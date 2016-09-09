@@ -1,0 +1,26 @@
+{
+  "name": "RNSonomaErrorReporting",
+  "version": "0.0.1",
+  "summary": "React Native plugin for Sonoma Error Reporting",
+  "license": "MIT",
+  "homepage": "https://github.com/microsoft/react-native-sonoma-private#readme",
+  "authors": {
+    "Microsoft Corporation": "codepush@microsoft.com"
+  },
+  "source": {
+    "http": "https://github.com/Microsoft/react-native-sonoma-private"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "source_files": "ios/RNSonomaErrorReporting/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ],
+    "AvalancheHub": [
+
+    ]
+  }
+}

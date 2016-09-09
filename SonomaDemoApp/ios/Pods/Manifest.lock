@@ -1,4 +1,5 @@
 PODS:
+  - AvalancheErrorReporting (0.0.1)
   - AvalancheHub (0.0.1)
   - React (0.32.1):
     - React/Core (= 0.32.1)
@@ -22,11 +23,15 @@ PODS:
     - React/Core
   - React/RCTWebSocket (0.32.1):
     - React/Core
+  - RNSonomaErrorReporting (0.0.1):
+    - AvalancheHub
+    - React
   - RNSonomaHub (0.0.1):
     - AvalancheHub
     - React
 
 DEPENDENCIES:
+  - AvalancheErrorReporting (from `../../AvalancheErrorReporting.podspec`)
   - AvalancheHub (from `../../AvalancheHub.podspec`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
@@ -37,21 +42,28 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNSonomaErrorReporting (from `../node_modules/react-native-sonoma-error-reporting`)
   - RNSonomaHub (from `../node_modules/react-native-sonoma-hub`)
 
 EXTERNAL SOURCES:
+  AvalancheErrorReporting:
+    :path: ../../AvalancheErrorReporting.podspec
   AvalancheHub:
     :path: ../../AvalancheHub.podspec
   React:
     :path: ../node_modules/react-native
+  RNSonomaErrorReporting:
+    :path: ../node_modules/react-native-sonoma-error-reporting
   RNSonomaHub:
     :path: ../node_modules/react-native-sonoma-hub
 
 SPEC CHECKSUMS:
-  AvalancheHub: aaf2563e2a4595a09ffc69936c76dc7e91bab3e8
+  AvalancheErrorReporting: a39743b7db7c7bafc0b90fd85f94ea8eee92279c
+  AvalancheHub: d19d0e10cf56cec787bfb6b12f65f1971510f454
   React: 304abd16605aeff4b114da814812a78de24d4ca5
+  RNSonomaErrorReporting: 40dc41129e3e7331f601e128ce21d5ff310bf833
   RNSonomaHub: 81947341393e3023bdbd271059e1478342045392
 
-PODFILE CHECKSUM: 553649ee0b318da0eaca49dc541aefae221c9428
+PODFILE CHECKSUM: 6d9c1cfca7a0b0cec418091f2bc0a3c8bd5302fa
 
 COCOAPODS: 1.0.1

@@ -1,7 +1,7 @@
 {
-  "name": "AvalancheHub",
+  "name": "AvalancheErrorReporting",
   "version": "0.0.1",
-  "summary": "Sonoma SDK Core",
+  "summary": "Sonoma Error Reporting SDK",
   "homepage": "https://github.com/Microsoft/Sonoma-SDK-iOS",
   "license": "MIT",
   "authors": {
@@ -14,5 +14,5 @@
     "ios": "7.0"
   },
   "requires_arc": true,
-  "vendored_frameworks": "Sonoma-SDK-iOS/Products/AvalancheHub/AvalancheHub.framework"
+  "vendored_frameworks": "Sonoma-SDK-iOS/Products/AvalancheErrorReporting/AvalancheErrorReporting.framework"
 }

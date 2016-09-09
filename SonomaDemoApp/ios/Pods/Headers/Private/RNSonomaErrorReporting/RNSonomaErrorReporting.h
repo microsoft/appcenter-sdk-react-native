@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-sonoma-error-reporting/ios/RNSonomaErrorReporting/RNSonomaErrorReporting.h
