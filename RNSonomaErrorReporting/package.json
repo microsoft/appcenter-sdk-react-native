@@ -1,0 +1,23 @@
+{
+  "name": "react-native-sonoma-error-reporting",
+  "version": "0.0.1",
+  "description": "React Native plugin for Sonoma Error Reporting",
+  "main": "SonomaErrorReporting.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/react-native-sonoma-private.git"
+  },
+  "keywords": [
+    "react-native",
+    "sonoma",
+    "error",
+    "reporting",
+    "crash"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/react-native-sonoma-private/issues"
+  },
+  "homepage": "https://github.com/microsoft/react-native-sonoma-private#readme"
+}

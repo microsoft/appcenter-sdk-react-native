@@ -1,0 +1,20 @@
+{
+  "name": "react-native-sonoma-hub",
+  "version": "0.0.1",
+  "description": "React Native plugin for Sonoma",
+  "main": "SonomaHub.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/react-native-sonoma-private.git"
+  },
+  "keywords": [
+    "react-native",
+    "sonoma"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/react-native-sonoma-private/issues"
+  },
+  "homepage": "https://github.com/microsoft/react-native-sonoma-private#readme"
+}

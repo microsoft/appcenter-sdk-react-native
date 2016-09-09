@@ -1,0 +1,57 @@
+PODS:
+  - AvalancheHub (0.0.1)
+  - React (0.32.1):
+    - React/Core (= 0.32.1)
+  - React/Core (0.32.1):
+    - React/CSSLayout
+  - React/CSSLayout (0.32.1)
+  - React/RCTActionSheet (0.32.1):
+    - React/Core
+  - React/RCTGeolocation (0.32.1):
+    - React/Core
+  - React/RCTImage (0.32.1):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTNetwork (0.32.1):
+    - React/Core
+  - React/RCTSettings (0.32.1):
+    - React/Core
+  - React/RCTText (0.32.1):
+    - React/Core
+  - React/RCTVibration (0.32.1):
+    - React/Core
+  - React/RCTWebSocket (0.32.1):
+    - React/Core
+  - RNSonomaHub (0.0.1):
+    - AvalancheHub
+    - React
+
+DEPENDENCIES:
+  - AvalancheHub (from `../../AvalancheHub.podspec`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNSonomaHub (from `../node_modules/react-native-sonoma-hub`)
+
+EXTERNAL SOURCES:
+  AvalancheHub:
+    :path: ../../AvalancheHub.podspec
+  React:
+    :path: ../node_modules/react-native
+  RNSonomaHub:
+    :path: ../node_modules/react-native-sonoma-hub
+
+SPEC CHECKSUMS:
+  AvalancheHub: aaf2563e2a4595a09ffc69936c76dc7e91bab3e8
+  React: 304abd16605aeff4b114da814812a78de24d4ca5
+  RNSonomaHub: 81947341393e3023bdbd271059e1478342045392
+
+PODFILE CHECKSUM: 553649ee0b318da0eaca49dc541aefae221c9428
+
+COCOAPODS: 1.0.1

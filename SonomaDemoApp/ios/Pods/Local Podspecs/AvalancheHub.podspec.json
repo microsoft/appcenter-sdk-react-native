@@ -1,0 +1,18 @@
+{
+  "name": "AvalancheHub",
+  "version": "0.0.1",
+  "summary": "Sonoma SDK Core",
+  "homepage": "https://github.com/Microsoft/AvalancheSDK-iOS",
+  "license": "MIT",
+  "authors": {
+    "Microsoft Corporation": "codepush@microsoft.com"
+  },
+  "source": {
+    "git": "https://github.com/Microsoft/AvalancheSDK-iOS.git"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "vendored_frameworks": "AvalancheSDK-iOS/Products/AvalancheHub/AvalancheHub.framework"
+}

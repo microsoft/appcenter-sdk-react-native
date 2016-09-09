@@ -1,0 +1,22 @@
+target 'SonomaDemoApp' do
+    pod 'React', :path => '../node_modules/react-native', :subspecs => [
+        'Core',
+        'RCTActionSheet',
+        'RCTGeolocation',
+        'RCTImage',
+        'RCTNetwork',
+        'RCTSettings',
+        'RCTText',
+        'RCTVibration',
+        'RCTWebSocket'
+    ]
+
+    pod 'AvalancheHub', :path => '../../AvalancheHub.podspec'
+    pod 'RNSonomaHub', :path => '../node_modules/react-native-sonoma-hub'
+
+    pod 'AvalancheErrorReporting', :path => '../../AvalancheErrorReporting.podspec'
+    pod 'RNSonomaErrorReporting', :path => '../node_modules/react-native-sonoma-error-reporting'
+
+    # pod 'AvalancheAnalytics', :path => '../../AvalancheAnalytics.podspec'
+    # pod 'RNSonomaAnalytics', :path => '../node_modules/react-native-sonoma-analytics'
+end

@@ -1,0 +1,3 @@
+[submodule "AvalancheSDK-iOS"]
+	path = AvalancheSDK-iOS
+	url = https://github.com/Microsoft/AvalancheSDK-iOS
