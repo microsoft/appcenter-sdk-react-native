@@ -40,10 +40,7 @@ TODO
 
 1. Error Reporting
   - Add global exception handler to capture JS unhandled exceptions send to server
-
 2. Analytics
   - Figure out how auto page tracking should work for React Native
-
-2. Type definitions
-
-3. Write tests
+3. Type definitions
+4. Write tests
