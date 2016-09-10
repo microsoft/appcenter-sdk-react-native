@@ -5,11 +5,11 @@
 
 RCT_ENUM_CONVERTER(AVALogLevel,
                    (@{ @"AVALogLevelNone": @(AVALogLevelNone),
-                       @"AVALogLevelDebug": @(AVALogLevelError),
+                       @"AVALogLevelAssert": @(AVALogLevelAssert),
+                       @"AVALogLevelError": @(AVALogLevelError),
                        @"AVALogLevelWarning": @(AVALogLevelWarning),
                        @"AVALogLevelDebug": @(AVALogLevelDebug),
                        @"AVALogLevelVerbose": @(AVALogLevelVerbose) }),
-                   AVALogLevelWarning,
+                   AVALogLevelAssert,
                    integerValue)
-
 @end

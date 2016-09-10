@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-sonoma-analytics/ios/RNSonomaAnalytics/RNSonomaAnalytics.h

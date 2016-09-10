@@ -1,0 +1,1 @@
+../../../../../../../Sonoma-SDK-iOS/Products/AvalancheErrorReporting/AvalancheErrorReporting.framework/Versions/A/Headers/AVAErrorLoggingDelegate.h

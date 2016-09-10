@@ -13,6 +13,8 @@
 #import "RCTRootView.h"
 
 @import AvalancheHub;
+@import AvalancheAnalytics;
+@import AvalancheErrorReporting;
 
 @implementation AppDelegate
 
@@ -26,7 +28,8 @@
                                                       moduleName:@"SonomaDemoApp"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
-  [AVAAvalanche start:[[NSUUID UUID] UUIDString] withFeatures:@[]];
+  
+  [AVAAvalanche start:[[NSUUID UUID] UUIDString] withFeatures:@[[AVAAnalytics class], [AVAErrorReporting class]]];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

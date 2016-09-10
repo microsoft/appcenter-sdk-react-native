@@ -1,4 +1,5 @@
 PODS:
+  - AvalancheAnalytics (0.0.1)
   - AvalancheErrorReporting (0.0.1)
   - AvalancheHub (0.0.1)
   - React (0.32.1):
@@ -23,6 +24,9 @@ PODS:
     - React/Core
   - React/RCTWebSocket (0.32.1):
     - React/Core
+  - RNSonomaAnalytics (0.0.1):
+    - AvalancheHub
+    - React
   - RNSonomaErrorReporting (0.0.1):
     - AvalancheHub
     - React
@@ -31,6 +35,7 @@ PODS:
     - React
 
 DEPENDENCIES:
+  - AvalancheAnalytics (from `../../AvalancheAnalytics.podspec`)
   - AvalancheErrorReporting (from `../../AvalancheErrorReporting.podspec`)
   - AvalancheHub (from `../../AvalancheHub.podspec`)
   - React/Core (from `../node_modules/react-native`)
@@ -42,28 +47,35 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNSonomaAnalytics (from `../node_modules/react-native-sonoma-analytics`)
   - RNSonomaErrorReporting (from `../node_modules/react-native-sonoma-error-reporting`)
   - RNSonomaHub (from `../node_modules/react-native-sonoma-hub`)
 
 EXTERNAL SOURCES:
+  AvalancheAnalytics:
+    :path: ../../AvalancheAnalytics.podspec
   AvalancheErrorReporting:
     :path: ../../AvalancheErrorReporting.podspec
   AvalancheHub:
     :path: ../../AvalancheHub.podspec
   React:
     :path: ../node_modules/react-native
+  RNSonomaAnalytics:
+    :path: ../node_modules/react-native-sonoma-analytics
   RNSonomaErrorReporting:
     :path: ../node_modules/react-native-sonoma-error-reporting
   RNSonomaHub:
     :path: ../node_modules/react-native-sonoma-hub
 
 SPEC CHECKSUMS:
+  AvalancheAnalytics: 3a6b001756907417f65ad406388ee3cd8b5ca80b
   AvalancheErrorReporting: a39743b7db7c7bafc0b90fd85f94ea8eee92279c
   AvalancheHub: d19d0e10cf56cec787bfb6b12f65f1971510f454
   React: 304abd16605aeff4b114da814812a78de24d4ca5
+  RNSonomaAnalytics: 8ce77886a1136ac6155f71cfb1f78fe2da972a51
   RNSonomaErrorReporting: 40dc41129e3e7331f601e128ce21d5ff310bf833
   RNSonomaHub: 81947341393e3023bdbd271059e1478342045392
 
-PODFILE CHECKSUM: 6d9c1cfca7a0b0cec418091f2bc0a3c8bd5302fa
+PODFILE CHECKSUM: 839575af29351cf8b614ef1453e42e7242723eba
 
 COCOAPODS: 1.0.1

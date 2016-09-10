@@ -23,6 +23,7 @@ module.exports = {
 
     LogLevel: {
         NONE: RNSonomaHub.AVALogLevelNone,
+        ASSERT: RNSonomaHub.AVALogLevelAssert,
         ERROR: RNSonomaHub.AVALogLevelError,
         WARNING: RNSonomaHub.AVALogLevelWarning,
         DEBUG: RNSonomaHub.AVALogLevelDebug,

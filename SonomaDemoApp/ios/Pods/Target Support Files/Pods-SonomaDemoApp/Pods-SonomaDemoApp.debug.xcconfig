@@ -1,8 +1,9 @@
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/../../../Sonoma-SDK-iOS/Products/AvalancheAnalytics" "${PODS_ROOT}/../../../Sonoma-SDK-iOS/Products/AvalancheErrorReporting" "${PODS_ROOT}/../../../Sonoma-SDK-iOS/Products/AvalancheHub"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AvalancheErrorReporting" "${PODS_ROOT}/Headers/Public/AvalancheHub" "${PODS_ROOT}/Headers/Public/RNSonomaErrorReporting" "${PODS_ROOT}/Headers/Public/RNSonomaHub" "${PODS_ROOT}/Headers/Public/React"
-LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/RNSonomaErrorReporting" "$PODS_CONFIGURATION_BUILD_DIR/RNSonomaHub" "$PODS_CONFIGURATION_BUILD_DIR/React"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AvalancheErrorReporting" -isystem "${PODS_ROOT}/Headers/Public/AvalancheHub" -isystem "${PODS_ROOT}/Headers/Public/RNSonomaErrorReporting" -isystem "${PODS_ROOT}/Headers/Public/RNSonomaHub" -isystem "${PODS_ROOT}/Headers/Public/React"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"RNSonomaErrorReporting" -l"RNSonomaHub" -l"React" -l"stdc++" -framework "JavaScriptCore"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AvalancheAnalytics" "${PODS_ROOT}/Headers/Public/AvalancheErrorReporting" "${PODS_ROOT}/Headers/Public/AvalancheHub" "${PODS_ROOT}/Headers/Public/RNSonomaAnalytics" "${PODS_ROOT}/Headers/Public/RNSonomaErrorReporting" "${PODS_ROOT}/Headers/Public/RNSonomaHub" "${PODS_ROOT}/Headers/Public/React"
+LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/RNSonomaAnalytics" "$PODS_CONFIGURATION_BUILD_DIR/RNSonomaErrorReporting" "$PODS_CONFIGURATION_BUILD_DIR/RNSonomaHub" "$PODS_CONFIGURATION_BUILD_DIR/React"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AvalancheAnalytics" -isystem "${PODS_ROOT}/Headers/Public/AvalancheErrorReporting" -isystem "${PODS_ROOT}/Headers/Public/AvalancheHub" -isystem "${PODS_ROOT}/Headers/Public/RNSonomaAnalytics" -isystem "${PODS_ROOT}/Headers/Public/RNSonomaErrorReporting" -isystem "${PODS_ROOT}/Headers/Public/RNSonomaHub" -isystem "${PODS_ROOT}/Headers/Public/React"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"RNSonomaAnalytics" -l"RNSonomaErrorReporting" -l"RNSonomaHub" -l"React" -l"stdc++" -framework "AvalancheAnalytics" -framework "AvalancheErrorReporting" -framework "AvalancheHub" -framework "JavaScriptCore"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods

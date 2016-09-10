@@ -54,6 +54,7 @@ RCT_EXPORT_METHOD(installId:(RCTPromiseResolveBlock)resolve
 - (NSDictionary *)constantsToExport
 {
     return @{ @"AVALogLevelNone": @(AVALogLevelNone),
+              @"AVALogLevelAssert": @(AVALogLevelAssert),
               @"AVALogLevelError": @(AVALogLevelError),
               @"AVALogLevelWarning": @(AVALogLevelWarning),
               @"AVALogLevelDebug": @(AVALogLevelDebug),
