@@ -1,3 +1,8 @@
 rootProject.name = 'SonomaDemoApp'
 
 include ':app'
+include ':react-native-sonoma-error-reporting'
+include ':react-native-sonoma-analytics'
+
+project(':react-native-sonoma-error-reporting').projectDir = new File(rootProject.projectDir, '../../RNSonomaErrorReporting/android')
+project(':react-native-sonoma-analytics').projectDir = new File(rootProject.projectDir, '../../RNSonomaAnalytics/android')

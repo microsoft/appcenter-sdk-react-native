@@ -1,10 +1,6 @@
 let RNSonomaErrorReporting = require("react-native").NativeModules.RNSonomaErrorReporting;
 
-module.exports = {
-    async isDebuggerAttached() {
-        return await RNSonomaErrorReporting.isDebuggerAttached();
-    },
-
+let SonomaErrorReporting = {
     async generateTestCrash() {
         await RNSonomaErrorReporting.generateTestCrash();
     },
@@ -18,18 +14,29 @@ module.exports = {
     },
 
     async getLastSessionCrashDetails() {
-        return await RNSonomaErrorReporting.lastSessionCrashDetails();
+        return await RNSonomaErrorReporting.getLastSessionCrashDetails();
     },
 
-    ErrorLogSetting: {
-        DISABLED: RNSonomaErrorReporting.AVAErrorLogSettingDisabled,
-        ALWAYS_ASK: RNSonomaErrorReporting.AVAErrorLogSettingAlwaysAsk,
-        AUTO_SEND: RNSonomaErrorReporting.AVAErrorLogSettingAutoSend
+    async sendCrashes() {
+        await RNSonomaErrorReporting.sendCrashes();
     },
 
-    UserConfirmation: {
-        DONT_SEND: RNSonomaErrorReporting.AVAUserConfirmationDontSend,
-        SEND: RNSonomaErrorReporting.AVAUserConfirmationSend,
-        ALWAYS: RNSonomaErrorReporting.AVAUserConfirmationAlways
+    async ignoreCrashes() {
+        await RNSonomaErrorReporting.ignoreCrashes();
+    },
+
+    async setTextAttachment(textAttachment) {
+        await RNSonomaErrorReporting.setTextAttachment(textAttachment);
     }
 };
+
+// Android does not have "isDebuggerAttached" method
+if (SonomaErrorReporting && RNSonomaErrorReporting.isDebuggerAttached) {
+    SonomaErrorReporting = Object.assign({
+        async isDebuggerAttached() {
+            return await RNSonomaErrorReporting.isDebuggerAttached();
+        },
+    }, SonomaErrorReporting);
+}
+
+module.exports = SonomaErrorReporting;

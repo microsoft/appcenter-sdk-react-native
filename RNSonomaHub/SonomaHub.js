@@ -1,6 +1,6 @@
 let RNSonomaHub = require("react-native").NativeModules.RNSonomaHub;
 
-module.exports = {
+const SonomaHub = {
     async setEnabled(isEnabled) {
         await RNSonomaHub.setEnabled(isEnabled);
     },
@@ -10,7 +10,7 @@ module.exports = {
     },
 
     async getLogLevel() {
-        return await RNSonomaHub.logLevel();
+        return await RNSonomaHub.getLogLevel();
     },
 
     async setLogLevel(logLevel) {
@@ -18,15 +18,21 @@ module.exports = {
     },
 
     async getInstallId() {
-        return await RNSonomaHub.installId();
+        return await RNSonomaHub.getInstallId();
     },
 
     LogLevel: {
-        NONE: RNSonomaHub.AVALogLevelNone,
-        ASSERT: RNSonomaHub.AVALogLevelAssert,
-        ERROR: RNSonomaHub.AVALogLevelError,
-        WARNING: RNSonomaHub.AVALogLevelWarning,
-        DEBUG: RNSonomaHub.AVALogLevelDebug,
-        VERBOSE: RNSonomaHub.AVALogLevelVerbose
+        ASSERT: RNSonomaHub.LogLevelAssert,
+        ERROR: RNSonomaHub.LogLevelError,
+        WARNING: RNSonomaHub.LogLevelWarning,
+        DEBUG: RNSonomaHub.LogLevelDebug,
+        VERBOSE: RNSonomaHub.LogLevelVerbose
     }
 };
+
+// Android does not have "NONE" log level
+if (RNSonomaHub && RNSonomaHub.LogLevelNone) {
+    SonomaHub.LogLevel.NONE = RNSonomaHub.LogLevelNone;
+}
+
+module.exports = SonomaHub;

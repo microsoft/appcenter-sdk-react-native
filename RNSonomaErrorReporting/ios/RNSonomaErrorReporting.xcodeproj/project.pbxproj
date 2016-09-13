@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		5419C2741D824AA700DDF3A1 /* RNSonomaErrorReporting.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNSonomaErrorReporting.h */; };
 		5419C2761D824AA700DDF3A1 /* RNSonomaErrorReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2751D824AA700DDF3A1 /* RNSonomaErrorReporting.m */; };
-		5419C2821D82666A00DDF3A1 /* RCTConvert+AVAErrorLogSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2811D82666A00DDF3A1 /* RCTConvert+AVAErrorLogSetting.m */; };
-		5419C2841D826B2700DDF3A1 /* RCTConvert+AVAUserConfirmation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2831D826B2700DDF3A1 /* RCTConvert+AVAUserConfirmation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,8 +28,6 @@
 		5419C2701D824AA700DDF3A1 /* libRNSonomaErrorReporting.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSonomaErrorReporting.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2731D824AA700DDF3A1 /* RNSonomaErrorReporting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSonomaErrorReporting.h; sourceTree = "<group>"; };
 		5419C2751D824AA700DDF3A1 /* RNSonomaErrorReporting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSonomaErrorReporting.m; sourceTree = "<group>"; };
-		5419C2811D82666A00DDF3A1 /* RCTConvert+AVAErrorLogSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+AVAErrorLogSetting.m"; sourceTree = "<group>"; };
-		5419C2831D826B2700DDF3A1 /* RCTConvert+AVAUserConfirmation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+AVAUserConfirmation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +62,6 @@
 			children = (
 				5419C2731D824AA700DDF3A1 /* RNSonomaErrorReporting.h */,
 				5419C2751D824AA700DDF3A1 /* RNSonomaErrorReporting.m */,
-				5419C2811D82666A00DDF3A1 /* RCTConvert+AVAErrorLogSetting.m */,
-				5419C2831D826B2700DDF3A1 /* RCTConvert+AVAUserConfirmation.m */,
 			);
 			path = RNSonomaErrorReporting;
 			sourceTree = "<group>";
@@ -128,9 +122,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5419C2841D826B2700DDF3A1 /* RCTConvert+AVAUserConfirmation.m in Sources */,
 				5419C2761D824AA700DDF3A1 /* RNSonomaErrorReporting.m in Sources */,
-				5419C2821D82666A00DDF3A1 /* RCTConvert+AVAErrorLogSetting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

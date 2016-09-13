@@ -31,8 +31,8 @@ RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
 }
 
 
-RCT_EXPORT_METHOD(logLevel:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve
+                     rejecter:(RCTPromiseRejectBlock)reject)
 {
     resolve([NSNumber numberWithInteger:[AVAAvalanche logLevel]]);
 }
@@ -45,20 +45,20 @@ RCT_EXPORT_METHOD(setLogLevel:(AVALogLevel)logLevel
     resolve(nil);
 }
 
-RCT_EXPORT_METHOD(installId:(RCTPromiseResolveBlock)resolve
-                   rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve
+                      rejecter:(RCTPromiseRejectBlock)reject)
 {
     resolve([[AVAAvalanche installId] UUIDString]);
 }
 
 - (NSDictionary *)constantsToExport
 {
-    return @{ @"AVALogLevelNone": @(AVALogLevelNone),
-              @"AVALogLevelAssert": @(AVALogLevelAssert),
-              @"AVALogLevelError": @(AVALogLevelError),
-              @"AVALogLevelWarning": @(AVALogLevelWarning),
-              @"AVALogLevelDebug": @(AVALogLevelDebug),
-              @"AVALogLevelVerbose": @(AVALogLevelVerbose) };
+    return @{ @"LogLevelNone": @(AVALogLevelNone),
+              @"LogLevelAssert": @(AVALogLevelAssert),
+              @"LogLevelError": @(AVALogLevelError),
+              @"LogLevelWarning": @(AVALogLevelWarning),
+              @"LogLevelDebug": @(AVALogLevelDebug),
+              @"LogLevelVerbose": @(AVALogLevelVerbose) };
 };
 
 @end

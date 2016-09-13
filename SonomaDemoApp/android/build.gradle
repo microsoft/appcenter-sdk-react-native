@@ -20,5 +20,12 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        maven {
+            url  'http://microsoftsonoma.bintray.com/sonoma'
+            credentials {
+                username 'sonoma-beta'
+                password 'cbaf881993ad1ab4128f71da716d060e8590906a'
+            }
+        }
     }
 }

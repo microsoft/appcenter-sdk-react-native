@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE();
 - (instancetype)init
 {
     self = [super init];
-    
+
     if (self) {
         // TODO: Set custom userConfirmationHandler that bridges information to JS,
         // possibly via the RCTDeviceEventEmitter, so that a user can set a custom
@@ -27,19 +27,9 @@ RCT_EXPORT_MODULE();
         //
         // See [AVAErrorReporting setUserConfirmationHandler:userConfirmationHandler].
     }
-    
+
     return self;
 }
-
-- (NSDictionary *)constantsToExport
-{
-    return @{ @"AVAErrorLogSettingDisabled": @(AVAErrorLogSettingDisabled),
-              @"AVAErrorLogSettingAlwaysAsk": @(AVAErrorLogSettingAlwaysAsk),
-              @"AVAErrorLogSettingAutoSend": @(AVAErrorLogSettingAutoSend),
-              @"AVAUserConfirmationDontSend": @(AVAUserConfirmationDontSend),
-              @"AVAUserConfirmationSend": @(AVAUserConfirmationSend),
-              @"AVAUserConfirmationAlways": @(AVAUserConfirmationAlways) };
-};
 
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
                             rejecter:(RCTPromiseRejectBlock)reject)
@@ -61,18 +51,30 @@ RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve
     resolve([NSNumber numberWithBool:[AVAErrorReporting hasCrashedInLastSession]]);
 }
 
-RCT_EXPORT_METHOD(notifyWithUserConfirmation:(AVAUserConfirmation)userConfirmation
-                                    resolver:(RCTPromiseResolveBlock)resolve
-                                    rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(sendCrashes:(RCTPromiseResolveBlock)resolve
+                     rejecter:(RCTPromiseRejectBlock)reject)
 {
-    // After the error reporting prompt is shown to the user, this method is used
-    // to communicate the user's reponse back from JS to native.
-    [AVAErrorReporting notifyWithUserConfirmation:userConfirmation];
+    [AVAErrorReporting notifyWithUserConfirmation:AVAUserConfirmationSend];
     resolve(nil);
 }
 
-RCT_EXPORT_METHOD(lastSessionCrashDetails:(RCTPromiseResolveBlock)resolve
-                                 rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(ignoreCrashes:(RCTPromiseResolveBlock)resolve
+                       rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [AVAErrorReporting notifyWithUserConfirmation:AVAUserConfirmationDontSend];
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(setTextAttachment:(NSString *)textAttachment
+                           resolver:(RCTPromiseResolveBlock)resolve
+                           rejecter:(RCTPromiseRejectBlock)reject)
+{
+    // TODO
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(getLastSessionCrashDetails:(RCTPromiseResolveBlock)resolve
+                                    rejecter:(RCTPromiseRejectBlock)reject)
 {
     AVAErrorReport *lastSessionCrashDetails = [AVAErrorReporting lastSessionCrashDetails];
     // TODO: Serialize crash details to NSDictionary and send to JS.

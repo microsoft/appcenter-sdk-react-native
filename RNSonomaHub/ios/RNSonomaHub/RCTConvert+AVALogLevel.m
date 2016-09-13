@@ -4,12 +4,12 @@
 @implementation RCTConvert (AVALogLevel)
 
 RCT_ENUM_CONVERTER(AVALogLevel,
-                   (@{ @"AVALogLevelNone": @(AVALogLevelNone),
-                       @"AVALogLevelAssert": @(AVALogLevelAssert),
-                       @"AVALogLevelError": @(AVALogLevelError),
-                       @"AVALogLevelWarning": @(AVALogLevelWarning),
-                       @"AVALogLevelDebug": @(AVALogLevelDebug),
-                       @"AVALogLevelVerbose": @(AVALogLevelVerbose) }),
+                   (@{ @"LogLevelNone": @(AVALogLevelNone),
+                       @"LogLevelAssert": @(AVALogLevelAssert),
+                       @"LogLevelError": @(AVALogLevelError),
+                       @"LogLevelWarning": @(AVALogLevelWarning),
+                       @"LogLevelDebug": @(AVALogLevelDebug),
+                       @"LogLevelVerbose": @(AVALogLevelVerbose) }),
                    AVALogLevelAssert,
                    integerValue)
 @end

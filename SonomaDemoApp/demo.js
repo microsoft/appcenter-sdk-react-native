@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import {
+  Alert,
   AppRegistry,
   StyleSheet,
   Text,
@@ -13,11 +14,24 @@ import {
   View
 } from 'react-native';
 
-import SonomaHub from 'react-native-sonoma-hub';
 import SonomaAnalytics from 'react-native-sonoma-analytics';
 import SonomaErrorReporting from 'react-native-sonoma-error-reporting';
 
 class SonomaDemoApp extends Component {
+  async componentDidMount() {
+    if (await SonomaErrorReporting.hasCrashedInLastSession()) {
+      let lastSessionCrashDetails = await SonomaErrorReporting.getLastSessionCrashDetails();
+      Alert.alert(
+        'Unhandled exception:',
+        lastSessionCrashDetails.exception.split('\n')[0],
+        [
+          {text: 'Send crash', onPress: () => SonomaErrorReporting.sendCrashes() },
+          {text: 'Ignore crash', onPress: () => SonomaErrorReporting.ignoreCrashes(), style: 'cancel'},
+        ]
+      );
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -25,7 +39,13 @@ class SonomaDemoApp extends Component {
           Welcome to Sonoma!
         </Text>
 
-        <TouchableOpacity onPress={() => SonomaErrorReporting.generateTestCrash()}>
+        <TouchableOpacity onPress={() => {
+          if (__DEV__) {
+            SonomaErrorReporting.generateTestCrash();
+          } else {
+            undefined.property;
+          }
+        }}>
           <Text style={styles.button}>
             Test Crash
           </Text>

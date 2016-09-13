@@ -21,7 +21,14 @@ Development repository for the Sonoma SDK for React Native.
 
 ## Getting Started (Android)
 
-TODO
+1. Clone the repository
+
+2. Build Demo app
+  - `cd` into SonomaDemoApp folder and `npm install`
+
+3. Run Demo app
+  - Boot up Android emulator
+  - `cd` into SonomaDemoApp folder and `react-native run-android`
 
 ## To-do items:
 
@@ -30,11 +37,15 @@ TODO
 1. Error Reporting
   - Send special JS error report if exception is from JS
   - Get last session crash details from JS
-  - Set custom user confirmation handler from JS
+  - Implement "automatic" crash sending / set custom crash listener from JS
+  - Send crash with binary attachment
 
 ### Android
 
-TODO
+1. Error Reporting
+  - Send special JS error report if exception is from JS
+  - Implement "automatic" crash sending / set custom crash listener from JS
+  - Send crash with binary attachment
 
 ### JS
 
@@ -42,5 +53,5 @@ TODO
   - Add global exception handler to capture JS unhandled exceptions send to server
 2. Analytics
   - Figure out how auto page tracking should work for React Native
-3. Type definitions
+3. Type definitions (useful for VS Code IntelliSense)
 4. Write tests
