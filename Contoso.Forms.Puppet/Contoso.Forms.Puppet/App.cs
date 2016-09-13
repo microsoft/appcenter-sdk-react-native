@@ -34,7 +34,7 @@ namespace Contoso.Forms.Puppet
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.Start("61e19ad3-5b43-4fc5-84aa-0bed649d70db", typeof(Analytics));
+            Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             Debug.WriteLine("Sonoma.InstallId=" + Sonoma.InstallId);
         }
