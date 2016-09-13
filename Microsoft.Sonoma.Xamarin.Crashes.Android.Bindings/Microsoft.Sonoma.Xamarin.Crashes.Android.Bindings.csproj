@@ -59,7 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\errors-release.aar" />
+    <LibraryProjectZip Include="Jars\crashes-release.aar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>
