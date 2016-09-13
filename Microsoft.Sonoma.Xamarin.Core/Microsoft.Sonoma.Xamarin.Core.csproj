@@ -37,7 +37,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sonoma.cs" />
+    <Compile Include="PlatformSonoma.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems" Label="Shared" />
