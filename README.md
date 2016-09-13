@@ -12,7 +12,9 @@ Development repository for the Sonoma SDK for React Native.
   - `cd` into SonomaDemoApp folder and `npm install`
   - `cd` into ios folder and `pod install`. If you have not installed CocoaPods, `sudo gem install cocoapods`.
   - If you make changes in any of the individual SDKs (eg. RNSonomaHub, RNSonomaErrorReporting), you will need to run the above two steps again to test your changes using the sample app.
-4. Run Demo app
+4. Configure Demo app
+  - Modify `SonomaDemoApp/ios/SonomaDemoApp/AppDelegate.m` to use your Sonoma App ID in the call to `[AVAAvalanche start: withFeatures:]`.
+5. Run Demo app
   - `cd` into SonomaDemoApp folder and `npm start`
   - Open up `SonomaDemoApp/ios/SonomaDemoApp.xcworkspace`, select desired simulator and click the "Run" button
 
@@ -22,7 +24,9 @@ Development repository for the Sonoma SDK for React Native.
 2. Build Demo app
   - `cd` into SonomaDemoApp folder and `npm install`
   - If you make changes in any of the individual SDKs (eg. RNSonomaHub, RNSonomaErrorReporting), you will need to `npm install` again to test your changes using the sample app.
-3. Run Demo app
+3. Configure Demo app
+  - Modify `SonomaDemoApp/android/app/src/main/java/com/sonomademoapp/MainApplication.java` to use your Sonoma App ID in the call to `Sonoma.start(...)`.
+4. Run Demo app
   - Boot up Android emulator
   - `cd` into SonomaDemoApp folder and `react-native run-android`
 
@@ -31,9 +35,11 @@ Development repository for the Sonoma SDK for React Native.
 ### iOS
 
 1. Error Reporting
+  - Wait for notification from JS before sending crash
   - Send special JS error report if exception is from JS
   - Get last session crash details from JS
   - Implement "automatic" crash sending / set custom crash listener from JS
+  - Send crash with text attachment
   - Send crash with binary attachment
 
 ### Android

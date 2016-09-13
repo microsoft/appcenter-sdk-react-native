@@ -18,7 +18,7 @@ target 'SonomaDemoApp' do
     pod 'AvalancheErrorReporting', :path => '../../AvalancheErrorReporting.podspec'
 
     # React Native wrappers for Sonoma SDK
-    pod 'RNSonomaHub', :path => '../node_modules/react-native-sonoma-hub'
-    pod 'RNSonomaAnalytics', :path => '../node_modules/react-native-sonoma-analytics'
-    pod 'RNSonomaErrorReporting', :path => '../node_modules/react-native-sonoma-error-reporting'
+    pod 'RNSonomaHub', :path => '../../RNSonomaHub'
+    pod 'RNSonomaAnalytics', :path => '../../RNSonomaAnalytics'
+    pod 'RNSonomaErrorReporting', :path => '../../RNSonomaErrorReporting'
 end

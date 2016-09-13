@@ -47,9 +47,9 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNSonomaAnalytics (from `../node_modules/react-native-sonoma-analytics`)
-  - RNSonomaErrorReporting (from `../node_modules/react-native-sonoma-error-reporting`)
-  - RNSonomaHub (from `../node_modules/react-native-sonoma-hub`)
+  - RNSonomaAnalytics (from `../../RNSonomaAnalytics`)
+  - RNSonomaErrorReporting (from `../../RNSonomaErrorReporting`)
+  - RNSonomaHub (from `../../RNSonomaHub`)
 
 EXTERNAL SOURCES:
   AvalancheAnalytics:
@@ -61,11 +61,11 @@ EXTERNAL SOURCES:
   React:
     :path: ../node_modules/react-native
   RNSonomaAnalytics:
-    :path: ../node_modules/react-native-sonoma-analytics
+    :path: ../../RNSonomaAnalytics
   RNSonomaErrorReporting:
-    :path: ../node_modules/react-native-sonoma-error-reporting
+    :path: ../../RNSonomaErrorReporting
   RNSonomaHub:
-    :path: ../node_modules/react-native-sonoma-hub
+    :path: ../../RNSonomaHub
 
 SPEC CHECKSUMS:
   AvalancheAnalytics: 3a6b001756907417f65ad406388ee3cd8b5ca80b
@@ -76,6 +76,6 @@ SPEC CHECKSUMS:
   RNSonomaErrorReporting: 40dc41129e3e7331f601e128ce21d5ff310bf833
   RNSonomaHub: 81947341393e3023bdbd271059e1478342045392
 
-PODFILE CHECKSUM: 839575af29351cf8b614ef1453e42e7242723eba
+PODFILE CHECKSUM: 26d18cdc6f56c7eff6a6058c2b3db266e34381c5
 
 COCOAPODS: 1.0.1
