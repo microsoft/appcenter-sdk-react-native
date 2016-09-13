@@ -37,8 +37,8 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlatformSonoma.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sonoma.cs" />
   </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

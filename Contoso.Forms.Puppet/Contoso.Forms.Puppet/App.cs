@@ -26,12 +26,17 @@ namespace Contoso.Forms.Puppet
                     }
                 }
             };
-            Debug.WriteLine("Sonoma=" + Sonoma.Enabled);
         }
 
         protected override void OnStart()
         {
             // Handle when your app starts
+            Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
+            Sonoma.LogLevel = LogLevel.Verbose;
+            Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
+            Sonoma.Start("61e19ad3-5b43-4fc5-84aa-0bed649d70db", typeof(Analytics));
+            Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
+            Debug.WriteLine("Sonoma.InstallId=" + Sonoma.InstallId);
         }
 
         protected override void OnSleep()

@@ -3,20 +3,19 @@ using System.Linq;
 using Android.App;
 using Java.Lang;
 
-// ReSharper disable once CheckNamespace
 namespace Microsoft.Sonoma.Xamarin.Core
 {
     using AndroidSonoma = Com.Microsoft.Sonoma.Core.Sonoma;
 
-    internal class PlatformSonoma : IPlatformSonoma
+    public static class Sonoma
     {
-        public bool Enabled
+        public static bool Enabled
         {
             get { return AndroidSonoma.Enabled; }
             set { AndroidSonoma.Enabled = value; }
         }
 
-        public LogLevel LogLevel
+        public static LogLevel LogLevel
         {
             get
             {
@@ -70,9 +69,9 @@ namespace Microsoft.Sonoma.Xamarin.Core
             }
         }
 
-        public Guid InstallId => Guid.Parse(AndroidSonoma.InstallId.ToString());
+        public static Guid InstallId => Guid.Parse(AndroidSonoma.InstallId.ToString());
 
-        public void Start(string appSecret, params Type[] features)
+        public static void Start(string appSecret, params Type[] features)
         {
             var bindingFeatures = features.Select(feature => Class.FromType((Type)feature.GetMethod("GetBindingType").Invoke(null, null))).ToArray();
             var application = (Application)Application.Context;

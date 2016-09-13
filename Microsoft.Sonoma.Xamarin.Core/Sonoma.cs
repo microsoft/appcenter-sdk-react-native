@@ -2,26 +2,26 @@
 
 namespace Microsoft.Sonoma.Xamarin.Core
 {
-    internal class PlatformSonoma : IPlatformSonoma
+    public static class Sonoma
     {
-        public bool Enabled
+        public static bool Enabled
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
 
-        public LogLevel LogLevel
+        public static LogLevel LogLevel
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
 
-        public Guid InstallId
+        public static Guid InstallId
         {
             get { throw new NotImplementedException(); }
         }
 
-        public void Start(string appSecret, params Type[] features)
+        public static void Start(string appSecret, params Type[] features)
         {
             throw new NotImplementedException();
         }
