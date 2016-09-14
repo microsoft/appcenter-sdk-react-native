@@ -5,6 +5,7 @@ using Android.Util;
 using Android.Widget;
 using Microsoft.Sonoma.Xamarin.Analytics;
 using Microsoft.Sonoma.Xamarin.Core;
+using Microsoft.Sonoma.Xamarin.Crashes;
 
 namespace Contoso.Android.Puppet
 {
@@ -31,7 +32,7 @@ namespace Contoso.Android.Puppet
             Log.Info("SonomaXamarin", "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             Log.Info("SonomaXamarin", "Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.Start("61e19ad3-5b43-4fc5-84aa-0bed649d70db", typeof(Analytics));
+            Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             Log.Info("SonomaXamarin", "Sonoma.InstallId=" + Sonoma.InstallId);
         }

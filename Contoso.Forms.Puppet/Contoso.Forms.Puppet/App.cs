@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Sonoma.Xamarin.Analytics;
 using Microsoft.Sonoma.Xamarin.Core;
+using Microsoft.Sonoma.Xamarin.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -34,7 +35,7 @@ namespace Contoso.Forms.Puppet
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics));
+            Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             Debug.WriteLine("Sonoma.InstallId=" + Sonoma.InstallId);
         }
@@ -42,6 +43,10 @@ namespace Contoso.Forms.Puppet
         protected override void OnSleep()
         {
             // Handle when your app sleeps
+            // Make it crash
+            // ReSharper disable once ConvertToConstant.Local
+            var count = 0;
+            Debug.WriteLine("count=" + (count / count));
         }
 
         protected override void OnResume()

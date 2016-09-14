@@ -136,6 +136,10 @@
       <Project>{42d541d7-b7c9-45a7-8d4d-8fb5a00668b3}</Project>
       <Name>Microsoft.Sonoma.Xamarin.Crashes.Android.Bindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Crashes.Android\Microsoft.Sonoma.Xamarin.Crashes.Android.csproj">
+      <Project>{d6db87ca-b8ec-4a38-805f-afdc7fec38eb}</Project>
+      <Name>Microsoft.Sonoma.Xamarin.Crashes.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
       <Project>{3acabf82-a3eb-4479-ad2b-004b57b0277e}</Project>
       <Name>Contoso.Forms.Puppet</Name>

@@ -8,6 +8,11 @@ namespace Microsoft.Sonoma.Xamarin.Analytics
 
     public static class Analytics
     {
+        public static Type GetBindingType()
+        {
+            return typeof (AndroidAnalytics);
+        }
+
         public static bool Enabled
         {
             get { return AndroidAnalytics.Enabled; }
@@ -28,11 +33,6 @@ namespace Microsoft.Sonoma.Xamarin.Analytics
         public static void TrackPage(string name, IDictionary<string, string> properties)
         {
             AndroidAnalytics.TrackPage(name, properties);
-        }
-
-        public static Type GetBindingType()
-        {
-            return typeof (AndroidAnalytics);
         }
     }
 }
