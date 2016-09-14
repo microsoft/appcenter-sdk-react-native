@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Sonoma.Xamarin.Analytics
 {
@@ -17,12 +18,12 @@ namespace Microsoft.Sonoma.Xamarin.Analytics
             set { throw new NotImplementedException(); }
         }
 
-        public static void TrackEvent(string name, IDictionary<string, string> properties)
+        public static void TrackEvent(string name, [Optional] IDictionary<string, string> properties)
         {
             throw new NotImplementedException();
         }
 
-        public static void TrackPage(string name, IDictionary<string, string> properties)
+        public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Sonoma.Xamarin.Analytics
@@ -25,12 +26,12 @@ namespace Microsoft.Sonoma.Xamarin.Analytics
             set { AndroidAnalytics.AutoPageTrackingEnabled = value; }
         }
 
-        public static void TrackEvent(string name, IDictionary<string, string> properties)
+        public static void TrackEvent(string name, [Optional] IDictionary<string, string> properties)
         {
             AndroidAnalytics.TrackEvent(name, properties);
         }
 
-        public static void TrackPage(string name, IDictionary<string, string> properties)
+        public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
         {
             AndroidAnalytics.TrackPage(name, properties);
         }
