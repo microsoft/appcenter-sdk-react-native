@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using Android.App;
+using Com.Microsoft.Sonoma.Core.Ingestion.Models;
 using Java.Lang;
 
 namespace Microsoft.Sonoma.Xamarin.Core
@@ -73,6 +75,8 @@ namespace Microsoft.Sonoma.Xamarin.Core
 
         public static void Start(string appSecret, params Type[] features)
         {
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            AndroidSonoma.SetWrapperSdk(new WrapperSdk { WrapperSdkName = "sonoma.xamarin", WrapperSdkVersion = version });
             var bindingFeatures = features.Select(feature => Class.FromType((Type)feature.GetMethod("GetBindingType").Invoke(null, null))).ToArray();
             var application = (Application)Application.Context;
             AndroidSonoma.Start(application, appSecret, bindingFeatures);
