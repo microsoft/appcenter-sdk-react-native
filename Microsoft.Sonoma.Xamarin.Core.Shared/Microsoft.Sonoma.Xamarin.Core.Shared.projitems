@@ -9,6 +9,7 @@
     <Import_RootNamespace>Microsoft.Sonoma.Xamarin.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)WrapperSdk.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogLevel.cs" />
   </ItemGroup>
 </Project>

@@ -6,10 +6,7 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
 
     public static class Crashes
     {
-        public static Type GetBindingType()
-        {
-            return typeof(AndroidCrashes);
-        }
+        public static Type BindingType => typeof(AndroidCrashes);
 
         public static bool Enabled
         {

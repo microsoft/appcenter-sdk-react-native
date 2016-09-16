@@ -9,10 +9,7 @@ namespace Microsoft.Sonoma.Xamarin.Analytics
 
     public static class Analytics
     {
-        public static Type GetBindingType()
-        {
-            return typeof (AndroidAnalytics);
-        }
+        public static Type BindingType => typeof(AndroidAnalytics);
 
         public static bool Enabled
         {
