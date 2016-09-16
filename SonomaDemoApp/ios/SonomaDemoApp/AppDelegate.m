@@ -12,9 +12,9 @@
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 
-@import AvalancheHub;
-@import AvalancheAnalytics;
-@import AvalancheErrorReporting;
+@import SonomaCore;
+@import SonomaAnalytics;
+@import SonomaCrashes;
 
 @implementation AppDelegate
 
@@ -29,7 +29,7 @@
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   
-  [AVAAvalanche start:[[NSUUID UUID] UUIDString] withFeatures:@[[AVAAnalytics class], [AVAErrorReporting class]]];
+  [SNMSonoma start:[[NSUUID UUID] UUIDString] withFeatures:@[[SNMAnalytics class], [SNMCrashes class]]];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

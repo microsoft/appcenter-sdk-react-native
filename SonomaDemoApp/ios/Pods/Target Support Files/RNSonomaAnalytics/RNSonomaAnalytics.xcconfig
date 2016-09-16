@@ -1,6 +1,6 @@
 CONFIGURATION_BUILD_DIR = $PODS_CONFIGURATION_BUILD_DIR/RNSonomaAnalytics
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/RNSonomaAnalytics" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AvalancheAnalytics" "${PODS_ROOT}/Headers/Public/AvalancheErrorReporting" "${PODS_ROOT}/Headers/Public/AvalancheHub" "${PODS_ROOT}/Headers/Public/RNSonomaAnalytics" "${PODS_ROOT}/Headers/Public/RNSonomaErrorReporting" "${PODS_ROOT}/Headers/Public/RNSonomaHub" "${PODS_ROOT}/Headers/Public/React"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/RNSonomaAnalytics" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/RNSonomaAnalytics" "${PODS_ROOT}/Headers/Public/RNSonomaCore" "${PODS_ROOT}/Headers/Public/RNSonomaCrashes" "${PODS_ROOT}/Headers/Public/React" "${PODS_ROOT}/Headers/Public/SonomaAnalytics" "${PODS_ROOT}/Headers/Public/SonomaCore" "${PODS_ROOT}/Headers/Public/SonomaCrashes"
 LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/React"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

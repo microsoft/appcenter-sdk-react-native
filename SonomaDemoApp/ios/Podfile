@@ -13,12 +13,12 @@ target 'SonomaDemoApp' do
     ]
 
     # Sonoma native SDK dependencies
-    pod 'AvalancheHub', :path => '../../AvalancheHub.podspec'
-    pod 'AvalancheAnalytics', :path => '../../AvalancheAnalytics.podspec'
-    pod 'AvalancheErrorReporting', :path => '../../AvalancheErrorReporting.podspec'
+    pod 'SonomaCore', :path => '../../SonomaCore.podspec'
+    pod 'SonomaAnalytics', :path => '../../SonomaAnalytics.podspec'
+    pod 'SonomaCrashes', :path => '../../SonomaCrashes.podspec'
 
     # React Native wrappers for Sonoma SDK
-    pod 'RNSonomaHub', :path => '../../RNSonomaHub'
+    pod 'RNSonomaCore', :path => '../../RNSonomaCore'
     pod 'RNSonomaAnalytics', :path => '../../RNSonomaAnalytics'
-    pod 'RNSonomaErrorReporting', :path => '../../RNSonomaErrorReporting'
+    pod 'RNSonomaCrashes', :path => '../../RNSonomaCrashes'
 end

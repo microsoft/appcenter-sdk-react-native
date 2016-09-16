@@ -7,7 +7,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.microsoft.react.sonoma.analytics.RNSonomaAnalyticsPackage;
-import com.microsoft.react.sonoma.errorreporting.RNSonomaErrorReportingPackage;
+import com.microsoft.react.sonoma.crashes.RNSonomaCrashesPackage;
 import com.microsoft.sonoma.analytics.Analytics;
 import com.microsoft.sonoma.core.Sonoma;
 import com.microsoft.sonoma.core.utils.UUIDUtils;
@@ -30,7 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new RNSonomaAnalyticsPackage(),
-          new RNSonomaErrorReportingPackage()
+          new RNSonomaCrashesPackage()
       );
 
       // Sonoma initialization

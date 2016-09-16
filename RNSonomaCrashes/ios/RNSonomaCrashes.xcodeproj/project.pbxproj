@@ -1,0 +1,261 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5419C2741D824AA700DDF3A1 /* RNSonomaCrashes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNSonomaCrashes.h */; };
+		5419C2761D824AA700DDF3A1 /* RNSonomaCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2751D824AA700DDF3A1 /* RNSonomaCrashes.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5419C26E1D824AA700DDF3A1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				5419C2741D824AA700DDF3A1 /* RNSonomaCrashes.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5419C2701D824AA700DDF3A1 /* libRNSonomaCrashes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSonomaCrashes.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5419C2731D824AA700DDF3A1 /* RNSonomaCrashes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSonomaCrashes.h; sourceTree = "<group>"; };
+		5419C2751D824AA700DDF3A1 /* RNSonomaCrashes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSonomaCrashes.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5419C26D1D824AA700DDF3A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5419C2671D824AA700DDF3A1 = {
+			isa = PBXGroup;
+			children = (
+				5419C2721D824AA700DDF3A1 /* RNSonomaCrashes */,
+				5419C2711D824AA700DDF3A1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5419C2711D824AA700DDF3A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5419C2701D824AA700DDF3A1 /* libRNSonomaCrashes.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5419C2721D824AA700DDF3A1 /* RNSonomaCrashes */ = {
+			isa = PBXGroup;
+			children = (
+				5419C2731D824AA700DDF3A1 /* RNSonomaCrashes.h */,
+				5419C2751D824AA700DDF3A1 /* RNSonomaCrashes.m */,
+			);
+			name = RNSonomaCrashes;
+			path = RNSonomaCrashes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5419C26F1D824AA700DDF3A1 /* RNSonomaCrashes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5419C2791D824AA700DDF3A1 /* Build configuration list for PBXNativeTarget "RNSonomaCrashes" */;
+			buildPhases = (
+				5419C26C1D824AA700DDF3A1 /* Sources */,
+				5419C26D1D824AA700DDF3A1 /* Frameworks */,
+				5419C26E1D824AA700DDF3A1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RNSonomaCrashes;
+			productName = RNSonomaCrashes;
+			productReference = 5419C2701D824AA700DDF3A1 /* libRNSonomaCrashes.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5419C2681D824AA700DDF3A1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Microsoft;
+				TargetAttributes = {
+					5419C26F1D824AA700DDF3A1 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 5419C26B1D824AA700DDF3A1 /* Build configuration list for PBXProject "RNSonomaCrashes" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5419C2671D824AA700DDF3A1;
+			productRefGroup = 5419C2711D824AA700DDF3A1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5419C26F1D824AA700DDF3A1 /* RNSonomaCrashes */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5419C26C1D824AA700DDF3A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5419C2761D824AA700DDF3A1 /* RNSonomaCrashes.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5419C2771D824AA700DDF3A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5419C2781D824AA700DDF3A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5419C27A1D824AA700DDF3A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = RNSonomaCrashes;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5419C27B1D824AA700DDF3A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = RNSonomaCrashes;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5419C26B1D824AA700DDF3A1 /* Build configuration list for PBXProject "RNSonomaCrashes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5419C2771D824AA700DDF3A1 /* Debug */,
+				5419C2781D824AA700DDF3A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5419C2791D824AA700DDF3A1 /* Build configuration list for PBXNativeTarget "RNSonomaCrashes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5419C27A1D824AA700DDF3A1 /* Debug */,
+				5419C27B1D824AA700DDF3A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5419C2681D824AA700DDF3A1 /* Project object */;
+}

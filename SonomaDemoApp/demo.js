@@ -15,18 +15,18 @@ import {
 } from 'react-native';
 
 import SonomaAnalytics from 'react-native-sonoma-analytics';
-import SonomaErrorReporting from 'react-native-sonoma-error-reporting';
+import SonomaCrashes from 'react-native-sonoma-crashes';
 
 class SonomaDemoApp extends Component {
   async componentDidMount() {
-    if (await SonomaErrorReporting.hasCrashedInLastSession()) {
-      let lastSessionCrashDetails = await SonomaErrorReporting.getLastSessionCrashDetails();
+    if (await SonomaCrashes.hasCrashedInLastSession()) {
+      let lastSessionCrashDetails = await SonomaCrashes.getLastSessionCrashDetails();
       Alert.alert(
         'Unhandled exception:',
         lastSessionCrashDetails.exception.split('\n')[0],
         [
-          {text: 'Send crash', onPress: () => SonomaErrorReporting.sendCrashes() },
-          {text: 'Ignore crash', onPress: () => SonomaErrorReporting.ignoreCrashes(), style: 'cancel'},
+          {text: 'Send crash', onPress: () => SonomaCrashes.sendCrashes() },
+          {text: 'Ignore crash', onPress: () => SonomaCrashes.ignoreCrashes(), style: 'cancel'},
         ]
       );
     }
@@ -41,7 +41,7 @@ class SonomaDemoApp extends Component {
 
         <TouchableOpacity onPress={() => {
           if (__DEV__) {
-            SonomaErrorReporting.generateTestCrash();
+            SonomaCrashes.generateTestCrash();
           } else {
             undefined.property;
           }

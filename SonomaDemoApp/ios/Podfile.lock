@@ -1,7 +1,4 @@
 PODS:
-  - AvalancheAnalytics (0.0.1)
-  - AvalancheErrorReporting (0.0.1)
-  - AvalancheHub (0.0.1)
   - React (0.32.1):
     - React/Core (= 0.32.1)
   - React/Core (0.32.1):
@@ -25,19 +22,19 @@ PODS:
   - React/RCTWebSocket (0.32.1):
     - React/Core
   - RNSonomaAnalytics (0.0.1):
-    - AvalancheHub
     - React
-  - RNSonomaErrorReporting (0.0.1):
-    - AvalancheHub
+    - SonomaCore
+  - RNSonomaCore (0.0.1):
     - React
-  - RNSonomaHub (0.0.1):
-    - AvalancheHub
+    - SonomaCore
+  - RNSonomaCrashes (0.0.1):
     - React
+    - SonomaCore
+  - SonomaAnalytics (0.0.1)
+  - SonomaCore (0.0.1)
+  - SonomaCrashes (0.0.1)
 
 DEPENDENCIES:
-  - AvalancheAnalytics (from `../../AvalancheAnalytics.podspec`)
-  - AvalancheErrorReporting (from `../../AvalancheErrorReporting.podspec`)
-  - AvalancheHub (from `../../AvalancheHub.podspec`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTGeolocation (from `../node_modules/react-native`)
@@ -48,34 +45,37 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNSonomaAnalytics (from `../../RNSonomaAnalytics`)
-  - RNSonomaErrorReporting (from `../../RNSonomaErrorReporting`)
-  - RNSonomaHub (from `../../RNSonomaHub`)
+  - RNSonomaCore (from `../../RNSonomaCore`)
+  - RNSonomaCrashes (from `../../RNSonomaCrashes`)
+  - SonomaAnalytics (from `../../SonomaAnalytics.podspec`)
+  - SonomaCore (from `../../SonomaCore.podspec`)
+  - SonomaCrashes (from `../../SonomaCrashes.podspec`)
 
 EXTERNAL SOURCES:
-  AvalancheAnalytics:
-    :path: ../../AvalancheAnalytics.podspec
-  AvalancheErrorReporting:
-    :path: ../../AvalancheErrorReporting.podspec
-  AvalancheHub:
-    :path: ../../AvalancheHub.podspec
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   RNSonomaAnalytics:
-    :path: ../../RNSonomaAnalytics
-  RNSonomaErrorReporting:
-    :path: ../../RNSonomaErrorReporting
-  RNSonomaHub:
-    :path: ../../RNSonomaHub
+    :path: "../../RNSonomaAnalytics"
+  RNSonomaCore:
+    :path: "../../RNSonomaCore"
+  RNSonomaCrashes:
+    :path: "../../RNSonomaCrashes"
+  SonomaAnalytics:
+    :path: "../../SonomaAnalytics.podspec"
+  SonomaCore:
+    :path: "../../SonomaCore.podspec"
+  SonomaCrashes:
+    :path: "../../SonomaCrashes.podspec"
 
 SPEC CHECKSUMS:
-  AvalancheAnalytics: 3a6b001756907417f65ad406388ee3cd8b5ca80b
-  AvalancheErrorReporting: a39743b7db7c7bafc0b90fd85f94ea8eee92279c
-  AvalancheHub: d19d0e10cf56cec787bfb6b12f65f1971510f454
   React: 304abd16605aeff4b114da814812a78de24d4ca5
-  RNSonomaAnalytics: 8ce77886a1136ac6155f71cfb1f78fe2da972a51
-  RNSonomaErrorReporting: 40dc41129e3e7331f601e128ce21d5ff310bf833
-  RNSonomaHub: 81947341393e3023bdbd271059e1478342045392
+  RNSonomaAnalytics: f6de1a30c539e88d4e500d2d488155ffc48ecf7c
+  RNSonomaCore: e8be0490a2717ed83a093fb60131e7f34b9d3045
+  RNSonomaCrashes: 45b8d32cd919df4b3a88f956362bf59b6ed72ab4
+  SonomaAnalytics: a0ce44a0fca199feb92215dc38e09e506e3179d6
+  SonomaCore: 2f7e80b94b5b5104a1e0729925fc3b91b22d3070
+  SonomaCrashes: 0dc9c1eb20fe11818abfce9fc35a342355472b81
 
-PODFILE CHECKSUM: 26d18cdc6f56c7eff6a6058c2b3db266e34381c5
+PODFILE CHECKSUM: e43796da45f27b2fd6e7caec8ed4166e81bab428
 
 COCOAPODS: 1.0.1
