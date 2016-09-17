@@ -6,12 +6,12 @@ using Xamarin.Forms.Platform.Android;
 namespace Contoso.Forms.Puppet.Droid
 {
     [Activity(Label = "SXPuppet", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    // ReSharper disable once UnusedMember.Global
     public class MainActivity : FormsApplicationActivity
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
             Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }

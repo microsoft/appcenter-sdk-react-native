@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Sonoma.Xamarin.Analytics;
 using Microsoft.Sonoma.Xamarin.Core;
@@ -9,24 +10,12 @@ namespace Contoso.Forms.Puppet
 {
     public class App : Application
     {
+        private Page _pageToTrack;
+
         public App()
         {
             // The root page of your application
-            MainPage = new ContentPage
-            {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children =
-                    {
-                        new Label
-                        {
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()
@@ -35,24 +24,58 @@ namespace Contoso.Forms.Puppet
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
+            Analytics.AutoPageTrackingEnabled = false;
             Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics), typeof(Crashes));
+            //Sonoma.Enabled = false;
+            //Sonoma.Enabled = true;
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEventWithProperties", new Dictionary<string, string> { { "someKey", "someValue" } });
             Debug.WriteLine("Sonoma.InstallId=" + Sonoma.InstallId);
+            OnCurrentPageChanged(MainPage);
+        }
+
+        private void OnCurrentPageChanged(Page page)
+        {
+            var navigationPage = page as NavigationPage;
+            _pageToTrack = navigationPage == null ? page : navigationPage.CurrentPage;
+            var name = _pageToTrack.GetType().Name;
+            if (name.EndsWith("Page") && name.Length > "Page".Length)
+                name = name.Remove(name.Length - "Page".Length);
+            Analytics.TrackPage(name);
+            if (navigationPage != null)
+            {
+                navigationPage.Pushed -= OnCurrentPageChanged;
+                navigationPage.Pushed += OnCurrentPageChanged;
+                navigationPage.Popped -= OnCurrentPageChanged;
+                navigationPage.Popped += OnCurrentPageChanged;
+            }
+            else
+            {
+                page.Appearing -= OnCurrentPageChanged;
+                page.Appearing += OnCurrentPageChanged;
+            }
+        }
+
+        private void OnCurrentPageChanged(object sender, EventArgs eventArgs)
+        {
+            OnCurrentPageChanged((Page)sender);
+        }
+
+        private void OnCurrentPageChanged(object sender, NavigationEventArgs navigationEventArgs)
+        {
+            OnCurrentPageChanged((Page)sender);
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
-            // Make it crash
-            // ReSharper disable once ConvertToConstant.Local
-            var count = 0;
-            Debug.WriteLine("count=" + (count / count));
+            Debug.WriteLine("OnSleep()");
         }
 
         protected override void OnResume()
         {
             // Handle when your app resumes
+            Debug.WriteLine("OnResume()");
+            OnCurrentPageChanged(_pageToTrack);
         }
     }
 }
