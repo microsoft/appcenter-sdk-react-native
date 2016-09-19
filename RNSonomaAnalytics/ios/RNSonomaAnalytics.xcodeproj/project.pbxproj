@@ -214,7 +214,7 @@
 		5486940A1D8384E600E6685A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/AvalancheAnalytics";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaAnalytics";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -225,7 +225,7 @@
 		5486940B1D8384E600E6685A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/AvalancheAnalytics";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaAnalytics";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

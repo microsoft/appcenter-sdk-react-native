@@ -7,7 +7,7 @@
 #import "RCTRootView.h"
 #import "RCTUtils.h"
 
-#import <AvalancheAnalytics/AvalancheAnalytics.h>
+#import <SonomaAnalytics/SonomaAnalytics.h>
 
 @interface RNSonomaAnalytics () <RCTBridgeModule>
 @end
@@ -21,7 +21,7 @@ RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
                     resolver:(RCTPromiseResolveBlock)resolve
                     rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [AVAAnalytics trackEvent:eventName withProperties:properties];
+    [SNMAnalytics trackEvent:eventName withProperties:properties];
     resolve(nil);
 }
 
@@ -30,7 +30,7 @@ RCT_EXPORT_METHOD(trackPage:(NSString *)pageName
                    resolver:(RCTPromiseResolveBlock)resolve
                    rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [AVAAnalytics trackPage:pageName withProperties:properties];
+    [SNMAnalytics trackPage:pageName withProperties:properties];
     resolve(nil);
 }
 

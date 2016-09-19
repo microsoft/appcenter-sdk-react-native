@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   s.source_files = 'ios/RNSonomaAnalytics/*.{h,m}'
 
   s.dependency 'React'
-  s.dependency 'AvalancheHub'
+  s.dependency 'SonomaCore'
 end
