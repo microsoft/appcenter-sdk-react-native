@@ -13,29 +13,28 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
-public class RNSonomaCrashesListener extends AbstractCrashesListener{
+public abstract class RNSonomaCrashesListenerBase extends AbstractCrashesListener {
     private ReactApplicationContext mReactApplicationContext;
     private static final String ON_BEFORE_SENDING_EVENT = "SonamaErrorReportOnBeforeSending";
     private static final String ON_SENDING_FAILED_EVENT = "SonamaErrorReportOnSendingFailed";
     private static final String ON_SENDING_SUCCEEDED_EVENT = "SonamaErrorReportOnSendingSucceeded";
 
-    public RNSonomaCrashesListener(ReactApplicationContext reactApplicationContext) {
-        mReactApplicationContext = reactApplicationContext;
+    public RNSonomaCrashesListener() {
     }
 
-    @Override
-    public boolean shouldProcess(ErrorReport report) {
-        // Process all crashes by default. JS side can stop a crash from
-        // being reported via the user confirmation "DONT_SEND" signal.
-        return true;
+    public void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
+        this.mReactApplicationContext = reactApplicationContext;
     }
 
-    @Override
-    public boolean shouldAwaitUserConfirmation() {
-        // Require user confirmation for all crashes, since this is the
-        // only way JS can indicate whether or not a crash should be sent.
-        return true;
-    }
+    /**
+     * Called when the JavaScript responds to a crash. 
+     * May be used when deciding whether to delay sending a crash,
+     * e.g. to determine that the JavaScript environment is unable to respond
+     * and thus to make decision in native code.
+     *
+     * @param userConfirmation either Crashes.SEND or Crashes.DONT_SEND
+     */
+    public void reportUserResponse(int userConfirmation) { }
 
     @Override
     public ErrorAttachment getErrorAttachment(ErrorReport report) {

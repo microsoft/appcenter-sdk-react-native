@@ -1,28 +1,32 @@
 let RNSonomaCrashes = require("react-native").NativeModules.RNSonomaCrashes;
 
+function deserializeCrashReport(nativeReport) {
+    if (!nativeReport) {
+	return;
+    }
+
+    let errorReport = {};
+    errorReport.id = nativeReport.id;
+    errorReport.threadName = nativeReport.threadName;
+    return errorReport;
+}
+
 let SonomaCrashes = {
+    // Constants
+    hasCrashedInLastSession: RNSonomaCrashes.hasCrashedInLastSession,
+    lastSessionCrashReport: deserializeCrashReport(RNSonomaCrashes.lastError),
+
+    // Functions
     async generateTestCrash() {
         await RNSonomaCrashes.generateTestCrash();
     },
 
-    async hasCrashedInLastSession() {
-        return await RNSonomaCrashes.hasCrashedInLastSession();
+    async sendCrash() {
+        await RNSonomaCrashes.sendCrash();
     },
 
-    async notifyWithUserConfirmation(userConfirmation) {
-        await RNSonomaCrashes.notifyWithUserConfirmation(userConfirmation);
-    },
-
-    async getLastSessionCrashDetails() {
-        return await RNSonomaCrashes.getLastSessionCrashDetails();
-    },
-
-    async sendCrashes() {
-        await RNSonomaCrashes.sendCrashes();
-    },
-
-    async ignoreCrashes() {
-        await RNSonomaCrashes.ignoreCrashes();
+    async ignoreCrash() {
+        await RNSonomaCrashes.ignoreCrash();
     },
 
     async setTextAttachment(textAttachment) {

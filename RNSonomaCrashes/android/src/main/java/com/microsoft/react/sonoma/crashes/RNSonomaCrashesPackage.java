@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNSonomaCrashesPackage implements ReactPackage {
+public class RNSonomaCrashesPackage< CrashListenerType extends RNSonomaCrashesListenerBase > implements ReactPackage {
     @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+	public List<NativeModule> createNativeModules(ReactApplicationContext reactContext, CrashListenerType crashListener) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNSonomaCrashesModule(reactContext));
+        modules.add(new RNSonomaCrashesModule(reactContext, crashListener));
         return modules;
     }
 

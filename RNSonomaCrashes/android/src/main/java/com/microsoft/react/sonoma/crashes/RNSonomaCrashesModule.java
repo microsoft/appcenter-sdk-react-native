@@ -4,6 +4,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.microsoft.sonoma.crashes.Crashes;
 import com.microsoft.sonoma.crashes.model.ErrorReport;
 
@@ -11,16 +12,40 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
-public class RNSonomaCrashesModule extends ReactContextBaseJavaModule {
+public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesListenerBase > extends ReactContextBaseJavaModule {
+    private mReactApplicationContext;
+    private CrashListenerType mCrashListener;
 
-    public RNSonomaCrashesModule(ReactApplicationContext reactContext) {
+    private static final HasCrashedInLastSessionKey = "hasCrashedInLastSession";
+    private static final LastErrorKey = "lastError";
+
+    public RNSonomaCrashesModule(ReactApplicationContext reactContext, CrashListenerType crashListener) {
         super(reactContext);
-        Crashes.setListener(new RNSonomaCrashesListener(reactContext));
+	this.mCrashListener = crashListener;
+	if (crashListener != null) {
+	    Crashes.setListener(crashListener);
+	}
     }
 
     @Override
     public String getName() {
         return "RNSonomaCrashes";
+    }
+    @Override
+    public Map<String, Object> getConstants() {
+	final Map<String, Object> constants = new HashMap<>();
+
+	ErrorReport lastError = Crashes.getLastSessionCrashReport();
+	
+	constants.put(RNSonomaCrashesModule.HasCrashedInLastSessionKey, lastError != null);
+	if (lastError) {
+	    WritableNativeMap jsLastError = new WritableNativeMap();
+	    jsLastError.putString("id", lastError.getId());
+	    jsLastError.putString("threadName", lastError.getThreadName());
+	    // TODO: More properties
+	    constants.put(RNSonomaCrashesModule.LastErrorKey, jsLastError);
+	}
+	return constants;
     }
 
     @ReactMethod
@@ -28,24 +53,25 @@ public class RNSonomaCrashesModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             public void run() {
                 Crashes.generateTestCrash();
-                promise.resolve("");
+                promise.reject(new Exception("generateTestCrash failed to generate a crash"));
             }
         }).start();
     }
 
     @ReactMethod
-    public void hasCrashedInLastSession(Promise promise) {
-        promise.resolve(Crashes.hasCrashedInLastSession());
-    }
-
-    @ReactMethod
-    public void sendCrashes(Promise promise) {
+    public void sendCrash(Promise promise) {
+	if (mCrashListener != null) {
+	    mCrashListener.reportUserResponse(Crashes.SEND);
+	}
         Crashes.notifyUserConfirmation(Crashes.SEND);
         promise.resolve("");
     }
 
     @ReactMethod
-    public void ignoreCrashes(Promise promise) {
+    public void ignoreCrash(Promise promise) {
+	if (mCrashListener != null) {
+	    mCrashListener.reportUserResponse(Crashes.DONT_SEND);
+	}
         Crashes.notifyUserConfirmation(Crashes.DONT_SEND);
         promise.resolve("");
     }

@@ -31,6 +31,16 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
+- (NSDictionary *)constantsToExport
+{
+    SNMErrorReport *lastSessionCrashReport = [SNMCrashes lastSessionCrashReport];
+
+    // TODO: Serialize lastSessionCrashReport in a similar way to android
+    return @{
+        @"hasCrashedInLastSession": lastSessionCrashReport == nil
+    };
+}
+
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
                             rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -41,7 +51,7 @@ RCT_EXPORT_METHOD(generateTestCrash:(RCTPromiseResolveBlock)resolve
                            rejecter:(RCTPromiseRejectBlock)reject)
 {
     [SNMCrashes generateTestCrash];
-    resolve(nil);
+    reject(nil);
 }
 
 
