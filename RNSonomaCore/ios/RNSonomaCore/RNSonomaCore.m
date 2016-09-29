@@ -1,64 +1,37 @@
 #import "RNSonomaCore.h"
 
-#import "RCTAssert.h"
-#import "RCTBridgeModule.h"
-#import "RCTConvert.h"
-#import "RCTEventDispatcher.h"
-#import "RCTRootView.h"
-#import "RCTUtils.h"
-
 #import <SonomaCore/SonomaCore.h>
 
-@interface RNSonomaCore () <RCTBridgeModule>
-@end
 
 @implementation RNSonomaCore
 
-RCT_EXPORT_MODULE();
+static NSString *appSecret;
 
-RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled
-                    resolver:(RCTPromiseResolveBlock)resolve
-                    rejecter:(RCTPromiseRejectBlock)reject)
++ (void) setAppSecret: (NSString *)secret
 {
-    [SNMSonoma setEnabled:isEnabled];
-    resolve(nil);
+  appSecret = secret;
 }
 
-RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
-                   rejecter:(RCTPromiseRejectBlock)reject)
++ (void) initializeSonoma
 {
-    resolve([NSNumber numberWithBool:[SNMSonoma isEnabled]]);
+  if (![SNMSonoma isInitialized]) {
+    if (appSecret == nil) {
+      // TODO: Fetch app secret from plist
+      appSecret = @"abc123";
+
+      // TODO: If fetching appsecret fails and it was not set in code, bail out?
+    }
+
+    id codePush = NSClassFromString(@"CodePushConfig");
+    if (codePush != nil) {
+      // Code push is present in the project
+      // TODO: find out codepush related info, keeping in mind this could be called very early on.
+    }
+
+    // TODO: Add in wrapperSDK once iOS supports that.
+
+    [SNMSonoma start: appSecret]
+  }
 }
-
-
-RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve
-                     rejecter:(RCTPromiseRejectBlock)reject)
-{
-    resolve([NSNumber numberWithInteger:[SNMSonoma logLevel]]);
-}
-
-RCT_EXPORT_METHOD(setLogLevel:(SNMLogLevel)logLevel
-                     resolver:(RCTPromiseResolveBlock)resolve
-                     rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [SNMSonoma setLogLevel:logLevel];
-    resolve(nil);
-}
-
-RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve
-                      rejecter:(RCTPromiseRejectBlock)reject)
-{
-    resolve([[SNMSonoma installId] UUIDString]);
-}
-
-- (NSDictionary *)constantsToExport
-{
-    return @{ @"LogLevelNone": @(SNMLogLevelNone),
-              @"LogLevelAssert": @(SNMLogLevelAssert),
-              @"LogLevelError": @(SNMLogLevelError),
-              @"LogLevelWarning": @(SNMLogLevelWarning),
-              @"LogLevelDebug": @(SNMLogLevelDebug),
-              @"LogLevelVerbose": @(SNMLogLevelVerbose) };
-};
 
 @end

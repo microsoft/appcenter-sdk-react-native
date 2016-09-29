@@ -39,11 +39,7 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
 	
 	constants.put(RNSonomaCrashesModule.HasCrashedInLastSessionKey, lastError != null);
 	if (lastError) {
-	    WritableNativeMap jsLastError = new WritableNativeMap();
-	    jsLastError.putString("id", lastError.getId());
-	    jsLastError.putString("threadName", lastError.getThreadName());
-	    // TODO: More properties
-	    constants.put(RNSonomaCrashesModule.LastErrorKey, jsLastError);
+	    constants.put(RNSonomaCrashesModule.LastErrorKey, RNSonomaCrashesUtils.convertErrorReportToWritableMap(lastError));
 	}
 	return constants;
     }
@@ -83,16 +79,6 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
             RNSonomaErrorAttachmentHelper.saveTextAttachment(getReactApplicationContext(), lastSessionCrashReport, textAttachment);
             promise.resolve("");
         } catch (IOException e) {
-            promise.reject(e);
-        }
-    }
-
-    @ReactMethod
-    public void getLastSessionCrashDetails(Promise promise) {
-        ErrorReport lastSessionCrashReport = Crashes.getLastSessionCrashReport();
-        try {
-            promise.resolve(RNSonomaCrashesUtils.convertErrorReportToWritableMap(lastSessionCrashReport));
-        } catch (JSONException e) {
             promise.reject(e);
         }
     }

@@ -8,6 +8,8 @@
 #import "RCTUtils.h"
 
 #import <SonomaCrashes/SonomaCrashes.h>
+#import <RNSonomaCore/RNSonomaCore.h>
+#import <SonomaCore/SonomaCore.h>
 
 @interface RNSonomaCrashes () <RCTBridgeModule>
 @end
@@ -15,6 +17,21 @@
 @implementation RNSonomaCrashes
 
 RCT_EXPORT_MODULE();
+
++ (void)register
+{
+  [RNSonomaCore initializeSonoma];
+  [SNMSonoma startFeature:[SNMCrashes class]]
+}
+
+// TODO: support this once the underlying iOS supports it.
+/*
++ (void)registerWithCrashDelegate
+{
+
+}
+*/
+
 
 - (instancetype)init
 {

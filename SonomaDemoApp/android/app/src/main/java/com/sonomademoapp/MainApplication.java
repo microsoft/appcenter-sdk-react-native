@@ -29,12 +29,9 @@ public class MainApplication extends Application implements ReactApplication {
       // Create RN native packages
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RNSonomaAnalyticsPackage(),
-          new RNSonomaCrashesPackage()
+          new RNSonomaAnalyticsPackage(MainApplication.this),
+          new RNSonomaCrashesPackage(MainApplication.this)
       );
-
-      // Sonoma initialization
-      Sonoma.start(MainApplication.this, UUIDUtils.randomUUID().toString(), Crashes.class, Analytics.class);
       return packages;
     }
   };
