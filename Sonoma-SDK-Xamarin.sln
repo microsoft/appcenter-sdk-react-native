@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Sonoma.Xamarin.Core.Android.Bindings", "Microsoft.Sonoma.Xamarin.Core.Android.Bindings\Microsoft.Sonoma.Xamarin.Core.Android.Bindings.csproj", "{C3B5BA33-DA39-400D-B5B3-85C68354FD74}"
 EndProject
@@ -39,9 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Sonoma.Xamarin.Cr
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
 		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
-		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU

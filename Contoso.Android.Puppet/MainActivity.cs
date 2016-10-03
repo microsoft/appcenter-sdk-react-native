@@ -32,7 +32,7 @@ namespace Contoso.Android.Puppet
             Log.Info("SonomaXamarin", "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             Log.Info("SonomaXamarin", "Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics), typeof(Crashes));
+            Sonoma.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             Log.Info("SonomaXamarin", "Sonoma.InstallId=" + Sonoma.InstallId);
         }
