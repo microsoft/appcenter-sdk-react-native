@@ -3,6 +3,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.Forms.Puppet.SubPage">
-    <Label Text="Nothing much here, just testing navigation. You can go back." VerticalOptions="Center"
+    <Label Text="Blank page to test navigation." VerticalOptions="Center"
            HorizontalOptions="Center" />
 </ContentPage>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Android.App;
 using Java.Lang;
@@ -10,11 +11,6 @@ namespace Microsoft.Sonoma.Xamarin.Core
 
     public static class Sonoma
     {
-        public static bool Enabled
-        {
-            get { return AndroidSonoma.Enabled; }
-            set { AndroidSonoma.Enabled = value; }
-        }
 
         public static LogLevel LogLevel
         {
@@ -70,14 +66,43 @@ namespace Microsoft.Sonoma.Xamarin.Core
             }
         }
 
-        public static Guid InstallId => Guid.Parse(AndroidSonoma.InstallId.ToString());
+        public static void SetServerUrl(string serverUrl)
+        {
+            AndroidSonoma.SetServerUrl(serverUrl);
+        }
+
+        public static void Initialize(string appSecret)
+        {
+            AndroidSonoma.Initialize(SetWrapperSdkAndGetApplication(), appSecret);
+        }
+
+        public static void Start(params Type[] features)
+        {
+            AndroidSonoma.Start(GetFeatures(features));
+        }
 
         public static void Start(string appSecret, params Type[] features)
         {
-            AndroidSonoma.SetWrapperSdk(new AndroidWrapperSdk { WrapperSdkName = WrapperSdk.Name, WrapperSdkVersion = WrapperSdk.Version });
-            var bindingFeatures = features.Select(feature => Class.FromType((Type)feature.GetProperty("BindingType").GetValue(null, null))).ToArray();
-            var application = (Application)Application.Context;
-            AndroidSonoma.Start(application, appSecret, bindingFeatures);
+            AndroidSonoma.Start(SetWrapperSdkAndGetApplication(), appSecret, GetFeatures(features));
         }
+        
+        private static Application SetWrapperSdkAndGetApplication()
+        {
+            AndroidSonoma.SetWrapperSdk(new AndroidWrapperSdk { WrapperSdkName = WrapperSdk.Name, WrapperSdkVersion = WrapperSdk.Version });
+            return (Application)Application.Context;
+        }
+
+        private static Class[] GetFeatures(IEnumerable<Type> features)
+        {
+            return features.Select(feature => Class.FromType((Type)feature.GetProperty("BindingType").GetValue(null, null))).ToArray();
+        }
+
+        public static bool Enabled
+        {
+            get { return AndroidSonoma.Enabled; }
+            set { AndroidSonoma.Enabled = value; }
+        }
+
+        public static Guid InstallId => Guid.Parse(AndroidSonoma.InstallId.ToString());
     }
 }

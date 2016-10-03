@@ -21,11 +21,12 @@ namespace Contoso.Forms.Puppet
         protected override void OnStart()
         {
             // Handle when your app starts
+            //Sonoma.SetServerUrl("http://in-integration.dev.avalanch.es:8081");
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
             Analytics.AutoPageTrackingEnabled = false;
-            Sonoma.Start("6ad16901-9d7d-4135-a3d5-085813b01a4b", typeof(Analytics), typeof(Crashes));
+            Sonoma.Start(typeof(Analytics), typeof(Crashes));
             //Sonoma.Enabled = false;
             //Sonoma.Enabled = true;
             Analytics.TrackEvent("myEvent");
