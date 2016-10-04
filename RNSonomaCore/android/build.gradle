@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
 apply plugin: 'com.android.library'
 
 android {
@@ -15,9 +27,18 @@ android {
     }
 }
 
+repositories {
+    maven {
+            url  'http://microsoftsonoma.bintray.com/sonoma'
+            credentials {
+                username 'sonoma-beta'
+                password 'cbaf881993ad1ab4128f71da716d060e8590906a'
+            }
+        }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile 'com.facebook.react:react-native:0.19.+'
+    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.microsoft.sonoma:core:+'
 }

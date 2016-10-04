@@ -12,16 +12,19 @@ static NSString *appSecret;
   appSecret = secret;
 }
 
++ (NSString *) getAppSecret
+{
+  if (appSecret == nil) {
+    appSecret = [[NSBundle mainBundle] objectForInfoDictionaryKey:"SonomaAppSeret"];
+    // TODO: If fetching appsecret fails and it was not set in code, bail out?
+  }
+
+  return appSecret;
+}
+
 + (void) initializeSonoma
 {
   if (![SNMSonoma isInitialized]) {
-    if (appSecret == nil) {
-      // TODO: Fetch app secret from plist
-      appSecret = @"abc123";
-
-      // TODO: If fetching appsecret fails and it was not set in code, bail out?
-    }
-
     id codePush = NSClassFromString(@"CodePushConfig");
     if (codePush != nil) {
       // Code push is present in the project
@@ -30,8 +33,23 @@ static NSString *appSecret;
 
     // TODO: Add in wrapperSDK once iOS supports that.
 
-    [SNMSonoma start: appSecret]
+    [SNMSonoma start: [RNSonomaCore getAppSecret]]
   }
+}
+
++ (void) setEnabled:(BOOL) enabled
+{
+  [SNMSonoma setEnabled:enabled];
+}
+
++ (void) setLogLevel: (SNMLogLevel)logLevel
+{
+  [SNMSonoma setLogLevel:logLevel];
+}
+
++ (SNMLogLevel) getLogLevel
+{
+  return [SNMSonoma getLogLevel];
 }
 
 @end

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "React Native plugin for Sonoma",
   "main": "SonomaCore.js",
-  private: "true",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/microsoft/react-native-sonoma-private.git"
