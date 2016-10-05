@@ -27,5 +27,11 @@ allprojects {
                 password 'cbaf881993ad1ab4128f71da716d060e8590906a'
             }
         }
+        flatDir {
+            dirs '$rootDir/../../../../RNSonomaCore/android/libs'
+        }
+        flatDir {
+            dirs '$rootDir/../../../RNSonomaCore/android/libs'
+        }
     }
 }

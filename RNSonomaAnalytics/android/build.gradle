@@ -19,5 +19,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:0.19.+'
-    compile 'com.microsoft.sonoma:analytics:+'
+    compile 'com.microsoft.sonoma:analytics:+' // TODO: specify specific version
+    compile (name:'RNSonomaCore', ext:'aar') // TODO: specify specific version
 }

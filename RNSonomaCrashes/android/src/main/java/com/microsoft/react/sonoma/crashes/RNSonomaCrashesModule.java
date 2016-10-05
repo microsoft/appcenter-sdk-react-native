@@ -1,51 +1,86 @@
 package com.microsoft.react.sonoma.crashes;
 
+import android.app.Application;
+import android.util.Log;
+
+import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableNativeMap;
+
+import com.microsoft.sonoma.core.Sonoma;
 import com.microsoft.sonoma.crashes.Crashes;
 import com.microsoft.sonoma.crashes.model.ErrorReport;
+
+import com.microsoft.react.sonoma.core.RNSonomaCore;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesListenerBase > extends ReactContextBaseJavaModule {
-    private mReactApplicationContext;
+public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesListenerBase > extends BaseJavaModule {
     private CrashListenerType mCrashListener;
 
-    private static final HasCrashedInLastSessionKey = "hasCrashedInLastSession";
-    private static final LastErrorKey = "lastError";
+    private static final String HasCrashedInLastSessionKey = "hasCrashedInLastSession";
+    private static final String LastCrashReportKey = "lastCrashReport";
+    private static final String PendingErrorsKey = "pendingErrors";
 
-    public RNSonomaCrashesModule(ReactApplicationContext reactContext, CrashListenerType crashListener) {
-        super(reactContext);
-	this.mCrashListener = crashListener;
-	if (crashListener != null) {
-	    Crashes.setListener(crashListener);
-	}
+    public RNSonomaCrashesModule(Application application, CrashListenerType crashListener) {
+        this.mCrashListener = crashListener;
+        if (crashListener != null) {
+            Crashes.setListener(crashListener);
+        }
+
+        RNSonomaCore.initializeSonoma(application);
+        Sonoma.start(Crashes.class);
+    }
+
+    public void setReactApplicationContext(ReactApplicationContext reactContext) {
+        RNSonomaCrashesUtils.logDebug("Setting react context");
+        if (this.mCrashListener != null) {
+            this.mCrashListener.setReactApplicationContext(reactContext);
+        }
     }
 
     @Override
     public String getName() {
         return "RNSonomaCrashes";
     }
+
     @Override
     public Map<String, Object> getConstants() {
-	final Map<String, Object> constants = new HashMap<>();
+        final Map<String, Object> constants = new HashMap<>();
 
-	ErrorReport lastError = Crashes.getLastSessionCrashReport();
-	
-	constants.put(RNSonomaCrashesModule.HasCrashedInLastSessionKey, lastError != null);
-	if (lastError) {
-	    constants.put(RNSonomaCrashesModule.LastErrorKey, RNSonomaCrashesUtils.convertErrorReportToWritableMap(lastError));
-	}
-	return constants;
+        ErrorReport lastError = Crashes.getLastSessionCrashReport();
+        
+        constants.put(RNSonomaCrashesModule.HasCrashedInLastSessionKey, lastError != null);
+        constants.put(RNSonomaCrashesModule.LastCrashReportKey, RNSonomaCrashesUtils.convertErrorReportToWritableMapOrEmpty(lastError));
+
+
+        List<ErrorReport> pendingReports = this.mCrashListener.getAndClearReports();
+        constants.put(RNSonomaCrashesModule.PendingErrorsKey, RNSonomaCrashesUtils.convertErrorReportsToWritableArrayOrEmpty(pendingReports));
+
+        RNSonomaCrashesUtils.logDebug("Returning constants with " + String.valueOf(pendingReports.size()) + " reports");
+        return constants;
     }
 
     @ReactMethod
-    public void generateTestCrash(final Promise promise) {
+    public void setEnabled(boolean shouldEnable) {
+        Crashes.setEnabled(shouldEnable);
+    }
+
+    @ReactMethod
+    public void isEnabled(Promise promise) {
+        promise.resolve(Crashes.isEnabled());
+    }
+
+    @ReactMethod
+    public void generateTestCrash(Promise promise) {
         new Thread(new Runnable() {
             public void run() {
                 Crashes.generateTestCrash();
@@ -54,32 +89,14 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
         }).start();
     }
 
-    @ReactMethod
-    public void sendCrash(Promise promise) {
-	if (mCrashListener != null) {
-	    mCrashListener.reportUserResponse(Crashes.SEND);
-	}
-        Crashes.notifyUserConfirmation(Crashes.SEND);
-        promise.resolve("");
-    }
-
-    @ReactMethod
-    public void ignoreCrash(Promise promise) {
-	if (mCrashListener != null) {
-	    mCrashListener.reportUserResponse(Crashes.DONT_SEND);
-	}
-        Crashes.notifyUserConfirmation(Crashes.DONT_SEND);
-        promise.resolve("");
-    }
-
-    @ReactMethod
-    public void setTextAttachment(String textAttachment, Promise promise) {
-        ErrorReport lastSessionCrashReport = Crashes.getLastSessionCrashReport();
-        try {
-            RNSonomaErrorAttachmentHelper.saveTextAttachment(getReactApplicationContext(), lastSessionCrashReport, textAttachment);
-            promise.resolve("");
-        } catch (IOException e) {
-            promise.reject(e);
+    @ReactMethod 
+    public void crashUserResponse(boolean send, ReadableMap attachments, Promise promise) {
+        int response = send ? Crashes.SEND : Crashes.DONT_SEND;
+        if (mCrashListener != null) {
+            mCrashListener.reportUserResponse(response);
+            mCrashListener.provideAttachments(attachments);
         }
+        Crashes.notifyUserConfirmation(response);
+        promise.resolve("");
     }
 }

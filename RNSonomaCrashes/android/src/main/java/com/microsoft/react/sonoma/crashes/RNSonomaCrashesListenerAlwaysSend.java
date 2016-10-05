@@ -1,12 +1,10 @@
 package com.microsoft.react.sonoma.crashes;
 
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.microsoft.sonoma.crashes.model.ErrorReport;
 
 public class RNSonomaCrashesListenerAlwaysSend extends RNSonomaCrashesListenerBase {
 
-    public RNSonomaCrashesListenerAlwaysSend(ReactApplicationContext reactApplicationContext) {
-        super(reactApplicationContext);
+    public RNSonomaCrashesListenerAlwaysSend() {
     }
 
     @Override
@@ -17,8 +15,8 @@ public class RNSonomaCrashesListenerAlwaysSend extends RNSonomaCrashesListenerBa
 
     @Override
     public boolean shouldAwaitUserConfirmation() {
-	// Do not wait for confirmation, send crashes immediately
-	return false;
+        // Do not wait for confirmation, send crashes immediately
+        return false;
     }
 
 }

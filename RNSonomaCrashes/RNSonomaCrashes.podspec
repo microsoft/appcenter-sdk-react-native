@@ -20,4 +20,6 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
   s.dependency 'SonomaCore'
+  s.dependency 'SonomaCrashes'
+  s.dependency 'RNSonomaCore'
 end

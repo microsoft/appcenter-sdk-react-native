@@ -3,6 +3,7 @@ package com.microsoft.react.sonoma.crashes;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.microsoft.sonoma.core.ingestion.models.Device;
 import com.microsoft.sonoma.crashes.model.ErrorReport;
@@ -10,6 +11,8 @@ import com.microsoft.sonoma.crashes.model.ErrorReport;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
+
+import java.util.List;
 
 public class RNSonomaCrashesUtils {
     private static final String LOG_TAG = "RNSonomaCrashes";
@@ -20,6 +23,10 @@ public class RNSonomaCrashesUtils {
 
     public static void logInfo(String message) {
         Log.i(LOG_TAG, message);
+    }
+
+    public static void logDebug(String message) {
+        Log.d(LOG_TAG, message);
     }
 
     public static WritableMap convertErrorReportToWritableMap(ErrorReport errorReport) throws JSONException {
@@ -40,5 +47,35 @@ public class RNSonomaCrashesUtils {
 
         errorReportMap.putMap("device", deviceInfoMap);
         return errorReportMap;
+    }
+
+    public static WritableArray convertErrorReportsToWritableArray(List<ErrorReport> errorReports) throws JSONException {
+        WritableArray errorReportsArray = Arguments.createArray();
+
+        for (ErrorReport report: errorReports) {
+            errorReportsArray.pushMap(convertErrorReportToWritableMap(report));
+        }
+
+        return errorReportsArray;
+    }
+
+    public static WritableArray convertErrorReportsToWritableArrayOrEmpty(List<ErrorReport> errorReports) {
+        try {
+            return convertErrorReportsToWritableArray(errorReports);
+        } catch (JSONException e) {
+            logError("Unable to serialize crash reports");
+            logError(Log.getStackTraceString(e));
+            return Arguments.createArray();
+        }
+    }
+
+    public static WritableMap convertErrorReportToWritableMapOrEmpty(ErrorReport errorReport) {
+        try {
+            return convertErrorReportToWritableMap(errorReport);
+        } catch (JSONException e) {
+            logError("Unable to serialize crash report");
+            logError(Log.getStackTraceString(e));
+            return Arguments.createMap();
+        }
     }
 }

@@ -36,7 +36,7 @@ public class RNSonomaCore {
     public static String getAppSecret() {
         if (RNSonomaCore.appSecret == null) {
             // TODO: Read from manifest/strings file
-            RNSonomaCore.appSecret = "abc123";
+            RNSonomaCore.appSecret = "123e4567-e89b-12d3-a456-426655440000";
         }
 
         return RNSonomaCore.appSecret;

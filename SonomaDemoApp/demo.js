@@ -19,16 +19,31 @@ import SonomaCrashes from 'react-native-sonoma-crashes';
 
 class SonomaDemoApp extends Component {
   async componentDidMount() {
-    if (await SonomaCrashes.hasCrashedInLastSession()) {
-      let lastSessionCrashDetails = await SonomaCrashes.getLastSessionCrashDetails();
-      Alert.alert(
+    if (SonomaCrashes.hasCrashedInLastSession) {
+      SonomaCrashes.process(function (reports, send) {
+        SonomaCrashes.addEventListener({
+          willSendCrash: function () {
+            console.log("WILL SEND CRASH");
+            console.log(arguments);
+          },
+          didSendCrash: function () {
+            console.log("DID SEND CRASH");
+            console.log(arguments);
+          },
+          failedSendingCrash: function () {
+            console.log("FAILED SENDING CRASH");
+            console.log(arguments);
+          }
+        });
+        Alert.alert(
         'Unhandled exception:',
-        lastSessionCrashDetails.exception.split('\n')[0],
+        reports[0].exception.split('\n')[0],
         [
-          {text: 'Send crash', onPress: () => SonomaCrashes.sendCrashes() },
-          {text: 'Ignore crash', onPress: () => SonomaCrashes.ignoreCrashes(), style: 'cancel'},
+          {text: 'Send crash', onPress: () => send(true,{}) },
+          {text: 'Ignore crash', onPress: () => send(false,{}), style: 'cancel'},
         ]
       );
+      });
     }
   }
 
