@@ -49,6 +49,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics.Forms\Microsoft.Sonoma.Xamarin.Analytics.Forms.csproj">
+      <Project>{b2f5efac-8b33-412e-8847-752682396372}</Project>
+      <Name>Microsoft.Sonoma.Xamarin.Analytics.Forms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics\Microsoft.Sonoma.Xamarin.Analytics.csproj">
       <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
       <Name>Microsoft.Sonoma.Xamarin.Analytics</Name>

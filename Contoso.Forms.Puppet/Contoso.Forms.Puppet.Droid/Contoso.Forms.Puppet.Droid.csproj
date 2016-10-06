@@ -135,6 +135,10 @@
       <Project>{93e4ada5-8d7a-44bf-9549-0ad76ab86e8f}</Project>
       <Name>Microsoft.Sonoma.Xamarin.Analytics.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics.Forms.Android\Microsoft.Sonoma.Xamarin.Analytics.Forms.Android.csproj">
+      <Project>{62f09266-58e2-4965-a18a-6c94f54aaa13}</Project>
+      <Name>Microsoft.Sonoma.Xamarin.Analytics.Forms.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Core.Android.Bindings\Microsoft.Sonoma.Xamarin.Core.Android.Bindings.csproj">
       <Project>{c3b5ba33-da39-400d-b5b3-85c68354fd74}</Project>
       <Name>Microsoft.Sonoma.Xamarin.Core.Android.Bindings</Name>
