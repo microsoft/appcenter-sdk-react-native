@@ -17,5 +17,10 @@ namespace Contoso.Forms.Puppet.Droid
             Sonoma.Initialize("44cd8722-bfe0-4748-ac14-7692e031a8a5");
             LoadApplication(new App());
         }
+
+        protected override void OnDestroy()
+        {
+            // cause a crash by not calling base method when exiting the main page with back button
+        }
     }
 }
