@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.Sonoma.Xamarin.Crashes
 {
@@ -47,34 +48,33 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
         {
             if (_errorLog != null && _exception != null)
             {
-                _errorLog.Exception = GenerateModelException();
+                _errorLog.Exception = GenerateModelException(_exception);
                 AndroidCrashes.Instance.SaveWrapperSdkErrorLog(_errorLog);
             }
         }
 
-        private static ModelException GenerateModelException()
+        private static ModelException GenerateModelException(Exception exception)
         {
-            ModelException topException = null;
-            ModelException parentException = null;
-            for (var cause = _exception; cause != null; cause = cause.InnerException)
+            var modelException = new ModelException
             {
-                var exception = new ModelException
+                Type = exception.GetType().FullName,
+                Message = exception.Message,
+                Frames = GenerateModelStackFrames(new StackTrace(exception, true))
+            };
+            var aggregateException = exception as AggregateException;
+            if (aggregateException?.InnerExceptions != null)
+            {
+                modelException.InnerExceptions = new List<ModelException>();
+                foreach (var innerException in aggregateException.InnerExceptions)
                 {
-                    Type = cause.GetType().FullName,
-                    Message = cause.Message,
-                    Frames = GenerateModelStackFrames(new StackTrace(cause, true))
-                };
-                if (topException == null)
-                {
-                    topException = exception;
+                    modelException.InnerExceptions.Add(GenerateModelException(innerException));
                 }
-                else
-                {
-                    parentException.InnerExceptions = new List<ModelException> { exception };
-                }
-                parentException = exception;
             }
-            return topException;
+            else if (exception.InnerException != null)
+            {
+                modelException.InnerExceptions = new List<ModelException> { GenerateModelException(exception.InnerException) };
+            }
+            return modelException;
         }
 
         private static IList<ModelStackFrame> GenerateModelStackFrames(StackTrace stackTrace)

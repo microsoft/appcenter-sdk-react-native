@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace Contoso.Forms.Puppet
 {
@@ -14,13 +16,14 @@ namespace Contoso.Forms.Puppet
             await Navigation.PushAsync(new SubPage());
         }
 
-
-        private void CrashMe(object sender, EventArgs e)
+        private void CrashWithDivsionByZero(object sender, EventArgs e)
         {
-            /* Crash with a division by zero. */
-            var count = 0;
-            // ReSharper disable once RedundantAssignment
-            count /= count;
+            Debug.WriteLine(0 / int.Parse("0"));
+        }
+
+        private void CrashWithAggregateException(object sender, EventArgs e)
+        {
+            throw new AggregateException(new IOException("Network down"), new ArgumentException("Invalid parameter", new ArgumentOutOfRangeException(nameof(sender), "It's over 9000!")));
         }
     }
 }

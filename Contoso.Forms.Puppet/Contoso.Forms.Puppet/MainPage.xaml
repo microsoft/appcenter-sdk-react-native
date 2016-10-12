@@ -3,15 +3,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.Forms.Puppet.MainPage">
-    <StackLayout>
-        <Button Text="Go to sub page."
-                HorizontalOptions="Center"
-                VerticalOptions="CenterAndExpand"
-                Clicked="GoToSubPage" />
+  <StackLayout>
+    <Button Text="Go to sub page."
+            HorizontalOptions="Center"
+            VerticalOptions="CenterAndExpand"
+            Clicked="GoToSubPage" />
 
-        <Button Text="Crash me!"
-                HorizontalOptions="Center"
-                VerticalOptions="CenterAndExpand"
-                Clicked="CrashMe"/>
-    </StackLayout>
+    <Button Text="Divide by 0!"
+            HorizontalOptions="Center"
+            VerticalOptions="CenterAndExpand"
+            Clicked="CrashWithDivsionByZero"/>
+
+    <Button Text="Crash with AggregateException!"
+            HorizontalOptions="Center"
+            VerticalOptions="CenterAndExpand"
+            Clicked="CrashWithAggregateException"/>
+  </StackLayout>
 </ContentPage>
