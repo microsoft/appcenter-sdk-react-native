@@ -1,6 +1,5 @@
 ﻿using Android.Runtime;
 using Android.Util;
-using Com.Microsoft.Sonoma.Crashes;
 using Com.Microsoft.Sonoma.Crashes.Ingestion.Models;
 using System;
 using System.Collections.Generic;
@@ -34,7 +33,7 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
         {
             Log.Info("SonomaXamarin", "Set up Xamarin crash handler.");
             AndroidEnvironment.UnhandledExceptionRaiser += OnUnhandledException;
-            AndroidCrashes.SetListener(new CrashListener());
+            AndroidCrashes.Instance.SetWrapperSdkListener(new CrashListener());
         }
 
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
@@ -95,11 +94,10 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
             return modelFrames;
         }
 
-        private class CrashListener : AbstractCrashesListener
+        private class CrashListener : Java.Lang.Object, AndroidCrashes.IWrapperSdkListener
         {
-            public override void OnCrashCaptured(ManagedErrorLog errorLog)
+            public void OnCrashCaptured(ManagedErrorLog errorLog)
             {
-                base.OnCrashCaptured(errorLog);
                 _errorLog = errorLog;
                 JoinExceptionAndLog();
             }
