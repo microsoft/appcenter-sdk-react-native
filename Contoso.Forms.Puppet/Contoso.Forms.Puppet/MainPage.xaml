@@ -14,9 +14,9 @@
             VerticalOptions="CenterAndExpand"
             Clicked="CrashWithDivsionByZero"/>
 
-    <Button Text="Crash with AggregateException!"
+    <Button Text="Track handled PrepareException"
             HorizontalOptions="Center"
             VerticalOptions="CenterAndExpand"
-            Clicked="CrashWithAggregateException"/>
+            Clicked="TrackHandledAggregateException"/>
   </StackLayout>
 </ContentPage>

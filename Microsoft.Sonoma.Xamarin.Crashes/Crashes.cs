@@ -9,5 +9,10 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
+
+        public static void TrackException(Exception exception)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

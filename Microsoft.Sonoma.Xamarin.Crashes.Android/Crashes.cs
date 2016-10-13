@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.Sonoma.Xamarin.Crashes
 {
@@ -22,6 +21,11 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
         {
             get { return AndroidCrashes.Enabled; }
             set { AndroidCrashes.Enabled = value; }
+        }
+
+        public static void TrackException(Exception exception)
+        {
+            AndroidCrashes.Instance.TrackException(GenerateModelException(exception));
         }
 
         private static readonly ModelStackFrame EmptyModelFrame = new ModelStackFrame();
