@@ -43,14 +43,19 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Sonoma.Xamarin.An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Sonoma.Xamarin.Analytics.Forms.Android", "Microsoft.Sonoma.Xamarin.Analytics.Forms.Android\Microsoft.Sonoma.Xamarin.Analytics.Forms.Android.csproj", "{62F09266-58E2-4965-A18A-6C94F54AAA13}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Sonoma.Xamarin.Crashes.Shared", "Microsoft.Sonoma.Xamarin.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.shproj", "{DB5A0B7D-8090-4A0C-97C7-CDF17AACAAF2}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
+		Microsoft.Sonoma.Xamarin.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
 		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 		Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared\Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared.projitems*{62f09266-58e2-4965-a18a-6c94f54aaa13}*SharedItemsImports = 4
 		Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared\Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared.projitems*{b2f5efac-8b33-412e-8847-752682396372}*SharedItemsImports = 4
 		Microsoft.Sonoma.Xamarin.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
 		Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared\Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared.projitems*{d32d24a1-15fa-4b5f-9925-695cd3bc4f1c}*SharedItemsImports = 13
+		Microsoft.Sonoma.Xamarin.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems*{d6db87ca-b8ec-4a38-805f-afdc7fec38eb}*SharedItemsImports = 4
+		Microsoft.Sonoma.Xamarin.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems*{db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -822,5 +827,6 @@ Global
 		{B2F5EFAC-8B33-412E-8847-752682396372} = {79759AE3-F42E-4D9F-8CB5-DBB28E8DF6E1}
 		{D32D24A1-15FA-4B5F-9925-695CD3BC4F1C} = {79759AE3-F42E-4D9F-8CB5-DBB28E8DF6E1}
 		{62F09266-58E2-4965-A18A-6C94F54AAA13} = {92954ED3-165B-4D86-9F8D-30E3DD4515A5}
+		{DB5A0B7D-8090-4A0C-97C7-CDF17AACAAF2} = {79759AE3-F42E-4D9F-8CB5-DBB28E8DF6E1}
 	EndGlobalSection
 EndGlobal

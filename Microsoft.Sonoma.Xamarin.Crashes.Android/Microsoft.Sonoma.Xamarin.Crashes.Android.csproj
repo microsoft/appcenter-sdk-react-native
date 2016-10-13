@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crashes.cs" />
+    <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,6 +64,7 @@
       <Name>Microsoft.Sonoma.Xamarin.Crashes.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Microsoft.Sonoma.Xamarin.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

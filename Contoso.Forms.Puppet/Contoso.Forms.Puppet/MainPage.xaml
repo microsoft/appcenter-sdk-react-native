@@ -13,6 +13,11 @@
             HorizontalOptions="Center"
             VerticalOptions="CenterAndExpand"
             Clicked="CrashWithDivsionByZero"/>
+    
+    <Button Text="Crashes.GenerateTestCrash()"
+            HorizontalOptions="Center"
+            VerticalOptions="CenterAndExpand"
+            Clicked="GenerateTestCrash"/>    
 
     <Button Text="Track handled PrepareException"
             HorizontalOptions="Center"

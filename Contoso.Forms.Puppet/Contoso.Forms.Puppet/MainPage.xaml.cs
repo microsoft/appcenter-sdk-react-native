@@ -19,7 +19,14 @@ namespace Contoso.Forms.Puppet
 
         private void CrashWithDivsionByZero(object sender, EventArgs e)
         {
-            Debug.WriteLine(0 / int.Parse("0"));
+            // ReSharper disable once RedundantAssignment
+            // ReSharper disable once UnusedVariable
+            var count = 0 / int.Parse("0");
+        }
+
+        private void GenerateTestCrash(object sender, EventArgs e)
+        {
+            Crashes.GenerateTestCrash();
         }
 
         private void TrackHandledAggregateException(object sender, EventArgs e)

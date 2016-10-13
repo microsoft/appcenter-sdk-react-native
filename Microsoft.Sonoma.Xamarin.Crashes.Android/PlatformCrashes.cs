@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Sonoma.Xamarin.Crashes.Shared;
 
 namespace Microsoft.Sonoma.Xamarin.Crashes
 {
@@ -13,19 +14,19 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
     using ModelException = Com.Microsoft.Sonoma.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Sonoma.Crashes.Ingestion.Models.StackFrame;
 
-    public static class Crashes
+    class PlatformCrashes : PlatformCrashesBase
     {
-        public static Type BindingType => typeof(AndroidCrashes);
+        public override Type BindingType => typeof(AndroidCrashes);
 
-        public static bool Enabled
+        public override bool Enabled
         {
             get { return AndroidCrashes.Enabled; }
             set { AndroidCrashes.Enabled = value; }
         }
 
-        public static bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
+        public override bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
 
-        public static void TrackException(Exception exception)
+        public override void TrackException(Exception exception)
         {
             AndroidCrashes.Instance.TrackException(GenerateModelException(exception));
         }
@@ -36,7 +37,7 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
 
         private static Exception _exception;
 
-        static Crashes()
+        static PlatformCrashes()
         {
             Log.Info("SonomaXamarin", "Set up Xamarin crash handler.");
             AndroidEnvironment.UnhandledExceptionRaiser += OnUnhandledException;
