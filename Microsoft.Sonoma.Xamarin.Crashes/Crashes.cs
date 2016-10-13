@@ -10,6 +10,11 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
             set { throw new NotImplementedException(); }
         }
 
+        public static bool HasCrashedInLastSession
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public static void TrackException(Exception exception)
         {
             throw new NotImplementedException();

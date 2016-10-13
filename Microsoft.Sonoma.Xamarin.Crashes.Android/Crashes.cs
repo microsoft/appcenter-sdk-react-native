@@ -23,6 +23,8 @@ namespace Microsoft.Sonoma.Xamarin.Crashes
             set { AndroidCrashes.Enabled = value; }
         }
 
+        public static bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
+
         public static void TrackException(Exception exception)
         {
             AndroidCrashes.Instance.TrackException(GenerateModelException(exception));

@@ -29,6 +29,7 @@ namespace Contoso.Forms.Puppet
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             Debug.WriteLine("Sonoma.InstallId=" + Sonoma.InstallId);
+            Debug.WriteLine("Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
         }
     }
 }
