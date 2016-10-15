@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="926a1baa-f5ab-4fb3-b6a6-3d7f84f7aed3" visible="True" isDefault="true" isSelected="true" title="Microsoft Sonoma SDK for Xamarin">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="2ec9df58-6ca2-4cb6-9bec-e0ab1f75fd83" visible="True" isExpanded="true" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="version, history" />
+    </HelpKeywords>
+    <Topic id="d60da2aa-3df0-4b1d-9e85-8a18b1d9754e" visible="True" title="Version 1.0.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="version, 1.0.0.0" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+</Topics>
