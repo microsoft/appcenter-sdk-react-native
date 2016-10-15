@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPlatformCrashes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformCrashesBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
   </ItemGroup>

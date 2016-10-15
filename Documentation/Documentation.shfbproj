@@ -36,6 +36,7 @@
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Microsoft.Sonoma.Xamarin.Core\Microsoft.Sonoma.Xamarin.Core.csproj" />
       <DocumentationSource sourceFile="..\Microsoft.Sonoma.Xamarin.Analytics\Microsoft.Sonoma.Xamarin.Analytics.csproj" />
+      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Xamarin.Crashes\Microsoft.Sonoma.Xamarin.Crashes.csproj" />
     </DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform

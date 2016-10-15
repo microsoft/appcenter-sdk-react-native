@@ -2,6 +2,9 @@
 
 namespace Microsoft.Sonoma.Xamarin.Crashes.Shared
 {
+    /// <summary>
+    /// Interface to abstract <see cref="Crashes"/> features between different platforms.
+    /// </summary>
     internal interface IPlatformCrashes
     {
         Type BindingType { get; }

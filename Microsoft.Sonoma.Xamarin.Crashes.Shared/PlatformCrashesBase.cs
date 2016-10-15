@@ -2,6 +2,9 @@
 
 namespace Microsoft.Sonoma.Xamarin.Crashes.Shared
 {
+    /// <summary>
+    /// Object used to share portable code between platforms.
+    /// </summary>
     abstract class PlatformCrashesBase : IPlatformCrashes
     {
         public abstract Type BindingType { get; }
