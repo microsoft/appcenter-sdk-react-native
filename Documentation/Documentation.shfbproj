@@ -34,7 +34,8 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Xamarin.Core\Microsoft.Sonoma.Xamarin.Core.csproj" xmlns="" />
+      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Xamarin.Core\Microsoft.Sonoma.Xamarin.Core.csproj" />
+      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Xamarin.Analytics\Microsoft.Sonoma.Xamarin.Analytics.csproj" />
     </DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
