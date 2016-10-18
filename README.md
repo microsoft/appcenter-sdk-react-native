@@ -6,8 +6,8 @@ The AAR files for Android are ignored from GIT, the idea is to script the downlo
 
 You can download the Android AAR files at https://github.com/Microsoft/Sonoma-SDK-Android/releases/tag/0.1.1
 
-* Copy `core-release.aar` to `Microsoft.Sonoma.Xamarin.Core.Android.Bindings\Jars`
-* Copy `analytics-release.aar` to `Microsoft.Sonoma.Xamarin.Analytics.Android.Bindings\Jars`
-* Copy `crashes-release.aar` to `Microsoft.Sonoma.Xamarin.Crashes.Android.Bindings\Jars`
+* Copy `core-release.aar` to `Microsoft.Sonoma.Core.Android.Bindings\Jars`
+* Copy `analytics-release.aar` to `Microsoft.Sonoma.Analytics.Android.Bindings\Jars`
+* Copy `crashes-release.aar` to `Microsoft.Sonoma.Crashes.Android.Bindings\Jars`
 
 For the documentation generator project, please install the `SandCastle` tool https://github.com/EWSoftware/SHFB/releases/tag/v2016.9.17.0.
