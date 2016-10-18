@@ -17,6 +17,7 @@ static NSString *appSecret;
   if (appSecret == nil) {
     appSecret = [[NSBundle mainBundle] objectForInfoDictionaryKey:"SonomaAppSeret"];
     // TODO: If fetching appsecret fails and it was not set in code, bail out?
+    appSecret = @"123e4567-e89b-12d3-a456-426655440000";
   }
 
   return appSecret;

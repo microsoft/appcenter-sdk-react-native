@@ -28,12 +28,16 @@ let SonomaCrashes = {
         let errorAttachments = {};
         let reportsWithAttachmentFunctions = SonomaCrashes.pendingReports.map(function (report) {
             function addAttachment(attachment) {
+                if (typeof attachment != "string") {
+                    throw new Error("Only string attachments are supported, received " + typeof attachment);
+                }
                 errorAttachments[report.id] = attachment;
             }
             return Object.assign({
                 addAttachment
             }, report);
         });
+
         callback(reportsWithAttachmentFunctions, function (response) {
             RNSonomaCrashes.crashUserResponse(response, errorAttachments);
         });
