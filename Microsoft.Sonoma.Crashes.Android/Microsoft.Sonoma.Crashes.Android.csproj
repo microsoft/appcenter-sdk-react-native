@@ -5,19 +5,17 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B189FF90-B901-4DA6-98EE-34474032FFCC}</ProjectGuid>
+    <ProjectGuid>{D6DB87CA-B8EC-4A38-805F-AFDC7FEC38EB}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.Android.Puppet</RootNamespace>
-    <AssemblyName>Contoso.Android.Puppet</AssemblyName>
+    <RootNamespace>Microsoft.Sonoma.Crashes</RootNamespace>
+    <AssemblyName>Microsoft.Sonoma.Crashes</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,8 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
-    <AndroidLinkMode>None</AndroidLinkMode>
+    <DocumentationFile>bin\Debug\Microsoft.Sonoma.Crashes.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,10 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Java.Interop" />
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -49,61 +45,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GettingStarted.Xamarin" />
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\AndroidManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.Android.Bindings\Microsoft.Sonoma.Analytics.Android.Bindings.csproj">
-      <Project>{34771dc0-9684-45be-9c9c-5a686468722c}</Project>
-      <Name>Microsoft.Sonoma.Analytics.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.Android\Microsoft.Sonoma.Analytics.Android.csproj">
-      <Project>{93e4ada5-8d7a-44bf-9549-0ad76ab86e8f}</Project>
-      <Name>Microsoft.Sonoma.Analytics.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Sonoma.Core.Android.Bindings\Microsoft.Sonoma.Core.Android.Bindings.csproj">
       <Project>{c3b5ba33-da39-400d-b5b3-85c68354fd74}</Project>
       <Name>Microsoft.Sonoma.Core.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Core.Android\Microsoft.Sonoma.Core.Android.csproj">
-      <Project>{119c1730-e109-4bc9-aa89-9dca2c50bfd5}</Project>
-      <Name>Microsoft.Sonoma.Core.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Sonoma.Crashes.Android.Bindings\Microsoft.Sonoma.Crashes.Android.Bindings.csproj">
       <Project>{42d541d7-b7c9-45a7-8d4d-8fb5a00668b3}</Project>
       <Name>Microsoft.Sonoma.Crashes.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Crashes.Android\Microsoft.Sonoma.Crashes.Android.csproj">
-      <Project>{d6db87ca-b8ec-4a38-805f-afdc7fec38eb}</Project>
-      <Name>Microsoft.Sonoma.Crashes.Android</Name>
-    </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-     Other similar extension points exist, see Microsoft.Common.targets.
-		<Target Name="BeforeBuild">
-		</Target>
-		<Target Name="AfterBuild">
-		</Target>
- -->
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

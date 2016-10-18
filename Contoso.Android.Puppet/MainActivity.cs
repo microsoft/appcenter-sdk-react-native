@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.OS;
 using Android.Util;
 using Android.Widget;
-using Microsoft.Sonoma.Xamarin.Analytics;
-using Microsoft.Sonoma.Xamarin.Core;
-using Microsoft.Sonoma.Xamarin.Crashes;
+using Microsoft.Sonoma.Analytics;
+using Microsoft.Sonoma.Core;
+using Microsoft.Sonoma.Crashes;
+using System.Collections.Generic;
 
 namespace Contoso.Android.Puppet
 {

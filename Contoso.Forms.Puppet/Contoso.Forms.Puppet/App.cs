@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.Sonoma.Analytics;
+using Microsoft.Sonoma.Analytics.Forms;
+using Microsoft.Sonoma.Core;
+using Microsoft.Sonoma.Crashes;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Sonoma.Xamarin.Analytics;
-using Microsoft.Sonoma.Xamarin.Analytics.Forms;
-using Microsoft.Sonoma.Xamarin.Core;
-using Microsoft.Sonoma.Xamarin.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet

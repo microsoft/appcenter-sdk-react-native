@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Microsoft.Sonoma.Xamarin.Core;
+using Microsoft.Sonoma.Core;
 using Xamarin.Forms.Platform.Android;
 
 namespace Contoso.Forms.Puppet.Droid

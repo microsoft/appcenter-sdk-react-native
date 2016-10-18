@@ -49,24 +49,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics.Forms\Microsoft.Sonoma.Xamarin.Analytics.Forms.csproj">
-      <Project>{b2f5efac-8b33-412e-8847-752682396372}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Analytics.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics\Microsoft.Sonoma.Xamarin.Analytics.csproj">
-      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Analytics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Core\Microsoft.Sonoma.Xamarin.Core.csproj">
-      <Project>{3fe04b97-48de-4895-8612-ecbdfebd917c}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Crashes\Microsoft.Sonoma.Xamarin.Crashes.csproj">
-      <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Crashes</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +73,24 @@
       <HintPath>..\..\packages\Xamarin.Forms.2.3.2.127\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.Forms\Microsoft.Sonoma.Analytics.Forms.csproj">
+      <Project>{b2f5efac-8b33-412e-8847-752682396372}</Project>
+      <Name>Microsoft.Sonoma.Analytics.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics\Microsoft.Sonoma.Analytics.csproj">
+      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
+      <Name>Microsoft.Sonoma.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Core\Microsoft.Sonoma.Core.csproj">
+      <Project>{3fe04b97-48de-4895-8612-ecbdfebd917c}</Project>
+      <Name>Microsoft.Sonoma.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes\Microsoft.Sonoma.Crashes.csproj">
+      <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
+      <Name>Microsoft.Sonoma.Crashes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

@@ -127,33 +127,33 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics.Android.Bindings\Microsoft.Sonoma.Xamarin.Analytics.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.Android.Bindings\Microsoft.Sonoma.Analytics.Android.Bindings.csproj">
       <Project>{34771dc0-9684-45be-9c9c-5a686468722c}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Analytics.Android.Bindings</Name>
+      <Name>Microsoft.Sonoma.Analytics.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics.Android\Microsoft.Sonoma.Xamarin.Analytics.Android.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.Android\Microsoft.Sonoma.Analytics.Android.csproj">
       <Project>{93e4ada5-8d7a-44bf-9549-0ad76ab86e8f}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Analytics.Android</Name>
+      <Name>Microsoft.Sonoma.Analytics.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Analytics.Forms.Android\Microsoft.Sonoma.Xamarin.Analytics.Forms.Android.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.Forms.Android\Microsoft.Sonoma.Analytics.Forms.Android.csproj">
       <Project>{62f09266-58e2-4965-a18a-6c94f54aaa13}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Analytics.Forms.Android</Name>
+      <Name>Microsoft.Sonoma.Analytics.Forms.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Core.Android.Bindings\Microsoft.Sonoma.Xamarin.Core.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Core.Android.Bindings\Microsoft.Sonoma.Core.Android.Bindings.csproj">
       <Project>{c3b5ba33-da39-400d-b5b3-85c68354fd74}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Core.Android.Bindings</Name>
+      <Name>Microsoft.Sonoma.Core.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Core.Android\Microsoft.Sonoma.Xamarin.Core.Android.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Core.Android\Microsoft.Sonoma.Core.Android.csproj">
       <Project>{119c1730-e109-4bc9-aa89-9dca2c50bfd5}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Core.Android</Name>
+      <Name>Microsoft.Sonoma.Core.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Crashes.Android.Bindings\Microsoft.Sonoma.Xamarin.Crashes.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes.Android.Bindings\Microsoft.Sonoma.Crashes.Android.Bindings.csproj">
       <Project>{42d541d7-b7c9-45a7-8d4d-8fb5a00668b3}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Crashes.Android.Bindings</Name>
+      <Name>Microsoft.Sonoma.Crashes.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Xamarin.Crashes.Android\Microsoft.Sonoma.Xamarin.Crashes.Android.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes.Android\Microsoft.Sonoma.Crashes.Android.csproj">
       <Project>{d6db87ca-b8ec-4a38-805f-afdc7fec38eb}</Project>
-      <Name>Microsoft.Sonoma.Xamarin.Crashes.Android</Name>
+      <Name>Microsoft.Sonoma.Crashes.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
       <Project>{3acabf82-a3eb-4479-ad2b-004b57b0277e}</Project>

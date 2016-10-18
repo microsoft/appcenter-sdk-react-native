@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using Microsoft.Sonoma.Xamarin.Crashes;
+using Microsoft.Sonoma.Crashes;
 
 namespace Contoso.Forms.Puppet
 {
