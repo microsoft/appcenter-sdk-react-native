@@ -15,7 +15,7 @@ static NSString *appSecret;
 + (NSString *) getAppSecret
 {
   if (appSecret == nil) {
-    appSecret = [[NSBundle mainBundle] objectForInfoDictionaryKey:"SonomaAppSeret"];
+    appSecret = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SonomaAppSeret"];
     // TODO: If fetching appsecret fails and it was not set in code, bail out?
     appSecret = @"123e4567-e89b-12d3-a456-426655440000";
   }
@@ -34,7 +34,7 @@ static NSString *appSecret;
 
     // TODO: Add in wrapperSDK once iOS supports that.
 
-    [SNMSonoma start: [RNSonomaCore getAppSecret]]
+      [SNMSonoma start:[RNSonomaCore getAppSecret]];
   }
 }
 
@@ -48,9 +48,9 @@ static NSString *appSecret;
   [SNMSonoma setLogLevel:logLevel];
 }
 
-+ (SNMLogLevel) getLogLevel
++ (SNMLogLevel) logLevel
 {
-  return [SNMSonoma getLogLevel];
+  return [SNMSonoma logLevel];
 }
 
 @end

@@ -2,7 +2,7 @@
 
 #import "RCTEventDispatcher.h"
 #import "RNSonomaCrashesUtils.h"
-#import <SonomaCrashes/Internals/Model/SNMErrorAttachment.h>
+#import "SNMErrorAttachment.h"
 
 @interface RNSonomaCrashesDelegateBase : NSObject<RNSonomaCrashesDelegate>
 @property NSDictionary* attachments;

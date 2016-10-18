@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 #import <SonomaCrashes/SNMCrashesDelegate.h>
+#import <SonomaCrashes/SonomaCrashes.h>
 #import "RCTBridge.h"
 
 @class RNSonomaCrashes;

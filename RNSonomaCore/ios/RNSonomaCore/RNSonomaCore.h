@@ -13,6 +13,6 @@
 + (void) setEnabled:(BOOL) enabled;
 
 + (void) setLogLevel: (SNMLogLevel)logLevel;
-+ (SNMLogLevel) getLogLevel;
++ (SNMLogLevel) logLevel;
 
 @end
