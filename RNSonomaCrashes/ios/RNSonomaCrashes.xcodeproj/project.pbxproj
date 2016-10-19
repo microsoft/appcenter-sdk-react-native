@@ -233,14 +233,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
 					"$(SRCROOT)/../../RNSonomaCore/**",
+					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCore",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**",
-					"/Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" \"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" /Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include/RNSonomaCore\"",
-				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCrashes;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNSonomaCore/ios/RNSonomaCore";
 			};
 			name = Debug;
 		};
@@ -250,14 +249,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
 					"$(SRCROOT)/../../RNSonomaCore/**",
+					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCore",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**",
-					"/Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" \"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" /Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include/RNSonomaCore\"",
-				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCrashes;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNSonomaCore/ios/RNSonomaCore";
 			};
 			name = Release;
 		};
