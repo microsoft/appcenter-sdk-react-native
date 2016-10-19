@@ -2,17 +2,11 @@
 
 #import "RCTEventDispatcher.h"
 #import "RNSonomaCrashesUtils.h"
-#import "SNMErrorAttachment.h"
+#import <SonomaCrashes/SNMErrorAttachment.h>
 
-@interface RNSonomaCrashesDelegateBase : NSObject<RNSonomaCrashesDelegate>
-@property NSDictionary* attachments;
-@property NSMutableArray* reports;
-@property RCTBridge* bridge;
-@end
-
-static NSString ON_BEFORE_SENDING_EVENT = @"SonamaErrorReportOnBeforeSending";
-static NSString ON_SENDING_FAILED_EVENT = @"SonamaErrorReportOnSendingFailed";
-static NSString ON_SENDING_SUCCEEDED_EVENT = @"SonamaErrorReportOnSendingSucceeded";
+static NSString *ON_BEFORE_SENDING_EVENT = @"SonamaErrorReportOnBeforeSending";
+static NSString *ON_SENDING_FAILED_EVENT = @"SonamaErrorReportOnSendingFailed";
+static NSString *ON_SENDING_SUCCEEDED_EVENT = @"SonamaErrorReportOnSendingSucceeded";
 
 
 @implementation RNSonomaCrashesDelegateBase
@@ -35,12 +29,12 @@ static NSString ON_SENDING_SUCCEEDED_EVENT = @"SonamaErrorReportOnSendingSucceed
     // Do not send anything until instructed to by JS
     return ^(NSArray<SNMErrorReport *> *errorReports){
         return YES;
-    }
+    };
 }
 
-- storeReportForJS:(SNMErrorReport *) report
+- (void)storeReportForJS:(SNMErrorReport *) report
 {
-    [self.reports add:errorReport];
+    [self.reports addObject:report];
 }
 
 - (void) crashes:(SNMCrashes *)crashes willSendErrorReport:(SNMErrorReport *)errorReport
@@ -53,7 +47,7 @@ static NSString ON_SENDING_SUCCEEDED_EVENT = @"SonamaErrorReportOnSendingSucceed
     [self.bridge.eventDispatcher sendAppEventWithName:ON_SENDING_SUCCEEDED_EVENT body:convertReportToJS(errorReport)];
 }
 
-- (void) crashes:(SNMCrashes *)crashes didFailSendingErrorReport:(SNMErrorReport *)errorReport withError:(NSError *)errorReport
+- (void) crashes:(SNMCrashes *)crashes didFailSendingErrorReport:(SNMErrorReport *)errorReport withError:(NSError *)sendError
 {
     [self.bridge.eventDispatcher sendAppEventWithName:ON_SENDING_FAILED_EVENT body:convertReportToJS(errorReport)];
 }
@@ -63,16 +57,11 @@ static NSString ON_SENDING_SUCCEEDED_EVENT = @"SonamaErrorReportOnSendingSucceed
     self.attachments = attachments;
 }
 
-- (void) setBridge: (RCTBridge*) bridge
-{
-    self.bridge = bridge;
-}
-
 - (SNMErrorAttachment *)attachmentWithCrashes:(SNMCrashes *)crashes forErrorReport:(SNMErrorReport *)errorReport
 {
     NSObject* attachment = [self.attachments objectForKey:[errorReport incidentIdentifier]];
     if (attachment && [attachment isKindOfClass:[NSString class]]) {
-        NSString * stringAttachment = attachment;
+        NSString * stringAttachment = (NSString *)attachment;
         return [SNMErrorAttachment attachmentWithText:stringAttachment];
     }
 
@@ -98,9 +87,9 @@ static NSString ON_SENDING_SUCCEEDED_EVENT = @"SonamaErrorReportOnSendingSucceed
 - (SNMUserConfirmationHandler)shouldAwaitUserConfirmationHandler
 {
     // Do not wait for user confirmation, always send.
-    return ^(NSArray<SNMErrorREport *> *errorReports){
+    return ^(NSArray<SNMErrorReport *> *errorReports){
         return NO;
-    }
+    };
 }
 
 @end

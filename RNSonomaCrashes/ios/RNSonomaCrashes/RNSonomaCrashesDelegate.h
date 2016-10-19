@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 
-#import <SonomaCrashes/SNMCrashesDelegate.h>
 #import <SonomaCrashes/SonomaCrashes.h>
+#import <SonomaCrashes/SNMCrashesDelegate.h>
+
 #import "RCTBridge.h"
 
 @class RNSonomaCrashes;
@@ -9,7 +10,7 @@
 
 @protocol RNSonomaCrashesDelegate <SNMCrashesDelegate>
 // Call to expose a report to JS
-- storeReportForJS:(SNMErrorReport *) report;
+- (void)storeReportForJS:(SNMErrorReport *) report;
 
 - (SNMUserConfirmationHandler)shouldAwaitUserConfirmationHandler;
 
@@ -26,7 +27,9 @@
 @end
 
 @interface RNSonomaCrashesDelegateBase : NSObject<RNSonomaCrashesDelegate>
-
+@property NSDictionary* attachments;
+@property NSMutableArray* reports;
+@property RCTBridge* bridge;
 @end
 
 @interface RNSonomaCrashesDelegateAlwaysSend: RNSonomaCrashesDelegateBase

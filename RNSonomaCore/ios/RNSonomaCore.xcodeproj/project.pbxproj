@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5419C25A1D81FDA300DDF3A1 /* RNSonomaCore.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNSonomaCore.h */; };
 		5419C25C1D81FDA300DDF3A1 /* RNSonomaCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* RNSonomaCore.m */; };
+		CB4D6D781DB6DE940080D9D6 /* RNSonomaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNSonomaCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -68,6 +69,17 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		CB4D6D771DB6DE8B0080D9D6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB4D6D781DB6DE940080D9D6 /* RNSonomaCore.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		5419C2551D81FDA300DDF3A1 /* RNSonomaCore */ = {
 			isa = PBXNativeTarget;
@@ -76,6 +88,7 @@
 				5419C2521D81FDA300DDF3A1 /* Sources */,
 				5419C2531D81FDA300DDF3A1 /* Frameworks */,
 				5419C2541D81FDA300DDF3A1 /* CopyFiles */,
+				CB4D6D771DB6DE8B0080D9D6 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -223,6 +236,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCore;
 				SKIP_INSTALL = YES;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -234,6 +248,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCore;
 				SKIP_INSTALL = YES;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 i386";
 			};
 			name = Release;
 		};

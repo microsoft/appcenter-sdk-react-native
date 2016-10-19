@@ -102,7 +102,7 @@
 		5419C2681D824AA700DDF3A1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					5419C26F1D824AA700DDF3A1 = {
@@ -155,8 +155,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -199,8 +201,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -226,8 +230,14 @@
 		5419C27A1D824AA700DDF3A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
+					"$(SRCROOT)/../../RNSonomaCore/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**",
+					"/Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" \"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" /Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include/RNSonomaCore\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCrashes;
 				SKIP_INSTALL = YES;
@@ -237,8 +247,14 @@
 		5419C27B1D824AA700DDF3A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
+					"$(SRCROOT)/../../RNSonomaCore/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**",
+					"/Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" \"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include\" /Library/Developer/Xcode/DerivedData/RNSonomaCore-ckasvtujapjyoogrxxdlzrooicue/Build/Products/Debug-iphonesimulator/include/RNSonomaCore\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCrashes;
 				SKIP_INSTALL = YES;
