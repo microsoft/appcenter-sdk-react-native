@@ -11,12 +11,13 @@
 #import "RNSonomaCrashesUtils.h"
 
 #import <SonomaCrashes/SonomaCrashes.h>
-#import <RNSonomaCore/RNSonomaCore.h>
+#import "RNSonomaCore.h"
 #import <SonomaCore/SonomaCore.h>
 
 @interface RNSonomaCrashes () <RCTBridgeModule>
 
-@property RNSonomaCrashesDelegate* crashDelegate;
+@property id<RNSonomaCrashesDelegate> crashDelegate;
+
 @end
 
 @implementation RNSonomaCrashes
@@ -26,20 +27,20 @@
 
 RCT_EXPORT_MODULE();
 
-static RNSonomaCrashesDelgate* crashDelegate;
+static id<RNSonomaCrashesDelegate> crashDelegate;
 
 + (void)register
 {
-    [RNSonomaCrashes registerWithCrashDelegate:[[RNSonomaCrashesDelegateBase alloc] init];
+    [RNSonomaCrashes registerWithCrashDelegate:[[RNSonomaCrashesDelegateBase alloc] init]];
 }
 
-+ (void)registerWithCrashDelegate: id<RNSonomaCrashesDelegate> delegate
++ (void)registerWithCrashDelegate:(id<RNSonomaCrashesDelegate>)delegate
 {
   [RNSonomaCore initializeSonoma];
   [SNMCrashes setDelegate:delegate];
-  self.crashDelegate = delegate;
+  crashDelegate = delegate;
   [SNMCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];
-  [SNMSonoma startFeature:[SNMCrashes class]]
+  [SNMSonoma startFeature:[SNMCrashes class]];
 }
 
 - (instancetype)init
@@ -65,16 +66,16 @@ static RNSonomaCrashesDelgate* crashDelegate;
     NSArray<SNMErrorReport *> *crashes = [crashDelegate getAndClearReports];
 
     return @{
-        @"hasCrashedInLastSession": lastSessionCrashReport == nil,
+        @"hasCrashedInLastSession": @(lastSessionCrashReport == nil),
         @"lastCrashReport": convertReportToJS(lastSessionCrashReport),
-        @"pendingErrors": convertReportsToJS()
+        @"pendingErrors": convertReportsToJS(crashes)
     };
 }
 
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
                             rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[SNMCrashes isDebuggerAttached]]);
+    resolve([NSNumber numberWithBool:[SNMSonoma isDebuggerAttached]]);
 }
 
 RCT_EXPORT_METHOD(generateTestCrash:(RCTPromiseResolveBlock)resolve
@@ -108,7 +109,7 @@ RCT_EXPORT_METHOD(setTextAttachment:(NSString *)textAttachment
 RCT_EXPORT_METHOD(getLastSessionCrashDetails:(RCTPromiseResolveBlock)resolve
                                     rejecter:(RCTPromiseRejectBlock)reject)
 {
-    SNMErrorReport *lastSessionCrashDetails = [SNMCrashes lastSessionCrashDetails];
+    SNMErrorReport *lastSessionCrashDetails = [SNMCrashes lastSessionCrashReport];
     // TODO: Serialize crash details to NSDictionary and send to JS.
     resolve(nil);
 }
