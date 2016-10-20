@@ -7,11 +7,10 @@
 #import "RCTRootView.h"
 #import "RCTUtils.h"
 
-#import "RNSonomaCrashesDelegate.h"
 #import "RNSonomaCrashesUtils.h"
 
 #import <SonomaCrashes/SonomaCrashes.h>
-#import "RNSonomaCore.h"
+#import "RNSonomaCore.h" // TODO: revert back to <> syntax once it is built as a framework
 #import <SonomaCore/SonomaCore.h>
 
 @interface RNSonomaCrashes () <RCTBridgeModule>
@@ -49,11 +48,6 @@ static id<RNSonomaCrashesDelegate> crashDelegate;
 
     if (self) {
         [self.crashDelegate setBridge:self.bridge];
-        // TODO: Set custom userConfirmationHandler that bridges information to JS,
-        // possibly via the RCTDeviceEventEmitter, so that a user can set a custom
-        // handler and show a custom alert from JS.
-        //
-        // See [SNMCrashes setUserConfirmationHandler:userConfirmationHandler].
     }
 
     return self;
@@ -78,11 +72,25 @@ RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
     resolve([NSNumber numberWithBool:[SNMSonoma isDebuggerAttached]]);
 }
 
+RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([NSNumber numberWithBool:[SNMCrashes isEnabled]]);
+}
+
+RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [SNMCrashes setEnabled:shouldEnable];
+    resolve(nil);
+}
+
 RCT_EXPORT_METHOD(generateTestCrash:(RCTPromiseResolveBlock)resolve
                            rejecter:(RCTPromiseRejectBlock)reject)
 {
     [SNMCrashes generateTestCrash];
-    reject(nil);
+    reject(@"crash_failed", @"Failed to crash!", nil);
 }
 
 RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attachments
@@ -96,22 +104,6 @@ RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attac
     [self.crashDelegate provideAttachments:attachments];
     [SNMCrashes notifyWithUserConfirmation:response];
     resolve(@"");
-}
-
-RCT_EXPORT_METHOD(setTextAttachment:(NSString *)textAttachment
-                           resolver:(RCTPromiseResolveBlock)resolve
-                           rejecter:(RCTPromiseRejectBlock)reject)
-{
-    // TODO
-    resolve(nil);
-}
-
-RCT_EXPORT_METHOD(getLastSessionCrashDetails:(RCTPromiseResolveBlock)resolve
-                                    rejecter:(RCTPromiseRejectBlock)reject)
-{
-    SNMErrorReport *lastSessionCrashDetails = [SNMCrashes lastSessionCrashReport];
-    // TODO: Serialize crash details to NSDictionary and send to JS.
-    resolve(nil);
 }
 
 @end

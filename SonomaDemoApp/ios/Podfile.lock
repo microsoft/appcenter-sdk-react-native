@@ -29,7 +29,9 @@ PODS:
     - SonomaCore
   - RNSonomaCrashes (0.0.1):
     - React
+    - RNSonomaCore
     - SonomaCore
+    - SonomaCrashes
   - SonomaAnalytics (0.0.1)
   - SonomaCore (0.0.1)
   - SonomaCrashes (0.0.1)
@@ -71,7 +73,7 @@ SPEC CHECKSUMS:
   React: 304abd16605aeff4b114da814812a78de24d4ca5
   RNSonomaAnalytics: f6de1a30c539e88d4e500d2d488155ffc48ecf7c
   RNSonomaCore: e8be0490a2717ed83a093fb60131e7f34b9d3045
-  RNSonomaCrashes: 45b8d32cd919df4b3a88f956362bf59b6ed72ab4
+  RNSonomaCrashes: cf777b8cc690b1c658328ff5a2acfb00699ea453
   SonomaAnalytics: a0ce44a0fca199feb92215dc38e09e506e3179d6
   SonomaCore: 2f7e80b94b5b5104a1e0729925fc3b91b22d3070
   SonomaCrashes: 0dc9c1eb20fe11818abfce9fc35a342355472b81

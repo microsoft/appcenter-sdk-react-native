@@ -12,9 +12,10 @@
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 
-@import SonomaCore;
-@import SonomaAnalytics;
-@import SonomaCrashes;
+//@import SonomaAnalytics;
+//@import SonomaCrashes;
+
+#import "RNSonomaCrashes";
 
 @implementation AppDelegate
 
@@ -28,8 +29,8 @@
                                                       moduleName:@"SonomaDemoApp"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
-  
-  [SNMSonoma start:[[NSUUID UUID] UUIDString] withFeatures:@[[SNMAnalytics class], [SNMCrashes class]]];
+
+  [RNSonomaCrashes register];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

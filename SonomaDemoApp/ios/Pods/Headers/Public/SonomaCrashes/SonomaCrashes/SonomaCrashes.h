@@ -1,1 +1,1 @@
-../../../../../../../Sonoma-SDK-iOS/Products/SonomaCrashes/SonomaCrashes.framework/Versions/A/Headers/SonomaCrashes.h
+../../../../../../../Sonoma-SDK-iOS/Products/SonomaCrashes/SonomaCrashes.framework/Headers/SonomaCrashes.h

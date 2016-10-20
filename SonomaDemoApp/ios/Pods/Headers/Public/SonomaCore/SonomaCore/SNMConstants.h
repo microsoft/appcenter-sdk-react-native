@@ -1,1 +1,1 @@
-../../../../../../../Sonoma-SDK-iOS/Products/SonomaCore/SonomaCore.framework/Versions/A/Headers/SNMConstants.h
+../../../../../../../Sonoma-SDK-iOS/Products/SonomaCore/SonomaCore.framework/Headers/SNMConstants.h

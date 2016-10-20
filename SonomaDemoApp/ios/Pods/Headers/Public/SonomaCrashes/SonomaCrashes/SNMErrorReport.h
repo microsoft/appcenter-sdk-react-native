@@ -1,0 +1,1 @@
+../../../../../../../Sonoma-SDK-iOS/Products/SonomaCrashes/SonomaCrashes.framework/Headers/SNMErrorReport.h

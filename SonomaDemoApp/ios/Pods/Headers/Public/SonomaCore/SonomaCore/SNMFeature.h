@@ -1,1 +1,1 @@
-../../../../../../../Sonoma-SDK-iOS/Products/SonomaCore/SonomaCore.framework/Versions/A/Headers/SNMFeature.h
+../../../../../../../Sonoma-SDK-iOS/Products/SonomaCore/SonomaCore.framework/Headers/SNMFeature.h
