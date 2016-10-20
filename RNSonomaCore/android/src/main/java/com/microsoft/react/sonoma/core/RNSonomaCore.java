@@ -4,6 +4,8 @@ import android.app.Application;
 
 import org.json.JSONObject;
 
+import java.io.InputStream;
+
 import com.microsoft.sonoma.core.Sonoma;
 import com.microsoft.sonoma.core.ingestion.models.WrapperSdk;
 
@@ -31,7 +33,7 @@ public class RNSonomaCore {
         E.g. code push can fetch the wrapperSdk, set the code push version, then set the
         wrapperSdk again so it can take effect.
     */
-    public static void setWrapperSdk(WrapperSDK wrapperSdk) {
+    public static void setWrapperSdk(WrapperSdk wrapperSdk) {
         RNSonomaCore.wrapperSdk = wrapperSdk;
         Sonoma.setWrapperSdk(wrapperSdk);
     }
