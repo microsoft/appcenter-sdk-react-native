@@ -30,6 +30,9 @@ public class RNSonomaCrashesUtils {
     }
 
     public static WritableMap convertErrorReportToWritableMap(ErrorReport errorReport) throws JSONException {
+        if (errorReport == null) {
+            return Arguments.createMap();
+        }
         WritableMap errorReportMap = Arguments.createMap();
         errorReportMap.putString("id", errorReport.getId());
         errorReportMap.putString("threadName", errorReport.getThreadName());

@@ -59,7 +59,9 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
         ErrorReport lastError = Crashes.getLastSessionCrashReport();
         
         constants.put(RNSonomaCrashesModule.HasCrashedInLastSessionKey, lastError != null);
-        constants.put(RNSonomaCrashesModule.LastCrashReportKey, RNSonomaCrashesUtils.convertErrorReportToWritableMapOrEmpty(lastError));
+        if (lastError != null) {
+            constants.put(RNSonomaCrashesModule.LastCrashReportKey, RNSonomaCrashesUtils.convertErrorReportToWritableMapOrEmpty(lastError));
+        }
 
 
         List<ErrorReport> pendingReports = this.mCrashListener.getAndClearReports();
@@ -80,7 +82,7 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
     }
 
     @ReactMethod
-    public void generateTestCrash(Promise promise) {
+    public void generateTestCrash(final Promise promise) {
         new Thread(new Runnable() {
             public void run() {
                 Crashes.generateTestCrash();

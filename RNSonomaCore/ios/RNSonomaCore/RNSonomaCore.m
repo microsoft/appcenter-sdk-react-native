@@ -18,9 +18,8 @@ static NSString *appSecret;
     NSString * plistPath = [[NSBundle mainBundle] pathForResource:@"Sonoma-Config" ofType:@"plist"];
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 
-    appSecret = [config objectForKey:@"AppSeret"];
-    // TODO: If fetching appsecret fails and it was not set in code, bail out?
-    appSecret = @"123e4567-e89b-12d3-a456-426655440000";
+    appSecret = [config objectForKey:@"app_secret"];
+    // If the appSecret is not set, we will pass nil to SNMSonoma which will error out, as expected
   }
 
   return appSecret;
