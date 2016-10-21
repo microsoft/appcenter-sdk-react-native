@@ -2,7 +2,8 @@
 
 #import "RCTEventDispatcher.h"
 #import "RNSonomaCrashesUtils.h"
-#import <SonomaCrashes/SNMErrorAttachment.h>
+
+@import SonomaCrashes.SNMErrorAttachment;
 
 static NSString *ON_BEFORE_SENDING_EVENT = @"SonamaErrorReportOnBeforeSending";
 static NSString *ON_SENDING_FAILED_EVENT = @"SonamaErrorReportOnSendingFailed";

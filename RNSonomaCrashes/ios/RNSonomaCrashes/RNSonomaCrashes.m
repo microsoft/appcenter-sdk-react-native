@@ -9,24 +9,23 @@
 
 #import "RNSonomaCrashesUtils.h"
 
-#import <SonomaCrashes/SonomaCrashes.h>
+@import SonomaCrashes;
+
 #import "RNSonomaCore.h" // TODO: revert back to <> syntax once it is built as a framework
-#import <SonomaCore/SonomaCore.h>
+
+//#import <SonomaCore/SonomaCore.h>
 
 @interface RNSonomaCrashes () <RCTBridgeModule>
-
-@property id<RNSonomaCrashesDelegate> crashDelegate;
 
 @end
 
 @implementation RNSonomaCrashes
 
 @synthesize bridge = _bridge;
-@synthesize crashDelegate = _crashDelegate;
-
-RCT_EXPORT_MODULE();
 
 static id<RNSonomaCrashesDelegate> crashDelegate;
+
+RCT_EXPORT_MODULE();
 
 + (void)register
 {
@@ -47,7 +46,7 @@ static id<RNSonomaCrashesDelegate> crashDelegate;
     self = [super init];
 
     if (self) {
-        [self.crashDelegate setBridge:self.bridge];
+        [crashDelegate setBridge:self.bridge];
     }
 
     return self;
@@ -98,10 +97,10 @@ RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attac
                 rejecter:(RCTPromiseRejectBlock)reject)
 {
     SNMUserConfirmation response = send ? SNMUserConfirmationSend : SNMUserConfirmationDontSend;
-    if ([self.crashDelegate respondsToSelector:@selector(reportUserResponse:)]) {
-        [self.crashDelegate reportUserResponse:response];
+    if ([crashDelegate respondsToSelector:@selector(reportUserResponse:)]) {
+        [crashDelegate reportUserResponse:response];
     }
-    [self.crashDelegate provideAttachments:attachments];
+    [crashDelegate provideAttachments:attachments];
     [SNMCrashes notifyWithUserConfirmation:response];
     resolve(@"");
 }

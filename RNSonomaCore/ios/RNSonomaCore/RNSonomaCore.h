@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
 
-#import <SonomaCore/SNMConstants.h>
+@import SonomaCore;
+//#import "/Users/jithomso/sonoma/react-native-sonoma-private/Sonoma-SDK-iOS/Products/SonomaCore/SonomaCore.framework/Headers/SonomaCore.h"
+//#import <SonomaCore/SonomaCore.h>
+
 
 @interface RNSonomaCore : NSObject
 

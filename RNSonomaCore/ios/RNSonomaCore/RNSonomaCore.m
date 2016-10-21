@@ -1,8 +1,5 @@
 #import "RNSonomaCore.h"
 
-#import <SonomaCore/SonomaCore.h>
-
-
 @implementation RNSonomaCore
 
 static NSString *appSecret;

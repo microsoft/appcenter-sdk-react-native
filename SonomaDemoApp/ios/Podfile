@@ -13,9 +13,9 @@ target 'SonomaDemoApp' do
     ]
 
     # Sonoma native SDK dependencies
-    pod 'SonomaCore', :path => '../../SonomaCore.podspec'
-    pod 'SonomaAnalytics', :path => '../../SonomaAnalytics.podspec'
-    pod 'SonomaCrashes', :path => '../../SonomaCrashes.podspec'
+#    pod 'SonomaCore', :path => '../../SonomaCore.podspec'
+#    pod 'SonomaAnalytics', :path => '../../SonomaAnalytics.podspec'
+#    pod 'SonomaCrashes', :path => '../../SonomaCrashes.podspec'
 
     # React Native wrappers for Sonoma SDK
     pod 'RNSonomaCore', :path => '../../RNSonomaCore'

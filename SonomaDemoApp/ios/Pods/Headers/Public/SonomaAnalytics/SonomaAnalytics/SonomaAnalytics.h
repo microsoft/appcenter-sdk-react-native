@@ -1,1 +1,0 @@
-../../../../../../../Sonoma-SDK-iOS/Products/SonomaAnalytics/SonomaAnalytics.framework/Versions/A/Headers/SonomaAnalytics.h

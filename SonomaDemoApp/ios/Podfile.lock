@@ -23,18 +23,11 @@ PODS:
     - React/Core
   - RNSonomaAnalytics (0.0.1):
     - React
-    - SonomaCore
   - RNSonomaCore (0.0.1):
     - React
-    - SonomaCore
   - RNSonomaCrashes (0.0.1):
     - React
     - RNSonomaCore
-    - SonomaCore
-    - SonomaCrashes
-  - SonomaAnalytics (0.0.1)
-  - SonomaCore (0.0.1)
-  - SonomaCrashes (0.0.1)
 
 DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
@@ -49,9 +42,6 @@ DEPENDENCIES:
   - RNSonomaAnalytics (from `../../RNSonomaAnalytics`)
   - RNSonomaCore (from `../../RNSonomaCore`)
   - RNSonomaCrashes (from `../../RNSonomaCrashes`)
-  - SonomaAnalytics (from `../../SonomaAnalytics.podspec`)
-  - SonomaCore (from `../../SonomaCore.podspec`)
-  - SonomaCrashes (from `../../SonomaCrashes.podspec`)
 
 EXTERNAL SOURCES:
   React:
@@ -62,22 +52,13 @@ EXTERNAL SOURCES:
     :path: "../../RNSonomaCore"
   RNSonomaCrashes:
     :path: "../../RNSonomaCrashes"
-  SonomaAnalytics:
-    :path: "../../SonomaAnalytics.podspec"
-  SonomaCore:
-    :path: "../../SonomaCore.podspec"
-  SonomaCrashes:
-    :path: "../../SonomaCrashes.podspec"
 
 SPEC CHECKSUMS:
   React: 304abd16605aeff4b114da814812a78de24d4ca5
-  RNSonomaAnalytics: f6de1a30c539e88d4e500d2d488155ffc48ecf7c
-  RNSonomaCore: e8be0490a2717ed83a093fb60131e7f34b9d3045
-  RNSonomaCrashes: cf777b8cc690b1c658328ff5a2acfb00699ea453
-  SonomaAnalytics: a0ce44a0fca199feb92215dc38e09e506e3179d6
-  SonomaCore: 2f7e80b94b5b5104a1e0729925fc3b91b22d3070
-  SonomaCrashes: 0dc9c1eb20fe11818abfce9fc35a342355472b81
+  RNSonomaAnalytics: 085af9d8583970b45947aca9e8ebeff54a646b22
+  RNSonomaCore: add21a7a1a33df2e6deacba55785f85fc9f2a873
+  RNSonomaCrashes: b87e662e6174d1ac997825ae93aea6431c27dd5f
 
-PODFILE CHECKSUM: e43796da45f27b2fd6e7caec8ed4166e81bab428
+PODFILE CHECKSUM: eb3bbdd7c129ab6d77a8dc879d966a768e9b3af2
 
 COCOAPODS: 1.0.1

@@ -15,7 +15,7 @@
 //@import SonomaAnalytics;
 //@import SonomaCrashes;
 
-#import "RNSonomaCrashes";
+#import "RNSonomaCrashes.h"
 
 @implementation AppDelegate
 
