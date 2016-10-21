@@ -6,9 +6,9 @@
 [assembly: AssemblyTitle("Microsoft.Sonoma.Crashes.Android.Bindings")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("guperrot")]
+[assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
