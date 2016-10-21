@@ -6,6 +6,6 @@ namespace Microsoft.Sonoma.Core
     {
         internal const string Name = "sonoma.xamarin";
 
-        internal static readonly string Version = typeof(WrapperSdk).GetTypeInfo().Assembly.GetName().Version.ToString();
+        internal static readonly string Version = typeof (WrapperSdk).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
     }
 }
