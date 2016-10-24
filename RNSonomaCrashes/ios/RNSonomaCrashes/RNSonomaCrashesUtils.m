@@ -87,15 +87,39 @@ NSDictionary* convertReportToJS(SNMErrorReport* report) {
     if (report == nil) {
         return @{};
     }
-    return @{
-             @"id": [report incidentIdentifier],
-             @"appProcessIdentifier": @([report appProcessIdentifier]),
-             @"appErrorTime": @([[report appErrorTime] timeIntervalSince1970]),
-             @"appStartTime": @([[report appStartTime] timeIntervalSince1970]),
-             
-             @"exceptionName": [report exceptionName],
-             @"exceptionReason": [report exceptionReason],
-             @"signal": [report signal],
-             @"device": serializeDeviceToDictionary([report device])
-             };
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    NSString * identifier = [report incidentIdentifier];
+    if (identifier) {
+        dict[@"id"] = identifier;
+    }
+    
+    NSUInteger processIdentifier = [report appProcessIdentifier];
+    dict[@"appProcessIdentifier"] = @(processIdentifier);
+    
+    NSTimeInterval startTime = [[report appStartTime] timeIntervalSince1970];
+    if (startTime) {
+      dict[@"appStartTime"] = @(startTime);
+    }
+    NSTimeInterval errTime = [[report appErrorTime] timeIntervalSince1970];
+    if (errTime) {
+      dict[@"appErrorTime"] = @(errTime);
+    }
+
+    NSString * exceptionName = [report exceptionName];
+    if (exceptionName) {
+      dict[@"exceptionName"] = exceptionName;
+    }
+    NSString * exceptionReason = [report exceptionReason];
+    if (exceptionReason) {
+      dict[@"exceptionReason"] = exceptionReason;
+    }
+
+    NSString * signal = [report signal];
+    if (signal) {
+      dict[@"signal"] = signal;
+    }
+
+    dict[@"device"] = serializeDeviceToDictionary([report device]);
+
+    return dict;
 }

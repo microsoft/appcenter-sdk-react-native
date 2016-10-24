@@ -8,7 +8,6 @@ const sendDidFail = "SonamaErrorReportOnSendingFailed";
 let SonomaCrashes = {
     // Constants
     hasCrashedInLastSession: RNSonomaCrashes.hasCrashedInLastSession,
-    pendingReports: RNSonomaCrashes.pendingErrors,
     lastSessionCrashReport: RNSonomaCrashes.lastCrashReport,
 
     // Functions
@@ -25,22 +24,23 @@ let SonomaCrashes = {
     },
 
     process(callback) {
-        let errorAttachments = {};
-        let reportsWithAttachmentFunctions = SonomaCrashes.pendingReports.map(function (report) {
-            function addAttachment(attachment) {
-                if (typeof attachment != "string") {
-                    throw new Error("Only string attachments are supported, received " + typeof attachment);
-                }
-                errorAttachments[report.id] = attachment;
-            }
-            return Object.assign({
-                addAttachment
-            }, report);
-        });
-
-        callback(reportsWithAttachmentFunctions, function (response) {
-            RNSonomaCrashes.crashUserResponse(response, errorAttachments);
-        });
+        return RNSonomaCrashes.getCrashReports().then(function (reports) {
+		let errorAttachments = {};
+		let reportsWithAttachmentFunction = reports.map(function (report) {
+			function addAttachment(attachment) {
+			    if (typeof attachment != "string") {
+				throw new Error("Only string attachments are supported, received " + typeof attachment);
+			    }
+			    errorAttachments[report.id] = attachment;
+			}
+			return Object.assign({
+				addAttachment
+			    }, report);
+		    });
+		callback(reportsWithAttachmentFunction, function (response) {
+			RNSonomaCrashes.crashUserResponse(response, errorAttachments);
+		    });
+	    });
     },
 
     addEventListener(listenerMap) {

@@ -56,13 +56,17 @@ RCT_EXPORT_MODULE();
 {
     SNMErrorReport *lastSessionCrashReport = [SNMCrashes lastSessionCrashReport];
 
-    NSArray<SNMErrorReport *> *crashes = [crashDelegate getAndClearReports];
-
     return @{
-        @"hasCrashedInLastSession": @(lastSessionCrashReport == nil),
-        @"lastCrashReport": convertReportToJS(lastSessionCrashReport),
-        @"pendingErrors": convertReportsToJS(crashes)
+        @"hasCrashedInLastSession": @(lastSessionCrashReport != nil),
+        @"lastCrashReport": convertReportToJS(lastSessionCrashReport)
     };
+}
+
+RCT_EXPORT_METHOD(getCrashReports:(RCTPromiseResolveBlock)resolve
+		  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  NSArray<SNMErrorReport *> *crashes = [crashDelegate getAndClearReports];
+  resolve(convertReportsToJS(crashes));
 }
 
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
