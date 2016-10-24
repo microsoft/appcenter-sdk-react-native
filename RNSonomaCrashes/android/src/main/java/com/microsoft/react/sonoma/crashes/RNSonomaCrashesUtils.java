@@ -39,6 +39,7 @@ public class RNSonomaCrashesUtils {
         errorReportMap.putString("appErrorTime", "" + errorReport.getAppErrorTime().getTime());
         errorReportMap.putString("appStartTime", "" + errorReport.getAppStartTime().getTime());
         errorReportMap.putString("exception", Log.getStackTraceString(errorReport.getThrowable()));
+        errorReportMap.putString("exceptionReason", errorReport.getThrowable().getMessage());
 
         Device deviceInfo = errorReport.getDevice();
         JSONStringer jsonStringer = new JSONStringer();
