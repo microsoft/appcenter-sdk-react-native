@@ -25,6 +25,9 @@
 
 static id<RNSonomaCrashesDelegate> crashDelegate;
 
+// iOS crash processing has a half second delay https://github.com/microsoft/sonoma-sdk-ios/blob/develop/SonomaCrashes/SonomaCrashes/SNMCrashes.m
+static BOOL crashProcessingDelayFinished = NO;
+
 RCT_EXPORT_MODULE();
 
 + (void)register
@@ -39,6 +42,12 @@ RCT_EXPORT_MODULE();
   crashDelegate = delegate;
   [SNMCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];
   [SNMSonoma startFeature:[SNMCrashes class]];
+  [self performSelector:@selector(crashProcessingDelayDidFinish) withObject:nil afterDelay:0.5];
+}
+
++ (void)crashProcessingDelayDidFinish
+{
+    crashProcessingDelayFinished = YES;
 }
 
 - (instancetype)init
@@ -57,16 +66,20 @@ RCT_EXPORT_MODULE();
     SNMErrorReport *lastSessionCrashReport = [SNMCrashes lastSessionCrashReport];
 
     return @{
-        @"hasCrashedInLastSession": @(lastSessionCrashReport != nil),
+        @"hasCrashedInLastSession": @(1 || lastSessionCrashReport != nil),
         @"lastCrashReport": convertReportToJS(lastSessionCrashReport)
     };
 }
 
 RCT_EXPORT_METHOD(getCrashReports:(RCTPromiseResolveBlock)resolve
-		  rejecter:(RCTPromiseRejectBlock)reject)
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSArray<SNMErrorReport *> *crashes = [crashDelegate getAndClearReports];
-  resolve(convertReportsToJS(crashes));
+    if (crashProcessingDelayFinished){
+        NSArray<SNMErrorReport *> *crashes = [crashDelegate getAndClearReports];
+        resolve(convertReportsToJS(crashes));
+    } else {
+        [self performSelector:@selector(getCrashReports:) withObject:resolve afterDelay:0.5];
+    }
 }
 
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve

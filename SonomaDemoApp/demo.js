@@ -37,7 +37,7 @@ class SonomaDemoApp extends Component {
         });
         Alert.alert(
         'Unhandled exception:',
-        reports[0].exception.split('\n')[0],
+        reports[0].exceptionReason,
         [
           {text: 'Send crash', onPress: () => send(true,{}) },
           {text: 'Ignore crash', onPress: () => send(false,{}), style: 'cancel'},
