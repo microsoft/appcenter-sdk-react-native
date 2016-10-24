@@ -252,3 +252,7 @@ ModelManifest.xml
 
 # Mac files
 .DS_Store
+
+# Cake directories
+tools/
+externals/
