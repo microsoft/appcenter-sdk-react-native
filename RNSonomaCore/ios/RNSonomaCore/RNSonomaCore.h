@@ -18,4 +18,7 @@
 + (void) setLogLevel: (SNMLogLevel)logLevel;
 + (SNMLogLevel) logLevel;
 
++ (SNMWrapperSdk *) getWrapperSdk;
++ (void) setWrapperSdk:(SNMWrapperSdk *)sdk;
+
 @end
