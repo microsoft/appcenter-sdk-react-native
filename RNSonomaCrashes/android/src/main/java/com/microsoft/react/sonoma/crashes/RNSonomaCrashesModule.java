@@ -28,7 +28,6 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
 
     private static final String HasCrashedInLastSessionKey = "hasCrashedInLastSession";
     private static final String LastCrashReportKey = "lastCrashReport";
-    private static final String PendingErrorsKey = "pendingErrors";
 
     public RNSonomaCrashesModule(Application application, CrashListenerType crashListener) {
         this.mCrashListener = crashListener;
@@ -63,12 +62,13 @@ public class RNSonomaCrashesModule< CrashListenerType extends RNSonomaCrashesLis
             constants.put(RNSonomaCrashesModule.LastCrashReportKey, RNSonomaCrashesUtils.convertErrorReportToWritableMapOrEmpty(lastError));
         }
 
-
-        List<ErrorReport> pendingReports = this.mCrashListener.getAndClearReports();
-        constants.put(RNSonomaCrashesModule.PendingErrorsKey, RNSonomaCrashesUtils.convertErrorReportsToWritableArrayOrEmpty(pendingReports));
-
-        RNSonomaCrashesUtils.logDebug("Returning constants with " + String.valueOf(pendingReports.size()) + " reports");
         return constants;
+    }
+
+    @ReactMethod
+    public void getCrashReports(Promise promise) {
+        List<ErrorReport> pendingReports = this.mCrashListener.getAndClearReports();
+        promise.resolve(RNSonomaCrashesUtils.convertErrorReportsToWritableArrayOrEmpty(pendingReports));
     }
 
     @ReactMethod
