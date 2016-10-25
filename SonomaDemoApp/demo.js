@@ -66,6 +66,14 @@ class SonomaDemoApp extends Component {
           </Text>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={() => {
+            undefined.functionCall();
+        }}>
+          <Text style={styles.button}>
+            Test JS Crash
+          </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => SonomaAnalytics.trackEvent("Button press", { page: "Home page" })}>
           <Text style={styles.button}>
             Track Event
