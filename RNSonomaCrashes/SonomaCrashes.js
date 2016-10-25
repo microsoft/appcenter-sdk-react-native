@@ -25,21 +25,21 @@ let SonomaCrashes = {
 
     process(callback) {
         return RNSonomaCrashes.getCrashReports().then(function (reports) {
-		let errorAttachments = {};
-		let reportsWithAttachmentFunction = reports.map(function (report) {
-			function addAttachment(attachment) {
-			    if (typeof attachment != "string") {
-				throw new Error("Only string attachments are supported, received " + typeof attachment);
-			    }
-			    errorAttachments[report.id] = attachment;
-			}
-			return Object.assign({
-				addAttachment
-			    }, report);
-		    });
-		callback(reportsWithAttachmentFunction, function (response) {
-			RNSonomaCrashes.crashUserResponse(response, errorAttachments);
-		    });
+            let errorAttachments = {};
+            let reportsWithAttachmentFunction = reports.map(function (report) {
+                function addAttachment(attachment) {
+                    if (typeof attachment != "string") {
+                    throw new Error("Only string attachments are supported, received " + typeof attachment);
+                    }
+                    errorAttachments[report.id] = attachment;
+                }
+                return Object.assign({
+                    addAttachment
+                    }, report);
+                });
+            callback(reportsWithAttachmentFunction, function (response) {
+                RNSonomaCrashes.crashUserResponse(response, errorAttachments);
+            });
 	    });
     },
 
