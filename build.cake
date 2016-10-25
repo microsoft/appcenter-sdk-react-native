@@ -18,6 +18,10 @@ class SonomaModule {
 	}
 }
 
+// SDK versions
+var ANDROID_SDK_VERSION = "0.1.2";
+var IOS_SDK_VERSION = "0.1.3";
+
 // URLs for downloading binaries.
 /*
  * Read this: http://www.mono-project.com/docs/faq/security/.
@@ -26,9 +30,9 @@ class SonomaModule {
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
  *     By running mozroots and install part of Mozilla's root certificates can make it work. 
  */
-var ANDROID_DIR = "SonomaSDK-Android-0.1.2";
-var ANDROID_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/android/" + ANDROID_DIR + ".zip";
-var IOS_URL = "https://aka.ms/ehvc9e";
+var SDK_STORAGE_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/";
+var ANDROID_URL = SDK_STORAGE_URL + "android/SonomaSDK-Android-" + ANDROID_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "ios/SonomaSDK-iOS-" + IOS_SDK_VERSION + ".zip";
 
 // Available Sonoma modules.
 var SONOMA_MODULES = new [] {
@@ -80,8 +84,8 @@ Task("Externals-Android")
 
 	// Copy files to $XamarinModule$.Android.Bindings/Jars
 	foreach (var module in SONOMA_MODULES) {
-		var aar = "./externals/android/" + ANDROID_DIR + "/" + module.AndroidModule;
-		CopyFile(aar, module.XamarinModule + ".Android.Bindings/Jars/" + module.AndroidModule);
+		var files = GetFiles("./externals/android/*/" + module.AndroidModule);
+		CopyFiles(files, module.XamarinModule + ".Android.Bindings/Jars/");
 	}
 });
 
