@@ -13,16 +13,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class RNSonomaAnalyticsPackage implements ReactPackage {
-    
+    boolean startEnabled;
+    Application application;
 
-    public RNSonomaAnalyticsPackage(Application application) {
-        // TODO: How should we start analytics? Do we need to avoid sending a sesion start heartbeat?
+    public RNSonomaAnalyticsPackage(Application application, boolean startEnabled) {
+        this.startEnabled = startEnabled;
+        this.application = application;
     }
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNSonomaAnalyticsModule(reactContext));
+        modules.add(new RNSonomaAnalyticsModule(application, reactContext, this.startEnabled));
         return modules;
     }
 

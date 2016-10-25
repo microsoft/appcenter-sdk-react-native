@@ -7,7 +7,10 @@
 #import "RCTRootView.h"
 #import "RCTUtils.h"
 
-#import <SonomaAnalytics/SonomaAnalytics.h>
+@import SonomaAnalytics;
+
+#import "RNSonomaCore.h" // TODO: revert back to <> syntax once it is built as a framework
+
 
 @interface RNSonomaAnalytics () <RCTBridgeModule>
 @end
@@ -15,6 +18,14 @@
 @implementation RNSonomaAnalytics
 
 RCT_EXPORT_MODULE();
+
++ (void)registerWithInitiallyEnabled:(BOOL) enabled
+{
+    [RNSonomaCore initializeSonoma];
+    [SNMSonoma setEnabled:enabled];
+    [SNMSonoma setAutoPageTrackingEnabled:false];
+    [SNMSonoma startFeature:[SNMAnalytics class]];
+}
 
 RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
               withProperties:(NSDictionary *)properties

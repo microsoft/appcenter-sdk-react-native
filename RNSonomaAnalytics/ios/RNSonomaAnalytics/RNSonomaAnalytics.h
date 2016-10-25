@@ -2,4 +2,6 @@
 
 @interface RNSonomaAnalytics : NSObject
 
++ (void)registerWithInitiallyEnabled:(BOOL)enabled;
+
 @end

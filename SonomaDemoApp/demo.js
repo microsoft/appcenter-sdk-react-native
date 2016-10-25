@@ -17,6 +17,12 @@ import {
 import SonomaAnalytics from 'react-native-sonoma-analytics';
 import SonomaCrashes from 'react-native-sonoma-crashes';
 
+var data = {};
+data.x = "x value";
+data.y = 12;
+data.null = null;
+data.undefined = undefined;
+
 class SonomaDemoApp extends Component {
   async componentDidMount() {
     if (SonomaCrashes.hasCrashedInLastSession) {
@@ -77,6 +83,12 @@ class SonomaDemoApp extends Component {
         <TouchableOpacity onPress={() => SonomaAnalytics.trackEvent("Button press", { page: "Home page" })}>
           <Text style={styles.button}>
             Track Event
+          </Text>
+        </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => SonomaAnalytics.trackEvent("Button press", data)}>
+          <Text style={styles.button}>
+            Track Event badly
           </Text>
         </TouchableOpacity>
       </View>

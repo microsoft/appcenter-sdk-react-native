@@ -27,7 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
       // Create RN native packages
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RNSonomaAnalyticsPackage(MainApplication.this),
+          new RNSonomaAnalyticsPackage(MainApplication.this, true),
           new RNSonomaCrashesPackage(MainApplication.this, new com.microsoft.react.sonoma.crashes.RNSonomaCrashesListenerAlwaysAsk())
       );
       return packages;
