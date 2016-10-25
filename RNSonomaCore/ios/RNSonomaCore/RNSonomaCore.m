@@ -3,6 +3,7 @@
 @implementation RNSonomaCore
 
 static NSString *appSecret;
+static SNMWrapperSdk * wrapperSdk;
 
 + (void) setAppSecret: (NSString *)secret
 {
@@ -25,14 +26,14 @@ static NSString *appSecret;
 + (void) initializeSonoma
 {
   if (![SNMSonoma isInitialized]) {
-    id codePush = NSClassFromString(@"CodePushConfig");
-    if (codePush != nil) {
-      // Code push is present in the project
-      // TODO: find out codepush related info, keeping in mind this could be called very early on.
-    }
-
-    // TODO: Add in wrapperSDK once iOS supports that.
-
+      SNMWrapperSdk * wrapperSdk =
+        [[SNMWrapperSdk alloc]
+            initWithWrapperSdkVersion:@"0.1.0"
+            wrapperSdkName:@"react-native-sonoma"
+            liveUpdateReleaseLabel:nil
+            liveUpdateDeploymentKey:nil
+            liveUpdatePackageHash:nil];
+      [self setWrapperSdk:wrapperSdk];
       [SNMSonoma start:[RNSonomaCore getAppSecret]];
   }
 }
@@ -50,6 +51,14 @@ static NSString *appSecret;
 + (SNMLogLevel) logLevel
 {
   return [SNMSonoma logLevel];
+}
+
++ (SNMWrapperSdk *) getWrapperSdk {
+    return wrapperSdk;
+}
++ (void) setWrapperSdk:(SNMWrapperSdk *)sdk {
+    wrapperSdk = sdk;
+    [SNMSonoma setWrapperSdk:sdk];
 }
 
 @end
