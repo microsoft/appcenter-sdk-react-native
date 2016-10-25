@@ -26,7 +26,8 @@ class SonomaModule {
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
  *     By running mozroots and install part of Mozilla's root certificates can make it work. 
  */
-var ANDROID_URL = "https://aka.ms/p8ujpf";
+var ANDROID_DIR = "SonomaSDK-Android-0.1.2";
+var ANDROID_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/android/" + ANDROID_DIR + ".zip";
 var IOS_URL = "https://aka.ms/ehvc9e";
 
 // Available Sonoma modules.
@@ -79,7 +80,7 @@ Task("Externals-Android")
 
 	// Copy files to $XamarinModule$.Android.Bindings/Jars
 	foreach (var module in SONOMA_MODULES) {
-		var aar = "./externals/android/" + module.AndroidModule;
+		var aar = "./externals/android/" + ANDROID_DIR + "/" + module.AndroidModule;
 		CopyFile(aar, module.XamarinModule + ".Android.Bindings/Jars/" + module.AndroidModule);
 	}
 });
