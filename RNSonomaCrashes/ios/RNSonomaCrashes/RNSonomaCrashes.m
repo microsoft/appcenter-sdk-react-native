@@ -74,11 +74,13 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(getCrashReports:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
+    void (^fetchCrashReports)() = ^void() {
+        resolve(convertReportsToJS([crashDelegate getAndClearReports]));
+    };
     if (crashProcessingDelayFinished){
-        NSArray<SNMErrorReport *> *crashes = [crashDelegate getAndClearReports];
-        resolve(convertReportsToJS(crashes));
+        fetchCrashReports();
     } else {
-        [self performSelector:@selector(getCrashReports:) withObject:resolve afterDelay:0.5];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC /2), dispatch_get_main_queue(), fetchCrashReports);
     }
 }
 
