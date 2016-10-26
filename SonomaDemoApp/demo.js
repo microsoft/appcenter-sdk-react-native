@@ -21,7 +21,9 @@ var data = {};
 data.x = "x value";
 data.y = 12;
 data.null = null;
-data.undefined = undefined;
+data["undefd"] = undefined;
+data["recursive"] = data;
+data["function"] = function () { console.log(arguments);};
 
 class SonomaDemoApp extends Component {
   async componentDidMount() {

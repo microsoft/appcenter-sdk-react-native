@@ -23,7 +23,7 @@ RCT_EXPORT_MODULE();
 {
     [RNSonomaCore initializeSonoma];
     [SNMSonoma setEnabled:enabled];
-    [SNMSonoma setAutoPageTrackingEnabled:false];
+    [SNMAnalytics setAutoPageTrackingEnabled:false];
     [SNMSonoma startFeature:[SNMAnalytics class]];
 }
 
@@ -32,7 +32,16 @@ RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
                     resolver:(RCTPromiseResolveBlock)resolve
                     rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [SNMAnalytics trackEvent:eventName withProperties:properties];
+    NSArray * allowedKeys = [[properties keysOfEntriesPassingTest:^BOOL (NSString *key, id obj, BOOL * stop) {
+        if ([obj isKindOfClass:[NSDictionary class]] ||
+            [obj isKindOfClass:[NSArray class]]) {
+            return NO;
+        }
+        return YES;
+    }] allObjects];
+    NSArray * newValues = [properties objectsForKeys:allowedKeys notFoundMarker:@""];
+    NSDictionary * filteredProperties = [NSDictionary dictionaryWithObjects:newValues forKeys:allowedKeys];
+    [SNMAnalytics trackEvent:eventName withProperties:filteredProperties];
     resolve(nil);
 }
 
@@ -44,5 +53,7 @@ RCT_EXPORT_METHOD(trackPage:(NSString *)pageName
     [SNMAnalytics trackPage:pageName withProperties:properties];
     resolve(nil);
 }
+
+
 
 @end

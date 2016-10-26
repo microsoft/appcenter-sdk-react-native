@@ -23,6 +23,7 @@ PODS:
     - React/Core
   - RNSonomaAnalytics (0.0.1):
     - React
+    - RNSonomaCore
   - RNSonomaCore (0.0.1):
     - React
   - RNSonomaCrashes (0.0.1):
@@ -55,7 +56,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   React: 304abd16605aeff4b114da814812a78de24d4ca5
-  RNSonomaAnalytics: 085af9d8583970b45947aca9e8ebeff54a646b22
+  RNSonomaAnalytics: 54c63d1681656e9f3b3096a63d483609823ac2a8
   RNSonomaCore: add21a7a1a33df2e6deacba55785f85fc9f2a873
   RNSonomaCrashes: b87e662e6174d1ac997825ae93aea6431c27dd5f
 
