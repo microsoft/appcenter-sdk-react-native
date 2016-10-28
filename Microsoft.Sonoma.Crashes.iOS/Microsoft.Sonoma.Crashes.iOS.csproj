@@ -63,10 +63,6 @@
       <Name>Microsoft.Sonoma.Core.iOS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="iOS Xamarin Default Crash Report.txt" />
-    <None Include="iOS Native Crash Report.txt" />
-  </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

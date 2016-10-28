@@ -1,43 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabbedPage Title="Sonoma Demo App" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Demo;assembly=Contoso.Forms.Demo" x:Class="Contoso.Forms.Demo.MainDemoPage">
-	<ContentPage Title="Crashes">
-		<TableView Intent="Form">
-			<TableSection>
-				<SwitchCell Text="Crashes Enabled" On="true" />
-			</TableSection>
-			<TableSection>
-				<ViewCell>
-					<Button Text="Generate Test Crash" />
-				</ViewCell>
-				<ViewCell>
-					<Button Text="Divide 42 by 0" />
-				</ViewCell>
-			</TableSection>
-		</TableView>
-	</ContentPage>
-	<ContentPage Title="Core">
-		<TableView Intent="Form">
-			<TableSection>
-				<ViewCell Tapped="LogLevelCellTapped">
-					<StackLayout Padding="0,10,20,0" Orientation="Horizontal" Margin="5,5,5,5">
-						<Label Text="Log level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-						<Label Text="Verbose" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" />
-					</StackLayout>
-				</ViewCell>
-			</TableSection>
-		</TableView>
-	</ContentPage>
-	<ContentPage Title="Analytics">
-		<TableView Intent="Form">
-			<TableSection>
-				<SwitchCell Text="Analytics Enabled" On="true" />
-			</TableSection>
-			<TableSection>
-				<EntryCell Label="Event Name" HorizontalTextAlignment="Start" />
-				<ViewCell>
-					<Button Text="Track Event" />
-				</ViewCell>
-			</TableSection>
-		</TableView>
-	</ContentPage>
+    <local:CoreContentPage/>
+	<local:AnalyticsContentPage/>
+	<local:CrashesContentPage/>
 </TabbedPage>

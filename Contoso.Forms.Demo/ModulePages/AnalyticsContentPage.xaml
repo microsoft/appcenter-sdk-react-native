@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Analytics" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.AnalyticsContentPage">
+        <TableView Intent="Form">
+            <TableSection>
+                <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
+            </TableSection>
+            <TableSection>
+                <EntryCell Label="Event Name" HorizontalTextAlignment="Start" x:Name="EventNameCell"/>
+			    <ViewCell Tapped="PropertiesCellTapped">
+				<StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                        <Label Text="Properties" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" x:Name="NumPropertiesLabel" />
+                    </StackLayout>
+				</ViewCell>
+			     <ViewCell Tapped="AddProperty">
+                    <Button Text="Add Property" InputTransparent="true"/>
+                </ViewCell>
+                <ViewCell Tapped="TrackEvent">
+                    <Button Text="Track Event" InputTransparent="true"/>
+                </ViewCell>
+            </TableSection>
+        </TableView>
+</ContentPage>

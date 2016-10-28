@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Core" xmlns:local="clr-namespace:Contoso.Forms.Demo"
+		xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.CoreContentPage">
+        <TableView Intent="Form">
+            <TableSection>
+                <ViewCell Tapped="LogLevelCellTapped">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                        <Label Text="Log level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="Verbose" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="LogLevelLabel" />
+                    </StackLayout>
+                </ViewCell>
+            </TableSection>
+		<TableSection>
+            <EntryCell Label="Log Message" x:Name="LogMessageEntryCell"/>
+			<EntryCell Label="Log Tag" x:Name="LogTagEntryCell"/>
+                <ViewCell Tapped="LogLevelCellTapped">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                        <Label Text="Log Level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                        <Label Text="{x:Static local:Constants.Verbose}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="LogWriteLevelLabel" />
+                    </StackLayout>
+                </ViewCell>
+			<ViewCell Tapped="WriteLog">
+                <Button Text="Write Log" InputTransparent="true"/>
+			</ViewCell>
+		</TableSection>
+        </TableView>
+    </ContentPage>

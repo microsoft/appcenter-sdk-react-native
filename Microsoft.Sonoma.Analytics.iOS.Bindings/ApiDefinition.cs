@@ -36,5 +36,15 @@ namespace Microsoft.Sonoma.Analytics.iOS.Bindings
 		[Export("isAutoPageTrackingEnabled")]
 		bool IsAutoPageTrackingEnabled();
 
+        // +(void)setEnabled:(BOOL)isEnabled;
+        [Static]
+        [Export("setEnabled:")]
+        void SetEnabled(bool isEnabled);
+
+        // +(BOOL)isEnabled;
+        [Static]
+        [Export("isEnabled")]
+        bool IsEnabled();
+
 	}
 }

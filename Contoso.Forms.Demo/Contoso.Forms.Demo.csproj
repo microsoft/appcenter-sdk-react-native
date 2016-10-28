@@ -33,6 +33,21 @@
     <EmbeddedResource Include="LogLevelPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModulePages\CrashesContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModulePages\CoreContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModulePages\AnalyticsContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddPropertyContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertiesContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -44,6 +59,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogLevelPage.cs">
       <DependentUpon>LogLevelPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModulePages\CrashesContentPage.xaml.cs">
+      <DependentUpon>CrashesContentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModulePages\CoreContentPage.xaml.cs">
+      <DependentUpon>CoreContentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModulePages\AnalyticsContentPage.xaml.cs">
+      <DependentUpon>AnalyticsContentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Constants.cs" />
+    <Compile Include="AddPropertyContentPage.xaml.cs">
+      <DependentUpon>AddPropertyContentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertiesContentPage.xaml.cs">
+      <DependentUpon>PropertiesContentPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -59,15 +90,18 @@
     <Reference Include="Microsoft.Sonoma.Core">
       <HintPath>..\packages\Microsoft.Sonoma.Core.0.1.0-SNAPSHOT\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Microsoft.Sonoma.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Sonoma.Analytics">
-      <HintPath>..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Microsoft.Sonoma.Analytics.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Sonoma.Crashes">
       <HintPath>..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Microsoft.Sonoma.Crashes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Sonoma.Analytics">
+      <HintPath>..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Microsoft.Sonoma.Analytics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ModulePages\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

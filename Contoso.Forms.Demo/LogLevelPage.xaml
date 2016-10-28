@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.LogLevelPage">
-    <ContentPage.Content>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Demo" x:Class="Contoso.Forms.Demo.LogLevelPage">
+	<ContentPage.Content>
 		<TableView Intent="Form">
 			<TableSection>
-            <ViewCell>
-					<Label Margin="20,0,0,0" Text="Verbose" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-				            <ViewCell>
-                    <Label Margin="20,0,0,0" Text="Debug" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-				            <ViewCell>
-                    <Label Margin="20,0,0,0" Text="Info" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-				            <ViewCell>
-                    <Label Margin="20,0,0,0" Text="Warning" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-				            <ViewCell>
-                    <Label Margin="20,0,0,0" Text="Error" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-				            <ViewCell>
-                    <Label Margin="20,0,0,0" Text="Assert" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-				            <ViewCell>
-                    <Label Margin="20,0,0,0" Text="None" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </ViewCell>
-                     </TableSection>
-
+				<TextCell Tapped="UpdateLogLevel" Text="{x:Static local:Constants.Verbose}" />
+				<TextCell Tapped="UpdateLogLevel" Text="{x:Static local:Constants.Debug}" />
+				<TextCell Tapped="UpdateLogLevel" Text="{x:Static local:Constants.Info}" />
+				<TextCell Tapped="UpdateLogLevel" Text="{x:Static local:Constants.Warning}" />
+				<TextCell Tapped="UpdateLogLevel" Text="{x:Static local:Constants.Error}" />
+			</TableSection>
 		</TableView>
-    </ContentPage.Content>
+	</ContentPage.Content>
 </ContentPage>

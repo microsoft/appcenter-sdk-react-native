@@ -26,8 +26,8 @@ namespace Microsoft.Sonoma.Analytics
 		/// </summary>
 		public static bool Enabled
 		{
-			get { return iOSAnalytics.Enabled; }
-			set { iOSAnalytics.Enabled = value; }
+            get { return iOSAnalytics.IsEnabled(); }
+            set { iOSAnalytics.SetEnabled(value); }
 		}
 
 		/// <summary>

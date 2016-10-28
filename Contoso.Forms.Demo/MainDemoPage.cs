@@ -9,12 +9,6 @@ namespace Contoso.Forms.Demo
         public MainDemoPage ()
         {
             InitializeComponent();
-
-        }
-
-        void LogLevelCellTapped(object sender, System.EventArgs e)
-        {
-            ((NavigationPage)App.Current.MainPage).PushAsync(new LogLevelPage());
         }
     }
 }
