@@ -7,9 +7,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
-import com.microsoft.react.sonoma.analytics.RNSonomaAnalyticsPackage;
+import com.microsoft.sonoma.react.analytics.RNSonomaAnalyticsPackage;
 
-import com.microsoft.react.sonoma.crashes.RNSonomaCrashesPackage;
+import com.microsoft.sonoma.react.crashes.RNSonomaCrashesPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new RNSonomaAnalyticsPackage(MainApplication.this, true),
-          new RNSonomaCrashesPackage(MainApplication.this, new com.microsoft.react.sonoma.crashes.RNSonomaCrashesListenerAlwaysAsk())
+          new RNSonomaCrashesPackage(MainApplication.this, new com.microsoft.sonoma.react.crashes.RNSonomaCrashesListenerAlwaysAsk())
       );
       return packages;
     }

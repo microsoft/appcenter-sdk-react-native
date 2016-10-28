@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.crashes;
+package com.microsoft.sonoma.react.crashes;
 
 import android.app.Application;
 import android.util.Log;
@@ -14,7 +14,7 @@ import com.microsoft.sonoma.core.Sonoma;
 import com.microsoft.sonoma.crashes.Crashes;
 import com.microsoft.sonoma.crashes.model.ErrorReport;
 
-import com.microsoft.react.sonoma.core.RNSonomaCore;
+import com.microsoft.sonoma.react.core.RNSonomaCore;
 
 import org.json.JSONException;
 

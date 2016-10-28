@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.analytics;
+package com.microsoft.sonoma.react.analytics;
 
 import android.app.Application;
 
@@ -8,7 +8,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
-import com.microsoft.react.sonoma.core.RNSonomaCore;
+import com.microsoft.sonoma.react.core.RNSonomaCore;
 import com.microsoft.sonoma.core.Sonoma;
 import com.microsoft.sonoma.analytics.Analytics;
 

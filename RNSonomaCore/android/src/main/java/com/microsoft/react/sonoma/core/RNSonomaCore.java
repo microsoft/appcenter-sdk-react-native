@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.core;
+package com.microsoft.sonoma.react.core;
 
 import android.app.Application;
 

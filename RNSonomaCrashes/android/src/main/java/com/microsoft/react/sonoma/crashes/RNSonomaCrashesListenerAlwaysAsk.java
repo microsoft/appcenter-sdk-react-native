@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.crashes;
+package com.microsoft.sonoma.react.crashes;
 
 import com.microsoft.sonoma.crashes.model.ErrorReport;
 

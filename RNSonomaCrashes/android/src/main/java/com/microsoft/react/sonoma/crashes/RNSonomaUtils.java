@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.crashes;
+package com.microsoft.sonoma.react.crashes;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;

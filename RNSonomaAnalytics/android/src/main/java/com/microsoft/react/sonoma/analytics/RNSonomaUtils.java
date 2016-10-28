@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.analytics;
+package com.microsoft.sonoma.react.analytics;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
