@@ -1,3 +1,5 @@
+platform :ios, '8.0'
+
 target 'SonomaDemoApp' do
     # React Native
     pod 'React', :path => '../node_modules/react-native', :subspecs => [
@@ -16,9 +18,10 @@ target 'SonomaDemoApp' do
 #    pod 'SonomaCore', :path => '../../SonomaCore.podspec'
 #    pod 'SonomaAnalytics', :path => '../../SonomaAnalytics.podspec'
 #    pod 'SonomaCrashes', :path => '../../SonomaCrashes.podspec'
+    pod 'Sonoma', :podspec => 'https://download.hockeyapp.net/sonoma/ios/Sonoma.podspec',  :subspecs => ['SonomaAnalytics', 'SonomaCrashes', 'SonomaCore']
 
     # React Native wrappers for Sonoma SDK
-    pod 'RNSonomaCore', :path => '../../RNSonomaCore'
+    pod 'RNSonomaCore', :podspec => '../../RNSonomaCore/RNSonomaCore.podspec'
     pod 'RNSonomaAnalytics', :path => '../../RNSonomaAnalytics'
     pod 'RNSonomaCrashes', :path => '../../RNSonomaCrashes'
 end

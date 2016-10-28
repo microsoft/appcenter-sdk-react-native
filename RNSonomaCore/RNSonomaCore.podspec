@@ -13,11 +13,10 @@ Pod::Spec.new do |s|
 
   s.source = { :http => 'https://github.com/Microsoft/react-native-sonoma-private' }
 
-  s.platform          = :ios, '7.0'
+  s.platform          = :ios, '8.0'
   s.requires_arc      = true
 
   s.source_files = 'ios/RNSonomaCore/*.{h,m}'
 
-  s.dependency 'React'
-#  s.dependency 'SonomaCore'
+  s.dependency 'Sonoma'
 end

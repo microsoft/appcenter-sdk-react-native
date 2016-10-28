@@ -1,1 +1,0 @@
-../../../../../../RNSonomaAnalytics/ios/RNSonomaAnalytics/RNSonomaAnalytics.h
