@@ -21,7 +21,7 @@ public class RNSonomaCore {
         RNSonomaCore.application = application;
 
         RNSonomaCore.wrapperSdk.setWrapperSdkVersion("0.1.0"); // NOTE: This number must be manually updated right now
-        RNSonomaCore.wrapperSdk.setWrapperSdkName("react-native-sonoma");
+        RNSonomaCore.wrapperSdk.setWrapperSdkName("sonoma.react-native");
 
         Sonoma.setWrapperSdk(wrapperSdk);
         Sonoma.initialize(application, RNSonomaCore.getAppSecret());
