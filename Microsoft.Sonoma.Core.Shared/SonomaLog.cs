@@ -4,7 +4,7 @@ namespace Microsoft.Sonoma.Core
 {
     public static partial class SonomaLog
     {
-        public const string LOG_TAG = "SonomaXamarin";
+        public const string LogTag = "SonomaXamarin";
 
         public static void Verbose(string tag, string message, Exception exception)
         {

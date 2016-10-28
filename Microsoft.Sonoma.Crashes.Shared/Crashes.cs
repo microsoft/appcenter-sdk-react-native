@@ -9,7 +9,7 @@ namespace Microsoft.Sonoma.Crashes
     /// </summary>
     public static class Crashes
     {
-        internal const string LOG_TAG = SonomaLog.LOG_TAG + "Crashes";
+        internal const string LogTag = SonomaLog.LogTag + "Crashes";
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 
