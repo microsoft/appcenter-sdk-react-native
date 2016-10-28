@@ -10,6 +10,8 @@ namespace Contoso.Forms.Puppet
 {
     public class App : Application
     {
+        private const string LOG_TAG = "SonomaXamarinPuppet";
+
         public App()
         {
             // The root page of your application
@@ -20,15 +22,15 @@ namespace Contoso.Forms.Puppet
         {
             // Handle when your app starts
             //Sonoma.SetServerUrl("http://in-integration.dev.avalanch.es:8081");
-            Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);
+            SonomaLog.Info(LOG_TAG, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
-            Debug.WriteLine("Sonoma.LogLevel=" + Sonoma.LogLevel);           
+            SonomaLog.Info(LOG_TAG, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             SonomaForms.StartTrackingFormPages();
             Sonoma.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
-            Debug.WriteLine("Sonoma.InstallId=" + Sonoma.InstallId);
-            Debug.WriteLine("Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+            SonomaLog.Info(LOG_TAG, "Sonoma.InstallId=" + Sonoma.InstallId);
+            SonomaLog.Info(LOG_TAG, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
         }
     }
 }

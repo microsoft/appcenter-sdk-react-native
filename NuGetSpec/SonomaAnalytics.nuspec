@@ -24,5 +24,9 @@
     <file src="Microsoft.Sonoma.Analytics.Android/bin/Release/Microsoft.Sonoma.Analytics.dll" target="lib/MonoAndroid403//Microsoft.Sonoma.Analytics.dll" />
     <file src="Microsoft.Sonoma.Analytics.Android.Bindings/bin/Release/Microsoft.Sonoma.Analytics.Android.Bindings.dll" target="lib/MonoAndroid403//Microsoft.Sonoma.Analytics.Android.Bindings.dll" />
 
+    <!-- iOS -->
+    <file src="Microsoft.Sonoma.Analytics.iOS/bin/Release/Microsoft.Sonoma.Analytics.dll" target="lib/Xamarin.iOS10//Microsoft.Sonoma.Analytics.dll" />
+    <file src="Microsoft.Sonoma.Analytics.iOS.Bindings/bin/Release/Microsoft.Sonoma.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10//Microsoft.Sonoma.Analytics.iOS.Bindings.dll" />
+
   </files>
 </package>

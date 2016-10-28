@@ -24,5 +24,12 @@
     <file src="Microsoft.Sonoma.Crashes.Android/bin/Release/Microsoft.Sonoma.Crashes.dll" target="lib/MonoAndroid403/Microsoft.Sonoma.Crashes.dll" />
     <file src="Microsoft.Sonoma.Crashes.Android.Bindings/bin/Release/Microsoft.Sonoma.Crashes.Android.Bindings.dll" target="lib/MonoAndroid403/Microsoft.Sonoma.Crashes.Android.Bindings.dll" />
 
+    <!-- iOS -->
+    <file src="Microsoft.Sonoma.Crashes.iOS/bin/Release/Microsoft.Sonoma.Crashes.dll" target="lib/Xamarin.iOS10/Microsoft.Sonoma.Crashes.dll" />
+    <file src="Microsoft.Sonoma.Crashes.iOS.Bindings/bin/Release/Microsoft.Sonoma.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Sonoma.Crashes.iOS.Bindings.dll" />
+
+    <file src="externals/ios/CrashReporter.framework/**" target="content/Xamarin.iOS10/SonomaFrameworks/CrashReporter.framework" />
+
   </files>
+
 </package>

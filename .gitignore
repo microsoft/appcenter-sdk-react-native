@@ -1,6 +1,9 @@
 # Ignore aar files
 *.aar
 
+# Ignore .a files
+*.a
+
 # Ignore generated resource files
 Resource.designer.cs
 
@@ -27,6 +30,10 @@ Resource.designer.cs
 bld/
 [Bb]in/
 [Oo]bj/
+
+# Crash Reporter Frameworks
+CrashReporter.framework/
+CrashReporter
 
 # Visual Studio 2015 cache/options directory
 .vs/

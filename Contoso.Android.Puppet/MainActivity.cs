@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Util;
 using Android.Widget;
 using Microsoft.Sonoma.Analytics;
 using Microsoft.Sonoma.Core;
@@ -12,9 +11,11 @@ namespace Contoso.Android.Puppet
     [Activity(Label = "SXPuppet", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        protected override void OnCreate(Bundle bundle)
+        private const string LOG_TAG = "SonomaXamarinPuppet";
+
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(bundle);
+            base.OnCreate(savedInstanceState);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -29,12 +30,12 @@ namespace Contoso.Android.Puppet
             };
 
             // Sonoma integration
-            Log.Info("SonomaXamarin", "Sonoma.LogLevel=" + Sonoma.LogLevel);
+            SonomaLog.Info(LOG_TAG, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
-            Log.Info("SonomaXamarin", "Sonoma.LogLevel=" + Sonoma.LogLevel);
+            SonomaLog.Info(LOG_TAG, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
-            Log.Info("SonomaXamarin", "Sonoma.InstallId=" + Sonoma.InstallId);
+            SonomaLog.Info(LOG_TAG, "Sonoma.InstallId=" + Sonoma.InstallId);
         }
     }
 }

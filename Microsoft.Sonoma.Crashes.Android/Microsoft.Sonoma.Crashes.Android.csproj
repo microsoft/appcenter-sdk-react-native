@@ -64,6 +64,10 @@
       <Project>{42d541d7-b7c9-45a7-8d4d-8fb5a00668b3}</Project>
       <Name>Microsoft.Sonoma.Crashes.Android.Bindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core.Android\Microsoft.Sonoma.Core.Android.csproj">
+      <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
+      <Name>Microsoft.Sonoma.Core.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

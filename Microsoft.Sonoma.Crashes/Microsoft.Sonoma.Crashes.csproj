@@ -41,6 +41,12 @@
     <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core\Microsoft.Sonoma.Core.csproj">
+      <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
+      <Name>Microsoft.Sonoma.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

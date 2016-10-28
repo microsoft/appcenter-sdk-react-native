@@ -21,5 +21,9 @@
     <file src="Microsoft.Sonoma.Core.Android/bin/Release/Microsoft.Sonoma.Core.dll" target="lib/MonoAndroid403/Microsoft.Sonoma.Core.dll" />
     <file src="Microsoft.Sonoma.Core.Android.Bindings/bin/Release/Microsoft.Sonoma.Core.Android.Bindings.dll" target="lib/MonoAndroid403/Microsoft.Sonoma.Core.Android.Bindings.dll" />
 
+    <!-- iOS -->
+    <file src="Microsoft.Sonoma.Core.iOS/bin/Release/Microsoft.Sonoma.Core.dll" target="lib/Xamarin.iOS10/Microsoft.Sonoma.Core.dll" />
+    <file src="Microsoft.Sonoma.Core.iOS.Bindings/bin/Release/Microsoft.Sonoma.Core.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Sonoma.Core.iOS.Bindings.dll" />
+
   </files>
 </package>

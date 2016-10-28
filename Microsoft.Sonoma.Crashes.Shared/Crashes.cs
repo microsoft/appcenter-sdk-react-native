@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Sonoma.Core;
 using Microsoft.Sonoma.Crashes.Shared;
 
 namespace Microsoft.Sonoma.Crashes
@@ -8,6 +9,8 @@ namespace Microsoft.Sonoma.Crashes
     /// </summary>
     public static class Crashes
     {
+        internal const string LOG_TAG = SonomaLog.LOG_TAG + "Crashes";
+
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 
         /// <summary>

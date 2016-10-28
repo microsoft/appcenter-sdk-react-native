@@ -7,5 +7,5 @@
   <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
   -->
   <remove-node path="/api/package[@name='com.microsoft.sonoma.core.ingestion.http']" />
-  <remove-node path="/api/package[@name='com.microsoft.sonoma.core.utils']" />
+  <remove-node path="/api/package[@name='com.microsoft.sonoma.core.utils.storage']" />
 </metadata>
