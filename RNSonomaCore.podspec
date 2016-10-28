@@ -1,6 +1,6 @@
 require 'json'
 
-package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
+package = JSON.parse(File.read(File.join(__dir__, 'RNSonomaCore', 'package.json')))
 
 Pod::Spec.new do |s|
   s.name              = 'RNSonomaCore'
@@ -11,12 +11,12 @@ Pod::Spec.new do |s|
 
   s.authors           = { 'Microsoft Corporation' => 'codepush@microsoft.com' }
 
-  s.source = { :http => 'https://github.com/Microsoft/react-native-sonoma-private' }
+  s.source = { :git => 'https://github.com/Microsoft/react-native-sonoma-private.git' }
 
   s.platform          = :ios, '8.0'
   s.requires_arc      = true
 
-  s.source_files = 'ios/RNSonomaCore/*.{h,m}'
+  s.source_files = 'RNSonomaCore/ios/RNSonomaCore/*.{h,m}'
 
   s.dependency 'Sonoma'
 end
