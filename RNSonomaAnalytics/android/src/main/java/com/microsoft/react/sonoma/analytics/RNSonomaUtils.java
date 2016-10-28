@@ -91,31 +91,9 @@ public class RNSonomaUtils {
         while (it.hasNextKey()) {
             String key = it.nextKey();
             ReadableType type = map.getType(key);
-            switch (type) {
-                case Map:
-                    stringMap.put(key, convertReadableMapToJsonObject(map.getMap(key)).toString());
-                    break;
-                case Array:
-                    stringMap.put(key, convertReadableArrayToJsonArray(map.getArray(key)).toString());
-                    break;
-                case String:
-                    stringMap.put(key, map.getString(key));
-                    break;
-                case Number:
-                    Double number = map.getDouble(key);
-                    if ((number == Math.floor(number)) && !Double.isInfinite(number)) {
-                        stringMap.put(key, "" + number.longValue());
-                    } else {
-                        stringMap.put(key, "" + number.doubleValue());
-                    }
-
-                    break;
-                case Boolean:
-                    stringMap.put(key, "" + map.getBoolean(key));
-                    break;
-                default:
-                    stringMap.put(key, null);
-                    break;
+            // Only support storing strings. Non-string data must be stringified in JS.
+            if (type == String) {
+                stringMap.put(key, map.getString(key));
             }
         }
 
