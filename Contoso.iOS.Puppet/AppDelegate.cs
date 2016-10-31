@@ -39,6 +39,8 @@ namespace Contoso.iOS.Puppet
 				SonomaLog.Verbose("THETAG", "THEMESSAGE", e);
 			}
 
+            Analytics.Enabled = true;
+            System.Diagnostics.Debug.WriteLine("ANALYTICS: " + Analytics.Enabled.ToString());
 			return true;
 		}
 		private void ThrowAnException()

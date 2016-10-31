@@ -6,6 +6,16 @@ namespace Microsoft.Sonoma.Analytics.iOS.Bindings
 	[BaseType(typeof(Core.iOS.Bindings.SNMFeatureAbstract))]
 	interface SNMAnalytics
 	{
+        // +(void)setEnabled:(BOOL)isEnabled;
+        [Static]
+        [Export("setEnabled:")]
+        void SetEnabled(bool isEnabled);
+
+        // +(BOOL)isEnabled;
+        [Static]
+        [Export("isEnabled")]
+        bool IsEnabled();
+
 		// +(void)trackEvent:(NSString *)eventName;
 		[Static]
 		[Export("trackEvent:")]
