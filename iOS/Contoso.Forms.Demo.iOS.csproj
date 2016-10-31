@@ -133,6 +133,7 @@
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
     <None Include="SonomaFrameworks\CrashReporter.framework\CrashReporter" />
+    <None Include="icon_attribution.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -143,6 +144,11 @@
       <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
       <Name>Contoso.Forms.Demo</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bolt%402x.png" />
+    <BundleResource Include="Resources\socket%402x.png" />
+    <BundleResource Include="Resources\lightning%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

@@ -26,6 +26,11 @@ namespace Contoso.Forms.Demo
             EventProperties = new List<Property>();
             NumPropertiesLabel.Text = EventProperties.Count.ToString();
             Analytics.Enabled = true;
+
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                Icon = "lightning.png";
+            }
         }
 
         void AddProperty(object sender, System.EventArgs e)

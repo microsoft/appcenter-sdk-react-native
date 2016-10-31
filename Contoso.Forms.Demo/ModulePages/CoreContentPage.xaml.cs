@@ -34,6 +34,11 @@ namespace Contoso.Forms.Demo
 
             LogWriteLevel = LogLevel.Verbose;
             UpdateLogWriteLevelLabel();
+
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                Icon = "bolt.png";
+            }
         }
 
         protected override void OnAppearing()

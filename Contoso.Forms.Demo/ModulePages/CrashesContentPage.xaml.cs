@@ -10,6 +10,10 @@ namespace Contoso.Forms.Demo
         public CrashesContentPage()
         {
             InitializeComponent();
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                Icon = "socket.png";
+            }
         }
 
         void TestCrash(object sender, System.EventArgs e)
