@@ -8,6 +8,7 @@ namespace Contoso.Forms.Demo
     public partial class LogLevelPage : ContentPage
     {
         private Dictionary<string, LogLevel> LogLevels;
+        public event Action<LogLevel> LevelSelected;
 
         public LogLevelPage()
         {
@@ -25,7 +26,7 @@ namespace Contoso.Forms.Demo
         void UpdateLogLevel(object sender, System.EventArgs e)
         {
             string level = ((TextCell)sender).Text;
-            Sonoma.LogLevel = LogLevels[level];
+            LevelSelected.Invoke(LogLevels[level]);
             ((NavigationPage)App.Current.MainPage).PopAsync();
         }
     }

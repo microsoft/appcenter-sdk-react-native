@@ -13,10 +13,10 @@
                     </StackLayout>
 				</ViewCell>
 			     <ViewCell Tapped="AddProperty">
-                    <Button Text="Add Property" InputTransparent="true"/>
+                    <Button Text="Add Property" Clicked="AddProperty" InputTransparent="true"/>
                 </ViewCell>
                 <ViewCell Tapped="TrackEvent">
-                    <Button Text="Track Event" InputTransparent="true"/>
+                    <Button Text="Track Event" InputTransparent="true" Clicked="TrackEvent"/>
                 </ViewCell>
             </TableSection>
         </TableView>

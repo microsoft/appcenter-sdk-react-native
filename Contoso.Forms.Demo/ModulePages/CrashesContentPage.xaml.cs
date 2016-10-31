@@ -20,6 +20,15 @@ namespace Contoso.Forms.Demo
         void DivideByZero(object sender, System.EventArgs e)
         {
             int x = 42 / int.Parse("0");
+            x = 0; // to prevent warning
+        }
+
+        void UpdateEnabled(object sender, System.EventArgs e)
+        {
+            if (CrashesEnabledSwitchCell != null)
+            {
+                Crashes.Enabled = CrashesEnabledSwitchCell.On;
+            }
         }
     }
 }

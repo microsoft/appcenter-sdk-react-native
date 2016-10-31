@@ -34,7 +34,6 @@ namespace Contoso.Forms.Demo
             addPage.PropertyAdded += (Property property) => { 
                 EventProperties.Add(property); 
                 RefreshPropCount();
-
             };
             Navigation.PushModalAsync(addPage);
         }

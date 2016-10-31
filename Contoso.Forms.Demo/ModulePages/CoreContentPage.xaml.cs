@@ -10,19 +10,20 @@ namespace Contoso.Forms.Demo
     {
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
-        private Dictionary<string, Action<string, string>> LogFunctions;
+        private Dictionary<LogLevel, Action<string, string>> LogFunctions;
         private Dictionary<LogLevel, string> LogLevelNames;
-         
+        private LogLevel LogWriteLevel;
+
         public CoreContentPage()
         {
             InitializeComponent();
 
-            LogFunctions = new Dictionary<string, Action<string, string>>();
-            LogFunctions.Add(Constants.Verbose, SonomaLog.Verbose);
-            LogFunctions.Add(Constants.Debug, SonomaLog.Debug);
-            LogFunctions.Add(Constants.Info, SonomaLog.Info);
-            LogFunctions.Add(Constants.Warning, SonomaLog.Warn);
-            LogFunctions.Add(Constants.Error, SonomaLog.Error);
+            LogFunctions = new Dictionary<LogLevel, Action<string, string>>();
+            LogFunctions.Add(LogLevel.Verbose, SonomaLog.Verbose);
+            LogFunctions.Add(LogLevel.Debug, SonomaLog.Debug);
+            LogFunctions.Add(LogLevel.Info, SonomaLog.Info);
+            LogFunctions.Add(LogLevel.Warn, SonomaLog.Warn);
+            LogFunctions.Add(LogLevel.Error, SonomaLog.Error);
 
             LogLevelNames = new Dictionary<LogLevel, string>();
             LogLevelNames.Add(LogLevel.Verbose, Constants.Verbose);
@@ -30,6 +31,9 @@ namespace Contoso.Forms.Demo
             LogLevelNames.Add(LogLevel.Info, Constants.Info);
             LogLevelNames.Add(LogLevel.Warn, Constants.Warning);
             LogLevelNames.Add(LogLevel.Error, Constants.Error);
+
+            LogWriteLevel = LogLevel.Verbose;
+            UpdateLogWriteLevelLabel();
         }
 
         protected override void OnAppearing()
@@ -40,15 +44,42 @@ namespace Contoso.Forms.Demo
 
         void LogLevelCellTapped(object sender, System.EventArgs e)
         {
-            ((NavigationPage)App.Current.MainPage).PushAsync(new LogLevelPage());
+            var page = new LogLevelPage();
+            page.LevelSelected += (LogLevel level) => { 
+                Sonoma.LogLevel = level;
+            };
+            ((NavigationPage)App.Current.MainPage).PushAsync(page);
+        }
+
+        void LogWriteLevelCellTapped(object sender, System.EventArgs e)
+        {
+            var page = new LogLevelPage();
+            page.LevelSelected += (LogLevel level) =>
+            {
+                LogWriteLevel = level;
+                UpdateLogWriteLevelLabel();
+            };
+            ((NavigationPage)App.Current.MainPage).PushAsync(page);
         }
 
         void WriteLog(object sender, System.EventArgs e)
         {
-            string level = LogWriteLevelLabel.Text;
             string message = LogMessageEntryCell.Text;
             string tag = LogTagEntryCell.Text;
-            LogFunctions[level](tag, message);
+            LogFunctions[LogWriteLevel](tag, message);
+        }
+
+        void UpdateEnabled(object sender, System.EventArgs e)
+        {
+            if (SonomaEnabledSwitchCell != null)
+            {
+                Sonoma.Enabled = SonomaEnabledSwitchCell.On;
+            }
+        }
+
+        void UpdateLogWriteLevelLabel()
+        {
+            LogWriteLevelLabel.Text = LogLevelNames[LogWriteLevel];
         }
     }
 }

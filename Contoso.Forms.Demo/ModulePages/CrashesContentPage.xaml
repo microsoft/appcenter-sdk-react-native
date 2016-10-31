@@ -5,14 +5,14 @@
 		x:Class="Contoso.Forms.Demo.CrashesContentPage">
         <TableView Intent="Form">
             <TableSection>
-                <SwitchCell Text="Crashes Enabled" On="true" />
+                <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
             </TableSection>
             <TableSection>
                 <ViewCell Tapped="TestCrash">
-                    <Button Text="Generate Test Crash" InputTransparent="true"/>
+                    <Button Text="Generate Test Crash" InputTransparent="true" Clicked="TestCrash"/>
                 </ViewCell>
                 <ViewCell Tapped="DivideByZero">
-                    <Button Text="Divide 42 by 0" InputTransparent="true"/>
+                    <Button Text="Divide 42 by 0" InputTransparent="true" Clicked="DivideByZero"/>
                 </ViewCell>
             </TableSection>
         </TableView>
