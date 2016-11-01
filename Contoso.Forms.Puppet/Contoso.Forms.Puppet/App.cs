@@ -21,10 +21,10 @@ namespace Contoso.Forms.Puppet
         {
             // Handle when your app starts
             //Sonoma.SetServerUrl("http://in-integration.dev.avalanch.es:8081");
-            SonomaLog.Info(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
+            SonomaLog.Assert(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             SonomaLog.Info(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
-            SonomaForms.StartTrackingFormPages();
+            //SonomaForms.StartTrackingFormPages();
             Sonoma.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });

@@ -28,15 +28,15 @@ namespace Microsoft.Sonoma.Analytics
             set { AndroidAnalytics.Enabled = value; }
         }
 
-        /// <summary>
-        /// Enable or disable automatic page tracking.
-        /// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
-        /// </summary>
-        public static bool AutoPageTrackingEnabled
-        {
-            get { return AndroidAnalytics.AutoPageTrackingEnabled; }
-            set { AndroidAnalytics.AutoPageTrackingEnabled = value; }
-        }
+        ///// <summary>
+        ///// Enable or disable automatic page tracking.
+        ///// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
+        ///// </summary>
+        //public static bool AutoPageTrackingEnabled
+        //{
+        //    get { return AndroidAnalytics.AutoPageTrackingEnabled; }
+        //    set { AndroidAnalytics.AutoPageTrackingEnabled = value; }
+        //}
 
         /// <summary>
         /// Track a custom event.
@@ -48,14 +48,14 @@ namespace Microsoft.Sonoma.Analytics
             AndroidAnalytics.TrackEvent(name, properties);
         }
 
-        /// <summary>
-        /// Track a custom page.
-        /// </summary>
-        /// <param name="name">A page name.</param>
-        /// <param name="properties">Optional properties.</param>
-        public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
-        {
-            AndroidAnalytics.TrackPage(name, properties);
-        }
+        ///// <summary>
+        ///// Track a custom page.
+        ///// </summary>
+        ///// <param name="name">A page name.</param>
+        ///// <param name="properties">Optional properties.</param>
+        //public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
+        //{
+        //    AndroidAnalytics.TrackPage(name, properties);
+        //}
     }
 }

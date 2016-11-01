@@ -49,13 +49,13 @@ namespace Microsoft.Sonoma.Crashes
             PlatformCrashes.GenerateTestCrash();
         }
 
-        /// <summary>
-        /// Track an exception.
-        /// </summary>
-        /// <param name="exception">An exception.</param>
-        public static void TrackException(Exception exception)
-        {
-            PlatformCrashes.TrackException(exception);
-        }
+        ///// <summary>
+        ///// Track an exception.
+        ///// </summary>
+        ///// <param name="exception">An exception.</param>
+        //public static void TrackException(Exception exception)
+        //{
+        //    PlatformCrashes.TrackException(exception);
+        //}
     }
 }

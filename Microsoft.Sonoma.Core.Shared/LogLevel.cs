@@ -11,28 +11,33 @@
         Verbose,
 
         /// <summary>
-        /// SDK emits debug, info, warn, and error logs.
+        /// SDK emits debug, info, warn, error and assert logs.
         /// </summary>
         Debug,
 
         /// <summary>
-        /// SDK emits info, warn, and error logs.
+        /// SDK emits info, warn, error, and assert logs.
         /// </summary>
         Info,
 
         /// <summary>
-        /// Only error and warn logs are emitted by the SDK.
+        /// SDK emits warn, error, and assert logs.
         /// </summary>
         Warn,
 
         /// <summary>
-        /// Only error logs are emitted by the SDK.
+        /// SDK error and assert logs.
         /// </summary>
         Error,
 
         /// <summary>
-        /// No log is emitted by the SDK.
+        /// Only assert logs are emitted by SDK.
         /// </summary>
-        Assert
+        Assert,
+
+        /// <summary>
+        /// No log is emitted by SDK.
+        /// </summary>
+        None
     }
 }

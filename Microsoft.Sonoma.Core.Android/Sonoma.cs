@@ -36,6 +36,8 @@ namespace Microsoft.Sonoma.Core
                         return LogLevel.Error;
                     case 7:
                         return LogLevel.Assert;
+                    case Com.Microsoft.Sonoma.Core.Utils.SonomaLog.None:
+                        return LogLevel.None;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
                 }
@@ -63,6 +65,9 @@ namespace Microsoft.Sonoma.Core
                         break;
                     case LogLevel.Assert:
                         androidValue = 7;
+                        break;
+                    case LogLevel.None:
+                        androidValue = Com.Microsoft.Sonoma.Core.Utils.SonomaLog.None;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
