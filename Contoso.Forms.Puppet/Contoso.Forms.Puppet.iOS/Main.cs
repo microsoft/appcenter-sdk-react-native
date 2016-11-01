@@ -1,8 +1,5 @@
 ﻿using UIKit;
 
-using Foundation;
-using UIKit;
-
 namespace Contoso.Forms.Demo.iOS
 {
     public class Application
