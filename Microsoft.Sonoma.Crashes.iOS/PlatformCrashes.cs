@@ -21,10 +21,10 @@ namespace Microsoft.Sonoma.Crashes
 
 		public override bool HasCrashedInLastSession => iOSCrashes.HasCrashedInLastSession;
 
-		public override void TrackException(Exception exception)
-		{
-			throw new NotImplementedException();
-		}
+		//public override void TrackException(Exception exception)
+		//{
+		//	throw new NotImplementedException();
+		//}
 
         //TODO this just logs every exception possible, which is not the way crashes are handled in the native sdk
 		static PlatformCrashes()

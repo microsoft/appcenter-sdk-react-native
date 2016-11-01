@@ -28,9 +28,9 @@ namespace Contoso.Forms.Puppet
             Crashes.GenerateTestCrash();
         }
 
-        private void TrackHandledAggregateException(object sender, EventArgs e)
+        private void CrashWithAggregateException(object sender, EventArgs e)
         {
-            Crashes.TrackException(PrepareException());
+            throw PrepareException();
         }
 
         private static Exception PrepareException()

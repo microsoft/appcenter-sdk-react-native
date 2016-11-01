@@ -26,25 +26,25 @@ namespace Microsoft.Sonoma.Analytics.iOS.Bindings
 		[Export("trackEvent:withProperties:")]
 		void TrackEvent(string eventName, NSDictionary properties);
 
-		// +(void)trackPage:(NSString *)pageName;
-		[Static]
-		[Export("trackPage:")]
-		void TrackPage(string pageName);
+		//// +(void)trackPage:(NSString *)pageName;
+		//[Static]
+		//[Export("trackPage:")]
+		//void TrackPage(string pageName);
 
-		// +(void)trackPage:(NSString *)pageName withProperties:(NSDictionary *)properties;
-		[Static]
-		[Export("trackPage:withProperties:")]
-		void TrackPage(string pageName, NSDictionary properties);
+		//// +(void)trackPage:(NSString *)pageName withProperties:(NSDictionary *)properties;
+		//[Static]
+		//[Export("trackPage:withProperties:")]
+		//void TrackPage(string pageName, NSDictionary properties);
 
-		// +(void)setAutoPageTrackingEnabled:(BOOL)isEnabled;
-		[Static]
-		[Export("setAutoPageTrackingEnabled:")]
-		void SetAutoPageTrackingEnabled(bool isEnabled);
+		//// +(void)setAutoPageTrackingEnabled:(BOOL)isEnabled;
+		//[Static]
+		//[Export("setAutoPageTrackingEnabled:")]
+		//void SetAutoPageTrackingEnabled(bool isEnabled);
 
-		// +(BOOL)isAutoPageTrackingEnabled;
-		[Static]
-		[Export("isAutoPageTrackingEnabled")]
-		bool IsAutoPageTrackingEnabled();
+		//// +(BOOL)isAutoPageTrackingEnabled;
+		//[Static]
+		//[Export("isAutoPageTrackingEnabled")]
+		//bool IsAutoPageTrackingEnabled();
 
 	}
 }

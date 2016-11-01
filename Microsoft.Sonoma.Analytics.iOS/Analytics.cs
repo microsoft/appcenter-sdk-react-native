@@ -34,11 +34,11 @@ namespace Microsoft.Sonoma.Analytics
 		/// Enable or disable automatic page tracking.
 		/// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
 		/// </summary>
-		public static bool AutoPageTrackingEnabled
-		{
-			get { return iOSAnalytics.IsAutoPageTrackingEnabled(); }
-			set { iOSAnalytics.SetAutoPageTrackingEnabled(value); }
-		}
+		//public static bool AutoPageTrackingEnabled
+		//{
+		//	get { return iOSAnalytics.IsAutoPageTrackingEnabled(); }
+		//	set { iOSAnalytics.SetAutoPageTrackingEnabled(value); }
+		//}
 
 		/// <summary>
 		/// Track a custom event.
@@ -55,20 +55,20 @@ namespace Microsoft.Sonoma.Analytics
 			iOSAnalytics.TrackEvent(name);
 		}
 
-		/// <summary>
-		/// Track a custom page.
-		/// </summary>
-		/// <param name="name">A page name.</param>
-		/// <param name="properties">Optional properties.</param>
-		public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
-		{
-			if (properties != null)
-			{
-				iOSAnalytics.TrackPage(name, StringDictToNSDict(properties));
-				return;
-			}
-			iOSAnalytics.TrackPage(name);
-		}
+		///// <summary>
+		///// Track a custom page.
+		///// </summary>
+		///// <param name="name">A page name.</param>
+		///// <param name="properties">Optional properties.</param>
+		//public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
+		//{
+		//	if (properties != null)
+		//	{
+		//		iOSAnalytics.TrackPage(name, StringDictToNSDict(properties));
+		//		return;
+		//	}
+		//	iOSAnalytics.TrackPage(name);
+		//}
 
 		private static NSDictionary StringDictToNSDict(IDictionary<string, string> dict)
 		{

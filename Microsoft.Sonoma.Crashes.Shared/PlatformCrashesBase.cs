@@ -20,6 +20,6 @@ namespace Microsoft.Sonoma.Crashes.Shared
 #endif
         }
 
-        public abstract void TrackException(Exception exception);
+        //public abstract void TrackException(Exception exception);
     }
 }

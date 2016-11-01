@@ -14,11 +14,6 @@
             AndroidSonomaLog.Debug(tag, message);
         }
 
-        public static void Error(string tag, string message)
-        {
-            AndroidSonomaLog.Error(tag, message);
-        }
-
         public static void Info(string tag, string message)
         {
             AndroidSonomaLog.Info(tag, message);
@@ -27,6 +22,16 @@
         public static void Warn(string tag, string message)
         {
             AndroidSonomaLog.Warn(tag, message);
+        }
+
+        public static void Error(string tag, string message)
+        {
+            AndroidSonomaLog.Error(tag, message);
+        }
+
+        public static void Assert(string tag, string message)
+        {
+            AndroidSonomaLog.LogAssert(tag, message);
         }
     }
 }
