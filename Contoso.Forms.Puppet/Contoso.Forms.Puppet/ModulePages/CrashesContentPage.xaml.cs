@@ -1,26 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Sonoma.Crashes;
+using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class MainPage
+    public partial class CrashesContentPage : ContentPage
     {
-        public MainPage()
+        public CrashesContentPage()
         {
             InitializeComponent();
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                Icon = "socket.png";
+            }
         }
 
-        private async void GoToSubPage(object sender, EventArgs e)
+        void TestCrash(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new SubPage());
+            Crashes.GenerateTestCrash();
         }
 
-        private void CrashWithDivsionByZero(object sender, EventArgs e)
+        void DivideByZero(object sender, System.EventArgs e)
         {
-            // ReSharper disable once RedundantAssignment
-            // ReSharper disable once UnusedVariable
-            var count = 0 / int.Parse("0");
+            int x = 42 / int.Parse("0");
+            x = 0; // to prevent warning
+        }
+
+        void UpdateEnabled(object sender, System.EventArgs e)
+        {
+            if (CrashesEnabledSwitchCell != null)
+            {
+                Crashes.Enabled = CrashesEnabledSwitchCell.On;
+            }
         }
 
         private void GenerateTestCrash(object sender, EventArgs e)

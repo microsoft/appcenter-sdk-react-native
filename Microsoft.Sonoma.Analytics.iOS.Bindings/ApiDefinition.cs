@@ -2,10 +2,10 @@ using Foundation;
 
 namespace Microsoft.Sonoma.Analytics.iOS.Bindings
 {
-	// @interface SNMAnalytics : SNMFeature
-	[BaseType(typeof(Core.iOS.Bindings.SNMFeatureAbstract))]
-	interface SNMAnalytics
-	{
+    // @interface SNMAnalytics : SNMFeature
+    [BaseType(typeof(NSObject))]
+    interface SNMAnalytics
+    {
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]
         [Export("setEnabled:")]
@@ -45,6 +45,5 @@ namespace Microsoft.Sonoma.Analytics.iOS.Bindings
 		//[Static]
 		//[Export("isAutoPageTrackingEnabled")]
 		//bool IsAutoPageTrackingEnabled();
-
 	}
 }

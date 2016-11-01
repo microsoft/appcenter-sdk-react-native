@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet.iOS", "Contoso.Forms.Puppet.iOS.csproj", "{455D0F73-D96F-438A-B651-8B4DE86B9B3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet.iOS", "Contoso.Forms.Puppet.iOS.csproj", "{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +11,13 @@ Global
 		Debug|iPhone = Debug|iPhone
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Release|iPhone.ActiveCfg = Release|iPhone
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Release|iPhone.Build.0 = Release|iPhone
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{455D0F73-D96F-438A-B651-8B4DE86B9B3D}.Debug|iPhone.Build.0 = Debug|iPhone
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Release|iPhone.ActiveCfg = Release|iPhone
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Release|iPhone.Build.0 = Release|iPhone
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}.Debug|iPhone.Build.0 = Debug|iPhone
 	EndGlobalSection
 EndGlobal
