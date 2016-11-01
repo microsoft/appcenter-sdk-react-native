@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Sonoma.Core;
 using Xamarin.Forms;
 
-namespace Contoso.Forms.Demo
+namespace Contoso.Forms.Puppet
 {
     public partial class LogLevelPage : ContentPage
     {

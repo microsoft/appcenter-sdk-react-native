@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{455D0F73-D96F-438A-B651-8B4DE86B9B3D}</ProjectGuid>
+    <ProjectGuid>{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Contoso.Forms.Puppet.iOS</RootNamespace>
-    <AssemblyName>Contoso.Forms.Puppet.IOSCOPY.iOS</AssemblyName>
+    <AssemblyName>Contoso.Forms.Demo.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -28,7 +28,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
-<AssemblyName>Contoso.Forms.Puppet.iOS</AssemblyName>
+    <AssemblyName>Contoso.Forms.Puppet.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -61,7 +61,7 @@
     <MtouchArch>i386</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-<AssemblyName>Contoso.Forms.Puppet.iOS</AssemblyName>
+    <AssemblyName>Contoso.Forms.Puppet.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,16 +90,16 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.2.127\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.3.163-pre3\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.2.127\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.3.163-pre3\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform.iOS">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.2.127\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.3.163-pre3\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.2.127\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.3.3.163-pre3\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +115,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <None Include="icon_attribution.txt" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -122,33 +123,34 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Core.iOS\Microsoft.Sonoma.Core.iOS.csproj">
-      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
-      <Name>Microsoft.Sonoma.Core.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes.iOS\Microsoft.Sonoma.Crashes.iOS.csproj">
-      <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
-      <Name>Microsoft.Sonoma.Crashes.iOS</Name>
+    <BundleResource Include="Resources\bolt%402x.png" />
+    <BundleResource Include="Resources\socket%402x.png" />
+    <BundleResource Include="Resources\lightning%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
+      <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
+      <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.iOS\Microsoft.Sonoma.Analytics.iOS.csproj">
       <Project>{EF5D0090-9E12-45B5-961C-45D787BD80A5}</Project>
       <Name>Microsoft.Sonoma.Analytics.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
-      <Project>{3ACABF82-A3EB-4479-AD2B-004B57B0277E}</Project>
-      <Name>Contoso.Forms.Puppet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.Forms.iOS\Microsoft.Sonoma.Analytics.Forms.iOS.csproj">
-      <Project>{33DA3801-060C-4AFF-9511-B1EA7B26C5C0}</Project>
-      <Name>Microsoft.Sonoma.Analytics.Forms.iOS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics.iOS.Bindings\Microsoft.Sonoma.Analytics.iOS.Bindings.csproj">
       <Project>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</Project>
       <Name>Microsoft.Sonoma.Analytics.iOS.Bindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Core.iOS\Microsoft.Sonoma.Core.iOS.csproj">
+      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
+      <Name>Microsoft.Sonoma.Core.iOS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Sonoma.Core.iOS.Bindings\Microsoft.Sonoma.Core.iOS.Bindings.csproj">
       <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
       <Name>Microsoft.Sonoma.Core.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes.iOS\Microsoft.Sonoma.Crashes.iOS.csproj">
+      <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
+      <Name>Microsoft.Sonoma.Crashes.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes.iOS.Bindings\Microsoft.Sonoma.Crashes.iOS.Bindings.csproj">
       <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
@@ -156,6 +158,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
-  <Import Project="..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Import Project="..\..\packages\Xamarin.Forms.2.3.3.163-pre3\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.3.163-pre3\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
 </Project>

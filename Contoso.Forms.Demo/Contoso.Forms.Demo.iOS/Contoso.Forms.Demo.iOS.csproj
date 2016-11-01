@@ -93,12 +93,6 @@
     <Reference Include="Microsoft.Sonoma.Core.iOS.Bindings">
       <HintPath>..\..\packages\Microsoft.Sonoma.Core.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Core.iOS.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Sonoma.Analytics">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Analytics.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Analytics.iOS.Bindings.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Sonoma.Crashes">
       <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Crashes.dll</HintPath>
     </Reference>
@@ -116,6 +110,12 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.163-pre3\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Sonoma.Analytics">
+      <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Sonoma.Analytics.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Analytics.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -140,15 +140,15 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Resources\bolt%402x.png" />
+    <BundleResource Include="Resources\socket%402x.png" />
+    <BundleResource Include="Resources\lightning%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj">
       <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
       <Name>Contoso.Forms.Demo</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\bolt%402x.png" />
-    <BundleResource Include="Resources\socket%402x.png" />
-    <BundleResource Include="Resources\lightning%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

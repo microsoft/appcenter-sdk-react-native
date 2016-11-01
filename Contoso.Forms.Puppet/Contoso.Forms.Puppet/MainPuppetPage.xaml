@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage Title="Sonoma Puppet App" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Puppet;assembly=Contoso.Forms.Puppet" x:Class="Contoso.Forms.Puppet.MainPuppetPage">
+    <local:CoreContentPage/>
+	<local:AnalyticsContentPage/>
+	<local:CrashesContentPage/>
+</TabbedPage>
