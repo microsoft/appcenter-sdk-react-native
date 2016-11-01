@@ -17,13 +17,6 @@
 			iOSLogger.SNMWrapperLog(msg_provider, tag, Microsoft.Sonoma.Core.iOS.Bindings.SNMLogLevel.Debug);
 		}
 
-
-		public static void Error(string tag, string message)
-		{
-			iOSMessageProvider msg_provider = () => { return message; };
-			iOSLogger.SNMWrapperLog(msg_provider, tag, Microsoft.Sonoma.Core.iOS.Bindings.SNMLogLevel.Error);
-		}
-
 		public static void Info(string tag, string message)
 		{
 			iOSMessageProvider msg_provider = () => { return message; };
@@ -35,5 +28,17 @@
 			iOSMessageProvider msg_provider = () => { return message; };
 			iOSLogger.SNMWrapperLog(msg_provider, tag, Microsoft.Sonoma.Core.iOS.Bindings.SNMLogLevel.Warning);
 		}
+
+        public static void Error(string tag, string message)
+        {
+            iOSMessageProvider msg_provider = () => { return message; };
+            iOSLogger.SNMWrapperLog(msg_provider, tag, Microsoft.Sonoma.Core.iOS.Bindings.SNMLogLevel.Error);
+        }
+
+        public static void Assert(string tag, string message)
+        {
+            iOSMessageProvider msg_provider = () => { return message; };
+            iOSLogger.SNMWrapperLog(msg_provider, tag, Microsoft.Sonoma.Core.iOS.Bindings.SNMLogLevel.Assert);
+        }
 	}
 }

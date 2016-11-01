@@ -13,7 +13,7 @@ namespace Microsoft.Sonoma.Analytics.Forms
 
 		public static void StartTrackingFormPages()
 		{
-			Analytics.AutoPageTrackingEnabled = false;
+			//Analytics.AutoPageTrackingEnabled = false;
 			_pageToTrack = Application.Current.MainPage;
 			PlatformSonomaForms.Initialize();
 		}
@@ -30,7 +30,7 @@ namespace Microsoft.Sonoma.Analytics.Forms
 			var name = _pageToTrack.GetType().Name;
 			if (name.EndsWith(CommonPageClassSuffix, StringComparison.OrdinalIgnoreCase) && name.Length > CommonPageClassSuffix.Length)
 				name = name.Remove(name.Length - CommonPageClassSuffix.Length);
-			Analytics.TrackPage(name);
+			//Analytics.TrackPage(name);
 			if (navigationPage != null)
 			{
 				navigationPage.Pushed -= OnCurrentPageChanged;

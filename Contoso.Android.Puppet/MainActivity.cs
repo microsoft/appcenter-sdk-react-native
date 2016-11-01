@@ -30,7 +30,7 @@ namespace Contoso.Android.Puppet
             };
 
             // Sonoma integration
-            SonomaLog.Info(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
+            SonomaLog.Assert(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.LogLevel = LogLevel.Verbose;
             SonomaLog.Info(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
             Sonoma.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));

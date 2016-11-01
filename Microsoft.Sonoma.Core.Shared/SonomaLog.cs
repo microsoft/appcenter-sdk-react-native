@@ -16,11 +16,6 @@ namespace Microsoft.Sonoma.Core
             Debug(tag, ConcatMessageException(message, exception));
         }
 
-        public static void Error(string tag, string message, Exception exception)
-        {
-            Error(tag, ConcatMessageException(message, exception));
-        }
-
         public static void Info(string tag, string message, Exception exception)
         {
             Info(tag, ConcatMessageException(message, exception));
@@ -29,6 +24,16 @@ namespace Microsoft.Sonoma.Core
         public static void Warn(string tag, string message, Exception exception)
         {
             Warn(tag, ConcatMessageException(message, exception));
+        }
+
+        public static void Error(string tag, string message, Exception exception)
+        {
+            Error(tag, ConcatMessageException(message, exception));
+        }
+
+        public static void Assert(string tag, string message, Exception exception)
+        {
+            Assert(tag, ConcatMessageException(message, exception));
         }
 
         private static string ConcatMessageException(string message, Exception exception)

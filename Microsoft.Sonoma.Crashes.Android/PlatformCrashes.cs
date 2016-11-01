@@ -26,10 +26,10 @@ namespace Microsoft.Sonoma.Crashes
 
         public override bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
 
-        public override void TrackException(Exception exception)
-        {
-            AndroidCrashes.Instance.TrackException(GenerateModelException(exception));
-        }
+        //public override void TrackException(Exception exception)
+        //{
+        //    AndroidCrashes.Instance.TrackException(GenerateModelException(exception));
+        //}
 
         /// <summary>
         /// Empty model stack frame used for comparison to optimize JSON payload.
@@ -92,7 +92,8 @@ namespace Microsoft.Sonoma.Crashes
             {
                 Type = exception.GetType().FullName,
                 Message = exception.Message,
-                Frames = GenerateModelStackFrames(new StackTrace(exception, true))
+                Frames = GenerateModelStackFrames(new StackTrace(exception, true)),
+                WrapperSdkName = WrapperSdk.Name
             };
             var aggregateException = exception as AggregateException;
             if (aggregateException?.InnerExceptions != null)

@@ -2,10 +2,10 @@
 
 namespace Microsoft.Sonoma.Core
 {
-    internal static class WrapperSdk
+    public static class WrapperSdk
     {
-        internal const string Name = "sonoma.xamarin";
+        public const string Name = "sonoma.xamarin";
 
-        internal static readonly string Version = typeof (WrapperSdk).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+        internal static readonly string Version = typeof(WrapperSdk).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
     }
 }

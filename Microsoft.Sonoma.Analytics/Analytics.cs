@@ -18,15 +18,15 @@ namespace Microsoft.Sonoma.Analytics
             set { throw new NotImplementedException(); }
         }
 
-        /// <summary>
-        /// Enable or disable automatic page tracking.
-        /// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
-        /// </summary>
-        public static bool AutoPageTrackingEnabled
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        ///// <summary>
+        ///// Enable or disable automatic page tracking.
+        ///// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
+        ///// </summary>
+        //public static bool AutoPageTrackingEnabled
+        //{
+        //    get { throw new NotImplementedException(); }
+        //    set { throw new NotImplementedException(); }
+        //}
 
         /// <summary>
         /// Track a custom event.
@@ -38,14 +38,14 @@ namespace Microsoft.Sonoma.Analytics
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Track a custom page.
-        /// </summary>
-        /// <param name="name">A page name.</param>
-        /// <param name="properties">Optional properties.</param>
-        public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
-        {
-            throw new NotImplementedException();
-        }
+        ///// <summary>
+        ///// Track a custom page.
+        ///// </summary>
+        ///// <param name="name">A page name.</param>
+        ///// <param name="properties">Optional properties.</param>
+        //public static void TrackPage(string name, [Optional] IDictionary<string, string> properties)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

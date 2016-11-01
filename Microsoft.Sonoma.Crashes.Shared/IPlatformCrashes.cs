@@ -15,6 +15,6 @@ namespace Microsoft.Sonoma.Crashes.Shared
 
         void GenerateTestCrash();
 
-        void TrackException(Exception exception);
+        //void TrackException(Exception exception);
     }
 }

@@ -21,9 +21,9 @@ namespace Microsoft.Sonoma.Crashes
             get { throw new NotImplementedException(); }
         }
 
-        public override void TrackException(Exception exception)
-        {
-            throw new NotImplementedException();
-        }
+        //public override void TrackException(Exception exception)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
