@@ -29,7 +29,7 @@ static SNMWrapperSdk * wrapperSdk;
       SNMWrapperSdk * wrapperSdk =
         [[SNMWrapperSdk alloc]
             initWithWrapperSdkVersion:@"0.1.0"
-            wrapperSdkName:@"react-native-sonoma"
+            wrapperSdkName:@"sonoma.react-native"
             liveUpdateReleaseLabel:nil
             liveUpdateDeploymentKey:nil
             liveUpdatePackageHash:nil];

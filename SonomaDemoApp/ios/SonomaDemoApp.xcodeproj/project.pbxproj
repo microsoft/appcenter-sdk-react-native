@@ -12,10 +12,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		CB4D6D961DBA90820080D9D6 /* SonomaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4D6D951DBA90820080D9D6 /* SonomaCore.framework */; };
-		CB4D6D981DBA90910080D9D6 /* SonomaCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4D6D971DBA90910080D9D6 /* SonomaCrashes.framework */; };
 		CB4D6DA91DBAC6BA0080D9D6 /* Sonoma-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4D6DA81DBAC6BA0080D9D6 /* Sonoma-Config.plist */; };
-		CB4D6DAB1DC11DD30080D9D6 /* SonomaAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4D6DAA1DC11DD30080D9D6 /* SonomaAnalytics.framework */; };
 		CBE4F703E802221835DA932C /* libPods-SonomaDemoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD76368D159A897B63515643 /* libPods-SonomaDemoApp.a */; };
 /* End PBXBuildFile section */
 
@@ -56,10 +53,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SonomaDemoApp/main.m; sourceTree = "<group>"; };
 		A7D945F1E3437879206CBE9A /* Pods-SonomaDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonomaDemoApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SonomaDemoApp/Pods-SonomaDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BD76368D159A897B63515643 /* libPods-SonomaDemoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SonomaDemoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB4D6D951DBA90820080D9D6 /* SonomaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SonomaCore.framework; path = "../../Sonoma-SDK-iOS/Products/SonomaCore/SonomaCore.framework"; sourceTree = "<group>"; };
-		CB4D6D971DBA90910080D9D6 /* SonomaCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SonomaCrashes.framework; path = "../../Sonoma-SDK-iOS/Products/SonomaCrashes/SonomaCrashes.framework"; sourceTree = "<group>"; };
 		CB4D6DA81DBAC6BA0080D9D6 /* Sonoma-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Sonoma-Config.plist"; path = "SonomaDemoApp/Sonoma-Config.plist"; sourceTree = "<group>"; };
-		CB4D6DAA1DC11DD30080D9D6 /* SonomaAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SonomaAnalytics.framework; path = "../../Sonoma-SDK-iOS/Products/SonomaAnalytics/SonomaAnalytics.framework"; sourceTree = "<group>"; };
 		D242D6C23BA93EED289A0AF3 /* Pods-SonomaDemoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonomaDemoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SonomaDemoApp/Pods-SonomaDemoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,9 +69,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB4D6D981DBA90910080D9D6 /* SonomaCrashes.framework in Frameworks */,
-				CB4D6D961DBA90820080D9D6 /* SonomaCore.framework in Frameworks */,
-				CB4D6DAB1DC11DD30080D9D6 /* SonomaAnalytics.framework in Frameworks */,
 				CBE4F703E802221835DA932C /* libPods-SonomaDemoApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,9 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				CB4D6DA81DBAC6BA0080D9D6 /* Sonoma-Config.plist */,
-				CB4D6DAA1DC11DD30080D9D6 /* SonomaAnalytics.framework */,
-				CB4D6D971DBA90910080D9D6 /* SonomaCrashes.framework */,
-				CB4D6D951DBA90820080D9D6 /* SonomaCore.framework */,
 				13B07FAE1A68108700A75B9A /* SonomaDemoApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SonomaDemoAppTests */,
@@ -402,11 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEAD_CODE_STRIPPING = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCore",
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaAnalytics",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -431,11 +415,7 @@
 			baseConfigurationReference = D242D6C23BA93EED289A0AF3 /* Pods-SonomaDemoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCore",
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaAnalytics",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

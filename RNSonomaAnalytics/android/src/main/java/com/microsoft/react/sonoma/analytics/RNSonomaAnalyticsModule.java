@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.analytics;
+package com.microsoft.sonoma.react.analytics;
 
 import android.app.Application;
 
@@ -8,7 +8,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
-import com.microsoft.react.sonoma.core.RNSonomaCore;
+import com.microsoft.sonoma.react.core.RNSonomaCore;
 import com.microsoft.sonoma.core.Sonoma;
 import com.microsoft.sonoma.analytics.Analytics;
 
@@ -20,7 +20,7 @@ public class RNSonomaAnalyticsModule extends ReactContextBaseJavaModule {
 
         RNSonomaCore.initializeSonoma(application);
         Analytics.setEnabled(startEnabled);
-        Analytics.setAutoPageTrackingEnabled(false);
+        //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
         Sonoma.start(Analytics.class);
     }
 
@@ -49,6 +49,8 @@ public class RNSonomaAnalyticsModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /*
+    // TODO: once the underlying SDK supports this
     @ReactMethod
     public void trackPage(String pageName, ReadableMap properties, Promise promise) {
         try {
@@ -58,4 +60,5 @@ public class RNSonomaAnalyticsModule extends ReactContextBaseJavaModule {
             promise.reject(e);
         }
     }
+    */
 }

@@ -5,9 +5,12 @@ module.exports = {
         await RNSonomaAnalytics.trackEvent(eventName, sanitizeProperties(properties));
     },
 
+    /*
+    // TODO: Uncomment this once the underlying SDK supports the functionality
     async trackPage(pageName, properties) {
         await RNSonomaAnalytics.trackPage(pageName, sanitizeProperties(properties));
     }
+    */
 };
 
 function sanitizeProperties(props) {
@@ -25,7 +28,7 @@ function sanitizeProperties(props) {
         case "undefined":
             break;
             default:
-            throw new Error("");
+            throw new Error("Properties cannot be serialized. Object must only contain strings");
         }
     }
 

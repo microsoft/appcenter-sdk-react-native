@@ -1,4 +1,4 @@
-package com.microsoft.react.sonoma.core;
+package com.microsoft.sonoma.react.core;
 
 import android.app.Application;
 
@@ -20,8 +20,8 @@ public class RNSonomaCore {
         }
         RNSonomaCore.application = application;
 
-        RNSonomaCore.wrapperSdk.setWrapperSdkVersion("0.1.0"); // NOTE: This number must be manually updated right now
-        RNSonomaCore.wrapperSdk.setWrapperSdkName("react-native-sonoma");
+        RNSonomaCore.wrapperSdk.setWrapperSdkVersion(com.microsoft.sonoma.react.core.BuildConfig.VERSION_NAME);
+        RNSonomaCore.wrapperSdk.setWrapperSdkName(com.microsoft.sonoma.react.core.BuildConfig.SDK_NAME);
 
         Sonoma.setWrapperSdk(wrapperSdk);
         Sonoma.initialize(application, RNSonomaCore.getAppSecret());

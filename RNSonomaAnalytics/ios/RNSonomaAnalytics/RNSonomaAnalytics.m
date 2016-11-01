@@ -23,7 +23,7 @@ RCT_EXPORT_MODULE();
 {
     [RNSonomaCore initializeSonoma];
     [SNMSonoma setEnabled:enabled];
-    [SNMAnalytics setAutoPageTrackingEnabled:false];
+    //[SNMAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
     [SNMSonoma startFeature:[SNMAnalytics class]];
 }
 
@@ -45,6 +45,8 @@ RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
     resolve(nil);
 }
 
+/*
+// TODO: once the underlying SDK supports this
 RCT_EXPORT_METHOD(trackPage:(NSString *)pageName
              withProperties:(NSDictionary *)properties
                    resolver:(RCTPromiseResolveBlock)resolve
@@ -53,7 +55,7 @@ RCT_EXPORT_METHOD(trackPage:(NSString *)pageName
     [SNMAnalytics trackPage:pageName withProperties:properties];
     resolve(nil);
 }
-
+*/
 
 
 @end

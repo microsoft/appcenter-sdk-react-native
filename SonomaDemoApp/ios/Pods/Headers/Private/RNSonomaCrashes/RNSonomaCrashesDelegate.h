@@ -1,1 +1,0 @@
-../../../../../../RNSonomaCrashes/ios/RNSonomaCrashes/RNSonomaCrashesDelegate.h
