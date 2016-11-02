@@ -1,0 +1,7 @@
+rootProject.name = 'linkTestApp'
+
+include ':app'
+include ':react-native-sonoma-crashes'
+project(':react-native-sonoma-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sonoma-crashes/android')
+include ':react-native-sonoma-analytics'
+project(':react-native-sonoma-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sonoma-analytics/android')
