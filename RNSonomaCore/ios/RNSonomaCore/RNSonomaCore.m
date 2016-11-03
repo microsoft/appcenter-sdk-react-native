@@ -16,7 +16,7 @@ static SNMWrapperSdk * wrapperSdk;
     NSString * plistPath = [[NSBundle mainBundle] pathForResource:@"Sonoma-Config" ofType:@"plist"];
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 
-    appSecret = [config objectForKey:@"app_secret"];
+    appSecret = [config objectForKey:@"AppSecret"];
     // If the appSecret is not set, we will pass nil to SNMSonoma which will error out, as expected
   }
 
