@@ -5,7 +5,20 @@ set -e
 semanticVersion=`grep AssemblyInformationalVersion Microsoft.Sonoma.Core/Properties/AssemblyInfo.cs | sed -E "s/^.*\"(.*)\".*$/\1/"`
 baseSemanticVersion=`sed -E 's/(.*)-.*/\1/' <<< "$semanticVersion"`
 
-newRevision=123 #TODO dynamic by calling get latest version on nuget repos
+latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/150e39b1-bf52-4fdd-bc32-28d950a14304/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Sonoma.Core'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
+latestNugetVersion=`sed -E "s/^.*<d:Version>(.*)<\/d:Version>.*$/\1/" <<< $latestNugetVersion`
+latestNugetBaseVersion=`sed -E 's/([^-]*)-.*/\1/' <<< "$latestNugetVersion"`
+latestNugetRevision=`sed -E 's/^.*-r0*(.*)-.*$/\1/' <<< "$latestNugetVersion"`
+
+# Check if base version changes, the second check is just to check if the revision is valid
+# If latestNugetVersion=latestNugetRevision that just means sed failed matching
+# e.g. first revision not yet published
+if [[ "$baseSemanticVersion" != "$latestNugetBaseVersion" ]] || [[ "$latestNugetVersion" == "$latestNugetRevision" ]]
+then
+    newRevision=1 # we use 0 padding and regexes, so start revisions at 1 to simplify
+else
+    newRevision=$((latestNugetRevision+1))
+fi
 
 # Nuget/cake does not support semver 2.0.0, work around with 1.0.0 limitations
 # pad with zeroes and add a letter before as cake will fail for some reason
