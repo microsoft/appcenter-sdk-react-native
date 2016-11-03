@@ -29,13 +29,13 @@ namespace Contoso.Android.Puppet
                 button.Text = button.Text.Substring(42);
             };
 
-            // Sonoma integration
-            SonomaLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            // Mobile Center integration
+            MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
-            SonomaLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
-            SonomaLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
+            MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// </summary>
     public static class Crashes
     {
-        internal const string LogTag = SonomaLog.LogTag + "Crashes";
+        internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 

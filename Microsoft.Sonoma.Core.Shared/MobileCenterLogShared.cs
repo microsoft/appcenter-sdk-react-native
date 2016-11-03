@@ -2,9 +2,9 @@
 
 namespace Microsoft.Azure.Mobile
 {
-    public static partial class SonomaLog
+    public static partial class MobileCenterLog
     {
-        public const string LogTag = "SonomaXamarin";
+        public const string LogTag = "MobileCenterXamarin";
 
         public static void Verbose(string tag, string message, Exception exception)
         {

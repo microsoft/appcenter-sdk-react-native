@@ -20,15 +20,15 @@ namespace Contoso.Forms.Puppet
 
         protected override void OnStart()
         {
-            SonomaLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
-            SonomaLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             //SonomaForms.StartTrackingFormPages();
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
-            SonomaLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
-            SonomaLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+            MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
+            MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
         }
 
         protected override void OnSleep()

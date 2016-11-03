@@ -19,11 +19,11 @@ namespace Contoso.Forms.Puppet
             InitializeComponent();
 
             LogFunctions = new Dictionary<LogLevel, Action<string, string>>();
-            LogFunctions.Add(LogLevel.Verbose, SonomaLog.Verbose);
-            LogFunctions.Add(LogLevel.Debug, SonomaLog.Debug);
-            LogFunctions.Add(LogLevel.Info, SonomaLog.Info);
-            LogFunctions.Add(LogLevel.Warn, SonomaLog.Warn);
-            LogFunctions.Add(LogLevel.Error, SonomaLog.Error);
+            LogFunctions.Add(LogLevel.Verbose, MobileCenterLog.Verbose);
+            LogFunctions.Add(LogLevel.Debug, MobileCenterLog.Debug);
+            LogFunctions.Add(LogLevel.Info, MobileCenterLog.Info);
+            LogFunctions.Add(LogLevel.Warn, MobileCenterLog.Warn);
+            LogFunctions.Add(LogLevel.Error, MobileCenterLog.Error);
 
             LogLevelNames = new Dictionary<LogLevel, string>();
             LogLevelNames.Add(LogLevel.Verbose, Constants.Verbose);
@@ -46,7 +46,7 @@ namespace Contoso.Forms.Puppet
         {
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
-            SonomaEnabledSwitchCell.On = MobileCenter.Enabled;
+            MobileCenterEnabledSwitchCell.On = MobileCenter.Enabled;
 
         }
 
@@ -79,9 +79,9 @@ namespace Contoso.Forms.Puppet
 
         void UpdateEnabled(object sender, System.EventArgs e)
         {
-            if (SonomaEnabledSwitchCell != null)
+            if (MobileCenterEnabledSwitchCell != null)
             {
-                MobileCenter.Enabled = SonomaEnabledSwitchCell.On;
+                MobileCenter.Enabled = MobileCenterEnabledSwitchCell.On;
             }
         }
 

@@ -11,6 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)WrapperSdk.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogLevel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SonomaLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLogShared.cs" />
   </ItemGroup>
 </Project>

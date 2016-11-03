@@ -41,7 +41,7 @@
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MobileCenter.cs" />
-    <Compile Include="SonomaLog.cs" />
+    <Compile Include="MobileCenterLog.cs" />
   </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -7,7 +7,7 @@ namespace Microsoft.Azure.Mobile.Analytics
     using AndroidAnalytics = Com.Microsoft.Sonoma.Analytics.Analytics;
 
     /// <summary>
-    /// Analytics feature.
+    /// Analytics service.
     /// </summary>
     public static class Analytics
     {

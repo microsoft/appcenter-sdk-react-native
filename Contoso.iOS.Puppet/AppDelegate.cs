@@ -36,7 +36,7 @@ namespace Contoso.iOS.Puppet
 			}
 			catch(Exception e)
 			{
-				SonomaLog.Verbose("THETAG", "THEMESSAGE", e);
+				MobileCenterLog.Verbose("THETAG", "THEMESSAGE", e);
 			}
 
             Analytics.Enabled = true;

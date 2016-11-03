@@ -3,7 +3,7 @@ using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings {
 	[Native]
-	public enum SNMErrorLogSetting : ulong
+	public enum MSErrorLogSetting : ulong
 	{
 		Disabled = 0,
 		AlwaysAsk = 1,
@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings {
 	}
 
 	[Native]
-	public enum SNMUserConfirmation : ulong
+	public enum MSUserConfirmation : ulong
 	{
 		DontSend = 0,
 		Send = 1,

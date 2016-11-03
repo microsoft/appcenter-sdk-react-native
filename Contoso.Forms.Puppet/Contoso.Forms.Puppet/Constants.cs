@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Contoso.Forms.Puppet
 {
     public static class Constants

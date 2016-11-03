@@ -1,37 +1,37 @@
 ﻿namespace Microsoft.Azure.Mobile
 {
-    using AndroidSonomaLog = Com.Microsoft.Sonoma.Core.Utils.SonomaLog;
+    using AndroidMobileCenterLog = Com.Microsoft.Sonoma.Core.Utils.SonomaLog;
 
-    public static partial class SonomaLog
+    public static partial class MobileCenterLog
     {
         public static void Verbose(string tag, string message)
         {
-            AndroidSonomaLog.Verbose(tag, message);
+            AndroidMobileCenterLog.Verbose(tag, message);
         }
 
         public static void Debug(string tag, string message)
         {
-            AndroidSonomaLog.Debug(tag, message);
+            AndroidMobileCenterLog.Debug(tag, message);
         }
 
         public static void Info(string tag, string message)
         {
-            AndroidSonomaLog.Info(tag, message);
+            AndroidMobileCenterLog.Info(tag, message);
         }
 
         public static void Warn(string tag, string message)
         {
-            AndroidSonomaLog.Warn(tag, message);
+            AndroidMobileCenterLog.Warn(tag, message);
         }
 
         public static void Error(string tag, string message)
         {
-            AndroidSonomaLog.Error(tag, message);
+            AndroidMobileCenterLog.Error(tag, message);
         }
 
         public static void Assert(string tag, string message)
         {
-            AndroidSonomaLog.LogAssert(tag, message);
+            AndroidMobileCenterLog.LogAssert(tag, message);
         }
     }
 }

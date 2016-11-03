@@ -3,7 +3,7 @@
 namespace Microsoft.Azure.Mobile
 {
     /// <summary>
-    /// SDK core used to initialize, start and control specific feature.
+    /// SDK core used to initialize, start and control specific service.
     /// </summary>
     public static class MobileCenter
     {
@@ -36,28 +36,28 @@ namespace Microsoft.Azure.Mobile
         }
 
         /// <summary>
-        /// Start features.
-        /// This may be called only once per feature per application process lifetime.
+        /// Start services.
+        /// This may be called only once per service per application process lifetime.
         /// </summary>
-        /// <param name="features">List of features to use.</param>
-        public static void Start(params Type[] features)
+        /// <param name="services">List of services to use.</param>
+        public static void Start(params Type[] services)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Initialize the SDK with the list of features to start.
+        /// Initialize the SDK with the list of services to start.
         /// This may be called only once per application process lifetime.
         /// </summary>
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="features">List of features to use.</param>
-        public static void Start(string appSecret, params Type[] features)
+        /// <param name="services">List of services to use.</param>
+        public static void Start(string appSecret, params Type[] services)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all features that have been started.
+        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been started.
         /// </summary>
         /// <remarks>
         /// The default state is <c>true</c> and updating the state is persisted into local application storage.

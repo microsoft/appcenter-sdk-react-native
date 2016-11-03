@@ -6,11 +6,11 @@ using Java.Lang;
 
 namespace Microsoft.Azure.Mobile
 {
-    using AndroidSonoma = Com.Microsoft.Sonoma.Core.Sonoma;
+    using AndroidMobileCenter = Com.Microsoft.Sonoma.Core.Sonoma;
     using AndroidWrapperSdk = Com.Microsoft.Sonoma.Core.Ingestion.Models.WrapperSdk;
 
     /// <summary>
-    /// SDK core used to initialize, start and control specific feature.
+    /// SDK core used to initialize, start and control specific service.
     /// </summary>
     public static class MobileCenter
     {
@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                var value = AndroidSonoma.LogLevel;
+                var value = AndroidMobileCenter.LogLevel;
                 switch (value)
                 {
                     case 2:
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Mobile
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
                 }
-                AndroidSonoma.LogLevel = androidValue;
+                AndroidMobileCenter.LogLevel = androidValue;
             }
         }
 
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="serverUrl">Base URL to use for server communication.</param>
         public static void SetServerUrl(string serverUrl)
         {
-            AndroidSonoma.SetServerUrl(serverUrl);
+            AndroidMobileCenter.SetServerUrl(serverUrl);
         }
         
         /// <summary>
@@ -92,41 +92,41 @@ namespace Microsoft.Azure.Mobile
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
         public static void Initialize(string appSecret)
         {
-            AndroidSonoma.Initialize(SetWrapperSdkAndGetApplication(), appSecret);
+            AndroidMobileCenter.Initialize(SetWrapperSdkAndGetApplication(), appSecret);
         }
 
         /// <summary>
-        /// Start features.
-        /// This may be called only once per feature per application process lifetime.
+        /// Start services.
+        /// This may be called only once per service per application process lifetime.
         /// </summary>
-        /// <param name="features">List of features to use.</param>
-        public static void Start(params Type[] features)
+        /// <param name="services">List of services to use.</param>
+        public static void Start(params Type[] services)
         {
-            AndroidSonoma.Start(GetFeatures(features));
+            AndroidMobileCenter.Start(GetServices(services));
         }
 
         /// <summary>
-        /// Initialize the SDK with the list of features to start.
+        /// Initialize the SDK with the list of services to start.
         /// This may be called only once per application process lifetime.
         /// </summary>
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="features">List of features to use.</param>
-        public static void Start(string appSecret, params Type[] features)
+        /// <param name="services">List of services to use.</param>
+        public static void Start(string appSecret, params Type[] services)
         {
-            AndroidSonoma.Start(SetWrapperSdkAndGetApplication(), appSecret, GetFeatures(features));
+            AndroidMobileCenter.Start(SetWrapperSdkAndGetApplication(), appSecret, GetServices(services));
         }
         
 
         /// <summary>
-        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all features that have been started.
+        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been started.
         /// </summary>
         /// <remarks>
         /// The default state is <c>true</c> and updating the state is persisted into local application storage.
         /// </remarks>
         public static bool Enabled
         {
-            get { return AndroidSonoma.Enabled; }
-            set { AndroidSonoma.Enabled = value; }
+            get { return AndroidMobileCenter.Enabled; }
+            set { AndroidMobileCenter.Enabled = value; }
         }
 
         /// <summary>
@@ -135,17 +135,17 @@ namespace Microsoft.Azure.Mobile
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid InstallId => Guid.Parse(AndroidSonoma.InstallId.ToString());
+        public static Guid InstallId => Guid.Parse(AndroidMobileCenter.InstallId.ToString());
 
         private static Application SetWrapperSdkAndGetApplication()
         {
-            AndroidSonoma.SetWrapperSdk(new AndroidWrapperSdk { WrapperSdkName = WrapperSdk.Name, WrapperSdkVersion = WrapperSdk.Version });
+            AndroidMobileCenter.SetWrapperSdk(new AndroidWrapperSdk { WrapperSdkName = WrapperSdk.Name, WrapperSdkVersion = WrapperSdk.Version });
             return (Application)Application.Context;
         }
 
-        private static Class[] GetFeatures(IEnumerable<Type> features)
+        private static Class[] GetServices(IEnumerable<Type> services)
         {
-            return features.Select(feature => Class.FromType((Type)feature.GetProperty("BindingType").GetValue(null, null))).ToArray();
+            return services.Select(service => Class.FromType((Type)service.GetProperty("BindingType").GetValue(null, null))).ToArray();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Microsoft.Azure.Mobile
 {
-    public static partial class SonomaLog
+    public static partial class MobileCenterLog
     {
         public static void Verbose(string tag, string message)
         {

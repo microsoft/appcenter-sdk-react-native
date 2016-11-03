@@ -4,20 +4,20 @@ using System;
 
 namespace Microsoft.Azure.Mobile.iOS.Bindings
 {
-	interface ISNMFeature { }
+	interface IMSService { }
 
-	// typedef NSString * (^SNMLogMessageProvider)();
-	delegate string SNMLogMessageProvider();
+	// typedef NSString * (^MSLogMessageProvider)();
+	delegate string MSLogMessageProvider();
 
-	// typedef void (^SNMLogHandler)(SNMLogMessageProvider, SNMLogLevel, const char *, const char *, uint);
-	unsafe delegate void SNMLogHandler(SNMLogMessageProvider arg0, SNMLogLevel arg1, IntPtr arg2, IntPtr arg3, uint arg4);
+	// typedef void (^MSLogHandler)(MSLogMessageProvider, MSLogLevel, const char *, const char *, uint);
+	unsafe delegate void MSLogHandler(MSLogMessageProvider arg0, MSLogLevel arg1, IntPtr arg2, IntPtr arg3, uint arg4);
 	//Note: Objective Sharpie tried to bind the above as:
-	//	unsafe delegate void SNMLogHandler(SNMLogMessageProvider arg0, SNMLogLevel arg1, string arg2, sbyte* arg3, sbyte* arg4, uint arg5);
+	//	unsafe delegate void MSLogHandler(MSLogMessageProvider arg0, MSLogLevel arg1, string arg2, sbyte* arg3, sbyte* arg4, uint arg5);
 	//But trying to use it as given gave an error.
 
-	// @interface SNMWrapperSdk : NSObject
+	// @interface MSWrapperSdk : NSObject
 	[BaseType (typeof(NSObject))]
-	interface SNMWrapperSdk
+	interface MSWrapperSdk
 	{
 		// @property (readonly, nonatomic) NSString * wrapperSdkVersion;
 		[Export("wrapperSdkVersion")]
@@ -39,18 +39,18 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("liveUpdatePackageHash")]
 		string LiveUpdatePackageHash { get; }
 
-		// -(BOOL)isEqual:(SNMWrapperSdk *)wrapperSdk;
+		// -(BOOL)isEqual:(MSWrapperSdk *)wrapperSdk;
 		[Export("isEqual:")]
-		bool IsEqual(SNMWrapperSdk wrapperSdk);
+		bool IsEqual(MSWrapperSdk wrapperSdk);
 
 		// -(instancetype)initWithWrapperSdkVersion:(NSString *)wrapperSdkVersion wrapperSdkName:(NSString *)wrapperSdkName liveUpdateReleaseLabel:(NSString *)liveUpdateReleaseLabel liveUpdateDeploymentKey:(NSString *)liveUpdateDeploymentKey liveUpdatePackageHash:(NSString *)liveUpdatePackageHash;
 		[Export("initWithWrapperSdkVersion:wrapperSdkName:liveUpdateReleaseLabel:liveUpdateDeploymentKey:liveUpdatePackageHash:")]
 		IntPtr Constructor(string wrapperSdkVersion, string wrapperSdkName, string liveUpdateReleaseLabel, string liveUpdateDeploymentKey, string liveUpdatePackageHash);
 	}
 
-	// @interface SNMDevice : SNMWrapperSdk
-	[BaseType(typeof(SNMWrapperSdk))]
-	interface SNMDevice
+	// @interface MSDevice : MSWrapperSdk
+	[BaseType(typeof(MSWrapperSdk))]
+	interface MSDevice
 	{
 		// @property (readonly, nonatomic) NSString * sdkName;
 		[Export("sdkName")]
@@ -116,34 +116,34 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("appNamespace")]
 		string AppNamespace { get; }
 
-		// -(BOOL)isEqual:(SNMDevice *)device;
+		// -(BOOL)isEqual:(MSDevice *)device;
 		[Export("isEqual:")]
-		bool IsEqual(SNMDevice device);
+		bool IsEqual(MSDevice device);
 	}
 
-	// @interface SNMSonoma : NSObject
+	// @interface MSMobileCenter : NSObject
 	[BaseType(typeof(NSObject))]
-	interface SNMSonoma
+	interface MSMobileCenter
 	{
 		// +(instancetype)sharedInstance;
 		[Static]
 		[Export("sharedInstance")]
-		SNMSonoma SharedInstance();
+		MSMobileCenter SharedInstance();
 
 		// +(void)start:(NSString *)appSecret;
 		[Static]
 		[Export("start:")]
 		void Start(string appSecret);
 
-		// +(void)start:(NSString *)appSecret withFeatures:(NSArray<Class> *)features;
+		// +(void)start:(NSString *)appSecret withServices:(NSArray<Class> *)services;
 		[Static]
-		[Export("start:withFeatures:")]
-		void Start(string appSecret, Class[] features);
+		[Export("start:withServices:")]
+		void Start(string appSecret, Class[] services);
 
-		// +(void)startFeature:(Class)feature;
+		// +(void)startService:(Class)service;
 		[Static]
-		[Export("startFeature:")]
-		void StartFeature(Class feature);
+		[Export("startService:")]
+		void StartService(Class service);
 
 		// +(BOOL)isInitialized;
 		[Static]
@@ -165,26 +165,26 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("isEnabled")]
 		bool IsEnabled();
 
-		// +(SNMLogLevel)logLevel;
-		// +(void)setLogLevel:(SNMLogLevel)logLevel;
+		// +(MSLogLevel)logLevel;
+		// +(void)setLogLevel:(MSLogLevel)logLevel;
 		[Static]
 		[Export("logLevel")]
-		SNMLogLevel LogLevel();
+		MSLogLevel LogLevel();
 
 		[Static]
 		[Export("setLogLevel:")]
-		void SetLogLevel(SNMLogLevel logLevel);
+		void SetLogLevel(MSLogLevel logLevel);
 
 		//TODO this needs to be fixed
-		// +(void)setLogHandler:(SNMLogHandler)logHandler;
+		// +(void)setLogHandler:(MSLogHandler)logHandler;
 		[Static]
 		[Export("setLogHandler:")]
-		void SetLogHandler(SNMLogHandler logHandler);
+		void SetLogHandler(MSLogHandler logHandler);
 
-		// +(void)setWrapperSdk:(SNMWrapperSdk *)wrapperSdk;
+		// +(void)setWrapperSdk:(MSWrapperSdk *)wrapperSdk;
 		[Static]
 		[Export("setWrapperSdk:")]
-		void SetWrapperSdk(SNMWrapperSdk wrapperSdk);
+		void SetWrapperSdk(MSWrapperSdk wrapperSdk);
 
 		// +(NSUUID *)installId;
 		[Static]
@@ -197,10 +197,10 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		bool IsDebuggerAttached();
 	}
 
-	// @protocol SNMFeature <NSObject>
+	// @protocol MSService <NSObject>
 	[Protocol, Model]
 	[BaseType(typeof(NSObject))]
-	interface SNMFeature
+	interface MSService
 	{
         // @required +(BOOL)isEnabled;
         [Static]
@@ -212,29 +212,29 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         void SetEnabled(bool val);
 
 	}
-	// @interface SNMFeatureAbstract : NSObject <SNMFeature>
-	[BaseType(typeof(SNMFeature))]
-	interface SNMFeatureAbstract : ISNMFeature
+	// @interface MSServiceAbstract : NSObject <MSService>
+	[BaseType(typeof(MSService))]
+	interface MSServiceAbstract : IMSService
 	{
 	}
 
-	// @interface SNMLogger : NSObject
+	// @interface MSLogger : NSObject
 	[BaseType(typeof(NSObject))]
-	interface SNMLogger
+	interface MSLogger
 	{
-		// +(void)logMessage:(SNMLogMessageProvider)messageProvider level:(SNMLogLevel)loglevel tag:(NSString *)tag file:(const char *)file function:(const char *)function line:(uint)line;
+		// +(void)logMessage:(MSLogMessageProvider)messageProvider level:(MSLogLevel)loglevel tag:(NSString *)tag file:(const char *)file function:(const char *)function line:(uint)line;
 		[Static]
 		[Export("logMessage:level:tag:file:function:line:")]
-		unsafe void LogMessage(SNMLogMessageProvider messageProvider, SNMLogLevel loglevel, string tag, IntPtr file, IntPtr function, uint line);
+		unsafe void LogMessage(MSLogMessageProvider messageProvider, MSLogLevel loglevel, string tag, IntPtr file, IntPtr function, uint line);
 	}
 
-	// @interface SNMWrapperLogger : NSObject
+	// @interface MSWrapperLogger : NSObject
 	[BaseType(typeof(NSObject))]
-	interface SNMWrapperLogger
+	interface MSWrapperLogger
 	{
-		// +(void)SNMWrapperLog:(SNMLogMessageProvider)message tag:(NSString *)tag level:(SNMLogLevel)level;
+		// +(void)MSWrapperLog:(MSLogMessageProvider)message tag:(NSString *)tag level:(MSLogLevel)level;
 		[Static]
-		[Export("SNMWrapperLog:tag:level:")]
-		void SNMWrapperLog(SNMLogMessageProvider message, string tag, SNMLogLevel level);
+		[Export("MSWrapperLog:tag:level:")]
+		void MSWrapperLog(MSLogMessageProvider message, string tag, MSLogLevel level);
 	}
 }

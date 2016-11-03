@@ -2,9 +2,9 @@ using Foundation;
 
 namespace Microsoft.Azure.Mobile.Analytics.iOS.Bindings
 {
-    // @interface SNMAnalytics : SNMFeature
+    // @interface MSAnalytics : MSService
     [BaseType(typeof(NSObject))]
-    interface SNMAnalytics
+    interface MSAnalytics
     {
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]

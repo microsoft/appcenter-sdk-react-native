@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         static PlatformCrashes()
         {
-            SonomaLog.Info(Crashes.LogTag, "Set up Xamarin crash handler.");
+            MobileCenterLog.Info(Crashes.LogTag, "Set up Xamarin crash handler.");
             AndroidEnvironment.UnhandledExceptionRaiser += OnUnhandledException;
             AndroidCrashes.Instance.SetWrapperSdkListener(new CrashListener());
         }
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
         {
             _exception = e.Exception;
-            SonomaLog.Error(Crashes.LogTag, "Unhandled Exception:", _exception);
+            MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", _exception);
             JoinExceptionAndLog();
         }
 

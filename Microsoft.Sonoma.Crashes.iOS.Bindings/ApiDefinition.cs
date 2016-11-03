@@ -4,9 +4,9 @@ using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
-	// @interface SNMErrorReport : NSObject
+	// @interface MSErrorReport : NSObject
 	[BaseType(typeof(NSObject))]
-	interface SNMErrorReport
+	interface MSErrorReport
 	{
 		// @property (readonly, nonatomic) NSString * incidentIdentifier;
 		[Export("incidentIdentifier")]
@@ -36,9 +36,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 		[Export("appErrorTime", ArgumentSemantic.Strong)]
 		NSDate AppErrorTime { get; }
 
-		// @property (readonly, nonatomic) SNMDevice * device;
+		// @property (readonly, nonatomic) MSDevice * device;
 		[Export("device")]
-		Microsoft.Azure.Mobile.iOS.Bindings.SNMDevice Device { get; }
+		Microsoft.Azure.Mobile.iOS.Bindings.MSDevice Device { get; }
 
 		// @property (readonly, assign, nonatomic) NSUInteger appProcessIdentifier;
 		[Export("appProcessIdentifier")]
@@ -50,12 +50,12 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 		bool IsAppKill { get; }
 	}
 
-	// typedef void (^SNMUserConfirmationHandler)(NSArray<SNMErrorReport *> * _Nonnull);
-	delegate void SNMUserConfirmationHandler(SNMErrorReport[] arg0);
+	// typedef void (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
+	delegate void MSUserConfirmationHandler(MSErrorReport[] arg0);
 
-    // @interface SNMCrashes
+    // @interface MSCrashes
     [BaseType(typeof(NSObject))]
-    interface SNMCrashes
+    interface MSCrashes
     {
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]
@@ -77,89 +77,89 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("hasCrashedInLastSession")]
         bool HasCrashedInLastSession { get; }
 
-        //(SNMErrorReport * _Nullable)lastSessionCrashReport;
+        //(MSErrorReport * _Nullable)lastSessionCrashReport;
         [Static]
         [NullAllowed, Export("lastSessionCrashReport")]
-        SNMErrorReport LastSessionCrashReport { get; }
+        MSErrorReport LastSessionCrashReport { get; }
 
-        //(void)setDelegate:(id<SNMCrashesDelegate> _Nullable)delegate;
+        //(void)setDelegate:(id<MSCrashesDelegate> _Nullable)delegate;
         [Static]
         [Export("setDelegate:")]
-        void SetDelegate([NullAllowed] SNMCrashesDelegate crashesDelegate);
+        void SetDelegate([NullAllowed] MSCrashesDelegate crashesDelegate);
 
-        //(void)setUserConfirmationHandler:(SNMUserConfirmationHandler _Nullable)userConfirmationHandler;
+        //(void)setUserConfirmationHandler:(MSUserConfirmationHandler _Nullable)userConfirmationHandler;
         [Static]
         [Export("setUserConfirmationHandler:")]
-        void SetUserConfirmationHandler([NullAllowed] SNMUserConfirmationHandler userConfirmationHandler);
+        void SetUserConfirmationHandler([NullAllowed] MSUserConfirmationHandler userConfirmationHandler);
 
-        //(void)notifyWithUserConfirmation:(SNMUserConfirmation)userConfirmation;
+        //(void)notifyWithUserConfirmation:(MSUserConfirmation)userConfirmation;
         [Static]
         [Export("notifyWithUserConfirmation:")]
-        void NotifyWithUserConfirmation(SNMUserConfirmation userConfirmation);
+        void NotifyWithUserConfirmation(MSUserConfirmation userConfirmation);
     }
 
-    // @protocol SNMCrashesDelegate <NSObject>
+    // @protocol MSCrashesDelegate <NSObject>
     [Protocol, Model]
     [BaseType(typeof(NSObject))]
-    interface SNMCrashesDelegate
+    interface MSCrashesDelegate
     {
-        // @optional -(BOOL)crashes:(SNMCrashes *)crashes shouldProcessErrorReport:(SNMErrorReport *)errorReport;
+        // @optional -(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:shouldProcessErrorReport:")]
-        bool CrashesShouldProcessErrorReport(SNMCrashes crashes, SNMErrorReport errorReport);
+        bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport);
 
         //TODO figure out why this is marked optional - we get a crash if it is not implemented
-        // @optional -(SNMErrorAttachment *)attachmentWithCrashes:(SNMCrashes *)crashes forErrorReport:(SNMErrorReport *)errorReport;
+        // @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
         [Export("attachmentWithCrashes:forErrorReport:")]
-        SNMErrorAttachment AttachmentWithCrashes(SNMCrashes crashes, SNMErrorReport errorReport);
+        MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport);
 
-        // @optional -(void)crashes:(SNMCrashes *)crashes willSendErrorReport:(SNMErrorReport *)errorReport;
+        // @optional -(void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:willSendErrorReport:")]
-        void CrashesWillSendErrorReport(SNMCrashes crashes, SNMErrorReport errorReport);
+        void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport errorReport);
 
-        // @optional -(void)crashes:(SNMCrashes *)crashes didSucceedSendingErrorReport:(SNMErrorReport *)errorReport;
+        // @optional -(void)crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:didSucceedSendingErrorReport:")]
-        void CrashesDidSucceedSendingErrorReport(SNMCrashes crashes, SNMErrorReport errorReport);
+        void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport);
 
-        // @optional -(void)crashes:(SNMCrashes *)crashes didFailSendingErrorReport:(SNMErrorReport *)errorReport withError:(NSError *)error;
+        // @optional -(void)crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)error;
         [Export("crashes:didFailSendingErrorReport:withError:")]
-        void CrashesDidFailSendingErrorReport(SNMCrashes crashes, SNMErrorReport errorReport, NSError error);
+        void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport, NSError error);
     }
 
-    // @interface SNMErrorAttachment : NSObject
+    // @interface MSErrorAttachment : NSObject
     [BaseType(typeof(NSObject))]
-    interface SNMErrorAttachment
+    interface MSErrorAttachment
     {
         // @property (nonatomic) NSString * _Nullable textAttachment;
         [NullAllowed, Export("textAttachment")]
         string TextAttachment { get; set; }
 
-        // @property (nonatomic) SNMErrorBinaryAttachment * _Nullable binaryAttachment;
+        // @property (nonatomic) MSErrorBinaryAttachment * _Nullable binaryAttachment;
         [NullAllowed, Export("binaryAttachment", ArgumentSemantic.Assign)]
-        SNMErrorBinaryAttachment BinaryAttachment { get; set; }
+        MSErrorBinaryAttachment BinaryAttachment { get; set; }
 
-        // -(BOOL)isEqual:(SNMErrorAttachment * _Nullable)attachment;
+        // -(BOOL)isEqual:(MSErrorAttachment * _Nullable)attachment;
         [Export("isEqual:")]
-        bool IsEqual([NullAllowed] SNMErrorAttachment attachment);
+        bool IsEqual([NullAllowed] MSErrorAttachment attachment);
 
-        // +(SNMErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text;
+        // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text;
         [Static]
         [Export("attachmentWithText:")]
-        SNMErrorAttachment AttachmentWithText(string text);
+        MSErrorAttachment AttachmentWithText(string text);
 
-        // +(SNMErrorAttachment * _Nonnull)attachmentWithBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
+        // +(MSErrorAttachment * _Nonnull)attachmentWithBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
         [Static]
         [Export("attachmentWithBinaryData:filename:mimeType:")]
-        SNMErrorAttachment AttachmentWithBinaryData(NSData data, [NullAllowed] string filename, string mimeType);
+        MSErrorAttachment AttachmentWithBinaryData(NSData data, [NullAllowed] string filename, string mimeType);
 
-        // +(SNMErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text andBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
+        // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text andBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
         [Static]
         [Export("attachmentWithText:andBinaryData:filename:mimeType:")]
-        SNMErrorAttachment AttachmentWithText(string text, NSData data, [NullAllowed] string filename, string mimeType);
+        MSErrorAttachment AttachmentWithText(string text, NSData data, [NullAllowed] string filename, string mimeType);
     }
 
-    // @interface SNMErrorBinaryAttachment : NSObject
+    // @interface MSErrorBinaryAttachment : NSObject
     [BaseType(typeof(NSObject))]
-    interface SNMErrorBinaryAttachment
+    interface MSErrorBinaryAttachment
     {
         // @property (readonly, nonatomic) NSString * _Nullable fileName;
         [NullAllowed, Export("fileName")]
@@ -173,9 +173,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("contentType")]
         string ContentType { get; }
 
-        // -(BOOL)isEqual:(SNMErrorBinaryAttachment * _Nullable)attachment;
+        // -(BOOL)isEqual:(MSErrorBinaryAttachment * _Nullable)attachment;
         [Export("isEqual:")]
-        bool IsEqual([NullAllowed] SNMErrorBinaryAttachment attachment);
+        bool IsEqual([NullAllowed] MSErrorBinaryAttachment attachment);
 
         // -(instancetype _Nonnull)initWithFileName:(NSString * _Nullable)fileName attachmentData:(NSData * _Nonnull)data contentType:(NSString * _Nonnull)contentType;
         [Export("initWithFileName:attachmentData:contentType:")]
