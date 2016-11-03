@@ -11,13 +11,12 @@ Pod::Spec.new do |s|
 
   s.authors           = { 'Microsoft' => 'support@hockeyapp.net' }
 
-  s.source = { :git => 'https://github.com/Microsoft/react-native-sonoma-private.git' }
+  s.source = { :git => 'https://github.com/Microsoft/react-native-sonoma-private.git', :branch => 'packaging' }
 
   s.platform          = :ios, '8.0'
   s.requires_arc      = true
 
-  s.source_files = 'RNSonomaCore/ios/RNSonomaCore/*.{h,m}'
+  s.vendored_frameworks = 'RNSonomaCore/Products/RNSonomaCore/RNSonomaCore.framework'
 
   s.dependency 'Sonoma'
-  s.frameworks = 'SonomaCore'
 end
