@@ -5,6 +5,7 @@ set -e
 semanticVersion=`grep AssemblyInformationalVersion Microsoft.Sonoma.Core/Properties/AssemblyInfo.cs | sed -E "s/^.*\"(.*)\".*$/\1/"`
 baseSemanticVersion=`sed -E 's/(.*)-.*/\1/' <<< "$semanticVersion"`
 
+# Get latest version from Nuget
 latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/150e39b1-bf52-4fdd-bc32-28d950a14304/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Sonoma.Core'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
 latestNugetVersion=`sed -E "s/^.*<d:Version>(.*)<\/d:Version>.*$/\1/" <<< $latestNugetVersion`
 latestNugetBaseVersion=`sed -E 's/([^-]*)-.*/\1/' <<< "$latestNugetVersion"`
@@ -27,7 +28,7 @@ fi
 newRevisionPadded=`printf %04d $newRevision`
 newVersion="${baseSemanticVersion}-r${newRevisionPadded}"
 
-# If the build is automated, we don't create a git tag, so add build metada to version to be able to know where that build comes from (git commit abbreviated).
+# If the build is automated, we don't create a git tag, so add build metadata to version to be able to know where that build comes from (git commit abbreviated).
 if [[ "$1" == "--use-hash" ]]
 then
 
