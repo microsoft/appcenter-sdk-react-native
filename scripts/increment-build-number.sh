@@ -9,7 +9,7 @@ baseSemanticVersion=`sed -E 's/(.*)-.*/\1/' <<< "$semanticVersion"`
 latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/150e39b1-bf52-4fdd-bc32-28d950a14304/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Sonoma.Core'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
 latestNugetVersion=`sed -E "s/^.*<d:Version>(.*)<\/d:Version>.*$/\1/" <<< $latestNugetVersion`
 latestNugetBaseVersion=`sed -E 's/([^-]*)-.*/\1/' <<< "$latestNugetVersion"`
-latestNugetRevision=`sed -E 's/^.*-r0*(.*)-.*$/\1/' <<< "$latestNugetVersion"`
+latestNugetRevision=`sed -E 's/^.*-r0*(.*)(-.*)?$/\1/' <<< "$latestNugetVersion"`
 
 # Check if base version changes, the second check is just to check if the revision is valid
 # If latestNugetVersion=latestNugetRevision that just means sed failed matching
