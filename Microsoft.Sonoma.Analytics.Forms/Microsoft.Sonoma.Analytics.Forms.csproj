@@ -8,8 +8,8 @@
     <ProjectGuid>{B2F5EFAC-8B33-412E-8847-752682396372}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Sonoma.Analytics.Forms</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Analytics.Forms</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Analytics.Forms</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Analytics.Forms</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -28,7 +28,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>

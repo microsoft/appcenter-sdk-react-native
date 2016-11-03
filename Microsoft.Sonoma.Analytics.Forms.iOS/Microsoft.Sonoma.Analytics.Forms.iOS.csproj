@@ -6,8 +6,8 @@
     <ProjectGuid>{33DA3801-060C-4AFF-9511-B1EA7B26C5C0}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Sonoma.Analytics.Forms</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Analytics.Forms</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Analytics.Forms</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Analytics.Forms</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

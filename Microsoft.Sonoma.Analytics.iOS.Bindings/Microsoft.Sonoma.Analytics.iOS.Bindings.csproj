@@ -6,8 +6,8 @@
     <ProjectGuid>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</ProjectGuid>
     <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Sonoma.Analytics.iOS.Bindings</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Analytics.iOS.Bindings</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Analytics.iOS.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Analytics.iOS.Bindings</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

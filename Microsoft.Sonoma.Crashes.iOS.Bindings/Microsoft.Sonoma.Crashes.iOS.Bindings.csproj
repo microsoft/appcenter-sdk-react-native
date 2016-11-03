@@ -6,8 +6,8 @@
     <ProjectGuid>{FCEB9729-627A-4964-B853-1649CA1FA76D}</ProjectGuid>
     <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Sonoma.Crashes.iOS.Bindings</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Crashes.iOS.Bindings</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

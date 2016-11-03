@@ -8,8 +8,8 @@
     <ProjectGuid>{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Sonoma.Crashes</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Crashes</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,10 +24,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Microsoft.Sonoma.Crashes.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.Azure.Mobile.Crashes.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>

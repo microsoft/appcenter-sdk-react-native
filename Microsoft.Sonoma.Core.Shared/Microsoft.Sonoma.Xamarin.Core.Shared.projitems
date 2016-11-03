@@ -6,7 +6,7 @@
     <SharedGUID>c6c4937c-d5f4-4e00-8b51-8d826ad83c5e</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Sonoma.Core</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.Azure.Mobile</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)WrapperSdk.cs" />

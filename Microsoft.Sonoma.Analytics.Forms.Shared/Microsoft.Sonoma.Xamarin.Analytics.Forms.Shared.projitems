@@ -6,7 +6,7 @@
     <SharedGUID>d32d24a1-15fa-4b5f-9925-695cd3bc4f1c</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Sonoma.Analytics.Forms.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.Azure.Mobile.Analytics.Forms.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)IPlatformSonomaForms.cs" />

@@ -6,8 +6,8 @@
     <ProjectGuid>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Sonoma.Core</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Core</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

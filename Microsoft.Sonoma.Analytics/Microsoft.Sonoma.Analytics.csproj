@@ -8,8 +8,8 @@
     <ProjectGuid>{0F13E444-717E-460A-BDE7-8AD537F0A418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Sonoma.Analytics</RootNamespace>
-    <AssemblyName>Microsoft.Sonoma.Analytics</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Analytics</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Analytics</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,10 +24,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Microsoft.Sonoma.Analytics.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.Azure.Mobile.Analytics.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
