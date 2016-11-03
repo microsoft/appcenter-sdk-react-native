@@ -4,14 +4,14 @@ package = JSON.parse(File.read(File.join(__dir__, 'RNSonomaCore', 'package.json'
 
 Pod::Spec.new do |s|
   s.name              = 'RNSonomaCore'
-  s.version           = package['version']
-  s.summary           = package['description']
-  s.license           = package['license']
-  s.homepage          = package['homepage']
+  s.version           = '0.0.1'
+  s.summary           = 'React Native plugin for Sonoma'
+  s.license           = 'MIT'
+  s.homepage          = 'https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme'
 
   s.authors           = { 'Microsoft' => 'support@hockeyapp.net' }
 
-  s.source = { :git => 'https://github.com/Microsoft/react-native-sonoma-private.git', :branch => 'packaging' }
+  s.source = { :git => 'https://github.com/Microsoft/MobileCenter-SDK-React-Native.git', :tag => 'v0.0.1' }
 
   s.platform          = :ios, '8.0'
   s.requires_arc      = true
