@@ -93,12 +93,6 @@
     <Reference Include="Microsoft.Sonoma.Core.iOS.Bindings">
       <HintPath>..\..\packages\Microsoft.Sonoma.Core.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Core.iOS.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Sonoma.Crashes">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Crashes.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Crashes.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Crashes.iOS.Bindings.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.163-pre3\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -116,6 +110,12 @@
     </Reference>
     <Reference Include="Microsoft.Sonoma.Analytics.iOS.Bindings">
       <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Analytics.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Sonoma.Crashes">
+      <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Crashes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Sonoma.Crashes.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Sonoma.Crashes.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -11,10 +11,18 @@ namespace Contoso.Forms.Puppet
         public CrashesContentPage()
         {
             InitializeComponent();
+            CrashesEnabledSwitchCell.On = Crashes.Enabled;
             if (Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }
+        }
+
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            CrashesEnabledSwitchCell.On = Crashes.Enabled;
         }
 
         void TestCrash(object sender, System.EventArgs e)

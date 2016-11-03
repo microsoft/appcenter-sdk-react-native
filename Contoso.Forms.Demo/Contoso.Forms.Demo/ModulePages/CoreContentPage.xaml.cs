@@ -11,12 +11,17 @@ namespace Contoso.Forms.Demo
         public CoreContentPage()
         {
             InitializeComponent();
-
             if (Device.OS == TargetPlatform.iOS)
             {
                 Icon = "bolt.png";
             }
         }  
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            SonomaEnabledSwitchCell.On = Sonoma.Enabled;
+        }
 
         void UpdateEnabled(object sender, System.EventArgs e)
         {

@@ -35,6 +35,7 @@ namespace Contoso.Forms.Puppet
             LogWriteLevel = LogLevel.Verbose;
             UpdateLogWriteLevelLabel();
 
+
             if (Device.OS == TargetPlatform.iOS)
             {
                 Icon = "bolt.png";
@@ -45,6 +46,8 @@ namespace Contoso.Forms.Puppet
         {
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[Sonoma.LogLevel];
+            SonomaEnabledSwitchCell.On = Sonoma.Enabled;
+
         }
 
         void LogLevelCellTapped(object sender, System.EventArgs e)

@@ -25,12 +25,16 @@ namespace Contoso.Forms.Demo
             InitializeComponent();
             EventProperties = new List<Property>();
             NumPropertiesLabel.Text = EventProperties.Count.ToString();
-            Analytics.Enabled = true;
-
             if (Device.OS == TargetPlatform.iOS)
             {
                 Icon = "lightning.png";
             }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            EnabledSwitchCell.On = Analytics.Enabled;
         }
 
         void AddProperty(object sender, System.EventArgs e)
