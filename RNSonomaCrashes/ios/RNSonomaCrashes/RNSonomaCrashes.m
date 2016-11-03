@@ -10,10 +10,8 @@
 #import "RNSonomaCrashesUtils.h"
 
 @import SonomaCrashes;
+@import RNSonomaCore;
 
-#import "RNSonomaCore.h" // TODO: revert back to <> syntax once it is built as a framework
-
-//#import <SonomaCore/SonomaCore.h>
 
 @interface RNSonomaCrashes () <RCTBridgeModule>
 

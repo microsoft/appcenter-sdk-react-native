@@ -231,11 +231,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
-					"$(SRCROOT)/../../RNSonomaCore/**",
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCore",
+					"$(inherited)",
+					"$(SRCROOT)/../../../ios",
 				);
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCrashes;
 				SKIP_INSTALL = YES;
@@ -247,11 +246,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCrashes",
-					"$(SRCROOT)/../../RNSonomaCore/**",
-					"$(SRCROOT)/../../Sonoma-SDK-iOS/Products/SonomaCore",
+					"$(inherited)",
+					"$(SRCROOT)/../../../ios",
 				);
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../SonomaDemoApp/node_modules/react-native/React/**";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNSonomaCrashes;
 				SKIP_INSTALL = YES;

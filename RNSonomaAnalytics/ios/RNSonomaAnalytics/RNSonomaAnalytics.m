@@ -8,9 +8,7 @@
 #import "RCTUtils.h"
 
 @import SonomaAnalytics;
-
-#import "RNSonomaCore.h" // TODO: revert back to <> syntax once it is built as a framework
-
+@import RNSonomaCore;
 
 @interface RNSonomaAnalytics () <RCTBridgeModule>
 @end

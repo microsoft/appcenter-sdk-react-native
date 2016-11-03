@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.license           = package['license']
   s.homepage          = package['homepage']
 
-  s.authors           = { 'Microsoft Corporation' => 'codepush@microsoft.com' }
+  s.authors           = { 'Microsoft' => 'support@hockeyapp.net' }
 
   s.source = { :git => 'https://github.com/Microsoft/react-native-sonoma-private.git' }
 
@@ -19,4 +19,5 @@ Pod::Spec.new do |s|
   s.source_files = 'RNSonomaCore/ios/RNSonomaCore/*.{h,m}'
 
   s.dependency 'Sonoma'
+  s.frameworks = 'SonomaCore'
 end
