@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Android.App;
-using Java.Lang;
+using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile
 {
-    using AndroidSonoma = Com.Microsoft.Sonoma.Core.Sonoma;
-    using AndroidWrapperSdk = Com.Microsoft.Sonoma.Core.Ingestion.Models.WrapperSdk;
+    using iOSSonoma = Microsoft.Azure.Mobile.iOS.Bindings.SNMSonoma;
+    using iOSLogLevel = Microsoft.Azure.Mobile.iOS.Bindings.SNMLogLevel;
+    using iOSWrapperSdk = Microsoft.Azure.Mobile.iOS.Bindings.SNMWrapperSdk;
 
     /// <summary>
     /// SDK core used to initialize, start and control specific feature.
     /// </summary>
-    public static class Sonoma
+    public static class MobileCenter
     {
         /// <summary>
         /// This property controls the amount of logs emitted by the SDK.
@@ -21,58 +21,57 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                var value = AndroidSonoma.LogLevel;
-                switch (value)
+                var val = iOSSonoma.LogLevel();
+                switch (val)
                 {
-                    case 2:
+                    case iOSLogLevel.Verbose:
                         return LogLevel.Verbose;
-                    case 3:
+                    case iOSLogLevel.Debug:
                         return LogLevel.Debug;
-                    case 4:
+                    case iOSLogLevel.Info:
                         return LogLevel.Info;
-                    case 5:
+                    case iOSLogLevel.Warning:
                         return LogLevel.Warn;
-                    case 6:
+                    case iOSLogLevel.Error:
                         return LogLevel.Error;
-                    case 7:
+                    case iOSLogLevel.Assert:
                         return LogLevel.Assert;
-                    case Com.Microsoft.Sonoma.Core.Utils.SonomaLog.None:
+                    case iOSLogLevel.None:
                         return LogLevel.None;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(value), value, null);
+                        throw new ArgumentOutOfRangeException(nameof(val), val, null);
                 }
             }
-
             set
             {
-                int androidValue;
+                iOSLogLevel loglevel;
                 switch (value)
                 {
                     case LogLevel.Verbose:
-                        androidValue = 2;
+                        loglevel = iOSLogLevel.Verbose;
                         break;
                     case LogLevel.Debug:
-                        androidValue = 3;
+                        loglevel = iOSLogLevel.Debug;
                         break;
                     case LogLevel.Info:
-                        androidValue = 4;
+                        loglevel = iOSLogLevel.Info;
                         break;
                     case LogLevel.Warn:
-                        androidValue = 5;
+                        loglevel = iOSLogLevel.Warning;
                         break;
                     case LogLevel.Error:
-                        androidValue = 6;
+                        loglevel = iOSLogLevel.Error;
                         break;
                     case LogLevel.Assert:
-                        androidValue = 7;
+                        loglevel = iOSLogLevel.Assert;
                         break;
                     case LogLevel.None:
-                        androidValue = Com.Microsoft.Sonoma.Core.Utils.SonomaLog.None;
+                        loglevel = iOSLogLevel.None;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
                 }
-                AndroidSonoma.LogLevel = androidValue;
+                iOSSonoma.SetLogLevel(loglevel);
             }
         }
 
@@ -82,9 +81,9 @@ namespace Microsoft.Azure.Mobile
         /// <param name="serverUrl">Base URL to use for server communication.</param>
         public static void SetServerUrl(string serverUrl)
         {
-            AndroidSonoma.SetServerUrl(serverUrl);
+            iOSSonoma.SetServerUrl(serverUrl);
         }
-        
+
         /// <summary>
         /// Initialize the SDK.
         /// This may be called only once per application process lifetime.
@@ -92,7 +91,8 @@ namespace Microsoft.Azure.Mobile
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
         public static void Initialize(string appSecret)
         {
-            AndroidSonoma.Initialize(SetWrapperSdkAndGetApplication(), appSecret);
+            SetWrapperSdk();
+            iOSSonoma.Start(appSecret);
         }
 
         /// <summary>
@@ -102,7 +102,11 @@ namespace Microsoft.Azure.Mobile
         /// <param name="features">List of features to use.</param>
         public static void Start(params Type[] features)
         {
-            AndroidSonoma.Start(GetFeatures(features));
+            SetWrapperSdk();
+            foreach (var feature in GetFeatures(features))
+            {
+                iOSSonoma.StartFeature(feature);
+            }
         }
 
         /// <summary>
@@ -113,9 +117,9 @@ namespace Microsoft.Azure.Mobile
         /// <param name="features">List of features to use.</param>
         public static void Start(string appSecret, params Type[] features)
         {
-            AndroidSonoma.Start(SetWrapperSdkAndGetApplication(), appSecret, GetFeatures(features));
+            SetWrapperSdk();
+            iOSSonoma.Start(appSecret, GetFeatures(features));
         }
-        
 
         /// <summary>
         /// Enable or disable the SDK as a whole. Updating the property propagates the value to all features that have been started.
@@ -125,8 +129,8 @@ namespace Microsoft.Azure.Mobile
         /// </remarks>
         public static bool Enabled
         {
-            get { return AndroidSonoma.Enabled; }
-            set { AndroidSonoma.Enabled = value; }
+            get { return iOSSonoma.IsEnabled(); }
+            set { iOSSonoma.SetEnabled(value); }
         }
 
         /// <summary>
@@ -135,17 +139,32 @@ namespace Microsoft.Azure.Mobile
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid InstallId => Guid.Parse(AndroidSonoma.InstallId.ToString());
-
-        private static Application SetWrapperSdkAndGetApplication()
-        {
-            AndroidSonoma.SetWrapperSdk(new AndroidWrapperSdk { WrapperSdkName = WrapperSdk.Name, WrapperSdkVersion = WrapperSdk.Version });
-            return (Application)Application.Context;
-        }
+        public static Guid InstallId => Guid.Parse(iOSSonoma.InstallId().ToString());
 
         private static Class[] GetFeatures(IEnumerable<Type> features)
         {
-            return features.Select(feature => Class.FromType((Type)feature.GetProperty("BindingType").GetValue(null, null))).ToArray();
+            return features.Select(feature => GetClassForType(GetBindingType(feature))).ToArray();
+        }
+
+        private static Class GetClassForType(Type type)
+        {
+            IntPtr classHandle = Class.GetHandle(type);
+            if (classHandle != IntPtr.Zero)
+            {
+                return new Class(classHandle);
+            }
+            return null; //TODO what should we do here? throw?
+        }
+
+        private static Type GetBindingType(Type type)
+        {
+            return (Type)type.GetProperty("BindingType").GetValue(null, null);
+        }
+
+        private static void SetWrapperSdk()
+        {
+            iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, "", "", "");
+            iOSSonoma.SetWrapperSdk(wrapperSdk);
         }
     }
 }

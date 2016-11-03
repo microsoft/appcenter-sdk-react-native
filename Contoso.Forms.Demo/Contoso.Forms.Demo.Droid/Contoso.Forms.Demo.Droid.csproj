@@ -106,7 +106,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj">
       <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
-      <Name>Contoso.Forms.Puppet</Name>
+      <Name>Contoso.Forms.Demo</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

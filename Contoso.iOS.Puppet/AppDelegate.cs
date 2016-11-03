@@ -25,10 +25,10 @@ namespace Contoso.iOS.Puppet
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
 
-			Sonoma.LogLevel = LogLevel.Verbose;
+			MobileCenter.LogLevel = LogLevel.Verbose;
 
-			Sonoma.SetServerUrl("http://in-integration.dev.avalanch.es:8081");
-			Sonoma.Start("e7eb534d-58b7-461b-a888-ec250c983e08", typeof(Analytics), typeof(Crashes));
+			MobileCenter.SetServerUrl("http://in-integration.dev.avalanch.es:8081");
+			MobileCenter.Start("e7eb534d-58b7-461b-a888-ec250c983e08", typeof(Analytics), typeof(Crashes));
 
 			try
 			{

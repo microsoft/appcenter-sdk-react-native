@@ -9,7 +9,7 @@ namespace Contoso.Forms.Puppet
 {
     public partial class App : Application
     {
-        private const string LogTag = "SonomaXamarinPuppet";
+        private const string LogTag = "MobileCenterXamarinPuppet";
 
         public App()
         {
@@ -20,14 +20,14 @@ namespace Contoso.Forms.Puppet
 
         protected override void OnStart()
         {
-            SonomaLog.Assert(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.LogLevel = LogLevel.Verbose;
-            SonomaLog.Info(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
+            SonomaLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            SonomaLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             //SonomaForms.StartTrackingFormPages();
-            Sonoma.Start(typeof(Analytics), typeof(Crashes));
+            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
-            SonomaLog.Info(LogTag, "Sonoma.InstallId=" + Sonoma.InstallId);
+            SonomaLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             SonomaLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
         }
 

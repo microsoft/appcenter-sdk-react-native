@@ -46,7 +46,7 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sonoma.cs" />
+    <Compile Include="MobileCenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SonomaLog.cs" />
   </ItemGroup>

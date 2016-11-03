@@ -5,7 +5,7 @@ namespace Microsoft.Azure.Mobile
     /// <summary>
     /// SDK core used to initialize, start and control specific feature.
     /// </summary>
-    public static class Sonoma
+    public static class MobileCenter
     {
         /// <summary>
         /// This property controls the amount of logs emitted by the SDK.

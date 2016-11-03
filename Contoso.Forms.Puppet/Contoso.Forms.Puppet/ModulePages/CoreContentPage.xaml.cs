@@ -45,8 +45,8 @@ namespace Contoso.Forms.Puppet
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            LogLevelLabel.Text = LogLevelNames[Sonoma.LogLevel];
-            SonomaEnabledSwitchCell.On = Sonoma.Enabled;
+            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+            SonomaEnabledSwitchCell.On = MobileCenter.Enabled;
 
         }
 
@@ -54,7 +54,7 @@ namespace Contoso.Forms.Puppet
         {
             var page = new LogLevelPage();
             page.LevelSelected += (LogLevel level) => { 
-                Sonoma.LogLevel = level;
+                MobileCenter.LogLevel = level;
             };
             ((NavigationPage)App.Current.MainPage).PushAsync(page);
         }
@@ -81,7 +81,7 @@ namespace Contoso.Forms.Puppet
         {
             if (SonomaEnabledSwitchCell != null)
             {
-                Sonoma.Enabled = SonomaEnabledSwitchCell.On;
+                MobileCenter.Enabled = SonomaEnabledSwitchCell.On;
             }
         }
 

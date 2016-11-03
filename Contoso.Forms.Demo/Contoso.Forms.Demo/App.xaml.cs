@@ -14,8 +14,8 @@ namespace Contoso.Forms.Demo
             InitializeComponent();
 
             MainPage = new NavigationPage(new MainDemoPage());
-            Sonoma.LogLevel = LogLevel.Verbose;
-            Sonoma.Start(typeof(Analytics), typeof(Crashes));
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnStart()

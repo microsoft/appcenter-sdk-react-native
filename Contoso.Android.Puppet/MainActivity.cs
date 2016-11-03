@@ -11,7 +11,7 @@ namespace Contoso.Android.Puppet
     [Activity(Label = "SXPuppet", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private const string LogTag = "SonomaXamarinPuppet";
+        private const string LogTag = "MobileCenterXamarinPuppet";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -30,12 +30,12 @@ namespace Contoso.Android.Puppet
             };
 
             // Sonoma integration
-            SonomaLog.Assert(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.LogLevel = LogLevel.Verbose;
-            SonomaLog.Info(LogTag, "Sonoma.LogLevel=" + Sonoma.LogLevel);
-            Sonoma.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
+            SonomaLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            SonomaLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+            MobileCenter.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
-            SonomaLog.Info(LogTag, "Sonoma.InstallId=" + Sonoma.InstallId);
+            SonomaLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
         }
     }
 }

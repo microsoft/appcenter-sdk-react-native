@@ -25,7 +25,7 @@ namespace Contoso.Forms.Puppet.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
                     
             // Sonoma must be initialized before the App is created
-            Sonoma.Initialize("44cd8722-bfe0-4748-ac14-7692e031a8a5");
+            MobileCenter.Initialize("44cd8722-bfe0-4748-ac14-7692e031a8a5");
 
             LoadApplication(new App());
         }
