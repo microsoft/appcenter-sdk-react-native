@@ -1,6 +1,6 @@
 using Foundation;
 
-namespace Microsoft.Sonoma.Analytics.iOS.Bindings
+namespace Microsoft.Azure.Mobile.Analytics.iOS.Bindings
 {
     // @interface SNMAnalytics : SNMFeature
     [BaseType(typeof(NSObject))]

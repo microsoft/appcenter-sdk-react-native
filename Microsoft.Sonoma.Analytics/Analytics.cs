@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Sonoma.Analytics
+namespace Microsoft.Azure.Mobile.Analytics
 {
     /// <summary>
     /// Analytics feature.

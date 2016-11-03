@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace Microsoft.Sonoma.Analytics.Forms
+namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
 	public static class SonomaForms
 	{

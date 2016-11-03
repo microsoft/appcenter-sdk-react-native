@@ -1,7 +1,7 @@
 using Android.App;
 using Android.OS;
 
-namespace Microsoft.Sonoma.Analytics.Forms
+namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
     public class PlatformSonomaForms : IPlatformSonomaForms
     {

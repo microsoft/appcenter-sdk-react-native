@@ -1,7 +1,7 @@
 using System;
 using ObjCRuntime;
 
-namespace Microsoft.Sonoma.Crashes.iOS.Bindings {
+namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings {
 	[Native]
 	public enum SNMErrorLogSetting : ulong
 	{

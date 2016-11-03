@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Crashes
+namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Exception thrown by <see cref="Crashes.GenerateTestCrash"/>.

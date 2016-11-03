@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Crashes.Shared
+namespace Microsoft.Azure.Mobile.Crashes.Shared
 {
     /// <summary>
     /// Interface to abstract <see cref="Crashes"/> features between different platforms.

@@ -4,7 +4,7 @@ using System.Linq;
 using Android.App;
 using Java.Lang;
 
-namespace Microsoft.Sonoma.Core
+namespace Microsoft.Azure.Mobile
 {
     using AndroidSonoma = Com.Microsoft.Sonoma.Core.Sonoma;
     using AndroidWrapperSdk = Com.Microsoft.Sonoma.Core.Ingestion.Models.WrapperSdk;

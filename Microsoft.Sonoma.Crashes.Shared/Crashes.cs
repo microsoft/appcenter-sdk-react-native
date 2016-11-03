@@ -1,8 +1,7 @@
 ﻿using System;
-using Microsoft.Sonoma.Core;
-using Microsoft.Sonoma.Crashes.Shared;
+using Microsoft.Azure.Mobile.Crashes.Shared;
 
-namespace Microsoft.Sonoma.Crashes
+namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Crashes feature.

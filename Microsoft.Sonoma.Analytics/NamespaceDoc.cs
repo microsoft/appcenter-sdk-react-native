@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Sonoma.Analytics
+﻿namespace Microsoft.Azure.Mobile.Analytics
 {
     /// <summary>
     /// Analytics SDK module.

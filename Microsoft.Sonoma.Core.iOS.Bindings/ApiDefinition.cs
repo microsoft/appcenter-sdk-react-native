@@ -2,7 +2,7 @@ using Foundation;
 using ObjCRuntime;
 using System;
 
-namespace Microsoft.Sonoma.Core.iOS.Bindings
+namespace Microsoft.Azure.Mobile.iOS.Bindings
 {
 	interface ISNMFeature { }
 

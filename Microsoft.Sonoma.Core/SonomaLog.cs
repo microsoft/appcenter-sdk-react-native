@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Core
+namespace Microsoft.Azure.Mobile
 {
     public static partial class SonomaLog
     {

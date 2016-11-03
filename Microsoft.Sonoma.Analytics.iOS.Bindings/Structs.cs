@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Analytics.iOS.Bindings
+namespace Microsoft.Azure.Mobile.Analytics.iOS.Bindings
 {
 }

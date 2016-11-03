@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Sonoma.Crashes;
+using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo

@@ -43,24 +43,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Microsoft.Sonoma.Core.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Core.0.1.0-SNAPSHOT\lib\MonoAndroid403\Microsoft.Sonoma.Core.Android.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Core">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Core.0.1.0-SNAPSHOT\lib\MonoAndroid403\Microsoft.Sonoma.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Crashes.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\MonoAndroid403\Microsoft.Sonoma.Crashes.Android.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Crashes">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Crashes.0.1.0-SNAPSHOT\lib\MonoAndroid403\Microsoft.Sonoma.Crashes.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Analytics.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\MonoAndroid403\Microsoft.Sonoma.Analytics.Android.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Sonoma.Analytics">
-      <HintPath>..\..\packages\Microsoft.Sonoma.Analytics.0.1.0-SNAPSHOT\lib\MonoAndroid403\Microsoft.Sonoma.Analytics.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\..\packages\Xamarin.Android.Support.v4.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>

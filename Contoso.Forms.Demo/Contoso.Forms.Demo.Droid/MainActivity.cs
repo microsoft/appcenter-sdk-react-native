@@ -8,7 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
-using Microsoft.Sonoma.Core;
+using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Demo.Droid
 {

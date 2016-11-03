@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Contoso.Forms.Demo
 {
     public static class Constants

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Core
+namespace Microsoft.Azure.Mobile
 {
     /// <summary>
     /// SDK core used to initialize, start and control specific feature.

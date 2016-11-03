@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Sonoma.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Crashes SDK module.

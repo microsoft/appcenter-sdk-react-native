@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Analytics.Forms
+namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
+    //TODO should rename this?
     internal class PlatformSonomaForms : IPlatformSonomaForms
     {
         public void Initialize()

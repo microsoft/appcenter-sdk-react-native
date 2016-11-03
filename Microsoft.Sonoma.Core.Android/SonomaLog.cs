@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Sonoma.Core
+﻿namespace Microsoft.Azure.Mobile
 {
     using AndroidSonomaLog = Com.Microsoft.Sonoma.Core.Utils.SonomaLog;
 

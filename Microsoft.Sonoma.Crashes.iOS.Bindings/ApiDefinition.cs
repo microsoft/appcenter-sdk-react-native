@@ -2,7 +2,7 @@ using System;
 using Foundation;
 using ObjCRuntime;
 
-namespace Microsoft.Sonoma.Crashes.iOS.Bindings
+namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
 	// @interface SNMErrorReport : NSObject
 	[BaseType(typeof(NSObject))]
@@ -38,7 +38,7 @@ namespace Microsoft.Sonoma.Crashes.iOS.Bindings
 
 		// @property (readonly, nonatomic) SNMDevice * device;
 		[Export("device")]
-		Core.iOS.Bindings.SNMDevice Device { get; }
+		Microsoft.Azure.Mobile.iOS.Bindings.SNMDevice Device { get; }
 
 		// @property (readonly, assign, nonatomic) NSUInteger appProcessIdentifier;
 		[Export("appProcessIdentifier")]

@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-using Microsoft.Sonoma.Core;
+using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Demo.iOS
 {

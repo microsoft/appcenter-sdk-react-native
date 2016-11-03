@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Sonoma.Core
+﻿namespace Microsoft.Azure.Mobile
 {
     /// <summary>
     /// Log level threshold for logs emitted by the SDK.

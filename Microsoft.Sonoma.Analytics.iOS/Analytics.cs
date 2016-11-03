@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Foundation;
 
-namespace Microsoft.Sonoma.Analytics
+namespace Microsoft.Azure.Mobile.Analytics
 {
 	using System.Linq;
 	using iOSAnalytics = iOS.Bindings.SNMAnalytics;

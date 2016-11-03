@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Sonoma.Core
+﻿namespace Microsoft.Azure.Mobile
 {
     /// <summary>
     /// Core SDK module.

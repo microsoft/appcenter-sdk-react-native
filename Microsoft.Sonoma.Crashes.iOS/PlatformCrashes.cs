@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Sonoma.Crashes.Shared;
-using Microsoft.Sonoma.Crashes.iOS.Bindings;
+using Microsoft.Azure.Mobile.Crashes.Shared;
+using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
-namespace Microsoft.Sonoma.Crashes
+namespace Microsoft.Azure.Mobile.Crashes
 {
 	using iOSCrashes = iOS.Bindings.SNMCrashes;
 

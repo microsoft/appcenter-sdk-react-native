@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Microsoft.Sonoma.Core
+namespace Microsoft.Azure.Mobile
 {
     public static class WrapperSdk
     {

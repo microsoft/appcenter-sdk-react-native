@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using Android.Runtime;
 using Com.Microsoft.Sonoma.Crashes.Ingestion.Models;
-using Microsoft.Sonoma.Crashes.Shared;
-using Microsoft.Sonoma.Core;
+using Microsoft.Azure.Mobile.Crashes.Shared;
+using Microsoft.Azure.Mobile;
 
-namespace Microsoft.Sonoma.Crashes
+namespace Microsoft.Azure.Mobile.Crashes
 {
     using AndroidCrashes = Com.Microsoft.Sonoma.Crashes.Crashes;
     using Exception = System.Exception;

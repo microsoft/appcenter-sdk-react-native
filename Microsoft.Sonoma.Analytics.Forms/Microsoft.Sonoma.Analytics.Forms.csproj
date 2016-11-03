@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Sonoma.Analytics\Microsoft.Sonoma.Analytics.csproj">
-      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
+      <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
       <Name>Microsoft.Sonoma.Analytics</Name>
     </ProjectReference>
   </ItemGroup>

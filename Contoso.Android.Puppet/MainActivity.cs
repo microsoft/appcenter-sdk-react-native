@@ -1,9 +1,9 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Widget;
-using Microsoft.Sonoma.Analytics;
-using Microsoft.Sonoma.Core;
-using Microsoft.Sonoma.Crashes;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Crashes;
 using System.Collections.Generic;
 
 namespace Contoso.Android.Puppet

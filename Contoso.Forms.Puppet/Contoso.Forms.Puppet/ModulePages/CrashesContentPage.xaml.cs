@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Sonoma.Crashes;
+using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -17,7 +17,6 @@ namespace Contoso.Forms.Puppet
                 Icon = "socket.png";
             }
         }
-
 
         protected override void OnAppearing()
         {

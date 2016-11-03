@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using ObjCRuntime;
 
-namespace Microsoft.Sonoma.Core
+namespace Microsoft.Azure.Mobile
 {
-    using iOSSonoma = Microsoft.Sonoma.Core.iOS.Bindings.SNMSonoma;
-    using iOSLogLevel = Microsoft.Sonoma.Core.iOS.Bindings.SNMLogLevel;
-    using iOSWrapperSdk = Microsoft.Sonoma.Core.iOS.Bindings.SNMWrapperSdk;
+    using iOSSonoma = Microsoft.Azure.Mobile.iOS.Bindings.SNMSonoma;
+    using iOSLogLevel = Microsoft.Azure.Mobile.iOS.Bindings.SNMLogLevel;
+    using iOSWrapperSdk = Microsoft.Azure.Mobile.iOS.Bindings.SNMWrapperSdk;
 
     /// <summary>
     /// SDK core used to initialize, start and control specific feature.

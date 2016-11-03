@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Sonoma.Analytics;
+using Microsoft.Azure.Mobile.Analytics;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet

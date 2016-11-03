@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Sonoma.Crashes.Shared
+namespace Microsoft.Azure.Mobile.Crashes.Shared
 {
     /// <summary>
     /// Object used to share portable code between platforms.

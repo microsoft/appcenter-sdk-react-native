@@ -1,8 +1,8 @@
 ﻿using Foundation;
 using UIKit;
-using Microsoft.Sonoma.Core;
-using Microsoft.Sonoma.Analytics;
-using Microsoft.Sonoma.Crashes;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
 using System;
 
 namespace Contoso.iOS.Puppet
