@@ -16,10 +16,23 @@ public class RNSonomaAnalyticsPackage implements ReactPackage {
     boolean startEnabled;
     Application application;
 
+    private static final String ENABLE_IN_JS = "ENABLE_IN_JS";
+
     public RNSonomaAnalyticsPackage(Application application, boolean startEnabled) {
         this.startEnabled = startEnabled;
         this.application = application;
     }
+
+    public RNSonomaAnalyticsPackage(Application application, String startEnabled) {
+        if (startEnabled.equals(ENABLE_IN_JS)){
+            this.startEnabled = false;
+        } else {
+            this.startEnabled = true;
+        }
+        
+        this.application = application;
+    }
+
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {

@@ -13,12 +13,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNSonomaCrashesPackage< CrashListenerType extends RNSonomaCrashesListenerBase > implements ReactPackage {
+public class RNSonomaCrashesPackage implements ReactPackage {
     private RNSonomaCrashesModule mCrashesModule;
+    private static final String CRASH_LISTENER_ASK_JAVASCRIPT = "ASK_JAVASCRIPT";
 
-    public RNSonomaCrashesPackage(Application application, CrashListenerType crashListener) {
+    public RNSonomaCrashesPackage(Application application, RNSonomaCrashesListenerBase crashListener) {
         // Construct the module up-front to enable crash reporting ASAP
         RNSonomaCrashesUtils.logDebug("Creating crashes module");
+        this.mCrashesModule = new RNSonomaCrashesModule(application, crashListener);
+    }
+
+   public RNSonomaCrashesPackage(Application application, String crashListenerType) {
+        // Construct the module up-front to enable crash reporting ASAP
+        RNSonomaCrashesUtils.logDebug("Creating crashes module with crashListener " + crashListenerType);
+        RNSonomaCrashesListenerBase crashListener;
+        if (crashListenerType.equals(CRASH_LISTENER_ASK_JAVASCRIPT)){
+            crashListener = new RNSonomaCrashesListenerAlwaysAsk();
+        } else {
+            crashListener = new RNSonomaCrashesListenerAlwaysSend();
+        }
+
         this.mCrashesModule = new RNSonomaCrashesModule(application, crashListener);
     }
 
