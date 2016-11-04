@@ -5,14 +5,14 @@ return rnpmlink.ios.initSonomaConfig().then(function(file) {
     return rnpmlink.inquirer.prompt({
         type: 'list',
         name: 'whenToSendiOSCrashes',
-        message: 'When should crashes be sent to the server for the iOS App ?',
+        message: 'For the iOS App, should crashes be sent automatically, or processed in javascript before being sent ?',
         choices: [
             {
-                "name": "Always send to server",
+                "name": "Automatically",
                 "value": "ALWAYS_SEND"
             },
             {
-                "name": "Process crashes in JavaScript before sending to server",
+                "name": "Processed in JavaScript by user",
                 "value": "ASK_JAVASCRIPT"
             }
         ]
