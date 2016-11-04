@@ -35,7 +35,7 @@ We support the following platforms:
 
 * Xamarin.iOS
 * Xamarin.Android
-* Xamarin.Forms
+* Xamarin.Forms (iOS and Android)
 
 ## 3. Setup
 
@@ -114,7 +114,7 @@ To start the SDK in your app, follow these steps:
     MobileCenter.Initialize("{Your Android App Secret}");
     ```
 
-    You can also copy paste the `Start` method call from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.
+    You can also copy paste the code from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.
     
     The example above shows how to use the `Start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `Start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
 
@@ -129,7 +129,7 @@ To start the SDK in your app, follow these steps:
     Analytics.TrackEvent("Video clicked", new Dictionary<string, string> { { "Category", "Music" }, { "key", "value"}});
     ```
 
-* **Enable or disable Analytics:**  You can change the enabled state of the Analytics module at runtime by calling the `Analytics.Enabled` property. If you disable it, the SDK will not collect any more analytics information for the app. To re-enable it, set property value as `true` in the same method.
+* **Enable or disable Analytics:**  You can change the enabled state of the Analytics module at runtime by calling the `Analytics.Enabled` property. If you disable it, the SDK will not collect any more analytics information for the app. To re-enable it, set property value as `true`.
 
     ```csharp
     Analytics.Enabled = true;
@@ -150,7 +150,7 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     Crashes.GenerateTestCrash();
     ```
 
-    Note that this API can only be used in test/beta apps and won't work in production apps.
+    Note that this API checks for debug vs release configurations. So you can use only use it when debuging as it won't work for release apps.
 
 * **Did the app crash in last session:** At any time after starting the SDK, you can check if the app crashed in the previous session:
 
@@ -158,13 +158,13 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     bool didAppCrash = Crashes.HasCrashedInLastSession;
     ```
 
-* **Enable or disable the Crashes module:**  You can disable and opt out of using the Crashes module by calling the `Enabled` API and the SDK will collect no crashes for your app. Use the same API to re-enable it by setting property as `true`.
+* **Enable or disable the Crashes module:**  You can disable and opt out of using the Crashes module by setting the `Enabled` property to `false` and the SDK will collect no crashes for your app. Use the same API to re-enable it by setting property as `true`.
 
     ```csharp
     Crashes.Enabled = true;
     ```
 
-    You can also check if the module is enabled or not using:
+    You can also check whether the module is enabled or not using:
 
     ```csharp
     bool isEnabled = Crashes.Enabled;
@@ -184,7 +184,7 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
         System.Guid installId = MobileCenter.InstallId;
     ```
 
-* **Enable/Disable Mobile Center SDK:** If you want the Mobile Center SDK to be disabled completely, use the `Enabled` API. When disabled, the SDK will not forward any information to MobileCenter.
+* **Enable/Disable Mobile Center SDK:** If you want the Mobile Center SDK to be disabled completely, use the `Enabled` property. When disabled, the SDK will not forward any information to MobileCenter.
 
     ```csharp
         MobileCenter.Enabled = false;
