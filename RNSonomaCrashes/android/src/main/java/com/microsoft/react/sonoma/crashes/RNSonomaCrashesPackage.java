@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNSonomaCrashesPackage< CrashListenerType extends RNSonomaCrashesListenerBase > implements ReactPackage {
+public class RNSonomaCrashesPackage implements ReactPackage {
     private RNSonomaCrashesModule mCrashesModule;
 
-    public RNSonomaCrashesPackage(Application application, CrashListenerType crashListener) {
+    public RNSonomaCrashesPackage(Application application, RNSonomaCrashesListenerBase crashListener) {
         // Construct the module up-front to enable crash reporting ASAP
         RNSonomaCrashesUtils.logDebug("Creating crashes module");
         this.mCrashesModule = new RNSonomaCrashesModule(application, crashListener);
