@@ -19,5 +19,34 @@
   "bugs": {
     "url": "https://github.com/microsoft/react-native-sonoma-private/issues"
   },
-  "homepage": "https://github.com/microsoft/react-native-sonoma-private#readme"
+  "homepage": "https://github.com/microsoft/react-native-sonoma-private#readme",
+  "dependencies": {
+    "sonoma-react-native-link-scripts": "../RNSonomaLinkScript"
+  },
+  "rnpm": {
+    "params": [
+      {
+        "type": "list",
+        "name": "whenToSendCrashes",
+        "message": "When should crashes be sent to the server for the Android app ?",
+        "choices": [
+          {
+            "name": "Always send to server",
+            "value": "ALWAYS_SEND"
+          },
+          {
+            "name": "Process crashes in JavaScript before sending to server",
+            "value": "ASK_JAVASCRIPT"
+          }
+        ]
+      }
+    ],
+    "android": {
+      "packageInstance": "new RNSonomaCrashesPackage(MainApplication.this, ${whenToSendCrashes})"
+    },
+    "commands": {
+      "prelink": "node node_modules/react-native-sonoma-crashes/scripts/prelink",
+      "postlink": "node node_modules/react-native-sonoma-crashes/scripts/postlink"
+    }
+  }
 }
