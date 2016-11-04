@@ -27,7 +27,7 @@ Let's get started with setting up Mobile Center Xamarin SDK in your app to use t
 Before you begin, please make sure that the following prerequisites are met:
 
 * A project setup in Xamarin Studio or Xamarin for Visual Studio.
-* You are not using other crash services on the same mobile app.
+* You are not using other crash services on the same mobile app for iOS platform.
 
 ## 2. Supported Platforms 
 
@@ -39,7 +39,7 @@ We support the following platforms:
 
 ## 3. Setup
 
-Mobile Center SDK is designed with a modular approach – a developer only needs to integrate the modules of the services that they're interested in. If you'd like to get started with just Analtyics or Crashes, include their packages in yoru app. For each iOS, Android and Forms project, add the 'Microsoft Mobile Center Analytics' and 'Microsoft Mobile Center Crashes' packages.
+Mobile Center SDK is designed with a modular approach – a developer only needs to integrate the modules of the services that they're interested in. If you'd like to get started with just Analytics or Crashes, include their packages in your app. For each iOS, Android and Forms project, add the 'Microsoft Mobile Center Analytics' and 'Microsoft Mobile Center Crashes' packages.
 
 ## For Xamarin Studio ##
 
@@ -78,45 +78,45 @@ To start the SDK in your app, follow these steps:
     using Microsoft.Azure.Mobile.Crashes;
     ```
 
-2. **Start the SDK:**  Mobile Center provides developers with two modules to get started – Analytics and Crashes. In order to use these modules, you need to opt in for the module(s) that you'd like, meaning by default no modules are started and you will have to explicitly call each of them when starting the SDK.   
+2. **Start the SDK:**  Mobile Center provides developers with two modules to get started – Analytics and Crashes. In order to use these modules, you need to opt in for the module(s) that you'd like, meaning by default no module is started and you will have to explicitly call each of them when starting the SDK.   
 
     **Xamarin.iOS**
 
     Open AppDelegate.cs file and add the `Start` API in FinishedLaunching() method
 
-    ```Xamarin
-    // MobileCenter.Start(getApplication(), "{Your App Secret}", Analytics.class, Crashes.class);
+    ```csharp
+    MobileCenter.Start("{Your App Secret}", typeof(Analytics), typeof(Crashes));
     ```
 
     **Xamarin.Android**
     
     Open MainActivity.cs file and add the `Start` API in OnCreate() method
 
-    ```Xamarin
-    // MobileCenter.Start(getApplication(), "{Your App Secret}", Analytics.class, Crashes.class);
+    ```csharp
+    MobileCenter.Start("{Your App Secret}", typeof(Analytics), typeof(Crashes));
     ```
 
     **Xamarin.Forms**
     
     Start SDK call is split into two methods for Xamarin.Forms. That's because you need two different AppSecrets - one for iOS and other for your Android app. Open App.xaml.cs file in your shared project and add the API below in the `App()` constructor.
 
-    ```Xamarin
+    ```csharp
     MobileCenter.Start(typeof(Analytics), typeof(Crashes));
     ```
      
     In the iOS project of the Forms app, open AppDelegate.cs and add the API in `FinishedLaunching()` method  
-    ```Xamarin
+    ```csharp
     MobileCenter.Initialize("{Your iOS App Secret}");
     ```
 
     In the Droid project of the Forms app, open MainActivity.cs and add the API in `OnCreate()` method  
-    ```Xamarin
+    ```csharp
     MobileCenter.Initialize("{Your Android App Secret}");
     ```
 
-    You can also copy paste the `start` method call from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.
+    You can also copy paste the `Start` method call from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.
     
-    The example above shows how to use the `start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
+    The example above shows how to use the `Start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `Start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
 
 ## 5. Analytics APIs
 
@@ -125,18 +125,18 @@ To start the SDK in your app, follow these steps:
 
 * **Custom Events:** You can track your own custom events with specific properties to know what's happening in your app, understand user actions, and see the aggregates in the Mobile Center portal. Once you have started the SDK, use the `TrackEvent()` method to track your events with properties.
 
-    ```Xamarin
+    ```csharp
     Analytics.TrackEvent("Video clicked", new Dictionary<string, string> { { "Category", "Music" }, { "key", "value"}});
     ```
 
-* **Enable or disable Analytics:**  You can change the enabled state of the Analytics module at runtime by calling the `Analytics.Enabled` method. If you disable it, the SDK will not collect any more analytics information for the app. To re-enable it, set property value as `true` in the same method.
+* **Enable or disable Analytics:**  You can change the enabled state of the Analytics module at runtime by calling the `Analytics.Enabled` property. If you disable it, the SDK will not collect any more analytics information for the app. To re-enable it, set property value as `true` in the same method.
 
-    ```Xamarin
+    ```csharp
     Analytics.Enabled = true;
     ```
     You can also check if the module is enabled or not using:
 
-    ```Xamarin
+    ```csharp
     bool isEnabled = Analytics.Enabled;
     ```
 
@@ -146,7 +146,7 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
 
 * **Generate a test crash:** The SDK provides you with a static API to generate a test crash for easy testing of the SDK:
 
-    ```Xamarin
+    ```csharp
     Crashes.GenerateTestCrash();
     ```
 
@@ -154,19 +154,19 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
 
 * **Did the app crash in last session:** At any time after starting the SDK, you can check if the app crashed in the previous session:
 
-    ```Xamarin
+    ```csharp
     bool didAppCrash = Crashes.HasCrashedInLastSession;
     ```
 
 * **Enable or disable the Crashes module:**  You can disable and opt out of using the Crashes module by calling the `Enabled` API and the SDK will collect no crashes for your app. Use the same API to re-enable it by setting property as `true`.
 
-    ```Xamarin
+    ```csharp
     Crashes.Enabled = true;
     ```
 
     You can also check if the module is enabled or not using:
 
-    ```Xamarin
+    ```csharp
     bool isEnabled = Crashes.Enabled;
     ```
 
@@ -174,18 +174,18 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
 
 * **Debugging**: You can control the amount of log messages that show up from the SDK. Use the API below to enable additional logging while debugging. By default, it is set it to `ASSERT` for non-debuggable applications and `WARN` for debuggable applications.
 
-    ```Xamarin
+    ```csharp
         MobileCenter.LogLevel = LogLevel.Verbose;
     ```
 
 * **Get Install Identifier**: The Mobile Center SDK creates a UUID for each device once the app is installed. This identifier remains the same for a device when the app is updated and a new one is generated only when the app is re-installed. The following API is useful for debugging purposes.
 
-    ```Xamarin
-        System.Guid installId = MobileCenter.InstallId();
+    ```csharp
+        System.Guid installId = MobileCenter.InstallId;
     ```
 
-* **Enable/Disable Mobile Center SDK:** If you want the Mobile Center SDK to be disabled completely, use the `setEnabled()` API. When disabled, the SDK will not forward any information to MobileCenter.
+* **Enable/Disable Mobile Center SDK:** If you want the Mobile Center SDK to be disabled completely, use the `Enabled` API. When disabled, the SDK will not forward any information to MobileCenter.
 
-    ```Xamarin
+    ```csharp
         MobileCenter.Enabled = false;
     ```
