@@ -28,7 +28,7 @@
       <CustomCommands>
         <Command>
           <type>AfterClean</type>
-          <command>rm Jars/crashes-release.aar</command>
+          <command>rm -f Jars/mobile-center-crashes-release.aar</command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -67,7 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\crashes-release.aar" />
+    <LibraryProjectZip Include="Jars\mobile-center-crashes-release.aar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>

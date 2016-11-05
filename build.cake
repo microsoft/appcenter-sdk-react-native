@@ -19,7 +19,7 @@ class SonomaModule {
 }
 
 // SDK versions
-var ANDROID_SDK_VERSION = "0.1.4";
+var ANDROID_SDK_VERSION = "0.2.0-9";
 var IOS_SDK_VERSION = "0.1.3";
 
 // URLs for downloading binaries.
@@ -30,15 +30,15 @@ var IOS_SDK_VERSION = "0.1.3";
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
  *     By running mozroots and install part of Mozilla's root certificates can make it work. 
  */
-var SDK_STORAGE_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/";
-var ANDROID_URL = SDK_STORAGE_URL + "android/SonomaSDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "ios/SonomaSDK-iOS-" + IOS_SDK_VERSION + ".zip";
+var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
+var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
+var IOS_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/" + "ios/SonomaSDK-iOS-" + IOS_SDK_VERSION + ".zip";
 
 // Available Sonoma modules.
 var SONOMA_MODULES = new [] {
-	new SonomaModule("core-release.aar", "SonomaCore.framework.zip", "Microsoft.Sonoma.Core", "SonomaCore.nuspec"),
-	new SonomaModule("analytics-release.aar", "SonomaAnalytics.framework.zip", "Microsoft.Sonoma.Analytics", "SonomaAnalytics.nuspec"),
-	new SonomaModule("crashes-release.aar", "SonomaCrashes.framework.zip", "Microsoft.Sonoma.Crashes", "SonomaCrashes.nuspec")
+	new SonomaModule("mobile-center-release.aar", "SonomaCore.framework.zip", "Microsoft.Sonoma.Core", "SonomaCore.nuspec"),
+	new SonomaModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "Microsoft.Sonoma.Analytics", "SonomaAnalytics.nuspec"),
+	new SonomaModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "Microsoft.Sonoma.Crashes", "SonomaCrashes.nuspec")
 };
 
 

@@ -32,7 +32,7 @@
         </Command>
         <Command>
           <type>AfterClean</type>
-          <command>rm -rf ../externals/android Jars/core-release.aar</command>
+          <command>rm -rf ../externals/android Jars/mobile-center-release.aar</command>
           <workingdir>${ProjectDir}</workingdir>
         </Command>
       </CustomCommands>
@@ -66,7 +66,7 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\core-release.aar" />
+    <LibraryProjectZip Include="Jars\mobile-center-release.aar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

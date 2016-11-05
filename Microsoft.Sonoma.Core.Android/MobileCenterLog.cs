@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Azure.Mobile
 {
-    using AndroidMobileCenterLog = Com.Microsoft.Sonoma.Core.Utils.SonomaLog;
+    using AndroidMobileCenterLog = Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog;
 
     public static partial class MobileCenterLog
     {

@@ -6,8 +6,8 @@ using Java.Lang;
 
 namespace Microsoft.Azure.Mobile
 {
-    using AndroidMobileCenter = Com.Microsoft.Sonoma.Core.Sonoma;
-    using AndroidWrapperSdk = Com.Microsoft.Sonoma.Core.Ingestion.Models.WrapperSdk;
+    using AndroidMobileCenter = Com.Microsoft.Azure.Mobile.MobileCenter;
+    using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
 
     /// <summary>
     /// SDK core used to initialize, start and control specific service.
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile
                         return LogLevel.Error;
                     case 7:
                         return LogLevel.Assert;
-                    case Com.Microsoft.Sonoma.Core.Utils.SonomaLog.None:
+                    case Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog.None:
                         return LogLevel.None;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Mobile
                         androidValue = 7;
                         break;
                     case LogLevel.None:
-                        androidValue = Com.Microsoft.Sonoma.Core.Utils.SonomaLog.None;
+                        androidValue = Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog.None;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);

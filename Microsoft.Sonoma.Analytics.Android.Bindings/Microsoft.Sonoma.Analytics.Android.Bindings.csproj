@@ -28,7 +28,7 @@
       <CustomCommands>
         <Command>
           <type>AfterClean</type>
-          <command>rm Jars/analytics-release.aar</command>
+          <command>rm -f Jars/mobile-center-analytics-release.aar</command>
           <workingdir>${ProjectDir}</workingdir>
         </Command>
       </CustomCommands>
@@ -62,13 +62,13 @@
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\analytics-release.aar" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Microsoft.Sonoma.Core.Android.Bindings\Microsoft.Sonoma.Core.Android.Bindings.csproj">
       <Project>{c3b5ba33-da39-400d-b5b3-85c68354fd74}</Project>
       <Name>Microsoft.Sonoma.Core.Android.Bindings</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryProjectZip Include="Jars\mobile-center-analytics-release.aar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>

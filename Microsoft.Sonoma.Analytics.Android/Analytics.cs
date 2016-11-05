@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
-    using AndroidAnalytics = Com.Microsoft.Sonoma.Analytics.Analytics;
+    using AndroidAnalytics = Com.Microsoft.Azure.Mobile.Analytics.Analytics;
 
     /// <summary>
     /// Analytics service.
