@@ -6,7 +6,7 @@ using Foundation;
 namespace Microsoft.Azure.Mobile.Analytics
 {
 	using System.Linq;
-	using iOSAnalytics = iOS.Bindings.SNMAnalytics;
+	using iOSAnalytics = iOS.Bindings.MSAnalytics;
 
 	/// <summary>
 	/// Analytics feature.

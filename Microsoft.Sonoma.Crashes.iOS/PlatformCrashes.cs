@@ -7,46 +7,46 @@ using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-	using iOSCrashes = iOS.Bindings.SNMCrashes;
+    using iOSCrashes = iOS.Bindings.MSCrashes;
 
-	class PlatformCrashes : PlatformCrashesBase
-	{
-		public override Type BindingType => typeof(iOSCrashes);
+    class PlatformCrashes : PlatformCrashesBase
+    {
+        public override Type BindingType => typeof(iOSCrashes);
 
-		public override bool Enabled
+        public override bool Enabled
         {
-            get { return SNMCrashes.IsEnabled(); }
-            set { SNMCrashes.SetEnabled(value); }
-		}
+            get { return MSCrashes.IsEnabled(); }
+            set { MSCrashes.SetEnabled(value); }
+        }
 
-		public override bool HasCrashedInLastSession => iOSCrashes.HasCrashedInLastSession;
+        public override bool HasCrashedInLastSession => iOSCrashes.HasCrashedInLastSession;
 
-		//public override void TrackException(Exception exception)
-		//{
-		//	throw new NotImplementedException();
-		//}
+        //public override void TrackException(Exception exception)
+        //{
+        //	throw new NotImplementedException();
+        //}
 
         //TODO this just logs every exception possible, which is not the way crashes are handled in the native sdk
-		static PlatformCrashes()
-		{
-            SNMCrashes.SetDelegate(new CrashDelegate());
-            SNMCrashes.NotifyWithUserConfirmation(SNMUserConfirmation.Always);
+        static PlatformCrashes()
+        {
+            MSCrashes.SetDelegate(new CrashDelegate());
+            MSCrashes.NotifyWithUserConfirmation(MSUserConfirmation.Always);
 
-		}
+        }
 
-		private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
-    class CrashDelegate : SNMCrashesDelegate
+    class CrashDelegate : MSCrashesDelegate
     {
-        public override bool CrashesShouldProcessErrorReport(SNMCrashes crashes, SNMErrorReport errorReport)
+        public override bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport)
         {
             return true;
         }
-        public override SNMErrorAttachment AttachmentWithCrashes(SNMCrashes crashes, SNMErrorReport errorReport)
+        public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport)
         {
             return null;
         }

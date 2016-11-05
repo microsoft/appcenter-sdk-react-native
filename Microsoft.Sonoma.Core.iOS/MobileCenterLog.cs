@@ -3,7 +3,7 @@
 	using iOSMessageProvider = Microsoft.Azure.Mobile.iOS.Bindings.MSLogMessageProvider;
 	using iOSLogger = Microsoft.Azure.Mobile.iOS.Bindings.MSWrapperLogger;
 
-	public static partial class MobileCenterlog
+	public static partial class MobileCenterLog
 	{
 		public static void Verbose(string tag, string message)
 		{
