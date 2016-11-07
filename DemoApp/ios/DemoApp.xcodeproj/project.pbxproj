@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* SonomaDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SonomaDemoAppTests.m */; };
+		00E356F31AD99517003FC87E /* DemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* DemoAppTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		CB4D6DA91DBAC6BA0080D9D6 /* Sonoma-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4D6DA81DBAC6BA0080D9D6 /* Sonoma-Config.plist */; };
-		CBE4F703E802221835DA932C /* libPods-SonomaDemoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD76368D159A897B63515643 /* libPods-SonomaDemoApp.a */; };
+		CB4D6DA91DBAC6BA0080D9D6 /* MobileCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB4D6DA81DBAC6BA0080D9D6 /* MobileCenter-Config.plist */; };
+		CBE4F703E802221835DA932C /* libPods-DemoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD76368D159A897B63515643 /* libPods-DemoApp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,7 +22,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = SonomaDemoApp;
+			remoteInfo = DemoApp;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -41,20 +41,20 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* SonomaDemoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SonomaDemoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* DemoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* SonomaDemoAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SonomaDemoAppTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* SonomaDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SonomaDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SonomaDemoApp/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = SonomaDemoApp/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* DemoAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoAppTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* DemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = DemoApp/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = DemoApp/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SonomaDemoApp/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SonomaDemoApp/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SonomaDemoApp/main.m; sourceTree = "<group>"; };
-		A7D945F1E3437879206CBE9A /* Pods-SonomaDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonomaDemoApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SonomaDemoApp/Pods-SonomaDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
-		BD76368D159A897B63515643 /* libPods-SonomaDemoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SonomaDemoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB4D6DA81DBAC6BA0080D9D6 /* Sonoma-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Sonoma-Config.plist"; path = "SonomaDemoApp/Sonoma-Config.plist"; sourceTree = "<group>"; };
-		D242D6C23BA93EED289A0AF3 /* Pods-SonomaDemoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonomaDemoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SonomaDemoApp/Pods-SonomaDemoApp.release.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DemoApp/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DemoApp/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DemoApp/main.m; sourceTree = "<group>"; };
+		A7D945F1E3437879206CBE9A /* Pods-DemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DemoApp/Pods-DemoApp.debug.xcconfig"; sourceTree = "<group>"; };
+		BD76368D159A897B63515643 /* libPods-DemoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DemoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB4D6DA81DBAC6BA0080D9D6 /* MobileCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "MobileCenter-Config.plist"; path = "DemoApp/MobileCenter-Config.plist"; sourceTree = "<group>"; };
+		D242D6C23BA93EED289A0AF3 /* Pods-DemoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DemoApp/Pods-DemoApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,20 +69,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBE4F703E802221835DA932C /* libPods-SonomaDemoApp.a in Frameworks */,
+				CBE4F703E802221835DA932C /* libPods-DemoApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* SonomaDemoAppTests */ = {
+		00E356EF1AD99517003FC87E /* DemoAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* SonomaDemoAppTests.m */,
+				00E356F21AD99517003FC87E /* DemoAppTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = SonomaDemoAppTests;
+			path = DemoAppTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -93,7 +93,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* SonomaDemoApp */ = {
+		13B07FAE1A68108700A75B9A /* DemoApp */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -104,7 +104,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = SonomaDemoApp;
+			name = DemoApp;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -117,10 +117,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				CB4D6DA81DBAC6BA0080D9D6 /* Sonoma-Config.plist */,
-				13B07FAE1A68108700A75B9A /* SonomaDemoApp */,
+				CB4D6DA81DBAC6BA0080D9D6 /* MobileCenter-Config.plist */,
+				13B07FAE1A68108700A75B9A /* DemoApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* SonomaDemoAppTests */,
+				00E356EF1AD99517003FC87E /* DemoAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				FC22D1CFF53C5D2CA5864327 /* Pods */,
 				891F6F76998B7C75B2E3269B /* Frameworks */,
@@ -132,8 +132,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* SonomaDemoApp.app */,
-				00E356EE1AD99517003FC87E /* SonomaDemoAppTests.xctest */,
+				13B07F961A680F5B00A75B9A /* DemoApp.app */,
+				00E356EE1AD99517003FC87E /* DemoAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,7 +141,7 @@
 		891F6F76998B7C75B2E3269B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BD76368D159A897B63515643 /* libPods-SonomaDemoApp.a */,
+				BD76368D159A897B63515643 /* libPods-DemoApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -149,8 +149,8 @@
 		FC22D1CFF53C5D2CA5864327 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A7D945F1E3437879206CBE9A /* Pods-SonomaDemoApp.debug.xcconfig */,
-				D242D6C23BA93EED289A0AF3 /* Pods-SonomaDemoApp.release.xcconfig */,
+				A7D945F1E3437879206CBE9A /* Pods-DemoApp.debug.xcconfig */,
+				D242D6C23BA93EED289A0AF3 /* Pods-DemoApp.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -158,9 +158,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* SonomaDemoAppTests */ = {
+		00E356ED1AD99517003FC87E /* DemoAppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SonomaDemoAppTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "DemoAppTests" */;
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
@@ -171,14 +171,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = SonomaDemoAppTests;
-			productName = SonomaDemoAppTests;
-			productReference = 00E356EE1AD99517003FC87E /* SonomaDemoAppTests.xctest */;
+			name = DemoAppTests;
+			productName = DemoAppTests;
+			productReference = 00E356EE1AD99517003FC87E /* DemoAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* SonomaDemoApp */ = {
+		13B07F861A680F5B00A75B9A /* DemoApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SonomaDemoApp" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DemoApp" */;
 			buildPhases = (
 				76591C32FD3BD62640FF7AA3 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -193,9 +193,9 @@
 			);
 			dependencies = (
 			);
-			name = SonomaDemoApp;
+			name = DemoApp;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* SonomaDemoApp.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* DemoApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -213,7 +213,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SonomaDemoApp" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DemoApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -226,8 +226,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* SonomaDemoApp */,
-				00E356ED1AD99517003FC87E /* SonomaDemoAppTests */,
+				13B07F861A680F5B00A75B9A /* DemoApp */,
+				00E356ED1AD99517003FC87E /* DemoAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -244,7 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB4D6DA91DBAC6BA0080D9D6 /* Sonoma-Config.plist in Resources */,
+				CB4D6DA91DBAC6BA0080D9D6 /* MobileCenter-Config.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
@@ -279,7 +279,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SonomaDemoApp/Pods-SonomaDemoApp-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DemoApp/Pods-DemoApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		76591C32FD3BD62640FF7AA3 /* [CP] Check Pods Manifest.lock */ = {
@@ -309,7 +309,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SonomaDemoApp/Pods-SonomaDemoApp-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DemoApp/Pods-DemoApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -319,7 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* SonomaDemoAppTests.m in Sources */,
+				00E356F31AD99517003FC87E /* DemoAppTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +337,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* SonomaDemoApp */;
+			target = 13B07F861A680F5B00A75B9A /* DemoApp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -349,7 +349,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = SonomaDemoApp;
+			path = DemoApp;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -363,11 +363,11 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SonomaDemoAppTests/Info.plist;
+				INFOPLIST_FILE = DemoAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SonomaDemoApp.app/SonomaDemoApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoApp.app/DemoApp";
 			};
 			name = Debug;
 		};
@@ -376,17 +376,17 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = SonomaDemoAppTests/Info.plist;
+				INFOPLIST_FILE = DemoAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SonomaDemoApp.app/SonomaDemoApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoApp.app/DemoApp";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7D945F1E3437879206CBE9A /* Pods-SonomaDemoApp.debug.xcconfig */;
+			baseConfigurationReference = A7D945F1E3437879206CBE9A /* Pods-DemoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEAD_CODE_STRIPPING = NO;
@@ -399,20 +399,20 @@
 					"$(SRCROOT)/../../../ios/RNCrashes/**",
 					"$(SRCROOT)/../../../ios/RNAnalytics/**",
 				);
-				INFOPLIST_FILE = SonomaDemoApp/Info.plist;
+				INFOPLIST_FILE = DemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = SonomaDemoApp;
+				PRODUCT_NAME = DemoApp;
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D242D6C23BA93EED289A0AF3 /* Pods-SonomaDemoApp.release.xcconfig */;
+			baseConfigurationReference = D242D6C23BA93EED289A0AF3 /* Pods-DemoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -424,14 +424,14 @@
 					"$(SRCROOT)/../../../ios/RNCrashes/**",
 					"$(SRCROOT)/../../../ios/RNAnalytics/**",
 				);
-				INFOPLIST_FILE = SonomaDemoApp/Info.plist;
+				INFOPLIST_FILE = DemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = SonomaDemoApp;
+				PRODUCT_NAME = DemoApp;
 			};
 			name = Release;
 		};
@@ -524,7 +524,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SonomaDemoAppTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "DemoAppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -533,7 +533,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SonomaDemoApp" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DemoApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -542,7 +542,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SonomaDemoApp" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DemoApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

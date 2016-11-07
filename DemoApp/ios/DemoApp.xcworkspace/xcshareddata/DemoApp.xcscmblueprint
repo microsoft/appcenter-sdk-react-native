@@ -12,9 +12,9 @@
     "476E658C08744EE27903E377B4070C3D2195E160" : "react-native-sonoma-private\/",
     "5D476A9F11FF230A02665C8DF20974CE43A29460" : "react-native-sonoma-private\/Sonoma-SDK-iOS\/"
   },
-  "DVTSourceControlWorkspaceBlueprintNameKey" : "SonomaDemoApp",
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DemoApp",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
-  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SonomaDemoApp\/ios\/SonomaDemoApp.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "DemoApp\/ios\/DemoApp.xcworkspace",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/microsoft\/react-native-sonoma-private",

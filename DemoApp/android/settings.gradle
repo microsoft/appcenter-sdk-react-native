@@ -1,4 +1,4 @@
-rootProject.name = 'SonomaDemoApp'
+rootProject.name = 'DemoApp'
 
 include ':app'
 include ':mobilecenter-crashes'

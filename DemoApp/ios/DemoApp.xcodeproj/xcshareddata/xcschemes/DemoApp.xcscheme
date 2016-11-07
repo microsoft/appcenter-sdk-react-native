@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "SonomaDemoApp.app"
-               BlueprintName = "SonomaDemoApp"
-               ReferencedContainer = "container:SonomaDemoApp.xcodeproj">
+               BuildableName = "DemoApp.app"
+               BlueprintName = "DemoApp"
+               ReferencedContainer = "container:DemoApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "SonomaDemoAppTests.xctest"
-               BlueprintName = "SonomaDemoAppTests"
-               ReferencedContainer = "container:SonomaDemoApp.xcodeproj">
+               BuildableName = "DemoAppTests.xctest"
+               BlueprintName = "DemoAppTests"
+               ReferencedContainer = "container:DemoApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "SonomaDemoAppTests.xctest"
-               BlueprintName = "SonomaDemoAppTests"
-               ReferencedContainer = "container:SonomaDemoApp.xcodeproj">
+               BuildableName = "DemoAppTests.xctest"
+               BlueprintName = "DemoAppTests"
+               ReferencedContainer = "container:DemoApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "SonomaDemoApp.app"
-            BlueprintName = "SonomaDemoApp"
-            ReferencedContainer = "container:SonomaDemoApp.xcodeproj">
+            BuildableName = "DemoApp.app"
+            BlueprintName = "DemoApp"
+            ReferencedContainer = "container:DemoApp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "SonomaDemoApp.app"
-            BlueprintName = "SonomaDemoApp"
-            ReferencedContainer = "container:SonomaDemoApp.xcodeproj">
+            BuildableName = "DemoApp.app"
+            BlueprintName = "DemoApp"
+            ReferencedContainer = "container:DemoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "SonomaDemoApp.app"
-            BlueprintName = "SonomaDemoApp"
-            ReferencedContainer = "container:SonomaDemoApp.xcodeproj">
+            BuildableName = "DemoApp.app"
+            BlueprintName = "DemoApp"
+            ReferencedContainer = "container:DemoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

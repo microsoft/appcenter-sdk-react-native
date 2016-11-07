@@ -1,6 +1,6 @@
 platform :ios, '8.0'
 
-target 'SonomaDemoApp' do
+target 'DemoApp' do
     # React Native
     pod 'React', :path => '../node_modules/react-native', :subspecs => [
         'Core',
