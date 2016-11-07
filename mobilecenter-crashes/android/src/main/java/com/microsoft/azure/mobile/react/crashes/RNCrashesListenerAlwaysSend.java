@@ -1,6 +1,6 @@
 package com.microsoft.azure.mobile.react.crashes;
 
-import com.microsoft.sonoma.crashes.model.ErrorReport;
+import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 public class RNCrashesListenerAlwaysSend extends RNCrashesListenerBase {
 

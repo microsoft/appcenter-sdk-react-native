@@ -1,6 +1,6 @@
 package com.microsoft.azure.mobile.react.crashes;
 
-import com.microsoft.sonoma.crashes.model.ErrorReport;
+import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 public class RNCrashesListenerAlwaysAsk extends RNCrashesListenerBase {
 
@@ -22,9 +22,6 @@ public class RNCrashesListenerAlwaysAsk extends RNCrashesListenerBase {
         // Require user confirmation for all crashes, since this is the
         // only way JS can indicate whether or not a crash should be sent.
 
-	// TODO: This function is called ~ when Sonoma.Start(Crashes) is called
-	// At that point there is not yet a JS environment. We need to inform JS
-	// once it starts that there is a pending error waiting for user interaction
         return true;
     }
 

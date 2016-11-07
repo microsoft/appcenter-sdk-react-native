@@ -30,18 +30,18 @@ try {
 
 module.exports = {
     initMobileCenterConfig: function(file) {
-        var MobileCenterConfig = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
+        var config = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         return inquirer.prompt([{
             type: 'input',
-            default: MobileCenterConfig.get('AppSecret'),
+            default: config.get('AppSecret'),
             message: 'What is the iOS App Secret?',
             name: 'AppSecret',
         }]).then(function(answers) {
             try {
-                MobileCenterConfig.set('AppSecret', answers['AppSecret']);
-                return MobileCenterConfig.save();
+                config.set('AppSecret', answers['AppSecret']);
+                return config.save();
             } catch (e) {
-                debug('Could not save MobileCenterConfig', e);
+                debug('Could not save config', e);
                 Promise.reject(e);
             }
         });

@@ -113,7 +113,7 @@ allprojects {
 
 repositories {
     maven {
-            url  'http://microsoftsonoma.bintray.com/sonoma'
+            url  'http://microsoftsonoma.bintray.com/mobilecenter'
             credentials {
                 username rootProject.bintrayUser
                 password rootProject.bintrayKey
@@ -123,5 +123,5 @@ repositories {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.sonoma:core:+'
+    compile 'com.microsoft.azure.mobile:mobile-center:+'
 }

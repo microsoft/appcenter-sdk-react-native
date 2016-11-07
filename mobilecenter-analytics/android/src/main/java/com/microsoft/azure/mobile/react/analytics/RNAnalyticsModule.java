@@ -9,8 +9,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
 import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenter;
-import com.microsoft.sonoma.core.Sonoma;
-import com.microsoft.sonoma.analytics.Analytics;
+import com.microsoft.azure.mobile.MobileCenter;
+import com.microsoft.azure.mobile.analytics.Analytics;
 
 import org.json.JSONException;
 
@@ -21,7 +21,7 @@ public class RNAnalyticsModule extends ReactContextBaseJavaModule {
         RNMobileCenter.initializeMobileCenter(application);
         Analytics.setEnabled(startEnabled);
         //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
-        Sonoma.start(Analytics.class);
+        MobileCenter.start(Analytics.class);
     }
 
     @Override

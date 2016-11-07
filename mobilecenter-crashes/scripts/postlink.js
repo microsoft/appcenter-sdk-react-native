@@ -9,7 +9,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     return rnpmlink.inquirer.prompt(prompt);
 }).then(function (answer) {
     var code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
-        '[RNCrashses registerWithCrashDelegate: [[RNSonomaCrashesDelegateAlwaysSend alloc] init]]'
+        '[RNCrashses registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]]'
         : '[RNCrashes register]'
     return rnpmlink.ios.initInAppDelegate('#import "RNCrashes.h"', code);
 }).then(function (file) {

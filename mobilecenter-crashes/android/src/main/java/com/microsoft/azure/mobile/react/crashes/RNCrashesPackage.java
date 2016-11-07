@@ -24,17 +24,17 @@ public class RNCrashesPackage implements ReactPackage {
         this.mCrashesModule = new RNCrashesModule(application, crashListener);
     }
 
-   public RNSonomaCrashesPackage(Application application, String crashListenerType) {
+   public RNCrashesPackage(Application application, String crashListenerType) {
         // Construct the module up-front to enable crash reporting ASAP
-        RNSonomaCrashesUtils.logDebug("Creating crashes module with crashListener " + crashListenerType);
-        RNSonomaCrashesListenerBase crashListener;
+        RNCrashesUtils.logDebug("Creating crashes module with crashListener " + crashListenerType);
+        RNCrashesListenerBase crashListener;
         if (crashListenerType.equals(CRASH_LISTENER_ASK_JAVASCRIPT)){
-            crashListener = new RNSonomaCrashesListenerAlwaysAsk();
+            crashListener = new RNCrashesListenerAlwaysAsk();
         } else {
-            crashListener = new RNSonomaCrashesListenerAlwaysSend();
+            crashListener = new RNCrashesListenerAlwaysSend();
         }
 
-        this.mCrashesModule = new RNSonomaCrashesModule(application, crashListener);
+        this.mCrashesModule = new RNCrashesModule(application, crashListener);
     }
 
     @Override

@@ -10,9 +10,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
-import com.microsoft.sonoma.core.Sonoma;
-import com.microsoft.sonoma.crashes.Crashes;
-import com.microsoft.sonoma.crashes.model.ErrorReport;
+import com.microsoft.azure.mobile.MobileCenter;
+import com.microsoft.azure.mobile.crashes.Crashes;
+import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenter;
 
@@ -36,7 +36,7 @@ public class RNCrashesModule extends BaseJavaModule {
         }
 
         RNMobileCenter.initializeMobileCenter(application);
-        Sonoma.start(Crashes.class);
+        MobileCenter.start(Crashes.class);
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {

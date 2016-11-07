@@ -5,10 +5,10 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.microsoft.sonoma.crashes.AbstractCrashesListener;
-import com.microsoft.sonoma.crashes.ErrorAttachments;
-import com.microsoft.sonoma.crashes.model.ErrorAttachment;
-import com.microsoft.sonoma.crashes.model.ErrorReport;
+import com.microsoft.azure.mobile.crashes.AbstractCrashesListener;
+import com.microsoft.azure.mobile.crashes.ErrorAttachments;
+import com.microsoft.azure.mobile.crashes.model.ErrorAttachment;
+import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 import org.json.JSONException;
 

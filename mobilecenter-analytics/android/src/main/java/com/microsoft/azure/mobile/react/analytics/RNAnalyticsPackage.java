@@ -22,7 +22,7 @@ public class RNAnalyticsPackage implements ReactPackage {
         this.application = application;
     }
 
-    public RNSonomaAnalyticsPackage(Application application, String startEnabled) {
+    public RNAnalyticsPackage(Application application, String startEnabled) {
         if (startEnabled.equals(ENABLE_IN_JS)){
             this.startEnabled = false;
         } else {
