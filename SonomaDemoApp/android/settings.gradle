@@ -1,8 +1,8 @@
 rootProject.name = 'SonomaDemoApp'
 
 include ':app'
-include ':react-native-sonoma-crashes'
-include ':react-native-sonoma-analytics'
+include ':mobilecenter-crashes'
+include ':mobilecenter-analytics'
 
-project(':react-native-sonoma-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sonoma-crashes/android')
-project(':react-native-sonoma-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sonoma-analytics/android')
+project(':mobilecenter-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/mobilecenter-crashes/android')
+project(':mobilecenter-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/mobilecenter-analytics/android')

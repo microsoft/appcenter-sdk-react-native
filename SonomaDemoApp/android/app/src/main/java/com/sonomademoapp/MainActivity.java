@@ -1,4 +1,4 @@
-package com.sonomademoapp;
+package com.demoapp;
 
 import android.os.Bundle;
 
@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "SonomaDemoApp";
+        return "DemoApp";
     }
 
     @Override

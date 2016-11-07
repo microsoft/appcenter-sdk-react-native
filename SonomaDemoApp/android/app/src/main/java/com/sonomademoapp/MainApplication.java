@@ -1,4 +1,4 @@
-package com.sonomademoapp;
+package com.demoapp;
 
 import android.app.Application;
 
@@ -7,9 +7,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
-import com.microsoft.sonoma.react.analytics.RNSonomaAnalyticsPackage;
+import com.microsoft.azure.mobile.react.analytics.RNAnalyticsPackage;
 
-import com.microsoft.sonoma.react.crashes.RNSonomaCrashesPackage;
+import com.microsoft.azure.mobile.react.crashes.RNCrashesPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
       // Create RN native packages
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RNSonomaAnalyticsPackage(MainApplication.this, true),
-          new RNSonomaCrashesPackage(MainApplication.this, new com.microsoft.sonoma.react.crashes.RNSonomaCrashesListenerAlwaysAsk())
+          new RNAnalyticsPackage(MainApplication.this, true),
+          new RNCrashesPackage(MainApplication.this, new com.microsoft.azure.mobile.react.crashes.RNCrashesListenerAlwaysAsk())
       );
       return packages;
     }

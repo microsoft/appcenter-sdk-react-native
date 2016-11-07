@@ -12,11 +12,8 @@
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 
-//@import SonomaAnalytics;
-//@import SonomaCrashes;
-
-#import "RNSonomaCrashes.h"
-#import "RNSonomaAnalytics.h"
+#import "RNCrashes.h"
+#import "RNAnalytics.h"
 
 @implementation AppDelegate
 
@@ -27,12 +24,12 @@
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"SonomaDemoApp"
+                                                      moduleName:@"DemoApp"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
 
-  [RNSonomaCrashes register];
-  [RNSonomaAnalytics registerWithInitiallyEnabled:true];
+  [RNCrashes register];
+  [RNAnalytics registerWithInitiallyEnabled:true];
   
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

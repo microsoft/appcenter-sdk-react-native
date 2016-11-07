@@ -18,7 +18,7 @@ target 'SonomaDemoApp' do
     pod 'Sonoma', :podspec => 'https://download.hockeyapp.net/sonoma/ios/Sonoma.podspec'
 
     # React Native wrappers for Sonoma SDK
-    pod 'RNSonomaCore', :podspec => '../../RNSonomaCore.podspec' # Will point to github tag
-    pod 'RNSonomaAnalytics', :path => '../node_modules/react-native-sonoma-analytics'
-    pod 'RNSonomaCrashes', :path => '../node_modules/react-native-sonoma-crashes'
+    pod 'RNMobileCenter', :podspec => '../../RNMobileCenter.podspec' # Will point to github tag
+    pod 'RNAnalytics', :path => '../node_modules/mobilecenter-analytics'
+    pod 'RNCrashes', :path => '../node_modules/mobilecenter-crashes'
 end

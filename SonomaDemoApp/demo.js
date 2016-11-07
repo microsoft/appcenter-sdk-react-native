@@ -14,8 +14,8 @@ import {
   View
 } from 'react-native';
 
-import SonomaAnalytics from 'react-native-sonoma-analytics';
-import SonomaCrashes from 'react-native-sonoma-crashes';
+import Analytics from 'mobilecenter-analytics';
+import Crashes from 'mobilecenter-crashes';
 
 var data = {};
 data.x = "x value";
@@ -25,11 +25,11 @@ data["undefd"] = undefined;
 data["recursive"] = data;
 data["function"] = function () { console.log(arguments);};
 
-class SonomaDemoApp extends Component {
+class DemoApp extends Component {
   async componentDidMount() {
-    if (SonomaCrashes.hasCrashedInLastSession) {
-      SonomaCrashes.process(function (reports, send) {
-        SonomaCrashes.addEventListener({
+    if (Crashes.hasCrashedInLastSession) {
+      Crashes.process(function (reports, send) {
+        Crashes.addEventListener({
           willSendCrash: function () {
             console.log("WILL SEND CRASH");
             console.log(arguments);
@@ -59,12 +59,12 @@ class SonomaDemoApp extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to Sonoma!
+          Welcome to Mobile Center!
         </Text>
 
         <TouchableOpacity onPress={() => {
           if (__DEV__) {
-            SonomaCrashes.generateTestCrash();
+            Crashes.generateTestCrash();
           } else {
             undefined.property;
           }
@@ -82,15 +82,15 @@ class SonomaDemoApp extends Component {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => SonomaAnalytics.trackEvent("Button press", { page: "Home page" })}>
+        <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", { page: "Home page" })}>
           <Text style={styles.button}>
             Track Event
           </Text>
         </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => SonomaAnalytics.trackEvent("Button press", data)}>
+      <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", data)}>
           <Text style={styles.button}>
-            Track Event badly
+            Track Event badly (Don't do this, only strings are supported)
           </Text>
         </TouchableOpacity>
       </View>
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('SonomaDemoApp', () => SonomaDemoApp);
+AppRegistry.registerComponent('DemoApp', () => DemoApp);
