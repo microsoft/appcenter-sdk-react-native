@@ -19,5 +19,35 @@
   "bugs": {
     "url": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/issues"
   },
-  "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme"
+  "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme",
+  "dependencies": {
+    "mobilecenter-link-scripts": "../mobilecenter-link-scripts"
+  },
+  "rnpm": {
+    "params": [
+      {
+        "type": "list",
+        "name": "whenToSendCrashes",
+        "message": "For the Android app, should crashes be sent automatically, or processed in javascript before being sent?",
+        "choices": [
+          {
+            "name": "Automatically",
+            "value": "ALWAYS_SEND"
+          },
+          {
+            "name": "Processed in JavaScript by user",
+            "value": "ASK_JAVASCRIPT"
+          }
+        ]
+      }
+    ],
+    "android": {
+      "packageInstance": "new RNCrashesPackage(MainApplication.this, ${whenToSendCrashes})"
+    },
+    "commands": {
+      "prelink": "node node_modules/mobilecenter-crashes/scripts/prelink",
+      "postlink": "node node_modules/mobilecenter-crashes/scripts/postlink"
+    }
+  }
+
 }

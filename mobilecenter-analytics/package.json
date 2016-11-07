@@ -17,5 +17,35 @@
   "bugs": {
     "url": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/issues"
   },
-  "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme"
+  "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme",
+  "dependencies": {
+    "mobilecenter-link-scripts": "../mobilecenter-link-scripts"
+  },
+  "rnpm": {
+    "params": [
+      {
+        "type": "list",
+        "name": "whenToEnableAnalytics",
+        "message": "For the Android app, should user tracking be enabled automatically ?",
+        "choices": [
+          {
+            "name": "Enable Automatically",
+            "value": "ALWAYS_SEND"
+          },
+          {
+            "name": "Enable in JavaScript",
+            "value": "ENABLE_IN_JS"
+          }
+        ]
+      }
+    ],
+    "android": {
+      "packageInstance": "new RNAnalyticsPackage(MainApplication.this, ${whenToEnableAnalytics})"
+    },
+    "commands": {
+      "prelink": "node node_modules/mobilecenter-analytics/scripts/prelink",
+      "postlink": "node node_modules/mobilecenter-analytics/scripts/postlink"
+    }
+  }
+
 }
