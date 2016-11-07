@@ -136,29 +136,29 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.iOS\Microsoft.Sonoma.Analytics.iOS.csproj">
+    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.iOS\Microsoft.Azure.Mobile.Analytics.iOS.csproj">
       <Project>{EF5D0090-9E12-45B5-961C-45D787BD80A5}</Project>
-      <Name>Microsoft.Sonoma.Analytics.iOS</Name>
+      <Name>Microsoft.Azure.Mobile.Analytics.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS\Microsoft.Sonoma.Core.iOS.csproj">
-      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
-      <Name>Microsoft.Sonoma.Core.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Crashes.iOS\Microsoft.Sonoma.Crashes.iOS.csproj">
-      <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
-      <Name>Microsoft.Sonoma.Crashes.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.iOS.Bindings\Microsoft.Sonoma.Analytics.iOS.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.iOS.Bindings\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.csproj">
       <Project>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</Project>
-      <Name>Microsoft.Sonoma.Analytics.iOS.Bindings</Name>
+      <Name>Microsoft.Azure.Mobile.Analytics.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS.Bindings\Microsoft.Sonoma.Core.iOS.Bindings.csproj">
-      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.Sonoma.Core.iOS.Bindings</Name>
+    <ProjectReference Include="..\Microsoft.Sonoma.Crashes.iOS\Microsoft.Azure.Mobile.Crashes.iOS.csproj">
+      <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Sonoma.Crashes.iOS.Bindings\Microsoft.Sonoma.Crashes.iOS.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.Sonoma.Crashes.iOS.Bindings\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.csproj">
       <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
-      <Name>Microsoft.Sonoma.Crashes.iOS.Bindings</Name>
+      <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS\Microsoft.Azure.Mobile.iOS.csproj">
+      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
+      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

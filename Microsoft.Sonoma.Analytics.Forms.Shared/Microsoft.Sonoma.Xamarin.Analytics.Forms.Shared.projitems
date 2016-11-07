@@ -9,7 +9,7 @@
     <Import_RootNamespace>Microsoft.Azure.Mobile.Analytics.Forms.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)IPlatformSonomaForms.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SonomaForms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPlatformMobileCenterForms.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterForms.cs" />
   </ItemGroup>
 </Project>

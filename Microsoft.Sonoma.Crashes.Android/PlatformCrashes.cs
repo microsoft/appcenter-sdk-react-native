@@ -5,7 +5,6 @@ using System.Linq;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
 using Microsoft.Azure.Mobile.Crashes.Shared;
-using Microsoft.Azure.Mobile;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {

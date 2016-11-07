@@ -36,9 +36,9 @@ var IOS_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/" + "ios/Sono
 
 // Available Sonoma modules.
 var SONOMA_MODULES = new [] {
-	new SonomaModule("mobile-center-release.aar", "SonomaCore.framework.zip", "Microsoft.Sonoma.Core", "SonomaCore.nuspec"),
-	new SonomaModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "Microsoft.Sonoma.Analytics", "SonomaAnalytics.nuspec"),
-	new SonomaModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "Microsoft.Sonoma.Crashes", "SonomaCrashes.nuspec")
+	new SonomaModule("mobile-center-release.aar", "SonomaCore.framework.zip", "Microsoft.Sonoma.Core", "MobileCenter.nuspec"),
+	new SonomaModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "Microsoft.Sonoma.Analytics", "MobileCenterAnalytics.nuspec"),
+	new SonomaModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "Microsoft.Sonoma.Crashes", "MobileCenterCrashes.nuspec")
 };
 
 
@@ -69,8 +69,8 @@ Task("Build")
 	.Does(() => 
 {
 	// Build solution
-	NuGetRestore("./Sonoma-SDK-Xamarin-Build.sln");
-	DotNetBuild("./Sonoma-SDK-Xamarin-Build.sln", c => c.Configuration = "Release");
+	NuGetRestore("./Sonoma-SDK-Xamarin.sln");
+	DotNetBuild("./Sonoma-SDK-Xamarin.sln", c => c.Configuration = "Release");
 });
 
 // Task dependencies for binding each platform.
@@ -170,7 +170,7 @@ Task("NuGet")
 		});
 	}
 
-	MoveFiles("./Microsoft.Sonoma*.nupkg", "./output");
+	MoveFiles("./Microsoft.Azure.Mobile*.nupkg", "./output");
 });
 
 // Main Task.

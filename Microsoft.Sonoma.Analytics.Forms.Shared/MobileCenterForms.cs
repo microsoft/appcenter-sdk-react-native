@@ -3,13 +3,13 @@ using Xamarin.Forms;
 
 namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
-	public static class SonomaForms
+	public static class MobileCenterForms
 	{
 		const string CommonPageClassSuffix = "Page";
 
 		static Page _pageToTrack;
 
-		static readonly IPlatformSonomaForms PlatformSonomaForms = new PlatformSonomaForms();
+		static readonly IPlatformMobileCenterForms PlatformSonomaForms = new PlatformMobileCenterForms();
 
 		public static void StartTrackingFormPages()
 		{

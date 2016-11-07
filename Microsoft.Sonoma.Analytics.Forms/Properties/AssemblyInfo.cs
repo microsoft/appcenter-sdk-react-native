@@ -4,11 +4,11 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.Sonoma.Analytics.Forms")]
+[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Analytics.Forms")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Microsoft.Sonoma.Analytics.Forms")]
+[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Analytics.Forms")]
 [assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

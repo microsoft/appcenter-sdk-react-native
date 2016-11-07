@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</ProjectGuid>
+    <ProjectGuid>{4936A94C-BE22-4F73-8468-64FA4371FF80}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Crashes.iOS</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -20,21 +20,28 @@
     <WarningLevel>4</WarningLevel>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <MtouchLink>
+    </MtouchLink>
+    <MtouchHttpClientHandler>
+    </MtouchHttpClientHandler>
+    <MtouchTlsProvider>
+    </MtouchTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <MtouchLink>
+    </MtouchLink>
+    <MtouchHttpClientHandler>
+    </MtouchHttpClientHandler>
+    <MtouchTlsProvider>
+    </MtouchTlsProvider>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,16 +53,23 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MobileCenter.cs" />
+    <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MobileCenterLog.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS.Bindings\Microsoft.Sonoma.Core.iOS.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.Sonoma.Crashes.iOS.Bindings\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.csproj">
+      <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS\Microsoft.Azure.Mobile.iOS.csproj">
+      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
       <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.Sonoma.Core.iOS.Bindings</Name>
+      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Sonoma.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Sonoma.Core.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems')" />
+  <Import Project="..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Sonoma.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

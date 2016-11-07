@@ -3,7 +3,7 @@ using Android.OS;
 
 namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
-    public class PlatformSonomaForms : IPlatformSonomaForms
+    public class PlatformMobileCenterForms : IPlatformMobileCenterForms
     {
         private static readonly object Lock = new object();
 
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Forms
 
             public void OnActivityResumed(Activity activity)
             {
-                SonomaForms.NotifyOnResume();
+                MobileCenterForms.NotifyOnResume();
             }
 
             public void OnActivitySaveInstanceState(Activity activity, Bundle outState)

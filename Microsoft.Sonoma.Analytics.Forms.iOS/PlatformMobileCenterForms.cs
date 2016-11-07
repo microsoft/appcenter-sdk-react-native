@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
-    class PlatformSonomaForms : IPlatformSonomaForms
+    class PlatformMobileCenterForms : IPlatformMobileCenterForms
     {
         public void Initialize()
 		{

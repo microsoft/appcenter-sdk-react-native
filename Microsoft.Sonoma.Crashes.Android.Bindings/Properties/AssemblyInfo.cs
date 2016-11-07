@@ -3,7 +3,7 @@
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Microsoft.Sonoma.Crashes.Android.Bindings")]
+[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Crashes.Android.Bindings")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]

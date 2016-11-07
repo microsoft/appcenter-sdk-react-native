@@ -98,7 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlatformSonomaForms.cs" />
+    <Compile Include="PlatformMobileCenterForms.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -110,9 +110,13 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.Android\Microsoft.Sonoma.Analytics.Android.csproj">
-      <Project>{93e4ada5-8d7a-44bf-9549-0ad76ab86e8f}</Project>
-      <Name>Microsoft.Sonoma.Analytics.Android</Name>
+    <ProjectReference Include="..\Microsoft.Sonoma.Core.Android\Microsoft.Azure.Mobile.Android.csproj">
+      <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
+      <Name>Microsoft.Azure.Mobile.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Sonoma.Analytics.Android\Microsoft.Azure.Mobile.Analytics.Android.csproj">
+      <Project>{93E4ADA5-8D7A-44BF-9549-0AD76AB86E8F}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.Sonoma.Analytics.Forms.Shared\Microsoft.Sonoma.Xamarin.Analytics.Forms.Shared.projitems" Label="Shared" />

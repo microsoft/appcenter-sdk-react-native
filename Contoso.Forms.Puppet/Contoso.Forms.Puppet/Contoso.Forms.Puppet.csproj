@@ -95,17 +95,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics\Microsoft.Sonoma.Analytics.csproj">
-      <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
-      <Name>Microsoft.Sonoma.Analytics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Core\Microsoft.Sonoma.Core.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Core\Microsoft.Azure.Mobile.csproj">
       <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
-      <Name>Microsoft.Sonoma.Core</Name>
+      <Name>Microsoft.Azure.Mobile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes\Microsoft.Sonoma.Crashes.csproj">
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
+      <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Sonoma.Crashes\Microsoft.Azure.Mobile.Crashes.csproj">
       <Project>{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}</Project>
-      <Name>Microsoft.Sonoma.Crashes</Name>
+      <Name>Microsoft.Azure.Mobile.Crashes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Azure.Mobile.Analytics.Forms
 {
-    internal interface IPlatformSonomaForms
+    internal interface IPlatformMobileCenterForms
     {
         void Initialize();
     }
