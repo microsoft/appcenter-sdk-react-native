@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNCrashesPackage< CrashListenerType extends RNCrashesListenerBase > implements ReactPackage {
+public class RNCrashesPackage implements ReactPackage {
     private RNCrashesModule mCrashesModule;
 
-    public RNCrashesPackage(Application application, CrashListenerType crashListener) {
+    public RNCrashesPackage(Application application, RNCrashesListenerBase crashListener) {
         // Construct the module up-front to enable crash reporting ASAP
         RNCrashesUtils.logDebug("Creating crashes module");
         this.mCrashesModule = new RNCrashesModule(application, crashListener);

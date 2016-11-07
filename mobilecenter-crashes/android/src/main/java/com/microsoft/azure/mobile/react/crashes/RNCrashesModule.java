@@ -23,13 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RNCrashesModule< CrashListenerType extends RNCrashesListenerBase > extends BaseJavaModule {
-    private CrashListenerType mCrashListener;
+public class RNCrashesModule extends BaseJavaModule {
+    private RNCrashesListenerBase mCrashListener;
 
     private static final String HasCrashedInLastSessionKey = "hasCrashedInLastSession";
     private static final String LastCrashReportKey = "lastCrashReport";
 
-    public RNCrashesModule(Application application, CrashListenerType crashListener) {
+    public RNCrashesModule(Application application, RNCrashesListenerBase crashListener) {
         this.mCrashListener = crashListener;
         if (crashListener != null) {
             Crashes.setListener(crashListener);
