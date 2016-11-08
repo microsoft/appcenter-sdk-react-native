@@ -2,15 +2,15 @@
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 
-// Sonoma module class definition.
-class SonomaModule {
+// MobileCenter module class definition.
+class MobileCenterModule {
 	public String AndroidModule { get; set; }
 	public String IosModule { get; set; }
 	public String XamarinModule { get; set; }
 	public String NuGetVersion { get; set; }
 	public String NuGetSpecFilename { get; set; }
 
-	public SonomaModule(String android, String ios, String xamarin, String nuGetSpecFilename) {
+	public MobileCenterModule(String android, String ios, String xamarin, String nuGetSpecFilename) {
 		AndroidModule = android;
 		IosModule = ios;
 		XamarinModule = xamarin;
@@ -34,11 +34,11 @@ var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/" + "ios/SonomaSDK-iOS-" + IOS_SDK_VERSION + ".zip";
 
-// Available Sonoma modules.
-var SONOMA_MODULES = new [] {
-	new SonomaModule("mobile-center-release.aar", "SonomaCore.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
-	new SonomaModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
-	new SonomaModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
+// Available MobileCenter modules.
+var MOBILECENTER_MODULES = new [] {
+	new MobileCenterModule("mobile-center-release.aar", "SonomaCore.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
+	new MobileCenterModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
+	new MobileCenterModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
 };
 
 
@@ -57,7 +57,7 @@ Task("Version")
 	.Does(() =>
 {
 	// Read AssemblyInfo.cs and extract versions for modules.
-	foreach (var module in SONOMA_MODULES) {
+	foreach (var module in MOBILECENTER_MODULES) {
 		var assemblyInfo = ParseAssemblyInfo("./" + module.XamarinModule + "/Properties/AssemblyInfo.cs");
 		module.NuGetVersion = assemblyInfo.AssemblyInformationalVersion;
 	}
@@ -91,7 +91,7 @@ Task("Externals-Android")
 	Unzip("./externals/android/android.zip", "./externals/android/");
 
 	// Copy files to $XamarinModule$.Android.Bindings/Jars
-	foreach (var module in SONOMA_MODULES) {
+	foreach (var module in MOBILECENTER_MODULES) {
 		var files = GetFiles("./externals/android/*/" + module.AndroidModule);
 		CopyFiles(files, module.XamarinModule + ".Android.Bindings/Jars/");
 	}
@@ -106,12 +106,12 @@ Task("Externals-Ios")
 		DeleteDirectory("./externals/ios", true);
 	CreateDirectory("./externals/ios");
 
-	// Download zip file containing sonoma frameworks
+	// Download zip file containing MobileCenter frameworks
 	DownloadFile(IOS_URL, "./externals/ios/ios.zip");
 
 	Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
-	// Copy the sonoma binaries directly from the frameworks and add the ".a" extension
+	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
 	var files = GetFiles("./externals/ios/*/*.framework/Sonoma*");
 	foreach (var file in files) {
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
@@ -129,13 +129,13 @@ Task("Externals-Ios")
 	CopyFile(framework_binary_location, framework_dest_path + "/CrashReporter");
 
 	// Put the PLCrashReporter framework into the two apps that need it
-	var puppet_frameworks_directory = "./Apps/Contoso.iOS.Puppet/SonomaFrameworks";
+	var puppet_frameworks_directory = "./Apps/Contoso.iOS.Puppet/MobileCenterFrameworks";
 	var ios_puppet_framework_dir = puppet_frameworks_directory + "/CrashReporter.framework";
 	CreateDirectory(puppet_frameworks_directory);
 	CreateDirectory(ios_puppet_framework_dir);
 	CopyFile(framework_binary_location, ios_puppet_framework_dir + "/CrashReporter");
 
-	var forms_frameworks_directory = "./Apps/Contoso.Forms.Puppet/Contoso.Forms.Puppet.iOS/SonomaFrameworks";
+	var forms_frameworks_directory = "./Apps/Contoso.Forms.Puppet/Contoso.Forms.Puppet.iOS/MobileCenterFrameworks";
 	var ios_forms_framework_dir = forms_frameworks_directory + "/CrashReporter.framework";
 	CreateDirectory(forms_frameworks_directory);
 	CreateDirectory(ios_forms_framework_dir);
@@ -160,7 +160,7 @@ Task("NuGet")
 	CreateDirectory("./output");
 
 	// Packaging NuGets.
-	foreach (var module in SONOMA_MODULES) {
+	foreach (var module in MOBILECENTER_MODULES) {
 		var spec = GetFiles("./NuGetSpec/" + module.NuGetSpecFilename);
 		Information("Building a NuGet package for " + module.XamarinModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {

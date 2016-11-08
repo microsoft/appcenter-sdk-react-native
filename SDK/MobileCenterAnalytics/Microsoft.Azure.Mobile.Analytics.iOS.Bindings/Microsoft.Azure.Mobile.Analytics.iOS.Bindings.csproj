@@ -42,7 +42,7 @@
     <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Sonoma.Core.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
       <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
       <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
     </ProjectReference>
