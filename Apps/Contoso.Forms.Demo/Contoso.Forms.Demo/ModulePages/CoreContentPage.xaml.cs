@@ -20,14 +20,14 @@ namespace Contoso.Forms.Demo
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            SonomaEnabledSwitchCell.On = Sonoma.Enabled;
+            SonomaEnabledSwitchCell.On = MobileCenter.Enabled;
         }
 
         void UpdateEnabled(object sender, System.EventArgs e)
         {
             if (SonomaEnabledSwitchCell != null)
             {
-                Sonoma.Enabled = SonomaEnabledSwitchCell.On;
+                MobileCenter.Enabled = SonomaEnabledSwitchCell.On;
             }
         }
 

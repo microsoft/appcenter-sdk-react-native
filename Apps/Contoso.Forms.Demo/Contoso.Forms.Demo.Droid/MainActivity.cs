@@ -1,11 +1,5 @@
-﻿using System;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 using Microsoft.Azure.Mobile;
@@ -13,19 +7,19 @@ using Microsoft.Azure.Mobile;
 namespace Contoso.Forms.Demo.Droid
 {
     [Activity(Label = "Contoso.Forms.Demo.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            base.OnCreate(bundle);
+            base.OnCreate(savedInstanceState);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
-                    
+            Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
             // Sonoma must be initialized before the App is created
-            Sonoma.Initialize("44cd8722-bfe0-4748-ac14-7692e031a8a5");
+            MobileCenter.Initialize("44cd8722-bfe0-4748-ac14-7692e031a8a5");
 
             LoadApplication(new App());
         }
