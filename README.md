@@ -150,7 +150,7 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     Crashes.GenerateTestCrash();
     ```
 
-    Note that this API checks for debug vs release configurations. So you can use only use it when debuging as it won't work for release apps.
+    Note that this API checks for debug vs release configurations. So you can only use it when debuging as it won't work for release apps.
 
 * **Did the app crash in last session:** At any time after starting the SDK, you can check if the app crashed in the previous session:
 
