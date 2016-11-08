@@ -18,8 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Cras
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
-		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
+		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
+		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
