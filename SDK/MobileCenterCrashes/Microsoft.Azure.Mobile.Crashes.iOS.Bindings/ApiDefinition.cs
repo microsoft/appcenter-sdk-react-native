@@ -181,4 +181,76 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("initWithFileName:attachmentData:contentType:")]
         IntPtr Constructor([NullAllowed] string fileName, NSData data, string contentType);
     }
+
+    // @interface MSException : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSException
+    {
+        // @property (nonatomic) NSString * _Nonnull type;
+        [Export("type")]
+        string Type { get; set; }
+
+        // @property (nonatomic) NSString * _Nonnull message;
+        [Export("message")]
+        string Message { get; set; }
+
+        // @property (nonatomic) NSArray<MSStackFrame *> * _Nullable frames;
+        [NullAllowed, Export("frames", ArgumentSemantic.Assign)]
+        MSStackFrame[] Frames { get; set; }
+
+        // @property (nonatomic) NSArray<MSException *> * _Nullable innerExceptions;
+        [NullAllowed, Export("innerExceptions", ArgumentSemantic.Assign)]
+        MSException[] InnerExceptions { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable wrapperSdkName;
+        [NullAllowed, Export("wrapperSdkName")]
+        string WrapperSdkName { get; set; }
+
+        // -(BOOL)isEqual:(MSException * _Nullable)exception;
+        [Export("isEqual:")]
+        bool IsEqual([NullAllowed] MSException exception);
+    }
+
+    // @interface MSStackFrame : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSStackFrame
+    {
+        // @property (nonatomic) NSString * _Nullable address;
+        [NullAllowed, Export("address")]
+        string Address { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable code;
+        [NullAllowed, Export("code")]
+        string Code { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable className;
+        [NullAllowed, Export("className")]
+        string ClassName { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable methodName;
+        [NullAllowed, Export("methodName")]
+        string MethodName { get; set; }
+
+        // @property (nonatomic) NSNumber * _Nullable lineNumber;
+        [NullAllowed, Export("lineNumber", ArgumentSemantic.Assign)]
+        NSNumber LineNumber { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable fileName;
+        [NullAllowed, Export("fileName")]
+        string FileName { get; set; }
+
+        // -(BOOL)isEqual:(MSStackFrame * _Nullable)frame;
+        [Export("isEqual:")]
+        bool IsEqual([NullAllowed] MSStackFrame frame);
+    }
+
+    // @interface MSWrapperExceptionManager : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSWrapperExceptionManager
+    {
+        // +(void)setWrapperException:(MSException *)exception;
+        [Static]
+        [Export("setWrapperException:")]
+        void SetWrapperException(MSException exception);
+    }
 }
