@@ -1,34 +1,27 @@
-# react-native-sonoma-private
+# Mobile Center React-Native
 
-Development repository for the Sonoma SDK for React Native.
+Development repository for the Mobile Center SDK for React Native.
 
 ## Getting Started (iOS)
 
 1. Clone the repository
-2. Build native SDK dependencies
-  - Open up `SonomaSDK.xcworkspace` from Sonoma-SDK-iOS submodule directory
-  - Select "AllDoc + Frameworks" target and build
-3. Build Demo app
-  - `cd` into SonomaDemoApp folder and `npm install`
-  - `cd` into ios folder and `pod install`. If you have not installed CocoaPods, `sudo gem install cocoapods`.
-  - If you make changes in any of the individual SDKs (eg. RNSonomaHub, RNSonomaErrorReporting), you will need to run the above two steps again to test your changes using the sample app.
-4. Configure Demo app
-  - Modify `SonomaDemoApp/ios/SonomaDemoApp/AppDelegate.m` to use your Sonoma App ID in the call to `[SNMSonoma start: withFeatures:]`.
+2. Download the latest Mobile Center frameworks from https://github.com/microsoft/MobileCenter-SDK-iOS
+3. open up `RNMobileCenter/ios/RNMobileCenter.xcodeproj`, drag in `MobileCenter.framework` and build the `Fat Framework` target
+4. Build Demo app
+  - `cd` into MobileCenterDemoApp folder and `npm install`
+  - run `react-native link` to hook up the native sources and specify app secret 
 5. Run Demo app
-  - `cd` into SonomaDemoApp folder and `npm start`
-  - Open up `SonomaDemoApp/ios/SonomaDemoApp.xcworkspace`, select desired simulator and click the "Run" button
+  - `cd` into MobileCenterDemoApp folder and `react-native run-ios`
 
 ## Getting Started (Android)
 
 1. Clone the repository
 2. Build Demo app
-  - `cd` into SonomaDemoApp folder and `npm install`
-  - If you make changes in any of the individual SDKs (eg. RNSonomaCore, RNSonomaCrashes), you will need to `npm install` again to test your changes using the sample app.
-3. Configure Demo app
-  - Modify `SonomaDemoApp/android/app/src/main/java/com/sonomademoapp/MainApplication.java` to use your Sonoma App ID in the call to `Sonoma.start(...)`.
+  - `cd` into MobileCenterDemoApp folder and `npm install`
+  - run `reacct-native link` to hook up native sources and specify app secret
 4. Run Demo app
   - Boot up Android emulator
-  - `cd` into SonomaDemoApp folder and `react-native run-android`
+  - `cd` into MobileCenterDemoApp folder and `react-native run-android`
 
 ## To-do items:
 
