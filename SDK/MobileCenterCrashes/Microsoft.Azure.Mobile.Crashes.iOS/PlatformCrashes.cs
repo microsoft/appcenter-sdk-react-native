@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.Shared;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -85,10 +87,21 @@ namespace Microsoft.Azure.Mobile.Crashes
                 iosFrame.MethodName = dotnetFrame.GetMethod().ToString();
                 iosFrame.ClassName = dotnetFrame.GetMethod().DeclaringType?.ToString();
                 iosFrame.LineNumber = dotnetFrame.GetFileLineNumber() == 0 ? null : (NSNumber)(dotnetFrame.GetFileLineNumber());
-                iosFrame.FileName = dotnetFrame.GetFileName();
+                iosFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
                 frameList.Add(iosFrame);
             }
             return frameList.Count == 0 ? null : frameList.ToArray();
+        }
+
+        private static string AnonymizePath(string path)
+        {
+            if ((path == null) || (path.Count() == 0) || !path.Contains("/Users/"))
+            {
+                return path;
+            }
+                
+            string pattern = "(/Users/[^/]+/)";
+            return Regex.Replace(path, pattern, "/Users/USER/");
         }
     }
 }
