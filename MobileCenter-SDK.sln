@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{8CDD4942-2E4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenter", "MobileCenter", "{13744327-9529-490B-A970-06A1D3144117}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analytics", "Analytics", "{C4C63221-60D5-412B-92CC-D59A8EA62E23}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterAnalytics", "MobileCenterAnalytics", "{C4C63221-60D5-412B-92CC-D59A8EA62E23}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crashes", "Crashes", "{7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterCrashes", "MobileCenterCrashes", "{7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile", "SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj", "{3FE04B97-48DE-4895-8612-ECBDFEBD917C}"
 EndProject
