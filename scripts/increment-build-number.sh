@@ -2,11 +2,11 @@
 set -e
 
 # Extract semantic version template from Core PCL project.
-semanticVersion=`grep AssemblyInformationalVersion Microsoft.Sonoma.Core/Properties/AssemblyInfo.cs | sed -E "s/^.*\"(.*)\".*$/\1/"`
+semanticVersion=`grep AssemblyInformationalVersion SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs | sed -E "s/^.*\"(.*)\".*$/\1/"`
 baseSemanticVersion=`sed -E 's/(.*)-.*/\1/' <<< "$semanticVersion"`
 
 # Get latest version from Nuget
-latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/150e39b1-bf52-4fdd-bc32-28d950a14304/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Sonoma.Core'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
+latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/150e39b1-bf52-4fdd-bc32-28d950a14304/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
 latestNugetVersion=`sed -E "s/^.*<d:Version>(.*)<\/d:Version>.*$/\1/" <<< $latestNugetVersion`
 latestNugetBaseVersion=`sed -E 's/([^-]*)-.*/\1/' <<< "$latestNugetVersion"`
 latestNugetRevision=`sed -E 's/^.*-r0*([^-]*).*$/\1/' <<< "$latestNugetVersion"`
@@ -37,5 +37,5 @@ then
 fi
 
 # Replace version in all the assemblies
-find . -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$newVersion\")/g"
-find . -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyFileVersion\(\"([0-9]+\.){3})(.*)\"\)/\1$newRevision\")/g"
+find SDK -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$newVersion\")/g"
+find SDK -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyFileVersion\(\"([0-9]+\.){3})(.*)\"\)/\1$newRevision\")/g"

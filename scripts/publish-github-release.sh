@@ -8,7 +8,7 @@ GITHUB_API_HOST="api"
 GITHUB_UPLOAD_HOST="uploads"
 BINARY_FILE_FILTER="*nupkg"
 JQ_COMMAND=jq
-PUBLISH_VERSION=`grep AssemblyInformationalVersion Microsoft.Sonoma.Core/Properties/AssemblyInfo.cs | sed -E "s/^.*\"(.*)\".*$/\1/"`
+PUBLISH_VERSION=`grep AssemblyInformationalVersion SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs | sed -E "s/^.*\"(.*)\".*$/\1/"`
 
 # GitHub API endpoints
 REQUEST_URL_TAG="$(printf $GITHUB_API_URL_TEMPLATE $GITHUB_API_HOST $REPOSITORY 'git/tags' $GITHUB_ACCESS_TOKEN)"
