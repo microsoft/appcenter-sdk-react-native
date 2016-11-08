@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import Crashes.SNMErrorReport;
+@import MobileCenterCrashes.MSErrorReport;
 
-NSDictionary* convertReportToJS(SNMErrorReport* report);
+NSDictionary* convertReportToJS(MSErrorReport* report);
 NSArray* convertReportsToJS(NSArray* reports);

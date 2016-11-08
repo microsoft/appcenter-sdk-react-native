@@ -7,7 +7,7 @@
 #import "RCTRootView.h"
 #import "RCTUtils.h"
 
-@import SonomaAnalytics;
+@import MobileCenterAnalytics;
 @import RNMobileCenter;
 
 @interface RNAnalytics () <RCTBridgeModule>
@@ -20,9 +20,9 @@ RCT_EXPORT_MODULE();
 + (void)registerWithInitiallyEnabled:(BOOL) enabled
 {
     [RNMobileCenter initializeMobileCenter];
-    [SNMSonoma setEnabled:enabled];
-    //[SNMAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
-    [SNMSonoma startFeature:[SNMAnalytics class]];
+    [MSAnalytics setEnabled:enabled];
+    //[MSAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
+    [MSMobileCenter startService:[MSAnalytics class]];
 }
 
 RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
@@ -39,7 +39,7 @@ RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
     }] allObjects];
     NSArray * newValues = [properties objectsForKeys:allowedKeys notFoundMarker:@""];
     NSDictionary * filteredProperties = [NSDictionary dictionaryWithObjects:newValues forKeys:allowedKeys];
-    [SNMAnalytics trackEvent:eventName withProperties:filteredProperties];
+    [MSAnalytics trackEvent:eventName withProperties:filteredProperties];
     resolve(nil);
 }
 
@@ -50,7 +50,7 @@ RCT_EXPORT_METHOD(trackPage:(NSString *)pageName
                    resolver:(RCTPromiseResolveBlock)resolve
                    rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [SNMAnalytics trackPage:pageName withProperties:properties];
+    [MSAnalytics trackPage:pageName withProperties:properties];
     resolve(nil);
 }
 */

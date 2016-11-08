@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import SonomaCore;
+@import MobileCenter;
 
 @interface RNMobileCenter : NSObject
 
@@ -12,10 +12,10 @@
 
 + (void) setEnabled:(BOOL) enabled;
 
-+ (void) setLogLevel: (SNMLogLevel)logLevel;
-+ (SNMLogLevel) logLevel;
++ (void) setLogLevel: (MSLogLevel)logLevel;
++ (MSLogLevel) logLevel;
 
-+ (SNMWrapperSdk *) getWrapperSdk;
-+ (void) setWrapperSdk:(SNMWrapperSdk *)sdk;
++ (MSWrapperSdk *) getWrapperSdk;
++ (void) setWrapperSdk:(MSWrapperSdk *)sdk;
 
 @end

@@ -1,26 +1,26 @@
 #import <Foundation/Foundation.h>
 
-@import Crashes;
+@import MobileCenterCrashes;
 
 #import "RCTBridge.h"
 
 @class RNCrashes;
-@class SNMErrorReport;
+@class MSErrorReport;
 
-@protocol RNCrashesDelegate <SNMCrashesDelegate>
+@protocol RNCrashesDelegate <MSCrashesDelegate>
 // Call to expose a report to JS
-- (void)storeReportForJS:(SNMErrorReport *) report;
+- (void)storeReportForJS:(MSErrorReport *) report;
 
-- (SNMUserConfirmationHandler)shouldAwaitUserConfirmationHandler;
+- (MSUserConfirmationHandler)shouldAwaitUserConfirmationHandler;
 
 
 @optional
 // Called when the JS code provides a send / don't-send response
-- reportUserResponse: (SNMUserConfirmation)confirmation;
+- reportUserResponse: (MSUserConfirmation)confirmation;
 
 @required
 // Internal use only, to configure native <-> JS communication
-- (NSArray<SNMErrorReport *> *) getAndClearReports;
+- (NSArray<MSErrorReport *> *) getAndClearReports;
 - (void) provideAttachments: (NSDictionary*) attachments;
 - (void) setBridge: (RCTBridge*) bridge;
 @end
