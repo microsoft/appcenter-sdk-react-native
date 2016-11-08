@@ -21,8 +21,7 @@ namespace Contoso.iOS.Puppet
 		public override void ViewDidAppear(bool animated)
 		{
 			base.ViewDidAppear(animated);
-			//int er = 4 / int.Parse("0");
-
+			int er = 4 / int.Parse("0");
 		}
 
 		public override void DidReceiveMemoryWarning()

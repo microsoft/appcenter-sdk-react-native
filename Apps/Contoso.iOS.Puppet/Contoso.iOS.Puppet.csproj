@@ -152,10 +152,6 @@
       <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
       <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj">
-      <Project>{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS\Microsoft.Azure.Mobile.Crashes.iOS.csproj">
       <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.iOS</Name>
