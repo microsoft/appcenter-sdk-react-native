@@ -34,9 +34,9 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Core\Microsoft.Sonoma.Core.csproj" />
-      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Analytics\Microsoft.Sonoma.Analytics.csproj" />
-      <DocumentationSource sourceFile="..\Microsoft.Sonoma.Crashes\Microsoft.Sonoma.Crashes.csproj" />
+      <DocumentationSource sourceFile="..\SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj" />
+      <DocumentationSource sourceFile="..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj" />
+      <DocumentationSource sourceFile="..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
