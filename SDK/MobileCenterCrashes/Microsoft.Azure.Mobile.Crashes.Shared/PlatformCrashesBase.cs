@@ -15,9 +15,7 @@ namespace Microsoft.Azure.Mobile.Crashes.Shared
 
         public void GenerateTestCrash()
         {
-#if DEBUG
             throw new TestCrashException();
-#endif
         }
 
         //public abstract void TrackException(Exception exception);

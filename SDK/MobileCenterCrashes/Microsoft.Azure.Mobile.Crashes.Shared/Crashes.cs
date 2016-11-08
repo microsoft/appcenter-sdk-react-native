@@ -43,6 +43,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <remarks>
         /// This call has no effect in non debug configuration (such as release).
         /// </remarks>
+        [System.Diagnostics.Conditional("DEBUG")]
         public static void GenerateTestCrash()
         {
             PlatformCrashes.GenerateTestCrash();
