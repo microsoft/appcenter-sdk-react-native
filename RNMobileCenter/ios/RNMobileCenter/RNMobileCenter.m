@@ -17,7 +17,7 @@ static MSWrapperSdk * wrapperSdk;
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 
     appSecret = [config objectForKey:@"AppSecret"];
-    // If the AppSecret is not set, we will pass nil to SNMSonoma which will error out, as expected
+    // If the AppSecret is not set, we will pass nil to MSMobileCenter which will error out, as expected
   }
 
   return appSecret;
