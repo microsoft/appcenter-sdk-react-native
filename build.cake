@@ -20,7 +20,7 @@ class MobileCenterModule {
 
 // SDK versions
 var ANDROID_SDK_VERSION = "0.2.0-9";
-var IOS_SDK_VERSION = "0.1.3";
+var IOS_SDK_VERSION = "0.2.0-5";
 
 // URLs for downloading binaries.
 /*
@@ -32,13 +32,13 @@ var IOS_SDK_VERSION = "0.1.3";
  */
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/" + "ios/SonomaSDK-iOS-" + IOS_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
 
 // Available MobileCenter modules.
 var MOBILECENTER_MODULES = new [] {
-	new MobileCenterModule("mobile-center-release.aar", "SonomaCore.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
-	new MobileCenterModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
-	new MobileCenterModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
+	new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
+	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
+	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
 };
 
 
@@ -112,7 +112,7 @@ Task("Externals-Ios")
 	Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
 	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
-	var files = GetFiles("./externals/ios/*/*.framework/Sonoma*");
+	var files = GetFiles("./externals/ios/*/*.framework/MobileCenter*");
 	foreach (var file in files) {
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
