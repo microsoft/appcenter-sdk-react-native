@@ -12,7 +12,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function(file) {
 }).then(function(answer) {
     var code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
         '[RNAnalytics registerWithInitiallyEnabled:true];'
-        : '[RNAnalytics registerWithInitiallyEnabled:false]'
+        : '[RNAnalytics registerWithInitiallyEnabled:false];'
     return rnpmlink.ios.initInAppDelegate('#import "RNAnalytics.h"', code);
 }).then(function(file) {
     console.log('Added code to initialize iOS Crashes SDK in ' + file);

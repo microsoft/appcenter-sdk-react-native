@@ -3,7 +3,7 @@
 #import "RCTEventDispatcher.h"
 #import "RNCrashesUtils.h"
 
-@import Crashes.SNMErrorAttachment;
+@import MobileCenterCrashes.MSErrorAttachment;
 
 static NSString *ON_BEFORE_SENDING_EVENT = @"MobileCenterErrorReportOnBeforeSending";
 static NSString *ON_SENDING_FAILED_EVENT = @"MobileCenterErrorReportOnSendingFailed";
@@ -18,37 +18,37 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
     return self;
 }
 
-- (BOOL) crashes:(SNMCrashes *)crashes shouldProcessErrorReport:(SNMErrorReport *)errorReport
+- (BOOL) crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport
 {
     // By default handle all reports and expose them all to JS.
     [self storeReportForJS: errorReport];
     return YES;
 }
 
-- (SNMUserConfirmationHandler)shouldAwaitUserConfirmationHandler
+- (MSUserConfirmationHandler)shouldAwaitUserConfirmationHandler
 {
     // Do not send anything until instructed to by JS
-    return ^(NSArray<SNMErrorReport *> *errorReports){
+    return ^(NSArray<MSErrorReport *> *errorReports){
         return YES;
     };
 }
 
-- (void)storeReportForJS:(SNMErrorReport *) report
+- (void)storeReportForJS:(MSErrorReport *) report
 {
     [self.reports addObject:report];
 }
 
-- (void) crashes:(SNMCrashes *)crashes willSendErrorReport:(SNMErrorReport *)errorReport
+- (void) crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport
 {
     [self.bridge.eventDispatcher sendAppEventWithName:ON_BEFORE_SENDING_EVENT body:convertReportToJS(errorReport)];
 }
 
-- (void) crashes:(SNMCrashes *)crashes didSucceedSendingErrorReport:(SNMErrorReport *)errorReport
+- (void) crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport
 {
     [self.bridge.eventDispatcher sendAppEventWithName:ON_SENDING_SUCCEEDED_EVENT body:convertReportToJS(errorReport)];
 }
 
-- (void) crashes:(SNMCrashes *)crashes didFailSendingErrorReport:(SNMErrorReport *)errorReport withError:(NSError *)sendError
+- (void) crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)sendError
 {
     [self.bridge.eventDispatcher sendAppEventWithName:ON_SENDING_FAILED_EVENT body:convertReportToJS(errorReport)];
 }
@@ -58,20 +58,20 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
     self.attachments = attachments;
 }
 
-- (SNMErrorAttachment *)attachmentWithCrashes:(SNMCrashes *)crashes forErrorReport:(SNMErrorReport *)errorReport
+- (MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport
 {
     NSObject* attachment = [self.attachments objectForKey:[errorReport incidentIdentifier]];
     if (attachment && [attachment isKindOfClass:[NSString class]]) {
         NSString * stringAttachment = (NSString *)attachment;
-        return [SNMErrorAttachment attachmentWithText:stringAttachment];
+        return [MSErrorAttachment attachmentWithText:stringAttachment];
     }
 
     return nil;
 }
 
-- (NSArray<SNMErrorReport *>*) getAndClearReports
+- (NSArray<MSErrorReport *>*) getAndClearReports
 {
-    NSArray<SNMErrorReport *>* result = self.reports;
+    NSArray<MSErrorReport *>* result = self.reports;
     self.reports = [[NSMutableArray alloc] init];
     return result;
 }
@@ -79,16 +79,16 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
 @end
 
 @implementation RNCrashesDelegateAlwaysSend
-- (BOOL) crashes:(SNMCrashes *)crashes shouldProcessErrorReport:(SNMErrorReport *)errorReport
+- (BOOL) crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport
 {
     // Do not pass the report to JS, but do process them
     return YES;
 }
 
-- (SNMUserConfirmationHandler)shouldAwaitUserConfirmationHandler
+- (MSUserConfirmationHandler)shouldAwaitUserConfirmationHandler
 {
     // Do not wait for user confirmation, always send.
-    return ^(NSArray<SNMErrorReport *> *errorReports){
+    return ^(NSArray<MSErrorReport *> *errorReports){
         return NO;
     };
 }

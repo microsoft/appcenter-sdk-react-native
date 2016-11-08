@@ -9,7 +9,7 @@
 
 #import "RNCrashesUtils.h"
 
-@import Crashes;
+@import MobileCenterCrashes;
 @import RNMobileCenter;
 
 
@@ -23,7 +23,7 @@
 
 static id<RNCrashesDelegate> crashDelegate;
 
-// iOS crash processing has a half second delay https://github.com/microsoft/sonoma-sdk-ios/blob/develop/Crashes/Crashes/SNMCrashes.m
+// iOS crash processing has a half second delay https://github.com/Microsoft/MobileCenter-SDK-iOS/blob/develop/MobileCenterCrashes/MobileCenterCrashes/MSCrashes.m#L296
 static BOOL crashProcessingDelayFinished = NO;
 
 RCT_EXPORT_MODULE();
@@ -36,10 +36,10 @@ RCT_EXPORT_MODULE();
 + (void)registerWithCrashDelegate:(id<RNCrashesDelegate>)delegate
 {
   [RNMobileCenter initializeMobileCenter];
-  [SNMCrashes setDelegate:delegate];
+  [MSCrashes setDelegate:delegate];
   crashDelegate = delegate;
-  [SNMCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];
-  [SNMSonoma startFeature:[SNMCrashes class]];
+  [MSCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];
+  [MSMobileCenter startService:[MSCrashes class]];
   [self performSelector:@selector(crashProcessingDelayDidFinish) withObject:nil afterDelay:0.5];
 }
 
@@ -61,7 +61,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport
 {
-    SNMErrorReport *lastSessionCrashReport = [SNMCrashes lastSessionCrashReport];
+    MSErrorReport *lastSessionCrashReport = [MSCrashes lastSessionCrashReport];
 
     return @{
         @"hasCrashedInLastSession": @(1 || lastSessionCrashReport != nil),
@@ -85,27 +85,27 @@ RCT_EXPORT_METHOD(getCrashReports:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
                             rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[SNMSonoma isDebuggerAttached]]);
+    resolve([NSNumber numberWithBool:[MSMobileCenter isDebuggerAttached]]);
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[SNMCrashes isEnabled]]);
+    resolve([NSNumber numberWithBool:[MSCrashes isEnabled]]);
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [SNMCrashes setEnabled:shouldEnable];
+    [MSCrashes setEnabled:shouldEnable];
     resolve(nil);
 }
 
 RCT_EXPORT_METHOD(generateTestCrash:(RCTPromiseResolveBlock)resolve
                            rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [SNMCrashes generateTestCrash];
+    [MSCrashes generateTestCrash];
     reject(@"crash_failed", @"Failed to crash!", nil);
 }
 
@@ -113,12 +113,12 @@ RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attac
                 resolver:(RCTPromiseResolveBlock)resolve
                 rejecter:(RCTPromiseRejectBlock)reject)
 {
-    SNMUserConfirmation response = send ? SNMUserConfirmationSend : SNMUserConfirmationDontSend;
+    MSUserConfirmation response = send ? MSUserConfirmationSend : MSUserConfirmationDontSend;
     if ([crashDelegate respondsToSelector:@selector(reportUserResponse:)]) {
         [crashDelegate reportUserResponse:response];
     }
     [crashDelegate provideAttachments:attachments];
-    [SNMCrashes notifyWithUserConfirmation:response];
+    [MSCrashes notifyWithUserConfirmation:response];
     resolve(@"");
 }
 

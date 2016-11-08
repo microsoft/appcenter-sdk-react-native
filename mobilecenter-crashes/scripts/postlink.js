@@ -9,8 +9,8 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     return rnpmlink.inquirer.prompt(prompt);
 }).then(function (answer) {
     var code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
-        '[RNCrashses registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]]'
-        : '[RNCrashes register]'
+        '[RNCrashses registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];'
+        : '[RNCrashes register];'
     return rnpmlink.ios.initInAppDelegate('#import "RNCrashes.h"', code);
 }).then(function (file) {
     console.log('Added code to initialize iOS Crashes SDK in ' + file);

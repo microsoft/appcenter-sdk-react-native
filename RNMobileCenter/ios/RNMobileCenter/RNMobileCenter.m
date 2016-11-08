@@ -3,7 +3,7 @@
 @implementation RNMobileCenter
 
 static NSString *appSecret;
-static SNMWrapperSdk * wrapperSdk;
+static MSWrapperSdk * wrapperSdk;
 
 + (void) setAppSecret: (NSString *)secret
 {
@@ -25,40 +25,40 @@ static SNMWrapperSdk * wrapperSdk;
 
 + (void) initializeMobileCenter
 {
-  if (![SNMSonoma isInitialized]) {
-      SNMWrapperSdk * wrapperSdk =
-        [[SNMWrapperSdk alloc]
+  if (![MSMobileCenter isInitialized]) {
+      MSWrapperSdk * wrapperSdk =
+        [[MSWrapperSdk alloc]
             initWithWrapperSdkVersion:@"0.1.0"
             wrapperSdkName:@"mobilecenter.react-native"
             liveUpdateReleaseLabel:nil
             liveUpdateDeploymentKey:nil
             liveUpdatePackageHash:nil];
       [self setWrapperSdk:wrapperSdk];
-      [SNMSonoma start:[RNMobileCenter getAppSecret]];
+      [MSMobileCenter start:[RNMobileCenter getAppSecret]];
   }
 }
 
 + (void) setEnabled:(BOOL) enabled
 {
-  [SNMSonoma setEnabled:enabled];
+  [MSMobileCenter setEnabled:enabled];
 }
 
-+ (void) setLogLevel: (SNMLogLevel)logLevel
++ (void) setLogLevel: (MSLogLevel)logLevel
 {
-  [SNMSonoma setLogLevel:logLevel];
+  [MSMobileCenter setLogLevel:logLevel];
 }
 
-+ (SNMLogLevel) logLevel
++ (MSLogLevel) logLevel
 {
-  return [SNMSonoma logLevel];
+  return [MSMobileCenter logLevel];
 }
 
-+ (SNMWrapperSdk *) getWrapperSdk {
++ (MSWrapperSdk *) getWrapperSdk {
     return wrapperSdk;
 }
-+ (void) setWrapperSdk:(SNMWrapperSdk *)sdk {
++ (void) setWrapperSdk:(MSWrapperSdk *)sdk {
     wrapperSdk = sdk;
-    [SNMSonoma setWrapperSdk:sdk];
+    [MSMobileCenter setWrapperSdk:sdk];
 }
 
 @end
