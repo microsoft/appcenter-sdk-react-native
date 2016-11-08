@@ -14,7 +14,7 @@ var MobileCenterConfigPlist = function (plistPath) {
         debug('Read contents of', plistPath);
     }
     catch (e) {
-        debug(`Could not read contents of Sonoma-Config.plist - ${e.message}`);
+        debug(`Could not read contents of MobileCenter-Config.plist - ${e.message}`);
         this.parsedInfoPlist = plist.parse(plist.build({}));
     }
 };

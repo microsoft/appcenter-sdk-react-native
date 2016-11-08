@@ -1,6 +1,6 @@
-# react-native-sonoma-private
+# Mobile Center React-Native
 
-Development repository for the Sonoma SDK for React Native.
+Development repository for the Mobile Center SDK for React Native.
 
 ## Getting Started (iOS)
 

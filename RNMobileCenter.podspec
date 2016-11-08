@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name              = 'RNMobileCenter'
   s.version           = '0.0.1'
-  s.summary           = 'React Native plugin for Sonoma'
+  s.summary           = 'React Native plugin for Mobile Center'
   s.license           = 'MIT'
   s.homepage          = 'https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme'
 
