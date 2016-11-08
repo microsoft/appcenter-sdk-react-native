@@ -62,7 +62,7 @@
       <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Shared\Microsoft.Sonoma.Xamarin.Core.Shared.projitems')" />
+  <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

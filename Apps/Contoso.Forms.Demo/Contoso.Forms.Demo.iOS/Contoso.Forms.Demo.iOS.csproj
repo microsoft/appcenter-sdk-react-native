@@ -146,7 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj">
-      <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
+      <Project>{8E7B51FC-8A9B-49F7-A40D-4D12BBF893B6}</Project>
       <Name>Contoso.Forms.Demo</Name>
     </ProjectReference>
   </ItemGroup>

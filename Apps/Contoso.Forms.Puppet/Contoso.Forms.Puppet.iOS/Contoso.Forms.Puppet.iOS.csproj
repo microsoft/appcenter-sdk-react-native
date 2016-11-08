@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}</ProjectGuid>
+    <ProjectGuid>{B4CF8897-4030-445F-81C4-6DBA81F26AAC}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Contoso.Forms.Puppet.iOS</RootNamespace>
@@ -133,7 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
-      <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
+      <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
       <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.iOS\Microsoft.Azure.Mobile.Analytics.iOS.csproj">

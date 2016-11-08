@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B39B339-86C4-47EF-8F85-811220494CA6}</ProjectGuid>
+    <ProjectGuid>{CBA94940-CBFA-4342-AA71-856FD863DDD0}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Contoso.Forms.Puppet.Droid</RootNamespace>
@@ -105,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
-      <Project>{DDB662E6-2AED-4805-A99F-AE3525A82768}</Project>
+      <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
       <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Android\Microsoft.Azure.Mobile.Analytics.Android.csproj">

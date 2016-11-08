@@ -70,6 +70,6 @@
       <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Sonoma.Xamarin.Crashes.Shared.projitems')" />
+  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
