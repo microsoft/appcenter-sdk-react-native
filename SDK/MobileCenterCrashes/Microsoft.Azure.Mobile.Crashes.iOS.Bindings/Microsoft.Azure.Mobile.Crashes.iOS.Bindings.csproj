@@ -48,9 +48,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\SonomaCrashes.a">
+    <NativeReference Include="..\..\..\externals\ios\MobileCenterCrashes.a">
       <Kind>Static</Kind>
-      <SmartLink>False</SmartLink>
+      <ForceLoad>True</ForceLoad>
+      <Frameworks>./MobileCenterFrameworks/CrashReporter.framework</Frameworks>
+      <LinkerFlags>-lc++</LinkerFlags>
+	  <IsCxx>True</IsCxx>
     </NativeReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />

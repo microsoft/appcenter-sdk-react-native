@@ -56,7 +56,7 @@
     <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\SonomaCore.a">
+    <NativeReference Include="..\..\..\externals\ios\MobileCenter.a">
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
     </NativeReference>
