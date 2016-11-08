@@ -36,9 +36,9 @@ var IOS_URL = "https://s3.amazonaws.com/hockey-app-download/sonoma/" + "ios/Sono
 
 // Available Sonoma modules.
 var SONOMA_MODULES = new [] {
-	new SonomaModule("mobile-center-release.aar", "SonomaCore.framework.zip", "Microsoft.Sonoma.Core", "MobileCenter.nuspec"),
-	new SonomaModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "Microsoft.Sonoma.Analytics", "MobileCenterAnalytics.nuspec"),
-	new SonomaModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "Microsoft.Sonoma.Crashes", "MobileCenterCrashes.nuspec")
+	new SonomaModule("mobile-center-release.aar", "SonomaCore.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
+	new SonomaModule("mobile-center-analytics-release.aar", "SonomaAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
+	new SonomaModule("mobile-center-crashes-release.aar", "SonomaCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
 };
 
 
@@ -69,8 +69,8 @@ Task("Build")
 	.Does(() => 
 {
 	// Build solution
-	NuGetRestore("./Sonoma-SDK-Xamarin.sln");
-	DotNetBuild("./Sonoma-SDK-Xamarin.sln", c => c.Configuration = "Release");
+	NuGetRestore("./MobileCenter-SDK-Build.sln");
+	DotNetBuild("./MobileCenter-SDK-Build.sln", c => c.Configuration = "Release");
 });
 
 // Task dependencies for binding each platform.
@@ -129,13 +129,13 @@ Task("Externals-Ios")
 	CopyFile(framework_binary_location, framework_dest_path + "/CrashReporter");
 
 	// Put the PLCrashReporter framework into the two apps that need it
-	var puppet_frameworks_directory = "./Contoso.iOS.Puppet/SonomaFrameworks";
+	var puppet_frameworks_directory = "./Apps/Contoso.iOS.Puppet/SonomaFrameworks";
 	var ios_puppet_framework_dir = puppet_frameworks_directory + "/CrashReporter.framework";
 	CreateDirectory(puppet_frameworks_directory);
 	CreateDirectory(ios_puppet_framework_dir);
 	CopyFile(framework_binary_location, ios_puppet_framework_dir + "/CrashReporter");
 
-	var forms_frameworks_directory = "./Contoso.Forms.Puppet/Contoso.Forms.Puppet.iOS/SonomaFrameworks";
+	var forms_frameworks_directory = "./Apps/Contoso.Forms.Puppet/Contoso.Forms.Puppet.iOS/SonomaFrameworks";
 	var ios_forms_framework_dir = forms_frameworks_directory + "/CrashReporter.framework";
 	CreateDirectory(forms_frameworks_directory);
 	CreateDirectory(ios_forms_framework_dir);
