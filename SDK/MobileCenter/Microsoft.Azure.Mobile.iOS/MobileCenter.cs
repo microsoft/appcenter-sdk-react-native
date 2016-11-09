@@ -153,7 +153,7 @@ namespace Microsoft.Azure.Mobile
             {
                 return new Class(classHandle);
             }
-            return null; //TODO what should we do here? throw?
+            return null;
         }
 
         private static Type GetBindingType(Type type)

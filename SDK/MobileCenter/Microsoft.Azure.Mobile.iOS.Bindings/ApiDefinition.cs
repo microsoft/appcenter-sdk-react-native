@@ -175,7 +175,6 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("setLogLevel:")]
 		void SetLogLevel(MSLogLevel logLevel);
 
-		//TODO this needs to be fixed
 		// +(void)setLogHandler:(MSLogHandler)logHandler;
 		[Static]
 		[Export("setLogHandler:")]

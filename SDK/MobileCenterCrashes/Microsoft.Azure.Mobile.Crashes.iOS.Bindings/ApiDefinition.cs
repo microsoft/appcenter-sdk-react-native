@@ -107,7 +107,6 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("crashes:shouldProcessErrorReport:")]
         bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport);
 
-        //TODO figure out why this is marked optional - we get a crash if it is not implemented
         // @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
         [Export("attachmentWithCrashes:forErrorReport:")]
         MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport);

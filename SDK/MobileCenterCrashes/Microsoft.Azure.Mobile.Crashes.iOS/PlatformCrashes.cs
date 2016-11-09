@@ -44,7 +44,6 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         private static iOSException GenerateiOSException(Exception exception)
         {
-            //TODO should actually just make a new constructor to take care of this 
             iOSException iosException = new iOSException();
             iosException.Type = exception.GetType().FullName;
             iosException.Message = exception.Message;
@@ -78,7 +77,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             List<iOSStackFrame> frameList = new List<iOSStackFrame>();
             for (int i = 0; i < trace.FrameCount; ++i)
             {
-                //TODO should actually just make a new constructor to take care of this
                 StackFrame dotnetFrame = trace.GetFrame(i);
                 if (dotnetFrame.GetMethod() == null) continue;
                 iOSStackFrame iosFrame = new iOSStackFrame();
