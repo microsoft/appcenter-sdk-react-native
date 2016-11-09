@@ -84,8 +84,8 @@ namespace Microsoft.Azure.Mobile.Crashes
                 iOSStackFrame iosFrame = new iOSStackFrame();
                 iosFrame.Address = null;
                 iosFrame.Code = null;
-                iosFrame.MethodName = dotnetFrame.GetMethod().ToString();
-                iosFrame.ClassName = dotnetFrame.GetMethod().DeclaringType?.ToString();
+                iosFrame.MethodName = dotnetFrame.GetMethod().Name;
+                iosFrame.ClassName = dotnetFrame.GetMethod().DeclaringType?.FullName;
                 iosFrame.LineNumber = dotnetFrame.GetFileLineNumber() == 0 ? null : (NSNumber)(dotnetFrame.GetFileLineNumber());
                 iosFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
                 frameList.Add(iosFrame);

@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 modelFrames.AddRange(frames.Select(frame => new ModelStackFrame
                 {
-                    ClassName = frame.GetMethod()?.DeclaringType?.ToString(),
+                    ClassName = frame.GetMethod()?.DeclaringType?.FullName,
                     MethodName = frame.GetMethod()?.Name,
                     FileName = frame.GetFileName(),
                     LineNumber = frame.GetFileLineNumber() != 0 ? new Java.Lang.Integer(frame.GetFileLineNumber()) : null
