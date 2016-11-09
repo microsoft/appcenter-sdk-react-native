@@ -4,10 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.Shared;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
+using Foundation;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
     using iOSCrashes = iOS.Bindings.MSCrashes;
+    using iOSException = iOS.Bindings.MSException;
+    using iOSStackFrame = iOS.Bindings.MSStackFrame;
 
     class PlatformCrashes : PlatformCrashesBase
     {
@@ -26,29 +31,77 @@ namespace Microsoft.Azure.Mobile.Crashes
         //	throw new NotImplementedException();
         //}
 
-        //TODO this just logs every exception possible, which is not the way crashes are handled in the native sdk
         static PlatformCrashes()
         {
-            MSCrashes.SetDelegate(new CrashDelegate());
-            MSCrashes.NotifyWithUserConfirmation(MSUserConfirmation.Always);
-
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            throw new NotImplementedException();
+            iOSException exception = GenerateiOSException((Exception)e.ExceptionObject);
+            iOS.Bindings.MSWrapperExceptionManager.SetWrapperException(exception);
         }
-    }
 
-    class CrashDelegate : MSCrashesDelegate
-    {
-        public override bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport)
+        private static iOSException GenerateiOSException(Exception exception)
         {
-            return true;
+            //TODO should actually just make a new constructor to take care of this 
+            iOSException iosException = new iOSException();
+            iosException.Type = exception.GetType().FullName;
+            iosException.Message = exception.Message;
+            iosException.Frames = GenerateStackFrames(exception);
+            iosException.WrapperSdkName = WrapperSdk.Name;
+
+            var aggregateException = exception as AggregateException;
+            List<iOSException> innerExceptions = new List<iOSException>();
+
+            if (aggregateException?.InnerExceptions != null)
+            {
+                foreach (Exception innerException in aggregateException.InnerExceptions)
+                {
+                    innerExceptions.Add(GenerateiOSException(innerException));
+                }
+            }
+            else if (exception.InnerException != null)
+            {
+                innerExceptions.Add(GenerateiOSException(exception.InnerException));
+            }
+
+            iosException.InnerExceptions = innerExceptions.Count > 0 ? innerExceptions.ToArray() : null;
+
+            return iosException;
         }
-        public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport)
+
+        private static iOSStackFrame[] GenerateStackFrames(Exception e)
         {
-            return null;
+            StackTrace trace = new StackTrace(e, true);
+
+            List<iOSStackFrame> frameList = new List<iOSStackFrame>();
+            for (int i = 0; i < trace.FrameCount; ++i)
+            {
+                //TODO should actually just make a new constructor to take care of this
+                StackFrame dotnetFrame = trace.GetFrame(i);
+                if (dotnetFrame.GetMethod() == null) continue;
+                iOSStackFrame iosFrame = new iOSStackFrame();
+                iosFrame.Address = null;
+                iosFrame.Code = null;
+                iosFrame.MethodName = dotnetFrame.GetMethod().ToString();
+                iosFrame.ClassName = dotnetFrame.GetMethod().DeclaringType?.ToString();
+                iosFrame.LineNumber = dotnetFrame.GetFileLineNumber() == 0 ? null : (NSNumber)(dotnetFrame.GetFileLineNumber());
+                iosFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
+                frameList.Add(iosFrame);
+            }
+            return frameList.Count == 0 ? null : frameList.ToArray();
+        }
+
+        private static string AnonymizePath(string path)
+        {
+            if ((path == null) || (path.Count() == 0) || !path.Contains("/Users/"))
+            {
+                return path;
+            }
+                
+            string pattern = "(/Users/[^/]+/)";
+            return Regex.Replace(path, pattern, "/Users/USER/");
         }
     }
 }
