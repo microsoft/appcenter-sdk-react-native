@@ -1,3 +1,5 @@
+[![Build Status](https://www.bitrise.io/app/2f5448791ead7158.svg?token=OXmRpllvCk374SWQCVevkA&branch=develop)](https://www.bitrise.io/app/2f5448791ead7158)
+
 # Mobile Center SDK for Xamarin
 
 ## Introduction
