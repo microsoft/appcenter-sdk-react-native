@@ -36,7 +36,7 @@
     <EmbeddedResource Include="ModulePages\CrashesContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\CoreContentPage.xaml">
+    <EmbeddedResource Include="ModulePages\MobileCenterContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="ModulePages\AnalyticsContentPage.xaml">
@@ -63,8 +63,8 @@
     <Compile Include="ModulePages\CrashesContentPage.xaml.cs">
       <DependentUpon>CrashesContentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModulePages\CoreContentPage.xaml.cs">
-      <DependentUpon>CoreContentPage.xaml</DependentUpon>
+    <Compile Include="ModulePages\MobileCenterContentPage.xaml.cs">
+      <DependentUpon>MobileCenterContentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModulePages\AnalyticsContentPage.xaml.cs">
       <DependentUpon>AnalyticsContentPage.xaml</DependentUpon>

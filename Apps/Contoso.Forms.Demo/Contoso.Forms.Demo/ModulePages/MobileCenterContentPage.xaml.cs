@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
-    public partial class CoreContentPage : ContentPage
+    public partial class MobileCenterContentPage : ContentPage
     {
-        public CoreContentPage()
+        public MobileCenterContentPage()
         {
             InitializeComponent();
             if (Device.OS == TargetPlatform.iOS)
