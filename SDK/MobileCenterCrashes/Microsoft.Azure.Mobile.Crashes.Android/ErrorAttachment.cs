@@ -7,12 +7,13 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         internal ErrorAttachment(AndroidErrorAttachment androidAttachment)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal AndroidErrorAttachment ToAndroidErrorAttachment()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new AndroidErrorAttachment();
         }
     }
 }

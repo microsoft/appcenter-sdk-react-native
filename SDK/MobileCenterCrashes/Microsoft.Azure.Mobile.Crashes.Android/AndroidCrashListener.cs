@@ -15,6 +15,11 @@
 
         public AndroidErrorAttachment GetErrorAttachment(AndroidErrorReport androidReport)
         {
+            if (_owner.GetErrorAttachment == null)
+            {
+                return null;
+            }
+
             var report = new ErrorReport(androidReport);
             var attachment = _owner.GetErrorAttachment(report);
             return attachment.ToAndroidErrorAttachment();
@@ -22,6 +27,10 @@
 
         public void OnBeforeSending(AndroidErrorReport androidReport)
         {
+            if (_owner.SendingErrorReport == null)
+            {
+                return;
+            }
             var report = new ErrorReport(androidReport);
             var e = new  SendingErrorReportEventArgs();
             e.Report = report;
@@ -30,6 +39,10 @@
 
         public void OnSendingFailed(AndroidErrorReport androidReport, Java.Lang.Exception exception)
         {
+            if (_owner.FailedToSendErrorReport == null)
+            {
+                return;
+            }
             var report = new ErrorReport(androidReport);
             var e = new FailedToSendErrorReportEventArgs();
             e.Report = report;
@@ -39,6 +52,10 @@
 
         public void OnSendingSucceeded(AndroidErrorReport androidReport)
         {
+            if (_owner.SentErrorReport == null)
+            {
+                return;
+            }
             var report = new ErrorReport(androidReport);
             var e = new SentErrorReportEventArgs();
             e.Report = report;
@@ -52,6 +69,10 @@
 
         public bool ShouldProcess(AndroidErrorReport androidReport)
         {
+            if (_owner.ShouldProcessErrorReport == null)
+            {
+                return true;
+            }
             var report = new ErrorReport(androidReport);
             return _owner.ShouldProcessErrorReport(report);
         }

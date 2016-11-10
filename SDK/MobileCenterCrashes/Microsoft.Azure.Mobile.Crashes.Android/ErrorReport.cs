@@ -8,12 +8,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         internal ErrorReport(AndroidErrorReport androidReport)
         {
-            throw new NotImplementedException();
-        }
-
-        internal AndroidErrorReport ToAndroidErrorReport()
-        {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

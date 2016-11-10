@@ -15,18 +15,33 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
+            if (_owner.ShouldProcessErrorReport == null)
+            {
+                return true;
+            }
+
             var report = new ErrorReport(msReport);
             return _owner.ShouldProcessErrorReport(report);
         }
 
         public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport)
         {
+            if (_owner.GetErrorAttachment == null) 
+            {
+                return null;
+            }
+              
             var report = new ErrorReport(msReport);
             return _owner.GetErrorAttachment(report).ToMSErrorAttachment();
-        }
+         }
 
         public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
+            if (_owner.SendingErrorReport == null)
+            {
+                return;
+            }
+
             var report = new ErrorReport(msReport);
             var e = new SendingErrorReportEventArgs();
             e.Report = report;
@@ -35,6 +50,11 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
+
+            if (_owner.SentErrorReport == null)
+            {
+                return;
+            }
             var report = new ErrorReport(msReport);
             var e = new SentErrorReportEventArgs();
             e.Report = report;
@@ -43,6 +63,10 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error)
         {
+            if (_owner.FailedToSendErrorReport == null)
+            {
+                return;
+            }
             var report = new ErrorReport(msReport);
             var e = new FailedToSendErrorReportEventArgs();
             e.Report = report;
