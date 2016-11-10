@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AddPropertyContentPage">
+	<TableView Intent="Form">
+		<TableSection>
+			<EntryCell Label="Property Name" x:Name="NameCell"/>
+			<EntryCell Label="Property Value" x:Name="ValueCell"/>
+			<ViewCell Tapped="AddProperty">
+				<Button Text="Add Property" InputTransparent="true" Clicked="AddProperty" />
+			</ViewCell>
+			<ViewCell Tapped="Cancel">
+				<Button Text="Cancel" InputTransparent="true" TextColor="Red" Clicked="Cancel"/>
+			</ViewCell>
+		</TableSection>
+	</TableView>
+</ContentPage>
