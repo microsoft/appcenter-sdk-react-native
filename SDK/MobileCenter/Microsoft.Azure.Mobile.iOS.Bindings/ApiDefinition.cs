@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 
 		// -(instancetype)initWithWrapperSdkVersion:(NSString *)wrapperSdkVersion wrapperSdkName:(NSString *)wrapperSdkName liveUpdateReleaseLabel:(NSString *)liveUpdateReleaseLabel liveUpdateDeploymentKey:(NSString *)liveUpdateDeploymentKey liveUpdatePackageHash:(NSString *)liveUpdatePackageHash;
 		[Export("initWithWrapperSdkVersion:wrapperSdkName:liveUpdateReleaseLabel:liveUpdateDeploymentKey:liveUpdatePackageHash:")]
-		IntPtr Constructor(string wrapperSdkVersion, string wrapperSdkName, string liveUpdateReleaseLabel, string liveUpdateDeploymentKey, string liveUpdatePackageHash);
+		IntPtr Constructor([NullAllowed] string wrapperSdkVersion, [NullAllowed] string wrapperSdkName, [NullAllowed] string liveUpdateReleaseLabel, [NullAllowed] string liveUpdateDeploymentKey, [NullAllowed] string liveUpdatePackageHash);
 	}
 
 	// @interface MSDevice : MSWrapperSdk
