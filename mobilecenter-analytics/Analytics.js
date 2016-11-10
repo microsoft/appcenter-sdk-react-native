@@ -5,6 +5,14 @@ module.exports = {
         await RNAnalytics.trackEvent(eventName, sanitizeProperties(properties));
     },
 
+    async getEnabled() {
+        return await RNAnalytics.getEnabled();
+    },
+
+    async setEnabled(enabled) {
+        return await RNAnalytics.setEnabled(enabled);
+    }
+
     /*
     // TODO: Uncomment this once the underlying SDK supports the functionality
     async trackPage(pageName, properties) {

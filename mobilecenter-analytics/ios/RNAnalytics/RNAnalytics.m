@@ -25,6 +25,20 @@ RCT_EXPORT_MODULE();
     [MSMobileCenter startService:[MSAnalytics class]];
 }
 
+RCT_EXPORT_METHOD(getEnabled:(RCTPromiseResolveBlock)resolve
+                    rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([NSNumber numberWithBool:[MSAnalytics isEnabled]]);
+}
+
+RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [MSAnalytics setEnabled:shouldEnable];
+    resolve(nil);
+}
+
 RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
               withProperties:(NSDictionary *)properties
                     resolver:(RCTPromiseResolveBlock)resolve
