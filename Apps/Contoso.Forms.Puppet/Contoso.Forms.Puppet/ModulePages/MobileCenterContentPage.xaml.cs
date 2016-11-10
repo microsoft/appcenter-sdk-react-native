@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class CoreContentPage : ContentPage
+    public partial class MobileCenterContentPage : ContentPage
     {
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
@@ -14,7 +14,7 @@ namespace Contoso.Forms.Puppet
         private Dictionary<LogLevel, string> LogLevelNames;
         private LogLevel LogWriteLevel;
 
-        public CoreContentPage()
+        public MobileCenterContentPage()
         {
             InitializeComponent();
 
