@@ -8,12 +8,12 @@ Pod::Spec.new do |s|
 
   s.author           = { 'Microsoft' => 'mobilecentersdk@microsoft.com' }
 
-  s.source = { :git => 'https://github.com/Microsoft/MobileCenter-SDK-React-Native.git' }
+  s.source = { :http => "https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter-SDK-ReactNative-#{s.version}.zip" }
 
   s.platform          = :ios, '8.0'
   s.requires_arc      = true
 
-  s.vendored_frameworks = 'RNMobileCenter/Products/RNMobileCenter/RNMobileCenter.framework'
+  s.vendored_frameworks = 'RNMobileCenter/RNMobileCenter.framework'
 
   s.dependency 'MobileCenter', '~> 0.2.0'
 end

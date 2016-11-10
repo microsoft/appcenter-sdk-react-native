@@ -16,7 +16,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     console.log('Added code to initialize iOS Crashes SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter', podspec: 'https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter.podspec' },
-        { pod: 'RNMobileCenter', podspec: '../../RNMobileCenter.podspec' }
+        { pod: 'RNMobileCenter', podspec: 'https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter-ReactNative.podspec' }
     ]).catch(function (e) {
         console.log(`
             Could not install dependencies using CocoaPods. 
