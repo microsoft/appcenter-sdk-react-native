@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Mobile
 
         private static void SetWrapperSdk()
         {
-            iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, "", "", "");
+            iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, null, null, null);
             iOSMobileCenter.SetWrapperSdk(wrapperSdk);
         }
     }
