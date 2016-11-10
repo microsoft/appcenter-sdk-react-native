@@ -31,7 +31,7 @@ namespace Contoso.Forms.Puppet
                 MobileCenterLog.Info(LogTag, "Sending error report\n");
 
                 SendingErrorReportEventArgs args = e as SendingErrorReportEventArgs;
-                MobileCenterLog.Info(LogTag, args.Report.Device.Model);
+                MobileCenterLog.Info(LogTag, args.Report.AppStartTime.ToString());
             };
 
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));

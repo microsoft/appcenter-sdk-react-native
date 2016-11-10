@@ -1,4 +1,5 @@
 ﻿using System;
+using Foundation;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -9,10 +10,17 @@ namespace Microsoft.Azure.Mobile.Crashes
         internal ErrorReport(MSErrorReport msReport)
         {
             Id = msReport.IncidentIdentifier;
-            //AppStartTime = msReport.AppStartTime //TODO convert
-            //AppStartTime = msReport.AppErrorTime //TODO convert
+            AppStartTime = NSDateToDateTimeOffset(msReport.AppStartTime);
+            AppStartTime = NSDateToDateTimeOffset(msReport.AppErrorTime);
             Device = msReport.Device == null ? null : new Device(msReport.Device);
-            //TODO others        
         }
+
+        private DateTimeOffset NSDateToDateTimeOffset(NSDate date)
+        {
+            DateTime dateTime = (DateTime)date;
+            dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+            return dateTime;
+        }
+
     }
 }
