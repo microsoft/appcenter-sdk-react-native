@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Crashes.Shared
+namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Interface to abstract <see cref="Crashes"/> features between different platforms.
@@ -14,6 +14,13 @@ namespace Microsoft.Azure.Mobile.Crashes.Shared
         bool HasCrashedInLastSession { get; }
 
         void GenerateTestCrash();
+
+        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
+        SendingErrorReportHandler SendingErrorReport { get; set; }
+        SentErrorReportHandler SentErrorReport { get; set; }
+        FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
+        GetErrorAttachmentCallback GetErrorAttachment { get; set; }
 
         //void TrackException(Exception exception);
     }

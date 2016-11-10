@@ -16,6 +16,12 @@ namespace Microsoft.Azure.Mobile.Crashes
 
     class PlatformCrashes : PlatformCrashesBase
     {
+        public override SendingErrorReportHandler SendingErrorReport { get; set; }
+        public override SentErrorReportHandler SentErrorReport { get; set; }
+        public override FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
+        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+
         public override Type BindingType => typeof(iOSCrashes);
 
         public override bool Enabled

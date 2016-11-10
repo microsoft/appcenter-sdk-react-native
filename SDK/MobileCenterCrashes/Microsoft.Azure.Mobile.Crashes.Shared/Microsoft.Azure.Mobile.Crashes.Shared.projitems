@@ -6,7 +6,7 @@
     <SharedGUID>db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Crashes.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.Azure.Mobile.Crashes</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />
@@ -14,5 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformCrashesBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorReportEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CrashesDelegates.cs" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
     <ProjectGuid>{4936A94C-BE22-4F73-8468-64FA4371FF80}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Crashes.iOS</RootNamespace>
+    <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
     <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
@@ -55,6 +55,9 @@
   <ItemGroup>
     <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ErrorAttachment.cs" />
+    <Compile Include="ErrorReport.cs" />
+    <Compile Include="CrashesDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">

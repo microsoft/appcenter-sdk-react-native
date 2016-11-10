@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Crashes.Shared;
+using Microsoft.Azure.Mobile.Crashes;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -8,6 +8,21 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// </summary>
     public static class Crashes
     {
+        static Crashes()
+        {
+            PlatformCrashes.SendingErrorReport = SendingErrorReport;
+            PlatformCrashes.SentErrorReport = SentErrorReport;
+            PlatformCrashes.FailedToSendErrorReport = FailedToSendErrorReport;
+            PlatformCrashes.ShouldProcessErrorReport = ShouldProcessErrorReport;
+            PlatformCrashes.GetErrorAttachment = GetErrorAttachment;
+        }
+
+        public static event SendingErrorReportHandler SendingErrorReport;
+        public static event SentErrorReportHandler SentErrorReport;
+        public static event FailedToSendErrorHandler FailedToSendErrorReport;
+        public static ShouldProcessErrorReportCallback ShouldProcessErrorReport;
+        public static GetErrorAttachmentCallback GetErrorAttachment;
+
         internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
@@ -57,5 +72,4 @@ namespace Microsoft.Azure.Mobile.Crashes
         //{
         //    PlatformCrashes.TrackException(exception);
         //}
-    }
 }

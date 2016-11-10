@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Crashes.Shared
+namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Object used to share portable code between platforms.
@@ -17,6 +17,13 @@ namespace Microsoft.Azure.Mobile.Crashes.Shared
         {
             throw new TestCrashException();
         }
+
+        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
+        public abstract SendingErrorReportHandler SendingErrorReport { get; set; }
+        public abstract SentErrorReportHandler SentErrorReport { get; set; }
+        public abstract FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        public abstract ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
+        public abstract GetErrorAttachmentCallback GetErrorAttachment { get; set; }
 
         //public abstract void TrackException(Exception exception);
     }

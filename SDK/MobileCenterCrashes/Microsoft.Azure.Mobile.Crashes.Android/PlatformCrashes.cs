@@ -12,9 +12,17 @@ namespace Microsoft.Azure.Mobile.Crashes
     using Exception = System.Exception;
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
+    using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
 
     class PlatformCrashes : PlatformCrashesBase
     {
+        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
+        public override SendingErrorReportHandler SendingErrorReport { get; set; }
+        public override SentErrorReportHandler SentErrorReport { get; set; }
+        public override FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
+        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+
         public override Type BindingType => typeof(AndroidCrashes);
 
         public override bool Enabled
@@ -30,6 +38,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         //    AndroidCrashes.Instance.TrackException(GenerateModelException(exception));
         //}
 
+        private AndroidICrashListener _crashListener;
         /// <summary>
         /// Empty model stack frame used for comparison to optimize JSON payload.
         /// </summary>
@@ -50,6 +59,11 @@ namespace Microsoft.Azure.Mobile.Crashes
             MobileCenterLog.Info(Crashes.LogTag, "Set up Xamarin crash handler.");
             AndroidEnvironment.UnhandledExceptionRaiser += OnUnhandledException;
             AndroidCrashes.Instance.SetWrapperSdkListener(new CrashListener());
+        }
+
+        public PlatformCrashes()
+        {
+            _crashListener = new AndroidCrashListener(this);
         }
 
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
@@ -136,4 +150,5 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
     }
+
 }

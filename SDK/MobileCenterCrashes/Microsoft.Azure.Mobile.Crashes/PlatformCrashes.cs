@@ -5,6 +5,49 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     class PlatformCrashes : PlatformCrashesBase
     {
+        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
+        public override SendingErrorReportHandler SendingErrorReport
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public override SentErrorReportHandler SentErrorReport
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public override FailedToSendErrorHandler FailedToSendErrorReport
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public override GetErrorAttachmentCallback GetErrorAttachment
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport
+        { 
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public override GetErrorAttachmentCallback GetErrorAttachment
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
         public override Type BindingType
         {
             get { throw new NotImplementedException(); }
