@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Crashes;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -72,4 +71,5 @@ namespace Microsoft.Azure.Mobile.Crashes
         //{
         //    PlatformCrashes.TrackException(exception);
         //}
+    }
 }

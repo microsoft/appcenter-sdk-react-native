@@ -1,5 +1,4 @@
-﻿using System;
-using Foundation;
+﻿using Foundation;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -8,49 +7,47 @@ namespace Microsoft.Azure.Mobile.Crashes
     public class CrashesDelegate : MSCrashesDelegate
     {
         private readonly PlatformCrashes _owner;
-        CrashesDelegate(PlatformCrashes owner)
+
+        internal CrashesDelegate(PlatformCrashes owner)
         {
             _owner = owner;
         }
 
-        public override bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport)
+        public override bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
-            ErrorReport report = new ErrorReport(errorReport);
+            var report = new ErrorReport(msReport);
             return _owner.ShouldProcessErrorReport(report);
         }
 
-        public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport)
+        public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport)
         {
-            ErrorReport report = new ErrorReport(errorReport);
+            var report = new ErrorReport(msReport);
             return _owner.GetErrorAttachment(report).ToMSErrorAttachment();
         }
 
         public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
-            
+            var report = new ErrorReport(msReport);
+            var e = new SendingErrorReportEventArgs();
+            e.Report = report;
+            _owner.SendingErrorReport(null, e);
         }
-        public override void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport);
-        public override void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error);
+
+        public override void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport)
+        {
+            var report = new ErrorReport(msReport);
+            var e = new SentErrorReportEventArgs();
+            e.Report = report;
+            _owner.SentErrorReport(null, e);
+        }
+
+        public override void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error)
+        {
+            var report = new ErrorReport(msReport);
+            var e = new FailedToSendErrorReportEventArgs();
+            e.Report = report;
+            e.Exception = error;
+            _owner.FailedToSendErrorReport(null, e);
+        }
     }
 }
-
-
-// @optional -(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport;
-[Export("crashes:shouldProcessErrorReport:")]
-bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport);
-
-// @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
-[Export("attachmentWithCrashes:forErrorReport:")]
-MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport);
-
-// @optional -(void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport;
-[Export("crashes:willSendErrorReport:")]
-void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport errorReport);
-
-// @optional -(void)crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport;
-[Export("crashes:didSucceedSendingErrorReport:")]
-void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport);
-
-// @optional -(void)crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)error;
-[Export("crashes:didFailSendingErrorReport:withError:")]
-void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport, NSError error);

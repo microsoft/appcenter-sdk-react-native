@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Crashes.Shared;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -26,18 +25,6 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public override GetErrorAttachmentCallback GetErrorAttachment
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport
-        { 
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }

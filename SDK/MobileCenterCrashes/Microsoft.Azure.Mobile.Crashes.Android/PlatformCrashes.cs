@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
-using Microsoft.Azure.Mobile.Crashes.Shared;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -64,6 +63,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public PlatformCrashes()
         {
             _crashListener = new AndroidCrashListener(this);
+            AndroidCrashes.SetListener(_crashListener);
         }
 
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
@@ -93,6 +93,8 @@ namespace Microsoft.Azure.Mobile.Crashes
                 AndroidCrashes.Instance.SaveWrapperSdkErrorLog(_errorLog);
             }
         }
+         
+        #pragma warning disable XS0001 // Find usages of mono todo items
 
         /// <summary>
         /// Generate structured data for a dotnet exception.
@@ -149,6 +151,9 @@ namespace Microsoft.Azure.Mobile.Crashes
                 JoinExceptionAndLog();
             }
         }
+
+        #pragma warning restore XS0001 // Find usages of mono todo items
+
     }
 
 }
