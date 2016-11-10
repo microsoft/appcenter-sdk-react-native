@@ -51,6 +51,8 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// </value>
         public static bool HasCrashedInLastSession => PlatformCrashes.HasCrashedInLastSession;
 
+        public static ErrorReport LastSessionCrashReport => PlatformCrashes.LastSessionCrashReport;
+
         /// <summary>
         /// Generates crash for test purpose.
         /// </summary>

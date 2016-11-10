@@ -13,6 +13,8 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         bool HasCrashedInLastSession { get; }
 
+        ErrorReport LastSessionCrashReport { get; }
+
         void GenerateTestCrash();
 
         // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)

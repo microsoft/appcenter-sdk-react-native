@@ -28,6 +28,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool HasCrashedInLastSession => MSCrashes.HasCrashedInLastSession;
 
+        public override ErrorReport LastSessionCrashReport
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         //public override void TrackException(Exception exception)
         //{
         //	throw new NotImplementedException();

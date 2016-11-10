@@ -32,6 +32,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
 
+        public override ErrorReport LastSessionCrashReport
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         //public override void TrackException(Exception exception)
         //{
         //    AndroidCrashes.Instance.TrackException(GenerateModelException(exception));

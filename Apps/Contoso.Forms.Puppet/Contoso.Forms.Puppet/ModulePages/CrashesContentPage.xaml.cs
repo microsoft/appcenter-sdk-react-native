@@ -12,7 +12,7 @@ namespace Contoso.Forms.Puppet
         {
             InitializeComponent();
             CrashesEnabledSwitchCell.On = Crashes.Enabled;
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }

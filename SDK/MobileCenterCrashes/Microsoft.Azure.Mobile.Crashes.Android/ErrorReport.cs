@@ -4,11 +4,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorReport;
 
-    public class ErrorReport
+    public partial class ErrorReport
     {
         internal ErrorReport(AndroidErrorReport androidReport)
         {
-            //throw new NotImplementedException();
+            Id = androidReport.Id;
+            AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
+            AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
+            // TODO other properties
         }
     }
 }

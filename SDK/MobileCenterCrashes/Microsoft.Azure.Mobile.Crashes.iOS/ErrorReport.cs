@@ -4,7 +4,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     using iOS.Bindings;
 
-    public class ErrorReport
+    public partial class ErrorReport
     {
         internal ErrorReport(MSErrorReport msReport)
         {

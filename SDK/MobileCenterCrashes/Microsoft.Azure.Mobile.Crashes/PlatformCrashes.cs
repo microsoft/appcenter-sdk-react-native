@@ -51,6 +51,11 @@ namespace Microsoft.Azure.Mobile.Crashes
             get { throw new NotImplementedException(); }
         }
 
+        public override ErrorReport LastSessionCrashReport
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         //public override void TrackException(Exception exception)
         //{
         //    throw new NotImplementedException();

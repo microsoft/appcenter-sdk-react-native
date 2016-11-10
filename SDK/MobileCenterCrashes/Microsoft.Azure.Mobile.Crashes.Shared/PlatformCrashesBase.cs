@@ -13,6 +13,8 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public abstract bool HasCrashedInLastSession { get; }
 
+        public abstract ErrorReport LastSessionCrashReport { get; }
+
         public void GenerateTestCrash()
         {
             throw new TestCrashException();
