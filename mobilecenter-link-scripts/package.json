@@ -1,6 +1,6 @@
 {
   "name": "mobilecenter-link-scripts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Node module that contains common functionality needed to link mobilecenter-* modules",
   "main": "src/index.js",
   "repository": {

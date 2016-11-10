@@ -1,6 +1,6 @@
 {
   "name": "mobilecenter-crashes",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "React Native plugin for Mobile Center Crashes",
   "main": "Crashes.js",
   "repository": {
