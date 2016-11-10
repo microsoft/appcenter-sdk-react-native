@@ -128,7 +128,7 @@ To start the SDK in your app, follow these steps:
 * **Custom Events:** You can track your own custom events with specific properties to know what's happening in your app, understand user actions, and see the aggregates in the Mobile Center portal. Once you have started the SDK, use the `TrackEvent()` method to track your events with properties.
 
     ```csharp
-    Analytics.TrackEvent("Video clicked", new Dictionary<string, string> { { "Category", "Music" }, { "key", "value"}});
+    Analytics.TrackEvent("Video clicked", new Dictionary<string, string> { { "Category", "Music" }, { "FileName", "favorite.avi"}});
     ```
 
 * **Enable or disable Analytics:**  You can change the enabled state of the Analytics module at runtime by calling the `Analytics.Enabled` property. If you disable it, the SDK will not collect any more analytics information for the app. To re-enable it, set property value as `true`.
