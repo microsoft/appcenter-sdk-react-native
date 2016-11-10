@@ -8,7 +8,11 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         internal ErrorReport(MSErrorReport msReport)
         {
-            //throw new NotImplementedException();
+            Id = msReport.IncidentIdentifier;
+            //AppStartTime = msReport.AppStartTime //TODO convert
+            //AppStartTime = msReport.AppErrorTime //TODO convert
+            Device = msReport.Device == null ? null : new Device(msReport.Device);
+            //TODO others        
         }
     }
 }

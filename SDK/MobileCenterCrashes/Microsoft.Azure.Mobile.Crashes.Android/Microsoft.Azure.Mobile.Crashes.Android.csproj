@@ -51,6 +51,7 @@
     <Compile Include="AndroidCrashListener.cs" />
     <Compile Include="ErrorReport.cs" />
     <Compile Include="ErrorAttachment.cs" />
+    <Compile Include="ErrorBinaryAttachment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

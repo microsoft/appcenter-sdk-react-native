@@ -1,19 +1,49 @@
 ﻿using System;
+
 namespace Microsoft.Azure.Mobile.Crashes
 {
     using AndroidErrorAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorAttachment;
+    using AndroidUtils = Com.Microsoft.Azure.Mobile.Crashes.ErrorAttachments;
 
     public class ErrorAttachment
     {
+        internal AndroidErrorAttachment internalAttachment { get; }
+
         internal ErrorAttachment(AndroidErrorAttachment androidAttachment)
         {
-            //throw new NotImplementedException();
+            internalAttachment = androidAttachment;
         }
 
-        internal AndroidErrorAttachment ToAndroidErrorAttachment()
+          // Public Constructors
+        public ErrorAttachment(string text)
         {
-            //throw new NotImplementedException();
-            return new AndroidErrorAttachment();
+            internalAttachment = AndroidUtils.AttachmentWithText(text);
+        }
+
+        public ErrorAttachment(byte[] data, string filename, string contentType)
+        {
+            internalAttachment = AndroidUtils.AttachmentWithBinary(data, filename, contentType);
+        }
+
+        public ErrorAttachment(string text, byte[] data, string filename, string contentType)
+        {
+            internalAttachment = AndroidUtils.Attachment(text, data, filename, contentType);
+        }
+
+        // Properties
+        public string TextAttachment => internalAttachment.TextAttachment;
+
+        public ErrorBinaryAttachment BinaryAttachment
+        { 
+            get
+            {
+                return new ErrorBinaryAttachment(internalAttachment.BinaryAttachment);
+            }
+            set
+            {
+                internalAttachment.BinaryAttachment = value.internalBinaryAttachment;
+            }
         }
     }
+
 }

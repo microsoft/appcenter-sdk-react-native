@@ -9,9 +9,30 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         static Crashes()
         {
-            PlatformCrashes.SendingErrorReport = SendingErrorReport;
-            PlatformCrashes.SentErrorReport = SentErrorReport;
-            PlatformCrashes.FailedToSendErrorReport = FailedToSendErrorReport;
+            PlatformCrashes.SendingErrorReport += (sender, e) =>
+            {
+                if (SendingErrorReport != null)
+                {
+                    SendingErrorReport(sender, e);
+                }
+            };
+
+            PlatformCrashes.SentErrorReport += (sender, e) =>
+            {
+                if (SentErrorReport != null)
+                {
+                    SentErrorReport(sender, e);
+                }
+            };
+
+            PlatformCrashes.FailedToSendErrorReport += (sender, e) => 
+            {
+                if (FailedToSendErrorReport != null)
+                {
+                    FailedToSendErrorReport(sender, e);
+                }
+            };
+
             PlatformCrashes.ShouldProcessErrorReport = ShouldProcessErrorReport;
             PlatformCrashes.GetErrorAttachment = GetErrorAttachment;
         }

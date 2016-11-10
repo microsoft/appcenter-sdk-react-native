@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Azure.Mobile;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -11,7 +12,8 @@ namespace Microsoft.Azure.Mobile.Crashes
             Id = androidReport.Id;
             AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
             AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
-            // TODO other properties
+            Device = androidReport.Device == null ? null : new Device(androidReport.Device);
+            //TODO others
         }
     }
 }

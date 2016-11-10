@@ -23,11 +23,25 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
+
+            Crashes.SendingErrorReport += (sender, e) =>
+            {
+                MobileCenterLog.Info(LogTag, "*************************\n");
+
+                MobileCenterLog.Info(LogTag, "Sending error report\n");
+
+                SendingErrorReportEventArgs args = e as SendingErrorReportEventArgs;
+                MobileCenterLog.Info(LogTag, args.Report.Device.Model);
+            };
+
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+
+
+
         }
 
         protected override void OnSleep()
