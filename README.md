@@ -17,10 +17,10 @@ This document contains the following sections:
 1. [Prerequisites](#1-prerequisites)
 2. [Supported Platforms](#2-supported-platforms)
 3. [Setup](#3-setup)
-4. [Start the SDK](#3-start-the-sdk)
-5. [Analytics APIs](#4-analytics-apis)
-6. [Crashes APIs](#5-crashes-apis)
-7. [Advanced APIs](#6-advanced-apis)
+4. [Start the SDK](#4-start-the-sdk)
+5. [Analytics APIs](#5-analytics-apis)
+6. [Crashes APIs](#6-crashes-apis)
+7. [Advanced APIs](#7-advanced-apis)
 
 Let's get started with setting up Mobile Center Xamarin SDK in your app to use these services:
 
