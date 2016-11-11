@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class CrashesContentPage : ContentPage
+    public partial class CrashesContentPage
     {
         public CrashesContentPage()
         {
             InitializeComponent();
-            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
+            if (Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }
@@ -30,8 +29,7 @@ namespace Contoso.Forms.Puppet
 
         void DivideByZero(object sender, System.EventArgs e)
         {
-            int x = 42 / int.Parse("0");
-            x = 0; // to prevent warning
+            (42 / int.Parse("0")).ToString();
         }
 
         void UpdateEnabled(object sender, System.EventArgs e)

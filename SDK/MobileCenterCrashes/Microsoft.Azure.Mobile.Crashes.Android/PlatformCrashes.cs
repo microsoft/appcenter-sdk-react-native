@@ -36,7 +36,11 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             get
             {
-                return null;
+                var androidReport = AndroidCrashes.LastSessionCrashReport;
+                if (androidReport == null)
+                    return null;
+                else
+                    return new ErrorReport(androidReport);
             }
         }
 
@@ -101,8 +105,8 @@ namespace Microsoft.Azure.Mobile.Crashes
                 AndroidCrashes.Instance.SaveWrapperSdkErrorLog(_errorLog);
             }
         }
-         
-        #pragma warning disable XS0001 // Find usages of mono todo items
+
+#pragma warning disable XS0001 // Find usages of mono todo items
 
         /// <summary>
         /// Generate structured data for a dotnet exception.
@@ -160,7 +164,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
-        #pragma warning restore XS0001 // Find usages of mono todo items
+#pragma warning restore XS0001 // Find usages of mono todo items
 
     }
 

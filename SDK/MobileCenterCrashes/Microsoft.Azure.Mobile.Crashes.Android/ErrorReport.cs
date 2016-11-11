@@ -12,11 +12,17 @@ namespace Microsoft.Azure.Mobile.Crashes
             AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
             AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
             Device = androidReport.Device == null ? null : new Device(androidReport.Device);
-
-            iOSDetails = null;
-            //FIXME: The error is here! when accessing androidReport.Throwable, we seem to crash...
-            AndroidDetails = new AndroidErrorDetails(androidReport.Throwable, androidReport.ThreadName);
-
+            object androidThrowable;
+            try
+            {
+                androidThrowable = androidReport.Throwable;
+            }
+            catch (Exception e)
+            {
+                MobileCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
+				androidThrowable = null;
+            }
+            AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
         }
     }
 }

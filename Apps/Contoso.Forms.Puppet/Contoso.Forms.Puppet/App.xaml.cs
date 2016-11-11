@@ -47,6 +47,7 @@ namespace Contoso.Forms.Puppet
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+            MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport=" + Crashes.LastSessionCrashReport?.AndroidDetails?.Exception);
         }
 
         protected override void OnSleep()
