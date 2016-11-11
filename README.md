@@ -66,7 +66,7 @@ Now that you've integrated the SDK in your application, it's time to start the S
 
 To start the SDK in your app, follow these steps:
 
-1. **Add using statements:**  Add the appropriate namespaces befor eyou get started with using our APIs.
+1. **Add using statements:**  Add the appropriate namespaces before you get started with using our APIs.
 
     **Xamarin.iOS** -  Open AppDelegate.cs file and add the lines below the existing using statements
 
