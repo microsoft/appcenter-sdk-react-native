@@ -32,7 +32,11 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             get
             {
-                throw new NotImplementedException();
+                var report = MSCrashes.LastSessionCrashReport;
+                if (report == null)
+                    return null;
+                else
+                    return new ErrorReport(report);
             }
         }
 
