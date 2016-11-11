@@ -41,13 +41,13 @@ namespace Contoso.Forms.Puppet
                     MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
                 }
             };
-
+            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
-            MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport=" + Crashes.LastSessionCrashReport?.AndroidDetails?.Exception);
+            MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport=" + Crashes.LastSessionCrashReport);
         }
 
         protected override void OnSleep()
