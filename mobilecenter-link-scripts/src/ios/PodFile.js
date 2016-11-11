@@ -23,8 +23,8 @@ PodFile.prototype.addPodLine = function (pod, podspec, version) {
     } else if (version) {
         line = `${line}, '~> ${version}'`;
     }
-    var pattern = this.fileContents.match(/end[\r\n\s]*$/)[0];
-    this.fileContents = this.fileContents.replace(pattern, `${line}\n${pattern}`);
+    var pattern = this.fileContents.match(/# Pods for .*/)[0];
+    this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
     debug(`${line} ===> ${this.file}`);
 };
 

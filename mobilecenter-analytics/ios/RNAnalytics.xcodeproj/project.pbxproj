@@ -215,7 +215,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../../ios",
+					"$(SRCROOT)/../../../ios/**",
 					"$(inherited)",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
@@ -230,7 +230,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../../ios",
+					"$(SRCROOT)/../../../ios/**",
 					"$(inherited)",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";

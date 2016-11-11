@@ -232,7 +232,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../../ios",
+					"$(SRCROOT)/../../../ios/**",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -248,7 +248,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../../ios",
+					"$(SRCROOT)/../../../ios/**",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
