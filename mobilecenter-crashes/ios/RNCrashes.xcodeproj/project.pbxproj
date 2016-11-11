@@ -235,6 +235,7 @@
 					"$(SRCROOT)/../../../ios",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNCrashes;
 				SKIP_INSTALL = YES;
@@ -250,6 +251,7 @@
 					"$(SRCROOT)/../../../ios",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNCrashes;
 				SKIP_INSTALL = YES;

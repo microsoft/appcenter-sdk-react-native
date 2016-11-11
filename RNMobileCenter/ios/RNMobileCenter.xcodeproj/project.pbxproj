@@ -24,7 +24,6 @@
 		5419C25A1D81FDA300DDF3A1 /* RNMobileCenter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */; };
 		5419C25C1D81FDA300DDF3A1 /* RNMobileCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* RNMobileCenter.m */; };
 		CB4D6D781DB6DE940080D9D6 /* RNMobileCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB61C4E31DD244EF00156BA6 /* MobileCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB61C4E21DD244EF00156BA6 /* MobileCenter.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,7 +43,6 @@
 		5419C2561D81FDA300DDF3A1 /* libRNMobileCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenter.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* RNMobileCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenter.m; sourceTree = "<group>"; };
-		CB61C4E21DD244EF00156BA6 /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileCenter.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +50,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB61C4E31DD244EF00156BA6 /* MobileCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +59,6 @@
 		5419C24D1D81FDA300DDF3A1 = {
 			isa = PBXGroup;
 			children = (
-				CB61C4E21DD244EF00156BA6 /* MobileCenter.framework */,
 				5419C2581D81FDA300DDF3A1 /* RNMobileCenter */,
 				5419C2571D81FDA300DDF3A1 /* Products */,
 			);
@@ -292,6 +288,7 @@
 				);
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNMobileCenter;
@@ -309,6 +306,7 @@
 				);
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNMobileCenter;
@@ -321,6 +319,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = UBF8T346G9;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -329,6 +328,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = UBF8T346G9;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
