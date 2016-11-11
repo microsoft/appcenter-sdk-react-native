@@ -113,7 +113,7 @@ allprojects {
 
 repositories {
     maven {
-            url  'http://microsoftsonoma.bintray.com/mobilecenter'
+            url  'http://mobilecenter.bintray.com/mobilecenter'
             credentials {
                 username rootProject.bintrayUser
                 password rootProject.bintrayKey
