@@ -17,10 +17,10 @@ This document contains the following sections:
 1. [Prerequisites](#1-prerequisites)
 2. [Supported Platforms](#2-supported-platforms)
 3. [Setup](#3-setup)
-4. [Start the SDK](#3-start-the-sdk)
-5. [Analytics APIs](#4-analytics-apis)
-6. [Crashes APIs](#5-crashes-apis)
-7. [Advanced APIs](#6-advanced-apis)
+4. [Start the SDK](#4-start-the-sdk)
+5. [Analytics APIs](#5-analytics-apis)
+6. [Crashes APIs](#6-crashes-apis)
+7. [Advanced APIs](#7-advanced-apis)
 
 Let's get started with setting up Mobile Center Xamarin SDK in your app to use these services:
 
@@ -128,7 +128,7 @@ To start the SDK in your app, follow these steps:
 * **Custom Events:** You can track your own custom events with specific properties to know what's happening in your app, understand user actions, and see the aggregates in the Mobile Center portal. Once you have started the SDK, use the `TrackEvent()` method to track your events with properties.
 
     ```csharp
-    Analytics.TrackEvent("Video clicked", new Dictionary<string, string> { { "Category", "Music" }, { "key", "value"}});
+    Analytics.TrackEvent("Video clicked", new Dictionary<string, string> { { "Category", "Music" }, { "FileName", "favorite.avi"}});
     ```
 
 * **Enable or disable Analytics:**  You can change the enabled state of the Analytics module at runtime by calling the `Analytics.Enabled` property. If you disable it, the SDK will not collect any more analytics information for the app. To re-enable it, set property value as `true`.
