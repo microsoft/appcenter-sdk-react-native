@@ -13,30 +13,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class RNAnalyticsPackage implements ReactPackage {
-    private boolean startEnabled;
-    private Application application;
     private static final String ENABLE_IN_JS = "ENABLE_IN_JS";
+    private RNAnalyticsModule module;
 
     public RNAnalyticsPackage(Application application, boolean startEnabled) {
-        this.startEnabled = startEnabled;
-        this.application = application;
+        this.module = new RNAnalyticsModule(application, startEnabled);
     }
 
     public RNAnalyticsPackage(Application application, String startEnabled) {
         if (startEnabled.equals(ENABLE_IN_JS)){
-            this.startEnabled = false;
+            this.module = new RNAnalyticsModule(application, false);
         } else {
-            this.startEnabled = true;
+            this.module = new RNAnalyticsModule(application, true);
         }
-        
-        this.application = application;
+
     }
 
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNAnalyticsModule(application, reactContext, this.startEnabled));
+        modules.add(this.module);
         return modules;
     }
 

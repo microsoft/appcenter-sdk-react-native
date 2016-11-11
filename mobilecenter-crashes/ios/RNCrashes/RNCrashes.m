@@ -64,7 +64,7 @@ RCT_EXPORT_MODULE();
     MSErrorReport *lastSessionCrashReport = [MSCrashes lastSessionCrashReport];
 
     return @{
-        @"hasCrashedInLastSession": @(1 || lastSessionCrashReport != nil),
+        @"hasCrashedInLastSession": @(lastSessionCrashReport != nil),
         @"lastCrashReport": convertReportToJS(lastSessionCrashReport)
     };
 }

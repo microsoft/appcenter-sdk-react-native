@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
@@ -14,12 +14,15 @@ import com.microsoft.azure.mobile.analytics.Analytics;
 
 import org.json.JSONException;
 
-public class RNAnalyticsModule extends ReactContextBaseJavaModule {
-    public RNAnalyticsModule(Application application, ReactApplicationContext reactContext, boolean startEnabled) {
-        super(reactContext);
-
+public class RNAnalyticsModule extends BaseJavaModule {
+    public RNAnalyticsModule(Application application, boolean startEnabled) {
         RNMobileCenter.initializeMobileCenter(application);
-        Analytics.setEnabled(startEnabled);
+        if (!startEnabled) {
+            // Avoid starting an analytics session.
+            // Note that we don't call this if startEnabled is true, because
+            // that causes a session to try and start before Analytics is started.
+            Analytics.setEnabled(startEnabled);
+        }
         //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
         MobileCenter.start(Analytics.class);
     }
