@@ -17,5 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ErrorReportEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CrashesDelegates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorReport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AndroidErrorDetails.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)iOSErrorDetails.cs" />
   </ItemGroup>
 </Project>

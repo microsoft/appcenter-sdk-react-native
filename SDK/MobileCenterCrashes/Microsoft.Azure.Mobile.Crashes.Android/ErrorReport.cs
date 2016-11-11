@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Azure.Mobile;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -13,7 +12,11 @@ namespace Microsoft.Azure.Mobile.Crashes
             AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
             AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
             Device = androidReport.Device == null ? null : new Device(androidReport.Device);
-            //TODO others
+
+            iOSDetails = null;
+            //FIXME: The error is here! when accessing androidReport.Throwable, we seem to crash...
+            AndroidDetails = new AndroidErrorDetails(androidReport.Throwable, androidReport.ThreadName);
+
         }
     }
 }

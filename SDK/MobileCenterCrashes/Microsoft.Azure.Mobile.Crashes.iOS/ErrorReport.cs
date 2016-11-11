@@ -13,6 +13,15 @@ namespace Microsoft.Azure.Mobile.Crashes
             AppStartTime = NSDateToDateTimeOffset(msReport.AppStartTime);
             AppStartTime = NSDateToDateTimeOffset(msReport.AppErrorTime);
             Device = msReport.Device == null ? null : new Device(msReport.Device);
+
+            AndroidDetails = null;
+
+            iOSDetails = new iOSErrorDetails(msReport.ReporterKey, 
+                                             msReport.Signal, 
+                                             msReport.ExceptionName, 
+                                             msReport.ExceptionReason, 
+                                             (uint)msReport.AppProcessIdentifier);
+
         }
 
         private DateTimeOffset NSDateToDateTimeOffset(NSDate date)
