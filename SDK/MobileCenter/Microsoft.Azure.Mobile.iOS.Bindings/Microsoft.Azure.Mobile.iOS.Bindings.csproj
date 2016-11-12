@@ -20,7 +20,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CustomCommands>
-      <CustomCommands>
+<!--      <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
           <command>sh ./build.sh -t externals-ios</command>
@@ -31,7 +31,7 @@
           <command>rm -rf externals/ios</command>
           <workingdir>${ProjectDir}/../../..</workingdir>
         </Command>
-      </CustomCommands>
+      </CustomCommands>-->
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

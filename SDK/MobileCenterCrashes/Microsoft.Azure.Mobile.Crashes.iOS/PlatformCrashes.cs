@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -58,8 +60,13 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MSException exception = GenerateiOSException((Exception)e.ExceptionObject);
+            Exception systemException = e.ExceptionObject as Exception;
+            MSException exception = GenerateiOSException(systemException);
             MSWrapperExceptionManager.SetWrapperException(exception);
+
+            byte[] exceptionBytes = SerializeException(systemException);
+            NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
+            MSWrapperExceptionManager.SetWrapperExceptionData(wrapperExceptionData);
         }
 
         private static MSException GenerateiOSException(Exception exception)
@@ -124,6 +131,14 @@ namespace Microsoft.Azure.Mobile.Crashes
                 
             string pattern = "(/Users/[^/]+/)";
             return Regex.Replace(path, pattern, "/Users/USER/");
+        }
+
+        private static byte[] SerializeException(Exception exception)
+        {
+            MemoryStream ms = new MemoryStream();
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(ms, exception);
+            return ms.ToArray();
         }
     }
 }

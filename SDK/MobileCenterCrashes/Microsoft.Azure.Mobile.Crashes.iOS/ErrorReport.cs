@@ -1,5 +1,7 @@
 ﻿using System;
 using Foundation;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -22,6 +24,8 @@ namespace Microsoft.Azure.Mobile.Crashes
                                              msReport.ExceptionReason, 
                                              (uint)msReport.AppProcessIdentifier);
 
+            NSData wrapperExceptionData = MSWrapperExceptionManager.LoadWrapperExceptionData(msReport.IncidentIdentifier);
+            SystemException = DeserializeException(wrapperExceptionData);
         }
 
         private DateTimeOffset NSDateToDateTimeOffset(NSDate date)
@@ -31,5 +35,12 @@ namespace Microsoft.Azure.Mobile.Crashes
             return dateTime;
         }
 
+        private Exception DeserializeException(NSData data)
+        {
+            byte[] exceptionBytes = data.ToArray();
+            MemoryStream ms = new MemoryStream(exceptionBytes);
+            BinaryFormatter formatter = new BinaryFormatter();
+            return formatter.Deserialize(ms) as Exception;
+        }
     }
 }

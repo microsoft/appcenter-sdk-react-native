@@ -34,7 +34,7 @@ namespace Contoso.Forms.Puppet
 
                 if (report.iOSDetails != null)
                 {
-                    MobileCenterLog.Info(LogTag, report.iOSDetails.ExceptionName);
+                    MobileCenterLog.Info(LogTag, report.SystemException.ToString());
                 }
                 else if (report.AndroidDetails != null)
                 {

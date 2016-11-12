@@ -50,28 +50,29 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
-
-            if (_owner.SentErrorReport == null)
+            if (_owner.SentErrorReport != null)
             {
-                return;
+                var report = new ErrorReport(msReport);
+                var e = new SentErrorReportEventArgs();
+                e.Report = report;
+                _owner.SentErrorReport(null, e);
             }
-            var report = new ErrorReport(msReport);
-            var e = new SentErrorReportEventArgs();
-            e.Report = report;
-            _owner.SentErrorReport(null, e);
+
+            MSWrapperExceptionManager.DeleteWrapperExceptionData(msReport.IncidentIdentifier);
         }
 
         public override void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error)
         {
-            if (_owner.FailedToSendErrorReport == null)
+            if (_owner.FailedToSendErrorReport != null)
             {
-                return;
+                var report = new ErrorReport(msReport);
+                var e = new FailedToSendErrorReportEventArgs();
+                e.Report = report;
+                e.Exception = error;
+                _owner.FailedToSendErrorReport(null, e);
             }
-            var report = new ErrorReport(msReport);
-            var e = new FailedToSendErrorReportEventArgs();
-            e.Report = report;
-            e.Exception = error;
-            _owner.FailedToSendErrorReport(null, e);
+
+            MSWrapperExceptionManager.DeleteWrapperExceptionData(msReport.IncidentIdentifier);
         }
     }
 }
