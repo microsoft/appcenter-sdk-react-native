@@ -17,6 +17,9 @@ public class RNAnalyticsPackage implements ReactPackage {
     private RNAnalyticsModule module;
 
     public RNAnalyticsPackage(Application application, boolean startEnabled) {
+        // We create the module early because the Analytics package depends on the
+        // onResume event to determine whether the app is foregrounded, and so
+        // automatic session management doesn't work if we start it too late
         this.module = new RNAnalyticsModule(application, startEnabled);
     }
 
