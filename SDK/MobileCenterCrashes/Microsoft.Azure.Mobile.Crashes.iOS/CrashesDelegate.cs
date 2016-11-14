@@ -58,7 +58,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 _owner.SentErrorReport(null, e);
             }
 
-            MSWrapperExceptionManager.DeleteWrapperExceptionData(msReport.IncidentIdentifier);
         }
 
         public override void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error)
@@ -71,8 +70,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 e.Exception = error;
                 _owner.FailedToSendErrorReport(null, e);
             }
-
-            MSWrapperExceptionManager.DeleteWrapperExceptionData(msReport.IncidentIdentifier);
         }
     }
 }

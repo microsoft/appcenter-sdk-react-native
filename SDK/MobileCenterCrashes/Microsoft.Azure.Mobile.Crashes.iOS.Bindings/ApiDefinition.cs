@@ -253,15 +253,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("setWrapperException:")]
         void SetWrapperException(MSException exception);
 
-        //TODO experimentals:
-
         [Static]
         [Export("setWrapperExceptionData:")]
         void SetWrapperExceptionData(NSData wrapperExceptionData);
-
-        [Static]
-        [Export("deleteWrapperExceptionDataWithUUIDString:")]
-        void DeleteWrapperExceptionData(string uuidString);
 
         [Static]
         [Export("loadWrapperExceptionDataWithUUIDString:")]
