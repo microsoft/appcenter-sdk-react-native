@@ -11,7 +11,7 @@ namespace Contoso.Forms.Puppet.iOS
         {
             Xamarin.Forms.Forms.Init();
 
-            MobileCenter.Initialize("679cde85-80f8-4df5-9524-a44354ee7410");
+            MobileCenter.Configure("44cd8722-bfe0-4748-ac14-7692e031a8a5");
 
             LoadApplication(new App());
 

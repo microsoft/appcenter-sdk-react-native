@@ -87,13 +87,13 @@ namespace Microsoft.Azure.Mobile
         }
         
         /// <summary>
-        /// Initialize the SDK.
+        /// Configure the SDK.
         /// This may be called only once per application process lifetime.
         /// </summary>
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        public static void Initialize(string appSecret)
+        public static void Configure(string appSecret)
         {
-            AndroidMobileCenter.Initialize(SetWrapperSdkAndGetApplication(), appSecret);
+            AndroidMobileCenter.Configure(SetWrapperSdkAndGetApplication(), appSecret);
         }
 
         /// <summary>
