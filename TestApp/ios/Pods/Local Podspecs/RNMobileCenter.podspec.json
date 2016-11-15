@@ -1,0 +1,24 @@
+{
+  "name": "RNMobileCenter",
+  "version": "0.1.0",
+  "summary": "React Native plugin for Mobile Center",
+  "license": "MIT",
+  "homepage": "https://mobile.azure.com/",
+  "documentation_url": "https://docs.mobile.azure.com/",
+  "authors": {
+    "Microsoft": "mobilecentersdk@microsoft.com"
+  },
+  "source": {
+    "http": "https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter-SDK-ReactNative-0.1.0.zip"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "requires_arc": true,
+  "vendored_frameworks": "RNMobileCenter/RNMobileCenter.framework",
+  "dependencies": {
+    "MobileCenter": [
+      "~> 0.2.0"
+    ]
+  }
+}
