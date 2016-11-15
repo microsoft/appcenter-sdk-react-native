@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		5419C25A1D81FDA300DDF3A1 /* RNMobileCenter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */; };
 		5419C25C1D81FDA300DDF3A1 /* RNMobileCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* RNMobileCenter.m */; };
+		BAA9A2301DDAA7B0005AFB93 /* MobileCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAA9A22F1DDAA7B0005AFB93 /* MobileCenter.framework */; };
 		CB4D6D781DB6DE940080D9D6 /* RNMobileCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		5419C2561D81FDA300DDF3A1 /* libRNMobileCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenter.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* RNMobileCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenter.m; sourceTree = "<group>"; };
+		BAA9A22F1DDAA7B0005AFB93 /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileCenter.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAA9A2301DDAA7B0005AFB93 /* MobileCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +64,7 @@
 			children = (
 				5419C2581D81FDA300DDF3A1 /* RNMobileCenter */,
 				5419C2571D81FDA300DDF3A1 /* Products */,
+				BAA9A22F1DDAA7B0005AFB93 /* MobileCenter.framework */,
 			);
 			sourceTree = "<group>";
 		};
