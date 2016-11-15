@@ -108,12 +108,12 @@ To start the SDK in your app, follow these steps:
      
     In the iOS project of the Forms app, open AppDelegate.cs and add the API in `FinishedLaunching()` method  
     ```csharp
-    MobileCenter.Initialize("{Your iOS App Secret}");
+    MobileCenter.Configure("{Your iOS App Secret}");
     ```
 
     In the Droid project of the Forms app, open MainActivity.cs and add the API in `OnCreate()` method  
     ```csharp
-    MobileCenter.Initialize("{Your Android App Secret}");
+    MobileCenter.Configure("{Your Android App Secret}");
     ```
 
     You can also copy paste the code from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.
