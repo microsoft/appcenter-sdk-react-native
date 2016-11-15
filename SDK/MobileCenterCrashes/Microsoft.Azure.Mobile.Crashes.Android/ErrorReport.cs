@@ -2,7 +2,10 @@
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
     using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorReport;
+    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
 
     public partial class ErrorReport
     {
@@ -21,8 +24,21 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 MobileCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
 				androidThrowable = null;
+                byte[] exceptionBytes = AndroidExceptionDataManager.GetManagedExceptionData(Id);
+                if (exceptionBytes != null)
+                {
+                    SystemException = DeserializeException(exceptionBytes);
+                }
             }
             AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
+            iOSDetails = null;
+        }
+
+        private Exception DeserializeException(byte[] exceptionBytes)
+        {
+            var ms = new MemoryStream(exceptionBytes);
+            var formatter = new BinaryFormatter();
+            return formatter.Deserialize(ms) as Exception;
         }
     }
 }

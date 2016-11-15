@@ -48,6 +48,11 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
 
+            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.SystemException != null)
+            {
+                string message = Crashes.LastSessionCrashReport.SystemException.Message;
+                MobileCenterLog.Info(LogTag, "Last Session Crash Report exception message: " + message);
+            }
         }
 
         protected override void OnSleep()

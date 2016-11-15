@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CustomCommands>
+    <!--<CustomCommands>
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
@@ -36,7 +36,7 @@
           <workingdir>${ProjectDir}</workingdir>
         </Command>
       </CustomCommands>
-    </CustomCommands>
+    </CustomCommands>-->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType></DebugType>

@@ -12,6 +12,9 @@ namespace Microsoft.Azure.Mobile.Crashes
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
     using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
 
     class PlatformCrashes : PlatformCrashesBase
     {
@@ -81,6 +84,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
         {
             _exception = e.Exception;
+
+            byte[] exceptionData = SerializeException(_exception);
+            AndroidExceptionDataManager.SetManagedExceptionData(exceptionData);
             MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", _exception);
             JoinExceptionAndLog();
         }
@@ -153,6 +159,14 @@ namespace Microsoft.Azure.Mobile.Crashes
                 }).Where(modelFrame => !modelFrame.Equals(EmptyModelFrame)));
             }
             return modelFrames;
+        }
+
+        private static byte[] SerializeException(Exception exception)
+        {
+            var ms = new MemoryStream();
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(ms, exception);
+            return ms.ToArray();
         }
 
         private class CrashListener : Java.Lang.Object, AndroidCrashes.IWrapperSdkListener
