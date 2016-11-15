@@ -130,10 +130,10 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("sharedInstance")]
 		MSMobileCenter SharedInstance();
 
-		// +(void)start:(NSString *)appSecret;
+		// +(void)configureWithAppSecret:(NSString *)appSecret;
 		[Static]
 		[Export("start:")]
-		void Start(string appSecret);
+		void ConfigureWithAppSecret(string appSecret);
 
 		// +(void)start:(NSString *)appSecret withServices:(NSArray<Class> *)services;
 		[Static]
