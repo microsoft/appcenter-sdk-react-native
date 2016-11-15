@@ -25,7 +25,10 @@ namespace Microsoft.Azure.Mobile.Crashes
                                              (uint)msReport.AppProcessIdentifier);
 
             NSData wrapperExceptionData = MSWrapperExceptionManager.LoadWrapperExceptionData(msReport.IncidentIdentifier);
-            SystemException = DeserializeException(wrapperExceptionData);
+            if (wrapperExceptionData != null)
+            {
+                SystemException = DeserializeException(wrapperExceptionData);
+            }
         }
 
         private DateTimeOffset NSDateToDateTimeOffset(NSDate date)

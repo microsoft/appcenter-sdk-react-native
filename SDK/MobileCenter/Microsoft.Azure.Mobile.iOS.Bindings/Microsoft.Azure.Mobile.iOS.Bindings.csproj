@@ -19,20 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CustomCommands>
-      <CustomCommands>
-        <Command>
-          <type>BeforeBuild</type>
-          <command>sh ./build.sh -t externals-ios</command>
-          <workingdir>${ProjectDir}/../../..</workingdir>
-        </Command>
-        <Command>
-          <type>AfterClean</type>
-          <command>rm -rf externals/ios</command>
-          <workingdir>${ProjectDir}/../../..</workingdir>
-        </Command>
-      </CustomCommands>
-    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>

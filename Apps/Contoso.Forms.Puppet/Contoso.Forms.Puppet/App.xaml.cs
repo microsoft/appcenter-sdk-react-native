@@ -32,7 +32,7 @@ namespace Contoso.Forms.Puppet
                 SendingErrorReportEventArgs args = e as SendingErrorReportEventArgs;
                 ErrorReport report = args.Report;
 
-                if (report.iOSDetails != null)
+                if (report.SystemException != null)
                 {
                     MobileCenterLog.Info(LogTag, report.SystemException.ToString());
                 }
@@ -47,7 +47,7 @@ namespace Contoso.Forms.Puppet
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
-            MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport=" + Crashes.LastSessionCrashReport);
+
         }
 
         protected override void OnSleep()
