@@ -8,15 +8,36 @@
  */
 
 #import "AppDelegate.h"
+#import "RNCrashes.h"
+
+#import "RNAnalytics.h"
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
+
+
+// For TestCrash 
+#import "RCTBridgeModule.h"
+#import "RCTConvert.h"
+#import "RCTEventDispatcher.h"
+#import "RCTRootView.h"
+#import "RCTUtils.h" 
+
+
+@import MobileCenter;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+
+  [MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
+  
+[RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];
+
+[RNAnalytics registerWithInitiallyEnabled:true];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
@@ -34,4 +55,25 @@
   return YES;
 }
 
+@end
+
+
+
+@interface TestCrash : NSObject <RCTBridgeModule>
+
+@end
+
+@implementation TestCrash
+@synthesize bridge = _bridge;
+
+RCT_EXPORT_MODULE();
+
+RCT_EXPORT_METHOD(crash:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  int *crashme = (void *)0;
+  while((*crashme++ = 0)) {
+
+  }
+}
 @end

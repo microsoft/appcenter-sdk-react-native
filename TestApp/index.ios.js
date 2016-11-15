@@ -9,10 +9,20 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity,
+  NativeModules
 } from 'react-native';
+import {FooClass} from './js/FooClass';
 
 export default class TestApp extends Component {
+  jsCrash() {
+    var foo = new FooClass();
+    foo.method1();
+  }
+  nativeCrash() {
+    NativeModules.TestCrash.crash();
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -26,6 +36,16 @@ export default class TestApp extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+        <TouchableOpacity onPress={this.jsCrash.bind(this)}>
+          <View style={styles.box}>
+            <Text>Crash JavaScript</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.nativeCrash.bind(this)}>
+          <View style={styles.box}>
+            <Text>Crash native code</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -42,6 +62,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  box: {
+    borderColor: 'red',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    padding: 10,
+    width: 100,
+    height: 100
   },
   instructions: {
     textAlign: 'center',
