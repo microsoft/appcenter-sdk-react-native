@@ -1,0 +1,29 @@
+PODS:
+  - MobileCenter (0.2.0):
+    - MobileCenter/MobileCenterAnalytics (= 0.2.0)
+    - MobileCenter/MobileCenterCrashes (= 0.2.0)
+  - MobileCenter/MobileCenter (0.2.0)
+  - MobileCenter/MobileCenterAnalytics (0.2.0):
+    - MobileCenter/MobileCenter
+  - MobileCenter/MobileCenterCrashes (0.2.0):
+    - MobileCenter/MobileCenter
+  - RNMobileCenter (0.1.0):
+    - MobileCenter (~> 0.2.0)
+
+DEPENDENCIES:
+  - MobileCenter (from `https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter.podspec`)
+  - RNMobileCenter (from `https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter-ReactNative.podspec`)
+
+EXTERNAL SOURCES:
+  MobileCenter:
+    :podspec: https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter.podspec
+  RNMobileCenter:
+    :podspec: https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter-ReactNative.podspec
+
+SPEC CHECKSUMS:
+  MobileCenter: dcddd46cbf3a52338078d08f931d84d4e1dd7179
+  RNMobileCenter: ab52cc1d1b5b635cfc0481758302061b156a741d
+
+PODFILE CHECKSUM: bd28a543a8d06ea9c0207ecf570320025754ab75
+
+COCOAPODS: 1.1.1
