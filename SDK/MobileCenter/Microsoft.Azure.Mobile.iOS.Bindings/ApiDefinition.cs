@@ -130,10 +130,10 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("sharedInstance")]
 		MSMobileCenter SharedInstance();
 
-		// +(void)start:(NSString *)appSecret;
+		// +(void)configureWithAppSecret:(NSString *)appSecret;
 		[Static]
-		[Export("start:")]
-		void Start(string appSecret);
+		[Export("configureWithAppSecret:")]
+		void ConfigureWithAppSecret(string appSecret);
 
 		// +(void)start:(NSString *)appSecret withServices:(NSArray<Class> *)services;
 		[Static]
@@ -145,10 +145,10 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 		[Export("startService:")]
 		void StartService(Class service);
 
-		// +(BOOL)isInitialized;
+		// +(BOOL)isConfigured;
 		[Static]
-		[Export("isInitialized")]
-		bool IsInitialized();
+		[Export("isConfigured")]
+		bool isConfigured();
 
 		// +(void)setServerUrl:(NSString *)serverUrl;
 		[Static]
