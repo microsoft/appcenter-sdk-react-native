@@ -18,7 +18,7 @@ namespace Contoso.Forms.Demo.Droid
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            MobileCenter.Configure("44cd8722-bfe0-4748-ac14-7692e031a8a5");
+            MobileCenter.Configure("095bc922-dc67-4f44-9c83-75d92b90534d");
 
             LoadApplication(new App());
         }
