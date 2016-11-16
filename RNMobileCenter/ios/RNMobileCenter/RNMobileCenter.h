@@ -8,7 +8,7 @@
 
 + (NSString *) getAppSecret;
 
-+ (void) initializeMobileCenter;
++ (void) configureMobileCenter;
 
 + (void) setEnabled:(BOOL) enabled;
 
