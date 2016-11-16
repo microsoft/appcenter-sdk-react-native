@@ -14,8 +14,8 @@ public class RNMobileCenter {
     private static Application application;
     private static WrapperSdk wrapperSdk = new WrapperSdk();
 
-    public static void initializeMobileCenter(Application application) {
-        if (MobileCenter.isInitialized()) {
+    public static void configureMobileCenter(Application application) {
+        if (MobileCenter.isConfigured()) {
             return;
         }
         RNMobileCenter.application = application;
@@ -24,7 +24,7 @@ public class RNMobileCenter {
         RNMobileCenter.wrapperSdk.setWrapperSdkName(com.microsoft.azure.mobile.react.mobilecenter.BuildConfig.SDK_NAME);
 
         MobileCenter.setWrapperSdk(wrapperSdk);
-        MobileCenter.initialize(application, RNMobileCenter.getAppSecret());
+        MobileCenter.configure(application, RNMobileCenter.getAppSecret());
     }
 
     /**

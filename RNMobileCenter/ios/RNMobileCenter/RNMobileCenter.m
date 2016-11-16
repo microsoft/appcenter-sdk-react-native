@@ -23,9 +23,9 @@ static MSWrapperSdk * wrapperSdk;
   return appSecret;
 }
 
-+ (void) initializeMobileCenter
++ (void) configureMobileCenter
 {
-  if (![MSMobileCenter isInitialized]) {
+  if (![MSMobileCenter isConfigured]) {
       MSWrapperSdk * wrapperSdk =
         [[MSWrapperSdk alloc]
             initWithWrapperSdkVersion:@"0.1.0"
@@ -34,7 +34,7 @@ static MSWrapperSdk * wrapperSdk;
             liveUpdateDeploymentKey:nil
             liveUpdatePackageHash:nil];
       [self setWrapperSdk:wrapperSdk];
-      [MSMobileCenter start:[RNMobileCenter getAppSecret]];
+      [MSMobileCenter configureWithAppSecret:[RNMobileCenter getAppSecret]];
   }
 }
 
