@@ -1,4 +1,7 @@
 [![Build Status](https://www.bitrise.io/app/2f5448791ead7158.svg?token=OXmRpllvCk374SWQCVevkA&branch=develop)](https://www.bitrise.io/app/2f5448791ead7158)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/MobileCenter-SDK-Xamarin.svg)](https://github.com/Microsoft/MobileCenter-SDK-Xamarin/releases/latest)
+[![NuGet](https://img.shields.io/nuget/v/Microsoft.Azure.Mobile.svg)](https://www.nuget.org/packages/Microsoft.Azure.Mobile/)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/MobileCenter-SDK-Xamarin/blob/develop/license.txt)
 
 # Mobile Center SDK for Xamarin
 
