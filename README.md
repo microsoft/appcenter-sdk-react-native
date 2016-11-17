@@ -41,7 +41,7 @@ We support the following platforms:
 
 ## 3. Setup
 
-Mobile Center SDK is designed with a modular approach – a developer only needs to integrate the modules of the services that they're interested in. If you'd like to get started with just Analytics or Crashes, include their packages in your app. For each iOS, Android and Forms project, add the 'Microsoft Mobile Center Analytics' and 'Microsoft Mobile Center Crashes' packages.
+Mobile Center SDK is designed with a modular approach – a developer only needs to integrate the modules of the services that they're interested in. If you'd like to get started with just Analytics or Crashes, include their packages in your app. For each iOS, Android and Forms project, add the 'Mobile Center Analytics' and 'Mobile Center Crashes' packages.
 
 ## For Xamarin Studio ##
 
