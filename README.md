@@ -50,7 +50,7 @@ Mobile Center SDK is designed with a modular approach – a developer only needs
 * Search and select "Mobile Center Analytics" and "Mobile Center Crashes". Then Click 'Add Packages'  
 
 **For Xamarin.Forms**  
-Multiplatform Xamarin.Forms app has three projects in your solution - portal or shared class library, project.Droid, project.iOS . You need to add NuGet packages to each of these projects.
+Multiplatform Xamarin.Forms app has three projects in your solution - portable class library or shared library, project.Droid, project.iOS . You need to add NuGet packages to each of these projects.
 
 * Navigate to the Project -> 'Add NuGet Packages...'
 * Search and select "Mobile Center Analytics" and "Mobile Center Crashes". Then Click 'Add Packages'
