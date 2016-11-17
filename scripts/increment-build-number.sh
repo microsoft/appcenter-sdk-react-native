@@ -6,7 +6,7 @@ semanticVersion=`grep AssemblyInformationalVersion SDK/MobileCenter/Microsoft.Az
 baseSemanticVersion=`sed -E 's/(.*)-.*/\1/' <<< "$semanticVersion"`
 
 # Get latest version from Nuget
-latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/150e39b1-bf52-4fdd-bc32-28d950a14304/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
+latestNugetVersion=`curl -s -H "X-NuGet-ApiKey: $NUGET_PASSWORD" "https://mseng.pkgs.visualstudio.com/_packaging/${NUGET_FEED_ID}/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true" --user $NUGET_USER:$NUGET_PASSWORD`
 latestNugetVersion=`sed -E "s/^.*<d:Version>(.*)<\/d:Version>.*$/\1/" <<< $latestNugetVersion`
 latestNugetBaseVersion=`sed -E 's/([^-]*)-.*/\1/' <<< "$latestNugetVersion"`
 latestNugetRevision=`sed -E 's/^.*-r0*([^-]*).*$/\1/' <<< "$latestNugetVersion"`
