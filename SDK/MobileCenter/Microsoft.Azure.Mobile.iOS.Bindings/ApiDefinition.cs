@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
 
         // +(void)configureWithAppSecret:(NSString *)appSecret;
         [Static]
-        [Export("start:")]
+        [Export("configureWithAppSecret:")]
         void ConfigureWithAppSecret(string appSecret);
 
         // +(void)start:(NSString *)appSecret withServices:(NSArray<Class> *)services;
