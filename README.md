@@ -41,7 +41,7 @@ We support the following platforms:
 
 ## 3. Setup
 
-Mobile Center SDK is designed with a modular approach – a developer only needs to integrate the modules of the services that they're interested in. If you'd like to get started with just Analytics or Crashes, include their packages in your app. For each iOS, Android and Forms project, add the 'Microsoft Mobile Center Analytics' and 'Microsoft Mobile Center Crashes' packages.
+Mobile Center SDK is designed with a modular approach – a developer only needs to integrate the modules of the services that they're interested in. If you'd like to get started with just Analytics or Crashes, include their packages in your app. For each iOS, Android and Forms project, add the 'Mobile Center Analytics' and 'Mobile Center Crashes' packages.
 
 ## For Xamarin Studio ##
 
@@ -50,7 +50,7 @@ Mobile Center SDK is designed with a modular approach – a developer only needs
 * Search and select "Mobile Center Analytics" and "Mobile Center Crashes". Then Click 'Add Packages'  
 
 **For Xamarin.Forms**  
-Multiplatform Xamarin.Forms app has three projects in your solution - portal or shared class library, project.Droid, project.iOS . You need to add NuGet packages to each of these projects.
+Multiplatform Xamarin.Forms app has three projects in your solution - portable class library or shared library, project.Droid, project.iOS . You need to add NuGet packages to each of these projects.
 
 * Navigate to the Project -> 'Add NuGet Packages...'
 * Search and select "Mobile Center Analytics" and "Mobile Center Crashes". Then Click 'Add Packages'
@@ -108,12 +108,12 @@ To start the SDK in your app, follow these steps:
      
     In the iOS project of the Forms app, open AppDelegate.cs and add the API in `FinishedLaunching()` method  
     ```csharp
-    MobileCenter.Initialize("{Your iOS App Secret}");
+    MobileCenter.Configure("{Your iOS App Secret}");
     ```
 
     In the Droid project of the Forms app, open MainActivity.cs and add the API in `OnCreate()` method  
     ```csharp
-    MobileCenter.Initialize("{Your Android App Secret}");
+    MobileCenter.Configure("{Your Android App Secret}");
     ```
 
     You can also copy paste the code from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.

@@ -145,10 +145,10 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         [Export("startService:")]
         void StartService(Class service);
 
-        // +(BOOL)isInitialized;
+        // +(BOOL)isConfigured;
         [Static]
-        [Export("isInitialized")]
-        bool IsInitialized();
+        [Export("isConfigured")]
+        bool isConfigured();
 
         // +(void)setServerUrl:(NSString *)serverUrl;
         [Static]
