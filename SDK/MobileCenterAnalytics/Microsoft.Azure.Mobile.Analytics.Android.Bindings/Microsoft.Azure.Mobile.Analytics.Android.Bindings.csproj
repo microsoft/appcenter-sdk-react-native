@@ -24,7 +24,7 @@
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <!--<CustomCommands>
+    <CustomCommands>
       <CustomCommands>
         <Command>
           <type>AfterClean</type>
@@ -32,7 +32,7 @@
           <workingdir>${ProjectDir}</workingdir>
         </Command>
       </CustomCommands>
-    </CustomCommands>-->
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
