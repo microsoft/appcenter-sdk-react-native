@@ -16,7 +16,7 @@ import org.json.JSONException;
 
 public class RNAnalyticsModule extends BaseJavaModule {
     public RNAnalyticsModule(Application application, boolean startEnabled) {
-        RNMobileCenter.initializeMobileCenter(application);
+        RNMobileCenter.configureMobileCenter(application);
         if (!startEnabled) {
             // Avoid starting an analytics session.
             // Note that we don't call this if startEnabled is true, because

@@ -1,6 +1,6 @@
 {
   "name": "mobilecenter-crashes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native plugin for Mobile Center Crashes",
   "main": "Crashes.js",
   "repository": {
@@ -21,14 +21,14 @@
   },
   "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme",
   "dependencies": {
-    "mobilecenter-link-scripts": "../mobilecenter-link-scripts"
+    "mobilecenter-link-scripts": "0.1.0"
   },
   "rnpm": {
     "params": [
       {
         "type": "list",
         "name": "whenToSendCrashes",
-        "message": "For the Android app, should crashes be sent automatically, or processed in javascript before being sent?",
+        "message": "For the Android app, should crashes be sent automatically, or processed in JavaScript before being sent?",
         "choices": [
           {
             "name": "Automatically",

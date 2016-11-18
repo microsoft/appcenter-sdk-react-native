@@ -35,7 +35,7 @@ public class RNCrashesModule extends BaseJavaModule {
             Crashes.setListener(crashListener);
         }
 
-        RNMobileCenter.initializeMobileCenter(application);
+        RNMobileCenter.configureMobileCenter(application);
         MobileCenter.start(Crashes.class);
     }
 

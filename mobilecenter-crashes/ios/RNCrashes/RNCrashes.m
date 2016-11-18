@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithCrashDelegate:(id<RNCrashesDelegate>)delegate
 {
-  [RNMobileCenter initializeMobileCenter];
+  [RNMobileCenter configureMobileCenter];
   [MSCrashes setDelegate:delegate];
   crashDelegate = delegate;
   [MSCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];

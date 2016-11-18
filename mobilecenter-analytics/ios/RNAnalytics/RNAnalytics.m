@@ -19,7 +19,7 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithInitiallyEnabled:(BOOL) enabled
 {
-    [RNMobileCenter initializeMobileCenter];
+    [RNMobileCenter configureMobileCenter];
     if (!enabled) {
         // Avoid starting an analytics session.
         // Note that we don't call this if startEnabled is true, because

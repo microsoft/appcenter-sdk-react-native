@@ -1,6 +1,6 @@
 {
   "name": "mobilecenter-analytics",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native plugin for Mobile Center Analytics",
   "main": "Analytics.js",
   "repository": {
@@ -19,14 +19,14 @@
   },
   "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme",
   "dependencies": {
-    "mobilecenter-link-scripts": "../mobilecenter-link-scripts"
+    "mobilecenter-link-scripts": "0.1.0"
   },
   "rnpm": {
     "params": [
       {
         "type": "list",
         "name": "whenToEnableAnalytics",
-        "message": "For the Android app, should user tracking be enabled automatically ?",
+        "message": "For the Android app, should user tracking be enabled automatically?",
         "choices": [
           {
             "name": "Enable Automatically",
