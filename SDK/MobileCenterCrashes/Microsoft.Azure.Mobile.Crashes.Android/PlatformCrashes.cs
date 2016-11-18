@@ -86,7 +86,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             _exception = e.Exception;
 
             byte[] exceptionData = SerializeException(_exception);
-            AndroidExceptionDataManager.SetManagedExceptionData(exceptionData);
             MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", _exception);
             JoinExceptionAndLog();
         }
@@ -108,7 +107,11 @@ namespace Microsoft.Azure.Mobile.Crashes
                 _errorLog.Exception = GenerateModelException(_exception);
 
                 /* Tell the Android SDK to overwrite the modified error log on disk. */
-                AndroidCrashes.Instance.SaveWrapperSdkErrorLog(_errorLog);
+                AndroidExceptionDataManager.SaveWrapperSdkErrorLog(_errorLog);
+
+                /* Save the System.Exception to disk as a serialized object. */
+                byte[] exceptionData = SerializeException(_exception);
+                AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id.ToString());
             }
         }
 
