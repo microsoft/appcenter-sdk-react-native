@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<!--
-  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
-  
-  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
-  -->
-  <remove-node path="/api/package[@name='com.microsoft.azure.mobile.crashes.ingestion.models.json']" />
+	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.crashes.ingestion.models.json']" />
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.crashes']/class[@name='Crashes']" name="managedName">AndroidCrashes</attr>
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.model']/class[@name='ErrorAttachment']" name="managedName">AndroidErrorAttachment</attr>
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.model']/class[@name='ErrorBinaryAttachment']" name="managedName">AndroidBinaryErrorAttachment</attr>
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.model']/class[@name='ErrorReport']" name="managedName">AndroidErrorReport</attr>
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.model']/class[@name='TestCrashException']" name="managedName">AndroidTestCrashException</attr>
 </metadata>

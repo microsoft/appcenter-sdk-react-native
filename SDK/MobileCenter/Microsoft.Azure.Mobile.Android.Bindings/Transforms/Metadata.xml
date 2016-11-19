@@ -1,11 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <!--
-  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
-  
-  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
-  -->
-  <remove-node path="/api/package[@name='com.microsoft.azure.mobile.ingestion.http']" />
-  <remove-node path="/api/package[@name='com.microsoft.azure.mobile.utils.storage']" />
+	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.ingestion.http']" />
+	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.utils.storage']" />
+	<attr path="/api/package[@name='com.microsoft.azure.mobile']/class[@name='MobileCenter']" name="managedName">AndroidMobileCenter</attr>
 </metadata>
