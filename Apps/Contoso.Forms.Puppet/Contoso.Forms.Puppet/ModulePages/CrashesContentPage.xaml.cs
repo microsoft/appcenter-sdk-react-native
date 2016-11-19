@@ -87,5 +87,10 @@ namespace Contoso.Forms.Puppet
                 return e;
             }
         }
+
+        public async void CrashAsync(object sender, EventArgs e)
+        {
+            await FakeService.DoStuffInBackground();
+        }
     }
 }
