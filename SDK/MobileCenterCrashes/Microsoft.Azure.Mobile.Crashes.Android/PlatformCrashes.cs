@@ -12,8 +12,6 @@ namespace Microsoft.Azure.Mobile.Crashes
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
     using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
-    using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
 
     class PlatformCrashes : PlatformCrashesBase
@@ -53,6 +51,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         //}
 
         private AndroidICrashListener _crashListener;
+
         /// <summary>
         /// Empty model stack frame used for comparison to optimize JSON payload.
         /// </summary>
@@ -84,8 +83,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
         {
             _exception = e.Exception;
-
-            byte[] exceptionData = SerializeException(_exception);
             MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", _exception);
             JoinExceptionAndLog();
         }
@@ -110,7 +107,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 AndroidExceptionDataManager.SaveWrapperSdkErrorLog(_errorLog);
 
                 /* Save the System.Exception to disk as a serialized object. */
-                byte[] exceptionData = SerializeException(_exception);
+                byte[] exceptionData = CrashesUtils.SerializeException(_exception);
                 AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id.ToString());
             }
         }
@@ -164,14 +161,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             return modelFrames;
         }
 
-        private static byte[] SerializeException(Exception exception)
-        {
-            var ms = new MemoryStream();
-            var formatter = new BinaryFormatter();
-            formatter.Serialize(ms, exception);
-            return ms.ToArray();
-        }
-
         private class CrashListener : Java.Lang.Object, AndroidCrashes.IWrapperSdkListener
         {
             public void OnCrashCaptured(ManagedErrorLog errorLog)
@@ -181,8 +170,8 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
+        public override void ApplyDelegate() { }
+
 #pragma warning restore XS0001 // Find usages of mono todo items
-
     }
-
 }

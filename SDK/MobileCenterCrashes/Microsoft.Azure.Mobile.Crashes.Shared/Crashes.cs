@@ -86,6 +86,11 @@ namespace Microsoft.Azure.Mobile.Crashes
             PlatformCrashes.GenerateTestCrash();
         }
 
+        public static void ApplyDelegate()
+        {
+            PlatformCrashes.ApplyDelegate();
+        }
+
         ///// <summary>
         ///// Track an exception.
         ///// </summary>
@@ -96,3 +101,4 @@ namespace Microsoft.Azure.Mobile.Crashes
         //}
     }
 }
+

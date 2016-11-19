@@ -132,10 +132,6 @@
     <BundleResource Include="Resources\lightning%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
-      <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
-      <Name>Contoso.Forms.Puppet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.iOS\Microsoft.Azure.Mobile.Analytics.iOS.csproj">
       <Project>{EF5D0090-9E12-45B5-961C-45D787BD80A5}</Project>
       <Name>Microsoft.Azure.Mobile.Analytics.iOS</Name>
@@ -159,6 +155,10 @@
     <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS.Bindings\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.csproj">
       <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
+      <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
+      <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

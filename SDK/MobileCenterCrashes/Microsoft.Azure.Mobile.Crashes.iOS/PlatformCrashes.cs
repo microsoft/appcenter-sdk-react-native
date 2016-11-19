@@ -7,6 +7,10 @@ using Foundation;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System;
+using System.Runtime.InteropServices;
+using ObjCRuntime;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -64,7 +68,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             MSException exception = GenerateiOSException(systemException);
             MSWrapperExceptionManager.SetWrapperException(exception);
 
-            byte[] exceptionBytes = SerializeException(systemException);
+            byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
             NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
             MSWrapperExceptionManager.SetWrapperExceptionData(wrapperExceptionData);
         }
@@ -133,12 +137,63 @@ namespace Microsoft.Azure.Mobile.Crashes
             return Regex.Replace(path, pattern, "/Users/USER/");
         }
 
-        private static byte[] SerializeException(Exception exception)
+        public override void ApplyDelegate()
         {
-            MemoryStream ms = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(ms, exception);
-            return ms.ToArray();
+            MSWrapperExceptionManager.SetDelegate(new InitializationDelegate());
+        }
+    }
+
+    public class InitializationDelegate : MSWrapperCrashesInitializer
+    {
+
+        [DllImport ("libc")]
+        private static extern int sigaction(Signal sig, IntPtr act, IntPtr oact);
+
+        private enum Signal
+        {
+            SIGBUS = 10,
+            SIGSEGV = 11
+        }
+
+        public override bool SetUpCrashHandlers()
+        {
+            //try
+            //{
+            //}
+            //finally
+            //{
+            //    Mono.Runtime.RemoveSignalHandlers();
+
+            //    try
+            //    {
+            //        MSWrapperExceptionManager.StartCrashReportingFromWrapperSdk();
+            //    }
+            //    finally
+            //    {
+            //        Mono.Runtime.InstallSignalHandlers();
+            //    }
+            //}
+
+            //return true;
+
+            IntPtr sigbus = Marshal.AllocHGlobal(512);
+            IntPtr sigsegv = Marshal.AllocHGlobal(512);
+
+            // Store Mono's SIGSEGV and SIGBUS handlers
+            sigaction(Signal.SIGBUS, IntPtr.Zero, sigbus);
+            sigaction(Signal.SIGSEGV, IntPtr.Zero, sigsegv);
+
+            // Enable crash reporting libraries
+            MSWrapperExceptionManager.StartCrashReportingFromWrapperSdk();
+            System.Diagnostics.Debug.WriteLine("set up crash handlers");
+
+            // Restore Mono SIGSEGV and SIGBUS handlers
+            sigaction(Signal.SIGBUS, sigbus, IntPtr.Zero);
+            sigaction(Signal.SIGSEGV, sigsegv, IntPtr.Zero);
+
+            Marshal.FreeHGlobal(sigbus);
+            Marshal.FreeHGlobal(sigsegv);
+            return true;
         }
     }
 }

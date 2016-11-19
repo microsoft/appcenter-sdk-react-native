@@ -2,8 +2,6 @@
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorReport;
     using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
 
@@ -27,18 +25,11 @@ namespace Microsoft.Azure.Mobile.Crashes
                 byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Id);
                 if (exceptionBytes != null)
                 {
-                    SystemException = DeserializeException(exceptionBytes);
+                    SystemException = CrashesUtils.DeserializeException(exceptionBytes);
                 }
             }
             AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
             iOSDetails = null;
-        }
-
-        private Exception DeserializeException(byte[] exceptionBytes)
-        {
-            var ms = new MemoryStream(exceptionBytes);
-            var formatter = new BinaryFormatter();
-            return formatter.Deserialize(ms) as Exception;
         }
     }
 }

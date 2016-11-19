@@ -24,7 +24,20 @@ namespace Contoso.Forms.Puppet
 
         void TestCrash(object sender, System.EventArgs e)
         {
-            Crashes.GenerateTestCrash();
+            try
+            {
+                String[] values = { "one", null, "two" };
+                for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
+                    System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
+                                  ctr == values.GetUpperBound(0) ? "" : ", ");
+                System.Diagnostics.Debug.WriteLine("");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("null reference exception");
+            }
+
+            //Crashes.GenerateTestCrash();
         }
 
         void DivideByZero(object sender, System.EventArgs e)

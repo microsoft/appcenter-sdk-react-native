@@ -103,6 +103,13 @@ namespace Microsoft.Azure.Mobile
         public static void Start(params Type[] services)
         {
             SetWrapperSdk();
+            foreach (var service in services)
+            {
+                if (service.GetMethod("ApplyDelegate") != null)
+                {
+                    service.GetMethod("ApplyDelegate").Invoke(null, null);
+                }
+            }
             foreach (var service in GetServices(services))
             {
                 iOSMobileCenter.StartService(service);
