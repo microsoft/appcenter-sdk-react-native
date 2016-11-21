@@ -169,9 +169,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 JoinExceptionAndLog();
             }
         }
-
-        public override void ApplyDelegate() { }
-
 #pragma warning restore XS0001 // Find usages of mono todo items
     }
 }

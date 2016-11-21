@@ -5,7 +5,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// <summary>
     /// Crashes feature.
     /// </summary>
-    public static class Crashes
+    public static partial class Crashes
     {
         static Crashes()
         {
@@ -84,11 +84,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         public static void GenerateTestCrash()
         {
             PlatformCrashes.GenerateTestCrash();
-        }
-
-        public static void ApplyDelegate()
-        {
-            PlatformCrashes.ApplyDelegate();
         }
 
         ///// <summary>

@@ -23,7 +23,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
         ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         GetErrorAttachmentCallback GetErrorAttachment { get; set; }
-        void ApplyDelegate();
         //void TrackException(Exception exception);
     }
 }

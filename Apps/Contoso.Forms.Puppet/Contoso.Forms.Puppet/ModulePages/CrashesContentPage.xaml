@@ -17,6 +17,12 @@
 			    <ViewCell Tapped="CrashWithAggregateException">
                     <Button Text="Crash With Aggregate Exception" InputTransparent="true" Clicked="CrashWithAggregateException"/>
                 </ViewCell>
+			    <ViewCell Tapped="CrashWithNullReferenceException">
+                    <Button Text="Crash With NullReferenceException" InputTransparent="true" Clicked="CrashWithNullReferenceException"/>
+                </ViewCell>
+			    <ViewCell Tapped="CatchNullReferenceException">
+                    <Button Text="Test Catching NullReferenceException" InputTransparent="true" Clicked="CatchNullReferenceException"/>
+                </ViewCell>
             </TableSection>
         </TableView>
 </ContentPage>

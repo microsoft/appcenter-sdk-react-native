@@ -26,7 +26,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         public abstract FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
         public abstract ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public abstract GetErrorAttachmentCallback GetErrorAttachment { get; set; }
-        public abstract void ApplyDelegate();
         //public abstract void TrackException(Exception exception);
     }
 }

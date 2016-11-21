@@ -5,12 +5,6 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -135,65 +129,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 
             string pattern = "(/Users/[^/]+/)";
             return Regex.Replace(path, pattern, "/Users/USER/");
-        }
-
-        public override void ApplyDelegate()
-        {
-            MSWrapperExceptionManager.SetDelegate(new InitializationDelegate());
-        }
-    }
-
-    public class InitializationDelegate : MSWrapperCrashesInitializer
-    {
-
-        [DllImport ("libc")]
-        private static extern int sigaction(Signal sig, IntPtr act, IntPtr oact);
-
-        private enum Signal
-        {
-            SIGBUS = 10,
-            SIGSEGV = 11
-        }
-
-        public override bool SetUpCrashHandlers()
-        {
-            //try
-            //{
-            //}
-            //finally
-            //{
-            //    Mono.Runtime.RemoveSignalHandlers();
-
-            //    try
-            //    {
-            //        MSWrapperExceptionManager.StartCrashReportingFromWrapperSdk();
-            //    }
-            //    finally
-            //    {
-            //        Mono.Runtime.InstallSignalHandlers();
-            //    }
-            //}
-
-            //return true;
-
-            IntPtr sigbus = Marshal.AllocHGlobal(512);
-            IntPtr sigsegv = Marshal.AllocHGlobal(512);
-
-            // Store Mono's SIGSEGV and SIGBUS handlers
-            sigaction(Signal.SIGBUS, IntPtr.Zero, sigbus);
-            sigaction(Signal.SIGSEGV, IntPtr.Zero, sigsegv);
-
-            // Enable crash reporting libraries
-            MSWrapperExceptionManager.StartCrashReportingFromWrapperSdk();
-            System.Diagnostics.Debug.WriteLine("set up crash handlers");
-
-            // Restore Mono SIGSEGV and SIGBUS handlers
-            sigaction(Signal.SIGBUS, sigbus, IntPtr.Zero);
-            sigaction(Signal.SIGSEGV, sigsegv, IntPtr.Zero);
-
-            Marshal.FreeHGlobal(sigbus);
-            Marshal.FreeHGlobal(sigsegv);
-            return true;
         }
     }
 }

@@ -62,6 +62,7 @@
     <Compile Include="..\Microsoft.Azure.Mobile.Crashes.Shared\CrashesUtils.cs">
       <Link>CrashesUtils.cs</Link>
     </Compile>
+    <Compile Include="CrashesExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">
