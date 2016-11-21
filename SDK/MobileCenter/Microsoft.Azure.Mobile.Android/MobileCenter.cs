@@ -6,8 +6,7 @@ using Java.Lang;
 
 namespace Microsoft.Azure.Mobile
 {
-    using System.Diagnostics;
-    using AndroidMobileCenter = Com.Microsoft.Azure.Mobile.MobileCenter;
+    using Com.Microsoft.Azure.Mobile;
     using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
 
     /// <summary>
@@ -85,7 +84,7 @@ namespace Microsoft.Azure.Mobile
         {
             AndroidMobileCenter.SetServerUrl(serverUrl);
         }
-        
+
         /// <summary>
         /// Configure the SDK.
         /// This may be called only once per application process lifetime.
@@ -116,7 +115,7 @@ namespace Microsoft.Azure.Mobile
         {
             AndroidMobileCenter.Start(SetWrapperSdkAndGetApplication(), appSecret, GetServices(services));
         }
-        
+
 
         /// <summary>
         /// Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been started.

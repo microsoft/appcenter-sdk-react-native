@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Android.Runtime;
-using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
 using Microsoft.Azure.Mobile.Crashes.Shared;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.Crashes;
+    using Com.Microsoft.Azure.Mobile.Crashes;
     using Exception = System.Exception;
+    using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
 
