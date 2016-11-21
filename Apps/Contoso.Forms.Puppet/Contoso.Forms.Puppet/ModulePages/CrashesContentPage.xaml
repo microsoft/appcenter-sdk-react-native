@@ -17,6 +17,9 @@
 			    <ViewCell Tapped="CrashWithAggregateException">
                     <Button Text="Crash With Aggregate Exception" InputTransparent="true" Clicked="CrashWithAggregateException"/>
                 </ViewCell>
+			    <ViewCell Tapped="CrashAsync">
+                    <Button Text="Crash Inside Async Task" InputTransparent="true" Clicked="CrashAsync"/>
+                </ViewCell>
             </TableSection>
         </TableView>
 </ContentPage>
