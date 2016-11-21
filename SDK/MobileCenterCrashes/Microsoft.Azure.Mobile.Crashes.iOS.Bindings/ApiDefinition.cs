@@ -247,7 +247,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
     [Protocol, Model]
     [BaseType(typeof(NSObject))]
-    interface MSWrapperCrashesInitializer
+    interface MSWrapperCrashesInitializationDelegate
     {
         //- (BOOL) setUpCrashHandlers;
         [Export("setUpCrashHandlers")]
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         //+ (void)setDelegate:(id<MSWrapperCrashesInitializer>) delegate
         [Static]
         [Export("setDelegate:")]
-        void SetDelegate(MSWrapperCrashesInitializer _delegate);
+        void SetDelegate(MSWrapperCrashesInitializationDelegate _delegate);
 
         //+ (void)startCrashReportingFromWrapperSdk;
         [Static]

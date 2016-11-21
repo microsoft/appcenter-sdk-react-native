@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Crashes
          * This is required so that Mono can handle the signals SIGSEGV and SIGBUS, which should not always
          * cause a crash, but do if the native SDK's crash reporting service handles them.
          */
-        public class InitializationDelegate : MSWrapperCrashesInitializer
+        public class InitializationDelegate : MSWrapperCrashesInitializationDelegate
         {
             [DllImport("libc")]
             private static extern int sigaction(Signal sig, IntPtr act, IntPtr oact);
