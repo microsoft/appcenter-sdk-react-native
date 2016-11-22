@@ -24,23 +24,15 @@ namespace Contoso.Forms.Puppet
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
 
-            Crashes.SendingErrorReport += (sender, e) =>
-            {
-                MobileCenterLog.Info(LogTag, "*************************\n");
+            //set event handlers
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
 
-                MobileCenterLog.Info(LogTag, "Sending error report\n");
-                SendingErrorReportEventArgs args = e as SendingErrorReportEventArgs;
-                ErrorReport report = args.Report;
+            //set callbacks
+            Crashes.ShouldProcessErrorReport = ShouldProcess;
+            Crashes.GetErrorAttachment = ErrorAttachmentForErrorReport;
 
-                if (report.SystemException != null)
-                {
-                    MobileCenterLog.Info(LogTag, report.SystemException.ToString());
-                }
-                else if (report.AndroidDetails != null)
-                {
-                    MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-                }
-            };
             MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent");
@@ -63,6 +55,88 @@ namespace Contoso.Forms.Puppet
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
+        {
+            MobileCenterLog.Info(LogTag, "Sending error report");
+
+            var args = e as SendingErrorReportEventArgs;
+            ErrorReport report = args.Report;
+
+            //test some values
+            if (report.SystemException != null)
+            {
+                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+            }
+            else if (report.AndroidDetails != null)
+            {
+                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+            }
+        }
+
+        void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
+        {
+            MobileCenterLog.Info(LogTag, "Sent error report");
+
+            var args = e as SentErrorReportEventArgs;
+            ErrorReport report = args.Report;
+
+            //test some values
+            if (report.SystemException != null)
+            {
+                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+            }
+            else
+            {
+                MobileCenterLog.Info(LogTag, "No system exception was found");
+            }
+
+            if (report.AndroidDetails != null)
+            {
+                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+            }
+        }
+
+        void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
+        {
+            MobileCenterLog.Info(LogTag, "Failed to send error report");
+
+            var args = e as FailedToSendErrorReportEventArgs;
+            ErrorReport report = args.Report;
+
+            //test some values
+            if (report.SystemException != null)
+            {
+                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+            }
+            else if (report.AndroidDetails != null)
+            {
+                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+            }
+
+            if (e.Exception != null)
+            {
+                MobileCenterLog.Info(LogTag, "There is an exception associated with the failure");
+            }
+        }
+
+        ErrorAttachment ErrorAttachmentForErrorReport(ErrorReport report)
+        {
+            MobileCenterLog.Info(LogTag, "Getting error attachment for error report");
+
+            if (report.iOSDetails != null)
+            {
+                return new ErrorAttachment("This is an error attachment for iOS");
+            }
+
+            return new ErrorAttachment("This is an error attachment for Android");
+        }
+
+        bool ShouldProcess(ErrorReport report)
+        {
+            MobileCenterLog.Info(LogTag, "Determining whether to process error report");
+            return false;
         }
     }
 }
