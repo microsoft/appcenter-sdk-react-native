@@ -52,6 +52,9 @@
     <Compile Include="ErrorReport.cs" />
     <Compile Include="ErrorAttachment.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
+    <Compile Include="..\Microsoft.Azure.Mobile.Crashes.Shared\CrashesUtils.cs">
+      <Link>CrashesUtils.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

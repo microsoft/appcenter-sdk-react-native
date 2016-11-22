@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Android.Runtime;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -83,8 +81,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
         {
             _exception = e.Exception;
-
-            byte[] exceptionData = SerializeException(_exception);
             MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", _exception);
             JoinExceptionAndLog();
         }
@@ -109,7 +105,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 AndroidExceptionDataManager.SaveWrapperSdkErrorLog(_errorLog);
 
                 /* Save the System.Exception to disk as a serialized object. */
-                byte[] exceptionData = SerializeException(_exception);
+                byte[] exceptionData = CrashesUtils.SerializeException(_exception);
                 AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id.ToString());
             }
         }
@@ -161,14 +157,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 }).Where(modelFrame => !modelFrame.Equals(EmptyModelFrame)));
             }
             return modelFrames;
-        }
-
-        private static byte[] SerializeException(Exception exception)
-        {
-            var ms = new MemoryStream();
-            var formatter = new BinaryFormatter();
-            formatter.Serialize(ms, exception);
-            return ms.ToArray();
         }
 
         private class CrashListener : Java.Lang.Object, AndroidCrashes.IWrapperSdkListener

@@ -1,7 +1,5 @@
 ﻿using System;
 using Foundation;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -27,7 +25,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             NSData wrapperExceptionData = MSWrapperExceptionManager.LoadWrapperExceptionData(msReport.IncidentIdentifier);
             if (wrapperExceptionData != null)
             {
-                SystemException = DeserializeException(wrapperExceptionData);
+                SystemException = CrashesUtils.DeserializeException(wrapperExceptionData.ToArray());
             }
         }
 
@@ -36,14 +34,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             DateTime dateTime = (DateTime)date;
             dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
             return dateTime;
-        }
-
-        private Exception DeserializeException(NSData data)
-        {
-            byte[] exceptionBytes = data.ToArray();
-            MemoryStream ms = new MemoryStream(exceptionBytes);
-            BinaryFormatter formatter = new BinaryFormatter();
-            return formatter.Deserialize(ms) as Exception;
         }
     }
 }
