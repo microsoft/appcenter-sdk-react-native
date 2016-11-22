@@ -1,7 +1,5 @@
 ﻿namespace Microsoft.Azure.Mobile.Crashes
 {
-    using AndroidErrorAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorAttachment;
-    using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorReport;
     using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
 
     class AndroidCrashListener : Java.Lang.Object, AndroidICrashListener

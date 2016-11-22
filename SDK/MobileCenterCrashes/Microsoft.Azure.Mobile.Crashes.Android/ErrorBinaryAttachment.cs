@@ -1,7 +1,5 @@
 ﻿namespace Microsoft.Azure.Mobile.Crashes
 {
-    using AndroidBinaryAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorBinaryAttachment;
-
     public class ErrorBinaryAttachment
     {
         internal AndroidBinaryAttachment internalBinaryAttachment { get; }
