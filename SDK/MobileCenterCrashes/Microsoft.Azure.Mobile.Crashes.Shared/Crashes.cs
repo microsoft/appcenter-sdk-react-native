@@ -33,15 +33,47 @@ namespace Microsoft.Azure.Mobile.Crashes
                 }
             };
 
-            PlatformCrashes.ShouldProcessErrorReport = ShouldProcessErrorReport;
-            PlatformCrashes.GetErrorAttachment = GetErrorAttachment;
+            PlatformCrashes.ShouldProcessErrorReport = null;
+            PlatformCrashes.GetErrorAttachment = null;
         }
 
+        /// <summary>
+        /// Occurs when an error report is about to be sent.
+        /// </summary>
         public static event SendingErrorReportHandler SendingErrorReport;
+
+        /// <summary>
+        /// Occurs when an error report has been successfully sent.
+        /// </summary>
         public static event SentErrorReportHandler SentErrorReport;
+
+        /// <summary>
+        /// Occurs when an error report has failed to be sent.
+        /// </summary>
         public static event FailedToSendErrorHandler FailedToSendErrorReport;
-        public static ShouldProcessErrorReportCallback ShouldProcessErrorReport;
-        public static GetErrorAttachmentCallback GetErrorAttachment;
+
+        /// <summary>
+        /// Set this callback to add custom behavior for determining whether an error report should be processed.
+        /// </summary>
+        /// <seealso cref="ShouldProcessErrorReportCallback"/>
+        public static ShouldProcessErrorReportCallback ShouldProcessErrorReport
+        {
+            set
+            {
+                PlatformCrashes.ShouldProcessErrorReport = value;
+            }
+        }
+
+        /// <summary>
+        /// Set this callback to add custom behavior for associating an error attachment with an error report.
+        /// </summary>
+        public static GetErrorAttachmentCallback GetErrorAttachment
+        {
+            set
+            {
+                PlatformCrashes.GetErrorAttachment = value;
+            }
+        }
 
         internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
 

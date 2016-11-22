@@ -2,8 +2,8 @@
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using AndroidErrorAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.ErrorAttachment;
     using AndroidUtils = Com.Microsoft.Azure.Mobile.Crashes.ErrorAttachments;
+    using AndroidErrorAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorAttachment;
 
     public class ErrorAttachment
     {
