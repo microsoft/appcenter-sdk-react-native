@@ -6,8 +6,8 @@ target 'TestApp' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'RNMobileCenter', :podspec => 'https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter-ReactNative.podspec'
-  pod 'MobileCenter', :podspec => 'https://mobilecentersdkdev.blob.core.windows.net/sdk/MobileCenter.podspec'
+  pod 'RNMobileCenter', '~> 0.1.0'
+  pod 'MobileCenter', '~> 0.3.0'
 
   
 
