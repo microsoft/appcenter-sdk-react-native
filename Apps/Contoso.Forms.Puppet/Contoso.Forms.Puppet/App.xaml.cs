@@ -136,7 +136,7 @@ namespace Contoso.Forms.Puppet
         bool ShouldProcess(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Determining whether to process error report");
-            return false;
+            return true;
         }
     }
 }

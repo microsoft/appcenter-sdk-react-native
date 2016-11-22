@@ -5,6 +5,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
     using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
+    using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorReport;
 
     public partial class ErrorReport
     {
