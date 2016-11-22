@@ -76,6 +76,7 @@
     <Compile Include="PropertiesContentPage.xaml.cs">
       <DependentUpon>PropertiesContentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FakeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ModulePages\" />

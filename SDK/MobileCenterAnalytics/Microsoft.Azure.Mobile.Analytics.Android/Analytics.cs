@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Com.Microsoft.Azure.Mobile.Analytics;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
-    using AndroidAnalytics = Com.Microsoft.Azure.Mobile.Analytics.Analytics;
-
     /// <summary>
     /// Analytics service.
     /// </summary>

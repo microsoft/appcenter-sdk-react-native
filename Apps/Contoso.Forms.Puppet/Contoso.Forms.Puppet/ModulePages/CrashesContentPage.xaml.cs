@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
@@ -87,6 +86,11 @@ namespace Contoso.Forms.Puppet
             {
                 return e;
             }
+        }
+
+        public async void CrashAsync(object sender, EventArgs e)
+        {
+            await FakeService.DoStuffInBackground();
         }
     }
 }
