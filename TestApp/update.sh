@@ -1,11 +1,12 @@
 #!/bin/bash
 echo 'Updating our npm packages...'
-rm -rf node_modules/mobilecenter-crashes
-rm -rf node_modules/mobilecenter-analytics
+rm -rf node_modules/mobile-center-link-scripts
+rm -rf node_modules/mobile-center-crashes
+rm -rf node_modules/mobile-center-analytics
 npm install
 echo 'Unlinking...'
-react-native unlink mobilecenter-crashes
-react-native unlink mobilecenter-analytics
+react-native unlink mobile-center-crashes
+react-native unlink mobile-center-analytics
 echo 'Linking...'
-react-native link mobilecenter-crashes
-react-native link mobilecenter-analytics
+react-native link mobile-center-crashes
+react-native link mobile-center-analytics

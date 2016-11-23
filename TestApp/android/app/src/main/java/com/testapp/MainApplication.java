@@ -26,8 +26,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNAnalyticsPackage(MainApplication.this, getResources().getString(R.string.mobilecenterAnalytics_whenToEnableAnalytics)),
-            new RNCrashesPackage(MainApplication.this, getResources().getString(R.string.mobilecenterCrashes_whenToSendCrashes))
+            new RNAnalyticsPackage(MainApplication.this, getResources().getString(R.string.mobileCenterAnalytics_whenToEnableAnalytics)),
+            new RNCrashesPackage(MainApplication.this, getResources().getString(R.string.mobileCenterCrashes_whenToSendCrashes))
       );
     }
   };
