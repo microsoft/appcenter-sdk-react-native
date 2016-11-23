@@ -1,5 +1,5 @@
 var fs = require('fs');
-var debug = require('debug')('mobilecenter-link:ios:AppDelegate');
+var debug = require('debug')('mobile-center-link:ios:AppDelegate');
 
 var AppDelegate = function (file) {
     this.appDelegatePath = file;

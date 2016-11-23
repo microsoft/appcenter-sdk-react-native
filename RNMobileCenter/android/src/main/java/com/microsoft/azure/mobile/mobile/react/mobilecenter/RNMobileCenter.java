@@ -49,7 +49,7 @@ public class RNMobileCenter {
     public static String getAppSecret() {
         if (RNMobileCenter.appSecret == null) {
             try {
-                InputStream configStream = RNMobileCenter.application.getAssets().open("mobilecenter-config.json");
+                InputStream configStream = RNMobileCenter.application.getAssets().open("mobile-center-config.json");
                 int size = configStream.available();
                 byte[] buffer = new byte[size];
                 configStream.read(buffer);

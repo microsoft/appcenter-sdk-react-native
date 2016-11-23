@@ -4,7 +4,7 @@ var childProcess = require('child_process');
 
 var glob = require('glob');
 var which = require('which').sync;
-var debug = require('debug')('mobilecenter-link:ios:Podfile');
+var debug = require('debug')('mobile-center-link:ios:Podfile');
 
 var Podfile = function (file) {
     debug(`Podfile located at ${file}`);

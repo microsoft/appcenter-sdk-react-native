@@ -3,10 +3,10 @@ var path = require('path');
 
 var mkdirp = require('mkdirp');
 var glob = require('glob');
-var debug = require('debug')('mobilecenter-link:android:MobileCenterConfig');
+var debug = require('debug')('mobile-center-link:android:MobileCenterConfig');
 
 /**
- * Class to get and set values in MobileCenter Config file for Android - aka mobilecenter-config.json
+ * Class to get and set values in MobileCenter Config file for Android - aka mobile-center-config.json
  */
 var MobileCenterConfig = function (file) {
     this.MobileCenterConfigPath = file;
@@ -39,21 +39,21 @@ MobileCenterConfig.prototype.save = function () {
 };
 
 MobileCenterConfig.searchForFile = function (cwd) {
-    var MobileCenterConfigPaths = glob.sync('**/mobilecenter-config.json', {
+    var MobileCenterConfigPaths = glob.sync('**/mobile-center-config.json', {
         ignore: ['node_modules/**', '**/build/**'],
         cwd: cwd || process.cwd()
     });
     if (MobileCenterConfigPaths.length > 1) {
         debug(MobileCenterConfigPaths);
-        throw new Error(`Found more than one mobilecenter-config.json in this project and hence, could not write App Secret.
-            Please add "app_secret" to the correct mobilecenter-config.json file
-            mobilecenter-config.json found at ${MobileCenterConfigPaths}
+        throw new Error(`Found more than one mobile-center-config.json in this project and hence, could not write App Secret.
+            Please add "app_secret" to the correct mobile-center-config.json file
+            mobile-center-config.json found at ${MobileCenterConfigPaths}
         `);
     }
     else if (MobileCenterConfigPaths.length === 1) {
         return MobileCenterConfigPaths[0];
     } else {
-        return path.join('android', 'app', 'src', 'main', 'assets', 'mobilecenter-config.json');
+        return path.join('android', 'app', 'src', 'main', 'assets', 'mobile-center-config.json');
     }
 };
 

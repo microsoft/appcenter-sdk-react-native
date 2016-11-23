@@ -1,4 +1,4 @@
-var rnpmlink = require('mobilecenter-link-scripts');
+var rnpmlink = require('mobile-center-link-scripts');
 var package = require('./../package.json');
 
 return rnpmlink.ios.initMobileCenterConfig().then(function (file) {

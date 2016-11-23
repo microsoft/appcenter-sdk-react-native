@@ -4,7 +4,7 @@ var path = require('path');
 var plist = require('plist');
 var xcode = require('xcode');
 var glob = require('glob');
-var debug = require('debug')('mobilecenter-link:ios:MobileCenterConfigPlist');
+var debug = require('debug')('mobile-center-link:ios:MobileCenterConfigPlist');
 
 var MobileCenterConfigPlist = function (plistPath) {
     this.plistPath = plistPath;

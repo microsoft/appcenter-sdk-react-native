@@ -2,6 +2,11 @@
 
 ___
 
+## Version 0.1.1
+
+Renamed packages from mobilecenter- to mobile-center-
+Renamed API calls from initialize to configure
+
 ## Version 0.1.0
 
 Initial release of Mobile Center for React Native.

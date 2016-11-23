@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var debug = require('debug')('mobilecenter-link:ios:index');
+var debug = require('debug')('mobile-center-link:ios:index');
 var glob = require('glob');
 var inquirer = require('inquirer');
 
