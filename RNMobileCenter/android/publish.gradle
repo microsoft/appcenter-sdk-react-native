@@ -1,8 +1,8 @@
 // Bintray constants
 
 ext {
-    siteUrl = 'https://github.com/Microsoft/MobileCenter-SDK-React-Native'
-    gitUrl = 'https://github.com/Microsoft/MobileCenter-SDK-React-Native.git'
+    siteUrl = 'https://github.com/Microsoft/mobile-center-sdk-react-native'
+    gitUrl = 'https://github.com/Microsoft/mobile-center-sdk-react-native.git'
     groupId = 'com.microsoft.azure.mobile.react'
     sdkDescription = 'Mobile Center SDK for Android react-native'
 
