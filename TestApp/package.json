@@ -9,8 +9,8 @@
   "dependencies": {
     "react": "15.3.2",
     "react-native": "0.37.0",
-    "mobilecenter-analytics": "../mobilecenter-analytics",
-    "mobilecenter-crashes": "../mobilecenter-crashes"
+    "mobilecenter-analytics": "../mobile-center-analytics",
+    "mobilecenter-crashes": "../mobile-center-crashes"
   },
   "jest": {
     "preset": "jest-react-native"

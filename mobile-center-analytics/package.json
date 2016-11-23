@@ -1,23 +1,23 @@
 {
-  "name": "mobilecenter-analytics",
+  "name": "mobile-center-analytics",
   "version": "0.1.1",
   "description": "React Native plugin for Mobile Center Analytics",
   "main": "Analytics.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/MobileCenter-SDK-React-Native.git"
+    "url": "git+https://github.com/Microsoft/mobile-center-sdk-react-native.git"
   },
   "keywords": [
     "react-native",
-    "mobilecenter",
+    "mobile-center",
     "analytics"
   ],
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/issues"
+    "url": "https://github.com/Microsoft/mobile-center-sdk-react-native/issues"
   },
-  "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme",
+  "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native#readme",
   "dependencies": {
     "mobilecenter-link-scripts": "0.1.0"
   },
@@ -43,8 +43,8 @@
       "packageInstance": "new RNAnalyticsPackage(MainApplication.this, ${whenToEnableAnalytics})"
     },
     "commands": {
-      "prelink": "node node_modules/mobilecenter-analytics/scripts/prelink",
-      "postlink": "node node_modules/mobilecenter-analytics/scripts/postlink"
+      "prelink": "node node_modules/mobile-center-analytics/scripts/prelink",
+      "postlink": "node node_modules/mobile-center-analytics/scripts/postlink"
     }
   }
 

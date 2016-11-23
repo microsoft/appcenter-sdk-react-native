@@ -1,15 +1,15 @@
 {
-  "name": "mobilecenter-crashes",
+  "name": "mobile-center-crashes",
   "version": "0.1.1",
   "description": "React Native plugin for Mobile Center Crashes",
   "main": "Crashes.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/MobileCenter-SDK-React-Native.git"
+    "url": "git+https://github.com/Microsoft/mobile-center-sdk-react-native.git"
   },
   "keywords": [
     "react-native",
-    "mobilecenter",
+    "mobile-center",
     "error",
     "reporting",
     "crash"
@@ -17,11 +17,11 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/issues"
+    "url": "https://github.com/Microsoft/mobile-center-sdk-react-native/issues"
   },
-  "homepage": "https://github.com/Microsoft/MobileCenter-SDK-React-Native#readme",
+  "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native#readme",
   "dependencies": {
-    "mobilecenter-link-scripts": "0.1.0"
+    "mobile-center-link-scripts": "0.1.0"
   },
   "rnpm": {
     "params": [
@@ -45,8 +45,8 @@
       "packageInstance": "new RNCrashesPackage(MainApplication.this, ${whenToSendCrashes})"
     },
     "commands": {
-      "prelink": "node node_modules/mobilecenter-crashes/scripts/prelink",
-      "postlink": "node node_modules/mobilecenter-crashes/scripts/postlink"
+      "prelink": "node node_modules/mobile-center-crashes/scripts/prelink",
+      "postlink": "node node_modules/mobile-center-crashes/scripts/postlink"
     }
   }
 
