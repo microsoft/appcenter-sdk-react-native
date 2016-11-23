@@ -5,7 +5,7 @@ Development repository for the Mobile Center SDK for React Native.
 ## Getting Started (iOS)
 
 1. Clone the repository
-2. Download the latest Mobile Center frameworks from https://github.com/microsoft/MobileCenter-SDK-iOS
+2. Download the latest Mobile Center frameworks from https://github.com/microsoft/mobile-center-sdk-ios
 3. open up `RNMobileCenter/ios/RNMobileCenter.xcodeproj`, drag in `MobileCenter.framework` and build the `Fat Framework` target
 4. Build Demo app
   - `cd` into MobileCenterDemoApp folder and `npm install`
@@ -18,7 +18,7 @@ Development repository for the Mobile Center SDK for React Native.
 1. Clone the repository
 2. Build Demo app
   - `cd` into MobileCenterDemoApp folder and `npm install`
-  - run `reacct-native link` to hook up native sources and specify app secret
+  - run `react-native link` to hook up native sources and specify app secret
 4. Run Demo app
   - Boot up Android emulator
   - `cd` into MobileCenterDemoApp folder and `react-native run-android`
