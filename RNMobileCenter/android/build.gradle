@@ -63,7 +63,7 @@ allprojects {
         publish = true
 
         pkg {
-            repo = "mobilecenter"
+            repo = bintrayRepo
             name = "mobile-center-react-native"
             userOrg = bintrayUserOrg
             vcsUrl = gitUrl
