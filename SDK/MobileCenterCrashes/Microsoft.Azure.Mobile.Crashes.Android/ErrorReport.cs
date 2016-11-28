@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 MobileCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
 				androidThrowable = null;
-                byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Id);
+                byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
                 if (exceptionBytes != null)
                 {
                     SystemException = CrashesUtils.DeserializeException(exceptionBytes);

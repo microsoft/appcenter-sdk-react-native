@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
                 /* Save the System.Exception to disk as a serialized object. */
                 byte[] exceptionData = CrashesUtils.SerializeException(_exception);
-                AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id.ToString());
+                AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id);
             }
         }
 
