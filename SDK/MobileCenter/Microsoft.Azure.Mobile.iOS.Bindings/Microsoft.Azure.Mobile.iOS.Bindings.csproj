@@ -20,7 +20,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CustomCommands>
-      <CustomCommands>
+    <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
           <command>sh ./build.sh -t externals-ios</command>
