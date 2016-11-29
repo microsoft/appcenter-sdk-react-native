@@ -5,27 +5,23 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-using Microsoft.Azure.Mobile;
-
-namespace Contoso.Forms.Puppet.iOS
+namespace Contoso.Forms.Test.iOS
 {
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            #if ENABLE_TEST_CLOUD
-            Xamarin.Calabash.Start();
-            #endif
-
             global::Xamarin.Forms.Forms.Init();
 
-            MobileCenter.Configure("44cd8722-bfe0-4748-ac14-7692e031a8a5");
+            // Code for starting up the Xamarin Test Cloud Agent
+#if ENABLE_TEST_CLOUD
+            Xamarin.Calabash.Start();
+#endif
 
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
-
         }
     }
 }
