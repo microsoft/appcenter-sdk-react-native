@@ -95,6 +95,20 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
+      <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj">
+      <Project>{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj">
+      <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
+      <Name>Microsoft.Azure.Mobile</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
