@@ -148,10 +148,6 @@
       <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
       <Name>Microsoft.Azure.Mobile.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
-      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS\Microsoft.Azure.Mobile.Crashes.iOS.csproj">
       <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.iOS</Name>
@@ -159,6 +155,10 @@
     <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS.Bindings\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.csproj">
       <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
+      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

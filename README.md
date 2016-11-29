@@ -1,7 +1,7 @@
 [![Build Status](https://www.bitrise.io/app/2f5448791ead7158.svg?token=OXmRpllvCk374SWQCVevkA&branch=develop)](https://www.bitrise.io/app/2f5448791ead7158)
-[![GitHub Release](https://img.shields.io/github/release/Microsoft/MobileCenter-SDK-Xamarin.svg)](https://github.com/Microsoft/MobileCenter-SDK-Xamarin/releases/latest)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xaramin.svg)](https://github.com/Microsoft/mobile-center-sdk-xaramin/releases/latest)
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.Azure.Mobile.svg)](https://www.nuget.org/packages/Microsoft.Azure.Mobile/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/MobileCenter-SDK-Xamarin/blob/develop/license.txt)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xaramin/blob/develop/license.txt)
 
 # Mobile Center SDK for Xamarin
 
@@ -64,6 +64,9 @@ Multiplatform Xamarin.Forms app has three projects in your solution - portable c
 * Search and select "Mobile Center Analytics" and "Mobile Center Crashes". Then Click 'Add Packages'
 
 Now that you've integrated the SDK in your application, it's time to start the SDK and make use of Mobile Center services.
+
+**Note:** If you installed the "Mobile Center Crashes" package for iOS prior to version 0.3.0, your iOS project should contain the folder
+"MobileCenterFrameworks" and its contents. It is no longer required and safe to delete.
 
 ## 4. Start the SDK
 
