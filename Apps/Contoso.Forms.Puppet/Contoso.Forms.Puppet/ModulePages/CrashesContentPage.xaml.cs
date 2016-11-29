@@ -10,7 +10,6 @@ namespace Contoso.Forms.Puppet
         public CrashesContentPage()
         {
             InitializeComponent();
-            CrashesEnabledSwitchCell.On = Crashes.Enabled;
             if (Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
