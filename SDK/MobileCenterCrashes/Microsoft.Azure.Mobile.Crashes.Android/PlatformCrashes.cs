@@ -8,8 +8,9 @@ using Microsoft.Azure.Mobile.Crashes.Shared;
 namespace Microsoft.Azure.Mobile.Crashes
 {
     using Com.Microsoft.Azure.Mobile.Crashes;
-    using Exception = System.Exception;
     using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
+    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
+    using Exception = System.Exception;
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
 
@@ -76,7 +77,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 _errorLog.Exception = GenerateModelException(_exception);
 
                 /* Tell the Android SDK to overwrite the modified error log on disk. */
-                AndroidCrashes.Instance.SaveWrapperSdkErrorLog(_errorLog);
+                AndroidExceptionDataManager.SaveWrapperSdkErrorLog(_errorLog);
             }
         }
 
