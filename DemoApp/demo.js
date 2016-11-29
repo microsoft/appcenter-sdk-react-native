@@ -14,8 +14,8 @@ import {
   View
 } from 'react-native';
 
-import Analytics from 'mobilecenter-analytics';
-import Crashes from 'mobilecenter-crashes';
+import Analytics from 'mobile-center-analytics';
+import Crashes from 'mobile-center-crashes';
 
 var data = {};
 data.x = "x value";
