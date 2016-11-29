@@ -19,8 +19,8 @@ class MobileCenterModule {
 }
 
 // SDK versions
-var ANDROID_SDK_VERSION = "0.3.0";
-var IOS_SDK_VERSION = "0.3.0";
+var ANDROID_SDK_VERSION = "0.3.1";
+var IOS_SDK_VERSION = "0.3.2";
 
 // URLs for downloading binaries.
 /*
