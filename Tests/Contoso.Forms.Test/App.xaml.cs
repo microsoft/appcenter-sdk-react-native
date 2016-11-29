@@ -8,7 +8,7 @@ namespace Contoso.Forms.Test
         {
             InitializeComponent();
 
-            MainPage = new Contoso.Forms.TestPage();
+            MainPage = new TestPage();
         }
 
         protected override void OnStart()

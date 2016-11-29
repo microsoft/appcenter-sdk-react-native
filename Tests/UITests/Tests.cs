@@ -26,10 +26,11 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void WelcomeTextIsDisplayed()
+        public void UnitTestA()
         {
-            AppResult[] results = app.WaitForElement(c => c.Marked("Welcome to Xamarin Forms!"));
-            app.Screenshot("Welcome screen.");
+            app.Query("UnitTestACell");
+
+            AppResult[] results = app.WaitForElement(c => c.Marked("UnitTestACell"));
 
             Assert.IsTrue(results.Any());
         }
