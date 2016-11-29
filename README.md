@@ -65,6 +65,9 @@ Multiplatform Xamarin.Forms app has three projects in your solution - portable c
 
 Now that you've integrated the SDK in your application, it's time to start the SDK and make use of Mobile Center services.
 
+** Note: If you installed the "Mobile Center Crashes" package for iOS prior to version 0.3.0, your iOS project should contain the folder
+"MobileCenterFrameworks" and its contents. It is no longer required, and safe to delete.**
+
 ## 4. Start the SDK
 
 To start the SDK in your app, follow these steps:
