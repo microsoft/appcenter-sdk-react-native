@@ -8,6 +8,8 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
+using Microsoft.Azure.Mobile;
+
 namespace Contoso.Forms.Test.Droid
 {
     [Activity(Label = "Contoso.Forms.Test.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -21,6 +23,8 @@ namespace Contoso.Forms.Test.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            MobileCenter.Configure("cc684d08-3240-4eb7-a748-e7ddd846a8b1");
 
             LoadApplication(new App());
         }

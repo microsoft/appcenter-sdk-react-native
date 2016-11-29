@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
+using Microsoft.Azure.Mobile.Crashes;
+
 namespace Contoso.Forms.Test
 {
     public partial class TestPage : ContentPage
@@ -14,8 +16,7 @@ namespace Contoso.Forms.Test
 
         void UnitTestA(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("unit test a");
+            throw new DivideByZeroException();
         }
-
     }
 }

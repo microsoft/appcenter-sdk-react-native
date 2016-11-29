@@ -100,8 +100,26 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.1.114\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Azure.Mobile">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.3.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.3.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.3.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.3.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.3.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.3.0-SNAPSHOT\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
+    </Reference>
     <Reference Include="Calabash">
-      <HintPath>..\..\packages\Xamarin.TestCloud.Agent.0.19.0\lib\Xamarin.iOS10\Calabash.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.TestCloud.Agent.0.20.3\lib\Xamarin.iOS10\Calabash.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

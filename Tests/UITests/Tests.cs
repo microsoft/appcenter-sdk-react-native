@@ -28,11 +28,14 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void UnitTestA()
         {
-            app.Query("UnitTestACell");
-
-            AppResult[] results = app.WaitForElement(c => c.Marked("UnitTestACell"));
-
-            Assert.IsTrue(results.Any());
+            try
+            {
+                app.Tap(c => c.Marked("UnitTestACell"));
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("crashed");
+            }
         }
     }
 }

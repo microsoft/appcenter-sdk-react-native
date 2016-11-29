@@ -1,5 +1,9 @@
 ﻿using Xamarin.Forms;
 
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
+
 namespace Contoso.Forms.Test
 {
     public partial class App : Application
@@ -7,6 +11,8 @@ namespace Contoso.Forms.Test
         public App()
         {
             InitializeComponent();
+
+            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
             MainPage = new TestPage();
         }

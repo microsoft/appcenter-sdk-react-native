@@ -5,6 +5,8 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
+using Microsoft.Azure.Mobile;
+
 namespace Contoso.Forms.Test.iOS
 {
     [Register("AppDelegate")]
@@ -18,6 +20,8 @@ namespace Contoso.Forms.Test.iOS
 #if ENABLE_TEST_CLOUD
             Xamarin.Calabash.Start();
 #endif
+
+            MobileCenter.Configure("f52dd054-e31f-4ff9-9f24-4e8d7942705b");
 
             LoadApplication(new App());
 
