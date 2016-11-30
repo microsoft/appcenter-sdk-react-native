@@ -4,14 +4,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     public class iOSErrorDetails
     {
-        public iOSErrorDetails(string _ReporterKey, string _Signal, string _ExceptionName, string _ExceptionReason,
-                               uint _AppProcessIdentifier)
+        public iOSErrorDetails(string reporterKey, string signal, string exceptionName, string exceptionReason,
+                               uint appProcessIdentifier)
         {
-            ReporterKey = _ReporterKey;
-            Signal = _Signal;
-            ExceptionName = _ExceptionName;
-            ExceptionReason = _ExceptionReason;
-            AppProcessIdentifier = _AppProcessIdentifier;
+            ReporterKey = reporterKey;
+            Signal = signal;
+            ExceptionName = exceptionName;
+            ExceptionReason = exceptionReason;
+            AppProcessIdentifier = appProcessIdentifier;
         }
 
         public string ReporterKey { get; }

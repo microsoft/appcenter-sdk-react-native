@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public Device Device { get; }
 
-        public Exception SystemException { get; }
+        public Exception Exception { get; }
 
         public AndroidErrorDetails AndroidDetails { get; }
 

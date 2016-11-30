@@ -2,21 +2,21 @@
 {
     public partial class Device
     {
-        public string SDKName { get; }
+        public string SdkName { get; }
 
-        public string SDKVersion { get; }
+        public string SdkVersion { get; }
 
         public string Model { get; }
 
-        public string OEMName { get; }
+        public string OemName { get; }
 
-        public string OSName { get; }
+        public string OsName { get; }
 
-        public string OSVersion { get; }
+        public string OsVersion { get; }
 
-        public string OSBuild { get; }
+        public string OsBuild { get; }
 
-        public int OSApiLevel { get; }
+        public int OsApiLevel { get; }
 
         public string Locale { get; }
 

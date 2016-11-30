@@ -4,10 +4,10 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     public class AndroidErrorDetails
     {
-        public AndroidErrorDetails(object _Exception, string _ThreadName)
+        public AndroidErrorDetails(object throwable, string threadName)
         {
-            Exception = _Exception;
-            ThreadName = _ThreadName;
+            Exception = throwable;
+            ThreadName = threadName;
         }
 
         public object Exception { get; }

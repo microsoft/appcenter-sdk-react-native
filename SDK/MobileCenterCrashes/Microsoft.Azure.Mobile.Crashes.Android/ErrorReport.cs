@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
                 if (exceptionBytes != null)
                 {
-                    SystemException = CrashesUtils.DeserializeException(exceptionBytes);
+                    Exception = CrashesUtils.DeserializeException(exceptionBytes);
                 }
             }
             AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
