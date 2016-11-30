@@ -40,9 +40,9 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
 
-            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.SystemException != null)
+            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.Exception != null)
             {
-                string message = Crashes.LastSessionCrashReport.SystemException.Message;
+                string message = Crashes.LastSessionCrashReport.Exception.Message;
                 MobileCenterLog.Info(LogTag, "Last Session Crash Report exception message: " + message);
             }
         }
@@ -65,9 +65,9 @@ namespace Contoso.Forms.Puppet
             ErrorReport report = args.Report;
 
             //test some values
-            if (report.SystemException != null)
+            if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+                MobileCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
@@ -83,9 +83,9 @@ namespace Contoso.Forms.Puppet
             ErrorReport report = args.Report;
 
             //test some values
-            if (report.SystemException != null)
+            if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+                MobileCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else
             {
@@ -106,9 +106,9 @@ namespace Contoso.Forms.Puppet
             ErrorReport report = args.Report;
 
             //test some values
-            if (report.SystemException != null)
+            if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+                MobileCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
