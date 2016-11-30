@@ -35,6 +35,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
             PlatformCrashes.ShouldProcessErrorReport = null;
             PlatformCrashes.GetErrorAttachment = null;
+            PlatformCrashes.ShouldAwaitUserConfirmation = null;
         }
 
         /// <summary>
@@ -65,6 +66,19 @@ namespace Microsoft.Azure.Mobile.Crashes
         }
 
         /// <summary>
+        /// Set this callback to add custom behavior for determining whether user confirmation is required to send
+        /// error reports.
+        /// </summary>
+        /// <seealso cref="ShouldAwaitUserConfirmationCallback"/>
+        public static ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation
+        {
+            set
+            {
+                PlatformCrashes.ShouldAwaitUserConfirmation = value;
+            }
+        }
+
+        /// <summary>
         /// Set this callback to add custom behavior for associating an error attachment with an error report.
         /// </summary>
         public static GetErrorAttachmentCallback GetErrorAttachment
@@ -78,6 +92,15 @@ namespace Microsoft.Azure.Mobile.Crashes
         internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
+
+        /// <summary>
+        /// Notifies SDK with a confirmation to handle the crash report.
+        /// </summary>
+        /// <param name="confirmation">A user confirmation. See <see cref="UserConfirmation"/>.</param>
+        public static void NotifyUserConfirmation(UserConfirmation confirmation)
+        {
+            PlatformCrashes.NotifyUserConfirmation(confirmation);
+        }
 
         /// <summary>
         /// Internal SDK property not intended for public use.

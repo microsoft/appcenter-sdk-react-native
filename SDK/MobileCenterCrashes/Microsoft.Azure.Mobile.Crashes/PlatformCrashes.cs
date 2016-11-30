@@ -29,10 +29,21 @@ namespace Microsoft.Azure.Mobile.Crashes
             set { throw new NotImplementedException(); }
         }
 
+        public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
         public override GetErrorAttachmentCallback GetErrorAttachment
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
+        }
+
+        public override void NotifyUserConfirmation(UserConfirmation confirmation)
+        {
+            throw new NotImplementedException();
         }
 
         public override Type BindingType

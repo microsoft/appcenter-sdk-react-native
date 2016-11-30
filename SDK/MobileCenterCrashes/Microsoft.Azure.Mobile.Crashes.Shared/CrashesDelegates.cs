@@ -17,6 +17,12 @@ namespace Microsoft.Azure.Mobile.Crashes
     public delegate ErrorAttachment GetErrorAttachmentCallback(ErrorReport report);
 
     /// <summary>
+    /// Determine whether user confirmation is required to process a report. <see cref="Crashes.NotifyUserConfirmation"/> must be called by yourself./> 
+    /// </summary>
+    /// <returns><c>true</c> if sending reports should be confirmed by a user.</returns>
+    public delegate bool ShouldAwaitUserConfirmationCallback();
+
+    /// <summary>
     /// Handler type for event <see cref="Crashes.SendingErrorReport"/>.
     /// </summary>
     /// <param name="sender">This parameter will be <c>null</c> when being sent from the <see cref="Crashes"/> class and should be ignored. </param>
@@ -36,4 +42,5 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// <param name="sender">This parameter will be <c>null</c> when being sent from the <see cref="Crashes"/> class and should be ignored. </param>
     /// <param name="e">Event arguments. See <see cref="FailedToSendErrorReportEventArgs"/> for more details.</param>
     public delegate void FailedToSendErrorHandler(object sender, FailedToSendErrorReportEventArgs e);
+
 }
