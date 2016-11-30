@@ -6,11 +6,11 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         public AndroidErrorDetails(object throwable, string threadName)
         {
-            Exception = throwable;
+            Throwable = throwable;
             ThreadName = threadName;
         }
 
-        public object Exception { get; }
+        public object Throwable { get; }
 
         public string ThreadName { get; }
     }
