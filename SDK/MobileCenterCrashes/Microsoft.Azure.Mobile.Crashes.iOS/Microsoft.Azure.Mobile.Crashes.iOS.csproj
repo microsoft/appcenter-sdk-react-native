@@ -59,9 +59,6 @@
     <Compile Include="ErrorReport.cs" />
     <Compile Include="CrashesDelegate.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
-    <Compile Include="..\Microsoft.Azure.Mobile.Crashes.Shared\CrashesUtils.cs">
-      <Link>CrashesUtils.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">
@@ -77,6 +74,7 @@
       <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems')" />
   <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
