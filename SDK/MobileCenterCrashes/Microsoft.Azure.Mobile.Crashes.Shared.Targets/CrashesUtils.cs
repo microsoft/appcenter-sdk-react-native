@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 MobileCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side exception", e);
                 formatter.Serialize(ms, e);
             }
-            formatter.Serialize(ms, exception);
+
             return ms.ToArray();
         }
 
