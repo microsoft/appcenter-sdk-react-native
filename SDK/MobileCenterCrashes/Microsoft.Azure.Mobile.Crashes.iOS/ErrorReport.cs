@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             Id = msReport.IncidentIdentifier;
             AppStartTime = NSDateToDateTimeOffset(msReport.AppStartTime);
-            AppStartTime = NSDateToDateTimeOffset(msReport.AppErrorTime);
+            AppErrorTime = NSDateToDateTimeOffset(msReport.AppErrorTime);
             Device = msReport.Device == null ? null : new Device(msReport.Device);
 
             AndroidDetails = null;
