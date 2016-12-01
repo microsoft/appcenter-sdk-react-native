@@ -1,7 +1,7 @@
 [![Build Status](https://www.bitrise.io/app/2f5448791ead7158.svg?token=OXmRpllvCk374SWQCVevkA&branch=develop)](https://www.bitrise.io/app/2f5448791ead7158)
-[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xaramin.svg)](https://github.com/Microsoft/mobile-center-sdk-xaramin/releases/latest)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xamarin.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/releases/latest)
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.Azure.Mobile.svg)](https://www.nuget.org/packages/Microsoft.Azure.Mobile/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xaramin/blob/develop/license.txt)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/blob/master/license.txt)
 
 # Mobile Center SDK for Xamarin
 
@@ -24,6 +24,8 @@ This document contains the following sections:
 5. [Analytics APIs](#5-analytics-apis)
 6. [Crashes APIs](#6-crashes-apis)
 7. [Advanced APIs](#7-advanced-apis)
+8. [Contributing](#8-contributing)
+9. [Contact](#9-contact)
 
 Let's get started with setting up Mobile Center Xamarin SDK in your app to use these services:
 
@@ -264,3 +266,18 @@ To handle the callbacks, add event handlers and set the callback properties in C
     ```csharp
         MobileCenter.Enabled = false;
     ```
+    
+## 8. Contributing
+
+We're looking forward to your contributions via pull requests.
+
+### 8.1 Code of Conduct
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
+
+### 8.2 Contributor License
+
+You must sign a [Contributor License Agreement](https://cla.microsoft.com/) before submitting your pull request. To complete the Contributor License Agreement (CLA), you will need to submit a request via the [form](https://cla.microsoft.com/) and then electronically sign the CLA when you receive the email containing the link to the document. You need to sign the CLA only once to cover submission to any Microsoft OSS project. 
+
+## 9. Contact
+If you have further questions or are running into trouble that cannot be resolved by any of the steps here, feel free to open a Github issue here or contact us at mobilecentersdk@microsoft.com.
