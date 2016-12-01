@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public string TextAttachment => internalAttachment.TextAttachment;
 
         /// <summary>
-        /// Gets or sets the binary attachment.
+        /// Gets or sets a binary attachment.
         /// </summary>
         /// <value>The binary attachment.</value>
         public ErrorBinaryAttachment BinaryAttachment

@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 if (androidReport == null)
                     return null;
                 else
-                    return new ErrorReport(androidReport);
+                    return ErrorReportCache.GetErrorReport(androidReport);
             }
         }
 

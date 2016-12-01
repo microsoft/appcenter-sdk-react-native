@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.Azure.Mobile.Crashes
 {    
     /// <summary>
-    /// Error report details pertinent only devices running iOS.
+    /// Error report details pertinent only to devices running iOS.
     /// </summary>
     public class iOSErrorDetails
     {

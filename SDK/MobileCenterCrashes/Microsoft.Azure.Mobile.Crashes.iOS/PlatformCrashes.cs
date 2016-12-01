@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             get
             {
-                var report = MSCrashes.LastSessionCrashReport;
-                if (report == null)
+                var msReport = MSCrashes.LastSessionCrashReport;
+                if (msReport == null)
                     return null;
                 else
-                    return new ErrorReport(report);
+                    return ErrorReportCache.GetErrorReport(msReport);
             }
         }
 

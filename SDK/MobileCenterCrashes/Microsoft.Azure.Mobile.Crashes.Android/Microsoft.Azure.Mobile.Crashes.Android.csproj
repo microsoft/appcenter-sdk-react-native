@@ -52,6 +52,7 @@
     <Compile Include="ErrorReport.cs" />
     <Compile Include="ErrorAttachment.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
+    <Compile Include="ErrorReportCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

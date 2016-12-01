@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
-    /// Error report details pertinent only devices running Android.
+    /// Error report details pertinent only to devices running Android.
     /// </summary>
     public class AndroidErrorDetails
     {
@@ -12,7 +12,7 @@
         }
 
         /// <summary>
-        /// Gets the throwable associated with the native crash.
+        /// Gets the throwable associated with the Java crash.
         /// </summary>
         /// <value>The throwable associated with the crash. <c>null</c> if the crash occured in C# code.</value>
         public object Throwable { get; }

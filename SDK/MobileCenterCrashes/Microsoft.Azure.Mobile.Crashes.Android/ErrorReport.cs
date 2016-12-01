@@ -7,14 +7,8 @@ namespace Microsoft.Azure.Mobile.Crashes
 
     public partial class ErrorReport
     {
-        internal ErrorReport(AndroidErrorReport androidReport) : this(CachedReportIfExists(androidReport))
+        internal ErrorReport(AndroidErrorReport androidReport)
         {
-            // If Id is not null we have loaded the report from the cache
-            if (Id != null)
-            {
-                return;
-            }
-
             Id = androidReport.Id;
             AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
             AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
@@ -38,18 +32,6 @@ namespace Microsoft.Azure.Mobile.Crashes
 
             AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
             iOSDetails = null;
-
-            cachedReports[Id] = this;
-        }
-
-        static private ErrorReport CachedReportIfExists(AndroidErrorReport androidReport)
-        {
-            ErrorReport cachedReport;
-            if (cachedReports.TryGetValue(androidReport.Id, out cachedReport))
-            {
-                return cachedReport;
-            }
-            return null;
         }
     }
 }
