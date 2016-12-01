@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
             catch (SerializationException e)
             {
-                MobileCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side exception", e);
+                MobileCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection", e);
                 formatter.Serialize(ms, e);
             }
 
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
             catch(SerializationException e)
             {
-                MobileCenterLog.Warn(Crashes.LogTag, "Failed to deserialize exception for client side exception", e);
+                MobileCenterLog.Warn(Crashes.LogTag, "Failed to deserialize exception for client side inspection", e);
                 deserializedException = e;
             }
 
