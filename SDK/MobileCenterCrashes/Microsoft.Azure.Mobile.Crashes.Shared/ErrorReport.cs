@@ -49,21 +49,5 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// </summary>
         /// <value>iOS error report details. <c>null</c> if the OS is not iOS.</value>
         public iOSErrorDetails iOSDetails { get; }
-
-        private static Dictionary<string, ErrorReport> cachedReports = new Dictionary<string, ErrorReport>();
-
-        private ErrorReport(ErrorReport other)
-        {
-            if (other != null)
-            {
-                Id = other.Id;
-                AppStartTime = other.AppStartTime;
-                AppErrorTime = other.AppErrorTime;
-                Device = other.Device;
-                Exception = other.Exception;
-                AndroidDetails = other.AndroidDetails;
-                iOSDetails = other.iOSDetails;
-            }
-        }
     }
 }
