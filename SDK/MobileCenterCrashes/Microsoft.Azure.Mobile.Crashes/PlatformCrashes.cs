@@ -5,19 +5,19 @@ namespace Microsoft.Azure.Mobile.Crashes
     class PlatformCrashes : PlatformCrashesBase
     {
         // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
-        public override SendingErrorReportHandler SendingErrorReport
+        public override SendingErrorReportEventHandler SendingErrorReport
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
 
-        public override SentErrorReportHandler SentErrorReport
+        public override SentErrorReportEventHandler SentErrorReport
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
 
-        public override FailedToSendErrorHandler FailedToSendErrorReport
+        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }

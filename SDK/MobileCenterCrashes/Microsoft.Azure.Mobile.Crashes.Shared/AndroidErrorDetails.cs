@@ -1,17 +1,26 @@
-﻿using System;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
+    /// <summary>
+    /// Error report details pertinent only devices running Android.
+    /// </summary>
     public class AndroidErrorDetails
     {
-        public AndroidErrorDetails(object _Exception, string _ThreadName)
+        internal AndroidErrorDetails(object throwable, string threadName)
         {
-            Exception = _Exception;
-            ThreadName = _ThreadName;
+            Throwable = throwable;
+            ThreadName = threadName;
         }
 
-        public object Exception { get; }
+        /// <summary>
+        /// Gets the throwable associated with the native crash.
+        /// </summary>
+        /// <value>The throwable associated with the crash. <c>null</c> if the crash occured in C# code.</value>
+        public object Throwable { get; }
 
+        /// <summary>
+        /// Gets the name of the thread that crashed.
+        /// </summary>
+        /// <value>The name of the thread that crashed.</value>
         public string ThreadName { get; }
     }
 }

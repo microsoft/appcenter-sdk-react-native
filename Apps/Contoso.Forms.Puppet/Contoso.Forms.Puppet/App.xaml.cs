@@ -31,18 +31,17 @@ namespace Contoso.Forms.Puppet
 
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
-            Crashes.GetErrorAttachment = ErrorAttachmentForErrorReport;
-
-            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
+            Crashes.GetErrorAttachment = ErrorAttachmentForReport;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
 
-            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.SystemException != null)
+            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.Exception != null)
             {
-                string message = Crashes.LastSessionCrashReport.SystemException.Message;
+                string message = Crashes.LastSessionCrashReport.Exception.Message;
                 MobileCenterLog.Info(LogTag, "Last Session Crash Report exception message: " + message);
             }
         }
@@ -65,9 +64,9 @@ namespace Contoso.Forms.Puppet
             ErrorReport report = args.Report;
 
             //test some values
-            if (report.SystemException != null)
+            if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+                MobileCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
@@ -83,9 +82,9 @@ namespace Contoso.Forms.Puppet
             ErrorReport report = args.Report;
 
             //test some values
-            if (report.SystemException != null)
+            if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+                MobileCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else
             {
@@ -106,9 +105,9 @@ namespace Contoso.Forms.Puppet
             ErrorReport report = args.Report;
 
             //test some values
-            if (report.SystemException != null)
+            if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.SystemException.ToString());
+                MobileCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
@@ -121,16 +120,17 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        ErrorAttachment ErrorAttachmentForErrorReport(ErrorReport report)
+        ErrorAttachment ErrorAttachmentForReport(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Getting error attachment for error report");
+            string text = "This is an error attachment for Android";
 
             if (report.iOSDetails != null)
             {
-                return new ErrorAttachment("This is an error attachment for iOS");
+                text = "This is an error attachment for iOS";
             }
 
-            return new ErrorAttachment("This is an error attachment for Android");
+            return ErrorAttachment.AttachmentWithText(text);
         }
 
         bool ShouldProcess(ErrorReport report)

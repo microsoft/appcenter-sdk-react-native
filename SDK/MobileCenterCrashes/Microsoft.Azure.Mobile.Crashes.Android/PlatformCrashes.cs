@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Android.Runtime;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -18,9 +16,9 @@ namespace Microsoft.Azure.Mobile.Crashes
     class PlatformCrashes : PlatformCrashesBase
     {
         // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
-        public override SendingErrorReportHandler SendingErrorReport { get; set; }
-        public override SentErrorReportHandler SentErrorReport { get; set; }
-        public override FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
+        public override SentErrorReportEventHandler SentErrorReport { get; set; }
+        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
 
@@ -109,7 +107,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
                 /* Save the System.Exception to disk as a serialized object. */
                 byte[] exceptionData = CrashesUtils.SerializeException(_exception);
-                AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id.ToString());
+                AndroidExceptionDataManager.SaveWrapperExceptionData(exceptionData, _errorLog.Id);
             }
         }
 

@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo.Droid", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo.iOS", "Apps\Contoso.Forms.Demo\Contoso.Forms.Demo.iOS\Contoso.Forms.Demo.iOS.csproj", "{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Crashes.Shared.Targets", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.shproj", "{CAE55C79-1601-400D-86BF-03AB8CC5B8B9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
@@ -1244,6 +1246,7 @@ Global
 		{8E7B51FC-8A9B-49F7-A40D-4D12BBF893B6} = {91CEE2C9-F64C-45C9-9353-B1EC87D13C6D}
 		{3B39B339-86C4-47EF-8F85-811220494CA6} = {91CEE2C9-F64C-45C9-9353-B1EC87D13C6D}
 		{EB8F7B8E-5013-4C0C-9C32-59ADC5FDFDBD} = {91CEE2C9-F64C-45C9-9353-B1EC87D13C6D}
+		{CAE55C79-1601-400D-86BF-03AB8CC5B8B9} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

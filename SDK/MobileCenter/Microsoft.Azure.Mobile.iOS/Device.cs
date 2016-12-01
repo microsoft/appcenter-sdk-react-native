@@ -8,14 +8,14 @@ namespace Microsoft.Azure.Mobile
     {
         public Device(MSDevice device)
         {
-            SDKName = device.SdkName;
-            SDKVersion = device.SdkVersion;
+            SdkName = device.SdkName;
+            SdkVersion = device.SdkVersion;
             Model = device.Model;
-            OEMName = device.OemName;
-            OSName = device.OsName;
-            OSVersion = device.OsVersion;
-            OSBuild = device.OsBuild;
-            OSApiLevel = device.OsApiLevel == null ? 0 : device.OsApiLevel.Int32Value;
+            OemName = device.OemName;
+            OsName = device.OsName;
+            OsVersion = device.OsVersion;
+            OsBuild = device.OsBuild;
+            OsApiLevel = device.OsApiLevel == null ? 0 : device.OsApiLevel.Int32Value;
             Locale = device.Locale;
             TimeZoneOffset = device.TimeZoneOffset == null ? 0 : device.TimeZoneOffset.Int32Value;
             ScreenSize = device.ScreenSize;
