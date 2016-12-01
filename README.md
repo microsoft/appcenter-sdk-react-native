@@ -179,11 +179,6 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     ```csharp
     bool isEnabled = Crashes.Enabled;
     ```
-* **Did the app crash in last session:** At any time after starting the SDK, you can check if the app crashed in the previous session:
-
-    ```csharp
-    Crashes.HasCrashedInLastSession;
-    ```
 
 * **Details about the last crash:** If your app crashed previously, you can get details about the last crash:
 
