@@ -15,13 +15,13 @@
 
         public AndroidErrorAttachment GetErrorAttachment(AndroidErrorReport androidReport)
         {
-            if (_owner.GetErrorAttachment == null)
+            if (_owner.ErrorAttachmentForErrorReport == null)
             {
                 return null;
             }
 
             var report = new ErrorReport(androidReport);
-            var attachment = _owner.GetErrorAttachment(report);
+            var attachment = _owner.ErrorAttachmentForErrorReport(report);
             return attachment.internalAttachment;
         }
 

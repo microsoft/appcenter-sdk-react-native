@@ -31,7 +31,7 @@ namespace Contoso.Forms.Puppet
 
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
-            Crashes.GetErrorAttachment = ErrorAttachmentForErrorReport;
+            Crashes.ErrorAttachmentForErrorReport = ErrorAttachmentForReport;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
             Analytics.TrackEvent("myEvent");
@@ -120,7 +120,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        ErrorAttachment ErrorAttachmentForErrorReport(ErrorReport report)
+        ErrorAttachment ErrorAttachmentForReport(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Getting error attachment for error report");
             string text = "This is an error attachment for Android";

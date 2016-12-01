@@ -34,23 +34,23 @@ namespace Microsoft.Azure.Mobile.Crashes
             };
 
             PlatformCrashes.ShouldProcessErrorReport = null;
-            PlatformCrashes.GetErrorAttachment = null;
+            PlatformCrashes.ErrorAttachmentForErrorReport = null;
         }
 
         /// <summary>
         /// Occurs when an error report is about to be sent.
         /// </summary>
-        public static event SendingErrorReportHandler SendingErrorReport;
+        public static event SendingErrorReportEventHandler SendingErrorReport;
 
         /// <summary>
         /// Occurs when an error report has been successfully sent.
         /// </summary>
-        public static event SentErrorReportHandler SentErrorReport;
+        public static event SentErrorReportEventHandler SentErrorReport;
 
         /// <summary>
         /// Occurs when an error report has failed to be sent.
         /// </summary>
-        public static event FailedToSendErrorHandler FailedToSendErrorReport;
+        public static event FailedToSendErrorReportEventHandler FailedToSendErrorReport;
 
         /// <summary>
         /// Set this callback to add custom behavior for determining whether an error report should be processed.
@@ -66,11 +66,11 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <summary>
         /// Set this callback to add custom behavior for associating an error attachment with an error report.
         /// </summary>
-        public static GetErrorAttachmentCallback GetErrorAttachment
+        public static ErrorAttachmentForErrorReportCallback ErrorAttachmentForErrorReport
         {
             set
             {
-                PlatformCrashes.GetErrorAttachment = value;
+                PlatformCrashes.ErrorAttachmentForErrorReport = value;
             }
         }
 

@@ -26,13 +26,13 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport)
         {
-            if (_owner.GetErrorAttachment == null) 
+            if (_owner.ErrorAttachmentForErrorReport == null) 
             {
                 return null;
             }
               
             var report = new ErrorReport(msReport);
-            return _owner.GetErrorAttachment(report).internalAttachment;
+            return _owner.ErrorAttachmentForErrorReport(report).internalAttachment;
          }
 
         public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)

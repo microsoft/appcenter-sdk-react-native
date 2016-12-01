@@ -10,11 +10,11 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     class PlatformCrashes : PlatformCrashesBase
     {
-        public override SendingErrorReportHandler SendingErrorReport { get; set; }
-        public override SentErrorReportHandler SentErrorReport { get; set; }
-        public override FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
+        public override SentErrorReportEventHandler SentErrorReport { get; set; }
+        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override ErrorAttachmentForErrorReportCallback ErrorAttachmentForErrorReport { get; set; }
 
         CrashesDelegate crashesDelegate { get; set; }
 
