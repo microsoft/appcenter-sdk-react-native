@@ -192,7 +192,7 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     ```
 
 * **Advanced Scenarios:**  The Crashes service provides events and callbacks for developers to perform additional actions before and when sending crash reports to Mobile Center. This gives you added flexibility on the crash reports that will be sent.
-To handle the callbacks, add event handlers and set the callback properties in Crashes. Note that these must be set before Mobile Center is started.
+Note that the events must be subscribed to and callbacks must be set before Mobile Center is started.
 
     The following callbacks are provided:
 
