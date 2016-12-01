@@ -7,7 +7,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
     public partial class ErrorReport
     {
-        internal ErrorReport(MSErrorReport msReport) : this(CachedReportIfExists(msReport))
+        internal ErrorReport(MSErrorReport msReport)
         {
             // If Id is not null we have loaded the report from the cache
             if (Id != null)
@@ -42,17 +42,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             DateTime dateTime = (DateTime)date;
             dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
             return dateTime;
-        }
-
-
-        static private ErrorReport CachedReportIfExists(MSErrorReport msReport)
-        {
-            ErrorReport cachedReport;
-            if (cachedReports.TryGetValue(msReport.IncidentIdentifier, out cachedReport))
-            {
-                return cachedReport;
-            }
-            return null;
         }
     }
 }

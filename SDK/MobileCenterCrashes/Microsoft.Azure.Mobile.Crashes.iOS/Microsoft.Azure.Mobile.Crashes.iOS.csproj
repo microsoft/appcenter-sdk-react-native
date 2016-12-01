@@ -59,6 +59,7 @@
     <Compile Include="ErrorReport.cs" />
     <Compile Include="CrashesDelegate.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
+    <Compile Include="ErrorReportCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">
