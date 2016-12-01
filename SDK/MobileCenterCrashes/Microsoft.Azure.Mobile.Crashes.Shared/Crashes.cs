@@ -103,6 +103,10 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// </value>
         public static bool HasCrashedInLastSession => PlatformCrashes.HasCrashedInLastSession;
 
+        /// <summary>
+        /// Gets the crash report generated in the last session.
+        /// </summary>
+        /// <value>Crash report from the last session.</value>
         public static ErrorReport LastSessionCrashReport => PlatformCrashes.LastSessionCrashReport;
 
         /// <summary>

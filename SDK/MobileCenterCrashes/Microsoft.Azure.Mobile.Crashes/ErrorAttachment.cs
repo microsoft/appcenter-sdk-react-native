@@ -2,15 +2,25 @@
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
+    /// <summary>
+    /// Error attachment for error report.
+    /// </summary>
     public class ErrorAttachment
     {
-        // Properties
+        /// <summary>
+        /// Gets or sets a plain text attachment.
+        /// </summary>
+        /// <value>The text attachment.</value>
         public string TextAttachment
         { 
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
 
+        /// <summary>
+        /// Gets or sets the binary attachment.
+        /// </summary>
+        /// <value>The binary attachment.</value>
         public ErrorBinaryAttachment BinaryAttachment
         { 
             get { throw new NotImplementedException(); }

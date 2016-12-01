@@ -5,9 +5,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    public static class CrashesUtils
+    internal static class CrashesUtils
     {
-        public static byte[] SerializeException(Exception exception)
+        internal static byte[] SerializeException(Exception exception)
         {
             var ms = new MemoryStream();
             var formatter = new BinaryFormatter();
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return ms.ToArray();
         }
 
-        public static Exception DeserializeException(byte[] exceptionBytes)
+        internal static Exception DeserializeException(byte[] exceptionBytes)
         {
             var ms = new MemoryStream(exceptionBytes);
             var formatter = new BinaryFormatter();

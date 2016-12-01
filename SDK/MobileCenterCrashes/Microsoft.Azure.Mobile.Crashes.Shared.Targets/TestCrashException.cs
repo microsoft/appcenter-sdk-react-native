@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
-    /// Exception thrown by <see cref="Crashes.GenerateTestCrash"/>.
+    /// Exception type thrown for testing purposes. See <see cref="Crashes.GenerateTestCrash"/>. 
     /// </summary>
     [Serializable]
     public class TestCrashException : Exception
@@ -18,6 +18,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
         }
 
+        /// <summary>
+        /// Deserialization constructor. Not intended for public use.
+        /// </summary>
         protected TestCrashException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
