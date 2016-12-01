@@ -32,9 +32,8 @@ namespace Contoso.Forms.Puppet
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.GetErrorAttachment = ErrorAttachmentForErrorReport;
-
-            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
