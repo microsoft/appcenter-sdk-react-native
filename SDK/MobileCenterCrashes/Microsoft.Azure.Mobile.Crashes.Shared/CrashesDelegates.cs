@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// </summary>
     /// <returns>The error attachment to be associated with <c>report</c>.</returns>
     /// <param name="report">The error report for which an error attachment is to be returned.</param>
-    public delegate ErrorAttachment ErrorAttachmentForErrorReportCallback(ErrorReport report);
+    public delegate ErrorAttachment GetErrorAttachmentCallback(ErrorReport report);
 
     /// <summary>
     /// Handler type for event <see cref="Crashes.SendingErrorReport"/>.

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         SentErrorReportEventHandler SentErrorReport { get; set; }
         FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        ErrorAttachmentForErrorReportCallback ErrorAttachmentForErrorReport { get; set; }
+        GetErrorAttachmentCallback GetErrorAttachment { get; set; }
 
         //void TrackException(Exception exception);
     }

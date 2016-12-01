@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             };
 
             PlatformCrashes.ShouldProcessErrorReport = null;
-            PlatformCrashes.ErrorAttachmentForErrorReport = null;
+            PlatformCrashes.GetErrorAttachment = null;
         }
 
         /// <summary>
@@ -66,11 +66,11 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <summary>
         /// Set this callback to add custom behavior for associating an error attachment with an error report.
         /// </summary>
-        public static ErrorAttachmentForErrorReportCallback ErrorAttachmentForErrorReport
+        public static GetErrorAttachmentCallback GetErrorAttachment
         {
             set
             {
-                PlatformCrashes.ErrorAttachmentForErrorReport = value;
+                PlatformCrashes.GetErrorAttachment = value;
             }
         }
 

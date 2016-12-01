@@ -31,7 +31,7 @@ namespace Contoso.Forms.Puppet
 
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
-            Crashes.ErrorAttachmentForErrorReport = ErrorAttachmentForReport;
+            Crashes.GetErrorAttachment = ErrorAttachmentForReport;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
             Analytics.TrackEvent("myEvent");

@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             set { throw new NotImplementedException(); }
         }
 
-        public override ErrorAttachmentForErrorReportCallback ErrorAttachmentForErrorReport
+        public override GetErrorAttachmentCallback GetErrorAttachment
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
