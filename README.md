@@ -177,6 +177,73 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     ```csharp
     bool isEnabled = Crashes.Enabled;
     ```
+* **Did the app crash in last session:** At any time after starting the SDK, you can check if the app crashed in the previous session:
+
+    ```csharp
+    Crashes.HasCrashedInLastSession;
+    ```
+
+* **Details about the last crash:** If your app crashed previously, you can get details about the last crash:
+
+    ```csharp
+    ErrorReport crashReport = Crashes.LastSessionCrashReport;
+    ```
+
+* **Advanced Scenarios:**  The Crashes service provides events and callbacks for developers to perform additional actions before and when sending crash reports to Mobile Center. This gives you added flexibility on the crash reports that will be sent.
+To handle the callbacks, add event handlers and set the callback properties in Crashes. Note that these must be set before Mobile Center is started.
+
+    The following callbacks are provided:
+
+    * **Should the crash be processed:** Set this callback if you'd like to decide if a particular crash needs to be processed or not. For example - there could be some system level crashes that you'd want to ignore and don't want to send to Mobile Center.
+
+        ```csharp
+        Crashes.ShouldProcessErrorReport = (report) =>
+        {
+                return true; // return true if the crash report should be processed, otherwise false.
+        };
+        ```
+
+    * **Error attachment:**  If you'd like to attach text/binary data to a crash report, implement this callback. Before sending the crash, our SDK will add the attachment to the crash report and you can view it on the Mobile Center portal.   
+
+        ```csharp
+        Crashes.GetErrorAttachment = (report) =>
+        {
+            // return your own created ErrorAttachment object
+       	}
+
+        ```
+
+    The following events are provided:
+
+    * **Before sending a crash report:** This callback will be invoked just before the crash is sent to Mobile Center:
+
+        ```csharp
+        Crashes.SendingErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
+    * **When sending a crash report succeeded:** This callback will be invoked after sending a crash report succeeded:
+
+        ```csharp
+        Crashes.SentErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
+    * **When sending a crash report failed:** This callback will be invoked after sending a crash report failed:
+
+        ```csharp
+        Crashes.FailedToSendErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
 
 ## 7. Advanced APIs
 
