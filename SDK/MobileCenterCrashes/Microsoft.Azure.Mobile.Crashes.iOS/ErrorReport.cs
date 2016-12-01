@@ -33,8 +33,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 Exception = CrashesUtils.DeserializeException(wrapperExceptionData.ToArray());
             }
-
-            cachedReports[Id] = this;
         }
 
         private DateTimeOffset NSDateToDateTimeOffset(NSDate date)
