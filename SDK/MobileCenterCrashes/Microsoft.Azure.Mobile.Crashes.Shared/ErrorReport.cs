@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -17,5 +18,22 @@ namespace Microsoft.Azure.Mobile.Crashes
         public AndroidErrorDetails AndroidDetails { get; }
 
         public iOSErrorDetails iOSDetails { get; }
+
+        private static Dictionary<string, ErrorReport> cachedReports = new Dictionary<string, ErrorReport>();
+
+        private ErrorReport(ErrorReport other)
+        {
+            if (other == null)
+            {
+                return;
+            }
+            Id = other.Id;
+            AppStartTime = other.AppStartTime;
+            AppErrorTime = other.AppErrorTime;
+            Device = other.Device;
+            Exception = other.Exception;
+            AndroidDetails = other.AndroidDetails;
+            iOSDetails = other.iOSDetails;
+        }
     }
 }
