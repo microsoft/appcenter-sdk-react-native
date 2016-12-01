@@ -54,6 +54,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         /// <summary>
         /// Set this callback to add custom behavior for determining whether an error report should be processed.
+        /// Returning false prevents the crash from being reported to the server.
         /// </summary>
         public static ShouldProcessErrorReportCallback ShouldProcessErrorReport
         {
@@ -64,7 +65,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         }
 
         /// <summary>
-        /// Set this callback to add custom behavior for associating an error attachment with an error report.
+        /// Set this callback to attach custom text and/or binaries to an error report.
         /// </summary>
         public static GetErrorAttachmentCallback GetErrorAttachment
         {
@@ -87,7 +88,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public static Type BindingType => PlatformCrashes.BindingType;
 
         /// <summary>
-        /// Enables or disable Crashes module.
+        /// Enables or disables Crashes module.
         /// </summary>
         public static bool Enabled
         {
@@ -104,9 +105,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         public static bool HasCrashedInLastSession => PlatformCrashes.HasCrashedInLastSession;
 
         /// <summary>
-        /// Gets the crash report generated in the last session.
+        /// Gets the crash report generated in the last session if there was a crash.
         /// </summary>
-        /// <value>Crash report from the last session.</value>
+        /// <value>Crash report from the last session, <c>null</c> if there was no crash in the last session.</value>
         public static ErrorReport LastSessionCrashReport => PlatformCrashes.LastSessionCrashReport;
 
         /// <summary>
