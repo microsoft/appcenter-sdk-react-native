@@ -123,13 +123,14 @@ namespace Contoso.Forms.Puppet
         ErrorAttachment ErrorAttachmentForErrorReport(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Getting error attachment for error report");
+            string text = "This is an error attachment for Android";
 
             if (report.iOSDetails != null)
             {
-                return new ErrorAttachment("This is an error attachment for iOS");
+                text = "This is an error attachment for iOS";
             }
 
-            return new ErrorAttachment("This is an error attachment for Android");
+            return ErrorAttachment.AttachmentWithText(text);
         }
 
         bool ShouldProcess(ErrorReport report)

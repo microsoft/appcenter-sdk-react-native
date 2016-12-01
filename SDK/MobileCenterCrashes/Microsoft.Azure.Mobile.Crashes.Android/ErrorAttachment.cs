@@ -2,46 +2,54 @@
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using AndroidUtils = Com.Microsoft.Azure.Mobile.Crashes.ErrorAttachments;
+    using AndroidErrorAttachments = Com.Microsoft.Azure.Mobile.Crashes.ErrorAttachments;
     using AndroidErrorAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorAttachment;
 
     public class ErrorAttachment
     {
         internal AndroidErrorAttachment internalAttachment { get; }
 
-        internal ErrorAttachment(AndroidErrorAttachment androidAttachment)
+        private ErrorAttachment(AndroidErrorAttachment androidAttachment)
         {
             internalAttachment = androidAttachment;
         }
 
-          // Public Constructors
-        public ErrorAttachment(string text)
+        public static ErrorAttachment Attachment(string text, byte[] data, string filename, string contentType)
         {
-            internalAttachment = AndroidUtils.AttachmentWithText(text);
+            AndroidErrorAttachment androidAttachment = AndroidErrorAttachments.Attachment(text, data, filename, contentType);
+            return new ErrorAttachment(androidAttachment);
         }
 
-        public ErrorAttachment(byte[] data, string filename, string contentType)
+        public static ErrorAttachment AttachmentWithBinary(byte[] data, string filename, string contentType)
         {
-            internalAttachment = AndroidUtils.AttachmentWithBinary(data, filename, contentType);
+            AndroidErrorAttachment androidAttachment = AndroidErrorAttachments.AttachmentWithBinary(data, filename, contentType);
+            return new ErrorAttachment(androidAttachment);
         }
 
-        public ErrorAttachment(string text, byte[] data, string filename, string contentType)
+        public static ErrorAttachment AttachmentWithText(string text)
         {
-            internalAttachment = AndroidUtils.Attachment(text, data, filename, contentType);
+            AndroidErrorAttachment androidAttachment = AndroidErrorAttachments.AttachmentWithText(text);
+            return new ErrorAttachment(androidAttachment);
         }
 
-        // Properties
         public string TextAttachment => internalAttachment.TextAttachment;
 
+        private ErrorBinaryAttachment internalBinaryAttachment;
+
         public ErrorBinaryAttachment BinaryAttachment
-        { 
+        {
             get
             {
-                return new ErrorBinaryAttachment(internalAttachment.BinaryAttachment);
+                if (internalBinaryAttachment == null)
+                {
+                    internalBinaryAttachment = new ErrorBinaryAttachment(internalAttachment.BinaryAttachment);
+                }
+                return internalBinaryAttachment;
             }
             set
             {
                 internalAttachment.BinaryAttachment = value.internalBinaryAttachment;
+                internalBinaryAttachment = null;
             }
         }
     }

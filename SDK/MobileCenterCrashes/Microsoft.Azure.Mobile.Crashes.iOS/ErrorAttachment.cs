@@ -9,39 +9,49 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         internal MSErrorAttachment internalAttachment { get; }
 
-        internal ErrorAttachment(MSErrorAttachment iosAttachment)
+        private ErrorAttachment(MSErrorAttachment iosAttachment)
         {
             internalAttachment = iosAttachment;
         }
 
-        public ErrorAttachment(string text)
-        {
-            internalAttachment = MSErrorAttachment.AttachmentWithText(text);
-        }
-
-        public ErrorAttachment(byte[] data, string filename, string contentType)
+        public static ErrorAttachment Attachment(string text, byte[] data, string filename, string contentType)
         {
             NSData nsdata = NSData.FromArray(data);
-            internalAttachment = MSErrorAttachment.AttachmentWithBinaryData(nsdata, filename, contentType);
+            MSErrorAttachment iosAttachment = MSErrorAttachment.AttachmentWithText(text, nsdata, filename, contentType);
+            return new ErrorAttachment(iosAttachment);
         }
 
-        public ErrorAttachment(string text, byte[] data, string filename, string contentType)
+        public static ErrorAttachment AttachmentWithBinary(byte[] data, string filename, string contentType)
         {
             NSData nsdata = NSData.FromArray(data);
-            internalAttachment = MSErrorAttachment.AttachmentWithText(text, nsdata, filename, contentType);
+            MSErrorAttachment iosAttachment = MSErrorAttachment.AttachmentWithBinaryData(nsdata, filename, contentType);
+            return new ErrorAttachment(iosAttachment);
+        }
+
+        public static ErrorAttachment AttachmentWithText(string text)
+        {
+            MSErrorAttachment iosAttachment = MSErrorAttachment.AttachmentWithText(text);
+            return new ErrorAttachment(iosAttachment);
         }
 
         public string TextAttachment => internalAttachment.TextAttachment;
+
+        private ErrorBinaryAttachment internalBinaryAttachment;
 
         public ErrorBinaryAttachment BinaryAttachment
         { 
             get
             {
-                return new ErrorBinaryAttachment(internalAttachment.BinaryAttachment);
+                if (internalBinaryAttachment == null)
+                {
+                    internalBinaryAttachment = new ErrorBinaryAttachment(internalAttachment.BinaryAttachment);
+                }
+                return internalBinaryAttachment; 
             }
             set
             {
                 internalAttachment.BinaryAttachment = value.internalBinaryAttachment;
+                internalBinaryAttachment = null;
             }
         }
     }

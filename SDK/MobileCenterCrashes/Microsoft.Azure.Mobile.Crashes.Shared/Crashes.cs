@@ -3,7 +3,7 @@
 namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
-    /// Crashes feature.
+    /// Crashes service.
     /// </summary>
     public static class Crashes
     {
@@ -55,7 +55,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <summary>
         /// Set this callback to add custom behavior for determining whether an error report should be processed.
         /// </summary>
-        /// <seealso cref="ShouldProcessErrorReportCallback"/>
         public static ShouldProcessErrorReportCallback ShouldProcessErrorReport
         {
             set
@@ -88,7 +87,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public static Type BindingType => PlatformCrashes.BindingType;
 
         /// <summary>
-        /// Enable or disable Crashes module.
+        /// Enables or disable Crashes module.
         /// </summary>
         public static bool Enabled
         {
@@ -107,7 +106,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public static ErrorReport LastSessionCrashReport => PlatformCrashes.LastSessionCrashReport;
 
         /// <summary>
-        /// Generates crash for test purpose.
+        /// Generates crash for testing purposes.
         /// </summary>
         /// <remarks>
         /// This call has no effect in non debug configuration (such as release).
