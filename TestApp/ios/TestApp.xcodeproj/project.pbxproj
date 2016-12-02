@@ -924,7 +924,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.mobilecenterrnsdk.TestApp;
 				PRODUCT_NAME = TestApp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5fbc5877-aba6-4f90-8acc-a0fddb724e07";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Wildcard In-House";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
