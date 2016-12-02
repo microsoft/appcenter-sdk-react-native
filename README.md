@@ -225,7 +225,7 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         ```csharp
         Crashes.NotifyUserConfirmation(UserConfirmation userConfirmation);
         ```
-        Pass one option of `UserConfirmation.Send`, `UserConfirmation.DontSend` or `UserConfirmation.AlwaysSend`.
+        Pass one of `UserConfirmation.Send`, `UserConfirmation.DontSend` or `UserConfirmation.AlwaysSend`.
 
     The following events are provided:
 
