@@ -37,7 +37,7 @@ namespace Contoso.Android.Puppet
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "MobileCenter.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
-            MobileCenterLog.Info(LogTag, "MobileCenter.LastSessionCrashReport=" + Crashes.LastSessionCrashReport?.AndroidDetails?.Exception);
+            MobileCenterLog.Info(LogTag, "MobileCenter.LastSessionCrashReport=" + Crashes.LastSessionCrashReport?.AndroidDetails?.Throwable);
         }
 
         protected override void OnDestroy()
