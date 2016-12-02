@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Analytics;
 
 namespace Microsoft.Azure.Mobile.Analytics
@@ -16,6 +17,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <value>
         /// The Android SDK Analytics bindings type.
         /// </value>
+        [Preserve]
         public static Type BindingType => typeof(AndroidAnalytics);
 
         /// <summary>

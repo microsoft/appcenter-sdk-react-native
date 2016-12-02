@@ -1,7 +1,7 @@
 [![Build Status](https://www.bitrise.io/app/2f5448791ead7158.svg?token=OXmRpllvCk374SWQCVevkA&branch=develop)](https://www.bitrise.io/app/2f5448791ead7158)
-[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xaramin.svg)](https://github.com/Microsoft/mobile-center-sdk-xaramin/releases/latest)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xamarin.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/releases/latest)
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.Azure.Mobile.svg)](https://www.nuget.org/packages/Microsoft.Azure.Mobile/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xaramin/blob/develop/license.txt)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/blob/master/license.txt)
 
 # Mobile Center SDK for Xamarin
 
@@ -24,6 +24,8 @@ This document contains the following sections:
 5. [Analytics APIs](#5-analytics-apis)
 6. [Crashes APIs](#6-crashes-apis)
 7. [Advanced APIs](#7-advanced-apis)
+8. [Contributing](#8-contributing)
+9. [Contact](#9-contact)
 
 Let's get started with setting up Mobile Center Xamarin SDK in your app to use these services:
 
@@ -178,6 +180,68 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     bool isEnabled = Crashes.Enabled;
     ```
 
+* **Details about the last crash:** If your app crashed previously, you can get details about the last crash:
+
+    ```csharp
+    ErrorReport crashReport = Crashes.LastSessionCrashReport;
+    ```
+
+* **Advanced Scenarios:**  The Crashes service provides events and callbacks for developers to perform additional actions before and when sending crash reports to Mobile Center. This gives you added flexibility on the crash reports that will be sent.
+Note that the events must be subscribed to and callbacks must be set before Mobile Center is started.
+
+    The following callbacks are provided:
+
+    * **Should the crash be processed:** Set this callback if you'd like to decide if a particular crash needs to be processed or not. For example - there could be some system level crashes that you'd want to ignore and don't want to send to Mobile Center.
+
+        ```csharp
+        Crashes.ShouldProcessErrorReport = (report) =>
+        {
+                return true; // return true if the crash report should be processed, otherwise false.
+        };
+        ```
+
+    * **Error attachment:**  If you'd like to attach text/binary data to a crash report, implement this callback. Before sending the crash, our SDK will add the attachment to the crash report and you can view it on the Mobile Center portal.   
+
+        ```csharp
+        Crashes.GetErrorAttachment = (report) =>
+        {
+            // return your own created ErrorAttachment object
+       	}
+
+        ```
+
+    The following events are provided:
+
+    * **Before sending a crash report:** This callback will be invoked just before the crash is sent to Mobile Center:
+
+        ```csharp
+        Crashes.SendingErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
+    * **When sending a crash report succeeded:** This callback will be invoked after sending a crash report succeeded:
+
+        ```csharp
+        Crashes.SentErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
+    * **When sending a crash report failed:** This callback will be invoked after sending a crash report failed:
+
+        ```csharp
+        Crashes.FailedToSendErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
 ## 7. Advanced APIs
 
 * **Debugging**: You can control the amount of log messages that show up from the SDK. Use the API below to enable additional logging while debugging. By default, it is set it to `ASSERT` for non-debuggable applications and `WARN` for debuggable applications.
@@ -197,3 +261,18 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     ```csharp
         MobileCenter.Enabled = false;
     ```
+    
+## 8. Contributing
+
+We're looking forward to your contributions via pull requests.
+
+### 8.1 Code of Conduct
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
+
+### 8.2 Contributor License
+
+You must sign a [Contributor License Agreement](https://cla.microsoft.com/) before submitting your pull request. To complete the Contributor License Agreement (CLA), you will need to submit a request via the [form](https://cla.microsoft.com/) and then electronically sign the CLA when you receive the email containing the link to the document. You need to sign the CLA only once to cover submission to any Microsoft OSS project. 
+
+## 9. Contact
+If you have further questions or are running into trouble that cannot be resolved by any of the steps here, feel free to open a Github issue here or contact us at mobilecentersdk@microsoft.com.

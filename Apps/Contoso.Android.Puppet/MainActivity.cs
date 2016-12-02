@@ -36,6 +36,13 @@ namespace Contoso.Android.Puppet
             MobileCenter.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
+            MobileCenterLog.Info(LogTag, "MobileCenter.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+            MobileCenterLog.Info(LogTag, "MobileCenter.LastSessionCrashReport=" + Crashes.LastSessionCrashReport?.AndroidDetails?.Throwable);
+        }
+
+        protected override void OnDestroy()
+        {
+            // This will crash with super not called exception, pure java exception that we want to test
         }
     }
 }

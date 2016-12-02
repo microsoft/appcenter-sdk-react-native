@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Mobile;
-
+﻿using Microsoft.Azure.Mobile;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -11,7 +8,7 @@ namespace Contoso.Forms.Demo
         public MobileCenterContentPage()
         {
             InitializeComponent();
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "bolt.png";
             }
