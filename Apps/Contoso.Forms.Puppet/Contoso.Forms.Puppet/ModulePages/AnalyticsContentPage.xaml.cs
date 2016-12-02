@@ -26,7 +26,7 @@ namespace Contoso.Forms.Puppet
             EventProperties = new List<Property>();
             NumPropertiesLabel.Text = EventProperties.Count.ToString();
 
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "lightning.png";
             }

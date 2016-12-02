@@ -36,7 +36,7 @@ namespace Contoso.Forms.Puppet
             UpdateLogWriteLevelLabel();
 
 
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "bolt.png";
             }

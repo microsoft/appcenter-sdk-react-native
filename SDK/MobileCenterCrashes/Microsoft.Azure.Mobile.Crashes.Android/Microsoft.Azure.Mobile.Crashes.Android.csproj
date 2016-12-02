@@ -48,6 +48,11 @@
     <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AndroidCrashListener.cs" />
+    <Compile Include="ErrorReport.cs" />
+    <Compile Include="ErrorAttachment.cs" />
+    <Compile Include="ErrorBinaryAttachment.cs" />
+    <Compile Include="ErrorReportCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -69,6 +74,7 @@
       <Name>Microsoft.Azure.Mobile.Crashes.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems')" />
   <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

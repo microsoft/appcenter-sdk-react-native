@@ -1,57 +1,58 @@
 using System;
 using Foundation;
 using ObjCRuntime;
+using CoreFoundation;
 
 namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
-	// @interface MSErrorReport : NSObject
-	[BaseType(typeof(NSObject))]
-	interface MSErrorReport
-	{
-		// @property (readonly, nonatomic) NSString * incidentIdentifier;
-		[Export("incidentIdentifier")]
-		string IncidentIdentifier { get; }
+    // @interface MSErrorReport : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSErrorReport
+    {
+        // @property (readonly, nonatomic) NSString * incidentIdentifier;
+        [Export("incidentIdentifier")]
+        string IncidentIdentifier { get; }
 
-		// @property (readonly, nonatomic) NSString * reporterKey;
-		[Export("reporterKey")]
-		string ReporterKey { get; }
+        // @property (readonly, nonatomic) NSString * reporterKey;
+        [Export("reporterKey")]
+        string ReporterKey { get; }
 
-		// @property (readonly, nonatomic) NSString * signal;
-		[Export("signal")]
-		string Signal { get; }
+        // @property (readonly, nonatomic) NSString * signal;
+        [Export("signal")]
+        string Signal { get; }
 
-		// @property (readonly, nonatomic) NSString * exceptionName;
-		[Export("exceptionName")]
-		string ExceptionName { get; }
+        // @property (readonly, nonatomic) NSString * exceptionName;
+        [Export("exceptionName")]
+        string ExceptionName { get; }
 
-		// @property (readonly, nonatomic) NSString * exceptionReason;
-		[Export("exceptionReason")]
-		string ExceptionReason { get; }
+        // @property (readonly, nonatomic) NSString * exceptionReason;
+        [Export("exceptionReason")]
+        string ExceptionReason { get; }
 
-		// @property (readonly, nonatomic, strong) NSDate * appStartTime;
-		[Export("appStartTime", ArgumentSemantic.Strong)]
-		NSDate AppStartTime { get; }
+        // @property (readonly, nonatomic, strong) NSDate * appStartTime;
+        [Export("appStartTime", ArgumentSemantic.Strong)]
+        NSDate AppStartTime { get; }
 
-		// @property (readonly, nonatomic, strong) NSDate * appErrorTime;
-		[Export("appErrorTime", ArgumentSemantic.Strong)]
-		NSDate AppErrorTime { get; }
+        // @property (readonly, nonatomic, strong) NSDate * appErrorTime;
+        [Export("appErrorTime", ArgumentSemantic.Strong)]
+        NSDate AppErrorTime { get; }
 
-		// @property (readonly, nonatomic) MSDevice * device;
-		[Export("device")]
-		Microsoft.Azure.Mobile.iOS.Bindings.MSDevice Device { get; }
+        // @property (readonly, nonatomic) MSDevice * device;
+        [Export("device")]
+        Microsoft.Azure.Mobile.iOS.Bindings.MSDevice Device { get; }
 
-		// @property (readonly, assign, nonatomic) NSUInteger appProcessIdentifier;
-		[Export("appProcessIdentifier")]
-		nuint AppProcessIdentifier { get; }
+        // @property (readonly, assign, nonatomic) NSUInteger appProcessIdentifier;
+        [Export("appProcessIdentifier")]
+        nuint AppProcessIdentifier { get; }
 
-		// -(BOOL)isAppKill;
-		[Export("isAppKill")]
-		//[Verify(MethodToProperty)]
-		bool IsAppKill { get; }
-	}
+        // -(BOOL)isAppKill;
+        [Export("isAppKill")]
+        //[Verify(MethodToProperty)]
+        bool IsAppKill { get; }
+    }
 
-	// typedef void (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
-	delegate void MSUserConfirmationHandler(MSErrorReport[] arg0);
+    // typedef bool (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
+    delegate bool MSUserConfirmationHandler(MSErrorReport[] arg0);
 
     // @interface MSCrashes
     [BaseType(typeof(NSObject))]
@@ -105,23 +106,23 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
     {
         // @optional -(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:shouldProcessErrorReport:")]
-        bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport);
+        bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
         [Export("attachmentWithCrashes:forErrorReport:")]
-        MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport);
+        MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:willSendErrorReport:")]
-        void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport errorReport);
+        void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:didSucceedSendingErrorReport:")]
-        void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport);
+        void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)error;
         [Export("crashes:didFailSendingErrorReport:withError:")]
-        void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport, NSError error);
+        void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error);
     }
 
     // @interface MSErrorAttachment : NSObject
@@ -243,6 +244,16 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         bool IsEqual([NullAllowed] MSStackFrame frame);
     }
 
+
+    [Protocol, Model]
+    [BaseType(typeof(NSObject))]
+    interface MSWrapperCrashesInitializationDelegate
+    {
+        //- (BOOL) setUpCrashHandlers;
+        [Export("setUpCrashHandlers")]
+        bool SetUpCrashHandlers();
+    }
+
     // @interface MSWrapperExceptionManager : NSObject
     [BaseType(typeof(NSObject))]
     interface MSWrapperExceptionManager
@@ -251,5 +262,23 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Static]
         [Export("setWrapperException:")]
         void SetWrapperException(MSException exception);
+
+        [Static]
+        [Export("setWrapperExceptionData:")]
+        void SetWrapperExceptionData(NSData wrapperExceptionData);
+
+        [Static]
+        [Export("loadWrapperExceptionDataWithUUIDString:")]
+        NSData LoadWrapperExceptionData(string uuidString);
+
+        //+ (void)setDelegate:(id<MSWrapperCrashesInitializer>) delegate
+        [Static]
+        [Export("setDelegate:")]
+        void SetDelegate(MSWrapperCrashesInitializationDelegate _delegate);
+
+        //+ (void)startCrashReportingFromWrapperSdk;
+        [Static]
+        [Export("startCrashReportingFromWrapperSdk")]
+        void StartCrashReportingFromWrapperSdk();
     }
 }

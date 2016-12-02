@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
@@ -51,7 +52,7 @@
     <NativeReference Include="..\..\..\externals\ios\MobileCenterCrashes.a">
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
-      <Frameworks>./MobileCenterFrameworks/CrashReporter.framework</Frameworks>
+      <Frameworks></Frameworks>
       <LinkerFlags>-lc++</LinkerFlags>
 	  <IsCxx>True</IsCxx>
     </NativeReference>
