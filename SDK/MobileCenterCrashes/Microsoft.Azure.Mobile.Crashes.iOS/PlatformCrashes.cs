@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
+using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -47,6 +48,8 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         static PlatformCrashes()
         {
+            /* Peform custom setup around the native SDK's for setting signal handlers */
+            MSWrapperExceptionManager.SetDelegate(new CrashesInitializationDelegate());
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 

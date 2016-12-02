@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Crashes service.
     /// </summary>
-    public static partial class Crashes
+    public static class Crashes
     {
         static Crashes()
         {

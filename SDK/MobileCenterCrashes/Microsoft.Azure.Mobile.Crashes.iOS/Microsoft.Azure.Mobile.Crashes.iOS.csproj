@@ -59,7 +59,6 @@
     <Compile Include="ErrorReport.cs" />
     <Compile Include="CrashesDelegate.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
-    <Compile Include="CrashesExtension.cs" />
     <Compile Include="ErrorReportCache.cs" />
   </ItemGroup>
   <ItemGroup>
