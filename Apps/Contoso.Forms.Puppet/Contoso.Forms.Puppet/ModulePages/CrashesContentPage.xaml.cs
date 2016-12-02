@@ -45,6 +45,32 @@ namespace Contoso.Forms.Puppet
             Crashes.GenerateTestCrash();
         }
 
+        private void CatchNullReferenceException(object sender, EventArgs e)
+        {
+            try
+            {
+                TriggerNullReferenceException();
+            }
+            catch (NullReferenceException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("null reference exception");
+            }
+        }
+
+        private void CrashWithNullReferenceException(object sender, EventArgs e)
+        {
+            TriggerNullReferenceException();
+        }
+
+        private void TriggerNullReferenceException()
+        {
+            string[] values = { "one", null, "two" };
+            for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
+                System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
+                              ctr == values.GetUpperBound(0) ? "" : ", ");
+            System.Diagnostics.Debug.WriteLine("");
+        }
+
         private void CrashWithAggregateException(object sender, EventArgs e)
         {
             throw PrepareException();

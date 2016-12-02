@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -37,6 +36,14 @@ namespace Microsoft.Azure.Mobile.Crashes
             PlatformCrashes.ShouldProcessErrorReport = null;
             PlatformCrashes.GetErrorAttachment = null;
             PlatformCrashes.ShouldAwaitUserConfirmation = null;
+
+            /* 
+             * We need to add [Android.Runtime.Preserve] to BindingType to avoid it
+             * from being removed by "Link all assemblies optimization".
+             * However we cannot do it because this code is shared with ios and PCL.
+             * So instead we use the property explicitly here to preserve the method call even after optimization.
+             */
+            var type = BindingType;
         }
 
         /// <summary>
@@ -156,3 +163,4 @@ namespace Microsoft.Azure.Mobile.Crashes
         //}
     }
 }
+

@@ -9,15 +9,18 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         internal static ErrorReport GetErrorReport(AndroidErrorReport androidReport)
         {
-            ErrorReport cachedReport;
-            if (cachedReports.TryGetValue(androidReport.Id, out cachedReport))
+            lock (cachedReports)
             {
-                return cachedReport;
-            }
+                ErrorReport cachedReport;
+                if (cachedReports.TryGetValue(androidReport.Id, out cachedReport))
+                {
+                    return cachedReport;
+                }
 
-            var newErrorReport = new ErrorReport(androidReport);
-            cachedReports[androidReport.Id] = newErrorReport;
-            return newErrorReport;
+                var newErrorReport = new ErrorReport(androidReport);
+                cachedReports[androidReport.Id] = newErrorReport;
+                return newErrorReport;
+            }
         }
     }
 }
