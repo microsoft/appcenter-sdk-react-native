@@ -21,6 +21,29 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
+
+        public override void NotifyUserConfirmation(UserConfirmation confirmation)
+        {
+            int androidUserConfirmation;
+
+            switch (confirmation)
+            {
+                case UserConfirmation.Send:
+                    androidUserConfirmation = AndroidCrashes.Send;
+                    break;
+                case UserConfirmation.DontSend:
+                    androidUserConfirmation = AndroidCrashes.DontSend;
+                    break;
+                case UserConfirmation.AlwaysSend:
+                    androidUserConfirmation = AndroidCrashes.AlwaysSend;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(confirmation), confirmation, null);
+            }
+
+            AndroidCrashes.NotifyUserConfirmation(androidUserConfirmation);
+        }
 
         public override Type BindingType => typeof(AndroidCrashes);
 

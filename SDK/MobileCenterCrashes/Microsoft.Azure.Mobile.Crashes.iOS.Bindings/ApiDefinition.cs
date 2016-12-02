@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         bool IsAppKill { get; }
     }
 
-    // typedef void (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
-    delegate void MSUserConfirmationHandler(MSErrorReport[] arg0);
+    // typedef bool (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
+    delegate bool MSUserConfirmationHandler(MSErrorReport[] arg0);
 
     // @interface MSCrashes
     [BaseType(typeof(NSObject))]

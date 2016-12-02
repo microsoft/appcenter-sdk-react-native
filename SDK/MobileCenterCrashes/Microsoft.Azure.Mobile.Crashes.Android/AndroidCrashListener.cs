@@ -64,6 +64,11 @@
 
         public bool ShouldAwaitUserConfirmation()
         {
+            if (_owner.ShouldAwaitUserConfirmation != null)
+            {
+                return _owner.ShouldAwaitUserConfirmation();
+            }
+
             return false;
         }
 
