@@ -223,7 +223,7 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         If you return `true`, your app should obtain user permission and message the SDK with the result using the following API:
 
         ```csharp
-        Crashes.NotifyUserConfirmation(UserConfirmation userConfirmation);
+        Crashes.NotifyUserConfirmation(UserConfirmation confirmation);
         ```
         Pass one of `UserConfirmation.Send`, `UserConfirmation.DontSend` or `UserConfirmation.AlwaysSend`.
 
