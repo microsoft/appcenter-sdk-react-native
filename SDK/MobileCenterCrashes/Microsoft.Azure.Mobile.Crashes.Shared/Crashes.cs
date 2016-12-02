@@ -140,3 +140,4 @@ namespace Microsoft.Azure.Mobile.Crashes
         //}
     }
 }
+

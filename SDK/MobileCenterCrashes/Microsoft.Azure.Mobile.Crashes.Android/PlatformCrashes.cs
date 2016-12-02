@@ -50,6 +50,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         //}
 
         private AndroidICrashListener _crashListener;
+
         /// <summary>
         /// Empty model stack frame used for comparison to optimize JSON payload.
         /// </summary>
@@ -167,9 +168,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 JoinExceptionAndLog();
             }
         }
-
 #pragma warning restore XS0001 // Find usages of mono todo items
-
     }
-
 }
