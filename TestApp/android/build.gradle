@@ -14,20 +14,7 @@ buildscript {
 
 allprojects {
     repositories {
-        //mavenLocal()
-
-        maven {
-            url  'http://mobilecenter.bintray.com/mobilecenter-snapshot'
-            // This repo is public now, so no credentials are needed
-            /*
-            credentials {
-                username rootProject.bintrayUser
-                password rootProject.bintrayKey
-            }
-            */
-        }
-
-
+        mavenLocal()
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
