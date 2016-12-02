@@ -180,6 +180,68 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
     bool isEnabled = Crashes.Enabled;
     ```
 
+* **Details about the last crash:** If your app crashed previously, you can get details about the last crash:
+
+    ```csharp
+    ErrorReport crashReport = Crashes.LastSessionCrashReport;
+    ```
+
+* **Advanced Scenarios:**  The Crashes service provides events and callbacks for developers to perform additional actions before and when sending crash reports to Mobile Center. This gives you added flexibility on the crash reports that will be sent.
+Note that the events must be subscribed to and callbacks must be set before Mobile Center is started.
+
+    The following callbacks are provided:
+
+    * **Should the crash be processed:** Set this callback if you'd like to decide if a particular crash needs to be processed or not. For example - there could be some system level crashes that you'd want to ignore and don't want to send to Mobile Center.
+
+        ```csharp
+        Crashes.ShouldProcessErrorReport = (report) =>
+        {
+                return true; // return true if the crash report should be processed, otherwise false.
+        };
+        ```
+
+    * **Error attachment:**  If you'd like to attach text/binary data to a crash report, implement this callback. Before sending the crash, our SDK will add the attachment to the crash report and you can view it on the Mobile Center portal.   
+
+        ```csharp
+        Crashes.GetErrorAttachment = (report) =>
+        {
+            // return your own created ErrorAttachment object
+       	}
+
+        ```
+
+    The following events are provided:
+
+    * **Before sending a crash report:** This callback will be invoked just before the crash is sent to Mobile Center:
+
+        ```csharp
+        Crashes.SendingErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
+    * **When sending a crash report succeeded:** This callback will be invoked after sending a crash report succeeded:
+
+        ```csharp
+        Crashes.SentErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
+    * **When sending a crash report failed:** This callback will be invoked after sending a crash report failed:
+
+        ```csharp
+        Crashes.FailedToSendErrorReport += (sender, e) =>
+        {
+        	...
+        };
+
+        ```
+
 ## 7. Advanced APIs
 
 * **Debugging**: You can control the amount of log messages that show up from the SDK. Use the API below to enable additional logging while debugging. By default, it is set it to `ASSERT` for non-debuggable applications and `WARN` for debuggable applications.

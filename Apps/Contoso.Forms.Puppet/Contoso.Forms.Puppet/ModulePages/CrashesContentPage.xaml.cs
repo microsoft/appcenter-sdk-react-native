@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class CrashesContentPage : ContentPage
+    public partial class CrashesContentPage
     {
         public CrashesContentPage()
         {
@@ -29,8 +29,7 @@ namespace Contoso.Forms.Puppet
 
         void DivideByZero(object sender, System.EventArgs e)
         {
-            int x = 42 / int.Parse("0");
-            x = 0; // to prevent warning
+            (42 / int.Parse("0")).ToString();
         }
 
         void UpdateEnabled(object sender, System.EventArgs e)

@@ -1,6 +1,7 @@
 using System;
 using Foundation;
 using ObjCRuntime;
+using CoreFoundation;
 
 namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
@@ -105,23 +106,23 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
     {
         // @optional -(BOOL)crashes:(MSCrashes *)crashes shouldProcessErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:shouldProcessErrorReport:")]
-        bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport errorReport);
+        bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
         [Export("attachmentWithCrashes:forErrorReport:")]
-        MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport errorReport);
+        MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:willSendErrorReport:")]
-        void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport errorReport);
+        void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:didSucceedSendingErrorReport:")]
-        void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport);
+        void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)error;
         [Export("crashes:didFailSendingErrorReport:withError:")]
-        void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport errorReport, NSError error);
+        void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error);
     }
 
     // @interface MSErrorAttachment : NSObject
@@ -251,5 +252,13 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Static]
         [Export("setWrapperException:")]
         void SetWrapperException(MSException exception);
+
+        [Static]
+        [Export("setWrapperExceptionData:")]
+        void SetWrapperExceptionData(NSData wrapperExceptionData);
+
+        [Static]
+        [Export("loadWrapperExceptionDataWithUUIDString:")]
+        NSData LoadWrapperExceptionData(string uuidString);
     }
 }

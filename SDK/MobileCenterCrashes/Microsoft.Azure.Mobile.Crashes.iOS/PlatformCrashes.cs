@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Azure.Mobile.Crashes.Shared;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using iOSCrashes = iOS.Bindings.MSCrashes;
-    using iOSException = iOS.Bindings.MSException;
-    using iOSStackFrame = iOS.Bindings.MSStackFrame;
-
     class PlatformCrashes : PlatformCrashesBase
     {
-        public override Type BindingType => typeof(iOSCrashes);
+        public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
+        public override SentErrorReportEventHandler SentErrorReport { get; set; }
+        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
+        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
+        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+
+        CrashesDelegate crashesDelegate { get; set; }
+
+        public override Type BindingType => typeof(MSCrashes);
 
         public override bool Enabled
         {
@@ -24,7 +26,19 @@ namespace Microsoft.Azure.Mobile.Crashes
             set { MSCrashes.SetEnabled(value); }
         }
 
-        public override bool HasCrashedInLastSession => iOSCrashes.HasCrashedInLastSession;
+        public override bool HasCrashedInLastSession => MSCrashes.HasCrashedInLastSession;
+
+        public override ErrorReport LastSessionCrashReport
+        {
+            get
+            {
+                var msReport = MSCrashes.LastSessionCrashReport;
+                if (msReport == null)
+                    return null;
+                else
+                    return ErrorReportCache.GetErrorReport(msReport);
+            }
+        }
 
         //public override void TrackException(Exception exception)
         //{
@@ -36,22 +50,33 @@ namespace Microsoft.Azure.Mobile.Crashes
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
-        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        public PlatformCrashes()
         {
-            iOSException exception = GenerateiOSException((Exception)e.ExceptionObject);
-            iOS.Bindings.MSWrapperExceptionManager.SetWrapperException(exception);
+            crashesDelegate = new CrashesDelegate(this);
+            MSCrashes.SetDelegate(crashesDelegate);
         }
 
-        private static iOSException GenerateiOSException(Exception exception)
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            iOSException iosException = new iOSException();
-            iosException.Type = exception.GetType().FullName;
-            iosException.Message = exception.Message;
-            iosException.Frames = GenerateStackFrames(exception);
-            iosException.WrapperSdkName = WrapperSdk.Name;
+            Exception systemException = e.ExceptionObject as Exception;
+            MSException exception = GenerateiOSException(systemException);
+            MSWrapperExceptionManager.SetWrapperException(exception);
+
+            byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
+            NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
+            MSWrapperExceptionManager.SetWrapperExceptionData(wrapperExceptionData);
+        }
+
+        private static MSException GenerateiOSException(Exception exception)
+        {
+            var msException = new MSException();
+            msException.Type = exception.GetType().FullName;
+            msException.Message = exception.Message;
+            msException.Frames = GenerateStackFrames(exception);
+            msException.WrapperSdkName = WrapperSdk.Name;
 
             var aggregateException = exception as AggregateException;
-            List<iOSException> innerExceptions = new List<iOSException>();
+            var innerExceptions = new List<MSException>();
 
             if (aggregateException?.InnerExceptions != null)
             {
@@ -65,31 +90,35 @@ namespace Microsoft.Azure.Mobile.Crashes
                 innerExceptions.Add(GenerateiOSException(exception.InnerException));
             }
 
-            iosException.InnerExceptions = innerExceptions.Count > 0 ? innerExceptions.ToArray() : null;
+            msException.InnerExceptions = innerExceptions.Count > 0 ? innerExceptions.ToArray() : null;
 
-            return iosException;
+            return msException;
         }
 
-        private static iOSStackFrame[] GenerateStackFrames(Exception e)
-        {
-            StackTrace trace = new StackTrace(e, true);
+        #pragma warning disable XS0001 // Find usages of mono todo items
 
-            List<iOSStackFrame> frameList = new List<iOSStackFrame>();
+        private static MSStackFrame[] GenerateStackFrames(Exception e)
+        {
+            var trace = new StackTrace(e, true);
+            var frameList = new List<MSStackFrame>();
+
             for (int i = 0; i < trace.FrameCount; ++i)
             {
                 StackFrame dotnetFrame = trace.GetFrame(i);
                 if (dotnetFrame.GetMethod() == null) continue;
-                iOSStackFrame iosFrame = new iOSStackFrame();
-                iosFrame.Address = null;
-                iosFrame.Code = null;
-                iosFrame.MethodName = dotnetFrame.GetMethod().Name;
-                iosFrame.ClassName = dotnetFrame.GetMethod().DeclaringType?.FullName;
-                iosFrame.LineNumber = dotnetFrame.GetFileLineNumber() == 0 ? null : (NSNumber)(dotnetFrame.GetFileLineNumber());
-                iosFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
-                frameList.Add(iosFrame);
+                var msFrame = new MSStackFrame();
+                msFrame.Address = null;
+                msFrame.Code = null;
+                msFrame.MethodName = dotnetFrame.GetMethod().Name;
+                msFrame.ClassName = dotnetFrame.GetMethod().DeclaringType?.FullName;
+                msFrame.LineNumber = dotnetFrame.GetFileLineNumber() == 0 ? null : (NSNumber)(dotnetFrame.GetFileLineNumber());
+                msFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
+                frameList.Add(msFrame);
             }
             return frameList.Count == 0 ? null : frameList.ToArray();
         }
+
+        #pragma warning restore XS0001 // Find usages of mono todo items
 
         private static string AnonymizePath(string path)
         {
