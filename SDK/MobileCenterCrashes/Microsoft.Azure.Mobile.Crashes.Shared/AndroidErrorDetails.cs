@@ -14,7 +14,7 @@
         /// <summary>
         /// Gets the throwable associated with the Java crash.
         /// </summary>
-        /// <value>The throwable associated with the crash. <c>null</c> if the crash occured in C# code.</value>
+        /// <value>The throwable associated with the crash. <c>null</c> if the crash occured in .NET code.</value>
         public object Throwable { get; }
 
         /// <summary>

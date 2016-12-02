@@ -1,9 +1,8 @@
 ﻿using Foundation;
+using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using iOS.Bindings;
-
     public class CrashesDelegate : MSCrashesDelegate
     {
         private readonly PlatformCrashes _owner;
