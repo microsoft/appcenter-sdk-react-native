@@ -108,20 +108,10 @@ allprojects {
             }
         }
     }
-
 }
 
 repositories {
-    maven {
-            url  'http://mobilecenter.bintray.com/mobilecenter'
-            // This repo is public now, so no credentials are needed
-            /*
-            credentials {
-                username rootProject.bintrayUser
-                password rootProject.bintrayKey
-            }
-            */
-        }
+    jcenter()
 }
 
 dependencies {
