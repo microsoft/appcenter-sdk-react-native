@@ -64,7 +64,7 @@ namespace Contoso.Forms.Puppet
 
         private void TriggerNullReferenceException()
         {
-            String[] values = { "one", null, "two" };
+            string[] values = { "one", null, "two" };
             for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
                 System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
                               ctr == values.GetUpperBound(0) ? "" : ", ");
