@@ -1,1 +1,1 @@
-require('./demo.js');
+require('./index.js');
