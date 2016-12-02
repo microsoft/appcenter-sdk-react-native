@@ -4,6 +4,7 @@ using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
 {
@@ -140,11 +141,34 @@ namespace Contoso.Forms.Puppet
             return true;
         }
 
+
         bool ConfirmationHandler()
         {
-            System.Diagnostics.Debug.WriteLine("User confirmation handler. Automatically setting.");
-            Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
-            return false;
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                Current.MainPage.DisplayActionSheet("Crash detected. Send anonymous crash report?", null, null, "Send", "Always Send", "Don't Send").ContinueWith((arg) =>
+                {
+                    var answer = arg.Result;
+                    UserConfirmation userConfirmationSelection;
+                    if (answer == "Send")
+                    {
+                        userConfirmationSelection = UserConfirmation.Send;
+                    }
+                    else if (answer == "Always Send")
+                    {
+                        userConfirmationSelection = UserConfirmation.AlwaysSend;
+                    }
+                    else
+                    {
+                        userConfirmationSelection = UserConfirmation.DontSend;
+                    }
+
+                    MobileCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
+                    Crashes.NotifyUserConfirmation(userConfirmationSelection);
+                });
+            });
+
+            return true;
         }
     }
 }
