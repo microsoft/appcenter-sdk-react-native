@@ -13,6 +13,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
             AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
             Device = androidReport.Device == null ? null : new Device(androidReport.Device);
+
             object androidThrowable;
             try
             {
@@ -21,13 +22,14 @@ namespace Microsoft.Azure.Mobile.Crashes
             catch (Exception e)
             {
                 MobileCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
-				androidThrowable = null;
+                androidThrowable = null;
                 byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
                 if (exceptionBytes != null)
                 {
                     Exception = CrashesUtils.DeserializeException(exceptionBytes);
                 }
             }
+
             AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
             iOSDetails = null;
         }

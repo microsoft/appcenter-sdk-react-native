@@ -9,6 +9,12 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         internal ErrorReport(MSErrorReport msReport)
         {
+            // If Id is not null we have loaded the report from the cache
+            if (Id != null)
+            {
+                return;
+            }
+
             Id = msReport.IncidentIdentifier;
             AppStartTime = NSDateToDateTimeOffset(msReport.AppStartTime);
             AppErrorTime = NSDateToDateTimeOffset(msReport.AppErrorTime);
@@ -16,10 +22,10 @@ namespace Microsoft.Azure.Mobile.Crashes
 
             AndroidDetails = null;
 
-            iOSDetails = new iOSErrorDetails(msReport.ReporterKey, 
-                                             msReport.Signal, 
-                                             msReport.ExceptionName, 
-                                             msReport.ExceptionReason, 
+            iOSDetails = new iOSErrorDetails(msReport.ReporterKey,
+                                             msReport.Signal,
+                                             msReport.ExceptionName,
+                                             msReport.ExceptionReason,
                                              (uint)msReport.AppProcessIdentifier);
 
             NSData wrapperExceptionData = MSWrapperExceptionManager.LoadWrapperExceptionData(msReport.IncidentIdentifier);

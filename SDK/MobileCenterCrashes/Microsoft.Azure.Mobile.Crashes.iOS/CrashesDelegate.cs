@@ -1,9 +1,8 @@
 ﻿using Foundation;
+using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using iOS.Bindings;
-
     public class CrashesDelegate : MSCrashesDelegate
     {
         private readonly PlatformCrashes _owner;
@@ -20,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 return true;
             }
 
-            var report = new ErrorReport(msReport);
+            var report = ErrorReportCache.GetErrorReport(msReport);
             return _owner.ShouldProcessErrorReport(report);
         }
 
@@ -31,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 return null;
             }
               
-            var report = new ErrorReport(msReport);
+            var report = ErrorReportCache.GetErrorReport(msReport);
             return _owner.GetErrorAttachment(report).internalAttachment;
          }
 
@@ -42,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 return;
             }
 
-            var report = new ErrorReport(msReport);
+            var report = ErrorReportCache.GetErrorReport(msReport);
             var e = new SendingErrorReportEventArgs();
             e.Report = report;
             _owner.SendingErrorReport(null, e);
@@ -52,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             if (_owner.SentErrorReport != null)
             {
-                var report = new ErrorReport(msReport);
+                var report = ErrorReportCache.GetErrorReport(msReport);
                 var e = new SentErrorReportEventArgs();
                 e.Report = report;
                 _owner.SentErrorReport(null, e);
@@ -64,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             if (_owner.FailedToSendErrorReport != null)
             {
-                var report = new ErrorReport(msReport);
+                var report = ErrorReportCache.GetErrorReport(msReport);
                 var e = new FailedToSendErrorReportEventArgs();
                 e.Report = report;
                 e.Exception = error;

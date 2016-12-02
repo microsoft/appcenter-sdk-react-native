@@ -20,7 +20,7 @@
                 return null;
             }
 
-            var report = new ErrorReport(androidReport);
+            var report = ErrorReportCache.GetErrorReport(androidReport);
             var attachment = _owner.GetErrorAttachment(report);
             return attachment.internalAttachment;
         }
@@ -31,7 +31,7 @@
             {
                 return;
             }
-            var report = new ErrorReport(androidReport);
+            var report = ErrorReportCache.GetErrorReport(androidReport);
             var e = new  SendingErrorReportEventArgs();
             e.Report = report;
             _owner.SendingErrorReport(null, e);
@@ -43,7 +43,7 @@
             {
                 return;
             }
-            var report = new ErrorReport(androidReport);
+            var report = ErrorReportCache.GetErrorReport(androidReport);
             var e = new FailedToSendErrorReportEventArgs();
             e.Report = report;
             e.Exception = exception;
@@ -56,7 +56,7 @@
             {
                 return;
             }
-            var report = new ErrorReport(androidReport);
+            var report = ErrorReportCache.GetErrorReport(androidReport);
             var e = new SentErrorReportEventArgs();
             e.Report = report;
             _owner.SentErrorReport(null, e);
@@ -73,7 +73,7 @@
             {
                 return true;
             }
-            var report = new ErrorReport(androidReport);
+            var report = ErrorReportCache.GetErrorReport(androidReport);
             return _owner.ShouldProcessErrorReport(report);
         }
     }

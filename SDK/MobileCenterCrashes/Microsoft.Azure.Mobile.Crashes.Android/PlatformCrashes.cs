@@ -16,9 +16,9 @@ namespace Microsoft.Azure.Mobile.Crashes
     class PlatformCrashes : PlatformCrashesBase
     {
         // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
-        public override SendingErrorReportHandler SendingErrorReport { get; set; }
-        public override SentErrorReportHandler SentErrorReport { get; set; }
-        public override FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
+        public override SentErrorReportEventHandler SentErrorReport { get; set; }
+        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 if (androidReport == null)
                     return null;
                 else
-                    return new ErrorReport(androidReport);
+                    return ErrorReportCache.GetErrorReport(androidReport);
             }
         }
 

@@ -5,6 +5,9 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     using iOS.Bindings;
 
+    /// <summary>
+    /// Binary attachment for error report.
+    /// </summary>
     public class ErrorBinaryAttachment
     {
         internal MSErrorBinaryAttachment internalBinaryAttachment { get; }
@@ -14,6 +17,10 @@ namespace Microsoft.Azure.Mobile.Crashes
             internalBinaryAttachment = internalBinaryErrorAttachment;
         }
 
+        /// <summary>
+        /// Gets the binary data file name.
+        /// </summary>
+        /// <value>The name of the binary data file.</value>
         public string FileName
         { 
             get 
@@ -22,6 +29,10 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
+        /// <summary>
+        /// Gets the binary data.
+        /// </summary>
+        /// <value>The binary data.</value>
         public byte[] Data
         { 
             get 
@@ -30,6 +41,10 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
+        /// <summary>
+        /// Gets the content type for the binary data.
+        /// </summary>
+        /// <value>The MIME type of the binary data.</value>
         public string ContentType
         { 
             get 

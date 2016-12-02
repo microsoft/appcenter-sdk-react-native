@@ -31,10 +31,9 @@ namespace Contoso.Forms.Puppet
 
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
-            Crashes.GetErrorAttachment = ErrorAttachmentForErrorReport;
-
-            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
+            Crashes.GetErrorAttachment = ErrorAttachmentForReport;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
@@ -121,16 +120,17 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        ErrorAttachment ErrorAttachmentForErrorReport(ErrorReport report)
+        ErrorAttachment ErrorAttachmentForReport(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Getting error attachment for error report");
+            string text = "This is an error attachment for Android";
 
             if (report.iOSDetails != null)
             {
-                return new ErrorAttachment("This is an error attachment for iOS");
+                text = "This is an error attachment for iOS";
             }
 
-            return new ErrorAttachment("This is an error attachment for Android");
+            return ErrorAttachment.AttachmentWithText(text);
         }
 
         bool ShouldProcess(ErrorReport report)

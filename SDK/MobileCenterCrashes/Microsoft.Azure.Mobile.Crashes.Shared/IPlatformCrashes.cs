@@ -19,10 +19,10 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         void NotifyUserConfirmation(UserConfirmation confirmation);
 
-        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are some corresponding events)
-        SendingErrorReportHandler SendingErrorReport { get; set; }
-        SentErrorReportHandler SentErrorReport { get; set; }
-        FailedToSendErrorHandler FailedToSendErrorReport { get; set; }
+        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
+        SendingErrorReportEventHandler SendingErrorReport { get; set; }
+        SentErrorReportEventHandler SentErrorReport { get; set; }
+        FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
         GetErrorAttachmentCallback GetErrorAttachment { get; set; }
