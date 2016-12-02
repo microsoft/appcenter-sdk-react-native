@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                     androidUserConfirmation = AndroidCrashes.AlwaysSend;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(val), val, null);
+                    throw new ArgumentOutOfRangeException(nameof(confirmation), confirmation, null);
             }
 
             AndroidCrashes.NotifyUserConfirmation(androidUserConfirmation);

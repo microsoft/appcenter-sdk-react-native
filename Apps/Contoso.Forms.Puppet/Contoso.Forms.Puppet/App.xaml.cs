@@ -32,6 +32,7 @@ namespace Contoso.Forms.Puppet
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.GetErrorAttachment = ErrorAttachmentForReport;
+            Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
             Analytics.TrackEvent("myEvent");
@@ -137,6 +138,13 @@ namespace Contoso.Forms.Puppet
         {
             MobileCenterLog.Info(LogTag, "Determining whether to process error report");
             return true;
+        }
+
+        bool ConfirmationHandler()
+        {
+            System.Diagnostics.Debug.WriteLine("User confirmation handler. Automatically setting.");
+            Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
+            return false;
         }
     }
 }
