@@ -210,7 +210,7 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
 
         ```
 
-    * **User Confirmation:** If user privacy is important to you as a developer, you might want to get user confirmation before sending a crash report to Mobile Center. The SDK exposes a callback where you can tell it to await user confirmation before sending any crash reports.
+    * **User Confirmation:** By default the SDK automatically transmits crash reports to Mobile Center. However, the SDK exposes a callback where you can tell it to await user confirmation before sending any crash reports.
     Your app is then responsible for obtaining confirmation, e.g. through a alert with one of these options - "Always Send", "Send", and "Don't Send". Based on the user input, you will tell the SDK and the crash will then respectively be forwarded to Mobile Center or not.
 
         ```csharp
