@@ -147,6 +147,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 Type = exception.GetType().FullName,
                 Message = exception.Message,
+                StackTrace = exception.StackTrace,
                 Frames = GenerateModelStackFrames(new StackTrace(exception, true)),
                 WrapperSdkName = WrapperSdk.Name
             };
