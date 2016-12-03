@@ -21,8 +21,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 allprojects {
     def ext = rootProject.ext
 
-
-
     android {
         compileSdkVersion 23
         buildToolsVersion "23.0.1"
@@ -48,10 +46,6 @@ allprojects {
             from android.sourceSets.main.java.srcDirs
             classifier = 'sources'
         }
-    }
-
-    artifacts {
-        //archives sourcesJar
     }
 
     bintray {
@@ -118,3 +112,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.microsoft.azure.mobile:mobile-center:0.3.+'
 }
+
+artifacts {
+    archives sourcesJar
+}
+
