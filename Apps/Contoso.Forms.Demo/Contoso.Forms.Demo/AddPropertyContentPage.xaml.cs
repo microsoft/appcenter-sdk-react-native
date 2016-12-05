@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
-    public partial class AddPropertyContentPage : ContentPage
+    public partial class AddPropertyContentPage
     {
         public event Action<Property> PropertyAdded;
 
@@ -25,6 +22,5 @@ namespace Contoso.Forms.Demo
         {
             Navigation.PopModalAsync();
         }
-
     }
 }
