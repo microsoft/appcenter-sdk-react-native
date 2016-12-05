@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Diagnostics;
 
 namespace Microsoft.Azure.Mobile
@@ -9,7 +11,6 @@ namespace Microsoft.Azure.Mobile
     public static class MobileCenter
     {
         /* Error message to display for unsupported targets. */
-
         private const string ErrorMessage =
             "[MobileCenter] ASSERT: Cannot use Mobile Center on this target. If you are on Android or iOS, you must add the NuGet packages in the Android and iOS projects as well. Other targets such as Universal Windows Applications are not yet supported.";
 

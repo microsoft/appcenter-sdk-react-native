@@ -78,7 +78,6 @@
     </Compile>
     <Compile Include="FakeService.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
       <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
