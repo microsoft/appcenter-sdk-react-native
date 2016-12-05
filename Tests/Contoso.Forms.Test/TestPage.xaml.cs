@@ -17,21 +17,39 @@ namespace Contoso.Forms.Test
             UpdateEnabledStateLabels();
         }
 
-        void ToggleMobileCenterEnabled(object sender, System.EventArgs e)
+        void EnableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.Enabled = !MobileCenter.Enabled;
+            MobileCenter.Enabled = true;
             UpdateEnabledStateLabels();
         }
 
-        void ToggleCrashesEnabled(object sender, System.EventArgs e)
+        void EnableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.Enabled = !Crashes.Enabled;
+            Crashes.Enabled = true;
             UpdateEnabledStateLabels();
         }
 
-        void ToggleAnalyticsEnabled(object sender, System.EventArgs e)
+        void EnableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.Enabled = !Analytics.Enabled;
+            Analytics.Enabled = true;
+            UpdateEnabledStateLabels();
+        }
+
+        void DisableMobileCenter(object sender, System.EventArgs e)
+        {
+            MobileCenter.Enabled = false;
+            UpdateEnabledStateLabels();
+        }
+
+        void DisableCrashes(object sender, System.EventArgs e)
+        {
+            Crashes.Enabled = false;
+            UpdateEnabledStateLabels();
+        }
+
+        void DisableAnalytics(object sender, System.EventArgs e)
+        {
+            Analytics.Enabled = false;
             UpdateEnabledStateLabels();
         }
 
@@ -70,6 +88,27 @@ namespace Contoso.Forms.Test
         void GenerateTestCrash(object sender, System.EventArgs e)
         {
             Crashes.GenerateTestCrash();
+        }
+
+        void CatchNullReferenceException(object sender, EventArgs e)
+        {
+            try
+            {
+                TriggerNullReferenceException();
+            }
+            catch (NullReferenceException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("null reference exception");
+            }
+        }
+
+       void TriggerNullReferenceException()
+        {
+            string[] values = { "one", null, "two" };
+            for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
+                System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
+                              ctr == values.GetUpperBound(0) ? "" : ", ");
+            System.Diagnostics.Debug.WriteLine("");
         }
 
         void UpdateEnabledStateLabels()

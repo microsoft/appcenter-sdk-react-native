@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Tests.cs" />
     <Compile Include="AppInitializer.cs" />
+    <Compile Include="ServiceStateHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

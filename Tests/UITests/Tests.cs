@@ -27,23 +27,45 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void ToggleEnabledStates()
+        public void TestEnablingAndDisablingServices()
         {
-            app.WaitForElement(c => c.Marked("ToggleMobileCenterEnabledButton"));
-            app.WaitForElement(c => c.Marked("ToggleAnalyticsEnabledButton"));
-            app.WaitForElement(c => c.Marked("ToggleCrashesEnabledButton"));
+            ServiceStateHelper.app = app;
+            ServiceStateHelper.platform = platform;
 
-            app.Tap(c => c.Marked("ToggleMobileCenterEnabledButton"));
-            app.Tap(c => c.Marked("ToggleAnalyticsEnabledButton"));
-            app.Tap(c => c.Marked("ToggleCrashesEnabledButton"));
-            //TODO some kind of verification (and more complicated sequence of events)
+            /* Test setting enabling all services */
+            ServiceStateHelper.MobileCenterEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            ServiceStateHelper.AnalyticsEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
+            ServiceStateHelper.CrashesEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
+
+            /* Test that disabling MobileCenter disables everything */
+            ServiceStateHelper.MobileCenterEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+
+            /* Test disabling individual services */
+            ServiceStateHelper.MobileCenterEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            ServiceStateHelper.AnalyticsEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            ServiceStateHelper.CrashesEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+
+            /* Test that enabling MobileCenter enabling everything, regardless of previous states */
+            ServiceStateHelper.MobileCenterEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
+            Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
         }
 
         [Test]
         public void SendEvents()
         {
-            app.WaitForElement(c => c.Marked("SendEventButton"));
-            app.WaitForElement(c => c.Marked("AddPropertyButton"));
+            app.ScrollTo("SendEventButton");
+            app.ScrollTo("AddPropertyButton");
 
             app.Tap(c => c.Marked("SendEventButton"));
             app.Tap(c => c.Marked("AddPropertyButton"));
@@ -58,8 +80,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void DivideByZero()
         {
-            app.WaitForElement(c => c.Marked("DivideByZeroCrashButton"));
-
+            app.ScrollDownTo("DivideByZeroCrashButton");
             app.Tap(c => c.Marked("DivideByZeroCrashButton"));
             app = AppInitializer.StartApp(platform);
             //TODO some kind of verification

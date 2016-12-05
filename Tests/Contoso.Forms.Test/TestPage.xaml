@@ -3,14 +3,23 @@
 	<TableView Intent="Form">
 		<TableSection Title="General Functionality">
 			<ViewCell>
-				<Button AutomationId="ToggleMobileCenterEnabledButton" Text="Toggle Mobile Center Enabled" Clicked="ToggleMobileCenterEnabled" />
-			</ViewCell>
-			<ViewCell>
-				<Button AutomationId="ToggleCrashesEnabledButton" Text="Toggle Crashes Enabled" Clicked="ToggleCrashesEnabled" />
-			</ViewCell>
-			<ViewCell>
-				<Button AutomationId="ToggleAnalyticsEnabledButton" Text="Toggle Analytics Enabled" Clicked="ToggleAnalyticsEnabled" />
-			</ViewCell>
+                <Button AutomationId="EnableMobileCenterButton" Text="Enable Mobile Center" Clicked="EnableMobileCenter" />
+            </ViewCell>
+            <ViewCell>
+                <Button AutomationId="EnableCrashesButton" Text="Enable Crashes" Clicked="EnableCrashes" />
+            </ViewCell>
+            <ViewCell>
+                <Button AutomationId="EnableAnalyticsButton" Text="Enable Analytics" Clicked="EnableAnalytics" />
+            </ViewCell>
+			         <ViewCell>
+                <Button AutomationId="DisableMobileCenterButton" Text="Disable Mobile Center" Clicked="DisableMobileCenter" />
+            </ViewCell>
+            <ViewCell>
+                <Button AutomationId="DisableCrashesButton" Text="Disable Crashes" Clicked="DisableCrashes" />
+            </ViewCell>
+            <ViewCell>
+                <Button AutomationId="DisableAnalyticsButton" Text="Disable Analytics" Clicked="DisableAnalytics" />
+            </ViewCell>
 			<ViewCell>
                 <Label AutomationId="MobileCenterEnabledLabel" x:Name="MobileCenterEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
             </ViewCell>
@@ -20,8 +29,6 @@
 			<ViewCell>
                 <Label AutomationId="AnalyticsEnabledLabel" x:Name="AnalyticsEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
             </ViewCell>
-		</TableSection>
-		<TableSection Title="Send Event">
 			<ViewCell>
 				<Button AutomationId="SendEventButton" Text="Send Event" Clicked="SendEvent" />
 			</ViewCell>
@@ -31,13 +38,14 @@
 			<ViewCell>
 				<Button AutomationId="ClearPropertiesButton" Text="Clear Properties" Clicked="ClearProperties" />
 			</ViewCell>
-		</TableSection>
-		<TableSection Title="Crashes">
             <ViewCell>
                 <Button AutomationId="DivideByZeroCrashButton" Text="Divide By Zero" Clicked="DivideByZeroCrash" />
             </ViewCell>
 			<ViewCell>
                 <Button AutomationId="GenerateTestCrashButton" Text="Generate Test Crash" Clicked="GenerateTestCrash" />
+            </ViewCell>
+			<ViewCell>
+                <Button AutomationId="CatchNullReferenceButton" Text="Catch Null Reference Exception" Clicked="CatchNullReferenceException" />
             </ViewCell>
         </TableSection>
 	</TableView>
