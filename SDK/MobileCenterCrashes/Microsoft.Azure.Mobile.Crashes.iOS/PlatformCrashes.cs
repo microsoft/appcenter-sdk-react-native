@@ -107,6 +107,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             var msException = new MSException();
             msException.Type = exception.GetType().FullName;
             msException.Message = exception.Message;
+            msException.StackTrace = exception.StackTrace;
             msException.Frames = GenerateStackFrames(exception);
             msException.WrapperSdkName = WrapperSdk.Name;
 
