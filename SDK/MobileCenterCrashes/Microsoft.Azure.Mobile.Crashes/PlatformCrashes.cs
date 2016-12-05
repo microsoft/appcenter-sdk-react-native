@@ -2,74 +2,33 @@
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    class PlatformCrashes : PlatformCrashesBase
+    internal class PlatformCrashes : PlatformCrashesBase
     {
         // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
-        public override SendingErrorReportEventHandler SendingErrorReport
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
 
-        public override SentErrorReportEventHandler SentErrorReport
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public override SentErrorReportEventHandler SentErrorReport { get; set; }
 
-        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
 
-        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
 
-        public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
-        public override GetErrorAttachmentCallback GetErrorAttachment
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+
+        public override Type BindingType { get; }
+
+        public override bool Enabled { get; set; }
+
+        public override bool HasCrashedInLastSession { get; }
+
+        public override ErrorReport LastSessionCrashReport { get; }
 
         public override void NotifyUserConfirmation(UserConfirmation confirmation)
         {
-            throw new NotImplementedException();
         }
 
-        public override Type BindingType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override bool Enabled
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public override bool HasCrashedInLastSession
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override ErrorReport LastSessionCrashReport
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        //public override void TrackException(Exception exception)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        //public override void TrackException(Exception exception) { }
     }
 }

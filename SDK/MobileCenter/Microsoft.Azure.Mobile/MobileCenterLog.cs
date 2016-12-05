@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.Azure.Mobile
 {
     /// <summary>
     /// This class is used to log messages consistent with those emitted by the SDK.
@@ -14,7 +12,6 @@ namespace Microsoft.Azure.Mobile
         /// <param name="message">Message.</param>
         public static void Verbose(string tag, string message)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -24,7 +21,6 @@ namespace Microsoft.Azure.Mobile
         /// <param name="message">Message.</param>
         public static void Debug(string tag, string message)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -34,7 +30,6 @@ namespace Microsoft.Azure.Mobile
         /// <param name="message">Message.</param>
         public static void Info(string tag, string message)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -44,7 +39,6 @@ namespace Microsoft.Azure.Mobile
         /// <param name="message">Message.</param>
         public static void Warn(string tag, string message)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -54,7 +48,6 @@ namespace Microsoft.Azure.Mobile
         /// <param name="message">Message.</param>
         public static void Error(string tag, string message)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -64,7 +57,6 @@ namespace Microsoft.Azure.Mobile
         /// <param name="message">Message.</param>
         public static void Assert(string tag, string message)
         {
-            throw new NotImplementedException();
         }
     }
 }
