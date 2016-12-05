@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Error attachment for error report.
@@ -11,21 +9,13 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// Gets or sets a plain text attachment.
         /// </summary>
         /// <value>The text attachment.</value>
-        public string TextAttachment
-        { 
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public string TextAttachment { get; set; }
 
         /// <summary>
         /// Gets or sets a binary attachment.
         /// </summary>
         /// <value>The binary attachment.</value>
-        public ErrorBinaryAttachment BinaryAttachment
-        { 
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public ErrorBinaryAttachment BinaryAttachment { get; set; }
 
         /// <summary>
         /// Builds an attachment with text and binary suitable for using in <see cref="Crashes.GetErrorAttachment"/>.
@@ -37,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <param name="contentType">Data MIME type.</param>
         public static ErrorAttachment Attachment(string text, byte[] data, string filename, string contentType)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
@@ -49,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <param name="contentType">Data MIME type.</param>
         public static ErrorAttachment AttachmentWithBinary(byte[] data, string filename, string contentType)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
@@ -59,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// <param name="text">Text to attach to the error report.</param>
         public static ErrorAttachment AttachmentWithText(string text)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
