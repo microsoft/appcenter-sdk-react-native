@@ -3,7 +3,7 @@
 		xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.MobileCenterContentPage">
         <TableView Intent="Form">
 		    <TableSection>
-                <SwitchCell Text="Mobile Center Enabled" On="true" x:Name="MobileCenterEnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
+                <SwitchCell Text="Mobile Center Enabled" On="true" x:Name="MobileCenterEnabledSwitchCell" PropertyChanged="UpdateEnabled" StyleId="MobileCenterEnabledSwitchCell"/>
             </TableSection>
             <TableSection>
                 <ViewCell Tapped="LogLevelCellTapped">

@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{78990F7A-6C3E-4007-B0E3-A8BF9625A327}</ProjectGuid>
+    <ProjectGuid>{71956925-9393-40CC-A01C-F0D8534E1DB6}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Contoso.Forms.Test.UITests</RootNamespace>
-    <AssemblyName>Contoso.Forms.Test.UITests</AssemblyName>
+    <RootNamespace>Contoso.Forms.Puppet.Tests</RootNamespace>
+    <AssemblyName>Contoso.Forms.Puppet.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -27,10 +27,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.UITest">
-      <HintPath>..\..\packages\Xamarin.UITest.2.0.2\lib\Xamarin.UITest.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.UITest.2.0.2\lib\Xamarin.UITest.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +39,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Forms.Puppet.iOS\Contoso.Forms.Puppet.iOS.csproj">
+      <Project>{B4CF8897-4030-445F-81C4-6DBA81F26AAC}</Project>
+      <Name>Contoso.Forms.Puppet.iOS</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Forms.Puppet.Droid\Contoso.Forms.Puppet.Droid.csproj">
+      <Project>{CBA94940-CBFA-4342-AA71-856FD863DDD0}</Project>
+      <Name>Contoso.Forms.Puppet.Droid</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
