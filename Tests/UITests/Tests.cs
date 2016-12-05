@@ -27,14 +27,42 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void UnitTestA()
+        public void ToggleEnabledStates()
         {
-            Process.GetCurrentProcess().BeginOutputReadLine();
-            app.Tap(c => c.Marked("UnitTestACell"));
+            app.WaitForElement(c => c.Marked("ToggleMobileCenterEnabledButton"));
+            app.WaitForElement(c => c.Marked("ToggleAnalyticsEnabledButton"));
+            app.WaitForElement(c => c.Marked("ToggleCrashesEnabledButton"));
+
+            app.Tap(c => c.Marked("ToggleMobileCenterEnabledButton"));
+            app.Tap(c => c.Marked("ToggleAnalyticsEnabledButton"));
+            app.Tap(c => c.Marked("ToggleCrashesEnabledButton"));
+            //TODO some kind of verification (and more complicated sequence of events)
+        }
+
+        [Test]
+        public void SendEvents()
+        {
+            app.WaitForElement(c => c.Marked("SendEventButton"));
+            app.WaitForElement(c => c.Marked("AddPropertyButton"));
+
+            app.Tap(c => c.Marked("SendEventButton"));
+            app.Tap(c => c.Marked("AddPropertyButton"));
+            app.Tap(c => c.Marked("AddPropertyButton"));
+            app.Tap(c => c.Marked("AddPropertyButton"));
+            app.Tap(c => c.Marked("AddPropertyButton"));
+            app.Tap(c => c.Marked("AddPropertyButton"));
+            app.Tap(c => c.Marked("SendEventButton"));
+            //TODO some kind of verification
+        }
+
+        [Test]
+        public void DivideByZero()
+        {
+            app.WaitForElement(c => c.Marked("DivideByZeroCrashButton"));
+
+            app.Tap(c => c.Marked("DivideByZeroCrashButton"));
             app = AppInitializer.StartApp(platform);
-            app.Query(c => c.Marked("UnitTestACell"));
-            string output = Process.GetCurrentProcess().StandardOutput.ToString();
-            Debug.WriteLine(output);
+            //TODO some kind of verification
         }
     }
 }

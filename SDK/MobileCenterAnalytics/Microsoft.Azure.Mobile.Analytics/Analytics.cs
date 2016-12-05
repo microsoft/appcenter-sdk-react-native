@@ -18,6 +18,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             set { throw new NotImplementedException(); }
         }
 
+        /*
         ///// <summary>
         ///// Enable or disable automatic page tracking.
         ///// Set this to false to if you plan to call <see cref="TrackPage"/> manually.
@@ -27,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         //    get { throw new NotImplementedException(); }
         //    set { throw new NotImplementedException(); }
         //}
-
+        */
         /// <summary>
         /// Track a custom event.
         /// </summary>

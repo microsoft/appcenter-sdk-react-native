@@ -6,6 +6,8 @@ using Foundation;
 using UIKit;
 
 using Microsoft.Azure.Mobile;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Contoso.Forms.Test.iOS
 {
@@ -14,7 +16,7 @@ namespace Contoso.Forms.Test.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            global::Xamarin.Forms.Forms.Init();
+          global::Xamarin.Forms.Forms.Init();
 
             // Code for starting up the Xamarin Test Cloud Agent
 #if ENABLE_TEST_CLOUD

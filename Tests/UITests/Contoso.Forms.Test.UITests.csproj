@@ -40,5 +40,19 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iOS\Contoso.Forms.Test.iOS.csproj">
+      <Project>{122FE275-3721-4C40-A1AA-E7D22813C8B9}</Project>
+      <Name>Contoso.Forms.Test.iOS</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Droid\Contoso.Forms.Test.Droid.csproj">
+      <Project>{64D0912F-65B5-49DC-88B5-D1261B63D6A3}</Project>
+      <Name>Contoso.Forms.Test.Droid</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
