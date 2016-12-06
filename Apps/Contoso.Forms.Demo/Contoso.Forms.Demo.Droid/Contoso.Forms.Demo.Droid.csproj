@@ -41,27 +41,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.0.3.1-r0003-0077888\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.0.4.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Analytics.0.3.1-r0003-0077888\lib\MonoAndroid403\\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Analytics.0.4.0\lib\MonoAndroid403\\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics.Android.Bindings">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Analytics.0.3.1-r0003-0077888\lib\MonoAndroid403\\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Analytics.0.4.0\lib\MonoAndroid403\\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.0.3.1-r0003-0077888\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.0.4.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Crashes.0.3.1-r0003-0077888\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Crashes.0.4.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes.Android.Bindings, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Crashes.0.3.1-r0003-0077888\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Crashes.0.4.0\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
