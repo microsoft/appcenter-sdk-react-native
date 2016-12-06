@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Xamarin.UITest;
+using Xamarin.UITest.Configuration;
 using Xamarin.UITest.Queries;
 
 namespace Contoso.Forms.Test.UITests
@@ -12,10 +13,10 @@ namespace Contoso.Forms.Test.UITests
         {
             if (platform == Platform.Android)
             {
-                return ConfigureApp.Android.EnableLocalScreenshots().StartApp();
+                return ConfigureApp.Android.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
             }
 
-            return ConfigureApp.iOS.EnableLocalScreenshots().StartApp();
+            return ConfigureApp.iOS.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
         }
     }
 }

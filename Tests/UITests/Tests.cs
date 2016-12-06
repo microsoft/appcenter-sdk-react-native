@@ -68,13 +68,13 @@ namespace Contoso.Forms.Test.UITests
         {
             app.Tap("GoToAnalyticsPageButton");
 
-            app.Tap(c => c.Marked("SendEventButton"));
-            app.Tap(c => c.Marked("AddPropertyButton"));
-            app.Tap(c => c.Marked("AddPropertyButton"));
-            app.Tap(c => c.Marked("AddPropertyButton"));
-            app.Tap(c => c.Marked("AddPropertyButton"));
-            app.Tap(c => c.Marked("AddPropertyButton"));
-            app.Tap(c => c.Marked("SendEventButton"));
+            app.Tap("SendEventButton");
+            app.Tap("AddPropertyButton");
+            app.Tap("AddPropertyButton");
+            app.Tap("AddPropertyButton");
+            app.Tap("AddPropertyButton");
+            app.Tap("AddPropertyButton");
+            app.Tap("SendEventButton");
             //TODO some kind of verification
         }
 
@@ -82,10 +82,19 @@ namespace Contoso.Forms.Test.UITests
         public void DivideByZero()
         {
             app.Tap("GoToCrashesPageButton");
-            app.Tap(c => c.Marked("DivideByZeroCrashButton"));
+            app.Tap("DivideByZeroCrashButton");
             app = AppInitializer.StartApp(platform);
-            //TODO some kind of verification
 
+            app.Tap("GoToCrashResultsPageButton");
+
+            CrashResultsHelper.app = app;
+            CrashResultsHelper.platform = platform;
+            Assert.IsTrue(CrashResultsHelper.SendingErrorReportWasCalled);
+            Assert.IsTrue(CrashResultsHelper.SentErrorReportWasCalled);
+            Assert.IsFalse(CrashResultsHelper.FailedToSendErrorReportWasCalled);
+            Assert.IsTrue(CrashResultsHelper.ShouldProcessErrorReportWasCalled);
+            Assert.IsTrue(CrashResultsHelper.ShouldAwaitUserConfirmationWasCalled);
+            Assert.IsTrue(CrashResultsHelper.GetErrorAttachmentWasCalled);
         }
     }
 }
