@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
-    public partial class CrashesContentPage : ContentPage
+    public partial class CrashesContentPage
     {
         public CrashesContentPage()
         {
@@ -29,7 +29,7 @@ namespace Contoso.Forms.Demo
 
         void DivideByZero(object sender, System.EventArgs e)
         {
-            int x = 42 / int.Parse("0");
+            (42 / int.Parse("0")).ToString();
         }
 
         void UpdateEnabled(object sender, System.EventArgs e)
@@ -38,6 +38,37 @@ namespace Contoso.Forms.Demo
             {
                 Crashes.Enabled = CrashesEnabledSwitchCell.On;
             }
+        }
+
+        private void GenerateTestCrash(object sender, EventArgs e)
+        {
+            Crashes.GenerateTestCrash();
+        }
+
+        private void CatchNullReferenceException(object sender, EventArgs e)
+        {
+            try
+            {
+                TriggerNullReferenceException();
+            }
+            catch (NullReferenceException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("null reference exception");
+            }
+        }
+
+        private void CrashWithNullReferenceException(object sender, EventArgs e)
+        {
+            TriggerNullReferenceException();
+        }
+
+        private void TriggerNullReferenceException()
+        {
+            string[] values = { "one", null, "two" };
+            for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
+                System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
+                              ctr == values.GetUpperBound(0) ? "" : ", ");
+            System.Diagnostics.Debug.WriteLine("");
         }
 
         private void CrashWithAggregateException(object sender, EventArgs e)
@@ -79,6 +110,11 @@ namespace Contoso.Forms.Demo
             {
                 return e;
             }
+        }
+
+        public async void CrashAsync(object sender, EventArgs e)
+        {
+            await FakeService.DoStuffInBackground();
         }
     }
 }
