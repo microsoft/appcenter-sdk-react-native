@@ -11,19 +11,20 @@ namespace Contoso.Forms.Test
         public App()
         {
             InitializeComponent();
-            TestPage theMainPage = new TestPage();
+            TestPage testPage = new TestPage();
 
-            Crashes.SentErrorReport += theMainPage.SentErrorReport;
-            Crashes.SendingErrorReport += theMainPage.SendingErrorReport;
-            Crashes.FailedToSendErrorReport += theMainPage.FailedToSendErrorReport;
-            Crashes.GetErrorAttachment = theMainPage.GetErrorAttachment;
-            Crashes.ShouldAwaitUserConfirmation = theMainPage.ShouldAwaitUserConfirmation;
-            Crashes.ShouldProcessErrorReport = theMainPage.ShouldProcessErrorReport;
-            
+            /* Set crash callbacks and events */
+            Crashes.ShouldProcessErrorReport = testPage.ResultsPage.ShouldProcessErrorReport;
+            Crashes.ShouldAwaitUserConfirmation = testPage.ResultsPage.ShouldAwaitUserConfirmation;
+            Crashes.GetErrorAttachment = testPage.ResultsPage.GetErrorAttachment;
+            Crashes.SendingErrorReport += testPage.ResultsPage.SendingErrorReport;
+            Crashes.SentErrorReport += testPage.ResultsPage.SentErrorReport;
+            Crashes.FailedToSendErrorReport += testPage.ResultsPage.FailedToSendErrorReport;
+
+            /* Start Mobile Center */
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
-
-            MainPage = theMainPage;
+            MainPage = testPage;
         }
 
         protected override void OnStart()

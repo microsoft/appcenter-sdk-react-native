@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Test.CrashResultsPage">
+	<TableView Intent="Form">
+		<TableSection>
+			<ViewCell>
+				<Label AutomationId="SendingErrorReportLabel" x:Name="SendingErrorReportLabel" Text="SendingErrorReport has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
+			</ViewCell>
+            <ViewCell>
+                <Label AutomationId="SentErrorReportLabel" x:Name="SentErrorReportLabel" Text="SentErrorReport has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </ViewCell>
+			<ViewCell>
+                <Label AutomationId="FailedToSendErrorReportLabel" x:Name="FailedToSendErrorReportLabel" Text="FailedToSendErrorReport has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </ViewCell>
+			<ViewCell>
+                <Label AutomationId="ShouldProcessErrorReportLabel" x:Name="ShouldProcessErrorReportLabel" Text="ShouldProcessErrorReport has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </ViewCell>
+			<ViewCell>
+                <Label AutomationId="ShouldAwaitUserConfirmationLabel" x:Name="ShouldAwaitUserConfirmationLabel" Text="ShouldAwaitUserConfirmation has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </ViewCell>
+            <ViewCell>
+                <Label AutomationId="GetErrorAttachmentLabel" x:Name="GetErrorAttachmentLabel" Text="GetErrorAttachment has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </ViewCell>
+			<ViewCell>
+                <Button AutomationId="DismissButton" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
+            </ViewCell>
+		</TableSection>
+	</TableView>
+</ContentPage>

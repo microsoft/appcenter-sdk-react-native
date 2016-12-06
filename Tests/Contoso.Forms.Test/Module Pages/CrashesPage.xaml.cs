@@ -8,9 +8,9 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Test
 {
-    public partial class CrashPage : ContentPage
+    public partial class CrashesPage : ContentPage
     {
-        public CrashPage()
+        public CrashesPage()
         {
             InitializeComponent();
         }

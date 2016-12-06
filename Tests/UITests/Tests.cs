@@ -81,7 +81,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void DivideByZero()
         {
-            app.Tap("GoToCrashPageButton");
+            app.Tap("GoToCrashesPageButton");
             app.Tap(c => c.Marked("DivideByZeroCrashButton"));
             app = AppInitializer.StartApp(platform);
             //TODO some kind of verification

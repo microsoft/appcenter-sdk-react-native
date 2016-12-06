@@ -22,7 +22,6 @@ namespace Contoso.Forms.Test
             Navigation.PopModalAsync();
         }
 
-
         void SendEvent(object sender, System.EventArgs e)
         {
             string name = "UITest Event";
