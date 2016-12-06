@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Test.AnalyticsPage">
+	<TableView Intent="Form">
+		<TableSection>
+			<ViewCell>
+				<Button AutomationId="SendEventButton" Text="Send Event" Clicked="SendEvent" />
+			</ViewCell>
+			<ViewCell>
+				<Button AutomationId="AddPropertyButton" Text="Add Property" Clicked="AddProperty" />
+			</ViewCell>
+			<ViewCell>
+				<Button AutomationId="ClearPropertiesButton" Text="Clear Properties" Clicked="ClearProperties" />
+			</ViewCell>
+			<ViewCell>
+				<Button AutomationId="DismissButton" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
+			</ViewCell>
+		</TableSection>
+	</TableView>
+</ContentPage>

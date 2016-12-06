@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Test.CrashPage">
+    <TableView Intent="Form">
+        <TableSection>
+            <ViewCell>
+                <Button AutomationId="DivideByZeroCrashButton" Text="Divide By Zero" Clicked="DivideByZeroCrash" />
+            </ViewCell>
+            <ViewCell>
+                <Button AutomationId="GenerateTestCrashButton" Text="Generate Test Crash" Clicked="GenerateTestCrash" />
+            </ViewCell>
+            <ViewCell>
+                <Button AutomationId="CatchNullReferenceButton" Text="Catch Null Reference Exception" Clicked="CatchNullReferenceException" />
+            </ViewCell>
+			<ViewCell>
+                <Button AutomationId="DismissButton" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
+            </ViewCell>
+        </TableSection>
+    </TableView>    
+</ContentPage>

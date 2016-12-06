@@ -31,6 +31,18 @@
     <EmbeddedResource Include="TestPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="CrashResultsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToggleStatesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrashPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnalyticsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -41,6 +53,18 @@
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TestPageCrashCallbacks.cs" />
+    <Compile Include="CrashResultsPage.xaml.cs">
+      <DependentUpon>CrashResultsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToggleStatesPage.xaml.cs">
+      <DependentUpon>ToggleStatesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrashPage.xaml.cs">
+      <DependentUpon>CrashPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AnalyticsPage.xaml.cs">
+      <DependentUpon>AnalyticsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

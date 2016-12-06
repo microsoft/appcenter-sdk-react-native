@@ -32,6 +32,8 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.app = app;
             ServiceStateHelper.platform = platform;
 
+            app.Tap("GoToTogglePageButton");
+
             /* Test setting enabling all services */
             ServiceStateHelper.MobileCenterEnabled = true;
             Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
@@ -64,8 +66,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void SendEvents()
         {
-            app.ScrollTo("SendEventButton");
-            app.ScrollTo("AddPropertyButton");
+            app.Tap("GoToAnalyticsPageButton");
 
             app.Tap(c => c.Marked("SendEventButton"));
             app.Tap(c => c.Marked("AddPropertyButton"));
@@ -80,10 +81,11 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void DivideByZero()
         {
-            app.ScrollDownTo("DivideByZeroCrashButton");
+            app.Tap("GoToCrashPageButton");
             app.Tap(c => c.Marked("DivideByZeroCrashButton"));
             app = AppInitializer.StartApp(platform);
             //TODO some kind of verification
+
         }
     }
 }

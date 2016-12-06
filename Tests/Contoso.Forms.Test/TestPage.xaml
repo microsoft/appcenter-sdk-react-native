@@ -1,52 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Test.TestPage">
 	<TableView Intent="Form">
-		<TableSection Title="General Functionality">
+		<TableSection>
 			<ViewCell>
-                <Button AutomationId="EnableMobileCenterButton" Text="Enable Mobile Center" Clicked="EnableMobileCenter" />
-            </ViewCell>
-            <ViewCell>
-                <Button AutomationId="EnableCrashesButton" Text="Enable Crashes" Clicked="EnableCrashes" />
-            </ViewCell>
-            <ViewCell>
-                <Button AutomationId="EnableAnalyticsButton" Text="Enable Analytics" Clicked="EnableAnalytics" />
-            </ViewCell>
-			         <ViewCell>
-                <Button AutomationId="DisableMobileCenterButton" Text="Disable Mobile Center" Clicked="DisableMobileCenter" />
-            </ViewCell>
-            <ViewCell>
-                <Button AutomationId="DisableCrashesButton" Text="Disable Crashes" Clicked="DisableCrashes" />
-            </ViewCell>
-            <ViewCell>
-                <Button AutomationId="DisableAnalyticsButton" Text="Disable Analytics" Clicked="DisableAnalytics" />
-            </ViewCell>
-			<ViewCell>
-                <Label AutomationId="MobileCenterEnabledLabel" x:Name="MobileCenterEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </ViewCell>
-			<ViewCell>
-                <Label AutomationId="CrashesEnabledLabel" x:Name="CrashesEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </ViewCell>
-			<ViewCell>
-                <Label AutomationId="AnalyticsEnabledLabel" x:Name="AnalyticsEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </ViewCell>
-			<ViewCell>
-				<Button AutomationId="SendEventButton" Text="Send Event" Clicked="SendEvent" />
+				<Button AutomationId="GoToTogglePageButton" Text="Go to Toggle Test Page" Clicked="GoToTogglePage" />
 			</ViewCell>
 			<ViewCell>
-				<Button AutomationId="AddPropertyButton" Text="Add Property" Clicked="AddProperty" />
+				<Button AutomationId="GoToCrashPageButton" Text="Go to Crash Test Page" Clicked="GoToCrashPage" />
 			</ViewCell>
 			<ViewCell>
-				<Button AutomationId="ClearPropertiesButton" Text="Clear Properties" Clicked="ClearProperties" />
+				<Button AutomationId="GoToAnalyticsPageButton" Text="Go to Analytics Test Page" Clicked="GoToAnalyticsPage" />
 			</ViewCell>
-            <ViewCell>
-                <Button AutomationId="DivideByZeroCrashButton" Text="Divide By Zero" Clicked="DivideByZeroCrash" />
-            </ViewCell>
-			<ViewCell>
-                <Button AutomationId="GenerateTestCrashButton" Text="Generate Test Crash" Clicked="GenerateTestCrash" />
-            </ViewCell>
-			<ViewCell>
-                <Button AutomationId="CatchNullReferenceButton" Text="Catch Null Reference Exception" Clicked="CatchNullReferenceException" />
-            </ViewCell>
-        </TableSection>
+		</TableSection>
 	</TableView>
 </ContentPage>

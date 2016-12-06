@@ -13,6 +13,7 @@ namespace Contoso.Forms.Test
     {
         public void SendingErrorReport(object sender, SendingErrorReportEventArgs e)
         {
+            
         }
 
         public void SentErrorReport(object sender, SentErrorReportEventArgs e)
