@@ -194,6 +194,10 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("message")]
         string Message { get; set; }
 
+        // @property (nonatomic) NSString * _Nullable stackTrace;
+        [NullAllowed, Export("stackTrace")]
+        string StackTrace { get; set; }
+
         // @property (nonatomic) NSArray<MSStackFrame *> * _Nullable frames;
         [NullAllowed, Export("frames", ArgumentSemantic.Assign)]
         MSStackFrame[] Frames { get; set; }
