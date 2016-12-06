@@ -22,7 +22,12 @@
 
             var report = ErrorReportCache.GetErrorReport(androidReport);
             var attachment = _owner.GetErrorAttachment(report);
-            return attachment.internalAttachment;
+            if (attachment != null)
+            {
+                return attachment.internalAttachment;
+            }
+
+            return null;
         }
 
         public void OnBeforeSending(AndroidErrorReport androidReport)
