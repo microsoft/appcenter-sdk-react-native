@@ -17,8 +17,8 @@ namespace Contoso.Forms.Puppet.Droid
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            //MobileCenter.Configure("cc09fb5d-86e9-4dd7-8cdd-4da63ad13677");
-            MobileCenter.Configure("44cd8722-bfe0-4748-ac14-7692e031a8a5");
+            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Configure("7f222d3c-0f5e-421b-93e7-f862c462e07e");
 
             LoadApplication(new App());
         }
