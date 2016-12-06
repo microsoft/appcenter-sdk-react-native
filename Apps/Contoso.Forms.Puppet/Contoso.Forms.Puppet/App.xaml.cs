@@ -4,6 +4,7 @@ using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
 {
@@ -32,6 +33,7 @@ namespace Contoso.Forms.Puppet
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.GetErrorAttachment = ErrorAttachmentForReport;
+            Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
             Analytics.TrackEvent("myEvent");
@@ -136,6 +138,36 @@ namespace Contoso.Forms.Puppet
         bool ShouldProcess(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Determining whether to process error report");
+            return true;
+        }
+
+
+        bool ConfirmationHandler()
+        {
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                Current.MainPage.DisplayActionSheet("Crash detected. Send anonymous crash report?", null, null, "Send", "Always Send", "Don't Send").ContinueWith((arg) =>
+                {
+                    var answer = arg.Result;
+                    UserConfirmation userConfirmationSelection;
+                    if (answer == "Send")
+                    {
+                        userConfirmationSelection = UserConfirmation.Send;
+                    }
+                    else if (answer == "Always Send")
+                    {
+                        userConfirmationSelection = UserConfirmation.AlwaysSend;
+                    }
+                    else
+                    {
+                        userConfirmationSelection = UserConfirmation.DontSend;
+                    }
+
+                    MobileCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
+                    Crashes.NotifyUserConfirmation(userConfirmationSelection);
+                });
+            });
+
             return true;
         }
     }

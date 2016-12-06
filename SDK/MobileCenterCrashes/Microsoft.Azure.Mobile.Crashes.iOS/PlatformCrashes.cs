@@ -15,6 +15,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
         CrashesDelegate crashesDelegate { get; set; }
 
@@ -40,6 +41,29 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
+        public override void NotifyUserConfirmation(UserConfirmation confirmation)
+        {
+            MSUserConfirmation iosUserConfirmation;
+
+            switch (confirmation)
+            {
+                case UserConfirmation.Send:
+                    iosUserConfirmation = MSUserConfirmation.Send;
+                    break;
+                case UserConfirmation.DontSend:
+                    iosUserConfirmation = MSUserConfirmation.DontSend;
+                    break;
+                case UserConfirmation.AlwaysSend:
+                    iosUserConfirmation = MSUserConfirmation.Always;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(confirmation), confirmation, null);
+            }
+
+            MSCrashes.NotifyWithUserConfirmation(iosUserConfirmation);
+        }
+
+
         //public override void TrackException(Exception exception)
         //{
         //	throw new NotImplementedException();
@@ -54,6 +78,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public PlatformCrashes()
         {
+            MSCrashes.SetUserConfirmationHandler((arg0) =>
+                    {
+                        if (ShouldAwaitUserConfirmation != null)
+                        {
+                            return ShouldAwaitUserConfirmation();
+                        }
+                        return false;
+                    });
             crashesDelegate = new CrashesDelegate(this);
             MSCrashes.SetDelegate(crashesDelegate);
         }
@@ -74,6 +106,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             var msException = new MSException();
             msException.Type = exception.GetType().FullName;
             msException.Message = exception.Message;
+            msException.StackTrace = exception.StackTrace;
             msException.Frames = GenerateStackFrames(exception);
             msException.WrapperSdkName = WrapperSdk.Name;
 
@@ -97,7 +130,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return msException;
         }
 
-        #pragma warning disable XS0001 // Find usages of mono todo items
+#pragma warning disable XS0001 // Find usages of mono todo items
 
         private static MSStackFrame[] GenerateStackFrames(Exception e)
         {
@@ -120,7 +153,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return frameList.Count == 0 ? null : frameList.ToArray();
         }
 
-        #pragma warning restore XS0001 // Find usages of mono todo items
+#pragma warning restore XS0001 // Find usages of mono todo items
 
         private static string AnonymizePath(string path)
         {
@@ -128,7 +161,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 return path;
             }
-                
+
             string pattern = "(/Users/[^/]+/)";
             return Regex.Replace(path, pattern, "/Users/USER/");
         }

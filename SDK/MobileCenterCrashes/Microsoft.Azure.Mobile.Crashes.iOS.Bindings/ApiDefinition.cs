@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         bool IsAppKill { get; }
     }
 
-    // typedef void (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
-    delegate void MSUserConfirmationHandler(MSErrorReport[] arg0);
+    // typedef bool (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
+    delegate bool MSUserConfirmationHandler(MSErrorReport[] arg0);
 
     // @interface MSCrashes
     [BaseType(typeof(NSObject))]
@@ -193,6 +193,10 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         // @property (nonatomic) NSString * _Nonnull message;
         [Export("message")]
         string Message { get; set; }
+
+        // @property (nonatomic) NSString * _Nullable stackTrace;
+        [NullAllowed, Export("stackTrace")]
+        string StackTrace { get; set; }
 
         // @property (nonatomic) NSArray<MSStackFrame *> * _Nullable frames;
         [NullAllowed, Export("frames", ArgumentSemantic.Assign)]
