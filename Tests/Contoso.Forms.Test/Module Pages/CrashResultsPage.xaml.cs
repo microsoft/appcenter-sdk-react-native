@@ -12,6 +12,11 @@ namespace Contoso.Forms.Test
         public CrashResultsPage()
         {
             InitializeComponent();
+
+            if (HasCrashedInLastSessionLabel != null && Crashes.HasCrashedInLastSession)
+            {
+                HasCrashedInLastSessionLabel.Text = "HasCrashedInLastSession == true";
+            }
         }
 
         void DismissPage(object sender, System.EventArgs e)

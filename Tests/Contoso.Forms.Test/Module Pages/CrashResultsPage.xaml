@@ -2,6 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Test.CrashResultsPage">
 	<TableView Intent="Form">
 		<TableSection>
+		    <ViewCell>
+                <Label AutomationId="HasCrashedInLastSessionLabel" x:Name="HasCrashedInLastSessionLabel" Text="HasCrashedInLastSession == false" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </ViewCell>
 			<ViewCell>
 				<Label AutomationId="SendingErrorReportLabel" x:Name="SendingErrorReportLabel" Text="SendingErrorReport has not occured" VerticalOptions="Center" HorizontalOptions="Center"/>
 			</ViewCell>

@@ -31,7 +31,13 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
               
             var report = ErrorReportCache.GetErrorReport(msReport);
-            return _owner.GetErrorAttachment(report).internalAttachment;
+            ErrorAttachment attachment = _owner.GetErrorAttachment(report);
+            if (attachment != null)
+            {
+                return attachment.internalAttachment;
+            }
+
+            return null;
          }
 
         public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)
