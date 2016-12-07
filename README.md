@@ -2,26 +2,27 @@
 
 Development repository for the Mobile Center SDK for React Native.
 
-## Getting Started (iOS)
+## Introduction
 
-1. Clone the repository
-2. Download the latest Mobile Center frameworks from https://github.com/microsoft/mobile-center-sdk-ios
-3. open up `RNMobileCenter/ios/RNMobileCenter.xcodeproj`, drag in `MobileCenter.framework` and build the `Fat Framework` target
-4. Build Demo app
-  - `cd` into MobileCenterDemoApp folder and `npm install`
-  - run `react-native link` to hook up the native sources and specify app secret 
-5. Run Demo app
-  - `cd` into MobileCenterDemoApp folder and `react-native run-ios`
+The Microsoft Mobile Center React Native SDK lets you add [Mobile Center](https://www.visualstudio.com/vs/mobile-center/) services to your
+React Native application.
 
-## Getting Started (Android)
+The SDK is currently in public preview. It provides a React Native friendly wrapper aound the native Mobile Center SDKs, supporting the
+following services:
 
-1. Clone the repository
-2. Build Demo app
-  - `cd` into MobileCenterDemoApp folder and `npm install`
-  - run `react-native link` to hook up native sources and specify app secret
-4. Run Demo app
-  - Boot up Android emulator
-  - `cd` into MobileCenterDemoApp folder and `react-native run-android`
+Analytics: Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically
+captures session count and device properties like model, OS Version etc. You can define your own custom events to measure things that matter
+to your business. All the information captured is available in the Mobile Center portal for you to analyze the data.
+
+Crashes: The Mobile Center SDK will automatically generate a crash log every time your app crashes. Both JavaScript exceptions and native
+crashes are supported. The log is first written to the device's 
+storage and when the user starts the app again, the crash report will be forwarded to Mobile Center. Collecting crashes works for both beta and
+live apps, i.e. those submitted to Google Play or other app stores. Crash logs contain viable information for you to help resolve the issue.
+The SDK gives you a lot of flexibility how to handle a crash log. As a developer you can collect and add additional information to the report
+if you like.
+
+To learn how to use this SDK, integrating it into your React Native app, see [this Mobile Center doc]
+(https://docs.mobile.azure.com/sdk/React-Native/getting-started)
 
 ## To-do items:
 
