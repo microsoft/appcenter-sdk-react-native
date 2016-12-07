@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Foundation;
 
 namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
@@ -16,6 +17,15 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         {
             SIGBUS = 10,
             SIGSEGV = 11
+        }
+
+        /* This constructor is required for Mono's internal purposes. Deleting it can cause crashes. */
+        public CrashesInitializationDelegate(IntPtr handle) : base(handle)
+        {
+        }
+
+        public CrashesInitializationDelegate()
+        {
         }
 
         public override bool SetUpCrashHandlers()

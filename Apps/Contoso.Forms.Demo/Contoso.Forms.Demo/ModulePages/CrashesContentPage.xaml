@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Crashes"
-		xmlns="http://xamarin.com/schemas/2014/forms" 
-		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-		x:Class="Contoso.Forms.Demo.CrashesContentPage">
+        xmlns="http://xamarin.com/schemas/2014/forms" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+        x:Class="Contoso.Forms.Demo.CrashesContentPage">
         <TableView Intent="Form">
             <TableSection>
                 <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
@@ -16,6 +16,15 @@
                 </ViewCell>
                 <ViewCell Tapped="CrashWithAggregateException">
                     <Button Text="Crash With Aggregate Exception" InputTransparent="true" Clicked="CrashWithAggregateException"/>
+               </ViewCell>
+                <ViewCell Tapped="CrashWithNullReferenceException">
+                    <Button Text="Crash With NullReferenceException" InputTransparent="true" Clicked="CrashWithNullReferenceException"/>
+                </ViewCell>
+                <ViewCell Tapped="CatchNullReferenceException">
+                    <Button Text="Test Catching NullReferenceException" InputTransparent="true" Clicked="CatchNullReferenceException"/>
+                </ViewCell>
+				<ViewCell Tapped="CrashAsync">
+                    <Button Text="Crash Inside Async Task" InputTransparent="true" Clicked="CrashAsync"/>
                 </ViewCell>
             </TableSection>
         </TableView>
