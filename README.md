@@ -21,8 +21,7 @@ live apps, i.e. those submitted to Google Play or other app stores. Crash logs c
 The SDK gives you a lot of flexibility how to handle a crash log. As a developer you can collect and add additional information to the report
 if you like.
 
-To learn how to use this SDK, integrating it into your React Native app, see [this Mobile Center doc]
-(https://docs.mobile.azure.com/sdk/React-Native/getting-started)
+To learn how to use this SDK, integrating it into your React Native app, see the [Mobile Center doc here.](https://docs.mobile.azure.com/sdk/React-Native/getting-started)
 
 ## To-do items:
 
