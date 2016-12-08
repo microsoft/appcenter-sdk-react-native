@@ -30,8 +30,6 @@ namespace Contoso.Forms.Test.UITests
         public void TestEnablingAndDisablingServices()
         {
             ServiceStateHelper.app = app;
-            ServiceStateHelper.platform = platform;
-
             app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Test setting enabling all services */
@@ -80,14 +78,14 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void DivideByZero()
         {
+            /* Crash the application with a divide by zero exception and then restart*/
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.DivideByZeroCrashButton);
             app = AppInitializer.StartApp(platform);
-
             app.Tap(TestStrings.GoToCrashResultsPageButton);
 
+            /* Ensure that the callbacks were properly called */
             CrashResultsHelper.app = app;
-            CrashResultsHelper.platform = platform;
             Assert.IsTrue(CrashResultsHelper.SendingErrorReportWasCalled);
             Assert.IsTrue(CrashResultsHelper.SentErrorReportWasCalled);
             Assert.IsFalse(CrashResultsHelper.FailedToSendErrorReportWasCalled);

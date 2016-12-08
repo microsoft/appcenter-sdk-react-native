@@ -8,29 +8,16 @@ namespace Contoso.Forms.Test.UITests
     public static class ServiceStateHelper
     {
         public static IApp app;
-        public static Platform platform;
 
         public static bool MobileCenterEnabled
         {
             get
             {
-                app.WaitForElement(TestStrings.MobileCenterEnabledLabel);
-                AppResult[] results = app.Query(TestStrings.MobileCenterEnabledLabel);
-                Assert.IsTrue(results.Length == 1);
-                return results[0].Text == TestStrings.MobileCenterEnabledText;
+                return IsPropertyEnabled(TestStrings.MobileCenterEnabledLabel, TestStrings.MobileCenterEnabledText);
             }
             set
             {
-                if (value)
-                {
-                    app.WaitForElement(TestStrings.EnableMobileCenterButton);
-                    app.Tap(TestStrings.EnableMobileCenterButton);
-                }
-                else
-                {
-                    app.WaitForElement(TestStrings.DisableMobileCenterButton);
-                    app.Tap(TestStrings.DisableMobileCenterButton);
-                }
+                ToggleProperty(TestStrings.EnableMobileCenterButton, TestStrings.DisableMobileCenterButton, value);
             }
         }
 
@@ -38,23 +25,11 @@ namespace Contoso.Forms.Test.UITests
         {
             get
             {
-                app.WaitForElement(TestStrings.CrashesEnabledLabel);
-                AppResult[] results = app.Query(TestStrings.CrashesEnabledLabel);
-                Assert.IsTrue(results.Length == 1);
-                return results[0].Text == TestStrings.CrashesEnabledText;
+                return IsPropertyEnabled(TestStrings.CrashesEnabledLabel, TestStrings.CrashesEnabledText);
             }
             set
             {
-                if (value)
-                {
-                    app.WaitForElement(TestStrings.EnableCrashesButton);
-                    app.Tap(TestStrings.EnableCrashesButton);
-                }
-                else
-                {
-                    app.WaitForElement(TestStrings.DisableCrashesButton);
-                    app.Tap(TestStrings.DisableCrashesButton);
-                }
+                ToggleProperty(TestStrings.EnableCrashesButton, TestStrings.DisableCrashesButton, value);
             }
         }
 
@@ -62,23 +37,33 @@ namespace Contoso.Forms.Test.UITests
         {
             get
             {
-                app.WaitForElement(TestStrings.AnalyticsEnabledLabel);
-                AppResult[] results = app.Query(TestStrings.AnalyticsEnabledLabel);
-                Assert.IsTrue(results.Length == 1);
-                return results[0].Text == TestStrings.AnalyticsEnabledText;
+                return IsPropertyEnabled(TestStrings.AnalyticsEnabledLabel, TestStrings.AnalyticsEnabledText);
             }
             set
             {
-                if (value)
-                {
-                    app.WaitForElement(TestStrings.EnableAnalyticsButton);
-                    app.Tap(TestStrings.EnableAnalyticsButton);
-                }
-                else
-                {
-                    app.WaitForElement(TestStrings.DisableAnalyticsButton);
-                    app.Tap(TestStrings.DisableAnalyticsButton);
-                }
+                ToggleProperty(TestStrings.EnableAnalyticsButton, TestStrings.DisableAnalyticsButton, value);
+            }
+        }
+
+        static bool IsPropertyEnabled(string elementId, string enabledText)
+        {
+            app.WaitForElement(elementId);
+            AppResult[] results = app.Query(elementId);
+            Assert.IsTrue(results.Length == 1);
+            return results[0].Text == enabledText;
+        }
+
+        static void ToggleProperty(string enableElementId, string disableElementId, bool shouldEnable)
+        {
+            if (shouldEnable)
+            {
+                app.WaitForElement(enableElementId);
+                app.Tap(enableElementId);
+            }
+            else
+            {
+                app.WaitForElement(disableElementId);
+                app.Tap(disableElementId);
             }
         }
     }
