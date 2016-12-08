@@ -22,12 +22,12 @@ namespace Contoso.Forms.Test
 
         public void GoToCrashesPage(object sender, System.EventArgs e)
         {
-            Navigation.PushModalAsync(new CrashesPage()); //TODO going to need to reuse same instance for events to work
+            Navigation.PushModalAsync(new CrashesPage());
         }
 
         public void GoToAnalyticsPage(object sender, System.EventArgs e)
         {
-            Navigation.PushModalAsync(new AnalyticsPage()); //TODO going to need to reuse same instance for events to work
+            Navigation.PushModalAsync(new AnalyticsPage());
         }
 
         public void GoToCrashResultsPage(object sender, System.EventArgs e)

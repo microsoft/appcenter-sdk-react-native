@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
-
+using System.Linq;
 namespace Contoso.Forms.Puppet
 {
     public partial class CrashesContentPage
@@ -29,7 +29,7 @@ namespace Contoso.Forms.Puppet
 
         void DivideByZero(object sender, System.EventArgs e)
         {
-            (42 / int.Parse("0")).ToString();
+            int x = (42 / int.Parse("0"));
         }
 
         void UpdateEnabled(object sender, System.EventArgs e)
@@ -38,11 +38,6 @@ namespace Contoso.Forms.Puppet
             {
                 Crashes.Enabled = CrashesEnabledSwitchCell.On;
             }
-        }
-
-        private void GenerateTestCrash(object sender, EventArgs e)
-        {
-            Crashes.GenerateTestCrash();
         }
 
         private void CatchNullReferenceException(object sender, EventArgs e)

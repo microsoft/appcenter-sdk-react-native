@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.IO;
+using System.Linq;
 
 namespace Contoso.Forms.Test
 {
@@ -22,12 +21,18 @@ namespace Contoso.Forms.Test
 
         void DivideByZeroCrash(object sender, System.EventArgs e)
         {
-            int x = 42 / int.Parse("0");
+            int x = (42 / int.Parse("0"));
         }
 
         void GenerateTestCrash(object sender, System.EventArgs e)
         {
             Crashes.GenerateTestCrash();
+        }
+
+        void CrashWithInvalidOperation(object sender, EventArgs e)
+        {
+            string[] strings = { "A", "B", "C" };
+            string s = strings.First((arg) => { return arg == "6"; });
         }
 
         void CatchNullReferenceException(object sender, EventArgs e)
@@ -36,10 +41,56 @@ namespace Contoso.Forms.Test
             {
                 TriggerNullReferenceException();
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 System.Diagnostics.Debug.WriteLine("null reference exception");
             }
+        }
+
+        private void CrashWithAggregateException(object sender, EventArgs e)
+        {
+            throw PrepareException();
+        }
+
+        private static Exception PrepareException()
+        {
+            try
+            {
+                throw new AggregateException(SendHttp(), new ArgumentException("Invalid parameter", ValidateLength()));
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+        }
+
+        private static Exception SendHttp()
+        {
+            try
+            {
+                throw new IOException("Network down");
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+        }
+
+        private static Exception ValidateLength()
+        {
+            try
+            {
+                throw new ArgumentOutOfRangeException(null, "It's over 9000!");
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+        }
+
+        public async void CrashAsync(object sender, EventArgs e)
+        {
+            await FakeService.DoStuffInBackground();
         }
 
         void TriggerNullReferenceException()
@@ -49,6 +100,14 @@ namespace Contoso.Forms.Test
                 System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
                               ctr == values.GetUpperBound(0) ? "" : ", ");
             System.Diagnostics.Debug.WriteLine("");
+        }
+    }
+
+    static class FakeService
+    {
+        internal async static Task DoStuffInBackground()
+        {
+            await Task.Run(() => { throw new IOException("Server did not respond"); });
         }
     }
 }

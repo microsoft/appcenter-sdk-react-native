@@ -81,6 +81,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet.UWP", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo.UWP", "Apps\Contoso.Forms.Demo\Contoso.Forms.Demo.UWP\Contoso.Forms.Demo.UWP.csproj", "{665362D9-5EE2-45DE-A907-25DC86999A68}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Contoso.Forms.Test.Strings", "Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.shproj", "{7B6E79A4-FBAF-4E7E-B696-0AC10D0A2552}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
@@ -1590,6 +1592,7 @@ Global
 		{CAE55C79-1601-400D-86BF-03AB8CC5B8B9} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 		{F2E21B65-DF87-40F0-BB2E-E67E728B86DA} = {088DA4BA-0AFB-4690-A639-7559BE14D0C8}
 		{665362D9-5EE2-45DE-A907-25DC86999A68} = {91CEE2C9-F64C-45C9-9353-B1EC87D13C6D}
+		{7B6E79A4-FBAF-4E7E-B696-0AC10D0A2552} = {4C54D493-95FE-44DA-B3E4-FA17B594D72C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

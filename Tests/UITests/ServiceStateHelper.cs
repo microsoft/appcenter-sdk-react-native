@@ -14,22 +14,22 @@ namespace Contoso.Forms.Test.UITests
         {
             get
             {
-                app.WaitForElement(c => c.Marked("MobileCenterEnabledLabel"));
-                AppResult[] results = app.Query(c => c.Marked("MobileCenterEnabledLabel"));
+                app.WaitForElement(TestStrings.MobileCenterEnabledLabel);
+                AppResult[] results = app.Query(TestStrings.MobileCenterEnabledLabel);
                 Assert.IsTrue(results.Length == 1);
-                return results[0].Text == "Mobile Center enabled";
+                return results[0].Text == TestStrings.MobileCenterEnabledText;
             }
             set
             {
                 if (value)
                 {
-                    app.WaitForElement(c => c.Marked("EnableMobileCenterButton"));
-                    app.Tap(c => c.Marked("EnableMobileCenterButton"));
+                    app.WaitForElement(TestStrings.EnableMobileCenterButton);
+                    app.Tap(TestStrings.EnableMobileCenterButton);
                 }
                 else
                 {
-                    app.WaitForElement(c => c.Marked("DisableMobileCenterButton"));
-                    app.Tap(c => c.Marked("DisableMobileCenterButton"));
+                    app.WaitForElement(TestStrings.DisableMobileCenterButton);
+                    app.Tap(TestStrings.DisableMobileCenterButton);
                 }
             }
         }
@@ -38,22 +38,22 @@ namespace Contoso.Forms.Test.UITests
         {
             get
             {
-                app.WaitForElement(c => c.Marked("CrashesEnabledLabel"));
-                AppResult[] results = app.Query(c => c.Marked("CrashesEnabledLabel"));
+                app.WaitForElement(TestStrings.CrashesEnabledLabel);
+                AppResult[] results = app.Query(TestStrings.CrashesEnabledLabel);
                 Assert.IsTrue(results.Length == 1);
-                return results[0].Text == "Crashes enabled";
+                return results[0].Text == TestStrings.CrashesEnabledText;
             }
             set
             {
                 if (value)
                 {
-                    app.WaitForElement(c => c.Marked("EnableCrashesButton"));
-                    app.Tap(c => c.Marked("EnableCrashesButton"));
+                    app.WaitForElement(TestStrings.EnableCrashesButton);
+                    app.Tap(TestStrings.EnableCrashesButton);
                 }
                 else
                 {
-                    app.WaitForElement(c => c.Marked("DisableCrashesButton"));
-                    app.Tap(c => c.Marked("DisableCrashesButton"));
+                    app.WaitForElement(TestStrings.DisableCrashesButton);
+                    app.Tap(TestStrings.DisableCrashesButton);
                 }
             }
         }
@@ -62,22 +62,22 @@ namespace Contoso.Forms.Test.UITests
         {
             get
             {
-                app.WaitForElement(c => c.Marked("AnalyticsEnabledLabel"));
-                AppResult[] results = app.Query(c => c.Marked("AnalyticsEnabledLabel"));
+                app.WaitForElement(TestStrings.AnalyticsEnabledLabel);
+                AppResult[] results = app.Query(TestStrings.AnalyticsEnabledLabel);
                 Assert.IsTrue(results.Length == 1);
-                return results[0].Text == "Analytics enabled";
+                return results[0].Text == TestStrings.AnalyticsEnabledText;
             }
             set
             {
                 if (value)
                 {
-                    app.WaitForElement(c => c.Marked("EnableAnalyticsButton"));
-                    app.Tap(c => c.Marked("EnableAnalyticsButton"));
+                    app.WaitForElement(TestStrings.EnableAnalyticsButton);
+                    app.Tap(TestStrings.EnableAnalyticsButton);
                 }
                 else
                 {
-                    app.WaitForElement(c => c.Marked("DisableAnalyticsButton"));
-                    app.Tap(c => c.Marked("DisableAnalyticsButton"));
+                    app.WaitForElement(TestStrings.DisableAnalyticsButton);
+                    app.Tap(TestStrings.DisableAnalyticsButton);
                 }
             }
         }

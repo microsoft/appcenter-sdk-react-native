@@ -40,7 +40,10 @@
     <EmbeddedResource Include="Module Pages\ToggleStatesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Module Pages\CrashResultsPage.xaml">
+    <EmbeddedResource Include="Module Pages\CrashResults Pages\CrashResultsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Module Pages\CrashResults Pages\LastSessionErrorReportPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -61,8 +64,11 @@
     <Compile Include="Module Pages\ToggleStatesPage.xaml.cs">
       <DependentUpon>ToggleStatesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Module Pages\CrashResultsPage.xaml.cs">
+    <Compile Include="Module Pages\CrashResults Pages\CrashResultsPage.xaml.cs">
       <DependentUpon>CrashResultsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Pages\CrashResults Pages\LastSessionErrorReportPage.xaml.cs">
+      <DependentUpon>LastSessionErrorReportPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Module Pages\" />
+    <Folder Include="Module Pages\CrashResults Pages\" />
   </ItemGroup>
+  <Import Project="..\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems" Label="Shared" Condition="Exists('..\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.3.175\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.3.175\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
 </Project>

@@ -32,7 +32,7 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.app = app;
             ServiceStateHelper.platform = platform;
 
-            app.Tap("GoToTogglePageButton");
+            app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Test setting enabling all services */
             ServiceStateHelper.MobileCenterEnabled = true;
@@ -66,26 +66,25 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void SendEvents()
         {
-            app.Tap("GoToAnalyticsPageButton");
-
-            app.Tap("SendEventButton");
-            app.Tap("AddPropertyButton");
-            app.Tap("AddPropertyButton");
-            app.Tap("AddPropertyButton");
-            app.Tap("AddPropertyButton");
-            app.Tap("AddPropertyButton");
-            app.Tap("SendEventButton");
+            app.Tap(TestStrings.GoToAnalyticsPageButton);
+            app.Tap(TestStrings.SendEventButton);
+            app.Tap(TestStrings.AddPropertyButton);
+            app.Tap(TestStrings.AddPropertyButton);
+            app.Tap(TestStrings.AddPropertyButton);
+            app.Tap(TestStrings.AddPropertyButton);
+            app.Tap(TestStrings.AddPropertyButton);
+            app.Tap(TestStrings.SendEventButton);
             //TODO some kind of verification
         }
 
         [Test]
         public void DivideByZero()
         {
-            app.Tap("GoToCrashesPageButton");
-            app.Tap("DivideByZeroCrashButton");
+            app.Tap(TestStrings.GoToCrashesPageButton);
+            app.Tap(TestStrings.DivideByZeroCrashButton);
             app = AppInitializer.StartApp(platform);
 
-            app.Tap("GoToCrashResultsPageButton");
+            app.Tap(TestStrings.GoToCrashResultsPageButton);
 
             CrashResultsHelper.app = app;
             CrashResultsHelper.platform = platform;

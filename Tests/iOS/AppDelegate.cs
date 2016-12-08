@@ -17,8 +17,11 @@ namespace Contoso.Forms.Test.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
           global::Xamarin.Forms.Forms.Init();
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => { 
+                Console.WriteLine("UNHANDLED EXCEPTION");
+            };
 
-            // Code for starting up the Xamarin Test Cloud Agent
+// Code for starting up the Xamarin Test Cloud Agent
 #if ENABLE_TEST_CLOUD
             Xamarin.Calabash.Start();
 #endif

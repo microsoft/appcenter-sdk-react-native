@@ -17,7 +17,7 @@ namespace Contoso.Forms.Test.UITests
             {
                 try
                 {
-                    WaitForLabelToSay("SendingErrorReportLabel", "SendingErrorReport has occured");
+                    WaitForLabelToSay(TestStrings.SendingErrorReportLabel, TestStrings.DidSendingErrorReportText);
                 }
                 catch (Exception e)
                 {
@@ -34,7 +34,7 @@ namespace Contoso.Forms.Test.UITests
             {
                 try
                 {
-                    WaitForLabelToSay("SentErrorReportLabel", "SentErrorReport has occured");
+                    WaitForLabelToSay(TestStrings.SentErrorReportLabel, TestStrings.DidSentErrorReportText);
                 }
                 catch (Exception e)
                 {
@@ -51,7 +51,7 @@ namespace Contoso.Forms.Test.UITests
             {
                 try
                 {
-                    WaitForLabelToSay("FailedToSendErrorReportLabel", "FailedToSendErrorReport has occured");
+                    WaitForLabelToSay(TestStrings.FailedToSendErrorReportLabel, TestStrings.DidFailedToSendErrorReportText);
                 }
                 catch (Exception e)
                 {
@@ -68,7 +68,7 @@ namespace Contoso.Forms.Test.UITests
             {
                 try
                 {
-                    WaitForLabelToSay("GetErrorAttachmentLabel", "GetErrorAttachment has occured");
+                    WaitForLabelToSay(TestStrings.GetErrorAttachmentLabel, TestStrings.DidGetErrorAttachmentText);
                 }
                 catch (Exception e)
                 {
@@ -85,7 +85,7 @@ namespace Contoso.Forms.Test.UITests
             {
                 try
                 {
-                    WaitForLabelToSay("ShouldProcessErrorReportLabel", "ShouldProcessErrorReport has occured");
+                    WaitForLabelToSay(TestStrings.ShouldProcessErrorReportLabel, TestStrings.DidShouldProcessErrorReportText);
                 }
                 catch (Exception e)
                 {
@@ -102,7 +102,7 @@ namespace Contoso.Forms.Test.UITests
             {
                 try
                 {
-                    WaitForLabelToSay("ShouldAwaitUserConfirmationLabel", "ShouldAwaitUserConfirmation has occured");
+                    WaitForLabelToSay(TestStrings.ShouldAwaitUserConfirmationLabel, TestStrings.DidShouldAwaitUserConfirmationText);
                 }
                 catch (Exception e)
                 {

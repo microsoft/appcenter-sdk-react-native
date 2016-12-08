@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Analytics;
+﻿using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile;
 
@@ -63,7 +61,7 @@ namespace Contoso.Forms.Test
         {
             if (CrashesEnabledLabel != null)
             {
-                CrashesEnabledLabel.Text = Crashes.Enabled ? "Crashes enabled" : "Crashes disabled";
+                CrashesEnabledLabel.Text = Crashes.Enabled ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
             }
         }
 
@@ -71,7 +69,7 @@ namespace Contoso.Forms.Test
         {
             if (AnalyticsEnabledLabel != null)
             {
-                AnalyticsEnabledLabel.Text = Analytics.Enabled ? "Analytics enabled" : "Analytics disabled";
+                AnalyticsEnabledLabel.Text = Analytics.Enabled ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
             }
         }
 
@@ -79,7 +77,7 @@ namespace Contoso.Forms.Test
         {
             if (MobileCenterEnabledLabel != null)
             {
-                MobileCenterEnabledLabel.Text = MobileCenter.Enabled ? "Mobile Center enabled" : "Mobile Center disabled";
+                MobileCenterEnabledLabel.Text = MobileCenter.Enabled ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
             }
         }
 

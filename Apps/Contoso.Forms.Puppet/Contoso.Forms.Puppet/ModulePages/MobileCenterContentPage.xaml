@@ -4,9 +4,6 @@
         <TableView Intent="Form">
 		    <TableSection>
                 <SwitchCell Text="Mobile Center Enabled" On="true" x:Name="MobileCenterEnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
-			    <ViewCell Tapped="ToggleEnabledSwitch">
-				    <Button AutomationId="ToggleEnabledSwitch" Text="Toggle Enabled Switch" InputTransparent="true" Clicked="ToggleEnabledSwitch"/>
-                </ViewCell>
             </TableSection>
             <TableSection>
                 <ViewCell Tapped="LogLevelCellTapped">
