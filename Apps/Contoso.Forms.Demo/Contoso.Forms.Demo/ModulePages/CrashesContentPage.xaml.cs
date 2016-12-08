@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.IO;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
@@ -37,23 +39,6 @@ namespace Contoso.Forms.Demo
             if (CrashesEnabledSwitchCell != null)
             {
                 Crashes.Enabled = CrashesEnabledSwitchCell.On;
-            }
-        }
-
-        private void GenerateTestCrash(object sender, EventArgs e)
-        {
-            Crashes.GenerateTestCrash();
-        }
-
-        private void CatchNullReferenceException(object sender, EventArgs e)
-        {
-            try
-            {
-                TriggerNullReferenceException();
-            }
-            catch (NullReferenceException ex)
-            {
-                System.Diagnostics.Debug.WriteLine("null reference exception");
             }
         }
 
