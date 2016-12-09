@@ -5,7 +5,7 @@
         x:Class="Contoso.Forms.Demo.CrashesContentPage">
         <TableView Intent="Form">
             <TableSection>
-                <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
+                <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
             </TableSection>
             <TableSection>
                 <ViewCell Tapped="TestCrash">
@@ -19,9 +19,6 @@
                </ViewCell>
                 <ViewCell Tapped="CrashWithNullReferenceException">
                     <Button Text="Crash With NullReferenceException" InputTransparent="true" Clicked="CrashWithNullReferenceException"/>
-                </ViewCell>
-                <ViewCell Tapped="CatchNullReferenceException">
-                    <Button Text="Test Catching NullReferenceException" InputTransparent="true" Clicked="CatchNullReferenceException"/>
                 </ViewCell>
 				<ViewCell Tapped="CrashAsync">
                     <Button Text="Crash Inside Async Task" InputTransparent="true" Clicked="CrashAsync"/>
