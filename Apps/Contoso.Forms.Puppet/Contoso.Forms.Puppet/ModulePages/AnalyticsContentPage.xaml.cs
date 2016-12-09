@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Xamarin.Forms;
 
@@ -18,7 +19,7 @@ namespace Contoso.Forms.Puppet
 
     public partial class AnalyticsContentPage : ContentPage
     {
-        private List<Property> EventProperties;
+        List<Property> EventProperties;
 
         public AnalyticsContentPage()
         {
@@ -36,27 +37,29 @@ namespace Contoso.Forms.Puppet
         {
             base.OnAppearing();
             EnabledSwitchCell.On = Analytics.Enabled;
+            EnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
 
-        void AddProperty(object sender, System.EventArgs e)
+        void AddProperty(object sender, EventArgs e)
         {
-            AddPropertyContentPage addPage = new AddPropertyContentPage();
-            addPage.PropertyAdded += (Property property) => { 
-                EventProperties.Add(property); 
+            var addPage = new AddPropertyContentPage();
+            addPage.PropertyAdded += (Property property) =>
+            {
+                EventProperties.Add(property);
                 RefreshPropCount();
             };
             Navigation.PushModalAsync(addPage);
         }
 
-        void PropertiesCellTapped(object sender, System.EventArgs e)
+        void PropertiesCellTapped(object sender, EventArgs e)
         {
             Navigation.PushAsync(new PropertiesContentPage(EventProperties));
         }
 
-        void TrackEvent(object sender, System.EventArgs e)
+        void TrackEvent(object sender, EventArgs e)
         {
-            Dictionary<string, string> properties = new Dictionary<string, string>();
+            var properties = new Dictionary<string, string>();
             foreach (Property property in EventProperties)
             {
                 properties.Add(property.Name, property.Value);
@@ -74,12 +77,9 @@ namespace Contoso.Forms.Puppet
 
         }
 
-        void UpdateEnabled(object sender, System.EventArgs e)
+        void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            if (EnabledSwitchCell != null)
-            {
-                Analytics.Enabled = EnabledSwitchCell.On;
-            }
+            Analytics.Enabled = e.Value;
         }
 
         void RefreshPropCount()
