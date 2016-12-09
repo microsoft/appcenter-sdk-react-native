@@ -2,6 +2,8 @@
 using Android.Content.PM;
 using Android.OS;
 using Microsoft.Azure.Mobile;
+using Com.Microsoft.Azure.Mobile.Analytics;
+using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 
 namespace Contoso.Forms.Puppet.Droid
 {
@@ -17,10 +19,30 @@ namespace Contoso.Forms.Puppet.Droid
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
+
             MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Configure("7f222d3c-0f5e-421b-93e7-f862c462e07e");
 
             LoadApplication(new App());
+        }
+    }
+
+    public class AndroidAnalyticsListener : Java.Lang.Object, IAnalyticsListener
+    {
+        public void OnSendingFailed(EventLog eventLog, Java.Lang.Exception e)
+        {
+            System.Console.WriteLine("OnSendingFailed*****");
+        }
+
+        public void OnSendingSucceeded(EventLog eventLog)
+        {
+            System.Console.WriteLine("OnSendingSucceeded*****");
+        }
+
+        public void OnBeforeSending(EventLog eventLog)
+        {
+            System.Console.WriteLine("OnBeforeSending*****");
         }
     }
 }
