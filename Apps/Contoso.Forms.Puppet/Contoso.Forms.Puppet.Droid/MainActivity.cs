@@ -5,6 +5,7 @@ using Microsoft.Azure.Mobile;
 using Com.Microsoft.Azure.Mobile.Analytics;
 using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Com.Microsoft.Azure.Mobile.Analytics.Channel;
+using Com.Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Contoso.Forms.Puppet.Droid
 {
@@ -31,19 +32,22 @@ namespace Contoso.Forms.Puppet.Droid
 
     public class AndroidAnalyticsListener : Java.Lang.Object, IAnalyticsListener
     {
-        public void OnSendingFailed(EventLog eventLog, Java.Lang.Exception e)
+        public void OnSendingFailed(ILog log, Java.Lang.Exception e)
         {
             System.Console.WriteLine("OnSendingFailed*****");
         }
 
-        public void OnSendingSucceeded(EventLog eventLog)
+        public void OnSendingSucceeded(ILog log)
         {
             System.Console.WriteLine("OnSendingSucceeded*****");
         }
 
-        public void OnBeforeSending(EventLog eventLog)
+        public void OnBeforeSending(ILog log)
         {
-            System.Console.WriteLine("OnBeforeSending*****");
+            EventLog eventLog = log as EventLog;
+            if (eventLog != null) {
+                System.Console.WriteLine("OnBeforeSendingEventLog*****");
+            }
         }
     }
 }
