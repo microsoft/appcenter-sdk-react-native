@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Test;assembly=Contoso.Forms.Test"  x:Class="Contoso.Forms.Test.CrashResultsPage">
-	<TableView Intent="Form">
+	<TableView Intent="Form" x:Name="ResultsTableView">
 		<TableSection>
 		    <ViewCell>
                 <Label AutomationId="{x:Static local:TestStrings.HasCrashedInLastSessionLabel}" x:Name="HasCrashedInLastSessionLabel" VerticalOptions="Center" HorizontalOptions="Center"/>

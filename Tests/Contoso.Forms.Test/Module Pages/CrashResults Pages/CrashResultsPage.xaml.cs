@@ -8,17 +8,26 @@ namespace Contoso.Forms.Test
         public CrashResultsPage()
         {
             InitializeComponent();
+            InitializeText();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (HasCrashedInLastSessionLabel != null && Crashes.HasCrashedInLastSession)
+            if (HasCrashedInLastSessionLabel != null)
             {
-                HasCrashedInLastSessionLabel.Text = TestStrings.HasCrashedInLastSessionText;
+                if (Crashes.HasCrashedInLastSession)
+                {
+                    HasCrashedInLastSessionLabel.Text = TestStrings.HasCrashedInLastSessionText;
+                }
+                else
+                {
+                    HasCrashedInLastSessionLabel.Text = TestStrings.HasNotCrashedInLastSessionText;
+                }
             }
         }
+
         void DismissPage(object sender, System.EventArgs e)
         {
             Navigation.PopModalAsync();
@@ -38,6 +47,7 @@ namespace Contoso.Forms.Test
                     SendingErrorReportLabel.Text = TestStrings.DidSendingErrorReportText;
                 }
             });
+
         }
 
         public void SentErrorReport(object sender, SentErrorReportEventArgs e)
@@ -83,6 +93,7 @@ namespace Contoso.Forms.Test
                     ShouldProcessErrorReportLabel.Text = TestStrings.DidShouldProcessErrorReportText;
                 }
             });
+
             return true;
         }
 
@@ -92,7 +103,7 @@ namespace Contoso.Forms.Test
             {
                 if (ShouldAwaitUserConfirmationLabel != null)
                 {
-                    ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidShouldProcessErrorReportText;
+                    ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidShouldAwaitUserConfirmationText;
                 }
             });
             return false;
@@ -102,7 +113,14 @@ namespace Contoso.Forms.Test
         {
             if (HasCrashedInLastSessionLabel != null)
             {
-                HasCrashedInLastSessionLabel.Text = TestStrings.HasNotCrashedInLastSessionText;
+                if (Crashes.HasCrashedInLastSession)
+                {
+                    HasCrashedInLastSessionLabel.Text = TestStrings.HasCrashedInLastSessionText;
+                }
+                else
+                {
+                    HasCrashedInLastSessionLabel.Text = TestStrings.HasNotCrashedInLastSessionText;
+                }
             }
 
             if (SendingErrorReportLabel != null)
