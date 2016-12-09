@@ -88,9 +88,12 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Check whether SDK has already been configured or not.
         /// </summary>
-        public static bool IsConfigured()
+        public static bool Configured
         {
-            return AndroidMobileCenter.IsConfigured;
+            get
+            {
+                return AndroidMobileCenter.IsConfigured;
+            }
         }
 
         /// <summary>

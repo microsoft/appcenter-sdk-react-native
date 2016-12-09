@@ -47,10 +47,7 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Check whether SDK has already been configured or not.
         /// </summary>
-        public static bool IsConfigured()
-        {
-            return false;
-        }
+        public static bool Configured { get; }
 
         /// <summary>
         ///     Configure the SDK.

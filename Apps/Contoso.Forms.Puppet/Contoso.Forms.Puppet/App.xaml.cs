@@ -22,7 +22,7 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
-            MobileCenterLog.Info(LogTag, "MobileCenter.IsConfigured()=" + MobileCenter.IsConfigured());
+            MobileCenterLog.Info(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
 
             //set event handlers
             Crashes.SendingErrorReport += SendingErrorReportHandler;

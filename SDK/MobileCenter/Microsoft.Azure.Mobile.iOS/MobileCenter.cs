@@ -87,9 +87,12 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Check whether SDK has already been configured or not.
         /// </summary>
-        public static bool IsConfigured()
+        public static bool Configured
         {
-            return iOSMobileCenter.IsConfigured();
+            get
+            {
+                return iOSMobileCenter.IsConfigured();
+            }
         }
 
         /// <summary>
