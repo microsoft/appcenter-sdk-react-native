@@ -17,6 +17,7 @@ namespace Contoso.Forms.Puppet.Droid
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            MobileCenterLog.Assert(App.LogTag, "MobileCenter.IsConfigured()=" + MobileCenter.IsConfigured());
             MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Configure("7f222d3c-0f5e-421b-93e7-f862c462e07e");
 
