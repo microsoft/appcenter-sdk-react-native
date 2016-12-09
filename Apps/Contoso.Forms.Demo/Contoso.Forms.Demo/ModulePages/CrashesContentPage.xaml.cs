@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
@@ -12,7 +13,7 @@ namespace Contoso.Forms.Demo
         public CrashesContentPage()
         {
             InitializeComponent();
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }
@@ -22,24 +23,22 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = Crashes.Enabled;
+            CrashesEnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
-        void TestCrash(object sender, System.EventArgs e)
+        void TestCrash(object sender, EventArgs e)
         {
             Crashes.GenerateTestCrash();
         }
 
-        void DivideByZero(object sender, System.EventArgs e)
+        void DivideByZero(object sender, EventArgs e)
         {
             (42 / int.Parse("0")).ToString();
         }
 
-        void UpdateEnabled(object sender, System.EventArgs e)
+        void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            if (CrashesEnabledSwitchCell != null)
-            {
-                Crashes.Enabled = CrashesEnabledSwitchCell.On;
-            }
+            Crashes.Enabled = e.Value;
         }
 
         private void CrashWithNullReferenceException(object sender, EventArgs e)
