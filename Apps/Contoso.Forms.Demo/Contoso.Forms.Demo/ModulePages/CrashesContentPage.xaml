@@ -5,7 +5,7 @@
         x:Class="Contoso.Forms.Demo.CrashesContentPage">
         <TableView Intent="Form">
             <TableSection>
-                <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
+                <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
             </TableSection>
             <TableSection>
                 <ViewCell Tapped="TestCrash">

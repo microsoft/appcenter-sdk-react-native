@@ -40,7 +40,6 @@ namespace Contoso.Forms.Puppet
             EnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
-
         void AddProperty(object sender, EventArgs e)
         {
             var addPage = new AddPropertyContentPage();
