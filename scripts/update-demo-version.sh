@@ -4,7 +4,7 @@ set -e
 # Replace version in all the assemblies
 for file in `find Apps -name AssemblyInfo.cs | grep Demo`
 do
-    sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$1-SNAPSHOT\")/g" $file
+    sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$1\")/g" $file
     sed -E -i '' "s/(AssemblyFileVersion\(\")(.*)\"\)/\1$1.0\")/g" $file
 done
 
