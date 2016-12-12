@@ -26,11 +26,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.UITest">
-      <HintPath>..\..\packages\Xamarin.UITest.2.0.2\lib\Xamarin.UITest.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.UITest.2.0.3\lib\Xamarin.UITest.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -38,9 +38,6 @@
     <Compile Include="AppInitializer.cs" />
     <Compile Include="ServiceStateHelper.cs" />
     <Compile Include="CrashResultsHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iOS\Contoso.Forms.Test.iOS.csproj">
@@ -55,6 +52,9 @@
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems" Label="Shared" Condition="Exists('..\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

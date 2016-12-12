@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
 using UIKit;
-
 using Microsoft.Azure.Mobile;
-using System.Runtime.InteropServices;
-using System.IO;
 
 namespace Contoso.Forms.Test.iOS
 {
@@ -22,7 +15,6 @@ namespace Contoso.Forms.Test.iOS
 #if ENABLE_TEST_CLOUD
             Xamarin.Calabash.Start();
 #endif
-
             MobileCenter.Configure("f52dd054-e31f-4ff9-9f24-4e8d7942705b");
 
             LoadApplication(new App());

@@ -144,6 +144,17 @@ Task("NuGet")
 // Main Task.
 Task("Default").IsDependentOn("NuGet");
 
+// Build tests
+Task("Tests").Does(() =>
+{
+	// Build tests and package the applications
+	NuGetRestore("./MobileCenter-SDK-Test.sln");
+	DotNetBuild("./Tests/Contoso.Forms.Test/Contoso.Forms.Test.csproj", c => c.Configuration = "Release");
+	MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Release|iPhone");
+	AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
+	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+});
+
 // Cleaning up files/directories.
 Task("clean").Does(() =>
 {
