@@ -30,7 +30,7 @@ ANDROID_RESULTS_FILE="android_results_$(date).txt"
 IOS_RESULTS_FILE="android_results_$(date).txt"
 
 TERM_VAL=$TERM
-if [-z ${TERM+x} ]; then
+if [ -z ${TERM+x} ]; then
 	TERM_VAL=xterm-256color
 fi
 
