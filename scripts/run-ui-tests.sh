@@ -2,9 +2,9 @@
 
 # Define directory and file locations
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-TEST_APK=$SCRIPT_DIR/Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
-TEST_IPA=$SCRIPT_DIR/Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
-UITEST_BUILD_DIR=$SCRIPT_DIR/Tests/UITests/bin/Release
+TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
+TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
+UITEST_BUILD_DIR=$SCRIPT_DIR/../Tests/UITests/bin/Release
 
 # Define build constants
 BUILD_SCRIPT=build.sh
@@ -60,7 +60,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Log in to Mobile Center
-echo "Logging in to mobile center as $USERNAME..."
+echo "Logging in to mobile center..."
 mobile-center login -u "$USERNAME" -p "$PASSWORD"
 if [ $? -ne 0 ]; then
     echo "An error occured while logging into Mobile Center."
@@ -69,11 +69,15 @@ fi
 
 # Build tests
 echo "Building applications and UITests..."
+
+pushd ..
 sh $BUILD_SCRIPT -t $BUILD_TARGET
 if [ $? -ne 0 ]; then
     echo "An error occured while building tests."
+    popd
     exit 1
 fi
+popd
 
 # Run Android tests
 echo "[$(date)] Running Android tests..."
