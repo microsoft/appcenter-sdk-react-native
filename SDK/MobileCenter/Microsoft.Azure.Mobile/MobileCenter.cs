@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile
         /// <remarks>
         ///     The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid InstallId { get; set; }
+        public static Guid? InstallId { get; set; }
 
         /// <summary>
         ///     Change the base URL (scheme + authority + port only) used to communicate with the backend.
