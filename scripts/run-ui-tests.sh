@@ -29,16 +29,11 @@ IOS_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$IOS_APP_NAME/test
 ANDROID_RESULTS_FILE="android_results_$(date).txt"
 IOS_RESULTS_FILE="android_results_$(date).txt"
 
-TERM_VAL=$TERM
-if [ -z ${TERM+x} ]; then
-	TERM_VAL=xterm-256color
-fi
-
 # Define text attributes
-RED=$(tput setaf 1 -T $TERM_VAL)
-GREEN=$(tput setaf 2 -T $TERM_VAL)
-BOLD=$(tput bold -T $TERM_VAL)
-UNATTRIBUTED=$(tput sgr0 -T $TERM_VAL)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+BOLD=$(tput bold)
+UNATTRIBUTED=$(tput sgr0)
 
 # Download and install NPM if it is not already installed
 npm -v &>/dev/null
