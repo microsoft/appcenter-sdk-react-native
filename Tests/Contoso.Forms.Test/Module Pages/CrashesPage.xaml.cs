@@ -21,7 +21,9 @@ namespace Contoso.Forms.Test
 
         void DivideByZeroCrash(object sender, System.EventArgs e)
         {
+            #pragma warning disable CS0219
             int x = (42 / int.Parse("0"));
+            #pragma warning restore CS0219
         }
 
         void GenerateTestCrash(object sender, System.EventArgs e)
@@ -32,7 +34,9 @@ namespace Contoso.Forms.Test
         void CrashWithInvalidOperation(object sender, EventArgs e)
         {
             string[] strings = { "A", "B", "C" };
+            #pragma warning disable CS0219
             string s = strings.First((arg) => { return arg == "6"; });
+            #pragma warning restore CS0219
         }
 
         void CatchNullReferenceException(object sender, EventArgs e)
