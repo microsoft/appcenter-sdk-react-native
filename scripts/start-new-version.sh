@@ -8,6 +8,8 @@ do
     sed -E -i '' "s/(AssemblyFileVersion\(\")(.*)\"\)/\1$1.0\")/g" $file
 done
 
+sed -E -i '' "s/(Version = \")(.*)\"/\1$1-SNAPSHOT\"/g" SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs
+
 # Replace android versions
 for file in `find . -name AndroidManifest.xml | grep Properties | grep -v Demo`
 do
