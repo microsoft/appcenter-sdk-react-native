@@ -33,11 +33,11 @@ IOS_APP="$USERNAME/$IOS_APP_NAME"
 TEST_SERIES="master"
 
 # Define results constants
-EXIT_CODE=0
 ANDROID_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
 IOS_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$IOS_APP_NAME/test/runs/"
 ANDROID_RESULTS_FILE="android_results.txt"
 IOS_RESULTS_FILE="ios_results.txt"
+MORE_INFORMATION_TEXT="For more information, visit "
 
 # Define text attributes
 RED=$(tput setaf 1)
@@ -78,7 +78,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Build tests
-echo "Building applications and UITests..."
+echo "Building target \"$BUILD_TARGET\"..."
 
 pushd ..
 sh $BUILD_SCRIPT -t $BUILD_TARGET
@@ -126,19 +126,23 @@ done < $IOS_RESULTS_FILE)
 rm $IOS_RESULTS_FILE
 
 # Print results
-if [ $ANDROID_RETURN_CODE -eq 0 ]; then
-	echo "${BOLD}Android test results: ${GREEN}passed! ${UNATTRIBUTED}"
-fi
-if [ $ANDROID_RETURN_CODE -ne 0 ]; then
-	EXIT_CODE=$ANDROID_RETURN_CODE
-	echo "${BOLD}Android test results: ${RED}failed.${UNATTRIBUTED}${BOLD} For more information, visit $ANDROID_PORTAL_URL$ANDROID_TEST_RUN_ID.${UNATTRIBUTED}"
-fi
-if [ $IOS_RETURN_CODE -eq 0 ]; then
-	echo "${BOLD}iOS test results: ${GREEN}passed! ${UNATTRIBUTED}"
-fi
-if [ $IOS_RETURN_CODE -ne 0 ]; then
-	EXIT_CODE=$IOS_RETURN_CODE
-	echo "${BOLD}iOS test results: ${RED}failed.${UNATTRIBUTED}${BOLD} For more information, visit $IOS_PORTAL_URL$IOS_TEST_RUN_ID.${UNATTRIBUTED}"
-fi
+print_results () {
+	if [ $2 -eq 0 ]; then
+		echo "${BOLD}$1 test results: ${GREEN}passed! ${UNATTRIBUTED}"
+	fi
+	if [ $2 -ne 0 ]; then
+		echo "${BOLD}$1 test results: ${RED}failed. ${UNATTRIBUTED}"
+	fi
+}
 
-exit $EXIT_CODE
+print_results "Android" $ANDROID_RETURN_CODE
+echo "${BOLD}$MORE_INFORMATION_TEXT$ANDROID_PORTAL_URL$ANDROID_TEST_RUN_ID.${UNATTRIBUTED}"
+
+print_results "iOS" $IOS_RETURN_CODE
+echo "${BOLD}$MORE_INFORMATION_TEXT$IOS_PORTAL_URL$IOS_TEST_RUN_ID.${UNATTRIBUTED}"
+
+# If iOS or Android tests failed, exit failure. Otherwise exit success
+if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
+	exit 1
+fi
+exit 0
