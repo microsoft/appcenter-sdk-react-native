@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// Internal SDK property not intended for public use.
         /// </summary>
         /// <value>
-        /// The Android SDK Analytics bindings type.
+        /// The iOS SDK Analytics bindings type.
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(iOSAnalytics);
