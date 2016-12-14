@@ -14,6 +14,7 @@ TEST_APK=$1
 TEST_IPA=$2
 BUILD_TARGET=$3
 
+# If there are no arguments, use default values
 if [ -z ${1+x} ]; then
 	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
 	TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
