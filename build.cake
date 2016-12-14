@@ -145,10 +145,8 @@ Task("NuGet")
 Task("Default").IsDependentOn("NuGet");
 
 // Build tests
-// Build tests
-Task("UITest").Does(() =>
+Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 {
-	NuGetRestore("./MobileCenter-SDK-Test.sln");
 	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Debug");
 });
  
@@ -161,6 +159,11 @@ Task("TestApps").IsDependentOn("UITest").Does(() =>
 	MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Debug|iPhone");
 	AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Debug");
 	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Debug");
+});
+
+Task("RestoreTestPackages").Does(() =>
+{
+	NuGetRestore("./MobileCenter-SDK-Test.sln");
 });
 
 // Cleaning up files/directories.

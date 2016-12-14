@@ -17,7 +17,7 @@ BUILD_TARGET=$3
 if [ -z ${1+x} ]; then
 	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
 	TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
-	BUILD_TARGET=Tests
+	BUILD_TARGET=TestApps
 fi
 
 # Define test parameters
