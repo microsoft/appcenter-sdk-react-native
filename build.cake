@@ -163,10 +163,10 @@ Task("TestApps").IsDependentOn("UITest").Does(() =>
 
 Task("RestoreTestPackages").Does(() =>
 {
+	NuGetRestore("./MobileCenter-SDK-Test.sln");
 	NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
 	NuGetUpdate("./Tests/iOS/packages.config");
 	NuGetUpdate("./Tests/Droid/packages.config");
-	NuGetRestore("./MobileCenter-SDK-Test.sln");
 });
 
 // Cleaning up files/directories.
