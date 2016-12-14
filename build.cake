@@ -149,18 +149,18 @@ Task("Default").IsDependentOn("NuGet");
 Task("UITest").Does(() =>
 {
 	NuGetRestore("./MobileCenter-SDK-Test.sln");
-	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Debug");
 });
-
+ 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
 	// Build tests and package the applications
 	// It is important that the entire solution is built before rebuilding the iOS and Android versions due to a bug 
 	// that causes improper linking of the forms application to iOS
-	DotNetBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
-	MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Release|iPhone");
-	AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
-	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+	DotNetBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Debug");
+	MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Debug|iPhone");
+	AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Debug");
+	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Debug");
 });
 
 // Cleaning up files/directories.
