@@ -1,5 +1,8 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.IO;
+using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
@@ -10,7 +13,7 @@ namespace Contoso.Forms.Demo
         public CrashesContentPage()
         {
             InitializeComponent();
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }
@@ -20,14 +23,15 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = Crashes.Enabled;
+            CrashesEnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
-        void TestCrash(object sender, System.EventArgs e)
+        void TestCrash(object sender, EventArgs e)
         {
             Crashes.GenerateTestCrash();
         }
 
-        void DivideByZero(object sender, System.EventArgs e)
+        void DivideByZero(object sender, EventArgs e)
         {
             try
             {
@@ -39,29 +43,9 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        void UpdateEnabled(object sender, System.EventArgs e)
+        void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            if (CrashesEnabledSwitchCell != null)
-            {
-                Crashes.Enabled = CrashesEnabledSwitchCell.On;
-            }
-        }
-
-        private void GenerateTestCrash(object sender, EventArgs e)
-        {
-            Crashes.GenerateTestCrash();
-        }
-
-        private void CatchNullReferenceException(object sender, EventArgs e)
-        {
-            try
-            {
-                TriggerNullReferenceException();
-            }
-            catch (NullReferenceException ex)
-            {
-                System.Diagnostics.Debug.WriteLine("null reference exception");
-            }
+            Crashes.Enabled = e.Value;
         }
 
         private void CrashWithNullReferenceException(object sender, EventArgs e)

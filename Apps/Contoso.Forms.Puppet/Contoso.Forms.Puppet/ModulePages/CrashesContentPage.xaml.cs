@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Contoso.Forms.Puppet
         public CrashesContentPage()
         {
             InitializeComponent();
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }
@@ -20,44 +21,47 @@ namespace Contoso.Forms.Puppet
         {
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = Crashes.Enabled;
+            CrashesEnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
-        void TestCrash(object sender, System.EventArgs e)
+        void TestCrash(object sender, EventArgs e)
         {
             Crashes.GenerateTestCrash();
         }
 
-        void DivideByZero(object sender, System.EventArgs e)
+        void DivideByZero(object sender, EventArgs e)
         {
             int x = (42 / int.Parse("0"));
         }
 
-        void UpdateEnabled(object sender, System.EventArgs e)
+        void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            if (CrashesEnabledSwitchCell != null)
-            {
-                Crashes.Enabled = CrashesEnabledSwitchCell.On;
-            }
+            Crashes.Enabled = e.Value;
         }
 
-        private void CatchNullReferenceException(object sender, EventArgs e)
+        void GenerateTestCrash(object sender, EventArgs e)
+        {
+            Crashes.GenerateTestCrash();
+        }
+
+        void CatchNullReferenceException(object sender, EventArgs e)
         {
             try
             {
                 TriggerNullReferenceException();
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 System.Diagnostics.Debug.WriteLine("null reference exception");
             }
         }
 
-        private void CrashWithNullReferenceException(object sender, EventArgs e)
+        void CrashWithNullReferenceException(object sender, EventArgs e)
         {
             TriggerNullReferenceException();
         }
 
-        private void TriggerNullReferenceException()
+        void TriggerNullReferenceException()
         {
             string[] values = { "one", null, "two" };
             for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
@@ -66,12 +70,12 @@ namespace Contoso.Forms.Puppet
             System.Diagnostics.Debug.WriteLine("");
         }
 
-        private void CrashWithAggregateException(object sender, EventArgs e)
+        void CrashWithAggregateException(object sender, EventArgs e)
         {
             throw PrepareException();
         }
 
-        private static Exception PrepareException()
+        static Exception PrepareException()
         {
             try
             {
@@ -83,7 +87,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        private static Exception SendHttp()
+        static Exception SendHttp()
         {
             try
             {
@@ -95,7 +99,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        private static Exception ValidateLength()
+        static Exception ValidateLength()
         {
             try
             {

@@ -97,7 +97,6 @@ mobile-center test run uitest --app $ANDROID_APP\
    --build-dir $UITEST_BUILD_DIR > $ANDROID_RESULTS_FILE
 ANDROID_RETURN_CODE=$?
 echo "[$(date)] Android tests completed."
-cat $ANDROID_RESULTS_FILE
 ANDROID_TEST_RUN_ID=$(
 while read -r line
 do
@@ -116,7 +115,6 @@ mobile-center test run uitest --app $IOS_APP\
    --build-dir $UITEST_BUILD_DIR > $IOS_RESULTS_FILE
 IOS_RETURN_CODE=$?
 echo "[$(date)] iOS tests completed."
-cat $IOS_RESULTS_FILE
 IOS_TEST_RUN_ID=$(
 while read -r line
 do

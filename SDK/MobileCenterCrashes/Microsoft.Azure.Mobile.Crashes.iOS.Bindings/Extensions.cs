@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
             IntPtr sigsegv = Marshal.AllocHGlobal(512);
             IntPtr sigfpe = Marshal.AllocHGlobal(512);
 
-            /* Store Mono's SIGSEGV and SIGBUS handlers */
+            /* Store Mono's SIGSEGV, SIGBUS, and SIGFPE handlers */
             sigaction(Signal.SIGBUS, IntPtr.Zero, sigbus);
             sigaction(Signal.SIGSEGV, IntPtr.Zero, sigsegv);
             sigaction(Signal.SIGFPE, IntPtr.Zero, sigfpe);
@@ -44,11 +44,12 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
             /* Enable native SDK crash reporting library */
             MSWrapperExceptionManager.StartCrashReportingFromWrapperSdk();
 
-            /* Restore Mono SIGSEGV and SIGBUS handlers */
+            /* Restore Mono SIGSEGV, SIGBUS, and SIGFPE handlers */
             sigaction(Signal.SIGBUS, sigbus, IntPtr.Zero);
             sigaction(Signal.SIGSEGV, sigsegv, IntPtr.Zero);
             sigaction(Signal.SIGFPE, sigfpe, IntPtr.Zero);
 
+            /* Release previously allocated space */
             Marshal.FreeHGlobal(sigbus);
             Marshal.FreeHGlobal(sigsegv);
             Marshal.FreeHGlobal(sigfpe);

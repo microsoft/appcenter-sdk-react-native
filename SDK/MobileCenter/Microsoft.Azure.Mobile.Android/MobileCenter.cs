@@ -86,6 +86,17 @@ namespace Microsoft.Azure.Mobile
         }
 
         /// <summary>
+        /// Check whether SDK has already been configured or not.
+        /// </summary>
+        public static bool Configured
+        {
+            get
+            {
+                return AndroidMobileCenter.IsConfigured;
+            }
+        }
+
+        /// <summary>
         /// Configure the SDK.
         /// This may be called only once per application process lifetime.
         /// </summary>
@@ -135,7 +146,18 @@ namespace Microsoft.Azure.Mobile
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid InstallId => Guid.Parse(AndroidMobileCenter.InstallId.ToString());
+        public static Guid? InstallId
+        {
+            get
+            {
+                var installId = AndroidMobileCenter.InstallId;
+                if (installId != null)
+                {
+                    return Guid.Parse(installId.ToString());
+                }
+                return null;
+            }
+        }
 
         private static Application SetWrapperSdkAndGetApplication()
         {

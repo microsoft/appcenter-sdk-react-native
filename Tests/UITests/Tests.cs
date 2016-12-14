@@ -72,7 +72,7 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.AddPropertyButton);
             app.Tap(TestStrings.AddPropertyButton);
             app.Tap(TestStrings.SendEventButton);
-            //TODO some kind of verification
+            //TODO This test is incomplete
         }
 
         [Test]
@@ -92,6 +92,7 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsTrue(CrashResultsHelper.ShouldProcessErrorReportWasCalled);
             Assert.IsTrue(CrashResultsHelper.ShouldAwaitUserConfirmationWasCalled);
             Assert.IsTrue(CrashResultsHelper.GetErrorAttachmentWasCalled);
+            //TODO verify the last session error report
         }
     }
 }

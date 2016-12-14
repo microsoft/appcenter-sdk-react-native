@@ -2,7 +2,7 @@
 <ContentPage Title="Analytics" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.AnalyticsContentPage">
         <TableView Intent="Form">
             <TableSection>
-                <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" PropertyChanged="UpdateEnabled"/>
+                <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" OnChanged="UpdateEnabled"/>
             </TableSection>
             <TableSection>
                 <EntryCell Label="Event Name" HorizontalTextAlignment="Start" x:Name="EventNameCell"/>

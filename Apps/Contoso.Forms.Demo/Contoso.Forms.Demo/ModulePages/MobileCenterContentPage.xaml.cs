@@ -12,7 +12,7 @@ namespace Contoso.Forms.Demo
             {
                 Icon = "bolt.png";
             }
-        }  
+        }
 
         protected override void OnAppearing()
         {
@@ -20,13 +20,9 @@ namespace Contoso.Forms.Demo
             MobileCenterEnabledSwitchCell.On = MobileCenter.Enabled;
         }
 
-        void UpdateEnabled(object sender, System.EventArgs e)
+        void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            if (MobileCenterEnabledSwitchCell != null)
-            {
-                MobileCenter.Enabled = MobileCenterEnabledSwitchCell.On;
-            }
+            MobileCenter.Enabled = e.Value;
         }
-
-      }
+    }
 }
