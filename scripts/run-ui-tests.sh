@@ -36,8 +36,8 @@ TEST_SERIES="master"
 EXIT_CODE=0
 ANDROID_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
 IOS_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$IOS_APP_NAME/test/runs/"
-ANDROID_RESULTS_FILE="android_results_$(date).txt"
-IOS_RESULTS_FILE="android_results_$(date).txt"
+ANDROID_RESULTS_FILE="android_results.txt"
+IOS_RESULTS_FILE="ios_results.txt"
 
 # Define text attributes
 RED=$(tput setaf 1)
