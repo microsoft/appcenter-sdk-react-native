@@ -1,14 +1,24 @@
 #!/bin/bash
 
+if ! [ -z ${1+x} ]; then
+	if [ -z ${2+x} ] || [ -z ${3+x} ]; then
+		echo "Error - usage: ./run-ui-tests.sh {PATH_TO_APK} {PATH_TO_IPA} {BUILD_TARGET}"
+	fi
+fi
+
 # Define directory and file locations
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
-TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
 UITEST_BUILD_DIR=$SCRIPT_DIR/../Tests/UITests/bin/Release
-
-# Define build constants
 BUILD_SCRIPT=build.sh
-BUILD_TARGET=Tests
+TEST_APK=$1
+TEST_IPA=$2
+BUILD_TARGET=$3
+
+if [ -z ${1+x} ]; then
+	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
+	TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
+	BUILD_TARGET=Tests
+fi
 
 # Define test parameters
 LOCALE="en-US"

@@ -145,10 +145,16 @@ Task("NuGet")
 Task("Default").IsDependentOn("NuGet");
 
 // Build tests
-Task("Tests").Does(() =>
+// Build tests
+Task("UITest").Does(() =>
+{
+	NuGetRestore("./MobileCenter-SDK-Test.sln");
+	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+});
+
+Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
 	// Build tests and package the applications
-	NuGetRestore("./MobileCenter-SDK-Test.sln");
 	// It is important that the entire solution is built before rebuilding the iOS and Android versions due to a bug 
 	// that causes improper linking of the forms application to iOS
 	DotNetBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
