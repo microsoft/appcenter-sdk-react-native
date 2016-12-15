@@ -3,6 +3,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class MobileCenterContentPage : ContentPage
     {
         public MobileCenterContentPage()

@@ -6,6 +6,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class CrashesContentPage
     {
         public CrashesContentPage()

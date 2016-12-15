@@ -8,6 +8,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class CrashesContentPage
     {
         public CrashesContentPage()

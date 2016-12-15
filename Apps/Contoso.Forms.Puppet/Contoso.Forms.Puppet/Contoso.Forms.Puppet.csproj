@@ -77,6 +77,7 @@
       <DependentUpon>PropertiesContentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="FakeService.cs" />
+    <Compile Include="PreserveAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
