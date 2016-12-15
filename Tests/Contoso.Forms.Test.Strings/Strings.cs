@@ -3,18 +3,18 @@
     public static class  TestStrings
     {
         /* General */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string DismissButton = "DismissButton";
 
         /* TestPage */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string GoToTogglePageButton = "GoToTogglePageButton";
         public static readonly string GoToCrashesPageButton = "GoToCrashesPageButton";
         public static readonly string GoToAnalyticsPageButton = "GoToAnalyticsPageButton";
         public static readonly string GoToCrashResultsPageButton = "GoToCrashResultsPageButton";
 
         /* ToggleStatesPage */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string EnableMobileCenterButton = "EnableMobileCenterButton";
         public static readonly string EnableAnalyticsButton = "EnableAnalyticsButton";
         public static readonly string EnableCrashesButton = "EnableCrashesButton";
@@ -25,7 +25,7 @@
         public static readonly string AnalyticsEnabledLabel = "AnalyticsEnabledLabel";
         public static readonly string CrashesEnabledLabel = "CrashesEnabledLabel";
 
-        //Text values
+        /* Text values */
         public static readonly string MobileCenterEnabledText = "Mobile Center enabled";
         public static readonly string MobileCenterDisabledText = "Mobile Center disabled";
         public static readonly string AnalyticsEnabledText = "Analytics enabled";
@@ -34,7 +34,7 @@
         public static readonly string CrashesDisabledText = "Crashes disabled";
 
         /* CrashesPage */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string DivideByZeroCrashButton = "DivideByZeroCrashButton";
         public static readonly string GenerateTestCrashButton = "GenerateTestCrashButton";
         public static readonly string CatchNullReferenceButton = "CatchNullReferenceButton";
@@ -43,7 +43,7 @@
         public static readonly string CrashWithInvalidOperationButton = "CrashWithInvalidOperationButton";
 
         /* CrashResultsPage */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string HasCrashedInLastSessionLabel = "HasCrashedInLastSessionLabel";
         public static readonly string SendingErrorReportLabel = "SendingErrorReportLabel";
         public static readonly string SentErrorReportLabel = "SentErrorReportLabel";
@@ -53,7 +53,7 @@
         public static readonly string GetErrorAttachmentLabel = "GetErrorAttachmentLabel";
         public static readonly string ViewLastSessionErrorReportButton = "ViewLastSessionErrorReportButton";
 
-        //Text values
+        /* Text values */
         public static readonly string HasCrashedInLastSessionText = "HasCrashedInLastSession == true";
         public static readonly string HasNotCrashedInLastSessionText = "HasCrashedInLastSession == false";
         public static readonly string DidSendingErrorReportText = "SendingErrorReport has occured";
@@ -70,7 +70,7 @@
         public static readonly string DidNotGetErrorAttachmentText = "GetErrorAttachment has not occured";
 
         /* LastSessionErrorReportPage */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string ExceptionTypeLabel = "ExceptionTypeLabel";
         public static readonly string ExceptionMessageLabel = "ExceptionMessageLabel";
         public static readonly string AppStartTimeLabel = "AppStartTimeLabel";
@@ -80,13 +80,13 @@
         public static readonly string AndroidDetailsLabel = "AndroidDetailsLabel";
         public static readonly string iOSDetailsLabel = "iOSDetailsLabel";
 
-        //Text values
+        /* Text values */
         public static readonly string DeviceReportedText = "Device reported";
         public static readonly string HasiOSDetailsText = "Has iOS details";
         public static readonly string HasAndroidDetailsText = "Has Android details";
 
         /* AnalyticsPage */
-        //Automation Ids
+        /* Automation Ids */
         public static readonly string SendEventButton = "SendEventButton";
         public static readonly string AddPropertyButton = "AddPropertyButton";
         public static readonly string ClearPropertiesButton = "ClearPropertiesButton";
