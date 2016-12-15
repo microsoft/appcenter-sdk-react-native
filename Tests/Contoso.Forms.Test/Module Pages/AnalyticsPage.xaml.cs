@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test
@@ -17,12 +16,12 @@ namespace Contoso.Forms.Test
             InitializeComponent();
         }
 
-        void DismissPage(object sender, System.EventArgs e)
+        void DismissPage(object sender, EventArgs e)
         {
             Navigation.PopModalAsync();
         }
 
-        void SendEvent(object sender, System.EventArgs e)
+        void SendEvent(object sender, EventArgs e)
         {
             string name = "UITest Event";
             if (EventProperties.Count == 0)
@@ -35,14 +34,14 @@ namespace Contoso.Forms.Test
             }
         }
 
-        void AddProperty(object sender, System.EventArgs e)
+        void AddProperty(object sender, EventArgs e)
         {
             string propertyName = "property number " + EventProperties.Count;
             string propertyValue = "value for " + propertyName;
             EventProperties.Add(propertyName, propertyValue);
         }
 
-        void ClearProperties(object sender, System.EventArgs e)
+        void ClearProperties(object sender, EventArgs e)
         {
             EventProperties.Clear();
         }

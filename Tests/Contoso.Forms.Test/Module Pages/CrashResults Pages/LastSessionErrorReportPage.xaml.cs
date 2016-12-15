@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Crashes;
-
+﻿using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Test
@@ -11,7 +8,7 @@ namespace Contoso.Forms.Test
         public LastSessionErrorReportPage()
         {
             InitializeComponent();
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 UpdateLabels();
             });

@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms;
-
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;

@@ -40,7 +40,7 @@ namespace Contoso.Forms.Test
 
         public void SendingErrorReport(object sender, SendingErrorReportEventArgs e)
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 if (SendingErrorReportLabel != null)
                 {
@@ -52,7 +52,7 @@ namespace Contoso.Forms.Test
 
         public void SentErrorReport(object sender, SentErrorReportEventArgs e)
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 if (SentErrorReportLabel != null)
                 {
@@ -63,7 +63,7 @@ namespace Contoso.Forms.Test
 
         public void FailedToSendErrorReport(object sender, FailedToSendErrorReportEventArgs e)
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 if (FailedToSendErrorReportLabel != null)
                 {
@@ -99,7 +99,7 @@ namespace Contoso.Forms.Test
 
         public bool ShouldAwaitUserConfirmation()
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 if (ShouldAwaitUserConfirmationLabel != null)
                 {

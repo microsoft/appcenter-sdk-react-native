@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Contoso.Forms.Test
+﻿namespace Contoso.Forms.Test
 {
     public static class  TestStrings
     {
