@@ -16,6 +16,7 @@ import {
 
 import Analytics from 'mobile-center-analytics';
 import Crashes from 'mobile-center-crashes';
+import {FooClass} from './js/FooClass';
 
 var data = {};
 data.x = "x value";
@@ -74,7 +75,7 @@ class DemoApp extends Component {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => { this.jsCrash(); }}>
+        <TouchableOpacity onPress={() => { new FooClass().method1(); }}>
           <Text style={styles.button}>
             Test JavaScript Crash
           </Text>
