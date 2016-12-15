@@ -95,26 +95,6 @@ class DemoApp extends Component {
       </View>
     );
   }
-
-    jsCrash() {
-      this.firstFunction();
-    }
-
-    firstFunction() {
-      this.secondFunction();
-    }
-
-    secondFunction() {
-      this.thirdFunction();
-    }
-
-    thirdFunction() {
-      this.sourceOfCrashFunction();
-    }
-
-    sourceOfCrashFunction() {
-      throw new Error('This is a JavaScript crash message');
-   }
 }
 
 const styles = StyleSheet.create({

@@ -10,7 +10,6 @@ export class BarClass {
     }
 
     static crashApp(value1, value2) {
-      var thisVariableIsUndefined;
-      thisVariableIsUndefined.invokingFunctionOnUndefined();
+      throw new Error('This is a JavaScript crash message');
     }
 }
