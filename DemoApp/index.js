@@ -101,7 +101,7 @@ class DemoApp extends Component {
   }
 
   sourceOfCrashFunction() {
-    throw new Error('This is a Javascript crash message');
+    throw new Error('This is a JavaScript crash message');
   }
 }
 
