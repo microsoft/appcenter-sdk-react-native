@@ -31,7 +31,6 @@ fi
 # Define test parameters
 LOCALE="en-US"
 USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
-PASSWORD="$MOBILE_CENTER_PASSWORD" # 'MOBILE_CENTER_PASSWORD' environment variable must be set
 IOS_DEVICES=8551ba4e # just one device. For a suite of 40, use 118f9d2f
 ANDROID_DEVICES=f0b8289c # just one device. For a suite of 40, use f47808f1
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
@@ -122,7 +121,7 @@ if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then
 	exit 1
 fi
 
-if [ FROM_BITRISE -eq 1 ]; then
+if [ $FROM_BITRISE -eq 1 ]; then
 	envman add --key ANDROID_TEST_RUN_ID_ENV --value "$ANDROID_TEST_RUN_ID"
 	envman add --key IOS_TEST_RUN_ID_ENV --value "$IOS_TEST_RUN_ID"
 fi

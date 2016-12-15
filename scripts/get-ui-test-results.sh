@@ -1,7 +1,6 @@
 #!/bin/bash
 
 USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
-PASSWORD="$MOBILE_CENTER_PASSWORD" # 'MOBILE_CENTER_PASSWORD' environment variable must be set
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
 IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
 ANDROID_APP="$USERNAME/$ANDROID_APP_NAME"
