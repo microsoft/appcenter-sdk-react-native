@@ -13,6 +13,7 @@ BUILD_SCRIPT=build.sh
 TEST_APK=$1
 TEST_IPA=$2
 BUILD_TARGET=$3
+CLEAN_TARGET="clean"
 FROM_BITRISE=0
 # If there are no arguments, use default values
 if [ -z ${1+x} ]; then
@@ -55,6 +56,7 @@ fi
 echo "Building target \"$BUILD_TARGET\"..."
 
 pushd ..
+sh $BUILD_SCRIPT -t $CLEAN_TARGET # clean so that we don't accidentally update to snapshot
 sh $BUILD_SCRIPT -t $BUILD_TARGET
 if [ $? -ne 0 ]; then
     echo "An error occured while building tests."
