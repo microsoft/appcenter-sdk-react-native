@@ -67,18 +67,16 @@ class DemoApp extends Component {
             Crashes.generateTestCrash();
           } else {
             undefined.property;
-          }
-        }}>
+          } }}>
+
           <Text style={styles.button}>
             Test Crash
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {
-            undefined.functionCall();
-        }}>
+        <TouchableOpacity onPress={() => { this.jsCrash(); }}>
           <Text style={styles.button}>
-            Test JS Crash
+            Test JavaScript Crash
           </Text>
         </TouchableOpacity>
 
@@ -96,6 +94,26 @@ class DemoApp extends Component {
       </View>
     );
   }
+
+    jsCrash() {
+      this.firstFunction();
+    }
+
+    firstFunction() {
+      this.secondFunction();
+    }
+
+    secondFunction() {
+      this.thirdFunction();
+    }
+
+    thirdFunction() {
+      this.sourceOfCrashFunction();
+    }
+
+    sourceOfCrashFunction() {
+      throw new Error('This is a JavaScript crash message');
+   }
 }
 
 const styles = StyleSheet.create({
