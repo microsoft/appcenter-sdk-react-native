@@ -34,7 +34,14 @@ namespace Contoso.Forms.Demo
 
         void DivideByZero(object sender, EventArgs e)
         {
-            (42 / int.Parse("0")).ToString();
+            try
+            {
+                int x = (42 / int.Parse("0"));
+            }
+            catch (Exception)
+            {
+                System.Diagnostics.Debug.WriteLine("CAUGHT THE EXCEPTION");
+            }
         }
 
         void UpdateEnabled(object sender, ToggledEventArgs e)
