@@ -75,7 +75,7 @@ class DemoApp extends Component {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => { new FooClass().method1(); }}>
+        <TouchableOpacity onPress={() => { this.jsCrash(); }}>
           <Text style={styles.button}>
             Test JavaScript Crash
           </Text>
@@ -94,6 +94,14 @@ class DemoApp extends Component {
         </TouchableOpacity>
       </View>
     );
+  }
+
+  jsCrash() {
+    this.sourceOfCrashFunction();
+  }
+
+  sourceOfCrashFunction() {
+    throw new Error('This is a Javascript crash message');
   }
 }
 
