@@ -31,7 +31,10 @@ namespace Contoso.Forms.Puppet
 
         void DivideByZero(object sender, EventArgs e)
         {
-            (42 / int.Parse("0")).ToString();
+            /* This is supposed to cause a crash, so we don't care that the variable 'x' is never used */
+            #pragma warning disable CS0219
+            int x = (42 / int.Parse("0"));
+            #pragma warning restore CS0219
         }
 
         void UpdateEnabled(object sender, ToggledEventArgs e)
