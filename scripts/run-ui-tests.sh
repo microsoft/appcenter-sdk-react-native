@@ -13,12 +13,18 @@ BUILD_SCRIPT=build.sh
 TEST_APK=$1
 TEST_IPA=$2
 BUILD_TARGET=$3
-
+FROM_BITRISE=0
 # If there are no arguments, use default values
 if [ -z ${1+x} ]; then
 	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
 	TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
 	BUILD_TARGET=TestApps
+fi
+
+# Need to know whether we are on bitrise for environment variables
+# This is indicated by a fourth argument - if there is one, we are on bitrise
+if ! [ -z ${4+x} ]; then
+	FROM_BITRISE=1
 fi
 
 # Define test parameters
@@ -36,46 +42,13 @@ TEST_SERIES="master"
 # Define results constants
 ANDROID_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
 IOS_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$IOS_APP_NAME/test/runs/"
-ANDROID_RESULTS_FILE="android_results.txt"
-IOS_RESULTS_FILE="ios_results.txt"
-MORE_INFORMATION_TEXT="For more information, visit "
+ANDROID_INFORMATION_FILE="android_info.txt"
+IOS_INFORMATION_FILE="ios_info.txt"
 
-# Define text attributes
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-BOLD=$(tput bold)
-UNATTRIBUTED=$(tput sgr0)
-
-# Download and install NPM if it is not already installed
-npm -v &>/dev/null
+# Log in to mobile center
+./mobile-center-login.sh
 if [ $? -ne 0 ]; then
-	# Install npm
-	echo "Installing npm..."
-    brew install npm
-	if [ $? -ne 0 ]; then
-    	echo "An error occured while downloading npm."
-    	exit 1
-	fi 
-fi
-
-# Is Mobile Center CLI installed?
-npm list -g mobile-center-cli >/dev/null
-if [ $? -ne 0 ]; then
-	# Install Mobile Center CLI
-	echo "Installing Mobile Center CLI..."
-	npm install -g mobile-center-cli
-	if [ $? -ne 0 ]; then
-    	echo "An error occured while installing Mobile Center CLI."
-    	exit 1
-	fi
-fi
-
-# Log in to Mobile Center
-echo "Logging in to mobile center..."
-mobile-center login -u "$USERNAME" -p "$PASSWORD"
-if [ $? -ne 0 ]; then
-    echo "An error occured while logging into Mobile Center."
-    exit 1
+	exit 1
 fi
 
 # Build tests
@@ -91,13 +64,12 @@ fi
 popd
 
 # Run Android tests
-echo "[$(date)] Running Android tests..."
+echo "Initiating Android tests..."
 mobile-center test run uitest --app $ANDROID_APP\
  --devices $ANDROID_DEVICES --app-path $TEST_APK\
   --test-series $TEST_SERIES --locale $LOCALE\
-   --build-dir $UITEST_BUILD_DIR > $ANDROID_RESULTS_FILE
+   --build-dir $UITEST_BUILD_DIR --async true > $ANDROID_INFORMATION_FILE
 ANDROID_RETURN_CODE=$?
-echo "[$(date)] Android tests completed."
 ANDROID_TEST_RUN_ID=$(
 while read -r line
 do
@@ -105,17 +77,25 @@ do
 		echo $(echo $line | cut -d'"' -f 2)
 		break
 	fi
-done < $ANDROID_RESULTS_FILE)
-rm $ANDROID_RESULTS_FILE
+done < $ANDROID_INFORMATION_FILE)
+rm $ANDROID_INFORMATION_FILE
+
+# Print results of Android test initiation
+if [ $ANDROID_RETURN_CODE -ne 0 ]; then
+	echo "Android test failed to initiate."
+fi
+if [ $ANDROID_RETURN_CODE -eq 0 ]; then
+	echo "Android test run id: $ANDROID_TEST_RUN_ID"
+	echo "Android test results: $ANDROID_PORTAL_URL$ANDROID_TEST_RUN_ID"
+fi
 
 # Run iOS tests
-echo "Running iOS tests..."
+echo "Initiating iOS tests..."
 mobile-center test run uitest --app $IOS_APP\
    --devices $IOS_DEVICES --app-path $TEST_IPA\
    --test-series $TEST_SERIES --locale $LOCALE\
-   --build-dir $UITEST_BUILD_DIR > $IOS_RESULTS_FILE
+   --build-dir $UITEST_BUILD_DIR --async true > $IOS_INFORMATION_FILE
 IOS_RETURN_CODE=$?
-echo "[$(date)] iOS tests completed."
 IOS_TEST_RUN_ID=$(
 while read -r line
 do
@@ -123,27 +103,26 @@ do
 		echo $(echo $line | cut -d'"' -f 2)
 		break
 	fi
-done < $IOS_RESULTS_FILE)
-rm $IOS_RESULTS_FILE
+done < $IOS_INFORMATION_FILE)
+rm $IOS_INFORMATION_FILE
 
-# Print results
-print_results () {
-	if [ $2 -eq 0 ]; then
-		echo "${BOLD}$1 test results: ${GREEN}passed! ${UNATTRIBUTED}"
-	fi
-	if [ $2 -ne 0 ]; then
-		echo "${BOLD}$1 test results: ${RED}failed. ${UNATTRIBUTED}"
-	fi
-}
+# Print results of iOS test initiation
+if [ $IOS_RETURN_CODE -ne 0 ]; then
+	echo "iOS test failed to initiate."
+fi
+if [ $IOS_RETURN_CODE -eq 0 ]; then
+	echo "iOS test run id: $IOS_TEST_RUN_ID"
+	echo "iOS test results: $IOS_PORTAL_URL$ANDROID_TEST_RUN_ID"
+fi
 
-print_results "Android" $ANDROID_RETURN_CODE
-echo "${BOLD}$MORE_INFORMATION_TEXT$ANDROID_PORTAL_URL$ANDROID_TEST_RUN_ID.${UNATTRIBUTED}"
-
-print_results "iOS" $IOS_RETURN_CODE
-echo "${BOLD}$MORE_INFORMATION_TEXT$IOS_PORTAL_URL$IOS_TEST_RUN_ID.${UNATTRIBUTED}"
-
-# If iOS or Android tests failed, exit failure. Otherwise exit success
+# If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
 if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
 	exit 1
 fi
+
+if [ FROM_BITRISE -eq 1 ]; then
+	envman add --key ANDROID_TEST_RUN_ID_ENV --value "$ANDROID_TEST_RUN_ID"
+	envman add --key IOS_TEST_RUN_ID_ENV --value "$IOS_TEST_RUN_ID"
+fi
+
 exit 0
