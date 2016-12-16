@@ -14,7 +14,7 @@ TEST_APK=$1
 TEST_IPA=$2
 BUILD_TARGET=$3
 CLEAN_TARGET="clean"
-
+FROM_BITRISE=0
 # If there are no arguments, use default values
 if [ -z ${1+x} ]; then
 	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
@@ -113,6 +113,14 @@ fi
 # If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
 if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
 	exit 1
+fi
+
+echo "Writing test run IDs to files..."
+if ! [ -z ${IN_BITRISE+x} ]; then # Then we are in bitrise environment
+	echo "$IOS_TEST_RUN_ID" > $IOS_TEST_RUN_ID_FILE
+	echo "$ANDROID_TEST_RUN_ID" > $ANDROID_TEST_RUN_ID_FILE
+	azure storage blob upload -q $IOS_TEST_RUN_ID_FILE $AZURE_STORAGE_CONTAINER
+	azure storage blob upload -q $ANDROID_TEST_RUN_ID_FILE $AZURE_STORAGE_CONTAINER
 fi
 
 exit 0

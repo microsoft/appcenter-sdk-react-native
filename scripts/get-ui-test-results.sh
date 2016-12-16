@@ -16,9 +16,26 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# Need to know whether we are on bitrise for environment variables
-# This is indicated by having no arguments
-if ! [ -z ${1+x} ]; then # not from bitrise
+if ! [ -z ${IN_BITRISE+x} ]; then # Then we are in bitrise environment
+	echo "Bitrise environment detected. Retrieving test run IDs from Azure Storage..."
+
+	azure storage blob download -q $AZURE_STORAGE_CONTAINER $IOS_TEST_RUN_ID_FILE
+	if [ $? -ne 0 ]; then
+		echo "Error downloading iOS test run ID."
+		exit 1
+	fi
+	azure storage blob download -q $AZURE_STORAGE_CONTAINER $ANDROID_TEST_RUN_ID_FILE
+	if [ $? -ne 0 ]; then
+		echo "Error downloading Android test run ID."
+		exit 1
+	fi
+
+	IOS_TEST_RUN_ID=$(cat "$IOS_TEST_RUN_ID_FILE")
+	$(echo "$IOS_TEST_RUN_ID") > $IOS_TEST_RUN_ID_FILE
+	$(echo "$ANDROID_TEST_RUN_ID") > $ANDROID_TEST_RUN_ID_FILE
+
+	echo "Test run IDs successfully retrieved."
+else # Not in bitrise environment
 	ANDROID_TEST_RUN_ID="$1"
 	IOS_TEST_RUN_ID="$2"
 fi
