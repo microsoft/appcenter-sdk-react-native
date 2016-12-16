@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Contoso.Forms.Puppet
+﻿namespace Contoso.Forms.Puppet
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public static class Constants
     {
         public const string Verbose = "Verbose";

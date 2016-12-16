@@ -70,6 +70,7 @@
       <DependentUpon>PropertiesContentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="FakeService.cs" />
+    <Compile Include="PreserveAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
