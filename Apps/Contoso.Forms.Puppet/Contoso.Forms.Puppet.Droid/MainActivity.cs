@@ -35,20 +35,17 @@ namespace Contoso.Forms.Puppet.Droid
     {
         public void OnSendingFailed(ILog log, Java.Lang.Exception e)
         {
-            System.Console.WriteLine("OnSendingFailed*****");
+            MobileCenterLog.Debug(App.LogTag, "Analytics listener OnSendingFailed with exception: " + e);
         }
 
         public void OnSendingSucceeded(ILog log)
         {
-            System.Console.WriteLine("OnSendingSucceeded*****");
+            MobileCenterLog.Debug(App.LogTag, "Analytics listener OnSendingSucceeded");
         }
 
         public void OnBeforeSending(ILog log)
         {
-            EventLog eventLog = log as EventLog;
-            if (eventLog != null) {
-                System.Console.WriteLine("OnBeforeSendingEventLog*****");
-            }
+            MobileCenterLog.Debug(App.LogTag, "Analytics listener OnBeforeSendingEventLog");
         }
     }
 }

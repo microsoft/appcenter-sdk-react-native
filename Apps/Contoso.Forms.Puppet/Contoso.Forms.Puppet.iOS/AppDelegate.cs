@@ -26,17 +26,17 @@ namespace Contoso.Forms.Puppet.iOS
     {
         public override void WillSendEventLog(MSAnalytics analytics, MSEventLog eventLog)
         {
-            System.Console.WriteLine("Will send event********");
+            MobileCenterLog.Debug(App.LogTag, "Will send event");
         }
 
         public override void DidSucceedSendingEventLog(MSAnalytics analytics, MSEventLog eventLog)
         {
-            System.Console.WriteLine("did send event********");
+            MobileCenterLog.Debug(App.LogTag, "Did send event");
         }
 
         public override void DidFailSendingEventLog(MSAnalytics analytics, MSEventLog eventLog, NSError error)
         {
-            System.Console.WriteLine("failed to send event********");
+            MobileCenterLog.Debug(App.LogTag, "Failed to send event with error: " + error);
         }
     }
 }
