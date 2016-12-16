@@ -92,7 +92,7 @@ if ! [ -z ${IN_BITRISE+x} ]; then # We are in bitrise environment
 	echo "Bitrise environment detected. Retrieving test run IDs from Azure Storage..."
 	# Download iOS test run ID from Azure Storage
 	download_file $IOS_TEST_RUN_ID_FILE $IOS_NAME
-	download_file $IOS_TEST_RUN_ID_FILE $ANDROID_NAME
+	download_file $ANDROID_TEST_RUN_ID_FILE $ANDROID_NAME
 	IOS_TEST_RUN_ID=$(cat "$IOS_TEST_RUN_ID_FILE")
 	ANDROID_TEST_RUN_ID=$(cat "$ANDROID_TEST_RUN_ID_FILE")
 	echo "Test run IDs successfully retrieved."
