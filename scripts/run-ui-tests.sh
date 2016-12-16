@@ -1,30 +1,30 @@
 #!/bin/bash
 
-if ! [ -z ${1+x} ]; then
-	if [ -z ${2+x} ] || [ -z ${3+x} ]; then
-		echo "Error - usage: ./run-ui-tests.sh {PATH_TO_APK} {PATH_TO_IPA} {BUILD_TARGET}"
-	fi
-fi
-
 # Define directory and file locations
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-UITEST_BUILD_DIR=$SCRIPT_DIR/../Tests/UITests/bin/Release
-BUILD_SCRIPT=build.sh
-TEST_APK=$1
-TEST_IPA=$2
-BUILD_TARGET=$3
+UITEST_BUILD_DIR="$SCRIPT_DIR/../Tests/UITests/bin/Release"
+BUILD_SCRIPT="build.sh"
+CLEAN_TARGET="clean"
 
-# If there are no arguments, use default values
-if [ -z ${1+x} ]; then
-	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
-	TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
-	BUILD_TARGET=TestApps
+# Set default values for running locally
+TEST_APK="$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk"
+TEST_IPA="$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa"
+BUILD_TARGET="TestApps"
+
+# If script is running in bitrise environment, use arguments
+if ! [ -z ${IN_BITRISE+x} ]; then # We are in bitrise environment
+	if [ -z ${3+x} ]; then # If there are not three arguments, exit failure
+		echo "Error - usage: ./run-ui-tests.sh {PATH_TO_APK} {PATH_TO_IPA} {BUILD_TARGET}"
+		exit 1
+	fi
+	TEST_APK=$1
+	TEST_IPA=$2
+	BUILD_TARGET=$3
 fi
 
 # Define test parameters
 LOCALE="en-US"
 USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
-PASSWORD="$MOBILE_CENTER_PASSWORD" # 'MOBILE_CENTER_PASSWORD' environment variable must be set
 IOS_DEVICES=8551ba4e # just one device. For a suite of 40, use 118f9d2f
 ANDROID_DEVICES=f0b8289c # just one device. For a suite of 40, use f47808f1
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
@@ -36,52 +36,72 @@ TEST_SERIES="master"
 # Define results constants
 ANDROID_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
 IOS_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$IOS_APP_NAME/test/runs/"
-ANDROID_RESULTS_FILE="android_results.txt"
-IOS_RESULTS_FILE="ios_results.txt"
-MORE_INFORMATION_TEXT="For more information, visit "
+ANDROID_INFORMATION_FILE="android_info.txt"
+IOS_INFORMATION_FILE="ios_info.txt"
+ANDROID_PLATFORM_NAME="Android"
+IOS_PLATFORM_NAME="iOS"
 
-# Define text attributes
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-BOLD=$(tput bold)
-UNATTRIBUTED=$(tput sgr0)
+# Define functions
 
-# Download and install NPM if it is not already installed
-npm -v &>/dev/null
-if [ $? -ne 0 ]; then
-	# Install npm
-	echo "Installing npm..."
-    brew install npm
-	if [ $? -ne 0 ]; then
-    	echo "An error occured while downloading npm."
-    	exit 1
-	fi 
-fi
-
-# Is Mobile Center CLI installed?
-npm list -g mobile-center-cli >/dev/null
-if [ $? -ne 0 ]; then
-	# Install Mobile Center CLI
-	echo "Installing Mobile Center CLI..."
-	npm install -g mobile-center-cli
-	if [ $? -ne 0 ]; then
-    	echo "An error occured while installing Mobile Center CLI."
-    	exit 1
+# This function extracts the test run ID from an information file, and then echoes it
+# Usage: get_test_run_id {INFORMATION_FILE}
+get_test_run_id() {
+	INFORMATION_FILE="$1"
+	while read -r line
+		do
+	if [ $(expr "$line" : "Test run id: ") -ne 0 ]; then
+		echo $(echo $line | cut -d'"' -f 2)
+		break
 	fi
-fi
+	done < $INFORMATION_FILE
+}
 
-# Log in to Mobile Center
-echo "Logging in to mobile center..."
-mobile-center login -u "$USERNAME" -p "$PASSWORD"
+# This function prints the results of test initialization
+# Usage: print_initialization_results {RETURN_CODE} {PLATFORM_NAME} {PORTAL_URL} {TEST_RUN_ID}
+print_initialization_results() {
+	RETURN_CODE=$1
+	PLATFORM_NAME="$2"
+	PORTAL_URL="$3"
+	TEST_RUN_ID="$4"
+	if [ $RETURN_CODE -ne 0 ]; then
+		echo "$PLATFORM_NAME test failed to initiate."
+	fi
+	if [ $RETURN_CODE -eq 0 ]; then
+		echo "$PLATFORM_NAME test run ID: $TEST_RUN_ID"
+		echo "$PLATFORM_NAME test results: $PORTAL_URL$TEST_RUN_ID"
+	fi
+}
+
+# This function initializes tests for the given parameters
+# Usage: initialize_tests {APP_NAME} {DEVICES_CODE} {APP_PACKAGE} {INFORMATION_FILE}
+initialize_tests() {
+	APP_NAME="$1"
+	DEVICES_CODE="$2"
+	APP_PACKAGE="$3"
+	INFORMATION_FILE="$4"
+	mobile-center test run uitest --app $APP_NAME\
+ 	--devices $DEVICES_CODE --app-path $APP_PACKAGE\
+  	--test-series $TEST_SERIES --locale $LOCALE\
+  	--build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
+	echo $?
+}
+
+# Log in to mobile center
+./mobile-center-login.sh
 if [ $? -ne 0 ]; then
-    echo "An error occured while logging into Mobile Center."
-    exit 1
+	exit 1
 fi
 
 # Build tests
-echo "Building target \"$BUILD_TARGET\"..."
-
 pushd ..
+echo "Cleaning..."
+sh $BUILD_SCRIPT -t $CLEAN_TARGET # clean so that we don't accidentally update to snapshot
+if [ $? -ne 0 ]; then
+    echo "An error occured while cleaning."
+    popd
+    exit 1
+fi
+echo "Building target \"$BUILD_TARGET\"..."
 sh $BUILD_SCRIPT -t $BUILD_TARGET
 if [ $? -ne 0 ]; then
     echo "An error occured while building tests."
@@ -91,59 +111,31 @@ fi
 popd
 
 # Run Android tests
-echo "[$(date)] Running Android tests..."
-mobile-center test run uitest --app $ANDROID_APP\
- --devices $ANDROID_DEVICES --app-path $TEST_APK\
-  --test-series $TEST_SERIES --locale $LOCALE\
-   --build-dir $UITEST_BUILD_DIR > $ANDROID_RESULTS_FILE
-ANDROID_RETURN_CODE=$?
-echo "[$(date)] Android tests completed."
-ANDROID_TEST_RUN_ID=$(
-while read -r line
-do
-	if [ $(expr "$line" : "Test run id: ") -ne 0 ]; then
-		echo $(echo $line | cut -d'"' -f 2)
-		break
-	fi
-done < $ANDROID_RESULTS_FILE)
-rm $ANDROID_RESULTS_FILE
+echo "Initializing Android tests..."
+ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK $ANDROID_INFORMATION_FILE)
+ANDROID_TEST_RUN_ID=$(get_test_run_id $ANDROID_INFORMATION_FILE)
+print_initialization_results $ANDROID_RETURN_CODE "$ANDROID_PLATFORM_NAME" "$ANDROID_PORTAL_URL" "$ANDROID_TEST_RUN_ID"
+rm $ANDROID_INFORMATION_FILE
 
 # Run iOS tests
-echo "Running iOS tests..."
-mobile-center test run uitest --app $IOS_APP\
-   --devices $IOS_DEVICES --app-path $TEST_IPA\
-   --test-series $TEST_SERIES --locale $LOCALE\
-   --build-dir $UITEST_BUILD_DIR > $IOS_RESULTS_FILE
-IOS_RETURN_CODE=$?
-echo "[$(date)] iOS tests completed."
-IOS_TEST_RUN_ID=$(
-while read -r line
-do
-   	if [ $(expr "$line" : "Test run id: ") -ne 0 ]; then
-		echo $(echo $line | cut -d'"' -f 2)
-		break
-	fi
-done < $IOS_RESULTS_FILE)
-rm $IOS_RESULTS_FILE
+echo "Initializing iOS tests..."
+IOS_RETURN_CODE=$(initialize_tests $IOS_APP $IOS_DEVICES $TEST_IPA $IOS_INFORMATION_FILE)
+IOS_TEST_RUN_ID=$(get_test_run_id $IOS_INFORMATION_FILE)
+print_initialization_results $IOS_RETURN_CODE "$IOS_PLATFORM_NAME" "$IOS_PORTAL_URL" "$IOS_TEST_RUN_ID"
+rm $IOS_INFORMATION_FILE
 
-# Print results
-print_results () {
-	if [ $2 -eq 0 ]; then
-		echo "${BOLD}$1 test results: ${GREEN}passed! ${UNATTRIBUTED}"
-	fi
-	if [ $2 -ne 0 ]; then
-		echo "${BOLD}$1 test results: ${RED}failed. ${UNATTRIBUTED}"
-	fi
-}
-
-print_results "Android" $ANDROID_RETURN_CODE
-echo "${BOLD}$MORE_INFORMATION_TEXT$ANDROID_PORTAL_URL$ANDROID_TEST_RUN_ID.${UNATTRIBUTED}"
-
-print_results "iOS" $IOS_RETURN_CODE
-echo "${BOLD}$MORE_INFORMATION_TEXT$IOS_PORTAL_URL$IOS_TEST_RUN_ID.${UNATTRIBUTED}"
-
-# If iOS or Android tests failed, exit failure. Otherwise exit success
+# If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
 if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
 	exit 1
 fi
+
+# If script is running in bitrise environment, upload test run IDs to Azure Storage
+if ! [ -z ${IN_BITRISE+x} ]; then # Then we are in bitrise environment
+	echo "Writing test run IDs to files..."
+	echo "$IOS_TEST_RUN_ID" > $IOS_TEST_RUN_ID_FILE
+	echo "$ANDROID_TEST_RUN_ID" > $ANDROID_TEST_RUN_ID_FILE
+	azure storage blob upload -q $IOS_TEST_RUN_ID_FILE $AZURE_STORAGE_CONTAINER
+	azure storage blob upload -q $ANDROID_TEST_RUN_ID_FILE $AZURE_STORAGE_CONTAINER
+fi
+
 exit 0

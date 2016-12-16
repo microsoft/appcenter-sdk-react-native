@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,7 +31,8 @@
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;ENABLE_TEST_CLOUD;</DefineConstants>
@@ -49,7 +50,8 @@
     <BuildIpa>true</BuildIpa>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;ENABLE_TEST_CLOUD;</DefineConstants>
@@ -83,10 +85,35 @@
     <MtouchArch>ARMv7, ARMv7s, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <MtouchExtraArgs></MtouchExtraArgs>
+    <MtouchExtraArgs>
+    </MtouchExtraArgs>
     <BuildIpa>true</BuildIpa>
-</PropertyGroup>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0002-f165ca7/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0002-f165ca7/lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0002-f165ca7/lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0002-f165ca7/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0002-f165ca7/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0002-f165ca7/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -105,24 +132,6 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.175\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.5.0-r0003-1ca4f82\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.5.0-r0003-1ca4f82\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.5.0-r0003-1ca4f82\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.5.0-r0003-1ca4f82\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.5.0-r0003-1ca4f82\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.5.0-r0003-1ca4f82\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -152,13 +161,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.3.175\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.3.175\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
-<PropertyGroup>
-       <CreateIpaDependsOn>
+  <PropertyGroup>
+    <CreateIpaDependsOn>
        $(CreateIpaDependsOn);
         CopyIpa
        </CreateIpaDependsOn>
-</PropertyGroup>
-<Target Name="CopyIpa" Condition="'$(OutputType)' == 'Exe'&#xA;        And '$(ComputedPlatform)' == 'iPhone'&#xA;        And '$(BuildIpa)' == 'true'">
+  </PropertyGroup>
+  <Target Name="CopyIpa" Condition="'$(OutputType)' == 'Exe'&#xA;        And '$(ComputedPlatform)' == 'iPhone'&#xA;        And '$(BuildIpa)' == 'true'">
     <Copy SourceFiles="$(IpaPackagePath)" DestinationFolder="$(OutputPath)" />
-</Target>
+  </Target>
 </Project>

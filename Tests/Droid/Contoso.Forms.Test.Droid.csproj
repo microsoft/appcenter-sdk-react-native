@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,6 +41,30 @@
     <AndroidSupportedAbis>x86;x86_64;armeabi;armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0002-f165ca7/lib/MonoAndroid403/Microsoft.Azure.Mobile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0002-f165ca7/lib/MonoAndroid403//Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0002-f165ca7/lib/MonoAndroid403//Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0002-f165ca7/lib/MonoAndroid403/Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0002-f165ca7/lib/MonoAndroid403/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0002-f165ca7/lib/MonoAndroid403/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -83,24 +107,6 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.175\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.5.0-r0003-1ca4f82\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.5.0-r0003-1ca4f82\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.5.0-r0003-1ca4f82\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.5.0-r0003-1ca4f82\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.5.0-r0003-1ca4f82\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.5.0-r0003-1ca4f82\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
