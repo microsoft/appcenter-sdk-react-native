@@ -1,16 +1,20 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.IO;
+using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class CrashesContentPage
     {
         public CrashesContentPage()
         {
             InitializeComponent();
-            if (Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
             {
                 Icon = "socket.png";
             }
@@ -20,41 +24,29 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = Crashes.Enabled;
+            CrashesEnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
-        void TestCrash(object sender, System.EventArgs e)
+        void TestCrash(object sender, EventArgs e)
         {
             Crashes.GenerateTestCrash();
         }
 
-        void DivideByZero(object sender, System.EventArgs e)
-        {
-            (42 / int.Parse("0")).ToString();
-        }
-
-        void UpdateEnabled(object sender, System.EventArgs e)
-        {
-            if (CrashesEnabledSwitchCell != null)
-            {
-                Crashes.Enabled = CrashesEnabledSwitchCell.On;
-            }
-        }
-
-        private void GenerateTestCrash(object sender, EventArgs e)
-        {
-            Crashes.GenerateTestCrash();
-        }
-
-        private void CatchNullReferenceException(object sender, EventArgs e)
+        void DivideByZero(object sender, EventArgs e)
         {
             try
             {
-                TriggerNullReferenceException();
+                int x = (42 / int.Parse("0"));
             }
-            catch (NullReferenceException ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine("null reference exception");
+                System.Diagnostics.Debug.WriteLine("CAUGHT THE EXCEPTION");
             }
+        }
+
+        void UpdateEnabled(object sender, ToggledEventArgs e)
+        {
+            Crashes.Enabled = e.Value;
         }
 
         private void CrashWithNullReferenceException(object sender, EventArgs e)

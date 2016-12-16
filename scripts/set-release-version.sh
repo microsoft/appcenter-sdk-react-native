@@ -8,4 +8,15 @@ currentVersion=`grep AssemblyInformationalVersion SDK/MobileCenter/Microsoft.Azu
 officialVersion=`sed -E 's/(.*)-.*/\1/' <<< "$currentVersion"`
 
 # Replace version in all the assemblies
-find SDK -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$officialVersion\")/g"
+for file in `find . -name AssemblyInfo.cs | grep -v Demo`
+do
+    sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$officialVersion\")/g" $file
+done
+
+sed -E -i '' "s/(Version = \")(.*)\"/\1$officialVersion\"/g" SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs
+
+# Replace android versions
+for file in `find . -name AndroidManifest.xml | grep Properties | grep -v Demo`
+do
+    sed -E -i '' "s/(android:versionName=\")([^\"]+)/\1$officialVersion/g" $file
+done

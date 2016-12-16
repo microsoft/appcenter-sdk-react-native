@@ -6,13 +6,14 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class MobileCenterContentPage : ContentPage
     {
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
-        private Dictionary<LogLevel, Action<string, string>> LogFunctions;
-        private Dictionary<LogLevel, string> LogLevelNames;
-        private LogLevel LogWriteLevel;
+        Dictionary<LogLevel, Action<string, string>> LogFunctions;
+        Dictionary<LogLevel, string> LogLevelNames;
+        LogLevel LogWriteLevel;
 
         public MobileCenterContentPage()
         {
@@ -50,16 +51,17 @@ namespace Contoso.Forms.Puppet
 
         }
 
-        void LogLevelCellTapped(object sender, System.EventArgs e)
+        void LogLevelCellTapped(object sender, EventArgs e)
         {
             var page = new LogLevelPage();
-            page.LevelSelected += (LogLevel level) => { 
+            page.LevelSelected += (LogLevel level) =>
+            {
                 MobileCenter.LogLevel = level;
             };
-            ((NavigationPage)App.Current.MainPage).PushAsync(page);
+            ((NavigationPage)Application.Current.MainPage).PushAsync(page);
         }
 
-        void LogWriteLevelCellTapped(object sender, System.EventArgs e)
+        void LogWriteLevelCellTapped(object sender, EventArgs e)
         {
             var page = new LogLevelPage();
             page.LevelSelected += (LogLevel level) =>
@@ -67,7 +69,7 @@ namespace Contoso.Forms.Puppet
                 LogWriteLevel = level;
                 UpdateLogWriteLevelLabel();
             };
-            ((NavigationPage)App.Current.MainPage).PushAsync(page);
+            ((NavigationPage)Application.Current.MainPage).PushAsync(page);
         }
 
         void WriteLog(object sender, System.EventArgs e)
@@ -77,12 +79,9 @@ namespace Contoso.Forms.Puppet
             LogFunctions[LogWriteLevel](tag, message);
         }
 
-        void UpdateEnabled(object sender, System.EventArgs e)
+        void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            if (MobileCenterEnabledSwitchCell != null)
-            {
-                MobileCenter.Enabled = MobileCenterEnabledSwitchCell.On;
-            }
+            MobileCenter.Enabled = e.Value;
         }
 
         void UpdateLogWriteLevelLabel()
