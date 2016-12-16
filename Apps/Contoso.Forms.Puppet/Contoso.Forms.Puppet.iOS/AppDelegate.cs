@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics.iOS.Bindings;
 using UIKit;
 
 namespace Contoso.Forms.Puppet.iOS
@@ -10,7 +11,7 @@ namespace Contoso.Forms.Puppet.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Xamarin.Forms.Forms.Init();
-
+            MSAnalytics.SetDelegate(new AnalyticsDelegate());
             MobileCenterLog.Assert(App.LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
             MobileCenterLog.Assert(App.LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
             MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
@@ -18,6 +19,24 @@ namespace Contoso.Forms.Puppet.iOS
 
             LoadApplication(new App());
             return base.FinishedLaunching(uiApplication, launchOptions);
+        }
+    }
+
+    public class AnalyticsDelegate : MSAnalyticsDelegate
+    {
+        public override void WillSendEventLog(MSAnalytics analytics, MSEventLog eventLog)
+        {
+            MobileCenterLog.Debug(App.LogTag, "Will send event");
+        }
+
+        public override void DidSucceedSendingEventLog(MSAnalytics analytics, MSEventLog eventLog)
+        {
+            MobileCenterLog.Debug(App.LogTag, "Did send event");
+        }
+
+        public override void DidFailSendingEventLog(MSAnalytics analytics, MSEventLog eventLog, NSError error)
+        {
+            MobileCenterLog.Debug(App.LogTag, "Failed to send event with error: " + error);
         }
     }
 }
