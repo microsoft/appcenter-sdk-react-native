@@ -31,9 +31,7 @@ if ! [ -z ${IN_BITRISE+x} ]; then # Then we are in bitrise environment
 	fi
 
 	IOS_TEST_RUN_ID=$(cat "$IOS_TEST_RUN_ID_FILE")
-	$(echo "$IOS_TEST_RUN_ID") > $IOS_TEST_RUN_ID_FILE
-	$(echo "$ANDROID_TEST_RUN_ID") > $ANDROID_TEST_RUN_ID_FILE
-
+	ANDROID_TEST_RUN_ID=$(cat "$ANDROID_TEST_RUN_ID_FILE")
 	echo "Test run IDs successfully retrieved."
 else # Not in bitrise environment
 	ANDROID_TEST_RUN_ID="$1"
