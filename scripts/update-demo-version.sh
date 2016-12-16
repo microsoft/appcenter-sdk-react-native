@@ -23,8 +23,5 @@ do
     versionName=$1 perl -pi -e 'undef $/; s/(CFBundleShortVersionString<\/key>\s*<string>)([^<]*)/${1}$ENV{versionName}/' $file
 done
 
-# Replace nuget package dependencies for Mobile Center
-for file in `find Apps -name packages.config | grep Demo`
-do
-    sed -E -i '' "s/(Microsoft.Azure.Mobile.*version=\")([^\"]*)/\1$1/g" $file
-done
+# Update nuget package dependencies for Mobile Center
+./build.sh -t UpdateDemoDependencies

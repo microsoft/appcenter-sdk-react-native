@@ -169,6 +169,13 @@ Task("RestoreTestPackages").Does(() =>
 	NuGetUpdate("./Tests/Droid/packages.config");
 });
 
+Task("UpdateDemoDependencies").Does(() =>
+{
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config");
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config");
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config");
+});
+
 // Cleaning up files/directories.
 Task("clean").Does(() =>
 {

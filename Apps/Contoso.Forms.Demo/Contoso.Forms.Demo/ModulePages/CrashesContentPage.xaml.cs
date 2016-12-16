@@ -34,14 +34,10 @@ namespace Contoso.Forms.Demo
 
         void DivideByZero(object sender, EventArgs e)
         {
-            try
-            {
-                int x = (42 / int.Parse("0"));
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Debug.WriteLine("CAUGHT THE EXCEPTION");
-            }
+            /* This is supposed to cause a crash, so we don't care that the variable 'x' is never used */
+#pragma warning disable CS0219
+            int x = (42 / int.Parse("0"));
+#pragma warning restore CS0219
         }
 
         void UpdateEnabled(object sender, ToggledEventArgs e)
