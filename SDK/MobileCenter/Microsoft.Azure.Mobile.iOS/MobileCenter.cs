@@ -150,7 +150,7 @@ namespace Microsoft.Azure.Mobile
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid InstallId => Guid.Parse(iOSMobileCenter.InstallId().ToString());
+        public static Guid? InstallId => Guid.Parse(iOSMobileCenter.InstallId().ToString());
 
         private static Class[] GetServices(IEnumerable<Type> services)
         {

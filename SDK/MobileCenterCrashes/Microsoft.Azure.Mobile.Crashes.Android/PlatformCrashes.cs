@@ -184,7 +184,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return modelFrames;
         }
 
-        private class CrashListener : Java.Lang.Object, AndroidCrashes.IWrapperSdkListener
+        class CrashListener : Java.Lang.Object, AndroidCrashes.IWrapperSdkListener
         {
             public void OnCrashCaptured(AndroidManagedErrorLog errorLog)
             {

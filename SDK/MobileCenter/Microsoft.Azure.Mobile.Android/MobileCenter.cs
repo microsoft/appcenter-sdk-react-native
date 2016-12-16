@@ -146,7 +146,18 @@ namespace Microsoft.Azure.Mobile
         /// <remarks>
         /// The identifier is lost if clearing application data or uninstalling application.
         /// </remarks>
-        public static Guid InstallId => Guid.Parse(AndroidMobileCenter.InstallId.ToString());
+        public static Guid? InstallId
+        {
+            get
+            {
+                var installId = AndroidMobileCenter.InstallId;
+                if (installId != null)
+                {
+                    return Guid.Parse(installId.ToString());
+                }
+                return null;
+            }
+        }
 
         private static Application SetWrapperSdkAndGetApplication()
         {

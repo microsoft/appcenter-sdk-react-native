@@ -17,6 +17,7 @@ namespace Contoso.Forms.Demo
         public string Value;
     }
 
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AnalyticsContentPage : ContentPage
     {
         List<Property> EventProperties;

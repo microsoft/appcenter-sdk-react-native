@@ -1,11 +1,10 @@
-﻿using System.Reflection;
-
-namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.Azure.Mobile
 {
     public static class WrapperSdk
     {
         public const string Name = "mobilecenter.xamarin";
 
-        internal static readonly string Version = typeof(WrapperSdk).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+        /* We can't use reflection for assemblyInformationalVersion on iOS with "Link All" optimization. */
+        internal const string Version = "0.5.1-SNAPSHOT";
     }
 }
