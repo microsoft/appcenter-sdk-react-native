@@ -200,7 +200,7 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         };
         ```
 
-    * **Error attachment:**  If you'd like to attach text/binary data to a crash report, implement this callback. Before sending the crash, our SDK will add the attachment to the crash report and you can view it on the Mobile Center portal.   
+    * **Error attachment:**  If you'd like to attach text/binary data to a crash report, implement this callback. Before sending the crash, our SDK will add the attachment to the crash report and you can view it on the Mobile Center portal. Note that attachment will show in the portal in the future as the UI is still not ready.
 
         ```csharp
         Crashes.GetErrorAttachment = (report) =>
