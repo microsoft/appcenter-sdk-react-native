@@ -40,8 +40,8 @@ Additional Grant of Patent Rights Version 2
 
 "Software" means the React Native software distributed by Facebook, Inc.
 
-Facebook, Inc. (“Facebook”) hereby grants to each recipient of the Software
-(“you”) a perpetual, worldwide, royalty-free, non-exclusive, irrevocable
+Facebook, Inc. (â€œFacebookâ€œ) hereby grants to each recipient of the Software
+(â€œyouâ€œ) a perpetual, worldwide, royalty-free, non-exclusive, irrevocable
 (subject to the termination provision below) license under any Necessary
 Claims, to make, have made, use, sell, offer to sell, import, and otherwise
 transfer the Software. For avoidance of doubt, no license is granted under
