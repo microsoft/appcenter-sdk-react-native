@@ -14,18 +14,12 @@ TEST_APK=$1
 TEST_IPA=$2
 BUILD_TARGET=$3
 CLEAN_TARGET="clean"
-FROM_BITRISE=0
+
 # If there are no arguments, use default values
 if [ -z ${1+x} ]; then
 	TEST_APK=$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk
 	TEST_IPA=$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa
 	BUILD_TARGET=TestApps
-fi
-
-# Need to know whether we are on bitrise for environment variables
-# This is indicated by a fourth argument - if there is one, we are on bitrise
-if ! [ -z ${4+x} ]; then
-	FROM_BITRISE=1
 fi
 
 # Define test parameters
@@ -119,11 +113,6 @@ fi
 # If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
 if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
 	exit 1
-fi
-
-if [ $FROM_BITRISE -eq 1 ]; then
-	envman add --key ANDROID_TEST_RUN_ID_ENV --value "$ANDROID_TEST_RUN_ID"
-	envman add --key IOS_TEST_RUN_ID_ENV --value "$IOS_TEST_RUN_ID"
 fi
 
 exit 0

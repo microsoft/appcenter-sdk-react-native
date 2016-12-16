@@ -21,9 +21,6 @@ fi
 if ! [ -z ${1+x} ]; then # not from bitrise
 	ANDROID_TEST_RUN_ID="$1"
 	IOS_TEST_RUN_ID="$2"
-else
-	ANDROID_TEST_RUN_ID="$ANDROID_TEST_RUN_ID_ENV"
-	IOS_TEST_RUN_ID="$IOS_TEST_RUN_ID_ENV"
 fi
 
 # Define text attributes
