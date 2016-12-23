@@ -70,7 +70,7 @@ Multiplatform Xamarin.Forms app has three projects in your solution - portable c
 
 ## Using Package Manager Console ##
 
-* Open Package Manager Console in either Xamarin Studio or Visual Studio  
+* Make sure Package Manager Console is opened in either Xamarin Studio or Visual Studio. You will have to install an add-in for Xamarin Studio.
 * Type the following commands:  
    PM> Install-Package Microsoft.Azure.Mobile.Analytics   
    PM> Install-Package Microsoft.Azure.Mobile.Crashes
