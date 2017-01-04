@@ -61,10 +61,5 @@ namespace Contoso.Forms.Test.UITests
             }
             return true;
         }
-
-        static void ResetAnalyticsResults()
-        {
-            app.Tap(TestStrings.ResetPageButton);
-        }
     }
 }

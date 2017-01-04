@@ -59,6 +59,48 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
+        public void TestServiceStatePersistence()
+        {
+            ServiceStateHelper.app = app;
+            app.Tap(TestStrings.GoToTogglePageButton);
+
+            /* Make sure Crashes enabled state is persistent */
+            ServiceStateHelper.MobileCenterEnabled = true;
+            ServiceStateHelper.CrashesEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+            app = AppInitializer.StartAppNoClear(platform);
+            app.Tap(TestStrings.GoToTogglePageButton);
+            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
+            Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+
+            /* Make sure Analytics enabled state is persistent */
+            ServiceStateHelper.MobileCenterEnabled = true;
+            ServiceStateHelper.AnalyticsEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            app = AppInitializer.StartAppNoClear(platform);
+            app.Tap(TestStrings.GoToTogglePageButton);
+            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
+
+            /* Make sure MobileCenter enabled state is persistent */
+            ServiceStateHelper.MobileCenterEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+            Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            app = AppInitializer.StartAppNoClear(platform);
+            app.Tap(TestStrings.GoToTogglePageButton);
+            Assert.IsFalse(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+
+            /* Reset services to enabled */
+            ServiceStateHelper.MobileCenterEnabled = true;
+        }
+
+
+        [Test]
         public void SendEventWithProperties()
         {
             app.Tap(TestStrings.GoToAnalyticsPageButton);
@@ -73,7 +115,7 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsTrue(AnalyticsResultsHelper.VerifyNumProperties(numProperties));
             Assert.IsTrue(AnalyticsResultsHelper.SentEventWasCalled);
             Assert.IsFalse(AnalyticsResultsHelper.FailedToSendEventWasCalled);
-        }
+        } 
 
         [Test]
         public void SendEventWithNoProperties()
@@ -93,6 +135,29 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
+        public void SendEventWithAnalyticsDisabled()
+        {
+            /* Disable Analytics */
+            ServiceStateHelper.app = app;
+            app.Tap(TestStrings.GoToTogglePageButton);
+            ServiceStateHelper.AnalyticsEnabled = false;
+            app.Tap(TestStrings.DismissButton);
+
+            app.Tap(TestStrings.GoToAnalyticsPageButton);
+            int numProperties = 1;
+            SendEvent(numProperties);
+            app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
+
+            /* Verify that the event was not sent */
+            AnalyticsResultsHelper.app = app;
+            Assert.IsFalse(AnalyticsResultsHelper.SendingEventWasCalled);
+            Assert.IsFalse(AnalyticsResultsHelper.VerifyEventName());
+            Assert.IsFalse(AnalyticsResultsHelper.VerifyNumProperties(numProperties));
+            Assert.IsFalse(AnalyticsResultsHelper.SentEventWasCalled);
+            Assert.IsFalse(AnalyticsResultsHelper.FailedToSendEventWasCalled);
+        }
+
+        [Test]
         public void TestCrash()
         {
             /* Crash the application with a test crash exception and then restart */
@@ -106,6 +171,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void InvalidOperation()
         {
+            
             /* Crash the application with an invalid operation exception and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashWithInvalidOperationButton);
@@ -152,7 +218,7 @@ namespace Contoso.Forms.Test.UITests
         /* Verify that a crash has been triggered and handled correctly */
         public void TestSuccessfulCrash()
         {
-            app = AppInitializer.StartApp(platform);
+            app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToCrashResultsPageButton);
 
             /* Ensure that the callbacks were properly called */
@@ -168,6 +234,10 @@ namespace Contoso.Forms.Test.UITests
             LastSessionErrorReportHelper.app = app;
             app.Tap(TestStrings.ViewLastSessionErrorReportButton);
             Assert.IsTrue(LastSessionErrorReportHelper.DeviceReported);
+            Assert.IsTrue(LastSessionErrorReportHelper.HasId);
+            Assert.IsTrue(LastSessionErrorReportHelper.HasAppErrorTime);
+            Assert.IsTrue(LastSessionErrorReportHelper.HasAppStartTime);
+
             if (platform == Platform.Android)
             {
                 Assert.IsTrue(LastSessionErrorReportHelper.HasAndroidDetails);
@@ -190,5 +260,6 @@ namespace Contoso.Forms.Test.UITests
             }
             app.Tap(TestStrings.SendEventButton);
         }
+
     }
 }
