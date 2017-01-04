@@ -59,7 +59,7 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void SendEvents()
+        public void SendEventWithProperties()
         {
             app.Tap(TestStrings.GoToAnalyticsPageButton);
             int numProperties = 5;
@@ -76,9 +76,26 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
+        public void SendEventWithNoProperties()
+        {
+            app.Tap(TestStrings.GoToAnalyticsPageButton);
+            int numProperties = 0;
+            SendEvent(numProperties);
+            app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
+
+            /* Verify that the event was sent properly */
+            AnalyticsResultsHelper.app = app;
+            Assert.IsTrue(AnalyticsResultsHelper.SendingEventWasCalled);
+            Assert.IsTrue(AnalyticsResultsHelper.VerifyEventName());
+            Assert.IsTrue(AnalyticsResultsHelper.VerifyNumProperties(numProperties));
+            Assert.IsTrue(AnalyticsResultsHelper.SentEventWasCalled);
+            Assert.IsFalse(AnalyticsResultsHelper.FailedToSendEventWasCalled);
+        }
+
+        [Test]
         public void TestCrash()
         {
-            /* Crash the application with a test crash exception and then restart*/
+            /* Crash the application with a test crash exception and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.GenerateTestCrashButton);
             TestSuccessfulCrash();
@@ -89,7 +106,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void InvalidOperation()
         {
-            /* Crash the application with an invalid operation exception and then restart*/
+            /* Crash the application with an invalid operation exception and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashWithInvalidOperationButton);
             TestSuccessfulCrash();
@@ -100,7 +117,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void AggregateException()
         {
-            /* Crash the application with an aggregate exception and then restart*/
+            /* Crash the application with an aggregate exception and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashWithAggregateExceptionButton);
             TestSuccessfulCrash();
@@ -111,7 +128,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void DivideByZero()
         {
-            /* Crash the application with a divide by zero exception and then restart*/
+            /* Crash the application with a divide by zero exception and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.DivideByZeroCrashButton);
             TestSuccessfulCrash();
@@ -122,7 +139,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void AsyncTaskException()
         {
-            /* Crash the application inside an asynchronous task and then restart*/
+            /* Crash the application inside an asynchronous task and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashInsideAsyncTaskButton);
             TestSuccessfulCrash();
@@ -147,7 +164,7 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsTrue(CrashResultsHelper.ShouldAwaitUserConfirmationWasCalled);
             Assert.IsTrue(CrashResultsHelper.GetErrorAttachmentWasCalled);
 
-            /* Verify that the error report is correct*/
+            /* Verify that the error report is correct */
             LastSessionErrorReportHelper.app = app;
             app.Tap(TestStrings.ViewLastSessionErrorReportButton);
             Assert.IsTrue(LastSessionErrorReportHelper.DeviceReported);
