@@ -30,8 +30,25 @@ namespace Contoso.Forms.Test.iOS
     {
         public override void WillSendEventLog(MSAnalytics analytics, MSEventLog eventLog)
         {
-            EventData.Name = eventLog.Name;
-            EventData.Properties = new Dictionary<string, string>();
+            EventSharer.InvokeSendingEvent(LogToEventData(eventLog));
+        }
+
+        public override void DidSucceedSendingEventLog(MSAnalytics analytics, MSEventLog eventLog)
+        {
+            EventSharer.InvokeSentEvent(LogToEventData(eventLog));
+        }
+
+        public override void DidFailSendingEventLog(MSAnalytics analytics, MSEventLog eventLog, NSError error)
+        {
+            EventSharer.InvokeFailedToSendEvent(LogToEventData(eventLog));
+        }
+
+        private EventData LogToEventData(MSEventLog eventLog)
+        {
+            var data = new EventData();
+
+            data.Name = eventLog.Name;
+            data.Properties = new Dictionary<string, string>();
 
             if (eventLog.Properties != null)
             {
@@ -40,18 +57,10 @@ namespace Contoso.Forms.Test.iOS
                     string strVal = eventLog.Properties.ValueForKey(nsstringKey).ToString();
                     string strKey = nsstringKey.ToString();
 
-                    EventData.Properties.Add(strKey, strVal);
+                    data.Properties.Add(strKey, strVal);
                 }
             }
-            EventData.Updated();
-        }
-
-        public override void DidSucceedSendingEventLog(MSAnalytics analytics, MSEventLog eventLog)
-        {
-        }
-
-        public override void DidFailSendingEventLog(MSAnalytics analytics, MSEventLog eventLog, NSError error)
-        {
+            return data;
         }
     }
 }

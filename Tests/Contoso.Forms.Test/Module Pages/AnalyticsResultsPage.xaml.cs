@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Test
@@ -10,18 +8,46 @@ namespace Contoso.Forms.Test
         public AnalyticsResultsPage()
         {
             InitializeComponent();
-            EventData.UpdatedEvent += () =>
+
+            EventSharer.SendingEvent += (EventData data) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     if (EventNameLabel != null)
                     {
-                        EventNameLabel.Text = EventData.Name;
+                        EventNameLabel.Text = data.Name;
                     }
 
                     if (EventPropertiesLabel != null)
                     {
-                        EventPropertiesLabel.Text = EventData.Properties == null ? "0" : EventData.Properties.Values.Count.ToString();
+                        EventPropertiesLabel.Text = data.Properties == null ? "0" : data.Properties.Values.Count.ToString();
+                    }
+
+                    if (DidSendingEventLabel != null)
+                    {
+                        DidSendingEventLabel.Text = TestStrings.DidSendingEventText;
+                    }
+                });
+            };
+
+            EventSharer.SentEvent += (EventData data) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    if (DidSentEventLabel != null)
+                    {
+                        DidSentEventLabel.Text = TestStrings.DidSentEventText;
+                    }
+                });
+            };
+
+            EventSharer.FailedToSendEvent += (EventData data) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    if (DidFailedToSendEventLabel != null)
+                    {
+                        DidFailedToSendEventLabel.Text = TestStrings.DidFailedToSendEventText;
                     }
                 });
             };
@@ -32,5 +58,13 @@ namespace Contoso.Forms.Test
             Navigation.PopModalAsync();
         }
 
+        void ResetPage(object sender, EventArgs e)
+        {
+            EventNameLabel.Text = "";
+            EventPropertiesLabel.Text = "";
+            DidSentEventLabel.Text = "";
+            DidSentEventLabel.Text = "";
+            DidFailedToSendEventLabel.Text = "";
+        } 
     }
 }

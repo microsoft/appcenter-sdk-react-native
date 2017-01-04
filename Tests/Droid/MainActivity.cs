@@ -39,28 +39,36 @@ namespace Contoso.Forms.Test.Droid
     {
         public void OnSendingFailed(ILog log, Java.Lang.Exception e)
         {
+            EventSharer.InvokeFailedToSendEvent(LogToEventData(log));
         }
 
         public void OnSendingSucceeded(ILog log)
         {
+            EventSharer.InvokeSentEvent(LogToEventData(log));
         }
 
         public void OnBeforeSending(ILog log)
         {
+            EventSharer.InvokeSendingEvent(LogToEventData(log));
+        }
+
+        private EventData LogToEventData(ILog log)
+        {
             EventLog eventlog = log as EventLog;
+            EventData data = new EventData();
             if (eventlog != null)
             {
-                EventData.Name = eventlog.Name;
-                EventData.Properties = new Dictionary<string, string>();
+                data.Name = eventlog.Name;
+                data.Properties = new Dictionary<string, string>();
                 if (eventlog.Properties != null)
                 {
                     foreach (string key in eventlog.Properties.Keys)
                     {
-                        EventData.Properties.Add(key, eventlog.Properties[key]);
+                        data.Properties.Add(key, eventlog.Properties[key]);
                     }
                 }
             }
-            EventData.Updated();
+            return data;
         }
     }
 }

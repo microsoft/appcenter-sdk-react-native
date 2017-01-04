@@ -113,7 +113,7 @@ namespace Contoso.Forms.Test
     {
         internal async static Task DoStuffInBackground()
         {
-            await Task.Run(() => { throw new IOException("Server did not respond"); });
+            await Task.Run(() => { throw new IOException(TestStrings.IOExceptionMessage); });
         }
     }
 }

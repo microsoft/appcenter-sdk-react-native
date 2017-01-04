@@ -9,6 +9,30 @@ namespace Contoso.Forms.Test.UITests
     {
         public static IApp app;
 
+        public static bool SendingEventWasCalled
+        {
+            get
+            {
+                return WaitForLabelToSay(TestStrings.DidSendingEventLabel, TestStrings.DidSendingEventText);
+            }
+        }
+
+        public static bool SentEventWasCalled
+        {
+            get
+            {
+                return WaitForLabelToSay(TestStrings.DidSentEventLabel, TestStrings.DidSentEventText);
+            }
+        }
+
+        public static bool FailedToSendEventWasCalled
+        {
+            get
+            {
+                return WaitForLabelToSay(TestStrings.DidFailedToSendEventLabel, TestStrings.DidFailedToSendEventText);
+            }
+        }
+
         public static bool VerifyNumProperties(int count)
         {
             return WaitForLabelToSay(TestStrings.EventPropertiesLabel, count.ToString());
@@ -36,6 +60,11 @@ namespace Contoso.Forms.Test.UITests
                 return false;
             }
             return true;
+        }
+
+        static void ResetAnalyticsResults()
+        {
+            app.Tap(TestStrings.ResetPageButton);
         }
     }
 }
