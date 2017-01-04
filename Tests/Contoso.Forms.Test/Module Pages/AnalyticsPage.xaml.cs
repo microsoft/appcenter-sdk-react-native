@@ -21,6 +21,11 @@ namespace Contoso.Forms.Test
             Navigation.PopModalAsync();
         }
 
+        void GoToAnalyticsResultsPage(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new AnalyticsResultsPage());
+        }
+
         void SendEvent(object sender, EventArgs e)
         {
             string name = "UITest Event";

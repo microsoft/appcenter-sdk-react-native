@@ -90,5 +90,11 @@
         public static readonly string SendEventButton = "SendEventButton";
         public static readonly string AddPropertyButton = "AddPropertyButton";
         public static readonly string ClearPropertiesButton = "ClearPropertiesButton";
+        public static readonly string GoToAnalyticsResultsPageButton = "GoToAnalyticsResultsPageButton";
+
+        /* AnalyticsResultsPage */
+        /* Automation Ids */
+        public static readonly string EventPropertiesLabel = "EventPropertiesLabel";
+        public static readonly string EventNameLabel = "EventNameLabel";
     }
 }
