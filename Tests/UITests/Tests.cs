@@ -51,7 +51,7 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.CrashesEnabled = false;
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
 
-            /* Test that enabling MobileCenter enabling everything, regardless of previous states */
+            /* Test that enabling MobileCenter enables everything, regardless of previous states */
             ServiceStateHelper.MobileCenterEnabled = true;
             Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
             Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
