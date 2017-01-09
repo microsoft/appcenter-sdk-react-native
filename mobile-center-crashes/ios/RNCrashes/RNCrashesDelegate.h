@@ -2,7 +2,7 @@
 
 @import MobileCenterCrashes;
 
-#import "RCTBridge.h"
+#import <React/RCTBridge.h>
 
 @class RNCrashes;
 @class MSErrorReport;

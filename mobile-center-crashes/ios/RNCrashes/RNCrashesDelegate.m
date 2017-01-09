@@ -1,6 +1,6 @@
 #import "RNCrashesDelegate.h"
 
-#import "RCTEventDispatcher.h"
+#import <React/RCTEventDispatcher.h>
 #import "RNCrashesUtils.h"
 
 @import MobileCenterCrashes.MSErrorAttachment;
