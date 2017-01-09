@@ -29,17 +29,27 @@ IOS_DEVICES=8551ba4e # just one device. For a suite of 40, use 118f9d2f
 ANDROID_DEVICES=f0b8289c # just one device. For a suite of 40, use f47808f1
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
 IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
-ANDROID_APP="$USERNAME/$ANDROID_APP_NAME"
-IOS_APP="$USERNAME/$IOS_APP_NAME"
+ANDROID_APP="$MOBILE_CENTER_TEST_APP_USERNAME/$ANDROID_APP_NAME"
+IOS_APP="$MOBILE_CENTER_TEST_APP_USERNAME/$IOS_APP_NAME"
 TEST_SERIES="master"
 
 # Define results constants
-ANDROID_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://mobile.azure.com/users/$USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_TEST_APP_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_TEST_APP_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 ANDROID_INFORMATION_FILE="android_info.txt"
 IOS_INFORMATION_FILE="ios_info.txt"
 ANDROID_PLATFORM_NAME="Android"
 IOS_PLATFORM_NAME="iOS"
+
+# If the MOBILE_CENTER_ANDROID_DEVICES environment variable is set, use it as the ANDROID_DEVICES
+if ! [ -z ${MOBILE_CENTER_ANDROID_DEVICES+x} ]; then
+	ANDROID_DEVICES="$MOBILE_CENTER_ANDROID_DEVICES"
+fi
+
+# If the MOBILE_CENTER_IOS_DEVICES environment variable is set, use it as the IOS_DEVICES
+if ! [ -z ${MOBILE_CENTER_IOS_DEVICES+x} ]; then
+	IOS_DEVICES="$MOBILE_CENTER_IOS_DEVICES"
+fi
 
 # Define functions
 
@@ -85,6 +95,12 @@ initialize_tests() {
   	--build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
 	echo $?
 }
+
+# The MOBILE_CENTER_TEST_APP_USERNAME environment variable must be set
+if [ -z ${MOBILE_CENTER_TEST_APP_USERNAME+x} ]; then
+	echo "Error - the environment variable MOBILE_CENTER_TEST_APP_USERNAME must be set."
+	exit 1
+fi
 
 # Log in to mobile center
 ./mobile-center-login.sh
