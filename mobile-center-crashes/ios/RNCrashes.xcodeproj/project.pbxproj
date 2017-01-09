@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNCrashes.h */; };
 		5419C2761D824AA700DDF3A1 /* RNCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2751D824AA700DDF3A1 /* RNCrashes.m */; };
+		BD18B4F11E243AE8005FBAB8 /* RNCrashes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNCrashes.h */; };
+		BD3B69BC1E243F1100F29911 /* RNCrashesDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB4D6D6B1DB6C6DB0080D9D6 /* RNCrashesDelegate.h */; };
 		CB4D6D6F1DB6C6DB0080D9D6 /* RNCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D6D6C1DB6C6DB0080D9D6 /* RNCrashesDelegate.m */; };
 		CB4D6D701DB6C6DB0080D9D6 /* RNCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D6D6E1DB6C6DB0080D9D6 /* RNCrashesUtils.m */; };
 /* End PBXBuildFile section */
@@ -20,6 +22,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				BD3B69BC1E243F1100F29911 /* RNCrashesDelegate.h in CopyFiles */,
 				5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,14 +81,26 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		BD18B4F01E243ADC005FBAB8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD18B4F11E243AE8005FBAB8 /* RNCrashes.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		5419C26F1D824AA700DDF3A1 /* RNCrashes */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5419C2791D824AA700DDF3A1 /* Build configuration list for PBXNativeTarget "RNCrashes" */;
 			buildPhases = (
+				BD18B4F01E243ADC005FBAB8 /* Headers */,
+				5419C26E1D824AA700DDF3A1 /* CopyFiles */,
 				5419C26C1D824AA700DDF3A1 /* Sources */,
 				5419C26D1D824AA700DDF3A1 /* Frameworks */,
-				5419C26E1D824AA700DDF3A1 /* CopyFiles */,
 			);
 			buildRules = (
 			);

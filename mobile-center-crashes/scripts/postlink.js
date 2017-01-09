@@ -12,7 +12,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     var code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
         '  [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes' :
         '  [RNCrashes register];  // Initialize Mobile Center crashes'
-    return rnpmlink.ios.initInAppDelegate('#import "RNCrashes.h"', code);
+    return rnpmlink.ios.initInAppDelegate('#import <RNCrashes/RNCrashes.h>', code);
 }).then(function (file) {
     console.log('Added code to initialize iOS Crashes SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
