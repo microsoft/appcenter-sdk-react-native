@@ -62,7 +62,7 @@ module.exports = {
 
     addPodDeps: function(pods) {
         if (!PodFile.isCocoaPodsInstalled()) {
-            return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed ? '));
+            return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
         var podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
         pods.forEach(function(pod) {
