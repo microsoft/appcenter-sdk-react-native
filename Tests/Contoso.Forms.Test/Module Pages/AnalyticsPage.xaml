@@ -12,6 +12,9 @@
 				<Button AutomationId="{x:Static local:TestStrings.ClearPropertiesButton}" Text="Clear Properties" Clicked="ClearProperties" />
 			</ViewCell>
 			<ViewCell>
+                <Button AutomationId="{x:Static local:TestStrings.GoToAnalyticsResultsPageButton}" Text="Go to Analytics Results Page" Clicked="GoToAnalyticsResultsPage" />
+            </ViewCell>
+			<ViewCell>
 				<Button AutomationId="{x:Static local:TestStrings.DismissButton}" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
 			</ViewCell>
 		</TableSection>
