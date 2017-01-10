@@ -11,8 +11,6 @@ namespace Contoso.Forms.Test
             ForceLayout();
             Device.BeginInvokeOnMainThread(() =>
             {
-                ForceLayout();
-
                 UpdateLabels();
             });
         }
@@ -30,6 +28,7 @@ namespace Contoso.Forms.Test
 
         void UpdateLabels()
         {
+            ForceLayout();
             if (ExceptionTypeLabel != null)
             {
                 ExceptionTypeLabel.Text = Crashes.LastSessionCrashReport?.Exception?.GetType().Name;
@@ -69,6 +68,7 @@ namespace Contoso.Forms.Test
             {
                 AndroidDetailsLabel.Text = TestStrings.HasAndroidDetailsText;
             }
+            ForceLayout();
         }
     }
 }

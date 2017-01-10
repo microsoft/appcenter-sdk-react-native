@@ -11,7 +11,6 @@ namespace Contoso.Forms.Test
         public ToggleStatesPage()
         {
             InitializeComponent();
-            ForceLayout();
             UpdateEnabledStateLabels();
         }
 
@@ -53,9 +52,11 @@ namespace Contoso.Forms.Test
 
         void UpdateEnabledStateLabels()
         {
+            ForceLayout();
             UpdateMobileCenterLabel();
             UpdateCrashesLabel();
             UpdateAnalyticsLabel();
+            ForceLayout();
         }
 
         void UpdateCrashesLabel()

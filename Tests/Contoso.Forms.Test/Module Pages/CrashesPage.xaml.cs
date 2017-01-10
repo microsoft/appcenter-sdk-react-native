@@ -12,7 +12,6 @@ namespace Contoso.Forms.Test
         public CrashesPage()
         {
             InitializeComponent();
-            ForceLayout();
         }
 
         void DismissPage(object sender, System.EventArgs e)
