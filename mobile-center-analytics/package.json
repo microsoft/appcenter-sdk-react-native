@@ -1,6 +1,6 @@
 {
   "name": "mobile-center-analytics",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "React Native plugin for Mobile Center Analytics",
   "main": "Analytics.js",
   "repository": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native#readme",
   "dependencies": {
-    "mobile-center-link-scripts": "0.1.4"
+    "mobile-center-link-scripts": "0.1.5"
   },
   "rnpm": {
     "params": [
