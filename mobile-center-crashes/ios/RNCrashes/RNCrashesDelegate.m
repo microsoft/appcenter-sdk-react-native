@@ -1,6 +1,13 @@
 #import "RNCrashesDelegate.h"
 
+// Support React Native headers both in the React namespace, where they are in RN version 0.40+,
+// and no namespace, for older versions of React Native
+#if __has_include(<React/RCTEventDispatcher.h>)
+#import <React/RCTEventDispatcher.h>
+#else
 #import "RCTEventDispatcher.h"
+#endif
+
 #import "RNCrashesUtils.h"
 
 @import MobileCenterCrashes.MSErrorAttachment;
