@@ -158,17 +158,6 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void TestCrash()
-        {
-            /* Crash the application with a test crash exception and then restart */
-            app.Tap(TestStrings.GoToCrashesPageButton);
-            app.Tap(TestStrings.GenerateTestCrashButton);
-            TestSuccessfulCrash();
-            Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionType(TestStrings.TestCrashExceptionName));
-            Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionMessage(TestStrings.TestCrashExceptionMessage));
-        }
-
-        [Test]
         public void InvalidOperation()
         {
             

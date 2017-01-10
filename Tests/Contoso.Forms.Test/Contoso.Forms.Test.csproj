@@ -89,15 +89,15 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0008-933abb8/lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
+      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0009-a6f1262/lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0008-933abb8/lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0009-a6f1262/lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0008-933abb8/lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0009-a6f1262/lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">

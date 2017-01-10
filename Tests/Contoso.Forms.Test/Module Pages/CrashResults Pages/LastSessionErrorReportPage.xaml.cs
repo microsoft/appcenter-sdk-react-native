@@ -11,6 +11,8 @@ namespace Contoso.Forms.Test
             ForceLayout();
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 UpdateLabels();
             });
         }

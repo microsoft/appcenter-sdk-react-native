@@ -13,6 +13,8 @@ namespace Contoso.Forms.Test
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    ForceLayout();
+
                     if (EventNameLabel != null)
                     {
                         EventNameLabel.Text = data.Name;
@@ -34,6 +36,8 @@ namespace Contoso.Forms.Test
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    ForceLayout();
+
                     if (DidSentEventLabel != null)
                     {
                         DidSentEventLabel.Text = TestStrings.DidSentEventText;
@@ -45,6 +49,8 @@ namespace Contoso.Forms.Test
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
+                    ForceLayout();
+
                     if (DidFailedToSendEventLabel != null)
                     {
                         DidFailedToSendEventLabel.Text = TestStrings.DidFailedToSendEventText;

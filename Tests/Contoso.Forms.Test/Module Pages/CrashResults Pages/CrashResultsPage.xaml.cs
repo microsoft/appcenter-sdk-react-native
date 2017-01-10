@@ -43,6 +43,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (SendingErrorReportLabel != null)
                 {
                     SendingErrorReportLabel.Text = TestStrings.DidSendingErrorReportText;
@@ -55,6 +57,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (SentErrorReportLabel != null)
                 {
                     SentErrorReportLabel.Text = TestStrings.DidSentErrorReportText;
@@ -66,6 +70,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (FailedToSendErrorReportLabel != null)
                 {
                     FailedToSendErrorReportLabel.Text = TestStrings.DidFailedToSendErrorReportText;
@@ -77,6 +83,8 @@ namespace Contoso.Forms.Test
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (GetErrorAttachmentLabel != null)
                 {
                     GetErrorAttachmentLabel.Text = TestStrings.DidGetErrorAttachmentText;
@@ -89,6 +97,8 @@ namespace Contoso.Forms.Test
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (ShouldProcessErrorReportLabel != null)
                 {
                     ShouldProcessErrorReportLabel.Text = TestStrings.DidShouldProcessErrorReportText;
@@ -102,6 +112,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (ShouldAwaitUserConfirmationLabel != null)
                 {
                     ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidShouldAwaitUserConfirmationText;
