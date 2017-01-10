@@ -14,6 +14,7 @@ namespace Contoso.Forms.Test
         public AnalyticsPage()
         {
             InitializeComponent();
+            ForceLayout();
         }
 
         void DismissPage(object sender, EventArgs e)

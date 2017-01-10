@@ -8,6 +8,7 @@ namespace Contoso.Forms.Test
         public LastSessionErrorReportPage()
         {
             InitializeComponent();
+            ForceLayout();
             Device.BeginInvokeOnMainThread(() =>
             {
                 UpdateLabels();

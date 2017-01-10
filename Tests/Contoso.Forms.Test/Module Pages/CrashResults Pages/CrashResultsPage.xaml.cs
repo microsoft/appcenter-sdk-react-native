@@ -8,6 +8,7 @@ namespace Contoso.Forms.Test
         public CrashResultsPage()
         {
             InitializeComponent();
+            ForceLayout();
             InitializeText();
         }
 

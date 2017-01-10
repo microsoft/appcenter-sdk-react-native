@@ -8,7 +8,7 @@ namespace Contoso.Forms.Test
         public AnalyticsResultsPage()
         {
             InitializeComponent();
-
+            ForceLayout();
             EventSharer.SendingEvent += (EventData data) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -63,7 +63,7 @@ namespace Contoso.Forms.Test
             EventNameLabel.Text = "";
             EventPropertiesLabel.Text = "";
             DidSentEventLabel.Text = "";
-            DidSentEventLabel.Text = "";
+            DidSendingEventLabel.Text = "";
             DidFailedToSendEventLabel.Text = "";
         } 
     }
