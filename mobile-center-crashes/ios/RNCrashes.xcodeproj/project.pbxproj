@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNCrashes.h */; };
 		5419C2761D824AA700DDF3A1 /* RNCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2751D824AA700DDF3A1 /* RNCrashes.m */; };
+		BA7994FF1E24DD4D00569B1F /* RNCrashesDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB4D6D6B1DB6C6DB0080D9D6 /* RNCrashesDelegate.h */; };
+		BA7995001E24DD6100569B1F /* RNCrashesUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB4D6D6D1DB6C6DB0080D9D6 /* RNCrashesUtils.h */; };
 		CB4D6D6F1DB6C6DB0080D9D6 /* RNCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D6D6C1DB6C6DB0080D9D6 /* RNCrashesDelegate.m */; };
 		CB4D6D701DB6C6DB0080D9D6 /* RNCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D6D6E1DB6C6DB0080D9D6 /* RNCrashesUtils.m */; };
 /* End PBXBuildFile section */
@@ -20,6 +22,8 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				BA7995001E24DD6100569B1F /* RNCrashesUtils.h in CopyFiles */,
+				BA7994FF1E24DD4D00569B1F /* RNCrashesDelegate.h in CopyFiles */,
 				5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
