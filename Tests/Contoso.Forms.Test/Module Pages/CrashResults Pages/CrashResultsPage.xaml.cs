@@ -5,9 +5,12 @@ namespace Contoso.Forms.Test
 {
     public partial class CrashResultsPage : ContentPage
     {
+        LastSessionErrorReportPage ErrorReportPage;
+
         public CrashResultsPage()
         {
             InitializeComponent();
+            ErrorReportPage = new LastSessionErrorReportPage();
             ForceLayout();
             InitializeText();
         }
@@ -36,7 +39,7 @@ namespace Contoso.Forms.Test
 
         void ViewLastSessionErrorReport(object sender, System.EventArgs e)
         {
-            Navigation.PushModalAsync(new LastSessionErrorReportPage());
+            Navigation.PushModalAsync(ErrorReportPage);
         }
 
         public void SendingErrorReport(object sender, SendingErrorReportEventArgs e)

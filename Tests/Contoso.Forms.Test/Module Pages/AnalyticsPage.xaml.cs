@@ -10,10 +10,12 @@ namespace Contoso.Forms.Test
     public partial class AnalyticsPage : ContentPage
     {
         Dictionary<string, string> EventProperties = new Dictionary<string, string>();
+        AnalyticsResultsPage AnalyticsResults;
 
         public AnalyticsPage()
         {
             InitializeComponent();
+            AnalyticsResults = new AnalyticsResultsPage();
             ForceLayout();
         }
 
@@ -24,7 +26,7 @@ namespace Contoso.Forms.Test
 
         void GoToAnalyticsResultsPage(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(new AnalyticsResultsPage());
+            Navigation.PushModalAsync(AnalyticsResults);
         }
 
         void SendEvent(object sender, EventArgs e)
