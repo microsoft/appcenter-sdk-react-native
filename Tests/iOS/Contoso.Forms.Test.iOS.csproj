@@ -88,6 +88,7 @@
     <MtouchExtraArgs>
     </MtouchExtraArgs>
     <BuildIpa>true</BuildIpa>
+    <MtouchSdkVersion></MtouchSdkVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
