@@ -5,9 +5,13 @@ namespace Contoso.Forms.Test
 {
     public partial class CrashResultsPage : ContentPage
     {
+        LastSessionErrorReportPage ErrorReportPage;
+
         public CrashResultsPage()
         {
             InitializeComponent();
+            ErrorReportPage = new LastSessionErrorReportPage();
+            ForceLayout();
             InitializeText();
         }
 
@@ -35,13 +39,15 @@ namespace Contoso.Forms.Test
 
         void ViewLastSessionErrorReport(object sender, System.EventArgs e)
         {
-            Navigation.PushModalAsync(new LastSessionErrorReportPage());
+            Navigation.PushModalAsync(ErrorReportPage);
         }
 
         public void SendingErrorReport(object sender, SendingErrorReportEventArgs e)
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (SendingErrorReportLabel != null)
                 {
                     SendingErrorReportLabel.Text = TestStrings.DidSendingErrorReportText;
@@ -54,6 +60,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (SentErrorReportLabel != null)
                 {
                     SentErrorReportLabel.Text = TestStrings.DidSentErrorReportText;
@@ -65,6 +73,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (FailedToSendErrorReportLabel != null)
                 {
                     FailedToSendErrorReportLabel.Text = TestStrings.DidFailedToSendErrorReportText;
@@ -76,6 +86,8 @@ namespace Contoso.Forms.Test
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (GetErrorAttachmentLabel != null)
                 {
                     GetErrorAttachmentLabel.Text = TestStrings.DidGetErrorAttachmentText;
@@ -88,6 +100,8 @@ namespace Contoso.Forms.Test
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (ShouldProcessErrorReportLabel != null)
                 {
                     ShouldProcessErrorReportLabel.Text = TestStrings.DidShouldProcessErrorReportText;
@@ -101,6 +115,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (ShouldAwaitUserConfirmationLabel != null)
                 {
                     ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidShouldAwaitUserConfirmationText;

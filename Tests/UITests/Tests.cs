@@ -158,24 +158,13 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void TestCrash()
-        {
-            /* Crash the application with a test crash exception and then restart */
-            app.Tap(TestStrings.GoToCrashesPageButton);
-            app.Tap(TestStrings.GenerateTestCrashButton);
-            TestSuccessfulCrash();
-            Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionType(TestStrings.TestCrashExceptionName));
-            Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionMessage(TestStrings.TestCrashExceptionMessage));
-        }
-
-        [Test]
         public void InvalidOperation()
         {
-            
             /* Crash the application with an invalid operation exception and then restart */
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashWithInvalidOperationButton);
             TestSuccessfulCrash();
+            LastSessionErrorReportHelper.app = app;
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionType(typeof(InvalidOperationException).Name));
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionMessage(TestStrings.InvalidOperationExceptionMessage));
         }
@@ -187,6 +176,7 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashWithAggregateExceptionButton);
             TestSuccessfulCrash();
+            LastSessionErrorReportHelper.app = app;
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionType(typeof(AggregateException).Name));
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionMessage(TestStrings.AggregateExceptionMessage));
         }
@@ -198,6 +188,7 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.DivideByZeroCrashButton);
             TestSuccessfulCrash();
+            LastSessionErrorReportHelper.app = app;
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionType(typeof(DivideByZeroException).Name));
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionMessage(TestStrings.DivideByZeroExceptionMessage));
         }
@@ -209,6 +200,7 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.CrashInsideAsyncTaskButton);
             TestSuccessfulCrash();
+            LastSessionErrorReportHelper.app = app;
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionType(typeof(IOException).Name));
             Assert.IsTrue(LastSessionErrorReportHelper.VerifyExceptionMessage(TestStrings.IOExceptionMessage));
         }
@@ -260,6 +252,5 @@ namespace Contoso.Forms.Test.UITests
             }
             app.Tap(TestStrings.SendEventButton);
         }
-
     }
 }

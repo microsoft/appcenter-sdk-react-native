@@ -21,7 +21,6 @@ namespace Contoso.Forms.Test.UITests
             {
                 return ConfigureApp.Android.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
             }
-
             return ConfigureApp.iOS.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
         }
     }

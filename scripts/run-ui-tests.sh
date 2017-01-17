@@ -25,7 +25,7 @@ fi
 # Define test parameters
 LOCALE="en-US"
 USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
-IOS_DEVICES=8551ba4e # just one device. For a suite of 40, use 118f9d2f
+IOS_DEVICES=8551ba4e # just one device. For a suite of 40, use 73df1bd7
 ANDROID_DEVICES=f0b8289c # just one device. For a suite of 40, use f47808f1
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
 IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
