@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -29,16 +30,15 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool HasCrashedInLastSession => MSCrashes.HasCrashedInLastSession;
 
-        public override ErrorReport LastSessionCrashReport
+        public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            get
+            return await Task.Run(() =>
             {
                 var msReport = MSCrashes.LastSessionCrashReport;
                 if (msReport == null)
                     return null;
-                else
-                    return ErrorReportCache.GetErrorReport(msReport);
-            }
+                return ErrorReportCache.GetErrorReport(msReport);
+            });
         }
 
         public override void NotifyUserConfirmation(UserConfirmation confirmation)

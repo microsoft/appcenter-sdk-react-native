@@ -5,6 +5,7 @@ using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Contoso.Android.Puppet
 {
@@ -33,11 +34,15 @@ namespace Contoso.Android.Puppet
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
-            MobileCenter.Start("44cd8722-bfe0-4748-ac14-7692e031a8a5", typeof(Analytics), typeof(Crashes));
+            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Start("7f222d3c-0f5e-421b-93e7-f862c462e07e", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "MobileCenter.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
-            MobileCenterLog.Info(LogTag, "MobileCenter.LastSessionCrashReport=" + Crashes.LastSessionCrashReport?.AndroidDetails?.Throwable);
+            Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
+            {
+                MobileCenterLog.Info(LogTag, "MobileCenter.LastSessionCrashReport=" + report.Result?.AndroidDetails?.Throwable);
+            });
         }
 
         protected override void OnDestroy()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.azure.mobile.xamarin.puppet" android:versionCode="4" android:versionName="0.5.1-SNAPSHOT" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.azure.mobile.xamarin.puppet" android:versionCode="5" android:versionName="0.6.0-SNAPSHOT" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
 	<application android:label="SXPuppet" android:icon="@drawable/Icon"></application>
 </manifest>

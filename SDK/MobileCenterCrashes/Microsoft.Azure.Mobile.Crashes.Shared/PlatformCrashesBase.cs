@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -14,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public abstract bool HasCrashedInLastSession { get; }
 
-        public abstract ErrorReport LastSessionCrashReport { get; }
+        public abstract Task<ErrorReport> GetLastSessionCrashReportAsync();
 
         public void GenerateTestCrash()
         {

@@ -39,12 +39,10 @@ namespace Contoso.Forms.Puppet
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
-
-            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.Exception != null)
+            Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                string message = Crashes.LastSessionCrashReport.Exception.Message;
-                MobileCenterLog.Info(LogTag, "Last Session Crash Report exception message: " + message);
-            }
+                MobileCenterLog.Info(LogTag, " Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+            });
         }
 
         protected override void OnSleep()
