@@ -193,7 +193,11 @@ Once you set up and start the Mobile Center SDK to use the Crashes module in you
 * **Details about the last crash:** If your app crashed previously, you can get details about the last crash:
 
     ```csharp
-    ErrorReport crashReport = Crashes.LastSessionCrashReport;
+    Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
+    {
+        var errorReport = task.Result;
+        // inspect errorReport, can be null
+    });
     ```
 
 * **Advanced Scenarios:**  The Crashes service provides events and callbacks for developers to perform additional actions before and when sending crash reports to Mobile Center. This gives you added flexibility on the crash reports that will be sent.
