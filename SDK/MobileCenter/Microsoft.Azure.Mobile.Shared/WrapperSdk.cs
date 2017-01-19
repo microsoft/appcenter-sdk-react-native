@@ -5,6 +5,6 @@
         public const string Name = "mobilecenter.xamarin";
 
         /* We can't use reflection for assemblyInformationalVersion on iOS with "Link All" optimization. */
-        internal const string Version = "0.5.1-SNAPSHOT";
+        internal const string Version = "0.6.0-SNAPSHOT";
     }
 }
