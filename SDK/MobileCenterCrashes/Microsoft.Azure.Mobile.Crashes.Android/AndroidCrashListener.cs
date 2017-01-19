@@ -15,17 +15,17 @@
 
         public AndroidErrorAttachment GetErrorAttachment(AndroidErrorReport androidReport)
         {
-            if (_owner.GetErrorAttachment == null)
-            {
-                return null;
-            }
+            //if (_owner.GetErrorAttachment == null)
+            //{
+            //    return null;
+            //}
 
-            var report = ErrorReportCache.GetErrorReport(androidReport);
-            var attachment = _owner.GetErrorAttachment(report);
-            if (attachment != null)
-            {
-                return attachment.internalAttachment;
-            }
+            //var report = ErrorReportCache.GetErrorReport(androidReport);
+            //var attachment = _owner.GetErrorAttachment(report);
+            //if (attachment != null)
+            //{
+            //    return attachment.internalAttachment;
+            //}
 
             return null;
         }

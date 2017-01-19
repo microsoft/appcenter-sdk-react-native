@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             };
 
             PlatformCrashes.ShouldProcessErrorReport = null;
-            PlatformCrashes.GetErrorAttachment = null;
+            //PlatformCrashes.GetErrorAttachment = null;
             PlatformCrashes.ShouldAwaitUserConfirmation = null;
 
             /* 
@@ -86,16 +86,16 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
-        /// <summary>
-        /// Set this callback to attach custom text and/or binaries to an error report.
-        /// </summary>
-        public static GetErrorAttachmentCallback GetErrorAttachment
-        {
-            set
-            {
-                PlatformCrashes.GetErrorAttachment = value;
-            }
-        }
+        ///// <summary>
+        ///// Set this callback to attach custom text and/or binaries to an error report.
+        ///// </summary>
+        //public static GetErrorAttachmentCallback GetErrorAttachment
+        //{
+        //    set
+        //    {
+        //        PlatformCrashes.GetErrorAttachment = value;
+        //    }
+        //}
 
         internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
 

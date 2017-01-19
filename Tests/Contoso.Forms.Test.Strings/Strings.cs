@@ -58,7 +58,7 @@
         public static readonly string FailedToSendErrorReportLabel = "FailedToSendErrorReportLabel";
         public static readonly string ShouldProcessErrorReportLabel = "ShouldProcessErrorReportLabel";
         public static readonly string ShouldAwaitUserConfirmationLabel = "ShouldAwaitUserConfirmationLabel";
-        public static readonly string GetErrorAttachmentLabel = "GetErrorAttachmentLabel";
+        //public static readonly string GetErrorAttachmentLabel = "GetErrorAttachmentLabel";
         public static readonly string ViewLastSessionErrorReportButton = "ViewLastSessionErrorReportButton";
 
         /* Text values */
@@ -74,8 +74,8 @@
         public static readonly string DidNotShouldProcessErrorReportText = "ShouldProcessErrorReport has not occured";
         public static readonly string DidShouldAwaitUserConfirmationText = "ShouldAwaitUserConfirmation has occured";
         public static readonly string DidNotShouldAwaitUserConfirmationText = "ShouldAwaitUserConfirmation has not occured";
-        public static readonly string DidGetErrorAttachmentText = "GetErrorAttachment has occured";
-        public static readonly string DidNotGetErrorAttachmentText = "GetErrorAttachment has not occured";
+        //public static readonly string DidGetErrorAttachmentText = "GetErrorAttachment has occured";
+        //public static readonly string DidNotGetErrorAttachmentText = "GetErrorAttachment has not occured";
 
         /* LastSessionErrorReportPage */
         /* Automation Ids */

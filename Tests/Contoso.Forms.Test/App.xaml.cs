@@ -15,7 +15,6 @@ namespace Contoso.Forms.Test
             /* Set crash callbacks and events */
             Crashes.ShouldProcessErrorReport = testPage.ResultsPage.ShouldProcessErrorReport;
             Crashes.ShouldAwaitUserConfirmation = testPage.ResultsPage.ShouldAwaitUserConfirmation;
-            Crashes.GetErrorAttachment = testPage.ResultsPage.GetErrorAttachment;
             Crashes.SendingErrorReport += testPage.ResultsPage.SendingErrorReport;
             Crashes.SentErrorReport += testPage.ResultsPage.SentErrorReport;
             Crashes.FailedToSendErrorReport += testPage.ResultsPage.FailedToSendErrorReport;
