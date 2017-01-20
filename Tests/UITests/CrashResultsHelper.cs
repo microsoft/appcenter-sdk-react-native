@@ -1,6 +1,5 @@
 ﻿using System;
 using Xamarin.UITest;
-using NUnit.Framework;
 using Xamarin.UITest.Queries;
 
 namespace Contoso.Forms.Test.UITests
@@ -70,10 +69,11 @@ namespace Contoso.Forms.Test.UITests
                 app.WaitFor(() =>
                 {
                     AppResult[] results = app.Query(labelName);
-                    Assert.IsTrue(results.Length == 1);
+                    if (results.Length < 1)
+                        return false;
                     AppResult label = results[0];
                     return label.Text == text;
-                });
+                }, timeout: TimeSpan.FromSeconds(5));
             }
             catch (Exception)
             {
