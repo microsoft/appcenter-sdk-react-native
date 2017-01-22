@@ -58,7 +58,7 @@
         public static readonly string FailedToSendErrorReportLabel = "FailedToSendErrorReportLabel";
         public static readonly string ShouldProcessErrorReportLabel = "ShouldProcessErrorReportLabel";
         public static readonly string ShouldAwaitUserConfirmationLabel = "ShouldAwaitUserConfirmationLabel";
-        //public static readonly string GetErrorAttachmentLabel = "GetErrorAttachmentLabel";
+        public static readonly string GetErrorAttachmentLabel = "GetErrorAttachmentLabel";
         public static readonly string ViewLastSessionErrorReportButton = "ViewLastSessionErrorReportButton";
 
         /* Text values */
