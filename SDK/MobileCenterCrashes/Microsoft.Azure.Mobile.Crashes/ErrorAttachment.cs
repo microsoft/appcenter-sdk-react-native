@@ -9,13 +9,13 @@
         /// Gets or sets a plain text attachment.
         /// </summary>
         /// <value>The text attachment.</value>
-        internal string TextAttachment { get; set; }
+        public string TextAttachment { get; set; }
 
         /// <summary>
         /// Gets or sets a binary attachment.
         /// </summary>
         /// <value>The binary attachment.</value>
-        internal ErrorBinaryAttachment BinaryAttachment { get; set; }
+        public ErrorBinaryAttachment BinaryAttachment { get; set; }
 
         /// <summary>
         /// Builds an attachment with text and binary suitable for using in <see cref="Crashes.GetErrorAttachment"/>.
@@ -25,7 +25,7 @@
         /// <param name="data">Binary data.</param>
         /// <param name="filename">Filename to use on reports.</param>
         /// <param name="contentType">Data MIME type.</param>
-        internal static ErrorAttachment Attachment(string text, byte[] data, string filename, string contentType)
+        public static ErrorAttachment Attachment(string text, byte[] data, string filename, string contentType)
         {
             return null;
         }
@@ -37,7 +37,7 @@
         /// <param name="data">Binary data.</param>
         /// <param name="filename">Filename to use on reports.</param>
         /// <param name="contentType">Data MIME type.</param>
-        internal static ErrorAttachment AttachmentWithBinary(byte[] data, string filename, string contentType)
+        public static ErrorAttachment AttachmentWithBinary(byte[] data, string filename, string contentType)
         {
             return null;
         }
@@ -47,7 +47,7 @@
         /// </summary>
         /// <returns>Error attachment or <c>null</c> if null text is passed.</returns>
         /// <param name="text">Text to attach to the error report.</param>
-        internal static ErrorAttachment AttachmentWithText(string text)
+        public static ErrorAttachment AttachmentWithText(string text)
         {
             return null;
         }

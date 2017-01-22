@@ -74,8 +74,8 @@
         public static readonly string DidNotShouldProcessErrorReportText = "ShouldProcessErrorReport has not occured";
         public static readonly string DidShouldAwaitUserConfirmationText = "ShouldAwaitUserConfirmation has occured";
         public static readonly string DidNotShouldAwaitUserConfirmationText = "ShouldAwaitUserConfirmation has not occured";
-        //public static readonly string DidGetErrorAttachmentText = "GetErrorAttachment has occured";
-        //public static readonly string DidNotGetErrorAttachmentText = "GetErrorAttachment has not occured";
+        public static readonly string DidGetErrorAttachmentText = "GetErrorAttachment has occured";
+        public static readonly string DidNotGetErrorAttachmentText = "GetErrorAttachment has not occured";
 
         /* LastSessionErrorReportPage */
         /* Automation Ids */
