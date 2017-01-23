@@ -23,22 +23,22 @@ namespace Microsoft.Azure.Mobile.Crashes
             return _owner.ShouldProcessErrorReport(report);
         }
 
-        public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport)
-        {
-            if (_owner.GetErrorAttachment == null) 
-            {
-                return null;
-            }
+        //public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport)
+        //{
+        //    if (_owner.GetErrorAttachment == null) 
+        //    {
+        //        return null;
+        //    }
               
-            var report = ErrorReportCache.GetErrorReport(msReport);
-            ErrorAttachment attachment = _owner.GetErrorAttachment(report);
-            if (attachment != null)
-            {
-                return attachment.internalAttachment;
-            }
+        //    var report = ErrorReportCache.GetErrorReport(msReport);
+        //    ErrorAttachment attachment = _owner.GetErrorAttachment(report);
+        //    if (attachment != null)
+        //    {
+        //        return attachment.internalAttachment;
+        //    }
 
-            return null;
-         }
+        //    return null;
+        // }
 
         public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {

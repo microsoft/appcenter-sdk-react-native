@@ -82,20 +82,6 @@ namespace Contoso.Forms.Test
             });
         }
 
-        public ErrorAttachment GetErrorAttachment(ErrorReport report)
-        {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-            {
-                ForceLayout();
-
-                if (GetErrorAttachmentLabel != null)
-                {
-                    GetErrorAttachmentLabel.Text = TestStrings.DidGetErrorAttachmentText;
-                }
-            });
-            return ErrorAttachment.AttachmentWithText("hello");
-        }
-
         public bool ShouldProcessErrorReport(ErrorReport report)
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -152,11 +138,6 @@ namespace Contoso.Forms.Test
             if (FailedToSendErrorReportLabel != null)
             {
                 FailedToSendErrorReportLabel.Text = TestStrings.DidNotFailedToSendErrorReportText;
-            }
-
-            if (GetErrorAttachmentLabel != null)
-            {
-                GetErrorAttachmentLabel.Text = TestStrings.DidNotGetErrorAttachmentText;
             }
 
             if (ShouldProcessErrorReportLabel != null)

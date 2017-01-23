@@ -20,9 +20,6 @@
 			<ViewCell>
                 <Label AutomationId="{x:Static local:TestStrings.ShouldAwaitUserConfirmationLabel}" x:Name="ShouldAwaitUserConfirmationLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
             </ViewCell>
-            <ViewCell>
-                <Label AutomationId="{x:Static local:TestStrings.GetErrorAttachmentLabel}" x:Name="GetErrorAttachmentLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </ViewCell>
 			<ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.ViewLastSessionErrorReportButton}" Text="View Last Session Error Report" Clicked="ViewLastSessionErrorReport" />
             </ViewCell>

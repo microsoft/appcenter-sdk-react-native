@@ -36,14 +36,14 @@ namespace Contoso.Forms.Test.UITests
             }
         }
 
-        public static bool GetErrorAttachmentWasCalled
-        {
-            get
-            {
-                return WaitForLabelToSay(TestStrings.GetErrorAttachmentLabel, 
-                                         TestStrings.DidGetErrorAttachmentText);
-            }
-        }
+        //public static bool GetErrorAttachmentWasCalled
+        //{
+        //    get
+        //    {
+        //        return WaitForLabelToSay(TestStrings.GetErrorAttachmentLabel, 
+        //                                 TestStrings.DidGetErrorAttachmentText);
+        //    }
+        //}
 
         public static bool ShouldProcessErrorReportWasCalled
         {

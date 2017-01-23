@@ -220,7 +220,6 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsFalse(CrashResultsHelper.FailedToSendErrorReportWasCalled);
             Assert.IsTrue(CrashResultsHelper.ShouldProcessErrorReportWasCalled);
             Assert.IsTrue(CrashResultsHelper.ShouldAwaitUserConfirmationWasCalled);
-            Assert.IsTrue(CrashResultsHelper.GetErrorAttachmentWasCalled);
 
             /* Verify that the error report is correct */
             LastSessionErrorReportHelper.app = app;

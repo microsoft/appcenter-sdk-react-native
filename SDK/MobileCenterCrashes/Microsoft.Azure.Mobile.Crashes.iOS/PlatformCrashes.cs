@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override SentErrorReportEventHandler SentErrorReport { get; set; }
         public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        //public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
         CrashesDelegate crashesDelegate { get; set; }
