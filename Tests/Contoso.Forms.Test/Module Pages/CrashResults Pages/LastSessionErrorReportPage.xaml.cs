@@ -5,19 +5,21 @@ namespace Contoso.Forms.Test
 {
     public partial class LastSessionErrorReportPage : ContentPage
     {
+        readonly string _nullText;
+
         public LastSessionErrorReportPage()
         {
             InitializeComponent();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                UpdateLabels();
-            });
+            _nullText = ExceptionTypeLabel.Text;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            UpdateLabels();
+            Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
+            {
+                Device.BeginInvokeOnMainThread(() => UpdateLabels(task.Result));
+            });
         }
 
         void DismissPage(object sender, System.EventArgs e)
@@ -25,47 +27,16 @@ namespace Contoso.Forms.Test
             Navigation.PopModalAsync();
         }
 
-        void UpdateLabels()
+        void UpdateLabels(ErrorReport errorReport)
         {
-            if (ExceptionTypeLabel != null)
-            {
-                ExceptionTypeLabel.Text = Crashes.LastSessionCrashReport?.Exception?.GetType().Name;
-            }
-
-            if (ExceptionMessageLabel != null)
-            {
-                ExceptionMessageLabel.Text = Crashes.LastSessionCrashReport?.Exception?.Message;
-            }
-
-            if (AppStartTimeLabel != null && Crashes.LastSessionCrashReport?.AppStartTime != null)
-            {
-                AppStartTimeLabel.Text = Crashes.LastSessionCrashReport.AppStartTime.ToString();
-            }
-
-            if (AppErrorTimeLabel != null && Crashes.LastSessionCrashReport?.AppErrorTime != null)
-            {
-                AppErrorTimeLabel.Text = Crashes.LastSessionCrashReport.AppErrorTime.ToString();
-            }
-
-            if (IdLabel != null)
-            {
-                IdLabel.Text = Crashes.LastSessionCrashReport?.Id;
-            }
-
-            if (DeviceLabel != null && Crashes.LastSessionCrashReport?.Device != null)
-            {
-                DeviceLabel.Text = TestStrings.DeviceReportedText;
-            }
-
-            if (iOSDetailsLabel != null && Crashes.LastSessionCrashReport?.iOSDetails != null)
-            {
-                iOSDetailsLabel.Text = TestStrings.HasiOSDetailsText;
-            }
-
-            if (AndroidDetailsLabel != null && Crashes.LastSessionCrashReport?.AndroidDetails != null)
-            {
-                AndroidDetailsLabel.Text = TestStrings.HasAndroidDetailsText;
-            }
+            ExceptionTypeLabel.Text = errorReport?.Exception?.GetType().Name ?? _nullText;
+            ExceptionMessageLabel.Text = errorReport?.Exception?.Message ?? _nullText;
+            AppStartTimeLabel.Text = errorReport?.AppStartTime.ToString() ?? _nullText;
+            AppErrorTimeLabel.Text = errorReport?.AppErrorTime.ToString() ?? _nullText;
+            IdLabel.Text = errorReport?.Id ?? _nullText;
+            DeviceLabel.Text = errorReport?.Device != null ? TestStrings.DeviceReportedText : _nullText;
+            iOSDetailsLabel.Text = errorReport?.iOSDetails != null ? TestStrings.HasiOSDetailsText : _nullText;
+            AndroidDetailsLabel.Text = errorReport?.AndroidDetails != null ? TestStrings.HasAndroidDetailsText : _nullText;
         }
     }
 }

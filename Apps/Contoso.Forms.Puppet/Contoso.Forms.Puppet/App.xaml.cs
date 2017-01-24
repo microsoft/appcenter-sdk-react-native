@@ -31,7 +31,6 @@ namespace Contoso.Forms.Puppet
 
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
-            Crashes.GetErrorAttachment = ErrorAttachmentForReport;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
 
@@ -39,12 +38,10 @@ namespace Contoso.Forms.Puppet
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
-
-            if (Crashes.HasCrashedInLastSession && Crashes.LastSessionCrashReport.Exception != null)
+            Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                string message = Crashes.LastSessionCrashReport.Exception.Message;
-                MobileCenterLog.Info(LogTag, "Last Session Crash Report exception message: " + message);
-            }
+                MobileCenterLog.Info(LogTag, " Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+            });
         }
 
         protected override void OnSleep()
@@ -121,18 +118,6 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        ErrorAttachment ErrorAttachmentForReport(ErrorReport report)
-        {
-            MobileCenterLog.Info(LogTag, "Getting error attachment for error report");
-            string text = "This is an error attachment for Android";
-
-            if (report.iOSDetails != null)
-            {
-                text = "This is an error attachment for iOS";
-            }
-
-            return ErrorAttachment.AttachmentWithText(text);
-        }
 
         bool ShouldProcess(ErrorReport report)
         {

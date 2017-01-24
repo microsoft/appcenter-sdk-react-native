@@ -2,4 +2,5 @@
 <metadata>
 	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.analytics.ingestion.models.json']" />
 	<attr path="/api/package[@name='com.microsoft.azure.mobile.analytics']/class[@name='Analytics']" name="managedName">AndroidAnalytics</attr>
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.analytics']/class[@name='Analytics']/method[@name='setListener']" name="visibility">public</attr>
 </metadata>

@@ -12,6 +12,10 @@ namespace Microsoft.Azure.Mobile.Crashes
     using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.AndroidCrashes;
     using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
     using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
+    using System.Threading.Tasks;
+    using Com.Microsoft.Azure.Mobile;
+    using Com.Microsoft.Azure.Mobile.Crashes.Model;
+    using System.Threading;
 
     class PlatformCrashes : PlatformCrashesBase
     {
@@ -20,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override SentErrorReportEventHandler SentErrorReport { get; set; }
         public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        //public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
         public override void NotifyUserConfirmation(UserConfirmation confirmation)
@@ -55,15 +59,31 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
 
-        public override ErrorReport LastSessionCrashReport
+        public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            get
+            var callback = new GetLastSessionCrashReportCallback();
+            AndroidCrashes.GetLastSessionCrashReport(callback);
+            var androidErrorReport = await callback.Result;
+            if (androidErrorReport == null)
+                return null;
+            return ErrorReportCache.GetErrorReport(androidErrorReport);
+        }
+
+        class GetLastSessionCrashReportCallback : Java.Lang.Object, IResultCallback
+        {
+            AndroidErrorReport _result;
+
+            internal Task<AndroidErrorReport> Result { get; }
+
+            internal GetLastSessionCrashReportCallback()
             {
-                var androidReport = AndroidCrashes.LastSessionCrashReport;
-                if (androidReport == null)
-                    return null;
-                else
-                    return ErrorReportCache.GetErrorReport(androidReport);
+                Result = new Task<AndroidErrorReport>(() => _result);
+            }
+
+            public void OnResult(Java.Lang.Object result)
+            {
+                _result = result as AndroidErrorReport;
+                Result.Start();
             }
         }
 

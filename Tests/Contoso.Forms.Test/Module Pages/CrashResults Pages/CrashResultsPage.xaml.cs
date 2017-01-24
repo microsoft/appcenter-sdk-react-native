@@ -5,9 +5,13 @@ namespace Contoso.Forms.Test
 {
     public partial class CrashResultsPage : ContentPage
     {
+        LastSessionErrorReportPage ErrorReportPage;
+
         public CrashResultsPage()
         {
             InitializeComponent();
+            ErrorReportPage = new LastSessionErrorReportPage();
+            ForceLayout();
             InitializeText();
         }
 
@@ -35,13 +39,15 @@ namespace Contoso.Forms.Test
 
         void ViewLastSessionErrorReport(object sender, System.EventArgs e)
         {
-            Navigation.PushModalAsync(new LastSessionErrorReportPage());
+            Navigation.PushModalAsync(ErrorReportPage);
         }
 
         public void SendingErrorReport(object sender, SendingErrorReportEventArgs e)
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (SendingErrorReportLabel != null)
                 {
                     SendingErrorReportLabel.Text = TestStrings.DidSendingErrorReportText;
@@ -54,6 +60,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (SentErrorReportLabel != null)
                 {
                     SentErrorReportLabel.Text = TestStrings.DidSentErrorReportText;
@@ -65,6 +73,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (FailedToSendErrorReportLabel != null)
                 {
                     FailedToSendErrorReportLabel.Text = TestStrings.DidFailedToSendErrorReportText;
@@ -72,22 +82,12 @@ namespace Contoso.Forms.Test
             });
         }
 
-        public ErrorAttachment GetErrorAttachment(ErrorReport report)
-        {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-            {
-                if (GetErrorAttachmentLabel != null)
-                {
-                    GetErrorAttachmentLabel.Text = TestStrings.DidGetErrorAttachmentText;
-                }
-            });
-            return ErrorAttachment.AttachmentWithText("hello");
-        }
-
         public bool ShouldProcessErrorReport(ErrorReport report)
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (ShouldProcessErrorReportLabel != null)
                 {
                     ShouldProcessErrorReportLabel.Text = TestStrings.DidShouldProcessErrorReportText;
@@ -101,6 +101,8 @@ namespace Contoso.Forms.Test
         {
             Device.BeginInvokeOnMainThread(() =>
             {
+                ForceLayout();
+
                 if (ShouldAwaitUserConfirmationLabel != null)
                 {
                     ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidShouldAwaitUserConfirmationText;
@@ -136,11 +138,6 @@ namespace Contoso.Forms.Test
             if (FailedToSendErrorReportLabel != null)
             {
                 FailedToSendErrorReportLabel.Text = TestStrings.DidNotFailedToSendErrorReportText;
-            }
-
-            if (GetErrorAttachmentLabel != null)
-            {
-                GetErrorAttachmentLabel.Text = TestStrings.DidNotGetErrorAttachmentText;
             }
 
             if (ShouldProcessErrorReportLabel != null)

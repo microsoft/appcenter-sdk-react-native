@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -34,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             };
 
             PlatformCrashes.ShouldProcessErrorReport = null;
-            PlatformCrashes.GetErrorAttachment = null;
+            //PlatformCrashes.GetErrorAttachment = null;
             PlatformCrashes.ShouldAwaitUserConfirmation = null;
 
             /* 
@@ -86,16 +87,16 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
-        /// <summary>
-        /// Set this callback to attach custom text and/or binaries to an error report.
-        /// </summary>
-        public static GetErrorAttachmentCallback GetErrorAttachment
-        {
-            set
-            {
-                PlatformCrashes.GetErrorAttachment = value;
-            }
-        }
+        ///// <summary>
+        ///// Set this callback to attach custom text and/or binaries to an error report.
+        ///// </summary>
+        //public static GetErrorAttachmentCallback GetErrorAttachment
+        //{
+        //    set
+        //    {
+        //        PlatformCrashes.GetErrorAttachment = value;
+        //    }
+        //}
 
         internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
 
@@ -139,7 +140,10 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// Gets the crash report generated in the last session if there was a crash.
         /// </summary>
         /// <value>Crash report from the last session, <c>null</c> if there was no crash in the last session.</value>
-        public static ErrorReport LastSessionCrashReport => PlatformCrashes.LastSessionCrashReport;
+        public static async Task<ErrorReport> GetLastSessionCrashReportAsync()
+        {
+            return await PlatformCrashes.GetLastSessionCrashReportAsync();
+        }
 
         /// <summary>
         /// Generates crash for testing purposes.

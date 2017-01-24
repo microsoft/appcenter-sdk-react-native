@@ -19,8 +19,8 @@ class MobileCenterModule {
 }
 
 // SDK versions
-var ANDROID_SDK_VERSION = "0.3.3";
-var IOS_SDK_VERSION = "0.3.4";
+var ANDROID_SDK_VERSION = "0.5.0";
+var IOS_SDK_VERSION = "0.3.7";
 
 // URLs for downloading binaries.
 /*
@@ -167,6 +167,13 @@ Task("RestoreTestPackages").Does(() =>
 	NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
 	NuGetUpdate("./Tests/iOS/packages.config");
 	NuGetUpdate("./Tests/Droid/packages.config");
+});
+
+Task("UpdateDemoDependencies").Does(() =>
+{
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config");
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config");
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config");
 });
 
 // Cleaning up files/directories.

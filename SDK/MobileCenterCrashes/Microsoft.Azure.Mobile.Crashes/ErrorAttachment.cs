@@ -3,7 +3,7 @@
     /// <summary>
     /// Error attachment for error report.
     /// </summary>
-    public class ErrorAttachment
+    internal class ErrorAttachment
     {
         /// <summary>
         /// Gets or sets a plain text attachment.

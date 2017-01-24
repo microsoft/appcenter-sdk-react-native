@@ -52,9 +52,11 @@ namespace Contoso.Forms.Test
 
         void UpdateEnabledStateLabels()
         {
+            ForceLayout();
             UpdateMobileCenterLabel();
             UpdateCrashesLabel();
             UpdateAnalyticsLabel();
+            ForceLayout();
         }
 
         void UpdateCrashesLabel()

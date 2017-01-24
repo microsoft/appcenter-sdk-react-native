@@ -9,9 +9,18 @@ namespace Contoso.Forms.Test.UITests
         {
             if (platform == Platform.Android)
             {
-                return ConfigureApp.Android.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
+                return ConfigureApp.Android.EnableLocalScreenshots().StartApp();
             }
 
+            return ConfigureApp.iOS.EnableLocalScreenshots().StartApp();
+        }
+
+        public static IApp StartAppNoClear(Platform platform)
+        {
+            if (platform == Platform.Android)
+            {
+                return ConfigureApp.Android.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
+            }
             return ConfigureApp.iOS.EnableLocalScreenshots().StartApp(AppDataMode.DoNotClear);
         }
     }
