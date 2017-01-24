@@ -9,18 +9,18 @@
         ///     Gets the binary data file name.
         /// </summary>
         /// <value>The name of the binary data file.</value>
-        internal string FileName { get; }
+        public string FileName { get; }
 
         /// <summary>
         ///     Gets the binary data.
         /// </summary>
         /// <value>The binary data.</value>
-        internal byte[] Data { get; }
+        public byte[] Data { get; }
 
         /// <summary>
         ///     Gets the content type for the binary data.
         /// </summary>
         /// <value>The MIME type of the binary data.</value>
-        internal string ContentType { get; }
+        public string ContentType { get; }
     }
 }
