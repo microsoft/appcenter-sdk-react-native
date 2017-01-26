@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile
     public static partial class MobileCenter
     {
         /* The key identifier for parsing app secrets */
-        private const string keyIdentifier = "ios";
+        private const string platformIdentifier = "ios";
 
         /// <summary>
         /// This property controls the amount of logs emitted by the SDK.
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Mobile
         public static void Start(string appSecret, params Type[] services)
         {
             SetWrapperSdk();
-            string parsedSecret = GetSecretForPlatform(appSecret, keyIdentifier);
+            string parsedSecret = GetSecretForPlatform(appSecret, platformIdentifier);
             iOSMobileCenter.Start(parsedSecret, GetServices(services));
         }
 
