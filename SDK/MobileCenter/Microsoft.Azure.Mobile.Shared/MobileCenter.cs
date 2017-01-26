@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile
         {
             /* If there are no colons, then there are no named identifiers, but log a message in case the developer made 
              * a typing error. */
-            if (!secrets.Contains(":"))
+            if (!secrets.Contains("="))
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile
 
             /* This assumes that the key contains only lowercase letters, digits, and hyphens 
              * (and that it has at least one character) */
-            string pattern = platformIdentifier + @":(\p{Nd}|\p{Ll}|-)+";
+            string pattern = platformIdentifier + @"=([^;])+";
             Match match = Regex.Match(secrets, pattern);
             if (match.Value == string.Empty)
             {
