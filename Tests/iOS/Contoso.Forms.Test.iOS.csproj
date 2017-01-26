@@ -89,33 +89,10 @@
     <MtouchExtraArgs>
     </MtouchExtraArgs>
     <BuildIpa>true</BuildIpa>
-    <MtouchSdkVersion></MtouchSdkVersion>
+    <MtouchSdkVersion>
+    </MtouchSdkVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0009-a6f1262/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0009-a6f1262/lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.Analytics.0.5.1-r0009-a6f1262/lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0009-a6f1262/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.Crashes.0.5.1-r0009-a6f1262/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.Azure.Mobile.0.5.1-r0009-a6f1262/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -138,6 +115,24 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Calabash">
       <HintPath>..\..\packages\Xamarin.TestCloud.Agent.0.20.3\lib\Xamarin.iOS10\Calabash.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.6.0-r0001-a52ca88\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.6.0-r0001-a52ca88\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.6.0-r0001-a52ca88\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.6.0-r0001-a52ca88\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.6.0-r0001-a52ca88\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.6.0-r0001-a52ca88\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
