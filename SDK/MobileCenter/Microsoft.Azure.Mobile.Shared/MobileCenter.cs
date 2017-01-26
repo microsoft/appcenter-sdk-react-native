@@ -25,11 +25,11 @@ namespace Microsoft.Azure.Mobile
              * This assumes that the key contains only lowercase letters, digits, and hyphens 
              * (and that it has at least one character) 
              */
-            string pattern = platformIdentifier + @"=([^;]+)";
-            Match match = Regex.Match(secrets, pattern);
+            var pattern = platformIdentifier + @"=([^;]+)";
+            var match = Regex.Match(secrets, pattern);
             if (match.Value == string.Empty)
             {
-                string message = "Error parsing key for '" + platformIdentifier + "'";
+                var message = "Error parsing key for '" + platformIdentifier + "'";
                 throw new ArgumentException(message, nameof(platformIdentifier));
             }
             return match.Groups[1].Value;
