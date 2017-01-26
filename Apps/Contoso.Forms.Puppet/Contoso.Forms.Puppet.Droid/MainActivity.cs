@@ -24,8 +24,8 @@ namespace Contoso.Forms.Puppet.Droid
             AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
             MobileCenterLog.Assert(App.LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
             MobileCenterLog.Assert(App.LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
-            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
-            MobileCenter.Configure("7f222d3c-0f5e-421b-93e7-f862c462e07e");
+            //MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
+            //MobileCenter.Configure("7f222d3c-0f5e-421b-93e7-f862c462e07e");
 
             LoadApplication(new App());
         }

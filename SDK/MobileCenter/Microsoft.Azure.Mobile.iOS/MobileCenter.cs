@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile
     /// <summary>
     /// SDK core used to initialize, start and control specific service.
     /// </summary>
-    public static class MobileCenter
+    public static partial class MobileCenter
     {
         /* The key identifier for parsing app secrets */
         private const string keyIdentifier = "ios";
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Mobile
         public static void Start(string appSecret, params Type[] services)
         {
             SetWrapperSdk();
-            string parsedSecret = Util.GetKeyForPlatform(appSecret, keyIdentifier);
+            string parsedSecret = GetSecretForPlatform(appSecret, keyIdentifier);
             iOSMobileCenter.Start(parsedSecret, GetServices(services));
         }
 

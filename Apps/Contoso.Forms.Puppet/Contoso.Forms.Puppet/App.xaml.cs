@@ -32,7 +32,7 @@ namespace Contoso.Forms.Puppet
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+            MobileCenter.Start("android:dc3a73bf-3621-4bc7-b46e-223c1c99346a,ios:drrewau73bf-3621-4bc7-b46e-223c1c99346a",typeof(Analytics), typeof(Crashes));
 
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
