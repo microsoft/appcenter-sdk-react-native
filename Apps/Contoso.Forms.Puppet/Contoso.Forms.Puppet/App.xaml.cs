@@ -32,7 +32,12 @@ namespace Contoso.Forms.Puppet
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+
+            MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
+            MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
+            MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Start("android=7f222d3c-0f5e-421b-93e7-f862c462e07e;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
+                               typeof(Analytics), typeof(Crashes));
 
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
