@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.UWP.Storage
 {
@@ -10,10 +11,11 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
     {
         //Group = column (crashes or analytics)
         //id = batch id
-        void PutLog(string groupName, ILog log);
-        void DeleteLogs(string groupName, string batchId);
-        void DeleteLogs(string groupName);
-        int CountLogs(string groupName);
+        void PutLog(string channelName, ILog log);
+        void DeleteLogs(string channelName, string batchId);
+        void DeleteLogs(string channelName);
+        int CountLogs(string channelName);
         void ClearPendingLogState();
+        string GetLogs(string channelName, int limit, out List<ILog> outLogs);
     }
 }

@@ -8,9 +8,9 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
 {
     public interface IChannel
     {
+        event EnqueuingLogEventHandler EnqueuingLog;
         event SendingLogEventHandler SendingLog;
         event SentLogEventHandler SentLog;
         event FailedToSendLogEventHandler FailedToSendLog;
-        void Clear(); // clear logs for the ichannel
     }
 }

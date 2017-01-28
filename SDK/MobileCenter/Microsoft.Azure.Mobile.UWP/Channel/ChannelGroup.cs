@@ -8,16 +8,19 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
 {
     public class ChannelGroup : IChannel
     {
+        private Dictionary<string, Channel> Channels;
+
+        #region Events
+        public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
         public event SentLogEventHandler SentLog;
         public event FailedToSendLogEventHandler FailedToSendLog;
-        public void Clear()
-        {
-            // clear logs of all child channels
-        }
-        public string ServerUrl { get; set; }
+        #endregion
 
-        //void AddGroup(string groupName, int maxLogsPerBatch, long batchTimeInterval /* should use timeinterval class instead of long? */, int maxParallelBatches /* what is this parameter */);
+        public void SetServerUrl(string serverUrl)
+        {
+            // set server url
+        }
         public void AddChannel(Channel channel)
         {
             // add channel
@@ -27,8 +30,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             // remove channel 
         }
 
-        //should this return IChannel or Channel?
-        public IChannel GetChannel(string channelName)
+        public Channel GetChannel(string channelName)
         {
             // get channel
             return null;
