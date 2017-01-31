@@ -98,6 +98,7 @@ Global
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{4936a94c-be22-4f73-8468-64fa4371ff80}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{78990f7a-6c3e-4007-b0e3-a8bf9625a327}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{7b6e79a4-fbaf-4e7e-b696-0ac10d0a2552}*SharedItemsImports = 13
+		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{96d06807-77ab-4794-8855-9a6a83cc9cea}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{aabf653e-0cc1-4d59-93db-4eef0e1df916}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{b87370cd-af51-45e0-aa15-3e0abc0c30a0}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13

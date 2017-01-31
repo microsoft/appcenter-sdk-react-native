@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
 {
-    public interface ILog
+    public partial class Device
     {
-        long TOffset { get; set; }
-        Guid SId { get; set; }
-        Device Device { get; set; }
+        public Device()
+        {
+
+        }
     }
 }
