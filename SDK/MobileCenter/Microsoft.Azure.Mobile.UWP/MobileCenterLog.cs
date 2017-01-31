@@ -1,7 +1,5 @@
 ﻿namespace Microsoft.Azure.Mobile
 {
-    using AndroidMobileCenterLog = Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog;
-
     public static partial class MobileCenterLog
     {
         /// <summary>
@@ -11,37 +9,37 @@
 
         static MobileCenterLog()
         {
-            LogTag = "MobileCenterXamarin";
+            LogTag = "MobileCenter";
         }
 
         public static void Verbose(string tag, string message)
         {
-            AndroidMobileCenterLog.Verbose(tag, message);
+            //TODO implement me
         }
 
         public static void Debug(string tag, string message)
         {
-            AndroidMobileCenterLog.Debug(tag, message);
+            //TODO implement me
         }
 
         public static void Info(string tag, string message)
         {
-            AndroidMobileCenterLog.Info(tag, message);
+            //TODO implement me
         }
 
         public static void Warn(string tag, string message)
         {
-            AndroidMobileCenterLog.Warn(tag, message);
+            //TODO implement me
         }
 
         public static void Error(string tag, string message)
         {
-            AndroidMobileCenterLog.Error(tag, message);
+            //TODO implement me
         }
 
         public static void Assert(string tag, string message)
         {
-            AndroidMobileCenterLog.LogAssert(tag, message);
+            //TODO implement me
         }
     }
 }

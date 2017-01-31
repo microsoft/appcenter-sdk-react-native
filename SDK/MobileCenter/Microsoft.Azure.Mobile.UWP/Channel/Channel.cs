@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 }
                 else
                 {
-                    //TODO log message
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Error persisting log", completedTask.Exception);
                 }
             });
         }

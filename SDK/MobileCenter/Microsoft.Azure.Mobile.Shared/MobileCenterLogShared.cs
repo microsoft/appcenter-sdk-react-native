@@ -5,11 +5,6 @@ namespace Microsoft.Azure.Mobile
     public static partial class MobileCenterLog
     {
         /// <summary>
-        /// The log tag for this SDK. All logs emitted at the Xamarin SDK level will contain this tag.
-        /// </summary>
-        public const string LogTag = "MobileCenterXamarin";
-
-        /// <summary>
         /// Writes a log and an exception at the <see cref="LogLevel.Verbose"/> level. 
         /// </summary>
         /// <param name="tag">Log tag.</param>

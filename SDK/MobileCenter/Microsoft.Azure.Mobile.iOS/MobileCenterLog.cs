@@ -5,7 +5,17 @@
 
 	public static partial class MobileCenterLog
 	{
-		public static void Verbose(string tag, string message)
+        /// <summary>
+        /// The log tag for this SDK. All logs emitted at the SDK level will contain this tag.
+        /// </summary>
+        public static string LogTag { get; private set; }
+
+        static MobileCenterLog()
+        {
+            LogTag = "MobileCenterXamarin";
+        }
+
+        public static void Verbose(string tag, string message)
 		{
 			iOSMessageProvider msg_provider = () => { return message; };
 			iOSLogger.MSWrapperLog(msg_provider, tag, Microsoft.Azure.Mobile.iOS.Bindings.MSLogLevel.Verbose);
