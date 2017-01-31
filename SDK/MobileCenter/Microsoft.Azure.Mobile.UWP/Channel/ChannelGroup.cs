@@ -9,6 +9,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
     public class ChannelGroup : IChannel
     {
         private Dictionary<string, Channel> Channels;
+        private const int ShutdownTimeout = 5000;
 
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
@@ -37,5 +38,10 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         }
 
         public bool Enabled { get; set; }
+
+        public void Shutdown()
+        {
+            //TODO implement me
+        }
     }
 }

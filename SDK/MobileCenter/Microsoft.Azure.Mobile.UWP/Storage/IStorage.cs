@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
         Task<bool> PutLogAsync(string channelName, ILog log);
         Task<bool> DeleteLogsAsync(string channelName, string batchId);
         Task<bool> DeleteLogsAsync(string channelName);
-        int CountLogs(string channelName);
+        Task<int> CountLogs(string channelName);
         void ClearPendingLogState();
         Task<string> GetLogsAsync(string channelName, int limit, out List<ILog> outLogs);
     }
