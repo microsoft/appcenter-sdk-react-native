@@ -118,7 +118,7 @@ To start the SDK in your app, follow these steps:
 
     **Xamarin.Forms**
     
-   For creating a cross platform Forms app targeting both iOS and Android platform, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two AppSecrets - one for iOS and another for Android. Therefore, Start SDK call is split into two methods for Xamarin.Forms. Open App.xaml.cs file in your shared project and add the API below in the `App()` constructor.
+   For creating a cross platform Forms app targeting both iOS and Android platform, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two AppSecrets - one for iOS and another for Android. Therefore, Start SDK call is split into two methods for Xamarin.Forms. Open the `App.xaml.cs` file (or your class that inherits `Xamarin.Forms.Application`) in your shared or portable project and add the API below in the `OnStart()` override method.
 
     ```csharp
     MobileCenter.Start(typeof(Analytics), typeof(Crashes));
