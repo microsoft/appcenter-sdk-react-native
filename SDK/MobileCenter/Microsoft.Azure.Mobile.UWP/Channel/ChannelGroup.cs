@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         {
             // set server url
         }
-        public void AddChannel(Channel channel)
+        public void AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
             // add channel
         }

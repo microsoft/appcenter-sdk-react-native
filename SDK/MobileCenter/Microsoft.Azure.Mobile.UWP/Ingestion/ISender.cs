@@ -5,16 +5,11 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.UWP.Ingestion
 {
-    //this is a dummy class
+    public class SenderException : Exception { }
     public interface ISender
     {
-        Task<SendLogsAsyncResult> SendLogsAsync(List<ILog> log);
+        Task SendLogsAsync(string appSecret, Guid installId, IEnumerable<ILog> logs);
         void Close();
     }
 
-    public class SendLogsAsyncResult
-    {
-        public bool Success;
-        public Exception Exception;
-    }
 }

@@ -15,54 +15,72 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
 {
     public class Channel : IChannel
     {
-        //TODO suffix async methods with async
-        //TODO research issues with awaiting inside of a lock and find solutions
-        //TODO should we capture the state snapshot before entering semaphore?
-        //TODO should our waits be async?
+        private const int ClearBatchSize = 100;
+
+        private Ingestion.Models.Device _device;
+        private string _appSecret;
+        private Guid _installId;
 
         private IStorage _storage;
         private ISender _sender;
-        private bool _enabled;
-        private bool _discardLogs;
+        private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+        private DispatcherTimer _timer = new DispatcherTimer();
+        private Dictionary<string, List<ILog>> _sendingBatches = new Dictionary<string, List<ILog>>();
+
         private int _maxParallelBatches;
         private int _maxLogsPerBatch;
-        private long _pendingLogCount;
-        private Dictionary<string, List<ILog>> _sendingBatches = new Dictionary<string, List<ILog>>();
-        private Ingestion.Models.Device _device;
-        private int _currentState;
-        private DispatcherTimer _timer = new DispatcherTimer();
-        private const int ClearBatchSize = 100;
-        private SemaphoreSlim _mutex = new SemaphoreSlim(1); //TODO max count?
 
-        //TODO maybe the solution to the countfromdisk problem is using a factory and hiding constructors? this seems best. then a user can't ever use a channel that hasn't checked disk for logs yet
-        public Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, ISender sender, IStorage storage)
+        private long _pendingLogCount;
+        private bool _enabled;
+        private bool _discardLogs;
+        private int _currentState;
+
+        //NOTE: the constructor should only be called from ChannelGroup
+        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, ISender sender, IStorage storage)
         {
             Name = name;
             _timer.Interval = batchTimeInterval;
-            _timer.Tick += TimerElapsed;
             _maxParallelBatches = maxParallelBatches;
             _maxLogsPerBatch = maxLogsPerBatch;
+            _appSecret = appSecret;
+            _installId = installId;
             _sender = sender;
             _storage = storage;
+            _timer.Tick += TimerElapsed;
+            CountFromDiskAsync().Start();
         }
 
-        public async Task CountFromDisk()
+        private async Task CountFromDiskAsync()
         {
+            await _mutex.WaitAsync();
             int stateSnapshot = _currentState;
-            _pendingLogCount = await _storage.CountLogs(Name);
-            if (stateSnapshot == _currentState)
+            _mutex.Release();
+
+            int logCount = await _storage.CountLogs(Name);
+            await _mutex.WaitAsync();
+            try
             {
-                CheckPendingLogs();
+                if (stateSnapshot == _currentState)
+                {
+                    _pendingLogCount = logCount;
+                    CheckPendingLogs();
+                }
+            }
+            finally
+            {
+                _mutex.Release();
             }
         }
 
-        private void TimerElapsed(object o, object a)
+        private void TimerElapsed(object s, object e)
         {
+            _mutex.Wait();
             _timer.Stop();
-            TriggerIngestion().Start();
+            TriggerIngestionAsync().Start();
+            _mutex.Release();
         }
 
-        internal bool Enabled
+        public bool Enabled
         {
             get
             {
@@ -81,9 +99,8 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                     {
                         _enabled = true;
                         _discardLogs = false;
-                        InvalidateCurrentState();
+                        _currentState++;
                         CheckPendingLogs();
-                        //TODO more?
                     }
                     else
                     {
@@ -111,66 +128,20 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             _mutex.Wait();
             try
             {
-
-                if (!_enabled && _discardLogs)
+                if (_discardLogs)
                 {
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is disabled; logs are discarded");
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
                     return;
                 }
-
-                // enqueue log
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
-
-                if (log.Device == null)
-                {
-                    if (_device == null)
-                    {
-                        try
-                        {
-                            _device = MiscStubs.GetDeviceInfo();
-                        }
-                        catch (Exception e) //TODO in android we catch a specific DeviceInfoException
-                        {
-                            MobileCenterLog.Error(MobileCenterLog.LogTag, "Device log cannot be generated", e);
-                            return;
-                        }
-                    }
-                    log.Device = _device;
-                }
-
-                if (log.TOffset == 0L)
-                {
-                    log.TOffset = MiscStubs.CurrentTimeInMilliseconds();
-                }
-
-                //TODO add data to logs as needed
-                int stateSnapshot = _currentState;
-                _storage.PutLogAsync(Name, log).ContinueWith((completedTask) =>
-                {
-                    if (stateSnapshot != _currentState)
-                    {
-                        return;
-                    }
-                    if (completedTask.Result)
-                    {
-                        _pendingLogCount++;
-                        if (_enabled)
-                        {
-                            CheckPendingLogs();
-                        }
-                        else
-                        {
-                            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
-                        }
-                    }
-                    else
-                    {
-                        MobileCenterLog.Error(MobileCenterLog.LogTag, "Error persisting log", completedTask.Exception);
-                    }
-
-                });
+                log = PrepareLog(log);
+                PersistLogAsync(log, _currentState).Start();
+            }
+            catch (DeviceInformationException e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Device log cannot be generated", e);
             }
             finally
             {
@@ -178,9 +149,66 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             }
         }
 
+        private ILog PrepareLog(ILog log)
+        {
+            //TODO probably more steps
+            if (log.Device == null && _device == null)
+            {
+                _device = MiscStubs.GetDeviceInfo();
+            }
+            log.Device = log.Device ?? _device;
+            if (log.TOffset == 0L)
+            {
+                log.TOffset = MiscStubs.CurrentTimeInMilliseconds();
+            }
+            return log;
+        }
+
+        private async Task PersistLogAsync(ILog log, int stateSnapshot)
+        {
+            try
+            {
+                await _storage.PutLogAsync(Name, log);
+            }
+            catch (Exception e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Error persisting log", e);
+                return;
+            }
+
+            await _mutex.WaitAsync();
+            try
+            {
+                if (stateSnapshot != _currentState)
+                {
+                    return;
+                }
+                _pendingLogCount++;
+                if (_enabled)
+                {
+                    CheckPendingLogs();
+                    return;
+                }
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
+            }
+            finally
+            {
+                _mutex.Release();
+            }
+        }
+
+        public void InvalidateDeviceCache()
+        {
+            _mutex.Wait();
+            _device = null;
+            _mutex.Release();
+        }
+
         public void Clear()
         {
+            _mutex.Wait();
             int stateSnapshot = _currentState;
+            _mutex.Release();
             _storage.DeleteLogsAsync(Name).ContinueWith((completedTask) =>
             {
                 _mutex.Wait();
@@ -199,10 +227,10 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             {
                 _enabled = false;
                 _discardLogs = deleteLogs;
-                InvalidateCurrentState();
-                foreach (List<ILog> batch in _sendingBatches.Values)
+                _currentState++;
+                if (deleteLogs && FailedToSendLog != null)
                 {
-                    if (deleteLogs && FailedToSendLog != null)
+                    foreach (List<ILog> batch in _sendingBatches.Values)
                     {
                         foreach (ILog log in batch)
                         {
@@ -210,24 +238,18 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                         }
                     }
                 }
-                try
-                {
-                    _sender.Close();
-                }
-                catch (Exception e) //TODO don't catch just any exception?
-                {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
-                }
-
+                _sender.Close();
                 if (deleteLogs)
                 {
                     _pendingLogCount = 0;
-                    DeleteLogsOnSuspended().Start();
+                    DeleteLogsOnSuspendedAsync().Start();
+                    return;
                 }
-                else
-                {
-                    _storage.ClearPendingLogState(); //TODO need to actually only do this for current channel, so pass name?
-                }
+                _storage.ClearPendingLogState(Name);
+            }
+            catch (SenderException e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
             }
             finally
             {
@@ -235,69 +257,55 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             }
         }
 
-        private async Task DeleteLogsOnSuspended()
+        private async Task DeleteLogsOnSuspendedAsync()
         {
             await _mutex.WaitAsync();
             try
             {
-
-                int stateSnapshot = _currentState;
-                if (SendingLog == null && FailedToSendLog == null)
+                if (SendingLog != null || FailedToSendLog != null)
                 {
-                    _mutex.Release();
-                    await _storage.DeleteLogsAsync(Name);
-                    _mutex.Wait(); //TODO obviously wasteful to wait again...
-                    return;
+                    int stateSnapshot = _currentState;
+                    await SignalDeletingLogs(stateSnapshot);
                 }
-
-                await DeleteLogsOnSuspended(_currentState);
+                _mutex.Release();
+                await _storage.DeleteLogsAsync(Name); //TODO if this throws an exception we will catch it and then try to release the mutex that we don't own
             }
-            finally
+            catch (Exception)
             {
                 _mutex.Release();
+                throw;
             }
         }
 
-        private async Task DeleteLogsOnSuspended(int stateSnapshot)
+        private async Task SignalDeletingLogs(int stateSnapshot)
         {
-
-                if (stateSnapshot != _currentState)
-                {
-                    return;
-                }
-                List<ILog> logs;
-                //TODO put a try-catch?
-                string batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, out logs);
-
-                if (stateSnapshot != _currentState) //TODO what if batchid == null?
-                {
-                    return;
-                }
-
-                foreach (ILog log in logs)
-                {
-                    SendingLog?.Invoke(this, new SendingLogEventArgs(log));
-                    FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
-                }
-                if (logs.Count >= ClearBatchSize)
-                {
-                    await DeleteLogsOnSuspended(stateSnapshot);
-                    return;
-                }
-
+            if (stateSnapshot != _currentState)
+            {
+                return;
+            }
+            List<ILog> logs;
             _mutex.Release();
-            await _storage.DeleteLogsAsync(Name);
-            _mutex.Wait();
+            //TODO put a try-catch?
+            string batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, out logs);
+            await _mutex.WaitAsync();
+
+            if (stateSnapshot != _currentState) //TODO what if batchid == null?
+            {
+                return;
+            }
+
+            foreach (ILog log in logs)
+            {
+                SendingLog?.Invoke(this, new SendingLogEventArgs(log));
+                FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
+            }
+            if (logs.Count >= ClearBatchSize)
+            {
+                await SignalDeletingLogs(stateSnapshot);
+            }
         }
 
-        private void InvalidateCurrentState()
-        {
-            _mutex.Wait();
-            _currentState++;
-            _mutex.Release();
-        }
-
-        private async Task TriggerIngestion()
+        private async Task TriggerIngestionAsync()
         {
             await _mutex.WaitAsync();
             try
@@ -313,17 +321,18 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                     MobileCenterLog.Debug(MobileCenterLog.LogTag, "Already sending " + _maxParallelBatches + " batches of analytics data to the server");
                     return;
                 }
+
                 /* Get a batch from storage */
                 var logs = new List<ILog>();
                 int stateSnapshot = _currentState;
                 _mutex.Release();
-                string batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, out logs);
+                string batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, out logs); //TODO if this throws we will delete an unowned mutex
                 await _mutex.WaitAsync();
                 if (batchId != null && stateSnapshot == _currentState)
                 {
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
-                    await TriggerIngestion(logs, stateSnapshot, batchId);
+                    await TriggerIngestionAsync(logs, stateSnapshot, batchId);
                 }
             }
             finally
@@ -332,7 +341,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             }
         }
 
-        private async Task TriggerIngestion(List<ILog> logs, int stateSnapshot, string batchId)
+        private async Task TriggerIngestionAsync(List<ILog> logs, int stateSnapshot, string batchId)
         {
             /* Before sending logs, trigger the sending event for this channel */
             if (SendingLog != null)
@@ -344,48 +353,54 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 }
             }
             _mutex.Release();
-            var result = await _sender.SendLogsAsync(logs);
+            try
+            {
+                await _sender.SendLogsAsync(_appSecret, _installId, logs);
+            }
+            catch (SenderException e)
+            {
+                await _mutex.WaitAsync();
+                HandleSendingFailure(batchId, e);
+            }
             await _mutex.WaitAsync();
             if (_currentState != stateSnapshot)
             {
                 return;
             }
-            if (result.Success)
-            {
-                _storage.DeleteLogsAsync(Name, batchId).Start();
-                var removedLogs = _sendingBatches[batchId];
-                _sendingBatches.Remove(batchId);
-                if (SentLog != null)
-                {
-                    foreach (var log in removedLogs)
-                    {
-                        SentLog(this, new SentLogEventArgs(log));
-                    }
-                }
-            }
-            else
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Sending logs for channel '" + Name + "', batch '" + batchId + "' failed", result.Exception);
-                var removedLogs = _sendingBatches[batchId];
-                _sendingBatches.Remove(batchId);
-                bool recoverableError = MiscStubs.IsRecoverableHttpError(result.Exception);
-                if (!recoverableError && FailedToSendLog != null)
-                {
-                    foreach (var log in removedLogs)
-                    {
-                        FailedToSendLog(this, new FailedToSendLogEventArgs(log, result.Exception));
-                    }
-                }
-                Suspend(!recoverableError, result.Exception);
-                if (recoverableError)
-                {
-                    _pendingLogCount += removedLogs.Count;
-                }
-            }
 
+            _storage.DeleteLogsAsync(Name, batchId).Start();
+            var removedLogs = _sendingBatches[batchId];
+            _sendingBatches.Remove(batchId);
+            if (SentLog != null)
+            {
+                foreach (var log in removedLogs)
+                {
+                    SentLog(this, new SentLogEventArgs(log));
+                }
+            }
             CheckPendingLogs();
         }
 
+        private void HandleSendingFailure(string batchId, SenderException e)
+        {
+            MobileCenterLog.Error(MobileCenterLog.LogTag, "Sending logs for channel '" + Name + "', batch '" + batchId + "' failed", e);
+            var removedLogs = _sendingBatches[batchId];
+            _sendingBatches.Remove(batchId);
+            bool recoverableError = MiscStubs.IsRecoverableHttpError(e);
+            if (!recoverableError && FailedToSendLog != null)
+            {
+                foreach (var log in removedLogs)
+                {
+                    FailedToSendLog(this, new FailedToSendLogEventArgs(log, e));
+                }
+            }
+            Suspend(!recoverableError, e);
+            if (recoverableError)
+            {
+                _pendingLogCount += removedLogs.Count;
+            }
+            return;
+        }
         private void CheckPendingLogs()
         {
             if (!_enabled)
@@ -397,7 +412,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             MobileCenterLog.Debug(MobileCenterLog.LogTag, "CheckPendingLogs(" + Name + ") pending log count: " + _pendingLogCount);
             if (_pendingLogCount >= _maxLogsPerBatch)
             {
-                TriggerIngestion().Start();
+                TriggerIngestionAsync().Start();
             }
             else if (_pendingLogCount > 0 && !_timer.IsEnabled)
             {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
 {
+    public class DeviceInformationException : Exception { }
     public partial class Device
     {
         public Device()
