@@ -115,7 +115,6 @@
     <Compile Include="MiscStubs.cs" />
     <Compile Include="MobileCenterLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatefulMutex.cs" />
     <Compile Include="Storage\IStorage.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.UWP.rd.xml" />
   </ItemGroup>

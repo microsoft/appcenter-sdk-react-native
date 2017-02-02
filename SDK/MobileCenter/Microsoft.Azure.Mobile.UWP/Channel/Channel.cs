@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         private Guid _installId;
 
         private IStorage _storage;
-        private ISender _sender;
+        private IIngestion _ingestion;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private DispatcherTimer _timer = new DispatcherTimer();
         private Dictionary<string, List<ILog>> _sendingBatches = new Dictionary<string, List<ILog>>();
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         private int _currentState;
 
         //NOTE: the constructor should only be called from ChannelGroup
-        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, ISender sender, IStorage storage)
+        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
         {
             Name = name;
             _timer.Interval = batchTimeInterval;
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             _maxLogsPerBatch = maxLogsPerBatch;
             _appSecret = appSecret;
             _installId = installId;
-            _sender = sender;
+            _ingestion = ingestion;
             _storage = storage;
             _timer.Tick += TimerElapsed;
             CountFromDiskAsync().Start();
@@ -149,6 +149,14 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             }
         }
 
+        public void NotifyStateInvalidated()
+        {
+            _mutex.Wait();
+            _currentState++;
+            _timer.Stop();//TODO yes?
+            _mutex.Release();
+        }
+
         private ILog PrepareLog(ILog log)
         {
             //TODO probably more steps
@@ -238,7 +246,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                         }
                     }
                 }
-                _sender.Close();
+                _ingestion.Close();
                 if (deleteLogs)
                 {
                     _pendingLogCount = 0;
@@ -247,7 +255,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 }
                 _storage.ClearPendingLogState(Name);
             }
-            catch (SenderException e)
+            catch (IngestionException e)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
             }
@@ -355,9 +363,9 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             _mutex.Release();
             try
             {
-                await _sender.SendLogsAsync(_appSecret, _installId, logs);
+                await _ingestion.SendLogsAsync(_appSecret, _installId, logs);
             }
-            catch (SenderException e)
+            catch (IngestionException e)
             {
                 await _mutex.WaitAsync();
                 HandleSendingFailure(batchId, e);
@@ -381,7 +389,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             CheckPendingLogs();
         }
 
-        private void HandleSendingFailure(string batchId, SenderException e)
+        private void HandleSendingFailure(string batchId, IngestionException e)
         {
             MobileCenterLog.Error(MobileCenterLog.LogTag, "Sending logs for channel '" + Name + "', batch '" + batchId + "' failed", e);
             var removedLogs = _sendingBatches[batchId];
@@ -418,6 +426,11 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             {
                 _timer.Start();
             }
+        }
+
+        public void Shutdown()
+        {
+            Suspend(false, new CancellationException());
         }
     }
 }
