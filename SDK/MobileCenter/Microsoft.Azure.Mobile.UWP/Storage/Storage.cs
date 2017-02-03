@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.UWP.Storage
 {
-    class Storage
+    public class Storage
     {
+        
     }
 }
