@@ -10,7 +10,8 @@
 
 #import "RNCrashesUtils.h"
 
-@import MobileCenterCrashes.MSErrorAttachment;
+//TODO: Re-enable error attachment when the feature becomes available.
+//@import MobileCenterCrashes.MSErrorAttachment;
 
 static NSString *ON_BEFORE_SENDING_EVENT = @"MobileCenterErrorReportOnBeforeSending";
 static NSString *ON_SENDING_FAILED_EVENT = @"MobileCenterErrorReportOnSendingFailed";
@@ -60,11 +61,14 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
     [self.bridge.eventDispatcher sendAppEventWithName:ON_SENDING_FAILED_EVENT body:convertReportToJS(errorReport)];
 }
 
+/*TODO: Re-enable error attachment when the feature becomes available.
 - (void) provideAttachments: (NSDictionary*) attachments
 {
     self.attachments = attachments;
 }
+ */
 
+/*TODO: Re-enable error attachment when the feature becomes available.
 - (MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport
 {
     NSObject* attachment = [self.attachments objectForKey:[errorReport incidentIdentifier]];
@@ -75,6 +79,7 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
 
     return nil;
 }
+*/
 
 - (NSArray<MSErrorReport *>*) getAndClearReports
 {

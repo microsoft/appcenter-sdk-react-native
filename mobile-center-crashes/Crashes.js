@@ -6,13 +6,17 @@ const sendDidSucceed = "MobileCenterErrorReportOnSendingSucceeded";
 const sendDidFail = "MobileCenterErrorReportOnSendingFailed";
 
 let Crashes = {
-    // Constants
-    hasCrashedInLastSession: RNCrashes.hasCrashedInLastSession,
-    lastSessionCrashReport: RNCrashes.lastCrashReport,
-
     // Functions
     async generateTestCrash() {
         return await RNCrashes.generateTestCrash();
+    },
+
+    async hasCrashedInLastSession() {
+        return await RNCrashes.hasCrashedInLastSession();
+    },
+
+    async lastSessionCrashReport() {
+        return await RNCrashes.lastSessionCrashReport();
     },
 
     async isEnabled() {
@@ -26,6 +30,8 @@ let Crashes = {
     process(callback) {
         return RNCrashes.getCrashReports().then(function (reports) {
             let errorAttachments = {};
+            /* TODO: Re-enable error attachment when the feature becomes available.
+            let errorAttachments = {};
             let reportsWithAttachmentFunction = reports.map(function (report) {
                 function addAttachment(attachment) {
                     if (typeof attachment != "string") {
@@ -37,7 +43,10 @@ let Crashes = {
                     addAttachment
                     }, report);
                 });
-            callback(reportsWithAttachmentFunction, function (response) {
+            reports = reportsWithAttachmentFunction;
+            */
+            
+            callback(reports, function (response) {
                 RNCrashes.crashUserResponse(response, errorAttachments);
             });
 	    });

@@ -6,8 +6,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.microsoft.azure.mobile.crashes.AbstractCrashesListener;
-import com.microsoft.azure.mobile.crashes.ErrorAttachments;
-import com.microsoft.azure.mobile.crashes.model.ErrorAttachment;
+// TODO: Re-enable error attachment when the feature becomes available.
+//import com.microsoft.azure.mobile.crashes.ErrorAttachments;
+//import com.microsoft.azure.mobile.crashes.model.ErrorAttachment;
 import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 import org.json.JSONException;
@@ -21,7 +22,8 @@ public abstract class RNCrashesListenerBase extends AbstractCrashesListener {
     private ReactApplicationContext mReactApplicationContext;
     private List<ErrorReport> mPendingReports = new ArrayList<ErrorReport>();
 
-    protected ReadableMap mAttachments;
+    // TODO: Re-enable error attachment when the feature becomes available.
+    //protected ReadableMap mAttachments;
 
     private static final String ON_BEFORE_SENDING_EVENT = "MobileCenterErrorReportOnBeforeSending";
     private static final String ON_SENDING_FAILED_EVENT = "MobileCenterErrorReportOnSendingFailed";
@@ -41,9 +43,11 @@ public abstract class RNCrashesListenerBase extends AbstractCrashesListener {
      */
     public void reportUserResponse(int userConfirmation) { }
 
+    /* TODO: Re-enable error attachment when the feature becomes available.
     public final void provideAttachments(ReadableMap attachments) {
         this.mAttachments = attachments;
     }
+    */
 
     public final List<ErrorReport> getAndClearReports() {
         List<ErrorReport> reports = this.mPendingReports;
@@ -55,6 +59,7 @@ public abstract class RNCrashesListenerBase extends AbstractCrashesListener {
         this.mPendingReports.add(report);
     }
 
+    /* TODO: Re-enable error attachment when the feature becomes available.
     @Override
     public ErrorAttachment getErrorAttachment(ErrorReport report) {
         if (this.mAttachments == null) {
@@ -73,10 +78,11 @@ public abstract class RNCrashesListenerBase extends AbstractCrashesListener {
 
         return null;
     }
+    */
 
     @Override
     public final void onBeforeSending(ErrorReport report) {
-        this.mAttachments = null;
+        //this.mAttachments = null;       // TODO: Re-enable error attachment when the feature becomes available.
 
         RNCrashesUtils.logInfo("Sending error report: " + report.getId());
         try {

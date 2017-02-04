@@ -48,6 +48,9 @@ RCT_EXPORT_MODULE();
 {
   [RNMobileCenter configureMobileCenter];
   [MSCrashes setDelegate:delegate];
+
+  //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
+
   crashDelegate = delegate;
   [MSCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];
   [MSMobileCenter startService:[MSCrashes class]];
@@ -63,6 +66,8 @@ RCT_EXPORT_MODULE();
 {
     self = [super init];
 
+    // Normally the bridge is nil at this point, but I left this code here anyway.
+    // When the RNCrashes setBridge setter is called, below, is when the bridge is actually provided.
     if (self) {
         [crashDelegate setBridge:self.bridge];
     }
@@ -70,14 +75,39 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
+-(void)setBridge:(RCTBridge*) bridgeValue
+{
+    _bridge = bridgeValue;
+    [crashDelegate setBridge:bridgeValue];
+}
+
+- (RCTBridge*) bridge {
+    return _bridge;
+}
+
 - (NSDictionary *)constantsToExport
 {
-    MSErrorReport *lastSessionCrashReport = [MSCrashes lastSessionCrashReport];
+    return @{};
+}
 
-    return @{
-        @"hasCrashedInLastSession": @(lastSessionCrashReport != nil),
-        @"lastCrashReport": convertReportToJS(lastSessionCrashReport)
+RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    void (^fetchHasCrashedInLastSession)() = ^void() {
+        MSErrorReport *report = [MSCrashes lastSessionCrashReport];
+        resolve(@(report != nil));
     };
+    dispatch_async(dispatch_get_main_queue(), fetchHasCrashedInLastSession);
+}
+
+RCT_EXPORT_METHOD(lastSessionCrashReport:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    void (^fetchLastSessionCrashReport)() = ^void() {
+        MSErrorReport *report = [MSCrashes lastSessionCrashReport];
+        resolve(convertReportToJS(report));
+    };
+    dispatch_async(dispatch_get_main_queue(), fetchLastSessionCrashReport);
 }
 
 RCT_EXPORT_METHOD(getCrashReports:(RCTPromiseResolveBlock)resolve
@@ -128,7 +158,8 @@ RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attac
     if ([crashDelegate respondsToSelector:@selector(reportUserResponse:)]) {
         [crashDelegate reportUserResponse:response];
     }
-    [crashDelegate provideAttachments:attachments];
+    //TODO: Re-enable error attachment when the feature becomes available.
+    //[crashDelegate provideAttachments:attachments];
     [MSCrashes notifyWithUserConfirmation:response];
     resolve(@"");
 }
