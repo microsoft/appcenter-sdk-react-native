@@ -11,12 +11,12 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
     {
         //Group = column (crashes or analytics)
         //id = batch id
-        Task<bool> PutLogAsync(string channelName, ILog log);
-        Task<bool> DeleteLogsAsync(string channelName, string batchId);
-        Task<bool> DeleteLogsAsync(string channelName);
+        Task PutLogAsync(string channelName, ILog log);
+        Task DeleteLogsAsync(string channelName, string batchId);
+        Task DeleteLogsAsync(string channelName);
         Task<int> CountLogs(string channelName);
         void ClearPendingLogState(string channelName);
-        Task<string> GetLogsAsync(string channelName, int limit, out List<ILog> outLogs);
+        Task<string> GetLogsAsync(string channelName, int limit, List<ILog> logs);
         void WaitForCurrentTasksToComplete(long timeout);
     }
 }

@@ -291,10 +291,10 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             {
                 return;
             }
-            List<ILog> logs;
+            var logs = new List<ILog>();
             _mutex.Release();
             //TODO put a try-catch?
-            string batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, out logs);
+            string batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, logs);
             await _mutex.WaitAsync();
 
             if (stateSnapshot != _currentState) //TODO what if batchid == null?
@@ -334,7 +334,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 var logs = new List<ILog>();
                 int stateSnapshot = _currentState;
                 _mutex.Release();
-                string batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, out logs); //TODO if this throws we will delete an unowned mutex
+                string batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs); //TODO if this throws we will delete an unowned mutex
                 await _mutex.WaitAsync();
                 if (batchId != null && stateSnapshot == _currentState)
                 {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +27,34 @@ namespace Microsoft.Azure.Mobile.UWP
         public static long CurrentTimeInMilliseconds()
         {
            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        }
+
+        //adapted from https://msdn.microsoft.com/en-us/library/bb412179(v=vs.110).aspx
+        public static string WriteFromObject<T>(T item)
+        {
+            //TODO using stuff is a bit weird and unnecessary
+            string jsonString = "";
+            using (MemoryStream ms = new MemoryStream())
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                serializer.WriteObject(ms, item);
+                byte[] json = ms.ToArray();
+                jsonString = Encoding.UTF8.GetString(json, 0, json.Length);
+            }
+            return jsonString;
+        }
+
+        //adapted from https://msdn.microsoft.com/en-us/library/bb412179(v=vs.110).aspx
+        public static T ReadToObject<T>(string json) where T : class, new()
+        {
+            //TODO using stuff is a bit weird and unnecessary
+            T deserializedItem = new T();
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(deserializedItem.GetType());
+                deserializedItem = serializer.ReadObject(ms) as T;
+            }
+            return deserializedItem;
         }
     }
 }
