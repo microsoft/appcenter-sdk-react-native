@@ -1,3 +1,5 @@
+source 'git@github.com:Microsoft/mobile-center-sdk-specs.git'
+
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -6,8 +8,8 @@ target 'TestApp' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'RNMobileCenter', '~> 0.1.0'
-  pod 'MobileCenter', '~> 0.3.0'
+  pod 'RNMobileCenter', '~> 0.2.0'
+  pod 'MobileCenter', '~> 0.4.0'
 
   
 

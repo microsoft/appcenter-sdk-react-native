@@ -1,6 +1,6 @@
 {
   "name": "mobile-center-analytics",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "React Native plugin for Mobile Center Analytics",
   "main": "Analytics.js",
   "repository": {
