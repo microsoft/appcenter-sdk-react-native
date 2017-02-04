@@ -27,12 +27,14 @@
 @required
 // Internal use only, to configure native <-> JS communication
 - (NSArray<MSErrorReport *> *) getAndClearReports;
-- (void) provideAttachments: (NSDictionary*) attachments;
+//TODO: Re-enable error attachment when the feature becomes available.
+//- (void) provideAttachments: (NSDictionary*) attachments;
 - (void) setBridge: (RCTBridge*) bridge;
 @end
 
 @interface RNCrashesDelegateBase : NSObject<RNCrashesDelegate>
-@property NSDictionary* attachments;
+//TODO: Re-enable error attachment when the feature becomes available.
+//@property NSDictionary* attachments;
 @property NSMutableArray* reports;
 @property RCTBridge* bridge;
 @end

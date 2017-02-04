@@ -15,6 +15,7 @@ import com.microsoft.azure.mobile.crashes.Crashes;
 import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenter;
+import com.microsoft.azure.mobile.ResultCallback;
 
 import org.json.JSONException;
 
@@ -54,15 +55,30 @@ public class RNCrashesModule extends BaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-
-        ErrorReport lastError = Crashes.getLastSessionCrashReport();
-        
-        constants.put(RNCrashesModule.HasCrashedInLastSessionKey, lastError != null);
-        if (lastError != null) {
-            constants.put(RNCrashesModule.LastCrashReportKey, RNCrashesUtils.convertErrorReportToWritableMapOrEmpty(lastError));
-        }
-
         return constants;
+    }
+
+    @ReactMethod
+    public void lastSessionCrashReport(final Promise promise) {
+        Crashes.getLastSessionCrashReport(new ResultCallback<ErrorReport>() {
+            @Override
+            public void onResult(ErrorReport errorReport) {
+                promise.resolve(errorReport != null ? 
+                    RNCrashesUtils.convertErrorReportToWritableMapOrEmpty(errorReport)
+                    : null);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void hasCrashedInLastSession(final Promise promise) {
+        Crashes.getLastSessionCrashReport(new ResultCallback<ErrorReport>() {
+            @Override
+            public void onResult(ErrorReport errorReport) {
+                Boolean hasCrashed = errorReport != null;
+                promise.resolve(hasCrashed);
+            }
+        });
     }
 
     @ReactMethod
@@ -96,7 +112,8 @@ public class RNCrashesModule extends BaseJavaModule {
         int response = send ? Crashes.SEND : Crashes.DONT_SEND;
         if (mCrashListener != null) {
             mCrashListener.reportUserResponse(response);
-            mCrashListener.provideAttachments(attachments);
+            //TODO: Re-enable error attachment when the feature becomes available.
+            //mCrashListener.provideAttachments(attachments);
         }
         Crashes.notifyUserConfirmation(response);
         promise.resolve("");
