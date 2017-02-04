@@ -1,0 +1,39 @@
+Building for iOS:
+
+- Download the latest Mobile Center frameworks zip from https://github.com/Microsoft/mobile-center-sdk-ios/releases.
+- Unzip it.
+- Open up RNMobileCenter/ios/RNMobileCenter.xcodeproj in Xcode
+- Drag in MobileCenter.framework; check "Copy items if needed"
+- Switch the scheme to "Fat framework"
+- Build
+- For validation do: file  ./Products/RNMobileCenter/RNMobileCenter.framework/RNMobileCenter
+  And confirm you see output like this:
+  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter: Mach-O universal binary with 4 architectures: [arm_v7: current ar archive random library] [i386: current ar archive random library] [x86_64: current ar archive random library] [arm64: current ar archive random library]
+  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture armv7):    current ar archive random library
+  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture i386):    current ar archive random library
+  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture x86_64):    current ar archive random library
+  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture arm64):    current ar archive random library  
+
+- Zip up the framework:
+  cd mobile-center-sdk-react-native/RNMobileCenter
+  ./zip-framework.sh
+
+
+
+- Build Demo app
+- cd into MobileCenterDemoApp folder and npm install
+- run react-native link to hook up the native sources and specify app secret
+- Run Demo app
+- cd into MobileCenterDemoApp folder and react-native run-ios
+
+
+
+
+More info:
+
+More about the fat framework build process:
+
+Just to be clear: this is what I mean about the "fat framework" only running a script
+that script invokes the build on the RNMobileCenter target a few times and builds the different archs and puts it all together
+and it looks like the script does build it in release mode
+To see the script:  select RNMobileCenter's root elemetn, select Fat Framework, go to the Build Phases tab, and there is a Run Script target
