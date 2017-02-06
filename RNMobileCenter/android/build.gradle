@@ -28,8 +28,8 @@ allprojects {
         defaultConfig {
             minSdkVersion 16
             targetSdkVersion 22
-            versionCode 2
-            versionName "0.1.1"
+            versionCode 3
+            versionName "0.2.0"
             group groupId
             version versionName
             buildConfigField 'String', "SDK_NAME", "\"mobilecenter.react-native\""
@@ -110,7 +110,7 @@ repositories {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.azure.mobile:mobile-center:0.3.+'
+    compile 'com.microsoft.azure.mobile:mobile-center:0.5.+'
 }
 
 artifacts {
