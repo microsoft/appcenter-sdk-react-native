@@ -108,23 +108,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CancellationException.cs" />
-    <Compile Include="chnl\Channel.cs" />
-    <Compile Include="chnl\ChannelDelegates.cs" />
-    <Compile Include="chnl\ChannelEventArgs.cs" />
-    <Compile Include="chnl\ChannelGroup.cs" />
-    <Compile Include="chnl\IChannel.cs" />
-    <Compile Include="ingstn\IIngestion.cs" />
-    <Compile Include="ingstn\Models\Device.cs" />
-    <Compile Include="ingstn\Models\ILog.cs" />
+    <Compile Include="Channel\Channel.cs" />
+    <Compile Include="Channel\ChannelDelegates.cs" />
+    <Compile Include="Channel\ChannelEventArgs.cs" />
+    <Compile Include="Channel\ChannelGroup.cs" />
+    <Compile Include="Channel\IChannel.cs" />
+    <Compile Include="Ingestion\IIngestion.cs" />
+    <Compile Include="Ingestion\Models\Device.cs" />
+    <Compile Include="Ingestion\Models\ILog.cs" />
     <Compile Include="MiscStubs.cs" />
     <Compile Include="MobileCenterLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="strg\IStorage.cs" />
-    <Compile Include="strg\Storage.cs" />
+    <Compile Include="Storage\IStorage.cs" />
+    <Compile Include="Storage\Storage.cs" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Properties\Microsoft.Azure.Mobile.UWP.rd.xml" />
   </ItemGroup>
+  <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -19,7 +19,6 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         private Guid _installId;
         private bool _enabled;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
@@ -107,14 +106,8 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             {
                 channel.Shutdown();
             }
-            try
-            {
-                _storage.WaitForCurrentTasksToComplete(ShutdownTimeout);
-            }
-            catch (Exception e) //TODO what kind of exception should we catch here?
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Interrupted while waiting for persistence to flush.", e);
-            }
+
+            //TODO need some kind of waiting/timeout?
 
             _mutex.Release();
         }

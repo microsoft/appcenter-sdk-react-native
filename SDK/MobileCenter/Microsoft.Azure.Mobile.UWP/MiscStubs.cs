@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.UWP
         }
 
         //adapted from https://msdn.microsoft.com/en-us/library/bb412179(v=vs.110).aspx
-        public static string WriteFromObject<T>(T item)
+        public static string WriteFromObject<T>(T item) //TODO might not work with an interface
         {
             //TODO using stuff is a bit weird and unnecessary
             string jsonString = "";
@@ -45,16 +45,14 @@ namespace Microsoft.Azure.Mobile.UWP
         }
 
         //adapted from https://msdn.microsoft.com/en-us/library/bb412179(v=vs.110).aspx
-        public static T ReadToObject<T>(string json) where T : class, new()
+        public static T ReadToObject<T>(string json)
         {
             //TODO using stuff is a bit weird and unnecessary
-            T deserializedItem = new T();
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(json)))
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(deserializedItem.GetType());
-                deserializedItem = serializer.ReadObject(ms) as T;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                return (T)serializer.ReadObject(ms);
             }
-            return deserializedItem;
         }
     }
 }

@@ -17,6 +17,5 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
         Task<int> CountLogs(string channelName);
         void ClearPendingLogState(string channelName);
         Task<string> GetLogsAsync(string channelName, int limit, List<ILog> logs);
-        void WaitForCurrentTasksToComplete(long timeout);
     }
 }
