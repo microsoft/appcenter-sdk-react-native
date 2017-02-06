@@ -64,7 +64,6 @@ class TestApp extends Component {
 
   sendCrashes() {
     const component = this;
-            console.log("sending crashes");
     Crashes.process(function (reports, send) {
       let status = "";
 
@@ -76,7 +75,6 @@ class TestApp extends Component {
 
       Crashes.addEventListener({
         willSendCrash: function () {
-            console.log("will send received");
           status += `Will send crash\n`;
           component.setState({sendStatus: status});
         },
