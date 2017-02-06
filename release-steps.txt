@@ -27,7 +27,29 @@ Building for iOS:
 - cd into MobileCenterDemoApp folder and react-native run-ios
 
 
+Bumping version numbers, for components that change (or whose static dependencies change):
 
+RNMobileCenter Android
+  mobile-center-sdk-react-native/RNMobileCenter/android/build.gradle
+    Add 1 to versionCode (it's just a counter that need be unique)
+    Bump the version in versionName
+    Ensure com.microsoft.azure.mobile:mobile-center (at the bottom) is correct
+
+RNMobileCenter iOS
+  mobile-center-sdk-react-native/RNMobileCenter.podspec
+    Bump the version num s.version
+    Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
+
+NPM modules
+  mobile-center-crashes/package.json
+  mobile-center-crashes/scripts/postlink.js
+  mobile-center-crashes/android/build.gradle (dependences at bottom)
+
+  mobile-center-analytics/package.json
+  mobile-center-analytics/scripts/postlink.js
+  mobile-center-analytics/android/build.gradle (dependences at bottom)
+
+  mobile-center-link-script/package.json
 
 More info:
 
