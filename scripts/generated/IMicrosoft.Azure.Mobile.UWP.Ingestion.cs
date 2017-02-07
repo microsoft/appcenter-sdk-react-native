@@ -7,11 +7,16 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
     using Microsoft.Azure;
     using Microsoft.Azure.Mobile;
     using Microsoft.Azure.Mobile.UWP;
+    using Microsoft.Rest;
     using Models;
     using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
-    /// Microsoft Sonoma Device Information REST API.
+    /// Microsoft Avalanche Ingestion REST API.
     /// </summary>
     public partial interface IMicrosoft.Ingestion : System.IDisposable
     {
@@ -30,11 +35,31 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
         /// </summary>
         JsonSerializerSettings DeserializationSettings { get; }
 
+        /// <summary>
+        /// API Version.
+        /// </summary>
+        string ApiVersion { get; set; }
+
 
         /// <summary>
-        /// Gets the IDevices.
+        /// Send logs to the Ingestion service.
         /// </summary>
-        IDevices Devices { get; }
+        /// <param name='appSecret'>
+        /// A unique and secret key used to identify the application.
+        /// </param>
+        /// <param name='installID'>
+        /// Installation identifier.
+        /// </param>
+        /// <param name='parameters'>
+        /// Payload.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<Microsoft.Rest.HttpOperationResponse> SendWithHttpMessagesAsync(System.Guid appSecret, System.Guid installID, LogContainer parameters, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }
