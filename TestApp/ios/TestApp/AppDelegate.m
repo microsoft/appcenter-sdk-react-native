@@ -22,6 +22,9 @@
 {
   NSURL *jsCodeLocation;
 
+  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  //[MSMobileCenter setLogLevel: MSLogLevelVerbose];
+  
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
   [RNCrashes register];  // Initialize Mobile Center crashes

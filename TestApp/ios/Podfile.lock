@@ -1,23 +1,23 @@
 PODS:
-  - MobileCenter (0.3.6):
-    - MobileCenter/MobileCenterAnalytics (= 0.3.6)
-    - MobileCenter/MobileCenterCrashes (= 0.3.6)
-  - MobileCenter/MobileCenter (0.3.6)
-  - MobileCenter/MobileCenterAnalytics (0.3.6):
+  - MobileCenter (0.4.1):
+    - MobileCenter/MobileCenterAnalytics (= 0.4.1)
+    - MobileCenter/MobileCenterCrashes (= 0.4.1)
+  - MobileCenter/MobileCenter (0.4.1)
+  - MobileCenter/MobileCenterAnalytics (0.4.1):
     - MobileCenter/MobileCenter
-  - MobileCenter/MobileCenterCrashes (0.3.6):
+  - MobileCenter/MobileCenterCrashes (0.4.1):
     - MobileCenter/MobileCenter
-  - RNMobileCenter (0.1.0):
-    - MobileCenter (~> 0.3.0)
+  - RNMobileCenter (0.2.0):
+    - MobileCenter (~> 0.4.0)
 
 DEPENDENCIES:
-  - MobileCenter (~> 0.3.0)
-  - RNMobileCenter (~> 0.1.0)
+  - MobileCenter (~> 0.4.0)
+  - RNMobileCenter (~> 0.2.0)
 
 SPEC CHECKSUMS:
-  MobileCenter: ed559fca36ef88584ee1b85162dbbd8ec92aa4b6
-  RNMobileCenter: 8ca8a27e2921a425196173e621751ccf2c406518
+  MobileCenter: 06c1c52837bdccbcf2e67adb2727d05efbad69b7
+  RNMobileCenter: 08408a13fca8f2e3e66847f01c28f41813286676
 
-PODFILE CHECKSUM: 1136c1243819c8bb87ab7f198a6916454107e978
+PODFILE CHECKSUM: e8a01d407126279056403416e836fb2f97d3c0ca
 
 COCOAPODS: 1.1.1
