@@ -7,8 +7,8 @@
     <ProjectGuid>{15E3FC9B-7714-4468-A296-81627A5B8F01}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>newuwp</RootNamespace>
-    <AssemblyName>newuwp</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.UWP</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -113,9 +113,16 @@
     <Compile Include="Channel\ChannelEventArgs.cs" />
     <Compile Include="Channel\ChannelGroup.cs" />
     <Compile Include="Channel\IChannel.cs" />
+    <Compile Include="Ingestion\Http\HttpUtils.cs" />
+    <Compile Include="Ingestion\Http\IngestionDecorator.cs" />
+    <Compile Include="Ingestion\Http\IngestionNetworkStateHandler.cs" />
     <Compile Include="Ingestion\IIngestion.cs" />
+    <Compile Include="Ingestion\Http\IngestionHttp.cs" />
     <Compile Include="Ingestion\Models\Device.cs" />
-    <Compile Include="Ingestion\Models\ILog.cs" />
+    <Compile Include="Ingestion\Models\Log.cs" />
+    <Compile Include="Ingestion\Models\LogContainer.cs" />
+    <Compile Include="Ingestion\Models\LogSerializer.cs" />
+    <Compile Include="Ingestion\Models\LogWithProperties.cs" />
     <Compile Include="MiscStubs.cs" />
     <Compile Include="MobileCenterLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

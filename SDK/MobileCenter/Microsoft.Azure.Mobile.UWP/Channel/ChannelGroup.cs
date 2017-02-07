@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Azure.Mobile.UWP.Ingestion;
+using Microsoft.Azure.Mobile.UWP.Ingestion.Http;
 using Microsoft.Azure.Mobile.UWP.Storage;
 
 namespace Microsoft.Azure.Mobile.UWP.Channel
@@ -114,14 +115,12 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
 
         private static IIngestion DefaultIngestion()
         {
-            //TODO implement me
-            return null;
+            return new IngestionNetworkStateHandler(new IngestionHttp());
         }
 
         private static IStorage DefaultStorage()
         {
-            //TODO implement me
-            return null;
+            return new Storage.Storage();
         }
 
         //TODO should these be wrapped in mutex? don't think so, but give some thought later

@@ -9,27 +9,27 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
 {
     public abstract class ChannelEventArgs : EventArgs
     {
-        public ChannelEventArgs(ILog log)
+        public ChannelEventArgs(Log log)
         {
             Log = log;
         }
-        public ILog Log { get; protected set; }
+        public Log Log { get; protected set; }
     }
     public class EnqueuingLogEventArgs : ChannelEventArgs
     {
-        public EnqueuingLogEventArgs(ILog log) : base(log) { }
+        public EnqueuingLogEventArgs(Log log) : base(log) { }
     }
     public class SendingLogEventArgs : ChannelEventArgs
     {
-        public SendingLogEventArgs(ILog log) : base(log) { }
+        public SendingLogEventArgs(Log log) : base(log) { }
     }
     public class SentLogEventArgs : ChannelEventArgs
     {
-        public SentLogEventArgs(ILog log) : base(log) { }
+        public SentLogEventArgs(Log log) : base(log) { }
     }
     public class FailedToSendLogEventArgs : ChannelEventArgs
     {
-        public FailedToSendLogEventArgs(ILog log, Exception exception) : base(log)
+        public FailedToSendLogEventArgs(Log log, Exception exception) : base(log)
         {
             Exception = exception;
         }

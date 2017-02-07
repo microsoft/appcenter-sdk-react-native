@@ -10,6 +10,8 @@ using Microsoft.Azure.Mobile.UWP.Ingestion;
 using Microsoft.Azure.Mobile.UWP.Storage;
 using Windows.UI.Xaml;
 using System.Runtime.CompilerServices;
+using Microsoft.Azure.Mobile.UWP.Ingestion.Http;
+using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.UWP.Channel
 {
@@ -25,7 +27,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         private IIngestion _ingestion;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private DispatcherTimer _timer = new DispatcherTimer();
-        private Dictionary<string, List<ILog>> _sendingBatches = new Dictionary<string, List<ILog>>();
+        private Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
 
         private int _maxParallelBatches;
         private int _maxLogsPerBatch;
@@ -123,7 +125,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         public event FailedToSendLogEventHandler FailedToSendLog;
         #endregion
 
-        public void Enqueue(ILog log)
+        public void Enqueue(Log log)
         {
             _mutex.Wait();
             try
@@ -139,7 +141,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 log = PrepareLog(log);
                 PersistLogAsync(log, _currentState).Start();
             }
-            catch (DeviceInformationException e)
+            catch (Exception e) //TODO make some kind of deviceinformationexception
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Device log cannot be generated", e);
             }
@@ -157,7 +159,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             _mutex.Release();
         }
 
-        private ILog PrepareLog(ILog log)
+        private Log PrepareLog(Log log) //TODO does this really need to return anything?
         {
             //TODO probably more steps
             if (log.Device == null && _device == null)
@@ -165,14 +167,14 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 _device = MiscStubs.GetDeviceInfo();
             }
             log.Device = log.Device ?? _device;
-            if (log.TOffset == 0L)
+            if (log.Toffset == 0L)
             {
-                log.TOffset = MiscStubs.CurrentTimeInMilliseconds();
+                log.Toffset = MiscStubs.CurrentTimeInMilliseconds();
             }
             return log;
         }
 
-        private async Task PersistLogAsync(ILog log, int stateSnapshot)
+        private async Task PersistLogAsync(Log log, int stateSnapshot)
         {
             try
             {
@@ -238,9 +240,9 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 _currentState++;
                 if (deleteLogs && FailedToSendLog != null)
                 {
-                    foreach (List<ILog> batch in _sendingBatches.Values)
+                    foreach (List<Log> batch in _sendingBatches.Values)
                     {
-                        foreach (ILog log in batch)
+                        foreach (Log log in batch)
                         {
                             FailedToSendLog(this, new FailedToSendLogEventArgs(log, exception));
                         }
@@ -291,7 +293,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             {
                 return;
             }
-            var logs = new List<ILog>();
+            var logs = new List<Log>();
             _mutex.Release();
             //TODO put a try-catch?
             string batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, logs);
@@ -302,7 +304,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 return;
             }
 
-            foreach (ILog log in logs)
+            foreach (Log log in logs)
             {
                 SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                 FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
@@ -331,7 +333,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
                 }
 
                 /* Get a batch from storage */
-                var logs = new List<ILog>();
+                var logs = new List<Log>();
                 int stateSnapshot = _currentState;
                 _mutex.Release();
                 string batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs); //TODO if this throws we will delete an unowned mutex
@@ -349,12 +351,12 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             }
         }
 
-        private async Task TriggerIngestionAsync(List<ILog> logs, int stateSnapshot, string batchId)
+        private async Task TriggerIngestionAsync(List<Log> logs, int stateSnapshot, string batchId)
         {
             /* Before sending logs, trigger the sending event for this channel */
             if (SendingLog != null)
             {
-                foreach (ILog log in logs)
+                foreach (Log log in logs)
                 {
                     var eventArgs = new SendingLogEventArgs(log);
                     SendingLog(this, eventArgs);
@@ -365,7 +367,7 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             {
                 await _ingestion.SendLogsAsync(_appSecret, _installId, logs);
             }
-            catch (IngestionException e)
+            catch (HttpOperationException e) //TODO this is not the right type to catch; should be more broad. Probably need to wrap expected exceptions into a type for ingestion
             {
                 await _mutex.WaitAsync();
                 HandleSendingFailure(batchId, e);
@@ -389,12 +391,12 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
             CheckPendingLogs();
         }
 
-        private void HandleSendingFailure(string batchId, IngestionException e)
+        private void HandleSendingFailure(string batchId, HttpOperationException e)
         {
             MobileCenterLog.Error(MobileCenterLog.LogTag, "Sending logs for channel '" + Name + "', batch '" + batchId + "' failed", e);
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
-            bool recoverableError = MiscStubs.IsRecoverableHttpError(e);
+            bool recoverableError = HttpUtils.IsRecoverableError(e);
             if (!recoverableError && FailedToSendLog != null)
             {
                 foreach (var log in removedLogs)

@@ -7,26 +7,30 @@ using System.Threading;
 using Microsoft.Data.Sqlite;
 
 using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.UWP.Storage
 {
     //TODO error handling (especially around statements that execute commands)
     public class Storage : IStorage
     {
-        private const string Database = "Microsoft.Azure.Mobile.UWP.Storage";
+        private const string Database = "Microsoft.Azure.Mobile.Storage";
         private const string Table = "logs";
         private const string ChannelColumn = "channel";
         private const string LogColumn = "log";
         private Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+        private JsonSerializerSettings _serializationSettings;
+        private JsonSerializerSettings _deserializationSettings;
+
         public Storage()
         {
             InitializeDatabaseAsync().Start();
         }
-        public async Task PutLogAsync(string channelName, ILog log)
+        public async Task PutLogAsync(string channelName, Log log)
         {
-            string logJsonString = MiscStubs.WriteFromObject(log);
+            string logJsonString = LogSerializer.Serialize(log);
             SqliteConnection dbConnection = GetDbConnection();
             await dbConnection.OpenAsync();
             try
@@ -144,7 +148,7 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
             _pendingDbIdentifiers.Clear();
             _mutex.Release();
         }
-        public async Task<string> GetLogsAsync(string channelName, int limit, List<ILog> logs) //TODO see if this can be broken up into smaller pieces
+        public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs) //TODO see if this can be broken up into smaller pieces
         {
             //TODO throw exception on failure
             SqliteConnection dbConnection = GetDbConnection();
@@ -155,7 +159,7 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
             try
             {
                 /* Save ids as a 2-tuple (SId, RowId) */
-                var idPairs = new List<Tuple<long, long>>();
+                var idPairs = new List<Tuple<Guid?, long>>();
                 var command = new SqliteCommand(null, dbConnection);
                 command.CommandText = string.Format("SELECT ROWID,* FROM {0} WHERE {1}=@channel LIMIT @limit", Table, ChannelColumn);
                 var channelParameter = new SqliteParameter("channel", channelName);
@@ -169,12 +173,12 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
                 {
                     string logJson = reader[LogColumn] as string;
                     //TODO error check?
-                    ILog log;
+                    Log log;
                     try
                     {
-                        log = MiscStubs.ReadToObject<ILog>(logJson);
+                        log = LogSerializer.DeserializeLog(logJson);
                         logs.Add(log);
-                        idPairs.Add(Tuple.Create(log.SId, reader.GetInt64(0)));
+                        idPairs.Add(Tuple.Create(log.Sid, reader.GetInt64(0)));
                     }
                     catch (Exception e) //TODO use a more specific exception?
                     {
@@ -196,9 +200,10 @@ namespace Microsoft.Azure.Mobile.UWP.Storage
                 var ids = new List<long>();
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "The SID/ID pairs for returning logs are:");
                 await _mutex.WaitAsync();
-                foreach (Tuple<long, long> idPair in idPairs)
+                foreach (var idPair in idPairs)
                 {
-                    MobileCenterLog.Debug(MobileCenterLog.LogTag, "\t" + idPair.Item1 + " / " + idPair.Item2);
+                    string sidString = idPair.Item1?.ToString() ?? "(null)";
+                    MobileCenterLog.Debug(MobileCenterLog.LogTag, "\t" + sidString + " / " + idPair.Item2);
                     _pendingDbIdentifiers.Add(idPair.Item2);
                     ids.Add(idPair.Item2);
                 }
