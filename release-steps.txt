@@ -1,61 +1,104 @@
-Building for iOS:
+**** Bumping version numbers, for components that change (or whose static dependencies change) ***
+
+  RNMobileCenter Android
+    mobile-center-sdk-react-native/RNMobileCenter/android/build.gradle
+      Add 1 to versionCode (it's just a counter that need be unique)
+      Bump the version in versionName
+      Ensure com.microsoft.azure.mobile:mobile-center (at the bottom) is correct
+
+  RNMobileCenter iOS
+    mobile-center-sdk-react-native/RNMobileCenter.podspec
+      Bump the version num s.version
+      Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
+
+  NPM modules
+    mobile-center-crashes/package.json
+    mobile-center-crashes/scripts/postlink.js
+    mobile-center-crashes/android/build.gradle (versionCode, versionName, and dependences at bottom)
+
+    mobile-center-analytics/package.json
+    mobile-center-analytics/scripts/postlink.js
+    mobile-center-analytics/android/build.gradle (dependences at bottom)
+
+    mobile-center-link-script/package.json
+
+*** Building for iOS ***
 
 - Download the latest Mobile Center frameworks zip from https://github.com/Microsoft/mobile-center-sdk-ios/releases.
-- Unzip it.
-- Open up RNMobileCenter/ios/RNMobileCenter.xcodeproj in Xcode
-- Drag in MobileCenter.framework; check "Copy items if needed"
-- Switch the scheme to "Fat framework"
-- Build
-- For validation do: file  ./Products/RNMobileCenter/RNMobileCenter.framework/RNMobileCenter
-  And confirm you see output like this:
-  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter: Mach-O universal binary with 4 architectures: [arm_v7: current ar archive random library] [i386: current ar archive random library] [x86_64: current ar archive random library] [arm64: current ar archive random library]
-  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture armv7):    current ar archive random library
-  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture i386):    current ar archive random library
-  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture x86_64):    current ar archive random library
-  RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture arm64):    current ar archive random library  
+  - Unzip it.
+  - Open up RNMobileCenter/ios/RNMobileCenter.xcodeproj in Xcode
+  - Drag in MobileCenter.framework; check "Copy items if needed"; Add to the RNMobileCenter target
+  - Switch the scheme to "Fat framework" (Product/Scheme menu)
+  - Ensure the Destination is Generic iOS Device (though I'm not sure it matters); ensure the "Fat Framework" target is selected
+  - Build (Product / Build For / Running)
+  - For validation do:
+    cd RNMobileCenter
+    file  ./Products/RNMobileCenter/RNMobileCenter.framework/RNMobileCenter
+    And confirm you see output like this:
+    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter: Mach-O universal binary with 4 architectures: [arm_v7: current ar archive random library] [i386: current ar archive random library] [x86_64: current ar archive random library] [arm64: current ar archive random library]
+    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture armv7):    current ar archive random library
+    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture i386):    current ar archive random library
+    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture x86_64):    current ar archive random library
+    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture arm64):    current ar archive random library  
 
-- Zip up the framework:
-  cd mobile-center-sdk-react-native/RNMobileCenter
-  ./zip-framework.sh
+  - Zip up the framework:
+    cd mobile-center-sdk-react-native/RNMobileCenter
+    ./zip-framework.sh
+
+*** Publishing for iOS ***
+  - If desired as a sanity check, download the old zip, unzip, and diff its contents with the contents of the new zip, to ensure all looks as expected.
+  - Create a new release draft here https://github.com/Microsoft/mobile-center-sdk-react-native/releases
+  - Rename MobileCenter-SDK-ReactNative-iOS-Pod-0.x.x.zip to have the right version number & drag/drop it into the release definition
+  - Publish the release; it will tag the source, so ideally try to make sure it's matched to the binary
+
+  To publish the updated CocoaPod:
+  - cd mobile-center-sdk-react-native
+  - Ensure you are a contributor to the cocopod; if you aren't, have the original contributor add your email address as a maintainer
+  - Create a session (using your name and email):  pod trunk register joe.blow@microsoft.com 'Joe Blow' --description='macbook pro'
+  - Click on the link in the email that arrives to complete creating the session
+  - Lint the update:
+    pod spec lint RNMobileCenter.podspec  --allow-warnings
+
+    The only warning should be:  There was a problem validating the URL https://mobile.azure.com.
+  - Publish the update:
+    pod trunk push RNMobileCenter.podspec --allow-warnings
+  - As a double check, ensure that everything looks OK with the published podspec here:  https://cocoapods.org/?q=RNMobileCenter
+
+*** Building and publishing for Android ***
+  - Log into bitrise, go to "mobile-center-sdk-react-native: Android & npm", click Start/Schedule a Build, click Advanced, and change Workflow to "publish-bintray"
+
+  - Validate that it's published here:  https://bintray.com/mobile-center  (login with GitHub auth)
+    It should get replicated to jcenter, for public consumption, a few minutes after it's published in bintray.
+
+*** Building and publishing npm ***
+  - Log into bitrise, go to "mobile-center-sdk-react-native: Android & npm".
+  - Navigate to the last build for the "primary" workflow, or kick off a new build with click Start/Schedule a Build, building the default workflow (primary).
+  - Download from artifacts the npm packages you wish to update.
+  - If desired as a sanity check, diff the new packages with previously published package tgz files, to ensure all the changes are as expected.
+    Beyond Compare can do diffs inside of a tgz.
+  - Login to npm with:
+    npm login
+    Username: mobilecenter
+    Password: <provide this>
+    Email: mobilecentersdk@microsoft.com
+  - Publish with commands like:
+    npm publsh mobile-center-analytics-0.2.0.tgz
+  - Validate that it's published here:  https://www.npmjs.com/~mobilecenter
+
+*** Building the Demo app ***
+
+  - Build Demo app
+  - cd into MobileCenterDemoApp folder and npm install
+  - run react-native link to hook up the native sources and specify app secret
+  - Run Demo app
+  - cd into MobileCenterDemoApp folder and react-native run-ios
 
 
+*** More info *** 
 
-- Build Demo app
-- cd into MobileCenterDemoApp folder and npm install
-- run react-native link to hook up the native sources and specify app secret
-- Run Demo app
-- cd into MobileCenterDemoApp folder and react-native run-ios
+  More about the fat framework build process:
 
-
-Bumping version numbers, for components that change (or whose static dependencies change):
-
-RNMobileCenter Android
-  mobile-center-sdk-react-native/RNMobileCenter/android/build.gradle
-    Add 1 to versionCode (it's just a counter that need be unique)
-    Bump the version in versionName
-    Ensure com.microsoft.azure.mobile:mobile-center (at the bottom) is correct
-
-RNMobileCenter iOS
-  mobile-center-sdk-react-native/RNMobileCenter.podspec
-    Bump the version num s.version
-    Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
-
-NPM modules
-  mobile-center-crashes/package.json
-  mobile-center-crashes/scripts/postlink.js
-  mobile-center-crashes/android/build.gradle (dependences at bottom)
-
-  mobile-center-analytics/package.json
-  mobile-center-analytics/scripts/postlink.js
-  mobile-center-analytics/android/build.gradle (dependences at bottom)
-
-  mobile-center-link-script/package.json
-
-More info:
-
-More about the fat framework build process:
-
-Just to be clear: this is what I mean about the "fat framework" only running a script
-that script invokes the build on the RNMobileCenter target a few times and builds the different archs and puts it all together
-and it looks like the script does build it in release mode
-To see the script:  select RNMobileCenter's root elemetn, select Fat Framework, go to the Build Phases tab, and there is a Run Script target
+  Just to be clear: this is what I mean about the "fat framework" only running a script
+  that script invokes the build on the RNMobileCenter target a few times and builds the different archs and puts it all together
+  and it looks like the script does build it in release mode
+  To see the script:  select RNMobileCenter's root elemetn, select Fat Framework, go to the Build Phases tab, and there is a Run Script target
