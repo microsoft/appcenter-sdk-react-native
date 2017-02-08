@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Rest;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Net;
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Http
+namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public partial class IngestionHttp : ServiceClient<IngestionHttp>, IIngestion
     {

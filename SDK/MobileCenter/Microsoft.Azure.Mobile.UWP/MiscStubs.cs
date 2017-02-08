@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.UWP
+namespace Microsoft.Azure.Mobile
 {
     /*
      * These are stubs for methods that do not belong here and do not have an implementation yet.

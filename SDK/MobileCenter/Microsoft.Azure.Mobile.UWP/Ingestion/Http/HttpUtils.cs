@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Http
+namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public static class HttpUtils
     {

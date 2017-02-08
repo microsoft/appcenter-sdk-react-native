@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Rest;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion
+namespace Microsoft.Azure.Mobile.Ingestion
 {
     public class IngestionException : Exception { }
 

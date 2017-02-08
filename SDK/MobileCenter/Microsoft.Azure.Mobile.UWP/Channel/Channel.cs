@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
-using Microsoft.Azure.Mobile.UWP.Ingestion;
-using Microsoft.Azure.Mobile.UWP.Storage;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion;
+using Microsoft.Azure.Mobile.Storage;
 using Windows.UI.Xaml;
 using System.Runtime.CompilerServices;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Http;
+using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Rest;
 
-namespace Microsoft.Azure.Mobile.UWP.Channel
+namespace Microsoft.Azure.Mobile.Channel
 {
     public class Channel : IChannel
     {

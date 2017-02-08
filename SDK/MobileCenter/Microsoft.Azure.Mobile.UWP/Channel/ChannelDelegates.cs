@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.UWP.Channel
+﻿namespace Microsoft.Azure.Mobile.Channel
 {
     public delegate void EnqueuingLogEventHandler(object sender, EnqueuingLogEventArgs e);
     public delegate void SendingLogEventHandler(object sender, SendingLogEventArgs e);

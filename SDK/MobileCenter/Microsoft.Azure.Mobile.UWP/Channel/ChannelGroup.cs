@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using Microsoft.Azure.Mobile.UWP.Ingestion;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Http;
-using Microsoft.Azure.Mobile.UWP.Storage;
+using Microsoft.Azure.Mobile.Ingestion;
+using Microsoft.Azure.Mobile.Ingestion.Http;
+using Microsoft.Azure.Mobile.Storage;
 
-namespace Microsoft.Azure.Mobile.UWP.Channel
+namespace Microsoft.Azure.Mobile.Channel
 {
     public class ChannelGroup : IChannel
     {

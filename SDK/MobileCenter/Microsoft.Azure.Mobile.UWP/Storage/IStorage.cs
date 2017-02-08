@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.UWP.Storage
+namespace Microsoft.Azure.Mobile.Storage
 {
     public interface IStorage // : IDisposable?
     {

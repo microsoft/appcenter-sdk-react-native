@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Data.Sqlite;
 
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.UWP.Storage
+namespace Microsoft.Azure.Mobile.Storage
 {
     //TODO error handling (especially around statements that execute commands)
     public class Storage : IStorage

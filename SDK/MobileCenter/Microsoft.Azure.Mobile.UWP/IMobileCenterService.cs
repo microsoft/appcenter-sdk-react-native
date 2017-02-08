@@ -1,11 +1,11 @@
-﻿using Microsoft.Azure.Mobile.UWP.Channel;
+﻿using Microsoft.Azure.Mobile.Channel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.UWP
+namespace Microsoft.Azure.Mobile
 {
     public interface IMobileCenterService
     {

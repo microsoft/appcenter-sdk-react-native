@@ -1,7 +1,6 @@
 ﻿#define DEBUG
 
-using Microsoft.Azure.Mobile.UWP;
-using Microsoft.Azure.Mobile.UWP.Channel;
+using Microsoft.Azure.Mobile.Channel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

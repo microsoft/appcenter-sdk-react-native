@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.NetworkInformation;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Threading;
 using Microsoft.Rest;
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Http
+namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public class IngestionNetworkStateHandler : IngestionDecorator
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 
-namespace Microsoft.Azure.Mobile.UWP.Utils
+namespace Microsoft.Azure.Mobile.Utils
 {
     public static class DeviceInformationHelper //TODO finish this
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.UWP.Channel
+namespace Microsoft.Azure.Mobile.Channel
 {
     public interface IChannel
     {
