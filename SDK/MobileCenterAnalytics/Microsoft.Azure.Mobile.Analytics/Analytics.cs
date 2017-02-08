@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Analytics
     /// <summary>
     ///     Analytics feature.
     /// </summary>
-    public static class Analytics
+    public class Analytics : IMobileCenterService
     {
         /// <summary>
         ///     Enable or disable Analytics module.

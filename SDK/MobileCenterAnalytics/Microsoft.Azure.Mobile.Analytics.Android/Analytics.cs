@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Mobile.Analytics
     /// <summary>
     /// Analytics service.
     /// </summary>
-    public static class Analytics
+    public class Analytics : IMobileCenterService
     {
         /// <summary>
         /// Internal SDK property not intended for public use.
