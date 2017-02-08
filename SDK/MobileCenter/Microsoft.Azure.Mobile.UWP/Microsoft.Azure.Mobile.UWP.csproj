@@ -128,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\IStorage.cs" />
     <Compile Include="Storage\Storage.cs" />
+    <Compile Include="Utils\DeviceInformationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Properties\Microsoft.Azure.Mobile.UWP.rd.xml" />
