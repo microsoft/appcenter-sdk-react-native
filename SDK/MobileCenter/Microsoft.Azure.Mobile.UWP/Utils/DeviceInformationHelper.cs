@@ -9,9 +9,7 @@ using Windows.Security.ExchangeActiveSyncProvisioning;
 
 namespace Microsoft.Azure.Mobile.UWP.Utils
 {
-    //public Device(string sdkVersion, string wrapperSdkVersion = default(string), string wrapperSdkName = default(string), string osBuild = default(string), int? osApiLevel = default(int?), string carrierName = default(string), string carrierCountry = default(string), string appNamespace = default(string), string liveUpdateReleaseLabel = default(string), string liveUpdateDeploymentKey = default(string), string liveUpdatePackageHash = default(string))
-
-    public static class DeviceInformationHelper
+    public static class DeviceInformationHelper //TODO finish this
     {
         private const string SdkName = "mobilecenter.uwp";
         //TODO thread safety?
@@ -21,7 +19,17 @@ namespace Microsoft.Azure.Mobile.UWP.Utils
             string model = deviceInfo.FriendlyName;
             string oemName = deviceInfo.SystemManufacturer;
             string osName = deviceInfo.OperatingSystem;
-            string osVersion = deviceInfo.SystemFirmwareVersion; //TODO unsure about this one
+
+            /* From https://social.msdn.microsoft.com/Forums/en-US/2d8a7dab-1bad-4405-b70d-768e4cb2af96/uwp-get-os-version-in-an-uwp-app?forum=wpdevelop */
+            string deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
+            ulong version = ulong.Parse(deviceFamilyVersion);
+            ulong major = (version & 0xFFFF000000000000L) >> 48;
+            ulong minor = (version & 0x0000FFFF00000000L) >> 32;
+            ulong build = (version & 0x00000000FFFF0000L) >> 16;
+            ulong revision = (version & 0x000000000000FFFFL);
+            string osVersion = $"{major}.{minor}.{build}.{revision}"; //TODO very unsure about this one
+
+
             string locale = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName; //TODO unsure about this one
             int timeZoneOffset = (int)TimeZoneInfo.Local.BaseUtcOffset.TotalMinutes; //TODO unsure about this one
 
@@ -29,6 +37,7 @@ namespace Microsoft.Azure.Mobile.UWP.Utils
             string screenSize = displayInfo.ScreenWidthInRawPixels.ToString() + "x" + displayInfo.ScreenHeightInRawPixels.ToString();  //{width}x{height}
             string appVersion = Windows.ApplicationModel.Package.Current.Id.Version.ToString(); //TODO unsure about this one
             string appBuild = Windows.ApplicationModel.Package.Current.Id.Version.Build.ToString();
+            return new Ingestion.Models.Device(SdkName, "sdkVersion", model, oemName, osName, osVersion, locale, timeZoneOffset, screenSize, appVersion, appBuild);
         }
     }
 }

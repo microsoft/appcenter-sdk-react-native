@@ -8,8 +8,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Net;
 
-//TODO thread safety
-
 namespace Microsoft.Azure.Mobile.UWP.Ingestion.Http
 {
     public partial class IngestionHttp : ServiceClient<IngestionHttp>, IIngestion
@@ -19,9 +17,9 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Http
         private const string ContentTypeValue = "application/json; charset=utf-8";
         private const string AppSecret = "App-Secret";
         private const string InstallId = "Install-ID";
-        private string _baseUrl;
-        private TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
+        private TimeSpan RequestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
+        private string _baseUrl;
 
         public IngestionHttp()
         {
@@ -76,7 +74,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Http
                 request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
             }
             cancellationToken.ThrowIfCancellationRequested();
-            this.HttpClient.Timeout = _requestTimeout;
+            this.HttpClient.Timeout = RequestTimeout;
             HttpResponseMessage response = await this.HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, "HTTP response status=" + response.StatusCode + " payload=" + response.Content.AsString());
             cancellationToken.ThrowIfCancellationRequested();

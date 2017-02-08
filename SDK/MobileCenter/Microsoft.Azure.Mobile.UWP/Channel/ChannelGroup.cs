@@ -27,16 +27,16 @@ namespace Microsoft.Azure.Mobile.UWP.Channel
         public event FailedToSendLogEventHandler FailedToSendLog;
         #endregion
 
-        public ChannelGroup(IIngestion ingestion, IStorage storage)
+        public ChannelGroup(IIngestion ingestion, IStorage storage, string appSecret)
         {
             _ingestion = ingestion;
             _storage = storage;
             _enabled = true;
+            _appSecret = appSecret;
         }
 
-        public ChannelGroup() : this(DefaultIngestion(), DefaultStorage())
+        public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret)
         {
-
         }
 
         public void SetServerUrl(string serverUrl)

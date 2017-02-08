@@ -18,7 +18,6 @@ namespace Microsoft.Azure.Mobile
         ///     This property controls the amount of logs emitted by the SDK.
         /// </summary>
         public static LogLevel LogLevel { get; set; }
-
         /// <summary>
         ///     Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been
         ///     started.
