@@ -21,21 +21,21 @@ namespace Microsoft.Azure.Mobile.Storage
         private Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private JsonSerializerSettings _serializationSettings;
-        private JsonSerializerSettings _deserializationSettings;
-
+        private SqliteConnection _dbConnection;
         public Storage()
         {
-            InitializeDatabaseAsync().Start();
+            _mutex.Wait();
+            _dbConnection = new SqliteConnection("DATA SOURCE=" + Database);
+            _mutex.Release();
+            Task.Run(() => InitializeDatabaseAsync());
         }
         public async Task PutLogAsync(string channelName, Log log)
         {
-            string logJsonString = LogSerializer.Serialize(log);
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
+            await OpenDbAsync();
             try
             {
-                var command = new SqliteCommand(null, dbConnection);
+                string logJsonString = LogSerializer.Serialize(log);
+                var command = new SqliteCommand(null, _dbConnection);
                 command.CommandText = string.Format("INSERT INTO {0} ({1}, {2}) VALUES (@channelName, @log)", Table, ChannelColumn, LogColumn);
                 var channelParameter = new SqliteParameter("channelName", channelName);
                 var logParameter = new SqliteParameter("log", logJsonString);
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Storage
             }
             finally
             {
-                dbConnection.Close();
+                CloseDb();
             }
 
             //TODO throw exception on failure
@@ -54,11 +54,9 @@ namespace Microsoft.Azure.Mobile.Storage
         public async Task DeleteLogsAsync(string channelName, string batchId)
         {
             //TODO throw exceptions on failure
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
+            await OpenDbAsync();
             try
             {
-                await _mutex.WaitAsync();
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "Deleting logs from the Storage database for " + channelName + " with " + batchId);
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "The IDs for deleting log(s) is/are:");
                 var identifiers = _pendingDbIdentifierGroups[channelName + batchId];
@@ -68,7 +66,6 @@ namespace Microsoft.Azure.Mobile.Storage
                     MobileCenterLog.Debug(MobileCenterLog.LogTag, "\t" + id);
                     _pendingDbIdentifiers.Remove(id);
                 }
-                _mutex.Release();
                 foreach (long id in identifiers)
                 {
                     await DeleteLogAsync(channelName, id);
@@ -76,58 +73,56 @@ namespace Microsoft.Azure.Mobile.Storage
             }
             finally
             {
-                dbConnection.Close();
+                CloseDb();
             }
         }
         public async Task DeleteLogsAsync(string channelName)
         {
             //TODO throw exception on failure
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, "Deleting all logs from the Storage database for " + channelName);
+            await OpenDbAsync();
             try
             {
-                List<string> fullIdentifiers = new List<string>();
-                await _mutex.WaitAsync();
-                foreach (string fullIdentifier in _pendingDbIdentifierGroups.Keys)
-                {
-                    //TODO fix issue where a channel can't start with the full name of another
-                    if (fullIdentifier.StartsWith(channelName))
-                    {
-                        foreach (long id in _pendingDbIdentifierGroups[fullIdentifier])
-                        {
-                            _pendingDbIdentifiers.Remove(id);
-                        }
-                        fullIdentifiers.Add(fullIdentifier);
-                    }
-                }
-                foreach (string fullIdentifier in fullIdentifiers)
-                {
-                    _pendingDbIdentifierGroups.Remove(fullIdentifier);
-                }
-                _mutex.Release();
-
-                var command = new SqliteCommand(null, dbConnection);
-                command.CommandText = string.Format("DELETE FROM {0} WHERE {1}=@channel", Table, ChannelColumn);
-                var channelParameter = new SqliteParameter("channel", channelName);
-                command.Parameters.Add(channelParameter);
-                command.Prepare();
-                await command.ExecuteNonQueryAsync();
-
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, "Deleting all logs from the Storage database for " + channelName);
+                await DeleteLogsAsyncHelper(channelName);
             }
             finally
             {
-                dbConnection.Close();
+                CloseDb();
             }
+        }
+        private async Task DeleteLogsAsyncHelper(string channelName)
+        {
+            //TODO throw exception on failure
+            List<string> fullIdentifiers = new List<string>();
+            foreach (string fullIdentifier in _pendingDbIdentifierGroups.Keys)
+            {
+                //TODO fix issue where a channel can't start with the full name of another
+                if (fullIdentifier.StartsWith(channelName))
+                {
+                    foreach (long id in _pendingDbIdentifierGroups[fullIdentifier])
+                    {
+                        _pendingDbIdentifiers.Remove(id);
+                    }
+                    fullIdentifiers.Add(fullIdentifier);
+                }
+            }
+            foreach (string fullIdentifier in fullIdentifiers)
+            {
+                _pendingDbIdentifierGroups.Remove(fullIdentifier);
+            }
+            var command = new SqliteCommand(null, _dbConnection);
+            command.CommandText = string.Format("DELETE FROM {0} WHERE {1}=@channel", Table, ChannelColumn);
+            var channelParameter = new SqliteParameter("channel", channelName);
+            command.Parameters.Add(channelParameter);
+            command.Prepare();
+            await command.ExecuteNonQueryAsync();
         }
         public async Task<int> CountLogs(string channelName)
         {
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, "Deleting all logs from the Storage database for " + channelName);
+            await OpenDbAsync();
             try
             {
-                var command = new SqliteCommand(null, dbConnection);
+                var command = new SqliteCommand(null, _dbConnection);
                 command.CommandText = string.Format("SELECT COUNT(ROWID) FROM {0} WHERE {1}=@channel", Table, ChannelColumn);
                 var channelParameter = new SqliteParameter("channel", channelName);
                 command.Parameters.Add(channelParameter);
@@ -137,8 +132,7 @@ namespace Microsoft.Azure.Mobile.Storage
             }
             finally
             {
-                dbConnection.Close();
-                _mutex.Release();
+                CloseDb();
             }
         }
         public void ClearPendingLogState(string channelName)
@@ -151,8 +145,7 @@ namespace Microsoft.Azure.Mobile.Storage
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs) //TODO see if this can be broken up into smaller pieces
         {
             //TODO throw exception on failure
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
+            await OpenDbAsync();
             logs.Clear();
             MobileCenterLog.Debug(MobileCenterLog.LogTag, "Trying to get up to " + limit + " logs from the database for " + channelName);
             string batchId = (new Guid()).ToString();
@@ -160,7 +153,7 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 /* Save ids as a 2-tuple (SId, RowId) */
                 var idPairs = new List<Tuple<Guid?, long>>();
-                var command = new SqliteCommand(null, dbConnection);
+                var command = new SqliteCommand(null, _dbConnection);
                 command.CommandText = string.Format("SELECT ROWID,* FROM {0} WHERE {1}=@channel LIMIT @limit", Table, ChannelColumn);
                 var channelParameter = new SqliteParameter("channel", channelName);
                 var limitParameter = new SqliteParameter("limit", limit);
@@ -199,7 +192,6 @@ namespace Microsoft.Azure.Mobile.Storage
 
                 var ids = new List<long>();
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "The SID/ID pairs for returning logs are:");
-                await _mutex.WaitAsync();
                 foreach (var idPair in idPairs)
                 {
                     string sidString = idPair.Item1?.ToString() ?? "(null)";
@@ -208,7 +200,6 @@ namespace Microsoft.Azure.Mobile.Storage
                     ids.Add(idPair.Item2);
                 }
                 _pendingDbIdentifierGroups.Add(channelName + batchId, ids);
-                _mutex.Release();
             }
             catch
             {
@@ -217,46 +208,46 @@ namespace Microsoft.Azure.Mobile.Storage
             }
             finally
             {
-                dbConnection.Close();
+                CloseDb();
             }
             return batchId;
         }
         private async Task InitializeDatabaseAsync()
         {
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
+            await OpenDbAsync();
             try
             {
-                string commandString = string.Format("CREATE TABLE IF NOT EXISTS {0} ({1} TEXT, {2} TEXT)", Table, ChannelColumn, LogColumn);
-                SqliteCommand command = new SqliteCommand(commandString, dbConnection);
+                string commandString = $"CREATE TABLE IF NOT EXISTS {Storage.Table} ({Storage.ChannelColumn} TEXT, {Storage.LogColumn} TEXT)";
+                SqliteCommand command = new SqliteCommand(commandString, _dbConnection);
                 await command.ExecuteNonQueryAsync();
             }
             finally
             {
-                dbConnection.Close();
+                CloseDb();
             }
         }
         private async Task DeleteLogAsync(string channelName, long rowId)
         {
-            SqliteConnection dbConnection = GetDbConnection();
-            await dbConnection.OpenAsync();
-            try
-            {
-                var command = new SqliteCommand(null, dbConnection);
+            /* We should have an open connection already */
+
+                var command = new SqliteCommand(null, _dbConnection);
                 command.CommandText = string.Format("DELETE FROM {0} WHERE ROWID=@id", Table);
                 var idParameter = new SqliteParameter("id", rowId);
                 command.Parameters.Add(idParameter);
                 command.Prepare();
                 await command.ExecuteNonQueryAsync();
-            }
-            finally
-            {
-                dbConnection.Close();
-            }
         }
-        private SqliteConnection GetDbConnection()
+
+        private async Task OpenDbAsync()
         {
-            return new SqliteConnection("DATA SOURCE=" + Database);
+            await _mutex.WaitAsync();
+            await _dbConnection.OpenAsync();
+        }
+
+        private void CloseDb()
+        {
+            _dbConnection.Close();
+            _mutex.Release();
         }
     }
 }

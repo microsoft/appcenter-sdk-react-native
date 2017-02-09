@@ -275,7 +275,7 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    IMobileCenterService serviceInstance = (IMobileCenterService)serviceType.GetProperty("_instance").GetGetMethod().Invoke(null, null);
+                    IMobileCenterService serviceInstance = (IMobileCenterService)serviceType.GetProperty("Instance").GetGetMethod().Invoke(null, null);
                     StartService(serviceInstance);
                 }
                 catch (Exception ex)

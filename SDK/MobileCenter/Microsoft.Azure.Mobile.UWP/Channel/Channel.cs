@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _ingestion = ingestion;
             _storage = storage;
             _timer.Tick += TimerElapsed;
-            CountFromDiskAsync().Start();
+            Task.Run(() => CountFromDiskAsync());
         }
 
         private async Task CountFromDiskAsync()
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 log = PrepareLog(log);
-                PersistLogAsync(log, _currentState).Start();
+                Task.Run(()=>PersistLogAsync(log, _currentState));
             }
             catch (Exception e) //TODO make some kind of deviceinformationexception
             {
@@ -252,7 +252,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 if (deleteLogs)
                 {
                     _pendingLogCount = 0;
-                    DeleteLogsOnSuspendedAsync().Start();
+                    Task.Run(() => DeleteLogsOnSuspendedAsync());
                     return;
                 }
                 _storage.ClearPendingLogState(Name);
@@ -378,7 +378,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 return;
             }
 
-            _storage.DeleteLogsAsync(Name, batchId).Start();
+            Task.Run(() => _storage.DeleteLogsAsync(Name, batchId));
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
             if (SentLog != null)
@@ -422,7 +422,7 @@ namespace Microsoft.Azure.Mobile.Channel
             MobileCenterLog.Debug(MobileCenterLog.LogTag, "CheckPendingLogs(" + Name + ") pending log count: " + _pendingLogCount);
             if (_pendingLogCount >= _maxLogsPerBatch)
             {
-                TriggerIngestionAsync().Start();
+                Task.Run(() => TriggerIngestionAsync());
             }
             else if (_pendingLogCount > 0 && !_timer.IsEnabled)
             {

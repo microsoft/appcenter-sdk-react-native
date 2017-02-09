@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// <summary>
     /// Crashes service.
     /// </summary>
-    public class Crashes : IMobileCenterService
+    public partial class Crashes : IMobileCenterService
     {
         static Crashes()
         {
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         //    }
         //}
 
-        internal const string LogTag = MobileCenterLog.LogTag + "Crashes";
+        internal const string LogTag = "MobileCenterCrashes";
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 

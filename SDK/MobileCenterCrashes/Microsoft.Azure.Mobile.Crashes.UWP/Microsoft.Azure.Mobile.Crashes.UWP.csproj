@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A1AF52EC-7BC0-44D5-9C73-6036E3E937C7}</ProjectGuid>
+    <ProjectGuid>{2F715D51-643C-4F7F-9EA4-6554D4EECCB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Crashes.UWP</RootNamespace>
+    <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
     <AssemblyName>Microsoft.Azure.Mobile.Crashes.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -107,10 +107,18 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Crashes.cs" />
+    <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.Crashes.UWP.rd.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
+      <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
+      <Name>Microsoft.Azure.Mobile.UWP</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

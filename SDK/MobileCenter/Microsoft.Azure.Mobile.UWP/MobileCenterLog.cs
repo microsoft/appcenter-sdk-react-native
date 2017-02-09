@@ -38,6 +38,7 @@ namespace Microsoft.Azure.Mobile
             if (Level <= LogLevel.Verbose)
             {
                 Console.WriteLine($"[{tag}] VERBOSE: {message}");
+                System.Diagnostics.Debug.WriteLine($"[{tag}] VERBOSE: {message}");
             }
             _mutex.Release();
         }
@@ -48,6 +49,8 @@ namespace Microsoft.Azure.Mobile
             if (Level <= LogLevel.Debug)
             {
                 Console.WriteLine($"[{tag}] DEBUG: {message}");
+                System.Diagnostics.Debug.WriteLine($"[{tag}] DEBUG: {message}"); ;
+
             }
             _mutex.Release();
         }
@@ -58,6 +61,8 @@ namespace Microsoft.Azure.Mobile
             if (Level <= LogLevel.Info)
             {
                 Console.WriteLine($"[{tag}] INFO: {message}");
+                System.Diagnostics.Debug.WriteLine($"[{tag}] INFO: {message}"); ;
+
             }
             _mutex.Release();
         }
@@ -68,6 +73,8 @@ namespace Microsoft.Azure.Mobile
             if (Level <= LogLevel.Warn)
             {
                 Console.WriteLine($"[{tag}] WARN: {message}");
+                System.Diagnostics.Debug.WriteLine($"[{tag}] WARN: {message}"); ;
+
             }
             _mutex.Release();
         }
@@ -78,6 +85,8 @@ namespace Microsoft.Azure.Mobile
             if (Level <= LogLevel.Error)
             {
                 Console.WriteLine($"[{tag}] ERROR: {message}");
+                System.Diagnostics.Debug.WriteLine($"[{tag}] ERROR: {message}"); ;
+
             }
             _mutex.Release();
         }
@@ -88,6 +97,8 @@ namespace Microsoft.Azure.Mobile
             if (Level <= LogLevel.Assert)
             {
                 Console.WriteLine($"[{tag}] ASSERT: {message}");
+                System.Diagnostics.Debug.WriteLine($"[{tag}] ASSERT: {message}"); ;
+
             }
             _mutex.Release();
         }

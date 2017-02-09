@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Azure.Mobile.Analytics;
+using System;
 using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -46,6 +47,8 @@ namespace Contoso.Forms.Puppet.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
+                Microsoft.Azure.Mobile.MobileCenter.Start("9f1e7459-eafd-490d-ac8d-5f03a3e3785f", typeof(Analytics));
+                Analytics.TrackEvent("myEvent");
 
                 Xamarin.Forms.Forms.Init(e);
 
