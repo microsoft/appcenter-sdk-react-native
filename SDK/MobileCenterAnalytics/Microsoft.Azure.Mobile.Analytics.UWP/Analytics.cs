@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         public void OnChannelGroupReady(ChannelGroup channelGroup)
         {
             _channelGroup = channelGroup;
-            _channelGroup.AddChannel(ChannelName, 10, TimeSpan.FromSeconds(3), 3);//TODO these values are just made up
+            _channelGroup.AddChannel(ChannelName, 3, TimeSpan.FromSeconds(3), 3);//TODO these values are just made up
         }
         #endregion
     }

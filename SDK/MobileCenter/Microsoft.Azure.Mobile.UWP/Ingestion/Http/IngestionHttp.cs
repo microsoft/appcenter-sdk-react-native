@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             cancellationToken.ThrowIfCancellationRequested();
             this.HttpClient.Timeout = RequestTimeout;
             HttpResponseMessage response = await this.HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, "HTTP response status=" + response.StatusCode + " payload=" + response.Content.AsString());
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={response.Content.AsString()}");
             cancellationToken.ThrowIfCancellationRequested();
             string responseContent = null;
             if (response.StatusCode != HttpStatusCode.OK)

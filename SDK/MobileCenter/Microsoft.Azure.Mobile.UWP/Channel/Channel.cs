@@ -26,7 +26,6 @@ namespace Microsoft.Azure.Mobile.Channel
         private IStorage _storage;
         private IIngestion _ingestion;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private DispatcherTimer _timer = new DispatcherTimer();
         private Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
 
         private int _maxParallelBatches;
@@ -36,19 +35,21 @@ namespace Microsoft.Azure.Mobile.Channel
         private bool _enabled;
         private bool _discardLogs;
         private int _currentState;
-
+        private bool _batchScheduled;
+        private TimeSpan _batchTimeInterval;
         //NOTE: the constructor should only be called from ChannelGroup
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
         {
             Name = name;
-            _timer.Interval = batchTimeInterval;
             _maxParallelBatches = maxParallelBatches;
             _maxLogsPerBatch = maxLogsPerBatch;
             _appSecret = appSecret;
             _installId = installId;
             _ingestion = ingestion;
             _storage = storage;
-            _timer.Tick += TimerElapsed;
+            _batchTimeInterval = batchTimeInterval;
+            _batchScheduled = false;
+            _enabled = true;
             Task.Run(() => CountFromDiskAsync());
         }
 
@@ -72,14 +73,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 _mutex.Release();
             }
-        }
-
-        private void TimerElapsed(object s, object e)
-        {
-            _mutex.Wait();
-            _timer.Stop();
-            TriggerIngestionAsync().Start();
-            _mutex.Release();
         }
 
         public bool Enabled
@@ -139,7 +132,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 log = PrepareLog(log);
-                Task.Run(()=>PersistLogAsync(log, _currentState));
+                Task.Run(() => PersistLogAsync(log, _currentState));
             }
             catch (Exception e) //TODO make some kind of deviceinformationexception
             {
@@ -155,7 +148,7 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             _mutex.Wait();
             _currentState++;
-            _timer.Stop();//TODO yes?
+            //TODO cancel scheduled batch here? or is it fine?
             _mutex.Release();
         }
 
@@ -316,7 +309,7 @@ namespace Microsoft.Azure.Mobile.Channel
         }
 
         private async Task TriggerIngestionAsync()
-        {
+        {//TODO there was a case where ingestion was triggered but there were no pending logs. investigate.
             await _mutex.WaitAsync();
             try
             {
@@ -324,7 +317,8 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     return;
                 }
-
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"triggerIngestion({Name}) pendingLogCount={_pendingLogCount}");
+                _batchScheduled = false;
                 //prepares a new batch and starts seding them to ingestion
                 if (_sendingBatches.Count >= _maxParallelBatches)
                 {
@@ -424,9 +418,10 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 Task.Run(() => TriggerIngestionAsync());
             }
-            else if (_pendingLogCount > 0 && !_timer.IsEnabled)
+            else if (_pendingLogCount > 0 && !_batchScheduled)
             {
-                _timer.Start();
+                _batchScheduled = true;
+                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith((completedTask) => TriggerIngestionAsync());
             }
         }
 
