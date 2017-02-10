@@ -9,6 +9,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
     using Mobile.Ingestion.Models;
     using Newtonsoft.Json;
     using System.Linq;
+    using System;
 
     /// <summary>
     /// Required explicit begin session log (a marker event for analytics
@@ -21,6 +22,13 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// Initializes a new instance of the StartSessionLog class.
         /// </summary>
         public StartSessionLog() { }
+
+        internal static StartSessionLog Empty = new StartSessionLog();
+
+        public override string GetJsonIdentifier()
+        {
+            return "start_session";
+        }
 
         /// <summary>
         /// Initializes a new instance of the StartSessionLog class.

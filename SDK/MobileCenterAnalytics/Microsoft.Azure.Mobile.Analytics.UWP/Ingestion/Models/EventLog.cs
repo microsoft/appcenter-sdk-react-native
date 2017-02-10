@@ -12,6 +12,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System;
 
     /// <summary>
     /// Event log.
@@ -23,6 +24,13 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         /// Initializes a new instance of the EventLog class.
         /// </summary>
         public EventLog() { }
+
+        internal static EventLog Empty = new EventLog();
+
+        public override string GetJsonIdentifier()
+        {
+            return "event";
+        }
 
         /// <summary>
         /// Initializes a new instance of the EventLog class.

@@ -32,7 +32,10 @@ namespace Contoso.UWP.Puppet
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.Start("9f1e7459-eafd-490d-ac8d-5f03a3e3785f", typeof(Analytics));
-            Analytics.TrackEvent("event");
+            var properties = new Dictionary<string, string>();
+            properties["key1"] = "value1";
+            properties["key2"] = "value";
+            Analytics.TrackEvent("event", properties);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }

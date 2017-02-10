@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
+    //TODO thread safety?
     public static class LogSerializer
     {
+        private static LogJsonConverter _converter = new LogJsonConverter();
         private static JsonSerializerSettings _serializationSettings;
         private static JsonSerializerSettings _deserializationSettings;
         static LogSerializer()
@@ -23,7 +25,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
                 ContractResolver = new Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new List<JsonConverter>
                     {
-                        new Rest.Serialization.Iso8601TimeSpanConverter()
+                        new Rest.Serialization.Iso8601TimeSpanConverter(),
+                        new Rest.Serialization.PolymorphicSerializeJsonConverter<Log>("type")
+        
                     }
             };
             _deserializationSettings = new JsonSerializerSettings
@@ -35,20 +39,23 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
                 ContractResolver = new Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new List<JsonConverter>
                     {
-                        new Rest.Serialization.Iso8601TimeSpanConverter()
+                        new Rest.Serialization.Iso8601TimeSpanConverter(),
+                        _converter
                     }
             };
-            _serializationSettings.Converters.Add(new Rest.Serialization.PolymorphicSerializeJsonConverter<Log>("type"));
-            _deserializationSettings.Converters.Add(new Rest.Serialization.PolymorphicDeserializeJsonConverter<Log>("type"));
         }
 
+        public static void AddFactory(string typeName, ILogFactory factory)
+        {
+            _converter.AddFactory(typeName, factory);
+        }
         public static string Serialize(LogContainer logContainer)
         {
-            return SerializeItem(logContainer);
+            return Rest.Serialization.SafeJsonConvert.SerializeObject(logContainer, _serializationSettings);
         }
         public static string Serialize(Log log)
         {
-            return SerializeItem(log);
+            return Rest.Serialization.SafeJsonConvert.SerializeObject(log, _serializationSettings);
         }
 
         public static Log DeserializeLog(string json)
@@ -59,11 +66,5 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         {
             return Rest.Serialization.SafeJsonConvert.DeserializeObject<LogContainer>(json, _deserializationSettings);
         }
-
-        private static string SerializeItem(object item)
-        {
-            return Rest.Serialization.SafeJsonConvert.SerializeObject(item, _serializationSettings);
-        }
-
     }
 }

@@ -9,12 +9,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class Log
+    public abstract class Log
     {
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary>
         public Log() { }
+
+        public abstract string GetJsonIdentifier();
 
         /// <summary>
         /// Initializes a new instance of the Log class.

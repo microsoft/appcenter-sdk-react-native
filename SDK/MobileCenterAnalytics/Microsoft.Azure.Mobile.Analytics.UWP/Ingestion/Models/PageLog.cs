@@ -24,6 +24,13 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// </summary>
         public PageLog() { }
 
+        internal static PageLog Empty = new PageLog();
+
+        public override string GetJsonIdentifier()
+        {
+            return "page";
+        }
+
         /// <summary>
         /// Initializes a new instance of the PageLog class.
         /// </summary>

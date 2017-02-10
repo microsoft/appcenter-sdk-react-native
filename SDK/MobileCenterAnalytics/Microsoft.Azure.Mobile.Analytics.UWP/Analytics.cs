@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Channel;
 using System.Runtime.InteropServices;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
+using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
 
 //TODO storage helper?
 
@@ -84,6 +85,9 @@ namespace Microsoft.Azure.Mobile.Analytics
         private bool _enabled = true;
         internal Analytics()
         {
+            Mobile.Ingestion.Models.LogSerializer.AddFactory(PageLog.Empty.GetJsonIdentifier(), new Mobile.Ingestion.Models.LogFactory<PageLog>());
+            Mobile.Ingestion.Models.LogSerializer.AddFactory(EventLog.Empty.GetJsonIdentifier(), new Mobile.Ingestion.Models.LogFactory<EventLog>());
+            Mobile.Ingestion.Models.LogSerializer.AddFactory(StartSessionLog.Empty.GetJsonIdentifier(), new Mobile.Ingestion.Models.LogFactory<StartSessionLog>());
         }
 
         public bool InstanceEnabled

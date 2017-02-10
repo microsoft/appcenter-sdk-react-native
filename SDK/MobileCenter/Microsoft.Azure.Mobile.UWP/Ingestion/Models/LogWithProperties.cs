@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class LogWithProperties : Log
+    public abstract class LogWithProperties : Log
     {
         /// <summary>
         /// Initializes a new instance of the LogWithProperties class.

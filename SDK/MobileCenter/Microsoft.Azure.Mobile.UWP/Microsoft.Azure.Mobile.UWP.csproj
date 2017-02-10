@@ -120,8 +120,11 @@
     <Compile Include="Ingestion\IIngestion.cs" />
     <Compile Include="Ingestion\Http\IngestionHttp.cs" />
     <Compile Include="Ingestion\Models\Device.cs" />
+    <Compile Include="Ingestion\Models\ILogFactory.cs" />
     <Compile Include="Ingestion\Models\Log.cs" />
     <Compile Include="Ingestion\Models\LogContainer.cs" />
+    <Compile Include="Ingestion\Models\LogFactory.cs" />
+    <Compile Include="Ingestion\Models\LogJsonConverter.cs" />
     <Compile Include="Ingestion\Models\LogSerializer.cs" />
     <Compile Include="Ingestion\Models\LogWithProperties.cs" />
     <Compile Include="MiscStubs.cs" />
@@ -131,6 +134,7 @@
     <Compile Include="Storage\IStorage.cs" />
     <Compile Include="Storage\Storage.cs" />
     <Compile Include="Utils\DeviceInformationHelper.cs" />
+    <Compile Include="Utils\JsonHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Properties\Microsoft.Azure.Mobile.UWP.rd.xml" />
