@@ -97,11 +97,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.WinF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.WPF", "SDK\MobileCenter\Microsoft.Azure.Mobile.WPF\Microsoft.Azure.Mobile.WPF.csproj", "{2FC1D00C-B081-450E-8F5D-82897A07D970}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VSMC.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
+		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{2fc1d00c-b081-450e-8f5d-82897a07d970}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{2fc1d00c-b081-450e-8f5d-82897a07d970}*SharedItemsImports = 4
@@ -111,6 +114,7 @@ Global
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{4936a94c-be22-4f73-8468-64fa4371ff80}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{78990f7a-6c3e-4007-b0e3-a8bf9625a327}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{7b6e79a4-fbaf-4e7e-b696-0ac10d0a2552}*SharedItemsImports = 13
+		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{aabf653e-0cc1-4d59-93db-4eef0e1df916}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{b87370cd-af51-45e0-aa15-3e0abc0c30a0}*SharedItemsImports = 4
@@ -1923,6 +1927,7 @@ Global
 		{B4E6AD1C-21A0-43A4-BD73-ED9BFC19BE6F} = {13744327-9529-490B-A970-06A1D3144117}
 		{E8297044-32BB-4CC9-B580-2535C42CDDE4} = {13744327-9529-490B-A970-06A1D3144117}
 		{2FC1D00C-B081-450E-8F5D-82897A07D970} = {13744327-9529-490B-A970-06A1D3144117}
+		{7CE5BF9E-3650-4151-8B54-C1301AA73606} = {C4C63221-60D5-412B-92CC-D59A8EA62E23}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

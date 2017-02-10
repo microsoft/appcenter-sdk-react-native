@@ -2,10 +2,6 @@
 
 namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
     using Microsoft.Rest;
     using Mobile.Ingestion.Models;
     using Newtonsoft.Json;

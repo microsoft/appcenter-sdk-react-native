@@ -107,10 +107,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Analytics.cs" />
-    <Compile Include="Ingestion\Models\EventLog.cs" />
-    <Compile Include="Ingestion\Models\PageLog.cs" />
-    <Compile Include="Ingestion\Models\StartSessionLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.Analytics.UWP.rd.xml" />
   </ItemGroup>
@@ -121,6 +117,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <Import Project="..\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

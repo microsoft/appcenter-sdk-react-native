@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Channel;
 using System.Runtime.InteropServices;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.UWP.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils;
 
 //TODO storage helper?
 
@@ -83,29 +84,23 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private ChannelGroup _channelGroup = null;
         private bool _enabled = true;
+        private IApplicationSettings _applicationSettings = new ApplicationSettings();
         internal Analytics()
         {
-            Mobile.Ingestion.Models.LogSerializer.AddFactory(PageLog.JsonIdentifier, new Mobile.Ingestion.Models.LogFactory<PageLog>());
-            Mobile.Ingestion.Models.LogSerializer.AddFactory(EventLog.JsonIdentifier, new Mobile.Ingestion.Models.LogFactory<EventLog>());
-            Mobile.Ingestion.Models.LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new Mobile.Ingestion.Models.LogFactory<StartSessionLog>());
+            LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
+            LogSerializer.AddFactory(EventLog.JsonIdentifier, new LogFactory<EventLog>());
+            LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new LogFactory<StartSessionLog>());
         }
 
         public bool InstanceEnabled
         {
             get
             {
-                object enabled;
-                bool found = Windows.Storage.ApplicationData.Current.LocalSettings.Values.TryGetValue(EnabledKey, out enabled);
-                if (!found)
-                {
-                    Windows.Storage.ApplicationData.Current.LocalSettings.Values[EnabledKey] = true;
-                    return true;
-                }
-                return (bool)enabled;
+                return _applicationSettings.GetValue(EnabledKey, defaultValue: true);
             }
             set
             {
-                Windows.Storage.ApplicationData.Current.LocalSettings.Values[EnabledKey] = value;
+                _applicationSettings[EnabledKey] = value;
             }
         }
 

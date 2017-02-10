@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
     using Microsoft.Azure;
     using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
     using Microsoft.Rest;
     using Mobile.Ingestion.Models;
     using Newtonsoft.Json;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    class ApplicationSettings : IApplicationSettings
+    public class ApplicationSettings : IApplicationSettings
     {
         public object this[string key]
         {
