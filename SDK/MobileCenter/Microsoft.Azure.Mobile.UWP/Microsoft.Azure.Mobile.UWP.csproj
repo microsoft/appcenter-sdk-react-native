@@ -107,39 +107,16 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CancellationException.cs" />
-    <Compile Include="Channel\Channel.cs" />
-    <Compile Include="Channel\ChannelDelegates.cs" />
-    <Compile Include="Channel\ChannelEventArgs.cs" />
-    <Compile Include="Channel\ChannelGroup.cs" />
-    <Compile Include="Channel\IChannel.cs" />
-    <Compile Include="IMobileCenterService.cs" />
-    <Compile Include="Ingestion\Http\HttpUtils.cs" />
-    <Compile Include="Ingestion\Http\IngestionDecorator.cs" />
-    <Compile Include="Ingestion\Http\IngestionNetworkStateHandler.cs" />
-    <Compile Include="Ingestion\IIngestion.cs" />
-    <Compile Include="Ingestion\Http\IngestionHttp.cs" />
-    <Compile Include="Ingestion\Models\Device.cs" />
-    <Compile Include="Ingestion\Models\ILogFactory.cs" />
-    <Compile Include="Ingestion\Models\Log.cs" />
-    <Compile Include="Ingestion\Models\LogContainer.cs" />
-    <Compile Include="Ingestion\Models\LogFactory.cs" />
-    <Compile Include="Ingestion\Models\LogJsonConverter.cs" />
-    <Compile Include="Ingestion\Models\LogSerializer.cs" />
-    <Compile Include="Ingestion\Models\LogWithProperties.cs" />
-    <Compile Include="MiscStubs.cs" />
-    <Compile Include="MobileCenter.cs" />
-    <Compile Include="MobileCenterLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\IStorage.cs" />
-    <Compile Include="Storage\Storage.cs" />
+    <Compile Include="Utils\ApplicationSettings.cs" />
     <Compile Include="Utils\DeviceInformationHelper.cs" />
-    <Compile Include="Utils\JsonHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Properties\Microsoft.Azure.Mobile.UWP.rd.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

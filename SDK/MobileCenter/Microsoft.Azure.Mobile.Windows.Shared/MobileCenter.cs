@@ -1,6 +1,5 @@
-﻿#define DEBUG
-
-using Microsoft.Azure.Mobile.Channel;
+﻿using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,9 +19,9 @@ namespace Microsoft.Azure.Mobile
         private bool _configured = false;
         private string _serverUrl;
         private static object _mobileCenterLock = new object();
+        private static IApplicationSettings _applicationSettings = new ApplicationSettings();
 
         #region static
-
 
         private static MobileCenter _instanceField;
 
@@ -165,18 +164,13 @@ namespace Microsoft.Azure.Mobile
 
         #region instance
 
+        //TODO need a way of giving application settings
+
         private bool InstanceEnabled
         {
             get
             {
-                object enabled;
-                bool found = Windows.Storage.ApplicationData.Current.LocalSettings.Values.TryGetValue(EnabledKey, out enabled);
-                if (!found)
-                {
-                    Windows.Storage.ApplicationData.Current.LocalSettings.Values[EnabledKey] = true;
-                    return true;
-                }
-                return (bool)enabled;
+                return _applicationSettings.GetValue(EnabledKey, defaultValue: true);
             }
             set
             {
@@ -187,7 +181,7 @@ namespace Microsoft.Azure.Mobile
                 bool previouslyEnabled = InstanceEnabled;
                 bool switchToDisabled = previouslyEnabled && !value;
                 bool switchToEnabled = !previouslyEnabled && value;
-                Windows.Storage.ApplicationData.Current.LocalSettings.Values[EnabledKey] = value;
+                _applicationSettings[EnabledKey] = value;
 
                 /* TODO register/unregister lifecycle callbacks? */
 
@@ -275,7 +269,7 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    IMobileCenterService serviceInstance = (IMobileCenterService)serviceType.GetProperty("Instance").GetGetMethod().Invoke(null, null);
+                    IMobileCenterService serviceInstance = (IMobileCenterService)serviceType.GetRuntimeProperty("Instance").GetValue(null);
                     StartService(serviceInstance);
                 }
                 catch (Exception ex)

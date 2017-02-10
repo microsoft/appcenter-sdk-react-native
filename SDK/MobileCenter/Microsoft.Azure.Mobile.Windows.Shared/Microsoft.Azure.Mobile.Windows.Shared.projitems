@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Microsoft.Azure.Mobile.Windows.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CancellationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\Channel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelDelegates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionHttp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionNetworkStateHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IIngestion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Device.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ILogFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\Storage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
+  </ItemGroup>
+</Project>

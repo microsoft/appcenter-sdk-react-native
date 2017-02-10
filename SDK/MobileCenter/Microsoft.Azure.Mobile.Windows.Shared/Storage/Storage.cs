@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Data.Sqlite;
-
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
@@ -125,7 +121,7 @@ namespace Microsoft.Azure.Mobile.Storage
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<int> CountLogs(string channelName)
+        public async Task<int> CountLogsAsync(string channelName)
         {
             await OpenDbAsync();
             try

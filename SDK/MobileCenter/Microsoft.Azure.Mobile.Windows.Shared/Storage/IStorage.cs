@@ -7,14 +7,12 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
-    public interface IStorage // : IDisposable?
+    public interface IStorage
     {
-        //Group = column (crashes or analytics)
-        //id = batch id
         Task PutLogAsync(string channelName, Log log);
         Task DeleteLogsAsync(string channelName, string batchId);
         Task DeleteLogsAsync(string channelName);
-        Task<int> CountLogs(string channelName);
+        Task<int> CountLogsAsync(string channelName);
         void ClearPendingLogState(string channelName);
         Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs);
     }

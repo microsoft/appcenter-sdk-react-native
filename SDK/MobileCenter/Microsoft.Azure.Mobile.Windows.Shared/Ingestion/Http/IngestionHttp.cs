@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Threading;
 using System.Net;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
@@ -61,7 +62,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             /* Save times */
             foreach (var log in logContainer.Logs)
             {
-                log.Toffset = MiscStubs.CurrentTimeInMilliseconds() - log.Toffset;
+                log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
             }
 
             /* Serialize Request */

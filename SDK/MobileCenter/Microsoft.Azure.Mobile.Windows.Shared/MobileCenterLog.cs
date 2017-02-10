@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Diagnostics.Tracing;
-using Windows.Foundation.Diagnostics;
 
 namespace Microsoft.Azure.Mobile
 {

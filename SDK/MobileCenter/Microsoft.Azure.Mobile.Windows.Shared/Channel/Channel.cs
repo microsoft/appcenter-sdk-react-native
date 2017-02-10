@@ -8,10 +8,10 @@ using System.Net.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
-using Windows.UI.Xaml;
 using System.Runtime.CompilerServices;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Rest;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
@@ -25,6 +25,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private IStorage _storage;
         private IIngestion _ingestion;
+        private IDeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
 
@@ -59,7 +60,7 @@ namespace Microsoft.Azure.Mobile.Channel
             int stateSnapshot = _currentState;
             _mutex.Release();
 
-            int logCount = await _storage.CountLogs(Name);
+            int logCount = await _storage.CountLogsAsync(Name);
             await _mutex.WaitAsync();
             try
             {
@@ -157,12 +158,12 @@ namespace Microsoft.Azure.Mobile.Channel
             //TODO probably more steps
             if (log.Device == null && _device == null)
             {
-                _device = MiscStubs.GetDeviceInfo();
+                _device = _deviceInfoHelper.GetDeviceInformation();
             }
             log.Device = log.Device ?? _device;
             if (log.Toffset == 0L)
             {
-                log.Toffset = MiscStubs.CurrentTimeInMilliseconds();
+                log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
             }
             return log;
         }
@@ -250,7 +251,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 _storage.ClearPendingLogState(Name);
             }
-            catch (IngestionException e)
+            catch (IngestionException e) //TODO change this exception type
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
             }
@@ -372,7 +373,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 return;
             }
 
-            Task.Run(() => _storage.DeleteLogsAsync(Name, batchId));
+            Task.Run(() => _storage.DeleteLogsAsync(Name, batchId)); //TODO is it okay to await here?
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
             if (SentLog != null)

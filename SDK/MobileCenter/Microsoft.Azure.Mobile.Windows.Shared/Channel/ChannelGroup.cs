@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Storage;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
@@ -20,6 +21,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private Guid _installId;
         private bool _enabled;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
@@ -27,16 +29,14 @@ namespace Microsoft.Azure.Mobile.Channel
         public event FailedToSendLogEventHandler FailedToSendLog;
         #endregion
 
-        public ChannelGroup(IIngestion ingestion, IStorage storage, string appSecret)
+        public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret) { }
+
+        protected ChannelGroup(IIngestion ingestion, IStorage storage, string appSecret)
         {
             _ingestion = ingestion;
             _storage = storage;
             _enabled = true;
             _appSecret = appSecret;
-        }
-
-        public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret)
-        {
         }
 
         public void SetServerUrl(string serverUrl)
