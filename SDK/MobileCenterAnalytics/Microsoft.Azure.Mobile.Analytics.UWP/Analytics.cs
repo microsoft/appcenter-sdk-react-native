@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// </summary>
         /// <param name="name">An event name.</param>
         /// <param name="properties">Optional properties.</param>
-        public static void TrackEvent(string name, [Optional] IDictionary<string, string> properties)
+        public static void TrackEvent(string name, IDictionary<string, string> properties = null)
         {
             lock (_analyticsLock)
             {
@@ -85,9 +85,9 @@ namespace Microsoft.Azure.Mobile.Analytics
         private bool _enabled = true;
         internal Analytics()
         {
-            Mobile.Ingestion.Models.LogSerializer.AddFactory(PageLog.Empty.GetJsonIdentifier(), new Mobile.Ingestion.Models.LogFactory<PageLog>());
-            Mobile.Ingestion.Models.LogSerializer.AddFactory(EventLog.Empty.GetJsonIdentifier(), new Mobile.Ingestion.Models.LogFactory<EventLog>());
-            Mobile.Ingestion.Models.LogSerializer.AddFactory(StartSessionLog.Empty.GetJsonIdentifier(), new Mobile.Ingestion.Models.LogFactory<StartSessionLog>());
+            Mobile.Ingestion.Models.LogSerializer.AddFactory(PageLog.JsonIdentifier, new Mobile.Ingestion.Models.LogFactory<PageLog>());
+            Mobile.Ingestion.Models.LogSerializer.AddFactory(EventLog.JsonIdentifier, new Mobile.Ingestion.Models.LogFactory<EventLog>());
+            Mobile.Ingestion.Models.LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new Mobile.Ingestion.Models.LogFactory<StartSessionLog>());
         }
 
         public bool InstanceEnabled
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
         }
 
-        private void InstanceTrackEvent(string name, [Optional] IDictionary<string, string> properties)
+        private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
         {
             if (_enabled && _channelGroup != null)
             {

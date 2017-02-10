@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
     /// <summary>
     /// Page view log (as in screens or activities).
     /// </summary>
-    [JsonObject("page")]
+    [JsonObject(JsonIdentifier)]
     public partial class PageLog : LogWithProperties
     {
         /// <summary>
@@ -26,10 +26,8 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
 
         internal static PageLog Empty = new PageLog();
 
-        public override string GetJsonIdentifier()
-        {
-            return "page";
-        }
+        internal const string JsonIdentifier = "page";
+
 
         /// <summary>
         /// Initializes a new instance of the PageLog class.

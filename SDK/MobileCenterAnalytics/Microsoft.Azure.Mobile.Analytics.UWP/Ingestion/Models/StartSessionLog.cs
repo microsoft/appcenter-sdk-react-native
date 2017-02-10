@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
     /// Required explicit begin session log (a marker event for analytics
     /// service).
     /// </summary>
-    [JsonObject("start_session")]
+    [JsonObject(JsonIdentifier)]
     public partial class StartSessionLog : Log
     {
         /// <summary>
@@ -25,10 +25,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
 
         internal static StartSessionLog Empty = new StartSessionLog();
 
-        public override string GetJsonIdentifier()
-        {
-            return "start_session";
-        }
+        internal const string JsonIdentifier = "start_session";
 
         /// <summary>
         /// Initializes a new instance of the StartSessionLog class.

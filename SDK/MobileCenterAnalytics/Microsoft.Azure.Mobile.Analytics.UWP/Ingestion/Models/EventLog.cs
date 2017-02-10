@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
     /// <summary>
     /// Event log.
     /// </summary>
-    [JsonObject("event")]
+    [JsonObject(JsonIdentifier)]
     public partial class EventLog : LogWithProperties
     {
         /// <summary>
@@ -25,12 +25,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         /// </summary>
         public EventLog() { }
 
-        internal static EventLog Empty = new EventLog();
-
-        public override string GetJsonIdentifier()
-        {
-            return "event";
-        }
+        internal const string JsonIdentifier = "event";
 
         /// <summary>
         /// Initializes a new instance of the EventLog class.

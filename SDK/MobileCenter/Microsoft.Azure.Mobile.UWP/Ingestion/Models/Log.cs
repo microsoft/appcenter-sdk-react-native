@@ -16,8 +16,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// </summary>
         public Log() { }
 
-        public abstract string GetJsonIdentifier();
-
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary>
