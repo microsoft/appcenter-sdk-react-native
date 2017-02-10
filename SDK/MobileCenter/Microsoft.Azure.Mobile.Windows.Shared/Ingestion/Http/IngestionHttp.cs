@@ -25,6 +25,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public IngestionHttp()
         {
             _baseUrl = DefaultBaseUrl;
+            this.HttpClient.Timeout = RequestTimeout;
         }
 
         public async Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken))
@@ -75,7 +76,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
             }
             cancellationToken.ThrowIfCancellationRequested();
-            this.HttpClient.Timeout = RequestTimeout;
             HttpResponseMessage response = await this.HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={response.Content.AsString()}");
             cancellationToken.ThrowIfCancellationRequested();

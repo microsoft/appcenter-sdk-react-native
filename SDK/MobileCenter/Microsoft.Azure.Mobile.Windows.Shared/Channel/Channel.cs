@@ -210,9 +210,8 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void Clear()
         {
-            _mutex.Wait();
             int stateSnapshot = _currentState;
-            _mutex.Release();
+
             _storage.DeleteLogsAsync(Name).ContinueWith((completedTask) =>
             {
                 _mutex.Wait();
@@ -361,13 +360,13 @@ namespace Microsoft.Azure.Mobile.Channel
             try
             {
                 await _ingestion.SendLogsAsync(_appSecret, _installId, logs);
+                await _mutex.WaitAsync();
             }
-            catch (HttpOperationException e) //TODO this is not the right type to catch; should be more broad. Probably need to wrap expected exceptions into a type for ingestion
+            catch (Exception e) //TODO this is not the right type to catch; should be more broad. Probably need to wrap expected exceptions into a type for ingestion
             {
                 await _mutex.WaitAsync();
                 HandleSendingFailure(batchId, e);
             }
-            await _mutex.WaitAsync();
             if (_currentState != stateSnapshot)
             {
                 return;
@@ -386,7 +385,7 @@ namespace Microsoft.Azure.Mobile.Channel
             CheckPendingLogs();
         }
 
-        private void HandleSendingFailure(string batchId, HttpOperationException e)
+        private void HandleSendingFailure(string batchId, Exception e)
         {
             MobileCenterLog.Error(MobileCenterLog.LogTag, "Sending logs for channel '" + Name + "', batch '" + batchId + "' failed", e);
             var removedLogs = _sendingBatches[batchId];
@@ -422,9 +421,21 @@ namespace Microsoft.Azure.Mobile.Channel
             else if (_pendingLogCount > 0 && !_batchScheduled)
             {
                 _batchScheduled = true;
-                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith((completedTask) => TriggerIngestionAsync());
+                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith(async (completedTask) =>
+                {
+
+                    _mutex.Wait();
+                    bool stillSchedued = _batchScheduled;
+                    _mutex.Release();
+                    if (stillSchedued) //TODO consider VERY carefully whether there is a race condition if batchscheduled changes right before this check
+                    {
+                        await TriggerIngestionAsync();
+                    }
+                });
             }
         }
+
+
 
         public void Shutdown()
         {

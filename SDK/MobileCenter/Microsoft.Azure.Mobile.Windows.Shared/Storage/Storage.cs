@@ -177,12 +177,20 @@ namespace Microsoft.Azure.Mobile.Storage
                     {
                         string logJson = reader[LogColumn] as string;
                         //TODO error check?
+
+                        long logId = reader.GetInt64(0);
+
+                        if (_pendingDbIdentifiers.Contains(logId))
+                        {
+                            continue;
+                        }
+
                         Log log;
                         try
                         {
                             log = LogSerializer.DeserializeLog(logJson);
                             logs.Add(log);
-                            idPairs.Add(Tuple.Create(log.Sid, reader.GetInt64(0)));
+                            idPairs.Add(Tuple.Create(log.Sid, logId));
                         }
                         catch (Exception e) //TODO use a more specific exception?
                         {
