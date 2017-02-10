@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Azure.Mobile.Analytics</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Analytics.UWP</AssemblyName>
+    <AssemblyName>Microsoft.Azure.Mobile.Analytics</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>

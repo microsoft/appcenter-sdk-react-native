@@ -8,7 +8,7 @@ namespace Microsoft.Azure.Mobile
     /// <summary>
     ///     SDK core used to initialize, start and control specific service.
     /// </summary>
-    public static class MobileCenter
+    public class MobileCenter
     {
         /* Error message to display for unsupported targets. */
         private const string ErrorMessage =

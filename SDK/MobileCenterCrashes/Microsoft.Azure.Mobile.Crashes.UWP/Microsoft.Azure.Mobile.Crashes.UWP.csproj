@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Crashes.UWP</AssemblyName>
+    <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
