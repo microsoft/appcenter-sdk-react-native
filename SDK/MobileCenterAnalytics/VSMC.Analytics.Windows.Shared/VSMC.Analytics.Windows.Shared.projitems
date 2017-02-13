@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Analytics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\SessionTracker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\EventLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\PageLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StartSessionLog.cs" />

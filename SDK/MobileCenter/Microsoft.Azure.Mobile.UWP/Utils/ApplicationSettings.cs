@@ -32,5 +32,10 @@ namespace Microsoft.Azure.Mobile.Utils
             }
             return (T)result;
         }
+
+        public void Remove(string key)
+        {
+            Windows.Storage.ApplicationData.Current.LocalSettings.Values.Remove(key);
+        }
     }
 }

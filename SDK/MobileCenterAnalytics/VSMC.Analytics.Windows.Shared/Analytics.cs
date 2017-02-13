@@ -8,14 +8,15 @@ using System.Runtime.InteropServices;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
-
-//TODO storage helper?
+using Microsoft.Azure.Mobile.Analytics.Channel;
+using Windows.ApplicationModel.Core;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
     public class Analytics : IMobileCenterService
     {
         #region static
+        internal static string LogTag = MobileCenterLog.LogTag + "Analytics";
 
         private const string EnabledKey = "MobileCenterAnalyticsEnabled";
         private const string ChannelName = "analytics";
@@ -85,11 +86,36 @@ namespace Microsoft.Azure.Mobile.Analytics
         private ChannelGroup _channelGroup = null;
         private bool _enabled = true;
         private IApplicationSettings _applicationSettings = new ApplicationSettings();
+        private SessionTracker _sessionTracker;
+        private const int MaxLogsPerBatch = 50;
+        private static TimeSpan BatchTimeInterval = TimeSpan.FromSeconds(3);
+        private const int MaxParallelBatches = 3;
+
         internal Analytics()
         {
             LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
             LogSerializer.AddFactory(EventLog.JsonIdentifier, new LogFactory<EventLog>());
             LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new LogFactory<StartSessionLog>());
+
+            CoreApplication.Resuming += (sender, e) =>
+            {
+                Resuming();
+            };
+            CoreApplication.Suspending += (sender, e) =>
+            {
+                Suspending();
+            };
+           //TODO handle exiting? what about launching?
+        }
+
+        private void Suspending()
+        {
+            _sessionTracker?.Pause();
+        }
+
+        private void Resuming()
+        {
+            _sessionTracker?.Resume();
         }
 
         public bool InstanceEnabled
@@ -101,6 +127,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             set
             {
                 _applicationSettings[EnabledKey] = value;
+                ApplyEnabledState(value);
             }
         }
 
@@ -116,8 +143,24 @@ namespace Microsoft.Azure.Mobile.Analytics
         public void OnChannelGroupReady(ChannelGroup channelGroup)
         {
             _channelGroup = channelGroup;
-            _channelGroup.AddChannel(ChannelName, 3, TimeSpan.FromSeconds(3), 3);//TODO these values are just made up
+            _channelGroup.AddChannel(ChannelName, MaxLogsPerBatch, BatchTimeInterval, MaxParallelBatches);
+            ApplyEnabledState(InstanceEnabled);
         }
+
+        private void ApplyEnabledState(bool enabled)
+        {
+            if (enabled && _channelGroup != null && _sessionTracker == null)
+            {
+                _sessionTracker = new SessionTracker(_channelGroup, ChannelName);
+                Resuming();
+            }
+            else if (!enabled && _sessionTracker != null)
+            {
+                _sessionTracker.ClearSessions();
+                _sessionTracker = null;
+            }
+        }
+
         #endregion
     }
 }

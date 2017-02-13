@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchTimeInterval = batchTimeInterval;
             _batchScheduled = false;
             _enabled = true;
-            Task.Run(() => CountFromDiskAsync());
+            CountFromDiskAsync();
         }
 
         private async Task CountFromDiskAsync()
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 log = PrepareLog(log);
-                Task.Run(() => PersistLogAsync(log, _currentState));
+                PersistLogAsync(log, _currentState);
             }
             catch (Exception e) //TODO make some kind of deviceinformationexception
             {
@@ -372,7 +372,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 return;
             }
 
-            Task.Run(() => _storage.DeleteLogsAsync(Name, batchId)); //TODO is it okay to await here?
+            _storage.DeleteLogsAsync(Name, batchId);
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
             if (SentLog != null)
