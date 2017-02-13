@@ -25,36 +25,30 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long? _lastPausedTime;
         private ApplicationSettings _applicationSettings = new ApplicationSettings();
         private object _lockObject = new object();
+
         public SessionTracker(ChannelGroup channelGroup, string channelName)
         {
-            /*
-            HashSet<string> storedSessions = _applicationSettings.GetValue<HashSet<string>>(StorageKey, null);
-            if (storedSessions == null)
-            {
-                return;
-            }
+            _channelGroup = channelGroup;
+            _channelName = channelName;
+            _channelGroup.EnqueuingLog += HandleEnqueuingLog;
 
-            foreach (string session in storedSessions)
-            {
-                
-            }
-            */
             string sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null)
             {
                 return;
             }
             _sessions = SessionsFromString(sessionsString);
-
+            if (_sessions.Count == 0)
+            {
+                return;
+            }
             string loadedSessionsString = "Loaded stored sessions:\n";
             foreach (var session in _sessions.Values)
             {
                 loadedSessionsString += "\t" + session + "\n";
             }
             MobileCenterLog.Debug(Analytics.LogTag, loadedSessionsString);
-            _channelGroup = channelGroup;
-            _channelName = channelName;
-            _channelGroup.EnqueuingLog += HandleEnqueuingLog;
+
         }
 
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
@@ -111,6 +105,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             var sessionsDict = new Dictionary<long, Guid>();
             string[] sessions = sessionsString.Split(StorageEntrySeparator);
+            if (sessions == null)
+            {
+                return sessionsDict;
+            }
             foreach (string sessionString in sessions)
             {
                 string[] splitSession = sessionString.Split(StorageKeyValueSeparator);
