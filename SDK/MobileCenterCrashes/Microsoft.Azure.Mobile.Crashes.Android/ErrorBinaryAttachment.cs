@@ -5,7 +5,7 @@
     /// <summary>
     /// Binary attachment for error report.
     /// </summary>
-    public class ErrorBinaryAttachment
+    internal class ErrorBinaryAttachment
     {
         //internal AndroidBinaryAttachment internalBinaryAttachment { get; }
 

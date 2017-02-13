@@ -47,7 +47,6 @@ namespace Contoso.Forms.Puppet.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-                Microsoft.Azure.Mobile.MobileCenter.Configure("9f1e7459-eafd-490d-ac8d-5f03a3e3785f");
                 Xamarin.Forms.Forms.Init(e);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)

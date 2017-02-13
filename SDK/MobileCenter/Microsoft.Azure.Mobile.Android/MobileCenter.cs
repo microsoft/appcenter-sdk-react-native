@@ -12,8 +12,11 @@ namespace Microsoft.Azure.Mobile
     /// <summary>
     /// SDK core used to initialize, start and control specific service.
     /// </summary>
-    public static class MobileCenter
+    public partial class MobileCenter
     {
+        /* The key identifier for parsing app secrets */
+        private const string PlatformIdentifier = "android";
+
         /// <summary>
         /// This property controls the amount of logs emitted by the SDK.
         /// </summary>
@@ -124,7 +127,17 @@ namespace Microsoft.Azure.Mobile
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-            AndroidMobileCenter.Start(SetWrapperSdkAndGetApplication(), appSecret, GetServices(services));
+            string parsedSecret;
+            try
+            {
+                parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
+            }
+            catch (ArgumentException ex)
+            {
+                MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
+                return;
+            }
+            AndroidMobileCenter.Start(SetWrapperSdkAndGetApplication(), parsedSecret, GetServices(services));
         }
 
 

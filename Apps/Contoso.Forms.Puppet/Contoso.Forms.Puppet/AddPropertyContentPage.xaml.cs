@@ -15,8 +15,8 @@ namespace Contoso.Forms.Puppet
 
         void AddProperty(object sender, EventArgs e)
         {
-            Property addedProperty = new Property(NameCell.Text, ValueCell.Text);
-            PropertyAdded.Invoke(addedProperty);
+            Property addedProperty = new Property(NameCell?.Text, ValueCell?.Text);
+            PropertyAdded?.Invoke(addedProperty);
             Navigation.PopModalAsync();
         }
 

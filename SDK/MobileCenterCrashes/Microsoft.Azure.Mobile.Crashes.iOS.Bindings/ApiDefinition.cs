@@ -108,9 +108,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("crashes:shouldProcessErrorReport:")]
         bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
-        // @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
-        [Export("attachmentWithCrashes:forErrorReport:")]
-        MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport);
+        //// @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
+        //[Export("attachmentWithCrashes:forErrorReport:")]
+        //MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:willSendErrorReport:")]
@@ -125,62 +125,62 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error);
     }
 
-    // @interface MSErrorAttachment : NSObject
-    [BaseType(typeof(NSObject))]
-    interface MSErrorAttachment
-    {
-        // @property (nonatomic) NSString * _Nullable textAttachment;
-        [NullAllowed, Export("textAttachment")]
-        string TextAttachment { get; set; }
+    //// @interface MSErrorAttachment : NSObject
+    //[BaseType(typeof(NSObject))]
+    //interface MSErrorAttachment
+    //{
+    //    // @property (nonatomic) NSString * _Nullable textAttachment;
+    //    [NullAllowed, Export("textAttachment")]
+    //    string TextAttachment { get; set; }
 
-        // @property (nonatomic) MSErrorBinaryAttachment * _Nullable binaryAttachment;
-        [NullAllowed, Export("binaryAttachment", ArgumentSemantic.Assign)]
-        MSErrorBinaryAttachment BinaryAttachment { get; set; }
+    //    // @property (nonatomic) MSErrorBinaryAttachment * _Nullable binaryAttachment;
+    //    [NullAllowed, Export("binaryAttachment", ArgumentSemantic.Assign)]
+    //    MSErrorBinaryAttachment BinaryAttachment { get; set; }
 
-        // -(BOOL)isEqual:(MSErrorAttachment * _Nullable)attachment;
-        [Export("isEqual:")]
-        bool IsEqual([NullAllowed] MSErrorAttachment attachment);
+    //    // -(BOOL)isEqual:(MSErrorAttachment * _Nullable)attachment;
+    //    [Export("isEqual:")]
+    //    bool IsEqual([NullAllowed] MSErrorAttachment attachment);
 
-        // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text;
-        [Static]
-        [Export("attachmentWithText:")]
-        MSErrorAttachment AttachmentWithText(string text);
+    //    // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text;
+    //    [Static]
+    //    [Export("attachmentWithText:")]
+    //    MSErrorAttachment AttachmentWithText(string text);
 
-        // +(MSErrorAttachment * _Nonnull)attachmentWithBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
-        [Static]
-        [Export("attachmentWithBinaryData:filename:mimeType:")]
-        MSErrorAttachment AttachmentWithBinaryData(NSData data, [NullAllowed] string filename, string mimeType);
+    //    // +(MSErrorAttachment * _Nonnull)attachmentWithBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
+    //    [Static]
+    //    [Export("attachmentWithBinaryData:filename:mimeType:")]
+    //    MSErrorAttachment AttachmentWithBinaryData(NSData data, [NullAllowed] string filename, string mimeType);
 
-        // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text andBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
-        [Static]
-        [Export("attachmentWithText:andBinaryData:filename:mimeType:")]
-        MSErrorAttachment AttachmentWithText(string text, NSData data, [NullAllowed] string filename, string mimeType);
-    }
+    //    // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text andBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
+    //    [Static]
+    //    [Export("attachmentWithText:andBinaryData:filename:mimeType:")]
+    //    MSErrorAttachment AttachmentWithText(string text, NSData data, [NullAllowed] string filename, string mimeType);
+    //}
 
-    // @interface MSErrorBinaryAttachment : NSObject
-    [BaseType(typeof(NSObject))]
-    interface MSErrorBinaryAttachment
-    {
-        // @property (readonly, nonatomic) NSString * _Nullable fileName;
-        [NullAllowed, Export("fileName")]
-        string FileName { get; }
+    //// @interface MSErrorBinaryAttachment : NSObject
+    //[BaseType(typeof(NSObject))]
+    //interface MSErrorBinaryAttachment
+    //{
+    //    // @property (readonly, nonatomic) NSString * _Nullable fileName;
+    //    [NullAllowed, Export("fileName")]
+    //    string FileName { get; }
 
-        // @property (readonly, nonatomic) NSData * _Nonnull data;
-        [Export("data")]
-        NSData Data { get; }
+    //    // @property (readonly, nonatomic) NSData * _Nonnull data;
+    //    [Export("data")]
+    //    NSData Data { get; }
 
-        // @property (readonly, nonatomic) NSString * _Nonnull contentType;
-        [Export("contentType")]
-        string ContentType { get; }
+    //    // @property (readonly, nonatomic) NSString * _Nonnull contentType;
+    //    [Export("contentType")]
+    //    string ContentType { get; }
 
-        // -(BOOL)isEqual:(MSErrorBinaryAttachment * _Nullable)attachment;
-        [Export("isEqual:")]
-        bool IsEqual([NullAllowed] MSErrorBinaryAttachment attachment);
+    //    // -(BOOL)isEqual:(MSErrorBinaryAttachment * _Nullable)attachment;
+    //    [Export("isEqual:")]
+    //    bool IsEqual([NullAllowed] MSErrorBinaryAttachment attachment);
 
-        // -(instancetype _Nonnull)initWithFileName:(NSString * _Nullable)fileName attachmentData:(NSData * _Nonnull)data contentType:(NSString * _Nonnull)contentType;
-        [Export("initWithFileName:attachmentData:contentType:")]
-        IntPtr Constructor([NullAllowed] string fileName, NSData data, string contentType);
-    }
+    //    // -(instancetype _Nonnull)initWithFileName:(NSString * _Nullable)fileName attachmentData:(NSData * _Nonnull)data contentType:(NSString * _Nonnull)contentType;
+    //    [Export("initWithFileName:attachmentData:contentType:")]
+    //    IntPtr Constructor([NullAllowed] string fileName, NSData data, string contentType);
+    //}
 
     // @interface MSException : NSObject
     [BaseType(typeof(NSObject))]

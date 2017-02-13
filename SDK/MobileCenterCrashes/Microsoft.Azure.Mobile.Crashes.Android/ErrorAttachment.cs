@@ -80,7 +80,6 @@
         //{
         //    AndroidErrorAttachment androidAttachment = AndroidErrorAttachments.AttachmentWithText(text);
         //    return new ErrorAttachment(androidAttachment);
-        //    return null;
         //}
     }
 }

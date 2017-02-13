@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile
     /// <summary>
     ///     SDK core used to initialize, start and control specific service.
     /// </summary>
-    public class MobileCenter
+    public partial class MobileCenter
     {
         private const string EnabledKey = "MobileCenterEnabled";
         private ChannelGroup _channelGroup;
@@ -291,10 +291,22 @@ namespace Microsoft.Azure.Mobile
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
 
-        private void StartInstance(string appSecret, params Type[] services)
+        public void StartInstance(string appSecret, params Type[] services)
         {
-            InstanceConfigure(appSecret);
-            StartInstance(services);
+            string parsedSecret;
+            try
+            {
+                parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
+            }
+            catch (ArgumentException ex)
+            {
+                MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
+                return;
+            }
+            if (InstanceConfigure(parsedSecret))
+            {
+                StartInstance(services);
+            }
         }
         #endregion
     }
