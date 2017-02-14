@@ -38,6 +38,7 @@ namespace Contoso.UWP.Puppet
             Analytics.TrackEvent("event", properties);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
         }
 
         /// <summary>

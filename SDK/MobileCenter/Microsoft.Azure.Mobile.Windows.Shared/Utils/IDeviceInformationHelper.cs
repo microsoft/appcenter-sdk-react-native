@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Mobile.Utils
     public interface IDeviceInformationHelper
     {
         Ingestion.Models.Device GetDeviceInformation();
-        Task<Ingestion.Models.Device> GetDeviceInformationAsync();
+        event Action InformationInvalidated;
 
     }
 }

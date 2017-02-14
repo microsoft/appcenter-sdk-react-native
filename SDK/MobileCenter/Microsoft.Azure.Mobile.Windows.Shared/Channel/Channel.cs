@@ -52,6 +52,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchScheduled = false;
             _enabled = true;
             _deviceInfoHelper = deviceInfoHelper;
+            _deviceInfoHelper.InformationInvalidated += () => InvalidateDeviceCache();
             CountFromDiskAsync();
         }
 

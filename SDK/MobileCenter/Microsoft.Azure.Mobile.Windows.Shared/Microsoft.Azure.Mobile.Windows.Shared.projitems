@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\Storage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\JsonHelper.cs" />

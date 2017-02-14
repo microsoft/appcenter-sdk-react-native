@@ -22,7 +22,6 @@ namespace Microsoft.Azure.Mobile.Channel
         private bool _enabled;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private DeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
-        private bool _initialized = false;
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
@@ -39,17 +38,6 @@ namespace Microsoft.Azure.Mobile.Channel
             _enabled = true;
             _appSecret = appSecret;
         }
-
-        public async Task InitializeAsync()
-        {
-            await _deviceInfoHelper.GetDeviceInformationAsync();
-            _initialized = true;
-            Initialized?.Invoke();
-        }
-
-        public bool IsInitialized => _initialized;
-
-        public event Action Initialized;
 
         public void SetServerUrl(string serverUrl)
         {
