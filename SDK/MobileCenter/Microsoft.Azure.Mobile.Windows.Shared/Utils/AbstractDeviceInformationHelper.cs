@@ -49,28 +49,28 @@ namespace Microsoft.Azure.Mobile.Utils
         protected abstract string GetAppBuild();
         protected abstract string GetScreenSize();
 
-        protected string GetCarrierName()
+        protected virtual string GetCarrierName()
         {
             return null;
         }
-        protected string GetCarrierCountry()
+        protected virtual string GetCarrierCountry()
         {
             return null;
         }
-        protected string GetAppNamespace()
+        protected virtual string GetAppNamespace()
         {
             return null;
         }
-        protected string GetLiveUpdateReleaseLabel()
+        protected virtual string GetLiveUpdateReleaseLabel()
         {
             return null;
         }
-        protected string GetLiveUpdateDevelopmentKey()
+        protected virtual string GetLiveUpdateDevelopmentKey()
         {
             return null;
         }
 
-        protected string GetLiveUpdatePackageHash()
+        protected virtual string GetLiveUpdatePackageHash()
         {
             return null;
         }
