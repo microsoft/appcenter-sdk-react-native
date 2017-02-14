@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
         //NOTE: the constructor should only be called from ChannelGroup
-        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
+        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage, DeviceInformationHelper deviceInfoHelper)
         {
             Name = name;
             _maxParallelBatches = maxParallelBatches;
@@ -51,8 +51,12 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchTimeInterval = batchTimeInterval;
             _batchScheduled = false;
             _enabled = true;
+            _deviceInfoHelper = deviceInfoHelper;
             CountFromDiskAsync();
         }
+
+        
+
 
         private async Task CountFromDiskAsync()
         {

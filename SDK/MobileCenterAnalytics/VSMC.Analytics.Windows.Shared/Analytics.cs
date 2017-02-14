@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         private const int MaxLogsPerBatch = 50;
         private static TimeSpan BatchTimeInterval = TimeSpan.FromSeconds(3);
         private const int MaxParallelBatches = 3;
-
+        private List<EventLog> _unenqueuedEvents = new List<EventLog>();
         internal Analytics()
         {
             LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
@@ -133,10 +133,17 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
         {
-            if (_enabled && _channelGroup != null)
+            if (_enabled)
             {
                 var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-                _channelGroup.GetChannel(ChannelName).Enqueue(log);
+                if (_channelGroup == null)
+                {
+                    _unenqueuedEvents.Add(log);
+                }
+                else
+                {
+                    _channelGroup.GetChannel(ChannelName).Enqueue(log);
+                }
             }
         }
 
@@ -149,10 +156,18 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private void ApplyEnabledState(bool enabled)
         {
-            if (enabled && _channelGroup != null && _sessionTracker == null)
+            if (enabled && _channelGroup != null)
             {
-                _sessionTracker = new SessionTracker(_channelGroup, ChannelName);
-                Resuming();
+                if (_sessionTracker == null)
+                {
+                    _sessionTracker = new SessionTracker(_channelGroup, ChannelName);
+                    Resuming();
+                }
+                foreach (var log in _unenqueuedEvents)
+                {
+                    _channelGroup.GetChannel(ChannelName).Enqueue(log);
+                }
+                _unenqueuedEvents.Clear();
             }
             else if (!enabled && _sessionTracker != null)
             {

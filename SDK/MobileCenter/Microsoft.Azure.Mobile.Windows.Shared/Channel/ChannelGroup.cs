@@ -21,7 +21,8 @@ namespace Microsoft.Azure.Mobile.Channel
         private Guid _installId;
         private bool _enabled;
         private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-
+        private DeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
+        private bool _initialized = false;
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
@@ -39,6 +40,17 @@ namespace Microsoft.Azure.Mobile.Channel
             _appSecret = appSecret;
         }
 
+        public async Task InitializeAsync()
+        {
+            await _deviceInfoHelper.GetDeviceInformationAsync();
+            _initialized = true;
+            Initialized?.Invoke();
+        }
+
+        public bool IsInitialized => _initialized;
+
+        public event Action Initialized;
+
         public void SetServerUrl(string serverUrl)
         {
             _mutex.Wait();
@@ -51,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _mutex.Wait();
             MobileCenterLog.Debug(MobileCenterLog.LogTag, "AddChannel(" + name + ")");
             //TODO error handling
-            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret, _installId, _ingestion, _storage);
+            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret, _installId, _ingestion, _storage, _deviceInfoHelper);
             newChannel.EnqueuingLog += AnyChannelEnqueuingLog;
             newChannel.SendingLog += AnyChannelSendingLog;
             newChannel.SentLog += AnyChannelSentLog;

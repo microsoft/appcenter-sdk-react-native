@@ -228,6 +228,7 @@ namespace Microsoft.Azure.Mobile
             else
             {
                 _channelGroup = new ChannelGroup(appSecret);
+                _channelGroup.InitializeAsync();
                 _channelGroup.Enabled = InstanceEnabled;
                 if (_serverUrl != null)
                 {
@@ -279,7 +280,7 @@ namespace Microsoft.Azure.Mobile
 
             }
         }
-        
+
         private void StartService(IMobileCenterService service)
         {
             if (_services.Contains(service))
@@ -287,9 +288,18 @@ namespace Microsoft.Azure.Mobile
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started a service of type '{service.GetType().Name}'.");
                 return;
             }
-            service.OnChannelGroupReady(_channelGroup);
-            MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
+            if (_channelGroup.IsInitialized)
+            {
+                service.OnChannelGroupReady(_channelGroup);
+            }
+            else
+            {
+                _channelGroup.Initialized += () => service.OnChannelGroupReady(_channelGroup);
+                MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
+
+            }
         }
+
 
         public void StartInstance(string appSecret, params Type[] services)
         {
