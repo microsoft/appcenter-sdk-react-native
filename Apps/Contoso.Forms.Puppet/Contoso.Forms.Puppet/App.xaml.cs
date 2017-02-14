@@ -9,11 +9,9 @@ namespace Contoso.Forms.Puppet
     public partial class App : Application
     {
         public const string LogTag = "MobileCenterXamarinPuppet";
-
         public App()
         {
             InitializeComponent();
-
             MainPage = new NavigationPage(new MainPuppetPage());
         }
 

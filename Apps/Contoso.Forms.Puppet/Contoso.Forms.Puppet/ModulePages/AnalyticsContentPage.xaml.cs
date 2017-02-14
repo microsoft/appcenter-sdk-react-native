@@ -41,7 +41,7 @@ namespace Contoso.Forms.Puppet
             EnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
         }
 
-        void AddProperty(object sender, EventArgs e)
+        async void AddProperty(object sender, EventArgs e)
         {
             var addPage = new AddPropertyContentPage();
             addPage.PropertyAdded += (Property property) =>
@@ -49,12 +49,12 @@ namespace Contoso.Forms.Puppet
                 EventProperties.Add(property);
                 RefreshPropCount();
             };
-            Navigation.PushModalAsync(addPage);
+            await Navigation.PushModalAsync(addPage);
         }
 
-        void PropertiesCellTapped(object sender, EventArgs e)
+        async void PropertiesCellTapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PropertiesContentPage(EventProperties));
+            await Navigation.PushAsync(new PropertiesContentPage(EventProperties));
         }
 
         void TrackEvent(object sender, EventArgs e)
