@@ -11,7 +11,7 @@ var pjson = require(path.join(process.cwd(), './package.json'));
 
 var MobileCenterConfig = require('./MobileCenterConfig');
 var AppDelegate = require('./AppDelegate');
-var PodFile = require('./Podfile');
+var PodFile = require('./PodFile');
 
 var appDelegatePaths = glob.sync("**/AppDelegate.m", { ignore: "node_modules/**" });
 var appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
