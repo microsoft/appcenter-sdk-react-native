@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
-using System.Reflection;
 using Windows.ApplicationModel.Core;
-using System.Threading;
 using Windows.Graphics.Display;
 
 namespace Microsoft.Azure.Mobile.Utils

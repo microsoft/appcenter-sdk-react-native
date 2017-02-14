@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private int _currentState;
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
-        //NOTE: the constructor should only be called from ChannelGroup
+        //TODO investigate changing use of state snapshots to leverage cancellation tokens
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage, DeviceInformationHelper deviceInfoHelper)
         {
             Name = name;
@@ -53,11 +53,8 @@ namespace Microsoft.Azure.Mobile.Channel
             _enabled = true;
             _deviceInfoHelper = deviceInfoHelper;
             _deviceInfoHelper.InformationInvalidated += () => InvalidateDeviceCache();
-            CountFromDiskAsync();
+            Task.Factory.StartNew(()=>CountFromDiskAsync());
         }
-
-        
-
 
         private async Task CountFromDiskAsync()
         {
@@ -137,8 +134,8 @@ namespace Microsoft.Azure.Mobile.Channel
                     return;
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
-                log = PrepareLog(log);
-                PersistLogAsync(log, _currentState);
+                PrepareLog(log);
+                Task.Factory.StartNew(()=>PersistLogAsync(log, _currentState));
             }
             catch (Exception e) //TODO make some kind of deviceinformationexception
             {
@@ -158,9 +155,8 @@ namespace Microsoft.Azure.Mobile.Channel
             _mutex.Release();
         }
 
-        private Log PrepareLog(Log log) //TODO does this really need to return anything?
+        private void PrepareLog(Log log)
         {
-            //TODO probably more steps
             if (log.Device == null && _device == null)
             {
                 _device = _deviceInfoHelper.GetDeviceInformation();
@@ -170,7 +166,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
             }
-            return log;
         }
 
         private async Task PersistLogAsync(Log log, int stateSnapshot)
@@ -278,7 +273,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 _mutex.Release();
                 await _storage.DeleteLogsAsync(Name); //TODO if this throws an exception we will catch it and then try to release the mutex that we don't own
             }
-            catch (Exception)
+            catch
             {
                 _mutex.Release();
                 throw;
@@ -314,7 +309,7 @@ namespace Microsoft.Azure.Mobile.Channel
         }
 
         private async Task TriggerIngestionAsync()
-        {//TODO there was a case where ingestion was triggered but there were no pending logs. investigate.
+        {
             await _mutex.WaitAsync();
             try
             {
@@ -324,7 +319,6 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, $"triggerIngestion({Name}) pendingLogCount={_pendingLogCount}");
                 _batchScheduled = false;
-                //prepares a new batch and starts seding them to ingestion
                 if (_sendingBatches.Count >= _maxParallelBatches)
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag, "Already sending " + _maxParallelBatches + " batches of analytics data to the server");
@@ -372,12 +366,18 @@ namespace Microsoft.Azure.Mobile.Channel
                 await _mutex.WaitAsync();
                 HandleSendingFailure(batchId, e);
             }
+
             if (_currentState != stateSnapshot)
             {
                 return;
             }
-
-            _storage.DeleteLogsAsync(Name, batchId);
+            _mutex.Release();
+            await _storage.DeleteLogsAsync(Name, batchId);
+            await _mutex.WaitAsync();
+            if (_currentState != stateSnapshot)
+            {
+                return;
+            }
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
             if (SentLog != null)
@@ -428,19 +428,13 @@ namespace Microsoft.Azure.Mobile.Channel
                 _batchScheduled = true;
                 Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith(async (completedTask) =>
                 {
-
-                    _mutex.Wait();
-                    bool stillSchedued = _batchScheduled;
-                    _mutex.Release();
-                    if (stillSchedued) //TODO consider VERY carefully whether there is a race condition if batchscheduled changes right before this check
+                    if (_batchScheduled)
                     {
                         await TriggerIngestionAsync();
                     }
                 });
             }
         }
-
-
 
         public void Shutdown()
         {
