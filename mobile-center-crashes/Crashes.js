@@ -66,7 +66,7 @@ let Crashes = {
 };
 
 // Android does not have "isDebuggerAttached" method
-if (Crashes && RNCrashes.isDebuggerAttached) {
+if (Crashes && RNCrashes && RNCrashes.isDebuggerAttached) {
     Crashes = Object.assign({
         async isDebuggerAttached() {
             return await RNCrashes.isDebuggerAttached();
