@@ -1,30 +1,34 @@
-import { DeviceEventEmitter, NativeModules } from 'react-native';
-const RNCrashes = NativeModules.RNCrashes;
+let ReactNative = require('react-native');
+const RNCrashes = ReactNative.NativeModules.RNCrashes;
 
 const willSendEvent = "MobileCenterErrorReportOnBeforeSending";
 const sendDidSucceed = "MobileCenterErrorReportOnSendingSucceeded";
 const sendDidFail = "MobileCenterErrorReportOnSendingFailed";
 
 let Crashes = {
-    // Functions
-    async generateTestCrash() {
-        return await RNCrashes.generateTestCrash();
+    // async - returns a Promise
+    generateTestCrash() {
+        return RNCrashes.generateTestCrash();
     },
 
-    async hasCrashedInLastSession() {
-        return await RNCrashes.hasCrashedInLastSession();
+    // async - returns a Promise
+    hasCrashedInLastSession() {
+        return RNCrashes.hasCrashedInLastSession();
     },
 
-    async lastSessionCrashReport() {
-        return await RNCrashes.lastSessionCrashReport();
+    // async - returns a Promise
+    lastSessionCrashReport() {
+        return RNCrashes.lastSessionCrashReport();
     },
 
-    async isEnabled() {
-        return await RNCrashes.isEnabled();
+    // async - returns a Promise
+    isEnabled() {
+        return RNCrashes.isEnabled();
     },
 
-    async setEnabled(shouldEnable) {
-        await RNCrashes.setEnabled(shouldEnable);
+    // async - returns a Promise
+    setEnabled(shouldEnable) {
+        return RNCrashes.setEnabled(shouldEnable);
     },
 
     process(callback) {
@@ -54,13 +58,13 @@ let Crashes = {
 
     addEventListener(listenerMap) {
         if (listenerMap.willSendCrash) {
-            DeviceEventEmitter.addListener(willSendEvent, listenerMap.willSendCrash);
+            ReactNative.DeviceEventEmitter.addListener(willSendEvent, listenerMap.willSendCrash);
         }
         if (listenerMap.didSendCrash) {
-            DeviceEventEmitter.addListener(sendDidSucceed, listenerMap.didSendCrash);
+            ReactNative.DeviceEventEmitter.addListener(sendDidSucceed, listenerMap.didSendCrash);
         }
         if (listenerMap.failedSendingCrash) {
-            DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
+            ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
         }
     }
 };
@@ -68,8 +72,9 @@ let Crashes = {
 // Android does not have "isDebuggerAttached" method
 if (Crashes && RNCrashes && RNCrashes.isDebuggerAttached) {
     Crashes = Object.assign({
-        async isDebuggerAttached() {
-            return await RNCrashes.isDebuggerAttached();
+        // async - returns a Promise
+        isDebuggerAttached() {
+            return RNCrashes.isDebuggerAttached();
         },
     }, Crashes);
 }

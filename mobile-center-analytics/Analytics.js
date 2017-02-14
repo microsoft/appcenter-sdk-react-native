@@ -1,16 +1,19 @@
 let RNAnalytics = require("react-native").NativeModules.RNAnalytics;
 
 module.exports = {
-    async trackEvent(eventName, properties) {
-        await RNAnalytics.trackEvent(eventName, sanitizeProperties(properties));
+    // async - returns a Promise
+    trackEvent(eventName, properties) {
+        return RNAnalytics.trackEvent(eventName, sanitizeProperties(properties));
     },
 
-    async getEnabled() {
-        return await RNAnalytics.getEnabled();
+    // async - returns a Promise
+    getEnabled() {
+        return RNAnalytics.getEnabled();
     },
 
-    async setEnabled(enabled) {
-        return await RNAnalytics.setEnabled(enabled);
+    // async - returns a Promise
+    setEnabled(enabled) {
+        return RNAnalytics.setEnabled(enabled);
     }
 
     /*
