@@ -16,14 +16,14 @@ namespace Microsoft.Azure.Mobile.Storage
         private const string LogColumn = "log";
         private Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
-        private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1); //TODO should this lock be static to guard against multiple instances of storage? If so, then the constructor will be blocking, so an async initialization method will need to be created.
+        private SemaphoreSlim _mutex = new SemaphoreSlim(0, 1); 
         private SqliteConnection _dbConnection;
         public Storage()
         {
-            _mutex.Wait();
             _dbConnection = new SqliteConnection($"DATA SOURCE={Database}");
             Task.Run(() => InitializeDatabaseAsync()); //don't release mutex until database is initialized
         }
+
         public async Task PutLogAsync(string channelName, Log log)
         {
             await OpenDbAsync();
@@ -43,7 +43,6 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 CloseDb();
             }
-
             //TODO throw exception on failure
         }
 
@@ -144,7 +143,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 CloseDb();
             }
         }
-        public async Task ClearPendingLogStateAsync(string channelName) //TODO this could block
+        public async Task ClearPendingLogStateAsync(string channelName)
         {
             await _mutex.WaitAsync();
             _pendingDbIdentifierGroups.Clear();
