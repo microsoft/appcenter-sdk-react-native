@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Storage
         Task DeleteLogsAsync(string channelName, string batchId);
         Task DeleteLogsAsync(string channelName);
         Task<int> CountLogsAsync(string channelName);
-        void ClearPendingLogState(string channelName);
+        Task ClearPendingLogStateAsync(string channelName);
         Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs);
     }
 }

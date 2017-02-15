@@ -22,8 +22,7 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             _mutex.Wait();
             _dbConnection = new SqliteConnection($"DATA SOURCE={Database}");
-            _mutex.Release(); //TODO in order to enforce that the database is created before any other operations, we could hold the lock until that finishes. but then some operations would become potentially slightly blocking
-            Task.Run(() => InitializeDatabaseAsync());
+            Task.Run(() => InitializeDatabaseAsync()); //don't release mutex until database is initialized
         }
         public async Task PutLogAsync(string channelName, Log log)
         {
@@ -145,9 +144,9 @@ namespace Microsoft.Azure.Mobile.Storage
                 CloseDb();
             }
         }
-        public void ClearPendingLogState(string channelName) //TODO this could block
+        public async Task ClearPendingLogStateAsync(string channelName) //TODO this could block
         {
-            _mutex.Wait();
+            await _mutex.WaitAsync();
             _pendingDbIdentifierGroups.Clear();
             _pendingDbIdentifiers.Clear();
             _mutex.Release();
@@ -234,7 +233,8 @@ namespace Microsoft.Azure.Mobile.Storage
         }
         private async Task InitializeDatabaseAsync()
         {
-            await OpenDbAsync();
+            //it is assumed that we have mutex already
+            await _dbConnection.OpenAsync();
             try
             {
                 string commandString = $"CREATE TABLE IF NOT EXISTS {Table} ({ChannelColumn} TEXT, {LogColumn} TEXT)";

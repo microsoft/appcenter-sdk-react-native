@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     Task.Run(() => DeleteLogsOnSuspendedAsync());
                     return;
                 }
-                _storage.ClearPendingLogState(Name);
+                Task.Run(() =>_storage.ClearPendingLogStateAsync(Name));
             }
             catch (IngestionException e) //TODO change this exception type
             {
