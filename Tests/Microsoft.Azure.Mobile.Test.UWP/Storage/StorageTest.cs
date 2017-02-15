@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+// ReSharper disable All
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -11,7 +12,6 @@ namespace Microsoft.Azure.Mobile.Test
     public class StorageTest
     {
         const string StorageTestChannelName = "storageTestChannelName";
-        const string IncorrectChannelName = "hello" + StorageTestChannelName;
 
         Storage _storage = new Storage();
 
@@ -177,6 +177,19 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
+        /// Verify that a channel that starts with the name of another channel does not cause problems.
+        /// </summary>
+        [TestMethod]
+        public void GetLogsFromChannelWithSimilarNames()
+        {
+            string fakeChannelName = StorageTestChannelName.Substring(0, StorageTestChannelName.Length - 1);
+            _storage.PutLogAsync(StorageTestChannelName, TestLog.CreateTestLog()).RunNotAsync();
+            List<Log> retrievedLogs = new List<Log>();
+            string batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).RunNotAsync();
+            Assert.IsNull(batchId);
+        }
+       
+        /// <summary>
         /// Verify that storage returns log more than once if pending state is cleared.
         /// </summary>
         [TestMethod]
@@ -211,7 +224,6 @@ namespace Microsoft.Azure.Mobile.Test
             Task.WaitAll(putLogTasks);
             return addedLogs;
         }
-
         #endregion
     }
 }

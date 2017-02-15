@@ -19,11 +19,11 @@ namespace Microsoft.Azure.Mobile.Test
         }
         public static void RunNotAsync(this Task @this)
         {
+            @this.Wait();
             if (@this.IsFaulted)
             {
                 throw @this.Exception;
             }
-            @this.Wait();
         }
     }
 }

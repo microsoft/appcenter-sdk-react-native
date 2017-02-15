@@ -9,7 +9,7 @@
     <Import_RootNamespace>Microsoft.Azure.Mobile.Windows.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CancellationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\CancellationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\Channel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelDelegates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelEventArgs.cs" />
@@ -30,9 +30,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\Storage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
