@@ -28,7 +28,7 @@ data["undefd"] = undefined;
 data["recursive"] = data;
 data["function"] = function () { console.log(arguments);};
 
-class TestApp extends Component {
+export default class TestApp extends Component {
   constructor() {
     super();
     this.state = {
