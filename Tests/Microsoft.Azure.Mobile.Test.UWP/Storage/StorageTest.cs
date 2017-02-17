@@ -1,7 +1,10 @@
-﻿using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+﻿using System.Data.Common;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-// ReSharper disable All
+using HyperMock;
+using Microsoft.Azure.Mobile.Storage;
+using Microsoft.Data.Sqlite;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -12,8 +15,7 @@ namespace Microsoft.Azure.Mobile.Test
     public class StorageTest
     {
         const string StorageTestChannelName = "storageTestChannelName";
-
-        Storage _storage = new Storage();
+        private Storage _storage = new Storage();
 
         [TestInitialize]
         public void InitializeStorageTest()
@@ -208,6 +210,30 @@ namespace Microsoft.Azure.Mobile.Test
 
             CollectionAssert.AreEqual(addedLogs, retrievedLogsFirstTry);
             CollectionAssert.AreEqual(addedLogs, retrievedLogsSecondTry);
+        }
+
+        private class ConcreteDbException : DbException
+        {
+        }
+
+
+        [TestMethod]
+        public void GetLogsError()
+        {
+            Task completedTask = Task.Delay(0);
+            completedTask.Wait();
+            var mockAdapter = Mock.Create<IStorageAdapter>();
+            var logs = new List<Log>();
+            mockAdapter.Setup(adapter => adapter.OpenAsync()).Returns(completedTask);
+            mockAdapter.Setup(adapter => adapter.ExecuteNonQueryAsync(Param.IsAny<DbCommand>())).Returns(completedTask);
+            mockAdapter.Setup(adapter => adapter.ExecuteQueryAsync(Param.IsAny<DbCommand>())).Throws(new ConcreteDbException());
+            /* Return SqliteCommand because DbCommand is abstract */
+            mockAdapter.Setup(adapter => adapter.CreateCommand()).Returns(new SqliteCommand());
+
+            var fakeStorage = new Storage(mockAdapter.Object);
+
+            Assert.ThrowsException<StorageException>(()=>
+                fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
         }
 
         #region Helper methods

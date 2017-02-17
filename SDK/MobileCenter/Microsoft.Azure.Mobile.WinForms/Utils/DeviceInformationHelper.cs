@@ -13,5 +13,7 @@ namespace Microsoft.Azure.Mobile.Utils
         {
             throw new NotImplementedException();
         }
+
+        public event Action InformationInvalidated;
     }
 }

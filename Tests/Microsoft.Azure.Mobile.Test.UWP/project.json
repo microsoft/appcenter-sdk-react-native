@@ -1,6 +1,8 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0"
+    "HyperMock.Universal": "2.0.4",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "System.Data.Common": "4.1.0"
   },
   "frameworks": {
     "uap10.0": {}

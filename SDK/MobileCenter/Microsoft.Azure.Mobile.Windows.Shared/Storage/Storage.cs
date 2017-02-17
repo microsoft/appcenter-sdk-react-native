@@ -22,10 +22,14 @@ namespace Microsoft.Azure.Mobile.Storage
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(0, 1);
         private readonly IStorageAdapter _storageAdapter;
 
-        public Storage()
+        public Storage() : this(new StorageAdapter(Database))
         {
-            _storageAdapter= new StorageAdapter(Database);
-            Task.Run(()=>InitializeDatabaseAsync());
+        }
+
+        public Storage(IStorageAdapter storageAdapter)
+        {
+            _storageAdapter = storageAdapter;
+            Task.Run(() => InitializeDatabaseAsync());
         }
 
         /// <exception cref="StorageException"/>
@@ -191,8 +195,11 @@ namespace Microsoft.Azure.Mobile.Storage
         public async Task ClearPendingLogStateAsync(string channelName)
         {
             await _mutex.WaitAsync();
+            MobileCenterLog.Debug("zander", "acquired");
+
             _pendingDbIdentifierGroups.Clear();
             _pendingDbIdentifiers.Clear();
+            MobileCenterLog.Debug("zander", "releasing");
             _mutex.Release();
         }
 
@@ -318,12 +325,16 @@ namespace Microsoft.Azure.Mobile.Storage
         private async Task OpenDbAsync()
         {
             await _mutex.WaitAsync();
+            MobileCenterLog.Debug("zander", "acquired");
+
             await _storageAdapter.OpenAsync();
         }
 
         private void CloseDb()
         {
             _storageAdapter.Close();
+            MobileCenterLog.Debug("zander", "releasing");
+
             _mutex.Release();
         }
 
