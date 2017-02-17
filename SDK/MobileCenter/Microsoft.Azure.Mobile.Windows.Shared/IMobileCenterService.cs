@@ -10,8 +10,6 @@ namespace Microsoft.Azure.Mobile
     public interface IMobileCenterService
     {
         bool InstanceEnabled { get; set; }
-        void OnChannelGroupReady(ChannelGroup channelGroup); //TODO or should this be IChannel?
-
-        //TODO application lifecycle
+        void OnChannelGroupReady(ChannelGroup channelGroup);
     }
 }

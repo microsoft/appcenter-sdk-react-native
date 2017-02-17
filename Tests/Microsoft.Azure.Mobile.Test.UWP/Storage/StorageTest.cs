@@ -1,10 +1,8 @@
-﻿using System.Data.Common;
+﻿using System.Runtime.InteropServices.ComTypes;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using HyperMock;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Data.Sqlite;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -15,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Test
     public class StorageTest
     {
         const string StorageTestChannelName = "storageTestChannelName";
-        private Storage _storage = new Storage();
+        private readonly Storage _storage = new Storage();
 
         [TestInitialize]
         public void InitializeStorageTest()
@@ -51,9 +49,9 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void PutOneLog()
         {
-            TestLog addedLog = TestLog.CreateTestLog();
+            var addedLog = TestLog.CreateTestLog();
             _storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
-            List<Log> retrievedLogs = new List<Log>();
+            var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0];
             Assert.AreEqual(addedLog, retrievedLog);
@@ -67,7 +65,7 @@ namespace Microsoft.Azure.Mobile.Test
         {
             PutNLogs(5);
             _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
-            int count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(0, count);
         }
 
@@ -77,13 +75,13 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void DeleteLogsWithBatchId()
         {
-            int numLogsToAdd = 5;
-            int limit = 3;
+            var numLogsToAdd = 5;
+            var limit = 3;
             var addedLogs = PutNLogs(numLogsToAdd);
-            List<Log> retrievedLogs = new List<Log>();
-            string batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            var retrievedLogs = new List<Log>();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
             _storage.DeleteLogsAsync(StorageTestChannelName, batchId).RunNotAsync();
-            int numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(numLogsToAdd - retrievedLogs.Count, numLogsRemaining);
         }
 
@@ -93,10 +91,10 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetLogsExactLimit()
         {
-            int numLogsToAdd = 5;
-            int limit = numLogsToAdd;
+            var numLogsToAdd = 5;
+            var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
-            List<Log> retrievedLogs = new List<Log>();
+            var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogs);
         }
@@ -107,8 +105,8 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetLogsLowLimit()
         {
-            int numLogsToAdd = 5;
-            int limit = 3;
+            var numLogsToAdd = 5;
+            var limit = 3;
             var addedLogs = PutNLogs(numLogsToAdd);
             List<Log> retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
@@ -122,10 +120,10 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetLogsHighLimit()
         {
-            int numLogsToAdd = 5;
-            int limit = 7;
+            var numLogsToAdd = 5;
+            var limit = 7;
             var addedLogs = PutNLogs(numLogsToAdd);
-            List<Log> retrievedLogs = new List<Log>();
+            var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
             CollectionAssert.AreEqual(retrievedLogs, addedLogs);
         }
@@ -136,8 +134,8 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetLogsHasBatchId()
         {
-            int numLogsToAdd = 5;
-            int limit = numLogsToAdd;
+            var numLogsToAdd = 5;
+            var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             List<Log> retrievedLogs = new List<Log>();
             string batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
@@ -150,11 +148,11 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetNoLogsHasNoBatchId()
         {
-            int numLogsToAdd = 0;
-            int limit = numLogsToAdd;
+            var numLogsToAdd = 0;
+            var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
-            List<Log> retrievedLogs = new List<Log>();
-            string batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            var retrievedLogs = new List<Log>();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
             Assert.IsNull(batchId);
         }
 
@@ -164,15 +162,14 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetDuplicateLogs()
         {
-            int numLogsToAdd = 5;
-            int limit = numLogsToAdd;
+            var numLogsToAdd = 5;
+            var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
+            var retrievedLogsFirstTry = new List<Log>();
+            var retrievedLogsSecondTry = new List<Log>();
 
-            List<Log> retrievedLogsFirstTry = new List<Log>();
-            List<Log> retrievedLogsSecondTry = new List<Log>();
-
-            string batchIdFirst = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
-            string batchIdSecond = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
 
             CollectionAssert.AreEqual(addedLogs, retrievedLogsFirstTry);
             Assert.AreEqual(0, retrievedLogsSecondTry.Count);
@@ -184,10 +181,10 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetLogsFromChannelWithSimilarNames()
         {
-            string fakeChannelName = StorageTestChannelName.Substring(0, StorageTestChannelName.Length - 1);
+            var fakeChannelName = StorageTestChannelName.Substring(0, StorageTestChannelName.Length - 1);
             _storage.PutLogAsync(StorageTestChannelName, TestLog.CreateTestLog()).RunNotAsync();
-            List<Log> retrievedLogs = new List<Log>();
-            string batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).RunNotAsync();
+            var retrievedLogs = new List<Log>();
+            var batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).RunNotAsync();
             Assert.IsNull(batchId);
         }
        
@@ -197,12 +194,12 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void ClearPendingState()
         {
-            int numLogsToAdd = 5;
-            int limit = numLogsToAdd;
+            var numLogsToAdd = 5;
+            var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
 
-            List<Log> retrievedLogsFirstTry = new List<Log>();
-            List<Log> retrievedLogsSecondTry = new List<Log>();
+            var retrievedLogsFirstTry = new List<Log>();
+            var retrievedLogsSecondTry = new List<Log>();
 
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
             _storage.ClearPendingLogStateAsync(StorageTestChannelName).RunNotAsync();
@@ -212,28 +209,37 @@ namespace Microsoft.Azure.Mobile.Test
             CollectionAssert.AreEqual(addedLogs, retrievedLogsSecondTry);
         }
 
-        private class ConcreteDbException : DbException
-        {
-        }
-
-
+        /// <summary>
+        /// Verify that an invalid log in the database, when retrieved, is deleted and no logs are returned.
+        /// </summary>
         [TestMethod]
-        public void GetLogsError()
+        public void FailToGetALog()
         {
-            Task completedTask = Task.Delay(0);
-            completedTask.Wait();
-            var mockAdapter = Mock.Create<IStorageAdapter>();
+            StorageAdapter storageAdapter = new StorageAdapter("Microsoft.Azure.Mobile.Storage");
+            storageAdapter.OpenAsync().RunNotAsync();
+            var command = storageAdapter.CreateCommand();
+            var logJsonString = "'this is not a valid log json string'";
+            var channelParameter = command.CreateParameter();
+            channelParameter.ParameterName = "channelName";
+            channelParameter.Value = StorageTestChannelName;
+            var logParameter = command.CreateParameter();
+            logParameter.ParameterName = "log";
+            logParameter.Value = logJsonString;
+            command.Parameters.Add(channelParameter);
+            command.Parameters.Add(logParameter);
+            command.CommandText = "INSERT INTO logs (channel, log) " +
+                                  $"VALUES (@{channelParameter.ParameterName}, @{logParameter.ParameterName})";
+            command.Prepare();
+            command.ExecuteNonQuery();
+            storageAdapter.Close();
             var logs = new List<Log>();
-            mockAdapter.Setup(adapter => adapter.OpenAsync()).Returns(completedTask);
-            mockAdapter.Setup(adapter => adapter.ExecuteNonQueryAsync(Param.IsAny<DbCommand>())).Returns(completedTask);
-            mockAdapter.Setup(adapter => adapter.ExecuteQueryAsync(Param.IsAny<DbCommand>())).Throws(new ConcreteDbException());
-            /* Return SqliteCommand because DbCommand is abstract */
-            mockAdapter.Setup(adapter => adapter.CreateCommand()).Returns(new SqliteCommand());
 
-            var fakeStorage = new Storage(mockAdapter.Object);
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, 4, logs).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
 
-            Assert.ThrowsException<StorageException>(()=>
-                fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
+            Assert.IsNull(batchId);
+            Assert.AreEqual(0, logs.Count);
+            Assert.AreEqual(0, count);
         }
 
         #region Helper methods

@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 Task.Run(() =>_storage.ClearPendingLogStateAsync(Name));
             }
-            catch (IngestionException e) //TODO change this exception type
+            catch (IngestionException e)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
             }
@@ -378,15 +378,16 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 await _storage.DeleteLogsAsync(Name, batchId);
             }
-            catch (StorageException)
+            catch (StorageException e)
             {
-                //TODO do something here. log message. return or contiue?
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
             }
             await _mutex.WaitAsync();
             if (_currentState != stateSnapshot)
             {
                 return;
             }
+            //TODO if there was a sending failure then will this part be incorrect?
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
             if (SentLog != null)

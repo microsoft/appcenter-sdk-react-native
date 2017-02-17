@@ -9,11 +9,11 @@ using System;
 
 namespace Microsoft.Azure.Mobile.Ingestion
 {
-    public partial interface IIngestion
+    public interface IIngestion
     {
         Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken));
         void Close();
-        void SetServerUrl(string serverUrl); //TODO should this be a property?
+        void SetServerUrl(string serverUrl);
     }
 }
 

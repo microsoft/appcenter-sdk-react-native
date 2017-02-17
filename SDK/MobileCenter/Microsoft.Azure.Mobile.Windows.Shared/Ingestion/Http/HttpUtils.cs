@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             var httpException = exception.InnerException as HttpOperationException;
             if (httpException == null)
             {
-                return false;//TODO what about other recoverable exceptiont that aren't of this type?
+                return false;//TODO what about other recoverable exceptions that aren't of this type?
             }
             var statusCode = (int)httpException.Response.StatusCode;
             return statusCode >= 501 || statusCode == 408 || statusCode == 429 || statusCode == 401;
