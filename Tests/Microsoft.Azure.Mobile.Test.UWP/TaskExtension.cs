@@ -10,19 +10,25 @@ namespace Microsoft.Azure.Mobile.Test
     {
         public static T RunNotAsync<T>(this Task<T> @this)
         {
-            @this.Wait();
-            if (@this.IsFaulted)
+            try
             {
-                throw @this.Exception;
+                @this.Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
             }
             return @this.Result;
         }
         public static void RunNotAsync(this Task @this)
         {
-            @this.Wait();
-            if (@this.IsFaulted)
+            try
             {
-                throw @this.Exception;
+                @this.Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
             }
         }
     }

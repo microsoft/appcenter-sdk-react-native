@@ -15,16 +15,17 @@ namespace Microsoft.Azure.Mobile.Storage
         private const string Table = "logs";
         private const string ChannelColumn = "channel";
         private const string LogColumn = "log";
+        private const string RowIdColumn = "rowid";
         private const string DbIdentifierDelimiter = "@";
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(0, 1);
-        private readonly SqliteConnection _dbConnection;
+        private readonly IStorageAdapter _storageAdapter;
 
         public Storage()
         {
-            _dbConnection = new SqliteConnection($"DATA SOURCE={Database}");
-            Task.Run(InitializeDatabaseAsync);
+            _storageAdapter= new StorageAdapter(Database);
+            Task.Run(()=>InitializeDatabaseAsync());
         }
 
         /// <exception cref="StorageException"/>
@@ -34,16 +35,21 @@ namespace Microsoft.Azure.Mobile.Storage
             try
             {
                 var logJsonString = LogSerializer.Serialize(log);
-                var command = _dbConnection.CreateCommand();
-                var channelParameter = new SqliteParameter("channelName", channelName);
-                var logParameter = new SqliteParameter("log", logJsonString);
+                var command = _storageAdapter.CreateCommand();
+                var channelParameter = command.CreateParameter();
+                channelParameter.ParameterName = "channelName";
+                channelParameter.Value = channelName;
+                var logParameter = command.CreateParameter();
+                logParameter.ParameterName = "log";
+                logParameter.Value = logJsonString;
                 command.Parameters.Add(channelParameter);
                 command.Parameters.Add(logParameter);
-                command.CommandText = $"INSERT INTO {Table} ({ChannelColumn}, {LogColumn}) VALUES (@{channelParameter.ParameterName}, @{logParameter.ParameterName})";
+                command.CommandText = $"INSERT INTO {Table} ({ChannelColumn}, {LogColumn}) " +
+                                      $"VALUES (@{channelParameter.ParameterName}, @{logParameter.ParameterName})";
                 command.Prepare();
-                command.ExecuteNonQuery();
+                await _storageAdapter.ExecuteNonQueryAsync(command);
             }
-            catch (SqliteException e)
+            catch (DbException e)
             {
                 throw new StorageException(e);
             }
@@ -103,8 +109,10 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     _pendingDbIdentifierGroups.Remove(fullIdentifier);
                 }
-                var command = _dbConnection.CreateCommand();
-                var channelParameter = new SqliteParameter("channel", channelName);
+                var command = _storageAdapter.CreateCommand();
+                var channelParameter = command.CreateParameter();
+                channelParameter.ParameterName = "channelName";
+                channelParameter.Value = channelName;
                 command.Parameters.Add(channelParameter);
                 command.CommandText = $"DELETE FROM {Table} WHERE {ChannelColumn}=@{channelParameter.ParameterName}";
                 command.Prepare();
@@ -124,14 +132,16 @@ namespace Microsoft.Azure.Mobile.Storage
         private async Task DeleteLogAsync(string channelName, long rowId)
         {
             /* We should have an open connection already */
-            var command = new SqliteCommand(null, _dbConnection);
-            var idParameter = new SqliteParameter("id", rowId);
-            command.CommandText = $"DELETE FROM {Table} WHERE ROWID=@{idParameter.ParameterName}";
+            var command = _storageAdapter.CreateCommand();
+            var idParameter = command.CreateParameter();
+            idParameter.ParameterName = "id";
+            idParameter.Value = rowId;
             command.Parameters.Add(idParameter);
+            command.CommandText = $"DELETE FROM {Table} WHERE {RowIdColumn}=@{idParameter.ParameterName}";
             command.Prepare();
             try
             {
-                await command.ExecuteNonQueryAsync();
+                await _storageAdapter.ExecuteNonQueryAsync(command);
             }
             catch (DbException e)
             {
@@ -143,26 +153,34 @@ namespace Microsoft.Azure.Mobile.Storage
         public async Task<int> CountLogsAsync(string channelName)
         {
             await OpenDbAsync();
+            const string errorMessage = "Error counting logs";
             try
             {
-                var command = _dbConnection.CreateCommand();
+                var countResultName = "NumberOfLogs";
+                var command = _storageAdapter.CreateCommand();
                 var channelParameter = new SqliteParameter("channel", channelName);
                 command.Parameters.Add(channelParameter);
                 command.CommandText =
-                    $"SELECT COUNT(*) FROM {Table} WHERE {ChannelColumn}=@{channelParameter.ParameterName}";
+                    $"SELECT COUNT(*) AS {countResultName} FROM {Table} WHERE {ChannelColumn}=@{channelParameter.ParameterName}";
                 command.Prepare();
-                using (var reader = await command.ExecuteReaderAsync())
-                {
-                    if (await reader.ReadAsync())
-                    {
-                        return reader.GetInt32(0);
-                    }
-                }
-                throw new StorageException("Error counting logs");
+                var results = await _storageAdapter.ExecuteQueryAsync(command);
+                return Convert.ToInt32(results[0][countResultName]);
             }
             catch (DbException e)
             {
-                throw new StorageException("Error counting logs", e);
+                throw new StorageException(errorMessage, e);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw new StorageException(errorMessage, e);
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new StorageException(errorMessage, e);
+            }
+            catch (InvalidCastException e)
+            {
+                throw new StorageException(errorMessage, e);
             }
             finally
             {
@@ -188,13 +206,17 @@ namespace Microsoft.Azure.Mobile.Storage
             try
             {
                 /* Create the query */
-                var command = new SqliteCommand(null, _dbConnection);
-                var channelParameter = new SqliteParameter("channel", channelName);
-                var limitParameter = new SqliteParameter("limit", limit);
+                var command = _storageAdapter.CreateCommand();
+                var channelParameter = command.CreateParameter();
+                channelParameter.ParameterName = "channelName";
+                channelParameter.Value = channelName;
+                var limitParameter = command.CreateParameter();
+                limitParameter.ParameterName = "limit";
+                limitParameter.Value = limit;
                 command.Parameters.Add(channelParameter);
                 command.Parameters.Add(limitParameter);
                 command.CommandText =
-                    $"SELECT ROWID,* FROM {Table} " +
+                    $"SELECT {RowIdColumn},* FROM {Table} " +
                     $"WHERE {ChannelColumn}=@{channelParameter.ParameterName} " +
                     $"LIMIT @{limitParameter.ParameterName}";
                 command.Prepare();
@@ -240,32 +262,30 @@ namespace Microsoft.Azure.Mobile.Storage
         }
 
         /// <exception cref="StorageException"/>
-        private async Task RetrieveLogsAsync(SqliteCommand command, string channelName, ICollection<Log> retrievedLogs,
+        private async Task RetrieveLogsAsync(DbCommand command, string channelName, ICollection<Log> retrievedLogs,
             ICollection<Tuple<Guid?, long>> idPairs)
         {
             var failedToDeserializeALog = false;
-            using (var reader = await command.ExecuteReaderAsync())
+            var retrievedRows = await _storageAdapter.ExecuteQueryAsync(command);
+            foreach (var row in retrievedRows)
             {
-                while (await reader.ReadAsync())
+                var logJson = row[LogColumn] as string;
+                var logId = Convert.ToInt64(row[RowIdColumn]);
+                if (_pendingDbIdentifiers.Contains(logId))
                 {
-                    var logJson = reader[LogColumn] as string;
-                    var logId = reader.GetInt64(0);
-                    if (_pendingDbIdentifiers.Contains(logId))
-                    {
-                        continue;
-                    }
-                    try
-                    {
-                        var log = LogSerializer.DeserializeLog(logJson);
-                        retrievedLogs.Add(log);
-                        idPairs.Add(Tuple.Create(log.Sid, logId));
-                    }
-                    catch (JsonSerializationException e)
-                    {
-                        MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in the database", e);
-                        failedToDeserializeALog = true;
-                        await DeleteLogAsync(channelName, logId);
-                    }
+                    continue;
+                }
+                try
+                {
+                    var log = LogSerializer.DeserializeLog(logJson);
+                    retrievedLogs.Add(log);
+                    idPairs.Add(Tuple.Create(log.Sid, logId));
+                }
+                catch (JsonSerializationException e)
+                {
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in the database", e);
+                    failedToDeserializeALog = true;
+                    await DeleteLogAsync(channelName, logId);
                 }
             }
             if (failedToDeserializeALog)
@@ -277,16 +297,17 @@ namespace Microsoft.Azure.Mobile.Storage
         private async Task InitializeDatabaseAsync()
         {
             /* The mutex should already be owned */
-            await _dbConnection.OpenAsync();
+            await _storageAdapter.OpenAsync();
             try
             {
-                string commandString = $"CREATE TABLE IF NOT EXISTS {Table} ({ChannelColumn} TEXT, {LogColumn} TEXT)";
-                var command = new SqliteCommand(commandString, _dbConnection);
-                await command.ExecuteNonQueryAsync();
+                var command = _storageAdapter.CreateCommand();
+                command.CommandText = $"CREATE TABLE IF NOT EXISTS {Table} ({ChannelColumn} TEXT, {LogColumn} TEXT)";
+                await _storageAdapter.ExecuteNonQueryAsync(command);
             }
             catch (DbException e)
             {
-                throw new StorageException("Error initializing storage", e);
+                var storageException = new StorageException("Failed to initialize storage", e);
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "An error occurred in storage", storageException);
             }
             finally
             {
@@ -297,12 +318,12 @@ namespace Microsoft.Azure.Mobile.Storage
         private async Task OpenDbAsync()
         {
             await _mutex.WaitAsync();
-            await _dbConnection.OpenAsync();
+            await _storageAdapter.OpenAsync();
         }
 
         private void CloseDb()
         {
-            _dbConnection.Close();
+            _storageAdapter.Close();
             _mutex.Release();
         }
 

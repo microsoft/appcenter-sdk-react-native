@@ -34,7 +34,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\Storage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
