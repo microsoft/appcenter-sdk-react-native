@@ -100,6 +100,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     }
                     else
                     {
+                        //TODO have lock
                         Suspend(true, new CancellationException());
                     }
                 }
@@ -223,39 +224,34 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private void Suspend(bool deleteLogs, Exception exception)
         {
-            _mutex.Wait();
-            try
+            _enabled = false;
+            _discardLogs = deleteLogs;
+            _currentState++;
+            if (deleteLogs && FailedToSendLog != null)
             {
-                _enabled = false;
-                _discardLogs = deleteLogs;
-                _currentState++;
-                if (deleteLogs && FailedToSendLog != null)
+                foreach (var batch in _sendingBatches.Values)
                 {
-                    foreach (var batch in _sendingBatches.Values)
+                    foreach (var log in batch)
                     {
-                        foreach (var log in batch)
-                        {
-                            FailedToSendLog(this, new FailedToSendLogEventArgs(log, exception));
-                        }
+                        FailedToSendLog(this, new FailedToSendLogEventArgs(log, exception));
                     }
                 }
+            }
+            try
+            {
                 _ingestion.Close();
-                if (deleteLogs)
-                {
-                    _pendingLogCount = 0;
-                    Task.Run(() => DeleteLogsOnSuspendedAsync());
-                    return;
-                }
-                Task.Run(() =>_storage.ClearPendingLogStateAsync(Name));
             }
             catch (IngestionException e)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
             }
-            finally
+            if (deleteLogs)
             {
-                _mutex.Release();
+                _pendingLogCount = 0;
+                Task.Run(() => DeleteLogsOnSuspendedAsync());
+                return;
             }
+            Task.Run(() => _storage.ClearPendingLogStateAsync(Name));
         }
 
         private async Task DeleteLogsOnSuspendedAsync()
@@ -447,7 +443,15 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void Shutdown()
         {
-            Suspend(false, new CancellationException());
+            _mutex.Wait();
+            try
+            {
+                Suspend(false, new CancellationException());
+            }
+            finally
+            {
+                _mutex.Release();
+            }
         }
     }
 }

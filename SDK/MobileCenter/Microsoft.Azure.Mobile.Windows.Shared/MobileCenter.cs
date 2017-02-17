@@ -9,17 +9,17 @@ using System.Threading;
 namespace Microsoft.Azure.Mobile
 {
     /// <summary>
-    ///     SDK core used to initialize, start and control specific service.
+    /// SDK core used to initialize, start and control specific service.
     /// </summary>
     public partial class MobileCenter
     {
         private const string EnabledKey = "MobileCenterEnabled";
         private ChannelGroup _channelGroup;
-        private HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
+        private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
         private bool _configured = false;
         private string _serverUrl;
-        private static object _mobileCenterLock = new object();
-        private static IApplicationSettings _applicationSettings = new ApplicationSettings();
+        private readonly static object MobileCenterLock = new object();
+        private readonly static IApplicationSettings ApplicationSettings = new ApplicationSettings();
 
         #region static
 
@@ -29,20 +29,16 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                lock (_mobileCenterLock)
+                lock (MobileCenterLock)
                 {
-                    if (_instanceField == null)
-                    {
-                        _instanceField = new MobileCenter();
-                    }
-                    return _instanceField;
+                    return _instanceField ?? (_instanceField = new MobileCenter());
                 }
             }
             set
             {
-                lock (_mobileCenterLock)
+                lock (MobileCenterLock)
                 {
-                    _instanceField = value; //for testing
+                    _instanceField = value;
                 }
             }
         }
@@ -73,14 +69,14 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                lock (_mobileCenterLock)
+                lock (MobileCenterLock)
                 {
                     return Instance.InstanceEnabled;
                 }
             }
             set
             {
-                lock (_mobileCenterLock)
+                lock (MobileCenterLock)
                 {
                     Instance.InstanceEnabled = value;
                 }
@@ -101,7 +97,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="serverUrl">Base URL to use for server communication.</param>
         public static void SetServerUrl(string serverUrl)
         {
-            lock (_mobileCenterLock)
+            lock (MobileCenterLock)
             {
                 Instance.SetInstanceServerUrl(serverUrl);
             }
@@ -114,7 +110,7 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                lock (_mobileCenterLock)
+                lock (MobileCenterLock)
                 {
                     return Instance.InstanceConfigured;
                 }
@@ -128,7 +124,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="appSecret">A unique and secret key used to identify the application.</param>
         public static void Configure(string appSecret)
         {
-            lock (_mobileCenterLock)
+            lock (MobileCenterLock)
             {
                 Instance.InstanceConfigure(appSecret);
             }
@@ -141,7 +137,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="services">List of services to use.</param>
         public static void Start(params Type[] services)
         {
-            lock (_mobileCenterLock)
+            lock (MobileCenterLock)
             {
                 Instance.StartInstance(services);
             }
@@ -155,7 +151,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="services">List of services to use.</param>
         public static void Start(string appSecret, params Type[] services)
         {
-            lock (_mobileCenterLock)
+            lock (MobileCenterLock)
             {
                 Instance.StartInstance(appSecret, services);
             }
@@ -170,7 +166,7 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                return _applicationSettings.GetValue(EnabledKey, defaultValue: true);
+                return ApplicationSettings.GetValue(EnabledKey, true);
             }
             set
             {
@@ -181,7 +177,7 @@ namespace Microsoft.Azure.Mobile
                 bool previouslyEnabled = InstanceEnabled;
                 bool switchToDisabled = previouslyEnabled && !value;
                 bool switchToEnabled = !previouslyEnabled && value;
-                _applicationSettings[EnabledKey] = value;
+                ApplicationSettings[EnabledKey] = value;
 
                 /* TODO register/unregister lifecycle callbacks? */
 
@@ -221,14 +217,13 @@ namespace Microsoft.Azure.Mobile
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center may only be configured once");
             }
-            else if (appSecret == null || appSecret == "")
+            else if (string.IsNullOrEmpty(appSecret))
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "appSecret may not be null or empty");
             }
             else
             {
-                _channelGroup = new ChannelGroup(appSecret);
-                _channelGroup.Enabled = InstanceEnabled;
+                _channelGroup = new ChannelGroup(appSecret) {Enabled = InstanceEnabled};
                 if (_serverUrl != null)
                 {
                     _channelGroup.SetServerUrl(_serverUrl);
@@ -272,7 +267,7 @@ namespace Microsoft.Azure.Mobile
                     IMobileCenterService serviceInstance = (IMobileCenterService)serviceType.GetRuntimeProperty("Instance").GetValue(null);
                     StartService(serviceInstance);
                 }
-                catch (Exception ex)
+                catch (Exception ex) //TODO make this more specific
                 {
                     MobileCenterLog.Error(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", ex);
                 }
@@ -287,6 +282,7 @@ namespace Microsoft.Azure.Mobile
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started a service of type '{service.GetType().Name}'.");
                 return;
             }
+            _services.Add(service);
             service.OnChannelGroupReady(_channelGroup);
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
