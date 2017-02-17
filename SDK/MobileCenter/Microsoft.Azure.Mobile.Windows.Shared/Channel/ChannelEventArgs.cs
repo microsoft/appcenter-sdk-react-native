@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Mobile.Channel
 {
     public abstract class ChannelEventArgs : EventArgs
     {
-        public ChannelEventArgs(Log log)
+        protected ChannelEventArgs(Log log)
         {
             Log = log;
         }

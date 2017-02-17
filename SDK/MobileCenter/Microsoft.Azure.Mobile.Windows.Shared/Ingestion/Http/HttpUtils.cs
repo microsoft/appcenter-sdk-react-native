@@ -8,16 +8,16 @@ using System.Net;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public static class HttpUtils
+    internal static class HttpUtils
     {
-        public static bool IsRecoverableError(Exception exception)
+        internal static bool IsRecoverableError(IngestionException exception)
         {
-            var httpException = exception as HttpOperationException;
+            var httpException = exception.InnerException as HttpOperationException;
             if (httpException == null)
             {
                 return false;//TODO what about other recoverable exceptiont that aren't of this type?
             }
-            int statusCode = (int)httpException.Response.StatusCode;
+            var statusCode = (int)httpException.Response.StatusCode;
             return statusCode >= 501 || statusCode == 408 || statusCode == 429 || statusCode == 401;
         }
     }

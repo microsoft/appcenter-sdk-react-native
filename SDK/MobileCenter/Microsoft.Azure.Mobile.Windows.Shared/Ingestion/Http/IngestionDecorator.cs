@@ -10,26 +10,26 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public abstract class IngestionDecorator : IIngestion
     {
-        protected IIngestion _decoratedApi { get; private set; }
+        protected IIngestion DecoratedApi { get; }
 
-        public IngestionDecorator(IIngestion decoratedApi)
+        protected IngestionDecorator(IIngestion decoratedApi)
         {
-            _decoratedApi = decoratedApi;
+            DecoratedApi = decoratedApi;
         }
 
         public virtual void Close()
         {
-            _decoratedApi.Close();
+            DecoratedApi.Close();
         }
 
         public virtual async Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _decoratedApi.SendLogsAsync(appSecret, installId, logs);
+            await DecoratedApi.SendLogsAsync(appSecret, installId, logs, cancellationToken);
         }
 
         public virtual void SetServerUrl(string serverUrl)
         {
-            _decoratedApi.SetServerUrl(serverUrl);
+            DecoratedApi.SetServerUrl(serverUrl);
         }
     }
 }

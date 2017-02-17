@@ -13,15 +13,14 @@ namespace Microsoft.Azure.Mobile.Channel
 {
     public class ChannelGroup : IChannel
     {
-        private Dictionary<string, Channel> _channels = new Dictionary<string, Channel>();
-        private const long ShutdownTimeout = 5000;
-        private IIngestion _ingestion;
-        private IStorage _storage;
-        private string _appSecret;
+        private readonly Dictionary<string, Channel> _channels = new Dictionary<string, Channel>();
+        //private const long ShutdownTimeout = 5000;
+        private readonly IIngestion _ingestion;
+        private readonly IStorage _storage;
+        private readonly string _appSecret;
         private Guid _installId;
         private bool _enabled;
-        private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private DeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
+        private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
@@ -49,9 +48,9 @@ namespace Microsoft.Azure.Mobile.Channel
         public void AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
             _mutex.Wait();
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, "AddChannel(" + name + ")");
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
             //TODO error handling
-            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret, _installId, _ingestion, _storage, _deviceInfoHelper);
+            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret, _installId, _ingestion, _storage);
             newChannel.EnqueuingLog += AnyChannelEnqueuingLog;
             newChannel.SendingLog += AnyChannelSendingLog;
             newChannel.SentLog += AnyChannelSentLog;

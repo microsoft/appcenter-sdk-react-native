@@ -18,19 +18,18 @@ namespace Microsoft.Azure.Mobile.Channel
     public class Channel : IChannel
     {
         private const int ClearBatchSize = 100;
-
         private Ingestion.Models.Device _device;
-        private string _appSecret;
-        private Guid _installId;
+        private readonly string _appSecret;
+        private readonly Guid _installId;
 
-        private IStorage _storage;
-        private IIngestion _ingestion;
-        private IDeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
-        private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
+        private readonly IStorage _storage;
+        private readonly IIngestion _ingestion;
+        private readonly IDeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
+        private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+        private readonly Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
 
-        private int _maxParallelBatches;
-        private int _maxLogsPerBatch;
+        private readonly int _maxParallelBatches;
+        private readonly int _maxLogsPerBatch;
 
         private long _pendingLogCount;
         private bool _enabled;
@@ -39,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
         //TODO investigate changing use of state snapshots to leverage cancellation tokens
-        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage, DeviceInformationHelper deviceInfoHelper)
+        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
         {
             Name = name;
             _maxParallelBatches = maxParallelBatches;
@@ -51,7 +50,6 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchTimeInterval = batchTimeInterval;
             _batchScheduled = false;
             _enabled = true;
-            _deviceInfoHelper = deviceInfoHelper;
             _deviceInfoHelper.InformationInvalidated += () => InvalidateDeviceCache();
             Task.Factory.StartNew(()=>CountFromDiskAsync());
         }
@@ -112,7 +110,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public string Name { private set; get; }
+        public string Name { get; }
 
         #region Events
         public event EnqueuingLogEventHandler EnqueuingLog;
@@ -174,7 +172,7 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 await _storage.PutLogAsync(Name, log);
             }
-            catch (Exception e)
+            catch (StorageException e)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Error persisting log", e);
                 return;
@@ -212,7 +210,7 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             int stateSnapshot = _currentState;
 
-            _storage.DeleteLogsAsync(Name).ContinueWith((completedTask) =>
+            _storage.DeleteLogsAsync(Name).ContinueWith(completedTask =>
             {
                 _mutex.Wait();
                 if (stateSnapshot == _currentState)
@@ -233,9 +231,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 _currentState++;
                 if (deleteLogs && FailedToSendLog != null)
                 {
-                    foreach (List<Log> batch in _sendingBatches.Values)
+                    foreach (var batch in _sendingBatches.Values)
                     {
-                        foreach (Log log in batch)
+                        foreach (var log in batch)
                         {
                             FailedToSendLog(this, new FailedToSendLogEventArgs(log, exception));
                         }
@@ -267,17 +265,20 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 if (SendingLog != null || FailedToSendLog != null)
                 {
-                    int stateSnapshot = _currentState;
+                    var stateSnapshot = _currentState;
                     await SignalDeletingLogs(stateSnapshot);
                 }
-                _mutex.Release();
-                await _storage.DeleteLogsAsync(Name); //TODO if this throws an exception we will catch it and then try to release the mutex that we don't own
             }
-            catch
+            catch (StorageException)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to invoke events for logs being deleted.");
+                return;
+            }
+            finally
             {
                 _mutex.Release();
-                throw;
             }
+            await _storage.DeleteLogsAsync(Name);
         }
 
         private async Task SignalDeletingLogs(int stateSnapshot)
@@ -288,16 +289,17 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             var logs = new List<Log>();
             _mutex.Release();
-            //TODO put a try-catch?
-            string batchId = await _storage.GetLogsAsync(Name, ClearBatchSize, logs);
+
+            await _storage.GetLogsAsync(Name, ClearBatchSize, logs);
+
             await _mutex.WaitAsync();
 
-            if (stateSnapshot != _currentState) //TODO what if batchid == null?
+            if (stateSnapshot != _currentState)
             {
                 return;
             }
 
-            foreach (Log log in logs)
+            foreach (var log in logs)
             {
                 SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                 FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
@@ -327,9 +329,9 @@ namespace Microsoft.Azure.Mobile.Channel
 
                 /* Get a batch from storage */
                 var logs = new List<Log>();
-                int stateSnapshot = _currentState;
+                var stateSnapshot = _currentState;
                 _mutex.Release();
-                string batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs); //TODO if this throws we will delete an unowned mutex
+                var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs); //TODO if this throws we will delete an unowned mutex
                 await _mutex.WaitAsync();
                 if (batchId != null && stateSnapshot == _currentState)
                 {
@@ -349,7 +351,7 @@ namespace Microsoft.Azure.Mobile.Channel
             /* Before sending logs, trigger the sending event for this channel */
             if (SendingLog != null)
             {
-                foreach (Log log in logs)
+                foreach (var log in logs)
                 {
                     var eventArgs = new SendingLogEventArgs(log);
                     SendingLog(this, eventArgs);
@@ -361,7 +363,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 await _ingestion.SendLogsAsync(_appSecret, _installId, logs);
                 await _mutex.WaitAsync();
             }
-            catch (Exception e) //TODO this is not the right type to catch; should be more broad. Probably need to wrap expected exceptions into a type for ingestion
+            catch (IngestionException e)
             {
                 await _mutex.WaitAsync();
                 HandleSendingFailure(batchId, e);
@@ -372,7 +374,14 @@ namespace Microsoft.Azure.Mobile.Channel
                 return;
             }
             _mutex.Release();
-            await _storage.DeleteLogsAsync(Name, batchId);
+            try
+            {
+                await _storage.DeleteLogsAsync(Name, batchId);
+            }
+            catch (StorageException)
+            {
+                //TODO do something here. log message. return or contiue?
+            }
             await _mutex.WaitAsync();
             if (_currentState != stateSnapshot)
             {
@@ -390,12 +399,12 @@ namespace Microsoft.Azure.Mobile.Channel
             CheckPendingLogs();
         }
 
-        private void HandleSendingFailure(string batchId, Exception e)
+        private void HandleSendingFailure(string batchId, IngestionException e)
         {
-            MobileCenterLog.Error(MobileCenterLog.LogTag, "Sending logs for channel '" + Name + "', batch '" + batchId + "' failed", e);
+            MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed", e);
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
-            bool recoverableError = HttpUtils.IsRecoverableError(e);
+            var recoverableError = HttpUtils.IsRecoverableError(e);
             if (!recoverableError && FailedToSendLog != null)
             {
                 foreach (var log in removedLogs)
@@ -408,7 +417,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 _pendingLogCount += removedLogs.Count;
             }
-            return;
         }
         private void CheckPendingLogs()
         {
@@ -418,7 +426,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 return;
             }
 
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, "CheckPendingLogs(" + Name + ") pending log count: " + _pendingLogCount);
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");
             if (_pendingLogCount >= _maxLogsPerBatch)
             {
                 Task.Run(() => TriggerIngestionAsync());
@@ -426,7 +434,7 @@ namespace Microsoft.Azure.Mobile.Channel
             else if (_pendingLogCount > 0 && !_batchScheduled)
             {
                 _batchScheduled = true;
-                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith(async (completedTask) =>
+                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith(async completedTask =>
                 {
                     if (_batchScheduled)
                     {

@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionHttp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionNetworkStateHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IIngestion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ILogFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Log.cs" />

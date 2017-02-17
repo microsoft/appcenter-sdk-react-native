@@ -12,8 +12,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public class IngestionNetworkStateHandler : IngestionDecorator
     {
-        private HashSet<ServiceCall> _calls = new HashSet<ServiceCall>();
-        private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+        private readonly HashSet<ServiceCall> _calls = new HashSet<ServiceCall>();
+        private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
         public IngestionNetworkStateHandler(IIngestion decoratedApi) : base(decoratedApi)
         {
@@ -23,12 +23,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private void HandleNetworkAddressChanged(object sender, EventArgs e) //TODO is this right? seems quite strange that this exception isn't going anywhere...maybe at least write a log or something? Perhaps completion events would be more appropriate here
         {
             _mutex.Wait();
-            bool connected = NetworkInterface.GetIsNetworkAvailable();
+            var connected = NetworkInterface.GetIsNetworkAvailable();
             foreach (var call in _calls)
             {
                 if (connected)
                 {
-                    call.RunWithRetriesAsync().ContinueWith((completedTask) =>
+                    call.RunWithRetriesAsync().ContinueWith(completedTask =>
                     {
                         if (completedTask.Exception != null)
                         {
@@ -63,9 +63,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             call?.Cancel();
         }
 
+        ///<exception cref="IngestionException"/>
         public override async Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var call = new ServiceCall(_decoratedApi, logs, appSecret, installId);
+            var call = new ServiceCall(DecoratedApi, logs, appSecret, installId);
             try
             {
                 await _mutex.WaitAsync();
@@ -91,18 +92,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         class ServiceCall
         {
-            private static Random _random = new Random();
-            private static SemaphoreSlim _randomMutex = new SemaphoreSlim(1, 1);
+            private static readonly Random Random = new Random();
+            private static readonly SemaphoreSlim RandomMutex = new SemaphoreSlim(1, 1);
 
-            private IList<Log> _logs;
+            private readonly IList<Log> _logs;
             private CancellationTokenSource _tokenSource;
-            private IIngestion _ingestion;
-            private string _appSecret;
-            private Guid _installId;
-            private int _retryCount = 0;
-            private SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+            private readonly IIngestion _ingestion;
+            private readonly string _appSecret;
+            private readonly Guid _installId;
+            private int _retryCount;
+            private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
-            private TimeSpan[] RetryIntervals = new TimeSpan[] { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20) };
+            private readonly TimeSpan[] _retryIntervals = { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20) };
             public ServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId)
             {
                 _ingestion = ingestion;
@@ -111,6 +112,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 _installId = installId;
             }
 
+            ///<exception cref="IngestionException"/>
             public async Task RunWithRetriesAsync()
             {
                 await _mutex.WaitAsync();
@@ -125,6 +127,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 }
             }
 
+            ///<exception cref="IngestionException"/>
             private async Task RunWithRetriesAsyncHelper()
             {
                 _tokenSource = _tokenSource ?? new CancellationTokenSource();
@@ -134,16 +137,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 }
                 catch (HttpOperationException exception)
                 {
+                    var ingestionException = new IngestionException(exception);
                     await _mutex.WaitAsync();
-                    if (!HttpUtils.IsRecoverableError(exception) || _retryCount >= RetryIntervals.Length)
+                    if (!HttpUtils.IsRecoverableError(ingestionException) || _retryCount >= _retryIntervals.Length)
                     {
                         _mutex.Release();
-                        throw;
+                        throw ingestionException;
                     }
 
-                    int delayMilliseconds = (int)(RetryIntervals[_retryCount++].TotalMilliseconds / 2.0);
-                    delayMilliseconds += await RandomInt(delayMilliseconds);
-                    string message = "Try #" + _retryCount + " failed and will be retried in " + delayMilliseconds + " ms";
+                    var delayMilliseconds = (int)(_retryIntervals[_retryCount++].TotalMilliseconds / 2.0);
+                    delayMilliseconds += await GetRandomIntAsync(delayMilliseconds);
+                    var message = $"Try #{_retryCount} failed and will be retried in {delayMilliseconds} ms";
                     _mutex.Release();
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, message, exception); //TODO unknown host stuff?
                     await Task.Delay(delayMilliseconds);
@@ -152,11 +156,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 }
             }
 
-            private static async Task<int> RandomInt(int max)
+            private static async Task<int> GetRandomIntAsync(int max)
             {
-                await _randomMutex.WaitAsync();
-                int randomInt = _random.Next(max);
-                _randomMutex.Release();
+                await RandomMutex.WaitAsync();
+                var randomInt = Random.Next(max);
+                RandomMutex.Release();
                 return randomInt;
             }
 

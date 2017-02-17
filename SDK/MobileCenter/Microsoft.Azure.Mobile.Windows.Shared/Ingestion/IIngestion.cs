@@ -9,8 +9,6 @@ using System;
 
 namespace Microsoft.Azure.Mobile.Ingestion
 {
-    public class IngestionException : Exception { }
-
     public partial interface IIngestion
     {
         Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken));
