@@ -13,11 +13,11 @@
 
   NPM modules
     mobile-center-crashes/package.json
-    mobile-center-crashes/scripts/postlink.js
+    mobile-center-crashes/scripts/postlink.js (for iOS pod dependencies)
     mobile-center-crashes/android/build.gradle (versionCode, versionName, and dependences at bottom)
 
     mobile-center-analytics/package.json
-    mobile-center-analytics/scripts/postlink.js
+    mobile-center-analytics/scripts/postlink.js (for iOS pod dependencies)
     mobile-center-analytics/android/build.gradle (dependences at bottom)
 
     mobile-center-link-script/package.json
