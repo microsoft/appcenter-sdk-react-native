@@ -43,6 +43,7 @@
 		5419C2561D81FDA300DDF3A1 /* libRNMobileCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenter.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* RNMobileCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenter.m; sourceTree = "<group>"; };
+		BA0D8B051E57C298005C4596 /* Global.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Global.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +78,17 @@
 			children = (
 				5419C2591D81FDA300DDF3A1 /* RNMobileCenter.h */,
 				5419C25B1D81FDA300DDF3A1 /* RNMobileCenter.m */,
+				BA5C22071E57BB7000C4C9A5 /* Support */,
 			);
 			path = RNMobileCenter;
+			sourceTree = "<group>";
+		};
+		BA5C22071E57BB7000C4C9A5 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				BA0D8B051E57C298005C4596 /* Global.xcconfig */,
+			);
+			name = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +205,7 @@
 /* Begin XCBuildConfiguration section */
 		5419C25D1D81FDA300DDF3A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA0D8B051E57C298005C4596 /* Global.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -241,6 +252,7 @@
 		};
 		5419C25E1D81FDA300DDF3A1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA0D8B051E57C298005C4596 /* Global.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
