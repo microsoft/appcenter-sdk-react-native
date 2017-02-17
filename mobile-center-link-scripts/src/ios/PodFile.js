@@ -23,7 +23,16 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
     } else if (version) {
         line = `${line}, '~> ${version}'`;
     }
-    var pattern = this.fileContents.match(/# Pods for .*/)[0];
+    var patterns = this.fileContents.match(/# Pods for .*/);
+    if (patterns === null) {
+        throw new Error(
+    `
+    Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for Mobile Center" line
+    in ${this.file}, inside
+    the "target" section, then rerun the react-native link. Mobile Center pods will be added below the comment.
+    `);
+    }
+    var pattern = patterns[0];
     this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
     debug(`${line} ===> ${this.file}`);
 };
