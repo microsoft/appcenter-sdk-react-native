@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name              = 'RNMobileCenter'
-  s.version           = '0.2.0'
+  s.version           = '0.2.1'
   s.summary           = 'React Native plugin for Mobile Center'
   s.license           = { :type => 'MIT',  :file => 'RNMobileCenter/LICENSE' }
   s.homepage          = 'https://mobile.azure.com'
