@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
@@ -16,15 +17,15 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
         private const long SessionTimeout = 20000;
-        private ChannelGroup _channelGroup;
-        private string _channelName;
-        private Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
+        private readonly ChannelGroup _channelGroup;
+        private readonly string _channelName;
+        private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
         private Guid? _sid;
-        private long? _lastQueuedLogTime;
-        private long? _lastResumedTime;
-        private long? _lastPausedTime;
-        private ApplicationSettings _applicationSettings = new ApplicationSettings();
-        private object _lockObject = new object();
+        private long _lastQueuedLogTime;
+        private long _lastResumedTime;
+        private long _lastPausedTime;
+        private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
+        private readonly object _lockObject = new object();
 
         public SessionTracker(ChannelGroup channelGroup, string channelName)
         {
@@ -32,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _channelName = channelName;
             _channelGroup.EnqueuingLog += HandleEnqueuingLog;
 
-            string sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
+            var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null)
             {
                 return;
@@ -42,12 +43,12 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 return;
             }
-            string loadedSessionsString = "Loaded stored sessions:\n";
+            var loadedSessionsString = "Loaded stored sessions:\n";
             foreach (var session in _sessions.Values)
             {
                 loadedSessionsString += "\t" + session + "\n";
             }
-            MobileCenterLog.Debug(Analytics.LogTag, loadedSessionsString);
+            MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
 
         }
 
@@ -55,7 +56,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             lock (_lockObject)
             {
-
                 if (e.Log is StartSessionLog)
                 {
                     return;
@@ -63,9 +63,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 if (e.Log.Toffset > 0)
                 {
                     long candidate = 0;
-                    bool foundPrevSession = false;
-                    //TODO change to linq?
-                    foreach (long key in _sessions.Keys)
+                    var foundPrevSession = false;
+                    foreach (var key in _sessions.Keys)
                     {
                         if (key <= e.Log.Toffset && key > candidate)
                         {
@@ -78,12 +77,13 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                         e.Log.Sid = _sessions[candidate];
                     }
                 }
-                if (e.Log.Sid == null)
+                if (e.Log.Sid != null)
                 {
-                    SendStartSessionIfNeeded();
-                    e.Log.Sid = _sid;
-                    _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds(); //TODO this?
+                    return;
                 }
+                SendStartSessionIfNeeded();
+                e.Log.Sid = _sid;
+                _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         public Dictionary<long, Guid> SessionsFromString(string sessionsString)
         {
             var sessionsDict = new Dictionary<long, Guid>();
-            string[] sessions = sessionsString.Split(StorageEntrySeparator);
+            var sessions = sessionsString.Split(StorageEntrySeparator);
             if (sessions == null)
             {
                 return sessionsDict;
@@ -114,13 +114,13 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 string[] splitSession = sessionString.Split(StorageKeyValueSeparator);
                 try
                 {
-                    long time = long.Parse(splitSession[0]);
-                    Guid sid = Guid.Parse(splitSession[1]);
+                    var time = long.Parse(splitSession[0]);
+                    var sid = Guid.Parse(splitSession[1]);
                     sessionsDict.Add(time, sid);
                 }
                 catch (Exception e)
                 {
-                    MobileCenterLog.Warn(Analytics.LogTag, $"Ignore invalid session in store: {sessionString}", e);
+                    MobileCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
                 }
             }
             return sessionsDict;
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             lock (_lockObject)
             {
-                MobileCenterLog.Debug(Analytics.LogTag, "SessionTracker.Pause");
+                MobileCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Pause");
                 _lastPausedTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             lock (_lockObject)
             {
-                MobileCenterLog.Debug(Analytics.LogTag, "SessionTracker.Resume");
+                MobileCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Resume");
                 _lastResumedTime = TimeHelper.CurrentTimeInMilliseconds();
                 SendStartSessionIfNeeded();
             }
@@ -168,30 +168,28 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _sessions.Add(TimeHelper.CurrentTimeInMilliseconds(), _sid.Value);
 
             _applicationSettings[StorageKey] = SessionsAsString();
-            StartSessionLog startSessionLog = new StartSessionLog();
-            startSessionLog.Sid = _sid;
+            StartSessionLog startSessionLog = new StartSessionLog {Sid = _sid};
             _channelGroup.GetChannel(_channelName).Enqueue(startSessionLog);
         }
 
       
         private bool HasSessionTimedOut()
         {
-            long now = TimeHelper.CurrentTimeInMilliseconds();
-            bool noLogSentForLong = (now - _lastQueuedLogTime) >= SessionTimeout;
-
-            if (_lastPausedTime == null)
+            var now = TimeHelper.CurrentTimeInMilliseconds();
+            var noLogSentForLong = _lastQueuedLogTime == 0 || (now - _lastQueuedLogTime) >= SessionTimeout;
+            if (_lastPausedTime == 0)
             {
-                return (_lastResumedTime == null) && noLogSentForLong;
+                return (_lastResumedTime == 0) && noLogSentForLong;
             }
-
-            if (_lastResumedTime == null)
+            if (_lastResumedTime == 0)
             {
                 return noLogSentForLong;
             }
-
-            bool isBackgroundForLong = (_lastPausedTime >= _lastResumedTime) && ((now - _lastPausedTime) >= SessionTimeout);
-            bool wasBackgroundForLong = (_lastResumedTime - Math.Max(_lastPausedTime.Value, _lastQueuedLogTime.Value)) >= SessionTimeout;
-            MobileCenterLog.Debug(Analytics.LogTag, $"noLogSentForLong={noLogSentForLong} isBackgroundForLong={isBackgroundForLong} wasBackgroundForLong={wasBackgroundForLong}");
+            var isBackgroundForLong = (_lastPausedTime >= _lastResumedTime) && ((now - _lastPausedTime) >= SessionTimeout);
+            var wasBackgroundForLong = (_lastResumedTime - Math.Max(_lastPausedTime, _lastQueuedLogTime)) >= SessionTimeout;
+            MobileCenterLog.Debug(Analytics.Instance.LogTag, $"noLogSentForLong={noLogSentForLong} " +
+                                                    $"isBackgroundForLong={isBackgroundForLong} " +
+                                                    $"wasBackgroundForLong={wasBackgroundForLong}");
             return noLogSentForLong && (isBackgroundForLong || wasBackgroundForLong);
         }
     }

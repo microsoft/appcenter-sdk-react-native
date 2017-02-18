@@ -100,7 +100,6 @@ namespace Microsoft.Azure.Mobile.Channel
                     }
                     else
                     {
-                        //TODO have lock
                         Suspend(true, new CancellationException());
                     }
                 }

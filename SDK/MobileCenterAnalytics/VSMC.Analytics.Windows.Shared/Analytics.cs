@@ -11,16 +11,14 @@ using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Windows.ApplicationModel.Core;
 
+//TODO harmonize thread safety with abstract base class
 namespace Microsoft.Azure.Mobile.Analytics
 {
-    public class Analytics : IMobileCenterService
+    public class Analytics : MobileCenterService
     {
         #region static
-        internal static string LogTag = MobileCenterLog.LogTag + "Analytics";
 
-        private const string EnabledKey = "MobileCenterAnalyticsEnabled";
-        private const string ChannelName = "analytics";
-        private static object _analyticsLock = new object();
+        private readonly static object AnalyticsLock = new object();
 
         private static Analytics _instanceField;
 
@@ -28,18 +26,14 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             get
             {
-                lock (_analyticsLock)
+                lock (AnalyticsLock)
                 {
-                    if (_instanceField == null)
-                    {
-                        _instanceField = new Analytics();
-                    }
-                    return _instanceField;
+                    return _instanceField ?? (_instanceField = new Analytics());
                 }
             }
             set
             {
-                lock (_analyticsLock)
+                lock (AnalyticsLock)
                 {
                     _instanceField = value; //for testing
                 }
@@ -53,14 +47,14 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             get
             {
-                lock (_analyticsLock)
+                lock (AnalyticsLock)
                 {
                     return Instance.InstanceEnabled;
                 }
             }
             set
             {
-                lock (_analyticsLock)
+                lock (AnalyticsLock)
                 {
                     Instance.InstanceEnabled = value;
                 }
@@ -74,7 +68,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <param name="properties">Optional properties.</param>
         public static void TrackEvent(string name, IDictionary<string, string> properties = null)
         {
-            lock (_analyticsLock)
+            lock (AnalyticsLock)
             {
                 Instance.InstanceTrackEvent(name, properties);
             }
@@ -83,14 +77,9 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         #region instance
 
-        private ChannelGroup _channelGroup = null;
-        private bool _enabled = true;
-        private IApplicationSettings _applicationSettings = new ApplicationSettings();
         private SessionTracker _sessionTracker;
-        private const int MaxLogsPerBatch = 50;
-        private static TimeSpan BatchTimeInterval = TimeSpan.FromSeconds(3);
-        private const int MaxParallelBatches = 3;
-        private List<EventLog> _unenqueuedEvents = new List<EventLog>();
+        private readonly List<EventLog> _unenqueuedEvents = new List<EventLog>();
+
         internal Analytics()
         {
             LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
@@ -118,64 +107,63 @@ namespace Microsoft.Azure.Mobile.Analytics
             _sessionTracker?.Resume();
         }
 
-        public bool InstanceEnabled
+        public override bool InstanceEnabled
         {
-            get
-            {
-                return _applicationSettings.GetValue(EnabledKey, defaultValue: true);
-            }
+            get { return base.InstanceEnabled; }
             set
             {
-                _applicationSettings[EnabledKey] = value;
+                base.InstanceEnabled = value;
                 ApplyEnabledState(value);
             }
         }
 
+        protected override string ChannelName => "analytics";
+
+        protected override string ServiceName => "Analytics";
+
         private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
         {
-            if (_enabled)
+            if (InstanceEnabled)
             {
                 var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-                if (_channelGroup == null)
+                if (ChannelGroup == null)
                 {
                     _unenqueuedEvents.Add(log);
                 }
                 else
                 {
-                    _channelGroup.GetChannel(ChannelName).Enqueue(log);
+                    ChannelGroup.GetChannel(ChannelName).Enqueue(log);
                 }
             }
         }
 
-        public void OnChannelGroupReady(ChannelGroup channelGroup)
+        public override void OnChannelGroupReady(ChannelGroup channelGroup)
         {
-            _channelGroup = channelGroup;
-            _channelGroup.AddChannel(ChannelName, MaxLogsPerBatch, BatchTimeInterval, MaxParallelBatches);
+            base.OnChannelGroupReady(channelGroup);
             ApplyEnabledState(InstanceEnabled);
         }
 
         private void ApplyEnabledState(bool enabled)
         {
-            if (enabled && _channelGroup != null)
+            if (enabled && ChannelGroup != null)
             {
                 if (_sessionTracker == null)
                 {
-                    _sessionTracker = new SessionTracker(_channelGroup, ChannelName);
+                    _sessionTracker = new SessionTracker(ChannelGroup, ChannelName);
                     Resuming();
                 }
                 foreach (var log in _unenqueuedEvents)
                 {
-                    _channelGroup.GetChannel(ChannelName).Enqueue(log);
+                    ChannelGroup.GetChannel(ChannelName).Enqueue(log);
                 }
                 _unenqueuedEvents.Clear();
             }
-            else if (!enabled && _sessionTracker != null)
+            else if (!enabled)
             {
-                _sessionTracker.ClearSessions();
+                _sessionTracker?.ClearSessions();
                 _sessionTracker = null;
             }
         }
-
         #endregion
     }
 }
