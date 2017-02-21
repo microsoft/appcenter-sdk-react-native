@@ -224,6 +224,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private void Suspend(bool deleteLogs, Exception exception)
         {
             _enabled = false;
+            _batchScheduled = false;
             _discardLogs = deleteLogs;
             _currentState++;
             if (deleteLogs && FailedToSendLog != null)
