@@ -39,8 +39,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 loadedSessionsString += "\t" + session + "\n";
             }
-            CoreApplication.Resuming += (sender, e) => Resume();
-            CoreApplication.Suspending += (sender, e) => Pause();
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 

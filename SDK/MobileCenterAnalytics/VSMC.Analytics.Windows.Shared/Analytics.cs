@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Core;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
@@ -109,17 +110,30 @@ namespace Microsoft.Azure.Mobile.Analytics
             ApplyEnabledState(InstanceEnabled);
         }
 
+        private void ResumingHandler(object sender, object e)
+        {
+            _sessionTracker?.Resume();
+        }
+        private void SuspendingHandler(object sender, object e)
+        {
+            _sessionTracker?.Pause();
+        }
+
         private void ApplyEnabledState(bool enabled)
         {
             if (enabled && ChannelGroup != null && _sessionTracker == null)
             {
 
                 _sessionTracker = new SessionTracker(ChannelGroup, ChannelName);
+                CoreApplication.Resuming += ResumingHandler;
+                CoreApplication.Suspending += SuspendingHandler;
                 _sessionTracker.Resume();
 
             }
             else if (!enabled)
             {
+                CoreApplication.Resuming -= ResumingHandler;
+                CoreApplication.Suspending -= SuspendingHandler;
                 _sessionTracker?.ClearSessions();
                 _sessionTracker = null;
             }
