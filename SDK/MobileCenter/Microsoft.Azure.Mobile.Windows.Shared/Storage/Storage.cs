@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Mobile.Storage
             await OpenDbAsync();
             try
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting logs from the Storage database for {channelName} with {batchId}");
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "The IDs for deleting log(s) is/are:");
                 var identifiers = _pendingDbIdentifierGroups[GetFullIdentifier(channelName, batchId)];
                 _pendingDbIdentifierGroups.Remove(GetFullIdentifier(channelName, batchId));
@@ -95,7 +95,7 @@ namespace Microsoft.Azure.Mobile.Storage
             await OpenDbAsync();
             try
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting all logs from storage for '{channelName}'");
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting all logs from storage for channel '{channelName}'");
                 var fullIdentifiers = new List<string>();
                 foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
                 {
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.Mobile.Storage
             }
             catch (DbException e)
             {
-                throw new StorageException($"Error deleting log from channel {channelName} with id {rowId}", e);
+                throw new StorageException($"Error deleting log from storage for channel '{channelName}' with id '{rowId}'", e);
             }
         }
 
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.Mobile.Storage
             await OpenDbAsync();
             logs?.Clear();
             var retrievedLogs = new List<Log>();
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Trying to get up to {limit} logs from the database for {channelName}");
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Trying to get up to {limit} logs from storage for {channelName}");
             try
             {
                 /* Create the query */
@@ -230,7 +230,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 await RetrieveLogsAsync(command, channelName, retrievedLogs, idPairs);
                 if (idPairs.Count == 0)
                 {
-                    MobileCenterLog.Debug(MobileCenterLog.LogTag, $"No available logs in the database for channel '{channelName}'");
+                    MobileCenterLog.Debug(MobileCenterLog.LogTag, $"No available logs in storage for channel '{channelName}'");
                     return null;
                 }
 
@@ -287,7 +287,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 }
                 catch (JsonReaderException e)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in the database", e);
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                     failedToDeserializeALog = true;
                     await DeleteLogAsync(channelName, logId);
                 }

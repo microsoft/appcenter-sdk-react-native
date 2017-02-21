@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    public partial class Crashes : IMobileCenterService
+    public partial class Crashes
     {
-        public bool InstanceEnabled { get; set; }
-        public void OnChannelGroupReady(ChannelGroup channelGroup)
-        {
-
-        }
+        protected override string ChannelName => "crashes";
+        protected override string ServiceName => "Crashes";
     }
 }

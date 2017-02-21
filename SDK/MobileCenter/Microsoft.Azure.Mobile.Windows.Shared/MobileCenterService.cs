@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 
 //TODO thread safety
@@ -15,10 +16,10 @@ namespace Microsoft.Azure.Mobile
         private static readonly TimeSpan DefaultTriggerInterval = TimeSpan.FromSeconds(3);
         private const int DefaultTriggerMaxParallelRequests = 3;
         private const string KeyEnabled = "MobileCenterServiceEnabled";
+        private readonly object _serviceLock = new object();
 
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
         protected ChannelGroup ChannelGroup { get; private set; }
-
         protected abstract string ChannelName { get; }
         protected abstract string ServiceName { get; }
         public virtual string LogTag => MobileCenterLog.LogTag + ServiceName;
@@ -31,41 +32,71 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                return _applicationSettings.GetValue(KeyEnabled, true);
+                lock (_serviceLock)
+                {
+                    return _applicationSettings.GetValue(KeyEnabled, true);
+                }
             }
             set
             {
-                var enabledString = (value ? "enabled" : "disabled");
-                if (value && !MobileCenter.Enabled)
+                lock (_serviceLock)
                 {
-                    MobileCenterLog.Error(LogTag, 
-                        "The SDK is disabled. Set MobileCenter.Enabled to 'true' before enabling a specific service.");
-                    return;
-                }
-                if (value == InstanceEnabled)
-                {
-                    MobileCenterLog.Info(LogTag, $"{ServiceName} service has already been {enabledString}.");
-                    return;
-                }
-                if (ChannelGroup != null)
-                {
-                    var channel = ChannelGroup.GetChannel(ChannelName);
-                    channel.Enabled = value;
-                    if (!value)
+                    var enabledString = (value ? "enabled" : "disabled");
+                    if (value && !MobileCenter.Enabled)
                     {
-                        channel.Clear();
+                        MobileCenterLog.Error(LogTag,
+                            "The SDK is disabled. Set MobileCenter.Enabled to 'true' before enabling a specific service.");
+                        return;
                     }
+                    if (value == InstanceEnabled)
+                    {
+                        MobileCenterLog.Info(LogTag, $"{ServiceName} service has already been {enabledString}.");
+                        return;
+                    }
+                    if (ChannelGroup != null)
+                    {
+                        var channel = ChannelGroup.GetChannel(ChannelName);
+                        channel.Enabled = value;
+                    }
+                    _applicationSettings[KeyEnabled] = value;
+                    MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
                 }
-                _applicationSettings[KeyEnabled] = value;
-                MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
             }
         }
 
         public virtual void OnChannelGroupReady(ChannelGroup channelGroup)
         {
-            ChannelGroup = channelGroup;
-            ChannelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-            ChannelGroup.GetChannel(ChannelName).Enabled = InstanceEnabled;
+            lock (_serviceLock)
+            {
+                ChannelGroup = channelGroup;
+                ChannelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
+                ChannelGroup.GetChannel(ChannelName).Enabled = InstanceEnabled;
+            }
+        }
+
+        protected bool IsInactive
+        {
+            get
+            {
+                lock (_serviceLock)
+                {
+                    if (ChannelGroup == null)
+                    {
+                        MobileCenterLog.Error(MobileCenterLog.LogTag,
+                            $"{ServiceName} service not initialized; discarding calls.");
+                        return true;
+                    }
+
+                    if (InstanceEnabled)
+                    {
+                        return false;
+                    }
+
+                    MobileCenterLog.Info(MobileCenterLog.LogTag,
+                        $"{ServiceName} service not enabled; discarding calls.");
+                    return true;
+                }
+            }
         }
     }
 }

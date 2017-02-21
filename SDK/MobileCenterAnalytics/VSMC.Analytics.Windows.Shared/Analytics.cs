@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Channel;
-using System.Runtime.InteropServices;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Analytics.Channel;
-using Windows.ApplicationModel.Core;
 
-//TODO harmonize thread safety with abstract base class
 namespace Microsoft.Azure.Mobile.Analytics
 {
     public class Analytics : MobileCenterService
@@ -78,33 +71,12 @@ namespace Microsoft.Azure.Mobile.Analytics
         #region instance
 
         private SessionTracker _sessionTracker;
-        private readonly List<EventLog> _unenqueuedEvents = new List<EventLog>();
 
         internal Analytics()
         {
             LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
             LogSerializer.AddFactory(EventLog.JsonIdentifier, new LogFactory<EventLog>());
             LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new LogFactory<StartSessionLog>());
-
-            CoreApplication.Resuming += (sender, e) =>
-            {
-                Resuming();
-            };
-            CoreApplication.Suspending += (sender, e) =>
-            {
-                Suspending();
-            };
-           //TODO handle exiting? what about launching?
-        }
-
-        private void Suspending()
-        {
-            _sessionTracker?.Pause();
-        }
-
-        private void Resuming()
-        {
-            _sessionTracker?.Resume();
         }
 
         public override bool InstanceEnabled
@@ -123,18 +95,12 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
         {
-            if (InstanceEnabled)
+            if (IsInactive)
             {
-                var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-                if (ChannelGroup == null)
-                {
-                    _unenqueuedEvents.Add(log);
-                }
-                else
-                {
-                    ChannelGroup.GetChannel(ChannelName).Enqueue(log);
-                }
+                return;
             }
+            var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
+            ChannelGroup.GetChannel(ChannelName).Enqueue(log);
         }
 
         public override void OnChannelGroupReady(ChannelGroup channelGroup)
@@ -145,18 +111,12 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private void ApplyEnabledState(bool enabled)
         {
-            if (enabled && ChannelGroup != null)
+            if (enabled && ChannelGroup != null && _sessionTracker == null)
             {
-                if (_sessionTracker == null)
-                {
-                    _sessionTracker = new SessionTracker(ChannelGroup, ChannelName);
-                    Resuming();
-                }
-                foreach (var log in _unenqueuedEvents)
-                {
-                    ChannelGroup.GetChannel(ChannelName).Enqueue(log);
-                }
-                _unenqueuedEvents.Clear();
+
+                _sessionTracker = new SessionTracker(ChannelGroup, ChannelName);
+                _sessionTracker.Resume();
+
             }
             else if (!enabled)
             {
@@ -164,6 +124,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 _sessionTracker = null;
             }
         }
+
         #endregion
     }
 }

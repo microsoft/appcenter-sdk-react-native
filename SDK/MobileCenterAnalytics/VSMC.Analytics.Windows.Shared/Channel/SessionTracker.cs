@@ -7,6 +7,7 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using System.Linq;
 using System.Reflection.Metadata;
+using Windows.ApplicationModel.Core;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
@@ -48,8 +49,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 loadedSessionsString += "\t" + session + "\n";
             }
-            MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
 
+            CoreApplication.Resuming += (sender, e) => Resume();
+            CoreApplication.Suspending += (sender, e) => Pause();
+            MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
@@ -89,7 +92,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         public string SessionsAsString()
         {
-            string sessionsString = "";
+            var sessionsString = "";
             foreach (var pair in _sessions)
             {
                 if (sessionsString != "")
@@ -109,16 +112,16 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 return sessionsDict;
             }
-            foreach (string sessionString in sessions)
+            foreach (var sessionString in sessions)
             {
-                string[] splitSession = sessionString.Split(StorageKeyValueSeparator);
+                var splitSession = sessionString.Split(StorageKeyValueSeparator);
                 try
                 {
                     var time = long.Parse(splitSession[0]);
                     var sid = Guid.Parse(splitSession[1]);
                     sessionsDict.Add(time, sid);
                 }
-                catch (Exception e)
+                catch (FormatException e) //TODO other exceptions?
                 {
                     MobileCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
                 }

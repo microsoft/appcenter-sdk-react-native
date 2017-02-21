@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// <summary>
     /// Crashes service.
     /// </summary>
-    public partial class Crashes : IMobileCenterService
+    public partial class Crashes : MobileCenterService
     {
         static Crashes()
         {
