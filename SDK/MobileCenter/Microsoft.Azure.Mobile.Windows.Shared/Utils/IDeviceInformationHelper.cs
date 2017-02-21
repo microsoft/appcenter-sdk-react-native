@@ -10,6 +10,5 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         Ingestion.Models.Device GetDeviceInformation();
         event Action InformationInvalidated;
-
     }
 }

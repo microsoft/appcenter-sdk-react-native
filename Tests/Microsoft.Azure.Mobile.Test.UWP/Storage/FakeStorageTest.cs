@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
-        /// Verify that if an error occurs while executing a query, a StorageException gets thrown.
+        /// Verify that if an error occurs while executing a query (from GetLogs), a StorageException gets thrown.
         /// </summary>
         [TestMethod]
         public void GetLogsQueryError()

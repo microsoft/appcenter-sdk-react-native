@@ -18,15 +18,14 @@ namespace Microsoft.Azure.Mobile.Channel
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
         private readonly string _appSecret;
-        private Guid _installId;
+        private readonly Guid _installId = IdHelper.InstallId;
         private bool _enabled;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        #region Events
+
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
         public event SentLogEventHandler SentLog;
         public event FailedToSendLogEventHandler FailedToSendLog;
-        #endregion
 
         public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret) { }
 
@@ -122,22 +121,21 @@ namespace Microsoft.Azure.Mobile.Channel
             return new Storage.Storage();
         }
 
-        //TODO should these be wrapped in mutex? don't think so, but give some thought later
         private void AnyChannelEnqueuingLog(object sender, EnqueuingLogEventArgs e)
         {
-            EnqueuingLog?.Invoke(sender, e); //TODO should we pass "this" as sender or "sender"?
+            EnqueuingLog?.Invoke(sender, e);
         }
         private void AnyChannelSendingLog(object sender, SendingLogEventArgs e)
         {
-            SendingLog?.Invoke(sender, e); //TODO should we pass "this" as sender or "sender"?
+            SendingLog?.Invoke(sender, e);
         }
         private void AnyChannelSentLog(object sender, SentLogEventArgs e)
         {
-            SentLog?.Invoke(sender, e); //TODO should we pass "this" as sender or "sender"?
+            SentLog?.Invoke(sender, e);
         }
         private void AnyChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
         {
-            FailedToSendLog?.Invoke(sender, e); //TODO should we pass "this" as sender or "sender"?
+            FailedToSendLog?.Invoke(sender, e);
         }
     }
 }

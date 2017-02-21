@@ -2,18 +2,15 @@
 using Microsoft.Azure.Mobile.Utils;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using System.Linq;
-using System.Reflection.Metadata;
 using Windows.ApplicationModel.Core;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
     public class SessionTracker
     {
-        private const string StorageKey = "sessions";
+        private const string StorageKey = "MobileCenterSessions";
         private const int StorageMaxSessions = 5;
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
@@ -33,23 +30,15 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _channelGroup = channelGroup;
             _channelName = channelName;
             _channelGroup.EnqueuingLog += HandleEnqueuingLog;
-
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
-            if (sessionsString == null)
-            {
-                return;
-            }
+            if (sessionsString == null) return;
             _sessions = SessionsFromString(sessionsString);
-            if (_sessions.Count == 0)
-            {
-                return;
-            }
+            if (_sessions.Count == 0) return;
             var loadedSessionsString = "Loaded stored sessions:\n";
             foreach (var session in _sessions.Values)
             {
                 loadedSessionsString += "\t" + session + "\n";
             }
-
             CoreApplication.Resuming += (sender, e) => Resume();
             CoreApplication.Suspending += (sender, e) => Pause();
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
@@ -59,10 +48,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             lock (_lockObject)
             {
-                if (e.Log is StartSessionLog)
-                {
-                    return;
-                }
+                if (e.Log is StartSessionLog) return;
                 if (e.Log.Toffset > 0)
                 {
                     long candidate = 0;
@@ -80,10 +66,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                         e.Log.Sid = _sessions[candidate];
                     }
                 }
-                if (e.Log.Sid != null)
-                {
-                    return;
-                }
+                if (e.Log.Sid != null) return;
                 SendStartSessionIfNeeded();
                 e.Log.Sid = _sid;
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
@@ -95,11 +78,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             var sessionsString = "";
             foreach (var pair in _sessions)
             {
-                if (sessionsString != "")
-                {
-                    sessionsString += StorageEntrySeparator;
-                }
-                sessionsString += pair.Key.ToString() + StorageKeyValueSeparator + pair.Value.ToString();
+                if (sessionsString != "") sessionsString += StorageEntrySeparator;
+                sessionsString += pair.Key.ToString() + StorageKeyValueSeparator + pair.Value;
             }
             return sessionsString;
         }
@@ -108,10 +88,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             var sessionsDict = new Dictionary<long, Guid>();
             var sessions = sessionsString.Split(StorageEntrySeparator);
-            if (sessions == null)
-            {
-                return sessionsDict;
-            }
+            if (sessions == null) return sessionsDict;
+
             foreach (var sessionString in sessions)
             {
                 var splitSession = sessionString.Split(StorageKeyValueSeparator);
@@ -171,7 +149,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _sessions.Add(TimeHelper.CurrentTimeInMilliseconds(), _sid.Value);
 
             _applicationSettings[StorageKey] = SessionsAsString();
-            StartSessionLog startSessionLog = new StartSessionLog {Sid = _sid};
+            var startSessionLog = new StartSessionLog {Sid = _sid};
             _channelGroup.GetChannel(_channelName).Enqueue(startSessionLog);
         }
 
