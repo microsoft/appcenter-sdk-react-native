@@ -47,37 +47,79 @@ namespace Microsoft.Azure.Mobile.Channel
         public void AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
             _mutex.Wait();
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
-            //TODO error handling
-            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret, _installId, _ingestion, _storage);
-            newChannel.EnqueuingLog += AnyChannelEnqueuingLog;
-            newChannel.SendingLog += AnyChannelSendingLog;
-            newChannel.SentLog += AnyChannelSentLog;
-            newChannel.FailedToSendLog += AnyChannelFailedToSendLog;
+            try
+            {
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
+                var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret,
+                    _installId, _ingestion, _storage);
+                _channels.Add(name, newChannel);
+                newChannel.EnqueuingLog += AnyChannelEnqueuingLog;
+                newChannel.SendingLog += AnyChannelSendingLog;
+                newChannel.SentLog += AnyChannelSentLog;
+                newChannel.FailedToSendLog += AnyChannelFailedToSendLog;
+            }
+            catch (ArgumentNullException e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Channel name cannot be null.", e);
 
-            _channels.Add(name, newChannel);
-            _mutex.Release();
+            }
+            catch (ArgumentException e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, $"Cannot add channel with duplicate name '{name}'.", e);
+            }
+            finally
+            {
+                _mutex.Release();
+            }
         }
 
         public void RemoveChannel(Channel channel)
         {
             _mutex.Wait();
-            //TODO error handling
-            channel.NotifyStateInvalidated();
-            channel.EnqueuingLog -= AnyChannelEnqueuingLog;
-            channel.SendingLog -= AnyChannelSendingLog;
-            channel.SentLog -= AnyChannelSentLog;
-            channel.FailedToSendLog -= AnyChannelFailedToSendLog;
-            _channels.Remove(channel.Name);
-            _mutex.Release();
+            try
+            {
+                channel.NotifyStateInvalidated();
+                channel.EnqueuingLog -= AnyChannelEnqueuingLog;
+                channel.SendingLog -= AnyChannelSendingLog;
+                channel.SentLog -= AnyChannelSentLog;
+                channel.FailedToSendLog -= AnyChannelFailedToSendLog;
+                var removeSucceeded = _channels.Remove(channel.Name);
+                if (!removeSucceeded)
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to remove channel with name {channel.Name}.");
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel name cannot be null.", e);
+            }
+            finally
+            {
+                _mutex.Release();
+            }
         }
 
         public Channel GetChannel(string channelName)
         {
             _mutex.Wait();
-            var channel = _channels[channelName];
-            _mutex.Release();
-            return channel;
+            try
+            {
+                return _channels[channelName];
+            }
+            catch (ArgumentNullException e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Channel name cannot be null.", e);
+                return null;
+            }
+            catch (KeyNotFoundException e)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, $"Could not find channel with name '{channelName}'.", e);
+                return null;
+            }
+            finally
+            {
+                _mutex.Release();
+            }
         }
 
         public bool Enabled

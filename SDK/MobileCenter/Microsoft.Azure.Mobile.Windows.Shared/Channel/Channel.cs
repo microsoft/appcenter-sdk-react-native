@@ -131,10 +131,6 @@ namespace Microsoft.Azure.Mobile.Channel
                 PrepareLog(log);
                 Task.Factory.StartNew(()=>PersistLogAsync(log, _currentState));
             }
-            catch (Exception e) //TODO make some kind of deviceinformationexception
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Device log cannot be generated", e);
-            }
             finally
             {
                 _mutex.Release();
@@ -289,6 +285,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private async Task TriggerIngestionAsync()
         {
+            var needsRelease = true;
             await _mutex.WaitAsync();
             try
             {
@@ -308,8 +305,10 @@ namespace Microsoft.Azure.Mobile.Channel
                 var logs = new List<Log>();
                 var stateSnapshot = _currentState;
                 _mutex.Release();
-                var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs); //TODO if this throws we will delete an unowned mutex
+                needsRelease = false;
+                var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs);
                 await _mutex.WaitAsync();
+                needsRelease = true;
                 if (batchId != null && stateSnapshot == _currentState)
                 {
                     _sendingBatches.Add(batchId, logs);
@@ -319,7 +318,10 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             finally
             {
-                _mutex.Release();
+                if (needsRelease)
+                {
+                    _mutex.Release();
+                }
             }
         }
 

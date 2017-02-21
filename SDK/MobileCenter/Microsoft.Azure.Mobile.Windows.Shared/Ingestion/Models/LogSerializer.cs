@@ -10,12 +10,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
     //TODO thread safety?
     public static class LogSerializer
     {
-        private static LogJsonConverter _converter = new LogJsonConverter();
-        private static JsonSerializerSettings _serializationSettings;
-        private static JsonSerializerSettings _deserializationSettings;
+        private static readonly LogJsonConverter Converter = new LogJsonConverter();
+        private static readonly JsonSerializerSettings SerializationSettings;
+        private static readonly JsonSerializerSettings DeserializationSettings;
         static LogSerializer()
         {
-            _serializationSettings = new JsonSerializerSettings
+            SerializationSettings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         
                     }
             };
-            _deserializationSettings = new JsonSerializerSettings
+            DeserializationSettings = new JsonSerializerSettings
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
@@ -40,31 +40,31 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
                 Converters = new List<JsonConverter>
                     {
                         new Rest.Serialization.Iso8601TimeSpanConverter(),
-                        _converter
+                        Converter
                     }
             };
         }
 
         public static void AddFactory(string typeName, ILogFactory factory)
         {
-            _converter.AddFactory(typeName, factory);
+            Converter.AddFactory(typeName, factory);
         }
         public static string Serialize(LogContainer logContainer)
         {
-            return Rest.Serialization.SafeJsonConvert.SerializeObject(logContainer, _serializationSettings);
+            return Rest.Serialization.SafeJsonConvert.SerializeObject(logContainer, SerializationSettings);
         }
         public static string Serialize(Log log)
         {
-            return Rest.Serialization.SafeJsonConvert.SerializeObject(log, _serializationSettings);
+            return Rest.Serialization.SafeJsonConvert.SerializeObject(log, SerializationSettings);
         }
 
         public static Log DeserializeLog(string json)
         {
-            return Rest.Serialization.SafeJsonConvert.DeserializeObject<Log>(json, _deserializationSettings);
+            return Rest.Serialization.SafeJsonConvert.DeserializeObject<Log>(json, DeserializationSettings);
         }
         public static LogContainer DeserializeContainer(string json)
         {
-            return Rest.Serialization.SafeJsonConvert.DeserializeObject<LogContainer>(json, _deserializationSettings);
+            return Rest.Serialization.SafeJsonConvert.DeserializeObject<LogContainer>(json, DeserializationSettings);
         }
     }
 }

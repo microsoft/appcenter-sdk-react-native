@@ -9,25 +9,22 @@ namespace Microsoft.Azure.Mobile.Utils
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
         //TODO thread safety?
-        private bool _leftBackground = false;
-        private object _lock = new object();
+        private bool _leftBackground;
         private string _cachedScreenSize;
         public override event Action InformationInvalidated;
 
         public DeviceInformationHelper()
         {
             CoreApplication.LeavingBackground += (o, e) => {
-                if (!_leftBackground)
+                if (_leftBackground) return;
+                _leftBackground = true;
+                CacheScreenSize();
+                DisplayInformation.DisplayContentsInvalidated += (displayInfo, obj) =>
                 {
-                    _leftBackground = true;
-                    CacheScreenSize();
-                    DisplayInformation.DisplayContentsInvalidated += (displayInfo, obj) =>
-                    {
-                        _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
-                        InformationInvalidated?.Invoke();
-                    };
+                    _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
                     InformationInvalidated?.Invoke();
-                }
+                };
+                InformationInvalidated?.Invoke();
             };
         }
 
