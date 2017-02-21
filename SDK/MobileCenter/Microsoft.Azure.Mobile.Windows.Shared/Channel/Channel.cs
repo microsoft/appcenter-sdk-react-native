@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Net.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
-using System.Runtime.CompilerServices;
 using Microsoft.Azure.Mobile.Ingestion.Http;
-using Microsoft.Rest;
 using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
@@ -57,10 +53,10 @@ namespace Microsoft.Azure.Mobile.Channel
         private async Task CountFromDiskAsync()
         {
             await _mutex.WaitAsync();
-            int stateSnapshot = _currentState;
+            var stateSnapshot = _currentState;
             _mutex.Release();
 
-            int logCount = await _storage.CountLogsAsync(Name);
+            var logCount = await _storage.CountLogsAsync(Name);
             await _mutex.WaitAsync();
             try
             {
@@ -149,7 +145,6 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             _mutex.Wait();
             _currentState++;
-            //TODO cancel scheduled batch here? or is it fine?
             _mutex.Release();
         }
 
@@ -208,8 +203,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void Clear()
         {
-            int stateSnapshot = _currentState;
-
+            var stateSnapshot = _currentState;
             _storage.DeleteLogsAsync(Name).ContinueWith(completedTask =>
             {
                 _mutex.Wait();
@@ -229,12 +223,9 @@ namespace Microsoft.Azure.Mobile.Channel
             _currentState++;
             if (deleteLogs && FailedToSendLog != null)
             {
-                foreach (var batch in _sendingBatches.Values)
+                foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
                 {
-                    foreach (var log in batch)
-                    {
-                        FailedToSendLog(this, new FailedToSendLogEventArgs(log, exception));
-                    }
+                    FailedToSendLog(this, new FailedToSendLogEventArgs(log, exception));
                 }
             }
             try
@@ -279,22 +270,12 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private async Task SignalDeletingLogs(int stateSnapshot)
         {
-            if (stateSnapshot != _currentState)
-            {
-                return;
-            }
+            if (stateSnapshot != _currentState) return;
             var logs = new List<Log>();
             _mutex.Release();
-
             await _storage.GetLogsAsync(Name, ClearBatchSize, logs);
-
             await _mutex.WaitAsync();
-
-            if (stateSnapshot != _currentState)
-            {
-                return;
-            }
-
+            if (stateSnapshot != _currentState) return;
             foreach (var log in logs)
             {
                 SendingLog?.Invoke(this, new SendingLogEventArgs(log));
@@ -342,14 +323,13 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private async Task TriggerIngestionAsync(List<Log> logs, int stateSnapshot, string batchId)
+        private async Task TriggerIngestionAsync(IList<Log> logs, int stateSnapshot, string batchId)
         {
             /* Before sending logs, trigger the sending event for this channel */
             if (SendingLog != null)
             {
-                foreach (var log in logs)
+                foreach (var eventArgs in logs.Select(log => new SendingLogEventArgs(log)))
                 {
-                    var eventArgs = new SendingLogEventArgs(log);
                     SendingLog(this, eventArgs);
                 }
             }
@@ -363,12 +343,11 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 await _mutex.WaitAsync();
                 HandleSendingFailure(batchId, e);
-            }
-
-            if (_currentState != stateSnapshot)
-            {
                 return;
             }
+
+            if (_currentState != stateSnapshot) return;
+
             _mutex.Release();
             try
             {
@@ -379,11 +358,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
             }
             await _mutex.WaitAsync();
-            if (_currentState != stateSnapshot)
-            {
-                return;
-            }
-            //TODO if there was a sending failure then will this part be incorrect?
+            if (_currentState != stateSnapshot) return;
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
             if (SentLog != null)

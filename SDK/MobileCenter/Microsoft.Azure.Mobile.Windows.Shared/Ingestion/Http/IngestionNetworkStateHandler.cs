@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             NetworkChange.NetworkAddressChanged += HandleNetworkAddressChanged;
         }
 
-        private void HandleNetworkAddressChanged(object sender, EventArgs e) //TODO is this right? seems quite strange that this exception isn't going anywhere...maybe at least write a log or something? Perhaps completion events would be more appropriate here
+        private void HandleNetworkAddressChanged(object sender, EventArgs e)
         {
             _mutex.Wait();
             var connected = NetworkInterface.GetIsNetworkAvailable();
@@ -28,6 +28,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 if (connected)
                 {
+                    //TODO take some action if the call fails?
                     call.RunWithRetriesAsync().ContinueWith(completedTask =>
                     {
                         if (completedTask.Exception != null)

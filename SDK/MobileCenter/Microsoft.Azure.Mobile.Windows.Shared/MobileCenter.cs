@@ -16,10 +16,10 @@ namespace Microsoft.Azure.Mobile
         private const string EnabledKey = "MobileCenterEnabled";
         private ChannelGroup _channelGroup;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
-        private bool _configured = false;
         private string _serverUrl;
         private readonly static object MobileCenterLock = new object();
         private readonly static IApplicationSettings ApplicationSettings = new ApplicationSettings();
+        private static bool _logLevelSet;
 
         #region static
 
@@ -50,11 +50,18 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                return MobileCenterLog.Level;
+                lock (MobileCenterLock)
+                {
+                    return MobileCenterLog.Level;
+                }
             }
             set
             {
-                MobileCenterLog.Level = value;
+                lock (MobileCenterLock)
+                {
+                    MobileCenterLog.Level = value;
+                    _logLevelSet = true;
+                }
             }
         }
 
@@ -112,7 +119,7 @@ namespace Microsoft.Azure.Mobile
             {
                 lock (MobileCenterLock)
                 {
-                    return Instance.InstanceConfigured;
+                    return Instance._instanceConfigured;
                 }
             }
         }
@@ -160,8 +167,6 @@ namespace Microsoft.Azure.Mobile
 
         #region instance
 
-        //TODO need a way of giving application settings
-
         private bool InstanceEnabled
         {
             get
@@ -174,12 +179,10 @@ namespace Microsoft.Azure.Mobile
                 {
                     _channelGroup.Enabled = false;
                 }
-                bool previouslyEnabled = InstanceEnabled;
-                bool switchToDisabled = previouslyEnabled && !value;
-                bool switchToEnabled = !previouslyEnabled && value;
+                var previouslyEnabled = InstanceEnabled;
+                var switchToDisabled = previouslyEnabled && !value;
+                var switchToEnabled = !previouslyEnabled && value;
                 ApplicationSettings[EnabledKey] = value;
-
-                /* TODO register/unregister lifecycle callbacks? */
 
                 foreach (var service in _services)
                 {
@@ -207,13 +210,16 @@ namespace Microsoft.Azure.Mobile
             _channelGroup?.SetServerUrl(serverUrl);
         }
 
-        private bool InstanceConfigured => _configured;
+        private bool _instanceConfigured;
 
         private bool InstanceConfigure(string appSecret)
         {
-            /* TODO Do something with log level? */
-
-            if (_configured)
+            if (!_logLevelSet)
+            {
+                MobileCenterLog.Level = LogLevel.Warn;
+                _logLevelSet = true;
+            }
+            if (_instanceConfigured)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center may only be configured once");
             }
@@ -228,7 +234,7 @@ namespace Microsoft.Azure.Mobile
                 {
                     _channelGroup.SetServerUrl(_serverUrl);
                 }
-                _configured = true;
+                _instanceConfigured = true;
                 MobileCenterLog.Assert(MobileCenterLog.LogTag, "Mobile Center SDK configured successfully.");
                 return true;
             }
@@ -244,9 +250,9 @@ namespace Microsoft.Azure.Mobile
                 return;
             }
 
-            if (!_configured)
+            if (!_instanceConfigured)
             {
-                string serviceNames = "";
+                var serviceNames = "";
                 foreach (var serviceType in services)
                 {
                     serviceNames += "\t" + serviceType.Name + "\n";
@@ -264,7 +270,7 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    IMobileCenterService serviceInstance = (IMobileCenterService)serviceType.GetRuntimeProperty("Instance").GetValue(null);
+                    var serviceInstance = (IMobileCenterService)serviceType.GetRuntimeProperty("Instance").GetValue(null);
                     StartService(serviceInstance);
                 }
                 catch (Exception ex) //TODO make this more specific
@@ -289,19 +295,17 @@ namespace Microsoft.Azure.Mobile
 
         public void StartInstance(string appSecret, params Type[] services)
         {
-            string parsedSecret;
             try
             {
-                parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
+                var parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
+                if (InstanceConfigure(parsedSecret))
+                {
+                    StartInstance(services);
+                }
             }
             catch (ArgumentException ex)
             {
                 MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
-                return;
-            }
-            if (InstanceConfigure(parsedSecret))
-            {
-                StartInstance(services);
             }
         }
         #endregion
