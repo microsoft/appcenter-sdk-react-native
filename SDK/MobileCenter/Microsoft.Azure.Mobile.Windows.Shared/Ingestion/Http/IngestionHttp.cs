@@ -35,8 +35,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         }
 
         public void Close()
-        {
-        }
+        { }
 
         public void SetServerUrl(string serverUrl)
         {
@@ -83,7 +82,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 string responseContent;
 
-                var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", response.StatusCode));
+                var ex = new HttpOperationException($"Operation returned an invalid status code '{response.StatusCode}'");
                 if (response.Content != null)
                 {
                     responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -110,6 +109,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
             redactedAppSecret += appSecret.Substring(endHidingIndex);
             return redactedAppSecret;
+        }
+
+        public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return new ServiceCall(this, logs, appSecret, installId);
         }
     }
 }

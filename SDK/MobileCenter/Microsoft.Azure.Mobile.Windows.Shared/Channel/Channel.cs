@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
@@ -313,7 +312,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
-                    await TriggerIngestionAsync(logs, stateSnapshot, batchId);
+                    TriggerIngestion(logs, stateSnapshot, batchId);
                 }
             }
             finally
@@ -325,7 +324,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private async Task TriggerIngestionAsync(IList<Log> logs, int stateSnapshot, string batchId)
+        private void TriggerIngestion(IList<Log> logs, int stateSnapshot, string batchId)
         {
             /* Before sending logs, trigger the sending event for this channel */
             if (SendingLog != null)
@@ -335,59 +334,58 @@ namespace Microsoft.Azure.Mobile.Channel
                     SendingLog(this, eventArgs);
                 }
             }
-            _mutex.Release();
-            try
+            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, _installId, logs);
+            serviceCall.Failed += exception => HandleSendingFailure(batchId, exception);
+            serviceCall.Succeeded += async () =>
             {
-                await _ingestion.SendLogsAsync(_appSecret, _installId, logs);
-                await _mutex.WaitAsync();
-            }
-            catch (IngestionException e)
-            {
-                await _mutex.WaitAsync();
-                HandleSendingFailure(batchId, e);
-                return;
-            }
-
-            if (_currentState != stateSnapshot) return;
-
-            _mutex.Release();
-            try
-            {
-                await _storage.DeleteLogsAsync(Name, batchId);
-            }
-            catch (StorageException e)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
-            }
-            await _mutex.WaitAsync();
-            if (_currentState != stateSnapshot) return;
-            var removedLogs = _sendingBatches[batchId];
-            _sendingBatches.Remove(batchId);
-            if (SentLog != null)
-            {
-                foreach (var log in removedLogs)
+                if (_currentState != stateSnapshot) return;
+                try
                 {
-                    SentLog(this, new SentLogEventArgs(log));
+                    await _storage.DeleteLogsAsync(Name, batchId);
                 }
-            }
-            CheckPendingLogs();
+                catch (StorageException e)
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+                }
+                await _mutex.WaitAsync();
+                try
+                {
+
+                    if (_currentState != stateSnapshot) return;
+                    var removedLogs = _sendingBatches[batchId];
+                    _sendingBatches.Remove(batchId);
+                    if (SentLog != null)
+                    {
+                        foreach (var log in removedLogs)
+                        {
+                            SentLog(this, new SentLogEventArgs(log));
+                        }
+                    }
+                    CheckPendingLogs();
+                }
+                finally
+                {
+                    _mutex.Release();
+                }
+            };
+            serviceCall.Execute();
         }
 
         private void HandleSendingFailure(string batchId, IngestionException e)
         {
+            var isRecoverable = e?.IsRecoverable ?? false;
             MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed", e);
             var removedLogs = _sendingBatches[batchId];
             _sendingBatches.Remove(batchId);
-            var recoverableError = HttpUtils.IsRecoverableError(e);
-            if (!recoverableError && FailedToSendLog != null)
+            if (!isRecoverable && FailedToSendLog != null)
             {
                 foreach (var log in removedLogs)
                 {
                     FailedToSendLog(this, new FailedToSendLogEventArgs(log, e));
                 }
             }
-            Suspend(!recoverableError, e);
-            if (recoverableError)
+            Suspend(!isRecoverable, e);
+            if (isRecoverable)
             {
                 _pendingLogCount += removedLogs.Count;
             }

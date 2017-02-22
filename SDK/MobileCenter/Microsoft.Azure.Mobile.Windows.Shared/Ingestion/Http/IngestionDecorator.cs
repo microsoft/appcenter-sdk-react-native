@@ -22,6 +22,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             DecoratedApi.Close();
         }
 
+        public abstract IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
+            CancellationToken cancellationToken = new CancellationToken());
+
         public virtual async Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken))
         {
             await DecoratedApi.SendLogsAsync(appSecret, installId, logs, cancellationToken);

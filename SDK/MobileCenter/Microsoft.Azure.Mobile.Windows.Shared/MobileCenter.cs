@@ -3,6 +3,7 @@ using Microsoft.Azure.Mobile.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 
@@ -252,11 +253,7 @@ namespace Microsoft.Azure.Mobile
 
             if (!_instanceConfigured)
             {
-                var serviceNames = "";
-                foreach (var serviceType in services)
-                {
-                    serviceNames += "\t" + serviceType.Name + "\n";
-                }
+                var serviceNames = services.Aggregate("", (current, serviceType) => current + $"\t{serviceType.Name}\n");
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot start services; Mobile Center has not been configured. Failed to start the following services:\n" + serviceNames);
                 return;
             }
@@ -270,14 +267,17 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    var serviceInstance = (IMobileCenterService)serviceType.GetRuntimeProperty("Instance").GetValue(null);
+                    var serviceInstance = (IMobileCenterService)serviceType.GetRuntimeProperty("Instance")?.GetValue(null);
+                    if (serviceInstance == null)
+                    {
+                        throw new MobileCenterException("Service type must contain static 'Instance' property");
+                    }
                     StartService(serviceInstance);
                 }
-                catch (Exception ex) //TODO make this more specific
+                catch (MobileCenterException ex)
                 {
                     MobileCenterLog.Error(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", ex);
                 }
-
             }
         }
 

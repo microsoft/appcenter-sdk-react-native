@@ -123,12 +123,10 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             if (enabled && ChannelGroup != null && _sessionTracker == null)
             {
-
                 _sessionTracker = new SessionTracker(ChannelGroup, ChannelName);
                 CoreApplication.Resuming += ResumingHandler;
                 CoreApplication.Suspending += SuspendingHandler;
                 _sessionTracker.Resume();
-
             }
             else if (!enabled)
             {

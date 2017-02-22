@@ -70,14 +70,15 @@ namespace Microsoft.Azure.Mobile.Storage
             try
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, "The IDs for deleting log(s) is/are:");
                 var identifiers = _pendingDbIdentifierGroups[GetFullIdentifier(channelName, batchId)];
                 _pendingDbIdentifierGroups.Remove(GetFullIdentifier(channelName, batchId));
+                var deletedIdsMessage = "The IDs for deleting log(s) is/ are:";
                 foreach (var id in identifiers)
                 {
-                    MobileCenterLog.Debug(MobileCenterLog.LogTag, "\t" + id);
+                    deletedIdsMessage += "\n\t" + id;
                     _pendingDbIdentifiers.Remove(id);
                 }
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, deletedIdsMessage);
                 foreach (var id in identifiers)
                 {
                     await DeleteLogAsync(channelName, id);
@@ -253,11 +254,11 @@ namespace Microsoft.Azure.Mobile.Storage
         private void ProcessLogIds(string channelName, string batchId, IEnumerable<Tuple<Guid?, long>> idPairs)
         {
             var ids = new List<long>();
-            var message = "The SID/ID pairs for returning logs are:\n";
+            var message = "The SID/ID pairs for returning logs are:";
             foreach (var idPair in idPairs)
             {
                 var sidString = idPair.Item1?.ToString() ?? "(null)";
-                message += "\t" + sidString + " / " + idPair.Item2;
+                message += "\n\t" + sidString + " / " + idPair.Item2;
                 _pendingDbIdentifiers.Add(idPair.Item2);
                 ids.Add(idPair.Item2);
             }

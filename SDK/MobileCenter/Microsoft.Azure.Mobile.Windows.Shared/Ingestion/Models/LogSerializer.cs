@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
-    //TODO thread safety?
     public static class LogSerializer
     {
         private static readonly LogJsonConverter Converter = new LogJsonConverter();
