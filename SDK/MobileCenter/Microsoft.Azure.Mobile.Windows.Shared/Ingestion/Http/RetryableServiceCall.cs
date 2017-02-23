@@ -17,10 +17,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private int _retryCount;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
-        private readonly TimeSpan[] _retryIntervals = { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20) };
+        private readonly TimeSpan[] _retryIntervals = { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(.5), TimeSpan.FromMinutes(20) };
 
-        public override event Action Succeeded;
-        public override event ServiceCallFailedHandler Failed;
         public override CancellationToken CancellationToken => _tokenSource.Token;
 
         public RetryableServiceCall(IServiceCall decoratedApi) : base(decoratedApi)
@@ -85,11 +83,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 if (completedTask.IsFaulted)
                 {
-                    Failed?.Invoke(completedTask.Exception?.InnerException as IngestionException);
+                    ServiceCallFailedCallback?.Invoke(completedTask.Exception?.InnerException as IngestionException);
                 }
                 else
                 {
-                    Succeeded?.Invoke();
+                    ServiceCallSucceededCallback?.Invoke();
                 }
             });
         }

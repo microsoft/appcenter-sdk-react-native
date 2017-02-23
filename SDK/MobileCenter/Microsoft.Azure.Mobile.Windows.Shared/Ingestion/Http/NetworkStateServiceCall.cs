@@ -12,8 +12,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             _networkIngestion = networkIngestion;
         }
-        public override event Action Succeeded;
-        public override event ServiceCallFailedHandler Failed;
+
         public override void Execute()
         {
             _networkIngestion.ExecuteCallAsync(DecoratedApi).ContinueWith(completedTask =>
@@ -25,11 +24,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     {
                         return;
                     }
-                    Failed?.Invoke(innerException as IngestionException);
+                    ServiceCallFailedCallback?.Invoke(innerException as IngestionException);
                 }
                 else
                 {
-                    Succeeded?.Invoke();
+                    ServiceCallSucceededCallback?.Invoke();
                 }
             });
         }

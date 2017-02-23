@@ -26,21 +26,32 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             NetworkChange.NetworkAddressChanged += HandleNetworkAddressChanged;
         }
 
-        private void HandleNetworkAddressChanged(object sender, EventArgs e)
+        private async void HandleNetworkAddressChanged(object sender, EventArgs e)
         {
             _mutex.Wait();
-            foreach (var call in _calls)
+            try
             {
                 if (IsConnected)
                 {
-                    call.Execute();
+                    var callsCopy = new HashSet<IServiceCall>(_calls);
+                    foreach (var call in callsCopy)
+                    {
+                        _calls.Remove(call);
+                        call.Execute();
+                    }
                 }
                 else
                 {
-                    PauseServiceCall(call);
+                    foreach (var call in _calls)
+                    {
+                        PauseServiceCall(call);
+                    }
                 }
             }
-            _mutex.Release();
+            finally
+            {
+                _mutex.Release();
+            }
         }
 
         public override void Close()
@@ -68,6 +79,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return new NetworkStateServiceCall(call, this);
         }
 
+        /// <exception cref="NetworkUnavailableException"/>
         public override async Task ExecuteCallAsync(IServiceCall call)
         {
             await _mutex.WaitAsync();
@@ -90,14 +102,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 throw new NetworkUnavailableException();
             }
         }
-
         private void RemoveCall(IServiceCall call)
         {
             _mutex.Wait();
-            if (_calls.Contains(call))
-            {
-                _calls.Remove(call);
-            }
+            _calls.Remove(call);
             _mutex.Release();
         }
     }

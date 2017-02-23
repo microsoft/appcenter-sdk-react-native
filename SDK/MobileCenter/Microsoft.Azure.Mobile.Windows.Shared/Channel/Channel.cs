@@ -335,8 +335,8 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
             }
             var serviceCall = _ingestion.PrepareServiceCall(_appSecret, _installId, logs);
-            serviceCall.Failed += exception => HandleSendingFailure(batchId, exception);
-            serviceCall.Succeeded += async () =>
+            serviceCall.ServiceCallFailedCallback = exception => HandleSendingFailure(batchId, exception);
+            serviceCall.ServiceCallSucceededCallback = async () =>
             {
                 if (_currentState != stateSnapshot) return;
                 try

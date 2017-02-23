@@ -16,29 +16,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public Guid InstallId => DecoratedApi.InstallId;
         public virtual CancellationToken CancellationToken => DecoratedApi.CancellationToken;
 
-        public virtual event ServiceCallFailedHandler Failed
+        public ServiceCallFailedHandler ServiceCallFailedCallback
         {
-            add
-            {
-                DecoratedApi.Failed += value;
-            }
-            remove
-            {
-                DecoratedApi.Failed -= value;
-            }
+            get { return DecoratedApi.ServiceCallFailedCallback; }
+            set { DecoratedApi.ServiceCallFailedCallback = value; }
         }
-        public virtual event Action Succeeded
+        public Action ServiceCallSucceededCallback
         {
-            add
-            {
-                DecoratedApi.Succeeded += value;
-            }
-            remove
-            {
-                DecoratedApi.Succeeded -= value;
-            }
+            get { return DecoratedApi.ServiceCallSucceededCallback; }
+            set { DecoratedApi.ServiceCallSucceededCallback = value; }
         }
-        
+
         protected ServiceCallDecorator(IServiceCall decoratedApi)
         {
             DecoratedApi = decoratedApi;

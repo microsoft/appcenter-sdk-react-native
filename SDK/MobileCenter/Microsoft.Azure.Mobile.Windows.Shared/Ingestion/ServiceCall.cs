@@ -16,8 +16,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public CancellationToken CancellationToken => _tokenSource.Token;
 
-        public event ServiceCallFailedHandler Failed;
-        public event Action Succeeded;
+        public ServiceCallFailedHandler ServiceCallFailedCallback { get; set; }
+        public Action ServiceCallSucceededCallback { get; set; }
 
         protected ServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId)
         {
@@ -39,11 +39,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 if (completedTask.IsFaulted)
                 {
-                    Failed?.Invoke(completedTask.Exception?.InnerException as IngestionException);
+                    ServiceCallFailedCallback?.Invoke(completedTask.Exception?.InnerException as IngestionException);
                 }
                 else
                 {
-                    Succeeded?.Invoke();
+                    ServiceCallSucceededCallback?.Invoke();
                 }
             });
         }

@@ -18,8 +18,8 @@ namespace Microsoft.Azure.Mobile.Ingestion
         void Execute();
         void Cancel();
 
-        event ServiceCallFailedHandler Failed;
-        event Action Succeeded;
+        ServiceCallFailedHandler ServiceCallFailedCallback { get; set; }
+        Action ServiceCallSucceededCallback { get; set; }
   
     }
 }
