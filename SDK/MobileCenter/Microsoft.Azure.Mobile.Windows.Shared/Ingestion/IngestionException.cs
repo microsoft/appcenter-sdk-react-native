@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Rest;
+using System.Net.Http;
 
 namespace Microsoft.Azure.Mobile.Ingestion
 {
@@ -11,6 +12,10 @@ namespace Microsoft.Azure.Mobile.Ingestion
         {
             get
             {
+                if (InnerException is HttpRequestException)
+                {
+                    return true; //TODO is this correct?
+                }
                 var httpException = InnerException as HttpOperationException;
                 if (httpException == null)
                 {

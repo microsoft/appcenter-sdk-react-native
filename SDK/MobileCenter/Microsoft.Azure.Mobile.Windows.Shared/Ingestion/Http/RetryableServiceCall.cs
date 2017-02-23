@@ -20,9 +20,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         private readonly TimeSpan[] _retryIntervals = { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20) };
 
-        public RetryableServiceCall(IServiceCall decoratedApi, IIngestion decoratedIngestion, RetryableIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(decoratedApi, ingestion, logs, appSecret, installId)
+        public RetryableServiceCall(IServiceCall decoratedApi, RetryableIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(decoratedApi, ingestion, logs, appSecret, installId)
         {
-            _decoratedIngestion = decoratedIngestion;
         }
 
         ///<exception cref="IngestionException"/>
@@ -46,7 +45,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _tokenSource = _tokenSource ?? new CancellationTokenSource();
             try
             {
-                await _decoratedIngestion.SendLogsAsync(this);
+                await Ingestion.SendLogsAsync(this);
             }
             catch (IngestionException e)
             {
@@ -96,7 +95,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             });
         }
 
-        public override event ServiceCallFailedHandler Failed;
         public override event Action Succeeded;
+        public override event ServiceCallFailedHandler Failed;
     }
 }

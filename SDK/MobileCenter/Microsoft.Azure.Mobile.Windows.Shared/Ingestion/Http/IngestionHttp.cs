@@ -75,7 +75,16 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
 
             cancellationToken.ThrowIfCancellationRequested();
-            var response = await this.HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await this.HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            }
+            catch (HttpRequestException ex)
+            {
+                request.Dispose();
+                throw new IngestionException(ex);
+            }
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={response.Content.AsString()}");
             cancellationToken.ThrowIfCancellationRequested();
             if (response.StatusCode != HttpStatusCode.OK)

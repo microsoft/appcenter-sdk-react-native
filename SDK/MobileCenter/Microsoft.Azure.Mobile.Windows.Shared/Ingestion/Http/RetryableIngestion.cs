@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             CancellationToken cancellationToken = new CancellationToken())
         {
             var decoratedCall = DecoratedApi.PrepareServiceCall(appSecret, installId, logs, cancellationToken);
-            return new RetryableServiceCall(decoratedCall, DecoratedApi, this, logs, appSecret, installId);
+            return new RetryableServiceCall(decoratedCall, this, logs, appSecret, installId);
         }
     }
 }

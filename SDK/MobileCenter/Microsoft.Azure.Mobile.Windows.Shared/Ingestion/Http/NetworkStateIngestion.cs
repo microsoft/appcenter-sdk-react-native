@@ -96,5 +96,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public NetworkStateServiceCall(IServiceCall decoratedApi, IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(decoratedApi, ingestion, logs, appSecret, installId)
         {
         }
+
     }
 }
