@@ -155,7 +155,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private static IIngestion DefaultIngestion()
         {
-            return new RetryableIngestion(new IngestionHttp());
+            return new NetworkStateIngestion(new RetryableIngestion(new IngestionHttp()));
         }
 
         private static IStorage DefaultStorage()

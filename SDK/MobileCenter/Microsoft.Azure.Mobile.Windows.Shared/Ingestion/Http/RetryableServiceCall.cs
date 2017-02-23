@@ -8,7 +8,7 @@ using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public class RetryableServiceCall : ServiceCall
+    public class RetryableServiceCall : ServiceCallDecorator
     {
         private static readonly Random Random = new Random();
         private static readonly SemaphoreSlim RandomMutex = new SemaphoreSlim(1, 1);
@@ -17,9 +17,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private int _retryCount;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private readonly IIngestion _decoratedIngestion;
+
         private readonly TimeSpan[] _retryIntervals = { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20) };
 
-        public RetryableServiceCall(IIngestion decoratedIngestion, RetryableIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(ingestion, logs, appSecret, installId)
+        public RetryableServiceCall(IServiceCall decoratedApi, IIngestion decoratedIngestion, RetryableIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(decoratedApi, ingestion, logs, appSecret, installId)
         {
             _decoratedIngestion = decoratedIngestion;
         }
@@ -45,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _tokenSource = _tokenSource ?? new CancellationTokenSource();
             try
             {
-                await _decoratedIngestion.SendLogsAsync(AppSecret, InstallId, Logs, _tokenSource.Token);
+                await _decoratedIngestion.SendLogsAsync(this);
             }
             catch (IngestionException e)
             {
@@ -75,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return randomInt;
         }
 
-        public void Cancel()
+        public override void Cancel()
         {
             _tokenSource?.Cancel();
         }

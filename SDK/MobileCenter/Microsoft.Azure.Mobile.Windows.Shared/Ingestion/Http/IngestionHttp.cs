@@ -28,10 +28,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             this.HttpClient.Timeout = _requestTimeout;
         }
 
-        public async Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task SendLogsAsync(IServiceCall call)
         {
-            var logContainer = new LogContainer(logs);
-            await SendHttpAsync(appSecret, installId, logContainer, cancellationToken);
+            var logContainer = new LogContainer(call.Logs);
+            await SendHttpAsync(call.AppSecret, call.InstallId, logContainer, new CancellationToken()); //TODO cancellation token should actually come from servicecall
         }
 
         public void Close()
@@ -114,7 +114,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new ServiceCall(this, logs, appSecret, installId);
+            return new HttpServiceCall(this, logs, appSecret, installId);
+        }
+    }
+
+    public class HttpServiceCall : ServiceCall
+    {
+        public HttpServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(ingestion, logs, appSecret, installId)
+        {
         }
     }
 }

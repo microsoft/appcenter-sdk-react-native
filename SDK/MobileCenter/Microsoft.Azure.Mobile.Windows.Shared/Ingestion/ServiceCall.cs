@@ -8,31 +8,31 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public class ServiceCall : IServiceCall
+    public abstract class ServiceCall : IServiceCall
     {
         public virtual event ServiceCallFailedHandler Failed;
         public virtual event Action Succeeded;
 
-        protected IIngestion Ingestion { get; }
-        protected IList<Log> Logs { get; }
-        protected string AppSecret { get; }
-        protected Guid InstallId { get; }
+        public IIngestion Ingestion { get; }
+        public IList<Log> Logs { get; }
+        public string AppSecret { get; }
+        public Guid InstallId { get; }
 
-        public ServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId)
+        protected ServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId)
         {
             Ingestion = ingestion;
             Logs = logs;
             AppSecret = appSecret;
             InstallId = installId;
         }
-        public ServiceCall(IIngestion ingestion)
+
+        public virtual void Cancel()
         {
-            Ingestion = ingestion;
         }
 
         public virtual void Execute()
         {
-            Ingestion.SendLogsAsync(AppSecret, InstallId, Logs).ContinueWith(completedTask =>
+            Ingestion.SendLogsAsync(this).ContinueWith(completedTask =>
             {
                 if (completedTask.IsFaulted)
                 {

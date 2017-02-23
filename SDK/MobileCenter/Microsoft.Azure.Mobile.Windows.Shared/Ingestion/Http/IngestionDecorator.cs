@@ -25,9 +25,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public abstract IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
             CancellationToken cancellationToken = new CancellationToken());
 
-        public virtual async Task SendLogsAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task SendLogsAsync(IServiceCall call)
         {
-            await DecoratedApi.SendLogsAsync(appSecret, installId, logs, cancellationToken);
+            await DecoratedApi.SendLogsAsync(call);
         }
 
         public virtual void SetServerUrl(string serverUrl)
