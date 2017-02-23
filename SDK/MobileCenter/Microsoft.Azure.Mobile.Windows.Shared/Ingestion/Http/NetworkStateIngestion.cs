@@ -10,10 +10,16 @@ using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
+    public class NetworkUnavailableException : IngestionException
+    {
+    }
+
     public class NetworkStateIngestion : IngestionDecorator
     {
         private readonly HashSet<IServiceCall> _calls = new HashSet<IServiceCall>();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+
+        private bool IsConnected => NetworkInterface.GetIsNetworkAvailable();
 
         public NetworkStateIngestion(IIngestion decoratedApi) : base(decoratedApi)
         {
@@ -23,10 +29,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private void HandleNetworkAddressChanged(object sender, EventArgs e)
         {
             _mutex.Wait();
-            var connected = NetworkInterface.GetIsNetworkAvailable();
             foreach (var call in _calls)
             {
-                if (connected)
+                if (IsConnected)
                 {
                     call.Execute();
                 }
@@ -57,26 +62,32 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             call?.Cancel();
         }
 
-        public override IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
-            CancellationToken cancellationToken = new CancellationToken())
+        public override IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
         {
-            var decoratedCall = DecoratedApi.PrepareServiceCall(appSecret, installId, logs, cancellationToken);
-            return new NetworkStateServiceCall(decoratedCall, this, logs, appSecret, installId);
+            var call = base.PrepareServiceCall(appSecret, installId, logs);
+            return new NetworkStateServiceCall(call, this);
         }
 
-        ///<exception cref="IngestionException"/>
-        public override async Task SendLogsAsync(IServiceCall call)
+        public override async Task ExecuteCallAsync(IServiceCall call)
         {
-            try
+            await _mutex.WaitAsync();
+            _calls.Add(call);
+            _mutex.Release();
+
+            if (IsConnected)
             {
-                await _mutex.WaitAsync();
-                _calls.Add(call);
-                _mutex.Release();
-                await DecoratedApi.SendLogsAsync(call);
+                try
+                {
+                    await base.ExecuteCallAsync(call);
+                }
+                finally
+                {
+                    RemoveCall(call);
+                }
             }
-            finally
+            else
             {
-                RemoveCall(call);
+                throw new NetworkUnavailableException();
             }
         }
 
@@ -89,13 +100,5 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
             _mutex.Release();
         }
-    }
-
-    public class NetworkStateServiceCall : ServiceCallDecorator
-    {
-        public NetworkStateServiceCall(IServiceCall decoratedApi, IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(decoratedApi, ingestion, logs, appSecret, installId)
-        {
-        }
-
     }
 }

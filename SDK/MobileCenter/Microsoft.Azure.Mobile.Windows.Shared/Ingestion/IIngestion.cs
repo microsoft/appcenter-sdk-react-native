@@ -11,8 +11,8 @@ namespace Microsoft.Azure.Mobile.Ingestion
 {
     public interface IIngestion
     {
-        IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs, CancellationToken cancellationToken = default(CancellationToken));
-        Task SendLogsAsync(IServiceCall call);
+        IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs);
+        Task ExecuteCallAsync(IServiceCall call);
         void Close();
         void SetServerUrl(string serverUrl);
     }

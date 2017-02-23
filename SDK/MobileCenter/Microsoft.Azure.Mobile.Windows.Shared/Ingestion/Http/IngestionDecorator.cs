@@ -22,12 +22,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             DecoratedApi.Close();
         }
 
-        public abstract IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
-            CancellationToken cancellationToken = new CancellationToken());
-
-        public virtual async Task SendLogsAsync(IServiceCall call)
+        public virtual IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
         {
-            await DecoratedApi.SendLogsAsync(call);
+            return DecoratedApi.PrepareServiceCall(appSecret, installId, logs);
+        }
+
+        public virtual async Task ExecuteCallAsync(IServiceCall call)
+        {
+            await DecoratedApi.ExecuteCallAsync(call);
         }
 
         public virtual void SetServerUrl(string serverUrl)

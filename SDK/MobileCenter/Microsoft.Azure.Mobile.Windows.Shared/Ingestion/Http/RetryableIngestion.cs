@@ -16,11 +16,21 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
         }
 
-        public override IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
-            CancellationToken cancellationToken = new CancellationToken())
+        public override IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
         {
-            var decoratedCall = DecoratedApi.PrepareServiceCall(appSecret, installId, logs, cancellationToken);
-            return new RetryableServiceCall(decoratedCall, this, logs, appSecret, installId);
+            var decoratedCall = DecoratedApi.PrepareServiceCall(appSecret, installId, logs);
+            return new RetryableServiceCall(decoratedCall);
+        }
+
+        public override async Task ExecuteCallAsync(IServiceCall call)
+        {
+            var retryableCall = call as RetryableServiceCall;
+            if (retryableCall == null)
+            {
+                await base.ExecuteCallAsync(call);
+                return;
+            }
+            await retryableCall.RunWithRetriesAsync();
         }
     }
 }

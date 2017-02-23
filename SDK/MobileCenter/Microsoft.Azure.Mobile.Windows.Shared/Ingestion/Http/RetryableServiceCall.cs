@@ -13,14 +13,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private static readonly Random Random = new Random();
         private static readonly SemaphoreSlim RandomMutex = new SemaphoreSlim(1, 1);
 
-        private CancellationTokenSource _tokenSource;
+        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private int _retryCount;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private readonly IIngestion _decoratedIngestion;
 
         private readonly TimeSpan[] _retryIntervals = { TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20) };
 
-        public RetryableServiceCall(IServiceCall decoratedApi, RetryableIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(decoratedApi, ingestion, logs, appSecret, installId)
+        public override event Action Succeeded;
+        public override event ServiceCallFailedHandler Failed;
+        public override CancellationToken CancellationToken => _tokenSource.Token;
+
+        public RetryableServiceCall(IServiceCall decoratedApi) : base(decoratedApi)
         {
         }
 
@@ -30,11 +33,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             await _mutex.WaitAsync();
             try
             {
+                _tokenSource = new CancellationTokenSource();
                 await RunWithRetriesAsyncHelper();
             }
             finally
             {
-                _tokenSource = null;
                 _mutex.Release();
             }
         }
@@ -42,24 +45,20 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         ///<exception cref="IngestionException"/>
         private async Task RunWithRetriesAsyncHelper()
         {
-            _tokenSource = _tokenSource ?? new CancellationTokenSource();
             try
             {
-                await Ingestion.SendLogsAsync(this);
+                await Ingestion.ExecuteCallAsync(this);
             }
             catch (IngestionException e)
             {
-                await _mutex.WaitAsync();
                 if (!e.IsRecoverable || _retryCount >= _retryIntervals.Length)
                 {
-                    _mutex.Release();
                     throw;
                 }
 
                 var delayMilliseconds = (int)(_retryIntervals[_retryCount++].TotalMilliseconds / 2.0);
                 delayMilliseconds += await GetRandomIntAsync(delayMilliseconds);
                 var message = $"Try #{_retryCount} failed and will be retried in {delayMilliseconds} ms";
-                _mutex.Release();
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, message, e);
                 await Task.Delay(delayMilliseconds);
                 _tokenSource.Token.ThrowIfCancellationRequested();
@@ -95,7 +94,5 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             });
         }
 
-        public override event Action Succeeded;
-        public override event ServiceCallFailedHandler Failed;
     }
 }

@@ -28,22 +28,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             this.HttpClient.Timeout = _requestTimeout;
         }
 
-        public async Task SendLogsAsync(IServiceCall call)
+        /// <exception cref="IngestionException"/>
+        public async Task ExecuteCallAsync(IServiceCall call)
         {
             var logContainer = new LogContainer(call.Logs);
-            await SendHttpAsync(call.AppSecret, call.InstallId, logContainer, new CancellationToken()); //TODO cancellation token should actually come from servicecall
-        }
-
-        public void Close()
-        { }
-
-        public void SetServerUrl(string serverUrl)
-        {
-            _baseUrl = serverUrl;
-        }
-
-        private async Task SendHttpAsync(string appSecret, Guid installId, LogContainer logContainer, CancellationToken cancellationToken)
-        {
             /* Create HTTP transport objects */
             var request = new HttpRequestMessage
             {
@@ -53,13 +41,13 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {request.RequestUri}...");
 
             /* Set Headers */
-            request.Headers.Add(AppSecret, appSecret);
-            request.Headers.Add(InstallId, installId.ToString());
+            request.Headers.Add(AppSecret, call.AppSecret);
+            request.Headers.Add(InstallId, call.InstallId.ToString());
 
             /* Log headers */
             var headers = $"Headers: Content-Type={ContentTypeValue}, " +
-                          $"{AppSecret}={GetRedactedAppSecret(appSecret)}, " +
-                          $"{InstallId}={installId}";
+                          $"{AppSecret}={GetRedactedAppSecret(call.AppSecret)}, " +
+                          $"{InstallId}={call.InstallId}";
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, headers);
 
             /* Save times */
@@ -74,11 +62,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
             request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
 
-            cancellationToken.ThrowIfCancellationRequested();
+            call.CancellationToken.ThrowIfCancellationRequested();
             HttpResponseMessage response = null;
             try
             {
-                response = await this.HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                response = await this.HttpClient.SendAsync(request, call.CancellationToken).ConfigureAwait(false);
             }
             catch (HttpRequestException ex)
             {
@@ -86,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 throw new IngestionException(ex);
             }
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={response.Content.AsString()}");
-            cancellationToken.ThrowIfCancellationRequested();
+            call.CancellationToken.ThrowIfCancellationRequested();
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 string responseContent;
@@ -108,6 +96,16 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
         }
 
+        public void Close()
+        {
+            
+        }
+
+        public void SetServerUrl(string serverUrl)
+        {
+            _baseUrl = serverUrl;
+        }
+
         private static string GetRedactedAppSecret(string appSecret)
         {
             var endHidingIndex = Math.Max(appSecret.Length - MaximumCharactersDisplayedForAppSecret, 0);
@@ -120,17 +118,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return redactedAppSecret;
         }
 
-        public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
         {
             return new HttpServiceCall(this, logs, appSecret, installId);
-        }
-    }
-
-    public class HttpServiceCall : ServiceCall
-    {
-        public HttpServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId) : base(ingestion, logs, appSecret, installId)
-        {
         }
     }
 }
