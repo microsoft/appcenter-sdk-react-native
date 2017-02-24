@@ -37,10 +37,10 @@ namespace Microsoft.Azure.Mobile
         public static Guid? InstallId { get; }
 
         /// <summary>
-        ///     Change the base URL (scheme + authority + port only) used to communicate with the backend.
+        ///     Change the base URL (scheme + authority + port only) used to send logs.
         /// </summary>
-        /// <param name="serverUrl">Base URL to use for server communication.</param>
-        public static void SetServerUrl(string serverUrl)
+        /// <param name="logUrl">base log URL.</param>
+        public static void SetLogUrl(string logUrl)
         {
         }
 
