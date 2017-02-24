@@ -11,6 +11,12 @@
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/p2wifj</iconUrl>
+    <dependencies>
+      <group targetFramework="uap10.0">
+        <dependency id="Microsoft.Data.SQLite" version="1.1.0"/>
+        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.5"/>
+      </group>
+    </dependencies>
   </metadata>
   <files>
 
@@ -24,6 +30,9 @@
     <!-- iOS -->
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll" />
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll" />
+
+    <!-- UWP -->
+    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.dll" />
 
   </files>
 </package>

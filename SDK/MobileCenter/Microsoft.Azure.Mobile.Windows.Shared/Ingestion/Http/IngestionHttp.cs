@@ -62,7 +62,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
             request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
 
-            call.CancellationToken.ThrowIfCancellationRequested();
+            if (call.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
             HttpResponseMessage response = null;
             try
             {
@@ -74,7 +77,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 throw new IngestionException(ex);
             }
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={response.Content.AsString()}");
-            call.CancellationToken.ThrowIfCancellationRequested();
+            if (call.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 string responseContent;

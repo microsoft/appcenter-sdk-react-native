@@ -28,5 +28,8 @@
     <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll" target="lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.dll" />
     <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" />
 
+    <!-- UWP -->
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.Analytics.dll" />
+
   </files>
 </package>

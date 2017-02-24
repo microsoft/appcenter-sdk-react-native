@@ -350,7 +350,6 @@ namespace Microsoft.Azure.Mobile.Channel
                 await _mutex.WaitAsync();
                 try
                 {
-
                     if (_currentState != stateSnapshot) return;
                     var removedLogs = _sendingBatches[batchId];
                     _sendingBatches.Remove(batchId);

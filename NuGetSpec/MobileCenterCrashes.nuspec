@@ -28,5 +28,8 @@
     <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll" />
     <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" />
 
+    <!-- UWP -->
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.Crashes.dll" />
+
   </files>
 </package>

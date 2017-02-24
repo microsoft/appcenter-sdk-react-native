@@ -6,19 +6,19 @@
 class MobileCenterModule {
 	public String AndroidModule { get; set; }
 	public String IosModule { get; set; }
-	public String XamarinModule { get; set; }
+	public String DotNetModule { get; set; }
 	public String NuGetVersion { get; set; }
 	public String NuGetSpecFilename { get; set; }
 
-	public MobileCenterModule(String android, String ios, String xamarin, String nuGetSpecFilename) {
+	public MobileCenterModule(String android, String ios, String dotnet, String nuGetSpecFilename) {
 		AndroidModule = android;
 		IosModule = ios;
-		XamarinModule = xamarin;
+		DotNetModule = dotnet;
 		NuGetSpecFilename = nuGetSpecFilename;
 	}
 }
 
-// SDK versions
+// Native SDK versions
 var ANDROID_SDK_VERSION = "0.5.0";
 var IOS_SDK_VERSION = "0.4.1";
 
@@ -50,7 +50,7 @@ Task("Version")
 {
 	// Read AssemblyInfo.cs and extract versions for modules.
 	foreach (var module in MOBILECENTER_MODULES) {
-		var assemblyInfo = ParseAssemblyInfo("./" + module.XamarinModule + "/Properties/AssemblyInfo.cs");
+		var assemblyInfo = ParseAssemblyInfo("./" + module.DotNetModule + "/Properties/AssemblyInfo.cs");
 		module.NuGetVersion = assemblyInfo.AssemblyInformationalVersion;
 	}
 });
@@ -61,8 +61,8 @@ Task("Build")
 	.Does(() => 
 {
 	// Build solution
-	NuGetRestore("./MobileCenter-SDK-Build.sln");
-	DotNetBuild("./MobileCenter-SDK-Build.sln", c => c.Configuration = "Release");
+	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
+	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", c => c.Configuration = "Release");
 });
 
 // Task dependencies for binding each platform.
@@ -82,10 +82,10 @@ Task("Externals-Android")
 	DownloadFile(ANDROID_URL, "./externals/android/android.zip");
 	Unzip("./externals/android/android.zip", "./externals/android/");
 
-	// Copy files to $XamarinModule$.Android.Bindings/Jars
+	// Copy files to $DotNetModule$.Android.Bindings/Jars
 	foreach (var module in MOBILECENTER_MODULES) {
-		var files = GetFiles("./externals/android/*/" + module.AndroidModule);
-		CopyFiles(files, module.XamarinModule + ".Android.Bindings/Jars/");
+		var files = GetFiles("./externals/android/*/" + module.DotNetModule);
+		CopyFiles(files, module.DotNetModule + ".Android.Bindings/Jars/");
 	}
 });
 
@@ -130,7 +130,7 @@ Task("NuGet")
 	// Packaging NuGets.
 	foreach (var module in MOBILECENTER_MODULES) {
 		var spec = GetFiles("./NuGetSpec/" + module.NuGetSpecFilename);
-		Information("Building a NuGet package for " + module.XamarinModule + " version " + module.NuGetVersion);
+		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {
 			BasePath = basePath,
 			Verbosity = NuGetVerbosity.Detailed,
@@ -191,3 +191,4 @@ Task("clean").Does(() =>
 });
 
 RunTarget(TARGET);
+
