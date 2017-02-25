@@ -54,14 +54,12 @@
   <ItemGroup>
     <None Include="Additions\AboutAdditions.txt" />
     <None Include="Jars\AboutJars.txt" />
+    <LibraryProjectZip Include="Jars\mobile-center-crashes-release.aar" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\EnumFields.xml" />
     <TransformFile Include="Transforms\EnumMethods.xml" />
     <TransformFile Include="Transforms\Metadata.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <LibraryProjectZip Include="Jars\mobile-center-crashes-release.aar" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
