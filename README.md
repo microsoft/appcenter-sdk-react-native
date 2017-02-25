@@ -80,7 +80,7 @@ Now that you've integrated the SDK in your application, it's time to start the S
 **Note:** If you installed the "Mobile Center Crashes" package for iOS prior to version 0.3.0, your iOS project should contain the folder
 "MobileCenterFrameworks" and its contents. It is no longer required and safe to delete.
 
-**Note:** Due to a bug in Xamarin.iOS 10.4, you need to **uncheck** `Enable incremental builds` in iOS Build Project Options.
+**Note:** Due to a bug in Xamarin.iOS 10.4, you need to *uncheck* **Enable incremental builds** in iOS Build Project Options.
 
 ## 4. Start the SDK
 
