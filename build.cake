@@ -30,8 +30,8 @@ class MobileCenterModule {
 }
 
 // Platform specific nuget folders
-var MAC_NUGETS_FOLDER = "./mac_nugets";
-var WINDOWS_NUGETS_FOLDER = "./windows_nugets";
+var MAC_NUGETS_FOLDER = "./MacNuGetPackages";
+var WINDOWS_NUGETS_FOLDER = "./WindowsNuGetPackages";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.5.0";
@@ -168,7 +168,11 @@ Task("MacNuGet")
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
-		CopyFile("Microsoft.Azure.Mobile*.nupkg", MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg");
+	var files = GetFiles("Microsoft.Azure.Mobile*.nupkg");
+		foreach (var file in files)
+		{
+			CopyFile(file, MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg");
+		}
 		MoveFiles("./Microsoft.Azure.Mobile*.nupkg", "./output");
 	}
 });
@@ -260,17 +264,17 @@ Task("DownloadNuGets").Does(()=>
 {
 	if (IsRunningOnUnix())
 	{
-		DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
-		DownloadFile(WINDOWS_NUGETS_URL, "nugets.zip");
-		Unzip("nugets.zip", ".");
-		DeleteFiles("nugets.zip");
+		CleanDirectory(WINDOWS_NUGETS_FOLDER);
+		DownloadFile(WINDOWS_NUGETS_URL, WINDOWS_NUGETS_ZIP);
+		Unzip(WINDOWS_NUGETS_ZIP, WINDOWS_NUGETS_FOLDER);
+		DeleteFiles(WINDOWS_NUGETS_ZIP);
 	}
 	else
 	{
-		DeleteDirectory(MAC_NUGETS_FOLDER, true);
-		DownloadFile(MAC_NUGETS_URL, "nugets.zip");
-		Unzip("nugets.zip", ".");
-		DeleteFiles("nugets.zip");
+		CleanDirectory(MAC_NUGETS_FOLDER);
+		DownloadFile(MAC_NUGETS_URL, MAC_NUGETS_ZIP);
+		Unzip(MAC_NUGETS_ZIP, MAC_NUGETS_FOLDER);
+		DeleteFiles(MAC_NUGETS_ZIP);
 	}
 });
 
@@ -280,31 +284,38 @@ Task("MergeNuGets")
 	.IsDependentOn("Version")
 	.Does(()=>
 {
+	var nugetMacUnzipped = "mac_nuget_folder";
+	var nugetWindowsUnzipped = "windows_nuget_folder";
+	CleanDirectory(nugetMacUnzipped);
+	CleanDirectory(nugetWindowsUnzipped);
+
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var nugetMacUnzipped = "mac_nuget_folder";
-		var nugetWindowsUnzipped = "windows_nuget_folder";
+
 		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg";
 		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg";
 
+		/* Unzip nuget package */
 		Unzip(nugetMac, nugetMacUnzipped);
 		Unzip(nugetWindows, nugetWindowsUnzipped);
 
-		var spec = GetFiles("./NuGetSpec/" + module.MainNuGetSpecFilename);
-		var propertiesArgument = 	"-properties mac_dir=" + nugetMacUnzipped + 
-									";windows_dir=" + nugetWindowsUnzipped;
-
+		/* Prepare nuspec by making substitutions */
+		CopyFile("./NuGetSpec/" + module.MainNuGetSpecFilename, "spec_copy");
+		ReplaceTextInFiles("spec_copy", "$mac_dir$", nugetMacUnzipped);
+		ReplaceTextInFiles("spec_copy", "$windows_dir$", nugetWindowsUnzipped);
+		var spec = GetFiles("spec_copy");
 		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion,
-			ArgumentCustomization = args => args += propertiesArgument
 		});
-
+		DeleteFiles("spec_copy");
 		DeleteDirectory(nugetMacUnzipped, true);
 		DeleteDirectory(nugetWindowsUnzipped, true);
 	}
 	
+	DeleteDirectory(MAC_NUGETS_FOLDER, true);
+	DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "./output");
 });

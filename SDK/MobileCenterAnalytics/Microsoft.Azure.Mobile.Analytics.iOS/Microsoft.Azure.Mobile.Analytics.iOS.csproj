@@ -50,5 +50,19 @@
     <Compile Include="Analytics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">
+      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
+      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.iOS.Bindings\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.csproj">
+      <Project>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics.iOS.Bindings</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

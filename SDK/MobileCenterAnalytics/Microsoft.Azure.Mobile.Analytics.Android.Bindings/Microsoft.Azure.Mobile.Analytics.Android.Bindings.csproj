@@ -57,6 +57,13 @@
     <None Include="Jars\AboutJars.txt" />
     <LibraryProjectZip Include="Jars\mobile-center-analytics-release.aar" />
   </ItemGroup>
+<ItemGroup>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
+      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
+      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
+    </ProjectReference>
+  </ItemGroup>
+
   <ItemGroup>
     <TransformFile Include="Transforms\EnumFields.xml" />
     <TransformFile Include="Transforms\EnumMethods.xml" />
