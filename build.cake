@@ -101,10 +101,7 @@ Task("Bindings-Ios").IsDependentOn("Externals-Ios");
 Task("Externals-Android")
 	.Does(() => 
 {
-	// Clean up download directory.
-	if(DirectoryExists("./externals/android"))
-		DeleteDirectory("./externals/android", true);
-	CreateDirectory("./externals/android");
+	CleanDirectory("./externals/android");
 
 	// Download zip file.
 	DownloadFile(ANDROID_URL, "./externals/android/android.zip");
@@ -121,10 +118,7 @@ Task("Externals-Android")
 Task("Externals-Ios")
 	.Does(() =>
 {
-	// Clean up download directory.
-	if(DirectoryExists("./externals/ios"))
-		DeleteDirectory("./externals/ios", true);
-	CreateDirectory("./externals/ios");
+	CleanDirectory("./externals/ios");
 
 	// Download zip file containing MobileCenter frameworks
 	DownloadFile(IOS_URL, "./externals/ios/ios.zip");
@@ -149,15 +143,8 @@ Task("MacNuGet")
 {
 	// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
-
-	if (DirectoryExists(MAC_NUGETS_FOLDER))
-		DeleteDirectory(MAC_NUGETS_FOLDER, true);
-	CreateDirectory(MAC_NUGETS_FOLDER);
-
-	// Clean up output directory. 
-	if(DirectoryExists("./output"))
-		DeleteDirectory("./output", true);
-	CreateDirectory("./output");
+	CleanDirectory(MAC_NUGETS_FOLDER);
+	CleanDirectory("./output");
 
 	// Packaging NuGets.
 	foreach (var module in MOBILECENTER_MODULES) {
@@ -168,7 +155,7 @@ Task("MacNuGet")
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
-	var files = GetFiles("Microsoft.Azure.Mobile*.nupkg");
+		var files = GetFiles("Microsoft.Azure.Mobile*.nupkg");
 		foreach (var file in files)
 		{
 			CopyFile(file, MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg");
@@ -185,15 +172,8 @@ Task("WindowsNuGet")
 {
 	// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
-
-	if (DirectoryExists(WINDOWS_NUGETS_FOLDER))
-		DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
-	CreateDirectory(WINDOWS_NUGETS_FOLDER);
-
-	// Clean up output directory. 
-	if(DirectoryExists("./output"))
-		DeleteDirectory("./output", true);
-	CreateDirectory("./output");
+	CleanDirectory(WINDOWS_NUGETS_FOLDER);
+	CleanDirectory("./output");
 
 	// Packaging NuGets.
 	foreach (var module in MOBILECENTER_MODULES) {

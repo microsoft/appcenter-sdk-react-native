@@ -7,8 +7,8 @@
 [CmdletBinding()]
 Param(
     [string]$Script = "build.cake",
-    #[string]$Target = "Default",
-    [string]$Target = "UploadNuGets",
+    [alias("t")]
+    [string]$Target = "Default",
     [ValidateSet("Release", "Debug")]
     [string]$Configuration = "Release",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
