@@ -1,4 +1,4 @@
-﻿using System;
+﻿#define DEBUG
 using System.Threading;
 
 namespace Microsoft.Azure.Mobile

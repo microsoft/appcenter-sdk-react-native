@@ -21,7 +21,7 @@
   <files>
 
     <!-- UWP -->
-    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.dll" />
+    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/uap/Microsoft.Azure.Mobile.dll" />
 
   </files>
 </package>
