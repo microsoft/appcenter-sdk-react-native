@@ -1,23 +1,37 @@
 #tool nuget:?package=XamarinComponent
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
+#addin "Cake.AzureStorage"
 
 // MobileCenter module class definition.
 class MobileCenterModule {
+	static int id = 0;
 	public String AndroidModule { get; set; }
 	public String IosModule { get; set; }
 	public String DotNetModule { get; set; }
 	public String NuGetVersion { get; set; }
-	public String MacNuGetSpecFilename =>"Mac" + MainNugetSpecFilename;
-	public String WindowsNuGetSpecFilename =>"Windows" + MainNugetSpecFilename;
-	public String MainNugetSpecFilename { get; set; }
-	public MobileCenterModule(String android, String ios, String dotnet, String mainNugetSpecFilename) {
+	public int Identifier { get; set; }
+	public String MacNuGetSpecFilename 
+	{
+		get { return  "Mac" + MainNuGetSpecFilename; }
+	}
+	public String WindowsNuGetSpecFilename
+	{
+		get { return  "Windows" + MainNuGetSpecFilename; }
+	}
+	public String MainNuGetSpecFilename { get; set; }
+	public MobileCenterModule(String android, String ios, String dotnet, String mainNuGetSpecFilename) {
 		AndroidModule = android;
 		IosModule = ios;
 		DotNetModule = dotnet;
-		MainNugetSpecFilename = mainNugetSpecFilename;
+		MainNuGetSpecFilename = mainNuGetSpecFilename;
+		Identifier = id++;
 	}
 }
+
+// Platform specific nuget folders
+var MAC_NUGETS_FOLDER = "./mac_nugets";
+var WINDOWS_NUGETS_FOLDER = "./windows_nugets";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.5.0";
@@ -35,11 +49,16 @@ var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
 
+var MAC_NUGETS_ZIP = "MacNuGetPackages.zip";
+var WINDOWS_NUGETS_ZIP = "WindowsNuGetPackages.zip";
+var MAC_NUGETS_URL = SDK_STORAGE_URL + MAC_NUGETS_ZIP;
+var WINDOWS_NUGETS_URL = SDK_STORAGE_URL + WINDOWS_NUGETS_ZIP;
+
 // Available MobileCenter modules.
 var MOBILECENTER_MODULES = new [] {
-	new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenterMac.nuspec"),
-	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalyticsMac.nuspec"),
-	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashesMac.nuspec")
+	new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
+	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
+	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
 };
 
 // Task TARGET for build
@@ -57,7 +76,7 @@ Task("Version")
 });
 
 // Building code task.
-Task("Build")
+Task("MacBuild")
 	.IsDependentOn("Externals")
 	.Does(() => 
 {
@@ -65,6 +84,7 @@ Task("Build")
 	NuGetRestore("./MobileCenter-SDK-Build-Mac.sln");
 	DotNetBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
 });
+
 // Building code task.
 Task("WindowsBuild").Does(() => 
 {
@@ -122,13 +142,17 @@ Task("Externals-Ios")
 Task("Externals").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Android");
 
 // Packaging NuGets.
-Task("NuGet")
-	.IsDependentOn("Build")
+Task("MacNuGet")
+	.IsDependentOn("MacBuild")
 	.IsDependentOn("Version")
 	.Does(() => 
 {
 	// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
+
+	if (DirectoryExists(MAC_NUGETS_FOLDER))
+		DeleteDirectory(MAC_NUGETS_FOLDER, true);
+	CreateDirectory(MAC_NUGETS_FOLDER);
 
 	// Clean up output directory. 
 	if(DirectoryExists("./output"))
@@ -144,9 +168,9 @@ Task("NuGet")
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
+		CopyFile("Microsoft.Azure.Mobile*.nupkg", MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg");
+		MoveFiles("./Microsoft.Azure.Mobile*.nupkg", "./output");
 	}
-
-	MoveFiles("./Microsoft.Azure.Mobile*.nupkg", "./output");
 });
 
 // Packaging Windows NuGets
@@ -157,6 +181,10 @@ Task("WindowsNuGet")
 {
 	// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
+
+	if (DirectoryExists(WINDOWS_NUGETS_FOLDER))
+		DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
+	CreateDirectory(WINDOWS_NUGETS_FOLDER);
 
 	// Clean up output directory. 
 	if(DirectoryExists("./output"))
@@ -172,14 +200,17 @@ Task("WindowsNuGet")
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
+		var files = GetFiles("Microsoft.Azure.Mobile*.nupkg");
+		foreach (var file in files)
+		{
+			CopyFile(file, WINDOWS_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg");
+		}
+		MoveFiles("./Microsoft.Azure.Mobile*.nupkg", "./output");
 	}
-
-	MoveFiles("./Microsoft.Azure.Mobile*.nupkg", "./output");
 });
 
-
 // Main Task.
-Task("Default").IsDependentOn("NuGet");
+Task("Default").IsDependentOn("BuildEnvironmentNuGets");
 
 // Build tests
 Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
@@ -187,47 +218,95 @@ Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 });
 
-Task("PrepareNuGetsForMerge").Does(()=>
+Task("BuildEnvironmentNuGets").Does(()=>
 {
- /* do stuff */
+	var NuGetTarget = IsRunningOnUnix() ? "MacNuGet" : "WindowsNuGet";
+	RunTarget(NuGetTarget);
 });
 
-Task("MergeNuGets").IsDependentOn("Version").IsDependentOn("PrepareNuGetsForMerge").Does(()=>
+Task("UploadNuGets")
+	.IsDependentOn("BuildEnvironmentNuGets")
+	.Does(()=>
 {
-foreach (var module in MOBILECENTER_MODULES)
+	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
+	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
+	if (IsRunningOnUnix())
+	{
+		Zip(MAC_NUGETS_FOLDER, MAC_NUGETS_ZIP);
+		AzureStorage.UploadFileToBlob(new AzureStorageSettings
+		{
+			AccountName = accountName,
+			ContainerName = "sdk",
+			BlobName = MAC_NUGETS_ZIP,
+			Key = apiKey,
+			UseHttps = true
+		}, MAC_NUGETS_ZIP);
+	}
+	else
+	{
+		Zip(WINDOWS_NUGETS_FOLDER, WINDOWS_NUGETS_ZIP);
+		AzureStorage.UploadFileToBlob(new AzureStorageSettings
+		{
+			AccountName = accountName,
+			ContainerName = "sdk",
+			BlobName = WINDOWS_NUGETS_ZIP,
+			Key = apiKey,
+			UseHttps = true
+		}, WINDOWS_NUGETS_ZIP);
+	}
+});
+
+Task("DownloadNuGets").Does(()=>
 {
+	if (IsRunningOnUnix())
+	{
+		DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
+		DownloadFile(WINDOWS_NUGETS_URL, "nugets.zip");
+		Unzip("nugets.zip", ".");
+		DeleteFiles("nugets.zip");
+	}
+	else
+	{
+		DeleteDirectory(MAC_NUGETS_FOLDER, true);
+		DownloadFile(MAC_NUGETS_URL, "nugets.zip");
+		Unzip("nugets.zip", ".");
+		DeleteFiles("nugets.zip");
+	}
+});
 
-var nugetMacUnzipped = "mac_nuget_folder"
-var nugetWindowsUnzipped = "windows_nuget_folder"
-var nugetMac = "????";
-var nugetWindows = "?????";
+Task("MergeNuGets")
+	.IsDependentOn("DownloadNuGets")
+	.IsDependentOn("BuildEnvironmentNuGets")
+	.IsDependentOn("Version")
+	.Does(()=>
+{
+	foreach (var module in MOBILECENTER_MODULES)
+	{
+		var nugetMacUnzipped = "mac_nuget_folder";
+		var nugetWindowsUnzipped = "windows_nuget_folder";
+		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg";
+		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg";
 
-	Unzip(nugetMac, nugetMacUnzipped);
-	Unzip(nugetWindows, nugetWindowsUnzipped);
+		Unzip(nugetMac, nugetMacUnzipped);
+		Unzip(nugetWindows, nugetWindowsUnzipped);
 
-		var spec = GetFiles("./NuGetSpec/" + module.NuGetSpecFilename);
+		var spec = GetFiles("./NuGetSpec/" + module.MainNuGetSpecFilename);
+		var propertiesArgument = 	"-properties mac_dir=" + nugetMacUnzipped + 
+									";windows_dir=" + nugetWindowsUnzipped;
+
 		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {
-			BasePath = basePath,
 			Verbosity = NuGetVerbosity.Detailed,
-			Version = module.NuGetVersion
+			Version = module.NuGetVersion,
+			ArgumentCustomization = args => args += propertiesArgument
 		});
-}
 
-MAC_DIR=$TEMP_DIRECTORY/$NUGET_MAC_UNZIPPED
-WINDOWS_DIR=$TEMP_DIRECTORY/$NUGET_WINDOWS_UNZIPPED
-OUTPUT_DIRECTORY="../output"
-
-# Unzip the nuget packages and send them to a temporary directory
-unzip $NUGET_MAC -d $MAC_DIR
-unzip $NUGET_WINDOWS -d $WINDOWS_DIR
-
-# Create the Nuget pakage
-//toolsettings.argumentcustomization for the properties
-nuget pack $NUSPEC properties "mac_dir=$MAC_DIR;windows_dir=$WINDOWS_DIR;version=$VERSION" outputdirectory $OUTPUT_DIRECTORY
-
-# Clean up
-rm -rf $TEMP_DIRECTORY
+		DeleteDirectory(nugetMacUnzipped, true);
+		DeleteDirectory(nugetWindowsUnzipped, true);
+	}
+	
+	CleanDirectory("output");
+	MoveFiles("*.nupkg", "./output");
 });
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
@@ -269,6 +348,13 @@ Task("clean").Does(() =>
 	CleanDirectories("./**/bin");
 	CleanDirectories("./**/obj");
 });
+
+void CleanDirectory(string directoryName)
+{
+	if(DirectoryExists(directoryName))
+		DeleteDirectory(directoryName, true);
+	CreateDirectory(directoryName);
+}
 
 RunTarget(TARGET);
 

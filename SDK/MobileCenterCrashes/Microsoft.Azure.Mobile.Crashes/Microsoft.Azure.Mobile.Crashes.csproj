@@ -46,12 +46,6 @@
     <Compile Include="ErrorBinaryAttachment.cs" />
     <Compile Include="TestCrashException.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj">
-      <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
-      <Name>Microsoft.Azure.Mobile</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
