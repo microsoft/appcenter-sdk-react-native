@@ -24,6 +24,15 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
+        public void InstallIdIsCorrectFormat()
+        {
+            CorePageHelper.app = app;
+            app.Tap(TestStrings.GoToCorePageButton);
+            var id = CorePageHelper.InstallId;
+            Assert.IsTrue(id.HasValue);
+        }
+
+        [Test]
         public void TestEnablingAndDisablingServices()
         {
             ServiceStateHelper.app = app;
