@@ -20,9 +20,6 @@
 			<ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.ResetPageButton}" Text="Reset Page" Clicked="ResetPage" />
             </ViewCell>
-            <ViewCell>
-                <Button AutomationId="{x:Static local:TestStrings.DismissButton}" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
-            </ViewCell>
         </TableSection>
     </TableView>
 </ContentPage>

@@ -12,6 +12,11 @@
         public static readonly string GoToCrashesPageButton = "GoToCrashesPageButton";
         public static readonly string GoToAnalyticsPageButton = "GoToAnalyticsPageButton";
         public static readonly string GoToCrashResultsPageButton = "GoToCrashResultsPageButton";
+        public static readonly string GoToCorePageButton = "GoToCorePageButton";
+
+        /* CorePage */
+        /* Automation Ids */
+        public static readonly string InstallIdLabel = "InstallIdLabel";
 
         /* ToggleStatesPage */
         /* Automation Ids */
