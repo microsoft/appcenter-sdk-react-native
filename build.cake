@@ -204,6 +204,7 @@ Task("UploadNuGets")
 		Key = apiKey,
 		UseHttps = true
 	}, nugetsZip);
+	RunTarget("RemoveTemporaries");
 });
 
 Task("DownloadNuGets").Does(()=>
