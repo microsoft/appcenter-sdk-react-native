@@ -190,6 +190,7 @@ Task("NuGet")
 }).OnError(()=>RunTarget("clean"));
 
 Task("PrepareNuGetsForMerge")
+	.IsDependentOn("DownloadNuGets")
 	.IsDependentOn("AssemblyTitle")
 	.Does(()=>
 {
@@ -234,7 +235,6 @@ Task("MergeNuGets")
 	.IsDependentOn("PrepareNuGetsForMerge")
 	.Does(()=>
 {
-	DownloadNuGets();
 	Information("Beginning NuGet merge...");
 	var nugetMacUnzipped = TEMPORARY_PREFIX + "mac_nuget_folder";
 	var nugetWindowsUnzipped = TEMPORARY_PREFIX + "windows_nuget_folder";
@@ -344,7 +344,7 @@ Task("clean")
 	CleanDirectories("./**/obj");
 });
 
-void DownloadNuGets()
+Task("DownloadNuGets").Does(()=>
 {
 	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
 	Information("Downloading NuGet packages compiled on a " + otherTargetName + "...");
@@ -356,7 +356,7 @@ void DownloadNuGets()
 	Unzip(nugetsZip, nugetsFolder);
 	DeleteFiles(nugetsZip);
 	Information("Successfully downloaded NuGet packages.");
-}
+});
 
 void DeleteDirectoryIfExists(string directoryName)
 {
