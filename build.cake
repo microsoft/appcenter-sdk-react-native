@@ -9,7 +9,7 @@ class MobileCenterModule {
 	public string IosModule { get; set; }
 	public string DotNetModule { get; set; }
 	public string NuGetVersion { get; set; }
-	public string AssemblyTitle { get; set; }
+	public string PackageId { get; set; }
 	public string MainNuGetSpecFilename { get; set; }
 	public string MacNuGetSpecFilename 
 	{
@@ -78,14 +78,20 @@ Task("Version")
 });
 
 // Assembly name task
-Task("AssemblyTitle")
+Task("PackageId")
 	.Does(() =>
 {
 	// Read AssemblyInfo.cs and extract versions for modules.
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var assemblyInfo = ParseAssemblyInfo("./" + module.DotNetModule + "/Properties/AssemblyInfo.cs");
-		module.AssemblyTitle = assemblyInfo.Title;
+		var nuspecText = FileReadText("./NuGetSpec/" + module.MainNuGetSpecFilename);
+		var startTag = "<id>";
+		var endTag = "</id>";
+		int startIndex = nuspecText.IndexOf(startTag) + startTag.Length;
+		int length = nuspecText.IndexOf(endTag) - startIndex;
+		var id = nuspecText.Substring(startIndex, length);
+		Information("id = " + id);
+		module.PackageId = id;
 	}
 });
 
@@ -191,7 +197,7 @@ Task("NuGet")
 
 Task("PrepareNuGetsForMerge")
 	.IsDependentOn("DownloadNuGets")
-	.IsDependentOn("AssemblyTitle")
+	.IsDependentOn("PackageId")
 	.Does(()=>
 {
 	var nugetFolder = IsRunningOnUnix() ? MAC_NUGETS_FOLDER : WINDOWS_NUGETS_FOLDER;
@@ -201,9 +207,9 @@ Task("PrepareNuGetsForMerge")
 	{
 		foreach (var module in MOBILECENTER_MODULES)
 		{
-			if (file.GetFilename().ToString().StartsWith(module.AssemblyTitle))
+			if (file.GetFilename().ToString().StartsWith(module.PackageId))
 			{
-				CopyFile(file, nugetFolder + "/" + module.AssemblyTitle + ".nupkg");
+				CopyFile(file, nugetFolder + "/" + module.PackageId + ".nupkg");
 				break;
 			}
 		}
@@ -244,8 +250,8 @@ Task("MergeNuGets")
 
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.AssemblyTitle + ".nupkg";
-		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.AssemblyTitle + ".nupkg";
+		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.PackageId + ".nupkg";
+		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.PackageId + ".nupkg";
 
 		/* Unzip nuget package */
 		Unzip(nugetMac, nugetMacUnzipped);
@@ -274,7 +280,7 @@ Task("MergeNuGets")
 	DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
-}).OnError(()=>RunTarget("clean"));
+});
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
