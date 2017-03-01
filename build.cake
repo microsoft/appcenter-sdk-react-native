@@ -11,6 +11,13 @@ class MobileCenterModule {
 	public string NuGetVersion { get; set; }
 	public string PackageId { get; set; }
 	public string MainNuGetSpecFilename { get; set; }
+	public string NuGetPackageName
+	{
+		get
+		{
+			return PackageId + "." + NuGetVersion + ".nupkg";
+		}
+	}
 	public string MacNuGetSpecFilename 
 	{
 		get { return  "Mac" + MainNuGetSpecFilename; }
@@ -77,7 +84,7 @@ Task("Version")
 	}
 });
 
-// Assembly name task
+// Package id task
 Task("PackageId")
 	.Does(() =>
 {
@@ -197,7 +204,12 @@ Task("NuGet")
 
 Task("PrepareNuGetsForMerge")
 	.IsDependentOn("DownloadNuGets")
+	.IsDependentOn("PrepareNuGetsForRemoteAction");
+
+
+Task("PrepareNuGetsForRemoteAction")
 	.IsDependentOn("PackageId")
+	.IsDependentOn("Version")
 	.Does(()=>
 {
 	var nugetFolder = IsRunningOnUnix() ? MAC_NUGETS_FOLDER : WINDOWS_NUGETS_FOLDER;
@@ -207,9 +219,9 @@ Task("PrepareNuGetsForMerge")
 	{
 		foreach (var module in MOBILECENTER_MODULES)
 		{
-			if (file.GetFilename().ToString().StartsWith(module.PackageId))
+			if (file.GetFilename().ToString() == module.NuGetPackageName)
 			{
-				CopyFile(file, nugetFolder + "/" + module.PackageId + ".nupkg");
+				CopyFile(file, nugetFolder + "/" + module.NuGetPackageName);
 				break;
 			}
 		}
@@ -218,6 +230,7 @@ Task("PrepareNuGetsForMerge")
 
 Task("UploadNuGets")
 	.IsDependentOn("NuGet")
+	.IsDependentOn("PrepareNuGetsForRemoteAction")
 	.Does(()=>
 {
 	//The environment variables below must be set for this task to succeed
