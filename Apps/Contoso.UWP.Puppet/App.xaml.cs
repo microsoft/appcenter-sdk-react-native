@@ -31,7 +31,8 @@ namespace Contoso.UWP.Puppet
         public App()
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Start("98038a20-4014-445a-b27f-048082036045", typeof(Analytics));
+            MobileCenter.Configure("98038a20-4014-445a-b27f-048082036045");
+            MobileCenter.Start(typeof(Analytics));
             var properties = new Dictionary<string, string>();
             properties["key1"] = "value1";
             properties["key2"] = "value";

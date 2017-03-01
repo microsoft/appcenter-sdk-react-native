@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Windows.ApplicationModel.Core;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
