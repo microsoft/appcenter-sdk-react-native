@@ -13,6 +13,7 @@
     <iconUrl>https://aka.ms/p2wifj</iconUrl>
     <dependencies>
       <group targetFramework="uap10.0">
+        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2"/>
         <dependency id="Microsoft.Data.SQLite" version="1.1.0"/>
         <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.5"/>
       </group>
@@ -33,7 +34,7 @@
     <file src="$mac_dir$/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/lib/uap/Microsoft.Azure.Mobile.dll" target="lib/uap/Microsoft.Azure.Mobile.dll" />
+    <file src="$windows_dir$/lib/uap10.0/Microsoft.Azure.Mobile.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.dll" />
 
   </files>
 </package>

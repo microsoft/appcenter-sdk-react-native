@@ -29,7 +29,7 @@
     <file src="$mac_dir$/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/lib/uap/Microsoft.Azure.Mobile.Crashes.dll" target="lib/uap/Microsoft.Azure.Mobile.Crashes.dll" />
+    <file src="$windows_dir$/lib/uap10.0/Microsoft.Azure.Mobile.Crashes.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.Crashes.dll" />
 
   </files>
 </package>

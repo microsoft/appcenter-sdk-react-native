@@ -29,7 +29,7 @@
     <file src="$mac_dir$/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/lib/uap/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap/Microsoft.Azure.Mobile.Analytics.dll" />
+    <file src="$windows_dir$/lib/uap10.0/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.Analytics.dll" />
 
   </files>
 </package>
