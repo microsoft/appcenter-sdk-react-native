@@ -204,6 +204,7 @@ Task("NuGet")
 
 Task("PrepareNuGetsForMerge")
 	.IsDependentOn("DownloadNuGets")
+	.IsDependentOn("NuGet")
 	.IsDependentOn("PrepareNuGetsForRemoteAction");
 
 
@@ -263,8 +264,8 @@ Task("MergeNuGets")
 
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.PackageId + ".nupkg";
-		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.PackageId + ".nupkg";
+		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.NuGetPackageName;
+		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.NuGetPackageName;
 
 		/* Unzip nuget package */
 		Unzip(nugetMac, nugetMacUnzipped);
