@@ -17,10 +17,12 @@ namespace Microsoft.Azure.Mobile.Channel
         //private const long ShutdownTimeout = 5000;
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
-        private readonly string _appSecret;
         private readonly Guid _installId = IdHelper.InstallId;
         private bool _enabled;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+
+        /* This must be visible to crashes */
+        public string AppSecret { get; set; }
 
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;
@@ -34,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _ingestion = ingestion;
             _storage = storage;
             _enabled = true;
-            _appSecret = appSecret;
+            AppSecret = appSecret;
         }
 
         public void SetServerUrl(string serverUrl)
@@ -50,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Channel
             try
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
-                var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, _appSecret,
+                var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
                     _installId, _ingestion, _storage);
                 _channels.Add(name, newChannel);
                 newChannel.EnqueuingLog += AnyChannelEnqueuingLog;

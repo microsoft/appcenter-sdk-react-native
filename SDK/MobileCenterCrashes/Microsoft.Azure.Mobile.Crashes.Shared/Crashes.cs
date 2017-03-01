@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
@@ -88,8 +89,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         //        PlatformCrashes.GetErrorAttachment = value;
         //    }
         //}
-
-        internal const string LogTag = "MobileCenterCrashes";
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 

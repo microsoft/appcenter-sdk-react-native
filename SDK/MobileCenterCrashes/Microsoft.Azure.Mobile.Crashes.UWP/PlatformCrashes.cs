@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
@@ -11,6 +12,23 @@ namespace Microsoft.Azure.Mobile.Crashes
 
     class PlatformCrashes : PlatformCrashesBase
     {
+        private const string WatsonKey = "VSMCAppId";
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern int WerRegisterCustomMetadata([MarshalAs(UnmanagedType.LPWStr)]string key, [MarshalAs(UnmanagedType.LPWStr)]string value);
+
+        /// <exception cref="MobileCenterException"/>
+        public void Configure(string appSecret)
+        {
+            try
+            {
+                WerRegisterCustomMetadata(WatsonKey, appSecret);
+            }
+            catch (Exception e)
+            {
+                throw new MobileCenterException("Failed to register crashes with Watson", e);
+            }
+        }
+
         // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
         public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
         public override SentErrorReportEventHandler SentErrorReport { get; set; }
