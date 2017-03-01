@@ -2,8 +2,6 @@
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
-#addin "Cake.Powershell"
-
 
 // MobileCenter module class definition.
 class MobileCenterModule {
@@ -47,6 +45,7 @@ var IOS_SDK_VERSION = "0.4.1";
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
  *     By running mozroots and install part of Mozilla's root certificates can make it work. 
  */
+
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
