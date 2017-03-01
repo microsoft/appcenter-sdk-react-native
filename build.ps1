@@ -7,7 +7,6 @@
 [CmdletBinding()]
 Param(
     [string]$Script = "build.cake",
-    [alias("t")]
     [string]$Target = "Default",
     [ValidateSet("Release", "Debug")]
     [string]$Configuration = "Release",

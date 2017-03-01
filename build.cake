@@ -2,6 +2,8 @@
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
+#addin "Cake.Powershell"
+
 
 // MobileCenter module class definition.
 class MobileCenterModule {
@@ -9,7 +11,7 @@ class MobileCenterModule {
 	public string IosModule { get; set; }
 	public string DotNetModule { get; set; }
 	public string NuGetVersion { get; set; }
-	public string Identifier { get; set; }
+	public string AssemblyTitle { get; set; }
 	public string MainNuGetSpecFilename { get; set; }
 	public string MacNuGetSpecFilename 
 	{
@@ -24,7 +26,6 @@ class MobileCenterModule {
 		IosModule = ios;
 		DotNetModule = dotnet;
 		MainNuGetSpecFilename = mainNuGetSpecFilename;
-		Identifier = System.IO.Path.GetFileNameWithoutExtension(MainNuGetSpecFilename);
 	}
 }
 
@@ -77,6 +78,18 @@ Task("Version")
 	}
 });
 
+// Assembly name task
+Task("AssemblyTitle")
+	.Does(() =>
+{
+	// Read AssemblyInfo.cs and extract versions for modules.
+	foreach (var module in MOBILECENTER_MODULES)
+	{
+		var assemblyInfo = ParseAssemblyInfo("./" + module.DotNetModule + "/Properties/AssemblyInfo.cs");
+		module.AssemblyTitle = assemblyInfo.Title;
+	}
+});
+
 Task("Build").Does(()=>
 {
 	var targetName = IsRunningOnUnix() ? "MacBuild" : "WindowsBuild";
@@ -90,7 +103,7 @@ Task("MacBuild")
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Mac.sln");
 	DotNetBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
-});
+}).OnError(()=>RunTarget("clean"));
 
 // Building Windows code task. (UWP)
 Task("WindowsBuild").Does(() => 
@@ -98,7 +111,7 @@ Task("WindowsBuild").Does(() =>
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", c => c.Configuration = "Release");
-});
+}).OnError(()=>RunTarget("clean"));
 
 // Task dependencies for binding each platform.
 Task("Bindings-Android").IsDependentOn("Externals-Android");
@@ -120,7 +133,7 @@ Task("Externals-Android")
 		var files = GetFiles("./externals/android/*/" + module.AndroidModule);
 		CopyFiles(files, module.DotNetModule + ".Android.Bindings/Jars/");
 	}
-});
+}).OnError(()=>RunTarget("clean"));
 
 // Downloading iOS binaries.
 Task("Externals-Ios")
@@ -130,7 +143,6 @@ Task("Externals-Ios")
 
 	// Download zip file containing MobileCenter frameworks
 	DownloadFile(IOS_URL, "./externals/ios/ios.zip");
-
 	Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
 	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
@@ -139,7 +151,7 @@ Task("Externals-Ios")
 	{
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
-});
+}).OnError(()=>RunTarget("clean"));
 
 // Create a common externals task depending on platform specific ones
 Task("Externals").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Android");
@@ -161,10 +173,7 @@ Task("NuGet")
 {
 	// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
-	var nugetFolder = IsRunningOnUnix() ? MAC_NUGETS_FOLDER : WINDOWS_NUGETS_FOLDER;
-
-	CleanDirectory(nugetFolder);
-	CleanDirectory("./output");
+	CleanDirectory("output");
 
 	// Packaging NuGets.
 	foreach (var module in MOBILECENTER_MODULES)
@@ -177,12 +186,27 @@ Task("NuGet")
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
-		var files = GetFiles("Microsoft.Azure.Mobile*.nupkg");
-		foreach (var file in files)
+	}
+	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
+}).OnError(()=>RunTarget("clean"));
+
+Task("PrepareNuGetsForMerge")
+	.IsDependentOn("AssemblyTitle")
+	.Does(()=>
+{
+	var nugetFolder = IsRunningOnUnix() ? MAC_NUGETS_FOLDER : WINDOWS_NUGETS_FOLDER;
+	CleanDirectory(nugetFolder);
+	var files = GetFiles("output/*.nupkg");
+	foreach (var file in files)
+	{
+		foreach (var module in MOBILECENTER_MODULES)
 		{
-			CopyFile(file, nugetFolder + "/" + module.Identifier + ".nupkg");
+			if (file.GetFilename().ToString().StartsWith(module.AssemblyTitle))
+			{
+				CopyFile(file, nugetFolder + "/" + module.AssemblyTitle + ".nupkg");
+				break;
+			}
 		}
-		MoveFiles("Microsoft.Azure.Mobile*.nupkg", "./output");
 	}
 });
 
@@ -204,25 +228,15 @@ Task("UploadNuGets")
 		Key = apiKey,
 		UseHttps = true
 	}, nugetsZip);
-	RunTarget("RemoveTemporaries");
-});
-
-Task("DownloadNuGets").Does(()=>
-{
-	var nugetsFolder = IsRunningOnUnix() ? WINDOWS_NUGETS_FOLDER : MAC_NUGETS_FOLDER;
-	var nugetsZip = IsRunningOnUnix() ? WINDOWS_NUGETS_ZIP : MAC_NUGETS_ZIP;
-	var nugetsUrl = IsRunningOnUnix() ? WINDOWS_NUGETS_URL : MAC_NUGETS_URL;
-	CleanDirectory(nugetsFolder);
-	DownloadFile(nugetsUrl, nugetsZip);
-	Unzip(nugetsZip, nugetsFolder);
-	DeleteFiles(nugetsZip);
-});
+}).Finally(()=>RunTarget("RemoveTemporaries"));
 
 Task("MergeNuGets")
-	.IsDependentOn("DownloadNuGets")
 	.IsDependentOn("NuGet")
+	.IsDependentOn("PrepareNuGetsForMerge")
 	.Does(()=>
 {
+	DownloadNuGets();
+	Information("Beginning NuGet merge...");
 	var nugetMacUnzipped = TEMPORARY_PREFIX + "mac_nuget_folder";
 	var nugetWindowsUnzipped = TEMPORARY_PREFIX + "windows_nuget_folder";
 	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
@@ -231,8 +245,8 @@ Task("MergeNuGets")
 
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg";
-		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.Identifier + ".nupkg";
+		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.AssemblyTitle + ".nupkg";
+		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.AssemblyTitle + ".nupkg";
 
 		/* Unzip nuget package */
 		Unzip(nugetMac, nugetMacUnzipped);
@@ -261,7 +275,7 @@ Task("MergeNuGets")
 	DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
-});
+}).OnError(()=>RunTarget("clean"));
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
@@ -290,7 +304,7 @@ Task("UpdateDemoDependencies").Does(() =>
 });
 
 // Remove any uploaded nugets from azure storage
-Task("CleanNuGetsFromAzureStorage").Does(()=>
+Task("CleanAzureStorage").Does(()=>
 {
 	var nugetsZip = IsRunningOnUnix() ? MAC_NUGETS_ZIP : WINDOWS_NUGETS_ZIP;
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
@@ -318,6 +332,7 @@ Task("RemoveTemporaries").Does(()=>
 	DeleteFiles("./NuGetSpec/*.temp.nuspec");
 });
 
+
 // Cleaning up files/directories.
 Task("clean")
 	.IsDependentOn("RemoveTemporaries")
@@ -329,6 +344,20 @@ Task("clean")
 	CleanDirectories("./**/bin");
 	CleanDirectories("./**/obj");
 });
+
+void DownloadNuGets()
+{
+	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
+	Information("Downloading NuGet packages compiled on a " + otherTargetName + "...");
+	var nugetsFolder = IsRunningOnUnix() ? WINDOWS_NUGETS_FOLDER : MAC_NUGETS_FOLDER;
+	var nugetsZip = IsRunningOnUnix() ? WINDOWS_NUGETS_ZIP : MAC_NUGETS_ZIP;
+	var nugetsUrl = IsRunningOnUnix() ? WINDOWS_NUGETS_URL : MAC_NUGETS_URL;
+	CleanDirectory(nugetsFolder);
+	DownloadFile(nugetsUrl, nugetsZip);
+	Unzip(nugetsZip, nugetsFolder);
+	DeleteFiles(nugetsZip);
+	Information("Successfully downloaded NuGet packages.");
+}
 
 void DeleteDirectoryIfExists(string directoryName)
 {
