@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net.NetworkInformation;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Threading;
-using Microsoft.Rest;
+using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {

@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Rest;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Threading;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
