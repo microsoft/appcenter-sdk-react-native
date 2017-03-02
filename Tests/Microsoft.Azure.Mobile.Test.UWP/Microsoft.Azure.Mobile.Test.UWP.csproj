@@ -40,7 +40,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -95,6 +95,7 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel\ChannelGroupTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\StorageTest.cs" />
@@ -115,7 +116,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Microsoft.Azure.Mobile.Test.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\UnitTestApp.rd.xml" />
@@ -131,6 +131,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj">
       <Project>{200073bf-fa7e-42af-8ed5-aa50be7c0295}</Project>
       <Name>Microsoft.Azure.Mobile.Analytics.UWP</Name>
@@ -143,12 +146,6 @@
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
       <Name>Microsoft.Azure.Mobile.UWP</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Channel\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
