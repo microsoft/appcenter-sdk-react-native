@@ -162,15 +162,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <PropertyGroup>
-    <CreateIpaDependsOn>
-       $(CreateIpaDependsOn);
-        CopyIpa
-       </CreateIpaDependsOn>
-  </PropertyGroup>
-  <Target Name="CopyIpa" Condition="'$(OutputType)' == 'Exe'&#xA;        And '$(ComputedPlatform)' == 'iPhone'&#xA;        And '$(BuildIpa)' == 'true'">
-    <Copy SourceFiles="$(IpaPackagePath)" DestinationFolder="$(OutputPath)" />
-  </Target>
   <Import Project="../../packages/Xamarin.Forms.2.3.3.180/build/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20/Xamarin.Forms.targets" Condition="Exists('../../packages/Xamarin.Forms.2.3.3.180/build/portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20/Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
