@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="logUrl">base log URL.</param>
         public static void SetLogUrl(string logUrl)
         {
-            iOSMobileCenter.SetServerUrl(logUrl);
+            iOSMobileCenter.SetLogUrl(logUrl);
         }
 
         /// <summary>
