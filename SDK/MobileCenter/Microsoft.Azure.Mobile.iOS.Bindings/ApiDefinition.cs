@@ -150,10 +150,10 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         [Export("isConfigured")]
         bool IsConfigured();
 
-        // +(void)setServerUrl:(NSString *)serverUrl;
+        // +(void)setLogUrl:(NSString *)setLogUrl;
         [Static]
-        [Export("setServerUrl:")]
-        void SetServerUrl(string serverUrl);
+        [Export("setLogUrl:")]
+        void SetLogUrl(string logUrl);
 
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]
