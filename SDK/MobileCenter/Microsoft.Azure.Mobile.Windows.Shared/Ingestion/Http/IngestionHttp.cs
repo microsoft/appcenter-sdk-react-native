@@ -12,11 +12,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public class IngestionHttp : IIngestion
     {
-        private const string DefaultBaseUrl = "https://in.mobile.azure.com";
-        private const string ApiVersion = "/logs?api_version=1.0.0-preview20160914";
-        private const string ContentTypeValue = "application/json; charset=utf-8";
-        private const string AppSecret = "App-Secret";
-        private const string InstallId = "Install-ID";
+        internal const string DefaultBaseUrl = "https://in.mobile.azure.com";
+        internal const string ApiVersion = "/logs?api_version=1.0.0-preview20160914";
+        internal const string ContentTypeValue = "application/json; charset=utf-8";
+        internal const string AppSecret = "App-Secret";
+        internal const string InstallId = "Install-ID";
+
         private readonly TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
         private string _baseUrl;
@@ -29,7 +30,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
 		public IngestionHttp(IHttpNetworkAdapter httpNetwork)
 		{
-			_baseUrl = DefaultBaseUrl;
 			_httpNetwork = httpNetwork;
 			_httpNetwork.Timeout = _requestTimeout;
 		}
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
 			if (response.StatusCode != HttpStatusCode.OK)
 			{
-				await ThrowIngestionException(request, response).ConfigureAwait(false);
+				await ThrowHttpOperationException(request, response).ConfigureAwait(false);
             }
         }
 
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return new HttpServiceCall(this, logs, appSecret, installId);
         }
 
-		internal async Task ThrowIngestionException(HttpRequestMessage request, HttpResponseMessage response)
+		internal async Task ThrowHttpOperationException(HttpRequestMessage request, HttpResponseMessage response)
 		{
 			var requestContent = string.Empty;
 			var responseContent = string.Empty;
@@ -116,11 +116,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 		internal HttpRequestMessage CreateRequest(string appSecret, Guid installId, IList<Log> logs)
 		{
 			var logContainer = new LogContainer(logs);
+			var baseUrl = string.IsNullOrEmpty(_baseUrl) ? DefaultBaseUrl : _baseUrl;
 			/* Create HTTP transport objects */
 			var request = new HttpRequestMessage
 			{
-				Method = new HttpMethod("POST"),
-				RequestUri = new Uri(_baseUrl + ApiVersion)
+				Method = HttpMethod.Post,
+				RequestUri = new Uri(baseUrl + ApiVersion)
 			};
 			MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {request.RequestUri}...");
 
