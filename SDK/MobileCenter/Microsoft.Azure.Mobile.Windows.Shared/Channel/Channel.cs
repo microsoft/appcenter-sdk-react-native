@@ -33,7 +33,8 @@ namespace Microsoft.Azure.Mobile.Channel
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
         //TODO investigate changing use of state snapshots to leverage cancellation tokens
-        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches, string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
+        internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
+            string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
         {
             Name = name;
             _maxParallelBatches = maxParallelBatches;
@@ -46,7 +47,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchScheduled = false;
             _enabled = true;
             _deviceInfoHelper.InformationInvalidated += () => InvalidateDeviceCache();
-            Task.Factory.StartNew(()=>CountFromDiskAsync());
+            Task.Factory.StartNew(() => CountFromDiskAsync());
         }
 
         private async Task CountFromDiskAsync()
@@ -71,32 +72,41 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public bool Enabled
+        public void SetEnabled(bool enabled)
+        {
+            _mutex.Wait();
+            try
+            {
+                if (_enabled == enabled)
+                {
+                    return;
+                }
+                if (enabled)
+                {
+                    _enabled = true;
+                    _discardLogs = false;
+                    _currentState++;
+                    CheckPendingLogs();
+                }
+                else
+                {
+                    Suspend(true, new CancellationException());
+                }
+            }
+            finally
+            {
+                _mutex.Release();
+            }
+        }
+
+        public bool IsEnabled
         {
             get
-            {
-                return _enabled;
-            }
-            set
             {
                 _mutex.Wait();
                 try
                 {
-                    if (_enabled == value)
-                    {
-                        return;
-                    }
-                    if (value)
-                    {
-                        _enabled = true;
-                        _discardLogs = false;
-                        _currentState++;
-                        CheckPendingLogs();
-                    }
-                    else
-                    {
-                        Suspend(true, new CancellationException());
-                    }
+                    return _enabled;
                 }
                 finally
                 {
@@ -105,6 +115,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
+        //TODO consider making this private
         public string Name { get; }
 
         #region Events
@@ -134,13 +145,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 _mutex.Release();
             }
-        }
-
-        public void NotifyStateInvalidated()
-        {
-            _mutex.Wait();
-            _currentState++;
-            _mutex.Release();
         }
 
         private void PrepareLog(Log log)
