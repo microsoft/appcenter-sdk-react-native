@@ -50,6 +50,9 @@
     <EmbeddedResource Include="Module Pages\AnalyticsResultsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Module Pages\CorePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -79,6 +82,9 @@
     </Compile>
     <Compile Include="EventData.cs" />
     <Compile Include="EventSharer.cs" />
+    <Compile Include="Module Pages\CorePage.xaml.cs">
+      <DependentUpon>CorePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

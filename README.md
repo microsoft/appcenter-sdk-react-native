@@ -80,6 +80,8 @@ Now that you've integrated the SDK in your application, it's time to start the S
 **Note:** If you installed the "Mobile Center Crashes" package for iOS prior to version 0.3.0, your iOS project should contain the folder
 "MobileCenterFrameworks" and its contents. It is no longer required and safe to delete.
 
+**Note:** Due to a bug in Xamarin.iOS 10.4, you need to *uncheck* **Enable incremental builds** in iOS Build Project Options.
+
 ## 4. Start the SDK
 
 To start the SDK in your app, follow these steps:
@@ -118,7 +120,7 @@ To start the SDK in your app, follow these steps:
 
     **Xamarin.Forms**
     
-   For creating a cross platform Forms app targeting both iOS and Android platform, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two AppSecrets - one for iOS and another for Android. Therefore, Start SDK call is split into two methods for Xamarin.Forms. Open App.xaml.cs file in your shared project and add the API below in the `App()` constructor.
+   For creating a cross platform Forms app targeting both iOS and Android platform, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two AppSecrets - one for iOS and another for Android. Therefore, Start SDK call is split into two methods for Xamarin.Forms. Open the `App.xaml.cs` file (or your class that inherits `Xamarin.Forms.Application`) in your shared or portable project and add the API below in the `OnStart()` override method.
 
     ```csharp
     MobileCenter.Start(typeof(Analytics), typeof(Crashes));

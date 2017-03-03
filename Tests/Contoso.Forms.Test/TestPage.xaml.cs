@@ -1,4 +1,5 @@
 ﻿using Xamarin.Forms;
+using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test
 {
@@ -30,6 +31,11 @@ namespace Contoso.Forms.Test
         public void GoToCrashResultsPage(object sender, System.EventArgs e)
         {
             Navigation.PushModalAsync(ResultsPage);
+        }
+
+        public void GoToCorePage(object sender, System.EventArgs e)
+        {
+            Navigation.PushModalAsync(new CorePage());
         }
     }
 }
