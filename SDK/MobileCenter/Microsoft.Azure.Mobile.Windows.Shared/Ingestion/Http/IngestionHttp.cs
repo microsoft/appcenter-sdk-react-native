@@ -10,7 +10,7 @@ using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public class IngestionHttp : ServiceClient<IngestionHttp>, IIngestion
+    public class IngestionHttp : IIngestion
     {
         private const string DefaultBaseUrl = "https://in.mobile.azure.com";
         private const string ApiVersion = "/logs?api_version=1.0.0-preview20160914";
@@ -20,55 +20,32 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private readonly TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
         private string _baseUrl;
+		private IHttpNetworkAdapter _httpNetwork;
 
-        public IngestionHttp()
+		public IngestionHttp() :
+			this(new HttpNetworkAdapter())
+		{
+		}
+
+		public IngestionHttp(IHttpNetworkAdapter httpNetwork)
+		{
+			_baseUrl = DefaultBaseUrl;
+			_httpNetwork = httpNetwork;
+			_httpNetwork.Timeout = _requestTimeout;
+		}
+
+		/// <exception cref="IngestionException"/>
+		public async Task ExecuteCallAsync(IServiceCall call)
         {
-            _baseUrl = DefaultBaseUrl;
-            this.HttpClient.Timeout = _requestTimeout;
-        }
-
-        /// <exception cref="IngestionException"/>
-        public async Task ExecuteCallAsync(IServiceCall call)
-        {
-            var logContainer = new LogContainer(call.Logs);
-            /* Create HTTP transport objects */
-            var request = new HttpRequestMessage
-            {
-                Method = new HttpMethod("POST"),
-                RequestUri = new Uri(_baseUrl + ApiVersion)
-            };
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {request.RequestUri}...");
-
-            /* Set Headers */
-            request.Headers.Add(AppSecret, call.AppSecret);
-            request.Headers.Add(InstallId, call.InstallId.ToString());
-
-            /* Log headers */
-            var headers = $"Headers: Content-Type={ContentTypeValue}, " +
-                          $"{AppSecret}={GetRedactedAppSecret(call.AppSecret)}, " +
-                          $"{InstallId}={call.InstallId}";
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, headers);
-
-            /* Save times */
-            foreach (var log in logContainer.Logs)
-            {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
-            }
-
-            /* Serialize Request */
-            var requestContent = LogSerializer.Serialize(logContainer);
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
-            request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
-            request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
-
             if (call.CancellationToken.IsCancellationRequested)
             {
                 return;
-            }
-            HttpResponseMessage response = null;
+			}
+			HttpRequestMessage request = CreateRequest(call.AppSecret, call.InstallId, call.Logs);
+			HttpResponseMessage response = null;
             try
             {
-                response = await this.HttpClient.SendAsync(request, call.CancellationToken).ConfigureAwait(false);
+                response = await _httpNetwork.SendAsync(request, call.CancellationToken).ConfigureAwait(false);
             }
             catch (HttpRequestException ex)
             {
@@ -80,33 +57,19 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 return;
             }
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                string responseContent;
-
-                var ex = new HttpOperationException($"Operation returned an invalid status code '{response.StatusCode}'");
-                if (response.Content != null)
-                {
-                    responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                else
-                {
-                    responseContent = string.Empty;
-                }
-                ex.Request = new HttpRequestMessageWrapper(request, requestContent);
-                ex.Response = new HttpResponseMessageWrapper(response, responseContent);
-                request.Dispose();
-                response.Dispose();
-                throw new IngestionException(ex);
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				await ThrowIngestionException(request, response).ConfigureAwait(false);
             }
         }
 
         public void Close()
         {
-            
-        }
+			// TODO What if re-enabled after?
+			// _httpNetwork.Dispose();
+		}
 
-        public void SetServerUrl(string serverUrl)
+		public void SetServerUrl(string serverUrl)
         {
             _baseUrl = serverUrl;
         }
@@ -123,10 +86,68 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return redactedAppSecret;
         }
 
-        public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
+		public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
         {
             return new HttpServiceCall(this, logs, appSecret, installId);
         }
-    }
+
+		internal async Task ThrowIngestionException(HttpRequestMessage request, HttpResponseMessage response)
+		{
+			var requestContent = string.Empty;
+			var responseContent = string.Empty;
+
+			var ex = new HttpOperationException($"Operation returned an invalid status code '{response.StatusCode}'");
+			if (request.Content != null)
+			{
+				requestContent = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
+			}
+			if (response.Content != null)
+			{
+				responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			}
+			ex.Request = new HttpRequestMessageWrapper(request, requestContent);
+			ex.Response = new HttpResponseMessageWrapper(response, responseContent);
+			request.Dispose();
+			response.Dispose();
+
+			throw new IngestionException(ex);
+		}
+
+		internal HttpRequestMessage CreateRequest(string appSecret, Guid installId, IList<Log> logs)
+		{
+			var logContainer = new LogContainer(logs);
+			/* Create HTTP transport objects */
+			var request = new HttpRequestMessage
+			{
+				Method = new HttpMethod("POST"),
+				RequestUri = new Uri(_baseUrl + ApiVersion)
+			};
+			MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {request.RequestUri}...");
+
+			/* Set Headers */
+			request.Headers.Add(AppSecret, appSecret);
+			request.Headers.Add(InstallId, installId.ToString());
+
+			/* Log headers */
+			var headers = $"Headers: Content-Type={ContentTypeValue}, " +
+						  $"{AppSecret}={GetRedactedAppSecret(appSecret)}, " +
+						  $"{InstallId}={installId}";
+			MobileCenterLog.Verbose(MobileCenterLog.LogTag, headers);
+
+			/* Save times */
+			foreach (var log in logContainer.Logs)
+			{
+				log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
+			}
+
+			/* Serialize Request */
+			var requestContent = LogSerializer.Serialize(logContainer);
+			MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
+			request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
+			request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
+
+			return request;
+		}
+	}
 }
 
