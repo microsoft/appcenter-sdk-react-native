@@ -15,7 +15,8 @@ namespace Contoso.Forms.Demo
 
             MainPage = new NavigationPage(new MainDemoPage());
             MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+            MobileCenter.Start("android=987b5941-4fac-4968-933e-98a7ff29237c;ios=fe2bf05d-f4f9-48a6-83d9-ea8033fbb644",
+                               typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnStart()
