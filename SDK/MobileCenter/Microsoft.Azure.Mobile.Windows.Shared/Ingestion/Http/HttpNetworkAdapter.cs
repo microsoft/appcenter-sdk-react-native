@@ -6,7 +6,14 @@ using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public class HttpNetworkAdapter : ServiceClient<HttpNetworkAdapter>, IHttpNetworkAdapter
+	public interface IHttpNetworkAdapter : IDisposable
+	{
+		TimeSpan Timeout { get; set; }
+
+		Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
+	}
+
+	public class HttpNetworkAdapter : ServiceClient<HttpNetworkAdapter>, IHttpNetworkAdapter
 	{
 		public TimeSpan Timeout
 		{
