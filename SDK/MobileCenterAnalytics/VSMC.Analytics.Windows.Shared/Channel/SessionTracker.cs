@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private const char StorageEntrySeparator = '/';
         private const long SessionTimeout = 20000;
         private readonly ChannelGroup _channelGroup;
-        private readonly string _channelName;
+        private readonly IChannel _channel;
         private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
         private Guid? _sid;
         private long _lastQueuedLogTime;
@@ -25,10 +25,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
 
-        public SessionTracker(ChannelGroup channelGroup, string channelName)
+        public SessionTracker(ChannelGroup channelGroup, IChannel channel)
         {
             _channelGroup = channelGroup;
-            _channelName = channelName;
+            _channel = channel;
             _channelGroup.EnqueuingLog += HandleEnqueuingLog;
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null) return;
@@ -145,13 +145,11 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
             _sid = Guid.NewGuid();
             _sessions.Add(TimeHelper.CurrentTimeInMilliseconds(), _sid.Value);
-
             _applicationSettings[StorageKey] = SessionsAsString();
             var startSessionLog = new StartSessionLog {Sid = _sid};
-            _channelGroup.GetChannel(_channelName).Enqueue(startSessionLog);
+            _channel.Enqueue(startSessionLog);
         }
 
-      
         private bool HasSessionTimedOut()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();

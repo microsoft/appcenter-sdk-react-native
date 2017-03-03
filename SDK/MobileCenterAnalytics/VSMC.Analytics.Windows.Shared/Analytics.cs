@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 return;
             }
             var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-            ChannelGroup.GetChannel(ChannelName).Enqueue(log);
+            Channel.Enqueue(log);
         }
 
         public override void OnChannelGroupReady(ChannelGroup channelGroup)
@@ -124,7 +124,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             if (enabled && ChannelGroup != null && _sessionTracker == null)
             {
-                _sessionTracker = new SessionTracker(ChannelGroup, ChannelName);
+                _sessionTracker = new SessionTracker(ChannelGroup, Channel);
                 CoreApplication.Resuming += ResumingHandler;
                 CoreApplication.Suspending += SuspendingHandler;
                 _sessionTracker.Resume();

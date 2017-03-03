@@ -176,10 +176,7 @@ namespace Microsoft.Azure.Mobile
             }
             set
             {
-                if (_channelGroup != null)
-                {
-                    _channelGroup.Enabled = false;
-                }
+                _channelGroup?.SetEnabled(value);
                 var previouslyEnabled = InstanceEnabled;
                 var switchToDisabled = previouslyEnabled && !value;
                 var switchToEnabled = !previouslyEnabled && value;
@@ -230,7 +227,8 @@ namespace Microsoft.Azure.Mobile
             }
             else
             {
-                _channelGroup = new ChannelGroup(appSecret) {Enabled = InstanceEnabled};
+                _channelGroup = new ChannelGroup(appSecret);
+         
                 if (_serverUrl != null)
                 {
                     _channelGroup.SetServerUrl(_serverUrl);

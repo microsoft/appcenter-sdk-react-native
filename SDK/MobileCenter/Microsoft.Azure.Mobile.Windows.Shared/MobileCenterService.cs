@@ -20,6 +20,7 @@ namespace Microsoft.Azure.Mobile
 
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
         protected ChannelGroup ChannelGroup { get; private set; }
+        protected IChannel Channel { get; private set; }
         protected abstract string ChannelName { get; }
         protected abstract string ServiceName { get; }
         public virtual string LogTag => MobileCenterLog.LogTag + ServiceName;
@@ -55,8 +56,7 @@ namespace Microsoft.Azure.Mobile
                     }
                     if (ChannelGroup != null)
                     {
-                        var channel = ChannelGroup.GetChannel(ChannelName);
-                        channel.Enabled = value;
+                        Channel.SetEnabled(value);
                     }
                     _applicationSettings[KeyEnabled] = value;
                     MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
@@ -69,8 +69,8 @@ namespace Microsoft.Azure.Mobile
             lock (_serviceLock)
             {
                 ChannelGroup = channelGroup;
-                ChannelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                ChannelGroup.GetChannel(ChannelName).Enabled = InstanceEnabled;
+                Channel = ChannelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
+                Channel.SetEnabled(InstanceEnabled);
             }
         }
 

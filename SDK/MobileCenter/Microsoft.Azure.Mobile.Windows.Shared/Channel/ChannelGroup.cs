@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Utils;
 
@@ -13,12 +14,12 @@ namespace Microsoft.Azure.Mobile.Channel
 {
     public class ChannelGroup : IChannel
     {
-        private readonly Dictionary<string, Channel> _channels = new Dictionary<string, Channel>();
+        /* While ChannelGroup is technically capable of deep nesting, note that this behavior is not tested */
+        private readonly HashSet<IChannel> _channels = new HashSet<IChannel>();
         //private const long ShutdownTimeout = 5000;
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
         private readonly Guid _installId = IdHelper.InstallId;
-        private bool _enabled;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
         /* This must be visible to crashes */
@@ -35,7 +36,6 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             _ingestion = ingestion;
             _storage = storage;
-            _enabled = true;
             AppSecret = appSecret;
         }
 
@@ -46,54 +46,36 @@ namespace Microsoft.Azure.Mobile.Channel
             _mutex.Release();
         }
 
-        public void AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
+        /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
+        public IChannel AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
-            _mutex.Wait();
-            try
-            {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
-                var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
-                    _installId, _ingestion, _storage);
-                _channels.Add(name, newChannel);
-                newChannel.EnqueuingLog += AnyChannelEnqueuingLog;
-                newChannel.SendingLog += AnyChannelSendingLog;
-                newChannel.SentLog += AnyChannelSentLog;
-                newChannel.FailedToSendLog += AnyChannelFailedToSendLog;
-            }
-            catch (ArgumentNullException e)
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Channel name cannot be null.", e);
-
-            }
-            catch (ArgumentException e)
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, $"Cannot add channel with duplicate name '{name}'.", e);
-            }
-            finally
-            {
-                _mutex.Release();
-            }
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
+            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
+                     _installId, _ingestion, _storage);
+            AddChannel(newChannel);
+            return newChannel;
         }
 
-        public void RemoveChannel(Channel channel)
+        /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
+        public void AddChannel(IChannel channel)
         {
             _mutex.Wait();
             try
             {
-                channel.NotifyStateInvalidated();
-                channel.EnqueuingLog -= AnyChannelEnqueuingLog;
-                channel.SendingLog -= AnyChannelSendingLog;
-                channel.SentLog -= AnyChannelSentLog;
-                channel.FailedToSendLog -= AnyChannelFailedToSendLog;
-                var removeSucceeded = _channels.Remove(channel.Name);
-                if (!removeSucceeded)
+                if (channel == null)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to remove channel with name {channel.Name}.");
+                    throw new MobileCenterException("Attempted to add null channel to group");
                 }
-            }
-            catch (ArgumentNullException e)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel name cannot be null.", e);
+                var added = _channels.Add(channel);
+                if (!added)
+                {
+                    /* The benefit of throwing an exception in this case is debatable. Might make sense to allow this. */
+                    throw new MobileCenterException("Attempted to add duplicate channel to group");
+                }
+                channel.EnqueuingLog += AnyChannelEnqueuingLog;
+                channel.SendingLog += AnyChannelSendingLog;
+                channel.SentLog += AnyChannelSentLog;
+                channel.FailedToSendLog += AnyChannelFailedToSendLog;
             }
             finally
             {
@@ -101,51 +83,20 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public Channel GetChannel(string channelName)
+        public void SetEnabled(bool enabled)
         {
             _mutex.Wait();
-            try
+            foreach (var channel in _channels)
             {
-                return _channels[channelName];
+                channel.SetEnabled(enabled);
             }
-            catch (ArgumentNullException e)
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Channel name cannot be null.", e);
-                return null;
-            }
-            catch (KeyNotFoundException e)
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, $"Could not find channel with name '{channelName}'.", e);
-                return null;
-            }
-            finally
-            {
-                _mutex.Release();
-            }
-        }
-
-        public bool Enabled
-        {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                _mutex.Wait();
-                foreach (var channel in _channels.Values)
-                {
-                    channel.Enabled = value;
-                }
-                _enabled = value;
-                _mutex.Release();
-            }
+            _mutex.Release();
         }
 
         public void Shutdown()
         {
             _mutex.Wait();
-            foreach (var channel in _channels.Values)
+            foreach (var channel in _channels)
             {
                 channel.Shutdown();
             }
@@ -153,6 +104,11 @@ namespace Microsoft.Azure.Mobile.Channel
             //TODO need some kind of waiting/timeout?
 
             _mutex.Release();
+        }
+
+        public void Enqueue(Log log)
+        {
+            /* No-op; inherited fat interface */
         }
 
         private static IIngestion DefaultIngestion()
