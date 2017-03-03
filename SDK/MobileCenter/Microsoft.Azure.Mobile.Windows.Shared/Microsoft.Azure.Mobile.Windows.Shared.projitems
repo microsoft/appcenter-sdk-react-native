@@ -18,7 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpServiceCall.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateIngestion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\ServiceCallDecorator.cs" />
