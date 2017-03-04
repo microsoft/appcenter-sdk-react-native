@@ -2,28 +2,40 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-	public interface IHttpNetworkAdapter : IDisposable
+	public interface IHttpNetworkAdapter
 	{
 		TimeSpan Timeout { get; set; }
 
 		Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
 	}
 
-	public class HttpNetworkAdapter : ServiceClient<HttpNetworkAdapter>, IHttpNetworkAdapter
+	public class HttpNetworkAdapter : IHttpNetworkAdapter
 	{
+        private readonly HttpClient _httpClient = new HttpClient();
 		public TimeSpan Timeout
 		{
-			get { return this.HttpClient.Timeout; }
-			set { this.HttpClient.Timeout = value; }
+			get { return _httpClient.Timeout; }
+			set { _httpClient.Timeout = value; }
 		}
 
-		public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+	    /// <exception cref="IngestionException"/>
+	    public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
-			return this.HttpClient.SendAsync(request, cancellationToken);
-		}
+		    try
+		    {
+                return await _httpClient.SendAsync(request, cancellationToken);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new IngestionException(e);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new IngestionException(e);
+            }
+        }
 	}
 }

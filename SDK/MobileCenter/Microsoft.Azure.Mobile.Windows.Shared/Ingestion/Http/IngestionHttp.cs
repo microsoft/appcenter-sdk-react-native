@@ -21,10 +21,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private readonly TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
         private string _baseUrl;
-		private IHttpNetworkAdapter _httpNetwork;
+		private readonly IHttpNetworkAdapter _httpNetwork;
 
-		public IngestionHttp() :
-			this(new HttpNetworkAdapter())
+		public IngestionHttp() : this(new HttpNetworkAdapter())
 		{
 		}
 
@@ -41,18 +40,19 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 return;
 			}
-			HttpRequestMessage request = CreateRequest(call.AppSecret, call.InstallId, call.Logs);
+			var request = CreateRequest(call.AppSecret, call.InstallId, call.Logs);
 			HttpResponseMessage response = null;
             try
             {
                 response = await _httpNetwork.SendAsync(request, call.CancellationToken).ConfigureAwait(false);
             }
-            catch (HttpRequestException ex)
+            catch (IngestionException)
             {
                 request.Dispose();
-                throw new IngestionException(ex);
+                throw;
             }
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={response.Content.AsString()}");
+            var payload = await response.Content.ReadAsStringAsync();
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={payload}");
             if (call.CancellationToken.IsCancellationRequested)
             {
                 return;
@@ -65,8 +65,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public void Close()
         {
-			// TODO What if re-enabled after?
-			// _httpNetwork.Dispose();
+            //TODO is there anything to do here?
 		}
 
 		public void SetServerUrl(string serverUrl)
@@ -91,13 +90,13 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return new HttpServiceCall(this, logs, appSecret, installId);
         }
 
-		internal async Task ThrowHttpOperationException(HttpRequestMessage request, HttpResponseMessage response)
+        /// <exception cref="IngestionException"/>
+        internal async Task ThrowHttpOperationException(HttpRequestMessage request, HttpResponseMessage response)
 		{
-			var requestContent = string.Empty;
-			var responseContent = string.Empty;
+            var requestContent = string.Empty;
+            var responseContent = string.Empty;
 
-			var ex = new HttpOperationException($"Operation returned an invalid status code '{response.StatusCode}'");
-			if (request.Content != null)
+            if (request.Content != null)
 			{
 				requestContent = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
 			}
@@ -105,18 +104,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 			{
 				responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 			}
-			ex.Request = new HttpRequestMessageWrapper(request, requestContent);
-			ex.Response = new HttpResponseMessageWrapper(response, responseContent);
+
 			request.Dispose();
 			response.Dispose();
 
-			throw new IngestionException(ex);
+			throw new IngestionException($"Operation returned an invalid status code '{response.StatusCode}'\n\trequest content: {requestContent}\n\tresponse content:{responseContent}");
 		}
 
 		internal HttpRequestMessage CreateRequest(string appSecret, Guid installId, IList<Log> logs)
 		{
 			var logContainer = new LogContainer(logs);
 			var baseUrl = string.IsNullOrEmpty(_baseUrl) ? DefaultBaseUrl : _baseUrl;
+
 			/* Create HTTP transport objects */
 			var request = new HttpRequestMessage
 			{
