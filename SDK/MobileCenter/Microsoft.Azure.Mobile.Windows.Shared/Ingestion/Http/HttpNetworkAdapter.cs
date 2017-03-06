@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             try
             {
-                return await _httpClient.SendAsync(request, cancellationToken);
+                return await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
             }
             catch (InvalidOperationException e)
             {

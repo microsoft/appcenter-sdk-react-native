@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var installId = Guid.NewGuid();
             var logs = new List<Log>();
             var call = _networkStateIngestion.PrepareServiceCall(appSecret, installId, logs);
-            Assert.AreEqual(call.GetType(), typeof(NetworkStateServiceCall));
+            Assert.IsInstanceOfType(call, typeof(NetworkStateServiceCall));
             Assert.AreEqual(call.AppSecret, appSecret);
             Assert.AreEqual(call.InstallId, installId);
             Assert.AreEqual(call.Logs, logs);

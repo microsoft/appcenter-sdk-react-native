@@ -18,6 +18,15 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public HttpStatusCode StatusCode { get; set; }
         public string ResponseContent { get; set; }
 
+        public override bool IsRecoverable
+        {
+            get
+            {
+                var statusCode = (int)StatusCode;
+                return statusCode >= 501 || statusCode == 408 || statusCode == 429 || statusCode == 401;
+            }
+        }
+
         public HttpIngestionException(string message) : base(message)
         {
         }
