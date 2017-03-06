@@ -14,18 +14,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
     {
         private readonly HashSet<IServiceCall> _calls = new HashSet<IServiceCall>();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-		private readonly INetworkStateAdapter _networkState;
-		
-		public NetworkStateIngestion(IIngestion decoratedApi) :
-			this(decoratedApi, new NetworkStateAdapter())
-		{
-		}
+        private readonly INetworkStateAdapter _networkState;
 
-		public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkState)
-			: base(decoratedApi)
+        public NetworkStateIngestion(IIngestion decoratedApi) :
+            this(decoratedApi, new NetworkStateAdapter())
         {
-			_networkState = networkState;
-			_networkState.NetworkAddressChanged += HandleNetworkAddressChanged;
+        }
+
+        public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkState)
+            : base(decoratedApi)
+        {
+            _networkState = networkState;
+            _networkState.NetworkAddressChanged += HandleNetworkAddressChanged;
         }
 
         private void HandleNetworkAddressChanged(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             //TODO what if already closed?
             _mutex.Wait();
-			_networkState.NetworkAddressChanged -= HandleNetworkAddressChanged;
+            _networkState.NetworkAddressChanged -= HandleNetworkAddressChanged;
             foreach (var call in _calls)
             {
                 PauseServiceCall(call);

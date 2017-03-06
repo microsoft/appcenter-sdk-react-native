@@ -2,21 +2,21 @@
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-	public interface INetworkStateAdapter
-	{
-		bool IsConnected { get; }
+    public interface INetworkStateAdapter
+    {
+        bool IsConnected { get; }
 
-		event NetworkAddressChangedEventHandler NetworkAddressChanged;
-	}
+        event NetworkAddressChangedEventHandler NetworkAddressChanged;
+    }
 
-	public class NetworkStateAdapter : INetworkStateAdapter
-	{
-		public bool IsConnected => NetworkInterface.GetIsNetworkAvailable();
+    public class NetworkStateAdapter : INetworkStateAdapter
+    {
+        public bool IsConnected => NetworkInterface.GetIsNetworkAvailable();
 
-		public event NetworkAddressChangedEventHandler NetworkAddressChanged
-		{
-			add { NetworkChange.NetworkAddressChanged += value; }
-			remove { NetworkChange.NetworkAddressChanged -= value; }
-		}
-	}
+        public event NetworkAddressChangedEventHandler NetworkAddressChanged
+        {
+            add { NetworkChange.NetworkAddressChanged += value; }
+            remove { NetworkChange.NetworkAddressChanged -= value; }
+        }
+    }
 }
