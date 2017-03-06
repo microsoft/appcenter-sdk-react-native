@@ -8,8 +8,8 @@ target 'TestApp' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'RNMobileCenter', '~> 0.2.0'
-  pod 'MobileCenter', '~> 0.4.0'
+  pod 'RNMobileCenter', '~> 0.3.0'
+  pod 'MobileCenter', '~> 0.5.0'
 
   
 
