@@ -1,8 +1,8 @@
 ﻿using System.Data.Common;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using HyperMock;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using HyperMock;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Data.Sqlite;
 
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Mobile.Test
 
         static Task GetCompletedTask()
         {
-            Task completedTask = Task.Delay(0);
+            var completedTask = Task.Delay(0);
             completedTask.Wait();
             return completedTask;
         }
