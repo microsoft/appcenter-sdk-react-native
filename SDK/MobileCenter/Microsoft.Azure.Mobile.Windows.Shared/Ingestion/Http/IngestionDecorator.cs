@@ -24,9 +24,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return DecoratedApi.PrepareServiceCall(appSecret, installId, logs);
         }
 
-        public virtual async Task ExecuteCallAsync(IServiceCall call)
+        public virtual Task ExecuteCallAsync(IServiceCall call)
         {
-            await DecoratedApi.ExecuteCallAsync(call);
+            return DecoratedApi.ExecuteCallAsync(call);
         }
 
         public virtual void SetServerUrl(string serverUrl)

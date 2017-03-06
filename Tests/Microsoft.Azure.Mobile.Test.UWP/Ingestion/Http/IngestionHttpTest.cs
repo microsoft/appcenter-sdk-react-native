@@ -8,7 +8,6 @@ using HyperMock;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Rest;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
@@ -42,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
-            Assert.ThrowsException<IngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<HttpIngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Occurred.Once());
         }
 
@@ -71,25 +70,11 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         }
 
         [TestMethod]
-        public void IngestionHttpThrowThrowHttpOperationException()
-        {
-            var appSecret = Guid.NewGuid().ToString();
-            var installId = Guid.NewGuid();
-            var logs = new List<Log>();
-            var request = _ingestionHttp.CreateRequest(appSecret, installId, logs);
-            var response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-            var ex = Assert.ThrowsException<IngestionException>(() => _ingestionHttp.ThrowHttpOperationException(request, response).RunNotAsync());
-            var inner = ex.InnerException as HttpOperationException;
-            Assert.IsNotNull(inner);
-            Assert.AreEqual(inner.Response.StatusCode, response.StatusCode);
-        }
-
-        [TestMethod]
         public void IngestionHttpCreateRequest()
         {
             var appSecret = Guid.NewGuid().ToString();
             var installId = Guid.NewGuid();
-            var logs = new List<Log>();
+            var logs = string.Empty;
             var request = _ingestionHttp.CreateRequest(appSecret, installId, logs);
 
             Assert.AreEqual(request.Method, HttpMethod.Post);

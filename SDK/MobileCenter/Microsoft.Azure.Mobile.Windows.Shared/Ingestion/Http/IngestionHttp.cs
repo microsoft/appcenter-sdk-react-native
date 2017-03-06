@@ -9,6 +9,20 @@ using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
+    public class HttpIngestionException : IngestionException
+    {
+        public HttpMethod Method { get; set; }
+        public Uri RequestUri { get; set; }
+        public string RequestContent { get; set; }
+
+        public HttpStatusCode StatusCode { get; set; }
+        public string ResponseContent { get; set; }
+
+        public HttpIngestionException(string message) : base(message)
+        {
+        }
+    }
+
     public class IngestionHttp : IIngestion
     {
         internal const string DefaultBaseUrl = "https://in.mobile.azure.com";
@@ -39,7 +53,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 return;
             }
-            var request = CreateRequest(call.AppSecret, call.InstallId, call.Logs);
+            var requestContent = CreateLogsContent(call.Logs);
+            var request = CreateRequest(call.AppSecret, call.InstallId, requestContent);
             HttpResponseMessage response = null;
             try
             {
@@ -50,15 +65,32 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 request.Dispose();
                 throw;
             }
-            var payload = await response.Content.ReadAsStringAsync();
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={payload}");
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int) response.StatusCode} ({response.StatusCode}) payload={requestContent}");
             if (call.CancellationToken.IsCancellationRequested)
             {
                 return;
             }
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                await ThrowHttpOperationException(request, response).ConfigureAwait(false);
+                var responseContent = string.Empty;
+                if (response.Content != null)
+                {
+                    responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+
+                var ex = new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")
+                {
+                    Method = request.Method,
+                    RequestUri = request.RequestUri,
+                    RequestContent = requestContent,
+                    StatusCode = response.StatusCode,
+                    ResponseContent = responseContent
+                };
+
+                request.Dispose();
+                response.Dispose();
+
+                throw ex;
             }
         }
 
@@ -89,30 +121,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return new HttpServiceCall(this, logs, appSecret, installId);
         }
 
-        /// <exception cref="IngestionException"/>
-        internal async Task ThrowHttpOperationException(HttpRequestMessage request, HttpResponseMessage response)
+        internal HttpRequestMessage CreateRequest(string appSecret, Guid installId, string requestContent)
         {
-            var requestContent = string.Empty;
-            var responseContent = string.Empty;
-
-            if (request.Content != null)
-            {
-                requestContent = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-            }
-            if (response.Content != null)
-            {
-                responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            }
-
-            request.Dispose();
-            response.Dispose();
-
-            throw new IngestionException($"Operation returned an invalid status code '{response.StatusCode}'\n\trequest content: {requestContent}\n\tresponse content:{responseContent}");
-        }
-
-        internal HttpRequestMessage CreateRequest(string appSecret, Guid installId, IList<Log> logs)
-        {
-            var logContainer = new LogContainer(logs);
             var baseUrl = string.IsNullOrEmpty(_baseUrl) ? DefaultBaseUrl : _baseUrl;
 
             /* Create HTTP transport objects */
@@ -133,6 +143,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                             $"{InstallId}={installId}";
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, headers);
 
+            /* Request content */
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
+            request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
+            request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
+
+            return request;
+        }
+
+        private string CreateLogsContent(IList<Log> logs)
+        {
+            var logContainer = new LogContainer(logs);
+
             /* Save times */
             foreach (var log in logContainer.Logs)
             {
@@ -141,11 +163,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
             /* Serialize Request */
             var requestContent = LogSerializer.Serialize(logContainer);
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
-            request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
-            request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
-
-            return request;
+            return requestContent;
         }
     }
 }

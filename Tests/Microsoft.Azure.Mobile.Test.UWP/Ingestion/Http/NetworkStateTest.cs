@@ -63,6 +63,20 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             VerifyAdapterSend(Occurred.Never());
         }
 
+        [TestMethod]
+        public void NetworkStateIngestionComeBackOnline()
+        {
+            var call = PrepareServiceCall();
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _networkState.IsConnected = false;
+            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            VerifyAdapterSend(Occurred.Never());
+            _networkState.IsConnected = true;
+            _networkState.TestNetworkAddressChanged();
+            _networkStateIngestion.WaitAllCalls().RunNotAsync();
+            VerifyAdapterSend(Occurred.Once());
+        }
+
         private IServiceCall PrepareServiceCall()
         {
             var appSecret = Guid.NewGuid().ToString();

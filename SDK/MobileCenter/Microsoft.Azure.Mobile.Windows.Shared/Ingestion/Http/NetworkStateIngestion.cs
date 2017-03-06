@@ -70,6 +70,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             base.Close();
         }
 
+        internal async Task WaitAllCalls()
+        {
+            int callsCount;
+            do
+            {
+                await _mutex.WaitAsync().ConfigureAwait(false);
+                callsCount = _calls.Count;
+                _mutex.Release();
+            } while (callsCount > 0);
+        }
+
         private void PauseServiceCall(IServiceCall call)
         {
             call?.Cancel();
@@ -84,7 +95,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         /// <exception cref="NetworkUnavailableException"/>
         public override async Task ExecuteCallAsync(IServiceCall call)
         {
-            await _mutex.WaitAsync();
+            await _mutex.WaitAsync().ConfigureAwait(false);
             _calls.Add(call);
             _mutex.Release();
 
@@ -92,7 +103,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 try
                 {
-                    await base.ExecuteCallAsync(call);
+                    await base.ExecuteCallAsync(call).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -104,6 +115,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 throw new NetworkUnavailableException();
             }
         }
+
         private void RemoveCall(IServiceCall call)
         {
             _mutex.Wait();
