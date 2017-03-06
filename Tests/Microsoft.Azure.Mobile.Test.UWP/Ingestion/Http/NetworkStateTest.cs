@@ -28,6 +28,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             _networkStateIngestion = new NetworkStateIngestion(new IngestionHttp(_adapter.Object), _networkState);
         }
 
+        /// <summary>
+        /// Verify that ingestion create ServiceCall correctly.
+        /// </summary>
         [TestMethod]
         public void NetworkStateIngestionPrepareServiceCall()
         {
@@ -41,6 +44,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             Assert.AreEqual(call.Logs, logs);
         }
 
+        /// <summary>
+        /// Verify that call executed when network is available.
+        /// </summary>
         [TestMethod]
         public void NetworkStateIngestionOnline()
         {
@@ -52,7 +58,10 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 
             // No throw any exception
         }
-
+        
+        /// <summary>
+        /// Verify that call not executed when network is not available.
+        /// </summary>
         [TestMethod]
         public void NetworkStateIngestionOffline()
         {
@@ -63,6 +72,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             VerifyAdapterSend(Occurred.Never());
         }
 
+        /// <summary>
+        /// Verify that call resended when network is available again.
+        /// </summary>
         [TestMethod]
         public void NetworkStateIngestionComeBackOnline()
         {
@@ -77,6 +89,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             VerifyAdapterSend(Occurred.Once());
         }
 
+        /// <summary>
+        /// Helper for prepare ServiceCall.
+        /// </summary>
         private IServiceCall PrepareServiceCall()
         {
             var appSecret = Guid.NewGuid().ToString();
@@ -85,6 +100,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             return _networkStateIngestion.PrepareServiceCall(appSecret, installId, logs);
         }
 
+        /// <summary>
+        /// Helper for setup responce.
+        /// </summary>
         private void SetupAdapterSendResponse(HttpResponseMessage response)
         {
             _adapter
@@ -92,6 +110,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
                 .Returns(Task.Run(() => response));
         }
 
+        /// <summary>
+        /// Helper for verify SendAsync call.
+        /// </summary>
         private void VerifyAdapterSend(Occurred occurred)
         {
             _adapter

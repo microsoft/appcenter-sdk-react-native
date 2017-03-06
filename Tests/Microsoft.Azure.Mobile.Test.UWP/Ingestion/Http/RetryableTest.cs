@@ -37,6 +37,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             _retryableIngestion = new RetryableIngestion(new IngestionHttp(_adapter.Object), retryIntervals);
         }
 
+        /// <summary>
+        /// Verify that not retrying not recoverable exceptions.
+        /// </summary>
         [TestMethod]
         public void RetryableExceptionOnFail()
         {
@@ -46,6 +49,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             VerifyAdapterSend(Occurred.Once());
         }
 
+        /// <summary>
+        /// Helper for prepare ServiceCall.
+        /// </summary>
         private IServiceCall PrepareServiceCall()
         {
             var appSecret = Guid.NewGuid().ToString();
@@ -54,6 +60,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             return _retryableIngestion.PrepareServiceCall(appSecret, installId, logs);
         }
 
+        /// <summary>
+        /// Helper for setup responce.
+        /// </summary>
         private void SetupAdapterSendResponse(HttpResponseMessage response)
         {
             _adapter
@@ -61,6 +70,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
                 .Returns(Task.Run(() => response));
         }
 
+        /// <summary>
+        /// Helper for verify SendAsync call.
+        /// </summary>
         private void VerifyAdapterSend(Occurred occurred)
         {
             _adapter
