@@ -38,10 +38,10 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             const string urlString = "here is a string dot com";
             _channelGroup.SetServerUrl(urlString);
+
             _mockIngestion.Verify(ingestion => ingestion.SetServerUrl(urlString), Occurred.Once());
         }
         
-        //TODO make the purpose of this test a bit more clear. currently, adding a channel will never return null. maybe use this test to verify events are subscribed to?
         /// <summary>
         /// Verify that a adding a Channel to a ChannelGroup works
         /// </summary>
@@ -122,6 +122,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             var channelMock = Mock.Create<IChannel>();
             _channelGroup.AddChannel(channelMock.Object);
+
             Assert.ThrowsException<MobileCenterException>(() => _channelGroup.AddChannel(channelMock.Object));
         }
 
@@ -150,7 +151,6 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             {
                 _channelGroup.AddChannel(mockedChannel);
             }
-
             _channelGroup.SetEnabled(true);
             _channelGroup.SetEnabled(false);
 
@@ -160,22 +160,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
                 channelMock.Verify(channel => channel.SetEnabled(Param.Is<bool>(p => !p)), Occurred.Once());
             }
         }
-
-        private static Task GetCompletedTask()
-        {
-            var completedTask = Task.Delay(0);
-            completedTask.Wait();
-            return completedTask;
-        }
-
-        private static Task<string> GetCompletedTaskString()
-        {
-            var completedTask = new Task<string>(() => "hello");
-            completedTask.Wait();
-            return completedTask;
-        }
-
     }
+
     /* Custom class to expose protected constructor */
     public class TestChannelGroup : ChannelGroup
     {
