@@ -38,9 +38,9 @@ namespace Microsoft.Azure.Mobile.Test
             completedTask.Wait();
             return completedTask;
         }
-        public static Task<string> GetCompletedTaskString()
+        public static Task<T> GetCompletedTask<T>(T retVal)
         {
-            var completedTask = Task<string>.Factory.StartNew(() => "hello");
+            var completedTask = Task<T>.Factory.StartNew(() => retVal);
             completedTask.Wait();
             return completedTask;
         }

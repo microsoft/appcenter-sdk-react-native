@@ -9,7 +9,6 @@ using Microsoft.Data.Sqlite;
 namespace Microsoft.Azure.Mobile.Test
 {
     using System.Collections.Generic;
-    using Storage = Storage.Storage;
 
     [TestClass]
     public class FakeStorageTest
@@ -34,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Test
             /* Return SqliteCommand because DbCommand is abstract */
             mockAdapter.Setup(adapter => adapter.CreateCommand()).Returns(new SqliteCommand());
 
-            var fakeStorage = new Storage(mockAdapter.Object);
+            var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
 
             var logs = new List<Log>();
             Assert.ThrowsException<StorageException>(() =>

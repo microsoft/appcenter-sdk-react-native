@@ -7,13 +7,12 @@ using Microsoft.Azure.Mobile.Storage;
 namespace Microsoft.Azure.Mobile.Test
 {
     using System.Collections.Generic;
-    using Storage = Storage.Storage;
 
     [TestClass]
     public class StorageTest
     {
         const string StorageTestChannelName = "storageTestChannelName";
-        private readonly Storage _storage = new Storage();
+        private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
 
         [TestInitialize]
         public void InitializeStorageTest()
