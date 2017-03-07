@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Utils
         }
         private string GetLocale()
         {
-            return System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            return System.Globalization.CultureInfo.CurrentCulture.Name;
         }
         private int GetTimeZoneOffset()
         {
