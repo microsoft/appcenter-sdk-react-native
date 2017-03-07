@@ -27,8 +27,8 @@ namespace Microsoft.Azure.Mobile.Test
         public void GetLogsQueryError()
         {
             var mockAdapter = Mock.Create<IStorageAdapter>();
-            mockAdapter.Setup(adapter => adapter.OpenAsync()).Returns(GetCompletedTask());
-            mockAdapter.Setup(adapter => adapter.ExecuteNonQueryAsync(Param.IsAny<DbCommand>())).Returns(GetCompletedTask());
+            mockAdapter.Setup(adapter => adapter.OpenAsync()).Returns(TaskExtension.GetCompletedTask());
+            mockAdapter.Setup(adapter => adapter.ExecuteNonQueryAsync(Param.IsAny<DbCommand>())).Returns(TaskExtension.GetCompletedTask());
             mockAdapter.Setup(adapter => adapter.ExecuteQueryAsync(Param.IsAny<DbCommand>())).Throws(new ConcreteDbException());
 
             /* Return SqliteCommand because DbCommand is abstract */
@@ -41,15 +41,5 @@ namespace Microsoft.Azure.Mobile.Test
                 fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
         }
 
-        #region Helper methods
-
-        static Task GetCompletedTask()
-        {
-            var completedTask = Task.Delay(0);
-            completedTask.Wait();
-            return completedTask;
-        }
-
-        #endregion
     }
 }

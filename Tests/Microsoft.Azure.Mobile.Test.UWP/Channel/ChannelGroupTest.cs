@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using System.Threading.Tasks;
 using HyperMock;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Test.Channel
 {
@@ -49,9 +44,11 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void TestAddChannel()
         {
             const string channelName = "some_channel";
-            var addedChannel = _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3);
+            var addedChannel =
+                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Mobile.Channel.Channel;
 
             Assert.IsNotNull(addedChannel);
+            Assert.AreEqual(channelName, addedChannel.Name);
         }
 
         /// <summary>
@@ -161,18 +158,4 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             }
         }
     }
-
-    /* Custom class to expose protected constructor */
-    public class TestChannelGroup : ChannelGroup
-    {
-        public TestChannelGroup(IStorage storage, IIngestion ingestion, string appSecret)
-            : base(ingestion, storage, appSecret)
-        {
-        }
-
-        public TestChannelGroup(string appSecret) : base(appSecret)
-        {
-        }
-    }
-
 }

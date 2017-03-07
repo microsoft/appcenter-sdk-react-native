@@ -31,5 +31,18 @@ namespace Microsoft.Azure.Mobile.Test
                 throw e.InnerException;
             }
         }
+
+        public static Task GetCompletedTask()
+        {
+            var completedTask = Task.Delay(0);
+            completedTask.Wait();
+            return completedTask;
+        }
+        public static Task<string> GetCompletedTaskString()
+        {
+            var completedTask = Task<string>.Factory.StartNew(() => "hello");
+            completedTask.Wait();
+            return completedTask;
+        }
     }
 }
