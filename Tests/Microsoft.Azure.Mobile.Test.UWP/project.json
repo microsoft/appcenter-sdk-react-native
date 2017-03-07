@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "HyperMock.Universal": "2.0.4",
+    "HyperMock.Universal": "2.0.5",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "System.Data.Common": "4.1.0"
   },

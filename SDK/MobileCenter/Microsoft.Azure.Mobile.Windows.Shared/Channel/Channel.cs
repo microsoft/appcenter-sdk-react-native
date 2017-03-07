@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private int _currentState;
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
-        //TODO investigate changing use of state snapshots to leverage cancellation tokens
+
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
             string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
         {
