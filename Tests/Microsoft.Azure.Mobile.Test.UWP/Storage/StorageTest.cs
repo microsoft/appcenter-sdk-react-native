@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void CountEmptyStorage()
         {
-            int count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(0, count);
         }
 
@@ -36,9 +36,9 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void CountNonemptyStorage()
         {
-            int numLogsToAdd = 5;
+            var numLogsToAdd = 5;
             PutNLogs(numLogsToAdd);
-            int count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(numLogsToAdd, count);
         }
 

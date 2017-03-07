@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using HyperMock;
+using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -15,14 +17,22 @@ namespace Microsoft.Azure.Mobile.Test.Channel
     public class ChannelTest
     {
         private Mobile.Channel.Channel _channel;
-        private Mock<IIngestion> _mockIngestion;
-        private IStorage _mockStorage = new MockStorage();
+        private MockIngestion _mockIngestion = new MockIngestion();
+        private IStorage _storage = new Mobile.Storage.Storage();
         private readonly string _channelName = "channelName";
         private readonly int _maxLogsPerBatch = 3;
         private readonly TimeSpan _batchTimeSpan = TimeSpan.FromSeconds(1);
         private readonly int _maxParallelBatches = 3;
         private readonly string _appSecret = Guid.NewGuid().ToString();
         private readonly Guid _installId = Guid.NewGuid();
+        private const int DefaultWaitTime = 5000;
+
+        /* Event semaphores for invokation verification */
+        private const int SendingLogSemaphoreIdx = 0;
+        private const int SentLogSemaphoreIdx = 1;
+        private const int FailedToSendLogSemaphoreIdx = 2;
+        private const int EnqueuingLogSemaphoreIdx = 3;
+        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0) };
 
         public ChannelTest()
         {
@@ -32,15 +42,14 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestInitialize]
         public void InitializeChannelTest()
         {
-            _mockIngestion = Mock.Create<IIngestion>();
-            _channel = GetChannelWithTimeSpan(_batchTimeSpan.TotalMilliseconds);
+            SetChannelWithTimeSpan(_batchTimeSpan.TotalMilliseconds);
         }
         
         /// <summary>
         /// Verify that channel is enabled by default
         /// </summary>
         [TestMethod]
-        public void TestEnabledByDefault()
+        public void ChannelEnabledByDefault()
         {
             Assert.IsTrue(_channel.IsEnabled);
         }
@@ -49,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Verify that disabling channel has the expected effect
         /// </summary>
         [TestMethod]
-        public void TestDisable()
+        public void DisableChannel()
         {
             _channel.SetEnabled(false);
 
@@ -60,7 +69,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Verify that enabling the channel has the expected effect
         /// </summary>
         [TestMethod]
-        public void TestEnable()
+        public void EnableChannel()
         {
             _channel.SetEnabled(false);
             _channel.SetEnabled(true);
@@ -69,32 +78,29 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         }
         
         /// <summary>
-        /// Verify that enqueuing a log invokes the proper event
+        /// Verify that enqueuing a log passes the same log reference to enqueue event argument
         /// </summary>
         [TestMethod]
-        public void TestEnqueue()
+        public void EnqueuedLogsAreSame()
         {
             var log = new TestLog();
-            var enqueued = false;
-
+            var sem = new SemaphoreSlim(0);
             _channel.EnqueuingLog += (sender, args) =>
             {
-                enqueued = true;
                 Assert.AreSame(log, args.Log);
+                sem.Release();
             };
 
             _channel.Enqueue(log);
-            Assert.IsTrue(enqueued);
+            Assert.IsTrue(sem.Wait(DefaultWaitTime));
         }
 
         /// <summary>
         /// Verify that a log is never sent in *less* time than it is supposed to wait (when the batch is not full)
         /// </summary>
         [TestMethod]
-        public void TestWaitTime()
+        public void WaitTime()
         {
-            /* One untested call seems to stabilize times */
-            GetWaitTime(1000);
             var expectedWaitTimes = new List<double> {500, 1000, 2000};
             var actualWaitTimes = expectedWaitTimes.Select(t => GetWaitTime(t)).ToList();
 
@@ -110,9 +116,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// to test locally
         /// </summary>
         [TestMethod, Ignore]
-        public void TestWaitTimeWithSoftUpperLimit()
+        public void WaitTimeWithSoftUpperLimit()
         {
-            GetWaitTime(1000);
             var expectedWaitTimes = new List<double> { 500, 3424, 7849 };
             var actualWaitTimes = new List<double>();
             for (var i = 0; i < expectedWaitTimes.Count; ++i)
@@ -135,40 +140,66 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Verify that when a batch reaches its capacity, it is sent immediately
         /// </summary>
         [TestMethod]
-        public void TestMaxLogsPerBatch()
+        public void MaxLogsPerBatch()
         {
-            _channel = GetChannelWithTimeSpan(TimeSpan.FromHours(1).TotalMilliseconds);
-            var sem = new SemaphoreSlim(0);
-            _channel.SendingLog += (sender, args) => { sem.Release(); };
+            SetChannelWithTimeSpan(TimeSpan.FromHours(1).TotalMilliseconds);
             for (var i = 0; i < _maxLogsPerBatch; ++i)
             {
                 _channel.Enqueue(new TestLog());
             }
-            var entered = sem.Wait(5000);
-            Assert.IsTrue(entered);
+            Assert.IsTrue(SendingLogOccurred(1));
         }
         
         /// <summary>
-        /// Verify that when channel is disabled, enqueue event is not triggered
+        /// Verify that when channel is disabled, sent event is not triggered
         /// </summary>
         [TestMethod]
-        public void TestEnqueueWhileDisabled()
+        public void EnqueueWhileDisabled()
         {
+            _channel.SetEnabled(false);
             var log = new TestLog();
-            var sem = new SemaphoreSlim(0);
-            _channel.EnqueuingLog += (sender, args) =>
-            {
-                sem.Release();
-            };
             _channel.Enqueue(log);
-            var entered = sem.Wait(5000);
-            Assert.IsFalse(entered);
+            Assert.IsFalse(SentLogOccurred(1));
         }
 
+        [TestMethod]
+        public void ChannelInvokesSendingLogEvent()
+        {
+            for (var i = 0; i < _maxLogsPerBatch; ++i)
+            {
+                _channel.Enqueue(new TestLog());
+            }
+
+            Assert.IsTrue(SendingLogOccurred(_maxLogsPerBatch));
+        }
+
+        [TestMethod]
+        public void ChannelInvokesSentLogEvent()
+        {
+            for (var i = 0; i < _maxLogsPerBatch; ++i)
+            {
+                _channel.Enqueue(new TestLog());
+            }
+
+            Assert.IsTrue(SentLogOccurred(_maxLogsPerBatch));
+        }
+
+        [TestMethod]
+        public void ChannelInvokesFailedToSendLogEvent()
+        {
+            MakeIngestionCallsFail();
+
+            for (var i = 0; i < _maxLogsPerBatch; ++i)
+            {
+                _channel.Enqueue(new TestLog());
+            }
+
+            Assert.IsTrue(FailedToSendLogOccurred(_maxLogsPerBatch));
+        }
 
         private double GetWaitTime(double milliseconds)
         {
-            _channel = GetChannelWithTimeSpan(milliseconds);
+            SetChannelWithTimeSpan(milliseconds);
             var log = new TestLog();
 
             DateTime startTime;
@@ -182,44 +213,75 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             startTime = DateTime.Now;
             _channel.Enqueue(log);
-            sem.Wait((int)milliseconds*4);
+            sem.Wait();
             var ticksDiff = endTime.Ticks - startTime.Ticks;
             return TimeSpan.FromTicks(ticksDiff).TotalMilliseconds; 
         }
 
-        private Mobile.Channel.Channel GetChannelWithTimeSpan(double milliseconds)
+        private void SetChannelWithTimeSpan(double milliseconds)
         {
+            _storage.DeleteLogsAsync(_channelName).Wait();
             var timeSpan = TimeSpan.FromMilliseconds(milliseconds);
-            var mockServiceCall = Mock.Create<IServiceCall>();
-            _mockIngestion.Setup(
-                ingestion => ingestion.PrepareServiceCall(_appSecret, _installId, Param.IsAny<IList<Log>>()))
-                .Returns(mockServiceCall.Object);
-            return new Mobile.Channel.Channel(_channelName, _maxLogsPerBatch, timeSpan, _maxParallelBatches,
-                _appSecret, _installId, _mockIngestion.Object, _mockStorage);
+            _channel = new Mobile.Channel.Channel(_channelName, _maxLogsPerBatch, timeSpan, _maxParallelBatches,
+                _appSecret, _installId, _mockIngestion, _storage);
+            MakeIngestionCallsSucceed();
+            SetupEventCallbacks();
+        }
+
+        private void MakeIngestionCallsFail()
+        {
+            _mockIngestion.CallShouldSucceed = false;
+        }
+
+        private void MakeIngestionCallsSucceed()
+        {
+            _mockIngestion.CallShouldSucceed = true;
+
+        }
+
+        private void SetupEventCallbacks()
+        {
+            foreach (var sem in _eventSemaphores)
+            {
+                if (sem.CurrentCount != 0)
+                {
+                    sem.Release(sem.CurrentCount);
+                }
+            }
+            _channel.SendingLog += (sender, args) => { _eventSemaphores[SendingLogSemaphoreIdx].Release(); };
+            _channel.SentLog += (sender, args) => { _eventSemaphores[SentLogSemaphoreIdx].Release(); };
+            _channel.FailedToSendLog += (sender, args) => { _eventSemaphores[FailedToSendLogSemaphoreIdx].Release(); };
+            _channel.EnqueuingLog += (sender, args) => { _eventSemaphores[EnqueuingLogSemaphoreIdx].Release(); };       
+        }
+
+        private bool FailedToSendLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[FailedToSendLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private bool EnqueuingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[EnqueuingLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private bool SentLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[SentLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private bool SendingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[SendingLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)
+        {
+            var enteredAll = true;
+            for (var i = 0; i < numTimes; ++i)
+            {
+                enteredAll &= semaphore.Wait(waitTime);
+            }
+            return enteredAll;
         }
     }
 }
-
-/*
-        public void SetEnabled(bool enabled)
-        public bool IsEnabled
-
-        #region Events
-        public event EnqueuingLogEventHandler EnqueuingLog;
-        public event SendingLogEventHandler SendingLog;
-        public event SentLogEventHandler SentLog;
-        public event FailedToSendLogEventHandler FailedToSendLog;
-        #endregion
-
-        public void Enqueue(Log log)
-
-
-
-
-        public void InvalidateDeviceCache()
-
-        public void Clear()
-       
-
-        public void Shutdown()
-        */

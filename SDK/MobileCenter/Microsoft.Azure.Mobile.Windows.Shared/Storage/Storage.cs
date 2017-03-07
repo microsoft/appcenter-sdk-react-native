@@ -69,7 +69,8 @@ namespace Microsoft.Azure.Mobile.Storage
             await OpenDbAsync();
             try
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
+                MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                    $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
                 var identifiers = _pendingDbIdentifierGroups[GetFullIdentifier(channelName, batchId)];
                 _pendingDbIdentifierGroups.Remove(GetFullIdentifier(channelName, batchId));
                 var deletedIdsMessage = "The IDs for deleting log(s) is/ are:";
@@ -83,6 +84,10 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     await DeleteLogAsync(channelName, id);
                 }
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new StorageException(e);
             }
             finally
             {
@@ -122,6 +127,10 @@ namespace Microsoft.Azure.Mobile.Storage
                 command.CommandText = $"DELETE FROM {Table} WHERE {ChannelColumn}=@{channelParameter.ParameterName}";
                 command.Prepare();
                 await command.ExecuteNonQueryAsync();
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new StorageException(e);
             }
             catch (DbException e)
             {
