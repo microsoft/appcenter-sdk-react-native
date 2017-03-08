@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _networkState.NetworkAddressChanged += HandleNetworkAddressChanged;
         }
 
-        private void HandleNetworkAddressChanged(object sender, EventArgs e)
+        private void HandleNetworkAddressChanged()
         {
             _mutex.Wait();
             try

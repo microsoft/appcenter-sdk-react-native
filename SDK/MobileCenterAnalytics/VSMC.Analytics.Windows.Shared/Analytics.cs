@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Analytics
     {
         #region static
 
-        private readonly static object AnalyticsLock = new object();
+        private static readonly object AnalyticsLock = new object();
 
         private static Analytics _instanceField;
 

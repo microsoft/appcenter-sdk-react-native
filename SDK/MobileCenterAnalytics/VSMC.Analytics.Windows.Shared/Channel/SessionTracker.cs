@@ -15,7 +15,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
         private const long SessionTimeout = 20000;
-        private readonly ChannelGroup _channelGroup;
         private readonly IChannel _channel;
         private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
         private Guid? _sid;
@@ -27,18 +26,13 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         public SessionTracker(ChannelGroup channelGroup, IChannel channel)
         {
-            _channelGroup = channelGroup;
             _channel = channel;
-            _channelGroup.EnqueuingLog += HandleEnqueuingLog;
+            channelGroup.EnqueuingLog += HandleEnqueuingLog;
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null) return;
             _sessions = SessionsFromString(sessionsString);
             if (_sessions.Count == 0) return;
-            var loadedSessionsString = "Loaded stored sessions:\n";
-            foreach (var session in _sessions.Values)
-            {
-                loadedSessionsString += "\t" + session + "\n";
-            }
+            var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 
@@ -156,7 +150,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             var noLogSentForLong = _lastQueuedLogTime == 0 || (now - _lastQueuedLogTime) >= SessionTimeout;
             if (_lastPausedTime == 0)
             {
-                return (_lastResumedTime == 0) && noLogSentForLong;
+                return _lastResumedTime == 0 && noLogSentForLong;
             }
             if (_lastResumedTime == 0)
             {
