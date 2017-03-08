@@ -16,18 +16,13 @@ namespace Microsoft.Azure.Mobile.Test
 
         static TestLog()
         {
-            LogSerializer.AddFactory(TestLog.JsonIdentifier, new LogFactory<TestLog>());
+            LogSerializer.AddFactory(JsonIdentifier, new LogFactory<TestLog>());
         }
 
         public static TestLog CreateTestLog()
         {
-            Dictionary<string, string> properties = new Dictionary<string, string>();
-            properties.Add("key1", "value1");
-            properties.Add("key2", "value2");
-            properties.Add("key3", "value3");
-            TestLog log = new TestLog(properties);
-            log.Sid = Guid.NewGuid();
-            return new TestLog(properties);
+            var properties = new Dictionary<string, string> {{"key1", "value1"}, {"key2", "value2"}, {"key3", "value3"}};
+            return new TestLog(properties) {Sid = Guid.NewGuid()};
         }
 
         public TestLog()
@@ -42,14 +37,14 @@ namespace Microsoft.Azure.Mobile.Test
 
         public override bool Equals(object obj)
         {
-            TestLog that = obj as TestLog;
+            var that = obj as TestLog;
             if (that == null)
             {
                 return false;
             }
 
-            string thisSerialized = LogSerializer.Serialize(this);
-            string thatSerialized = LogSerializer.Serialize(that);
+            var thisSerialized = LogSerializer.Serialize(this);
+            var thatSerialized = LogSerializer.Serialize(that);
             return thisSerialized == thatSerialized;
         }
 

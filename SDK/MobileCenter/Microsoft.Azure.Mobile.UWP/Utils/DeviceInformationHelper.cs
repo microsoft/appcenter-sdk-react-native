@@ -3,12 +3,13 @@ using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.ApplicationModel.Core;
 using Windows.Graphics.Display;
+using Windows.UI.Xaml;
+using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        //TODO thread safety?
         private bool _leftBackground;
         private string _cachedScreenSize;
         public override event Action InformationInvalidated;
@@ -57,6 +58,11 @@ namespace Microsoft.Azure.Mobile.Utils
             return deviceInfo.SystemProductName;
         }
 
+        protected override string GetAppNamespace()
+        {
+            return Application.Current.GetType().Namespace;
+        }
+
         protected override string GetDeviceOemName()
         {
             EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
@@ -91,7 +97,7 @@ namespace Microsoft.Azure.Mobile.Utils
         protected override string GetAppVersion()
         {
             var packageVersion = Windows.ApplicationModel.Package.Current.Id.Version;
-            return $"{packageVersion.Major}.{packageVersion.Minor}"; //TODO unsure about this one
+            return $"{packageVersion.Major}.{packageVersion.Minor}";
         }
 
         protected override string GetAppBuild()

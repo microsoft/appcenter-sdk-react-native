@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Ingestion;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -38,9 +39,24 @@ namespace Microsoft.Azure.Mobile.Test
             completedTask.Wait();
             return completedTask;
         }
-        public static Task<string> GetCompletedTaskString()
+
+        public static Task GetFaultedTask()
         {
-            var completedTask = Task<string>.Factory.StartNew(() => "hello");
+            var task = Task.Factory.StartNew(() => { throw new IngestionException(); });
+            try
+            {
+                task.Wait();
+            }
+            catch (Exception)
+            {
+                
+            }
+            return task;
+        }
+
+        public static Task<T> GetCompletedTask<T>(T retVal)
+        {
+            var completedTask = Task<T>.Factory.StartNew(() => retVal);
             completedTask.Wait();
             return completedTask;
         }

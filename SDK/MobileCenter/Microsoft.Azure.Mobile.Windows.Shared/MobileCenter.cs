@@ -168,6 +168,8 @@ namespace Microsoft.Azure.Mobile
 
         #region instance
 
+        internal MobileCenter() { }
+
         private bool InstanceEnabled
         {
             get

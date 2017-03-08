@@ -7,13 +7,12 @@ using Microsoft.Azure.Mobile.Storage;
 namespace Microsoft.Azure.Mobile.Test
 {
     using System.Collections.Generic;
-    using Storage = Storage.Storage;
 
     [TestClass]
     public class StorageTest
     {
         const string StorageTestChannelName = "storageTestChannelName";
-        private readonly Storage _storage = new Storage();
+        private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
 
         [TestInitialize]
         public void InitializeStorageTest()
@@ -27,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void CountEmptyStorage()
         {
-            int count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(0, count);
         }
 
@@ -37,9 +36,9 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void CountNonemptyStorage()
         {
-            int numLogsToAdd = 5;
+            var numLogsToAdd = 5;
             PutNLogs(numLogsToAdd);
-            int count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(numLogsToAdd, count);
         }
 
