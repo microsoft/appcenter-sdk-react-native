@@ -99,7 +99,9 @@
     <Compile Include="Channel\ChannelGroupTest.cs" />
     <Compile Include="Channel\ChannelTest.cs" />
     <Compile Include="Channel\TestChannelGroup.cs" />
+    <Compile Include="MobileCenterTest.cs" />
     <Compile Include="MockIngestion.cs" />
+    <Compile Include="MockMobileCenterService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\MockStorage.cs" />
