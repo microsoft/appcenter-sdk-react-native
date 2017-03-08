@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public class NetworkStateServiceCall : ServiceCallDecorator

@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.NetworkInformation;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Threading;
-using Microsoft.Rest;
+using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
@@ -18,12 +14,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
     {
         private readonly HashSet<IServiceCall> _calls = new HashSet<IServiceCall>();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
+        private readonly INetworkStateAdapter _networkState;
 
-        private bool IsConnected => NetworkInterface.GetIsNetworkAvailable();
-
-        public NetworkStateIngestion(IIngestion decoratedApi) : base(decoratedApi)
+        public NetworkStateIngestion(IIngestion decoratedApi) :
+            this(decoratedApi, new NetworkStateAdapter())
         {
-            NetworkChange.NetworkAddressChanged += HandleNetworkAddressChanged;
+        }
+
+        public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkState)
+            : base(decoratedApi)
+        {
+            _networkState = networkState;
+            _networkState.NetworkAddressChanged += HandleNetworkAddressChanged;
         }
 
         private void HandleNetworkAddressChanged(object sender, EventArgs e)
@@ -31,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _mutex.Wait();
             try
             {
-                if (IsConnected)
+                if (_networkState.IsConnected)
                 {
                     var callsCopy = new HashSet<IServiceCall>(_calls);
                     foreach (var call in callsCopy)
@@ -58,7 +60,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             //TODO what if already closed?
             _mutex.Wait();
-            NetworkChange.NetworkAddressChanged -= HandleNetworkAddressChanged;
+            _networkState.NetworkAddressChanged -= HandleNetworkAddressChanged;
             foreach (var call in _calls)
             {
                 PauseServiceCall(call);
@@ -66,6 +68,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _calls.Clear();
             _mutex.Release();
             base.Close();
+        }
+
+        internal async Task WaitAllCalls()
+        {
+            int callsCount;
+            do
+            {
+                await _mutex.WaitAsync().ConfigureAwait(false);
+                callsCount = _calls.Count;
+                _mutex.Release();
+            } while (callsCount > 0);
         }
 
         private void PauseServiceCall(IServiceCall call)
@@ -82,15 +95,15 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         /// <exception cref="NetworkUnavailableException"/>
         public override async Task ExecuteCallAsync(IServiceCall call)
         {
-            await _mutex.WaitAsync();
+            await _mutex.WaitAsync().ConfigureAwait(false);
             _calls.Add(call);
             _mutex.Release();
 
-            if (IsConnected)
+            if (_networkState.IsConnected)
             {
                 try
                 {
-                    await base.ExecuteCallAsync(call);
+                    await base.ExecuteCallAsync(call).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -102,6 +115,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 throw new NetworkUnavailableException();
             }
         }
+
         private void RemoveCall(IServiceCall call)
         {
             _mutex.Wait();

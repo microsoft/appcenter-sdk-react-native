@@ -59,8 +59,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM</PlatformTarget>
+    <DebugType>pdbonly</DebugType>    <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
@@ -97,8 +96,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel\ChannelGroupTest.cs" />
+
+    <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
+    <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
+    <Compile Include="Ingestion\Http\RetryableTest.cs" />
     <Compile Include="Channel\ChannelTest.cs" />
     <Compile Include="Channel\TestChannelGroup.cs" />
+
     <Compile Include="MobileCenterTest.cs" />
     <Compile Include="MockIngestion.cs" />
     <Compile Include="MockMobileCenterService.cs" />

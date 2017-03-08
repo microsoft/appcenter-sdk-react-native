@@ -1,11 +1,15 @@
 ﻿using Microsoft.Azure.Mobile.Analytics;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Crashes;
 
 namespace Contoso.Forms.Puppet.UWP
 {
@@ -47,7 +51,9 @@ namespace Contoso.Forms.Puppet.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
+
                 Xamarin.Forms.Forms.Init(e);
+
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
