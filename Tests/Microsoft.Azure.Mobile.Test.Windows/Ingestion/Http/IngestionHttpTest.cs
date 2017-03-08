@@ -7,19 +7,17 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
-    [TestClass]
     public class IngestionHttpTest
     {
         private Mock<IHttpNetworkAdapter> _adapter;
         private IngestionHttp _ingestionHttp;
 
-        [TestInitialize]
-        public void InitializeIngestionHttpTest()
+        public IngestionHttpTest()
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
             _ingestionHttp = new IngestionHttp(_adapter.Object);
@@ -28,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         /// <summary>
         /// Verify that ingestion call http adapter and not fails on success.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void IngestionHttpStatusCodeOK()
         {
             var call = PrepareServiceCall();
@@ -42,19 +40,19 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         /// <summary>
         /// Verify that ingestion throw exception on error response.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void IngestionHttpStatusCodeError()
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
-            Assert.ThrowsException<HttpIngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
+            Assert.Throws<HttpIngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Once());
         }
 
         /// <summary>
         /// Verify that ingestion don't call http adapter when call is closed.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void IngestionHttpCancel()
         {
             var call = PrepareServiceCall();
@@ -67,24 +65,24 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         /// <summary>
         /// Verify that ingestion prepare ServiceCall correctly.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void IngestionHttpPrepareServiceCall()
         {
             var appSecret = Guid.NewGuid().ToString();
             var installId = Guid.NewGuid();
             var logs = new List<Log>();
             var call = _ingestionHttp.PrepareServiceCall(appSecret, installId, logs);
-            Assert.IsInstanceOfType(call, typeof(HttpServiceCall));
-            Assert.AreEqual(call.Ingestion, _ingestionHttp);
-            Assert.AreEqual(call.AppSecret, appSecret);
-            Assert.AreEqual(call.InstallId, installId);
-            Assert.AreEqual(call.Logs, logs);
+            Assert.IsType(typeof(HttpServiceCall), call);
+            Assert.Equal(call.Ingestion, _ingestionHttp);
+            Assert.Equal(call.AppSecret, appSecret);
+            Assert.Equal(call.InstallId, installId);
+            Assert.Equal(call.Logs, logs);
         }
 
         /// <summary>
         /// Verify that ingestion create ServiceCall correctly.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void IngestionHttpCreateRequest()
         {
             var appSecret = Guid.NewGuid().ToString();
@@ -92,9 +90,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var logs = string.Empty;
             var request = _ingestionHttp.CreateRequest(appSecret, installId, logs);
 
-            Assert.AreEqual(request.Method, HttpMethod.Post);
-            Assert.IsTrue(request.Headers.Contains(IngestionHttp.AppSecret));
-            Assert.IsTrue(request.Headers.Contains(IngestionHttp.InstallId));
+            Assert.Equal(request.Method, HttpMethod.Post);
+            Assert.True(request.Headers.Contains(IngestionHttp.AppSecret));
+            Assert.True(request.Headers.Contains(IngestionHttp.InstallId));
         }
 
         /// <summary>

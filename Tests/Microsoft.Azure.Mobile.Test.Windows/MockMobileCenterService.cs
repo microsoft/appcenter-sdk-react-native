@@ -12,11 +12,11 @@ namespace Microsoft.Azure.Mobile.Test
     {
         private static MockMobileCenterService _instanceField;
 
-        public static MockMobileCenterService Instance
+        public static void Reset()
         {
-            get => _instanceField ?? (_instanceField = new MockMobileCenterService());
-            set => _instanceField = value;
+            _instanceField = new MockMobileCenterService();
         }
+        public static MockMobileCenterService Instance => _instanceField ?? (_instanceField = new MockMobileCenterService());
         public Mock<IMobileCenterService> MockInstance { get; }
 
         public MockMobileCenterService()
@@ -25,8 +25,8 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         public bool InstanceEnabled {
-            get => MockInstance.Object.InstanceEnabled;
-            set => MockInstance.Object.InstanceEnabled = value;
+            get { return MockInstance.Object.InstanceEnabled; }
+            set { MockInstance.Object.InstanceEnabled = value; }
         }
 
         public void OnChannelGroupReady(ChannelGroup channelGroup)

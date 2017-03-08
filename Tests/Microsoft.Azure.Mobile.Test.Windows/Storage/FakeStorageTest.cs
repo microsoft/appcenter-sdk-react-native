@@ -1,15 +1,14 @@
 ﻿using System.Data.Common;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Microsoft.Data.Sqlite;
+using Xunit;
 
 namespace Microsoft.Azure.Mobile.Test
 {
     using System.Collections.Generic;
 
-    [TestClass]
     public class FakeStorageTest
     {
         const string StorageTestChannelName = "storageTestChannelName";
@@ -21,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Test
         /// <summary>
         /// Verify that if an error occurs while executing a query (from GetLogs), a StorageException gets thrown.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetLogsQueryError()
         {
             var mockAdapter = new Mock<IStorageAdapter>();
@@ -35,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Test
             var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
 
             var logs = new List<Log>();
-            Assert.ThrowsException<StorageException>(() =>
+            Assert.Throws<StorageException>(() =>
                 fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
         }
 

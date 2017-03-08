@@ -4,25 +4,26 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Mobile.Test
 {
-    [TestClass]
     public class MobileCenterTest
     {
-        [TestMethod]
+        [Fact]
         public void StartInstanceWithConfigure()
         {
+            MockMobileCenterService.Reset();
+            MobileCenter.Instance = new MobileCenter();
             MobileCenter.Start(typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void StartInstanceWithoutConfigure()
         {
-            var mockService = new Mock<IMobileCenterService>();
+            MockMobileCenterService.Reset();
             MobileCenter.Configure("appsecret");
             MobileCenter.Start(typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());

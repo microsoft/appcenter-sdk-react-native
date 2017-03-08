@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private readonly HttpClient _httpClient = new HttpClient();
         public TimeSpan Timeout
         {
-            get => _httpClient.Timeout;
-            set => _httpClient.Timeout = value;
+            get { return _httpClient.Timeout; }
+            set { _httpClient.Timeout = value; }
         }
 
         /// <exception cref="IngestionException"/>

@@ -281,7 +281,7 @@ Task("MergeNuGets")
 		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {
 			Verbosity = NuGetVerbosity.Detailed,
-			Version = "7.0.0.5"
+			Version = module.NuGetVersion
 		});
 
 		/* Clean up */

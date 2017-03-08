@@ -22,6 +22,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             try
             {
                 WerRegisterCustomMetadata(WatsonKey, appSecret);
+
             }
             catch (Exception e)
             {

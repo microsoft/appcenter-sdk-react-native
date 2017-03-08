@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
-    [TestClass]
     public class NetworkStateTest
     {
         private Mock<IHttpNetworkAdapter> _adapter;
         private NetworkStateAdapter _networkState;
         private NetworkStateIngestion _networkStateIngestion;
 
-        [TestInitialize]
-        public void InitializeNetworkStateTest()
+        public NetworkStateTest()
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
             _networkState = new NetworkStateAdapter();
@@ -31,23 +29,23 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         /// <summary>
         /// Verify that ingestion create ServiceCall correctly.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void NetworkStateIngestionPrepareServiceCall()
         {
             var appSecret = Guid.NewGuid().ToString();
             var installId = Guid.NewGuid();
             var logs = new List<Log>();
             var call = _networkStateIngestion.PrepareServiceCall(appSecret, installId, logs);
-            Assert.IsInstanceOfType(call, typeof(NetworkStateServiceCall));
-            Assert.AreEqual(call.AppSecret, appSecret);
-            Assert.AreEqual(call.InstallId, installId);
-            Assert.AreEqual(call.Logs, logs);
+            Assert.IsType(typeof(NetworkStateServiceCall), call);
+            Assert.Equal(call.AppSecret, appSecret);
+            Assert.Equal(call.InstallId, installId);
+            Assert.Equal(call.Logs, logs);
         }
 
         /// <summary>
         /// Verify that call executed when network is available.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void NetworkStateIngestionOnline()
         {
             var call = PrepareServiceCall();
@@ -62,26 +60,26 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         /// <summary>
         /// Verify that call not executed when network is not available.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void NetworkStateIngestionOffline()
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             _networkState.IsConnected = false;
-            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.Throws<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Never());
         }
 
         /// <summary>
         /// Verify that call resended when network is available again.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void NetworkStateIngestionComeBackOnline()
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             _networkState.IsConnected = false;
-            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.Throws<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Never());
             _networkState.IsConnected = true;
             _networkStateIngestion.WaitAllCalls().RunNotAsync();
