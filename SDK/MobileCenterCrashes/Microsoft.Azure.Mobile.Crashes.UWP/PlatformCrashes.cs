@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
     class PlatformCrashes : PlatformCrashesBase
     {
-        private const string WatsonKey = "VSMCAppId";
+        private const string WatsonKey = "VSMCAppSecret";
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         private static extern int WerRegisterCustomMetadata([MarshalAs(UnmanagedType.LPWStr)]string key, [MarshalAs(UnmanagedType.LPWStr)]string value);
 
@@ -22,7 +22,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             try
             {
                 WerRegisterCustomMetadata(WatsonKey, appSecret);
-
             }
             catch (Exception e)
             {
@@ -49,8 +48,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
             return null;
-        }
-
-      
+        }      
     }
 }
