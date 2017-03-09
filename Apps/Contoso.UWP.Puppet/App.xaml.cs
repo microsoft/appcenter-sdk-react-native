@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
-
+using Microsoft.Azure.Mobile.Crashes;
 namespace Contoso.UWP.Puppet
 {
     /// <summary>
@@ -32,7 +32,7 @@ namespace Contoso.UWP.Puppet
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.Configure("98038a20-4014-445a-b27f-048082036045");
-            MobileCenter.Start(typeof(Analytics));
+            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             var properties = new Dictionary<string, string>();
             properties["key1"] = "value1";
             properties["key2"] = "value";

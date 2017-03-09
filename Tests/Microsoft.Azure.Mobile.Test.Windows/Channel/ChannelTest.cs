@@ -8,10 +8,11 @@ using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Test.Storage;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.Mobile.Test.Channel
 {
+    [TestClass]
     public class ChannelTest
     {
         private Mobile.Channel.Channel _channel;
@@ -35,63 +36,69 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public ChannelTest()
         {
             LogSerializer.AddFactory(TestLog.JsonIdentifier, new LogFactory<TestLog>());
+        }
+
+        [TestInitialize]
+        public void InitializeChannelTest()
+        {
             SetChannelWithTimeSpan(_batchTimeSpan);
         }
-        
+
         /// <summary>
         /// Verify that channel is enabled by default
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void ChannelEnabledByDefault()
         {
-            Assert.True(_channel.IsEnabled);
+            Assert.IsTrue(_channel.IsEnabled);
         }
 
         /// <summary>
         /// Verify that disabling channel has the expected effect
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void DisableChannel()
         {
             _channel.SetEnabled(false);
 
-            Assert.False(_channel.IsEnabled);
+            Assert.IsFalse(_channel.IsEnabled);
         }
 
         /// <summary>
         /// Verify that enabling the channel has the expected effect
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void EnableChannel()
         {
             _channel.SetEnabled(false);
             _channel.SetEnabled(true);
 
-            Assert.True(_channel.IsEnabled);
+            Assert.IsTrue(_channel.IsEnabled);
         }
         
         /// <summary>
         /// Verify that enqueuing a log passes the same log reference to enqueue event argument
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void EnqueuedLogsAreSame()
         {
             var log = new TestLog();
             var sem = new SemaphoreSlim(0);
             _channel.EnqueuingLog += (sender, args) =>
             {
-                Assert.Same(log, args.Log);
+                Assert.AreSame(log, args.Log);
                 sem.Release();
             };
 
             _channel.Enqueue(log);
-            Assert.True(sem.Wait(DefaultWaitTime));
+            Assert.IsTrue(sem.Wait(DefaultWaitTime));
         }
 
         /// <summary>
         /// Verify that a log is never sent in *less* time than it is supposed to wait (when the batch is not full)
         /// </summary>
-        [Fact(Skip="too unstable")]
+        /// <remarks>Ignore due to instability</remarks>
+        [TestMethod, Ignore]
         public void WaitTime()
         {
             var expectedWaitTimes = new List<double> {500, 1000, 2000};
@@ -99,7 +106,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             for (var i = 0; i < expectedWaitTimes.Count; ++i)
             {
-                Assert.True(actualWaitTimes[i] >= expectedWaitTimes[i]);
+                Assert.IsTrue(actualWaitTimes[i] >= expectedWaitTimes[i]);
             }
         }
 
@@ -108,7 +115,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// it should not cause any automated testing to fail due to various CPU speeds, but is useful
         /// to test locally
         /// </summary>
-        [Fact(Skip="too unpredictable")]
+        /// <remarks>Ignore due to instability</remarks>
+        [TestMethod, Ignore]
         public void WaitTimeWithSoftUpperLimit()
         {
             var expectedWaitTimes = new List<double> { 500, 3424, 7849 };
@@ -123,72 +131,63 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             {
                 var diff = actualWaitTimes[i] - expectedWaitTimes[i];
                 diffs.Add(diff);
-                Assert.True(diff >= 0);
+                Assert.IsTrue(diff >= 0);
             }
             var range = diffs.Max() - diffs.Min();
-            Assert.True(range <= errorThresholdMilliseconds);
+            Assert.IsTrue(range <= errorThresholdMilliseconds);
         }
 
         /// <summary>
         /// Verify that when a batch reaches its capacity, it is sent immediately
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void MaxLogsPerBatch()
         {
-
             SetChannelWithTimeSpan(TimeSpan.FromHours(1));
             for (var i = 0; i < _maxLogsPerBatch; ++i)
             {
                 _channel.Enqueue(new TestLog());
             }
-            Assert.True(SendingLogOccurred(1));
+            Assert.IsTrue(SendingLogOccurred(1));
         }
         
         /// <summary>
         /// Verify that when channel is disabled, sent event is not triggered
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void EnqueueWhileDisabled()
         {
-            SetChannelWithTimeSpan(_batchTimeSpan);
-
             _channel.SetEnabled(false);
             var log = new TestLog();
             _channel.Enqueue(log);
-            Assert.False(SentLogOccurred(1));
+            Assert.IsFalse(SentLogOccurred(1));
         }
 
-        [Fact]
+        [TestMethod]
         public void ChannelInvokesSendingLogEvent()
         {
-            SetChannelWithTimeSpan(_batchTimeSpan);
-
             for (var i = 0; i < _maxLogsPerBatch; ++i)
             {
                 _channel.Enqueue(new TestLog());
             }
 
-            Assert.True(SendingLogOccurred(_maxLogsPerBatch));
+            Assert.IsTrue(SendingLogOccurred(_maxLogsPerBatch));
         }
 
-        [Fact]
+        [TestMethod]
         public void ChannelInvokesSentLogEvent()
         {
-            SetChannelWithTimeSpan(_batchTimeSpan);
-
             for (var i = 0; i < _maxLogsPerBatch; ++i)
             {
                 _channel.Enqueue(new TestLog());
             }
 
-            Assert.True(SentLogOccurred(_maxLogsPerBatch));
+            Assert.IsTrue(SentLogOccurred(_maxLogsPerBatch));
         }
 
-        [Fact]
+        [TestMethod]
         public void ChannelInvokesFailedToSendLogEvent()
         {
-            SetChannelWithTimeSpan(_batchTimeSpan);
-
             MakeIngestionCallsFail();
 
             for (var i = 0; i < _maxLogsPerBatch; ++i)
@@ -196,7 +195,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
                 _channel.Enqueue(new TestLog());
             }
 
-            Assert.True(FailedToSendLogOccurred(_maxLogsPerBatch));
+            Assert.IsTrue(FailedToSendLogOccurred(_maxLogsPerBatch));
         }
 
         private double GetWaitTime(double milliseconds)
@@ -237,7 +236,6 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         private void MakeIngestionCallsSucceed()
         {
             _mockIngestion.CallShouldSucceed = true;
-
         }
 
         private void SetupEventCallbacks()

@@ -4,14 +4,14 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Xunit;
 
 namespace Microsoft.Azure.Mobile.Test
 {
     public class MobileCenterTest
     {
-        [Fact]
+        [TestMethod]
         public void StartInstanceWithConfigure()
         {
             MockMobileCenterService.Reset();
@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Test
             MockMobileCenterService.Instance.MockInstance.Verify(service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
         }
 
-        [Fact]
+        [TestMethod]
         public void StartInstanceWithoutConfigure()
         {
             MockMobileCenterService.Reset();

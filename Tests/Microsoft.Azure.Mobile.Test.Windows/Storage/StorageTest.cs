@@ -1,84 +1,79 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.Mobile.Test
 {
-    using System.Collections.Generic;
-
+    [TestClass]
     public class StorageTest
     {
-        const string StorageTestChannelName = "storageTestChannelName";
+        private const string StorageTestChannelName = "storageTestChannelName";
         private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
 
+        [TestInitialize]
         public void InitializeStorageTest()
         {
             _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
         }
 
         /// <summary>
-        /// Verify that counting number of logs stored when there are no logs returns 0.
+        ///     Verify that counting number of logs stored when there are no logs returns 0.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void CountEmptyStorage()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
-            Assert.Equal(0, count);
+            Assert.AreEqual(0, count);
         }
 
         /// <summary>
-        /// Verify that after adding 'n' logs, counting logs returns 'n'.
+        ///     Verify that after adding 'n' logs, counting logs returns 'n'.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void CountNonemptyStorage()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             PutNLogs(numLogsToAdd);
             var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
-            Assert.Equal(numLogsToAdd, count);
+            Assert.AreEqual(numLogsToAdd, count);
         }
 
         /// <summary>
-        /// Verify that storing a log and then retrieving it from storage does not alter the log.
+        ///     Verify that storing a log and then retrieving it from storage does not alter the log.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void PutOneLog()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var addedLog = TestLog.CreateTestLog();
             _storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
             var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0];
-            Assert.Equal(addedLog, retrievedLog);
+            Assert.AreEqual(addedLog, retrievedLog);
         }
 
         /// <summary>
-        /// Verify that deleting all logs for a given channel does so.
+        ///     Verify that deleting all logs for a given channel does so.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void DeleteLogsNoBatchId()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             PutNLogs(5);
             _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
-            Assert.Equal(0, count);
+            Assert.AreEqual(0, count);
         }
 
         /// <summary>
-        /// Verify that deleting a particular batch deletes exactly the number of logs for that batch.
+        ///     Verify that deleting a particular batch deletes exactly the number of logs for that batch.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void DeleteLogsWithBatchId()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = 3;
             var addedLogs = PutNLogs(numLogsToAdd);
@@ -86,150 +81,135 @@ namespace Microsoft.Azure.Mobile.Test
             var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
             _storage.DeleteLogsAsync(StorageTestChannelName, batchId).RunNotAsync();
             var numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
-            Assert.Equal(numLogsToAdd - retrievedLogs.Count, numLogsRemaining);
+            Assert.AreEqual(numLogsToAdd - retrievedLogs.Count, numLogsRemaining);
         }
 
         /// <summary>
-        /// Verify that when the limit equals the number of logs for the given channel, all logs are returned.
+        ///     Verify that when the limit equals the number of logs for the given channel, all logs are returned.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetLogsExactLimit()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
-            Assert.True(IsSubset(addedLogs, retrievedLogs));
-            Assert.True(IsSubset(retrievedLogs, addedLogs));
+            CollectionAssert.AreEquivalent(addedLogs, retrievedLogs);
         }
 
         /// <summary>
-        /// Verify that when the limit is lower than the number of logs for the given channel, all logs are returned.
+        ///     Verify that when the limit is lower than the number of logs for the given channel, all logs are returned.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetLogsLowLimit()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = 3;
             var addedLogs = PutNLogs(numLogsToAdd);
-            List<Log> retrievedLogs = new List<Log>();
+            var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
-            Assert.Equal(limit, retrievedLogs.Count);
-            Assert.True(IsSubset(addedLogs, retrievedLogs));
+            Assert.AreEqual(limit, retrievedLogs.Count);
+            CollectionAssert.IsSubsetOf(retrievedLogs, addedLogs);
         }
 
         /// <summary>
-        /// Verify that when the limit exceeds the number of logs for the given channel, 'limit' logs are correctly returned.
+        ///     Verify that when the limit exceeds the number of logs for the given channel, 'limit' logs are correctly returned.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetLogsHighLimit()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = 7;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
-            Assert.Equal(retrievedLogs, addedLogs);
+            CollectionAssert.AreEquivalent(retrievedLogs, addedLogs);
         }
 
         /// <summary>
-        /// Verify that when logs are retrieved, the batchId is not null.
+        ///     Verify that when logs are retrieved, the batchId is not null.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetLogsHasBatchId()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
-            List<Log> retrievedLogs = new List<Log>();
-            string batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
-            Assert.NotNull(batchId);
+            var retrievedLogs = new List<Log>();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            Assert.IsNotNull(batchId);
         }
 
         /// <summary>
-        /// Verify that when no logs are retrieved, the batchId is null.
+        ///     Verify that when no logs are retrieved, the batchId is null.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetNoLogsHasNoBatchId()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 0;
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
             var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
-            Assert.Null(batchId);
+            Assert.IsNull(batchId);
         }
 
         /// <summary>
-        /// Verify that storage does not return same log more than once.
+        ///     Verify that storage does not return same log more than once.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetDuplicateLogs()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogsFirstTry = new List<Log>();
             var retrievedLogsSecondTry = new List<Log>();
-
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
-
-            Assert.Equal(addedLogs, retrievedLogsFirstTry);
-            Assert.Equal(0, retrievedLogsSecondTry.Count);
-        }
+            CollectionAssert.AreEquivalent(addedLogs, retrievedLogsFirstTry);
+            Assert.AreEqual(0, retrievedLogsSecondTry.Count);
+        }  
 
         /// <summary>
-        /// Verify that a channel that starts with the name of another channel does not cause problems.
+        ///     Verify that a channel that starts with the name of another channel does not cause problems.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void GetLogsFromChannelWithSimilarNames()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var fakeChannelName = StorageTestChannelName.Substring(0, StorageTestChannelName.Length - 1);
             _storage.PutLogAsync(StorageTestChannelName, TestLog.CreateTestLog()).RunNotAsync();
             var retrievedLogs = new List<Log>();
             var batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).RunNotAsync();
-            Assert.Null(batchId);
+            Assert.IsNull(batchId);
         }
 
         /// <summary>
-        /// Verify that storage returns log more than once if pending state is cleared.
+        ///     Verify that storage returns log more than once if pending state is cleared.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void ClearPendingState()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
             var numLogsToAdd = 5;
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
-
             var retrievedLogsFirstTry = new List<Log>();
             var retrievedLogsSecondTry = new List<Log>();
-
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
             _storage.ClearPendingLogStateAsync(StorageTestChannelName).RunNotAsync();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
-
-            Assert.Equal(addedLogs, retrievedLogsFirstTry);
-            Assert.Equal(addedLogs, retrievedLogsSecondTry);
+            CollectionAssert.AreEquivalent(addedLogs, retrievedLogsFirstTry);
+            CollectionAssert.AreEquivalent(addedLogs, retrievedLogsSecondTry);
         }
 
         /// <summary>
-        /// Verify that an invalid log in the database, when retrieved, is deleted and no logs are returned.
+        ///     Verify that an invalid log in the database, when retrieved, is deleted and no logs are returned.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void FailToGetALog()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
-            StorageAdapter storageAdapter = new StorageAdapter("Microsoft.Azure.Mobile.Storage");
+            var storageAdapter = new StorageAdapter("Microsoft.Azure.Mobile.Storage");        
             storageAdapter.OpenAsync().RunNotAsync();
             var command = storageAdapter.CreateCommand();
             var logJsonString = "'this is not a valid log json string'";
@@ -247,21 +227,20 @@ namespace Microsoft.Azure.Mobile.Test
             command.ExecuteNonQuery();
             storageAdapter.Close();
             var logs = new List<Log>();
-
             var batchId = _storage.GetLogsAsync(StorageTestChannelName, 4, logs).RunNotAsync();
             var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
-
-            Assert.Null(batchId);
-            Assert.Equal(0, logs.Count);
-            Assert.Equal(0, count);
+            Assert.IsNull(batchId);
+            Assert.AreEqual(0, logs.Count);
+            Assert.AreEqual(0, count);
         }
 
         #region Helper methods
+
         private List<TestLog> PutNLogs(int n)
         {
-            Task[] putLogTasks = new Task[n];
-            List<TestLog> addedLogs = new List<TestLog>();
-            for (int i = 0; i < n; ++i)
+            var putLogTasks = new Task[n];
+            var addedLogs = new List<TestLog>();
+            for (var i = 0; i < n; ++i)
             {
                 var testLog = TestLog.CreateTestLog();
                 addedLogs.Add(testLog);
@@ -271,10 +250,6 @@ namespace Microsoft.Azure.Mobile.Test
             return addedLogs;
         }
 
-        private bool IsSubset(IEnumerable<Log> set, IEnumerable<Log> subset)
-        {
-            return set == subset || subset.All(log => set.Contains(log));
-        }
         #endregion
     }
 }

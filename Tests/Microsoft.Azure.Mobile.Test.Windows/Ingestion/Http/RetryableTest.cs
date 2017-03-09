@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Xunit;
 
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
+    [TestClass]
 	public class RetryableTest
     {
         private TestInterval[] _intervals;
         private Mock<IHttpNetworkAdapter> _adapter;
         private IIngestion _retryableIngestion;
 
-        public RetryableTest()
+        [TestInitialize]
+        public void InitializeRetryableTest()
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
             _intervals = new []
@@ -38,12 +40,12 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         /// <summary>
         /// Verify that not retrying not recoverable exceptions.
         /// </summary>
-        [Fact]
+        [TestMethod]
         public void RetryableExceptionOnFail()
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.BadRequest));
-            Assert.Throws<HttpIngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<HttpIngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Once());
         }
 
