@@ -16,7 +16,7 @@ Resource.designer.cs
 *.user
 *.userosscache
 *.sln.docstates
-
+*.sln.DotSettings
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
