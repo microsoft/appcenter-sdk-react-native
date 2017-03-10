@@ -15,7 +15,6 @@ namespace Microsoft.Azure.Mobile.Channel
         private const int ClearBatchSize = 100;
         private Ingestion.Models.Device _device;
         private readonly string _appSecret;
-        private readonly Guid _installId;
 
         private readonly IStorage _storage;
         private readonly IIngestion _ingestion;
@@ -34,13 +33,12 @@ namespace Microsoft.Azure.Mobile.Channel
         private TimeSpan _batchTimeInterval;
 
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
-            string appSecret, Guid installId, IIngestion ingestion, IStorage storage)
+            string appSecret, IIngestion ingestion, IStorage storage)
         {
             Name = name;
             _maxParallelBatches = maxParallelBatches;
             _maxLogsPerBatch = maxLogsPerBatch;
             _appSecret = appSecret;
-            _installId = installId;
             _ingestion = ingestion;
             _storage = storage;
             _batchTimeInterval = batchTimeInterval;
@@ -338,7 +336,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     SendingLog(this, eventArgs);
                 }
             }
-            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, _installId, logs);
+            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, MobileCenter.InstallId.Value, logs);
             serviceCall.ServiceCallFailedCallback = exception => HandleSendingFailure(batchId, exception);
             serviceCall.ServiceCallSucceededCallback = async () =>
             {

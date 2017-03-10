@@ -8,6 +8,5 @@ namespace Microsoft.Azure.Mobile
     {
         public MobileCenterException(string message) : base(message) { }
         public MobileCenterException(string message, Exception innerException) : base(message, innerException) { }
-        public MobileCenterException() { }
     }
 }

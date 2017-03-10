@@ -16,14 +16,13 @@ namespace Microsoft.Azure.Mobile.Test.Channel
     public class ChannelTest
     {
         private Mobile.Channel.Channel _channel;
-        private MockIngestion _mockIngestion = new MockIngestion();
-        private IStorage _storage = new Mobile.Storage.Storage();
-        private readonly string _channelName = "channelName";
-        private readonly int _maxLogsPerBatch = 3;
+        private readonly MockIngestion _mockIngestion = new MockIngestion();
+        private readonly IStorage _storage = new Mobile.Storage.Storage();
+        private const string ChannelName = "channelName";
+        private const int _maxLogsPerBatch = 3;
         private readonly TimeSpan _batchTimeSpan = TimeSpan.FromSeconds(1);
-        private readonly int _maxParallelBatches = 3;
+        private const int MaxParallelBatches = 3;
         private readonly string _appSecret = Guid.NewGuid().ToString();
-        private readonly Guid _installId = Guid.NewGuid();
         private const int DefaultWaitTime = 5000;
 
         /* Event semaphores for invokation verification */
@@ -141,7 +140,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Verify that when a batch reaches its capacity, it is sent immediately
         /// </summary>
         [TestMethod]
-        public void MaxLogsPerBatch()
+        public void EnqueueMaxLogs()
         {
             SetChannelWithTimeSpan(TimeSpan.FromHours(1));
             for (var i = 0; i < _maxLogsPerBatch; ++i)
@@ -221,9 +220,9 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
-            _storage.DeleteLogsAsync(_channelName).Wait();
-            _channel = new Mobile.Channel.Channel(_channelName, _maxLogsPerBatch, timeSpan, _maxParallelBatches,
-                _appSecret, _installId, _mockIngestion, _storage);
+            _storage.DeleteLogsAsync(ChannelName).Wait();
+            _channel = new Mobile.Channel.Channel(ChannelName, _maxLogsPerBatch, timeSpan, MaxParallelBatches,
+                _appSecret, _mockIngestion, _storage);
             MakeIngestionCallsSucceed();
             SetupEventCallbacks();
         }

@@ -19,7 +19,6 @@ namespace Microsoft.Azure.Mobile.Channel
         //private const long ShutdownTimeout = 5000;
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
-        private readonly Guid _installId = IdHelper.InstallId;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
         /* This must be visible to crashes */
@@ -51,7 +50,7 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
             var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
-                     _installId, _ingestion, _storage);
+                     _ingestion, _storage);
             AddChannel(newChannel);
             return newChannel;
         }

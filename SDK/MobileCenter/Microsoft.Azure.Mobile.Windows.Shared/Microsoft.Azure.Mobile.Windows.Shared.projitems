@@ -50,7 +50,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\IdHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
   </ItemGroup>
 </Project>
