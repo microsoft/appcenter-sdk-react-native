@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         protected override string ChannelName => "analytics";
 
-        protected override string ServiceName => "Analytics";
+        public override string ServiceName => "Analytics";
 
         private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
         {

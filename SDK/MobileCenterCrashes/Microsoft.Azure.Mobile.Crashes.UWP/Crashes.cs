@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         }
 
         protected override string ChannelName => "crashes";
-        protected override string ServiceName => "Crashes";
+        public override string ServiceName => "Crashes";
 
         /// <exception cref="MobileCenterException">Failed to register crashes with Watson</exception>
         public override void OnChannelGroupReady(ChannelGroup channelGroup)
