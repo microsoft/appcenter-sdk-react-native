@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile
         protected ChannelGroup ChannelGroup { get; private set; }
         protected IChannel Channel { get; private set; }
         protected abstract string ChannelName { get; }
-        protected abstract string ServiceName { get; }
+        public abstract string ServiceName { get; }
         public virtual string LogTag => MobileCenterLog.LogTag + ServiceName;
         protected virtual string EnabledPreferenceKey => KeyEnabled + PreferenceKeySeparator + ChannelName;
         protected virtual int TriggerCount => DefaultTriggerCount;
