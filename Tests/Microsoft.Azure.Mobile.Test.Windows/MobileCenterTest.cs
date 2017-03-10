@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Storage;
+using Microsoft.Azure.Mobile.Test.Windows.Channel;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -104,10 +106,17 @@ namespace Microsoft.Azure.Mobile.Test
                 service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
         }
 
+        /// <summary>
+        /// Verify that calling start with a null services array does not cause a crash
+        /// </summary>
         [TestMethod]
         public void StartNullServices()
         {
-            MobileCenter.Start("appsecret", null);
+            Type[] services = null;
+            // ReSharper disable once ExpressionIsAlwaysNull
+            MobileCenter.Start("appsecret", services);
+
+            /* Reaching this point means the test passed! */
         }
 
         /// <summary>
@@ -117,13 +126,14 @@ namespace Microsoft.Azure.Mobile.Test
         public void GetEnabled()
         {
             var settingsMock = new Mock<IApplicationSettings>();
-            MobileCenter.ApplicationSettings = settingsMock.Object;
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object);
             settingsMock.SetupSequence(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true).Returns(false);
 
             Assert.IsTrue(MobileCenter.Enabled);
             Assert.IsFalse(MobileCenter.Enabled);
-            settingsMock.Verify(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()), Times.Exactly(2));
+            settingsMock.Verify(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()),
+                Times.Exactly(2));
         }
 
         /// <summary>
@@ -132,30 +142,52 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void SetEnabledSameValue()
         {
-            MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
             var settingsMock = new Mock<IApplicationSettings>();
-            MobileCenter.ApplicationSettings = settingsMock.Object;
+            var channelGroupMock = new Mock<IChannelGroup>();
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
             MobileCenter.Enabled = MobileCenter.Enabled;
 
-            MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
+            MockMobileCenterService.Instance.MockInstance.VerifySet(
+                service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = It.IsAny<bool>(), Times.Never());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(It.IsAny<bool>()), Times.Never());
         }
 
         /// <summary>
-        /// Verify that setting Enabled to its existing value propagates the change
+        /// Verify that setting Enabled to a different value (after configure is called) propagates the change
         /// </summary>
         [TestMethod]
-        public void SetEnabledDifferentValue()
+        public void SetEnabledDifferentValueAfterConfigure()
         {
-            MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
             var settingsMock = new Mock<IApplicationSettings>();
-            MobileCenter.ApplicationSettings = settingsMock.Object;
+            var channelGroupMock = new Mock<IChannelGroup>();
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
             var setVal = !MobileCenter.Enabled;
             MobileCenter.Enabled = setVal;
 
-            //TODO should this also verify that channel group is enabled/disabled as appropriate?
-            MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal, Times.Once());
+            MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal,
+                Times.Once());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = setVal, Times.Once());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(setVal), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that setting Enabled to a different value (before configure is called) propagates the change when configure is called
+        /// </summary>
+        [TestMethod]
+        public void SetEnabledDifferentValueBeforeConfigure()
+        {
+            var settingsMock = new Mock<IApplicationSettings>();
+            settingsMock.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, true)).Returns(true);
+
+            var channelGroupMock = new Mock<IChannelGroup>();
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Enabled = false;
+            MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
+
+            settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = false, Times.Once());
         }
 
         /// <summary>
@@ -178,7 +210,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void GetInstallId()
         {
             var settingsMock = new Mock<IApplicationSettings>();
-            MobileCenter.ApplicationSettings = settingsMock.Object;
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object);
             settingsMock.Setup(settings => settings.GetValue(MobileCenter.InstallIdKey, It.IsAny<Guid>()))
                 .Returns(Guid.NewGuid());
             var installId = MobileCenter.InstallId;
@@ -194,7 +226,8 @@ namespace Microsoft.Azure.Mobile.Test
         public void StartServiceWithoutConfigure()
         {
             MobileCenter.Start(typeof(MockMobileCenterService));
-            MockMobileCenterService.Instance.MockInstance.Verify(service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
         }
 
         /// <summary>
@@ -205,18 +238,69 @@ namespace Microsoft.Azure.Mobile.Test
         {
             MobileCenter.Configure("appsecret");
             MobileCenter.Start(typeof(MockMobileCenterService));
-            MockMobileCenterService.Instance.MockInstance.Verify(service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
         }
 
         /// <summary>
-        /// Verify that starting faulty services does not prevent other services from starting
+        /// Verify that trying to start a null service does not prevent other services from starting
         /// </summary>
         [TestMethod]
-        public void StartFaultyAndCorrectServices()
+        public void StartNullServiceAndCorrectService()
         {
-            MobileCenter.Start("app secret", typeof(string), typeof(BadMobileCenterService), null, typeof(MockMobileCenterService));
-            MockMobileCenterService.Instance.MockInstance.Verify(service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+            MobileCenter.Start("app secret", null, typeof(MockMobileCenterService));
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
         }
+
+        /// <summary>
+        /// Verify that trying to start a service with no static Instance property does not prevent other services from starting
+        /// </summary>
+        [TestMethod]
+        public void StartNoInstanceServiceAndCorrectService()
+        {
+            MobileCenter.Start("app secret", typeof(string), typeof(MockMobileCenterService));
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that trying to start a service whose static Instance property returns null does not prevent other services from starting
+        /// </summary>
+        [TestMethod]
+        public void StartNullInstanceServiceAndCorrectService()
+        {
+            MobileCenter.Start("app secret", typeof(NullInstanceMobileCenterService), typeof(MockMobileCenterService));
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that trying to start mobile center with a null app secret causes the service passed not to be started
+        /// </summary>
+        [TestMethod]
+        public void StartInstanceNullSecretAndCorrectService()
+        {
+            string appSecret = null;
+            // ReSharper disable once ExpressionIsAlwaysNull
+            MobileCenter.Start(appSecret, typeof(MockMobileCenterService));
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
+        }
+
+        /// <summary>
+        /// Verify that trying to start a service whose static Instance property returns an object that is not an IMobileCenterService
+        /// does not prevent other services from starting
+        /// </summary>
+        [TestMethod]
+        public void StartWrongInstanceTypeServiceAndCorrectService()
+        {
+            MobileCenter.Start("app secret", typeof(WrongInstanceTypeMobileCenterService),
+                typeof(MockMobileCenterService));
+            MockMobileCenterService.Instance.MockInstance.Verify(
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+        }
+
 
         /// <summary>
         /// Verify that starting a Mobile Center instance with a null app secret does not cause Mobile Centerto be configured
@@ -234,7 +318,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void ConfigureWithEmptyAppSecret()
         {
-            MobileCenter.Configure(null);
+            MobileCenter.Configure("");
             Assert.IsFalse(MobileCenter.Configured);
         }
 
@@ -248,19 +332,175 @@ namespace Microsoft.Azure.Mobile.Test
             Assert.ThrowsException<MobileCenterException>(() => MobileCenter.Instance.InstanceConfigure("appsecret"));
         }
 
+        /// <summary>
+        /// Verify that the channel group's server url is not set by Mobile Center by default
+        /// </summary>
+        [TestMethod]
+        public void ServerUrlIsNotSetByDefault()
+        {
+            var channelGroupMock = new Mock<IChannelGroup>();
+            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+                new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Configure("appsecret");
+            channelGroupMock.Verify(channelGroup => channelGroup.SetServerUrl(It.IsAny<string>()), Times.Never());
+        }
+
+        /// <summary>
+        /// Verify that the channel group's server url is set by Mobile Center once configured if its server url had been set beforehand
+        /// </summary>
+        [TestMethod]
+        public void SetServerUrlBeforeConfigure()
+        {
+            var channelGroupMock = new Mock<IChannelGroup>();
+            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+                new MockChannelGroupFactory(channelGroupMock));
+            var customServerUrl = "www dot server url dot com";
+            MobileCenter.SetServerUrl(customServerUrl);
+            MobileCenter.Configure("appsecret");
+
+            channelGroupMock.Verify(channelGroup => channelGroup.SetServerUrl(customServerUrl), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that the channel group's server url is updated by Mobile Center if its server url is set after configuration
+        /// </summary>
+        [TestMethod]
+        public void SetServerUrlAfterConfigure()
+        {
+            var channelGroupMock = new Mock<IChannelGroup>();
+            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+                new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Configure("appsecret");
+            var customServerUrl = "www dot server url dot com";
+            MobileCenter.SetServerUrl(customServerUrl);
+
+            channelGroupMock.Verify(channelGroup => channelGroup.SetServerUrl(customServerUrl), Times.Once());
+        }
+
         private static void VerifySetLogLevel(LogLevel level)
         {
             MobileCenter.LogLevel = level;
             Assert.AreEqual(MobileCenter.LogLevel, level);
         }
+
+        /// <summary>
+        /// Verify parse when there is no equals (so the given string is assumed to be the app secret)
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretNoEquals()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var parsedSecret = MobileCenter.GetSecretForPlatform(appSecret, "uwp");
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when there is only one platform (and no terminating semicolon)
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretOnePlatform()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"{platformId}={appSecret}";
+            var parsedSecret = MobileCenter.GetSecretForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when there is only one platform and a terminating semicolon
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretOnePlatformTerminatingSemicolon()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"{platformId}={appSecret};";
+            var parsedSecret = MobileCenter.GetSecretForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when the platform is one of two
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretFirstOfTwo()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"{platformId}={appSecret}; ios=anotherstring";
+            var parsedSecret = MobileCenter.GetSecretForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+
+        /// <summary>
+        /// Verify parse when the platform is second of two
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretSecondOfTwo()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"ios=anotherstring; {platformId}={appSecret}";
+            var parsedSecret = MobileCenter.GetSecretForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when the string has extra semicolons
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretExtraSemicolons()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"ios=anotherstring;;;;{platformId}={appSecret};;;;";
+            var parsedSecret = MobileCenter.GetSecretForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify that when the parse result of an app secret is the empty string, configuration does not occur
+        /// </summary>
+        [TestMethod]
+        public void ConfigureMobileCenterWithEmptyAppSecretEmptyResult()
+        {
+            var secrets = $"{MobileCenter.PlatformIdentifier}=";
+            MobileCenter.Configure(secrets);
+
+            Assert.IsFalse(MobileCenter.Configured);
+        }
+
+        /// <summary>
+        /// Verify parse when the platform identifier is wrong
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretWrongIdentifier()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"ios=anotherstring;{platformId}={appSecret};";
+            Assert.ThrowsException<MobileCenterException>(
+                () => MobileCenter.GetSecretForPlatform(secrets, platformId + platformId));
+        }
     }
 
-    public class BadMobileCenterService : IMobileCenterService
+    public class NullInstanceMobileCenterService : IMobileCenterService
     {
         public static IMobileCenterService Instance => null;
 
         public bool InstanceEnabled { get; set; }
-        public void OnChannelGroupReady(ChannelGroup channelGroup)
+        public void OnChannelGroupReady(IChannelGroup channelGroup)
+        {
+        }
+    }
+    public class WrongInstanceTypeMobileCenterService : IMobileCenterService
+    {
+        public static Guid Instance => Guid.NewGuid();
+
+        public bool InstanceEnabled { get; set; }
+        public void OnChannelGroupReady(IChannelGroup channelGroup)
         {
         }
     }

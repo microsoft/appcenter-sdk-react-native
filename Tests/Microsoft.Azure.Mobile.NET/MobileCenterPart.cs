@@ -2,6 +2,6 @@
 {
     public partial class MobileCenter
     {
-        private const string PlatformIdentifier = "core-test";
+        public static string PlatformIdentifier = "core-test";
     }
 }

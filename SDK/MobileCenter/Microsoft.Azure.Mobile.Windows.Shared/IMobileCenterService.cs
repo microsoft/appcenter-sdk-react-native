@@ -10,6 +10,6 @@ namespace Microsoft.Azure.Mobile
     public interface IMobileCenterService
     {
         bool InstanceEnabled { get; set; }
-        void OnChannelGroupReady(ChannelGroup channelGroup);
+        void OnChannelGroupReady(IChannelGroup channelGroup);
     }
 }

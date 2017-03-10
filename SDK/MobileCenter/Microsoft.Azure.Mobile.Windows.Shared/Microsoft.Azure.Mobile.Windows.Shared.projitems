@@ -14,7 +14,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelDelegates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\ChannelGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\IAppSecretHolder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroupFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpServiceCall.cs" />
@@ -39,7 +42,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />

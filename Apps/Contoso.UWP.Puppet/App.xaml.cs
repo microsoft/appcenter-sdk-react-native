@@ -31,6 +31,8 @@ namespace Contoso.UWP.Puppet
         public App()
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.Enabled = true;
+            MobileCenter.Enabled = false;
             MobileCenter.Configure("98038a20-4014-445a-b27f-048082036045");
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             var properties = new Dictionary<string, string>();

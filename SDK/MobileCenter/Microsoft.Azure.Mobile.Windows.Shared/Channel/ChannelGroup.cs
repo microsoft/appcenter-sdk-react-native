@@ -12,7 +12,7 @@ using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
-    public class ChannelGroup : IChannel
+    public class ChannelGroup : IChannelGroup, IAppSecretHolder
     {
         /* While ChannelGroup is technically capable of deep nesting, note that this behavior is not tested */
         private readonly HashSet<IChannel> _channels = new HashSet<IChannel>();
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
         /* This must be visible to crashes */
-        public string AppSecret { get; set; }
+        public string AppSecret { get; internal set; }
 
         public event EnqueuingLogEventHandler EnqueuingLog;
         public event SendingLogEventHandler SendingLog;

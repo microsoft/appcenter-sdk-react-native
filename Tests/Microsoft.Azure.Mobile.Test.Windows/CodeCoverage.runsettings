@@ -8,7 +8,7 @@
           <CodeCoverage>
             <ModulePaths>
               <Include>
-                <ModulePath>.*\.dll$</ModulePath>                        
+                <ModulePath>.*\Microsoft.Azure.Mobile.NET.dll$</ModulePath>                        
               </Include>
               <Exclude>
                 <ModulePath>.*Test.Windows.dll</ModulePath>               

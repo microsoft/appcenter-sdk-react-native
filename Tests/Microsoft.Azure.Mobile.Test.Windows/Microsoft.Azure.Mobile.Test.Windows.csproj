@@ -80,6 +80,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel\MockChannelGroupFactory.cs" />
     <Compile Include="Channel\ChannelGroupTest.cs" />
     <Compile Include="Channel\ChannelTest.cs" />
     <Compile Include="Channel\TestChannelGroup.cs" />

@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private static Analytics _instanceField;
 
-        public static Analytics Instance
+        internal static Analytics Instance
         {
             get
             {
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             Channel.Enqueue(log);
         }
 
-        public override void OnChannelGroupReady(ChannelGroup channelGroup)
+        public override void OnChannelGroupReady(IChannelGroup channelGroup)
         {
             base.OnChannelGroupReady(channelGroup);
             ApplyEnabledState(InstanceEnabled);

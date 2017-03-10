@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile
         private readonly object _serviceLock = new object();
 
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
-        protected ChannelGroup ChannelGroup { get; private set; }
+        protected IChannelGroup ChannelGroup { get; private set; }
         protected IChannel Channel { get; private set; }
         protected abstract string ChannelName { get; }
         protected abstract string ServiceName { get; }
@@ -35,14 +35,14 @@ namespace Microsoft.Azure.Mobile
             {
                 lock (_serviceLock)
                 {
-                    return _applicationSettings.GetValue(KeyEnabled, true);
+                    return _applicationSettings.GetValue(EnabledPreferenceKey, true);
                 }
             }
             set
             {
                 lock (_serviceLock)
                 {
-                    var enabledString = (value ? "enabled" : "disabled");
+                    var enabledString = value ? "enabled" : "disabled";
                     if (value && !MobileCenter.Enabled)
                     {
                         MobileCenterLog.Error(LogTag,
@@ -54,23 +54,21 @@ namespace Microsoft.Azure.Mobile
                         MobileCenterLog.Info(LogTag, $"{ServiceName} service has already been {enabledString}.");
                         return;
                     }
-                    if (ChannelGroup != null)
-                    {
-                        Channel.SetEnabled(value);
-                    }
-                    _applicationSettings[KeyEnabled] = value;
+                    Channel?.SetEnabled(value);
+                    _applicationSettings[EnabledPreferenceKey] = value;
                     MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
                 }
             }
         }
 
-        public virtual void OnChannelGroupReady(ChannelGroup channelGroup)
+        public virtual void OnChannelGroupReady(IChannelGroup channelGroup)
         {
             lock (_serviceLock)
             {
                 ChannelGroup = channelGroup;
                 Channel = ChannelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                Channel.SetEnabled(InstanceEnabled);
+                _applicationSettings[EnabledPreferenceKey] = MobileCenter.Enabled;
+                Channel?.SetEnabled(MobileCenter.Enabled);
             }
         }
 
