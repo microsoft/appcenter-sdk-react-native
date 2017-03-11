@@ -87,6 +87,7 @@
     <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
     <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
     <Compile Include="Ingestion\Http\RetryableTest.cs" />
+    <Compile Include="MobileCenterServiceTest.cs" />
     <Compile Include="MobileCenterTest.cs" />
     <Compile Include="MockIngestion.cs" />
     <Compile Include="MockMobileCenterService.cs" />
