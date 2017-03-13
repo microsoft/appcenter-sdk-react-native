@@ -258,8 +258,10 @@ namespace Microsoft.Azure.Mobile.Test
     public class BadMobileCenterService : IMobileCenterService
     {
         public static IMobileCenterService Instance => null;
+        public string ServiceName => nameof(BadMobileCenterService);
 
         public bool InstanceEnabled { get; set; }
+
         public void OnChannelGroupReady(ChannelGroup channelGroup)
         {
         }

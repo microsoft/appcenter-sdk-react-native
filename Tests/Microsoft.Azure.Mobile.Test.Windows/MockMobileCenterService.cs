@@ -10,6 +10,7 @@ namespace Microsoft.Azure.Mobile.Test
 {
     public class MockMobileCenterService : IMobileCenterService
     {
+        public string ServiceName => nameof(MockMobileCenterService);
         private static MockMobileCenterService _instanceField;
 
         public static void Reset()

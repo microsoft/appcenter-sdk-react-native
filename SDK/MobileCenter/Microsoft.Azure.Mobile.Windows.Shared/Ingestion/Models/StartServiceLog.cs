@@ -6,6 +6,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
 
     public class StartServiceLog : Log
     {
+        internal const string JsonIdentifier = "StartServiceLog";
+
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary
@@ -26,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// feature).
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.</param>
-        public StartServiceLog(long toffset, Mobile.Ingestion.Models.Device device, IEnumerable<string> services, System.Guid? sid = default(System.Guid?))
+        public StartServiceLog(long toffset, Device device, IEnumerable<string> services, System.Guid? sid = default(System.Guid?))
             : base(toffset, device, sid)
         {
             Services = new List<string>(services);
@@ -37,5 +39,21 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// </summary>
         [JsonProperty(PropertyName = "services")]
         public List<string> Services { get; set; }
+
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public override void Validate()
+        {
+            base.Validate();
+
+            if (Services == null)
+            {
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, nameof(Services));
+            }
+        }
     }
 }

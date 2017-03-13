@@ -195,7 +195,10 @@ namespace Microsoft.Azure.Mobile
 
         #region instance
 
-        internal MobileCenter() { }
+        internal MobileCenter()
+        {
+            LogSerializer.AddFactory(StartServiceLog.JsonIdentifier, new LogFactory<StartServiceLog>());
+        }
 
         private bool InstanceEnabled
         {
