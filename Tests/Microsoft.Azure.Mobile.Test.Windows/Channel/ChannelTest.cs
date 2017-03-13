@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Verify that a log is never sent in *less* time than it is supposed to wait (when the batch is not full)
         /// </summary>
         /// <remarks>Ignore due to instability</remarks>
-        [TestMethod, Ignore]
+        //[TestMethod, Ignore]
         public void WaitTime()
         {
             var expectedWaitTimes = new List<double> {500, 1000, 2000};
@@ -115,7 +115,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// to test locally
         /// </summary>
         /// <remarks>Ignore due to instability</remarks>
-        [TestMethod, Ignore]
+        //[TestMethod, Ignore]
         public void WaitTimeWithSoftUpperLimit()
         {
             var expectedWaitTimes = new List<double> { 500, 3424, 7849 };
