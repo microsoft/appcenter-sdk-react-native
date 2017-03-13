@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private static Analytics _instanceField;
 
-        internal static Analytics Instance
+        public static Analytics Instance
         {
             get
             {
