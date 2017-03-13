@@ -298,7 +298,9 @@ namespace Microsoft.Azure.Mobile
                 {
                     var serviceInstance =
                         (IMobileCenterService) serviceType.GetRuntimeProperty("Instance")?.GetValue(null);
-                    StartService(serviceInstance);
+
+                    if (StartService(serviceInstance))
+                        startedServiceNames.Add(serviceInstance.ServiceName);
                 }
                 catch (MobileCenterException ex)
                 {
