@@ -4,7 +4,8 @@
     {
         public MainPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
             LoadApplication(new Puppet.App());
         }
     }
