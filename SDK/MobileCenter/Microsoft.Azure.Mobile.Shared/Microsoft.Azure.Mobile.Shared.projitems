@@ -9,6 +9,7 @@
     <Import_RootNamespace>Microsoft.Azure.Mobile</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WrapperSdk.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogLevel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLogShared.cs" />

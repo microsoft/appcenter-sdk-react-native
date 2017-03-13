@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         private static Crashes _instanceField;
         private static readonly object CrashesLock = new object();
-        public static Crashes Instance
+        internal static Crashes Instance
         {
             get
             {
@@ -32,12 +32,17 @@ namespace Microsoft.Azure.Mobile.Crashes
         protected override string ChannelName => "crashes";
         public override string ServiceName => "Crashes";
 
-        /// <exception cref="MobileCenterException">Failed to register crashes with Watson</exception>
-        public override void OnChannelGroupReady(ChannelGroup channelGroup)
+        /// <exception cref="MobileCenterException"/>
+        public override void OnChannelGroupReady(IChannelGroup channelGroup)
         {
-            base.OnChannelGroupReady(channelGroup);
             var platformCrashes = PlatformCrashes as PlatformCrashes;
-            platformCrashes?.Configure(channelGroup.AppSecret);
+            var appSecretHolder = channelGroup as IAppSecretHolder;
+            if (appSecretHolder == null)
+            {
+                throw new MobileCenterException("Cannot find app secret to register crashes service");
+            }
+            platformCrashes?.Configure(appSecretHolder.AppSecret);
+            base.OnChannelGroupReady(channelGroup);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
 
-        public SessionTracker(ChannelGroup channelGroup, IChannel channel)
+        public SessionTracker(IChannelGroup channelGroup, IChannel channel)
         {
             _channel = channel;
             channelGroup.EnqueuingLog += HandleEnqueuingLog;

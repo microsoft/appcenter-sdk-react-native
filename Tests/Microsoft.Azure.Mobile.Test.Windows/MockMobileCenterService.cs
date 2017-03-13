@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Test
             set { MockInstance.Object.InstanceEnabled = value; }
         }
 
-        public void OnChannelGroupReady(ChannelGroup channelGroup)
+        public void OnChannelGroupReady(IChannelGroup channelGroup)
         {
             MockInstance.Object.OnChannelGroupReady(channelGroup);
         }

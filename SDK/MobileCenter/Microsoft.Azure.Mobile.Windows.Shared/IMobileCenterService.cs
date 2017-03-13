@@ -11,6 +11,6 @@ namespace Microsoft.Azure.Mobile
     {
         string ServiceName { get; }
         bool InstanceEnabled { get; set; }
-        void OnChannelGroupReady(ChannelGroup channelGroup);
+        void OnChannelGroupReady(IChannelGroup channelGroup);
     }
 }

@@ -80,12 +80,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel\MockChannelGroupFactory.cs" />
     <Compile Include="Channel\ChannelGroupTest.cs" />
     <Compile Include="Channel\ChannelTest.cs" />
     <Compile Include="Channel\TestChannelGroup.cs" />
     <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
     <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
     <Compile Include="Ingestion\Http\RetryableTest.cs" />
+    <Compile Include="MobileCenterServiceTest.cs" />
     <Compile Include="MobileCenterTest.cs" />
     <Compile Include="MockIngestion.cs" />
     <Compile Include="MockMobileCenterService.cs" />
