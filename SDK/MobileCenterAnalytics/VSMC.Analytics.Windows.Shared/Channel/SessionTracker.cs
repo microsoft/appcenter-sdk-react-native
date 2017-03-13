@@ -23,6 +23,11 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
 
+        /* Exists for testing */
+        public SessionTracker()
+        {
+        }
+
         public SessionTracker(IChannelGroup channelGroup, IChannel channel)
         {
             _channel = channel;

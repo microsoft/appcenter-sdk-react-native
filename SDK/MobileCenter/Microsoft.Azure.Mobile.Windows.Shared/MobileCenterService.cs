@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile
         }
 
         /* This constructor is only for testing */
-        internal MobileCenterService(IApplicationSettings settings)
+        internal MobileCenterService(IApplicationSettings settings) : this()
         {
             _applicationSettings = settings;
         }

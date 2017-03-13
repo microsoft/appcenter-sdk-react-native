@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="AnalyticsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionTrackerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -64,6 +65,10 @@
     <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.NET\Microsoft.Azure.Mobile.Analytics.NET.csproj">
       <Project>{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}</Project>
       <Name>Microsoft.Azure.Mobile.Analytics.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
+      <Project>{e76dc547-2b63-4911-971c-767587ebfab6}</Project>
+      <Name>Microsoft.Azure.Mobile.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

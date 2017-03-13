@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Microsoft.Azure.Mobile.Utils;
+using VSMC.Analytics.Windows.Shared;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
@@ -75,12 +75,18 @@ namespace Microsoft.Azure.Mobile.Analytics
         /* Internal for testing purposes */
         internal SessionTracker SessionTracker;
         internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
+        private readonly ISessionTrackerFactory _sessionTrackerFactory;
 
         internal Analytics()
         {
             LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
             LogSerializer.AddFactory(EventLog.JsonIdentifier, new LogFactory<EventLog>());
             LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new LogFactory<StartSessionLog>());
+        }
+
+        internal Analytics(ISessionTrackerFactory sessionTrackerFactory) : this()
+        {
+            _sessionTrackerFactory = sessionTrackerFactory;
         }
 
         public override bool InstanceEnabled
@@ -119,7 +125,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             if (enabled && ChannelGroup != null && SessionTracker == null)
             {
-                SessionTracker = new SessionTracker(ChannelGroup, Channel);
+                SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
                 ApplicationLifecycleHelper.Enabled = true;
                 SessionTracker.Resume();
             }
@@ -129,6 +135,11 @@ namespace Microsoft.Azure.Mobile.Analytics
                 SessionTracker?.ClearSessions();
                 SessionTracker = null;
             }
+        }
+
+        private SessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel)
+        {
+            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
         }
 
         #endregion

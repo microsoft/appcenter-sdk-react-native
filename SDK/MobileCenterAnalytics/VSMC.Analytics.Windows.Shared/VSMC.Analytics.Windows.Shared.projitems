@@ -14,5 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\EventLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\PageLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StartSessionLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ISessionTrackerFactory.cs" />
   </ItemGroup>
 </Project>
