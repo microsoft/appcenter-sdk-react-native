@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="133e4822-68ea-4e90-9c8c-c15e4b35246a"
-    Publisher="CN=guperrot"
+    Name="2a16a451-5df0-42b2-941c-dafeed006a2e"
+    Publisher="CN=MS1"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="133e4822-68ea-4e90-9c8c-c15e4b35246a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="2a16a451-5df0-42b2-941c-dafeed006a2e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Contoso.Forms.Puppet.UWP</DisplayName>
-    <PublisherDisplayName>guperrot</PublisherDisplayName>
+    <DisplayName>TestCrash.UWP</DisplayName>
+    <PublisherDisplayName>MS1</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Contoso.Forms.Puppet.UWP.App">
+      EntryPoint="TestCrash.UWP.App">
       <uap:VisualElements
-        DisplayName="Contoso.Forms.Puppet.UWP"
+        DisplayName="TestCrash.UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Contoso.Forms.Puppet.UWP"
+        Description="TestCrash.UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
