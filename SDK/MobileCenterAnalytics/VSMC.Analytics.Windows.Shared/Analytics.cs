@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Windows.ApplicationModel.Core;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
@@ -72,7 +72,9 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         #region instance
 
-        private SessionTracker _sessionTracker;
+        /* Internal for testing purposes */
+        internal SessionTracker SessionTracker;
+        internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
 
         internal Analytics()
         {
@@ -109,32 +111,23 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             base.OnChannelGroupReady(channelGroup);
             ApplyEnabledState(InstanceEnabled);
-        }
-
-        private void ResumingHandler(object sender, object e)
-        {
-            _sessionTracker?.Resume();
-        }
-        private void SuspendingHandler(object sender, object e)
-        {
-            _sessionTracker?.Pause();
+            ApplicationLifecycleHelper.ApplicationResuming += () => SessionTracker?.Resume();
+            ApplicationLifecycleHelper.ApplicationSuspending += () => SessionTracker?.Pause();
         }
 
         private void ApplyEnabledState(bool enabled)
         {
-            if (enabled && ChannelGroup != null && _sessionTracker == null)
+            if (enabled && ChannelGroup != null && SessionTracker == null)
             {
-                _sessionTracker = new SessionTracker(ChannelGroup, Channel);
-                CoreApplication.Resuming += ResumingHandler;
-                CoreApplication.Suspending += SuspendingHandler;
-                _sessionTracker.Resume();
+                SessionTracker = new SessionTracker(ChannelGroup, Channel);
+                ApplicationLifecycleHelper.Enabled = true;
+                SessionTracker.Resume();
             }
             else if (!enabled)
             {
-                CoreApplication.Resuming -= ResumingHandler;
-                CoreApplication.Suspending -= SuspendingHandler;
-                _sessionTracker?.ClearSessions();
-                _sessionTracker = null;
+                ApplicationLifecycleHelper.Enabled = false;
+                SessionTracker?.ClearSessions();
+                SessionTracker = null;
             }
         }
 
