@@ -7,13 +7,15 @@ using System.Linq;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
-    public class SessionTracker : ISessionTracker
+    internal class SessionTracker : ISessionTracker
     {
+        /* Internal for testing */
+        internal static long SessionTimeout = 20000;
+
         private const string StorageKey = "MobileCenterSessions";
         private const int StorageMaxSessions = 5;
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
-        private const long SessionTimeout = 20000;
         private readonly IChannel _channel;
         private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
         private Guid? _sid;
@@ -35,68 +37,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 
-        private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
-        {
-            lock (_lockObject)
-            {
-                if (e.Log is StartSessionLog) return;
-                if (e.Log.Toffset > 0)
-                {
-                    long candidate = 0;
-                    var foundPrevSession = false;
-                    foreach (var key in _sessions.Keys)
-                    {
-                        if (key <= e.Log.Toffset && key > candidate)
-                        {
-                            candidate = key;
-                            foundPrevSession = true;
-                        }
-                    }
-                    if (foundPrevSession)
-                    {
-                        e.Log.Sid = _sessions[candidate];
-                    }
-                }
-                if (e.Log.Sid != null) return;
-                SendStartSessionIfNeeded();
-                e.Log.Sid = _sid;
-                _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
-            }
-        }
-
-        public string SessionsAsString()
-        {
-            var sessionsString = "";
-            foreach (var pair in _sessions)
-            {
-                if (sessionsString != "") sessionsString += StorageEntrySeparator;
-                sessionsString += pair.Key.ToString() + StorageKeyValueSeparator + pair.Value;
-            }
-            return sessionsString;
-        }
-
-        public Dictionary<long, Guid> SessionsFromString(string sessionsString)
-        {
-            var sessionsDict = new Dictionary<long, Guid>();
-            var sessions = sessionsString.Split(StorageEntrySeparator);
-            if (sessions == null) return sessionsDict;
-
-            foreach (var sessionString in sessions)
-            {
-                var splitSession = sessionString.Split(StorageKeyValueSeparator);
-                try
-                {
-                    var time = long.Parse(splitSession[0]);
-                    var sid = Guid.Parse(splitSession[1]);
-                    sessionsDict.Add(time, sid);
-                }
-                catch (FormatException e) //TODO other exceptions?
-                {
-                    MobileCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
-                }
-            }
-            return sessionsDict;
-        }
 
         public void Pause()
         {
@@ -125,6 +65,37 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
         }
 
+        private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
+        {
+            lock (_lockObject)
+            {
+                /* Skip StartSessionLogs to avoid an infinite loop */
+                if (e.Log is StartSessionLog) return;
+                
+                if (e.Log.Toffset > 0)
+                {
+                    long candidate = 0;
+                    var foundPrevSession = false;
+                    foreach (var key in _sessions.Keys)
+                    {
+                        if (key <= e.Log.Toffset && key > candidate)
+                        {
+                            candidate = key;
+                            foundPrevSession = true;
+                        }
+                    }
+                    if (foundPrevSession)
+                    {
+                        e.Log.Sid = _sessions[candidate];
+                    }
+                }
+                if (e.Log.Sid != null) return;
+                SendStartSessionIfNeeded();
+                e.Log.Sid = _sid;
+                _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
+            }
+        }
+
         private void SendStartSessionIfNeeded()
         {
             if (_sid != null && !HasSessionTimedOut())
@@ -139,8 +110,43 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _sid = Guid.NewGuid();
             _sessions.Add(TimeHelper.CurrentTimeInMilliseconds(), _sid.Value);
             _applicationSettings[StorageKey] = SessionsAsString();
-            var startSessionLog = new StartSessionLog {Sid = _sid};
+            var startSessionLog = new StartSessionLog { Sid = _sid };
             _channel.Enqueue(startSessionLog);
+        }
+
+
+        private string SessionsAsString()
+        {
+            var sessionsString = "";
+            foreach (var pair in _sessions)
+            {
+                if (sessionsString != "") sessionsString += StorageEntrySeparator;
+                sessionsString += pair.Key.ToString() + StorageKeyValueSeparator + pair.Value;
+            }
+            return sessionsString;
+        }
+
+        private Dictionary<long, Guid> SessionsFromString(string sessionsString)
+        {
+            var sessionsDict = new Dictionary<long, Guid>();
+            if (sessionsString == null) return sessionsDict;
+            var sessions = sessionsString.Split(StorageEntrySeparator);
+
+            foreach (var sessionString in sessions)
+            {
+                var splitSession = sessionString.Split(StorageKeyValueSeparator);
+                try
+                {
+                    var time = long.Parse(splitSession[0]);
+                    var sid = Guid.Parse(splitSession[1]);
+                    sessionsDict.Add(time, sid);
+                }
+                catch (FormatException e) //TODO other exceptions?
+                {
+                    MobileCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
+                }
+            }
+            return sessionsDict;
         }
 
         private bool HasSessionTimedOut()
