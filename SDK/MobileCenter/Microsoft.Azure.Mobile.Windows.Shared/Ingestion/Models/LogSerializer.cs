@@ -12,6 +12,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         private static readonly LogJsonConverter Converter = new LogJsonConverter();
         private static readonly JsonSerializerSettings SerializationSettings;
         private static readonly JsonSerializerSettings DeserializationSettings;
+        internal const string TypeIdKey = "type";
+
         static LogSerializer()
         {
             SerializationSettings = new JsonSerializerSettings
@@ -25,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
                 Converters = new List<JsonConverter>
                     {
                         new Rest.Serialization.Iso8601TimeSpanConverter(),
-                        new Rest.Serialization.PolymorphicSerializeJsonConverter<Log>("type")
+                        new Rest.Serialization.PolymorphicSerializeJsonConverter<Log>(TypeIdKey)
         
                     }
             };
@@ -60,10 +62,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         public static Log DeserializeLog(string json)
         {
             return Rest.Serialization.SafeJsonConvert.DeserializeObject<Log>(json, DeserializationSettings);
-        }
-        public static LogContainer DeserializeContainer(string json)
-        {
-            return Rest.Serialization.SafeJsonConvert.DeserializeObject<LogContainer>(json, DeserializationSettings);
         }
     }
 }

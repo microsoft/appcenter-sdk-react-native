@@ -295,7 +295,7 @@ namespace Microsoft.Azure.Mobile.Storage
                     retrievedLogs.Add(log);
                     idPairs.Add(Tuple.Create(log.Sid, logId));
                 }
-                catch (JsonReaderException e)
+                catch (JsonException e)
                 {
                     MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                     failedToDeserializeALog = true;
