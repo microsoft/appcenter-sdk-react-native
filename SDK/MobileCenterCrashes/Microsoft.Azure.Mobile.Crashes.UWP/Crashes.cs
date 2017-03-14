@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         private static Crashes _instanceField;
         private static readonly object CrashesLock = new object();
-        internal static Crashes Instance
+        public static Crashes Instance
         {
             get
             {

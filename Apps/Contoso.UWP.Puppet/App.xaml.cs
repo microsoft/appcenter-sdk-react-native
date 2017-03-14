@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
+
 namespace Contoso.UWP.Puppet
 {
     /// <summary>

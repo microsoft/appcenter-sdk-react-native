@@ -17,10 +17,10 @@ namespace Microsoft.Azure.Mobile
         private const int DefaultTriggerMaxParallelRequests = 3;
         private const string KeyEnabled = "MobileCenterServiceEnabled";
         private readonly object _serviceLock = new object();
-
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
-        protected IChannelGroup ChannelGroup { get; private set; }
         protected IChannel Channel { get; private set; }
+        protected IChannelGroup ChannelGroup { get; private set; }
+
         protected abstract string ChannelName { get; }
         public abstract string ServiceName { get; }
         public virtual string LogTag => MobileCenterLog.LogTag + ServiceName;
@@ -28,6 +28,17 @@ namespace Microsoft.Azure.Mobile
         protected virtual int TriggerCount => DefaultTriggerCount;
         protected virtual TimeSpan TriggerInterval => DefaultTriggerInterval;
         protected virtual int TriggerMaxParallelRequests => DefaultTriggerMaxParallelRequests;
+
+        /* This constructor is only for testing */
+        protected MobileCenterService()
+        {
+        }
+
+        /* This constructor is only for testing */
+        internal MobileCenterService(IApplicationSettings settings) : this()
+        {
+            _applicationSettings = settings;
+        }
 
         public virtual bool InstanceEnabled
         {
@@ -66,9 +77,10 @@ namespace Microsoft.Azure.Mobile
             lock (_serviceLock)
             {
                 ChannelGroup = channelGroup;
-                Channel = ChannelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                _applicationSettings[EnabledPreferenceKey] = MobileCenter.Enabled;
-                Channel?.SetEnabled(MobileCenter.Enabled);
+                Channel = channelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
+                var enabled = MobileCenter.Enabled && InstanceEnabled;
+                _applicationSettings[EnabledPreferenceKey] = enabled;
+                Channel.SetEnabled(enabled);
             }
         }
 
@@ -78,7 +90,7 @@ namespace Microsoft.Azure.Mobile
             {
                 lock (_serviceLock)
                 {
-                    if (ChannelGroup == null)
+                    if (Channel == null)
                     {
                         MobileCenterLog.Error(MobileCenterLog.LogTag,
                             $"{ServiceName} service not initialized; discarding calls.");

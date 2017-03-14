@@ -11,6 +11,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public TestChannelGroup(IStorage storage, IIngestion ingestion, string appSecret)
             : base(ingestion, storage, appSecret)
         {
+
         }
 
         public TestChannelGroup(string appSecret) : base(appSecret)

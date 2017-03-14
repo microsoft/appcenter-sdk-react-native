@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Linq;
-using Windows.ApplicationModel.Core;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
@@ -23,6 +22,11 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long _lastPausedTime;
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
+
+        /* Exists for testing */
+        public SessionTracker()
+        {
+        }
 
         public SessionTracker(IChannelGroup channelGroup, IChannel channel)
         {
