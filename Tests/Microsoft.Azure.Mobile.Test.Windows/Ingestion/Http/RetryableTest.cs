@@ -38,10 +38,116 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         }
 
         /// <summary>
+        /// Verify that ingestion create ServiceCall correctly.
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionPrepareServiceCall()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var installId = Guid.NewGuid();
+            var logs = new List<Log>();
+            var call = _retryableIngestion.PrepareServiceCall(appSecret, installId, logs);
+            Assert.IsInstanceOfType(call, typeof(RetryableServiceCall));
+            Assert.AreEqual(call.AppSecret, appSecret);
+            Assert.AreEqual(call.InstallId, installId);
+            Assert.AreEqual(call.Logs, logs);
+        }
+
+        /// <summary>
+        /// Verify behaviour without exceptions.
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionSuccess()
+        {
+            var call = PrepareServiceCall();
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            VerifyAdapterSend(Times.Once());
+
+            // No throw any exception
+        }
+
+        /// <summary>
+        /// Verify that retrying on recoverable exceptions.
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionRepeat1()
+        {
+            var call = PrepareServiceCall();
+            // RequestTimeout - retryable
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            // Run code after this interval immideatly
+            _intervals[0].Set();
+            // On first delay: replace response (next will be succeed)
+            _intervals[0].OnRequest += () => SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            // Checks send times on N delay moment
+            _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
+            _intervals[1].OnRequest += () => Assert.Fail();
+
+            // Run all chain not async
+            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            
+            // Must be sent 2 times: 1 - main, 1 - repeat
+            VerifyAdapterSend(Times.Exactly(2));
+        }
+
+        /// <summary>
+        /// Verify that retrying on recoverable exceptions.
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionRepeat3()
+        {
+            var call = PrepareServiceCall();
+            // RequestTimeout - retryable
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            // Run code after this intervals immideatly
+            _intervals[0].Set();
+            _intervals[1].Set();
+            _intervals[2].Set();
+            // On third delay: replace response (next will be succeed)
+            _intervals[2].OnRequest += () => SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            // Checks send times on N delay moment
+            _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
+            _intervals[1].OnRequest += () => VerifyAdapterSend(Times.Exactly(2));
+            _intervals[2].OnRequest += () => VerifyAdapterSend(Times.Exactly(3));
+
+            // Run all chain not async
+            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            
+            // Must be sent 4 times: 1 - main, 3 - repeat
+            VerifyAdapterSend(Times.Exactly(4));
+        }
+
+        /// <summary>
+        /// Verify service call canceling.
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionCancel()
+        {
+            var call = PrepareServiceCall();
+            // RequestTimeout - retryable
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            // Run code after this intervals immideatly
+            _intervals[0].Set();
+            _intervals[1].Set();
+            // On second delay: cancel call
+            _intervals[1].OnRequest += () => call.Cancel();
+            // Checks send times on N delay moment
+            _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
+            _intervals[2].OnRequest += () => Assert.Fail();
+
+            // Run all chain not async
+            Assert.ThrowsException<TaskCanceledException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+
+            // Must be sent 2 times: 1 - main, 1 - repeat
+            VerifyAdapterSend(Times.Exactly(2));
+        }
+
+        /// <summary>
         /// Verify that not retrying not recoverable exceptions.
         /// </summary>
         [TestMethod]
-        public void RetryableExceptionOnFail()
+        public void RetryableIngestionException()
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.BadRequest));
