@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the LogWithProperties class.
         /// </summary>
-        public LogWithProperties() { }
+        protected LogWithProperties() { }
 
         /// <summary>
         /// Initializes a new instance of the LogWithProperties class.
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
-        public LogWithProperties(long toffset, Device device, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
+        protected LogWithProperties(long toffset, Device device, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
             : base(toffset, device, sid)
         {
             Properties = properties;

@@ -5,7 +5,6 @@ using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Microsoft.Azure.Mobile.Utils;
-using VSMC.Analytics.Windows.Shared;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
@@ -73,20 +72,21 @@ namespace Microsoft.Azure.Mobile.Analytics
         #region instance
 
         /* Internal for testing purposes */
-        internal SessionTracker SessionTracker;
+        internal ISessionTracker SessionTracker;
         internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
 
         internal Analytics()
         {
-            LogSerializer.AddFactory(PageLog.JsonIdentifier, new LogFactory<PageLog>());
-            LogSerializer.AddFactory(EventLog.JsonIdentifier, new LogFactory<EventLog>());
-            LogSerializer.AddFactory(StartSessionLog.JsonIdentifier, new LogFactory<StartSessionLog>());
+            LogSerializer.AddLogType(PageLog.JsonIdentifier, typeof(PageLog));
+            LogSerializer.AddLogType(EventLog.JsonIdentifier, typeof(EventLog));
+            LogSerializer.AddLogType(StartSessionLog.JsonIdentifier, typeof(StartSessionLog));
         }
 
-        internal Analytics(ISessionTrackerFactory sessionTrackerFactory) : this()
+        internal Analytics(ISessionTrackerFactory sessionTrackerFactory, IApplicationLifecycleHelper lifecycleHelper) : this()
         {
             _sessionTrackerFactory = sessionTrackerFactory;
+            ApplicationLifecycleHelper = lifecycleHelper;
         }
 
         public override bool InstanceEnabled
@@ -94,8 +94,12 @@ namespace Microsoft.Azure.Mobile.Analytics
             get { return base.InstanceEnabled; }
             set
             {
+                var prevValue = InstanceEnabled;
                 base.InstanceEnabled = value;
-                ApplyEnabledState(value);
+                if (value != prevValue)
+                {
+                    ApplyEnabledState(value);
+                }
             }
         }
 
@@ -137,7 +141,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
         }
 
-        private SessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel)
+        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel)
         {
             return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
         }

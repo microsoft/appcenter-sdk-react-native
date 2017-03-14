@@ -37,7 +37,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ILogFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />

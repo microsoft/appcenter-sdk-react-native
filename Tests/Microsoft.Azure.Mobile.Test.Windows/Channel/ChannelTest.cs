@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
         public ChannelTest()
         {
-            LogSerializer.AddFactory(TestLog.JsonIdentifier, new LogFactory<TestLog>());
+            LogSerializer.AddLogType(TestLog.JsonIdentifier, typeof(TestLog));
         }
 
         [TestInitialize]

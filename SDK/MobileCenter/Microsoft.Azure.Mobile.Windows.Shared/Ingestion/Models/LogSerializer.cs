@@ -44,9 +44,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
             };
         }
 
-        public static void AddFactory(string typeName, ILogFactory factory)
+        public static void AddLogType(string typeName, Type logType)
         {
-            Converter.AddFactory(typeName, factory);
+            Converter.AddLogType(typeName, logType);
         }
         public static string Serialize(LogContainer logContainer)
         {

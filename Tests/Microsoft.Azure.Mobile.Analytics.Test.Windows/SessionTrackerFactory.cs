@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Microsoft.Azure.Mobile.Channel;
 using Moq;
-using VSMC.Analytics.Windows.Shared;
 
 namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 {
     public class SessionTrackerFactory : ISessionTrackerFactory
     {
-        public Mock<SessionTracker> ReturningSessionTrackerMock = new Mock<SessionTracker>();
+        public Mock<ISessionTracker> ReturningSessionTrackerMock = new Mock<ISessionTracker>();
 
-        public SessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel)
+        public ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel)
         {
             return ReturningSessionTrackerMock.Object;
         }

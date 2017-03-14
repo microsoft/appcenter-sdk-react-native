@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Test
 
         static TestLog()
         {
-            LogSerializer.AddFactory(JsonIdentifier, new LogFactory<TestLog>());
+            LogSerializer.AddLogType(JsonIdentifier, typeof(TestLog));
         }
 
         public static TestLog CreateTestLog()

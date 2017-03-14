@@ -12,14 +12,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
 
     public class LogJsonConverter : JsonConverter
     {
-        private Dictionary<string, ILogFactory> _logFactories = new Dictionary<string, ILogFactory>();
+        private Dictionary<string, Type> _logTypes = new Dictionary<string, Type>();
         private Microsoft.Rest.Serialization.PolymorphicDeserializeJsonConverter<Log> _converter = new Rest.Serialization.PolymorphicDeserializeJsonConverter<Log>("type");
         private object _jsonConverterLock = new object();
-        public void AddFactory(string typeName, ILogFactory factory)
+        public void AddLogType(string typeName, Type type)
         {
             lock (_jsonConverterLock)
             {
-                _logFactories[typeName] = factory;
+                _logTypes[typeName] = type;
             }
         }
 
@@ -32,13 +32,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         {
             var jobject = JObject.Load(reader);
             string typeName = jobject["type"].ToString();
-            ILogFactory factory;
+            Type logType;
             lock (_jsonConverterLock)
             {
-                factory = _logFactories[typeName];
+                logType = _logTypes[typeName];
             }
-            var log = factory.Create();
-            return _converter.ReadJson(jobject.CreateReader(), factory.LogType, existingValue, serializer);
+            return _converter.ReadJson(jobject.CreateReader(), logType, existingValue, serializer);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

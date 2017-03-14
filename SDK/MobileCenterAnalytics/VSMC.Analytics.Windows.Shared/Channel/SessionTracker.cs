@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
-    public class SessionTracker
+    public class SessionTracker : ISessionTracker
     {
         private const string StorageKey = "MobileCenterSessions";
         private const int StorageMaxSessions = 5;
@@ -22,11 +22,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long _lastPausedTime;
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
-
-        /* Exists for testing */
-        public SessionTracker()
-        {
-        }
 
         public SessionTracker(IChannelGroup channelGroup, IChannel channel)
         {
