@@ -60,6 +60,7 @@
     <Compile Include="CrashesDelegate.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
     <Compile Include="ErrorReportCache.cs" />
+    <Compile Include="CrashesPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.Mobile.Crashes.iOS.Bindings\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.csproj">

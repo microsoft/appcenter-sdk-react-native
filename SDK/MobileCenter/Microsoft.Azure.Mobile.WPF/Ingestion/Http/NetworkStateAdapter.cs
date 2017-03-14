@@ -15,8 +15,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public event Action NetworkAddressChanged
         {
-            add => PrivateNetworkAddressChanged += value;
-            remove => PrivateNetworkAddressChanged -= value;
+            add { PrivateNetworkAddressChanged += value; }
+            remove { PrivateNetworkAddressChanged -= value; }
         }
     }
 }

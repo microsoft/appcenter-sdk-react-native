@@ -8,6 +8,5 @@ namespace Microsoft.Azure.Mobile
 {
     public abstract class MobileCenterService : IMobileCenterService
     {
-        /* This class should remain empty */
     }
 }
