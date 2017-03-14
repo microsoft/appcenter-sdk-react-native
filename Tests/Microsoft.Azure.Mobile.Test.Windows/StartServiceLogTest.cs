@@ -7,16 +7,19 @@ using System.Collections.Generic;
 namespace Microsoft.Azure.Mobile.Test.Windows
 {
     [TestClass]
-    public class StartServiceLogTests
+    public class StartServiceLogTest
     {
         private const string StorageTestChannelName = "storageTestChannelName";
 
         [TestInitialize]
-        public void asdf()
+        public void InitializeStartServiceTest()
         {
             LogSerializer.AddFactory(StartServiceLog.JsonIdentifier, new LogFactory<StartServiceLog>());
         }
 
+        /// <summary>
+        /// Verify that default values are null (or 0 in offset case)
+        /// </summary>
         [TestMethod]
         public void CheckInitialValues()
         {
@@ -27,15 +30,15 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             Assert.AreEqual(0, log.Toffset);
         }
 
+        /// <summary>
+        /// Validate that name services can be correctly saved and restored
+        /// </summary>
         [TestMethod]
         public void SaveStartServiceLog()
         {
             StartServiceLog addedLog = new StartServiceLog();
             addedLog.Device = new DeviceInformationHelper().GetDeviceInformation();
             addedLog.Toffset = TimeHelper.CurrentTimeInMilliseconds();
-
-            Assert.ThrowsException<Rest.ValidationException>((Action)addedLog.Validate);
-
             addedLog.Services = new List<string>() { "Service0", "Service1", "Service2" };
 
             Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
@@ -48,6 +51,19 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             {
                 Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
             }
+        }
+
+        /// <summary>
+        /// Validate that log is not valid with nullable 'Services'
+        /// </summary>
+        [TestMethod]
+        public void ValidateStartServiceLog()
+        {
+            StartServiceLog log = new StartServiceLog();
+            log.Device = new DeviceInformationHelper().GetDeviceInformation();
+            log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
+
+            Assert.ThrowsException<Rest.ValidationException>( (Action)log.Validate );
         }
     }
 }

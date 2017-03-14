@@ -299,8 +299,8 @@ namespace Microsoft.Azure.Mobile
                     var serviceInstance =
                         (IMobileCenterService) serviceType.GetRuntimeProperty("Instance")?.GetValue(null);
 
-                    if (StartService(serviceInstance))
-                        startedServiceNames.Add(serviceInstance.ServiceName);
+                    StartService(serviceInstance);
+                    startedServiceNames.Add(serviceInstance.ServiceName);
                 }
                 catch (MobileCenterException ex)
                 {
@@ -316,7 +316,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        private bool StartService(IMobileCenterService service)
+        private void StartService(IMobileCenterService service)
         {
             if (service == null)
             {
@@ -324,14 +324,12 @@ namespace Microsoft.Azure.Mobile
             }
             if (_services.Contains(service))
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started a service of type '{service.GetType().Name}'.");
-                return false;
+                throw new MobileCenterException( $"Mobile Center has already started a service of type '{service.GetType().Name}'." );
             }
 
             service.OnChannelGroupReady(_channelGroup);
             _services.Add(service);
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
-            return true;
         }
 
         public void StartInstance(string appSecret, params Type[] services)
