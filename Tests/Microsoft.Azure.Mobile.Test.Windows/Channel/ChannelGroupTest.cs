@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             _channelGroup.EnqueuingLog += (sender, args) => { fired = true; };
             var mockChannel = new Mock<IChannel>();
             _channelGroup.AddChannel(mockChannel.Object);
-            mockChannel.Raise(channel => channel.EnqueuingLog += null, default(EnqueuingLogEventArgs));
+            mockChannel.Raise(channel => channel.EnqueuingLog += null, null, default(EnqueuingLogEventArgs));
 
             Assert.IsTrue(fired);
         }
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             _channelGroup.SendingLog += (sender, args) => { fired = true; };
             var mockChannel = new Mock<IChannel>();
             _channelGroup.AddChannel(mockChannel.Object);
-            mockChannel.Raise(channel => channel.SendingLog += null, default(SendingLogEventArgs));
+            mockChannel.Raise(channel => channel.SendingLog += null, null, default(SendingLogEventArgs));
 
             Assert.IsTrue(fired);
         }
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             _channelGroup.SentLog += (sender, args) => { fired = true; };
             var mockChannel = new Mock<IChannel>();
             _channelGroup.AddChannel(mockChannel.Object);
-            mockChannel.Raise(channel => channel.SentLog += null, default(SentLogEventArgs));
+            mockChannel.Raise(channel => channel.SentLog += null, null, default(SentLogEventArgs));
 
             Assert.IsTrue(fired);
         }
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             _channelGroup.FailedToSendLog += (sender, args) => { fired = true; };
             var mockChannel = new Mock<IChannel>();
             _channelGroup.AddChannel(mockChannel.Object);
-            mockChannel.Raise(channel => channel.FailedToSendLog += null, default(FailedToSendLogEventArgs));
+            mockChannel.Raise(channel => channel.FailedToSendLog += null, null, default(FailedToSendLogEventArgs));
 
             Assert.IsTrue(fired);
         }

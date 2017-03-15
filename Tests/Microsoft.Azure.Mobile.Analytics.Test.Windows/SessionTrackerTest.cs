@@ -91,11 +91,26 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void HandleEnqueuingLogDuringSession()
         {
             _sessionTracker.Resume();
-            var eventLog = new EventLog {Name = "thisisaneventlog"};
-            var eventArgs = new EnqueuingLogEventArgs(eventLog);
-            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
-
+            var eventLog = new EventLog {Toffset = 2};
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(eventLog));
             Assert.IsNotNull(eventLog.Sid);
+        }
+
+        /// <summary>
+        /// If two logs are enqueued during the same session, they should have the same session id
+        /// </summary>
+        [TestMethod]
+        public void HandleEnueuingSecondLogDuringSession()
+        {
+            _sessionTracker.Resume();
+            var time = TimeHelper.CurrentTimeInMilliseconds();
+            var firstLog = new EventLog { Toffset = time };
+            var secondLog = new EventLog { Toffset = time + 1 };
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(firstLog));
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(secondLog));
+
+            Assert.IsNotNull(secondLog.Sid);
+            Assert.AreEqual(firstLog.Sid, secondLog.Sid);
         }
 
         /// <summary>
@@ -107,7 +122,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Pause();
             var eventLog = new EventLog { Name = "thisisaneventlog" };
             var eventArgs = new EnqueuingLogEventArgs(eventLog);
-            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
             _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
             Assert.IsNotNull(eventLog.Sid);
@@ -122,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Pause();
             var sessionLog = new StartSessionLog();
             var eventArgs = new EnqueuingLogEventArgs(sessionLog);
-            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
             _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Never());
         }
