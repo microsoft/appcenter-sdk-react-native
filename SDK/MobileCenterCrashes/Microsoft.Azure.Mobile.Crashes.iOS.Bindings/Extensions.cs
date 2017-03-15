@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Foundation;
+using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
@@ -31,10 +31,57 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
         public override bool SetUpCrashHandlers()
         {
+            if (!TryChainingSignalHandlers())
+            {
+                OverwriteSignalHandlers();
+            }
+            return true;
+        }
+
+        /* 
+         * In Mono 4.8, it is possible to chain the mono signal handlers to the PLCrashReporter signal handlers, so
+         * if the APIs for this are available, it is preferable to use them. If the APIs are unavailable, return
+         * false.
+         */
+        private bool TryChainingSignalHandlers()
+        {
+            var type = Type.GetType("Mono.Runtime");
+            var installSignalHandlers = type?.GetMethod("InstallSignalHandlers", BindingFlags.Public | BindingFlags.Static);
+            var removeSignalHandlers = type?.GetMethod("RemoveSignalHandlers", BindingFlags.Public | BindingFlags.Static);
+
+            if (installSignalHandlers == null || removeSignalHandlers == null)
+            {
+                return false;
+            }
+
+            try
+            {
+            }
+            finally
+            {
+                removeSignalHandlers.Invoke(null, null);
+                try
+                {
+                    MSWrapperExceptionManager.StartCrashReportingFromWrapperSdk();
+                }
+                finally
+                {
+                    installSignalHandlers.Invoke(null, null);
+                }
+            }
+
+            return true;
+        }
+
+        /*
+         * If the Mono 4.8 APIs are unavailable, we must overwrite the signal handlers for certain signals. 
+         */
+        private void OverwriteSignalHandlers()
+        {
             /* Allocate space to store the Mono handlers */
-            IntPtr sigbus = Marshal.AllocHGlobal(512);
-            IntPtr sigsegv = Marshal.AllocHGlobal(512);
-            IntPtr sigfpe = Marshal.AllocHGlobal(512);
+            var sigbus = Marshal.AllocHGlobal(512);
+            var sigsegv = Marshal.AllocHGlobal(512);
+            var sigfpe = Marshal.AllocHGlobal(512);
 
             /* Store Mono's SIGSEGV, SIGBUS, and SIGFPE handlers */
             sigaction(Signal.SIGBUS, IntPtr.Zero, sigbus);
@@ -53,8 +100,6 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
             Marshal.FreeHGlobal(sigbus);
             Marshal.FreeHGlobal(sigsegv);
             Marshal.FreeHGlobal(sigfpe);
-
-            return true;
         }
     }
 }

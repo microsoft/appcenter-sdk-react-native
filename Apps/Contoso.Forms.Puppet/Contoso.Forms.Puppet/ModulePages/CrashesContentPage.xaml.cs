@@ -69,8 +69,11 @@ namespace Contoso.Forms.Puppet
         {
             string[] values = { "one", null, "two" };
             for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
-                System.Diagnostics.Debug.WriteLine("{0}{1}", values[ctr].Trim(),
-                              ctr == values.GetUpperBound(0) ? "" : ", ");
+            {
+                var val = values[ctr].Trim();
+                var separator = ctr == values.GetUpperBound(0) ? "" : ", ";
+                System.Diagnostics.Debug.WriteLine("{0}{1}", val, separator);
+            }
             System.Diagnostics.Debug.WriteLine("");
         }
 
