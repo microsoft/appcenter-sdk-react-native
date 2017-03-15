@@ -1,15 +1,10 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
+using System.Collections.Generic;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
 {
-    using Microsoft.Rest;
-    using Mobile.Ingestion.Models;
-    using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System;
-
     /// <summary>
     /// Event log.
     /// </summary>
