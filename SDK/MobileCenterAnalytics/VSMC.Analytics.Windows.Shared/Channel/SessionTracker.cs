@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Linq;
+using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
