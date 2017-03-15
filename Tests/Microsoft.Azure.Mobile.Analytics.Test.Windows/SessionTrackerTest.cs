@@ -83,5 +83,20 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 
             Assert.IsTrue(ApplicationSettings.IsEmpty);
         }
+
+        /// <summary>
+        /// Verify that an enqueuing log is handled properly while the tracker is in a session
+        /// </summary>
+        [TestMethod]
+        public void HandleEnqueuingLogDuringSession()
+        {
+            _sessionTracker.Resume();
+            var eventLog = new EventLog {Name = "thisisaneventlog"};
+            var eventArgs = new EnqueuingLogEventArgs(eventLog);
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
+
+            //verify that sid was set
+            Assert.IsNotNull(eventLog.Sid);
+        }
     }
 }

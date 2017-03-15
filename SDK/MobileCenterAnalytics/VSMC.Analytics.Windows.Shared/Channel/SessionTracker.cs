@@ -115,8 +115,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _channel.Enqueue(startSessionLog);
         }
 
-
-        private string SessionsAsString()
+        internal string SessionsAsString()
         {
             var sessionsString = "";
             foreach (var pair in _sessions)
@@ -127,7 +126,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             return sessionsString;
         }
 
-        private Dictionary<long, Guid> SessionsFromString(string sessionsString)
+        internal Dictionary<long, Guid> SessionsFromString(string sessionsString)
         {
             var sessionsDict = new Dictionary<long, Guid>();
             if (sessionsString == null) return sessionsDict;
