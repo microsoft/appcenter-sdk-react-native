@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-
     public class TestCrashException : Exception { }
 
     class PlatformCrashes : PlatformCrashesBase

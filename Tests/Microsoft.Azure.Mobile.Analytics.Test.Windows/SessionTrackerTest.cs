@@ -95,8 +95,54 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             var eventArgs = new EnqueuingLogEventArgs(eventLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
 
-            //verify that sid was set
             Assert.IsNotNull(eventLog.Sid);
         }
+
+        /// <summary>
+        /// Verify that an enqueuing log is adjusted and a session is started when a log is enqueued
+        /// </summary>
+        [TestMethod]
+        public void HandleEnqueuingLogOutsideSession()
+        {
+            _sessionTracker.Pause();
+            var eventLog = new EventLog { Name = "thisisaneventlog" };
+            var eventArgs = new EnqueuingLogEventArgs(eventLog);
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
+
+            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            Assert.IsNotNull(eventLog.Sid);
+        }
+
+        /// <summary>
+        /// Verify that when a StartSessionLog is enqueued, a new session is not started
+        /// </summary>
+        [TestMethod]
+        public void HandleEnqueuingStartSessionLog()
+        {
+            _sessionTracker.Pause();
+            var sessionLog = new StartSessionLog();
+            var eventArgs = new EnqueuingLogEventArgs(sessionLog);
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, eventArgs);
+
+            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Never());
+        }
+
+        /// <summary>
+        /// Verify that there are never more than max sessions
+        /// </summary>
+        [TestMethod]
+        public void StartMaxSessions()
+        {
+            for (var i = 0; i <= SessionTracker.StorageMaxSessions; ++i)
+            {
+                _sessionTracker.Pause();
+                Task.Delay((int)SessionTracker.SessionTimeout).Wait();
+                _sessionTracker.Resume();
+            }
+
+            Assert.IsTrue(_sessionTracker.NumSessions == SessionTracker.StorageMaxSessions);
+        }
+
+        //TODO sucessive resumes seem to fail in some cases?
     }
 }

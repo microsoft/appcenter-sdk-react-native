@@ -12,9 +12,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
     {
         /* Internal for testing */
         internal static long SessionTimeout = 20000;
+        internal const int StorageMaxSessions = 5;
 
         private const string StorageKey = "MobileCenterSessions";
-        private const int StorageMaxSessions = 5;
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
         private readonly IChannel _channel;
@@ -66,6 +66,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
         }
 
+        /* For testing */
+        internal int NumSessions => _sessions.Count;
+
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
         {
             lock (_lockObject)
@@ -99,7 +102,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         private void SendStartSessionIfNeeded()
         {
-            if (_sid != null && !HasSessionTimedOut())
+            var now = TimeHelper.CurrentTimeInMilliseconds();
+            if (_sid != null && !HasSessionTimedOut(now))
             {
                 return;
             }
@@ -109,13 +113,13 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 _sessions.Remove(_sessions.Keys.Min());
             }
             _sid = Guid.NewGuid();
-            _sessions.Add(TimeHelper.CurrentTimeInMilliseconds(), _sid.Value);
+            _sessions.Add(now, _sid.Value);
             _applicationSettings[StorageKey] = SessionsAsString();
             var startSessionLog = new StartSessionLog { Sid = _sid };
             _channel.Enqueue(startSessionLog);
         }
 
-        internal string SessionsAsString()
+        private string SessionsAsString()
         {
             var sessionsString = "";
             foreach (var pair in _sessions)
@@ -126,7 +130,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             return sessionsString;
         }
 
-        internal Dictionary<long, Guid> SessionsFromString(string sessionsString)
+        private Dictionary<long, Guid> SessionsFromString(string sessionsString)
         {
             var sessionsDict = new Dictionary<long, Guid>();
             if (sessionsString == null) return sessionsDict;
@@ -149,9 +153,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             return sessionsDict;
         }
 
-        private bool HasSessionTimedOut()
+        private bool HasSessionTimedOut(long now)
         {
-            var now = TimeHelper.CurrentTimeInMilliseconds();
             var noLogSentForLong = _lastQueuedLogTime == 0 || (now - _lastQueuedLogTime) >= SessionTimeout;
             if (_lastPausedTime == 0)
             {
