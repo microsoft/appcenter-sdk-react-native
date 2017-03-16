@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             get
             {
                 var statusCode = (int)StatusCode;
-                return statusCode >= 501 || statusCode == 408 || statusCode == 429 || statusCode == 401;
+                return statusCode >= 501 || statusCode == 408 || statusCode == 429;
             }
         }
 
