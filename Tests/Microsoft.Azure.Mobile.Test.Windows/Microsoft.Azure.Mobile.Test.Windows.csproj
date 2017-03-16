@@ -87,6 +87,12 @@
     <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
     <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
     <Compile Include="Ingestion\Http\RetryableTest.cs" />
+    <Compile Include="Ingestion\Models\TestLog.cs" />
+    <Compile Include="Ingestion\Models\LogFactoryTest.cs" />
+    <Compile Include="Ingestion\Models\LogContainerTest.cs" />
+    <Compile Include="Ingestion\Models\LogWithPropertiesTest.cs" />
+    <Compile Include="Ingestion\Models\LogTest.cs" />
+    <Compile Include="Ingestion\Models\DeviceTest.cs" />
     <Compile Include="MobileCenterServiceTest.cs" />
     <Compile Include="MobileCenterTest.cs" />
     <Compile Include="MockIngestion.cs" />
