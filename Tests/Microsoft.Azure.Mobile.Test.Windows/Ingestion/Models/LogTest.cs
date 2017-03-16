@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
     [TestClass]
     public class LogTest
     {
-        private const long toOffset = 0;
+        private const long TOffset = 0;
 
         /// <summary>
         /// Verify that instance is constructed properly.
@@ -18,18 +18,17 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void TestInstanceConstruction()
         {
-            var defaultGuid = default(System.Guid?);
             var mockDevice = new Mock<Device>();
             
             Log emptyLog = new TestLog();
-            Log log = new TestLog(toOffset, mockDevice.Object);
+            Log log = new TestLog(TOffset, mockDevice.Object);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
 
-            Assert.AreEqual(defaultGuid, log.Sid);
-            Assert.AreEqual<long>(toOffset, log.Toffset);
-            Assert.AreEqual<Device>(mockDevice.Object, log.Device);
+            Assert.AreEqual(default(System.Guid?), log.Sid);
+            Assert.AreEqual(TOffset, log.Toffset);
+            Assert.AreEqual(mockDevice.Object, log.Device);
         }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestValidateThrowsExceptionWhenDeviceIsNull()
         {
             const Device nullDevice = null;
-            Log log = new TestLog(toOffset, nullDevice);
+            Log log = new TestLog(TOffset, nullDevice);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
 
@@ -50,8 +49,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestValidateCallsDeviceValidateWhenDeviceIsNotNull()
         {
             var mockDevice = new Mock<Device>();
-
-            Log log = new TestLog(toOffset, mockDevice.Object);
+            Log log = new TestLog(TOffset, mockDevice.Object);
             log.Validate();
 
             mockDevice.Verify(device => device.Validate());

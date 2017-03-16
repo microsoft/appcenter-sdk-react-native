@@ -83,20 +83,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                     {
                         e.Log.Sid = _sessions[key];
                     }
-                    /*
-                    foreach (var key in _sessions.Keys)
-                    {
-                        if (key <= e.Log.Toffset && key > candidate)
-                        {
-                            candidate = key;
-                            foundPrevSession = true;
-                        }
-                    }
-                    if (foundPrevSession)
-                    {
-                        e.Log.Sid = _sessions[key];
-                    }
-                    */
                 }
                 if (e.Log.Sid != null) return;
                 SendStartSessionIfNeeded();

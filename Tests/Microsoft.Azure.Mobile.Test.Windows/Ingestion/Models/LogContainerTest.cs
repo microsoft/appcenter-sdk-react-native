@@ -1,8 +1,10 @@
-﻿using Moq;
+﻿using System.Collections;
+using Moq;
 using Microsoft.Rest;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -16,19 +18,13 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestInstanceConstruction()
         {
             var mockLog = new Mock<Log>();
+            var logList = new List<Log> {mockLog.Object, mockLog.Object, mockLog.Object};
+            var emptyContainer = new LogContainer();
+            var container = new LogContainer(logList);
 
-            IList<Log> logList = new List<Log>();
-            logList.Add(mockLog.Object);
-            logList.Add(mockLog.Object);
-            logList.Add(mockLog.Object);
-
-            LogContainer emptyLog = new LogContainer();
-            LogContainer log = new LogContainer(logList);
-
-            Assert.IsNotNull(emptyLog);
-            Assert.IsNotNull(log);
-
-            Assert.AreEqual(logList, log.Logs);
+            Assert.IsNotNull(emptyContainer);
+            Assert.IsNotNull(container);
+            CollectionAssert.AreEquivalent(logList, (List<Log>)container.Logs);
         }
 
         /// <summary>
@@ -37,8 +33,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenLogsIsNull()
         {
-            IList<Log> logList = null;
-            LogContainer container = new LogContainer(logList);
+            var container = new LogContainer(null);
             Assert.ThrowsException<ValidationException>(() => container.Validate());
         }
 
@@ -49,7 +44,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestValidateThrowsExceptionLogsCountIsLessThan1()
         {
             IList<Log> logList = new List<Log>();
-            LogContainer container = new LogContainer(logList);
+            var container = new LogContainer(logList);
             Assert.ThrowsException<ValidationException>(() => container.Validate());
         }
 
@@ -60,12 +55,13 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestValidateCallValidateOnEveryItem()
         {
             var mockLog = new Mock<Log>();
-            IList<Log> logList = new List<Log>();
-            logList.Add(mockLog.Object);
-            logList.Add(mockLog.Object);
-            logList.Add(mockLog.Object);
-
-            LogContainer container = new LogContainer(logList);
+            IList<Log> logList = new List<Log>
+            {
+                mockLog.Object,
+                mockLog.Object,
+                mockLog.Object
+            };
+            var container = new LogContainer(logList);
             container.Validate();
 
             mockLog.Verify(log => log.Validate(), Times.Exactly(logList.Count));

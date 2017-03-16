@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
     [TestClass]
     public class LogWithPopertiesTest
     {
-        private const long toOffset = 0;
+        private const long TOffset = 0;
 
         /// <summary>
         /// Verify that instance is constructed properly.
@@ -20,16 +20,14 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void TestInstanceConstruction()
         {
-            var defaultDictionary = default(IDictionary<string, string>);
             var mockDevice = new Mock<Device>();
 
             LogWithProperties emptyLog = new TestLogWithProperties();
-            LogWithProperties log = new TestLogWithProperties(toOffset, mockDevice.Object);
+            LogWithProperties log = new TestLogWithProperties(TOffset, mockDevice.Object);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
-        
-            Assert.AreEqual(defaultDictionary, log.Properties);
+            Assert.IsNull(log.Properties);
         }
     }
 
