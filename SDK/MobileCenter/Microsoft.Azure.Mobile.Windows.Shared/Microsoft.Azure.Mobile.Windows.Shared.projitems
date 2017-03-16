@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroupFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpServiceCall.cs" />

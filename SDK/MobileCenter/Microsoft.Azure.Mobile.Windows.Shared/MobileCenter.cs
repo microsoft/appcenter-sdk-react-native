@@ -23,6 +23,7 @@ namespace Microsoft.Azure.Mobile
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
+        private IChannel _channel;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
         private string _serverUrl;
         private static readonly object MobileCenterLock = new object();
@@ -30,6 +31,7 @@ namespace Microsoft.Azure.Mobile
         private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
         private const string StartErrorMessage = "Failed to start services";
         private bool _instanceConfigured;
+        private const string ChannelName = "core";
 
         #region static
 
@@ -266,6 +268,8 @@ namespace Microsoft.Azure.Mobile
             }
             var appSecret = GetSecretForPlatform(appSecretString, PlatformIdentifier);
             _channelGroup = CreateChannelGroup(appSecret);
+            _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
+                Constants.DefaultTriggerMaxParallelRequests);
             if (_serverUrl != null)
             {
                 _channelGroup.SetServerUrl(_serverUrl);
@@ -310,9 +314,8 @@ namespace Microsoft.Azure.Mobile
 
             if (startedServiceNames.Count > 0)
             {
-                StartServiceLog serviceLog = new StartServiceLog();
-                serviceLog.Services = startedServiceNames;
-                _channelGroup.Enqueue( serviceLog );
+                var serviceLog = new StartServiceLog {Services = startedServiceNames};
+                _channel.Enqueue( serviceLog );
             }
         }
 

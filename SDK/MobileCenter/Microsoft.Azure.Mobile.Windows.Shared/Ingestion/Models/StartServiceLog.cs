@@ -7,11 +7,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
     [JsonObject( JsonIdentifier )]
     public class StartServiceLog : Log
     {
-        internal const string JsonIdentifier = "StartServiceLog";
+        internal const string JsonIdentifier = "start_service";
 
         /// <summary>
         /// Initializes a new instance of the Log class.
-        /// </summary
+        /// </summary>
         public StartServiceLog() { }
 
         /// <summary>

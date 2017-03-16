@@ -74,18 +74,15 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 request.Dispose();
                 throw;
             }
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int) response.StatusCode} ({response.StatusCode}) payload={requestContent}");
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int) response.StatusCode} ({response.StatusCode}) payload={responseContent}");
             if (call.CancellationToken.IsCancellationRequested)
             {
                 return;
             }
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                var responseContent = string.Empty;
-                if (response.Content != null)
-                {
-                    responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
+
 
                 var ex = new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")
                 {
