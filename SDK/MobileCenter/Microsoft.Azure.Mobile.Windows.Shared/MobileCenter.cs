@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using System;
 using System.Collections.Generic;
@@ -204,6 +205,7 @@ namespace Microsoft.Azure.Mobile
         internal MobileCenter()
         {
              _applicationSettings = new ApplicationSettings();
+            LogSerializer.AddFactory(StartServiceLog.JsonIdentifier, new LogFactory<StartServiceLog>());
         }
 
         /* This constructor is only for unit testing */
@@ -283,6 +285,8 @@ namespace Microsoft.Azure.Mobile
                 throw new MobileCenterException("Mobile Center has not been configured.");
             }
 
+            List<string> startedServiceNames = new List<string>();
+
             foreach (var serviceType in services)
             {
                 if (serviceType == null)
@@ -292,13 +296,23 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
+                    var serviceInstance =
+                        (IMobileCenterService) serviceType.GetRuntimeProperty("Instance")?.GetValue(null);
+
                     StartService(serviceInstance);
+                    startedServiceNames.Add(serviceInstance.ServiceName);
                 }
                 catch (MobileCenterException ex)
                 {
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", ex);
                 }
+            }
+
+            if (startedServiceNames.Count > 0)
+            {
+                StartServiceLog serviceLog = new StartServiceLog();
+                serviceLog.Services = startedServiceNames;
+                _channelGroup.Enqueue( serviceLog );
             }
         }
 
@@ -310,9 +324,7 @@ namespace Microsoft.Azure.Mobile
             }
             if (_services.Contains(service))
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag,
-                    $"Mobile Center has already started a service of type '{service.GetType().Name}'.");
-                return;
+                throw new MobileCenterException( $"Mobile Center has already started a service of type '{service.GetType().Name}'." );
             }
 
             service.OnChannelGroupReady(_channelGroup);

@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateIngestion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\ServiceCallDecorator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StartServiceLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\ServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionHttp.cs" />
