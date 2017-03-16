@@ -13,8 +13,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         /* Internal for testing */
         internal static long SessionTimeout = 20000;
         internal const int StorageMaxSessions = 5;
+        internal const string StorageKey = "MobileCenterSessions";
 
-        private const string StorageKey = "MobileCenterSessions";
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
         private readonly IChannel _channel;
@@ -33,6 +33,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null) return;
             _sessions = SessionsFromString(sessionsString);
+            /* Re-write sessions in storage in case of any invalid strings */
+            _applicationSettings[StorageKey] = SessionsAsString();
             if (_sessions.Count == 0) return;
             var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
@@ -75,16 +77,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 /* Skip StartSessionLogs to avoid an infinite loop */
                 if (e.Log is StartSessionLog) return;
-                
-                if (e.Log.Toffset > 0)
+                if (SetExistingSessionId(e.Log, _sessions))
                 {
-                    var key = _sessions.Keys.Where(num => num <= e.Log.Toffset).DefaultIfEmpty(-1).Max();
-                    if (key != -1)
-                    {
-                        e.Log.Sid = _sessions[key];
-                    }
+                    return;
                 }
-                if (e.Log.Sid != null) return;
                 SendStartSessionIfNeeded();
                 e.Log.Sid = _sid;
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
@@ -121,7 +117,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             return sessionsString;
         }
 
-        private Dictionary<long, Guid> SessionsFromString(string sessionsString)
+        internal static Dictionary<long, Guid> SessionsFromString(string sessionsString)
         {
             var sessionsDict = new Dictionary<long, Guid>();
             if (sessionsString == null) return sessionsDict;
@@ -146,21 +142,41 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         private bool HasSessionTimedOut(long now)
         {
-            var noLogSentForLong = _lastQueuedLogTime == 0 || (now - _lastQueuedLogTime) >= SessionTimeout;
-            if (_lastPausedTime == 0)
+            return HasSessionTimedOut(now, _lastQueuedLogTime, _lastResumedTime, _lastPausedTime);
+        }
+
+        internal static bool HasSessionTimedOut(long now, long lastQueuedLogTime, long lastResumedTime, long lastPausedTime)
+        {
+            var noLogSentForLong = lastQueuedLogTime == 0 || (now - lastQueuedLogTime) >= SessionTimeout;
+            if (lastPausedTime == 0)
             {
-                return _lastResumedTime == 0 && noLogSentForLong;
+                return lastResumedTime == 0 && noLogSentForLong;
             }
-            if (_lastResumedTime == 0)
+            if (lastResumedTime == 0)
             {
                 return noLogSentForLong;
             }
-            var isBackgroundForLong = (_lastPausedTime >= _lastResumedTime) && ((now - _lastPausedTime) >= SessionTimeout);
-            var wasBackgroundForLong = (_lastResumedTime - Math.Max(_lastPausedTime, _lastQueuedLogTime)) >= SessionTimeout;
+            var isBackgroundForLong = (lastPausedTime >= lastResumedTime) && ((now - lastPausedTime) >= SessionTimeout);
+            var wasBackgroundForLong = (lastResumedTime - Math.Max(lastPausedTime, lastQueuedLogTime)) >= SessionTimeout;
             MobileCenterLog.Debug(Analytics.Instance.LogTag, $"noLogSentForLong={noLogSentForLong} " +
                                                     $"isBackgroundForLong={isBackgroundForLong} " +
                                                     $"wasBackgroundForLong={wasBackgroundForLong}");
             return noLogSentForLong && (isBackgroundForLong || wasBackgroundForLong);
+        }
+
+        internal static bool SetExistingSessionId(Log log, IDictionary<long, Guid> sessions)
+        {
+            if (log.Toffset <= 0)
+            {
+                return false;
+            }
+                        var key = sessions.Keys.Where(num => num <= log.Toffset).DefaultIfEmpty(-1).Max();
+            if (key == -1)
+            {
+                return false;
+            }
+            log.Sid = sessions[key];
+            return true;
         }
     }
 }
