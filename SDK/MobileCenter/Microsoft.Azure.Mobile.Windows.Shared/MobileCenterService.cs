@@ -12,9 +12,6 @@ namespace Microsoft.Azure.Mobile
     public abstract class MobileCenterService : IMobileCenterService
     {
         private const string PreferenceKeySeparator = "_";
-        private const int DefaultTriggerCount = 50;
-        private static readonly TimeSpan DefaultTriggerInterval = TimeSpan.FromSeconds(3);
-        private const int DefaultTriggerMaxParallelRequests = 3;
         private const string KeyEnabled = "MobileCenterServiceEnabled";
         private readonly object _serviceLock = new object();
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
@@ -22,12 +19,12 @@ namespace Microsoft.Azure.Mobile
         protected IChannelGroup ChannelGroup { get; private set; }
 
         protected abstract string ChannelName { get; }
-        protected abstract string ServiceName { get; }
+        public abstract string ServiceName { get; }
         public virtual string LogTag => MobileCenterLog.LogTag + ServiceName;
         protected virtual string EnabledPreferenceKey => KeyEnabled + PreferenceKeySeparator + ChannelName;
-        protected virtual int TriggerCount => DefaultTriggerCount;
-        protected virtual TimeSpan TriggerInterval => DefaultTriggerInterval;
-        protected virtual int TriggerMaxParallelRequests => DefaultTriggerMaxParallelRequests;
+        protected virtual int TriggerCount => Constants.DefaultTriggerCount;
+        protected virtual TimeSpan TriggerInterval => Constants.DefaultTriggerInterval;
+        protected virtual int TriggerMaxParallelRequests => Constants.DefaultTriggerMaxParallelRequests;
 
         /* This constructor is only for testing */
         protected MobileCenterService()

@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         }
 
         protected override string ChannelName => "crashes";
-        protected override string ServiceName => "Crashes";
+        public override string ServiceName => "Crashes";
 
         /// <exception cref="MobileCenterException"/>
         public override void OnChannelGroupReady(IChannelGroup channelGroup)

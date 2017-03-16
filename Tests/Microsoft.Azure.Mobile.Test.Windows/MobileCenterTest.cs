@@ -489,17 +489,21 @@ namespace Microsoft.Azure.Mobile.Test
     public class NullInstanceMobileCenterService : IMobileCenterService
     {
         public static IMobileCenterService Instance => null;
+        public string ServiceName => nameof(NullInstanceMobileCenterService);
 
         public bool InstanceEnabled { get; set; }
         public void OnChannelGroupReady(IChannelGroup channelGroup)
         {
         }
     }
-    public class WrongInstanceTypeMobileCenterService : IMobileCenterService
+    public class WrongInstanceTypeMobileCenterService : Mobile.IMobileCenterService
     {
         public static Guid Instance => Guid.NewGuid();
+        public string ServiceName => nameof(WrongInstanceTypeMobileCenterService);
 
         public bool InstanceEnabled { get; set; }
+
+
         public void OnChannelGroupReady(IChannelGroup channelGroup)
         {
         }

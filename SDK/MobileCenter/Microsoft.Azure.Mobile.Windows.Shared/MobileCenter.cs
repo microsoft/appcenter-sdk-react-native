@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Microsoft.Azure.Mobile
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
+        private IChannel _channel;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
         private string _serverUrl;
         private static readonly object MobileCenterLock = new object();
@@ -29,6 +31,7 @@ namespace Microsoft.Azure.Mobile
         private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
         private const string StartErrorMessage = "Failed to start services";
         private bool _instanceConfigured;
+        private const string ChannelName = "core";
 
         #region static
 
@@ -204,6 +207,7 @@ namespace Microsoft.Azure.Mobile
         internal MobileCenter()
         {
              _applicationSettings = new ApplicationSettings();
+            LogSerializer.AddFactory(StartServiceLog.JsonIdentifier, new LogFactory<StartServiceLog>());
         }
 
         /* This constructor is only for unit testing */
@@ -264,6 +268,8 @@ namespace Microsoft.Azure.Mobile
             }
             var appSecret = GetSecretForPlatform(appSecretString, PlatformIdentifier);
             _channelGroup = CreateChannelGroup(appSecret);
+            _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
+                Constants.DefaultTriggerMaxParallelRequests);
             if (_serverUrl != null)
             {
                 _channelGroup.SetServerUrl(_serverUrl);
@@ -283,6 +289,8 @@ namespace Microsoft.Azure.Mobile
                 throw new MobileCenterException("Mobile Center has not been configured.");
             }
 
+            List<string> startedServiceNames = new List<string>();
+
             foreach (var serviceType in services)
             {
                 if (serviceType == null)
@@ -292,13 +300,22 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
+                    var serviceInstance =
+                        (IMobileCenterService) serviceType.GetRuntimeProperty("Instance")?.GetValue(null);
+
                     StartService(serviceInstance);
+                    startedServiceNames.Add(serviceInstance.ServiceName);
                 }
                 catch (MobileCenterException ex)
                 {
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", ex);
                 }
+            }
+
+            if (startedServiceNames.Count > 0)
+            {
+                var serviceLog = new StartServiceLog {Services = startedServiceNames};
+                _channel.Enqueue( serviceLog );
             }
         }
 
@@ -310,9 +327,7 @@ namespace Microsoft.Azure.Mobile
             }
             if (_services.Contains(service))
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag,
-                    $"Mobile Center has already started a service of type '{service.GetType().Name}'.");
-                return;
+                throw new MobileCenterException( $"Mobile Center has already started a service of type '{service.GetType().Name}'." );
             }
 
             service.OnChannelGroupReady(_channelGroup);
