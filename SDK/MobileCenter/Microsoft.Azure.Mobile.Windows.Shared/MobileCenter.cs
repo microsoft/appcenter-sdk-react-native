@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Mobile
         internal MobileCenter()
         {
              _applicationSettings = new ApplicationSettings();
-            LogSerializer.AddFactory(StartServiceLog.JsonIdentifier, new LogFactory<StartServiceLog>());
+            LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
         }
 
         /* This constructor is only for unit testing */
@@ -289,7 +289,7 @@ namespace Microsoft.Azure.Mobile
                 throw new MobileCenterException("Mobile Center has not been configured.");
             }
 
-            List<string> startedServiceNames = new List<string>();
+            var startedServiceNames = new List<string>();
 
             foreach (var serviceType in services)
             {
@@ -301,8 +301,11 @@ namespace Microsoft.Azure.Mobile
                 try
                 {
                     var serviceInstance =
-                        (IMobileCenterService) serviceType.GetRuntimeProperty("Instance")?.GetValue(null);
-
+                        serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
+                    if (serviceInstance == null)
+                    {
+                        throw new MobileCenterException("Service type does not contain static 'Instance' property of type IMobileCenterService");
+                    }
                     StartService(serviceInstance);
                     startedServiceNames.Add(serviceInstance.ServiceName);
                 }

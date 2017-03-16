@@ -36,7 +36,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Device.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ILogFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogJsonConverter.cs" />

@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         }
 
         protected override string ChannelName => "test_service";
-        protected override string ServiceName => "TestService";
+        public override string ServiceName => "TestService";
 
         public IChannelGroup PublicChannelGroup => ChannelGroup;
         public IChannel PublicChannel => Channel;

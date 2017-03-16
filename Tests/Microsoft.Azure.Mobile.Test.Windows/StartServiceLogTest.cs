@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestInitialize]
         public void InitializeStartServiceTest()
         {
-            LogSerializer.AddFactory(StartServiceLog.JsonIdentifier, new LogFactory<StartServiceLog>());
+            LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
         }
 
         /// <summary>
