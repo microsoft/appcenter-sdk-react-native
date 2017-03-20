@@ -15,16 +15,13 @@ namespace Microsoft.Azure.Mobile.Channel
         private const int ClearBatchSize = 100;
         private Ingestion.Models.Device _device;
         private readonly string _appSecret;
-
         private readonly IStorage _storage;
         private readonly IIngestion _ingestion;
         private readonly IDeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private readonly Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
-
         private readonly int _maxParallelBatches;
         private readonly int _maxLogsPerBatch;
-
         private long _pendingLogCount;
         private bool _enabled;
         private bool _discardLogs;
@@ -44,30 +41,8 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchTimeInterval = batchTimeInterval;
             _batchScheduled = false;
             _enabled = true;
-            _deviceInfoHelper.InformationInvalidated += () => InvalidateDeviceCache();
-            Task.Factory.StartNew(() => CountFromDiskAsync());
-        }
-
-        private async Task CountFromDiskAsync()
-        {
-            await _mutex.WaitAsync();
-            var stateSnapshot = _currentState;
-            _mutex.Release();
-
-            var logCount = await _storage.CountLogsAsync(Name);
-            await _mutex.WaitAsync();
-            try
-            {
-                if (stateSnapshot == _currentState)
-                {
-                    _pendingLogCount = logCount;
-                    CheckPendingLogs();
-                }
-            }
-            finally
-            {
-                _mutex.Release();
-            }
+            _deviceInfoHelper.InformationInvalidated += InvalidateDeviceCache;
+            Task.Factory.StartNew(CountFromDiskAsync);
         }
 
         public void SetEnabled(bool enabled)
@@ -97,6 +72,9 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
+        /// <summary>
+        /// Gets value indicating whether the Channel is enabled
+        /// </summary>
         public bool IsEnabled
         {
             get
@@ -113,7 +91,9 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        //TODO consider making this private
+        /// <summary>
+        /// The channel's Name
+        /// </summary>
         public string Name { get; }
 
         #region Events
@@ -212,6 +192,28 @@ namespace Microsoft.Azure.Mobile.Channel
             });
         }
 
+        private async Task CountFromDiskAsync()
+        {
+            await _mutex.WaitAsync();
+            var stateSnapshot = _currentState;
+            _mutex.Release();
+
+            var logCount = await _storage.CountLogsAsync(Name);
+            await _mutex.WaitAsync();
+            try
+            {
+                if (stateSnapshot == _currentState)
+                {
+                    _pendingLogCount = logCount;
+                    CheckPendingLogs();
+                }
+            }
+            finally
+            {
+                _mutex.Release();
+            }
+        }
+
         private void Suspend(bool deleteLogs, Exception exception)
         {
             _enabled = false;
@@ -236,7 +238,7 @@ namespace Microsoft.Azure.Mobile.Channel
             if (deleteLogs)
             {
                 _pendingLogCount = 0;
-                Task.Run(() => DeleteLogsOnSuspendedAsync());
+                Task.Run(DeleteLogsOnSuspendedAsync);
                 return;
             }
             Task.Run(() => _storage.ClearPendingLogStateAsync(Name));
@@ -267,12 +269,18 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private async Task SignalDeletingLogs(int stateSnapshot)
         {
-            if (stateSnapshot != _currentState) return;
+            if (stateSnapshot != _currentState)
+            {
+                return;
+            }
             var logs = new List<Log>();
             _mutex.Release();
             await _storage.GetLogsAsync(Name, ClearBatchSize, logs);
             await _mutex.WaitAsync();
-            if (stateSnapshot != _currentState) return;
+            if (stateSnapshot != _currentState)
+            {
+                return;
+            }
             foreach (var log in logs)
             {
                 SendingLog?.Invoke(this, new SendingLogEventArgs(log));
@@ -391,6 +399,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 _pendingLogCount += removedLogs.Count;
             }
         }
+
         private void CheckPendingLogs()
         {
             if (!_enabled)
@@ -402,7 +411,7 @@ namespace Microsoft.Azure.Mobile.Channel
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");
             if (_pendingLogCount >= _maxLogsPerBatch)
             {
-                Task.Run(() => TriggerIngestionAsync());
+                Task.Run(TriggerIngestionAsync);
             }
             else if (_pendingLogCount > 0 && !_batchScheduled)
             {

@@ -1,22 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
+    /// <summary>
+    /// IChannels are responsible for processing logs. In most cases, that means storing them and sending them to Ingestion.
+    /// </summary>
     public interface IChannel
     {
+        /// <summary>
+        /// Invoked when a log will be enqueued
+        /// </summary>
         event EnqueuingLogEventHandler EnqueuingLog;
+
+        /// <summary>
+        /// Invoke when a log will be sent
+        /// </summary>
         event SendingLogEventHandler SendingLog;
+
+        /// <summary>
+        /// Invoked when a log successfully sent
+        /// </summary>
         event SentLogEventHandler SentLog;
+
+        /// <summary>
+        /// Invoked when a log failed to send properly
+        /// </summary>
         event FailedToSendLogEventHandler FailedToSendLog;
+
+        /// <summary>
+        /// Enable or disable the channel
+        /// </summary>
+        /// <param name="enabled">Value indicating whether channel should be enabled or disabled</param>
         void SetEnabled(bool enabled);
+
+        /// <summary>
+        /// Stop all calls in progress and deactivate this channel
+        /// </summary>
         void Shutdown();
 
-        //TODO comment on how this is a fat interface
+        /// <summary>
+        /// Enqueue a log for processing
+        /// </summary>
+        /// <param name="log"></param>
         void Enqueue(Log log);
     }
 }
