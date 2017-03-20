@@ -180,10 +180,13 @@ Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 // Pack NuGets for appropriate platform
 Task("NuGet")
 	.IsDependentOn("Build")
+	.IsDependentOn("NuGetNoBuild");
+
+Task("NuGetNoBuild")
 	.IsDependentOn("Version")
 	.Does(()=>
-{
-	// NuGet on mac trims out the first ./ so adding it twice works around
+	{
+// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
 	CleanDirectory("output");
 
@@ -200,7 +203,7 @@ Task("NuGet")
 		});
 	}
 	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
-}).OnError(()=>RunTarget("clean"));
+	}).OnError(()=>RunTarget("clean"));
 
 Task("PrepareNuGetsForMerge")
 	.IsDependentOn("DownloadNuGets")
@@ -230,7 +233,11 @@ Task("PrepareNuGetsForRemoteAction")
 });
 
 Task("UploadNuGets")
-	.IsDependentOn("NuGet")
+	.IsDependentOn("Build")
+	.IsDependentOn("UploadNuGetsNoBuild");
+
+Task("UploadNuGetsNoBuild")
+	.IsDependentOn("NuGetNoBuild")
 	.IsDependentOn("PrepareNuGetsForRemoteAction")
 	.Does(()=>
 {
