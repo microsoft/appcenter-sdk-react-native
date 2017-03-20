@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{AA6821F3-930A-49E4-BA3F-D68255F39F1E}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.NET", "Tests\Microsoft.Azure.Mobile.Analytics.NET\Microsoft.Azure.Mobile.Analytics.NET.csproj", "{C5DAC35E-B902-4E24-A8F7-963AD0F85F7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.Test.Windows", "Tests\Microsoft.Azure.Mobile.Analytics.Test.Windows\Microsoft.Azure.Mobile.Analytics.Test.Windows.csproj", "{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Core", "SDK\MobileCenter\Microsoft.Azure.Mobile.Core\Microsoft.Azure.Mobile.Core.csproj", "{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -334,6 +336,22 @@ Global
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}.Release|x64.Build.0 = Release|Any CPU
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}.Release|x86.ActiveCfg = Release|Any CPU
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}.Release|x86.Build.0 = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|x64.Build.0 = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Debug|x86.Build.0 = Debug|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|ARM.Build.0 = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x64.ActiveCfg = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x64.Build.0 = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x86.ActiveCfg = Release|Any CPU
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -362,5 +380,6 @@ Global
 		{E76DC547-2B63-4911-971C-767587EBFAB6} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 		{C5DAC35E-B902-4E24-A8F7-963AD0F85F7A} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
+		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40} = {A0839AAC-BC4D-4DDE-9ACB-C094BC599C16}
 	EndGlobalSection
 EndGlobal
