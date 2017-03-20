@@ -3,10 +3,7 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
 
 namespace Microsoft.Azure.Mobile
 {
@@ -18,8 +15,8 @@ namespace Microsoft.Azure.Mobile
         /* Internal for testing */
         internal const string EnabledKey = "MobileCenterEnabled";
         internal const string InstallIdKey = "MobileCenterInstallId";
+        private readonly IApplicationLifecycleHelper _applicationLifecycleHelper = new ApplicationLifecycleHelper();
 
-        /* Internal for testing */
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
@@ -268,6 +265,7 @@ namespace Microsoft.Azure.Mobile
             }
             var appSecret = GetSecretForPlatform(appSecretString, PlatformIdentifier);
             _channelGroup = CreateChannelGroup(appSecret);
+            _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.Shutdown();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                 Constants.DefaultTriggerMaxParallelRequests);
             if (_serverUrl != null)

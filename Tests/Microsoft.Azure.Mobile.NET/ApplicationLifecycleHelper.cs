@@ -27,7 +27,13 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
+        public void InvokeUnhandledException()
+        {
+            UnhandledExceptionOccurred?.Invoke(null, new UnhandledExceptionOccurredEventArgs(new Exception()));
+        }
+
         public event Action ApplicationSuspending;
         public event Action ApplicationResuming;
+        public event UnhandledExceptionOccurredEventHandler UnhandledExceptionOccurred;
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.UI.Xaml;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -12,6 +9,10 @@ namespace Microsoft.Azure.Mobile.Utils
         public ApplicationLifecycleHelper()
         {
             Enabled = true;
+            Application.Current.UnhandledException += (sender, eventArgs) =>
+            {
+                UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
+            };
         }
 
         private void InvokeResuming(object sender, object e)
@@ -52,5 +53,6 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public event Action ApplicationSuspending;
         public event Action ApplicationResuming;
+        public event UnhandledExceptionOccurredEventHandler UnhandledExceptionOccurred;
     }
 }

@@ -22,6 +22,11 @@ namespace Microsoft.Azure.Mobile.Storage
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(0, 1);
         private readonly IStorageAdapter _storageAdapter;
 
+        private bool _stopAddingOperations = false;
+        private int _numTasksRemaning;
+        private SemaphoreSlim _taskSem = new SemaphoreSlim(1);
+        private object _taskLock = new object();
+
         public Storage() : this(new StorageAdapter(Database))
         {
         }
@@ -29,6 +34,7 @@ namespace Microsoft.Azure.Mobile.Storage
         public Storage(IStorageAdapter storageAdapter)
         {
             _storageAdapter = storageAdapter;
+            StartTask();
             Task.Run(() => InitializeDatabaseAsync());
         }
 
@@ -310,7 +316,7 @@ namespace Microsoft.Azure.Mobile.Storage
 
         private async Task InitializeDatabaseAsync()
         {
-            /* The mutex should already be owned */
+            /* The mutex should already be owned and the task should be started*/
             await _storageAdapter.OpenAsync();
             try
             {
@@ -329,8 +335,46 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        private void StartTask()
+        {
+            lock (_taskLock)
+            {
+                if (_stopAddingOperations)
+                {
+                    throw new CancellationException();
+                }
+                _numTasksRemaning++;
+                if (_taskSem.CurrentCount == 1)
+                {
+                    _taskSem.Wait();
+                }
+            }
+        }
+
+        private void StopTask()
+        {
+            lock (_taskLock)
+            {
+                _numTasksRemaning--;
+                if (_numTasksRemaning == 0 && _stopAddingOperations && _taskSem.CurrentCount == 0)
+                {
+                    _taskSem.Release();
+                }
+            }
+        }
+
+        public bool Shutdown(TimeSpan timeout)
+        {
+            lock (_taskLock)
+            {
+                _stopAddingOperations = true;
+            }
+            return _taskSem.Wait(timeout);
+        }
+
         private async Task OpenDbAsync()
         {
+            StartTask();
             await _mutex.WaitAsync();
             await _storageAdapter.OpenAsync();
         }
@@ -339,6 +383,7 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             _storageAdapter.Close();
             _mutex.Release();
+            StopTask();
         }
 
         private static string GetFullIdentifier(string channelName, string identifier)

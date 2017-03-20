@@ -38,5 +38,10 @@ namespace Microsoft.Azure.Mobile.Test.Storage
         {
             return TaskExtension.GetCompletedTask();
         }
+
+        public bool Shutdown(TimeSpan timeout)
+        {
+            return true;
+        }
     }
 }

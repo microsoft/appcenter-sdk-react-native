@@ -11,5 +11,6 @@ namespace Microsoft.Azure.Mobile.Utils
         public bool Enabled { get; set; }
         public event Action ApplicationSuspending;
         public event Action ApplicationResuming;
+        public event UnhandledExceptionOccurredEventHandler UnhandledExceptionOccurred;
     }
 }

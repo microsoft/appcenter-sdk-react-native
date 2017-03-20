@@ -99,6 +99,7 @@
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\MockStorage.cs" />
     <Compile Include="Storage\StorageTest.cs" />
+    <Compile Include="Storage\TimeConsumingStorageAdapter.cs" />
     <Compile Include="TaskExtension.cs" />
     <Compile Include="TestLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

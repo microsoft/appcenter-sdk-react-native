@@ -28,6 +28,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private int _currentState;
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
+        private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
 
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
             string appSecret, IIngestion ingestion, IStorage storage)
@@ -432,6 +433,11 @@ namespace Microsoft.Azure.Mobile.Channel
             try
             {
                 Suspend(false, new CancellationException());
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
+                if (!_storage.Shutdown(_shutdownTimeout))
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
+                }
             }
             finally
             {
