@@ -33,5 +33,16 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             DecoratedApi.SetServerUrl(serverUrl);
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            /* No-op */
+        }
     }
 }

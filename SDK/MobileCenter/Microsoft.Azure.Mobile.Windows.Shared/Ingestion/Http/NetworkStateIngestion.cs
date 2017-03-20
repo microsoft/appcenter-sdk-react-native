@@ -122,5 +122,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _calls.Remove(call);
             _mutex.Release();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                _mutex.Dispose();
+            }
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Type BindingType => typeof(Crashes);
 
-        public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
+        public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
             return null;
         }      

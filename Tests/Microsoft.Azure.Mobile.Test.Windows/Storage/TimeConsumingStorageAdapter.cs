@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Storage;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Storage
 {
-    class TimeConsumingStorageAdapter : IStorageAdapter
+    internal sealed class TimeConsumingStorageAdapter : IStorageAdapter
     {
         public void Close()
         {
@@ -32,6 +30,11 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Storage
         }
 
         public async Task OpenAsync()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+        }
+
+        public void Dispose()
         {
         }
     }

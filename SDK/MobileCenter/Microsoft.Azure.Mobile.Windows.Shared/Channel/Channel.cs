@@ -10,7 +10,7 @@ using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
-    public class Channel : IChannel
+    public sealed class Channel : IChannel
     {
         private const int ClearBatchSize = 100;
         private Ingestion.Models.Device _device;
@@ -28,7 +28,6 @@ namespace Microsoft.Azure.Mobile.Channel
         private int _currentState;
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
-        private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
 
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
             string appSecret, IIngestion ingestion, IStorage storage)
@@ -345,7 +344,8 @@ namespace Microsoft.Azure.Mobile.Channel
                     SendingLog(this, eventArgs);
                 }
             }
-            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, MobileCenter.InstallId.Value, logs);
+            var installId = MobileCenter.InstallId.HasValue ? MobileCenter.InstallId.Value : Guid.Empty;
+            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs);
             serviceCall.ServiceCallFailedCallback = exception => HandleSendingFailure(batchId, exception);
             serviceCall.ServiceCallSucceededCallback = async () =>
             {
@@ -433,16 +433,16 @@ namespace Microsoft.Azure.Mobile.Channel
             try
             {
                 Suspend(false, new CancellationException());
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
-                if (!_storage.Shutdown(_shutdownTimeout))
-                {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
-                }
             }
             finally
             {
                 _mutex.Release();
             }
+        }
+
+        public void Dispose()
+        {
+            _mutex.Dispose();
         }
     }
 }

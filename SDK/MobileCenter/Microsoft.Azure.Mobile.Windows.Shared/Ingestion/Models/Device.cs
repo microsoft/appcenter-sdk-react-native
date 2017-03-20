@@ -1,18 +1,13 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
+using Newtonsoft.Json;
+
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.Ingestion;
-    using Microsoft.Rest;
-    using Newtonsoft.Json;
-    using System.Linq;
-
     /// <summary>
     /// Device characteristics.
     /// </summary>
-    public partial class Device
+    public class Device
     {
         /// <summary>
         /// Initializes a new instance of the Device class.
@@ -280,50 +275,50 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="Rest.ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (SdkName == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "SdkName");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "SdkName");
             }
             if (SdkVersion == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "SdkVersion");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "SdkVersion");
             }
             if (Model == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Model");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Model");
             }
             if (OemName == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "OemName");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "OemName");
             }
             if (OsName == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "OsName");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "OsName");
             }
             if (OsVersion == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "OsVersion");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "OsVersion");
             }
             if (Locale == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Locale");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Locale");
             }
             if (ScreenSize == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "ScreenSize");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "ScreenSize");
             }
             if (AppVersion == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "AppVersion");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "AppVersion");
             }
             if (AppBuild == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "AppBuild");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "AppBuild");
             }
         }
     }

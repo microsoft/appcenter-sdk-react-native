@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 
@@ -8,7 +7,7 @@ namespace Microsoft.Azure.Mobile.Ingestion
 {
     public delegate void ServiceCallFailedHandler(IngestionException exception);
 
-    public interface IServiceCall
+    public interface IServiceCall : IDisposable
     {
         IIngestion Ingestion { get; }
         IList<Log> Logs { get; }
@@ -17,9 +16,7 @@ namespace Microsoft.Azure.Mobile.Ingestion
         CancellationToken CancellationToken { get; }
         void Execute();
         void Cancel();
-
         ServiceCallFailedHandler ServiceCallFailedCallback { get; set; }
         Action ServiceCallSucceededCallback { get; set; }
-  
     }
 }

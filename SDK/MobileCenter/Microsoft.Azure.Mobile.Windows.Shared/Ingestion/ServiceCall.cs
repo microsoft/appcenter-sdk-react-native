@@ -34,6 +34,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public virtual void Execute()
         {
+            _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
             Ingestion.ExecuteCallAsync(this).ContinueWith(completedTask =>
             {
@@ -46,6 +47,20 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     ServiceCallSucceededCallback?.Invoke();
                 }
             });
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _tokenSource?.Dispose();
+            }
         }
     }
 }

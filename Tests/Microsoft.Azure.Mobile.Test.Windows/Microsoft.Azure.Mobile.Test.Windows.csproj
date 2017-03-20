@@ -83,7 +83,6 @@
     <Compile Include="Channel\MockChannelGroupFactory.cs" />
     <Compile Include="Channel\ChannelGroupTest.cs" />
     <Compile Include="Channel\ChannelTest.cs" />
-    <Compile Include="Channel\TestChannelGroup.cs" />
     <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
     <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
     <Compile Include="Ingestion\Http\RetryableTest.cs" />

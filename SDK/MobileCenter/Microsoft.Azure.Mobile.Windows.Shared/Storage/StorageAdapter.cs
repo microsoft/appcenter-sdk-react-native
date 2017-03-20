@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
-    public class StorageAdapter : IStorageAdapter
+    public sealed class StorageAdapter : IStorageAdapter
     {
         private readonly DbConnection _dbConnection;
         public StorageAdapter(string databaseName)
@@ -32,10 +28,10 @@ namespace Microsoft.Azure.Mobile.Storage
                 while (await reader.ReadAsync())
                 {
                     var row = new Dictionary<string, object>();
-                    for (int i = 0; i < reader.FieldCount; ++i)
+                    for (var i = 0; i < reader.FieldCount; ++i)
                     {
-                        string columnName = reader.GetName(i);
-                        object columnValue = reader.GetValue(i);
+                        var columnName = reader.GetName(i);
+                        var columnValue = reader.GetValue(i);
                         row.Add(columnName, columnValue);
                     }
                     rows.Add(row);
@@ -59,6 +55,11 @@ namespace Microsoft.Azure.Mobile.Storage
         public void Close()
         {
             _dbConnection.Close();
+        }
+
+        public void Dispose()
+        {
+            _dbConnection.Dispose();
         }
     }
 }

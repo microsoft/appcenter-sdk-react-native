@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
-    public class ChannelGroup : IChannelGroup, IAppSecretHolder
+    public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
     {
         /* While ChannelGroup is technically capable of deep nesting, note that this behavior is not tested */
         private readonly HashSet<IChannel> _channels = new HashSet<IChannel>();
-        //private const long ShutdownTimeout = 5000;
+        private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
@@ -31,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret) { }
 
-        protected ChannelGroup(IIngestion ingestion, IStorage storage, string appSecret)
+        internal ChannelGroup(IIngestion ingestion, IStorage storage, string appSecret)
         {
             _ingestion = ingestion;
             _storage = storage;
@@ -99,9 +95,11 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 channel.Shutdown();
             }
-
-            //TODO need some kind of waiting/timeout?
-
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
+            if (!_storage.Shutdown(_shutdownTimeout))
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
+            }
             _mutex.Release();
         }
 
@@ -135,6 +133,11 @@ namespace Microsoft.Azure.Mobile.Channel
         private void AnyChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
         {
             FailedToSendLog?.Invoke(sender, e);
+        }
+
+        public void Dispose()
+        {
+            _mutex?.Dispose();
         }
     }
 }

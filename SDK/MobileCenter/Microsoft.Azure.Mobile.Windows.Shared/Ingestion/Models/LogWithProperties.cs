@@ -1,15 +1,10 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
+using Newtonsoft.Json;
+using System.Collections.Generic;
+
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.Ingestion;
-    using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public abstract class LogWithProperties : Log
     {
         /// <summary>
@@ -33,6 +28,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
+        ///<param name="device">Description of the device emitting the log</param>
         protected LogWithProperties(long toffset, Device device, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
             : base(toffset, device, sid)
         {
@@ -45,17 +41,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties")]
         public IDictionary<string, string> Properties { get; set; }
-
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public override void Validate()
-        {
-            base.Validate();
-        }
     }
 }
 

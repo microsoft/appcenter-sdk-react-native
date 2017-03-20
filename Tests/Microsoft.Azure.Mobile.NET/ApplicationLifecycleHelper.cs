@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -15,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Utils
         {
             if (Enabled)
             {
-                ApplicationSuspending?.Invoke();
+                ApplicationSuspending?.Invoke(null, null);
             }
         }
 
@@ -23,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Utils
         {
             if (Enabled)
             {
-                ApplicationResuming?.Invoke();
+                ApplicationResuming?.Invoke(null, null);
             }
         }
 
@@ -32,8 +27,8 @@ namespace Microsoft.Azure.Mobile.Utils
             UnhandledExceptionOccurred?.Invoke(null, new UnhandledExceptionOccurredEventArgs(new Exception()));
         }
 
-        public event Action ApplicationSuspending;
-        public event Action ApplicationResuming;
+        public event EventHandler<object> ApplicationSuspending;
+        public event EventHandler<object> ApplicationResuming;
         public event UnhandledExceptionOccurredEventHandler UnhandledExceptionOccurred;
     }
 }

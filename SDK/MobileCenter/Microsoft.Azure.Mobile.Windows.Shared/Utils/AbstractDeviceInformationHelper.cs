@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
@@ -76,7 +72,7 @@ namespace Microsoft.Azure.Mobile.Utils
         }
         private string GetSdkVersion()
         {
-            return this.GetType().GetTypeInfo().Assembly.GetName().Version.ToString();
+            return GetType().GetTypeInfo().Assembly.GetName().Version.ToString();
         }
         private string GetLocale()
         {

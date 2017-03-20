@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public RetryableIngestion(IIngestion decoratedApi, TimeSpan[] retryIntervals) : base(decoratedApi)
         {
-            if (retryIntervals == null) throw new ArgumentNullException("retryIntervals");
+            if (retryIntervals == null) throw new ArgumentNullException(nameof(retryIntervals));
             _retryIntervals = new Func<Task>[retryIntervals.Length];
             for (int i = 0; i < retryIntervals.Length; i++)
             {
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public RetryableIngestion(IIngestion decoratedApi, Func<Task>[] retryIntervals) : base(decoratedApi)
         {
-                if (retryIntervals == null) throw new ArgumentNullException("retryIntervals");
+                if (retryIntervals == null) throw new ArgumentNullException(nameof(retryIntervals));
                 _retryIntervals = retryIntervals;
         }
 

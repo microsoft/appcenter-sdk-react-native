@@ -69,6 +69,7 @@
     <Compile Include="ApplicationLifecycleHelper.cs" />
     <Compile Include="ApplicationSettings.cs" />
     <Compile Include="DeviceInformationHelper.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MobileCenterPart.cs" />
     <Compile Include="NetworkStateAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

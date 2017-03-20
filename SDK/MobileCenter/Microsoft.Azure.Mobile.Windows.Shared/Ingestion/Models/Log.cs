@@ -1,20 +1,15 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
+using Newtonsoft.Json;
+
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.Ingestion;
-    using Microsoft.Rest;
-    using Newtonsoft.Json;
-    using System.Linq;
-
     public abstract class Log
     {
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary>
-        public Log() { }
+        protected Log() { }
 
         /// <summary>
         /// Initializes a new instance of the Log class.
@@ -30,7 +25,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        public Log(long toffset, Device device, System.Guid? sid = default(System.Guid?))
+        /// <param name="device">Description of the device emitting the log</param>
+        protected Log(long toffset, Device device, System.Guid? sid = default(System.Guid?))
         {
             Toffset = toffset;
             Sid = sid;
@@ -66,19 +62,16 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="Rest.ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (Device == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Device");
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Device");
             }
-            if (Device != null)
-            {
-                Device.Validate();
-            }
+            Device.Validate();          
         }
     }
 }

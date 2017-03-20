@@ -43,5 +43,9 @@ namespace Microsoft.Azure.Mobile.Test.Storage
         {
             return true;
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

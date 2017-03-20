@@ -1,11 +1,12 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using System;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
     /// <summary>
     /// IChannels are responsible for processing logs. In most cases, that means storing them and sending them to Ingestion.
     /// </summary>
-    public interface IChannel
+    public interface IChannel : IDisposable
     {
         /// <summary>
         /// Invoked when a log will be enqueued

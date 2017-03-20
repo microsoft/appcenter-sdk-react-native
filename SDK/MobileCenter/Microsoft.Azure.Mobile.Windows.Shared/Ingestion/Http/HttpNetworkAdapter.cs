@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public interface IHttpNetworkAdapter
+    public interface IHttpNetworkAdapter : IDisposable
     {
         TimeSpan Timeout { get; set; }
 
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
     }
 
-    public class HttpNetworkAdapter : IHttpNetworkAdapter
+    public sealed class HttpNetworkAdapter : IHttpNetworkAdapter
     {
         private readonly HttpClient _httpClient = new HttpClient();
         public TimeSpan Timeout
@@ -36,6 +36,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 throw new IngestionException(e);
             }
+        }
+
+        public void Dispose()
+        {
+            _httpClient.Dispose();
         }
     }
 }

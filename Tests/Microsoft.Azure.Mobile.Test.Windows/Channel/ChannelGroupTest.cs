@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             _mockIngestion = new Mock<IIngestion>();
             _mockStorage = new Mock<IStorage>();
-            _channelGroup = new TestChannelGroup(_mockStorage.Object, _mockIngestion.Object, _appSecret);
+            _channelGroup = new ChannelGroup(_mockIngestion.Object, _mockStorage.Object, _appSecret);
         }
 
         /// <summary>

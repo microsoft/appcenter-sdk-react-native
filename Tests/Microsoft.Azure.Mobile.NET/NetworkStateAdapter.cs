@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public bool IsConnected
         {
-            get => _isConnected;
+            get { return _isConnected; }
             set
             {
                 if (_isConnected == value)

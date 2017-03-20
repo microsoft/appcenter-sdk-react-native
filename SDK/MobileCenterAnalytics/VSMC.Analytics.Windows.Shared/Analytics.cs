@@ -121,8 +121,8 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             base.OnChannelGroupReady(channelGroup);
             ApplyEnabledState(InstanceEnabled);
-            ApplicationLifecycleHelper.ApplicationResuming += () => SessionTracker?.Resume();
-            ApplicationLifecycleHelper.ApplicationSuspending += () => SessionTracker?.Pause();
+            ApplicationLifecycleHelper.ApplicationResuming += (sender, e) => SessionTracker?.Resume();
+            ApplicationLifecycleHelper.ApplicationSuspending += (sender, e) => SessionTracker?.Pause();
         }
 
         private void ApplyEnabledState(bool enabled)

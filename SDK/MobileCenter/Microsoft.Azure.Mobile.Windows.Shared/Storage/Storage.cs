@@ -9,7 +9,7 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
-    internal class Storage : IStorage
+    internal sealed class Storage : IStorage
     {
         private const string Database = "Microsoft.Azure.Mobile.Storage";
         private const string Table = "logs";
@@ -22,10 +22,10 @@ namespace Microsoft.Azure.Mobile.Storage
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(0, 1);
         private readonly IStorageAdapter _storageAdapter;
 
-        private bool _stopAddingOperations = false;
+        private bool _stopAddingOperations;
         private int _numTasksRemaning;
-        private SemaphoreSlim _taskSem = new SemaphoreSlim(1);
-        private object _taskLock = new object();
+        private readonly SemaphoreSlim _taskSem = new SemaphoreSlim(1);
+        private readonly object _taskLock = new object();
 
         public Storage() : this(new StorageAdapter(Database))
         {
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             _storageAdapter = storageAdapter;
             StartTask();
-            Task.Run(() => InitializeDatabaseAsync());
+            Task.Run(InitializeDatabaseAsync);
         }
 
         /// <exception cref="StorageException"/>
@@ -341,7 +341,7 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 if (_stopAddingOperations)
                 {
-                    throw new CancellationException();
+                    throw new StorageException("Trying to execute task after shutdown requested");
                 }
                 _numTasksRemaning++;
                 if (_taskSem.CurrentCount == 1)
@@ -395,6 +395,13 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             var lastDelimiterIndex = identifier.LastIndexOf(DbIdentifierDelimiter, StringComparison.Ordinal);
             return identifier.Substring(0, lastDelimiterIndex) == channelName;
+        }
+
+        public void Dispose()
+        {
+            _mutex.Dispose();
+            _taskSem.Dispose();
+            _storageAdapter.Dispose();
         }
     }
 }

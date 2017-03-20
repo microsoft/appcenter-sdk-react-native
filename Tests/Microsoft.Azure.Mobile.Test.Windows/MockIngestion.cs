@@ -7,7 +7,7 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Test
 {
-    public class MockIngestion : IIngestion
+    public sealed class MockIngestion : IIngestion
     {
         public bool CallShouldSucceed { get; set; }
         public bool CloseShouldSucceed { get; set; }
@@ -36,6 +36,10 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         public void SetServerUrl(string serverUrl)
+        {
+        }
+
+        public void Dispose()
         {
         }
     }

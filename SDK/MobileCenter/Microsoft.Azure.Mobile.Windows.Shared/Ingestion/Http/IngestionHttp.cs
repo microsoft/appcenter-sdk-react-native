@@ -9,30 +9,7 @@ using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public class HttpIngestionException : IngestionException
-    {
-        public HttpMethod Method { get; set; }
-        public Uri RequestUri { get; set; }
-        public string RequestContent { get; set; }
-
-        public HttpStatusCode StatusCode { get; set; }
-        public string ResponseContent { get; set; }
-
-        public override bool IsRecoverable
-        {
-            get
-            {
-                var statusCode = (int)StatusCode;
-                return statusCode >= 501 || statusCode == 408 || statusCode == 429;
-            }
-        }
-
-        public HttpIngestionException(string message) : base(message)
-        {
-        }
-    }
-
-    public class IngestionHttp : IIngestion
+   public sealed class IngestionHttp : IIngestion
     {
         internal const string DefaultBaseUrl = "https://in.mobile.azure.com";
         internal const string ApiVersion = "/logs?api_version=1.0.0-preview20160914";
@@ -64,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
             var requestContent = CreateLogsContent(call.Logs);
             var request = CreateRequest(call.AppSecret, call.InstallId, requestContent);
-            HttpResponseMessage response = null;
+            HttpResponseMessage response;
             try
             {
                 response = await _httpNetwork.SendAsync(request, call.CancellationToken).ConfigureAwait(false);
@@ -74,8 +51,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 request.Dispose();
                 throw;
             }
+            if (response == null)
+            {
+                throw new IngestionException("Null response received");
+            }
             var responseContent = "(null)";
-            if (response?.Content != null)
+            if (response.Content != null)
             {
                 responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
@@ -90,21 +71,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 {
                     Method = request.Method,
                     RequestUri = request.RequestUri,
-                    RequestContent = requestContent,
                     StatusCode = response.StatusCode,
+                    RequestContent = requestContent,
                     ResponseContent = responseContent
                 };
-
                 request.Dispose();
                 response.Dispose();
-
                 throw ex;
             }
         }
 
         public void Close()
         {
-            //TODO is there anything to do here?
         }
 
         public void SetServerUrl(string serverUrl)
@@ -172,6 +150,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             /* Serialize Request */
             var requestContent = LogSerializer.Serialize(logContainer);
             return requestContent;
+        }
+
+        public void Dispose()
+        {
+            /* No-op */
         }
     }
 }

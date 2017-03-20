@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
-
-//TODO thread safety
 
 namespace Microsoft.Azure.Mobile
 {

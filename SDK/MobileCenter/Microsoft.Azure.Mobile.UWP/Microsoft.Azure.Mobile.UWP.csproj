@@ -107,6 +107,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Ingestion\Http\NetworkStateAdapter.cs" />
     <Compile Include="MobileCenterPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

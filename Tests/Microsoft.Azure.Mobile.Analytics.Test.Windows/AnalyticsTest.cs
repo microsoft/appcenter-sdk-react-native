@@ -65,8 +65,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void SetupSessionTrackerEvents()
         {
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null, null, null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
             _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
@@ -80,8 +80,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         {
             Analytics.Enabled = false;
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null, null, null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Never());
             _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Never());
@@ -97,8 +97,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
             Analytics.Enabled = true;
 
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null, null, null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
