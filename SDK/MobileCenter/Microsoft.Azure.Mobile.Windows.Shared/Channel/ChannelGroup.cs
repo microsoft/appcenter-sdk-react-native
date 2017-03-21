@@ -136,6 +136,10 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void Dispose()
         {
+            foreach (var channel in _channels)
+            {
+                channel.Dispose();
+            }
             _mutex.Dispose();
             _ingestion.Dispose();
             _storage.Dispose();

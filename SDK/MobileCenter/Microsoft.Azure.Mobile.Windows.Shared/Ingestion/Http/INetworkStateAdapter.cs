@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
     {
         bool IsConnected { get; }
 
-        event Action NetworkAddressChanged;
+        event EventHandler NetworkAddressChanged;
     }
 }
 

@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task PutLogAsync(string channelName, Log log)
         {
-            await OpenDbAsync();
+            await OpenDbAsync().ConfigureAwait(false);
             try
             {
                 var logJsonString = LogSerializer.Serialize(log);
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 command.CommandText = $"INSERT INTO {Table} ({ChannelColumn}, {LogColumn}) " +
                                       $"VALUES (@{channelParameter.ParameterName}, @{logParameter.ParameterName})";
                 command.Prepare();
-                await _storageAdapter.ExecuteNonQueryAsync(command);
+                await _storageAdapter.ExecuteNonQueryAsync(command).ConfigureAwait(false);
             }
             catch (DbException e)
             {
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName, string batchId)
         {
-            await OpenDbAsync();
+            await OpenDbAsync().ConfigureAwait(false);
             try
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag,
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, deletedIdsMessage);
                 foreach (var id in identifiers)
                 {
-                    await DeleteLogAsync(channelName, id);
+                    await DeleteLogAsync(channelName, id).ConfigureAwait(false);
                 }
             }
             catch (KeyNotFoundException e)
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName)
         {
-            await OpenDbAsync();
+            await OpenDbAsync().ConfigureAwait(false);
             try
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Deleting all logs from storage for channel '{channelName}'");
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 command.Parameters.Add(channelParameter);
                 command.CommandText = $"DELETE FROM {Table} WHERE {ChannelColumn}=@{channelParameter.ParameterName}";
                 command.Prepare();
-                await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
             }
             catch (KeyNotFoundException e)
             {
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Mobile.Storage
             command.Prepare();
             try
             {
-                await _storageAdapter.ExecuteNonQueryAsync(command);
+                await _storageAdapter.ExecuteNonQueryAsync(command).ConfigureAwait(false);
             }
             catch (DbException e)
             {
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<int> CountLogsAsync(string channelName)
         {
-            await OpenDbAsync();
+            await OpenDbAsync().ConfigureAwait(false);
             const string errorMessage = "Error counting logs";
             try
             {
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 command.CommandText =
                     $"SELECT COUNT(*) AS {countResultName} FROM {Table} WHERE {ChannelColumn}=@{channelParameter.ParameterName}";
                 command.Prepare();
-                var results = await _storageAdapter.ExecuteQueryAsync(command);
+                var results = await _storageAdapter.ExecuteQueryAsync(command).ConfigureAwait(false);
                 return Convert.ToInt32(results[0][countResultName]);
             }
             catch (DbException e)
@@ -225,7 +225,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <returns></returns>
         public async Task ClearPendingLogStateAsync(string channelName)
         {
-            await _mutex.WaitAsync();
+            await _mutex.WaitAsync().ConfigureAwait(false);
             _pendingDbIdentifierGroups.Clear();
             _pendingDbIdentifiers.Clear();
             _mutex.Release();
@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
-            await OpenDbAsync();
+            await OpenDbAsync().ConfigureAwait(false);
             logs?.Clear();
             var retrievedLogs = new List<Log>();
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Trying to get up to {limit} logs from storage for {channelName}");
@@ -265,7 +265,7 @@ namespace Microsoft.Azure.Mobile.Storage
 
                 // Execute the query
                 var idPairs = new List<Tuple<Guid?, long>>();
-                await RetrieveLogsAsync(command, channelName, retrievedLogs, idPairs);
+                await RetrieveLogsAsync(command, channelName, retrievedLogs, idPairs).ConfigureAwait(false);
                 if (idPairs.Count == 0)
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag, $"No available logs in storage for channel '{channelName}'");
@@ -308,7 +308,7 @@ namespace Microsoft.Azure.Mobile.Storage
             ICollection<Tuple<Guid?, long>> idPairs)
         {
             var failedToDeserializeALog = false;
-            var retrievedRows = await _storageAdapter.ExecuteQueryAsync(command);
+            var retrievedRows = await _storageAdapter.ExecuteQueryAsync(command).ConfigureAwait(false);
             foreach (var row in retrievedRows)
             {
                 var logJson = row[LogColumn] as string;
@@ -327,7 +327,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                     failedToDeserializeALog = true;
-                    await DeleteLogAsync(channelName, logId);
+                    await DeleteLogAsync(channelName, logId).ConfigureAwait(false);
                 }
             }
             if (failedToDeserializeALog)
@@ -339,12 +339,12 @@ namespace Microsoft.Azure.Mobile.Storage
         private async Task InitializeDatabaseAsync()
         {
             // The mutex should already be owned and the task should be started
-            await _storageAdapter.OpenAsync();
+            await _storageAdapter.OpenAsync().ConfigureAwait(false);
             try
             {
                 var command = _storageAdapter.CreateCommand();
                 command.CommandText = $"CREATE TABLE IF NOT EXISTS {Table} ({ChannelColumn} TEXT, {LogColumn} TEXT)";
-                await _storageAdapter.ExecuteNonQueryAsync(command);
+                await _storageAdapter.ExecuteNonQueryAsync(command).ConfigureAwait(false);
             }
             catch (DbException e)
             {
@@ -413,8 +413,8 @@ namespace Microsoft.Azure.Mobile.Storage
         private async Task OpenDbAsync()
         {
             StartTask();
-            await _mutex.WaitAsync();
-            await _storageAdapter.OpenAsync();
+            await _mutex.WaitAsync().ConfigureAwait(false);
+            await _storageAdapter.OpenAsync().ConfigureAwait(false);
         }
 
         /// <summary>

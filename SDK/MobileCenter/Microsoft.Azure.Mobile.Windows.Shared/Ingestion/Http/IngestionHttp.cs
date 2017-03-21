@@ -83,6 +83,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public void Close()
         {
+            
         }
 
         public void SetServerUrl(string serverUrl)
@@ -154,7 +155,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public void Dispose()
         {
-            // No-op
+            _httpNetwork.Dispose();
         }
     }
 }

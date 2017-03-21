@@ -24,9 +24,9 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             var rows = new List<Dictionary<string, object>>();
 
-            using (var reader = await command.ExecuteReaderAsync())
+            using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
             {
-                while (await reader.ReadAsync())
+                while (await reader.ReadAsync().ConfigureAwait(false))
                 {
                     var row = new Dictionary<string, object>();
                     for (var i = 0; i < reader.FieldCount; ++i)
@@ -44,12 +44,12 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="DbException"/>
         public async Task ExecuteNonQueryAsync(DbCommand command)
         {
-            await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
 
         public async Task OpenAsync()
         {
-            await _dbConnection.OpenAsync();
+            await _dbConnection.OpenAsync().ConfigureAwait(false);
         }
 
         /// <exception cref="DbException"/>

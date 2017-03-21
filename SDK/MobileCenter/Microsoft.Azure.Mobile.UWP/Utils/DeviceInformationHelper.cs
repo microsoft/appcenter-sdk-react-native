@@ -4,7 +4,6 @@ using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.ApplicationModel.Core;
 using Windows.Graphics.Display;
 using Windows.UI.Xaml;
-using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -54,7 +53,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetDeviceModel()
         {
-            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
+            var deviceInfo = new EasClientDeviceInformation();
             return deviceInfo.SystemProductName;
         }
 
@@ -65,32 +64,32 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetDeviceOemName()
         {
-            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
+            var deviceInfo = new EasClientDeviceInformation();
             return deviceInfo.SystemManufacturer;
         }
 
         protected override string GetOsName()
         {
-            EasClientDeviceInformation deviceInfo = new EasClientDeviceInformation();
+            var deviceInfo = new EasClientDeviceInformation();
             return deviceInfo.OperatingSystem;
         }
 
         protected override string GetOsBuild()
         {
-            /* Adapted from https://social.msdn.microsoft.com/Forums/en-US/2d8a7dab-1bad-4405-b70d-768e4cb2af96/uwp-get-os-version-in-an-uwp-app?forum=wpdevelop */
-            string deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
-            ulong version = ulong.Parse(deviceFamilyVersion);
-            ulong build = (version & 0x00000000FFFF0000L) >> 16;
+            // Adapted from https://social.msdn.microsoft.com/Forums/en-US/2d8a7dab-1bad-4405-b70d-768e4cb2af96/uwp-get-os-version-in-an-uwp-app?forum=wpdevelop
+            var deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
+            var version = ulong.Parse(deviceFamilyVersion);
+            var build = (version & 0x00000000FFFF0000L) >> 16;
             return build.ToString();
         }
 
         protected override string GetOsVersion()
         {
-            /* Adapted from https://social.msdn.microsoft.com/Forums/en-US/2d8a7dab-1bad-4405-b70d-768e4cb2af96/uwp-get-os-version-in-an-uwp-app?forum=wpdevelop */
-            string deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
-            ulong version = ulong.Parse(deviceFamilyVersion);
-            ulong major = (version & 0xFFFF000000000000L) >> 48;
-            ulong minor = (version & 0x0000FFFF00000000L) >> 32;
+            // Adapted from https://social.msdn.microsoft.com/Forums/en-US/2d8a7dab-1bad-4405-b70d-768e4cb2af96/uwp-get-os-version-in-an-uwp-app?forum=wpdevelop
+            var deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
+            var version = ulong.Parse(deviceFamilyVersion);
+            var major = (version & 0xFFFF000000000000L) >> 48;
+            var minor = (version & 0x0000FFFF00000000L) >> 32;
             return $"{major}.{minor}";
         }
 

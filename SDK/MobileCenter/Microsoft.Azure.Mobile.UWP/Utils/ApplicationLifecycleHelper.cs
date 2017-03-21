@@ -17,12 +17,12 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private void InvokeResuming(object sender, object e)
         {
-            ApplicationResuming?.Invoke(sender, e);
+            ApplicationResuming?.Invoke(sender, EventArgs.Empty);
         }
 
         private void InvokeSuspending(object sender, object e)
         {
-            ApplicationSuspending?.Invoke(sender, e);
+            ApplicationSuspending?.Invoke(sender, EventArgs.Empty);
         }
 
         private bool _enabled;
@@ -51,8 +51,8 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-        public event EventHandler<object> ApplicationSuspending;
-        public event EventHandler<object> ApplicationResuming;
-        public event UnhandledExceptionOccurredEventHandler UnhandledExceptionOccurred;
+        public event EventHandler ApplicationSuspending;
+        public event EventHandler ApplicationResuming;
+        public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }

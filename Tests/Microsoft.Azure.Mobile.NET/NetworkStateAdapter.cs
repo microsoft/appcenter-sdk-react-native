@@ -20,10 +20,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 }
 
                 _isConnected = value;
-                NetworkAddressChanged?.Invoke();
+                NetworkAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public event Action NetworkAddressChanged;
+        public event EventHandler NetworkAddressChanged;
     }
 }

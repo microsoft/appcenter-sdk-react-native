@@ -55,6 +55,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
   </ItemGroup>
 </Project>
