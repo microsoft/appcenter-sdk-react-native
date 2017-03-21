@@ -5,7 +5,7 @@ namespace Microsoft.Azure.Mobile.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     {
-        public abstract event Action InformationInvalidated;
+        public abstract event EventHandler InformationInvalidated;
 
         public Ingestion.Models.Device GetDeviceInformation()
         {
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Utils
         }
         private int GetTimeZoneOffset()
         {
-            return (int)TimeZoneInfo.Local.BaseUtcOffset.TotalMinutes; //TODO unsure about this. base utc offset?
+            return (int)TimeZoneInfo.Local.BaseUtcOffset.TotalMinutes;
         }
 
         private string GetWrapperSdkVersion()

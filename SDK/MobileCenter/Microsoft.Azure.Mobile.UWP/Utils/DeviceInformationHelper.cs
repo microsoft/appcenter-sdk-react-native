@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         private bool _leftBackground;
         private string _cachedScreenSize;
-        public override event Action InformationInvalidated;
+        public override event EventHandler InformationInvalidated;
 
         public DeviceInformationHelper()
         {
@@ -23,9 +23,9 @@ namespace Microsoft.Azure.Mobile.Utils
                 DisplayInformation.DisplayContentsInvalidated += (displayInfo, obj) =>
                 {
                     _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
-                    InformationInvalidated?.Invoke();
+                    InformationInvalidated?.Invoke(this, EventArgs.Empty);
                 };
-                InformationInvalidated?.Invoke();
+                InformationInvalidated?.Invoke(this, EventArgs.Empty);
             };
         }
 

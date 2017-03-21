@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         private const string DefaultValue = "default";
 
-        public override event Action InformationInvalidated;
+        public override event EventHandler InformationInvalidated;
         protected override string GetSdkName()
         {
             return DefaultValue;

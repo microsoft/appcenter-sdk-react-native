@@ -10,20 +10,19 @@ namespace Microsoft.Azure.Mobile.Channel
 {
     public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
     {
-        /* While ChannelGroup is technically capable of deep nesting, note that this behavior is not tested */
+        // Note: While ChannelGroup is technically capable of deep nesting, note that this behavior is not tested
         private readonly HashSet<IChannel> _channels = new HashSet<IChannel>();
         private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
 
-        /* This must be visible to crashes */
         public string AppSecret { get; internal set; }
 
-        public event EnqueuingLogEventHandler EnqueuingLog;
-        public event SendingLogEventHandler SendingLog;
-        public event SentLogEventHandler SentLog;
-        public event FailedToSendLogEventHandler FailedToSendLog;
+        public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
+        public event EventHandler<SendingLogEventArgs> SendingLog;
+        public event EventHandler<SentLogEventArgs> SentLog;
+        public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
 
         public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret) { }
 
@@ -64,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 var added = _channels.Add(channel);
                 if (!added)
                 {
-                    /* The benefit of throwing an exception in this case is debatable. Might make sense to allow this. */
+                    // The benefit of throwing an exception in this case is debatable. Might make sense to allow this.
                     throw new MobileCenterException("Attempted to add duplicate channel to group");
                 }
                 channel.EnqueuingLog += AnyChannelEnqueuingLog;
@@ -105,7 +104,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void Enqueue(Log log)
         {
-            /* No-op; inherited fat interface */
+            // No-op
         }
 
         private static IIngestion DefaultIngestion()
@@ -137,7 +136,9 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void Dispose()
         {
-            _mutex?.Dispose();
+            _mutex.Dispose();
+            _ingestion.Dispose();
+            _storage.Dispose();
         }
     }
 }

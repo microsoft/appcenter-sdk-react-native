@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             var baseUrl = string.IsNullOrEmpty(_baseUrl) ? DefaultBaseUrl : _baseUrl;
 
-            /* Create HTTP transport objects */
+            // Create HTTP transport objects
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -119,17 +119,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             };
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {request.RequestUri}...");
 
-            /* Set Headers */
+            // Set Headers
             request.Headers.Add(AppSecret, appSecret);
             request.Headers.Add(InstallId, installId.ToString());
 
-            /* Log headers */
+            // Log headers
             var headers = $"Headers: Content-Type={ContentTypeValue}, " +
                             $"{AppSecret}={GetRedactedAppSecret(appSecret)}, " +
                             $"{InstallId}={installId}";
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, headers);
 
-            /* Request content */
+            // Request content
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
             request.Content = new StringContent(requestContent, System.Text.Encoding.UTF8);
             request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
@@ -141,20 +141,20 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             var logContainer = new LogContainer(logs);
 
-            /* Save times */
+            // Save times
             foreach (var log in logContainer.Logs)
             {
                 log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
             }
 
-            /* Serialize Request */
+            // Serialize request
             var requestContent = LogSerializer.Serialize(logContainer);
             return requestContent;
         }
 
         public void Dispose()
         {
-            /* No-op */
+            // No-op
         }
     }
 }

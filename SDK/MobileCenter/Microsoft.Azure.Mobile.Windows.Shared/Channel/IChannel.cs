@@ -11,22 +11,22 @@ namespace Microsoft.Azure.Mobile.Channel
         /// <summary>
         /// Invoked when a log will be enqueued
         /// </summary>
-        event EnqueuingLogEventHandler EnqueuingLog;
+        event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
 
         /// <summary>
         /// Invoke when a log will be sent
         /// </summary>
-        event SendingLogEventHandler SendingLog;
+        event EventHandler<SendingLogEventArgs> SendingLog;
 
         /// <summary>
         /// Invoked when a log successfully sent
         /// </summary>
-        event SentLogEventHandler SentLog;
+        event EventHandler<SentLogEventArgs> SentLog;
 
         /// <summary>
         /// Invoked when a log failed to send properly
         /// </summary>
-        event FailedToSendLogEventHandler FailedToSendLog;
+        event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
 
         /// <summary>
         /// Enable or disable the channel

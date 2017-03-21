@@ -9,6 +9,9 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
+    /// <summary>
+    /// Manages the database of Mobile Center logs on disk
+    /// </summary>
     internal sealed class Storage : IStorage
     {
         private const string Database = "Microsoft.Azure.Mobile.Storage";
@@ -17,6 +20,7 @@ namespace Microsoft.Azure.Mobile.Storage
         private const string LogColumn = "log";
         private const string RowIdColumn = "rowid";
         private const string DbIdentifierDelimiter = "@";
+
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(0, 1);
@@ -37,6 +41,7 @@ namespace Microsoft.Azure.Mobile.Storage
             StartTask();
             Task.Run(InitializeDatabaseAsync);
         }
+
 
         /// <exception cref="StorageException"/>
         public async Task PutLogAsync(string channelName, Log log)
@@ -151,7 +156,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         private async Task DeleteLogAsync(string channelName, long rowId)
         {
-            /* We should have an open connection already */
+            // Should have an open connection already
             var command = _storageAdapter.CreateCommand();
             var idParameter = command.CreateParameter();
             idParameter.ParameterName = "id";
@@ -169,6 +174,11 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Asynchronously counts the number of logs stored for a particular channel
+        /// </summary>
+        /// <param name="channelName">The name of the channel to count logs for</param>
+        /// <returns>The number of logs found in storage</returns>
         /// <exception cref="StorageException"/>
         public async Task<int> CountLogsAsync(string channelName)
         {
@@ -176,7 +186,7 @@ namespace Microsoft.Azure.Mobile.Storage
             const string errorMessage = "Error counting logs";
             try
             {
-                var countResultName = "NumberOfLogs";
+                const string countResultName = "NumberOfLogs";
                 var command = _storageAdapter.CreateCommand();
                 var channelParameter = new SqliteParameter("channel", channelName);
                 command.Parameters.Add(channelParameter);
@@ -208,6 +218,11 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Asynchronously clears the stored state of logs that have been retrieved
+        /// </summary>
+        /// <param name="channelName"></param>
+        /// <returns></returns>
         public async Task ClearPendingLogStateAsync(string channelName)
         {
             await _mutex.WaitAsync();
@@ -216,6 +231,13 @@ namespace Microsoft.Azure.Mobile.Storage
             _mutex.Release();
         }
 
+        /// <summary>
+        /// Asynchronously retrieves logs from storage and flags them to avoid duplicate retrievals on subsequent calls
+        /// </summary>
+        /// <param name="channelName">Name of the channel to retrieve logs from</param>
+        /// <param name="limit">The maximum number of logs to retrieve</param>
+        /// <param name="logs">A list to which the retrieved logs will be added</param>
+        /// <returns>A batch ID for the set of returned logs; null if no logs are found</returns>
         /// <exception cref="StorageException"/>
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
@@ -225,7 +247,7 @@ namespace Microsoft.Azure.Mobile.Storage
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Trying to get up to {limit} logs from storage for {channelName}");
             try
             {
-                /* Create the query */
+                // Create the query
                 var command = _storageAdapter.CreateCommand();
                 var channelParameter = command.CreateParameter();
                 channelParameter.ParameterName = "channelName";
@@ -241,7 +263,7 @@ namespace Microsoft.Azure.Mobile.Storage
                     $"LIMIT @{limitParameter.ParameterName}";
                 command.Prepare();
 
-                /* Execute the query */
+                // Execute the query
                 var idPairs = new List<Tuple<Guid?, long>>();
                 await RetrieveLogsAsync(command, channelName, retrievedLogs, idPairs);
                 if (idPairs.Count == 0)
@@ -250,7 +272,7 @@ namespace Microsoft.Azure.Mobile.Storage
                     return null;
                 }
 
-                /* Process the results */
+                // Process the results
                 var batchId = Guid.NewGuid().ToString();
                 ProcessLogIds(channelName, batchId, idPairs);
                 logs?.AddRange(retrievedLogs);
@@ -316,7 +338,7 @@ namespace Microsoft.Azure.Mobile.Storage
 
         private async Task InitializeDatabaseAsync()
         {
-            /* The mutex should already be owned and the task should be started*/
+            // The mutex should already be owned and the task should be started
             await _storageAdapter.OpenAsync();
             try
             {
@@ -335,6 +357,10 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Marks the start of a storage operation that can be waited on by <see cref="Shutdown"/>
+        /// </summary>
+        /// <exception cref="StorageException"><see cref="Shutdown"/> has previously been called</exception>
         private void StartTask()
         {
             lock (_taskLock)
@@ -351,6 +377,9 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Marks the end of a storage operation that can be waited on by <see cref="Shutdown"/>
+        /// </summary>
         private void StopTask()
         {
             lock (_taskLock)
@@ -363,6 +392,12 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Waits for any running storage operations to complete and prevents subsequent storage operations from running
+        /// </summary>
+        /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
+        /// <returns>True if remaining tasks completed in time; false otherwise</returns>
+        /// <remarks>This method blocks the calling thread</remarks>
         public bool Shutdown(TimeSpan timeout)
         {
             lock (_taskLock)
@@ -372,6 +407,9 @@ namespace Microsoft.Azure.Mobile.Storage
             return _taskSem.Wait(timeout);
         }
 
+        /// <summary>
+        /// Opens a connection to the database, acquires the lock, and starts a task
+        /// </summary>
         private async Task OpenDbAsync()
         {
             StartTask();
@@ -379,6 +417,9 @@ namespace Microsoft.Azure.Mobile.Storage
             await _storageAdapter.OpenAsync();
         }
 
+        /// <summary>
+        /// Closes an open connection to the database, releases the lock, and ends a task
+        /// </summary>
         private void CloseDb()
         {
             _storageAdapter.Close();

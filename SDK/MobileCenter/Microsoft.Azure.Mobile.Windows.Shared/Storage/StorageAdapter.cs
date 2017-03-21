@@ -8,6 +8,7 @@ namespace Microsoft.Azure.Mobile.Storage
     public sealed class StorageAdapter : IStorageAdapter
     {
         private readonly DbConnection _dbConnection;
+
         public StorageAdapter(string databaseName)
         {
             _dbConnection = new SqliteConnection($"DATA SOURCE={databaseName}");

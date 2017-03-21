@@ -5,13 +5,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public interface IHttpNetworkAdapter : IDisposable
-    {
-        TimeSpan Timeout { get; set; }
-
-        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
-    }
-
     public sealed class HttpNetworkAdapter : IHttpNetworkAdapter
     {
         private readonly HttpClient _httpClient = new HttpClient();
