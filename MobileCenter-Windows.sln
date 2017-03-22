@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Anal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Core", "SDK\MobileCenter\Microsoft.Azure.Mobile.Core\Microsoft.Azure.Mobile.Core.csproj", "{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Standard", "SDK\MobileCenter\Microsoft.Azure.Mobile.Standard\Microsoft.Azure.Mobile.Standard.csproj", "{B67964BD-3B2E-4125-A3D3-5A166FD7696E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
@@ -352,6 +354,22 @@ Global
 		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x64.Build.0 = Release|Any CPU
 		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x86.ActiveCfg = Release|Any CPU
 		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40}.Release|x86.Build.0 = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|x64.Build.0 = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Debug|x86.Build.0 = Debug|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|ARM.Build.0 = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|x64.ActiveCfg = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|x64.Build.0 = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|x86.ActiveCfg = Release|Any CPU
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -381,5 +399,6 @@ Global
 		{C5DAC35E-B902-4E24-A8F7-963AD0F85F7A} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 		{5AD2CA5D-74E5-451C-9F16-C9527EF7FA40} = {A0839AAC-BC4D-4DDE-9ACB-C094BC599C16}
+		{B67964BD-3B2E-4125-A3D3-5A166FD7696E} = {A0839AAC-BC4D-4DDE-9ACB-C094BC599C16}
 	EndGlobalSection
 EndGlobal
