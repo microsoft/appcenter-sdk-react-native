@@ -102,8 +102,9 @@
     <Compile Include="TaskExtension.cs" />
     <Compile Include="TestLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartServiceLogTest.cs" />
+    <Compile Include="Ingestion\Models\StartServiceLogTest.cs" />
     <Compile Include="TestMobileCenterService.cs" />
+    <Compile Include="Utils\UnhandledExceptionEventArgsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

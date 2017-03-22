@@ -154,6 +154,16 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
         }
 
+        [TestMethod]
+        public void FailedToSendLogEventArgsAreSame()
+        {
+            var ex = new Exception();
+            var log = new TestLog();
+            var failedEventLogArgs = new FailedToSendLogEventArgs(log,ex);
+            Assert.AreSame(log, failedEventLogArgs.Log);
+            Assert.AreSame(ex, failedEventLogArgs.Exception);
+        }
+
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
             _storage.DeleteLogsAsync(ChannelName).Wait();

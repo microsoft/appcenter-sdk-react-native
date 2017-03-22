@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Test.Windows
+namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
     [TestClass]
     public class StartServiceLogTest
