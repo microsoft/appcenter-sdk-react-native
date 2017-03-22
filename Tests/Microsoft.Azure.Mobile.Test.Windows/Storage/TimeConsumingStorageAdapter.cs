@@ -12,7 +12,6 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Storage
         public void Close()
         {
         }
-
         public DbCommand CreateCommand()
         {
             return new SqlCommand();

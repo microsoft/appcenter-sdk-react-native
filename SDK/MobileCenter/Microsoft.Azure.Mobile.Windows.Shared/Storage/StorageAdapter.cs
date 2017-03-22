@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
@@ -8,6 +9,7 @@ namespace Microsoft.Azure.Mobile.Storage
     public sealed class StorageAdapter : IStorageAdapter
     {
         private readonly DbConnection _dbConnection;
+        private bool _walEnabled;
 
         public StorageAdapter(string databaseName)
         {
@@ -50,6 +52,7 @@ namespace Microsoft.Azure.Mobile.Storage
         public async Task OpenAsync()
         {
             await _dbConnection.OpenAsync().ConfigureAwait(false);
+            EnableWal(); // Enable WAL in case it hasn't been enabled already
         }
 
         /// <exception cref="DbException"/>
@@ -62,5 +65,21 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             _dbConnection.Dispose();
         }
+
+        // Write-Ahead Logging (WAL) in SQLite: http://www.sqlite.org/draft/wal.html
+        private void EnableWal()
+        {
+            if (_walEnabled)
+            {
+                return;
+            }
+
+            // Note that this doesn't work with the current SQLite package. https://github.com/aspnet/Microsoft.Data.Sqlite/issues/337
+            var command = _dbConnection.CreateCommand();
+            command.CommandText = "PRAGMA journal_mode=WAL";
+            command.ExecuteScalar();
+            _walEnabled = true;
+        }
+
     }
 }

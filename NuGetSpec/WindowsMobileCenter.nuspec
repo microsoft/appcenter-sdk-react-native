@@ -15,6 +15,7 @@
       <group targetFramework="uap10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2"/>
         <dependency id="Microsoft.Data.SQLite" version="1.1.0"/>
+        <dependency id="sqlite" version="[3.12.3,3.12.3]"/>
         <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.5"/>
       </group>
     </dependencies>
