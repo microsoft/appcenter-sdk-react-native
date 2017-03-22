@@ -10,8 +10,7 @@ namespace Microsoft.Azure.Mobile.Channel
 {
     public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
     {
-        // Note: While ChannelGroup is technically capable of deep nesting, note that this behavior is not tested
-        private readonly HashSet<IChannel> _channels = new HashSet<IChannel>();
+        private readonly HashSet<IChannelUnit> _channels = new HashSet<IChannelUnit>();
         private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
@@ -41,7 +40,7 @@ namespace Microsoft.Azure.Mobile.Channel
         }
 
         /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
-        public IChannel AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
+        public IChannelUnit AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
             var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
@@ -51,7 +50,7 @@ namespace Microsoft.Azure.Mobile.Channel
         }
 
         /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
-        public void AddChannel(IChannel channel)
+        public void AddChannel(IChannelUnit channel)
         {
             _mutex.Wait();
             try
@@ -100,11 +99,6 @@ namespace Microsoft.Azure.Mobile.Channel
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
             }
             _mutex.Release();
-        }
-
-        public void Enqueue(Log log)
-        {
-            // No-op
         }
 
         private static IIngestion DefaultIngestion()

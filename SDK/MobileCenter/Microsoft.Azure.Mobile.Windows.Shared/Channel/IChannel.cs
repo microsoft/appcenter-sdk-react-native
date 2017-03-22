@@ -38,11 +38,5 @@ namespace Microsoft.Azure.Mobile.Channel
         /// Stop all calls in progress and deactivate this channel
         /// </summary>
         void Shutdown();
-
-        /// <summary>
-        /// Enqueue a log for processing
-        /// </summary>
-        /// <param name="log"></param>
-        void Enqueue(Log log);
     }
 }

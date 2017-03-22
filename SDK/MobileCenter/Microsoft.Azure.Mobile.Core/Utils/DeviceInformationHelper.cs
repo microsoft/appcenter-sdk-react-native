@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Utils
             throw new NotImplementedException();
         }
 
-        public override event Action InformationInvalidated;
+        public override event EventHandler InformationInvalidated;
         protected override string GetDeviceOemName()
         {
             throw new NotImplementedException();

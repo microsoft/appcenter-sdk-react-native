@@ -14,14 +14,14 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
     public class SessionTrackerTest
     {
         private Mock<IChannelGroup> _mockChannelGroup;
-        private Mock<IChannel> _mockChannel;
+        private Mock<IChannelUnit> _mockChannel;
         private SessionTracker _sessionTracker;
 
         [TestInitialize]
         public void InitializeSessionTrackerTest()
         {
             _mockChannelGroup = new Mock<IChannelGroup>();
-            _mockChannel = new Mock<IChannel>();
+            _mockChannel = new Mock<IChannelUnit>();
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);

@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
         }
 
-        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannel channel)
+        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
         {
             return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
         }

@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
-        private IChannel _channel;
+        private IChannelUnit _channel;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
         private string _serverUrl;
         private static readonly object MobileCenterLock = new object();

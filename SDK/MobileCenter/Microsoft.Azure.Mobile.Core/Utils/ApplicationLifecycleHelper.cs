@@ -9,8 +9,8 @@ namespace Microsoft.Azure.Mobile.Utils
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
         public bool Enabled { get; set; }
-        public event Action ApplicationSuspending;
-        public event Action ApplicationResuming;
-        public event UnhandledExceptionOccurredEventHandler UnhandledExceptionOccurred;
+        public event EventHandler ApplicationSuspending;
+        public event EventHandler ApplicationResuming;
+        public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }
