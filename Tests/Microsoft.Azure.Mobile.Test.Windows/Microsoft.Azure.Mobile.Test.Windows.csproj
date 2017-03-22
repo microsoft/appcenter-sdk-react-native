@@ -113,6 +113,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.NET\Microsoft.Azure.Mobile.Analytics.NET.csproj">
+      <Project>{C5DAC35E-B902-4E24-A8F7-963AD0F85F7A}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics.NET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
       <Project>{e76dc547-2b63-4911-971c-767587ebfab6}</Project>
       <Name>Microsoft.Azure.Mobile.NET</Name>
