@@ -79,8 +79,12 @@ namespace Microsoft.Azure.Mobile.Utils
             // Adapted from https://social.msdn.microsoft.com/Forums/en-US/2d8a7dab-1bad-4405-b70d-768e4cb2af96/uwp-get-os-version-in-an-uwp-app?forum=wpdevelop
             var deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
             var version = ulong.Parse(deviceFamilyVersion);
+            var major = (version & 0xFFFF000000000000L) >> 48;
+            var minor = (version & 0x0000FFFF00000000L) >> 32;
             var build = (version & 0x00000000FFFF0000L) >> 16;
-            return build.ToString();
+            var revision = version & 0x000000000000FFFFL;
+
+            return $"{major}.{minor}.{build}.{revision}";
         }
 
         protected override string GetOsVersion()
@@ -90,19 +94,20 @@ namespace Microsoft.Azure.Mobile.Utils
             var version = ulong.Parse(deviceFamilyVersion);
             var major = (version & 0xFFFF000000000000L) >> 48;
             var minor = (version & 0x0000FFFF00000000L) >> 32;
-            return $"{major}.{minor}";
+            var build = (version & 0x00000000FFFF0000L) >> 16;
+            return $"{major}.{minor}.{build}";
         }
 
         protected override string GetAppVersion()
         {
             var packageVersion = Windows.ApplicationModel.Package.Current.Id.Version;
-            return $"{packageVersion.Major}.{packageVersion.Minor}";
+            return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}.{packageVersion.Revision}";
         }
 
         protected override string GetAppBuild()
         {
             var packageVersion = Windows.ApplicationModel.Package.Current.Id.Version;
-            return packageVersion.Build.ToString();
+            return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}.{packageVersion.Revision}";
         }
 
         protected override string GetScreenSize()
