@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
-            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
+            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
-            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
+            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
         }
 
         /// <summary>
