@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         private Mock<ISessionTracker> _mockSessionTracker;
         private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycle;
         private Mock<IChannelGroup> _mockChannelGroup;
-        private Mock<IChannel> _mockChannel;
+        private Mock<IChannelUnit> _mockChannel;
 
         [TestInitialize]
         public void InitializeAnalyticsTest()
@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockSessionTracker = factory.ReturningSessionTrackerMock;
             _mockApplicationLifecycle = new Mock<IApplicationLifecycleHelper>();
             _mockChannelGroup = new Mock<IChannelGroup>();
-            _mockChannel = new Mock<IChannel>();
+            _mockChannel = new Mock<IChannelUnit>();
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
-            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
+            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
-            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
+            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
         }
 
         /// <summary>

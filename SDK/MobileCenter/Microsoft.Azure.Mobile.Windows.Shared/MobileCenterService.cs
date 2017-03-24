@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile
         private const string KeyEnabled = "MobileCenterServiceEnabled";
         private readonly object _serviceLock = new object();
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
-        protected IChannel Channel { get; private set; }
+        protected IChannelUnit Channel { get; private set; }
         protected IChannelGroup ChannelGroup { get; private set; }
 
         protected abstract string ChannelName { get; }

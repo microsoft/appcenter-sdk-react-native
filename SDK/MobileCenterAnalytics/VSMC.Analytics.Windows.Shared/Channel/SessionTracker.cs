@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
-        private readonly IChannel _channel;
+        private readonly IChannelUnit _channel;
         private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
         private Guid? _sid;
         private long _lastQueuedLogTime;
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
 
-        public SessionTracker(IChannelGroup channelGroup, IChannel channel)
+        public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
         {
             _channel = channel;
             channelGroup.EnqueuingLog += HandleEnqueuingLog;

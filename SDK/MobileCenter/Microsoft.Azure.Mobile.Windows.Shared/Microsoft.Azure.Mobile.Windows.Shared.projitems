@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroupFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
@@ -56,5 +57,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\WatsonCrashesStarter.cs" />
   </ItemGroup>
 </Project>

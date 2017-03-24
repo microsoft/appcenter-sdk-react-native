@@ -31,18 +31,25 @@ namespace Microsoft.Azure.Mobile.Storage
         private readonly SemaphoreSlim _taskSem = new SemaphoreSlim(1);
         private readonly object _taskLock = new object();
 
+        /// <summary>
+        /// Creates an instance of Storage
+        /// </summary>
         public Storage() : this(new StorageAdapter(Database))
         {
         }
 
-        public Storage(IStorageAdapter storageAdapter)
+        internal Storage(IStorageAdapter storageAdapter)
         {
             _storageAdapter = storageAdapter;
             StartTask();
             Task.Run(InitializeDatabaseAsync);
         }
 
-
+        /// <summary>
+        /// Asynchronously adds a log to storage
+        /// </summary>
+        /// <param name="channelName">The name of the channel associated with the log</param>
+        /// <param name="log">The log to add</param>
         /// <exception cref="StorageException"/>
         public async Task PutLogAsync(string channelName, Log log)
         {
@@ -74,6 +81,11 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Asynchronously deletes all logs in a particular batch
+        /// </summary>
+        /// <param name="channelName">The name of the channel associated with the batch</param>
+        /// <param name="batchId">The batch identifier</param>
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName, string batchId)
         {
@@ -106,6 +118,10 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Asynchronously deletes all logs for a particular channel
+        /// </summary>
+        /// <param name="channelName">Name of the channel to delete logs for</param>
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName)
         {
@@ -153,6 +169,11 @@ namespace Microsoft.Azure.Mobile.Storage
             }
         }
 
+        /// <summary>
+        /// Asynchronously delete a single log from storage
+        /// </summary>
+        /// <param name="channelName">The name of the channel associated with the log</param>
+        /// <param name="rowId">The row id of the log</param>
         /// <exception cref="StorageException"/>
         private async Task DeleteLogAsync(string channelName, long rowId)
         {
@@ -222,7 +243,6 @@ namespace Microsoft.Azure.Mobile.Storage
         /// Asynchronously clears the stored state of logs that have been retrieved
         /// </summary>
         /// <param name="channelName"></param>
-        /// <returns></returns>
         public async Task ClearPendingLogStateAsync(string channelName)
         {
             await _mutex.WaitAsync().ConfigureAwait(false);
@@ -438,6 +458,9 @@ namespace Microsoft.Azure.Mobile.Storage
             return identifier.Substring(0, lastDelimiterIndex) == channelName;
         }
 
+        /// <summary>
+        /// Disposes the storage object
+        /// </summary>
         public void Dispose()
         {
             _mutex.Dispose();

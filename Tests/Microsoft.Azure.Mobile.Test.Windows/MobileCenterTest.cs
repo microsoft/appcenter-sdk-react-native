@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Mobile.Test
             var channelGroupMock = new Mock<IChannelGroup>();
             channelGroupMock.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(new Mock<IChannel>().Object);
+                .Returns(new Mock<IChannelUnit>().Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
             MobileCenter.Enabled = MobileCenter.Enabled;
@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Mobile.Test
             var channelGroupMock = new Mock<IChannelGroup>();
             channelGroupMock.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(new Mock<IChannel>().Object);
+                .Returns(new Mock<IChannelUnit>().Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
             var setVal = !MobileCenter.Enabled;
@@ -190,7 +190,7 @@ namespace Microsoft.Azure.Mobile.Test
             var channelGroupMock = new Mock<IChannelGroup>();
             channelGroupMock.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(new Mock<IChannel>().Object);
+                .Returns(new Mock<IChannelUnit>().Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Enabled = false;
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));

@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
     {
         private TestMobileCenterService _testService;
         private Mock<IApplicationSettings> _mockSettings;
-        private Mock<IChannel> _mockChannel;
+        private Mock<IChannelUnit> _mockChannel;
         private Mock<IChannelGroup> _mockChannelGroup;
 
         [TestInitialize]
@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         {
             _mockSettings = new Mock<IApplicationSettings>();
             _testService = new TestMobileCenterService(_mockSettings.Object);
-            _mockChannel = new Mock<IChannel>();
+            _mockChannel = new Mock<IChannelUnit>();
             _mockChannelGroup = new Mock<IChannelGroup>();
 
             _mockChannelGroup.Setup(

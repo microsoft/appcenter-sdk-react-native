@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             var fired = false;
             _channelGroup.EnqueuingLog += (sender, args) => { fired = true; };
-            var mockChannel = new Mock<IChannel>();
+            var mockChannel = new Mock<IChannelUnit>();
             _channelGroup.AddChannel(mockChannel.Object);
             mockChannel.Raise(channel => channel.EnqueuingLog += null, null, default(EnqueuingLogEventArgs));
 
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             var fired = false;
             _channelGroup.SendingLog += (sender, args) => { fired = true; };
-            var mockChannel = new Mock<IChannel>();
+            var mockChannel = new Mock<IChannelUnit>();
             _channelGroup.AddChannel(mockChannel.Object);
             mockChannel.Raise(channel => channel.SendingLog += null, null, default(SendingLogEventArgs));
 
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             var fired = false;
             _channelGroup.SentLog += (sender, args) => { fired = true; };
-            var mockChannel = new Mock<IChannel>();
+            var mockChannel = new Mock<IChannelUnit>();
             _channelGroup.AddChannel(mockChannel.Object);
             mockChannel.Raise(channel => channel.SentLog += null, null, default(SentLogEventArgs));
 
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             var fired = false;
             _channelGroup.FailedToSendLog += (sender, args) => { fired = true; };
-            var mockChannel = new Mock<IChannel>();
+            var mockChannel = new Mock<IChannelUnit>();
             _channelGroup.AddChannel(mockChannel.Object);
             mockChannel.Raise(channel => channel.FailedToSendLog += null, null, default(FailedToSendLogEventArgs));
 
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void TestAddDuplicateChannel()
         {
-            var channelMock = new Mock<IChannel>();
+            var channelMock = new Mock<IChannelUnit>();
             _channelGroup.AddChannel(channelMock.Object);
 
             Assert.ThrowsException<MobileCenterException>(() => _channelGroup.AddChannel(channelMock.Object));
@@ -142,16 +142,16 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             var channelMocks = new List<Mock>();
             for (var i = 0; i < numChannels; ++i)
             {
-                channelMocks.Add(new Mock<IChannel>());
+                channelMocks.Add(new Mock<IChannelUnit>());
             }
-            foreach (var mockedChannel in channelMocks.Select(mock => mock.Object as IChannel))
+            foreach (var mockedChannel in channelMocks.Select(mock => mock.Object as IChannelUnit))
             {
                 _channelGroup.AddChannel(mockedChannel);
             }
             _channelGroup.SetEnabled(true);
             _channelGroup.SetEnabled(false);
 
-            foreach (var channelMock in channelMocks.Select(mock => mock as Mock<IChannel>))
+            foreach (var channelMock in channelMocks.Select(mock => mock as Mock<IChannelUnit>))
             {
                 channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => p)), Times.Once());
                 channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => !p)), Times.Once());

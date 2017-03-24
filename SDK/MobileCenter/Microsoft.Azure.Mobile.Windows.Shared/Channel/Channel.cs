@@ -10,7 +10,7 @@ using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
-    public sealed class Channel : IChannel
+    public sealed class Channel : IChannelUnit
     {
         private const int ClearBatchSize = 100;
         private Ingestion.Models.Device _device;

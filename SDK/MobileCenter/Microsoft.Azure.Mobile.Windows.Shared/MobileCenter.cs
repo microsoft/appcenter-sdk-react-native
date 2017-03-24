@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
-        private IChannel _channel;
+        private IChannelUnit _channel;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
         private string _serverUrl;
         private static readonly object MobileCenterLock = new object();
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Mobile
         private const string StartErrorMessage = "Failed to start services";
         private bool _instanceConfigured;
         private const string ChannelName = "core";
-
+        private string _appSecret;
         #region static
 
         private static MobileCenter _instanceField;
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.Mobile
         {
             lock (MobileCenterLock)
             {
-                Instance.StartInstance(appSecret, services);
+                Instance.StartInstanceAndConfigure(appSecret, services);
             }
         }
 
@@ -263,8 +263,8 @@ namespace Microsoft.Azure.Mobile
             {
                 throw new MobileCenterException("Multiple attempts to configure Mobile Center");
             }
-            var appSecret = GetSecretForPlatform(appSecretString, PlatformIdentifier);
-            _channelGroup = CreateChannelGroup(appSecret);
+            _appSecret = GetSecretForPlatform(appSecretString, PlatformIdentifier);
+            _channelGroup = CreateChannelGroup(_appSecret);
             _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.Shutdown();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                 Constants.DefaultTriggerMaxParallelRequests);
@@ -298,14 +298,24 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    var serviceInstance =
-                        serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
-                    if (serviceInstance == null)
+                    if (IsCrashesService(serviceType))
                     {
-                        throw new MobileCenterException("Service type does not contain static 'Instance' property of type IMobileCenterService");
+                        StartCrashesService(_appSecret);
+                        startedServiceNames.Add("Crashes");
                     }
-                    StartService(serviceInstance);
-                    startedServiceNames.Add(serviceInstance.ServiceName);
+                    else
+                    {
+                        var serviceInstance =
+                        serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
+                        StartService(serviceInstance);
+                        if (serviceInstance == null)
+                        {
+                            throw new MobileCenterException("Service type does not contain static 'Instance' property of type IMobileCenterService");
+                        }
+                        startedServiceNames.Add(serviceInstance.ServiceName);
+
+                    }
+
                 }
                 catch (MobileCenterException ex)
                 {
@@ -336,7 +346,7 @@ namespace Microsoft.Azure.Mobile
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
 
-        public void StartInstance(string appSecret, params Type[] services)
+        public void StartInstanceAndConfigure(string appSecret, params Type[] services)
         {
             try
             {
@@ -348,6 +358,16 @@ namespace Microsoft.Azure.Mobile
                 var message = _instanceConfigured ? StartErrorMessage : ConfigurationErrorMessage;
                 MobileCenterLog.Error(MobileCenterLog.LogTag, message, ex);
             }
+        }
+
+        private bool IsCrashesService(Type serviceType)
+        {
+            return serviceType?.FullName == "Microsoft.Azure.Mobile.Crashes.Crashes";
+        }
+
+        private static void StartCrashesService(string appSecret)
+        {
+            WatsonCrashesStarter.RegisterWithWatson(appSecret);
         }
 
         #endregion
