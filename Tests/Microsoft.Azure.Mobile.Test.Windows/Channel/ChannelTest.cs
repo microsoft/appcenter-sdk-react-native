@@ -195,10 +195,9 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             {
                 _channel.Enqueue(new TestLog());
             }
-            _channel.SetEnabled(true);
 
+            Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
             Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
-            Assert.IsFalse(SendingLogOccurred(MaxLogsPerBatch));
         }
 
         /// <summary>
@@ -226,24 +225,6 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             _channel.Dispose();
             Assert.ThrowsException<ObjectDisposedException>(() => _channel.SetEnabled(true));
-        }
-
-        /// <summary>
-        /// Validate that all logs is removed after disabled
-        /// </summary>
-        [TestMethod]
-        public void ChannelNotInvokesSendLogEventAfterDisabled()
-        {
-            _channel.Shutdown();
-            for (int i = 0; i < MaxLogsPerBatch; ++i)
-            {
-                _channel.Enqueue(new TestLog());
-            }
-            _channel.SetEnabled(false);
-            _channel.SetEnabled(true);
-
-            Assert.IsFalse(SentLogOccurred(MaxLogsPerBatch));
-            Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
         }
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
