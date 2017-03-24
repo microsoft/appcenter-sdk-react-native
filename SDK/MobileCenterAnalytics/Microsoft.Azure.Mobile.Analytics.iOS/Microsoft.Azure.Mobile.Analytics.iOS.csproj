@@ -55,6 +55,10 @@
       <Project>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</Project>
       <Name>Microsoft.Azure.Mobile.Analytics.iOS.Bindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">
+      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
+      <Name>Microsoft.Azure.Mobile.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
