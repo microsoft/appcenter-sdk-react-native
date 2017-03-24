@@ -307,11 +307,11 @@ namespace Microsoft.Azure.Mobile
                     {
                         var serviceInstance =
                         serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
-                        StartService(serviceInstance);
                         if (serviceInstance == null)
                         {
                             throw new MobileCenterException("Service type does not contain static 'Instance' property of type IMobileCenterService");
                         }
+                        StartService(serviceInstance);
                         startedServiceNames.Add(serviceInstance.ServiceName);
 
                     }
