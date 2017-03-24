@@ -306,23 +306,23 @@ Task("UploadAssemblies")
 	var assembliesZip = IsRunningOnUnix() ? MAC_ASSEMBLIES_ZIP : WINDOWS_ASSEMBLIES_ZIP;
 
 	var pclAssemblies = GetFiles(PCL_ASSEMBLIES_FOLDER + "/*.dll");
-	CleanDirectory(assembliesFolder + "/PCL_ASSEMBLIES_FOLDER");
-	CopyFiles(pclAssemblies, assembliesFolder + "/PCL_ASSEMBLIES_FOLDER");
+	CleanDirectory(assembliesFolder + "/" + PCL_ASSEMBLIES_FOLDER);
+	CopyFiles(pclAssemblies, assembliesFolder + "/" + PCL_ASSEMBLIES_FOLDER);
 
 	if (IsRunningOnUnix())
 	{
-		CleanDirectory( assembliesFolder + "/IOS_ASSEMBLIES_FOLDER");
+		CleanDirectory( assembliesFolder + "/" + IOS_ASSEMBLIES_FOLDER);
 		var iosAssemblies = GetFiles(IOS_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(iosAssemblies, assembliesFolder + "/IOS_ASSEMBLIES_FOLDER");
-		CleanDirectory( assembliesFolder + "/ANDROID_ASSEMBLIES_FOLDER");
+		CopyFiles(iosAssemblies, assembliesFolder + "/" + IOS_ASSEMBLIES_FOLDER);
+		CleanDirectory( assembliesFolder + "/" + ANDROID_ASSEMBLIES_FOLDER);
 		var androidAssemblies = GetFiles(ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(androidAssemblies, assembliesFolder + "/ANDROID_ASSEMBLIES_FOLDER");
+		CopyFiles(androidAssemblies, assembliesFolder + "/" + ANDROID_ASSEMBLIES_FOLDER);
 	}
 	else
 	{
-		CleanDirectory( assembliesFolder + "/UWP_ASSEMBLIES_FOLDER");
+		CleanDirectory( assembliesFolder + "/" + UWP_ASSEMBLIES_FOLDER);
 		var uwpAssemblies = GetFiles(UWP_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(uwpAssemblies, assembliesFolder + "/UWP_ASSEMBLIES_FOLDER");
+		CopyFiles(uwpAssemblies, assembliesFolder + "/" + UWP_ASSEMBLIES_FOLDER);
 	}
 
 	Zip(assembliesFolder, assembliesZip);
@@ -339,6 +339,7 @@ Task("UploadAssemblies")
 Task("MergeAssemblies")
 	.IsDependentOn("PrepareAssemblies")
 	.IsDependentOn("DownloadAssemblies")
+	.IsDependentOn("Version")
 	.Does(()=>
 {
 	Information("Beginning NuGet merge...");
