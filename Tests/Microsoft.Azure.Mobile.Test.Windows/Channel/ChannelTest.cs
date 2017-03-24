@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void ChannelInvokesSendingLogEventAfterEnabling()
         {
             _channel.Shutdown();
-            for (var i = 0; i < MaxLogsPerBatch; ++i)
+            for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
                 _channel.Enqueue(new TestLog());
             }
@@ -191,7 +191,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void ChannelInvokesFailedToSendLogEventAfterEnabling()
         {
             _channel.SetEnabled(false);
-            for (var i = 0; i < MaxLogsPerBatch; ++i)
+            for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
                 _channel.Enqueue(new TestLog());
             }
@@ -199,6 +199,51 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
             Assert.IsFalse(SendingLogOccurred(MaxLogsPerBatch));
+        }
+
+        /// <summary>
+        /// Validate that all logs removed
+        /// </summary>
+        [TestMethod]
+        public void ClearLogs()
+        {
+            _channel.Shutdown();
+            _channel.Enqueue(new TestLog());
+
+            Task.Delay(DefaultWaitTime).Wait();
+
+            _channel.Clear();
+            _channel.SetEnabled(true);
+
+            Assert.IsFalse(SendingLogOccurred(1));
+        }
+
+        /// <summary>
+        /// Validate that channel's mutex is disposed
+        /// </summary>
+        [TestMethod]
+        public void DisposeChannelTest()
+        {
+            _channel.Dispose();
+            Assert.ThrowsException<ObjectDisposedException>(() => _channel.SetEnabled(true));
+        }
+
+        /// <summary>
+        /// Validate that all logs is removed after disabled
+        /// </summary>
+        [TestMethod]
+        public void ChannelNotInvokesSendLogEventAfterDisabled()
+        {
+            _channel.Shutdown();
+            for (int i = 0; i < MaxLogsPerBatch; ++i)
+            {
+                _channel.Enqueue(new TestLog());
+            }
+            _channel.SetEnabled(false);
+            _channel.SetEnabled(true);
+
+            Assert.IsFalse(SentLogOccurred(MaxLogsPerBatch));
+            Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
         }
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
