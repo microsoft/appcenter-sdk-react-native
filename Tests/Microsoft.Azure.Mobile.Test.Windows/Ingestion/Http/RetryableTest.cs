@@ -13,17 +13,24 @@ using Moq;
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
     [TestClass]
-	public class RetryableTest
+    public class RetryableTest
     {
         private TestInterval[] _intervals;
         private Mock<IHttpNetworkAdapter> _adapter;
         private IIngestion _retryableIngestion;
 
+        private const int DefaultWaitTime = 5000;
+
+        /* Event semaphores for invokation verification */
+        private const int SucceededCallbackSemaphoreIdx = 0;
+        private const int FailedCallbackSemaphoreIdx = 1;
+        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0) };
+
         [TestInitialize]
         public void InitializeRetryableTest()
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
-            _intervals = new []
+            _intervals = new[]
             {
                 new TestInterval(),
                 new TestInterval(),
@@ -86,7 +93,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 
             // Run all chain not async
             _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
-            
+
             // Must be sent 2 times: 1 - main, 1 - repeat
             VerifyAdapterSend(Times.Exactly(2));
         }
@@ -113,7 +120,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 
             // Run all chain not async
             _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
-            
+
             // Must be sent 4 times: 1 - main, 3 - repeat
             VerifyAdapterSend(Times.Exactly(4));
         }
@@ -155,6 +162,32 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             VerifyAdapterSend(Times.Once());
         }
 
+        [TestMethod]
+        public void ServiceCallSuccessCallbackTest()
+        {
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            var call = PrepareServiceCall();
+
+            SetupEventCallbacks(call);
+
+            call.Execute();
+
+            Assert.IsTrue(SuccessCallbackOccurred());
+        }
+
+        [TestMethod]
+        public void ServiceCallFailedCallbackTest()
+        {
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            var call = PrepareServiceCall();
+
+            SetupEventCallbacks(call);
+
+            call.Execute();
+
+            Assert.IsTrue(FailedCallbackOccurred());
+        }
+
         /// <summary>
         /// Helper for prepare ServiceCall.
         /// </summary>
@@ -184,7 +217,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             _adapter
                 .Verify(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), times);
         }
-        
+
         public class TestInterval
         {
             private volatile TaskCompletionSource<bool> _task = new TaskCompletionSource<bool>();
@@ -193,6 +226,40 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 
             public Task Wait() { OnRequest?.Invoke(); return _task.Task; }
             public void Set() => _task.TrySetResult(true);
+        }
+
+        private void SetupEventCallbacks(IServiceCall call)
+        {
+            foreach (var sem in _eventSemaphores)
+            {
+                if (sem.CurrentCount != 0)
+                {
+                    sem.Release(sem.CurrentCount);
+                }
+            }
+
+            call.ServiceCallSucceededCallback += () => _eventSemaphores[SucceededCallbackSemaphoreIdx].Release();
+            call.ServiceCallFailedCallback += (e) => _eventSemaphores[FailedCallbackSemaphoreIdx].Release();
+        }
+
+        private bool SuccessCallbackOccurred(int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[SucceededCallbackSemaphoreIdx], 1, waitTime);
+        }
+
+        private bool FailedCallbackOccurred(int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[FailedCallbackSemaphoreIdx], 1, waitTime);
+        }
+
+        private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)
+        {
+            var enteredAll = true;
+            for (var i = 0; i < numTimes; ++i)
+            {
+                enteredAll &= semaphore.Wait(waitTime);
+            }
+            return enteredAll;
         }
     }
 }

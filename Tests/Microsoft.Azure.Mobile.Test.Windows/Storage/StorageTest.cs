@@ -15,10 +15,16 @@ namespace Microsoft.Azure.Mobile.Test
         private const string StorageTestChannelName = "storageTestChannelName";
         private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
 
+        private TestStorageAdapter _testAdapter;
+        private Mobile.Storage.Storage _storageWithTestAdapter;
+
         [TestInitialize]
         public void InitializeStorageTest()
         {
             _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
+
+            _testAdapter = new TestStorageAdapter();
+            _storageWithTestAdapter = new Mobile.Storage.Storage(_testAdapter);
         }
 
         /// <summary>
@@ -171,7 +177,7 @@ namespace Microsoft.Azure.Mobile.Test
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogsFirstTry);
             Assert.AreEqual(0, retrievedLogsSecondTry.Count);
-        }  
+        }
 
         /// <summary>
         ///     Verify that a channel that starts with the name of another channel does not cause problems.
@@ -210,7 +216,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void FailToGetALog()
         {
-            var storageAdapter = new StorageAdapter("Microsoft.Azure.Mobile.Storage");        
+            var storageAdapter = new StorageAdapter("Microsoft.Azure.Mobile.Storage");
             storageAdapter.OpenAsync().RunNotAsync();
             var command = storageAdapter.CreateCommand();
             var logJsonString = "'this is not a valid log json string'";
@@ -233,6 +239,82 @@ namespace Microsoft.Azure.Mobile.Test
             Assert.IsNull(batchId);
             Assert.AreEqual(0, logs.Count);
             Assert.AreEqual(0, count);
+        }
+
+        /// <summary>
+        /// Verify that storage throws StorageException if something went wrong
+        /// </summary>
+        [TestMethod]
+        public void StorageThrowsStorageException()
+        {
+            _testAdapter.IsSuccessQuery = false;
+
+            try
+            {
+                _storageWithTestAdapter.PutLogAsync("channel_name", new TestLog()).Wait();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e.InnerException as StorageException);
+            }
+
+            try
+            {
+                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.PutLogAsync("channel_name", new TestLog()));
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e.InnerException as StorageException);
+            }
+
+            try
+            {
+                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.DeleteLogsAsync("channel_name", string.Empty));
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e.InnerException as StorageException);
+            }
+
+            try
+            {
+                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.DeleteLogsAsync("channel_name"));
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e.InnerException as StorageException);
+            }
+
+            try
+            {
+                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.CountLogsAsync("channel_name"));
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e.InnerException as StorageException);
+            }
+
+            try
+            {
+                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.GetLogsAsync("channel_name", 1, new List<Log>()));
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e.InnerException as StorageException);
+            }
+
+            _testAdapter.IsSuccessQuery = true;
+        }
+
+        /// <summary>
+        /// Verify that storage is disposing correctly
+        /// </summary>
+        [TestMethod]
+        public void StorageDisposeTest()
+        {
+            _storageWithTestAdapter.Dispose();
+            Assert.IsTrue(_testAdapter.IsDisposed);
+            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _storageWithTestAdapter.ClearPendingLogStateAsync(string.Empty));
         }
 
         #region Helper methods

@@ -90,6 +90,7 @@
     <Compile Include="Ingestion\Http\RetryableTest.cs" />
     <Compile Include="Ingestion\Http\ServiceCallTest.cs" />
     <Compile Include="Ingestion\IngestionExceptionTest.cs" />
+    <Compile Include="Ingestion\Models\JsonLogConverterTest.cs" />
     <Compile Include="Ingestion\Models\TestLog.cs" />
     <Compile Include="Ingestion\Models\LogContainerTest.cs" />
     <Compile Include="Ingestion\Models\LogWithPropertiesTest.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\MockStorage.cs" />
     <Compile Include="Storage\StorageTest.cs" />
+    <Compile Include="Storage\TestStorageAdapter.cs" />
     <Compile Include="Storage\TimeConsumingStorageAdapter.cs" />
     <Compile Include="TaskExtension.cs" />
     <Compile Include="TestLog.cs" />
@@ -112,7 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CodeCoverage.runsettings" />
+    <None Include="CodeCoverage.runsettings">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
