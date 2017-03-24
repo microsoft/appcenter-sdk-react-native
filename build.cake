@@ -37,8 +37,13 @@ class MobileCenterModule {
 var TEMPORARY_PREFIX = "CAKE_SCRIPT_TEMP";
 
 // Platform specific nuget folders
-var MAC_NUGETS_FOLDER = TEMPORARY_PREFIX + "MacNuGetPackages";
-var WINDOWS_NUGETS_FOLDER = TEMPORARY_PREFIX + "WindowsNuGetPackages";
+var MAC_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "MacAssemblies";
+var WINDOWS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "WindowsAssemblies";
+// Assembly folders
+var UWP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "UWPAssemblies";
+var IOS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "iOSAssemblies";
+var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
+var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.5.0";
@@ -57,10 +62,11 @@ var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
 
-var MAC_NUGETS_ZIP = TEMPORARY_PREFIX + "MacNuGetPackages.zip";
-var WINDOWS_NUGETS_ZIP = TEMPORARY_PREFIX + "WindowsNuGetPackages.zip";
-var MAC_NUGETS_URL = SDK_STORAGE_URL + MAC_NUGETS_ZIP;
-var WINDOWS_NUGETS_URL = SDK_STORAGE_URL + WINDOWS_NUGETS_ZIP;
+
+var MAC_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "MacNuGetAssemblies.zip";
+var WINDOWS_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "WindowsNuGetAssemblies.zip";
+var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
+var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
 // Available MobileCenter modules.
 var MOBILECENTER_MODULES = new [] {
@@ -117,12 +123,85 @@ Task("MacBuild")
 	DotNetBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
 }).OnError(()=>RunTarget("clean"));
 
-// Building Windows code task. (UWP)
+// Building Windows code task
 Task("WindowsBuild").Does(() => 
 {
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", c => c.Configuration = "Release");
+}).OnError(()=>RunTarget("clean"));
+
+// Build and prepare UWP dlls
+Task("PrepareUWPAssemblies").Does(() =>
+{
+	NuGetRestore("./MobileCenter-SDK-Build-UWP.sln");
+	DotNetBuild("./MobileCenter-SDK-Build-UWP.sln", c => c.Configuration = "Release");
+
+	var assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll" };
+	CleanDirectory(UWP_ASSEMBLIES_FOLDER);
+	foreach (var assembly in assemblies)
+	{
+		CopyFile(assembly, UWP_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
+	}
+}).OnError(()=>RunTarget("clean"));
+
+// Build and prepare iOS dlls
+Task("PrepareIosAssemblies").IsDependentOn("Externals-Ios").Does(() =>
+{
+	NuGetRestore("./MobileCenter-SDK-Build-iOS.sln");
+	DotNetBuild("./MobileCenter-SDK-Build-iOS.sln", c => c.Configuration = "Release");
+
+	var assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll",
+									"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.iOS.Bindings.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll",
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" };
+
+	CleanDirectory(IOS_ASSEMBLIES_FOLDER);
+	foreach (var assembly in assemblies)
+	{
+		CopyFile(assembly, IOS_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
+	}
+}).OnError(()=>RunTarget("clean"));
+
+// Build and prepare Android dlls
+Task("PrepareAndroidAssemblies").IsDependentOn("Externals-Android").Does(() =>
+{
+	NuGetRestore("./MobileCenter-SDK-Build-Android.sln");
+	DotNetBuild("./MobileCenter-SDK-Build-Android.sln", c => c.Configuration = "Release");
+
+	var assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.dll",
+									"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.Android.Bindings.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll",
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll" };
+
+	CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
+	foreach (var assembly in assemblies)
+	{
+		CopyFile(assembly, ANDROID_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
+	}
+}).OnError(()=>RunTarget("clean"));
+
+// Build and prepare PCL dlls
+Task("PreparePCLAssemblies").Does(() =>
+{
+	NuGetRestore("./MobileCenter-SDK-Build-PCL.sln");
+	DotNetBuild("./MobileCenter-SDK-Build-PCL.sln", c => c.Configuration = "Release");
+
+	var assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/Microsoft.Azure.Mobile.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" };
+
+	CleanDirectory(PCL_ASSEMBLIES_FOLDER);
+	foreach (var assembly in assemblies)
+	{
+		CopyFile(assembly, PCL_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
+	}
 }).OnError(()=>RunTarget("clean"));
 
 // Task dependencies for binding each platform.
@@ -182,8 +261,8 @@ Task("NuGet")
 	.IsDependentOn("Build")
 	.IsDependentOn("Version")
 	.Does(()=>
-	{
-// NuGet on mac trims out the first ./ so adding it twice works around
+{
+	// NuGet on mac trims out the first ./ so adding it twice works around
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
 	CleanDirectory("output");
 
@@ -200,82 +279,104 @@ Task("NuGet")
 		});
 	}
 	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
-	}).OnError(()=>RunTarget("clean"));
+}).OnError(()=>RunTarget("clean"));
 
-Task("PrepareNuGetsForMerge")
-	.IsDependentOn("DownloadNuGets")
-	.IsDependentOn("NuGet")
-	.IsDependentOn("PrepareNuGetsForRemoteAction");
-
-
-Task("PrepareNuGetsForRemoteAction")
-	.IsDependentOn("PackageId")
-	.IsDependentOn("Version")
-	.Does(()=>
+Task("PrepareAssemblies").IsDependentOn("PreparePCLAssemblies").Does(()=>
 {
-	var nugetFolder = IsRunningOnUnix() ? MAC_NUGETS_FOLDER : WINDOWS_NUGETS_FOLDER;
-	CleanDirectory(nugetFolder);
-	var files = GetFiles("output/*.nupkg");
-	foreach (var file in files)
+	if (IsRunningOnUnix())
 	{
-		foreach (var module in MOBILECENTER_MODULES)
-		{
-			if (file.GetFilename().ToString() == module.NuGetPackageName)
-			{
-				var destination = nugetFolder + "/" + module.NuGetPackageName;
-				CopyFile(file, destination);
-				break;
-			}
-		}
+		RunTarget("PrepareIosAssemblies");
+		RunTarget("PrepareAndroidAssemblies");
+	}
+	else
+	{
+		RunTarget("PrepareUWPAssemblies");
 	}
 });
 
-Task("UploadNuGets")
-	.IsDependentOn("NuGet")
-	.IsDependentOn("PrepareNuGetsForRemoteAction")
+Task("UploadAssemblies")
+	.IsDependentOn("PrepareAssemblies")
 	.Does(()=>
 {
 	//The environment variables below must be set for this task to succeed
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
 	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
-	var nugetsFolder = IsRunningOnUnix() ? MAC_NUGETS_FOLDER : WINDOWS_NUGETS_FOLDER;
-	var nugetsZip = IsRunningOnUnix() ? MAC_NUGETS_ZIP : WINDOWS_NUGETS_ZIP;
-	Zip(nugetsFolder, nugetsZip);
+
+	var assembliesFolder = IsRunningOnUnix() ? MAC_ASSEMBLIES_FOLDER : WINDOWS_ASSEMBLIES_FOLDER;
+	var assembliesZip = IsRunningOnUnix() ? MAC_ASSEMBLIES_ZIP : WINDOWS_ASSEMBLIES_ZIP;
+
+	var pclAssemblies = GetFiles(PCL_ASSEMBLIES_FOLDER + "/*.dll");
+	CleanDirectory(assembliesFolder + "/PCL_ASSEMBLIES_FOLDER");
+	CopyFiles(pclAssemblies, assembliesFolder + "/PCL_ASSEMBLIES_FOLDER");
+
+	if (IsRunningOnUnix())
+	{
+		CleanDirectory( assembliesFolder + "/IOS_ASSEMBLIES_FOLDER");
+		var iosAssemblies = GetFiles(IOS_ASSEMBLIES_FOLDER + "/*.dll");
+		CopyFiles(iosAssemblies, assembliesFolder + "/IOS_ASSEMBLIES_FOLDER");
+		CleanDirectory( assembliesFolder + "/ANDROID_ASSEMBLIES_FOLDER");
+		var androidAssemblies = GetFiles(ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
+		CopyFiles(androidAssemblies, assembliesFolder + "/ANDROID_ASSEMBLIES_FOLDER");
+	}
+	else
+	{
+		CleanDirectory( assembliesFolder + "/UWP_ASSEMBLIES_FOLDER");
+		var uwpAssemblies = GetFiles(UWP_ASSEMBLIES_FOLDER + "/*.dll");
+		CopyFiles(uwpAssemblies, assembliesFolder + "/UWP_ASSEMBLIES_FOLDER");
+	}
+
+	Zip(assembliesFolder, assembliesZip);
 	AzureStorage.UploadFileToBlob(new AzureStorageSettings
 	{
 		AccountName = accountName,
 		ContainerName = "sdk",
-		BlobName = nugetsZip,
+		BlobName = assembliesZip,
 		Key = apiKey,
 		UseHttps = true
-	}, nugetsZip);
+	}, assembliesZip);
 }).Finally(()=>RunTarget("RemoveTemporaries"));
 
-Task("MergeNuGets")
-	.IsDependentOn("NuGet")
-	.IsDependentOn("PrepareNuGetsForMerge")
+Task("MergeAssemblies")
+	.IsDependentOn("PrepareAssemblies")
+	.IsDependentOn("DownloadAssemblies")
 	.Does(()=>
 {
 	Information("Beginning NuGet merge...");
-	var nugetMacUnzipped = TEMPORARY_PREFIX + "mac_nuget_folder";
-	var nugetWindowsUnzipped = TEMPORARY_PREFIX + "windows_nuget_folder";
+	var assembliesMacUnzipped = TEMPORARY_PREFIX + "mac_assemblies_folder";
+	var assembliesWindowsUnzipped = TEMPORARY_PREFIX + "windows_assemblies_folder";
 	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
-	CleanDirectory(nugetMacUnzipped);
-	CleanDirectory(nugetWindowsUnzipped);
+	CleanDirectory(assembliesMacUnzipped);
+	CleanDirectory(assembliesWindowsUnzipped);
+
+	if (IsRunningOnUnix())
+	{
+		//extract the uwp packages
+		CleanDirectory(UWP_ASSEMBLIES_FOLDER);
+		var files = GetFiles(assembliesWindowsUnzipped + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
+		CopyFiles(files, UWP_ASSEMBLIES_FOLDER);
+	}
+	else
+	{
+		//extract the ios packages
+		CleanDirectory(IOS_ASSEMBLIES_FOLDER);
+		var files = GetFiles(assembliesMacUnzipped + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
+		CopyFiles(files, IOS_ASSEMBLIES_FOLDER);
+		
+		//extract the android packages
+		CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
+		files = GetFiles(assembliesMacUnzipped + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
+		CopyFiles(files, ANDROID_ASSEMBLIES_FOLDER);
+	}
 
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var nugetMac = MAC_NUGETS_FOLDER + "/" + module.NuGetPackageName;
-		var nugetWindows = WINDOWS_NUGETS_FOLDER + "/" + module.NuGetPackageName;
-
-		/* Unzip nuget package */
-		Unzip(nugetMac, nugetMacUnzipped);
-		Unzip(nugetWindows, nugetWindowsUnzipped);
-
 		/* Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original) */
 		CopyFile("NuGetSpec/" + module.MainNuGetSpecFilename, specCopyName);
-		ReplaceTextInFiles(specCopyName, "$mac_dir$", nugetMacUnzipped);
-		ReplaceTextInFiles(specCopyName, "$windows_dir$", nugetWindowsUnzipped);
+		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
+
 		var spec = GetFiles(specCopyName);
 
 		/* Create the NuGet package */
@@ -287,12 +388,14 @@ Task("MergeNuGets")
 
 		/* Clean up */
 		DeleteFiles(specCopyName);
-		DeleteDirectory(nugetMacUnzipped, true);
-		DeleteDirectory(nugetWindowsUnzipped, true);
+		DeleteDirectory(assembliesMacUnzipped, true);
+		DeleteDirectory(assembliesWindowsUnzipped, true);
 	}
 	
-	DeleteDirectory(MAC_NUGETS_FOLDER, true);
-	DeleteDirectory(WINDOWS_NUGETS_FOLDER, true);
+	DeleteDirectory(PCL_ASSEMBLIES_FOLDER, true);
+	DeleteDirectory(ANDROID_ASSEMBLIES_FOLDER, true);
+	DeleteDirectory(IOS_ASSEMBLIES_FOLDER, true);
+	DeleteDirectory(UWP_ASSEMBLIES_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
 });
@@ -326,7 +429,7 @@ Task("UpdateDemoDependencies").Does(() =>
 // Remove any uploaded nugets from azure storage
 Task("CleanAzureStorage").Does(()=>
 {
-	var nugetsZip = IsRunningOnUnix() ? MAC_NUGETS_ZIP : WINDOWS_NUGETS_ZIP;
+	var nugetsZip = IsRunningOnUnix() ? MAC_ASSEMBLIES_ZIP : WINDOWS_ASSEMBLIES_ZIP;
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
 	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
 
@@ -365,18 +468,18 @@ Task("clean")
 	CleanDirectories("./**/obj");
 });
 
-Task("DownloadNuGets").Does(()=>
+Task("DownloadAssemblies").Does(()=>
 {
 	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
-	Information("Downloading NuGet packages compiled on a " + otherTargetName + "...");
-	var nugetsFolder = IsRunningOnUnix() ? WINDOWS_NUGETS_FOLDER : MAC_NUGETS_FOLDER;
-	var nugetsZip = IsRunningOnUnix() ? WINDOWS_NUGETS_ZIP : MAC_NUGETS_ZIP;
-	var nugetsUrl = IsRunningOnUnix() ? WINDOWS_NUGETS_URL : MAC_NUGETS_URL;
-	CleanDirectory(nugetsFolder);
-	DownloadFile(nugetsUrl, nugetsZip);
-	Unzip(nugetsZip, nugetsFolder);
-	DeleteFiles(nugetsZip);
-	Information("Successfully downloaded NuGet packages.");
+	Information("Downloading assemblies compiled on a " + otherTargetName + "...");
+	var assembliesFolder = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_FOLDER : MAC_ASSEMBLIES_FOLDER;
+	var assembliesZip = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_ZIP : MAC_ASSEMBLIES_ZIP;
+	var assembliesUrl = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_URL : MAC_ASSEMBLIES_URL;
+	CleanDirectory(assembliesFolder);
+	DownloadFile(assembliesUrl, assembliesZip);
+	Unzip(assembliesZip, assembliesFolder);
+	DeleteFiles(assembliesZip);
+	Information("Successfully downloaded assemblies.");
 });
 
 void DeleteDirectoryIfExists(string directoryName)
