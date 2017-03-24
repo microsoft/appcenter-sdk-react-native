@@ -375,7 +375,7 @@ Task("MergeAssemblies")
 		CopyFile("NuGetSpec/" + module.MainNuGetSpecFilename, specCopyName);
 		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
 		ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
-		ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$windows_dir$", UWP_ASSEMBLIES_FOLDER);
 		ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
 
 		var spec = GetFiles(specCopyName);
