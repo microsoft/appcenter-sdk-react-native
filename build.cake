@@ -36,9 +36,10 @@ class MobileCenterModule {
 
 var TEMPORARY_PREFIX = "CAKE_SCRIPT_TEMP";
 
-// Platform specific nuget folders
-var MAC_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "MacAssemblies";
-var WINDOWS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "WindowsAssemblies";
+var DOWNLOADED_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "DownloadedAssemblies";
+var MAC_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "MacAssemblies.zip";
+var WINDOWS_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "WindowsAssemblies.zip";
+
 // Assembly folders
 var UWP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "UWPAssemblies";
 var IOS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "iOSAssemblies";
@@ -61,10 +62,6 @@ var IOS_SDK_VERSION = "0.4.1";
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
 var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
-
-
-var MAC_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "MacNuGetAssemblies.zip";
-var WINDOWS_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "WindowsNuGetAssemblies.zip";
 var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
@@ -302,30 +299,29 @@ Task("UploadAssemblies")
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
 	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
 
-	var assembliesFolder = IsRunningOnUnix() ? MAC_ASSEMBLIES_FOLDER : WINDOWS_ASSEMBLIES_FOLDER;
 	var assembliesZip = IsRunningOnUnix() ? MAC_ASSEMBLIES_ZIP : WINDOWS_ASSEMBLIES_ZIP;
 
 	var pclAssemblies = GetFiles(PCL_ASSEMBLIES_FOLDER + "/*.dll");
-	CleanDirectory(assembliesFolder + "/" + PCL_ASSEMBLIES_FOLDER);
-	CopyFiles(pclAssemblies, assembliesFolder + "/" + PCL_ASSEMBLIES_FOLDER);
+	CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + PCL_ASSEMBLIES_FOLDER);
+	CopyFiles(pclAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + PCL_ASSEMBLIES_FOLDER);
 
 	if (IsRunningOnUnix())
 	{
-		CleanDirectory( assembliesFolder + "/" + IOS_ASSEMBLIES_FOLDER);
+		CleanDirectory( DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER);
 		var iosAssemblies = GetFiles(IOS_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(iosAssemblies, assembliesFolder + "/" + IOS_ASSEMBLIES_FOLDER);
-		CleanDirectory( assembliesFolder + "/" + ANDROID_ASSEMBLIES_FOLDER);
+		CopyFiles(iosAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER);
+		CleanDirectory( DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER);
 		var androidAssemblies = GetFiles(ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(androidAssemblies, assembliesFolder + "/" + ANDROID_ASSEMBLIES_FOLDER);
+		CopyFiles(androidAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER);
 	}
 	else
 	{
-		CleanDirectory( assembliesFolder + "/" + UWP_ASSEMBLIES_FOLDER);
+		CleanDirectory( DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER);
 		var uwpAssemblies = GetFiles(UWP_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(uwpAssemblies, assembliesFolder + "/" + UWP_ASSEMBLIES_FOLDER);
+		CopyFiles(uwpAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER);
 	}
 
-	Zip(assembliesFolder, assembliesZip);
+	Zip(DOWNLOADED_ASSEMBLIES_FOLDER, assembliesZip);
 	AzureStorage.UploadFileToBlob(new AzureStorageSettings
 	{
 		AccountName = accountName,
@@ -349,19 +345,19 @@ Task("MergeAssemblies")
 	{
 		//extract the uwp packages
 		CleanDirectory(UWP_ASSEMBLIES_FOLDER);
-		var files = GetFiles(WINDOWS_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
+		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, UWP_ASSEMBLIES_FOLDER);
 	}
 	else
 	{
 		//extract the ios packages
 		CleanDirectory(IOS_ASSEMBLIES_FOLDER);
-		var files = GetFiles(MAC_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
+		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, IOS_ASSEMBLIES_FOLDER);
 		
 		//extract the android packages
 		CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
-		files = GetFiles(MAC_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
+		files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, ANDROID_ASSEMBLIES_FOLDER);
 	}
 
@@ -391,15 +387,7 @@ Task("MergeAssemblies")
 	DeleteDirectory(ANDROID_ASSEMBLIES_FOLDER, true);
 	DeleteDirectory(IOS_ASSEMBLIES_FOLDER, true);
 	DeleteDirectory(UWP_ASSEMBLIES_FOLDER, true);
-		if (IsRunningOnUnix())
-		{
-			DeleteDirectory(WINDOWS_ASSEMBLIES_FOLDER, true);
-		}
-		else
-		{
-			DeleteDirectory(MAC_ASSEMBLIES_FOLDER, true);
-		}
-
+	DeleteDirectory(DOWNLOADED_ASSEMBLIES_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
 });
@@ -484,12 +472,11 @@ Task("DownloadAssemblies").Does(()=>
 {
 	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
 	Information("Downloading assemblies compiled on a " + otherTargetName + "...");
-	var assembliesFolder = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_FOLDER : MAC_ASSEMBLIES_FOLDER;
 	var assembliesZip = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_ZIP : MAC_ASSEMBLIES_ZIP;
 	var assembliesUrl = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_URL : MAC_ASSEMBLIES_URL;
-	CleanDirectory(assembliesFolder);
+	CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER);
 	DownloadFile(assembliesUrl, assembliesZip);
-	Unzip(assembliesZip, assembliesFolder);
+	Unzip(assembliesZip, DOWNLOADED_ASSEMBLIES_FOLDER);
 	DeleteFiles(assembliesZip);
 	Information("Successfully downloaded assemblies.");
 });
