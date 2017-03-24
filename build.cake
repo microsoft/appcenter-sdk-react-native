@@ -343,29 +343,25 @@ Task("MergeAssemblies")
 	.Does(()=>
 {
 	Information("Beginning NuGet merge...");
-	var assembliesMacUnzipped = TEMPORARY_PREFIX + "mac_assemblies_folder";
-	var assembliesWindowsUnzipped = TEMPORARY_PREFIX + "windows_assemblies_folder";
 	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
-	CleanDirectory(assembliesMacUnzipped);
-	CleanDirectory(assembliesWindowsUnzipped);
 
 	if (IsRunningOnUnix())
 	{
 		//extract the uwp packages
 		CleanDirectory(UWP_ASSEMBLIES_FOLDER);
-		var files = GetFiles(assembliesWindowsUnzipped + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
+		var files = GetFiles(WINDOWS_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, UWP_ASSEMBLIES_FOLDER);
 	}
 	else
 	{
 		//extract the ios packages
 		CleanDirectory(IOS_ASSEMBLIES_FOLDER);
-		var files = GetFiles(assembliesMacUnzipped + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
+		var files = GetFiles(MAC_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, IOS_ASSEMBLIES_FOLDER);
 		
 		//extract the android packages
 		CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
-		files = GetFiles(assembliesMacUnzipped + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
+		files = GetFiles(MAC_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, ANDROID_ASSEMBLIES_FOLDER);
 	}
 
@@ -389,14 +385,21 @@ Task("MergeAssemblies")
 
 		/* Clean up */
 		DeleteFiles(specCopyName);
-		DeleteDirectory(assembliesMacUnzipped, true);
-		DeleteDirectory(assembliesWindowsUnzipped, true);
 	}
 	
 	DeleteDirectory(PCL_ASSEMBLIES_FOLDER, true);
 	DeleteDirectory(ANDROID_ASSEMBLIES_FOLDER, true);
 	DeleteDirectory(IOS_ASSEMBLIES_FOLDER, true);
 	DeleteDirectory(UWP_ASSEMBLIES_FOLDER, true);
+		if (IsRunningOnUnix())
+		{
+			DeleteDirectory(WINDOWS_ASSEMBLIES_FOLDER, true);
+		}
+		else
+		{
+			DeleteDirectory(MAC_ASSEMBLIES_FOLDER, true);
+		}
+
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
 });
@@ -430,7 +433,6 @@ Task("UpdateDemoDependencies").Does(() =>
 // Remove any uploaded nugets from azure storage
 Task("CleanAzureStorage").Does(()=>
 {
-	var nugetsZip = IsRunningOnUnix() ? MAC_ASSEMBLIES_ZIP : WINDOWS_ASSEMBLIES_ZIP;
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
 	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
 
@@ -438,7 +440,16 @@ Task("CleanAzureStorage").Does(()=>
 	{
 		AccountName = accountName,
 		ContainerName = "sdk",
-		BlobName = nugetsZip,
+		BlobName = MAC_ASSEMBLIES_ZIP,
+		Key = apiKey,
+		UseHttps = true
+	});
+
+	AzureStorage.DeleteBlob(new AzureStorageSettings
+	{
+		AccountName = accountName,
+		ContainerName = "sdk",
+		BlobName = WINDOWS_ASSEMBLIES_ZIP,
 		Key = apiKey,
 		UseHttps = true
 	});
