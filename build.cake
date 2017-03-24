@@ -180,9 +180,6 @@ Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 // Pack NuGets for appropriate platform
 Task("NuGet")
 	.IsDependentOn("Build")
-	.IsDependentOn("NuGetNoBuild");
-
-Task("NuGetNoBuild")
 	.IsDependentOn("Version")
 	.Does(()=>
 	{
@@ -225,7 +222,8 @@ Task("PrepareNuGetsForRemoteAction")
 		{
 			if (file.GetFilename().ToString() == module.NuGetPackageName)
 			{
-				CopyFile(file, nugetFolder + "/" + module.NuGetPackageName);
+				var destination = nugetFolder + "/" + module.NuGetPackageName;
+				CopyFile(file, destination);
 				break;
 			}
 		}
@@ -233,11 +231,7 @@ Task("PrepareNuGetsForRemoteAction")
 });
 
 Task("UploadNuGets")
-	.IsDependentOn("Build")
-	.IsDependentOn("UploadNuGetsNoBuild");
-
-Task("UploadNuGetsNoBuild")
-	.IsDependentOn("NuGetNoBuild")
+	.IsDependentOn("NuGet")
 	.IsDependentOn("PrepareNuGetsForRemoteAction")
 	.Does(()=>
 {
