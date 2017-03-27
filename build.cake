@@ -519,12 +519,7 @@ string GetLatestNuGetVersion()
 	var nugetFeedId = EnvironmentVariable("NUGET_FEED_ID");
 	var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
 	HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
-
-    // Set some reasonable limits on resources used by this request
-    request.MaximumAutomaticRedirections = 4;
-    request.MaximumResponseHeadersLength = 4;
 	request.Headers["X-NuGet-ApiKey"] = nugetPassword;
-    // Set credentials to use for this request.
     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
     HttpWebResponse response = (HttpWebResponse)request.GetResponse ();
 	var responseString = String.Empty;
@@ -532,7 +527,6 @@ string GetLatestNuGetVersion()
 	{
 		responseString = reader.ReadToEnd();
 	}
-
 	var startTag = "<d:Version>";
 	var endTag = "</d:Version>";
 	int start = responseString.IndexOf(startTag);
@@ -550,8 +544,13 @@ string GetBaseVersion(string fullVersion)
 string GetRevision(string fullVersion)
 {
 	var indexDash = fullVersion.IndexOf("-");
-
-	return fullVersion.Substring(indexDash + 1, fullVersion.Length - indexDash - 1);
+	var secondIndexOfDash = fullVersion.IndexOf("-", indexDash + 1);
+	var len = fullVersion.Length - indexDash - 1;
+	if (secondIndexOfDash != -1)
+	{
+		len = secondIndexOfDash - indexDash - 1;
+	}
+	return fullVersion.Substring(indexDash + 1, len);
 }
 
 void DeleteDirectoryIfExists(string directoryName)
