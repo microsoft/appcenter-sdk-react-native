@@ -2,7 +2,11 @@
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
+#addin "System.Net.Http"
 
+using System.Net.Http;
+using System.Net;
+using System.Text;
 // MobileCenter module class definition.
 class MobileCenterModule {
 	public string AndroidModule { get; set; }
@@ -91,7 +95,7 @@ Task("Version")
 Task("PackageId")
 	.Does(() =>
 {
-	// Read AssemblyInfo.cs and extract versions for modules.
+	// Read AssemblyInfo.cs and extract package ids for modules.
 	foreach (var module in MOBILECENTER_MODULES)
 	{
 		var nuspecText = FileReadText("./NuGetSpec/" + module.MainNuGetSpecFilename);
@@ -494,6 +498,61 @@ Task("DownloadAssemblies").Does(()=>
 	DeleteFiles(assembliesZip);
 	Information("Successfully downloaded assemblies.");
 });
+
+Task("IncrementBuildNumber").Does(()=>
+{
+	// Get base version of PCL core
+	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
+	var version = assemblyInfo.AssemblyInformationalVersion;
+
+	var nugetVer = GetLatestNuGetVersion();
+    var baseVersion = GetBaseVersion(nugetVer);
+	var rev = GetRevision(nugetVer);
+	Information(baseVersion);
+	Information(rev);
+});
+
+string GetLatestNuGetVersion()
+{
+	var nugetUser = EnvironmentVariable("NUGET_USER");
+	var nugetPassword = EnvironmentVariable("NUGET_PASSWORD");
+	var nugetFeedId = EnvironmentVariable("NUGET_FEED_ID");
+	var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
+	HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
+
+    // Set some reasonable limits on resources used by this request
+    request.MaximumAutomaticRedirections = 4;
+    request.MaximumResponseHeadersLength = 4;
+	request.Headers["X-NuGet-ApiKey"] = nugetPassword;
+    // Set credentials to use for this request.
+    request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
+    HttpWebResponse response = (HttpWebResponse)request.GetResponse ();
+	var responseString = String.Empty;
+	using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+	{
+		responseString = reader.ReadToEnd();
+	}
+
+	var startTag = "<d:Version>";
+	var endTag = "</d:Version>";
+	int start = responseString.IndexOf(startTag);
+	int end = responseString.IndexOf(endTag);
+	var tag = responseString.Substring(start + startTag.Length, end - start - startTag.Length);
+	return tag;
+}
+
+string GetBaseVersion(string fullVersion)
+{
+	var indexDash = fullVersion.IndexOf("-");
+	return fullVersion.Substring(0, indexDash);
+}
+
+string GetRevision(string fullVersion)
+{
+	var indexDash = fullVersion.IndexOf("-");
+
+	return fullVersion.Substring(indexDash + 1, fullVersion.Length - indexDash - 1);
+}
 
 void DeleteDirectoryIfExists(string directoryName)
 {
