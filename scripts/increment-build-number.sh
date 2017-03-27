@@ -37,5 +37,5 @@ then
 fi
 
 # Replace version in all the assemblies
-find SDK -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$newVersion\")/g"
-find SDK -name AssemblyInfo.cs | xargs sed -E -i '' "s/(AssemblyFileVersion\(\"([0-9]+\.){3})(.*)\"\)/\1$newRevision\")/g"
+find SDK -name AssemblyInfo.cs | xargs sed -E -i "s/(AssemblyInformationalVersion\(\")(.*)\"\)/\1$newVersion\")/g"
+find SDK -name AssemblyInfo.cs | xargs sed -E -i "s/(AssemblyFileVersion\(\"([0-9]+\.){3})(.*)\"\)/\1$newRevision\")/g"
