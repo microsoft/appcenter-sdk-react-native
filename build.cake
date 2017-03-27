@@ -297,11 +297,11 @@ Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 	{
 		var macFolder = "mac/assemblies/";
 		var windowsFolder = "windows/assemblies/";
-		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$pcl_dir$", macFolder + PCL_ASSEMBLIES_FOLDER);
-		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$ios_dir$", macFolder + IOS_ASSEMBLIES_FOLDER);
-		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$windows_dir$", windowsFolder + UWP_ASSEMBLIES_FOLDER);
-		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$android_dir$", macFolder + ANDROID_ASSEMBLIES_FOLDER);
-		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$version$", module.NuGetVersion);
+		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$pcl_dir$", macFolder + PCL_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$ios_dir$", macFolder + IOS_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$windows_dir$", windowsFolder + UWP_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$android_dir$", macFolder + ANDROID_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$version$", module.NuGetVersion);
 	}
 });
 
