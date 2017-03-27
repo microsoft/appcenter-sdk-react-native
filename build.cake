@@ -291,6 +291,20 @@ Task("PrepareAssemblies").IsDependentOn("PreparePCLAssemblies").Does(()=>
 	}
 });
 
+Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
+{
+	foreach (var module in MOBILECENTER_MODULES)
+	{
+		var macFolder = "mac/assemblies/";
+		var windowsFolder = "windows/assemblies/";
+		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$pcl_dir$", macFolder + PCL_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$ios_dir$", macFolder + IOS_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$windows_dir$", windowsFolder + UWP_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$android_dir$", macFolder + ANDROID_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(module.MainNuGetSpecFilename, "$version$", module.NuGetVersion);
+	}
+});
+
 Task("UploadAssemblies")
 	.IsDependentOn("PrepareAssemblies")
 	.Does(()=>
