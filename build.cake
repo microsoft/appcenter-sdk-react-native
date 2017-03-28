@@ -3,10 +3,13 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
 #addin "System.Net.Http"
+#addin nuget:?package=Cake.Git
 
 using System.Net.Http;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+
 // MobileCenter module class definition.
 class MobileCenterModule {
 	public string AndroidModule { get; set; }
@@ -501,16 +504,32 @@ Task("DownloadAssemblies").Does(()=>
 
 Task("IncrementBuildNumber").Does(()=>
 {
+	var files = GetFiles("**/AssemblyInfo.cs");
+	Information(files.Count);
+});
+
+void IncrementBuildNumber(bool useHash)
+{
 	// Get base version of PCL core
 	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
 	var version = assemblyInfo.AssemblyInformationalVersion;
-
 	var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
-	var rev = GetRevision(nugetVer);
-	Information(baseVersion);
-	Information(rev);
-});
+	var newRevNum = GetRevisionNumber(nugetVer) + 1;
+	var newRevString = GetPaddedString(newRevNum, 4);
+	string newVersion = baseVersion + "-r" + newRevString;
+	if (useHash)
+	{
+		newVersion += "-" + GetShortCommitHash();
+	}
+
+}
+
+string GetShortCommitHash()
+{
+	var lastCommit = GitLogTip(".");
+	return lastCommit.Sha.Substring(0, 7);
+}
 
 string GetLatestNuGetVersion()
 {
@@ -538,19 +557,44 @@ string GetLatestNuGetVersion()
 string GetBaseVersion(string fullVersion)
 {
 	var indexDash = fullVersion.IndexOf("-");
+	if (indexDash == -1)
+	{
+		return fullVersion;
+	}
 	return fullVersion.Substring(0, indexDash);
 }
 
-string GetRevision(string fullVersion)
+int GetRevisionNumber(string fullVersion)
 {
-	var indexDash = fullVersion.IndexOf("-");
-	var secondIndexOfDash = fullVersion.IndexOf("-", indexDash + 1);
-	var len = fullVersion.Length - indexDash - 1;
-	if (secondIndexOfDash != -1)
+	var revStart = fullVersion.IndexOf("-r");
+	if (revStart == -1)
 	{
-		len = secondIndexOfDash - indexDash - 1;
+		return 0;
 	}
-	return fullVersion.Substring(indexDash + 1, len);
+	var revEnd = fullVersion.IndexOf("-", revStart + 1);
+	if (revEnd == -1)
+	{
+		revEnd = fullVersion.Length;
+	}
+	var revString = fullVersion.Substring(revStart + 2, revEnd - revStart - 2);
+	try
+	{
+		return Int32.Parse(revString);
+	}
+	catch
+	{
+		return 0; //if the revision number could not be parsed, start new revision
+	}
+}
+
+string GetPaddedString(int num, int numDigits)
+{
+	var numString = num.ToString();
+	while (numString.Length < numDigits)
+	{
+		numString = "0" + numString;
+	}
+	return numString;
 }
 
 void DeleteDirectoryIfExists(string directoryName)
