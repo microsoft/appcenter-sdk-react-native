@@ -420,7 +420,6 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private void HandleSendingFailure(string batchId, IngestionException e)
         {
-            var stateSnapshot = _currentState;
             var isRecoverable = e?.IsRecoverable ?? false;
             MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed", e);
             var removedLogs = _sendingBatches[batchId];
@@ -429,13 +428,7 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 foreach (var log in removedLogs)
                 {
-                    _mutex.Release();
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, e));
-                    _mutex.Wait();
-                    if (stateSnapshot != _currentState)
-                    {
-                        return;
-                    }
                 }
             }
             Suspend(!isRecoverable, e);

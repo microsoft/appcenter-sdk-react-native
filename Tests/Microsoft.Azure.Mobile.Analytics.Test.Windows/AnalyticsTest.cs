@@ -111,6 +111,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TrackEvent()
         {
+            Analytics.Enabled = true;
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
             var eventName = "eventName";
             var key = "key";

@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         private const string DefaultValue = "default";
 
-        public override event EventHandler InformationInvalidated;
+        public static event EventHandler InformationInvalidated;
         protected override string GetSdkName()
         {
             return DefaultValue;
@@ -50,6 +50,11 @@ namespace Microsoft.Azure.Mobile.Utils
         protected override string GetScreenSize()
         {
             return DefaultValue;
+        }
+
+        public static void RefreshDisplayCache()
+        {
+            
         }
     }
 }

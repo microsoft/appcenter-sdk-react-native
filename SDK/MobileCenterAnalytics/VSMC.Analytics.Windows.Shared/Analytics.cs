@@ -124,7 +124,6 @@ namespace Microsoft.Azure.Mobile.Analytics
             ApplyEnabledState(InstanceEnabled);
             ApplicationLifecycleHelper.ApplicationResuming += (sender, e) =>
             {
-                DeviceInformationHelper.RefreshDisplayCache();
                 SessionTracker?.Resume();
                 _hasResumed = true;
             };

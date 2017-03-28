@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Utils
             ApplicationResuming?.Invoke(sender, EventArgs.Empty);
         }
 
-        private void InvokeSuspending(object sender, object e)
+        private void InvokeSuspended(object sender, object e)
         {
             ApplicationSuspended?.Invoke(sender, EventArgs.Empty);
         }
@@ -40,12 +40,12 @@ namespace Microsoft.Azure.Mobile.Utils
                 if (value)
                 {
                     CoreApplication.LeavingBackground += InvokeResuming;
-                    CoreApplication.EnteredBackground += InvokeSuspending;
+                    CoreApplication.EnteredBackground += InvokeSuspended;
                 }
                 else
                 {
                     CoreApplication.LeavingBackground -= InvokeResuming;
-                    CoreApplication.EnteredBackground -= InvokeSuspending;
+                    CoreApplication.EnteredBackground -= InvokeSuspended;
                 }
                 _enabled = value;
             }
