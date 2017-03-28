@@ -554,6 +554,7 @@ string GetLatestNuGetVersion()
 	var nugetUser = EnvironmentVariable("NUGET_USER");
 	var nugetPassword = EnvironmentVariable("NUGET_PASSWORD");
 	var nugetFeedId = EnvironmentVariable("NUGET_FEED_ID");
+	Information("Nuget user = " + nugetUser);
 	var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
 	HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
 	request.Headers["X-NuGet-ApiKey"] = nugetPassword;
