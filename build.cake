@@ -551,10 +551,11 @@ string GetShortCommitHash()
 
 string GetLatestNuGetVersion()
 {
+	//Since password and feed id are secret variables in VSTS (and thus cannot be accessed like other environment variables),
+	//provide the option to pass them as parameters to the cake script
 	var nugetUser = EnvironmentVariable("NUGET_USER");
-	var nugetPassword = EnvironmentVariable("NUGET_PASSWORD");
-	var nugetFeedId = EnvironmentVariable("NUGET_FEED_ID");
-	Information("Nuget user = " + nugetUser);
+	var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
+	var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
 	var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
 	HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
 	request.Headers["X-NuGet-ApiKey"] = nugetPassword;
