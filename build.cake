@@ -2,10 +2,8 @@
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
-#addin "System.Net.Http"
 #addin nuget:?package=Cake.Git
 
-using System.Net.Http;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
