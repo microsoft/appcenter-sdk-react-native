@@ -10,9 +10,9 @@ namespace Microsoft.Azure.Mobile.Utils
         bool Enabled { get; set; }
 
         /// <summary>
-        /// Occurs when the application is about to be suspended
+        /// Occurs when the application has just been suspended
         /// </summary>
-        event EventHandler ApplicationSuspending;
+        event EventHandler ApplicationSuspended;
 
         /// <summary>
         /// Occurs when the application is about to resume

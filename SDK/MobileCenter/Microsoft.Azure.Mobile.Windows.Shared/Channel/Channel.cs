@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchTimeInterval = batchTimeInterval;
             _batchScheduled = false;
             _enabled = true;
-            _deviceInfoHelper.InformationInvalidated += (sender, e) => InvalidateDeviceCache();
+            DeviceInformationHelper.InformationInvalidated += (sender, e) => InvalidateDeviceCache();
             Task.Factory.StartNew(CountFromDiskAsync);
         }
 
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             finally
             {
-                _mutex.Release();
+                TryReleaseMutex();
             }
         }
 
@@ -86,13 +86,13 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 finally
                 {
-                    _mutex.Release();
+                    TryReleaseMutex();
                 }
             }
         }
 
         /// <summary>
-        /// The channel's Name
+        /// The channel's name
         /// </summary>
         public string Name { get; }
 
@@ -106,22 +106,30 @@ namespace Microsoft.Azure.Mobile.Channel
         public void Enqueue(Log log)
         {
             _mutex.Wait();
+            var stateSnapshot = _currentState;
             try
             {
                 if (_discardLogs)
                 {
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is disabled; logs are discarded");
+                    _mutex.Release();
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
                     return;
                 }
+                _mutex.Release();
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
+                _mutex.Wait();
+                if (stateSnapshot != _currentState)
+                {
+                    return;
+                }
                 PrepareLog(log);
                 Task.Factory.StartNew(()=>PersistLogAsync(log, _currentState));
             }
             finally
             {
-                _mutex.Release();
+                TryReleaseMutex();
             }
         }
 
@@ -167,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             finally
             {
-                _mutex.Release();
+                TryReleaseMutex();
             }
         }
 
@@ -210,7 +218,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             finally
             {
-                _mutex.Release();
+                TryReleaseMutex();
             }
         }
 
@@ -220,11 +228,18 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchScheduled = false;
             _discardLogs = deleteLogs;
             _currentState++;
+            var stateSnapshot = _currentState;
             if (deleteLogs && FailedToSendLog != null)
             {
                 foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
                 {
+                    _mutex.Release();
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
+                    _mutex.Wait();
+                    if (stateSnapshot != _currentState)
+                    {
+                        return;
+                    }
                 }
             }
             try
@@ -262,7 +277,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             finally
             {
-                _mutex.Release();
+                TryReleaseMutex();
             }
             await _storage.DeleteLogsAsync(Name).ConfigureAwait(false);
         }
@@ -283,8 +298,14 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             foreach (var log in logs)
             {
+                _mutex.Release();
                 SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                 FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
+                _mutex.Wait();
+                if (stateSnapshot != _currentState)
+                {
+                    return;
+                }
             }
             if (logs.Count >= ClearBatchSize)
             {
@@ -326,7 +347,7 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 if (_mutex.CurrentCount == 0)
                 {
-                    _mutex.Release();
+                    TryReleaseMutex();
                 }
             }
         }
@@ -338,7 +359,13 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 foreach (var eventArgs in logs.Select(log => new SendingLogEventArgs(log)))
                 {
+                    _mutex.Release();
                     SendingLog?.Invoke(this, eventArgs);
+                    _mutex.Wait();
+                    if (stateSnapshot != _currentState)
+                    {
+                        return;
+                    }
                 }
             }
             var installId = MobileCenter.InstallId.HasValue ? MobileCenter.InstallId.Value : Guid.Empty;
@@ -372,14 +399,20 @@ namespace Microsoft.Azure.Mobile.Channel
                     {
                         foreach (var log in removedLogs)
                         {
+                            _mutex.Release();
                             SentLog?.Invoke(this, new SentLogEventArgs(log));
+                            _mutex.Wait();
+                            if (stateSnapshot != _currentState)
+                            {
+                                return;
+                            }
                         }
                     }
                     CheckPendingLogs();
                 }
                 finally
                 {
-                    _mutex.Release();
+                    TryReleaseMutex();
                 }
             };
             serviceCall.Execute();
@@ -387,6 +420,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
         private void HandleSendingFailure(string batchId, IngestionException e)
         {
+            var stateSnapshot = _currentState;
             var isRecoverable = e?.IsRecoverable ?? false;
             MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed", e);
             var removedLogs = _sendingBatches[batchId];
@@ -395,7 +429,13 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 foreach (var log in removedLogs)
                 {
+                    _mutex.Release();
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, e));
+                    _mutex.Wait();
+                    if (stateSnapshot != _currentState)
+                    {
+                        return;
+                    }
                 }
             }
             Suspend(!isRecoverable, e);
@@ -440,13 +480,21 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             finally
             {
-                _mutex.Release();
+                TryReleaseMutex();
             }
         }
 
         public void Dispose()
         {
             _mutex.Dispose();
+        }
+
+        private void TryReleaseMutex()
+        {
+            if (_mutex.CurrentCount == 0)
+            {
+                _mutex.Release();
+            }
         }
     }
 }

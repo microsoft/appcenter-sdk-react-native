@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private void InvokeSuspending(object sender, object e)
         {
-            ApplicationSuspending?.Invoke(sender, EventArgs.Empty);
+            ApplicationSuspended?.Invoke(sender, EventArgs.Empty);
         }
 
         private bool _enabled;
@@ -39,19 +39,19 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
                 if (value)
                 {
-                    CoreApplication.Resuming += InvokeResuming;
-                    CoreApplication.Suspending += InvokeSuspending;
+                    CoreApplication.LeavingBackground += InvokeResuming;
+                    CoreApplication.EnteredBackground += InvokeSuspending;
                 }
                 else
                 {
-                    CoreApplication.Resuming -= InvokeResuming;
-                    CoreApplication.Suspending -= InvokeSuspending;
+                    CoreApplication.LeavingBackground -= InvokeResuming;
+                    CoreApplication.EnteredBackground -= InvokeSuspending;
                 }
                 _enabled = value;
             }
         }
 
-        public event EventHandler ApplicationSuspending;
+        public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }

@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void SetupSessionTrackerEvents()
         {
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null, null, null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspended += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         {
             Analytics.Enabled = false;
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null, null, null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspended += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Never());
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
             Analytics.Enabled = true;
 
-            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspending += null, null, null);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspended += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
 

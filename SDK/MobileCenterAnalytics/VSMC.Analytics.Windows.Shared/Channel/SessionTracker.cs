@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null) return;
             _sessions = SessionsFromString(sessionsString);
-            /* Re-write sessions in storage in case of any invalid strings */
+            // Re-write sessions in storage in case of any invalid strings
             _applicationSettings[StorageKey] = SessionsAsString();
             if (_sessions.Count == 0) return;
             var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
@@ -75,8 +75,12 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             lock (_lockObject)
             {
-                /* Skip StartSessionLogs to avoid an infinite loop */
-                if (e.Log is StartSessionLog) return;
+                // Skip StartSessionLogs to avoid an infinite loop
+                // Skip StartServiceLog because enqueuing a startservicelog should not trigger the start of a session
+                if (e.Log is StartSessionLog || e.Log is StartServiceLog)
+                {
+                    return;
+                }
                 if (SetExistingSessionId(e.Log, _sessions))
                 {
                     return;
