@@ -18,7 +18,7 @@
   <files>
 
     <!-- UWP -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.Crashes.dll" />
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.Crashes.UWP.dll" />
 
   </files>
 </package>

@@ -16,7 +16,8 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
-    <AndroidTlsProvider></AndroidTlsProvider>
+    <AndroidTlsProvider>
+    </AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,13 +65,13 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android\Microsoft.Azure.Mobile.Android.csproj">
+      <Project>{119c1730-e109-4bc9-aa89-9dca2c50bfd5}</Project>
+      <Name>Microsoft.Azure.Mobile.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Azure.Mobile.Crashes.Android.Bindings\Microsoft.Azure.Mobile.Crashes.Android.Bindings.csproj">
       <Project>{42D541D7-B7C9-45A7-8D4D-8FB5A00668B3}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android\Microsoft.Azure.Mobile.Android.csproj">
-      <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
-      <Name>Microsoft.Azure.Mobile.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
