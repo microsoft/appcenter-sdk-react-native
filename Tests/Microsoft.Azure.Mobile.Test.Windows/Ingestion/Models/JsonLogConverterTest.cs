@@ -39,12 +39,15 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         /// Validate that conveter throws exception for unexpected type
         /// </summary>
         [TestMethod]
-        public void ReadJsonThrowExceptionForUnexpectedTypeName()
+        public void ReadJsonThrowsExceptionForUnexpectedTypeName()
         {
             JObject jObj = CreateJObjectWithType(TestType);
             Assert.ThrowsException<JsonReaderException>(() => _converter.ReadJson(jObj.CreateReader(), typeof(JObject), null, null));
         }
 
+        /// <summary>
+        /// Validate that ReadJson doesn't throw exception for expected type name
+        /// </summary>
         [TestMethod]
         public void ReadJsonDoesntThrowExceptionForExpectedTypeName()
         {
