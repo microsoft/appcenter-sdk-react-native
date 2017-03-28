@@ -502,27 +502,47 @@ Task("DownloadAssemblies").Does(()=>
 	Information("Successfully downloaded assemblies.");
 });
 
-Task("IncrementBuildNumber").Does(()=>
+Task("IncrementRevisionNumberWithHash").Does(()=>
 {
-	var files = GetFiles("**/AssemblyInfo.cs");
-	Information(files.Count);
+	IncrementRevisionNumber(true);
 });
 
-void IncrementBuildNumber(bool useHash)
+Task("IncrementRevisionNumber").Does(()=>
+{
+	IncrementRevisionNumber(false);
+});
+
+void IncrementRevisionNumber(bool useHash)
 {
 	// Get base version of PCL core
 	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	var version = assemblyInfo.AssemblyInformationalVersion;
+	var baseSemanticVersion = GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
+
 	var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
-	var newRevNum = GetRevisionNumber(nugetVer) + 1;
+	var newRevNum = baseSemanticVersion == baseVersion ? 1 : GetRevisionNumber(nugetVer) + 1;
 	var newRevString = GetPaddedString(newRevNum, 4);
-	string newVersion = baseVersion + "-r" + newRevString;
+	var newVersion = baseVersion + "-r" + newRevString;
 	if (useHash)
 	{
 		newVersion += "-" + GetShortCommitHash();
 	}
 
+	//Replace AssemblyInformationVersion
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFiles("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
+	
+	// Increment revision number of AssemblyFileVersion
+	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
+	var files = FindRegexInFiles("**/AssemblyInfo.cs", fileVersionPattern);
+	foreach (var file in files)
+	{
+		var fileVersionTrimmedPattern = @"AssemblyFileVersion\("+ "\"" + @"([0-9]+.){3}";
+		var fullVersion = FindRegexMatchInFile(file, fileVersionPattern, RegexOptions.None);
+		var trimmedVersion = FindRegexMatchInFile(file, fileVersionTrimmedPattern, RegexOptions.None);
+		var newFileVersion = trimmedVersion + newRevNum + "\")";
+		ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
+	}
 }
 
 string GetShortCommitHash()
