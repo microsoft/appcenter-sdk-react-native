@@ -518,12 +518,58 @@ Task("SetReleaseVersion").Does(()=>
 	// Replace versions in all non-demo app files
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	var assemblyInfoFiles = GetFiles("**/AssemblyInfo.cs");
-	ReplaceRegexInFiles("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
+	ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
 
 	//Replace version in wrapper sdk
 	var patternString = "Version = \"[^\"]+\";";
 	var newString = "Version = \"" + baseSemanticVersion + "\";";
 	ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
+});
+
+Task("UpdateDemoVersion").Does(()=>
+{
+	string newVersion = Argument("DemoVersion");
+	// Replace version in all the demo application assemblies
+	var demoAssemblyInfoGlob = "Apps/**/*Demo*/**/AssemblyInfo.cs";
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFiles(demoAssemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
+	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFiles(demoAssemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+
+	// Replace android versions
+	var manifestGlob = "Apps/**/*Demo*/**/AndroidManifest.xml";
+	// Manifest version name tag
+	var versionNamePattern = "android:versionName=\"[^\"]+\"";
+	var newVersionName = "android:versionName=\"" + newVersion + "\"";
+	ReplaceRegexInFiles(manifestGlob, versionNamePattern, newVersionName);
+	// Manifest version code
+	var manifests = GetFiles("Apps/**/*Demo*/**/AndroidManifest.xml");
+	foreach (var manifest in manifests)
+	{
+		var versionCodePattern = "android:versionCode=\"[^\"]+\"";
+		var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
+		var firstPart = "android:versionCode=\"";
+		var length = versionCodeText.Length - 1 - firstPart.Length;
+		var versionCode = int.Parse(versionCodeText.Substring(firstPart.Length, length));
+		var newVersionCodeText = firstPart + (versionCode + 1) + "\"";
+		ReplaceRegexInFiles(manifest.FullPath, versionCodePattern, newVersionCodeText);
+	}
+
+	//Replace UWP version
+	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
+	var versionTagPattern = " Version=\"[^\"]+\"";
+	var newVersionTagText = " Version=\""+newVersion+"\"";
+	ReplaceRegexInFiles(uwpManifestGlob, versionTagPattern, newVersionTagText);
+
+	//Replace iOS version
+	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>"
+	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/");
+	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>"
+	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
+
+	RunTarget("UpdateDemoDependencies");
 });
 
 void IncrementRevisionNumber(bool useHash)
@@ -652,12 +698,21 @@ void CleanDirectory(string directoryName)
 	CreateDirectory(directoryName);
 }
 
-void ReplaceRegexInFiles(string globberPattern, string regEx, string replacement, string excludeFilePathsContaining)
+void ReplaceRegexInFilesWithExclusion(string globberPattern, string regEx, string replacement, params string[] excludeFilePathsContaining)
 {
 	var assemblyInfoFiles = GetFiles(globberPattern);
 	foreach (var file in assemblyInfoFiles)
 	{
-		if (!file.FullPath.Contains(excludeFilePathsContaining))
+		bool shouldReplace = true;
+		foreach (var excludeString in excludeFilePathsContaining)
+		{
+			if (file.FullPath.Contains(excludeString))
+			{
+				shouldReplace = false;
+				break;
+			}
+		}
+		if (shouldReplace)
 		{
 			ReplaceRegexInFiles(file.FullPath, regEx, replacement);
 		}
