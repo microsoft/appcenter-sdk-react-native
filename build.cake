@@ -521,9 +521,7 @@ Task("SetReleaseVersion").Does(()=>
 	ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
 
 	//Replace version in wrapper sdk
-	var patternString = "Version = \"[^\"]+\";";
-	var newString = "Version = \"" + baseSemanticVersion + "\";";
-	ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
+	UpdateWrapperSdkVersion(baseSemanticVersion);
 });
 
 Task("UpdateDemoVersion").Does(()=>
@@ -546,13 +544,7 @@ Task("UpdateDemoVersion").Does(()=>
 	var manifests = GetFiles("Apps/**/*Demo*/**/AndroidManifest.xml");
 	foreach (var manifest in manifests)
 	{
-		var versionCodePattern = "android:versionCode=\"[^\"]+\"";
-		var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
-		var firstPart = "android:versionCode=\"";
-		var length = versionCodeText.Length - 1 - firstPart.Length;
-		var versionCode = int.Parse(versionCodeText.Substring(firstPart.Length, length));
-		var newVersionCodeText = firstPart + (versionCode + 1) + "\"";
-		ReplaceRegexInFiles(manifest.FullPath, versionCodePattern, newVersionCodeText);
+		IncrementManifestVersionCode(manifest);
 	}
 
 	//Replace UWP version
@@ -570,6 +562,52 @@ Task("UpdateDemoVersion").Does(()=>
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
 
 	RunTarget("UpdateDemoDependencies");
+});
+
+Task("StartNewVersion").Does(()=>
+{
+	var newVersion = Argument<string>("NewVersion");
+	var snapshotVersion = newVersion + "-SNAPSHOT";
+
+	// Replace version in all the demo application assemblies
+	var assemblyInfoGlob = "**/AssemblyInfo.cs";
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
+	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+
+	// Update wrapper sdk version
+	UpdateWrapperSdkVersion(snapshotVersion);
+
+	// Replace android versions
+	var manifestGlob = "Apps/**/AndroidManifest.xml";
+	// Manifest version name tag
+	var versionNamePattern = "android:versionName=\"[^\"]+\"";
+	var newVersionName = "android:versionName=\"" + snapshotVersion + "\"";
+	ReplaceRegexInFilesWithExclusion(manifestGlob, versionNamePattern, newVersionName, "Demo");
+	// Manifest version code
+	var manifests = GetFiles(manifestGlob);
+	foreach (var manifest in manifests)
+	{
+		if (!manifest.FullPath.Contains("Demo"))
+		{
+			IncrementManifestVersionCode(manifest);
+		}
+	}
+
+	//Replace UWP version
+	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
+	var versionTagPattern = " Version=\"[^\"]+\"";
+	var newVersionTagText = " Version=\""+newVersion+".0\"";
+	ReplaceRegexInFilesWithExclusion(uwpManifestGlob, versionTagPattern, newVersionTagText, "Demo");
+
+	//Replace iOS version
+	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
+	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
+	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>";
+	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
 });
 
 void IncrementRevisionNumber(bool useHash)
@@ -641,6 +679,17 @@ string GetLatestNuGetVersion()
 	return tag;
 }
 
+void IncrementManifestVersionCode(FilePath manifest)
+{
+	var versionCodePattern = "android:versionCode=\"[^\"]+\"";
+	var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
+	var firstPart = "android:versionCode=\"";
+	var length = versionCodeText.Length - 1 - firstPart.Length;
+	var versionCode = int.Parse(versionCodeText.Substring(firstPart.Length, length));
+	var newVersionCodeText = firstPart + (versionCode + 1) + "\"";
+	ReplaceRegexInFiles(manifest.FullPath, versionCodePattern, newVersionCodeText);
+}
+
 string GetBaseVersion(string fullVersion)
 {
 	var indexDash = fullVersion.IndexOf("-");
@@ -649,6 +698,13 @@ string GetBaseVersion(string fullVersion)
 		return fullVersion;
 	}
 	return fullVersion.Substring(0, indexDash);
+}
+
+void UpdateWrapperSdkVersion(string newVersion)
+{
+	var patternString = "Version = \"[^\"]+\";";
+	var newString = "Version = \"" + newVersion + "\";";
+	ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
 }
 
 int GetRevisionNumber(string fullVersion)
