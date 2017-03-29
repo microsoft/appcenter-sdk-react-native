@@ -596,7 +596,7 @@ Task("StartNewVersion").Does(()=>
 	}
 
 	//Replace UWP version
-	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
+	var uwpManifestGlob = "Apps/**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
 	var newVersionTagText = " Version=\""+newVersion+".0\"";
 	ReplaceRegexInFilesWithExclusion(uwpManifestGlob, versionTagPattern, newVersionTagText, "Demo");
