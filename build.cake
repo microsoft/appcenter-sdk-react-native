@@ -528,7 +528,7 @@ Task("SetReleaseVersion").Does(()=>
 
 Task("UpdateDemoVersion").Does(()=>
 {
-	string newVersion = Argument("DemoVersion");
+	var newVersion = Argument<string>("DemoVersion");
 	// Replace version in all the demo application assemblies
 	var demoAssemblyInfoGlob = "Apps/**/*Demo*/**/AssemblyInfo.cs";
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
@@ -558,14 +558,14 @@ Task("UpdateDemoVersion").Does(()=>
 	//Replace UWP version
 	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
-	var newVersionTagText = " Version=\""+newVersion+"\"";
+	var newVersionTagText = " Version=\""+newVersion+".0\"";
 	ReplaceRegexInFiles(uwpManifestGlob, versionTagPattern, newVersionTagText);
 
 	//Replace iOS version
-	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>"
+	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/");
-	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>"
+	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
 
