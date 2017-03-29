@@ -74,7 +74,6 @@ if [ ! -f $CAKE_EXE ]; then
     exit 1
 fi
 
-echo "EXTRA ARGS: $EXTRA_ARGS"
 # Start Cake
 if $SHOW_VERSION; then
     mono $CAKE_EXE -version

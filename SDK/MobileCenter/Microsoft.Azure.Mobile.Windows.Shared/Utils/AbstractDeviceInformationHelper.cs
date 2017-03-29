@@ -5,8 +5,6 @@ namespace Microsoft.Azure.Mobile.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     {
-        public abstract event EventHandler InformationInvalidated;
-
         public Ingestion.Models.Device GetDeviceInformation()
         {
             return new Ingestion.Models.Device

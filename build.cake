@@ -2,11 +2,12 @@
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
 #addin "Cake.AzureStorage"
-#addin "System.Net.Http"
+#addin nuget:?package=Cake.Git
 
-using System.Net.Http;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+
 // MobileCenter module class definition.
 class MobileCenterModule {
 	public string AndroidModule { get; set; }
@@ -499,24 +500,62 @@ Task("DownloadAssemblies").Does(()=>
 	Information("Successfully downloaded assemblies.");
 });
 
-Task("IncrementBuildNumber").Does(()=>
+Task("IncrementRevisionNumberWithHash").Does(()=>
+{
+	IncrementRevisionNumber(true);
+});
+
+Task("IncrementRevisionNumber").Does(()=>
+{
+	IncrementRevisionNumber(false);
+});
+
+void IncrementRevisionNumber(bool useHash)
 {
 	// Get base version of PCL core
 	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	var version = assemblyInfo.AssemblyInformationalVersion;
+	var baseSemanticVersion = GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
 
 	var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
-	var rev = GetRevision(nugetVer);
-	Information(baseVersion);
-	Information(rev);
-});
+	var newRevNum = baseSemanticVersion == baseVersion ? 1 : GetRevisionNumber(nugetVer) + 1;
+	var newRevString = GetPaddedString(newRevNum, 4);
+	var newVersion = baseVersion + "-r" + newRevString;
+	if (useHash)
+	{
+		newVersion += "-" + GetShortCommitHash();
+	}
+
+	//Replace AssemblyInformationVersion
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFiles("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
+	
+	// Increment revision number of AssemblyFileVersion
+	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
+	var files = FindRegexInFiles("**/AssemblyInfo.cs", fileVersionPattern);
+	foreach (var file in files)
+	{
+		var fileVersionTrimmedPattern = @"AssemblyFileVersion\("+ "\"" + @"([0-9]+.){3}";
+		var fullVersion = FindRegexMatchInFile(file, fileVersionPattern, RegexOptions.None);
+		var trimmedVersion = FindRegexMatchInFile(file, fileVersionTrimmedPattern, RegexOptions.None);
+		var newFileVersion = trimmedVersion + newRevNum + "\")";
+		ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
+	}
+}
+
+string GetShortCommitHash()
+{
+	var lastCommit = GitLogTip(".");
+	return lastCommit.Sha.Substring(0, 7);
+}
 
 string GetLatestNuGetVersion()
 {
+	//Since password and feed id are secret variables in VSTS (and thus cannot be accessed like other environment variables),
+	//provide the option to pass them as parameters to the cake script
 	var nugetUser = EnvironmentVariable("NUGET_USER");
-	var nugetPassword = EnvironmentVariable("NUGET_PASSWORD");
-	var nugetFeedId = EnvironmentVariable("NUGET_FEED_ID");
+	var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
+	var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
 	var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
 	HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
 	request.Headers["X-NuGet-ApiKey"] = nugetPassword;
@@ -538,19 +577,44 @@ string GetLatestNuGetVersion()
 string GetBaseVersion(string fullVersion)
 {
 	var indexDash = fullVersion.IndexOf("-");
+	if (indexDash == -1)
+	{
+		return fullVersion;
+	}
 	return fullVersion.Substring(0, indexDash);
 }
 
-string GetRevision(string fullVersion)
+int GetRevisionNumber(string fullVersion)
 {
-	var indexDash = fullVersion.IndexOf("-");
-	var secondIndexOfDash = fullVersion.IndexOf("-", indexDash + 1);
-	var len = fullVersion.Length - indexDash - 1;
-	if (secondIndexOfDash != -1)
+	var revStart = fullVersion.IndexOf("-r");
+	if (revStart == -1)
 	{
-		len = secondIndexOfDash - indexDash - 1;
+		return 0;
 	}
-	return fullVersion.Substring(indexDash + 1, len);
+	var revEnd = fullVersion.IndexOf("-", revStart + 1);
+	if (revEnd == -1)
+	{
+		revEnd = fullVersion.Length;
+	}
+	var revString = fullVersion.Substring(revStart + 2, revEnd - revStart - 2);
+	try
+	{
+		return Int32.Parse(revString);
+	}
+	catch
+	{
+		return 0; //if the revision number could not be parsed, start new revision
+	}
+}
+
+string GetPaddedString(int num, int numDigits)
+{
+	var numString = num.ToString();
+	while (numString.Length < numDigits)
+	{
+		numString = "0" + numString;
+	}
+	return numString;
 }
 
 void DeleteDirectoryIfExists(string directoryName)

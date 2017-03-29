@@ -1,47 +1,64 @@
 ﻿using System;
+using System.Threading;
 using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.ApplicationModel.Core;
 using Windows.Graphics.Display;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        private bool _leftBackground;
-        private string _cachedScreenSize;
-        public override event EventHandler InformationInvalidated;
-
-        public DeviceInformationHelper()
+        private static bool _leftBackground;
+        private static string _cachedScreenSize;
+        public static event EventHandler InformationInvalidated;
+        private static object _lockObject = new object();
+        static DeviceInformationHelper()
         {
             CoreApplication.LeavingBackground += (o, e) => {
-                if (_leftBackground) return;
-                _leftBackground = true;
-                CacheScreenSize();
-                DisplayInformation.DisplayContentsInvalidated += (displayInfo, obj) =>
+                lock (_lockObject)
                 {
-                    _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
-                    InformationInvalidated?.Invoke(this, EventArgs.Empty);
-                };
-                InformationInvalidated?.Invoke(this, EventArgs.Empty);
+                    if (_leftBackground)
+                    {
+                        return;
+                    }
+                    DisplayInformation.DisplayContentsInvalidated += (displayInfo, obj) =>
+                    {
+                        RefreshDisplayCache();
+                    };
+                    _leftBackground = true;
+                    RefreshDisplayCache();
+                }
             };
         }
 
-        private void CacheScreenSize()
+        //NOTE: This method MUST be called from the UI thread
+        public static void RefreshDisplayCache()
         {
-            try
+            lock (_lockObject)
             {
-                var displayInfo = DisplayInformation.GetForCurrentView();
+
+                DisplayInformation displayInfo = null;
+                try
+                {
+                    displayInfo = DisplayInformation.GetForCurrentView();
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+                if (_cachedScreenSize == ScreenSizeFromDisplayInfo(displayInfo))
+                {
+                    return;
+                }
                 _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
-            }
-            catch (Exception e)
-            {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, "Failed to retrieve screen size", e);
+                InformationInvalidated?.Invoke(null, EventArgs.Empty);
             }
         }
 
-        private string ScreenSizeFromDisplayInfo(DisplayInformation displayInfo)
+        private static string ScreenSizeFromDisplayInfo(DisplayInformation displayInfo)
         {
             return $"{displayInfo.ScreenWidthInRawPixels}x{displayInfo.ScreenHeightInRawPixels}";
         }
@@ -112,7 +129,10 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetScreenSize()
         {
-            return _cachedScreenSize;
+            lock (_lockObject)
+            {
+                return _cachedScreenSize;
+            }
         }
     }
 }

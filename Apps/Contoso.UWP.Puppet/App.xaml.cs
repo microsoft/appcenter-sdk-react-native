@@ -32,14 +32,14 @@ namespace Contoso.UWP.Puppet
         public App()
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Enabled = true;
-            MobileCenter.Enabled = false;
             MobileCenter.Configure("98038a20-4014-445a-b27f-048082036045");
+            Analytics.Enabled = true;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+            MobileCenter.Enabled = true;
             var properties = new Dictionary<string, string>();
             properties["key1"] = "value1";
             properties["key2"] = "value";
-            Analytics.TrackEvent("event", properties);
+            //Analytics.TrackEvent("event", properties);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
