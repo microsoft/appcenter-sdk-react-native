@@ -518,7 +518,7 @@ void IncrementRevisionNumber(bool useHash)
 
 	var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
-	var newRevNum = baseSemanticVersion == baseVersion ? 1 : GetRevisionNumber(nugetVer) + 1;
+	var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1; 
 	var newRevString = GetPaddedString(newRevNum, 4);
 	var newVersion = baseVersion + "-r" + newRevString;
 	if (useHash)
