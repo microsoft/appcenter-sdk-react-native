@@ -209,6 +209,18 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         }
 
         /// <summary>
+        /// Validate that function doesn't throw any exception
+        /// </summary>
+        [TestMethod]
+        public void CallExecuteAsyncWhenCallIsNotOfTypeRetryableServiceCall()
+        {
+            var mockServiceCall = new Mock<IServiceCall>();
+            _retryableIngestion.ExecuteCallAsync(new TestServiceCall(mockServiceCall.Object));
+
+            // No throw any exception
+        }
+
+        /// <summary>
         /// Helper for prepare ServiceCall.
         /// </summary>
         private IServiceCall PrepareServiceCall()
@@ -280,6 +292,13 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
                 enteredAll &= semaphore.Wait(waitTime);
             }
             return enteredAll;
+        }
+
+        public class TestServiceCall : ServiceCallDecorator
+        {
+            public TestServiceCall(IServiceCall decoratedApi) : base(decoratedApi)
+            {
+            }
         }
     }
 }
