@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="logUrl">Base URL to use for server communication.</param>
         public static void SetLogUrl(string logUrl)
         {
-            AndroidMobileCenter.SetLogUrl(logUrl);
+            AndroidMobileCenter.SetServerUrl(logUrl);
         }
 
         /// <summary>
