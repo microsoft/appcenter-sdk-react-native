@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         }
 
         [TestMethod]
-        public void TestDisposeChanngelGroup()
+        public void TestDisposeChannelGroup()
         {
             _channelGroup.Dispose();
             Assert.ThrowsException<ObjectDisposedException>(() => _channelGroup.SetEnabled(true));
@@ -169,7 +169,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Veriy that all channels are disabled after channel group disabling
         /// </summary>
         [TestMethod]
-        public void TestShudownChannelGroup()
+        public void TestShutdownChannelGroup()
         {
             const string channelName = "some_channel";
             var addedChannel =

@@ -22,6 +22,7 @@
                 <Function>.*\.NetworkStateAdapter\..*</Function>
                 <Function>.*\.MobileCenterPart\..*</Function>
                 <Function>.*\.WatsonCrashesStarter\..*</Function>
+                <Function>.*\.ApplicationLifecycleHelper\..*</Function>
               </Exclude>
             </Functions>
             <!-- We recommend you do not change the following values: -->
