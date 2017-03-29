@@ -189,6 +189,26 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         }
 
         /// <summary>
+        /// Validate that constructor throws correct exception type with nullable timespan array
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionWithNullIntervals()
+        {
+            TimeSpan[] timeSpans = null;
+            Assert.ThrowsException<ArgumentNullException>(() => { new RetryableIngestion(new IngestionHttp(_adapter.Object), timeSpans); });
+        }
+
+        /// <summary>
+        /// Validate that constructor throws correct exception type with nullable timespan array
+        /// </summary>
+        [TestMethod]
+        public void RetryableIngestionWithNullFunc()
+        {
+            Func<Task>[] funcs = null;
+            Assert.ThrowsException<ArgumentNullException>(() => { new RetryableIngestion(new IngestionHttp(_adapter.Object), funcs); });
+        }
+
+        /// <summary>
         /// Helper for prepare ServiceCall.
         /// </summary>
         private IServiceCall PrepareServiceCall()
