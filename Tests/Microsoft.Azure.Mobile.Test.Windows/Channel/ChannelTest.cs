@@ -227,6 +227,30 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             Assert.ThrowsException<ObjectDisposedException>(() => _channel.SetEnabled(true));
         }
 
+        /// <summary>
+        /// Validate that StorageException is processing without exception
+        /// </summary>
+        [TestMethod]
+        public void ThrowStorageExceptionInDeleteLogsTime()
+        {
+            var storage = new Mock<IStorage>();
+            storage.Setup(s => s.DeleteLogsAsync(It.IsAny<string>(), It.IsAny<string>())).Throws<StorageException>();
+            storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>())).Returns(Task.FromResult(""));
+
+            Mobile.Channel.Channel channel = new Mobile.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
+
+            //Shutdown channel and store some log
+            channel.Shutdown();
+            channel.Enqueue(new TestLog());
+
+            //Wait while log is saving
+            Task.Delay(1000).Wait();
+
+            channel.SetEnabled(true);
+
+            // Not throw any exception
+        }
+
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
             _storage.DeleteLogsAsync(ChannelName).Wait();
