@@ -341,48 +341,48 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
-        /// Verify that the channel group's server url is not set by Mobile Center by default
+        /// Verify that the channel group's log url is not set by Mobile Center by default
         /// </summary>
         [TestMethod]
-        public void ServerUrlIsNotSetByDefault()
+        public void LogUrlIsNotSetByDefault()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
             MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
-            channelGroupMock.Verify(channelGroup => channelGroup.SetServerUrl(It.IsAny<string>()), Times.Never());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetLogUrl(It.IsAny<string>()), Times.Never());
         }
 
         /// <summary>
-        /// Verify that the channel group's server url is set by Mobile Center once configured if its server url had been set beforehand
+        /// Verify that the channel group's log url is set by Mobile Center once configured if its log url had been set beforehand
         /// </summary>
         [TestMethod]
-        public void SetServerUrlBeforeConfigure()
+        public void SetLogUrlBeforeConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
             MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
-            var customServerUrl = "www dot server url dot com";
-            MobileCenter.SetServerUrl(customServerUrl);
+            var customLogUrl = "www dot log url dot com";
+            MobileCenter.SetLogUrl(customLogUrl);
             MobileCenter.Configure("appsecret");
 
-            channelGroupMock.Verify(channelGroup => channelGroup.SetServerUrl(customServerUrl), Times.Once());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetLogUrl(customLogUrl), Times.Once());
         }
 
         /// <summary>
-        /// Verify that the channel group's server url is updated by Mobile Center if its server url is set after configuration
+        /// Verify that the channel group's log url is updated by Mobile Center if its log url is set after configuration
         /// </summary>
         [TestMethod]
-        public void SetServerUrlAfterConfigure()
+        public void SetLogUrlAfterConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
             MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
-            var customServerUrl = "www dot server url dot com";
-            MobileCenter.SetServerUrl(customServerUrl);
+            var customLogUrl = "www dot log url dot com";
+            MobileCenter.SetLogUrl(customLogUrl);
 
-            channelGroupMock.Verify(channelGroup => channelGroup.SetServerUrl(customServerUrl), Times.Once());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetLogUrl(customLogUrl), Times.Once());
         }
 
         private static void VerifySetLogLevel(LogLevel level)

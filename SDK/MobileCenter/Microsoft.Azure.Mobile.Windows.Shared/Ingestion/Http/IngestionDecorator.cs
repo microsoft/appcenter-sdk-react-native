@@ -29,9 +29,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return DecoratedApi.ExecuteCallAsync(call);
         }
 
-        public virtual void SetServerUrl(string serverUrl)
+        public virtual void SetLogUrl(string logUrl)
         {
-            DecoratedApi.SetServerUrl(serverUrl);
+            DecoratedApi.SetLogUrl(logUrl);
         }
 
         public void Dispose()

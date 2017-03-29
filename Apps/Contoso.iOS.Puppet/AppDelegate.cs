@@ -27,7 +27,7 @@ namespace Contoso.iOS.Puppet
 
             MobileCenter.LogLevel = LogLevel.Verbose;
 
-            //MobileCenter.SetServerUrl("http://in-integration.dev.avalanch.es:8081");
+            //MobileCenter.SetLogUrl("http://in-integration.dev.avalanch.es:8081");
             MobileCenter.Start("b5ac8947-ee9d-4f05-8009-426687eb2381", typeof(Analytics), typeof(Crashes));
 
             try
