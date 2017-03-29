@@ -109,6 +109,10 @@ Task("Externals-Ios")
 	foreach (var file in files) {
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
+
+	// Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
+	if(DirectoryExists("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle"))
+		MoveDirectory("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
 });
 
 // Create a common externals task depending on platform specific ones
