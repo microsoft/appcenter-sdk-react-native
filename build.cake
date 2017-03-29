@@ -19,8 +19,8 @@ class MobileCenterModule {
 }
 
 // SDK versions
-var ANDROID_SDK_VERSION = "0.5.0";
-var IOS_SDK_VERSION = "0.5.1";
+var ANDROID_SDK_VERSION = "0.6.1";
+var IOS_SDK_VERSION = "0.6.0";
 
 // URLs for downloading binaries.
 /*
@@ -38,7 +38,8 @@ var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zi
 var MOBILECENTER_MODULES = new [] {
 	new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
 	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
-	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
+	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
+	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec")	
 };
 
 // Task TARGET for build

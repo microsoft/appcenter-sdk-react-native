@@ -16,8 +16,9 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <AndroidTlsProvider></AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,7 +33,7 @@
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -98,6 +99,14 @@
     <ProjectReference Include="..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.Android\Microsoft.Azure.Mobile.Android.csproj">
       <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
       <Name>Microsoft.Azure.Mobile.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Android\Microsoft.Azure.Mobile.Distribute.Android.csproj">
+      <Project>{AD38DEE9-8A74-4B04-93C3-0831B55E7254}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Android.Bindings\Microsoft.Azure.Mobile.Distribute.Android.Bindings.csproj">
+      <Project>{11D31A79-0F09-4708-8097-3D1C5D886547}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

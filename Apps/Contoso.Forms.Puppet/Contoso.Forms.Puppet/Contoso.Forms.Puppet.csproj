@@ -95,6 +95,10 @@
       <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
       <Name>Microsoft.Azure.Mobile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj">
+      <Project>{41FEBC72-C12B-47E1-B6F6-51D50158C825}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Contoso.Forms.Puppet.Droid</RootNamespace>
     <AssemblyName>Contoso.Forms.Puppet.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -16,6 +16,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidTlsProvider></AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -134,6 +135,14 @@
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Android.Bindings\Microsoft.Azure.Mobile.Analytics.Android.Bindings.csproj">
       <Project>{34771DC0-9684-45BE-9C9C-5A686468722C}</Project>
       <Name>Microsoft.Azure.Mobile.Analytics.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Android\Microsoft.Azure.Mobile.Distribute.Android.csproj">
+      <Project>{AD38DEE9-8A74-4B04-93C3-0831B55E7254}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Android.Bindings\Microsoft.Azure.Mobile.Distribute.Android.Bindings.csproj">
+      <Project>{11D31A79-0F09-4708-8097-3D1C5D886547}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
