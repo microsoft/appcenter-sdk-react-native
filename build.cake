@@ -510,11 +510,26 @@ Task("IncrementRevisionNumber").Does(()=>
 	IncrementRevisionNumber(false);
 });
 
+Task("SetReleaseVersion").Does(()=>
+{
+	// Get base version of PCL core
+	var baseSemanticVersion = GetPCLBaseSemanticVersion();
+
+	// Replace versions in all non-demo app files
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	var assemblyInfoFiles = GetFiles("**/AssemblyInfo.cs");
+	ReplaceRegexInFiles("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
+
+	//Replace version in wrapper sdk
+	var patternString = "Version = \"[^\"]+\";";
+	var newString = "Version = \"" + baseSemanticVersion + "\";";
+	ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
+});
+
 void IncrementRevisionNumber(bool useHash)
 {
 	// Get base version of PCL core
-	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	var baseSemanticVersion = GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
+	var baseSemanticVersion = GetPCLBaseSemanticVersion();
 
 	var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
@@ -526,10 +541,10 @@ void IncrementRevisionNumber(bool useHash)
 		newVersion += "-" + GetShortCommitHash();
 	}
 
-	//Replace AssemblyInformationVersion
+	//Replace AssemblyInformationalVersion in all AssemblyInfo files
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFiles("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
-	
+
 	// Increment revision number of AssemblyFileVersion
 	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
 	var files = FindRegexInFiles("**/AssemblyInfo.cs", fileVersionPattern);
@@ -541,6 +556,12 @@ void IncrementRevisionNumber(bool useHash)
 		var newFileVersion = trimmedVersion + newRevNum + "\")";
 		ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
 	}
+}
+
+string GetPCLBaseSemanticVersion()
+{
+	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
+	return GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
 }
 
 string GetShortCommitHash()
@@ -629,6 +650,18 @@ void CleanDirectory(string directoryName)
 {
 	DeleteDirectoryIfExists(directoryName);
 	CreateDirectory(directoryName);
+}
+
+void ReplaceRegexInFiles(string globberPattern, string regEx, string replacement, string excludeFilePathsContaining)
+{
+	var assemblyInfoFiles = GetFiles(globberPattern);
+	foreach (var file in assemblyInfoFiles)
+	{
+		if (!file.FullPath.Contains(excludeFilePathsContaining))
+		{
+			ReplaceRegexInFiles(file.FullPath, regEx, replacement);
+		}
+	}
 }
 
 RunTarget(TARGET);
