@@ -123,7 +123,10 @@ Task("MacBuild")
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Mac.sln");
 	DotNetBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
 
 // Building Windows code task
 Task("WindowsBuild").Does(() => 
@@ -131,7 +134,10 @@ Task("WindowsBuild").Does(() =>
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", c => c.Configuration = "Release");
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
 
 // Build and prepare UWP dlls
 Task("PrepareUWPAssemblies").Does(() =>
@@ -147,7 +153,10 @@ Task("PrepareUWPAssemblies").Does(() =>
 	{
 		CopyFile(assembly, UWP_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
 	}
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
 
 // Build and prepare iOS dlls
 Task("PrepareIosAssemblies").IsDependentOn("Externals-Ios").Does(() =>
@@ -187,7 +196,11 @@ Task("PrepareAndroidAssemblies").IsDependentOn("Externals-Android").Does(() =>
 	{
 		CopyFile(assembly, ANDROID_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
 	}
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
+
 
 // Build and prepare PCL dlls
 Task("PreparePCLAssemblies").Does(() =>
@@ -204,7 +217,11 @@ Task("PreparePCLAssemblies").Does(() =>
 	{
 		CopyFile(assembly, PCL_ASSEMBLIES_FOLDER + "/" + System.IO.Path.GetFileName(assembly));
 	}
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
+
 
 // Task dependencies for binding each platform.
 Task("Bindings-Android").IsDependentOn("Externals-Android");
@@ -244,7 +261,10 @@ Task("Externals-Ios")
 	{
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
 
 // Create a common externals task depending on platform specific ones
 Task("Externals").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Android");
@@ -281,7 +301,11 @@ Task("NuGet")
 		});
 	}
 	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
-}).OnError(()=>RunTarget("clean"));
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
+});
+
 
 Task("PrepareAssemblies").IsDependentOn("PreparePCLAssemblies").Does(()=>
 {
@@ -349,6 +373,9 @@ Task("UploadAssemblies")
 		Key = apiKey,
 		UseHttps = true
 	}, assembliesZip);
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
 }).Finally(()=>RunTarget("RemoveTemporaries"));
 
 Task("MergeAssemblies")
@@ -409,6 +436,9 @@ Task("MergeAssemblies")
 	DeleteDirectory(DOWNLOADED_ASSEMBLIES_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
 });
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
@@ -491,6 +521,9 @@ Task("DownloadAssemblies").Does(()=>
 	Unzip(assembliesZip, DOWNLOADED_ASSEMBLIES_FOLDER);
 	DeleteFiles(assembliesZip);
 	Information("Successfully downloaded assemblies.");
+}).OnError(exception => {
+	RunTarget("clean");
+	throw exception;
 });
 
 void DeleteDirectoryIfExists(string directoryName)
