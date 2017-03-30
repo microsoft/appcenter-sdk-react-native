@@ -39,18 +39,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
             {
                 throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Logs");
             }
-            if (Logs != null)
+            if (Logs.Count < 1)
             {
-                if (Logs.Count < 1)
-                {
-                    throw new Rest.ValidationException(Rest.ValidationRules.MinItems, "Logs", 1);
-                }
-                foreach (var element in Logs)
-                {
-                    element?.Validate();
-                }
+                throw new Rest.ValidationException(Rest.ValidationRules.MinItems, "Logs", 1);
+            }
+            foreach (var element in Logs)
+            {
+                element?.Validate();
             }
         }
     }
 }
-

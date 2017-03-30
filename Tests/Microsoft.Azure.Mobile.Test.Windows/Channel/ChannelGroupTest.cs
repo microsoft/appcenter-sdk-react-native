@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             _mockIngestion.Verify(ingestion => ingestion.SetLogUrl(urlString), Times.Once());
         }
-        
+
         /// <summary>
         /// Verify that a adding a Channel to a ChannelGroup works
         /// </summary>
@@ -156,6 +156,28 @@ namespace Microsoft.Azure.Mobile.Test.Channel
                 channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => p)), Times.Once());
                 channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => !p)), Times.Once());
             }
+        }
+
+        [TestMethod]
+        public void TestDisposeChannelGroup()
+        {
+            _channelGroup.Dispose();
+            Assert.ThrowsException<ObjectDisposedException>(() => _channelGroup.SetEnabled(true));
+        }
+
+        /// <summary>
+        /// Veriy that all channels are disabled after channel group disabling
+        /// </summary>
+        [TestMethod]
+        public void TestShutdownChannelGroup()
+        {
+            const string channelName = "some_channel";
+            var addedChannel =
+                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Mobile.Channel.Channel;
+
+            _channelGroup.Shutdown();
+
+            Assert.IsFalse(addedChannel.IsEnabled);
         }
     }
 }

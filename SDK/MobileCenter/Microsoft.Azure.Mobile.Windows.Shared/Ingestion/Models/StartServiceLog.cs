@@ -4,7 +4,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
     using Newtonsoft.Json;
 
-    [JsonObject( JsonIdentifier )]
+    [JsonObject(JsonIdentifier)]
     public class StartServiceLog : Log
     {
         internal const string JsonIdentifier = "start_service";

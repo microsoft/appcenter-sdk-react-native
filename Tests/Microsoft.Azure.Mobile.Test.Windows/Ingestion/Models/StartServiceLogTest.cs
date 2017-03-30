@@ -1,15 +1,16 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Test.Windows
+namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
     [TestClass]
     public class StartServiceLogTest
     {
-        private const string StorageTestChannelName = "storageTestChannelName";
+        private const string StorageTestChannelName = "startServiceStorageTestChannelName";
 
         [TestInitialize]
         public void InitializeStartServiceTest()
@@ -31,6 +32,22 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         }
 
         /// <summary>
+        /// Validate that services names are coping
+        /// </summary>
+        [TestMethod]
+        public void CheckInitialValuesWithServices()
+        {
+            List<string> servicesNames = new List<string>() { "Service0", "Service1", "Service2" };
+            StartServiceLog log = new StartServiceLog(0, null, servicesNames);
+
+            Assert.IsNotNull(log.Services);
+            foreach (string serviceName in log.Services)
+            {
+                Assert.IsTrue(servicesNames.Contains(serviceName));
+            }
+        }
+
+        /// <summary>
         /// Validate that name services can be correctly saved and restored
         /// </summary>
         [TestMethod]
@@ -40,6 +57,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             addedLog.Device = new DeviceInformationHelper().GetDeviceInformation();
             addedLog.Toffset = TimeHelper.CurrentTimeInMilliseconds();
             addedLog.Services = new List<string>() { "Service0", "Service1", "Service2" };
+            addedLog.Sid = Guid.NewGuid();
 
             Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
             _storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
@@ -63,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             log.Device = new DeviceInformationHelper().GetDeviceInformation();
             log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
 
-            Assert.ThrowsException<Rest.ValidationException>( (Action)log.Validate );
+            Assert.ThrowsException<Rest.ValidationException>((Action)log.Validate);
         }
     }
 }

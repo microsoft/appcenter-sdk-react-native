@@ -36,8 +36,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public RetryableIngestion(IIngestion decoratedApi, Func<Task>[] retryIntervals) : base(decoratedApi)
         {
-                if (retryIntervals == null) throw new ArgumentNullException(nameof(retryIntervals));
-                _retryIntervals = retryIntervals;
+            if (retryIntervals == null) throw new ArgumentNullException(nameof(retryIntervals));
+            _retryIntervals = retryIntervals;
         }
 
         public override IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
