@@ -3,6 +3,7 @@ using UIKit;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.Azure.Mobile.Distribute;
 using System;
 
 namespace Contoso.iOS.Puppet
@@ -27,7 +28,9 @@ namespace Contoso.iOS.Puppet
 
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            MobileCenter.Start("b889c4f2-9ac2-4e2e-ae16-dae54f2c5899", typeof(Analytics), typeof(Crashes));
+            Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
+            Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+            MobileCenter.Start("b889c4f2-9ac2-4e2e-ae16-dae54f2c5899", typeof(Analytics), typeof(Crashes), typeof(Distribute));
             try
             {
                 ThrowAnException();
@@ -41,10 +44,19 @@ namespace Contoso.iOS.Puppet
             System.Diagnostics.Debug.WriteLine("ANALYTICS: " + Analytics.Enabled.ToString());
             return true;
         }
+
         private void ThrowAnException()
         {
             throw new Exception();
         }
+
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            Distribute.PlatformOpenUrl(url);
+
+            return base.OpenUrl(application, url, sourceApplication, annotation);
+        }
+
         public override void OnResignActivation(UIApplication application)
         {
             // Invoked when the application is about to move from active to inactive state.
