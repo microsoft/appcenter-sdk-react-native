@@ -154,7 +154,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Assert.IsTrue(_sessionTracker.NumSessions == SessionTracker.StorageMaxSessions);
         }
 
-        //TODO sucessive resumes seem to fail in some cases?
         /// <summary>
         /// Verify that creating a session dictionary from an invalid string returns a dictionary without the invalid sessions
         /// </summary>

@@ -10,11 +10,27 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
     internal class SessionTracker : ISessionTracker
     {
-        /* Internal for testing */
+        // Represents the state of a session
+        private enum SessionState
+        {
+            Inactive,
+            Active,
+            None
+        }
+
+        // Need to track the current state because if not, successive calls to resume could cause
+        // a session to be started multiple times. Worse, if the calls occur in rapid succession,
+        // the session entries could have the same time in milliseconds, causing an exception to
+        // be thrown.
+        //
+        // TL;DR - it is incorrect to resume an active session, and to pause an inactive session,
+        // so we track the current session state.
+        private SessionState _currentSessionState = SessionState.None;
+
+        // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
         internal const int StorageMaxSessions = 5;
         internal const string StorageKey = "MobileCenterSessions";
-
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
         private readonly IChannelUnit _channel;
@@ -25,6 +41,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long _lastPausedTime;
         private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
         private readonly object _lockObject = new object();
+
+        // This field is purely for testing
+        internal int NumSessions => _sessions.Count;
 
         public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
         {
@@ -40,13 +59,18 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 
-
         public void Pause()
         {
             lock (_lockObject)
             {
+                if (_currentSessionState == SessionState.Inactive)
+                {
+                    MobileCenterLog.Warn(Analytics.Instance.LogTag, "Trying to pause already inactive session.");
+                    return;
+                }
                 MobileCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Pause");
                 _lastPausedTime = TimeHelper.CurrentTimeInMilliseconds();
+                _currentSessionState = SessionState.Inactive;
             }
         }
 
@@ -54,8 +78,14 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             lock (_lockObject)
             {
+                if (_currentSessionState == SessionState.Active)
+                {
+                    MobileCenterLog.Warn(Analytics.Instance.LogTag, "Trying to resume already active session.");
+                    return;
+                }
                 MobileCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Resume");
                 _lastResumedTime = TimeHelper.CurrentTimeInMilliseconds();
+                _currentSessionState = SessionState.Active;
                 SendStartSessionIfNeeded();
             }
         }
@@ -67,9 +97,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 _applicationSettings.Remove(StorageKey);
             }
         }
-
-        /* For testing */
-        internal int NumSessions => _sessions.Count;
 
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
         {
@@ -149,6 +176,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             return HasSessionTimedOut(now, _lastQueuedLogTime, _lastResumedTime, _lastPausedTime);
         }
 
+        // Internal and static so that it can be tested more easily
         internal static bool HasSessionTimedOut(long now, long lastQueuedLogTime, long lastResumedTime, long lastPausedTime)
         {
             var noLogSentForLong = lastQueuedLogTime == 0 || (now - lastQueuedLogTime) >= SessionTimeout;
