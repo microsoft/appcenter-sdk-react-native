@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// Validate that FailedToSendLog calls when channel is disabled
         /// </summary>
         [TestMethod]
-        public void ChannelInvokesFailedToSendLogEventAfterEnabling()
+        public void ChannelInvokesFailedToSendLogEventAfterDisabling()
         {
             _channel.SetEnabled(false);
             for (int i = 0; i < MaxLogsPerBatch; ++i)
