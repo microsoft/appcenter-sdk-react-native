@@ -179,6 +179,10 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             {
                 _channel.Enqueue(new TestLog());
             }
+
+            //Wait while log is saving
+            Task.Delay(1000).Wait();
+
             _channel.SetEnabled(true);
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
