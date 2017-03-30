@@ -47,5 +47,29 @@
       <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="..\..\..\externals\ios\MobileCenterDistribute.a">
+      <Kind>Static</Kind>
+      <ForceLoad>True</ForceLoad>
+      <SmartLink>False</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\Info.plist">
+      <Link>Resources\MobileCenterDistributeResources.bundle\Info.plist</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\de.lproj\MobileCenterDistribute.strings">
+      <Link>Resources\MobileCenterDistributeResources.bundle\de.lproj\MobileCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\en.lproj\MobileCenterDistribute.strings">
+      <Link>Resources\MobileCenterDistributeResources.bundle\en.lproj\MobileCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\fr.lproj\MobileCenterDistribute.strings">
+      <Link>Resources\MobileCenterDistributeResources.bundle\fr.lproj\MobileCenterDistribute.strings</Link>
+    </BundleResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
 </Project>
