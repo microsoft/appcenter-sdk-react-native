@@ -21,7 +21,7 @@ namespace Contoso.Forms.Puppet.iOS
         {
             MSDistribute.OpenUrl(url);
 
-            return base.OpenUrl(application, url, sourceApplication, annotation);
+            return true;
         }
     }
 
