@@ -1,5 +1,4 @@
 #addin nuget:?package=Cake.FileHelpers
-#addin "Cake.AzureStorage"
 #addin nuget:?package=Cake.Git
 
 using System.Net;
@@ -7,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 // Task TARGET for build
-var TARGET = Argument("target", Argument("t"));
+var TARGET = Argument("target", Argument("t", ""));
 
 Task("IncrementRevisionNumberWithHash").Does(()=>
 {
