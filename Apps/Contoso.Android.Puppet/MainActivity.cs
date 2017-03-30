@@ -35,7 +35,7 @@ namespace Contoso.Android.Puppet
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            MobileCenter.Start("7f222d3c-0f5e-421b-93e7-f862c462e07e", typeof(Analytics), typeof(Crashes));
+            MobileCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes));
             Analytics.TrackEvent("myEvent", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "MobileCenter.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);

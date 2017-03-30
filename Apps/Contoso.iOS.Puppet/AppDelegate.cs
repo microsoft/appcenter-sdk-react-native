@@ -26,10 +26,8 @@ namespace Contoso.iOS.Puppet
             // If not required for your application you can safely delete this method
 
             MobileCenter.LogLevel = LogLevel.Verbose;
-
-            //MobileCenter.SetLogUrl("http://in-integration.dev.avalanch.es:8081");
-            MobileCenter.Start("b5ac8947-ee9d-4f05-8009-426687eb2381", typeof(Analytics), typeof(Crashes));
-
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Start("b889c4f2-9ac2-4e2e-ae16-dae54f2c5899", typeof(Analytics), typeof(Crashes));
             try
             {
                 ThrowAnException();

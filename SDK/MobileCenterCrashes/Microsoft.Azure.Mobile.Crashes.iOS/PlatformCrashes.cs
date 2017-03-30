@@ -78,6 +78,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public PlatformCrashes()
         {
+            MSCrashes.NotifyPermanentlyDisableMachExceptionHandling();
             MSCrashes.SetUserConfirmationHandler((arg0) =>
                     {
                         if (ShouldAwaitUserConfirmation != null)

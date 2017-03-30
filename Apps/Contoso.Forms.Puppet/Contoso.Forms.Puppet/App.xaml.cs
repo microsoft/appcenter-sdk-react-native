@@ -9,11 +9,16 @@ namespace Contoso.Forms.Puppet
     public partial class App : Application
     {
         public const string LogTag = "MobileCenterXamarinPuppet";
+
         public App()
         {
             InitializeComponent();
-            
+
             MainPage = new NavigationPage(new MainPuppetPage());
+        }
+
+        protected override void OnStart()
+        {
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
@@ -30,15 +35,10 @@ namespace Contoso.Forms.Puppet
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
             MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
-            //MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");//Note that uwp app secret is for prod
-            MobileCenter.Start("android=7f222d3c-0f5e-421b-93e7-f862c462e07e;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899;uwp=98038a20-4014-445a-b27f-048082036045",
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Start("android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
                                typeof(Analytics), typeof(Crashes));
-                               
-        }
 
-        protected override void OnStart()
-        {
-            /*
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
@@ -46,7 +46,7 @@ namespace Contoso.Forms.Puppet
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
                 MobileCenterLog.Info(LogTag, " Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
-            });*/
+            });
         }
 
         protected override void OnSleep()
