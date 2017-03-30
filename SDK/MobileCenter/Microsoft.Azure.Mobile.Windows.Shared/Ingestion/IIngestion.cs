@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Ingestion
         IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs);
         Task ExecuteCallAsync(IServiceCall call);
         void Close();
-        void SetServerUrl(string serverUrl);
+        void SetLogUrl(string logUrl);
     }
 }
 

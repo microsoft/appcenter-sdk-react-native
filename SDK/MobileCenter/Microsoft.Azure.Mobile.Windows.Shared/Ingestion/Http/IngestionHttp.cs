@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         private readonly TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
-        private string _baseUrl;
+        private string _baseLogUrl;
         private readonly IHttpNetworkAdapter _httpNetwork;
 
         public IngestionHttp() : this(new HttpNetworkAdapter())
@@ -86,9 +86,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             
         }
 
-        public void SetServerUrl(string serverUrl)
+        public void SetLogUrl(string logUrl)
         {
-            _baseUrl = serverUrl;
+            _baseLogUrl = logUrl;
         }
 
         private static string GetRedactedAppSecret(string appSecret)
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         internal HttpRequestMessage CreateRequest(string appSecret, Guid installId, string requestContent)
         {
-            var baseUrl = string.IsNullOrEmpty(_baseUrl) ? DefaultBaseUrl : _baseUrl;
+            var baseUrl = string.IsNullOrEmpty(_baseLogUrl) ? DefaultBaseUrl : _baseLogUrl;
 
             // Create HTTP transport objects
             var request = new HttpRequestMessage

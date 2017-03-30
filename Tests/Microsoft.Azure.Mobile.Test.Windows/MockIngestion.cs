@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Test
             }
         }
 
-        public void SetServerUrl(string serverUrl)
+        public void SetLogUrl(string logUrl)
         {
         }
 

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
-        private string _serverUrl;
+        private string _logUrl;
         private static readonly object MobileCenterLock = new object();
         private static bool _logLevelSet;
         private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
@@ -120,12 +120,12 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
         /// </summary>
-        /// <param name="serverUrl">Base URL to use for server communication.</param>
-        public static void SetServerUrl(string serverUrl)
+        /// <param name="logUrl">Base URL to use for server communication.</param>
+        public static void SetLogUrl(string logUrl)
         {
             lock (MobileCenterLock)
             {
-                Instance.SetInstanceServerUrl(serverUrl);
+                Instance.SetInstanceLogUrl(logUrl);
             }
         }
 
@@ -245,10 +245,10 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        private void SetInstanceServerUrl(string serverUrl)
+        private void SetInstanceLogUrl(string logUrl)
         {
-            _serverUrl = serverUrl;
-            _channelGroup?.SetServerUrl(serverUrl);
+            _logUrl = logUrl;
+            _channelGroup?.SetLogUrl(logUrl);
         }
 
 
@@ -268,9 +268,9 @@ namespace Microsoft.Azure.Mobile
             _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.Shutdown();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                 Constants.DefaultTriggerMaxParallelRequests);
-            if (_serverUrl != null)
+            if (_logUrl != null)
             {
-                _channelGroup.SetServerUrl(_serverUrl);
+                _channelGroup.SetLogUrl(_logUrl);
             }
             _instanceConfigured = true;
             MobileCenterLog.Assert(MobileCenterLog.LogTag, "Mobile Center SDK configured successfully.");

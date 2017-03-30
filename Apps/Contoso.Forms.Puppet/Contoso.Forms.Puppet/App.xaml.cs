@@ -30,7 +30,7 @@ namespace Contoso.Forms.Puppet
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
             MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
-            //MobileCenter.SetServerUrl("https://in-integration.dev.avalanch.es");//Note that uwp app secret is for prod
+            //MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");//Note that uwp app secret is for prod
             MobileCenter.Start("android=7f222d3c-0f5e-421b-93e7-f862c462e07e;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899;uwp=98038a20-4014-445a-b27f-048082036045",
                                typeof(Analytics), typeof(Crashes));
                                

@@ -6,6 +6,6 @@ namespace Microsoft.Azure.Mobile.Channel
     {
         void AddChannel(IChannelUnit channel);
         IChannelUnit AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches);
-        void SetServerUrl(string serverUrl);
+        void SetLogUrl(string logUrl);
     }
 }

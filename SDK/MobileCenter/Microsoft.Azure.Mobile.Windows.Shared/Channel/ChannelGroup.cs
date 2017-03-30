@@ -32,10 +32,10 @@ namespace Microsoft.Azure.Mobile.Channel
             AppSecret = appSecret;
         }
 
-        public void SetServerUrl(string serverUrl)
+        public void SetLogUrl(string logUrl)
         {
             _mutex.Wait();
-            _ingestion.SetServerUrl(serverUrl);
+            _ingestion.SetLogUrl(logUrl);
             _mutex.Release();
         }
 

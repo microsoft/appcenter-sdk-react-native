@@ -26,15 +26,15 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         }
 
         /// <summary>
-        /// Verify that setting the server url works correctly.
+        /// Verify that setting the log url works correctly.
         /// </summary>
         [TestMethod]
-        public void TestSetServerUrl()
+        public void TestSetLogUrl()
         {
             const string urlString = "here is a string dot com";
-            _channelGroup.SetServerUrl(urlString);
+            _channelGroup.SetLogUrl(urlString);
 
-            _mockIngestion.Verify(ingestion => ingestion.SetServerUrl(urlString), Times.Once());
+            _mockIngestion.Verify(ingestion => ingestion.SetLogUrl(urlString), Times.Once());
         }
 
         /// <summary>

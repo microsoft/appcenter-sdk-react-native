@@ -81,10 +81,10 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
         /// </summary>
-        /// <param name="serverUrl">Base URL to use for server communication.</param>
-        public static void SetServerUrl(string serverUrl)
+        /// <param name="logUrl">Base URL to use for server communication.</param>
+        public static void SetLogUrl(string logUrl)
         {
-            iOSMobileCenter.SetServerUrl(serverUrl);
+            iOSMobileCenter.SetLogUrl(logUrl);
         }
 
         /// <summary>

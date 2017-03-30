@@ -510,15 +510,114 @@ Task("IncrementRevisionNumber").Does(()=>
 	IncrementRevisionNumber(false);
 });
 
+Task("SetReleaseVersion").Does(()=>
+{
+	// Get base version of PCL core
+	var baseSemanticVersion = GetPCLBaseSemanticVersion();
+
+	// Replace versions in all non-demo app files
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	var assemblyInfoFiles = GetFiles("**/AssemblyInfo.cs");
+	ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
+
+	//Replace version in wrapper sdk
+	UpdateWrapperSdkVersion(baseSemanticVersion);
+});
+
+Task("UpdateDemoVersion").Does(()=>
+{
+	var newVersion = Argument<string>("DemoVersion");
+	// Replace version in all the demo application assemblies
+	var demoAssemblyInfoGlob = "Apps/**/*Demo*/**/AssemblyInfo.cs";
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFiles(demoAssemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
+	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFiles(demoAssemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+
+	// Replace android versions
+	var manifestGlob = "Apps/**/*Demo*/**/AndroidManifest.xml";
+	// Manifest version name tag
+	var versionNamePattern = "android:versionName=\"[^\"]+\"";
+	var newVersionName = "android:versionName=\"" + newVersion + "\"";
+	ReplaceRegexInFiles(manifestGlob, versionNamePattern, newVersionName);
+	// Manifest version code
+	var manifests = GetFiles("Apps/**/*Demo*/**/AndroidManifest.xml");
+	foreach (var manifest in manifests)
+	{
+		IncrementManifestVersionCode(manifest);
+	}
+
+	//Replace UWP version
+	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
+	var versionTagPattern = " Version=\"[^\"]+\"";
+	var newVersionTagText = " Version=\""+newVersion+".0\"";
+	ReplaceRegexInFiles(uwpManifestGlob, versionTagPattern, newVersionTagText);
+
+	//Replace iOS version
+	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
+	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/");
+	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>";
+	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
+
+	RunTarget("UpdateDemoDependencies");
+});
+
+Task("StartNewVersion").Does(()=>
+{
+	var newVersion = Argument<string>("NewVersion");
+	var snapshotVersion = newVersion + "-SNAPSHOT";
+
+	// Replace version in all the demo application assemblies
+	var assemblyInfoGlob = "**/AssemblyInfo.cs";
+	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
+	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
+	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+
+	// Update wrapper sdk version
+	UpdateWrapperSdkVersion(snapshotVersion);
+
+	// Replace android versions
+	var manifestGlob = "Apps/**/AndroidManifest.xml";
+	// Manifest version name tag
+	var versionNamePattern = "android:versionName=\"[^\"]+\"";
+	var newVersionName = "android:versionName=\"" + snapshotVersion + "\"";
+	ReplaceRegexInFilesWithExclusion(manifestGlob, versionNamePattern, newVersionName, "Demo");
+	// Manifest version code
+	var manifests = GetFiles(manifestGlob);
+	foreach (var manifest in manifests)
+	{
+		if (!manifest.FullPath.Contains("Demo"))
+		{
+			IncrementManifestVersionCode(manifest);
+		}
+	}
+
+	//Replace UWP version
+	var uwpManifestGlob = "Apps/**/Package.appxmanifest";
+	var versionTagPattern = " Version=\"[^\"]+\"";
+	var newVersionTagText = " Version=\""+newVersion+".0\"";
+	ReplaceRegexInFilesWithExclusion(uwpManifestGlob, versionTagPattern, newVersionTagText, "Demo");
+
+	//Replace iOS version
+	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
+	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
+	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>";
+	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
+	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
+});
+
 void IncrementRevisionNumber(bool useHash)
 {
 	// Get base version of PCL core
-	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	var baseSemanticVersion = GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
+	var baseSemanticVersion = GetPCLBaseSemanticVersion();
 
 	var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
-	var newRevNum = baseSemanticVersion == baseVersion ? 1 : GetRevisionNumber(nugetVer) + 1;
+	var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1; 
 	var newRevString = GetPaddedString(newRevNum, 4);
 	var newVersion = baseVersion + "-r" + newRevString;
 	if (useHash)
@@ -526,10 +625,10 @@ void IncrementRevisionNumber(bool useHash)
 		newVersion += "-" + GetShortCommitHash();
 	}
 
-	//Replace AssemblyInformationVersion
+	//Replace AssemblyInformationalVersion in all AssemblyInfo files
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFiles("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
-	
+
 	// Increment revision number of AssemblyFileVersion
 	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
 	var files = FindRegexInFiles("**/AssemblyInfo.cs", fileVersionPattern);
@@ -541,6 +640,12 @@ void IncrementRevisionNumber(bool useHash)
 		var newFileVersion = trimmedVersion + newRevNum + "\")";
 		ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
 	}
+}
+
+string GetPCLBaseSemanticVersion()
+{
+	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
+	return GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
 }
 
 string GetShortCommitHash()
@@ -574,6 +679,17 @@ string GetLatestNuGetVersion()
 	return tag;
 }
 
+void IncrementManifestVersionCode(FilePath manifest)
+{
+	var versionCodePattern = "android:versionCode=\"[^\"]+\"";
+	var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
+	var firstPart = "android:versionCode=\"";
+	var length = versionCodeText.Length - 1 - firstPart.Length;
+	var versionCode = int.Parse(versionCodeText.Substring(firstPart.Length, length));
+	var newVersionCodeText = firstPart + (versionCode + 1) + "\"";
+	ReplaceRegexInFiles(manifest.FullPath, versionCodePattern, newVersionCodeText);
+}
+
 string GetBaseVersion(string fullVersion)
 {
 	var indexDash = fullVersion.IndexOf("-");
@@ -582,6 +698,13 @@ string GetBaseVersion(string fullVersion)
 		return fullVersion;
 	}
 	return fullVersion.Substring(0, indexDash);
+}
+
+void UpdateWrapperSdkVersion(string newVersion)
+{
+	var patternString = "Version = \"[^\"]+\";";
+	var newString = "Version = \"" + newVersion + "\";";
+	ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
 }
 
 int GetRevisionNumber(string fullVersion)
@@ -629,6 +752,27 @@ void CleanDirectory(string directoryName)
 {
 	DeleteDirectoryIfExists(directoryName);
 	CreateDirectory(directoryName);
+}
+
+void ReplaceRegexInFilesWithExclusion(string globberPattern, string regEx, string replacement, params string[] excludeFilePathsContaining)
+{
+	var assemblyInfoFiles = GetFiles(globberPattern);
+	foreach (var file in assemblyInfoFiles)
+	{
+		bool shouldReplace = true;
+		foreach (var excludeString in excludeFilePathsContaining)
+		{
+			if (file.FullPath.Contains(excludeString))
+			{
+				shouldReplace = false;
+				break;
+			}
+		}
+		if (shouldReplace)
+		{
+			ReplaceRegexInFiles(file.FullPath, regEx, replacement);
+		}
+	}
 }
 
 RunTarget(TARGET);
