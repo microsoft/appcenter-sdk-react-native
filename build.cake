@@ -526,8 +526,8 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
 		var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
 		var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
 		var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
-
-		var nuspecPathPrefix = "windows/nuspecs/NuGetSpec/";
+		var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
+		
 		foreach (var module in MOBILECENTER_MODULES)
 		{
 			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuGetSpecFilename, "$pcl_dir$", pclAssemblies);
@@ -539,10 +539,10 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
 
 Task("NugetPackVSTS").Does(()=>
 {
-	CopyFiles("windows/nuspecs/NuGetSpec/*.nuspec", ".");
+	var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var spec = GetFiles(module.MainNuGetSpecFilename);
+		var spec = GetFiles(nuspecPathPrefix + module.MainNuGetSpecFilename);
 		/* Create the NuGet packages */
 		Information("Building a NuGet package for " + module.MainNuGetSpecFilename);
 		NuGetPack(spec, new NuGetPackSettings {
