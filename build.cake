@@ -530,12 +530,11 @@ Task("NugetPackVSTS").Does(()=>
 {
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var spec = GetFiles("windows/nuspecs/" + module.MainNuGetSpecFilename);
+		var spec = GetFiles("windows/nuspecs/NuGetSpec/" + module.MainNuGetSpecFilename);
 		/* Create the NuGet packages */
 		Information("Building a NuGet package for " + spec);
 		NuGetPack(spec, new NuGetPackSettings {
 			Verbosity = NuGetVerbosity.Detailed,
-			Version = "0.0.0-testVSTS" + System.Guid.NewGuid().ToString()
 		});
 	}
 });
