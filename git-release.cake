@@ -10,7 +10,7 @@ Task("Default").IsDependentOn("GitRelease");
 Task("GitRelease")
 	.Does(() =>
 {
-    var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
+    var assemblyInfo = ParseAssemblyInfo("AssemblyInfo.cs");
 	var publishVersion = assemblyInfo.AssemblyInformationalVersion;
     var username = "user";
     var password = Argument<string>("GithubToken");
@@ -20,7 +20,7 @@ Task("GitRelease")
     // Oddly, there is no obvious API to create a file, so we have to create a file by copying an existing
     // file and replacing its contents
     var releaseFile = File("tempRelease.md");
-    CopyFile(File("README.md"), releaseFile);
+    CopyFile(File("AssemblyInfo.cs"), releaseFile);
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
 
     // Build a string containing paths to NuGet packages
