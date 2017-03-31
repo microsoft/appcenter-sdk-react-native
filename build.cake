@@ -324,8 +324,8 @@ Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 {
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var macFolder = "../../mac/assemblies/";
-		var windowsFolder = "../../windows/assemblies/";
+		var macFolder = "mac/assemblies/";
+		var windowsFolder = "windows/assemblies/";
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$pcl_dir$", macFolder + "PCLAssemblies");
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$ios_dir$", macFolder + "iOSAssemblies");
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$windows_dir$", windowsFolder + "UWPAssemblies");
