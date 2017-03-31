@@ -9,7 +9,7 @@ using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-   public sealed class IngestionHttp : IIngestion
+    public sealed class IngestionHttp : IIngestion
     {
         internal const string DefaultBaseUrl = "https://in.mobile.azure.com";
         internal const string ApiVersion = "/logs?api_version=1.0.0-preview20160914";
@@ -40,50 +40,41 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 return;
             }
             var requestContent = CreateLogsContent(call.Logs);
-            var request = CreateRequest(call.AppSecret, call.InstallId, requestContent);
-            HttpResponseMessage response;
-            try
+            using (var request = CreateRequest(call.AppSecret, call.InstallId, requestContent))
+            using (var response = await _httpNetwork.SendAsync(request, call.CancellationToken).ConfigureAwait(false))
             {
-                response = await _httpNetwork.SendAsync(request, call.CancellationToken).ConfigureAwait(false);
-            }
-            catch (IngestionException)
-            {
-                request.Dispose();
-                throw;
-            }
-            if (response == null)
-            {
-                throw new IngestionException("Null response received");
-            }
-            var responseContent = "(null)";
-            if (response.Content != null)
-            {
-                responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            }
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={responseContent}");
-            if (call.CancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                var ex = new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")
+                if (response == null)
                 {
-                    Method = request.Method,
-                    RequestUri = request.RequestUri,
-                    StatusCode = response.StatusCode,
-                    RequestContent = requestContent,
-                    ResponseContent = responseContent
-                };
-                request.Dispose();
-                response.Dispose();
-                throw ex;
+                    throw new IngestionException("Null response received");
+                }
+                var responseContent = "(null)";
+                if (response.Content != null)
+                {
+                    responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={responseContent}");
+                if (call.CancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    var ex = new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")
+                    {
+                        Method = request.Method,
+                        RequestUri = request.RequestUri,
+                        StatusCode = response.StatusCode,
+                        RequestContent = requestContent,
+                        ResponseContent = responseContent
+                    };
+                    throw ex;
+                }
             }
         }
 
         public void Close()
         {
-            
+            //No-op
         }
 
         public void SetLogUrl(string logUrl)
