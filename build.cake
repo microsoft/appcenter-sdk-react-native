@@ -324,12 +324,6 @@ Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 {
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var macFolder = "mac/assemblies/";
-		var windowsFolder = "windows/assemblies/";
-		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$pcl_dir$", macFolder + "PCLAssemblies");
-		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$ios_dir$", macFolder + "iOSAssemblies");
-		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$windows_dir$", windowsFolder + "UWPAssemblies");
-		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$android_dir$", macFolder + "AndroidAssemblies");
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$version$", module.NuGetVersion);
 	}
 });
@@ -524,6 +518,23 @@ Task("DownloadAssemblies").Does(()=>
 }).OnError(exception => {
 	RunTarget("clean");
 	throw exception;
+});
+
+Task("PrepareAssemblyPathsVSTS").Does(()=>
+{
+		var iosAssemblies = EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC");
+		var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
+		var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
+		var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
+
+		var nuspecPathPrefix = "windows/nuspecs/NuGetSpec/";
+		foreach (var module in MOBILECENTER_MODULES)
+		{
+			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuGetSpecFilename, "$pcl_dir$", pclAssemblies);
+			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuGetSpecFilename, "$ios_dir$", iosAssemblies);
+			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuGetSpecFilename, "$windows_dir$", uwpAssemblies);
+			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuGetSpecFilename, "$android_dir$", androidAssemblies);
+		}
 });
 
 Task("NugetPackVSTS").Does(()=>
