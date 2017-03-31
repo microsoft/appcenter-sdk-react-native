@@ -52,7 +52,7 @@ namespace Contoso.iOS.Puppet
 
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
-            Distribute.PlatformOpenUrl(url);
+            Distribute.OpenUrl(url);
 
             return true;
         }

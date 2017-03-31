@@ -37,7 +37,7 @@ namespace Microsoft.Azure.Mobile.Distribute
         /// Place this method call into app delegate openUrl method.
         /// </summary>
         /// <param name="url">The url with parameters.</param>
-        public static void PlatformOpenUrl(NSUrl url)
+        public static void OpenUrl(NSUrl url)
         {
             iOSDistribute.OpenUrl(url);
         }
