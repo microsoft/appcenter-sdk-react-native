@@ -54,7 +54,7 @@ namespace Contoso.iOS.Puppet
         {
             Distribute.PlatformOpenUrl(url);
 
-            return base.OpenUrl(application, url, sourceApplication, annotation);
+            return true;
         }
 
         public override void OnResignActivation(UIApplication application)
