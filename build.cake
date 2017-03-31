@@ -526,6 +526,20 @@ Task("DownloadAssemblies").Does(()=>
 	throw exception;
 });
 
+Task("NugetPackVSTS").Does(()=>
+{
+	foreach (var module in modules)
+	{
+		var spec = GetFiles("windows/nuspecs/" + module.MainNuGetSpecFilename);
+		/* Create the NuGet packages */
+		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
+		NuGetPack(spec, new NuGetPackSettings {
+			Verbosity = NuGetVerbosity.Detailed,
+			Version = module.NuGetVersion
+		});
+	}
+});
+
 void DeleteDirectoryIfExists(string directoryName)
 {
 	if (DirectoryExists(directoryName))
