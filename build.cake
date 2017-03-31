@@ -532,9 +532,10 @@ Task("NugetPackVSTS").Does(()=>
 	{
 		var spec = GetFiles("windows/nuspecs/" + module.MainNuGetSpecFilename);
 		/* Create the NuGet packages */
-		Information("Building a NuGet package for " + module.DotNetModule);
+		Information("Building a NuGet package for " + spec);
 		NuGetPack(spec, new NuGetPackSettings {
 			Verbosity = NuGetVerbosity.Detailed,
+			Version = "0.0.0-testVSTS" + System.Guid.NewGuid().ToString()
 		});
 	}
 });
