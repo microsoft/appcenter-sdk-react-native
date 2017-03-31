@@ -24,9 +24,9 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void CheckInitialValues()
         {
-            StartServiceLog log = new StartServiceLog();
+            var log = new StartServiceLog();
             Assert.IsNull(log.Device);
-            Assert.IsNull(log.Services);
+            Assert.AreEqual(0, log.Services.Count);
             Assert.IsNull(log.Sid);
             Assert.AreEqual(0, log.Toffset);
         }
@@ -37,11 +37,11 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void CheckInitialValuesWithServices()
         {
-            List<string> servicesNames = new List<string>() { "Service0", "Service1", "Service2" };
-            StartServiceLog log = new StartServiceLog(0, null, servicesNames);
+            var servicesNames = new List<string> { "Service0", "Service1", "Service2" };
+            var log = new StartServiceLog(0, null, servicesNames);
 
             Assert.IsNotNull(log.Services);
-            foreach (string serviceName in log.Services)
+            foreach (var serviceName in log.Services)
             {
                 Assert.IsTrue(servicesNames.Contains(serviceName));
             }
@@ -53,19 +53,21 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void SaveStartServiceLog()
         {
-            StartServiceLog addedLog = new StartServiceLog();
-            addedLog.Device = new DeviceInformationHelper().GetDeviceInformation();
-            addedLog.Toffset = TimeHelper.CurrentTimeInMilliseconds();
-            addedLog.Services = new List<string>() { "Service0", "Service1", "Service2" };
-            addedLog.Sid = Guid.NewGuid();
+            var addedLog = new StartServiceLog
+            {
+                Device = new DeviceInformationHelper().GetDeviceInformation(),
+                Toffset = TimeHelper.CurrentTimeInMilliseconds(),
+                Services = new List<string> {"Service0", "Service1", "Service2"},
+                Sid = Guid.NewGuid()
+            };
 
-            Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
-            _storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
+            var storage = new Mobile.Storage.Storage();
+            storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
             var retrievedLogs = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
-            StartServiceLog retrievedLog = retrievedLogs[0] as StartServiceLog;
+            storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
+            var retrievedLog = retrievedLogs[0] as StartServiceLog;
 
-            foreach (string serviceName in addedLog.Services)
+            foreach (var serviceName in addedLog.Services)
             {
                 Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
             }
@@ -77,9 +79,12 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void ValidateStartServiceLog()
         {
-            StartServiceLog log = new StartServiceLog();
-            log.Device = new DeviceInformationHelper().GetDeviceInformation();
-            log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
+            var log = new StartServiceLog
+            {
+                Services = null,
+                Device = new DeviceInformationHelper().GetDeviceInformation(),
+                Toffset = TimeHelper.CurrentTimeInMilliseconds()
+            };
 
             Assert.ThrowsException<Rest.ValidationException>((Action)log.Validate);
         }

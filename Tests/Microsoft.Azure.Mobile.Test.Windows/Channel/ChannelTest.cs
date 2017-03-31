@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         private readonly string _appSecret = Guid.NewGuid().ToString();
         private const int DefaultWaitTime = 5000;
 
-        /* Event semaphores for invokation verification */
+        // Event semaphores for invokation verification
         private const int SendingLogSemaphoreIdx = 0;
         private const int SentLogSemaphoreIdx = 1;
         private const int FailedToSendLogSemaphoreIdx = 2;
@@ -169,7 +169,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         }
 
         /// <summary>
-        /// Validate that channel'll send log after enabling
+        /// Validate that channel will send log after enabling
         /// </summary>
         [TestMethod]
         public void ChannelInvokesSendingLogEventAfterEnabling()
@@ -180,7 +180,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
                 _channel.Enqueue(new TestLog());
             }
 
-            //Wait while log is saving
+            // Wait while log is saving; changing enabled value of channel too soon
+            // will invalidate its currently running operations
             Task.Delay(1000).Wait();
 
             _channel.SetEnabled(true);
@@ -311,12 +312,14 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
         private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)
         {
-            var enteredAll = true;
             for (var i = 0; i < numTimes; ++i)
             {
-                enteredAll &= semaphore.Wait(waitTime);
+                if (!semaphore.Wait(waitTime))
+                {
+                    return false;
+                }
             }
-            return enteredAll;
+            return true;
         }
     }
 }

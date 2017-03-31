@@ -1,5 +1,6 @@
 ﻿#define DEBUG
 using System;
+using System.Diagnostics;
 
 namespace Microsoft.Azure.Mobile
 {
@@ -10,7 +11,7 @@ namespace Microsoft.Azure.Mobile
         /// </summary>
         public static string LogTag { get; private set; }
         private static readonly object LogLock = new object();
-        private static LogLevel _level;
+        private static LogLevel _level = LogLevel.Assert;
 
         internal static LogLevel Level
         {
@@ -29,6 +30,10 @@ namespace Microsoft.Azure.Mobile
         static MobileCenterLog()
         {
             LogTag = "MobileCenter";
+            if (Debugger.IsAttached)
+            {
+                _level = LogLevel.Warn;
+            }
         }
 
         public static void Verbose(string tag, string message)
