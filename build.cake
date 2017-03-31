@@ -324,8 +324,8 @@ Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 {
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var macFolder = "../../mac/assemblies/";
-		var windowsFolder = "../../windows/assemblies/";
+		var macFolder = "mac/assemblies/";
+		var windowsFolder = "windows/assemblies/";
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$pcl_dir$", macFolder + "PCLAssemblies");
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$ios_dir$", macFolder + "iOSAssemblies");
 		ReplaceTextInFiles("./NuGetSpec/" + module.MainNuGetSpecFilename, "$windows_dir$", windowsFolder + "UWPAssemblies");
@@ -528,11 +528,12 @@ Task("DownloadAssemblies").Does(()=>
 
 Task("NugetPackVSTS").Does(()=>
 {
+	CopyFiles("windows/nuspecs/NuGetSpec/*.nuspec", ".");
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var spec = GetFiles("windows/nuspecs/NuGetSpec/" + module.MainNuGetSpecFilename);
+		var spec = GetFiles(module.MainNuGetSpecFilename);
 		/* Create the NuGet packages */
-		Information("Building a NuGet package for " + spec);
+		Information("Building a NuGet package for " + module.MainNuGetSpecFilename);
 		NuGetPack(spec, new NuGetPackSettings {
 			Verbosity = NuGetVerbosity.Detailed,
 		});
