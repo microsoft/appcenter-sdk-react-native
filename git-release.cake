@@ -24,7 +24,7 @@ Task("GitRelease")
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
 
     // Build a string containing paths to NuGet packages
-    var files = GetFiles("**/*.nupkg");
+    var files = GetFiles("**/*Microsoft.Azure.Mobile*.nupkg");
     var assets = string.Empty;
     foreach (var file in files)
     {
