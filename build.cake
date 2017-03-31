@@ -528,7 +528,7 @@ Task("DownloadAssemblies").Does(()=>
 
 Task("NugetPackVSTS").Does(()=>
 {
-	foreach (var module in modules)
+	foreach (var module in MOBILECENTER_MODULES)
 	{
 		var spec = GetFiles("windows/nuspecs/" + module.MainNuGetSpecFilename);
 		/* Create the NuGet packages */
