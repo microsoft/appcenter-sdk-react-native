@@ -6,10 +6,14 @@ using System.Diagnostics;
 namespace Microsoft.Azure.Mobile
 {
     /// <summary>
-    ///     SDK core used to initialize, start and control specific service.
+    /// SDK core used to initialize, start and control specific service.
     /// </summary>
     public partial class MobileCenter
     {
+        internal MobileCenter()
+        {
+        }
+
         /* Error message to display for unsupported targets. */
         private const string ErrorMessage =
             "[MobileCenter] ASSERT: Cannot use Mobile Center on this target. If you are on Android or iOS, you must add the NuGet packages in the Android and iOS projects as well. Other targets such as Universal Windows Applications are not yet supported.";
