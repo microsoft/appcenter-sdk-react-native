@@ -47,12 +47,16 @@ Task("UpdateDemoVersion").Does(()=>
 	// Manifest version name tag
 	var versionNamePattern = "android:versionName=\"[^\"]+\"";
 	var newVersionName = "android:versionName=\"" + newVersion + "\"";
-	ReplaceRegexInFiles(manifestGlob, versionNamePattern, newVersionName);
+	ReplaceRegexInFilesWithExclusion(manifestGlob, versionNamePattern, newVersionName, "/bin/", "/obj/");
 	// Manifest version code
 	var manifests = GetFiles("Apps/**/*Demo*/**/AndroidManifest.xml");
 	foreach (var manifest in manifests)
 	{
-		IncrementManifestVersionCode(manifest);
+		if (!manifest.FullPath.Contains("/bin/") &&
+			!manifest.FullPath.Contains("/obj/"))
+		{
+			IncrementManifestVersionCode(manifest);
+		}
 	}
 
 	//Replace UWP version
@@ -91,13 +95,15 @@ Task("StartNewVersion").Does(()=>
 	var androidManifestGlob = "Apps/**/AndroidManifest.xml";
 	var versionNamePattern = "android:versionName=\"[^\"]+\"";
 	var newVersionName = "android:versionName=\"" + snapshotVersion + "\"";
-	ReplaceRegexInFilesWithExclusion(androidManifestGlob, versionNamePattern, newVersionName, "Demo");
+	ReplaceRegexInFilesWithExclusion(androidManifestGlob, versionNamePattern, newVersionName, "Demo", "/bin/", "/obj/");
 
 	// Replace android manifest version code
 	var manifests = GetFiles(androidManifestGlob);
 	foreach (var manifest in manifests)
 	{
-		if (!manifest.FullPath.Contains("Demo"))
+		if (!manifest.FullPath.Contains("Demo") && 
+			!manifest.FullPath.Contains("/bin/") &&
+			!manifest.FullPath.Contains("/obj/"))
 		{
 			IncrementManifestVersionCode(manifest);
 		}
@@ -120,9 +126,9 @@ Task("StartNewVersion").Does(()=>
 
 Task("UpdateDemoDependencies").Does(() =>
 {
-	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config");
-	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config");
-	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config");
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
+	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
 });
 
 void IncrementRevisionNumber(bool useHash)
@@ -196,6 +202,7 @@ string GetLatestNuGetVersion()
 
 void IncrementManifestVersionCode(FilePath manifest)
 {
+	Information(manifest.FullPath);
 	var versionCodePattern = "android:versionCode=\"[^\"]+\"";
 	var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
 	var firstPart = "android:versionCode=\"";
