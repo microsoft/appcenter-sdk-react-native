@@ -38,6 +38,9 @@ namespace Microsoft.Azure.Mobile.Crashes
             var type = BindingType;
         }
 
+        internal Crashes()
+        { }
+
         /// <summary>
         /// Occurs when an error report is about to be sent.
         /// </summary>
