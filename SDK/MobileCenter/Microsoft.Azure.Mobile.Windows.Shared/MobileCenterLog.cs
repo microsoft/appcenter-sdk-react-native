@@ -1,5 +1,4 @@
 ﻿#define DEBUG
-using System;
 using System.Diagnostics;
 
 namespace Microsoft.Azure.Mobile

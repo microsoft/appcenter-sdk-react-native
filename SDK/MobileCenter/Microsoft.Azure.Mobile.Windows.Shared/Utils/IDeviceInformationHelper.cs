@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.Azure.Mobile.Utils
+﻿namespace Microsoft.Azure.Mobile.Utils
 {
     public interface IDeviceInformationHelper
     {

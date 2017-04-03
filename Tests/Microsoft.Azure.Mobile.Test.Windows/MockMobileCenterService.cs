@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Channel;
+﻿using Microsoft.Azure.Mobile.Channel;
 using Moq;
 
 namespace Microsoft.Azure.Mobile.Test

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Microsoft.Azure.Mobile.Utils.Synchronization
+﻿namespace Microsoft.Azure.Mobile.Utils.Synchronization
 {
     /// <summary>
     /// Responsible for keeping track of a current <see cref="State"/>

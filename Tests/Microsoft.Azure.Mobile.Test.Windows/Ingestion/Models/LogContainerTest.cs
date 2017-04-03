@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using Moq;
+﻿using Moq;
 using Microsoft.Rest;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Channel
 {

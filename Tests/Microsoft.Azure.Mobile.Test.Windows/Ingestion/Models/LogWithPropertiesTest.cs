@@ -1,5 +1,4 @@
 ﻿using Moq;
-using Microsoft.Rest;
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

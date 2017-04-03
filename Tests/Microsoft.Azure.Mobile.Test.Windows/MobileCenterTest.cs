@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion;
-using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Test.Windows.Channel;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
