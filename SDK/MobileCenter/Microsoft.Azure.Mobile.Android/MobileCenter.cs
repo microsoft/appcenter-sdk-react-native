@@ -16,6 +16,10 @@ namespace Microsoft.Azure.Mobile
     {
         /* The key identifier for parsing app secrets */
         private const string PlatformIdentifier = "android";
+        
+        internal MobileCenter()
+        {
+        }
 
         /// <summary>
         /// This property controls the amount of logs emitted by the SDK.

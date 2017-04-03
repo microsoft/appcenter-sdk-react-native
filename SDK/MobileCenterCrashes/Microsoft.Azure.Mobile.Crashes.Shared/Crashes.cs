@@ -39,7 +39,8 @@ namespace Microsoft.Azure.Mobile.Crashes
         }
 
         internal Crashes()
-        { }
+        {
+        }
 
         /// <summary>
         /// Occurs when an error report is about to be sent.

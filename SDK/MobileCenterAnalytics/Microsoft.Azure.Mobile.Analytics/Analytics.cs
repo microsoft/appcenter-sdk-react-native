@@ -8,7 +8,8 @@ namespace Microsoft.Azure.Mobile.Analytics
     public class Analytics : IMobileCenterService
     {
         internal Analytics()
-        { }
+        {
+        }
 
         /// <summary>
         ///     Enable or disable Analytics module.

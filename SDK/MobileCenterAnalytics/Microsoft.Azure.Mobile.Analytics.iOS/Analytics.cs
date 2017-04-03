@@ -14,7 +14,8 @@ namespace Microsoft.Azure.Mobile.Analytics
     public class Analytics : MobileCenterService
     {
         internal Analytics()
-        { }
+        {
+        }
 
         /// <summary>
         /// Internal SDK property not intended for public use.
