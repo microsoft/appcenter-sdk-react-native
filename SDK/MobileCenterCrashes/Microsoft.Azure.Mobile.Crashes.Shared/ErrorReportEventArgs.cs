@@ -1,12 +1,12 @@
 ﻿using System;
-using Com.Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Event arguments base class for all events that involve an error report.
     /// </summary>
-    public class ErrorReportEventArgs : NetworkStateHelper.EventArgs
+    public class ErrorReportEventArgs : EventArgs
     {
         /// <summary>
         /// The error report associated with the event.

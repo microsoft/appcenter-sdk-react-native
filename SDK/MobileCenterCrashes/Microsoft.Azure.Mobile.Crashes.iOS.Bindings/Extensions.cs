@@ -1,4 +1,8 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
+﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 {
     /*
      * This class is required so that Mono can handle the signals SIGSEGV and SIGBUS, which should not always
