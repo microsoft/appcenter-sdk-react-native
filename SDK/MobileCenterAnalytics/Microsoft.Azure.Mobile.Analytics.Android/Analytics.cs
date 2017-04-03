@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Android.Runtime;
-using Com.Microsoft.Azure.Mobile.Analytics;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {

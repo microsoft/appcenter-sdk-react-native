@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {

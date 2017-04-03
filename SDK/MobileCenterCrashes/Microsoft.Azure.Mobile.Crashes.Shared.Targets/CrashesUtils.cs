@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     internal static class CrashesUtils
     {

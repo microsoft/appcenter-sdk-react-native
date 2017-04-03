@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Exception type thrown for testing purposes. See <see cref="Crashes.GenerateTestCrash"/>. 

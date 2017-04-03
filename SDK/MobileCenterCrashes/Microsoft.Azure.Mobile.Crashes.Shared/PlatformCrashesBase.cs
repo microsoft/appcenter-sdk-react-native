@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Object used to share portable code between platforms.

@@ -1,13 +1,4 @@
-﻿using Android.App;
-using Android.Content.PM;
-using Android.OS;
-using Microsoft.Azure.Mobile;
-using Com.Microsoft.Azure.Mobile.Analytics;
-using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Com.Microsoft.Azure.Mobile.Analytics.Channel;
-using Com.Microsoft.Azure.Mobile.Ingestion.Models;
-
-namespace Contoso.Forms.Puppet.Droid
+﻿namespace Contoso.Forms.Puppet.Droid
 {
     [Activity(Label = "MCFPuppet", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity

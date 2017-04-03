@@ -1,19 +1,4 @@
-﻿using System;
-using Android.App;
-using Android.Content;
-using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.OS;
-using Microsoft.Azure.Mobile;
-using Com.Microsoft.Azure.Mobile.Analytics.Channel;
-using Com.Microsoft.Azure.Mobile.Ingestion.Models;
-using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Com.Microsoft.Azure.Mobile.Analytics;
-using System.Collections.Generic;
-
-namespace Contoso.Forms.Test.Droid
+﻿namespace Contoso.Forms.Test.Droid
 {
     [Activity(Label = "Contoso.Forms.Test.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity

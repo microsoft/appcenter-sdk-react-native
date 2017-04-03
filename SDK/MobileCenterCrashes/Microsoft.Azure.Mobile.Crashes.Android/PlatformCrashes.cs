@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Android.Runtime;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
@@ -12,10 +6,6 @@ namespace Microsoft.Azure.Mobile.Crashes
     using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.AndroidCrashes;
     using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
     using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
-    using System.Threading.Tasks;
-    using Com.Microsoft.Azure.Mobile;
-    using Com.Microsoft.Azure.Mobile.Crashes.Model;
-    using System.Threading;
 
     class PlatformCrashes : PlatformCrashesBase
     {

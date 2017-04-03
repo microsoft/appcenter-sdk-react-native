@@ -6,7 +6,6 @@ using Java.Lang;
 
 namespace Microsoft.Azure.Mobile
 {
-    using Com.Microsoft.Azure.Mobile;
     using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
 
     /// <summary>

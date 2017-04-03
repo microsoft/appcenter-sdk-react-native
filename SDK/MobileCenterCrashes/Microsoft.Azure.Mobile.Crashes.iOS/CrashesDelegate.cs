@@ -1,5 +1,4 @@
 ﻿using Foundation;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
