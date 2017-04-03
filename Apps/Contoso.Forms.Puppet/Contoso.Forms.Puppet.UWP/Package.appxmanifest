@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="2a16a451-5df0-42b2-941c-dafeed006a2e" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Contoso.Forms.Puppet.UWP</DisplayName>
-    <PublisherDisplayName>bmourat</PublisherDisplayName>
+    <PublisherDisplayName>alchocro</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
