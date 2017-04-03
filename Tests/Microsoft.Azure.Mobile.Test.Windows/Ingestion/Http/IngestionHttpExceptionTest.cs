@@ -7,7 +7,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
     public class IngestionHttpExceptionTest
     {
         [TestMethod]
-        public void IsRecovarblePropertyTest()
+        public void IsRecoverablePropertyTest()
         {
             HttpIngestionException exception = new HttpIngestionException("Test exception message");
 
@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
             Assert.IsTrue(exception.IsRecoverable);
 
             exception.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-            Assert.IsFalse(exception.IsRecoverable);
+            Assert.IsTrue(exception.IsRecoverable);
         }
     }
 }

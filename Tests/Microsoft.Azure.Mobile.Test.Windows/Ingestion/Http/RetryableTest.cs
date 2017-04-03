@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         [TestMethod]
         public void ServiceCallFailedCallbackTest()
         {
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
             var call = PrepareServiceCall();
 
             SetupEventCallbacks(call);

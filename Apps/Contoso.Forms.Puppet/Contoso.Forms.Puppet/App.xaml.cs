@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure.Mobile;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
 
 namespace Contoso.Forms.Puppet
 {

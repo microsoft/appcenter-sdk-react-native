@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Mobile
         /// </summary>
         protected virtual int TriggerMaxParallelRequests => Constants.DefaultTriggerMaxParallelRequests;
 
-        internal MobileCenterService()
+        protected MobileCenterService()
         {
         }
 

@@ -13,8 +13,8 @@ namespace Microsoft.Azure.Mobile.Channel
         private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
         private readonly IIngestion _ingestion;
         private readonly IStorage _storage;
-        private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-
+        private readonly object _channelGroupLock = new object();
+        private bool _isDisposed;
         public string AppSecret { get; internal set; }
 
         public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
@@ -33,26 +33,32 @@ namespace Microsoft.Azure.Mobile.Channel
 
         public void SetLogUrl(string logUrl)
         {
-            _mutex.Wait();
-            _ingestion.SetLogUrl(logUrl);
-            _mutex.Release();
+            ThrowIfDisposed();
+            lock (_channelGroupLock)
+            {
+                _ingestion.SetLogUrl(logUrl);
+            }
         }
 
         /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
         public IChannelUnit AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
-            var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
-                     _ingestion, _storage);
-            AddChannel(newChannel);
-            return newChannel;
+            ThrowIfDisposed();
+            lock (_channelGroupLock)
+            {
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
+                var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
+                    _ingestion, _storage);
+                AddChannel(newChannel);
+                return newChannel;
+            }
         }
 
         /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
         public void AddChannel(IChannelUnit channel)
         {
-            _mutex.Wait();
-            try
+            ThrowIfDisposed();
+            lock (_channelGroupLock)
             {
                 if (channel == null)
                 {
@@ -69,35 +75,35 @@ namespace Microsoft.Azure.Mobile.Channel
                 channel.SentLog += AnyChannelSentLog;
                 channel.FailedToSendLog += AnyChannelFailedToSendLog;
             }
-            finally
-            {
-                _mutex.Release();
-            }
         }
 
         public void SetEnabled(bool enabled)
         {
-            _mutex.Wait();
-            foreach (var channel in _channels)
+            ThrowIfDisposed();
+            lock (_channelGroupLock)
             {
-                channel.SetEnabled(enabled);
+                foreach (var channel in _channels)
+                {
+                    channel.SetEnabled(enabled);
+                }
             }
-            _mutex.Release();
         }
 
         public void Shutdown()
         {
-            _mutex.Wait();
-            foreach (var channel in _channels)
+            ThrowIfDisposed();
+            lock (_channelGroupLock)
             {
-                channel.Shutdown();
+                foreach (var channel in _channels)
+                {
+                    channel.Shutdown();
+                }
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
+                if (!_storage.Shutdown(_shutdownTimeout))
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
+                }
             }
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
-            if (!_storage.Shutdown(_shutdownTimeout))
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
-            }
-            _mutex.Release();
         }
 
         private static IIngestion DefaultIngestion()
@@ -133,9 +139,17 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 channel.Dispose();
             }
-            _mutex.Dispose();
             _ingestion.Dispose();
             _storage.Dispose();
+            _isDisposed = true;
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException("ChannelGroup");
+            }
         }
     }
 }

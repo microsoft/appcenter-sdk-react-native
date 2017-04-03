@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
