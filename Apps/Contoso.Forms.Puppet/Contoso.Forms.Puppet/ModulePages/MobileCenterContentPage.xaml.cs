@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Azure.Mobile;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 

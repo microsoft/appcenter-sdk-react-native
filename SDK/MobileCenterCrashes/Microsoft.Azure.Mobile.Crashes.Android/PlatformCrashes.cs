@@ -1,4 +1,13 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Android.Runtime;
+using Com.Microsoft.Azure.Mobile;
+using Com.Microsoft.Azure.Mobile.Crashes.Model;
+
+namespace Microsoft.Azure.Mobile.Crashes
 {
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;

@@ -1,4 +1,7 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿using System.Collections.Generic;
+using Com.Microsoft.Azure.Mobile.Crashes.Model;
+
+namespace Microsoft.Azure.Mobile.Crashes
 {
     static class ErrorReportCache
     {

@@ -1,4 +1,7 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Interface to abstract <see cref="Crashes"/> features between different platforms.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Android.App;
+using Com.Microsoft.Azure.Mobile;
 using Java.Lang;
 
 namespace Microsoft.Azure.Mobile
