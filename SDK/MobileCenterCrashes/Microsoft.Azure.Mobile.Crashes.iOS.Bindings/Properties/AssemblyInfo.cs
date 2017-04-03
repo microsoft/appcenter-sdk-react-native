@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System.Reflection;
 
 // This attribute allows you to mark your assemblies as “safe to link”. 
