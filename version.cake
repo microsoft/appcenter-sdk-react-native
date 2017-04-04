@@ -86,7 +86,7 @@ Task("StartNewVersion").Does(()=>
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
 	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
-	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")", "Demo");
 
 	// Update wrapper sdk version
 	//UpdateWrapperSdkVersion(snapshotVersion);
@@ -118,10 +118,10 @@ Task("StartNewVersion").Does(()=>
 	//Replace iOS version
 	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
-	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
+	ReplaceRegexInFilesWithExclusion("**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
 	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
-	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
+	ReplaceRegexInFilesWithExclusion("**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
 });
 
 Task("UpdateDemoDependencies").Does(() =>
