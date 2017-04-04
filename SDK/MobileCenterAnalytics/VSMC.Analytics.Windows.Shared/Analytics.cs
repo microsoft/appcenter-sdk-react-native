@@ -12,6 +12,11 @@ namespace Microsoft.Azure.Mobile.Analytics
     {
         #region static
 
+        private const int MaxEventProperties = 5;
+        private const int MaxEventNameLength = 256;
+        private const int MaxEventPropertyKeyLength = 64;
+        private const int MaxEventPropertyValueLength = 64;
+
         private static readonly object AnalyticsLock = new object();
 
         private static Analytics _instanceField;
@@ -67,6 +72,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 Instance.InstanceTrackEvent(name, properties);
             }
         }
+
         #endregion
 
         #region instance
@@ -114,6 +120,21 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 return;
             }
+            if (string.IsNullOrEmpty(name))
+            {
+                MobileCenterLog.Error(LogTag, "Name cannot be null or empty");
+                return;
+            }
+            if (name.Length > MaxEventNameLength)
+            {
+                MobileCenterLog.Error(LogTag, "Name cannot be longer then " + MaxEventNameLength + " characters");
+                return;
+            }
+            if (!ValidateProperties(properties))
+            {
+                /* Error already logged */
+                return;
+            }
             var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
             Channel.Enqueue(log);
         }
@@ -152,6 +173,41 @@ namespace Microsoft.Azure.Mobile.Analytics
         private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
         {
             return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
+        }
+
+        private bool ValidateProperties(IDictionary<string, string> properties)
+        {
+            if (properties == null)
+                return true;
+            if (properties.Count > MaxEventProperties)
+            {
+                MobileCenterLog.Error(LogTag, "Properties cannot be more then " + MaxEventProperties);
+                return false;
+            }
+            foreach (var property in properties)
+            {
+                if (string.IsNullOrEmpty(property.Key))
+                {
+                    MobileCenterLog.Error(LogTag, "Property key cannot be null or empty");
+                    return false;
+                }
+                if (property.Key.Length > MaxEventPropertyKeyLength)
+                {
+                    MobileCenterLog.Error(LogTag, "Property key cannot be longer then " + MaxEventPropertyKeyLength + " characters");
+                    return false;
+                }
+                if (property.Value == null)
+                {
+                    MobileCenterLog.Error(LogTag, "Property value cannot be null");
+                    return false;
+                }
+                if (property.Value.Length > MaxEventPropertyValueLength)
+                {
+                    MobileCenterLog.Error(LogTag, "Property value cannot be longer then " + MaxEventPropertyValueLength + " characters");
+                    return false;
+                }
+            }
+            return true;
         }
 
         #endregion
