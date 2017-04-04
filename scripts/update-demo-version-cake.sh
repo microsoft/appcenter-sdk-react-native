@@ -3,4 +3,5 @@
 
 version=$1
 
-./build.sh -s "version.cake" -t "UpdateDemoVersion" -DemoVersion "$(version)"
+./build.sh -s "version.cake" -t "UpdateDemoVersion" -DemoVersion "$version"
+
