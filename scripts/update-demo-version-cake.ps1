@@ -2,7 +2,7 @@
 
 [CmdletBinding()]
 Param(
-    [string]$DemoVersion
+    [string]$Version
 )
 
-.\build.ps1 -Script "version.cake" -Target "UpdateDemoVersion" -ExtraArgs '-DemoVersion="$DemoVersion"'
+.\build.ps1 -Script "version.cake" -Target "UpdateDemoVersion" -ExtraArgs '-DemoVersion="$Version"'
