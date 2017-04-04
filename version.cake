@@ -126,14 +126,8 @@ Task("StartNewVersion").Does(()=>
 
 Task("UpdateDemoDependencies").Does(() =>
 {
-	try
-	{
-		NuGetRestore("MobileCenter-SDK.sln");
-	}
-	catch
-	{
-		Information("NOTE: IGNORE THE RED ERROR MESSAGE if it is about the UWP project");
-	}
+
+	NuGetRestore("MobileCenter-Demo-Mac.sln");
 
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
