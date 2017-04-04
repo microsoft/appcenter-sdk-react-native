@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
+    /// <summary>
+    /// Used to register application with watson for Crashes.
+    /// </summary>
     public class WatsonCrashesStarter
     {
         private const string WatsonKey = "VSMCAppSecret";
