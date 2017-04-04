@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics.iOS.Bindings;
 using UIKit;
 
 namespace Contoso.Forms.Puppet.iOS
