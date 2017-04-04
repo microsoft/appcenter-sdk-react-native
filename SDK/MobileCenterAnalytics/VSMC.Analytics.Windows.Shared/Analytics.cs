@@ -63,8 +63,17 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <summary>
         ///     Track a custom event.
         /// </summary>
-        /// <param name="name">An event name.</param>
-        /// <param name="properties">Optional properties.</param>
+        /// <param name="name">
+        ///     An event name.
+        ///     Should be not null, not empty and shorter than 256 characters.
+        /// </param>
+        /// <param name="properties">
+        ///     Optional properties.
+        ///     Maximum count is 5, next will be skipped.
+        ///     Keys should be not null, not empty and shorter than 64 characters.
+        ///     Values should be not null and shorter than 64 characters.
+        ///     Invalid properties willbe skipped.
+        /// </param>
         public static void TrackEvent(string name, IDictionary<string, string> properties = null)
         {
             lock (AnalyticsLock)
@@ -122,12 +131,12 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
             if (string.IsNullOrEmpty(name))
             {
-                MobileCenterLog.Error(LogTag, "Name cannot be null or empty");
+                MobileCenterLog.Error(LogTag, "Name cannot be null or empty.");
                 return;
             }
             if (name.Length > MaxEventNameLength)
             {
-                MobileCenterLog.Error(LogTag, "Name cannot be longer then " + MaxEventNameLength + " characters");
+                MobileCenterLog.Error(LogTag, "Name cannot be longer then " + MaxEventNameLength + " characters.");
                 return;
             }
             properties = ValidateProperties(properties);
@@ -178,32 +187,32 @@ namespace Microsoft.Azure.Mobile.Analytics
             var result = new Dictionary<string, string>();
             foreach (var property in properties)
             {
+                if (result.Count >= MaxEventProperties)
+                {
+                    MobileCenterLog.Error(LogTag, "Too many properties. Only " + MaxEventProperties + " valid properties will be send.");
+                    break;
+                }
                 if (string.IsNullOrEmpty(property.Key))
                 {
-                    MobileCenterLog.Error(LogTag, "Property key cannot be null or empty");
+                    MobileCenterLog.Error(LogTag, "Property key cannot be null or empty. Property will be skipped.");
                     continue;
                 }
                 if (property.Key.Length > MaxEventPropertyKeyLength)
                 {
-                    MobileCenterLog.Error(LogTag, "Property key cannot be longer then " + MaxEventPropertyKeyLength + " characters");
+                    MobileCenterLog.Error(LogTag, "Property key cannot be longer then " + MaxEventPropertyKeyLength + " characters. Property \"" + property.Key + "\" will be skipped.");
                     continue;
                 }
                 if (property.Value == null)
                 {
-                    MobileCenterLog.Error(LogTag, "Property value cannot be null");
+                    MobileCenterLog.Error(LogTag, "Property value cannot be null. Property \"" + property.Key + "\" will be skipped.");
                     continue;
                 }
                 if (property.Value.Length > MaxEventPropertyValueLength)
                 {
-                    MobileCenterLog.Error(LogTag, "Property value cannot be longer then " + MaxEventPropertyValueLength + " characters");
+                    MobileCenterLog.Error(LogTag, "Property value cannot be longer then " + MaxEventPropertyValueLength + " characters. Property \"" + property.Key + "\" will be skipped.");
                     continue;
                 }
                 result.Add(property.Key, property.Value);
-                if (result.Count >= MaxEventProperties)
-                {
-                    MobileCenterLog.Error(LogTag, "Properties cannot be more then " + MaxEventProperties);
-                    break;
-                }
             }
             return result;
         }
