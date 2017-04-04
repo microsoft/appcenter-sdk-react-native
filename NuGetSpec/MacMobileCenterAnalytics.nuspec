@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.Azure.Mobile.Analytics</id>
+    <title>Mobile Center Analytics</title>
+    <authors>Microsoft Corporation</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Microsoft Visual Studio Mobile Center Analytics package provides analytics capabilities for your mobile applications.</summary>
+    <description>This package contains functionalities to collect session, device properties, events etc… for your application.</description>
+    <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/p2wifj</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.Azure.Mobile" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+
+    <!-- PCL -->
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.dll" />
+
+    <!-- Android -->
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll" target="lib/MonoAndroid403//Microsoft.Azure.Mobile.Analytics.dll" />
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll" target="lib/MonoAndroid403//Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll" />
+
+    <!-- iOS -->
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll" target="lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.dll" />
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10//Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" />
+    
+  </files>
+</package>

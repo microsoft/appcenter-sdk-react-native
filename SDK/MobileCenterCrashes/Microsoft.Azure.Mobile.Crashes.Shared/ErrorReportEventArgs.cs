@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Azure.Mobile;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {

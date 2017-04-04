@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
@@ -24,5 +23,5 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.7.1.0")]
-[assembly: AssemblyInformationalVersion("0.7.1-SNAPSHOT")]
+[assembly: AssemblyFileVersion("0.8.0.0")]
+[assembly: AssemblyInformationalVersion("0.8.0-SNAPSHOT")]

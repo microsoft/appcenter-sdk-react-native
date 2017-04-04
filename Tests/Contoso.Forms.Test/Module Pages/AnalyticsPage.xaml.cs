@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test
 {

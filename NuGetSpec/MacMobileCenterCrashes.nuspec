@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.Azure.Mobile.Crashes</id>
+    <title>Mobile Center Crashes</title>
+    <authors>Microsoft Corporation</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Microsoft Visual Studio Mobile Center Crashes package provides crash reporting capabilities for your mobile applications.</summary>
+    <description>This package contains functionalities to collect crash reports for your application.</description>
+    <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/p2wifj</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.Azure.Mobile" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+
+    <!-- PCL -->
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll" />
+
+    <!-- Android -->
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/MonoAndroid403/Microsoft.Azure.Mobile.Crashes.dll" />
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll" target="lib/MonoAndroid403/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll" />
+
+    <!-- iOS -->
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll" />
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" />
+
+  </files>
+</package>

@@ -15,7 +15,9 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <AndroidTlsProvider>
+    </AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,7 +30,8 @@
     <DocumentationFile>bin\Debug\Microsoft.Azure.Mobile.Crashes.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -41,6 +44,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -53,6 +57,7 @@
     <Compile Include="ErrorAttachment.cs" />
     <Compile Include="ErrorBinaryAttachment.cs" />
     <Compile Include="ErrorReportCache.cs" />
+    <Compile Include="CrashesPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -62,16 +67,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android\Microsoft.Azure.Mobile.Android.csproj">
-      <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
+      <Project>{119c1730-e109-4bc9-aa89-9dca2c50bfd5}</Project>
       <Name>Microsoft.Azure.Mobile.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
-      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Azure.Mobile.Crashes.Android.Bindings\Microsoft.Azure.Mobile.Crashes.Android.Bindings.csproj">
       <Project>{42D541D7-B7C9-45A7-8D4D-8FB5A00668B3}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
+      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
+      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems')" />

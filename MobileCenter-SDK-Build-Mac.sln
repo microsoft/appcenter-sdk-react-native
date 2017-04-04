@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenter", "MobileCente
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterAnalytics", "MobileCenterAnalytics", "{C4C63221-60D5-412B-92CC-D59A8EA62E23}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterAnalytics", "MobileCenterAnalytics", "{7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterCrashes", "MobileCenterCrashes", "{7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile", "SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj", "{3FE04B97-48DE-4895-8612-ECBDFEBD917C}"
 EndProject
@@ -45,14 +45,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Cras
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Crashes.iOS", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS\Microsoft.Azure.Mobile.Crashes.iOS.csproj", "{4936A94C-BE22-4F73-8468-64FA4371FF80}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Crashes.Shared.Targets", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.shproj", "{CAE55C79-1601-400D-86BF-03AB8CC5B8B9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
+		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems*{4936a94c-be22-4f73-8468-64fa4371ff80}*SharedItemsImports = 4
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{4936a94c-be22-4f73-8468-64fa4371ff80}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{b87370cd-af51-45e0-aa15-3e0abc0c30a0}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
+		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared.Targets\Microsoft.Azure.Mobile.Crashes.Shared.Targets.projitems*{d6db87ca-b8ec-4a38-805f-afdc7fec38eb}*SharedItemsImports = 4
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{d6db87ca-b8ec-4a38-805f-afdc7fec38eb}*SharedItemsImports = 4
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2}*SharedItemsImports = 13
 	EndGlobalSection
@@ -828,6 +832,7 @@ Global
 		{D6DB87CA-B8EC-4A38-805F-AFDC7FEC38EB} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 		{FCEB9729-627A-4964-B853-1649CA1FA76D} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 		{4936A94C-BE22-4F73-8468-64FA4371FF80} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
+		{CAE55C79-1601-400D-86BF-03AB8CC5B8B9} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
