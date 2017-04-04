@@ -89,7 +89,7 @@ Task("StartNewVersion").Does(()=>
 	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
 
 	// Update wrapper sdk version
-	UpdateWrapperSdkVersion(snapshotVersion);
+	//UpdateWrapperSdkVersion(snapshotVersion);
 
 	// Replace android manifest version name tag
 	var androidManifestGlob = "Apps/**/AndroidManifest.xml";
