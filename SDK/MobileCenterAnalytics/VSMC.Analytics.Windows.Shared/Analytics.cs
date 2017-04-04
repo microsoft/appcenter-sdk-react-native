@@ -130,11 +130,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 MobileCenterLog.Error(LogTag, "Name cannot be longer then " + MaxEventNameLength + " characters");
                 return;
             }
-            if (!ValidateProperties(properties))
-            {
-                /* Error already logged */
-                return;
-            }
+            properties = ValidateProperties(properties);
             var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
             Channel.Enqueue(log);
         }
@@ -175,39 +171,41 @@ namespace Microsoft.Azure.Mobile.Analytics
             return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
         }
 
-        private bool ValidateProperties(IDictionary<string, string> properties)
+        private IDictionary<string, string> ValidateProperties(IDictionary<string, string> properties)
         {
             if (properties == null)
-                return true;
-            if (properties.Count > MaxEventProperties)
-            {
-                MobileCenterLog.Error(LogTag, "Properties cannot be more then " + MaxEventProperties);
-                return false;
-            }
+                return null;
+            var result = new Dictionary<string, string>();
             foreach (var property in properties)
             {
                 if (string.IsNullOrEmpty(property.Key))
                 {
                     MobileCenterLog.Error(LogTag, "Property key cannot be null or empty");
-                    return false;
+                    continue;
                 }
                 if (property.Key.Length > MaxEventPropertyKeyLength)
                 {
                     MobileCenterLog.Error(LogTag, "Property key cannot be longer then " + MaxEventPropertyKeyLength + " characters");
-                    return false;
+                    continue;
                 }
                 if (property.Value == null)
                 {
                     MobileCenterLog.Error(LogTag, "Property value cannot be null");
-                    return false;
+                    continue;
                 }
                 if (property.Value.Length > MaxEventPropertyValueLength)
                 {
                     MobileCenterLog.Error(LogTag, "Property value cannot be longer then " + MaxEventPropertyValueLength + " characters");
-                    return false;
+                    continue;
+                }
+                result.Add(property.Key, property.Value);
+                if (result.Count >= MaxEventProperties)
+                {
+                    MobileCenterLog.Error(LogTag, "Properties cannot be more then " + MaxEventProperties);
+                    break;
                 }
             }
-            return true;
+            return result;
         }
 
         #endregion
