@@ -126,9 +126,34 @@ Task("StartNewVersion").Does(()=>
 
 Task("UpdateDemoDependencies").Does(() =>
 {
+	try
+	{
+		NuGetRestore("MobileCenter-SDK.sln");
+	}
+	catch
+	{
+		Information("NOTE: IGNORE THE RED ERROR MESSAGE if it is about the UWP project");
+	}
+
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
+
+	// Get version that was just retrieved
+	var packagesConfig = "./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config";
+	var patternPrefix = "<package id=\"Microsoft.Azure.Mobile\" version=\"";
+	var configPattern = patternPrefix + "[^\"]+\"";
+	var packagesConfigFile = new FilePath(packagesConfig);
+	var versionTag = FindRegexMatchInFile(packagesConfigFile, configPattern, RegexOptions.None);
+	var newVersion = versionTag.Substring(patternPrefix.Length, versionTag.Length - patternPrefix.Length - 1);
+
+	// Edit the project.json
+	var analyticsPattern = "\"Microsoft.Azure.Mobile.Analytics\": \"[^\"]+\",";
+	var crashesPattern = "\"Microsoft.Azure.Mobile.Crashes\": \"[^\"]+\",";
+	var newAnalyticsString = "\"Microsoft.Azure.Mobile.Analytics\": \"" + newVersion + "\",";
+	var newCrashesString = "\"Microsoft.Azure.Mobile.Crashes\": \"" + newVersion + "\",";
+	ReplaceRegexInFiles("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.UWP/project.json", analyticsPattern, newAnalyticsString);
+	ReplaceRegexInFiles("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.UWP/project.json", crashesPattern, newCrashesString);
 });
 
 void IncrementRevisionNumber(bool useHash)
@@ -200,9 +225,9 @@ string GetLatestNuGetVersion()
 	return tag;
 }
 
+
 void IncrementManifestVersionCode(FilePath manifest)
 {
-	Information(manifest.FullPath);
 	var versionCodePattern = "android:versionCode=\"[^\"]+\"";
 	var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
 	var firstPart = "android:versionCode=\"";
