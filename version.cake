@@ -81,7 +81,7 @@ Task("StartNewVersion").Does(()=>
 	var newVersion = Argument<string>("NewVersion");
 	var snapshotVersion = newVersion + "-SNAPSHOT";
 
-	// Replace version in all the demo application assemblies
+	// Replace version in all but the demo application assemblies
 	var assemblyInfoGlob = "**/AssemblyInfo.cs";
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
@@ -92,7 +92,7 @@ Task("StartNewVersion").Does(()=>
 	//UpdateWrapperSdkVersion(snapshotVersion);
 
 	// Replace android manifest version name tag
-	var androidManifestGlob = "Apps/**/AndroidManifest.xml";
+	var androidManifestGlob = "**/AndroidManifest.xml";
 	var versionNamePattern = "android:versionName=\"[^\"]+\"";
 	var newVersionName = "android:versionName=\"" + snapshotVersion + "\"";
 	ReplaceRegexInFilesWithExclusion(androidManifestGlob, versionNamePattern, newVersionName, "Demo", "/bin/", "/obj/");
@@ -110,7 +110,7 @@ Task("StartNewVersion").Does(()=>
 	}
 
 	//Replace UWP version
-	var uwpManifestGlob = "Apps/**/Package.appxmanifest";
+	var uwpManifestGlob = "**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
 	var newVersionTagText = " Version=\""+newVersion+".0\"";
 	ReplaceRegexInFilesWithExclusion(uwpManifestGlob, versionTagPattern, newVersionTagText, "Demo");
