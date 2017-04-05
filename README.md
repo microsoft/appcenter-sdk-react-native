@@ -105,32 +105,24 @@ To start the SDK in your app, follow these steps:
 
     **Xamarin.iOS**
  
-   Open AppDelegate.cs file and add the `Start` API in FinishedLaunching() method
+   1. Open your `AppDelegate.cs` file and add the `Start`-API in your `FinishedLaunching`-method
 
     ```csharp
     MobileCenter.Start("{Your Xamarin iOS App Secret}", typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
     
-    Add a new URL scheme to your `info.plist`: Open your `Info.plist` and add a new key for `URL types` or `CFBundleURLTypes` (in case Xcode displays your `Info.plist` as source code).
-3. Change the key of the first child item to URL Schemes or `CFBundleURLSchemes`.
-4. Enter `mobilecenter-${APP_SECRET}` as the URL scheme and replace `${APP_SECRET}` with the App Secret of your app.
-5. Implement the `openURL`-callback in your `AppDelegate` to enable in-app-updates.
+    2. Add a new URL scheme to your `info.plist`. Open your `Info.plist` and switch to the **Advanced** tab. Copy and paste your bundle identifier as the `URL Identifier`, e.g. `com.example.awesomeapp`.
+    3. Next, in the **Advanced** tab, enter `mobilecenter-${APP_SECRET}` as the URL scheme and replace `${APP_SECRET}` with the App Secret of your app.
+    4. Implement the `openURL`-callback in your `AppDelegate` to enable in-app-updates and add the `Distribute.OpenUrl(url)`-call.
+    
+	```csharp
+	public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+   {
+   		Distribute.OpenUrl(url);
 
-**Objective-C**
-
-```objectivec
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-         
-  // Pass the url to MSDistribute.
-  [MSDistribute openUrl:url];
-  return YES;
-}
-
-```
-
+       return true;
+   }
+	```
 
     **Xamarin.Android**
     
@@ -151,6 +143,10 @@ To start the SDK in your app, follow these steps:
     You need to copy paste the App secret value for Xamarin iOS and Android app from Mobile Center portal. Make sure to replace the placeholder text above with the actual values for your application.
     
     The example above shows how to use the `Start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `Start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
+    
+   **Note that your forms iOS app requires additional setup-steps for Distribute to work.**
+   
+   These steps are described above in the `Xamarin.iOS`-paragraph.
 
 ## 5. Analytics APIs
 
@@ -292,7 +288,7 @@ Use the same string name and specify the localized value to be reflected in the 
 
 You can change the enabled state by calling the `setEnabled` API. If you disable it, the SDK will not prompt your users when a new version is available for install. To re-enable it, pass `YES` or `true` as a parameter in the same method.
 
-Note that it will only disable SDK features for Distribute service which is in-app updates for your application and has nothing to do with disabling `Distribute` service from Mobile Center.
+Note that it will only disable SDK features for the Distribute service (in-app updates for your application) and the SDK API has nothing to do with disabling the **Distribute** service on the Mobile Center portal.
 
 ```csharp
 Distribute.Enabled = false;
