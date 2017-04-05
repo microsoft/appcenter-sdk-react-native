@@ -98,24 +98,46 @@ To start the SDK in your app, follow these steps:
     using Microsoft.Azure.Mobile;
     using Microsoft.Azure.Mobile.Analytics;
     using Microsoft.Azure.Mobile.Crashes;
+    using Microsoft.Azure.Mobile.Distribute;
     ```
 
-2. **Start the SDK:**  Mobile Center provides developers with two modules to get started – Analytics and Crashes. In order to use these modules, you need to opt in for the module(s) that you'd like, meaning by default no module is started and you will have to explicitly call each of them when starting the SDK.   
+2. **Start the SDK:**  Mobile Center provides developers with three modules to get started – Analytics, Crashes and Distribute. In order to use these modules, you need to opt in for the module(s) that you'd like, meaning by default no module is started and you will have to explicitly call each of them when starting the SDK.   
 
     **Xamarin.iOS**
  
    Open AppDelegate.cs file and add the `Start` API in FinishedLaunching() method
 
     ```csharp
-    MobileCenter.Start("{Your Xamarin iOS App Secret}", typeof(Analytics), typeof(Crashes));
+    MobileCenter.Start("{Your Xamarin iOS App Secret}", typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
+    
+    Add a new URL scheme to your `info.plist`: Open your `Info.plist` and add a new key for `URL types` or `CFBundleURLTypes` (in case Xcode displays your `Info.plist` as source code).
+3. Change the key of the first child item to URL Schemes or `CFBundleURLSchemes`.
+4. Enter `mobilecenter-${APP_SECRET}` as the URL scheme and replace `${APP_SECRET}` with the App Secret of your app.
+5. Implement the `openURL`-callback in your `AppDelegate` to enable in-app-updates.
+
+**Objective-C**
+
+```objectivec
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+         
+  // Pass the url to MSDistribute.
+  [MSDistribute openUrl:url];
+  return YES;
+}
+
+```
+
 
     **Xamarin.Android**
     
     Open MainActivity.cs file and add the `Start` API in OnCreate() method
 
     ```csharp
-    MobileCenter.Start("{Your Xamarin Android App Secret}", typeof(Analytics), typeof(Crashes));
+    MobileCenter.Start("{Your Xamarin Android App Secret}", typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
 
     **Xamarin.Forms**
@@ -123,7 +145,7 @@ To start the SDK in your app, follow these steps:
    For creating a Xamarin.Forms application targeting both iOS and Android platforms, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two App secrets - one for iOS and another for Android. Open the `App.xaml.cs` file (or your class that inherits `Xamarin.Forms.Application`) in your shared or portable project and add the API below in the `OnStart()` override method.
 
     ```csharp
-    MobileCenter.Start("ios={Your Xamarin iOS App Secret};android={Your Xamarin Android App secret}",typeof(Analytics), typeof(Crashes));
+    MobileCenter.Start("ios={Your Xamarin iOS App Secret};android={Your Xamarin Android App secret}",typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
      
     You need to copy paste the App secret value for Xamarin iOS and Android app from Mobile Center portal. Make sure to replace the placeholder text above with the actual values for your application.
@@ -281,7 +303,6 @@ You can also check if the service is enabled in the SDK or not at runtime.
 ```csharp
 bool enabled = Distribute.Enabled;
 ```
-
 
 
 ## 8. Advanced APIs
