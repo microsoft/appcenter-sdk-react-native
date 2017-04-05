@@ -68,11 +68,13 @@ namespace Microsoft.Azure.Mobile.Utils
         {
             return null;
         }
+
         private string GetSdkVersion()
         {
-            return GetType().GetTypeInfo().Assembly.GetName().Version.ToString();
+           return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
         }
-        private string GetLocale()
+
+    private string GetLocale()
         {
             return System.Globalization.CultureInfo.CurrentCulture.Name;
         }

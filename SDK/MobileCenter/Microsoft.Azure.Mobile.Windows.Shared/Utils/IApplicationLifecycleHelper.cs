@@ -2,6 +2,9 @@
 
 namespace Microsoft.Azure.Mobile.Utils
 {
+    /// <summary>
+    /// Represents an object that tracks the application lifecycle.
+    /// </summary>
     public interface IApplicationLifecycleHelper
     {
         /// <summary>
@@ -22,6 +25,7 @@ namespace Microsoft.Azure.Mobile.Utils
         /// <summary>
         /// Occurs when an unhandled exception is fired
         /// </summary>
+        /// <remarks>This is used to set up the shutdown logic in the event of a crash.</remarks>
         event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }

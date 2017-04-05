@@ -81,18 +81,18 @@ Task("StartNewVersion").Does(()=>
 	var newVersion = Argument<string>("NewVersion");
 	var snapshotVersion = newVersion + "-SNAPSHOT";
 
-	// Replace version in all the demo application assemblies
+	// Replace version in all but the demo application assemblies
 	var assemblyInfoGlob = "**/AssemblyInfo.cs";
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
 	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
-	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")", "Demo");
 
 	// Update wrapper sdk version
-	UpdateWrapperSdkVersion(snapshotVersion);
+	//UpdateWrapperSdkVersion(snapshotVersion);
 
 	// Replace android manifest version name tag
-	var androidManifestGlob = "Apps/**/AndroidManifest.xml";
+	var androidManifestGlob = "**/AndroidManifest.xml";
 	var versionNamePattern = "android:versionName=\"[^\"]+\"";
 	var newVersionName = "android:versionName=\"" + snapshotVersion + "\"";
 	ReplaceRegexInFilesWithExclusion(androidManifestGlob, versionNamePattern, newVersionName, "Demo", "/bin/", "/obj/");
@@ -110,7 +110,7 @@ Task("StartNewVersion").Does(()=>
 	}
 
 	//Replace UWP version
-	var uwpManifestGlob = "Apps/**/Package.appxmanifest";
+	var uwpManifestGlob = "**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
 	var newVersionTagText = " Version=\""+newVersion+".0\"";
 	ReplaceRegexInFilesWithExclusion(uwpManifestGlob, versionTagPattern, newVersionTagText, "Demo");
@@ -118,17 +118,36 @@ Task("StartNewVersion").Does(()=>
 	//Replace iOS version
 	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
-	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
+	ReplaceRegexInFilesWithExclusion("**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
 	var bundleShortVersionPattern = @"<key>CFBundleShortVersionString<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
-	ReplaceRegexInFilesWithExclusion("Apps/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
+	ReplaceRegexInFilesWithExclusion("**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
 });
 
 Task("UpdateDemoDependencies").Does(() =>
 {
+
+	NuGetRestore("MobileCenter-Demo-Mac.sln");
+
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
+
+	// Get version that was just retrieved
+	var packagesConfig = "./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config";
+	var patternPrefix = "<package id=\"Microsoft.Azure.Mobile\" version=\"";
+	var configPattern = patternPrefix + "[^\"]+\"";
+	var packagesConfigFile = new FilePath(packagesConfig);
+	var versionTag = FindRegexMatchInFile(packagesConfigFile, configPattern, RegexOptions.None);
+	var newVersion = versionTag.Substring(patternPrefix.Length, versionTag.Length - patternPrefix.Length - 1);
+
+	// Edit the project.json
+	var analyticsPattern = "\"Microsoft.Azure.Mobile.Analytics\": \"[^\"]+\",";
+	var crashesPattern = "\"Microsoft.Azure.Mobile.Crashes\": \"[^\"]+\",";
+	var newAnalyticsString = "\"Microsoft.Azure.Mobile.Analytics\": \"" + newVersion + "\",";
+	var newCrashesString = "\"Microsoft.Azure.Mobile.Crashes\": \"" + newVersion + "\",";
+	ReplaceRegexInFiles("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.UWP/project.json", analyticsPattern, newAnalyticsString);
+	ReplaceRegexInFiles("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.UWP/project.json", crashesPattern, newCrashesString);
 });
 
 void IncrementRevisionNumber(bool useHash)
@@ -200,9 +219,9 @@ string GetLatestNuGetVersion()
 	return tag;
 }
 
+
 void IncrementManifestVersionCode(FilePath manifest)
 {
-	Information(manifest.FullPath);
 	var versionCodePattern = "android:versionCode=\"[^\"]+\"";
 	var versionCodeText = FindRegexMatchInFile(manifest, versionCodePattern, RegexOptions.None);
 	var firstPart = "android:versionCode=\"";
