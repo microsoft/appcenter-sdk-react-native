@@ -24,9 +24,10 @@ This document contains the following sections:
 4. [Start the SDK](#4-start-the-sdk)
 5. [Analytics APIs](#5-analytics-apis)
 6. [Crashes APIs](#6-crashes-apis)
-7. [Advanced APIs](#7-advanced-apis)
-8. [Contributing](#8-contributing)
-9. [Contact](#9-contact)
+7. [Distribute APIs](#7-distribute-apis)
+8. [Advanced APIs](#8-advanced-apis)
+9. [Contributing](#9-contributing)
+10. [Contact](#10-contact)
 
 Let's get started with setting up Mobile Center Xamarin SDK in your app to use these services:
 
@@ -253,8 +254,37 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         };
 
         ```
+## 7. Distribute APIs
 
-## 7. Advanced APIs
+You can easily let your users get the latest version of your app by integrating `Distribute` service of Mobile Center SDK. All you need to do is pass the service name as a parameter in the `start()` API call. Once the activity is created, the SDK checks for new updates in the background. If it finds a new update, users will see a dialog with three options - `Download`,`Postpone` and `Ignore`. If the user presses `Download`, it will trigger the new version to be installed. `Postpone` will delay the download until the app is opened again. `Ignore` will not prompt the user again for that particular app version.
+
+Please follow the paragraph in [Start the SDK](#3-start-the-sdk) to setup the Distribute service.
+
+### Localization of the update UI
+
+You can easily provide your own resource strings if you'd like to localize the text displayed in the update dialog. Look at the string files for iOS [here](https://github.com/Microsoft/mobile-center-sdk-ios/blob/develop/MobileCenterDistribute/MobileCenterDistribute/Resources/en.lproj/MobileCenterDistribute.strings) and those for Android [here]([here](https://github.com/Microsoft/mobile-center-sdk-android/blob/distribute/sdk/mobile-center-distribute/src/main/res/values/strings.xml)).
+
+Use the same string name and specify the localized value to be reflected in the dialog in your own app resource files.  
+
+### Enable or disable Distribute
+
+You can change the enabled state by calling the `setEnabled` API. If you disable it, the SDK will not prompt your users when a new version is available for install. To re-enable it, pass `YES` or `true` as a parameter in the same method.
+
+Note that it will only disable SDK features for Distribute service which is in-app updates for your application and has nothing to do with disabling `Distribute` service from Mobile Center.
+
+```csharp
+Distribute.Enabled = false;
+```
+
+You can also check if the service is enabled in the SDK or not at runtime. 
+  
+```csharp
+bool enabled = Distribute.Enabled;
+```
+
+
+
+## 8. Advanced APIs
 
 * **Debugging**: You can control the amount of log messages that show up from the SDK. Use the API below to enable additional logging while debugging. By default, it is set it to `ASSERT` for non-debuggable applications and `WARN` for debuggable applications.
 
@@ -274,17 +304,17 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         MobileCenter.Enabled = false;
     ```
     
-## 8. Contributing
+## 9. Contributing
 
 We're looking forward to your contributions via pull requests.
 
-### 8.1 Code of Conduct
+### 9.1 Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
-### 8.2 Contributor License
+### 9.2 Contributor License
 
 You must sign a [Contributor License Agreement](https://cla.microsoft.com/) before submitting your pull request. To complete the Contributor License Agreement (CLA), you will need to submit a request via the [form](https://cla.microsoft.com/) and then electronically sign the CLA when you receive the email containing the link to the document. You need to sign the CLA only once to cover submission to any Microsoft OSS project. 
 
-## 9. Contact
+## 10. Contact
 If you have further questions or are running into trouble that cannot be resolved by any of the steps here, feel free to open a Github issue here or contact us at mobilecentersdk@microsoft.com.
