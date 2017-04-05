@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.Azure.Mobile;
+﻿using Microsoft.Azure.Mobile;
+using System.Collections.Generic;
+using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
@@ -39,7 +40,7 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            MobileCenter.Start("android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
+            MobileCenter.Start("uwp=bff0949b-7970-439d-9745-92cdc59b10fe;android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute));
 
             Analytics.TrackEvent("myEvent");

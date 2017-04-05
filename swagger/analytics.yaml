@@ -1,0 +1,1524 @@
+swagger: '2.0'
+info:
+  title: Sonoma.Analytics
+  description: Microsoft Sonoma Analytics REST API.
+  version: '1.0.0-preview20161028'
+host: api-prod-east-us2.prod.avalanch.es
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /v0.1
+paths:
+  '/apps/{app_id}/analytics/log_flow':
+    get:
+      operationId: Analytics_LogFlow
+      x-client-operation: Analytics_LogFlow
+      description: Logs received between the specified start time and the current time. The API will return a maximum of 100 logs per call.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/LogFlowStartTimeParameter'
+      responses:
+        '200':
+          description: List of logs for the requested time range.
+          schema:
+            $ref: '#/definitions/LogContainer'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/active_device_counts':
+    get:
+      operationId: Analytics_DeviceCounts
+      x-client-operation: Analytics_DeviceCounts
+      description: Count of active devices by interval in the time range.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of active devices by interval in the time range.
+          schema:
+            $ref: '#/definitions/ActiveDeviceCounts'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/session_durations_distribution':
+    get:
+      operationId: Analytics_SessionDurationsDistribution
+      x-client-operation: Analytics_SessionDurationsDistribution
+      description: Gets session duration .
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: List of  session durations for requested time range.
+          schema:
+            $ref: '#/definitions/SessionDurationsDistribution'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/versions':
+    get:
+      operationId: Analytics_Versions
+      x-client-operation: Analytics_Versions
+      description: Count of active versions in the time range ordered by version.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/CountParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of active versions in the time range ordered by version.
+          schema:
+            $ref: '#/definitions/Versions'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/session_counts':
+     get:
+       operationId: Analytics_SessionCounts
+       x-client-operation: Analytics_SessionCounts
+       description: Count of sessions in the time range.
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/IntervalParameter'
+        - $ref: '#/parameters/VersionsParameter'
+       responses:
+        '200':
+          description: Count of sessions in the time range.
+          schema:
+            $ref: '#/definitions/SessionCounts'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/sessions_per_device':
+     get:
+       operationId: Analytics_PerDeviceCounts
+       x-client-operation: Analytics_PerDeviceCounts
+       description: Count of sessions per device in the time range
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/IntervalParameter'
+        - $ref: '#/parameters/VersionsParameter'
+       responses:
+        '200':
+          description: Count of sessions per device in the time range
+          schema:
+            $ref: '#/definitions/SessionsPerDevice'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/places':
+     get:
+       operationId: Analytics_PlaceCounts
+       x-client-operation: Analytics_PlaceCounts
+       description: Places in the time range
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/CountParameter'
+        - $ref: '#/parameters/VersionsParameter'
+       responses:
+        '200':
+          description: Places with count during the time range in descending order
+          schema:
+            $ref: '#/definitions/Places'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/models':
+     get:
+       operationId: Analytics_ModelCounts
+       x-client-operation: Analytics_ModelCounts
+       description: models in the time range
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/CountParameter'
+        - $ref: '#/parameters/VersionsParameter'
+       responses:
+        '200':
+          description: Models with count during the time range in descending order
+          schema:
+            $ref: '#/definitions/AnalyticsModels'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/languages':
+     get:
+       operationId: Analytics_LanguageCounts
+       x-client-operation: Analytics_LanguageCounts
+       description: languages in the time range
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/CountParameter'
+        - $ref: '#/parameters/VersionsParameter'
+       responses:
+        '200':
+          description: Languages with count during the time range in descending order
+          schema:
+            $ref: '#/definitions/Languages'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/oses':
+     get:
+       operationId: Analytics_OperatingSystemCounts
+       x-client-operation: Analytics_OperatingSystemCounts
+       description: OSes in the time range
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/CountParameter'
+        - $ref: '#/parameters/VersionsParameter'
+       responses:
+        '200':
+          description: OSes with count during the time range in descending order
+          schema:
+            $ref: '#/definitions/OSes'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/available_versions':
+    x-internal: true
+    get:
+      x-ms-pageable:
+        nextLinkName: nextLink
+      operationId: Analytics_AvailableVersions
+      x-client-operation: Analytics_AvailableVersions
+      description: Get all available versions in the time range.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/TopParameter'
+        - $ref: '#/parameters/SkipParameter'
+        - $ref: '#/parameters/FilterParameter'
+        - $ref: '#/parameters/InlineCountParameter'
+      responses:
+        '200':
+          description: A list of available versions in the time range.
+          schema:
+            $ref: '#/definitions/AvailableVersions'
+        default:
+          description: Error code with reason.
+          schema:
+            $ref: '#/definitions/Error'
+  '/apps/{app_id}/analytics/crash_counts':
+    get:
+      operationId: Analytics_CrashCounts
+      x-client-operation: Analytics_CrashCounts
+      description: Count of crashes by day in the time range based the selected versions.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of crashes by day in the time range and total crashes over the time range.
+          schema:
+            $ref: '#/definitions/CrashCounts'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/crashfree_device_percentages':
+    get:
+      operationId: Analytics_CrashFreeDevicePercentages
+      x-client-operation: Analytics_CrashFreeDevicePercentages
+      description: Percentage of crash-free device by day in the time range based on the selected versions. Api will return -1 if crash devices is greater than active devices 
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Percentage of crash-free devices by day in the time range and overall percentage of the time range.
+          schema:
+            $ref: '#/definitions/CrashFreeDevicePercentages'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/crash_groups':
+    post:
+      operationId: Analytics_CrashGroupsTotals
+      x-client-operation: Analytics_CrashGroupsTotals
+      description: Overall crashes and affected users count of the selected crash groups with selected versions
+      parameters:
+         - $ref: '#/parameters/AppKeyParameter'
+         - $ref: '#/parameters/CrashGroupsParameter'
+      responses:
+        '200':
+          description: Overall crashes and affected users count for all selected crash groups
+          schema:
+            $ref: '#/definitions/CrashesOverall'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/crash_groups/{crash_group_id}/overall':
+    get:
+      operationId: Analytics_CrashGroupTotals
+      x-client-operation: Analytics_CrashGroupTotals
+      description: Overall crashes and affected users count of the selected crash group with selected version
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/CrashGroupParameter'
+        - $ref: '#/parameters/VersionParameter'
+      responses:
+        '200':
+          description: Overall crashes and affected users count
+          schema:
+            $ref: '#/definitions/CrashOverall'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/crash_groups/{crash_group_id}/crash_counts':
+    get:
+      operationId: Analytics_CrashGroupCounts
+      x-client-operation: Analytics_CrashGroupCounts
+      description: Count of crashes by day in the time range of the selected crash group with selected version
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/CrashGroupParameter'
+        - $ref: '#/parameters/VersionParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+      responses:
+        '200':
+          description: Count of crashes by day in the time range and total crashes over the time range.
+          schema:
+            $ref: '#/definitions/CrashCounts'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/crash_groups/{crash_group_id}/models':
+     get:
+       operationId: Analytics_CrashGroupModelCounts
+       x-client-operation: Analytics_CrashGroupModelCounts
+       description: top models of the selected crash group with selected version
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/CrashGroupParameter'
+        - $ref: '#/parameters/VersionParameter'
+        - $ref: '#/parameters/TopParameter'
+       responses:
+        '200':
+          description: Top Models with percentage in descending order
+          schema:
+            $ref: '#/definitions/CrashGroupModels'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/crash_groups/{crash_group_id}/operating_systems':
+     get:
+       operationId: Analytics_CrashGroupOperatingSystemCounts
+       x-client-operation: Analytics_CrashGroupOperatingSystemCounts
+       description: top OSes of the selected crash group with selected version
+       parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/CrashGroupParameter'
+        - $ref: '#/parameters/VersionParameter'
+        - $ref: '#/parameters/TopParameter'
+       responses:
+        '200':
+          description: Top OSes with percentage in descending order
+          schema:
+            $ref: '#/definitions/CrashGroupOperatingSystems'
+        default:
+            description: Error code with reason
+            schema:
+              $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events':
+    get:
+      operationId: Analytics_Events
+      x-client-operation: Analytics_Events
+      description: Count of active events in the time range ordered by event.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+        - $ref: '#/parameters/EventNameParameter'
+        - $ref: '#/parameters/TopParameter'
+        - $ref: '#/parameters/SkipParameter'
+        - $ref: '#/parameters/InlineCountParameter'
+        - $ref: '#/parameters/OrderByParameter'
+      responses:
+        '200':
+          description: Count of active events in the time range ordered by event.
+          schema:
+            $ref: '#/definitions/Events'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events/{event_name}/event_count':
+    get:
+      operationId: Analytics_EventCount
+      x-client-operation: Analytics_EventCount
+      description: Count of events by interval in the time range.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/EventParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of events by interval in the time range.
+          schema:
+            $ref: '#/definitions/EventCount'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events/{event_name}/device_count':
+    get:
+      operationId: Analytics_EventDeviceCount
+      x-client-operation: Analytics_EventDeviceCount
+      description: Count of devices for an event by interval in the time range.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/EventParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of devices for an event by interval in the time range.
+          schema:
+            $ref: '#/definitions/EventDeviceCount'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events/{event_name}/count_per_device':
+    get:
+      operationId: Analytics_EventPerDeviceCount
+      x-client-operation: Analytics_EventPerDeviceCount
+      description: Count of events per device by interval in the time range.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/EventParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of events per device by interval in the time range.
+          schema:
+            $ref: '#/definitions/EventCountPerDevice'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events/{event_name}/count_per_session':
+    get:
+      operationId: Analytics_EventPerSessionCount
+      x-client-operation: Analytics_EventPerSessionCount
+      description: Count of events per session by interval in the time range.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/EventParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+      responses:
+        '200':
+          description: Count of events per session by interval in the time range.
+          schema:
+            $ref: '#/definitions/EventCountPerSession'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events/{event_name}/properties':
+    get:
+      operationId: Analytics_EventProperties
+      x-client-operation: Analytics_EventProperties
+      description: Event properties.  Up to the first 5 received properties.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/EventParameter'
+      responses:
+        '200':
+          description: Event properties.  Up to the first 5 received properties.
+          schema:
+            $ref: '#/definitions/EventProperties'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/apps/{app_id}/analytics/events/{event_name}/properties/{event_property_name}/counts':
+    get:
+      operationId: Analytics_EventPropertyCounts
+      x-client-operation: Analytics_EventPropertyCounts
+      description: Event properties value counts during the time range in descending order.  Limited up to 5 values.
+      parameters:
+        - $ref: '#/parameters/AppKeyParameter'
+        - $ref: '#/parameters/EventParameter'
+        - $ref: '#/parameters/EventPropertyParameter'
+        - $ref: '#/parameters/StartParameter'
+        - $ref: '#/parameters/EndParameter'
+        - $ref: '#/parameters/VersionsParameter'
+        - $ref: '#/parameters/PropertyCountParameter'
+      responses:
+        '200':
+          description: Event properties value counts during the time range in descending order.  Limited up to 5 values.
+          schema:
+            $ref: '#/definitions/EventPropertyValues'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+
+parameters:
+  AppKeyParameter:
+    name: app_id
+    in: path
+    description: The id of the application
+    required: true
+    type: string
+    format: string
+
+  StartParameter:
+    name: start
+    in: query
+    description: Start date time in data in ISO 8601 date time format
+    required: true
+    type: string
+    format: date-time
+
+  LogFlowStartTimeParameter:
+    name: start
+    in: query
+    description: Start date time in data in ISO 8601 date time format. It must be within the current day in the UTC timezone. The default value is the start time of the current day in UTC timezone.
+    required: false
+    type: string
+    format: date-time
+
+  EndParameter:
+    name: end
+    in: query
+    description: Last date time in data in ISO 8601 date time format
+    required: false
+    type: string
+    format: date-time
+
+  CrashGroupParameter:
+    name: crash_group_id
+    in: path
+    description: The id of the crash group
+    required: true
+    type: string
+    format: string
+
+  CrashGroupsParameter:
+    name: crash_groups
+    in: body
+    required: true
+    schema:
+      $ref: "#/definitions/CrashGroupContainer"
+
+  EventParameter:
+    name: event_name
+    in: path
+    description: The id of the event
+    required: true
+    type: string
+    format: string
+
+  EventPropertyParameter:
+    name: event_property_name
+    in: path
+    description: The id of the event property
+    required: true
+    type: string
+    format: string
+
+  IntervalParameter:
+    name: interval
+    in: query
+    description: Size of interval in ISO 8601 duration format. (PnYnMnDTnHnMnS|PnW|P<date>T<time>). The valid durations are 1 day (P1D), 1 week (P1W), and 30 days (P30D).
+    required: true
+    type: string
+    format: Timespan
+
+  VersionsParameter:
+    name: versions
+    in: query
+    required: false
+    type: array
+    items:
+      type: string
+    collectionFormat: pipes
+
+  VersionParameter:
+    name: version
+    in: query
+    required: true
+    type: string
+    format: string
+
+  EventNameParameter:
+    name: event_name
+    in: query
+    description: to select the specific events
+    required: false
+    type: array
+    items:
+      type: string
+    collectionFormat: pipes
+
+  CountParameter:
+    name: count
+    in: query
+    description: "The number of results to return"
+    required: false
+    type: integer
+    format: int64
+
+  TopParameter:
+    name: $top
+    in: query
+    description: The maximum number of results to return. (0 will fetch all results)
+    required: false
+    default: 30
+    minimum: 0
+    maximum: 2000
+    type: integer
+    format: int64
+
+  SkipParameter:
+    name: $skip
+    in: query
+    description: The offset (starting at 0) of the first result to return. This parameter along with limit is used to perform pagination.
+    required: false
+    default: 0
+    minimum: 0
+    type: integer
+    format: int64
+
+  FilterParameter:
+    name: $filter
+    in: query
+    description: A filter as specified in https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#97-filtering.
+    required: false
+    type: string
+    format: string
+
+  InlineCountParameter:
+    name: $inlinecount
+    in: query
+    description: Controls whether or not to include a count of all the items accross all pages.
+    required: false
+    default: none
+    type: string
+    enum:
+      - allpages
+      - none
+
+  OrderByParameter:
+    name: $orderby
+    in: query
+    description: controls the sorting order and sorting based on which column
+    required: false
+    default: count desc
+    type: string
+
+  PropertyCountParameter:
+    name: count
+    in: query
+    description: "The number of property values to return"
+    required: false
+    default: 5
+    minimum: 1
+    maximum: 10
+    type: integer
+    format: int64
+
+definitions:
+  CrashCounts:
+    type: object
+    properties:
+      count:
+        description: total crash count
+        type: integer
+        format: int64
+      crashes:
+        description: the total crash count for day
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+
+  ActiveDeviceCounts:
+    properties:
+      daily:
+        description: the active device count for each interval
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+      weekly:
+        description: the active device count for each interval with a week's retention
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+      monthly:
+        description: the active device count for each interval with a month's retention
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+
+  Places:
+    description: "Places and count during the time range in descending order"
+    properties:
+      total:
+        type: integer
+        format: int64
+      places:
+        type: array
+        items:
+          $ref: '#/definitions/Place'
+
+  Place:
+    description: "The place code and the count"
+    type: object
+    properties:
+      code:
+        description: the place code
+        type: string
+      count:
+        description: the count of the this place
+        type: integer
+        format: int64
+      previous_count:
+        description: the count of previous time range of the place
+        type: integer
+        format: int64
+
+  Error:
+    description: Error
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            description: The status code return by the API. It can be 400 or 403 or 500.
+            type: integer
+            enum: [
+              400,
+              403,
+              500
+            ]
+          message:
+            description: The reason for the request failed
+            type: string
+
+  SessionDurationsDistribution:
+    type: object
+    properties:
+      distribution:
+        description: the count of sessions in these buckets
+        type: array
+        items:
+          type: object
+          properties:
+            bucket:
+              description: the bucket name
+              type: string
+            count:
+              description: the count of sessions in current bucket
+              type: integer
+              format: int32
+      previous_average_duration:
+        description: the previous average session duration for previous time range
+        type: string
+      average_duration:
+        description: the average session duration for current time range
+        type: string
+
+  Versions:
+    properties:
+      versions:
+        description: list of version count
+        type: array
+        items:
+          $ref: '#/definitions/Version'
+      total:
+        description: the total count of versions
+        type: integer
+        format: int64
+
+  Version:
+    type: object
+    properties:
+      version:
+        description: version 
+        type: string
+      count:
+        description: version count
+        type: integer
+        format: int64
+      previous_count:
+        description: the count of previous time range of the version
+        type: integer
+        format: int64
+
+  SessionCounts:
+    type: object
+    properties:
+      total_count:
+        description: total session count
+        type: integer
+        format: int64
+      previous_total_count:
+        description: previous total session count
+        type: integer
+        format: int64
+      sessions:
+        description: the total session count for each interval
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+
+  # since the return type is diffrent from SessionCounts, do not refactory here
+  SessionsPerDevice:
+    type: object
+    properties:
+      average_sessions_per_user:
+        description: average seesion per user
+        type: number
+        format: double
+      previous_average_sessions_per_user:
+        description: previous average session per user
+        type: number
+        format: double
+      total_count:
+        description: total session per device count
+        type: integer
+        format: int64
+      previous_total_count:
+        description: previous total count
+        type: integer
+        format: int64
+      sessions_per_user:
+        type: array
+        description: the session count for each interval per device
+        items:
+          type: object
+          properties:
+            datetime:
+              description: the ISO 8601 datetime
+              type: string
+            count:
+              description: count
+              type: number
+              format: double
+
+  AnalyticsModels:
+    type: object
+    properties:
+      total:
+        type: integer
+        format: int64
+      models:
+        type: array
+        items:
+          $ref: '#/definitions/Model'
+
+  Model:
+    properties:
+      model_name:
+        type: string
+        description: model's name
+      count:
+        description: count current of model
+        type: integer
+        format: int64
+      previous_count:
+        description: count of previous model
+        type: integer
+        format: int64
+
+  Languages:
+    type: object
+    properties:
+      total:
+        type: integer
+        format: int64
+      languages:
+        type: array
+        items:
+          $ref: '#/definitions/Language'
+
+  Language:
+    properties:
+      language_name:
+        type: string
+        description: language's name
+      count:
+        description: count current of language
+        type: integer
+        format: int64
+      previous_count:
+        description: count of previous lanugage
+        type: integer
+        format: int64
+
+  OSes:
+    type: object
+    properties:
+      total:
+        type: integer
+        format: int64
+      oses:
+        type: array
+        items:
+          $ref: '#/definitions/OS'
+
+  OS:
+    properties:
+      os_name:
+        type: string
+        description: OS name
+      count:
+        description: count current of OS
+        type: integer
+        format: int64
+      previous_count:
+        description: count of previous OS
+        type: integer
+        format: int64
+
+  DateTimeCounts:
+    properties:
+      datetime:
+        description: the ISO 8601 datetime
+        type: string
+      count:
+        description: count of the object
+        type: integer
+        format: int64
+
+  DateTimeDecimalCounts:
+    properties:
+      datetime:
+        description: the ISO 8601 datetime
+        type: string
+      count:
+        description: decimal count of the object
+        type: number
+        format: double
+
+  AvailableVersions:
+    type: object
+    properties:
+      versions:
+        description: List of available versions.
+        type: array
+        items:
+          description: Version name.
+          type: string
+          format: string
+      total_count:
+        description: The full number of versions accross all pages.
+        type: integer
+        format: int64
+
+  CrashFreeDevicePercentages:
+    type: object
+    properties:
+      average_percentage:
+        description: Average percentage
+        type: integer
+        format: int64
+      daily_percentages:
+        description: The crash-free percentage per day.
+        type: array
+        items:
+          $ref: '#/definitions/DateTimePercentages'
+
+  DateTimePercentages:
+    properties:
+      datetime:
+        description: the ISO 8601 datetime
+        type: string
+      percentage:
+        description: percentage of the object
+        type: number
+        format: double
+
+  CrashesOverall:
+    description: list of crash groups with overall crashes count and affected users
+    type: array
+    items:
+        type: object
+        properties:
+            crash_group_id:
+                type: string
+                format: string
+            app_version:
+                type: string
+                format: string
+            overall:
+                $ref: '#/definitions/CrashOverall'
+
+  CrashOverall:
+    type: object
+    properties:
+      crash_count:
+        type: integer
+        format: int64
+      device_count:
+        type: integer
+        format: int64
+
+  CrashGroupModels:
+    type: object
+    properties:
+      crash_count:
+        type: integer
+        format: int64
+      models:
+        type: array
+        items:
+          $ref: '#/definitions/CrashGroupModel'
+
+  CrashGroupModel:
+    type: object
+    properties:
+      model_name:
+        type: string
+        description: model's name
+      crash_count:
+        description: count of model
+        type: integer
+        format: int64
+
+  CrashGroupOperatingSystems:
+    type: object
+    properties:
+      crash_count:
+        type: integer
+        format: int64
+      operating_systems:
+        type: array
+        items:
+          $ref: '#/definitions/CrashGroupOperatingSystem'
+
+  CrashGroupOperatingSystem:
+    type: object
+    properties:
+      operating_system_name:
+        type: string
+        description: OS name
+      crash_count:
+        type: integer
+        format: int64
+        description: count of OS
+
+  CrashGroupContainer:
+    type: object
+    required:
+      - crash_groups
+    properties:
+      crash_groups:
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/definitions/CrashGroupAndVersion'
+
+  CrashGroupAndVersion:
+    type: object
+    properties:
+      crash_group_id:
+        type: string
+        format: string
+      app_version:
+        type: string
+        format: string
+
+  Events:
+    properties:
+      events:
+        type: array
+        items:
+          $ref: '#/definitions/Event'
+      total:
+        description: the total count of events
+        type: integer
+        format: int64
+      total_devices:
+        description: the active device over this period
+        type: integer
+        format: int64
+
+  Event:
+    type: object
+    properties:
+      id:
+        type: string
+        format: string
+      name:
+        type: string
+        format: string
+      deviceCount:
+        type: integer
+        format: int64
+      previous_device_count:
+        description: the device count of previous time range of the event
+        type: integer
+        format: int64
+      count:
+        type: integer
+        format: int64
+      previous_count:
+        description: the event count of previous time range of the event
+        type: integer
+        format: int64
+      count_per_device:
+        type: integer
+        format: int64
+      count_per_session:
+        type: integer
+        format: int64
+
+  EventCount:
+    type: object
+    properties:
+      total_count:
+        type: integer
+        format: int64
+      previous_total_count:
+        type: integer
+        format: int64
+      count:
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+
+  EventDeviceCount:
+    type: object
+    properties:
+      total_devices:
+        type: integer
+        format: int64
+      total_devices_with_event:
+        type: integer
+        format: int64
+      previous_total_devices_with_event:
+        type: integer
+        format: int64
+      devices_count:
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeCounts'
+  
+  EventCountPerDevice:
+    type: object
+    properties:
+      avg_count_per_device:
+        type: number
+        format: double
+      previous_avg_count_per_device:
+        type: number
+        format: double
+      count_per_device:
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeDecimalCounts'
+  
+  EventCountPerSession:
+    type: object
+    properties:
+      avg_count_per_session:
+        type: number
+        format: double
+      previous_avg_count_per_session:
+        type: number
+        format: double
+      count_per_session:
+        type: array
+        items:
+          $ref: '#/definitions/DateTimeDecimalCounts'
+
+  LogContainer:
+    type: object
+    properties:
+      exceeded_max_limit:
+        description: indicates if the number of available logs are more than the max allowed return limit(100).
+        type: boolean
+      last_received_log_timestamp:
+        description: the timestamp of the last log received. This value can be used as the start time parameter in the consecutive API call.
+        type: string
+        format: date-time
+      logs:
+        minItems: 0
+        description: the list of logs
+        type: array
+        items:
+          $ref: '#/definitions/Log'
+    required:
+      - logs
+
+  Log:
+    type: object
+    discriminator: type
+    properties:
+      type:
+        type: string
+        enum: ["event", "page", "start_session", "error", "push_installation"]
+        description: >
+          Log type.
+      timestamp:
+        type: string
+        format: date-time
+        description: >
+          Log creation timestamp.
+      install_id:
+        type: string
+        format: uuid
+        description: >
+          Install ID.
+      device:
+        $ref: '#/definitions/Device'
+    required:
+      - type
+      - timestamp
+      - install_id
+      - device
+
+  LogWithProperties:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Log'
+    properties:
+      properties:
+        type: object
+        description: >
+          Additional key/value pair parameters.
+        additionalProperties:
+          type: string
+
+  Device:
+    type: object
+    description: Device characteristics.
+    properties:
+      sdk_name:
+        type: string
+        description: >
+          Name of the SDK. Consists of the name of the SDK and the platform, e.g. "avalanchesdk.ios", "hockeysdk.android".
+      sdk_version:
+        type: string
+        description: >
+          Version of the SDK in semver format, e.g. "1.2.0" or "0.12.3-alpha.1".
+      wrapper_sdk_version:
+        type: string
+        description: >
+          Version of the wrapper SDK in semver format. When the SDK is embedding another base SDK (for example Xamarin.Android wraps Android),
+          the Xamarin specific version is populated into this field while sdkVersion refers to the original Android SDK.
+      wrapper_sdk_name:
+        type: string
+        description: >
+         Name of the wrapper SDK. Consists of the name of the SDK and the wrapper platform, e.g. "avalanchesdk.xamarin", "hockeysdk.cordova".
+      model:
+        type: string
+        description: >
+          Device model (example: iPad2,3).
+      oem_name:
+        type: string
+        description: >
+          Device manufacturer (example: HTC).
+      os_name:
+        type: string
+        description: >
+          OS name (example: iOS).
+          The following OS names are standardized (non-exclusive): Android, iOS, macOS, tvOS, Windows.
+      os_version:
+        type: string
+        description: >
+          OS version (example: 9.3.0).
+      os_build:
+        type: string
+        description: >
+          OS build code (example: LMY47X).
+      os_api_level:
+        type: integer
+        description: >
+          API level when applicable like in Android (example: 15).
+      locale:
+        type: string
+        description: >
+          Language code (example: en_US).
+      time_zone_offset:
+        type: integer
+        description: >
+          The offset in minutes from UTC for the device time zone, including daylight savings time.
+      screen_size:
+        type: string
+        description: >
+          Screen size of the device in pixels (example: 640x480).
+      app_version:
+        type: string
+        description: >
+          Application version name, e.g. 1.1.0
+      carrier_name:
+        type: string
+        description: >
+          Carrier name (for mobile devices).
+      carrier_code:
+        type: string
+        description: >
+          Carrier country code (for mobile devices).
+      carrier_country:
+        type: string
+        description: >
+          Carrier country.
+      app_build:
+        type: string
+        description: >
+          The app's build number, e.g. 42.
+      app_namespace:
+        type: string
+        description: >
+          The bundle identifier, package identifier, or namespace, depending on what the individual plattforms use,  .e.g com.microsoft.example.
+    required:
+      - sdk_name
+      - sdk_version
+      - model
+      - oem_name
+      - os_name
+      - os_version
+      - locale
+      - time_zone_offset
+      - screen_size
+      - app_version
+      - app_build
+
+  StartSessionLog:
+    type: object
+    description: Required explicit begin session log (a marker event for analytics service).
+    x-ms-discriminator-value: start_session
+    allOf:
+      - $ref: '#/definitions/Log'
+    properties:
+      session_id:
+        type: string
+        format: uuid
+        description: >
+          Session ID.
+    required:
+      - session_id
+
+  PageLog:
+    type: object
+    description: Page view log (as in screens or activities).
+    x-ms-discriminator-value: page
+    allOf:
+      - $ref: '#/definitions/LogWithProperties'
+    properties:
+      session_id:
+        type: string
+        format: uuid
+        description: >
+          Session ID.
+      name:
+        type: string
+        description: >
+          Name of the page.
+    required:
+      - name
+      - session_id
+
+  EventLog:
+    type: object
+    description: Event log.
+    x-ms-discriminator-value: event
+    allOf:
+      - $ref: '#/definitions/LogWithProperties'
+    properties:
+      session_id:
+        type: string
+        format: uuid
+        description: >
+          Session ID.
+      id:
+        type: string
+        format: uuid
+        description: >
+          Unique identifier for this event.
+      name:
+        type: string
+        description: >
+          Name of the event.
+    required:
+      - id
+      - name
+      - session_id
+
+  PushInstallationLog:
+    type: object
+    description: Push installation Information.
+    x-ms-discriminator-value: push_installation
+    allOf:
+      - $ref: '#/definitions/Log'
+    properties:
+      installation_id:
+        type: string
+        format: uuid
+        description: >
+          Globally unique identifier string.
+      push_channel:
+        type: string
+        description: >
+          The PNS handle for this installation.
+      platform:
+        type: string
+        enum: ["apns","gcm"]
+        description: >
+          Device platform.
+      tags:
+        type: array
+        description: The list of tags.
+        minItems: 0
+        items:
+          type : string
+      is_patch:
+        type: boolean
+        description: >
+          If true, tags will be added to existing tags, else all tags will be overwritten.
+    required:
+        - installation_id
+        - push_channel
+        - platform
+
+  ErrorLog:
+      type: object
+      description: Error log.
+      x-ms-discriminator-value: error
+      allOf:
+        - $ref: '#/definitions/Log'
+      properties:
+        session_id:
+          type: string
+          format: uuid
+          description: >
+            Session ID.
+        id:
+          type: string
+          format: uuid
+          description: Error identifier.
+        app_launch_toffset:
+          type: integer
+          format: int64
+          description: >
+            Corresponds to the number of milliseconds elapsed between the time the error occurred and the app was launched.
+      required:
+        - session_id
+        - id
+
+  DateTimeCountContainer:
+    description: count for each interval
+    type: array
+    items:
+      $ref: '#/definitions/DateTimeCounts'
+  
+  EventProperties:
+    description: Event properties during the time range
+    type: object
+    properties:
+      event_properties:
+        type: array
+        items:
+          description: The event property
+          type: string
+          format: string
+
+  EventPropertyValues:
+    description: Event property value counts during the time range in descending order
+    type: object
+    properties:
+      total:
+        description: The total property value counts
+        type: integer
+        format: int64
+      values: 
+        description: The event property values
+        type: array
+        items:
+          $ref: '#/definitions/EventPropertyValue'
+
+  EventPropertyValue:
+    description: An event property value with counts
+    type: object
+    properties:
+      name:
+        description: The event property value name
+        type: string
+      count:
+        description: The count of the the event property value
+        type: integer
+        format: int64
+      previous_count:
+        description: The count of previous time range of the event property value
+        type: integer
+        format: int64

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Azure.Mobile;
+using System;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet

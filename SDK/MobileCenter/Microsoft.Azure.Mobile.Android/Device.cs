@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.Azure.Mobile
 {
     using AndroidDevice = Com.Microsoft.Azure.Mobile.Ingestion.Models.Device;
 

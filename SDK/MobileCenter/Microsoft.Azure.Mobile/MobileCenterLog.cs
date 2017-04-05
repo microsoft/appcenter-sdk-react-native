@@ -6,6 +6,11 @@
     public static partial class MobileCenterLog
     {
         /// <summary>
+        /// The log tag for this SDK. All logs emitted at the SDK level will contain this tag.
+        /// </summary>
+        public static string LogTag { get; private set; }
+
+        /// <summary>
         /// Writes a log at the <see cref="LogLevel.Verbose"/> level. 
         /// </summary>
         /// <param name="tag">Log tag.</param>

@@ -7,22 +7,21 @@ namespace Contoso.Forms.Puppet
     public partial class AddPropertyContentPage : ContentPage
     {
         public event Action<Property> PropertyAdded;
-
         public AddPropertyContentPage()
         {
             InitializeComponent();
         }
 
-        void AddProperty(object sender, EventArgs e)
+        async void AddProperty(object sender, EventArgs e)
         {
-            Property addedProperty = new Property(NameCell.Text, ValueCell.Text);
-            PropertyAdded.Invoke(addedProperty);
-            Navigation.PopModalAsync();
+            Property addedProperty = new Property(NameEntry?.Text, ValueEntry?.Text);
+            PropertyAdded?.Invoke(addedProperty);
+            await Navigation.PopModalAsync();
         }
 
-        void Cancel(object sender, EventArgs e)
+        async void Cancel(object sender, EventArgs e)
         {
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
 
     }

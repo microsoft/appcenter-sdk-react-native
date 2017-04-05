@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Callback type for determining whether a particular error report should be processed.

@@ -16,7 +16,8 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
-    <AndroidTlsProvider></AndroidTlsProvider>
+    <AndroidTlsProvider>
+    </AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +30,8 @@
     <DocumentationFile>bin\Debug\Microsoft.Azure.Mobile.Analytics.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -59,13 +61,17 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.Android.Bindings\Microsoft.Azure.Mobile.Analytics.Android.Bindings.csproj">
-      <Project>{34771DC0-9684-45BE-9C9C-5A686468722C}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.Android.Bindings</Name>
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android\Microsoft.Azure.Mobile.Android.csproj">
+      <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
+      <Name>Microsoft.Azure.Mobile.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
       <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.Android.Bindings\Microsoft.Azure.Mobile.Analytics.Android.Bindings.csproj">
+      <Project>{34771DC0-9684-45BE-9C9C-5A686468722C}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

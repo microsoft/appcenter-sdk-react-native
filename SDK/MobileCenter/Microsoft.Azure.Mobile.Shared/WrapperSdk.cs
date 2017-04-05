@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile
+namespace Microsoft.Azure.Mobile
 {
     public static class WrapperSdk
     {

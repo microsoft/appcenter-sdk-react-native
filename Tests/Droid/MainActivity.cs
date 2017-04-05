@@ -1,17 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Microsoft.Azure.Mobile;
-using Com.Microsoft.Azure.Mobile.Analytics.Channel;
-using Com.Microsoft.Azure.Mobile.Ingestion.Models;
-using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Com.Microsoft.Azure.Mobile.Analytics;
-using System.Collections.Generic;
+using Com.Microsoft.Azure.Mobile.Analytics.Channel;
+using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
+using Com.Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test.Droid
 {
