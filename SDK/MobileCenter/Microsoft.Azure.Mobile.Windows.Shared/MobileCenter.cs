@@ -20,10 +20,11 @@ namespace Microsoft.Azure.Mobile
         private const string ChannelName = "core";
         private const string CrashesServiceFullType = "Microsoft.Azure.Mobile.Crashes.Crashes";
         private const string CrashesServiceName = "Crashes";
+        private const string DistributeServiceFullType = "Microsoft.Azure.Mobile.Distribute.Distribute";
 
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object MobileCenterLock = new object();
-        
+
         private readonly IApplicationLifecycleHelper _applicationLifecycleHelper = new ApplicationLifecycleHelper();
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
@@ -38,7 +39,7 @@ namespace Microsoft.Azure.Mobile
 
         // The shared instance of MobileCenter
         private static MobileCenter _instanceField;
-        
+
         /// <summary>
         /// Gets or sets the shared instance of Mobile Center. Should never return null.
         /// Setter is for testing.
@@ -202,7 +203,7 @@ namespace Microsoft.Azure.Mobile
         // Creates a new instance of MobileCenter
         private MobileCenter()
         {
-             _applicationSettings = new ApplicationSettings();
+            _applicationSettings = new ApplicationSettings();
             LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
         }
 
@@ -244,7 +245,7 @@ namespace Microsoft.Azure.Mobile
             _logUrl = logUrl;
             _channelGroup?.SetLogUrl(logUrl);
         }
-        
+
         // Internal for testing
         internal void InstanceConfigure(string appSecretOrSecrets)
         {
@@ -313,6 +314,12 @@ namespace Microsoft.Azure.Mobile
                         }
                         StartCrashesService(_appSecret);
                         startServiceLog.Services.Add(CrashesServiceName);
+                    }
+
+                    // Same comment as crash: we don't support distribute in UWP, not even a custom start.
+                    else if (IsDistributeService(serviceType))
+                    {
+                        MobileCenterLog.Warn(MobileCenterLog.LogTag, "Distribute service is not yet supported on UWP.");
                     }
                     else
                     {
@@ -385,6 +392,12 @@ namespace Microsoft.Azure.Mobile
         private static bool IsCrashesService(Type serviceType)
         {
             return serviceType?.FullName == CrashesServiceFullType;
+        }
+
+        // Same comment as crash: we don't support Distribute in UWP.
+        private static bool IsDistributeService(Type serviceType)
+        {
+            return serviceType?.FullName == DistributeServiceFullType;
         }
 
         // Registers the Mobile Center application with Watson to enable crash reporting
