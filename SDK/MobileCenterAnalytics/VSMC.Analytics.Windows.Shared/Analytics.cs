@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// Validates name.
         /// </summary>
         /// <param name="name">Log name to validate.</param>
-        /// <param name="logType"></param>
+        /// <param name="logType">Log type.</param>
         /// <returns><c>true</c> if validation succeeds, otherwise <с>false</с>.</returns>
         private bool ValidateName(string name, string logType)
         {
@@ -196,8 +196,8 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// Validates properties.
         /// </summary>
         /// <param name="properties">Properties collection to validate.</param>
-        /// <param name="logName"></param>
-        /// <param name="logType"></param>
+        /// <param name="logName">Log name.</param>
+        /// <param name="logType">Log type.</param>
         /// <returns>Valid properties collection with maximum size of 5</returns>
         private IDictionary<string, string> ValidateProperties(IDictionary<string, string> properties, string logName, string logType)
         {
