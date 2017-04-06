@@ -7,16 +7,19 @@ using Windows.UI.Xaml;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
+    /// <summary>
+    /// Implements the abstract device information helper class
+    /// </summary>
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
         private static bool _leftBackground;
         private static string _cachedScreenSize;
         public static event EventHandler InformationInvalidated;
-        private static object _lockObject = new object();
+        private static readonly object LockObject = new object();
         static DeviceInformationHelper()
         {
             CoreApplication.LeavingBackground += (o, e) => {
-                lock (_lockObject)
+                lock (LockObject)
                 {
                     if (_leftBackground)
                     {
@@ -35,16 +38,18 @@ namespace Microsoft.Azure.Mobile.Utils
         //NOTE: This method MUST be called from the UI thread
         public static void RefreshDisplayCache()
         {
-            lock (_lockObject)
+            lock (LockObject)
             {
 
                 DisplayInformation displayInfo = null;
                 try
                 {
+                    // This can throw exceptions that aren't well documented, so catch-all and ignore
                     displayInfo = DisplayInformation.GetForCurrentView();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Could not get display information.", e);
                     return;
                 }
                 if (_cachedScreenSize == ScreenSizeFromDisplayInfo(displayInfo))
@@ -69,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Utils
         protected override string GetDeviceModel()
         {
             var deviceInfo = new EasClientDeviceInformation();
-            return deviceInfo.SystemProductName;
+            return string.IsNullOrEmpty(deviceInfo.SystemProductName) ? deviceInfo.SystemSku : deviceInfo.SystemProductName;
         }
 
         protected override string GetAppNamespace()
@@ -127,7 +132,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetScreenSize()
         {
-            lock (_lockObject)
+            lock (LockObject)
             {
                 return _cachedScreenSize;
             }
