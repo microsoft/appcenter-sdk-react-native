@@ -34,6 +34,7 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll" />
     <file src="$ios_dir$/Microsoft.Azure.Mobile.iOS.Bindings.dll" target="lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll" />
 
+    <!-- TODO: Combine windows nuspec into this -->
     <!-- UWP -->
     <file src="$windows_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0/Microsoft.Azure.Mobile.dll" />
 
