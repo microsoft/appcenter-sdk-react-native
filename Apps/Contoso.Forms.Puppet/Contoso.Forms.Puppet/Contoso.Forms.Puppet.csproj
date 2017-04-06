@@ -15,7 +15,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
@@ -82,18 +82,6 @@
     <Compile Include="PreserveAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.Mobile">
-      <HintPath>..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile\obj\Debug\Microsoft.Azure.Mobile.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics">
-      <HintPath>..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\obj\Debug\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes">
-      <HintPath>..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\obj\Debug\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Distribute">
-      <HintPath>..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\obj\Debug\Microsoft.Azure.Mobile.Distribute.dll</HintPath>
-    </Reference>    
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\..\packages\Xamarin.Forms.2.3.4.224\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -106,6 +94,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
+      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj">
+      <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj">
+      <Project>{41febc72-c12b-47e1-b6f6-51d50158c825}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj">
+      <Project>{3fe04b97-48de-4895-8612-ecbdfebd917c}</Project>
+      <Name>Microsoft.Azure.Mobile</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
