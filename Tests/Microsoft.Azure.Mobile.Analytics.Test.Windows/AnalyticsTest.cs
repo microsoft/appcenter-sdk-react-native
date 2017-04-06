@@ -126,6 +126,64 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         }
 
         /// <summary>
+        /// Verify that an event log is not enqueued when TrackEvent is called with invalid parameters
+        /// </summary>
+        [TestMethod]
+        public void TrackEventInvalid()
+        {
+            Analytics.Enabled = true;
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+
+            // Event name is null or empty
+            Analytics.TrackEvent(null);
+            Analytics.TrackEvent("");
+            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Never());
+
+            // Event name exceeds max length
+            Analytics.TrackEvent(new string('?', 257));
+            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Never());
+
+            // Without properties
+            Analytics.TrackEvent("test", null);
+            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Once());
+
+            // Property key is null or empty 
+            _mockChannel.ResetCalls();
+            Analytics.TrackEvent("test", new Dictionary<string, string> { { "", "test" } });
+            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+                log.Properties == null || log.Properties.Count == 0)), Times.Once());
+
+            // Property key length exceeds maximum
+            _mockChannel.ResetCalls();
+            Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 65), "test" } });
+            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+                log.Properties == null || log.Properties.Count == 0)), Times.Once());
+            
+            // Property value is null
+            _mockChannel.ResetCalls();
+            Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", null } });
+            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+                log.Properties == null || log.Properties.Count == 0)), Times.Once());
+
+            // Property value length exceeds maximum
+            _mockChannel.ResetCalls();
+            Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", new string('?', 65) } });
+            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+                log.Properties == null || log.Properties.Count == 0)), Times.Once());
+
+            // Properties size exceeds maximum
+            _mockChannel.ResetCalls();
+            var manyProperties = new Dictionary<string, string>();
+            for (int i = 0; i < 6; i++)
+            {
+                manyProperties["test" + i] = "test" + i;
+            }
+            Analytics.TrackEvent("test", manyProperties);
+            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+                log.Properties.Count == 5)), Times.Once());
+        }
+
+        /// <summary>
         /// Verify that event logs are not sent when disabled
         /// </summary>
         [TestMethod]
