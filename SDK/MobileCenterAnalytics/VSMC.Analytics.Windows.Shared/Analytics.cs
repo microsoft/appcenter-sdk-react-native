@@ -202,36 +202,37 @@ namespace Microsoft.Azure.Mobile.Analytics
         private IDictionary<string, string> ValidateProperties(IDictionary<string, string> properties, string logName, string logType)
         {
             if (properties == null)
+            {
                 return null;
+            }
             var result = new Dictionary<string, string>();
             foreach (var property in properties)
             {
                 if (result.Count >= MaxEventProperties)
                 {
-                    MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : properties cannot contain more than {2} items. Skipping other properties.", logType, logName, MaxEventProperties));
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : properties cannot contain more than {2} items. Skipping other properties.", logType, logName, MaxEventProperties));
                     break;
                 }
                 if (string.IsNullOrEmpty(property.Key))
                 {
-                    MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : a property key cannot be null or empty. Property will be skipped.", logType, logName));
-                    continue;
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : a property key cannot be null or empty. Property will be skipped.", logType, logName));
                 }
-                if (property.Key.Length > MaxEventPropertyKeyLength)
+                else if (property.Key.Length > MaxEventPropertyKeyLength)
                 {
-                    MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : property '{2}' : property key length cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyKeyLength));
-                    continue;
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property key length cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyKeyLength));
                 }
-                if (property.Value == null)
+                else if(property.Value == null)
                 {
-                    MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be null. Property '{2}' will be skipped.", logType, logName, property.Key));
-                    continue;
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be null. Property '{2}' will be skipped.", logType, logName, property.Key));
                 }
-                if (property.Value.Length > MaxEventPropertyValueLength)
+                else if(property.Value.Length > MaxEventPropertyValueLength)
                 {
-                    MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyValueLength));
-                    continue;
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyValueLength));
                 }
-                result.Add(property.Key, property.Value);
+                else
+                {
+                    result.Add(property.Key, property.Value);
+                }
             }
             return result;
         }
