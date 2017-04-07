@@ -8,7 +8,19 @@ namespace Microsoft.Azure.Mobile.Distribute
     public static partial class Distribute
     {
         [Preserve]
-        public static Type BindingType => typeof(iOSDistribute);
+        public static Type BindingType
+        {
+            get
+            {
+
+// We cannot use Conditional Attributes as they only work for non-void methods and classes, not for properties.
+#if DEBUG
+                return null;
+#else
+                return typeof(iOSDistribute);
+#endif
+            }
+        }
 
         static bool PlatformEnabled
         {
