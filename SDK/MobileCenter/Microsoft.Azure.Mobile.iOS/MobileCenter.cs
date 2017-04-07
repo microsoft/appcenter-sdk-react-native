@@ -171,7 +171,7 @@ namespace Microsoft.Azure.Mobile
 
         private static Class[] GetServices(IEnumerable<Type> services)
         {
-            List<Class> classes = new List<Class>();
+            var classes = new List<Class>();
             foreach (Type t in services)
             {
                 if((GetBindingType(t) != null) && (GetClassForType(GetBindingType(t)) != null))

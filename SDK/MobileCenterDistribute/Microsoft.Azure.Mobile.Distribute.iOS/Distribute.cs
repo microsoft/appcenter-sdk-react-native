@@ -7,18 +7,22 @@ namespace Microsoft.Azure.Mobile.Distribute
 
     public static partial class Distribute
     {
+
+        static Type _internalBindingType = typeof(iOSDistribute);
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        static void setInternalBindingTypeForDebug()
+        {
+            _internalBindingType = null;
+        }
+
         [Preserve]
         public static Type BindingType
         {
             get
             {
-
-// We cannot use Conditional Attributes as they only work for non-void methods and classes, not for properties.
-#if DEBUG
-                return null;
-#else
-                return typeof(iOSDistribute);
-#endif
+                setInternalBindingTypeForDebug();
+                return _internalBindingType;
             }
         }
 
