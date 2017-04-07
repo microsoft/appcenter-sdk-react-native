@@ -160,6 +160,14 @@
       <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.iOS\Microsoft.Azure.Mobile.Distribute.iOS.csproj">
+      <Project>{60241627-33BB-45F9-A1B6-6F1CB2BF2C4A}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.iOS.Bindings\Microsoft.Azure.Mobile.Distribute.iOS.Bindings.csproj">
+      <Project>{278DFD3C-A0DD-4DD2-97C5-44EC4BEE8462}</Project>
+      <Name>Microsoft.Azure.Mobile.Distribute.iOS.Bindings</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

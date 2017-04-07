@@ -37,6 +37,7 @@
       <DocumentationSource sourceFile="..\SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj" />
       <DocumentationSource sourceFile="..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj" />
       <DocumentationSource sourceFile="..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj" />
+      <DocumentationSource sourceFile="..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>

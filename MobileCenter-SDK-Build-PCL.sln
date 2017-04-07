@@ -21,6 +21,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Cras
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Crashes.Shared", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.shproj", "{DB5A0B7D-8090-4A0C-97C7-CDF17AACAAF2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterDistribute", "MobileCenterDistribute", "{05D82897-7013-4466-8CB2-447FF1E47D8D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Distribute.Shared", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.shproj", "{5AEF073D-7370-41C1-86CD-A61B4DEB9883}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Distribute", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj", "{41FEBC72-C12B-47E1-B6F6-51D50158C825}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
@@ -199,6 +205,54 @@ Global
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|x64.Build.0 = Release|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|x86.ActiveCfg = Release|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|x86.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|ARM.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|ARM.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|x64.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|x64.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|x86.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Ad-Hoc|x86.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|x64.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.AppStore|x86.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|ARM.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|x64.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|x86.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|ARM.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|ARM.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|iPhone.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|x64.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|x64.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|x86.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,6 +266,9 @@ Global
 		{0F13E444-717E-460A-BDE7-8AD537F0A418} = {C4C63221-60D5-412B-92CC-D59A8EA62E23}
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 		{DB5A0B7D-8090-4A0C-97C7-CDF17AACAAF2} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
+		{05D82897-7013-4466-8CB2-447FF1E47D8D} = {8CDD4942-2E48-4CF7-AC99-85718F238455}
+		{5AEF073D-7370-41C1-86CD-A61B4DEB9883} = {05D82897-7013-4466-8CB2-447FF1E47D8D}
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825} = {05D82897-7013-4466-8CB2-447FF1E47D8D}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
