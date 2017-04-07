@@ -131,11 +131,10 @@ Task("WindowsBuild")
 {
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", 
-	settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
-	settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
-	settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
-	settings => settings.SetConfiguration("Release").WithProperty("Platform", "AnyCpu"));
+	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
+	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
+	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
+	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("PrepareMacAssemblies").IsDependentOn("PrepareWindowsAssemblies");
@@ -174,33 +173,34 @@ Task("PrepareWindowsAssemblies")
 	.IsDependentOn("WindowsBuild")
 	.Does(() =>
 {
-	var anyCpuAssemblies = new string[] {	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-											"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll" };
+	var anyCpuAssemblies = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
+										  	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll" };
 
-	var x86Assemblies = new string[] { 	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll",
+	var x86Assemblies = new string[] { 	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll",
+										"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll",
     									"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
    										"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" };
 
    var x64Assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x64/Release/Microsoft.Azure.Mobile.dll",
+  										"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll",
    										"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
    										"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"};
 	
 	var armAssemblies = new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.dll",
+										"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll",
 										"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
 										"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"};
 
-	var targetsFile = "nuget/Microsoft.Azure.Mobile.targets";
 	var armFolder = UWP_ASSEMBLIES_FOLDER + "/ARM";
 	var x86Folder = UWP_ASSEMBLIES_FOLDER + "/x86";
 	var x64Folder = UWP_ASSEMBLIES_FOLDER + "/x64";
 
 	CleanDirectory(UWP_ASSEMBLIES_FOLDER);
-	CleanDirectory(armFolder, false);
-	CleanDirectory(x86Folder, false);
-	CleanDirectory(x64Folder, false);
+	CopyFiles(anyCpuAssemblies, UWP_ASSEMBLIES_FOLDER, false);
+	CopyFiles(x86Assemblies, x86Folder);
+	CopyFiles(x64Assemblies, x64Folder);
+	CopyFiles(armAssemblies, armFolder);
 
-	CopyFiles(uwpAssemblies, UWP_ASSEMBLIES_FOLDER);
-	CopyFiles(uwpAssemblies, UWP_ASSEMBLIES_FOLDER);
 }).OnError(HandleError);
 
 // Task dependencies for binding each platform.
