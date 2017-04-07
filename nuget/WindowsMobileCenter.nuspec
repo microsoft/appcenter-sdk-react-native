@@ -23,7 +23,7 @@
   <files>
 
     <!-- targets file adds correct references to proper platforms -->
-    <file src="NuGetSpec/Microsoft.Azure.Mobile.targets"  target="build/uap10.0/Microsoft.Azure.Mobile.targets"/>
+    <file src="nuget/Microsoft.Azure.Mobile.targets"  target="build/uap10.0/Microsoft.Azure.Mobile.targets"/>
     
     <!--x86 -->
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll" target="build/uap10.0/win10-x86/Microsoft.Azure.Mobile.dll" />
