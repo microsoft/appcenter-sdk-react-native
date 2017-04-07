@@ -12,6 +12,11 @@ namespace Microsoft.Azure.Mobile.Analytics
     {
         #region static
 
+        private const int MaxEventProperties = 5;
+        private const int MaxEventNameLength = 256;
+        private const int MaxEventPropertyKeyLength = 64;
+        private const int MaxEventPropertyValueLength = 64;
+
         private static readonly object AnalyticsLock = new object();
 
         private static Analytics _instanceField;
@@ -56,8 +61,14 @@ namespace Microsoft.Azure.Mobile.Analytics
         }
 
         /// <summary>
-        ///     Track a custom event.
+        ///     Track a custom event with name and optional properties.
         /// </summary>
+        /// <remarks>
+        ///     The name parameter can not be null or empty.Maximum allowed length = 256.
+        ///     The properties parameter maximum item count = 5.
+        ///     The properties keys/names can not be null or empty, maximum allowed key length = 64.
+        ///     The properties values can not be null, maximum allowed value length = 64.
+        /// </remarks>
         /// <param name="name">An event name.</param>
         /// <param name="properties">Optional properties.</param>
         public static void TrackEvent(string name, IDictionary<string, string> properties = null)
@@ -67,6 +78,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 Instance.InstanceTrackEvent(name, properties);
             }
         }
+
         #endregion
 
         #region instance
@@ -114,8 +126,13 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 return;
             }
-            var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-            Channel.Enqueue(log);
+            const string type = "Event";
+            if (ValidateName(name, type))
+            {
+                properties = ValidateProperties(properties, name, type);
+                var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
+                Channel.Enqueue(log);
+            }
         }
 
         public override void OnChannelGroupReady(IChannelGroup channelGroup)
@@ -152,6 +169,72 @@ namespace Microsoft.Azure.Mobile.Analytics
         private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
         {
             return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
+        }
+
+        /// <summary>
+        /// Validates name.
+        /// </summary>
+        /// <param name="name">Log name to validate.</param>
+        /// <param name="logType">Log type.</param>
+        /// <returns><c>true</c> if validation succeeds, otherwise <с>false</с>.</returns>
+        private bool ValidateName(string name, string logType)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                MobileCenterLog.Error(LogTag, logType + " name cannot be null or empty.");
+                return false;
+            }
+            if (name.Length > MaxEventNameLength)
+            {
+                MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : name length cannot be longer than {2} characters.", logType, name, MaxEventNameLength));
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Validates properties.
+        /// </summary>
+        /// <param name="properties">Properties collection to validate.</param>
+        /// <param name="logName">Log name.</param>
+        /// <param name="logType">Log type.</param>
+        /// <returns>Valid properties collection with maximum size of 5</returns>
+        private IDictionary<string, string> ValidateProperties(IDictionary<string, string> properties, string logName, string logType)
+        {
+            if (properties == null)
+            {
+                return null;
+            }
+            var result = new Dictionary<string, string>();
+            foreach (var property in properties)
+            {
+                if (result.Count >= MaxEventProperties)
+                {
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : properties cannot contain more than {2} items. Skipping other properties.", logType, logName, MaxEventProperties));
+                    break;
+                }
+                if (string.IsNullOrEmpty(property.Key))
+                {
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : a property key cannot be null or empty. Property will be skipped.", logType, logName));
+                }
+                else if (property.Key.Length > MaxEventPropertyKeyLength)
+                {
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property key length cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyKeyLength));
+                }
+                else if(property.Value == null)
+                {
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be null. Property '{2}' will be skipped.", logType, logName, property.Key));
+                }
+                else if(property.Value.Length > MaxEventPropertyValueLength)
+                {
+                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyValueLength));
+                }
+                else
+                {
+                    result.Add(property.Key, property.Value);
+                }
+            }
+            return result;
         }
 
         #endregion
