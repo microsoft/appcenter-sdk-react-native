@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <mc-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-Platform>
+    <mc-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-Platform>
+    <mc-BuildDir>$(MSBuildThisFileDirectory)..\..\build\uap10.0\win10-$(mc-Platform)</mc-BuildDir>
+  </PropertyGroup>
+
+  <Target Name="PlatformCheck" BeforeTargets="InjectCoreReference"
+    Condition=" ( ('$(Platform)' != 'x86') AND ('$(Platform)' != 'ARM') AND  ('$(Platform)' != 'x64') )">
+    <Error  Text="Please build your project specifically for one of the following platforms: x86, x64, ARM" />
+  </Target>
+
+<Target Name="InjectCoreReference" BeforeTargets="InjectWatsonReference">
+    <ItemGroup Condition=" '$(Platform)' == 'x86' or '$(Platform)' == 'x64' or '$(Platform)' == 'ARM'">
+      <Reference Include="Microsoft.Azure.Mobile.dll">
+     <HintPath>$(mc-BuildDir)\Microsoft.Azure.Mobile.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Target>
+
+<Target Name="InjectWatsonReference" BeforeTargets="ResolveAssemblyReferences">
+    <ItemGroup Condition=" '$(Platform)' == 'x86' or '$(Platform)' == 'x64' or '$(Platform)' == 'ARM'">
+      <Reference Include="WatsonRegistrationUtility">
+        <HintPath>$(mc-BuildDir)\WatsonRegistrationUtility.winmd</HintPath>
+      </Reference>
+    </ItemGroup>
+</Target>
+
+  <ItemDefinitionGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>
