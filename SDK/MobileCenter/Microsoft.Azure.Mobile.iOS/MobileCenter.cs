@@ -174,10 +174,14 @@ namespace Microsoft.Azure.Mobile
             var classes = new List<Class>();
             foreach (Type t in services)
             {
-                if((GetBindingType(t) != null) && (GetClassForType(GetBindingType(t)) != null))
+                var bindingType = GetBindingType(t);
+                if((bindingType != null) && (GetClassForType(bindingType) != null))
                 {
-                    Class aClass = GetClassForType(GetBindingType(t));
-                    classes.Add(aClass);
+                    var aClass = GetClassForType(bindingType);
+                    if (aClass != null)
+                    {
+                        classes.Add(aClass);
+                    }
                 }
             }
             return classes.ToArray();

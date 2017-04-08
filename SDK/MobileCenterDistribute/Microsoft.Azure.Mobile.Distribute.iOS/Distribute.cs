@@ -7,11 +7,10 @@ namespace Microsoft.Azure.Mobile.Distribute
 
     public static partial class Distribute
     {
-
         static Type _internalBindingType = typeof(iOSDistribute);
 
         [System.Diagnostics.Conditional("DEBUG")]
-        static void setInternalBindingTypeForDebug()
+        static void SetInternalBindingTypeForDebug()
         {
             _internalBindingType = null;
         }
@@ -21,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Distribute
         {
             get
             {
-                setInternalBindingTypeForDebug();
+                SetInternalBindingTypeForDebug();
                 return _internalBindingType;
             }
         }

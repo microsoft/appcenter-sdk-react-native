@@ -188,12 +188,16 @@ namespace Microsoft.Azure.Mobile
             foreach (Type t in services)
             {
                 var propertyInfo = t.GetProperty("BindingType");
-                if ((propertyInfo != null) && ((Type)propertyInfo.GetValue(null, null) != null))
+                if (propertyInfo != null)
                 {
-                    Class aClass = Class.FromType((Type)propertyInfo.GetValue(null, null));
-                    if (aClass != null)
+                    var  value = (Type)propertyInfo.GetValue(null, null);
+                    if (value != null)
                     {
-                        classes.Add(aClass);
+                        var aClass = Class.FromType((Type)propertyInfo.GetValue(null, null));
+                        if (aClass != null)
+                        {
+                            classes.Add(aClass);
+                        }   
                     }
                 }
             }
