@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile
             foreach (Type t in services)
             {
                 var bindingType = GetBindingType(t);
-                if((bindingType != null) && (GetClassForType(bindingType) != null))
+                if(bindingType != null)
                 {
                     var aClass = GetClassForType(bindingType);
                     if (aClass != null)
