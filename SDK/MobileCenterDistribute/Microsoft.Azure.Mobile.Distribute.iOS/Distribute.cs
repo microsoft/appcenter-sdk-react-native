@@ -52,13 +52,14 @@ namespace Microsoft.Azure.Mobile.Distribute
 
         /// <summary>
         /// Do not check for updates in case the app is launched with a debug configuration.
-        /// Place this method call into you app delegate's didFinishLaunching:withOptions: method BEFORE 
-        /// you call MobileCenter.start(...) if you are using in-app updates.
+        /// In case you want to use in-app updated, place this method call into your
+        /// app delegate's FinishedLaunching method BEFORE you call MobileCenter.Start(...)
+        /// or before you init the forms application object if you use Xamarin Forms.
         /// </summary>
         /// <remarks>
         /// This method is required because the SDK cannot detect an attached debugger, nor can it detect
-        /// a release configuration. If this method is not called, the browser will appear and try to
-        /// setup in-app updates which we do not want.
+        /// a release configuration at runtme. If this method is not called, the browser will appear and try to
+        /// setup in-app updates.
         /// </remarks>
         [System.Diagnostics.Conditional("DEBUG")]
         public static void DontCheckForUpdatesInDebug()
