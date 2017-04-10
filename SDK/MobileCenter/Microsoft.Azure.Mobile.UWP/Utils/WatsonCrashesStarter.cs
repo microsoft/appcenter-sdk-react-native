@@ -1,4 +1,5 @@
-﻿using WatsonRegistrationUtility;
+﻿using System;
+using WatsonRegistrationUtility;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -14,10 +15,13 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 WatsonRegistrationManager.Start(appSecret);
             }
-            catch
+            catch (Exception e)
             {
-                MobileCenterLog.Info(MobileCenterLog.LogTag, "The API to register this application with the Watson service is not supported on this device.");
+#if DEBUG
+                throw new MobileCenterException("Failed to register crashes with Watson", e);
+#else
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
+#endif
             }
         }
-    }
 }
