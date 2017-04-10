@@ -185,7 +185,7 @@ namespace Microsoft.Azure.Mobile
         private static Class[] GetServices(IEnumerable<Type> services)
         {
             var classes = new List<Class>();
-            foreach (Type t in services)
+            foreach (var t in services)
             {
                 var propertyInfo = t.GetProperty("BindingType");
                 if (propertyInfo != null)
