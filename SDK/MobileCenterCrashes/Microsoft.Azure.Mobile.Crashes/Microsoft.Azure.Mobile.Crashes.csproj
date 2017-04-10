@@ -34,9 +34,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-x64|AnyCPU'">
-    <OutputPath>bin\Release-x64\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj">

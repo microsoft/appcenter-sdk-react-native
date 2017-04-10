@@ -33,9 +33,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-x64|AnyCPU'">
-    <OutputPath>bin\Release-x64\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Analytics.cs" />
     <Compile Include="NamespaceDoc.cs" />

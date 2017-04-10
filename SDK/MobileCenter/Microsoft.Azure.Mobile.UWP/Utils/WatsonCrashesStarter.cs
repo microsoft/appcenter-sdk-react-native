@@ -24,4 +24,5 @@ namespace Microsoft.Azure.Mobile.Utils
 #endif
             }
         }
+    }
 }
