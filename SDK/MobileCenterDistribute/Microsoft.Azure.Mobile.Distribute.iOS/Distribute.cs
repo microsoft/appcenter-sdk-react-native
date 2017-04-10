@@ -9,18 +9,11 @@ namespace Microsoft.Azure.Mobile.Distribute
     {
         static Type _internalBindingType = typeof(iOSDistribute);
 
-        [System.Diagnostics.Conditional("DEBUG")]
-        static void SetInternalBindingTypeForDebug()
-        {
-            _internalBindingType = null;
-        }
-
         [Preserve]
         public static Type BindingType
         {
             get
             {
-                SetInternalBindingTypeForDebug();
                 return _internalBindingType;
             }
         }
@@ -55,6 +48,22 @@ namespace Microsoft.Azure.Mobile.Distribute
         public static void OpenUrl(NSUrl url)
         {
             iOSDistribute.OpenUrl(url);
+        }
+
+        /// <summary>
+        /// Do not check for updates in case the app is launched with a debug configuration.
+        /// Place this method call into you app delegate's didFinishLaunching:withOptions: method BEFORE 
+        /// you call MobileCenter.start(...) if you are using in-app updates.
+        /// </summary>
+        /// <remarks>
+        /// This method is required because the SDK cannot detect an attached debugger, nor can it detect
+        /// a release configuration. If this method is not called, the browser will appear and try to
+        /// setup in-app updates which we do not want.
+        /// </remarks>
+        [System.Diagnostics.Conditional("DEBUG")]
+        public static void DontCheckForUpdatesInDebug()
+        {
+            _internalBindingType = null;
         }
     }
 }

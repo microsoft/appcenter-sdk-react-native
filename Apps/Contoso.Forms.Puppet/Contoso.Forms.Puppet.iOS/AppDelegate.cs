@@ -12,6 +12,7 @@ namespace Contoso.Forms.Puppet.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Xamarin.Forms.Forms.Init();
+            Distribute.DontCheckForUpdatesInDebug();
             MSAnalytics.SetDelegate(new AnalyticsDelegate());
             LoadApplication(new App());
             return base.FinishedLaunching(uiApplication, launchOptions);
