@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile
         ///     Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been
         ///     started.
         /// </summary>
-        /// <remarks>
+        /// <remarks>ah
         ///     The default state is <c>true</c> and updating the state is persisted into local application storage.
         /// </remarks>
         public static bool Enabled { get; set; }

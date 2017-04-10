@@ -3,15 +3,15 @@
   <PropertyGroup>
     <mc-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-Platform>
     <mc-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-Platform>
-    <mc-BuildDir>$(MSBuildThisFileDirectory)..\..\build\uap10.0\win10-$(mc-Platform)</mc-BuildDir>
+    <mc-BuildDir>$(MSBuildThisFileDirectory)win10-$(mc-Platform)</mc-BuildDir>
   </PropertyGroup>
 
-  <Target Name="PlatformCheck" BeforeTargets="InjectCoreReference"
+  <Target Name="PlatformCheck" BeforeTargets="InjectAnalyticsReference"
     Condition=" ( ('$(Platform)' != 'x86') AND ('$(Platform)' != 'ARM') AND  ('$(Platform)' != 'x64') )">
     <Error  Text="Please build your project specifically for one of the following platforms: x86, x64, ARM" />
   </Target>
 
-<Target Name="InjectCoreReference" BeforeTargets="ResolveAssemblyReferences">
+<Target Name="InjectAnalyticsReference" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup Condition=" '$(Platform)' == 'x86' or '$(Platform)' == 'x64' or '$(Platform)' == 'ARM'">
       <Reference Include="Microsoft.Azure.Mobile.Analytics.dll">
      <HintPath>$(mc-BuildDir)\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
