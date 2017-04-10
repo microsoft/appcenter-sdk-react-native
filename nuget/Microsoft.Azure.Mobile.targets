@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <mc-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-Platform>
-    <mc-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-Platform>
-    <mc-core-BuildDir>$(MSBuildThisFileDirectory)win10-$(mc-Platform)</mc-core-BuildDir>
+    <mc-core-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-core-Platform>
+    <mc-core-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-core-Platform>
+    <mc-core-BuildDir>$(MSBuildThisFileDirectory)win10-$(mc-core-Platform)</mc-core-BuildDir>
   </PropertyGroup>
 
   <Target Name="PlatformCheck" BeforeTargets="InjectCoreReference"
