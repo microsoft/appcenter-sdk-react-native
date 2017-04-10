@@ -1,7 +1,6 @@
 ﻿namespace Microsoft.Azure.Mobile.Crashes
 {
-    public class Crashes
+    public static class Crashes
     {
-    
     }
 }

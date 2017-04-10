@@ -21,7 +21,11 @@ namespace Microsoft.Azure.Mobile.Utils
             }
             catch (Exception e)
             {
+#if DEBUG
                 throw new MobileCenterException("Failed to register crashes with Watson", e);
+#else
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
+#endif
             }
         }
     }

@@ -52,8 +52,8 @@ var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
 var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.5.0";
-var IOS_SDK_VERSION = "0.5.1";
+var ANDROID_SDK_VERSION = "0.6.1";
+var IOS_SDK_VERSION = "0.6.1";
 
 // URLs for downloading binaries.
 /*
@@ -74,7 +74,8 @@ var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 var MOBILECENTER_MODULES = new [] {
 	new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
 	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
-	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec")
+	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
+	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec")	
 };
 
 // Task TARGET for build
@@ -169,7 +170,9 @@ Task("PrepareIosAssemblies").IsDependentOn("Externals-Ios").Does(() =>
 									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
 									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll",
 									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" };
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll",
+									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
+									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll" };
 
 	CleanDirectory(IOS_ASSEMBLIES_FOLDER);
 	foreach (var assembly in assemblies)
@@ -189,7 +192,9 @@ Task("PrepareAndroidAssemblies").IsDependentOn("Externals-Android").Does(() =>
 									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
 									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll",
 									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll" };
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll",
+									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
+									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll" };
 
 	CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
 	foreach (var assembly in assemblies)
@@ -210,7 +215,8 @@ Task("PreparePCLAssemblies").Does(() =>
 
 	var assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/Microsoft.Azure.Mobile.dll",
 									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" };
+									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
+									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/Microsoft.Azure.Mobile.Distribute.dll" };
 
 	CleanDirectory(PCL_ASSEMBLIES_FOLDER);
 	foreach (var assembly in assemblies)
@@ -261,6 +267,10 @@ Task("Externals-Ios")
 	{
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
+
+	// Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
+	if(DirectoryExists("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle"))
+		MoveDirectory("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
 }).OnError(exception => {
 	RunTarget("clean");
 	throw exception;
