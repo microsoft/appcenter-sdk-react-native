@@ -18,15 +18,15 @@
   <files>
 
     <file src="nuget/Microsoft.Azure.Mobile.Analytics.targets"  target="build/uap10.0/Microsoft.Azure.Mobile.Analytics.targets"/>
-    
+
     <!--x86 -->
-    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll" target="build/uap10.0/win10-x86/Microsoft.Azure.Mobile.Analytics.dll" />
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll" target="runtimes/win10-x86/lib/uap10.0/Microsoft.Azure.Mobile.Analytics.dll" />
 
     <!-- x64 -->
-    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll" target="build/uap10.0/win10-x64/Microsoft.Azure.Mobile.Analytics.dll" />
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll" target="runtimes/win10-x64/lib/uap10.0/Microsoft.Azure.Mobile.Analytics.dll" />
 
     <!-- ARM -->
-    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll" target="build/uap10.0/win10-ARM/Microsoft.Azure.Mobile.Analytics.dll" />
+    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll" target="runtimes/win10-ARM/lib/uap10.0/Microsoft.Azure.Mobile.Analytics.dll" />
 
   </files>
 </package>

@@ -3,16 +3,17 @@
   <PropertyGroup>
     <mc-core-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-core-Platform>
     <mc-core-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-core-Platform>
-    <mc-core-BuildDir>$(MSBuildThisFileDirectory)win10-$(mc-core-Platform)</mc-core-BuildDir>
+    <mc-core-BuildDir>$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(mc-core-Platform)\lib\uap10.0</mc-core-BuildDir>
+    <mc-core-IsCorrectArch Condition="'$(mc-core-Platform)' == 'x86' or '$(mc-core-Platform)' == 'x64' or '$(mc-core-Platform)' == 'ARM'">true</mc-core-IsCorrectArch>
   </PropertyGroup>
 
   <Target Name="PlatformCheck" BeforeTargets="InjectCoreReference"
-    Condition=" ( ('$(Platform)' != 'x86') AND ('$(Platform)' != 'ARM') AND  ('$(Platform)' != 'x64') )">
+    Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' != 'true')">
     <Error  Text="Please build your project specifically for one of the following platforms: x86, x64, ARM" />
   </Target>
 
 <Target Name="InjectCoreReference" BeforeTargets="InjectWatsonReference">
-    <ItemGroup Condition=" '$(Platform)' == 'x86' or '$(Platform)' == 'x64' or '$(Platform)' == 'ARM'">
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' == 'true')">
       <Reference Include="Microsoft.Azure.Mobile.dll">
      <HintPath>$(mc-core-BuildDir)\Microsoft.Azure.Mobile.dll</HintPath>
       </Reference>
@@ -20,7 +21,7 @@
 </Target>
 
 <Target Name="InjectWatsonReference" BeforeTargets="ResolveAssemblyReferences">
-    <ItemGroup Condition=" '$(Platform)' == 'x86' or '$(Platform)' == 'x64' or '$(Platform)' == 'ARM'">
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' == 'true')">
       <Reference Include="WatsonRegistrationUtility">
         <HintPath>$(mc-core-BuildDir)\WatsonRegistrationUtility.winmd</HintPath>
       </Reference>

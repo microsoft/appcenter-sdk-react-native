@@ -40,19 +40,19 @@
     <!-- targets file adds correct references to proper platforms -->
     <file src="$windows_dir$/Microsoft.Azure.Mobile.targets"  target="build/uap10.0/Microsoft.Azure.Mobile.targets"/>
     
-    <!--x86 -->
-    <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.dll" target="build/uap10.0/win10-x86/Microsoft.Azure.Mobile.dll" />
-    <file src="$windows_dir$/x86/WatsonRegistrationUtility.dll"  target="build/uap10.0/win10-x86/WatsonRegistrationUtility.dll"/>
-    <file src="$windows_dir$/x86/WatsonRegistrationUtility.winmd" target="build/uap10.0/win10-x86/WatsonRegistrationUtility.winmd" />
+     <!--x86 -->
+    <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.dll" target="runtimes/win10-x86/lib/uap10.0/Microsoft.Azure.Mobile.dll" />
+    <file src="$windows_dir$/x86/WatsonRegistrationUtility.dll" target="runtimes/win10-x86/lib/uap10.0/WatsonRegistrationUtility.dll"/>
+    <file src="$windows_dir$/x86/WatsonRegistrationUtility.winmd" target="runtimes/win10-x86/lib/uap10.0/WatsonRegistrationUtility.winmd" />
 
     <!-- x64 -->
-    <file src="$windows_dir$/x64/Microsoft.Azure.Mobile.dll" target="build/uap10.0/win10-x64/Microsoft.Azure.Mobile.dll" />
-    <file src="$windows_dir$/x64/WatsonRegistrationUtility.dll"  target="build/uap10.0/win10-x64/WatsonRegistrationUtility.dll"/>
-    <file src="$windows_dir$/x64/WatsonRegistrationUtility.winmd" target="build/uap10.0/win10-x64/WatsonRegistrationUtility.winmd" />
+    <file src="$windows_dir$/x64/Microsoft.Azure.Mobile.dll" target="runtimes/win10-x64/lib/uap10.0/Microsoft.Azure.Mobile.dll" />
+    <file src="$windows_dir$/x64/WatsonRegistrationUtility.dll"  target="runtimes/win10-x64/lib/uap10.0/WatsonRegistrationUtility.dll"/>
+    <file src="$windows_dir$/x64/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0/WatsonRegistrationUtility.winmd" />
 
     <!-- ARM -->
-    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.dll" target="build/uap10.0/win10-ARM/Microsoft.Azure.Mobile.dll" />
-    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.dll"  target="build/uap10.0/win10-ARM/WatsonRegistrationUtility.dll"/>
-    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.winmd" target="build/uap10.0/win10-ARM/WatsonRegistrationUtility.winmd" />
+    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.dll" target="runtimes/win10-ARM/lib/uap10.0/Microsoft.Azure.Mobile.dll" />
+    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.dll"  target="runtimes/win10-ARM/lib/uap10.0/WatsonRegistrationUtility.dll"/>
+    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.winmd" target="runtimes/win10-ARM/lib/uap10.0/WatsonRegistrationUtility.winmd" />
   </files>
 </package>
