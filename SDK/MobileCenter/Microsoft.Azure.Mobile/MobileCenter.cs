@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile
 
         /* Error message to display for unsupported targets. */
         private const string ErrorMessage =
-            "[MobileCenter] ASSERT: Cannot use Mobile Center on this target. If you are on Android or iOS, you must add the NuGet packages in the Android and iOS projects as well. Other targets such as Universal Windows Applications are not yet supported.";
+            "[MobileCenter] ASSERT: Cannot use Mobile Center on this target. If you are on Android or iOS or UWP, you must add the NuGet packages in the Android and iOS and UWP projects as well. Other targets are not yet supported.";
 
         /// <summary>
         ///     This property controls the amount of logs emitted by the SDK.
