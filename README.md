@@ -108,6 +108,7 @@ To start the SDK in your app, follow these steps:
    1. Open your `AppDelegate.cs` file and add the `Start`-API in your `FinishedLaunching`-method
 
     ```csharp
+    Distribute.DontCheckForUpdatesInDebug();
     MobileCenter.Start("{Your Xamarin iOS App Secret}", typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
     
@@ -144,9 +145,31 @@ To start the SDK in your app, follow these steps:
     
     The example above shows how to use the `Start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `Start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
     
-   **Note that your forms iOS app requires additional setup-steps for Distribute to work.**
-   
-   These steps are described above in the `Xamarin.iOS`-paragraph.
+   **Note that your forms iOS app requires additional setup steps for in-app updates to work.**
+
+	In case you are using Mobile Center Distribute, make sure to add the `Distribute.DontCheckForUpdatesInDebug();` call to your `FinishedLaunching` method on you app delegate. It should look similar to this:
+  	
+	```csharp
+    public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
+    {
+    	Xamarin.Forms.Forms.Init();
+    	Distribute.DontCheckForUpdatesInDebug();
+    	LoadApplication(new App());
+    	return base.FinishedLaunching(uiApplication, launchOptions);
+        } 
+   ```
+     
+	Implement the `openURL`-callback in your `AppDelegate` to enable in-app-updates and add the `Distribute.OpenUrl(url)`-call.
+    
+	```csharp
+	public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+   {
+   		Distribute.OpenUrl(url);
+
+       return true;
+   }
+	```
+
 
 ## 5. Analytics APIs
 
