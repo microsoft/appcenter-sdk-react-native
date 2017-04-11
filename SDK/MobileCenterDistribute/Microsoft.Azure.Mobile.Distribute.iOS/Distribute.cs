@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Distribute
         /// </summary>
         /// <remarks>
         /// This method is required because the SDK cannot detect an attached debugger, nor can it detect
-        /// a release configuration at runtme. If this method is not called, the browser will appear and try to
+        /// a release configuration at runtime. If this method is not called, the browser will appear and try to
         /// setup in-app updates.
         /// </remarks>
         [System.Diagnostics.Conditional("DEBUG")]
