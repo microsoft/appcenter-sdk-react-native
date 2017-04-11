@@ -9,7 +9,7 @@ namespace Contoso.Forms.Demo
         public MobileCenterContentPage()
         {
             InitializeComponent();
-            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
             {
                 Icon = "bolt.png";
             }
