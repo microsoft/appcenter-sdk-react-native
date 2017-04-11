@@ -7,8 +7,16 @@ namespace Microsoft.Azure.Mobile.Distribute
 
     public static partial class Distribute
     {
+        static Type _internalBindingType = typeof(iOSDistribute);
+
         [Preserve]
-        public static Type BindingType => typeof(iOSDistribute);
+        public static Type BindingType
+        {
+            get
+            {
+                return _internalBindingType;
+            }
+        }
 
         static bool PlatformEnabled
         {
@@ -40,6 +48,23 @@ namespace Microsoft.Azure.Mobile.Distribute
         public static void OpenUrl(NSUrl url)
         {
             iOSDistribute.OpenUrl(url);
+        }
+
+        /// <summary>
+        /// Do not check for updates in case the app is launched with a debug configuration.
+        /// In case you want to use in-app updated, place this method call into your
+        /// app delegate's FinishedLaunching method BEFORE you call MobileCenter.Start(...)
+        /// or before you init the forms application object if you use Xamarin Forms.
+        /// </summary>
+        /// <remarks>
+        /// This method is required because the SDK cannot detect an attached debugger, nor can it detect
+        /// a release configuration at runtime. If this method is not called, the browser will appear and try to
+        /// setup in-app updates.
+        /// </remarks>
+        [System.Diagnostics.Conditional("DEBUG")]
+        public static void DontCheckForUpdatesInDebug()
+        {
+            _internalBindingType = null;
         }
     }
 }
