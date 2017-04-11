@@ -63,7 +63,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Dist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Distribute", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj", "{41FEBC72-C12B-47E1-B6F6-51D50158C825}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.UWP", "Contoso.UWP", "{84BEBC1B-18C9-46F4-821A-49ADFCD97A02}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.UWP.Puppet", "Contoso.UWP.Puppet", "{84BEBC1B-18C9-46F4-821A-49ADFCD97A02}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
