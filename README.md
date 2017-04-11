@@ -145,7 +145,7 @@ To start the SDK in your app, follow these steps:
     
     The example above shows how to use the `Start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `Start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
     
-   **Note that your forms iOS app requires additional setup steps for in-app updates to work.**
+   **Note that your Xamarin.iOS app requires additional setup steps for in-app updates to work.**
 
 	In case you are using Mobile Center Distribute, make sure to add the `Distribute.DontCheckForUpdatesInDebug();` call to your `FinishedLaunching` method on you app delegate. It should look similar to this:
   	
@@ -297,7 +297,7 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         ```
 ## 7. Distribute APIs
 
-You can easily let your users get the latest version of your app by integrating Mobile Center Distribute. All you need to do is pass the service name as a parameter in the `start()` API call. Once the app launches, the SDK checks for new updates in the background. If it finds a new update, users will see a dialog with three options - **Download**, **Postpone** and **Ignore**. If the user taps **Download**, Mobile Center Distribute will trigger the new version to be installed. **Postpone** will delay the download until the app is opened again. **Ignore** will not prompt the user again for that particular app version. In case of a required update, the user will only have the option to tap **Download**.
+You can easily let your users get the latest version of your app by integrating Mobile Center Distribute. All you need to do is pass the service name as a parameter in the `Start()` API call. Once the app launches, the SDK checks for new updates in the background. If it finds a new update, users will see a dialog with three options - **Download**, **Postpone** and **Ignore**. If the user taps **Download**, Mobile Center Distribute will trigger the new version to be installed. **Postpone** will delay the download until the app is opened again. **Ignore** will not prompt the user again for that particular app version. In case of a required update, the user will only have the option to tap **Download**.
 
 Please follow the paragraph in [Start the SDK](#3-start-the-sdk) to setup the Distribute service.
 
