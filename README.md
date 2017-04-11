@@ -309,7 +309,7 @@ Use the same string name and specify the localized value to be reflected in the 
 
 ### Enable or disable Distribute
 
-You can change the enabled state by calling the `setEnabled` API. If you disable it, the SDK will not prompt your users when a new version is available for install. To re-enable it, pass `YES` or `true` as a parameter in the same method.
+You can change the enabled state by changing the `Enabled` property. If you disable it, the SDK will not prompt your users when a new version is available for install. To re-enable it, set the property to `true`.
 
 Note that it will only disable SDK features for the Distribute service (in-app updates for your application) and the SDK API has nothing to do with disabling the **Distribute** service on the Mobile Center portal.
 
