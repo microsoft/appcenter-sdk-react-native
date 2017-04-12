@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.Azure.Mobile;
+using System;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile;
-
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -37,7 +36,7 @@ namespace Contoso.Forms.Puppet
             UpdateLogWriteLevelLabel();
 
 
-            if (Xamarin.Forms.Device.OS == TargetPlatform.iOS)
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
             {
                 Icon = "bolt.png";
             }

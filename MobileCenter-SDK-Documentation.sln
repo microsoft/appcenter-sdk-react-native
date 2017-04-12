@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Documentation", "Documentation\Documentation.shfbproj", "{B1ED97E6-8ABB-4B96-BF25-49ED3E96AC73}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0F13E444-717E-460A-BDE7-8AD537F0A418} = {0F13E444-717E-460A-BDE7-8AD537F0A418}
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825} = {41FEBC72-C12B-47E1-B6F6-51D50158C825}
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08} = {302F0881-77AE-4CCE-ACF4-930AD5D4FB08}
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C} = {3FE04B97-48DE-4895-8612-ECBDFEBD917C}
 	EndProjectSection
@@ -16,10 +17,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Anal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Crashes", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj", "{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Distribute", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj", "{41FEBC72-C12B-47E1-B6F6-51D50158C825}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Distribute.Shared", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.shproj", "{5AEF073D-7370-41C1-86CD-A61B4DEB9883}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
+		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{41febc72-c12b-47e1-b6f6-51d50158c825}*SharedItemsImports = 4
+		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{5aef073d-7370-41c1-86cd-a61b4deb9883}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +49,10 @@ Global
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,10 +1,5 @@
-﻿using System;
-using Foundation;
-
-namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.Azure.Mobile.Crashes
 {
-    using iOS.Bindings;
-
     /// <summary>
     /// Binary attachment for error report.
     /// </summary>

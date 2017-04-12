@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Analytics;
 
@@ -9,8 +8,12 @@ namespace Microsoft.Azure.Mobile.Analytics
     /// <summary>
     /// Analytics service.
     /// </summary>
-    public static class Analytics
+    public class Analytics : MobileCenterService
     {
+        internal Analytics()
+        {
+        }
+
         /// <summary>
         /// Internal SDK property not intended for public use.
         /// </summary>
@@ -44,7 +47,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// </summary>
         /// <param name="name">An event name.</param>
         /// <param name="properties">Optional properties.</param>
-        public static void TrackEvent(string name, [Optional] IDictionary<string, string> properties)
+        public static void TrackEvent(string name, IDictionary<string, string> properties = null)
         {
             AndroidAnalytics.TrackEvent(name, properties);
         }

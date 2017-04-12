@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics.iOS.Bindings;
+using Microsoft.Azure.Mobile.Distribute;
 using UIKit;
 
 namespace Contoso.Forms.Puppet.iOS
@@ -11,9 +12,17 @@ namespace Contoso.Forms.Puppet.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Xamarin.Forms.Forms.Init();
+            Distribute.DontCheckForUpdatesInDebug();
             MSAnalytics.SetDelegate(new AnalyticsDelegate());
             LoadApplication(new App());
             return base.FinishedLaunching(uiApplication, launchOptions);
+        }
+
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            Distribute.OpenUrl(url);
+
+            return true;
         }
     }
 

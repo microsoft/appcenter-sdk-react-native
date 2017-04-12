@@ -4,6 +4,16 @@
 
     public static partial class MobileCenterLog
     {
+        /// <summary>
+        /// The log tag for this SDK. All logs emitted at the SDK level will contain this tag.
+        /// </summary>
+        public static string LogTag { get; private set; }
+
+        static MobileCenterLog()
+        {
+            LogTag = "MobileCenterXamarin";
+        }
+
         public static void Verbose(string tag, string message)
         {
             AndroidMobileCenterLog.Verbose(tag, message);

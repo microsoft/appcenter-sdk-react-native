@@ -1,4 +1,3 @@
-[![Build Status](https://www.bitrise.io/app/2f5448791ead7158.svg?token=OXmRpllvCk374SWQCVevkA&branch=develop)](https://www.bitrise.io/app/2f5448791ead7158)
 [![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xamarin.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/releases/latest)
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.Azure.Mobile.svg)](https://www.nuget.org/packages/Microsoft.Azure.Mobile/)
 [![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/blob/master/license.txt)
@@ -7,13 +6,15 @@
 
 ## Introduction
 
-The Mobile Center Xamarin SDK lets you add our services to your iOS and Android applications.
+The Microsoft Mobile Center SDKs allow you to add Mobile Center services to your mobile application.
 
-The SDK supports the following services:
+The SDK currently supports the following services:
 
-1. **Analytics**: Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically captures session count and device properties like model, OS Version etc. You can define your own custom events to measure things that matter to your business. All the information captured is available in the Mobile Center portal for you to analyze the data.
+1. **Analytics**: Mobile Center Analytics helps you understand user behavior and customer engagement to improve your Android app. The SDK automatically captures session count and device properties like model, OS Version etc. You can define your own custom events to measure things that matter to your business. All the information captured is available in the Mobile Center portal for you to analyze the data.
 
-2. **Crashes**: The Mobile Center SDK will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be forwarded to Mobile Center. Collecting crashes works for both beta and live apps, i.e. those submitted to Google Play or other app stores. Crash logs contain viable information for you to help resolve the issue. The SDK gives you a lot of flexibility how to handle a crash log. As a developer you can collect and add additional information to the report if you like.
+2. **Crashes**: Mobile Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and on the next app start, the crash report is forwarded to Mobile Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store, Google Play or other app stores. Crash logs contain valuable information for you to help resolve the issue. The SDK gives you a lot of flexibility how to handle a crash log. As a developer you can collect and add additional information to the report if you like.
+
+3. **Distribute**: Mobile Center Distribute enables your users to install a new version of the app when you distribute it via Mobile Center. With a new version of the app available, the SDK will present an update dialog to the users to either download, postpone or ignore the latest version. Once they tap **Download**, the SDK will update the application. If necessary, you can force your users to update the app to continue to use it. Note that this feature will `NOT` work if your app is deployed to the app store, if you are developing locally, if you are distributing new versions through a channel other than mobile center or if it is a debug build of your app (for Android Apps only).
 
 This document contains the following sections:
 
@@ -23,9 +24,10 @@ This document contains the following sections:
 4. [Start the SDK](#4-start-the-sdk)
 5. [Analytics APIs](#5-analytics-apis)
 6. [Crashes APIs](#6-crashes-apis)
-7. [Advanced APIs](#7-advanced-apis)
-8. [Contributing](#8-contributing)
-9. [Contact](#9-contact)
+7. [Distribute APIs](#7-distribute-apis)
+8. [Advanced APIs](#8-advanced-apis)
+9. [Contributing](#9-contributing)
+10. [Contact](#10-contact)
 
 Let's get started with setting up Mobile Center Xamarin SDK in your app to use these services:
 
@@ -80,8 +82,6 @@ Now that you've integrated the SDK in your application, it's time to start the S
 **Note:** If you installed the "Mobile Center Crashes" package for iOS prior to version 0.3.0, your iOS project should contain the folder
 "MobileCenterFrameworks" and its contents. It is no longer required and safe to delete.
 
-**Note:** Due to a bug in Xamarin.iOS 10.4, you need to *uncheck* **Enable incremental builds** in iOS Build Project Options.
-
 ## 4. Start the SDK
 
 To start the SDK in your app, follow these steps:
@@ -98,47 +98,78 @@ To start the SDK in your app, follow these steps:
     using Microsoft.Azure.Mobile;
     using Microsoft.Azure.Mobile.Analytics;
     using Microsoft.Azure.Mobile.Crashes;
+    using Microsoft.Azure.Mobile.Distribute;
     ```
 
-2. **Start the SDK:**  Mobile Center provides developers with two modules to get started – Analytics and Crashes. In order to use these modules, you need to opt in for the module(s) that you'd like, meaning by default no module is started and you will have to explicitly call each of them when starting the SDK.   
+2. **Start the SDK:**  Mobile Center provides developers with three modules to get started – Analytics, Crashes and Distribute. In order to use these modules, you need to opt in for the module(s) that you'd like, meaning by default no module is started and you will have to explicitly call each of them when starting the SDK.   
 
     **Xamarin.iOS**
  
-   Open AppDelegate.cs file and add the `Start` API in FinishedLaunching() method
+   1. Open your `AppDelegate.cs` file and add the `Start`-API in your `FinishedLaunching`-method
 
     ```csharp
-    MobileCenter.Start("{Your Xamarin iOS App Secret}", typeof(Analytics), typeof(Crashes));
+    Distribute.DontCheckForUpdatesInDebug();
+    MobileCenter.Start("{Your Xamarin iOS App Secret}", typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
+    
+    2. Add a new URL scheme to your `info.plist`. Open your `Info.plist` and switch to the **Advanced** tab. Copy and paste your bundle identifier as the `URL Identifier`, e.g. `com.example.awesomeapp`.
+    3. Next, in the **Advanced** tab, enter `mobilecenter-${APP_SECRET}` as the URL scheme and replace `${APP_SECRET}` with the App Secret of your app.
+    4. Implement the `openURL`-callback in your `AppDelegate` to enable in-app-updates and add the `Distribute.OpenUrl(url)`-call.
+    
+	```csharp
+	public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+   {
+   		Distribute.OpenUrl(url);
+
+       return true;
+   }
+	```
 
     **Xamarin.Android**
     
     Open MainActivity.cs file and add the `Start` API in OnCreate() method
 
     ```csharp
-    MobileCenter.Start("{Your Xamarin Android App Secret}", typeof(Analytics), typeof(Crashes));
+    MobileCenter.Start("{Your Xamarin Android App Secret}", typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
 
     **Xamarin.Forms**
     
-   For creating a cross platform Forms app targeting both iOS and Android platform, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two AppSecrets - one for iOS and another for Android. Therefore, Start SDK call is split into two methods for Xamarin.Forms. Open the `App.xaml.cs` file (or your class that inherits `Xamarin.Forms.Application`) in your shared or portable project and add the API below in the `OnStart()` override method.
+   For creating a Xamarin.Forms application targeting both iOS and Android platforms, you need to create two applications in Mobile Center portal - one for each platform. Creating two apps will give you two App secrets - one for iOS and another for Android. Open the `App.xaml.cs` file (or your class that inherits `Xamarin.Forms.Application`) in your shared or portable project and add the API below in the `OnStart()` override method.
 
     ```csharp
-    MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+    MobileCenter.Start("ios={Your Xamarin iOS App Secret};android={Your Xamarin Android App secret}",typeof(Analytics), typeof(Crashes), typeof(Distribute));
     ```
      
-    In the iOS project of the Forms app, open AppDelegate.cs and add the API in `FinishedLaunching()` method. Make sure you call the API before `LoadApplication()` method is called.    
-    ```csharp
-    MobileCenter.Configure("{Your Xamarin iOS App Secret}");
-    ```
-
-    In the Droid project of the Forms app, open MainActivity.cs and add the API in `OnCreate()` method. Make sure you call the API before `LoadApplication()` method is called.     
-    ```csharp
-    MobileCenter.Configure("{Your Xamarin Android App Secret}");
-    ```
-
-    You can also copy paste the code from the Overview page on Mobile Center portal once your app is selected. It already includes the App Secret so that all the data collected by the SDK corresponds to your application. Make sure to replace {Your App Secret} text with the actual value for your application.
+    You need to copy paste the App secret value for Xamarin iOS and Android app from Mobile Center portal. Make sure to replace the placeholder text above with the actual values for your application.
     
     The example above shows how to use the `Start()` method and include both the Analytics and Crashes module. If you wish not to use Analytics, remove the parameter from the method call above. Note that, unless you explicitly specify each module as parameters in the start method, you can't use that Mobile Center service. Also, the `Start()` API can be used only once in the lifecycle of your app – all other calls will log a warning to the console and only the modules included in the first call will be available.
+    
+   **Note that your Xamarin.iOS app requires additional setup steps for in-app updates to work.**
+
+	In case you are using Mobile Center Distribute, make sure to add the `Distribute.DontCheckForUpdatesInDebug();` call to your `FinishedLaunching` method on you app delegate. It should look similar to this:
+  	
+	```csharp
+    public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
+    {
+    	Xamarin.Forms.Forms.Init();
+    	Distribute.DontCheckForUpdatesInDebug();
+    	LoadApplication(new App());
+    	return base.FinishedLaunching(uiApplication, launchOptions);
+        } 
+   ```
+     
+	Implement the `openURL`-callback in your `AppDelegate` to enable in-app-updates and add the `Distribute.OpenUrl(url)`-call.
+    
+	```csharp
+	public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+   {
+   		Distribute.OpenUrl(url);
+
+       return true;
+   }
+	```
+
 
 ## 5. Analytics APIs
 
@@ -264,8 +295,36 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         };
 
         ```
+## 7. Distribute APIs
 
-## 7. Advanced APIs
+You can easily let your users get the latest version of your app by integrating Mobile Center Distribute. All you need to do is pass the service name as a parameter in the `Start()` API call. Once the app launches, the SDK checks for new updates in the background. If it finds a new update, users will see a dialog with three options - **Download**, **Postpone** and **Ignore**. If the user taps **Download**, Mobile Center Distribute will trigger the new version to be installed. **Postpone** will delay the download until the app is opened again. **Ignore** will not prompt the user again for that particular app version. In case of a required update, the user will only have the option to tap **Download**.
+
+Please follow the paragraph in [Start the SDK](#3-start-the-sdk) to setup the Distribute service.
+
+### Localization of the update UI
+
+You can easily provide your own resource strings if you'd like to localize the text displayed in the update dialog. Look at the string files for iOS [in this resource file](https://github.com/Microsoft/mobile-center-sdk-ios/blob/develop/MobileCenterDistribute/MobileCenterDistribute/Resources/en.lproj/MobileCenterDistribute.strings) and those for Android [in this resource file](https://github.com/Microsoft/mobile-center-sdk-android/blob/distribute/sdk/mobile-center-distribute/src/main/res/values/strings.xml).
+
+Use the same string name and specify the localized value to be reflected in the dialog in your own app resource files.  
+
+### Enable or disable Distribute
+
+You can change the enabled state by changing the `Enabled` property. If you disable it, the SDK will not prompt your users when a new version is available for install. To re-enable it, set the property to `true`.
+
+Note that it will only disable SDK features for the Distribute service (in-app updates for your application) and the SDK API has nothing to do with disabling the **Distribute** service on the Mobile Center portal.
+
+```csharp
+Distribute.Enabled = false;
+```
+
+You can also check if the service is enabled in the SDK or not at runtime. 
+  
+```csharp
+bool enabled = Distribute.Enabled;
+```
+
+
+## 8. Advanced APIs
 
 * **Debugging**: You can control the amount of log messages that show up from the SDK. Use the API below to enable additional logging while debugging. By default, it is set it to `ASSERT` for non-debuggable applications and `WARN` for debuggable applications.
 
@@ -285,17 +344,17 @@ Note that the events must be subscribed to and callbacks must be set before Mobi
         MobileCenter.Enabled = false;
     ```
     
-## 8. Contributing
+## 9. Contributing
 
 We're looking forward to your contributions via pull requests.
 
-### 8.1 Code of Conduct
+### 9.1 Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
-### 8.2 Contributor License
+### 9.2 Contributor License
 
 You must sign a [Contributor License Agreement](https://cla.microsoft.com/) before submitting your pull request. To complete the Contributor License Agreement (CLA), you will need to submit a request via the [form](https://cla.microsoft.com/) and then electronically sign the CLA when you receive the email containing the link to the document. You need to sign the CLA only once to cover submission to any Microsoft OSS project. 
 
-## 9. Contact
+## 10. Contact
 If you have further questions or are running into trouble that cannot be resolved by any of the steps here, feel free to open a Github issue here or contact us at mobilecentersdk@microsoft.com.

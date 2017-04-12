@@ -1,7 +1,5 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-
 using Foundation;
+using System.Reflection;
 
 // This attribute allows you to mark your assemblies as “safe to link”. 
 // When the attribute is present, the linker—if enabled—will process the assembly 
@@ -32,3 +30,5 @@ using Foundation;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
+[assembly: AssemblyFileVersion("0.8.0.0")]
+[assembly: AssemblyInformationalVersion("0.8.0-SNAPSHOT")]

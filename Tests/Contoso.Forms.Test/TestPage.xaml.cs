@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms;
-using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test
 {

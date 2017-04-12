@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.Runtime;
+using Com.Microsoft.Azure.Mobile;
+using Com.Microsoft.Azure.Mobile.Crashes.Model;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -12,10 +15,6 @@ namespace Microsoft.Azure.Mobile.Crashes
     using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.AndroidCrashes;
     using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
     using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
-    using System.Threading.Tasks;
-    using Com.Microsoft.Azure.Mobile;
-    using Com.Microsoft.Azure.Mobile.Crashes.Model;
-    using System.Threading;
 
     class PlatformCrashes : PlatformCrashesBase
     {
@@ -138,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             /*
              * We don't assume order between java crash handler and c# crash handler.
              * This method is called after either of those 2 events.
-             * It is thus effective only the second time when we got both the c# exception and the Android error log.
+             * It is thus effective only the second time when we got both the .NET exception and the Android error log.
              */
             if (_errorLog != null && _exception != null)
             {

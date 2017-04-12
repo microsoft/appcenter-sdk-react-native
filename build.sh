@@ -3,7 +3,7 @@
 # This is the Cake bootstrapper script that is responsible for
 # downloading Cake and all specified tools from NuGet.
 ###############################################################
-
+PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 # Define directories.
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
@@ -74,7 +74,6 @@ if [ ! -f $CAKE_EXE ]; then
     exit 1
 fi
 
-echo "EXTRA ARGS: $EXTRA_ARGS"
 # Start Cake
 if $SHOW_VERSION; then
     mono $CAKE_EXE -version

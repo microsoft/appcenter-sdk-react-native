@@ -6,6 +6,7 @@ using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
@@ -78,7 +79,6 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public PlatformCrashes()
         {
-            MSCrashes.NotifyPermanentlyDisableMachExceptionHandling();
             MSCrashes.SetUserConfirmationHandler((arg0) =>
                     {
                         if (ShouldAwaitUserConfirmation != null)

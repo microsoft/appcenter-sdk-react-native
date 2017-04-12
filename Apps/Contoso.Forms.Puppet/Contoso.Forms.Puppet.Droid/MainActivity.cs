@@ -1,11 +1,10 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Microsoft.Azure.Mobile;
 using Com.Microsoft.Azure.Mobile.Analytics;
-using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Com.Microsoft.Azure.Mobile.Analytics.Channel;
 using Com.Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Puppet.Droid
 {

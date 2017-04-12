@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.Azure.Mobile.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile
 {
-    using iOS.Bindings;
-
     public partial class Device
     {
         public Device(MSDevice device)

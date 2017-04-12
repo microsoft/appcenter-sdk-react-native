@@ -1,0 +1,93 @@
+swagger: '2.0'
+info:
+  title: Sonoma.Devices
+  description: Microsoft Sonoma Device Information REST API.
+  version: '1.0.0-preview20161024'
+host: devices.prod.avalanch.es
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /v0.1
+paths:
+  '/devices/model_mappings_csv':
+    get:
+      operationId: Devices_ModelMappingCsv
+      x-client-operation: Devices_ModelMappingCsv
+      description: Gets the device model mappings in CSV format
+      produces:
+        - file/csv
+      responses:
+        '200':
+          description: The device model mappings in CSV format
+          schema:
+            type: file
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+  '/devices/model_mappings_json':
+    get:
+      operationId: Devices_ModelMappingJson
+      x-client-operation: Devices_ModelMappingJson
+      description: Gets the device model mappings in JSON format
+      responses:
+        '200':
+          description: The device model mappings in JSON format
+          schema:
+            type: object
+            additionalProperties:
+              $ref: '#/definitions/DeviceMapping'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+  '/devices/model_mapping':
+    get:
+      operationId: Devices_ModelMapping
+      x-client-operation: Devices_ModelMapping
+      description: Gets the device model mapping
+      responses:
+        '200':
+          description: The device model mapping
+          schema:
+            $ref: '#/definitions/DeviceMapping'
+        default:
+          description: Error code with reason
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  DeviceMapping:
+    description: Device mapping
+    type: object
+    properties:
+      os:
+        description: Operating system
+        type: string
+        enum: [ 'Unknown', 'iOS', 'Android' ]
+      name:
+        description: Device name
+        type: string
+      man:
+        description: Manufacturer name
+        type: string
+  Error:
+    description: Error
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            description: The status code return by the API. It can be 400 or 403 or 500.
+            type: integer
+            enum: [
+              400,
+              403,
+              500
+            ]
+          message:
+            description: The reason for the request failed
+            type: string
