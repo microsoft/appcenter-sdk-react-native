@@ -126,7 +126,6 @@ Task("StartNewVersion").Does(()=>
 
 Task("UpdateDemoDependencies").Does(() =>
 {
-
 	NuGetRestore("MobileCenter-Demo-Mac.sln");
 
 	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});

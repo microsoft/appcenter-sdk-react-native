@@ -180,6 +180,7 @@ Task("PrepareWindowsAssemblies")
 	.Does(() =>
 {
 	var anyCpuAssemblies = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
+											"nuget/Microsoft.Azure.Mobile.Analytics.targets",
 										  	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll"
 										};
 
