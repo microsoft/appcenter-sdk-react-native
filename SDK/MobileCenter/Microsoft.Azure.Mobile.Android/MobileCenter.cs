@@ -184,7 +184,24 @@ namespace Microsoft.Azure.Mobile
 
         private static Class[] GetServices(IEnumerable<Type> services)
         {
-            return services.Select(service => Class.FromType((Type)service.GetProperty("BindingType").GetValue(null, null))).ToArray();
+            var classes = new List<Class>();
+            foreach (var t in services)
+            {
+                var propertyInfo = t.GetProperty("BindingType");
+                if (propertyInfo != null)
+                {
+                    var  value = (Type)propertyInfo.GetValue(null, null);
+                    if (value != null)
+                    {
+                        var aClass = Class.FromType((Type)propertyInfo.GetValue(null, null));
+                        if (aClass != null)
+                        {
+                            classes.Add(aClass);
+                        }   
+                    }
+                }
+            }
+            return classes.ToArray();
         }
     }
 }

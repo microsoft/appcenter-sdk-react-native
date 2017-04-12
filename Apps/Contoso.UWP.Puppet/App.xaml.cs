@@ -23,7 +23,7 @@ namespace Contoso.UWP.Puppet
         public App()
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Configure("98038a20-4014-445a-b27f-048082036045");
+            MobileCenter.Configure("42f4a839-c54c-44da-8072-a2f2a61751b2");
             Analytics.Enabled = true;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes));
             MobileCenter.Enabled = true;
