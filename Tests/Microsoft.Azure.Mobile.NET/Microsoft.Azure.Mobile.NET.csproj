@@ -73,6 +73,7 @@
     <Compile Include="MobileCenterPart.cs" />
     <Compile Include="NetworkStateAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WatsonCrashesStarter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
