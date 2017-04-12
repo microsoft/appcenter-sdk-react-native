@@ -40,5 +40,18 @@
 	<string>MCFDemo</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.8.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>CFBundleURLName</key>
+			<string>com.microsoft.azure.mobile.xamarin.forms.demo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mobilecenter-fe2bf05d-f4f9-48a6-83d9-ea8033fbb644</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
