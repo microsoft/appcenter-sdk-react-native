@@ -25,9 +25,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
+            ApplicationSettings.Reset();
             _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
             SessionTracker.SessionTimeout = 500;
-            ApplicationSettings.Reset();
         }
 
         /// <summary>
