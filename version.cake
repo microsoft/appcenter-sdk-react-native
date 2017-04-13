@@ -180,6 +180,9 @@ void IncrementRevisionNumber(bool useHash)
 		var newFileVersion = trimmedVersion + newRevNum + "\")";
 		ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
 	}
+
+	// Update wrapper sdk version
+	UpdateWrapperSdkVersion(newVersion);
 }
 
 string GetPCLBaseSemanticVersion()
