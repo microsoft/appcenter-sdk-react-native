@@ -9,7 +9,7 @@
   <Identity
     Name="d7caa89c-60ad-439a-9c1a-95182d6f490d"
     Publisher="CN=alchocro"
-    Version="0.8.1.0" />
+    Version="0.8.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="d7caa89c-60ad-439a-9c1a-95182d6f490d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
