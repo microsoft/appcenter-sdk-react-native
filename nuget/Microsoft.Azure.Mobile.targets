@@ -8,12 +8,11 @@
     <mc-core-IsCorrectArch Condition="'$(mc-core-Platform)' == 'x86' or '$(mc-core-Platform)' == 'x64' or '$(mc-core-Platform)' == 'ARM'">true</mc-core-IsCorrectArch>
   </PropertyGroup>
 
-  <Target Name="PlatformCheck" BeforeTargets="InjectWatsonReference"
+  <Target Name="PlatformCheck" BeforeTargets="ResolveAssemblyReferences"
     Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' != 'true')">
     <Error  Text="Please build your project specifically for one of the following platforms: x86, x64, ARM" />
   </Target>
 
-<Target Name="InjectWatsonReference" BeforeTargets="InjectCoreReference">
     <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' == 'true')">
       <ReferenceCopyLocalPaths Include="$(mc-core-ArchDir)\native\WatsonRegistrationUtility.dll"/>
       <Reference Include="WatsonRegistrationUtility.winmd">
@@ -21,15 +20,12 @@
         <Implementation>WatsonRegistrationUtility.dll</Implementation>
       </Reference>
     </ItemGroup>
-</Target>
 
-<Target Name="InjectCoreReference" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' == 'true')">
       <Reference Include="Microsoft.Azure.Mobile.dll">
         <HintPath>$(mc-core-ArchDir)\lib\uap10.0\Microsoft.Azure.Mobile.dll</HintPath>
       </Reference>
     </ItemGroup>
-</Target>
 
   <ItemDefinitionGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
     <ClCompile>
