@@ -27,17 +27,17 @@
 
     <!--x86 -->
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll" target="runtimes/win10-x86/lib/uap10.0" />
-    <file src="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"  target="runtimes/win10-x86/lib/uap10.0"/>
+    <file src="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"  target="runtimes/win10-x86/native"/>
     <file src="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" target="runtimes/win10-x86/lib/uap10.0" />
 
     <!-- x64 -->
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x64/Release/Microsoft.Azure.Mobile.dll" target="runtimes/win10-x64/lib/uap10.0" />
-    <file src="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"  target="runtimes/win10-x64/lib/uap10.0"/>
+    <file src="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"  target="runtimes/win10-x64/native"/>
     <file src="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0" />
 
     <!-- ARM -->
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.dll" target="runtimes/win10-ARM/lib/uap10.0" />
-    <file src="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"  target="runtimes/win10-ARM/lib/uap10.0"/>
+    <file src="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"  target="runtimes/win10-ARM/native"/>
     <file src="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" target="runtimes/win10-ARM/lib/uap10.0" />
   </files>
 </package>
