@@ -6,7 +6,6 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Test.Windows.Storage;
 using Moq;
-using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.Mobile.Test
@@ -17,14 +16,9 @@ namespace Microsoft.Azure.Mobile.Test
     {
         const string StorageTestChannelName = "storageTestChannelName";
 
-        private class ConcreteDbException : DbException
-        {
-        }
-
         [TestMethod]
         public void ShutdownTimeout()
         {
-            var storageAdapter = new TimeConsumingStorageAdapter();
             var storage = new Mobile.Storage.Storage(storageAdapter);
             Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
             Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
@@ -37,8 +31,6 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void ShutdownSucceed()
         {
-
-            var storageAdapter = new TimeConsumingStorageAdapter();
             var storage = new Mobile.Storage.Storage(storageAdapter);
             Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
             Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
@@ -57,11 +49,8 @@ namespace Microsoft.Azure.Mobile.Test
         {
             var mockAdapter = new Mock<IStorageAdapter>();
             mockAdapter.Setup(adapter => adapter.OpenAsync()).Returns(TaskExtension.GetCompletedTask());
-            mockAdapter.Setup(adapter => adapter.ExecuteNonQueryAsync(It.IsAny<DbCommand>())).Returns(TaskExtension.GetCompletedTask());
-            mockAdapter.Setup(adapter => adapter.ExecuteQueryAsync(It.IsAny<DbCommand>())).Throws(new ConcreteDbException());
-
-            /* Return SqliteCommand because DbCommand is abstract */
-            mockAdapter.Setup(adapter => adapter.CreateCommand()).Returns(new SqliteCommand());
+            mockAdapter.Setup(adapter => adapter.ExecuteNonQueryAsync(It.IsAny<string>(), It.IsAny<object[]>())).Returns(TaskExtension.GetCompletedTask());
+            mockAdapter.Setup(adapter => adapter.ExecuteQueryAsync(It.IsAny<string>(), It.IsAny<object[]>())).Throws(new TestDbException(""));
 
             var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
 
