@@ -288,7 +288,7 @@ Task("NuGet")
 		NuGetPack(spec, new NuGetPackSettings {
 			BasePath = basePath,
 			Verbosity = NuGetVerbosity.Detailed,
-			Version = "0.9.41"
+			Version = module.NuGetVersion
 		});
 	}
 	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
