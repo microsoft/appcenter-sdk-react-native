@@ -10,6 +10,11 @@
     mobile-center-sdk-react-native/RNMobileCenter.podspec
       Bump the version num s.version
       Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
+    RNMobileCenter.m
+      Update the version number used for `initWithWrapperSdkVersion:`.  That should match s.version in
+      RNMobileCewnter.podspec (and for Android the wrapper SDK version comes from the version number
+      in build.gradle)
+
 
   NPM modules
     mobile-center-crashes/package.json
