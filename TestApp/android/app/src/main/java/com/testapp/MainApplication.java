@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.react.analytics.RNAnalyticsPackage;
 import com.microsoft.azure.mobile.react.crashes.RNCrashesPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -41,6 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+
+    MobileCenter.setLogLevel(Log.VERBOSE);
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

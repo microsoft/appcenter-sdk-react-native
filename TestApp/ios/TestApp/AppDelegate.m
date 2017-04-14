@@ -15,15 +15,16 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+@import MobileCenter;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation;
+  NSURL *jsCodeLocation;                  
 
   //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
-  //[MSMobileCenter setLogLevel: MSLogLevelVerbose];
+  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
   
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
