@@ -39,6 +39,3 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
-
-# It's normally advised to check in Pods, but we ignore them for the DemoApp as we keep it in its unlinked state   
-ios/Pods/
