@@ -21,7 +21,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Wind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.UWP", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj", "{200073BF-FA7E-42AF-8ED5-AA50BE7C0295}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VSMC.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Crashes.UWP", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.UWP\Microsoft.Azure.Mobile.Crashes.UWP.csproj", "{2F715D51-643C-4F7F-9EA4-6554D4EECCB2}"
 EndProject
@@ -39,10 +39,10 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
-		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
-		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
-		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
