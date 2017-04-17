@@ -93,9 +93,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Dist
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Distribute.Shared", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.shproj", "{5AEF073D-7370-41C1-86CD-A61B4DEB9883}"
 EndProject
+<<<<<<< HEAD:MobileCenter-Mac.sln
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.UWP", "SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj", "{15E3FC9B-7714-4468-A296-81627A5B8F01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.UWP", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj", "{200073BF-FA7E-42AF-8ED5-AA50BE7C0295}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Crashes.UWP", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.UWP\Microsoft.Azure.Mobile.Crashes.UWP.csproj", "{2F715D51-643C-4F7F-9EA4-6554D4EECCB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.UWP.Puppet", "Apps\Contoso.UWP.Puppet\Contoso.UWP.Puppet.csproj", "{2F81AF7B-06FC-4163-859A-979F375330FF}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Windows.Shared", "SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.shproj", "{B4E6AD1C-21A0-43A4-BD73-ED9BFC19BE6F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
+		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
+		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
+>>>>>>> develop:MobileCenter-SDK.sln
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{41febc72-c12b-47e1-b6f6-51d50158c825}*SharedItemsImports = 4
@@ -105,6 +126,10 @@ Global
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{60241627-33bb-45f9-a1b6-6f1cb2bf2c4a}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{78990f7a-6c3e-4007-b0e3-a8bf9625a327}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{7b6e79a4-fbaf-4e7e-b696-0ac10d0a2552}*SharedItemsImports = 13
+<<<<<<< HEAD:MobileCenter-Mac.sln
+=======
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
+>>>>>>> develop:MobileCenter-SDK.sln
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{aabf653e-0cc1-4d59-93db-4eef0e1df916}*SharedItemsImports = 4
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{ad38dee9-8a74-4b04-93c3-0831b55e7254}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{b87370cd-af51-45e0-aa15-3e0abc0c30a0}*SharedItemsImports = 4
