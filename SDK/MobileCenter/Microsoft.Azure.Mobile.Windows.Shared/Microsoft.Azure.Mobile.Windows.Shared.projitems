@@ -20,6 +20,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />

@@ -14,14 +14,10 @@ namespace Microsoft.Azure.Mobile.Test
         private const string StorageTestChannelName = "storageTestChannelName";
         private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
 
-        private Mobile.Storage.Storage _storageWithTestAdapter;
-
         [TestInitialize]
         public void InitializeStorageTest()
         {
             _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
-
-            _storageWithTestAdapter = new Mobile.Storage.Storage();
         }
 
         /// <summary>

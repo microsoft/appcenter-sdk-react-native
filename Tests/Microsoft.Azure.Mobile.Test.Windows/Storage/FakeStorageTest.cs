@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Data.Common;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Azure.Mobile.Test.Storage;
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLite;
 
 namespace Microsoft.Azure.Mobile.Test
 {
+    using PredType = Expression<Func<Mobile.Storage.Storage.LogEntry, bool>>;
 
     [TestClass]
     public class FakeStorageTest
     {
-        const string StorageTestChannelName = "storageTestChannelName";
+        private const string StorageTestChannelName = "storageTestChannelName";
 
         /// <summary>
         /// Verify that shutdown fails when tasks exceed time limit
@@ -23,15 +23,15 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void ShutdownTimeout()
         {
-            var mockConnection = new Mock<SQLiteAsyncConnection>("tbl", true);
+            var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
                     c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
-                .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)))
+                .Callback(() => Task.Delay(TimeSpan.MaxValue).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
             Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
             Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
-            var result = storage.Shutdown(TimeSpan.FromMilliseconds(1));
+            var result = storage.Shutdown(TimeSpan.FromTicks(1));
 
             Assert.IsFalse(result);
         }
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void ShutdownSucceed()
         {
-            var mockConnection = new Mock<SQLiteAsyncConnection>();
+            var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
                     c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
                 .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)))
@@ -60,11 +60,11 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void ShutdownPreventsNewTasks()
         {
-            var mockConnection = new Mock<SQLiteAsyncConnection>();
+            var mockConnection = new Mock<IStorageAdapter>();
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            storage.Shutdown(TimeSpan.FromSeconds(10));
+            Assert.IsTrue(storage.Shutdown(TimeSpan.FromSeconds(10)));
             Assert.ThrowsException<StorageException>(
-                () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()));
+                () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()).RunNotAsync());
         }
 
         /// <summary>
@@ -73,11 +73,11 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetLogsQueryError()
         {
-            var mockConnection = new Mock<SQLiteAsyncConnection>();
-            mockConnection.Setup(
-                    c => c.Table<Mobile.Storage.Storage.LogEntry>())
-                .Throws(new TestSqliteException());
-            var fakeStorage = new Mobile.Storage.Storage(mockConnection.Object);
+            var mockAdapter = new Mock<IStorageAdapter>();
+            mockAdapter.Setup(
+                    a => a.GetAsync(It.IsAny<PredType>(), It.IsAny<int>()))
+                .Throws(new StorageException());
+            var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
             var logs = new List<Log>();
             Assert.ThrowsException<StorageException>(() =>
                 fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
@@ -89,15 +89,13 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void StorageThrowsStorageException()
         {
-            var mockConnection = new Mock<SQLiteAsyncConnection>();
-            mockConnection.Setup(
-                    c => c.Table<Mobile.Storage.Storage.LogEntry>())
-                .Throws(new TestSqliteException());
-            mockConnection.Setup(c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
-                .Throws(new TestSqliteException());
-
-
-            var fakeStorage = new Mobile.Storage.Storage(mockConnection.Object);
+            var mockAdapter = new Mock<IStorageAdapter>();
+            mockAdapter.Setup(
+                    a => a.GetAsync(It.IsAny<PredType>(), It.IsAny<int>()))
+                .Throws(new StorageException());
+            mockAdapter.Setup(c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
+                .Throws(new StorageException());
+            var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
             try
             {
                 fakeStorage.PutLogAsync("channel_name", new TestLog()).RunNotAsync();
