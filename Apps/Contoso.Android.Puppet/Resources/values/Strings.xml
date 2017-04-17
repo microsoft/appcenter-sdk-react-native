@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Crash1">Crash with substring</string>
+	<string name="Crash1">Crash with substring</string>
 	<string name="Crash2">Crash with Java class not found</string>
-    <string name="ApplicationName">Contoso.Android.Puppet</string>
+	<string name="ApplicationName">Contoso.Android.Puppet</string>
 </resources>
