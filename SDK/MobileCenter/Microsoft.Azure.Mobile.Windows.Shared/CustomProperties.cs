@@ -12,7 +12,12 @@ namespace Microsoft.Azure.Mobile
     {
         private static readonly Regex KeyPattern = new Regex("^[a-zA-Z][a-zA-Z0-9]*$");
 
-        internal Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        internal Dictionary<string, object> Properties { get; }
+
+        public CustomProperties()
+        {
+            Properties = new Dictionary<string, object>();
+        }
 
         /// <summary>
         /// Set the specified property value with the specified key.

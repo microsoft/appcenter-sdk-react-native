@@ -39,8 +39,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         [JsonProperty(PropertyName = "properties")]
         internal JArray JsonProperties
         {
-            get => WriteProperties(Properties);
-            set => Properties = ReadProperties(value);
+            get { return WriteProperties(Properties); }
+            set { Properties = ReadProperties(value); }
         }
 
         /// <summary>
