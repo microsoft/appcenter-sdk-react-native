@@ -48,43 +48,7 @@ namespace Microsoft.Azure.Mobile
         /// <param name="key">Key with which the specified value is to be set.</param>
         /// <param name="value">Value to be set with the specified key.</param>
         /// <returns>This instance.</returns>
-        public CustomProperties Set(string key, long value) => SetObject(key, value);
-
-        /// <summary>
-        /// Set the specified property value with the specified key.
-        /// If the properties previously contained a property for the key, the old value is replaced.
-        /// </summary>
-        /// <param name="key">Key with which the specified value is to be set.</param>
-        /// <param name="value">Value to be set with the specified key.</param>
-        /// <returns>This instance.</returns>
-        public CustomProperties Set(string key, short value) => SetObject(key, value);
-
-        /// <summary>
-        /// Set the specified property value with the specified key.
-        /// If the properties previously contained a property for the key, the old value is replaced.
-        /// </summary>
-        /// <param name="key">Key with which the specified value is to be set.</param>
-        /// <param name="value">Value to be set with the specified key.</param>
-        /// <returns>This instance.</returns>
         public CustomProperties Set(string key, float value) => SetObject(key, value);
-
-        /// <summary>
-        /// Set the specified property value with the specified key.
-        /// If the properties previously contained a property for the key, the old value is replaced.
-        /// </summary>
-        /// <param name="key">Key with which the specified value is to be set.</param>
-        /// <param name="value">Value to be set with the specified key.</param>
-        /// <returns>This instance.</returns>
-        public CustomProperties Set(string key, double value) => SetObject(key, value);
-
-        /// <summary>
-        /// Set the specified property value with the specified key.
-        /// If the properties previously contained a property for the key, the old value is replaced.
-        /// </summary>
-        /// <param name="key">Key with which the specified value is to be set.</param>
-        /// <param name="value">Value to be set with the specified key.</param>
-        /// <returns>This instance.</returns>
-        public CustomProperties Set(string key, decimal value) => SetObject(key, value);
 
         /// <summary>
         /// Set the specified property value with the specified key.
