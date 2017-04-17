@@ -117,7 +117,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="..\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

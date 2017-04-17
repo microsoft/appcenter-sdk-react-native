@@ -61,6 +61,6 @@
       <Name>Microsoft.Azure.Mobile.NET</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\..\SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
