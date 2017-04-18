@@ -95,60 +95,16 @@ namespace Microsoft.Azure.Mobile.Test
                 .Throws(new StorageException());
             mockAdapter.Setup(c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
                 .Throws(new StorageException());
+            mockAdapter.Setup(c => c.DeleteAsync(It.IsAny<Expression<Func<Mobile.Storage.Storage.LogEntry, bool>>>()))
+                .Throws(new StorageException());
+            mockAdapter.Setup(c => c.CountAsync(It.IsAny<Expression<Func<Mobile.Storage.Storage.LogEntry, bool>>>()))
+                .Throws(new StorageException());
             var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
-            try
-            {
-                fakeStorage.PutLogAsync("channel_name", new TestLog()).RunNotAsync();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e as StorageException);
-            }
 
-            try
-            {
-                fakeStorage.PutLogAsync("channel_name", new TestLog()).RunNotAsync();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e as StorageException);
-            }
-
-            try
-            {
-                fakeStorage.DeleteLogsAsync("channel_name", string.Empty).RunNotAsync();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e as StorageException);
-            }
-
-            try
-            {
-                fakeStorage.DeleteLogsAsync("channel_name").RunNotAsync();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e as StorageException);
-            }
-
-            try
-            {
-                fakeStorage.CountLogsAsync("channel_name").RunNotAsync();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e as StorageException);
-            }
-
-            try
-            {
-                fakeStorage.GetLogsAsync("channel_name", 1, new List<Log>()).RunNotAsync();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e as StorageException);
-            }
+            Assert.ThrowsException<StorageException>(() => fakeStorage.PutLogAsync("channel_name", new TestLog()).RunNotAsync());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.DeleteLogsAsync("channel_name", string.Empty).RunNotAsync());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.CountLogsAsync("channel_name").RunNotAsync());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.GetLogsAsync("channel_name", 1, new List<Log>()).RunNotAsync());
         }
     }
 }
