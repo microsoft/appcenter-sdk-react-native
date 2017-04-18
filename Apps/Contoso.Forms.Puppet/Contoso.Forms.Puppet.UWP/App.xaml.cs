@@ -5,7 +5,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
+using Microsoft.Azure.Mobile;
 namespace Contoso.Forms.Puppet.UWP
 {
     /// <summary>
@@ -19,6 +19,7 @@ namespace Contoso.Forms.Puppet.UWP
         /// </summary>
         public App()
         {
+            MobileCenter.SetCountry("United States");
             InitializeComponent();
             Suspending += OnSuspending;
         }
