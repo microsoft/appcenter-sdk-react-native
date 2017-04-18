@@ -7,14 +7,14 @@ using System.Collections.Generic;
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
     [TestClass]
-    public class StartServiceLogTest
+    public class CustomPropertiesLogTest
     {
-        private const string StorageTestChannelName = "startServiceStorageTestChannelName";
+        private const string StorageTestChannelName = "customPropertiesStorageTestChannelName";
 
         [TestInitialize]
         public void InitializeStartServiceTest()
         {
-            LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
+            LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
         }
 
         /// <summary>
@@ -23,40 +23,32 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         [TestMethod]
         public void CheckInitialValues()
         {
-            var log = new StartServiceLog();
+            var log = new CustomPropertiesLog();
             Assert.IsNull(log.Device);
-            Assert.AreEqual(0, log.Services.Count);
+            Assert.AreEqual(0, log.Properties.Count);
             Assert.IsNull(log.Sid);
             Assert.AreEqual(0, log.Toffset);
         }
 
         /// <summary>
-        /// Validate that services names are coping
+        /// Validate that properties can be correctly saved and restored
         /// </summary>
         [TestMethod]
-        public void CheckInitialValuesWithServices()
+        public void SaveCustomPropertiesLog()
         {
-            var servicesNames = new List<string> { "Service0", "Service1", "Service2" };
-            var log = new StartServiceLog(0, null, servicesNames);
-
-            Assert.IsNotNull(log.Services);
-            foreach (var serviceName in log.Services)
-            {
-                Assert.IsTrue(servicesNames.Contains(serviceName));
-            }
-        }
-
-        /// <summary>
-        /// Validate that name services can be correctly saved and restored
-        /// </summary>
-        [TestMethod]
-        public void SaveStartServiceLog()
-        {
-            var addedLog = new StartServiceLog
+            var addedLog = new CustomPropertiesLog
             {
                 Device = new DeviceInformationHelper().GetDeviceInformation(),
                 Toffset = TimeHelper.CurrentTimeInMilliseconds(),
-                Services = new List<string> {"Service0", "Service1", "Service2"},
+                Properties = new Dictionary<string, object>
+                {
+                    { "t1", "test" },
+                    { "t2", new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { "t3", 1 },
+                    { "t4", 0.1f },
+                    { "t5", false },
+                    { "t6", null }
+                },
                 Sid = Guid.NewGuid()
             };
 
@@ -65,23 +57,25 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
             var retrievedLogs = new List<Log>();
             storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
-            var retrievedLog = retrievedLogs[0] as StartServiceLog;
+            var retrievedLog = retrievedLogs[0] as CustomPropertiesLog;
 
-            foreach (var serviceName in addedLog.Services)
+            foreach (var addedProperty in addedLog.Properties)
             {
-                Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
+                object retrievedProperty;
+                Assert.IsTrue(retrievedLog.Properties.TryGetValue(addedProperty.Key, out retrievedProperty));
+                Assert.IsTrue(EqualityComparer<object>.Default.Equals(addedProperty.Value, retrievedProperty));
             }
         }
 
         /// <summary>
-        /// Validate that log is not valid with nullable 'Services'
+        /// Validate that log is not valid with nullable 'Properties'
         /// </summary>
         [TestMethod]
         public void ValidateStartServiceLog()
         {
-            var log = new StartServiceLog
+            var log = new CustomPropertiesLog
             {
-                Services = null,
+                Properties = null,
                 Device = new DeviceInformationHelper().GetDeviceInformation(),
                 Toffset = TimeHelper.CurrentTimeInMilliseconds()
             };
