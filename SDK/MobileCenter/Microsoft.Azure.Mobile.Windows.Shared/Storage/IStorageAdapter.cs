@@ -13,6 +13,5 @@ namespace Microsoft.Azure.Mobile.Storage
         Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new();
         Task<int> InsertAsync<T>(T val) where T : new();
         Task<int> DeleteAsync<T>(Expression<Func<T, bool>> pred) where T : new();
-        Task<int> DeleteAsync<T>(T val) where T : new();
     }
 }

@@ -77,17 +77,5 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException(e);
             }
         }
-
-        public async Task<int> DeleteAsync<T>(T entry) where T : new()
-        {
-            try
-            {
-                return await _dbConnection.DeleteAsync(entry).ConfigureAwait(false);
-            }
-            catch (SQLiteException e)
-            {
-                throw new StorageException(e);
-            }
-        }
     }
 }

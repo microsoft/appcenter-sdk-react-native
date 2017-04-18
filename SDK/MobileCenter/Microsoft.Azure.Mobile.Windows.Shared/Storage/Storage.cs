@@ -143,25 +143,6 @@ namespace Microsoft.Azure.Mobile.Storage
         }
 
         /// <summary>
-        /// Asynchronously delete a single log from storage
-        /// </summary>
-        /// <param name="channelName">The name of the channel associated with the log</param>
-        /// <param name="rowId">The row id of the log</param>
-        /// <exception cref="StorageException"/>
-        private async Task DeleteLogAsync(string channelName, long rowId)
-        {
-            // Should be in a task already
-            try
-            {
-                await _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Id == rowId).ConfigureAwait(false);
-            }
-            catch (StorageException)
-            {
-                throw new StorageException($"Error deleting log from storage for channel '{channelName}' with id '{rowId}'");
-            }
-        }
-
-        /// <summary>
         /// Asynchronously counts the number of logs stored for a particular channel
         /// </summary>
         /// <param name="channelName">The name of the channel to count logs for</param>
@@ -226,7 +207,7 @@ namespace Microsoft.Azure.Mobile.Storage
                     {
                         MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                         failedToDeserializeALog = true;
-                        await DeleteLogAsync(channelName, entry.Id).ConfigureAwait(false);
+                        await _storageAdapter.DeleteAsync<LogEntry>(row => row.Id == entry.Id).ConfigureAwait(false);
                     }
                 }
                 if (failedToDeserializeALog)
