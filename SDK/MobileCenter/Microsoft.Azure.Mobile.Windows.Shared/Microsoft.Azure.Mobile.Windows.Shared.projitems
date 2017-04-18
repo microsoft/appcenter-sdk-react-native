@@ -61,6 +61,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StateKeeper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\WatsonCrashesStarter.cs" />
   </ItemGroup>
 </Project>

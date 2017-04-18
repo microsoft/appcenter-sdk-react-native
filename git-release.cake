@@ -4,7 +4,6 @@
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", "Default"));
-
 Task("Default").IsDependentOn("GitRelease");
 
 // Create a tag and release on GitHub
@@ -12,7 +11,7 @@ Task("GitRelease")
 	.Does(() =>
 {
     var assemblyInfo = ParseAssemblyInfo("SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	  var publishVersion = assemblyInfo.AssemblyInformationalVersion;
+	var publishVersion = assemblyInfo.AssemblyInformationalVersion;
     var username = "user";
     var password = Argument<string>("GithubToken");
     var owner = "Microsoft";
@@ -23,7 +22,6 @@ Task("GitRelease")
     var releaseFile = File("tempRelease.md");
     CopyFile(File("SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs"), releaseFile);
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
-
     // Build a string containing paths to NuGet packages
     var files = GetFiles("../../**/*Microsoft.Azure.Mobile*.nupkg");
     var assets = string.Empty;
@@ -33,14 +31,13 @@ Task("GitRelease")
     }
     assets = assets.Substring(0,assets.Length-1);
     GitReleaseManagerCreate(username, password, owner, repo, new GitReleaseManagerCreateSettings {
-      Prerelease        = true,
-      Assets            = assets,
-      TargetCommitish   = "master",
-      InputFilePath = releaseFile.Path.FullPath,
-      Name = publishVersion
+        Prerelease        = true,
+        Assets            = assets,
+        TargetCommitish   = "master",
+        InputFilePath = releaseFile.Path.FullPath,
+        Name = publishVersion
     });
     GitReleaseManagerPublish(username, password, owner, repo,  publishVersion);
     DeleteFile(releaseFile);
 });
-
 RunTarget(TARGET);

@@ -11,7 +11,7 @@
     <AssemblyName>Microsoft.Azure.Mobile</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -114,9 +114,19 @@
     <Compile Include="Utils\ApplicationLifecycleHelper.cs" />
     <Compile Include="Utils\ApplicationSettings.cs" />
     <Compile Include="Utils\DeviceInformationHelper.cs" />
+    <Compile Include="Utils\WatsonCrashesStarter.cs" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Properties\Microsoft.Azure.Mobile.UWP.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
+      <Project>{b977bf28-3a1c-4a89-a673-a22eddc9d23d}</Project>
+      <Name>WatsonRegistrationUtility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" />
   <Import Project="..\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems" Label="Shared" />
