@@ -27,6 +27,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException(e);
             }
         }
+
         public async Task<List<T>> GetAsync<T>(Expression<Func<T, bool>> pred, int limit) where T : new()
         {
             try
@@ -38,7 +39,6 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException(e);
             }
-
         }
 
         public async Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new()
