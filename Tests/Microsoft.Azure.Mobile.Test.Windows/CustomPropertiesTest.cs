@@ -15,8 +15,11 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             var value1 = "test";
             var value2 = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             var value3 = 1;
-            var value4 = 0.1f;
-            var value5 = false;
+            var value4 = 100L;
+            var value5 = 0.1f;
+            var value6 = 0.1m;
+            var value7 = 0.1;
+            var value8 = false;
             CustomProperties properties = new CustomProperties();
             Assert.AreEqual(0, properties.Properties.Count);
 
@@ -27,6 +30,9 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             properties.Set(nullKey, value3);
             properties.Set(nullKey, value4);
             properties.Set(nullKey, value5);
+            properties.Set(nullKey, value6);
+            properties.Set(nullKey, value7);
+            properties.Set(nullKey, value8);
             properties.Clear(nullKey);
             Assert.AreEqual(0, properties.Properties.Count);
 
@@ -37,6 +43,9 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             properties.Set(invalidKey, value3);
             properties.Set(invalidKey, value4);
             properties.Set(invalidKey, value5);
+            properties.Set(invalidKey, value6);
+            properties.Set(invalidKey, value7);
+            properties.Set(invalidKey, value8);
             properties.Clear(invalidKey);
             Assert.AreEqual(0, properties.Properties.Count);
 
@@ -46,8 +55,11 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             properties.Set("t3", value3);
             properties.Set("t4", value4);
             properties.Set("t5", value5);
-            properties.Clear("t6");
-            Assert.AreEqual(6, properties.Properties.Count);
+            properties.Set("t6", value6);
+            properties.Set("t7", value7);
+            properties.Set("t8", value8);
+            properties.Clear("t9");
+            Assert.AreEqual(9, properties.Properties.Count);
 
             /* Already contains keys. */
             properties.Set("t1", value1);
@@ -55,8 +67,11 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             properties.Set("t3", value3);
             properties.Set("t4", value4);
             properties.Set("t5", value5);
-            properties.Clear("t6");
-            Assert.AreEqual(6, properties.Properties.Count);
+            properties.Set("t6", value6);
+            properties.Set("t7", value7);
+            properties.Set("t8", value8);
+            properties.Clear("t9");
+            Assert.AreEqual(9, properties.Properties.Count);
         }
 
         /// <summary>
@@ -99,37 +114,31 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         }
 
         /// <summary>
-        /// Verify that int setting correct.
+        /// Verify that number setting correct.
         /// </summary>
         [TestMethod]
-        public void TestSetInteger()
+        public void TestSetNumber()
         {
-            var key = "test";
             CustomProperties properties = new CustomProperties();
             Assert.AreEqual(0, properties.Properties.Count);
 
             /* Normal value. */
-            var normalValue = 1;
-            properties.Set(key, normalValue);
-            Assert.AreEqual(1, properties.Properties.Count);
-            Assert.AreEqual(normalValue, properties.Properties[key]);
-        }
-
-        /// <summary>
-        /// Verify that float setting correct.
-        /// </summary>
-        [TestMethod]
-        public void TestSetFloat()
-        {
-            var key = "test";
-            CustomProperties properties = new CustomProperties();
-            Assert.AreEqual(0, properties.Properties.Count);
-
-            /* Normal value. */
-            var normalValue = 0.1f;
-            properties.Set(key, normalValue);
-            Assert.AreEqual(1, properties.Properties.Count);
-            Assert.AreEqual(normalValue, properties.Properties[key]);
+            var value1 = 1;
+            var value2 = 100L;
+            var value3 = 0.1f;
+            var value4 = 0.1m;
+            var value5 = 0.1;
+            properties.Set("t1", value1);
+            properties.Set("t2", value2);
+            properties.Set("t3", value3);
+            properties.Set("t4", value4);
+            properties.Set("t5", value5);
+            Assert.AreEqual(5, properties.Properties.Count);
+            Assert.AreEqual(value1, properties.Properties["t1"]);
+            Assert.AreEqual(value2, properties.Properties["t2"]);
+            Assert.AreEqual(value3, properties.Properties["t3"]);
+            Assert.AreEqual(value4, properties.Properties["t4"]);
+            Assert.AreEqual(value5, properties.Properties["t5"]);
         }
 
         /// <summary>
