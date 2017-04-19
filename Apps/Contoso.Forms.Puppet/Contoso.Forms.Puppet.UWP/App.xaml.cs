@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -21,7 +22,10 @@ namespace Contoso.Forms.Puppet.UWP
         public App()
         {
             // Set the country before initialization occurs so Mobile Center can send the field to the backend
-            MobileCenter.SetCountry("US");
+            // Note that the country code provided does not reflect the physical device location, but rather the
+            // country that corresponds to the culture it uses. You may wish to retrieve the country code using
+            // a different means, such as device location.
+            MobileCenter.SetCountryCode(RegionInfo.CurrentRegion.TwoLetterISORegionName);
             InitializeComponent();
             Suspending += OnSuspending;
         }

@@ -7,12 +7,12 @@ namespace Microsoft.Azure.Mobile
         private const string PlatformIdentifier = "uwp";
 
         /// <summary>
-        /// Sets the device country to display in the portal
+        /// Sets the two-letter ISO country code to send to the backend.
         /// </summary>
-        /// <param name="country">The current country</param>
-        public static void SetCountry(string country)
+        /// <param name="countryCode">The two-letter ISO country code. See <see href="https://www.iso.org/obp/ui/#search"/> for more information.</param>
+        public static void SetCountryCode(string countryCode)
         {
-            DeviceInformationHelper.SetCountry(country);
+            DeviceInformationHelper.SetCountryCode(countryCode);
         }
     }
 }

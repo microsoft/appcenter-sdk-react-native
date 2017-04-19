@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Utils
         private static readonly object LockObject = new object();
         private static string _country;
 
-        internal static void SetCountry(string country)
+        internal static void SetCountryCode(string country)
         {
             _country = country;
             InformationInvalidated?.Invoke(null, EventArgs.Empty);
