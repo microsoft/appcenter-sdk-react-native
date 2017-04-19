@@ -14,6 +14,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+#if REFERENCE
+[assembly: ReferenceAssembly]
+#endif
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

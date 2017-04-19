@@ -24,7 +24,7 @@
 
     <!-- targets files add correct references to proper platforms -->
     <file src="nuget/Microsoft.Azure.Mobile.targets"  target="build/uap10.0"/>
-    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll" target="ref/uap10.0" />
+    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll" target="ref/uap10.0" />
     
     <!--x86 -->
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll" target="runtimes/win10-x86/lib/uap10.0" />

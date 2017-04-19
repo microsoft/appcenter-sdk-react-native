@@ -1,5 +1,8 @@
 ﻿using System;
+#if REFERENCE
+#else
 using WatsonRegistrationUtility;
+#endif
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -13,7 +16,10 @@ namespace Microsoft.Azure.Mobile.Utils
         {
             try
             {
+                #if REFERENCE
+                #else
                 WatsonRegistrationManager.Start(appSecret);
+                #endif
             }
             catch (Exception e)
             {

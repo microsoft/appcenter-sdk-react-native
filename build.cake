@@ -136,6 +136,7 @@ Task("WindowsBuild")
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
+	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("PrepareMacAssemblies").IsDependentOn("PrepareWindowsAssemblies");
@@ -181,7 +182,9 @@ Task("PrepareWindowsAssemblies")
 {
 	var anyCpuAssemblies = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
 											"nuget/Microsoft.Azure.Mobile.Analytics.targets",
-										  	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll"
+										  	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll",
+											"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll",
+											"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll"
 										};
 
 	var x86Assemblies = new string[] { 	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll",
@@ -198,7 +201,8 @@ Task("PrepareWindowsAssemblies")
 										"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll",
 										"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
 										"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"};
-
+							
+									
 	var armFolder = UWP_ASSEMBLIES_FOLDER + "/ARM";
 	var x86Folder = UWP_ASSEMBLIES_FOLDER + "/x86";
 	var x64Folder = UWP_ASSEMBLIES_FOLDER + "/x64";

@@ -31,7 +31,7 @@
 
     <!-- UWP -->
     <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.targets"  target="build/uap10.0" />
-    <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.Analytics.dll" target="ref/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="ref/uap10.0" />
 
     <!--x86 -->
     <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.Analytics.dll" target="runtimes/win10-x86/lib/uap10.0" />
