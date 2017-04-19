@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "Microsoft.Rest.ClientRuntime": "2.3.5"
+    "Microsoft.Rest.ClientRuntime": "2.3.6"
   },
   "frameworks": {
     "uap10.0": {}
