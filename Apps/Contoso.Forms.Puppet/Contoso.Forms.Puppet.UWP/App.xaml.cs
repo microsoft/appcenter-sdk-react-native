@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
+
 namespace Contoso.Forms.Puppet.UWP
 {
     /// <summary>
@@ -19,7 +20,8 @@ namespace Contoso.Forms.Puppet.UWP
         /// </summary>
         public App()
         {
-            MobileCenter.SetCountry("United States");
+            // Set the country before initialization occurs so Mobile Center can send the field to the backend
+            MobileCenter.SetCountry("US");
             InitializeComponent();
             Suspending += OnSuspending;
         }
