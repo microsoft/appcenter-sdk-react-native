@@ -2,10 +2,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <mc-core-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-core-Platform>
+    <mc-core-Platform Condition="'$(Platform)' == 'ARM'">arm</mc-core-Platform>
     <mc-core-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-core-Platform>
     <mc-core-ArchDir>$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(mc-core-Platform)</mc-core-ArchDir>
     
-    <mc-core-IsCorrectArch Condition="'$(mc-core-Platform)' == 'x86' or '$(mc-core-Platform)' == 'x64' or '$(mc-core-Platform)' == 'ARM'">true</mc-core-IsCorrectArch>
+    <mc-core-IsCorrectArch Condition="'$(mc-core-Platform)' == 'x86' or '$(mc-core-Platform)' == 'x64' or '$(mc-core-Platform)' == 'arm'">true</mc-core-IsCorrectArch>
   </PropertyGroup>
 
   <Target Name="PlatformCheck" BeforeTargets="ResolveAssemblyReferences"
