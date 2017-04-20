@@ -2,9 +2,10 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <mc-analytics-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-analytics-Platform>
+    <mc-core-Platform Condition="'$(Platform)' == 'ARM'">arm</mc-core-Platform>
     <mc-analytics-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-analytics-Platform>
     <mc-analytics-BuildDir>$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(mc-analytics-Platform)\lib\uap10.0</mc-analytics-BuildDir>
-    <mc-analytics-IsCorrectArch Condition="'$(mc-analytics-Platform)' == 'x86' or '$(mc-analytics-Platform)' == 'x64' or '$(mc-analytics-Platform)' == 'ARM'">true</mc-analytics-IsCorrectArch>
+    <mc-analytics-IsCorrectArch Condition="'$(mc-analytics-Platform)' == 'x86' or '$(mc-analytics-Platform)' == 'x64' or '$(mc-analytics-Platform)' == 'arm'">true</mc-analytics-IsCorrectArch>
   </PropertyGroup>
 
     <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-analytics-IsCorrectArch)' == 'true')">
