@@ -14,19 +14,18 @@ namespace Microsoft.Azure.Mobile.Utils
         /// <exception cref="MobileCenterException"/>
         public static void RegisterWithWatson(string appSecret)
         {
+            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
             try
             {
-                #if REFERENCE
-                #else
+#if REFERENCE
+#else
                 WatsonRegistrationManager.Start(appSecret);
-                #endif
+#endif
             }
             catch (Exception e)
             {
 #if DEBUG
                 throw new MobileCenterException("Failed to register crashes with Watson", e);
-#else
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
 #endif
             }
         }
