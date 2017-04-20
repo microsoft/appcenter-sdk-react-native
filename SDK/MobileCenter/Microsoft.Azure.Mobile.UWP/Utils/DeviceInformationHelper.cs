@@ -16,6 +16,14 @@ namespace Microsoft.Azure.Mobile.Utils
         private static string _cachedScreenSize;
         public static event EventHandler InformationInvalidated;
         private static readonly object LockObject = new object();
+        private static string _country;
+
+        internal static void SetCountryCode(string country)
+        {
+            _country = country;
+            InformationInvalidated?.Invoke(null, EventArgs.Empty);
+        }
+
         static DeviceInformationHelper()
         {
             CoreApplication.LeavingBackground += (o, e) => {
@@ -136,6 +144,11 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 return _cachedScreenSize;
             }
+        }
+
+        protected override string GetCarrierCountry()
+        {
+            return _country;
         }
     }
 }

@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Anal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.UWP", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj", "{200073BF-FA7E-42AF-8ED5-AA50BE7C0295}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VSMC.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Crashes", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj", "{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}"
 EndProject
@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo", "Apps\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo.UWP", "Apps\Contoso.Forms.Demo\Contoso.Forms.Demo.UWP\Contoso.Forms.Demo.UWP.csproj", "{665362D9-5EE2-45DE-A907-25DC86999A68}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WatsonRegistrationUtility", "SDK\MobileCenter\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj", "{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterDistribute", "MobileCenterDistribute", "{44E43AB9-E48B-4162-BEAA-2D59651DB6FA}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Distribute.Shared", "SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.shproj", "{5AEF073D-7370-41C1-86CD-A61B4DEB9883}"
@@ -69,14 +71,14 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
-		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{41febc72-c12b-47e1-b6f6-51d50158c825}*SharedItemsImports = 4
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{5aef073d-7370-41c1-86cd-a61b4deb9883}*SharedItemsImports = 13
-		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
-		SDK\MobileCenterAnalytics\VSMC.Analytics.Windows.Shared\VSMC.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
@@ -109,16 +111,16 @@ Global
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C}.Release|x64.Build.0 = Release|Any CPU
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C}.Release|x86.ActiveCfg = Release|Any CPU
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C}.Release|x86.Build.0 = Release|Any CPU
-		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.Build.0 = Debug|x86
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|ARM.ActiveCfg = Debug|ARM
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|ARM.Build.0 = Debug|ARM
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|x64.ActiveCfg = Debug|x64
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|x64.Build.0 = Debug|x64
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|x86.ActiveCfg = Debug|x86
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|x86.Build.0 = Debug|x86
-		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|Any CPU.ActiveCfg = Release|x86
+		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|Any CPU.Build.0 = Release|x86
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|ARM.ActiveCfg = Release|ARM
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|ARM.Build.0 = Release|ARM
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Release|x64.ActiveCfg = Release|x64
@@ -166,7 +168,6 @@ Global
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Debug|x86.Build.0 = Debug|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|Any CPU.Build.0 = Release|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|ARM.ActiveCfg = Release|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|ARM.Build.0 = Release|Any CPU
 		{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}.Release|x64.ActiveCfg = Release|Any CPU
@@ -357,6 +358,22 @@ Global
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x86.ActiveCfg = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x86.Build.0 = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x86.Deploy.0 = Release|x86
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|Any CPU.Build.0 = Debug|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|ARM.Build.0 = Debug|ARM
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|x64.ActiveCfg = Debug|x64
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|x64.Build.0 = Debug|x64
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|x86.ActiveCfg = Debug|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|x86.Build.0 = Debug|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|Any CPU.Build.0 = Release|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|ARM.ActiveCfg = Release|ARM
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|ARM.Build.0 = Release|ARM
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x64.ActiveCfg = Release|x64
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x64.Build.0 = Release|x64
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x86.ActiveCfg = Release|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x86.Build.0 = Release|Win32
 		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41FEBC72-C12B-47E1-B6F6-51D50158C825}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -402,6 +419,7 @@ Global
 		{98E19A5F-F553-4414-96FD-FBE4B6221CD5} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 		{8E7B51FC-8A9B-49F7-A40D-4D12BBF893B6} = {98E19A5F-F553-4414-96FD-FBE4B6221CD5}
 		{665362D9-5EE2-45DE-A907-25DC86999A68} = {98E19A5F-F553-4414-96FD-FBE4B6221CD5}
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D} = {A0839AAC-BC4D-4DDE-9ACB-C094BC599C16}
 		{44E43AB9-E48B-4162-BEAA-2D59651DB6FA} = {52B933EB-4C7D-4646-B12B-DF6BBAD7921A}
 		{5AEF073D-7370-41C1-86CD-A61B4DEB9883} = {44E43AB9-E48B-4162-BEAA-2D59651DB6FA}
 		{41FEBC72-C12B-47E1-B6F6-51D50158C825} = {44E43AB9-E48B-4162-BEAA-2D59651DB6FA}

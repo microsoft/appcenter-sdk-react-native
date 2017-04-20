@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -13,6 +14,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+#if REFERENCE
+[assembly: ReferenceAssembly]
+#endif
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -24,6 +29,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyInformationalVersion("0.8.1-SNAPSHOT")]
-[assembly: AssemblyFileVersion("0.8.1.0")]
+[assembly: AssemblyInformationalVersion("0.9.0-SNAPSHOT")]
+[assembly: AssemblyFileVersion("0.9.0.0")]
 [assembly: ComVisible(false)]

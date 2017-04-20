@@ -25,7 +25,6 @@ Task("SetReleaseVersion").Does(()=>
 
 	// Replace versions in all non-demo app files
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
-	var assemblyInfoFiles = GetFiles("**/AssemblyInfo.cs");
 	ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
 
 	//Replace version in wrapper sdk
@@ -39,8 +38,10 @@ Task("UpdateDemoVersion").Does(()=>
 	var demoAssemblyInfoGlob = "Apps/**/*Demo*/**/AssemblyInfo.cs";
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFiles(demoAssemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
+
+	var newFileVersion = GetBaseVersion(newVersion) + "." + GetRevisionNumber(newVersion);
 	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
-	ReplaceRegexInFiles(demoAssemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")");
+	ReplaceRegexInFiles(demoAssemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newFileVersion + "\")");
 
 	// Replace android versions
 	var manifestGlob = "Apps/**/*Demo*/**/AndroidManifest.xml";
@@ -62,7 +63,7 @@ Task("UpdateDemoVersion").Does(()=>
 	//Replace UWP version
 	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
-	var newVersionTagText = " Version=\""+newVersion+".0\"";
+	var newVersionTagText = " Version=\"" + newFileVersion + "\"";
 	ReplaceRegexInFiles(uwpManifestGlob, versionTagPattern, newVersionTagText);
 
 	//Replace iOS version
@@ -73,7 +74,32 @@ Task("UpdateDemoVersion").Does(()=>
 	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
 
-	RunTarget("UpdateDemoDependencies");
+    // Replace nuget version that demo depends on to the same version
+	ReplaceRegexInFiles("Apps/**/*Demo*/**/packages.config", "(Microsoft.Azure.Mobile.*version=\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
+	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile.*version:[ +]\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
+
+	// And restore packages
+	NuGetRestore("MobileCenter-Demo-Mac.sln");
+
+	// Fix csproj files references, which actually update nugets to most recent
+	// but in practice demo is updated to most recent when we need this script
+	// so that's not a real issue.
+	// But we should really consider converting xamarin project to use project.json
+	// This is good as it updates Xamarin.Forms as well which is often updated and
+	// we like to make sure our SDK works well with latest Xamarin.Forms too.
+	NuGetUpdate("Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config");
+	NuGetUpdate("Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config");
+	NuGetUpdate("Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config");
+
+	// Well we can't NuGetUpdate UWP with project.json, fix version manually
+	// Again we can remove this step if every project uses project.json...
+	var packagesConfig = "./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config";
+	var patternPrefix = "<package id=\"Microsoft.Azure.Mobile\" version=\"";
+	var configPattern = patternPrefix + "[^\"]+\"";
+	var packagesConfigFile = new FilePath(packagesConfig);
+	var versionTag = FindRegexMatchInFile(packagesConfigFile, configPattern, RegexOptions.None);
+	newVersion = versionTag.Substring(patternPrefix.Length, versionTag.Length - patternPrefix.Length - 1);
+	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]+\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
 });
 
 Task("StartNewVersion").Does(()=>
@@ -124,32 +150,6 @@ Task("StartNewVersion").Does(()=>
 	ReplaceRegexInFilesWithExclusion("**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/", "Demo");
 });
 
-Task("UpdateDemoDependencies").Does(() =>
-{
-
-	NuGetRestore("MobileCenter-Demo-Mac.sln");
-
-	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
-	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
-	NuGetUpdate("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config", new NuGetUpdateSettings { Source = new List<string> {"https://api.nuget.org/v3/index.json"}});
-
-	// Get version that was just retrieved
-	var packagesConfig = "./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config";
-	var patternPrefix = "<package id=\"Microsoft.Azure.Mobile\" version=\"";
-	var configPattern = patternPrefix + "[^\"]+\"";
-	var packagesConfigFile = new FilePath(packagesConfig);
-	var versionTag = FindRegexMatchInFile(packagesConfigFile, configPattern, RegexOptions.None);
-	var newVersion = versionTag.Substring(patternPrefix.Length, versionTag.Length - patternPrefix.Length - 1);
-
-	// Edit the project.json
-	var analyticsPattern = "\"Microsoft.Azure.Mobile.Analytics\": \"[^\"]+\",";
-	var crashesPattern = "\"Microsoft.Azure.Mobile.Crashes\": \"[^\"]+\",";
-	var newAnalyticsString = "\"Microsoft.Azure.Mobile.Analytics\": \"" + newVersion + "\",";
-	var newCrashesString = "\"Microsoft.Azure.Mobile.Crashes\": \"" + newVersion + "\",";
-	ReplaceRegexInFiles("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.UWP/project.json", analyticsPattern, newAnalyticsString);
-	ReplaceRegexInFiles("./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.UWP/project.json", crashesPattern, newCrashesString);
-});
-
 void IncrementRevisionNumber(bool useHash)
 {
 	// Get base version of PCL core
@@ -159,7 +159,7 @@ void IncrementRevisionNumber(bool useHash)
     var baseVersion = GetBaseVersion(nugetVer);
 	var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1; 
 	var newRevString = GetPaddedString(newRevNum, 4);
-	var newVersion = baseVersion + "-r" + newRevString;
+	var newVersion = baseSemanticVersion + "-r" + newRevString;
 	if (useHash)
 	{
 		newVersion += "-" + GetShortCommitHash();
@@ -180,6 +180,9 @@ void IncrementRevisionNumber(bool useHash)
 		var newFileVersion = trimmedVersion + newRevNum + "\")";
 		ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
 	}
+
+	// Update wrapper sdk version
+	UpdateWrapperSdkVersion(newVersion);
 }
 
 string GetPCLBaseSemanticVersion()
