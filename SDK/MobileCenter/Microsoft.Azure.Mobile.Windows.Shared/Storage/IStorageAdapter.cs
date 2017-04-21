@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
-    public interface IStorageAdapter : IDisposable
+    public interface IStorageAdapter
     {
-        DbCommand CreateCommand();
-        Task<List<Dictionary<string, object>>> ExecuteQueryAsync(DbCommand command);
-        Task ExecuteNonQueryAsync(DbCommand command);
-        Task OpenAsync();
-        void Close();
+        Task<List<T>> GetAsync<T>(Expression<Func<T, bool>> pred, int limit) where T : new();
+        Task CreateTableAsync<T>() where T : new();
+        Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new();
+        Task<int> InsertAsync<T>(T val) where T : new();
+        Task<int> DeleteAsync<T>(Expression<Func<T, bool>> pred) where T : new();
     }
 }
