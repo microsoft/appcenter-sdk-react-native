@@ -56,6 +56,8 @@ var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 var ANDROID_SDK_VERSION = "0.6.1";
 var IOS_SDK_VERSION = "0.6.1";
 
+var PLATFORM_PATHS = new PlatformPaths();
+
 // URLs for downloading binaries.
 /*
  * Read this: http://www.mono-project.com/docs/faq/security/.
@@ -81,6 +83,128 @@ var MOBILECENTER_MODULES = new [] {
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", "Default"));
+
+class AssemblyGroup
+{
+	public string[] AssemblyPaths {get; set;}
+	public string AssemblyFolder {get; set;}
+}
+
+// This class contains the assembly folder paths and other platform dependent paths involved in preparing assemblies for VSTS and Azure storage.
+// When a new platform is supported, an AssemblyGroup must be created and added to the proper {OS}UploadAssemblyGroups array. Also, its 
+// AssemblyFolder must be added to the correct platform's "DownloadAssemblyFolders" array.
+class PlatformPaths
+{
+	public PlatformPaths()
+	{
+		UploadAssemblyGroups = new List<AssemblyGroup>();
+		DownloadAssemblyFolders = new List<string>();
+	}
+
+	// Folders for the assemblies that the current platform must create and upload
+	public List<AssemblyGroup> UploadAssemblyGroups {get; set;}
+
+	// The name of the zip file to upload
+	public string UploadAssembliesZip {get; set;}
+
+	// The name of the zip file to download
+	public string DownloadAssembliesZip {get; set;}
+	// The paths of downloaded assembly folders
+	public List<string> DownloadAssemblyFolders {get; set;}
+
+	// The URL to download files from
+	public string DownloadUrl {get; set;}
+}
+
+// Prepare the platform paths for downloading, uploading, and preparing assemblies
+Setup(context =>
+{
+	var uploadId = Argument("storage-id", "");
+	if (IsRunningOnUnix())
+	{
+		var iosAssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = IOS_ASSEMBLIES_FOLDER,
+			AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll",
+							"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.iOS.Bindings.dll",
+							"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+							"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll",
+							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
+							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll",
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll" }
+		};
+		var androidAssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = ANDROID_ASSEMBLIES_FOLDER,
+			AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.dll",
+							"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.Android.Bindings.dll",
+							"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+							"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll",
+							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
+							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll",
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll" }
+		};
+		var pclAssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = PCL_ASSEMBLIES_FOLDER,
+			AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/Microsoft.Azure.Mobile.dll",
+							"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/Microsoft.Azure.Mobile.Distribute.dll" }
+		};
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(pclAssemblyGroup);
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER);
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x86");
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x64");
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/ARM");
+		PLATFORM_PATHS.UploadAssembliesZip = MAC_ASSEMBLIES_ZIP + uploadId;
+		PLATFORM_PATHS.DownloadUrl = WINDOWS_ASSEMBLIES_URL + uploadId;
+		PLATFORM_PATHS.UploadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + uploadId;
+	}
+	else
+	{
+		var uwpAnyCpuAssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
+			AssemblyPaths = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
+								"nuget/Microsoft.Azure.Mobile.Analytics.targets",
+								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll",
+								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll",
+								"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll" }
+		};
+		var uwpX86AssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x86",
+			AssemblyPaths = new string[] { 	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll",
+								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll",
+    							"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
+   								"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
+		};
+		var uwpX64AssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x64",
+			AssemblyPaths =  new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x64/Release/Microsoft.Azure.Mobile.dll",
+  									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll",
+   									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
+   									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"}
+		};
+		var uwpArmAssemblyGroup = new AssemblyGroup {
+			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/ARM",
+			AssemblyPaths =  new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.dll",
+									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll",
+									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
+									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"}
+		};
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpAnyCpuAssemblyGroup);
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX86AssemblyGroup);
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX64AssemblyGroup);
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpArmAssemblyGroup);
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(IOS_ASSEMBLIES_FOLDER);
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(ANDROID_ASSEMBLIES_FOLDER);
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(PCL_ASSEMBLIES_FOLDER);
+		PLATFORM_PATHS.UploadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + uploadId;
+		PLATFORM_PATHS.DownloadUrl = MAC_ASSEMBLIES_URL + uploadId;
+		PLATFORM_PATHS.DownloadAssembliesZip = MAC_ASSEMBLIES_ZIP + uploadId;
+	}
+});
 
 // Versioning task.
 Task("Version")
@@ -139,80 +263,12 @@ Task("WindowsBuild")
 	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
 }).OnError(HandleError);
 
-Task("PrepareAssemblies").IsDependentOn("PrepareMacAssemblies").IsDependentOn("PrepareWindowsAssemblies");
-
-// Mac agent prepares Android, iOS, and PCL assemblies
-Task("PrepareMacAssemblies")
-	.WithCriteria(() => IsRunningOnUnix())
-	.IsDependentOn("MacBuild")
-	.Does(() =>
+Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
 {
-	var iosAssemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll",
-									"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.iOS.Bindings.dll",
-									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll",
-									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll" };
-	var androidAssemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.dll",
-									"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.Android.Bindings.dll",
-									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll",
-									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll" };
-	var pclAssemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/Microsoft.Azure.Mobile.dll",
-									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-									"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-									"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/Microsoft.Azure.Mobile.Distribute.dll" };
-
-	CopyFiles(iosAssemblies, IOS_ASSEMBLIES_FOLDER);
-	CopyFiles(androidAssemblies, ANDROID_ASSEMBLIES_FOLDER);
-	CopyFiles(pclAssemblies, PCL_ASSEMBLIES_FOLDER);
-}).OnError(HandleError);
-
-
-// Windows agent prepares windows assemblies
-Task("PrepareWindowsAssemblies")
-	.WithCriteria(() => !IsRunningOnUnix())
-	.IsDependentOn("WindowsBuild")
-	.Does(() =>
-{
-	var anyCpuAssemblies = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
-											"nuget/Microsoft.Azure.Mobile.Analytics.targets",
-										  	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll",
-											"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll",
-											"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll"
-										};
-
-	var x86Assemblies = new string[] { 	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll",
-										"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll",
-    									"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-   										"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" };
-
-   var x64Assemblies = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x64/Release/Microsoft.Azure.Mobile.dll",
-  										"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll",
-   										"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-   										"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"};
-	
-	var armAssemblies = new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.dll",
-										"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll",
-										"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-										"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"};
-							
-									
-	var armFolder = UWP_ASSEMBLIES_FOLDER + "/ARM";
-	var x86Folder = UWP_ASSEMBLIES_FOLDER + "/x86";
-	var x64Folder = UWP_ASSEMBLIES_FOLDER + "/x64";
-
-	CleanDirectory(UWP_ASSEMBLIES_FOLDER);
-	CopyFiles(anyCpuAssemblies, UWP_ASSEMBLIES_FOLDER, false);
-	CopyFiles(x86Assemblies, x86Folder);
-	CopyFiles(x64Assemblies, x64Folder);
-	CopyFiles(armAssemblies, armFolder);
-
+	foreach (var assemblyGroup in PLATFORM_PATHS.UploadAssemblyGroups)
+	{
+		CopyFiles(assemblyGroup.AssemblyPaths, assemblyGroup.AssemblyFolder);
+	}
 }).OnError(HandleError);
 
 // Task dependencies for binding each platform.
@@ -307,46 +363,46 @@ Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 	}
 });
 
+
+// Upload assemblies to Azure storage
 Task("UploadAssemblies")
 	.IsDependentOn("PrepareAssemblies")
 	.Does(()=>
 {
-	//The environment variables below must be set for this task to succeed
+	// The environment variables below must be set for this task to succeed
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
 	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
 
-	var assembliesZip = IsRunningOnUnix() ? MAC_ASSEMBLIES_ZIP : WINDOWS_ASSEMBLIES_ZIP;
-
-	var pclAssemblies = GetFiles(PCL_ASSEMBLIES_FOLDER + "/*.dll");
-	CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + PCL_ASSEMBLIES_FOLDER);
-	CopyFiles(pclAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + PCL_ASSEMBLIES_FOLDER);
-
-	if (IsRunningOnUnix())
+	foreach (var assemblyGroup in PLATFORM_PATHS.UploadAssemblyGroups)
 	{
-		CleanDirectory( DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER);
-		var iosAssemblies = GetFiles(IOS_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(iosAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER);
-		CleanDirectory( DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER);
-		var androidAssemblies = GetFiles(ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(androidAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER);
-	}
-	else
-	{
-		CleanDirectory( DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER);
-		var uwpAssemblies = GetFiles(UWP_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(uwpAssemblies, DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER);
+		var destinationFolder =  DOWNLOADED_ASSEMBLIES_FOLDER + "/" + assemblyGroup.AssemblyFolder;
+		CleanDirectory(destinationFolder);
+		CopyFiles(assemblyGroup.AssemblyPaths, destinationFolder);
 	}
 
-	Zip(DOWNLOADED_ASSEMBLIES_FOLDER, assembliesZip);
+	Zip(DOWNLOADED_ASSEMBLIES_FOLDER, PLATFORM_PATHS.UploadAssembliesZip);
 	AzureStorage.UploadFileToBlob(new AzureStorageSettings
 	{
 		AccountName = accountName,
 		ContainerName = "sdk",
-		BlobName = assembliesZip,
+		BlobName = PLATFORM_PATHS.UploadAssembliesZip,
 		Key = apiKey,
 		UseHttps = true
-	}, assembliesZip);
+	}, PLATFORM_PATHS.UploadAssembliesZip);
+
 }).OnError(HandleError).Finally(()=>RunTarget("RemoveTemporaries"));
+
+// Download assemblies from azure storage
+Task("DownloadAssemblies").Does(()=>
+{
+	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
+	Information("Downloading assemblies compiled on a " + otherTargetName + "...");
+	CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER);
+	DownloadFile(PLATFORM_PATHS.DownloadUrl, PLATFORM_PATHS.DownloadAssembliesZip);
+	Unzip(PLATFORM_PATHS.DownloadAssembliesZip, DOWNLOADED_ASSEMBLIES_FOLDER);
+	DeleteFiles(PLATFORM_PATHS.DownloadAssembliesZip);
+	Information("Successfully downloaded assemblies.");
+}).OnError(HandleError);
 
 Task("MergeAssemblies")
 	.IsDependentOn("PrepareAssemblies")
@@ -354,7 +410,9 @@ Task("MergeAssemblies")
 	.IsDependentOn("Version")
 	.Does(()=>
 {
-	Information("Beginning NuGet merge...");
+		CleanDirectory("output");
+
+	Information("Beginning complete package creation...");
 	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 
 	if (IsRunningOnUnix())
@@ -376,7 +434,12 @@ Task("MergeAssemblies")
 		files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
 		CopyFiles(files, ANDROID_ASSEMBLIES_FOLDER);
 	}
-
+	foreach (var assemblyFolder in PLATFORM_PATHS.DownloadAssemblyFolders)
+	{
+		CleanDirectory(assemblyFolder);
+		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + assemblyFolder + "/*");
+		CopyFiles(files, assemblyFolder);
+	}
 	foreach (var module in MOBILECENTER_MODULES)
 	{
 		// Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
@@ -475,19 +538,6 @@ Task("clean")
 	CleanDirectories("./**/bin");
 	CleanDirectories("./**/obj");
 });
-
-Task("DownloadAssemblies").Does(()=>
-{
-	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
-	Information("Downloading assemblies compiled on a " + otherTargetName + "...");
-	var assembliesZip = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_ZIP : MAC_ASSEMBLIES_ZIP;
-	var assembliesUrl = IsRunningOnUnix() ? WINDOWS_ASSEMBLIES_URL : MAC_ASSEMBLIES_URL;
-	CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER);
-	DownloadFile(assembliesUrl, assembliesZip);
-	Unzip(assembliesZip, DOWNLOADED_ASSEMBLIES_FOLDER);
-	DeleteFiles(assembliesZip);
-	Information("Successfully downloaded assemblies.");
-}).OnError(HandleError);
 
 Task("PrepareAssemblyPathsVSTS").Does(()=>
 {
