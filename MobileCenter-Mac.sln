@@ -124,6 +124,7 @@ Global
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{78990f7a-6c3e-4007-b0e3-a8bf9625a327}*SharedItemsImports = 4
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{7b6e79a4-fbaf-4e7e-b696-0ac10d0a2552}*SharedItemsImports = 13
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
 		Tests\Contoso.Forms.Test.Strings\Contoso.Forms.Test.Strings.projitems*{aabf653e-0cc1-4d59-93db-4eef0e1df916}*SharedItemsImports = 4
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{ad38dee9-8a74-4b04-93c3-0831b55e7254}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{b87370cd-af51-45e0-aa15-3e0abc0c30a0}*SharedItemsImports = 4

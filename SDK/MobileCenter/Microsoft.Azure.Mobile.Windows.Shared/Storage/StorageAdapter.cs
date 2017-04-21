@@ -1,113 +1,81 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+using SQLite;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
-    /// <summary>
-    /// Implementation of IStorageAdapter that uses <see cref="Microsoft.Data.Sqlite"/>
-    /// </summary>
-    /// <remarks><see cref="Microsoft.Data.Sqlite"/> doesn't actually support asynchronicity, so the methods are actually executed synchronously. To mitigate this, Write-Ahead Logging is used.</remarks>
-    public sealed class StorageAdapter : IStorageAdapter
+    internal class StorageAdapter : IStorageAdapter
     {
-        private readonly DbConnection _dbConnection;
-        private bool _walEnabled;
+        private readonly SQLiteAsyncConnection _dbConnection;
 
-        /// <summary>
-        /// Creates an instance of the Storage Adapter
-        /// </summary>
-        /// <param name="databaseName"></param>
-        public StorageAdapter(string databaseName)
+        public StorageAdapter(string databasePath)
         {
-            _dbConnection = new SqliteConnection($"DATA SOURCE={databaseName}");
+            _dbConnection = new SQLiteAsyncConnection(databasePath);
         }
 
-        /// <summary>
-        /// Creates a DbComand associated with this adapter
-        /// </summary>
-        /// <returns>The requested command</returns>
-        public DbCommand CreateCommand()
+        public async Task CreateTableAsync<T>() where T : new()
         {
-            return _dbConnection.CreateCommand();
-        }
-
-        /// <summary>
-        /// Asynchronously executes and reads the results of a query command
-        /// </summary>
-        /// <param name="command">The command to execute</param>
-        /// <returns>The results in the form of a dictionary</returns>
-        /// <exception cref="DbException"/>
-        public async Task<List<Dictionary<string, object>>> ExecuteQueryAsync(DbCommand command)
-        {
-            var rows = new List<Dictionary<string, object>>();
-
-            using (var reader = await command.ExecuteReaderAsync().ConfigureAwait(false))
+            try
             {
-                while (await reader.ReadAsync().ConfigureAwait(false))
+                await _dbConnection.CreateTableAsync<T>().ConfigureAwait(false);
+            }
+            catch (SQLiteException e)
+            {
+                throw new StorageException(e);
+            }
+        }
+
+        public async Task<List<T>> GetAsync<T>(Expression<Func<T, bool>> pred, int limit) where T : new()
+        {
+            try
+            {
+                var table = _dbConnection.Table<T>();
+                return await table.Where(pred).Take(limit).ToListAsync().ConfigureAwait(false);
+            }
+            catch (SQLiteException e)
+            {
+                throw new StorageException(e);
+            }
+        }
+
+        public async Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new()
+        {
+            var table = _dbConnection.Table<T>();
+            return await table.Where(pred).CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> InsertAsync<T>(T val) where T : new()
+        {
+            try
+            {
+                return await _dbConnection.InsertAsync(val).ConfigureAwait(false);
+            }
+            catch (SQLiteException e)
+            {
+                throw new StorageException(e);
+            }
+        }
+
+        public async Task<int> DeleteAsync<T>(Expression<Func<T, bool>> pred) where T : new()
+        {
+            try
+            {
+                var numDeleted = 0;
+                var table = _dbConnection.Table<T>();
+                var entries = await table.Where(pred).ToListAsync().ConfigureAwait(false);
+                foreach (var entry in entries)
                 {
-                    var row = new Dictionary<string, object>();
-                    for (var i = 0; i < reader.FieldCount; ++i)
-                    {
-                        var columnName = reader.GetName(i);
-                        var columnValue = reader.GetValue(i);
-                        row.Add(columnName, columnValue);
-                    }
-                    rows.Add(row);
+                    numDeleted += await _dbConnection.DeleteAsync(entry).ConfigureAwait(false);
                 }
+                return numDeleted;
             }
-            return rows;
-        }
-
-        /// <summary>
-        /// Asyncrhonously executes a non-query command
-        /// </summary>
-        /// <param name="command">The command to execute</param>
-        /// <exception cref="DbException"/>
-        public async Task ExecuteNonQueryAsync(DbCommand command)
-        {
-            await command.ExecuteNonQueryAsync().ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Asynchronously opens a connection to the database
-        /// </summary>
-        public async Task OpenAsync()
-        {
-            await _dbConnection.OpenAsync().ConfigureAwait(false);
-            EnableWal(); // Enable WAL in case it hasn't been enabled already
-        }
-
-        /// <summary>
-        /// Asynchronously closes a connection to the database
-        /// </summary>
-        /// <exception cref="DbException"/>
-        public void Close()
-        {
-            _dbConnection.Close();
-        }
-
-        /// <summary>
-        /// Disposes the adapter
-        /// </summary>
-        public void Dispose()
-        {
-            _dbConnection.Dispose();
-        }
-
-        // Write-Ahead Logging (WAL) in SQLite: http://www.sqlite.org/draft/wal.html
-        private void EnableWal()
-        {
-            if (_walEnabled)
+            catch (SQLiteException e)
             {
-                return;
+                throw new StorageException(e);
             }
-
-            // Note that this doesn't work with the current SQLite package. https://github.com/aspnet/Microsoft.Data.Sqlite/issues/337
-            var command = _dbConnection.CreateCommand();
-            command.CommandText = "PRAGMA journal_mode=WAL";
-            command.ExecuteScalar();
-            _walEnabled = true;
         }
     }
 }

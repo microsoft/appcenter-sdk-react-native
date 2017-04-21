@@ -8,7 +8,6 @@ namespace Microsoft.Azure.Mobile.Test.Storage
 {
     public class MockStorage : IStorage
     {
-
         public Task ClearPendingLogStateAsync(string channelName)
         {
             return TaskExtension.GetCompletedTask();
