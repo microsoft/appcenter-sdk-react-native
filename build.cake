@@ -382,6 +382,7 @@ Task("UploadAssemblies")
 		CopyFiles(assemblyGroup.AssemblyPaths, destinationFolder);
 	}
 
+	Information("Uploading to blob " + PLATFORM_PATHS.UploadAssembliesZip);
 	Zip(DOWNLOADED_ASSEMBLIES_FOLDER, PLATFORM_PATHS.UploadAssembliesZip);
 	AzureStorage.UploadFileToBlob(new AzureStorageSettings
 	{
