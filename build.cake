@@ -84,6 +84,9 @@ var MOBILECENTER_MODULES = new [] {
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", "Default"));
 
+// Storage id to append to upload and download file names in storage
+var STORAGE_ID = Argument("StorageId", Argument("storage-id", ""));
+
 class AssemblyGroup
 {
 	public string[] AssemblyPaths {get; set;}
@@ -119,7 +122,6 @@ class PlatformPaths
 // Prepare the platform paths for downloading, uploading, and preparing assemblies
 Setup(context =>
 {
-	var uploadId = Argument("storage-id", "");
 	if (IsRunningOnUnix())
 	{
 		var iosAssemblyGroup = new AssemblyGroup {
@@ -158,9 +160,9 @@ Setup(context =>
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x86");
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x64");
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/ARM");
-		PLATFORM_PATHS.UploadAssembliesZip = MAC_ASSEMBLIES_ZIP + uploadId;
-		PLATFORM_PATHS.DownloadUrl = WINDOWS_ASSEMBLIES_URL + uploadId;
-		PLATFORM_PATHS.UploadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + uploadId;
+		PLATFORM_PATHS.UploadAssembliesZip = MAC_ASSEMBLIES_ZIP + STORAGE_ID;
+		PLATFORM_PATHS.DownloadUrl = WINDOWS_ASSEMBLIES_URL + STORAGE_ID;
+		PLATFORM_PATHS.DownloadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + STORAGE_ID;
 	}
 	else
 	{
@@ -200,9 +202,9 @@ Setup(context =>
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(IOS_ASSEMBLIES_FOLDER);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(ANDROID_ASSEMBLIES_FOLDER);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(PCL_ASSEMBLIES_FOLDER);
-		PLATFORM_PATHS.UploadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + uploadId;
-		PLATFORM_PATHS.DownloadUrl = MAC_ASSEMBLIES_URL + uploadId;
-		PLATFORM_PATHS.DownloadAssembliesZip = MAC_ASSEMBLIES_ZIP + uploadId;
+		PLATFORM_PATHS.UploadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + STORAGE_ID;
+		PLATFORM_PATHS.DownloadUrl = MAC_ASSEMBLIES_URL + STORAGE_ID;
+		PLATFORM_PATHS.DownloadAssembliesZip = MAC_ASSEMBLIES_ZIP + STORAGE_ID;
 	}
 });
 
@@ -496,23 +498,31 @@ Task("CleanAzureStorage").Does(()=>
 	var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
 	var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
 
-	AzureStorage.DeleteBlob(new AzureStorageSettings
+	try
 	{
-		AccountName = accountName,
-		ContainerName = "sdk",
-		BlobName = MAC_ASSEMBLIES_ZIP,
-		Key = apiKey,
-		UseHttps = true
-	});
+		AzureStorage.DeleteBlob(new AzureStorageSettings
+		{
+			AccountName = accountName,
+			ContainerName = "sdk",
+			BlobName = MAC_ASSEMBLIES_ZIP + STORAGE_ID,
+			Key = apiKey,
+			UseHttps = true
+		});
+	
+		AzureStorage.DeleteBlob(new AzureStorageSettings
+		{
+			AccountName = accountName,
+			ContainerName = "sdk",
+			BlobName = WINDOWS_ASSEMBLIES_ZIP + STORAGE_ID,
+			Key = apiKey,
+			UseHttps = true
+		});
+	}
+	catch
+	{
+		// not an error if the blob is not found
+	}
 
-	AzureStorage.DeleteBlob(new AzureStorageSettings
-	{
-		AccountName = accountName,
-		ContainerName = "sdk",
-		BlobName = WINDOWS_ASSEMBLIES_ZIP,
-		Key = apiKey,
-		UseHttps = true
-	});
 }).OnError(HandleError);
 
 // Remove all temporary files and folders
