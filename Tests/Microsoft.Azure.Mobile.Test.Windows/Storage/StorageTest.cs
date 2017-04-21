@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Azure.Mobile.Test.Windows.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SQLite;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -14,16 +14,10 @@ namespace Microsoft.Azure.Mobile.Test
         private const string StorageTestChannelName = "storageTestChannelName";
         private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
 
-        private TestStorageAdapter _testAdapter;
-        private Mobile.Storage.Storage _storageWithTestAdapter;
-
         [TestInitialize]
         public void InitializeStorageTest()
         {
             _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
-
-            _testAdapter = new TestStorageAdapter();
-            _storageWithTestAdapter = new Mobile.Storage.Storage(_testAdapter);
         }
 
         /// <summary>
@@ -215,105 +209,15 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void FailToGetALog()
         {
-            var storageAdapter = new StorageAdapter("Microsoft.Azure.Mobile.Storage");
-            storageAdapter.OpenAsync().RunNotAsync();
-            var command = storageAdapter.CreateCommand();
-            var logJsonString = "'this is not a valid log json string'";
-            var channelParameter = command.CreateParameter();
-            channelParameter.ParameterName = "channelName";
-            channelParameter.Value = StorageTestChannelName;
-            var logParameter = command.CreateParameter();
-            logParameter.ParameterName = "log";
-            logParameter.Value = logJsonString;
-            command.Parameters.Add(channelParameter);
-            command.Parameters.Add(logParameter);
-            command.CommandText = "INSERT INTO logs (channel, log) " +
-                                  $"VALUES (@{channelParameter.ParameterName}, @{logParameter.ParameterName})";
-            command.Prepare();
-            command.ExecuteNonQuery();
-            storageAdapter.Close();
+            var invalidLogEntry = new Mobile.Storage.Storage.LogEntry { Channel = StorageTestChannelName, Log = "good luck deserializing me!" };
+            var connection = new SQLiteConnection("Microsoft.Azure.Mobile.Storage");
+            connection.Insert(invalidLogEntry);
             var logs = new List<Log>();
             var batchId = _storage.GetLogsAsync(StorageTestChannelName, 4, logs).RunNotAsync();
             var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.IsNull(batchId);
             Assert.AreEqual(0, logs.Count);
             Assert.AreEqual(0, count);
-        }
-
-        /// <summary>
-        /// Verify that storage throws StorageException if something went wrong
-        /// </summary>
-        [TestMethod]
-        public void StorageThrowsStorageException()
-        {
-            _testAdapter.IsSuccessQuery = false;
-
-            try
-            {
-                _storageWithTestAdapter.PutLogAsync("channel_name", new TestLog()).Wait();
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e.InnerException as StorageException);
-            }
-
-            try
-            {
-                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.PutLogAsync("channel_name", new TestLog()));
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e.InnerException as StorageException);
-            }
-
-            try
-            {
-                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.DeleteLogsAsync("channel_name", string.Empty));
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e.InnerException as StorageException);
-            }
-
-            try
-            {
-                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.DeleteLogsAsync("channel_name"));
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e.InnerException as StorageException);
-            }
-
-            try
-            {
-                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.CountLogsAsync("channel_name"));
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e.InnerException as StorageException);
-            }
-
-            try
-            {
-                Assert.ThrowsExceptionAsync<AggregateException>(() => _storageWithTestAdapter.GetLogsAsync("channel_name", 1, new List<Log>()));
-            }
-            catch (Exception e)
-            {
-                Assert.IsNotNull(e.InnerException as StorageException);
-            }
-
-            _testAdapter.IsSuccessQuery = true;
-        }
-
-        /// <summary>
-        /// Verify that storage is disposing correctly
-        /// </summary>
-        [TestMethod]
-        public void StorageDisposeTest()
-        {
-            _storageWithTestAdapter.Dispose();
-            Assert.IsTrue(_testAdapter.IsDisposed);
-            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _storageWithTestAdapter.ClearPendingLogStateAsync(string.Empty));
         }
 
         #region Helper methods
