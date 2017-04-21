@@ -397,8 +397,7 @@ Task("UploadAssemblies")
 // Download assemblies from azure storage
 Task("DownloadAssemblies").Does(()=>
 {
-	var otherTargetName = IsRunningOnUnix() ? "Windows machine" : "Mac";	
-	Information("Downloading assemblies compiled on a " + otherTargetName + "...");
+	Information("Fetching assemblies from url: " + PLATFORM_PATHS.DownloadUrl);
 	CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER);
 	DownloadFile(PLATFORM_PATHS.DownloadUrl, PLATFORM_PATHS.DownloadAssembliesZip);
 	Unzip(PLATFORM_PATHS.DownloadAssembliesZip, DOWNLOADED_ASSEMBLIES_FOLDER);
