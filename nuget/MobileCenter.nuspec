@@ -52,8 +52,8 @@
     <file src="$windows_dir$/x64/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0" />
 
     <!-- ARM -->
-    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.dll" target="runtimes/win10-ARM/lib/uap10.0" />
-    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.dll"  target="runtimes/win10-ARM/native"/>
-    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.winmd" target="runtimes/win10-ARM/lib/uap10.0" />
+    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.dll" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.dll"  target="runtimes/win10-arm/native"/>
+    <file src="$windows_dir$/ARM/WatsonRegistrationUtility.winmd" target="runtimes/win10-arm/lib/uap10.0" />
   </files>
 </package>
