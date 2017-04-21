@@ -5,7 +5,6 @@ using Android.Widget;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
-using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Distribute;
 
 namespace Contoso.Android.Puppet
@@ -24,11 +23,17 @@ namespace Contoso.Android.Puppet
 
             // Get our button from the layout resource,
             // and attach an event to it
-            var button = FindViewById<Button>(Resource.Id.MyButton);
-            button.Click += delegate
+            var crashButton1 = FindViewById<Button>(Resource.Id.Crash1);
+            crashButton1.Click += delegate
             {
                 // Crash
-                button.Text = button.Text.Substring(42);
+                crashButton1.Text = crashButton1.Text.Substring(42);
+            };
+            var crashButton2 = FindViewById<Button>(Resource.Id.Crash2);
+            crashButton2.Click += delegate
+            {
+                // Crash
+                Java.Lang.Class.ForName("toto");
             };
 
             // Mobile Center integration
@@ -44,7 +49,8 @@ namespace Contoso.Android.Puppet
             MobileCenterLog.Info(LogTag, "MobileCenter.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                MobileCenterLog.Info(LogTag, "MobileCenter.LastSessionCrashReport=" + report.Result?.AndroidDetails?.Throwable);
+                MobileCenterLog.Info(LogTag, "MobileCenter.LastThrowable=" + report.Result?.AndroidDetails?.Throwable);
+                MobileCenterLog.Info(LogTag, "MobileCenter.LastException=" + report.Result?.Exception);
             });
         }
 

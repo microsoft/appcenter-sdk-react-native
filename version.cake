@@ -74,12 +74,13 @@ Task("UpdateDemoVersion").Does(()=>
 	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
 
-    // Replace nuget version that demo depends on to the same version
-	ReplaceRegexInFiles("Apps/**/*Demo*/**/packages.config", "(Microsoft.Azure.Mobile.*version=\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
-	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile.*version:[ +]\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
-
 	// And restore packages
 	NuGetRestore("MobileCenter-Demo-Mac.sln");
+
+	if (newVersion.Contains("-")) {
+		ReplaceRegexInFiles("Apps/**/*Demo*/**/packages.config", "(Microsoft.Azure.Mobile.*version=\")[^\"]+", "$10.0.0-alpha", RegexOptions.ECMAScript);
+		ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile.*version:[ +]\")[^\"]+", "$10.0.0-alpha", RegexOptions.ECMAScript);
+	}
 
 	// Fix csproj files references, which actually update nugets to most recent
 	// but in practice demo is updated to most recent when we need this script

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <mc-core-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-core-Platform>
+    <mc-core-Platform Condition="'$(Platform)' == 'ARM'">arm</mc-core-Platform>
+    <mc-core-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-core-Platform>
+    <mc-core-ArchDir>$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(mc-core-Platform)</mc-core-ArchDir>
+    
+    <mc-core-IsCorrectArch Condition="'$(mc-core-Platform)' == 'x86' or '$(mc-core-Platform)' == 'x64' or '$(mc-core-Platform)' == 'arm'">true</mc-core-IsCorrectArch>
+  </PropertyGroup>
+
+  <Target Name="PlatformCheck" BeforeTargets="ResolveAssemblyReferences"
+    Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' != 'true')">
+    <Error  Text="Please build your project specifically for one of the following platforms: x86, x64, ARM" />
+  </Target>
+
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' == 'true')">
+      <ReferenceCopyLocalPaths Include="$(mc-core-ArchDir)\native\WatsonRegistrationUtility.dll"/>
+      <Reference Include="WatsonRegistrationUtility.winmd">
+        <HintPath>$(mc-core-ArchDir)\lib\uap10.0\WatsonRegistrationUtility.winmd</HintPath>
+        <Implementation>WatsonRegistrationUtility.dll</Implementation>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-core-IsCorrectArch)' == 'true')">
+      <Reference Include="Microsoft.Azure.Mobile.dll">
+        <HintPath>$(mc-core-ArchDir)\lib\uap10.0\Microsoft.Azure.Mobile.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+  <ItemDefinitionGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>

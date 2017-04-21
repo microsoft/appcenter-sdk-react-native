@@ -22,6 +22,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLockSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
@@ -49,9 +53,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\Storage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationLifecycleHelper.cs" />
@@ -63,6 +65,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StateKeeper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\WatsonCrashesStarter.cs" />
   </ItemGroup>
 </Project>

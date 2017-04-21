@@ -1,5 +1,8 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+#if REFERENCE
+#else
+using WatsonRegistrationUtility;
+#endif
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -8,23 +11,21 @@ namespace Microsoft.Azure.Mobile.Utils
     /// </summary>
     public class WatsonCrashesStarter
     {
-        private const string WatsonKey = "VSMCAppSecret";
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern int WerRegisterCustomMetadata([MarshalAs(UnmanagedType.LPWStr)]string key, [MarshalAs(UnmanagedType.LPWStr)]string value);
-
         /// <exception cref="MobileCenterException"/>
         public static void RegisterWithWatson(string appSecret)
         {
+            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
             try
             {
-                WerRegisterCustomMetadata(WatsonKey, appSecret);
+#if REFERENCE
+#else
+                WatsonRegistrationManager.Start(appSecret);
+#endif
             }
             catch (Exception e)
             {
 #if DEBUG
                 throw new MobileCenterException("Failed to register crashes with Watson", e);
-#else
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
 #endif
             }
         }
