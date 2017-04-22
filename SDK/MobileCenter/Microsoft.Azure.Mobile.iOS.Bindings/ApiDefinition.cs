@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         [Export("wrapperSdkName")]
         string WrapperSdkName { get; }
 
-        // @property (readonly, nonatomic) NSString * wrapperSdkName;
+        // @property (readonly, nonatomic) NSString * wrapperRuntimeVersion;
         [Export("wrapperRuntimeVersion")]
         string WrapperRuntimeVersion { get; }
 
