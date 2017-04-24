@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Utils;
 using SQLite;
 
 namespace Microsoft.Azure.Mobile.Storage
@@ -20,6 +21,7 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             try
             {
+                MobileCenterLog.Debug("zander", "create table async");
                 await _dbConnection.CreateTableAsync<T>().ConfigureAwait(false);
             }
             catch (SQLiteException e)
@@ -32,6 +34,8 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             try
             {
+                MobileCenterLog.Debug("zander", "get async");
+
                 var table = _dbConnection.Table<T>();
                 return await table.Where(pred).Take(limit).ToListAsync().ConfigureAwait(false);
             }
@@ -43,6 +47,8 @@ namespace Microsoft.Azure.Mobile.Storage
 
         public async Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new()
         {
+            MobileCenterLog.Debug("zander", "count async");
+
             var table = _dbConnection.Table<T>();
             return await table.Where(pred).CountAsync().ConfigureAwait(false);
         }
@@ -51,6 +57,8 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             try
             {
+                MobileCenterLog.Debug("zander", "insert async");
+
                 return await _dbConnection.InsertAsync(val).ConfigureAwait(false);
             }
             catch (SQLiteException e)
@@ -63,6 +71,8 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             try
             {
+                MobileCenterLog.Debug("zander", "delete async");
+
                 var numDeleted = 0;
                 var table = _dbConnection.Table<T>();
                 var entries = await table.Where(pred).ToListAsync().ConfigureAwait(false);

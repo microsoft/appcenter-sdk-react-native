@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         #region instance
 
-        /* Internal for testing purposes */
+        // Internal for testing purposes
         internal ISessionTracker SessionTracker;
         internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
         private readonly ISessionTrackerFactory _sessionTrackerFactory;

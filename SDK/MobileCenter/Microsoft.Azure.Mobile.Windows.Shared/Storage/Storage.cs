@@ -283,6 +283,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// </summary>
         public void Dispose()
         {
+            _storageAdapter.Close();
             _taskLockSource.Dispose();
         }
     }
