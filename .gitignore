@@ -264,3 +264,6 @@ ModelManifest.xml
 # Cake directories
 tools/
 externals/
+
+# Output directory
+output/
