@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile
     public abstract class MobileCenterService : IMobileCenterService
     {
         private const string PreferenceKeySeparator = "_";
-        private const string KeyEnabled = "MobileCenterServiceEnabled";
+        private const string KeyEnabled = Constants.KeyPrefix + "ServiceEnabled";
         private readonly object _serviceLock = new object();
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
 
