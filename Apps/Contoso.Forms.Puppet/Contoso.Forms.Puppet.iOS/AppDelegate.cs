@@ -2,6 +2,8 @@
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics.iOS.Bindings;
 using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.Azure.Mobile.Push;
+
 using UIKit;
 
 namespace Contoso.Forms.Puppet.iOS
@@ -24,6 +26,15 @@ namespace Contoso.Forms.Puppet.iOS
 
             return true;
         }
+
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            Push.RegisteredForRemoteNotifications(deviceToken);
+        }
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            Push.FailedToRegisterForRemoteNotifications(error);
+        }
     }
 
     public class AnalyticsDelegate : MSAnalyticsDelegate
@@ -42,5 +53,6 @@ namespace Contoso.Forms.Puppet.iOS
         {
             MobileCenterLog.Debug(App.LogTag, "Failed to send event with error: " + error);
         }
-    }
+          }
+
 }

@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</ProjectGuid>
+    <ProjectGuid>{D8F25BA5-249D-4BB0-A4B1-A3245F2437FF}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Push.iOS</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Push</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,20 +18,26 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <IOSDebuggerPort>60744</IOSDebuggerPort>
+    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <MtouchLink></MtouchLink>
+    <MtouchHttpClientHandler></MtouchHttpClientHandler>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <MtouchHttpClientHandler></MtouchHttpClientHandler>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,19 +49,15 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMobileCenterService.cs" />
-    <Compile Include="MobileCenter.cs" />
-    <Compile Include="MobileCenterService.cs" />
+    <Compile Include="Push.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MobileCenterLog.cs" />
-    <Compile Include="Device.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
-      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
+    <ProjectReference Include="..\Microsoft.Azure.Mobile.Push.iOS.Bindings\Microsoft.Azure.Mobile.Push.iOS.Bindings.csproj">
+      <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
+      <Name>Microsoft.Azure.Mobile.Push.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems')" />
+  <Import Project="..\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

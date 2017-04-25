@@ -53,8 +53,8 @@ var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
 var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.6.1";
-var IOS_SDK_VERSION = "0.6.1";
+var ANDROID_SDK_VERSION = "0.6.2-0+abac23d";
+var IOS_SDK_VERSION = "0.6.2-38";
 
 // URLs for downloading binaries.
 /*

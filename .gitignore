@@ -264,3 +264,7 @@ ModelManifest.xml
 # Cake directories
 tools/
 externals/
+
+# Google services json
+google-services.json
+
