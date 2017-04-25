@@ -51,6 +51,7 @@
       </Frameworks>
       <LinkerFlags>-lc++</LinkerFlags>
       <IsCxx>True</IsCxx>
+      <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>
   <ItemGroup>
