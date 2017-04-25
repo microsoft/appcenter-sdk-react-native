@@ -1,10 +1,8 @@
 ﻿using Microsoft.Azure.Mobile;
-using System.Collections.Generic;
 using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
-using System;
 using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
@@ -166,7 +164,9 @@ namespace Contoso.Forms.Puppet
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)
         {
-            MobileCenterLog.Info(LogTag, "OnReleaseAvailable");
+            MobileCenterLog.Info(LogTag, "OnReleaseAvailable id=" + releaseDetails.Id
+                                            + " version=" + releaseDetails.Version
+                                            + " releaseNotesUrl=" + releaseDetails.ReleaseNotesUrl);
             var custom = releaseDetails.ReleaseNotes?.ToLowerInvariant().Contains("custom") ?? false;
             if (custom)
             {
@@ -184,10 +184,7 @@ namespace Contoso.Forms.Puppet
                 {
                     if (releaseDetails.MandatoryUpdate || (task as Task<bool>).Result)
                     {
-                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                        {
-                            Distribute.NotifyUpdateAction(UpdateAction.Update);
-                        });
+                        Distribute.NotifyUpdateAction(UpdateAction.Update);
                     }
                     else
                     {
