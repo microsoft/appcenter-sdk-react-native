@@ -142,6 +142,7 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="icon_attribution.txt" />
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -151,7 +152,6 @@
     <BundleResource Include="Resources\bolt%402x.png" />
     <BundleResource Include="Resources\socket%402x.png" />
     <BundleResource Include="Resources\lightning%402x.png" />
-    <BundleResource Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj">
