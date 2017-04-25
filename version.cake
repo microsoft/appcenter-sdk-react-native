@@ -27,7 +27,7 @@ Task("SetReleaseVersion").Does(()=>
 	var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
 
-	//Replace version in wrapper sdk
+	// Replace version in wrapper sdk
 	UpdateWrapperSdkVersion(baseSemanticVersion);
 });
 
@@ -60,13 +60,13 @@ Task("UpdateDemoVersion").Does(()=>
 		}
 	}
 
-	//Replace UWP version
+	// Replace UWP version
 	var uwpManifestGlob = "Apps/**/*Demo*/**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
 	var newVersionTagText = " Version=\"" + newFileVersion + "\"";
 	ReplaceRegexInFiles(uwpManifestGlob, versionTagPattern, newVersionTagText);
 
-	//Replace iOS version
+	// Replace iOS version
 	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/");
@@ -82,25 +82,8 @@ Task("UpdateDemoVersion").Does(()=>
 		ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile.*version:[ +]\")[^\"]+", "$10.0.0-alpha", RegexOptions.ECMAScript);
 	}
 
-	// Fix csproj files references, which actually update nugets to most recent
-	// but in practice demo is updated to most recent when we need this script
-	// so that's not a real issue.
-	// But we should really consider converting xamarin project to use project.json
-	// This is good as it updates Xamarin.Forms as well which is often updated and
-	// we like to make sure our SDK works well with latest Xamarin.Forms too.
-	NuGetUpdate("Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config");
-	NuGetUpdate("Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.Droid/packages.config");
-	NuGetUpdate("Apps/Contoso.Forms.Demo/Contoso.Forms.Demo.iOS/packages.config");
-
-	// Well we can't NuGetUpdate UWP with project.json, fix version manually
-	// Again we can remove this step if every project uses project.json...
-	var packagesConfig = "./Apps/Contoso.Forms.Demo/Contoso.Forms.Demo/packages.config";
-	var patternPrefix = "<package id=\"Microsoft.Azure.Mobile\" version=\"";
-	var configPattern = patternPrefix + "[^\"]+\"";
-	var packagesConfigFile = new FilePath(packagesConfig);
-	var versionTag = FindRegexMatchInFile(packagesConfigFile, configPattern, RegexOptions.None);
-	newVersion = versionTag.Substring(patternPrefix.Length, versionTag.Length - patternPrefix.Length - 1);
-	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]+\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
+	// Replace version in all the demo application project.json's
+	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
 });
 
 Task("StartNewVersion").Does(()=>
@@ -136,13 +119,13 @@ Task("StartNewVersion").Does(()=>
 		}
 	}
 
-	//Replace UWP version
+	// Replace UWP version
 	var uwpManifestGlob = "**/Package.appxmanifest";
 	var versionTagPattern = " Version=\"[^\"]+\"";
 	var newVersionTagText = " Version=\""+newVersion+".0\"";
 	ReplaceRegexInFilesWithExclusion(uwpManifestGlob, versionTagPattern, newVersionTagText, "Demo");
 
-	//Replace iOS version
+	// Replace iOS version
 	var bundleVersionPattern = @"<key>CFBundleVersion<\/key>\s*<string>[^<]*<\/string>";
 	var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("**/Info.plist", bundleVersionPattern, newBundleVersionString, "/bin/", "/obj/", "Demo");
