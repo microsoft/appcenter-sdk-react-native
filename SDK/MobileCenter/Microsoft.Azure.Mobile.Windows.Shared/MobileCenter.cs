@@ -13,8 +13,8 @@ namespace Microsoft.Azure.Mobile
     public partial class MobileCenter
     {
         // Internals for testing
-        internal const string EnabledKey = "MobileCenterEnabled";
-        internal const string InstallIdKey = "MobileCenterInstallId";
+        internal const string EnabledKey = Constants.KeyPrefix + "Enabled";
+        internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
         private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
         private const string StartErrorMessage = "Failed to start services";
         private const string ChannelName = "core";
