@@ -4,6 +4,7 @@ using Android.Runtime;
 namespace Microsoft.Azure.Mobile.Push
 {
     using AndroidPush = Com.Microsoft.Azure.Mobile.Push.Push;
+
     public partial class Push
     {
         private static bool PlatformEnabled
@@ -19,5 +20,10 @@ namespace Microsoft.Azure.Mobile.Push
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(AndroidPush);
+
+        public static void EnableFirebaseAnalytics()
+        {
+            AndroidPush.EnableFirebaseAnalytics(global::Android.App.Application.Context);
+        }
     }
 }
