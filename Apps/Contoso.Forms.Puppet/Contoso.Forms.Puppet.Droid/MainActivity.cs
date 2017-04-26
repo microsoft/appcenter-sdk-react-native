@@ -20,7 +20,7 @@ namespace Contoso.Forms.Puppet.Droid
                 foreach (var key in Intent.Extras.KeySet())
                 {
                     var val = Intent.Extras.GetString(key);
-                    MobileCenterLog.Debug("zander", $"Key: {key} Value: {val}");
+                    MobileCenterLog.Debug("XamarinPuppet", $"Key: {key} Value: {val}");
                 }
             }
             IsPlayServicesAvailable();
@@ -34,7 +34,7 @@ namespace Contoso.Forms.Puppet.Droid
             AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
             
             LoadApplication(new App());
-            MobileCenterLog.Assert("zander", "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+            MobileCenterLog.Assert("XamarinPuppet", "InstanceID token: " + FirebaseInstanceId.Instance.Token);
 
         }
 

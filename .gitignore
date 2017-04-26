@@ -266,5 +266,5 @@ tools/
 externals/
 
 # Google services json
-google-services.json
+**/google-services.json
 
