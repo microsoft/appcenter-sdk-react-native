@@ -74,16 +74,12 @@ Task("UpdateDemoVersion").Does(()=>
 	var newBundleShortVersionString = "<key>CFBundleShortVersionString</key>\n\t<string>" + newVersion + "</string>";
 	ReplaceRegexInFilesWithExclusion("Apps/**/*Demo*/**/Info.plist", bundleShortVersionPattern, newBundleShortVersionString, "/bin/", "/obj/");
 
+	// Note: nuget update does not work with projects using project.json
+	// Replace version in all the demo application
+	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
+
 	// And restore packages
 	NuGetRestore("MobileCenter-Demo-Mac.sln");
-
-	if (newVersion.Contains("-")) {
-		ReplaceRegexInFiles("Apps/**/*Demo*/**/packages.config", "(Microsoft.Azure.Mobile.*version=\")[^\"]+", "$10.0.0-alpha", RegexOptions.ECMAScript);
-		ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile.*version:[ +]\")[^\"]+", "$10.0.0-alpha", RegexOptions.ECMAScript);
-	}
-
-	// Replace version in all the demo application project.json's
-	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
 });
 
 Task("StartNewVersion").Does(()=>
