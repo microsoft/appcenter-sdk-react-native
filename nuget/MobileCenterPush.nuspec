@@ -25,6 +25,7 @@
             <dependency id="Xamarin.Firebase.Analytics" version="42.1001.0"/>
         </group>
     </dependencies>
+    <version>$version$</version>
   </metadata>
   <files>
 
