@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="15" package="com.microsoft.azure.mobile.xamarin.forms.demo" android:versionName="0.9.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.azure.mobile.xamarin.forms.demo" android:versionName="0.9.1-r0011-cf24b25" android:versionCode="21">
 	<uses-sdk android:minSdkVersion="15" />
 	<application android:label="MCFDemo"></application>
 </manifest>

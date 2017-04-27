@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "Microsoft.Azure.Mobile.Analytics": "0.9.0",
-    "Microsoft.Azure.Mobile.Crashes": "0.9.0",
-    "Microsoft.Azure.Mobile.Distribute": "0.9.0",
+    "Microsoft.Azure.Mobile.Analytics": "0.9.1-r0011-cf24b25",
+    "Microsoft.Azure.Mobile.Crashes": "0.9.1-r0011-cf24b25",
+    "Microsoft.Azure.Mobile.Distribute": "0.9.1-r0011-cf24b25",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Xamarin.Forms": "2.3.4.231"
   },
