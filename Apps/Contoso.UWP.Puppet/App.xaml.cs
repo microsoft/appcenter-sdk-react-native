@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.UWP.Puppet
 {
@@ -26,8 +27,9 @@ namespace Contoso.UWP.Puppet
             MobileCenter.Configure("42f4a839-c54c-44da-8072-a2f2a61751b2");
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Analytics.Enabled = true;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+            MobileCenter.Start(typeof(Analytics), typeof(Crashes), typeof(Push));
             MobileCenter.Enabled = true;
+            Push.Enabled = true;
             var properties = new Dictionary<string, string>();
             properties["key1"] = "value1";
             properties["key2"] = "value";
@@ -82,6 +84,8 @@ namespace Contoso.UWP.Puppet
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            Push.Register();
         }
 
         /// <summary>

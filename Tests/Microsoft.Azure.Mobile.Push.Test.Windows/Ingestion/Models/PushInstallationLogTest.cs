@@ -1,6 +1,7 @@
 ﻿using Moq;
 using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Rest;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -11,16 +12,12 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
     {
         private const long TOffset = 0;
 
-        /// <summary>
-        /// Verify that instance is constructed properly.
-        /// </summary>
         [TestMethod]
         public void TestConstructor()
         {
             var mockDevice = new Mock<Device>();
 
             PushInstallationLog log = new PushInstallationLog(TOffset, mockDevice.Object, "token1");
-
             Assert.IsNotNull(log);
             Assert.AreEqual(default(System.Guid?), log.Sid);
             Assert.AreEqual("token1", log.PushToken);
@@ -29,6 +26,15 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             Assert.IsNotNull(log2);
             Assert.IsNotNull(log2.Sid);
             Assert.AreEqual("token2", log2.PushToken);
+        }
+
+        [TestMethod]
+        public void TestValidateThrowsExceptionWhenPushTokenIsNull()
+        {
+            var mockDevice = new Mock<Device>();
+
+            PushInstallationLog log = new PushInstallationLog(TOffset, mockDevice.Object, null);
+            Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
     }
 }
