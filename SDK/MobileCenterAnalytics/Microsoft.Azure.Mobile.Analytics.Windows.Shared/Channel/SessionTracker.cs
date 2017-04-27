@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
         internal const int StorageMaxSessions = 5;
-        internal const string StorageKey = "MobileCenterSessions";
+        internal const string StorageKey = Constants.KeyPrefix + "Sessions";
         private const char StorageKeyValueSeparator = '.';
         private const char StorageEntrySeparator = '/';
         private readonly IChannelUnit _channel;
