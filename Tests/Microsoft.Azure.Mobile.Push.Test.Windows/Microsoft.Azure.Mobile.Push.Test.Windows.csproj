@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Ingestion\Models\PushInstallationLogTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PushTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
