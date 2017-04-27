@@ -1,9 +1,9 @@
 ﻿using Microsoft.Azure.Mobile;
-using System.Collections.Generic;
 using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
+using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
 {
@@ -34,6 +34,8 @@ namespace Contoso.Forms.Puppet
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
 
+            Distribute.ReleaseAvailable = OnReleaseAvailable;
+
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
             MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
@@ -42,8 +44,6 @@ namespace Contoso.Forms.Puppet
             MobileCenter.Start("uwp=42f4a839-c54c-44da-8072-a2f2a61751b2;android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute));
 
-            Analytics.TrackEvent("myEvent");
-            Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
@@ -154,13 +154,45 @@ namespace Contoso.Forms.Puppet
                     {
                         userConfirmationSelection = UserConfirmation.DontSend;
                     }
-
                     MobileCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
                     Crashes.NotifyUserConfirmation(userConfirmationSelection);
                 });
             });
 
             return true;
+        }
+
+        bool OnReleaseAvailable(ReleaseDetails releaseDetails)
+        {
+            MobileCenterLog.Info(LogTag, "OnReleaseAvailable id=" + releaseDetails.Id
+                                            + " version=" + releaseDetails.Version
+                                            + " releaseNotesUrl=" + releaseDetails.ReleaseNotesUrl);
+            var custom = releaseDetails.ReleaseNotes?.ToLowerInvariant().Contains("custom") ?? false;
+            if (custom)
+            {
+                var title = "Version " + releaseDetails.ShortVersion + " available!";
+                Task answer;
+                if (releaseDetails.MandatoryUpdate)
+                {
+                    answer = Current.MainPage.DisplayAlert(title, releaseDetails.ReleaseNotes, "Update now!");
+                }
+                else
+                {
+                    answer = Current.MainPage.DisplayAlert(title, releaseDetails.ReleaseNotes, "Update now!", "Maybe tomorrow...");
+                }
+                answer.ContinueWith((task) =>
+                {
+                    if (releaseDetails.MandatoryUpdate || (task as Task<bool>).Result)
+                    {
+                        Distribute.NotifyUpdateAction(UpdateAction.Update);
+                    }
+                    else
+                    {
+                        Distribute.NotifyUpdateAction(UpdateAction.Postpone);
+                    }
+                });
+            }
+            return custom;
         }
     }
 }
