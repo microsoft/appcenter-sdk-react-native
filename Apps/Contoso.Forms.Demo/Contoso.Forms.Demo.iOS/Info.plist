@@ -5,7 +5,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.microsoft.azure.mobile.xamarin.forms.demo</string>
 	<key>CFBundleVersion</key>
-	<string>0.9.0</string>
+	<string>0.9.1-r0011-cf24b25</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -39,7 +39,7 @@
 	<key>CFBundleName</key>
 	<string>MCFDemo</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.9.0</string>
+	<string>0.9.1-r0011-cf24b25</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
