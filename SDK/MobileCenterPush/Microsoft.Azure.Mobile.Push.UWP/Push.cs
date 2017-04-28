@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
             else
             {
-                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed. PushToken cannot be null or empty.");
+                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
             }
 
             _mutex.Unlock();
