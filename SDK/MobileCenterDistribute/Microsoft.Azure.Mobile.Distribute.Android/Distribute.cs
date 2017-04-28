@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Mobile.Distribute
                     };
                     return _releaseAvailableCallback(releaseDetails);
                 }
-                return true;
+                return false;
             }
         }
     }
