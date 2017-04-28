@@ -170,7 +170,7 @@ Setup(context =>
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
 			AssemblyPaths = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
 								"nuget/Microsoft.Azure.Mobile.Analytics.targets",
-								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll",
+								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
 								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll",
 								"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll" }
 		};
