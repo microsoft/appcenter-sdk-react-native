@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Push
             var stateSnapshot = _stateKeeper.GetStateSnapshot();
             _mutex.Unlock();
 
-            PushNotificationChannel pushNotificationChannel = Task.Run(() => CreatePushNotificationChannel()).Result;
+            var pushNotificationChannel = Task.Run(() => CreatePushNotificationChannel()).Result;
 
             try
             {
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
             catch (StatefulMutexException e)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Register operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Push service registering with Mobile Center backend has failed", e);
                 return;
             }
             finally
@@ -35,19 +35,19 @@ namespace Microsoft.Azure.Mobile.Push
                 _mutex.Unlock();
             }
 
-            string pushToken = pushNotificationChannel.Uri;
+            var pushToken = pushNotificationChannel.Uri;
 
             if (!string.IsNullOrEmpty(pushToken))
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Push token '{pushToken}'");
 
-                PushInstallationLog pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
+                var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
 
                 Channel.Enqueue(pushInstallationLog);
             }
             else
             {
-                MobileCenterLog.Error(LogTag, "PushToken cannot be null or empty.");
+                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed. PushToken cannot be null or empty.");
             }
 
             _mutex.Unlock();

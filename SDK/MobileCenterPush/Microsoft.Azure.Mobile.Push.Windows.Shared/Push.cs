@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Push
             get
             {
                 lock (PushLock)
-                { 
+                {
                     return _instanceField ?? (_instanceField = new Push());
                 }
             }
