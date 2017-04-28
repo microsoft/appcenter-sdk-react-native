@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Mobile.Push
 
         private async Task<PushNotificationChannel> CreatePushNotificationChannel()
         {
-            PushNotificationChannel channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            PushNotificationChannel channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
 
             return channel;
         }
