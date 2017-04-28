@@ -45,15 +45,6 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        /// <summary>
-        /// Retrieve the push token from platform-specific Push Notification Service,
-        /// and later use the token to register with Mobile Center backend.
-        /// </summary>
-        public static void Register()
-        {
-            Instance.InstanceRegister();
-        }
-
         #endregion
 
         #region instance
@@ -91,6 +82,8 @@ namespace Microsoft.Azure.Mobile.Push
         public override void OnChannelGroupReady(IChannelGroup channelGroup)
         {
             base.OnChannelGroupReady(channelGroup);
+
+            Instance.InstanceRegister();
         }
 
         public override bool InstanceEnabled

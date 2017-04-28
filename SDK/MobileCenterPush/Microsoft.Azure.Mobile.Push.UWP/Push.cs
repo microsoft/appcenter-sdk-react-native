@@ -8,6 +8,8 @@ namespace Microsoft.Azure.Mobile.Push
 {
     public partial class Push : MobileCenterService
     {
+        // Retrieve the push token from platform-specific Push Notification Service,
+        // and later use the token to register with Mobile Center backend.
         private void InstanceRegister()
         {
             if (!Enabled)

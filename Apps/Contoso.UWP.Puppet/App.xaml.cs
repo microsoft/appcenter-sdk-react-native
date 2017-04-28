@@ -83,8 +83,6 @@ namespace Contoso.UWP.Puppet
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-
-            Push.Register();
         }
 
         /// <summary>
