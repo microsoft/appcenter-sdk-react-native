@@ -39,7 +39,7 @@
     <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ObjcBindingCoreSource Include="Structs.cs" />
+    <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">

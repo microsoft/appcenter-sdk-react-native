@@ -11,5 +11,13 @@
         static void PlatformSetApiUrl(string apiUrl)
         {
         }
+
+        static void SetReleaseAvailableCallback(ReleaseAvailableCallback releaseAvailableCallback)
+        {
+        }
+
+        static void HandleUpdateAction(UpdateAction updateAction)
+        {
+        }
     }
 }
