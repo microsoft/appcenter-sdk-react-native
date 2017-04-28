@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Rest;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {

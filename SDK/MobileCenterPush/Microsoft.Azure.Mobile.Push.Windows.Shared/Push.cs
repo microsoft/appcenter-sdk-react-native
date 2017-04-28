@@ -30,6 +30,9 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
+        /// <summary>
+        /// Push module enabled or disabled
+        /// </summary>
         public static bool Enabled
         {
             get
@@ -42,6 +45,10 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
+        /// <summary>
+        /// Retrieve the push token from platform-specific Push Notification Service,
+        /// and later use the token to register with Mobile Center backend.
+        /// </summary>
         public static void Register()
         {
             Instance.InstanceRegister();
