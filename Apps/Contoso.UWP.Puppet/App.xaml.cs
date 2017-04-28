@@ -29,7 +29,6 @@ namespace Contoso.UWP.Puppet
             Analytics.Enabled = true;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes), typeof(Push));
             MobileCenter.Enabled = true;
-            Push.Enabled = true;
             var properties = new Dictionary<string, string>();
             properties["key1"] = "value1";
             properties["key2"] = "value";
