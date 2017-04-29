@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Ingestion.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models
@@ -14,19 +11,29 @@ namespace Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models
         public PushInstallationLog(long toffset, Mobile.Ingestion.Models.Device device, string pushToken, System.Guid? sid = default(System.Guid?))
             : base(toffset, device, sid)
         {
-            this.PushToken = pushToken;
+            PushToken = pushToken;
         }
 
+        /// <summary>
+        /// The Windows Push Notification handle for this installation.
+        /// </summary>
         [JsonProperty(PropertyName = "push_token")]
         public string PushToken { get; set; }
 
         /// <summary>
-        /// 
-        /// 
+        /// Validate the PushInstallationLog
         /// </summary>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown if PushToken is null or empty
+        /// </exception>
         public override void Validate()
         {
             base.Validate();
+
+            if (string.IsNullOrEmpty(this.PushToken))
+            {
+                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "PushToken");
+            }
         }
     }
 }
