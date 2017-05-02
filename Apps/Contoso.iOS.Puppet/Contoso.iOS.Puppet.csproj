@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="ModulePages\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -118,13 +119,21 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="FirstViewController.cs" />
-    <Compile Include="SecondViewController.cs" />
-    <Compile Include="FirstViewController.designer.cs">
-      <DependentUpon>FirstViewController.cs</DependentUpon>
+    <Compile Include="ModulePages\AnalyticsController.cs" />
+    <Compile Include="ModulePages\AnalyticsController.designer.cs">
+      <DependentUpon>AnalyticsController.cs</DependentUpon>
     </Compile>
-    <Compile Include="SecondViewController.designer.cs">
-      <DependentUpon>SecondViewController.cs</DependentUpon>
+    <Compile Include="ModulePages\CrashesController.cs" />
+    <Compile Include="ModulePages\CrashesController.designer.cs">
+      <DependentUpon>CrashesController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModulePages\DistributeController.cs" />
+    <Compile Include="ModulePages\DistributeController.designer.cs">
+      <DependentUpon>DistributeController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModulePages\MobileCenterController.cs" />
+    <Compile Include="ModulePages\MobileCenterController.designer.cs">
+      <DependentUpon>MobileCenterController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

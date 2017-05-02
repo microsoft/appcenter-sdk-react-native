@@ -1,4 +1,4 @@
-// WARNING
+﻿// WARNING
 //
 // This file has been generated automatically by Xamarin Studio from the outlets and
 // actions declared in your storyboard file.
@@ -11,10 +11,10 @@ using UIKit;
 
 namespace Contoso.iOS.Puppet
 {
-    [Register ("FirstViewController")]
-    partial class FirstViewController
+    [Register("AnalyticsController")]
+    partial class AnalyticsController
     {
-        void ReleaseDesignerOutlets ()
+        void ReleaseDesignerOutlets()
         {
         }
     }
