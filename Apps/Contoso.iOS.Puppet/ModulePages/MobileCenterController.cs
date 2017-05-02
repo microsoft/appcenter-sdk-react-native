@@ -28,9 +28,9 @@ namespace Contoso.iOS.Puppet
         {
         }
 
-        public override void ViewDidLoad()
+        public override void ViewDidAppear(bool animated)
         {
-            base.ViewDidLoad();
+            base.ViewDidAppear(animated);
             MobileCenterEnabledSwitch.On = MobileCenter.Enabled;
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];

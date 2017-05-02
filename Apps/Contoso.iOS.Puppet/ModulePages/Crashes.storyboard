@@ -65,6 +65,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Crashes" image="socket.png" id="fBa-26-q2S"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jP0-jK-I1W" userLabel="First Responder" sceneMemberID="firstResponder"/>

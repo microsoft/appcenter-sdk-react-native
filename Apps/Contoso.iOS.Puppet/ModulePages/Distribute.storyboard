@@ -37,6 +37,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Distribute" image="socket.png" id="2ja-ct-abX"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KfR-dM-U3A" userLabel="First Responder" sceneMemberID="firstResponder"/>
