@@ -148,6 +148,7 @@
       <DependentUpon>LogLevelController.cs</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
+    <Compile Include="FakeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.iOS\Microsoft.Azure.Mobile.Analytics.iOS.csproj">

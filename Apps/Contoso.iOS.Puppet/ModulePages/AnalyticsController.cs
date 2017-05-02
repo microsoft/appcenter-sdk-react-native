@@ -49,8 +49,8 @@ namespace Contoso.iOS.Puppet
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            EnabledSwitch.On = Analytics.Enabled;
-            EnabledSwitch.Enabled = MobileCenter.Enabled;
+            AnalyticsEnabledSwitch.On = Analytics.Enabled;
+            AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
             NumPropertiesLabel.Text = mEventProperties.Count.ToString();
         }
 
@@ -67,8 +67,8 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateEnabled()
         {
-        	Analytics.Enabled = EnabledSwitch.On;
-        	EnabledSwitch.On = Analytics.Enabled;
+        	Analytics.Enabled = AnalyticsEnabledSwitch.On;
+            AnalyticsEnabledSwitch.On = Analytics.Enabled;
         }
 
         partial void AddProperty()

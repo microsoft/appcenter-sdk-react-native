@@ -13,7 +13,7 @@ namespace Contoso.iOS.Puppet
 	partial class AnalyticsController
 	{
 		[Outlet]
-		UIKit.UISwitch EnabledSwitch { get; set; }
+		UIKit.UISwitch AnalyticsEnabledSwitch { get; set; }
 
 		[Outlet]
 		UIKit.UITextField EventName { get; set; }
@@ -32,9 +32,9 @@ namespace Contoso.iOS.Puppet
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (EnabledSwitch != null) {
-				EnabledSwitch.Dispose ();
-				EnabledSwitch = null;
+			if (AnalyticsEnabledSwitch != null) {
+				AnalyticsEnabledSwitch.Dispose ();
+				AnalyticsEnabledSwitch = null;
 			}
 
 			if (EventName != null) {

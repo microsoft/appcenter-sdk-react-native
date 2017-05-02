@@ -150,7 +150,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="EnabledSwitch" destination="Lca-F4-Rmc" id="8bP-fG-T0v"/>
+                        <outlet property="AnalyticsEnabledSwitch" destination="Lca-F4-Rmc" id="kCL-F5-eIe"/>
                         <outlet property="EventName" destination="w6f-yF-tME" id="CgR-Yr-RWJ"/>
                         <outlet property="NumPropertiesLabel" destination="hxf-ws-Tmz" id="o4S-to-ttJ"/>
                     </connections>
