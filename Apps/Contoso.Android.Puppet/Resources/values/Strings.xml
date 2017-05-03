@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="ApplicationName">Contoso.Android.Puppet</string>
+	<string name="ApplicationName">Mobile Center Puppet</string>
     <string name="MobileCenterTitle">Mobile Center</string>
     <string name="AnalyticsTitle">Analytics</string>
     <string name="CrashesTitle">Crashes</string>
     <string name="DistributeTitle">Distribute</string>
+
+    <string name="MobileCenterEnabled">Mobile Center Enabled</string>
+    <string name="MobileCenterLogLevel">Log Level</string>
+    <string name="MobileCenterLogMessage">Log Message</string>
+    <string name="MobileCenterLogTag">Log Tag</string>
+    <string name="MobileCenterWriteLog">Write Log</string>
+	
+    <string name="AnalyticsEnabled">Analytics Enabled</string>
+    <string name="AnalyticsEventName">Event Name</string>
+    <string name="AnalyticsProperties">Properties</string>
+    <string name="AnalyticsAddProperty">Add Property</string>
+    <string name="AnalyticsTrackEvent">Track Event</string>
+
+    <string name="CrashesEnabled">Crashes Enabled</string>
+
+    <string name="DistributeEnabled">Distribute Enabled</string>
 </resources>

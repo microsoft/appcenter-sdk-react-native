@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
-using Android.Widget;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
@@ -10,7 +10,7 @@ using Microsoft.Azure.Mobile.Distribute;
 
 namespace Contoso.Android.Puppet
 {
-    [Activity(Label = "SXPuppet", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "SXPuppet", Icon = "@drawable/icon", Theme = "@style/PuppetTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : AppCompatActivity
     {
         const string LogTag = "MobileCenterXamarinPuppet";
