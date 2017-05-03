@@ -31,9 +31,16 @@ class MobileCenterModule {
 	{
 		get { return  "Windows" + MainNuspecFilename; }
 	}
+	public bool HasExternals { get; set; }
+
 	public MobileCenterModule(string android, string ios, string dotnet, string mainNuspecFilename) {
 		AndroidModule = android;
 		IosModule = ios;
+		DotNetModule = dotnet;
+		MainNuspecFilename = mainNuspecFilename;
+		HasExternals = true;
+	}
+	public MobileCenterModule(string dotnet, string mainNuspecFilename) {
 		DotNetModule = dotnet;
 		MainNuspecFilename = mainNuspecFilename;
 	}
@@ -78,7 +85,9 @@ var MOBILECENTER_MODULES = new [] {
 	new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
 	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
 	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
-	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec")	
+	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec"),
+	//																					when we have a pcl part, this should be changed vvvv (remove uwp extension)
+	new MobileCenterModule("mobile-center-push.aar", "MobileCenterPush.framework.zip", "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP", "MobileCenterPush.nuspec")
 };
 
 // Task TARGET for build
@@ -170,30 +179,35 @@ Setup(context =>
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
 			AssemblyPaths = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
 								"nuget/Microsoft.Azure.Mobile.Analytics.targets",
+								"nuget/Microsoft.Azure.Mobile.Push.targets",
 								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll",
 								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll",
-								"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll" }
+								"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll",
+								"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Reference/Microsoft.Azure.Mobile.Push.dll" }
 		};
 		var uwpX86AssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x86",
 			AssemblyPaths = new string[] { 	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll",
 								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll",
     							"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-   								"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
+   								"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd",
+								"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Push.dll" }
 		};
 		var uwpX64AssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x64",
 			AssemblyPaths =  new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x64/Release/Microsoft.Azure.Mobile.dll",
   									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll",
    									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-   									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"}
+   									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd",
+									"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Push.dll"}
 		};
 		var uwpArmAssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/ARM",
 			AssemblyPaths =  new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.dll",
 									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll",
 									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"}
+									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd",
+									"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Push.dll"}
 		};
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpAnyCpuAssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX86AssemblyGroup);
@@ -290,6 +304,10 @@ Task("Externals-Android")
 	// Copy files to {DotNetModule}.Android.Bindings/Jars
 	foreach (var module in MOBILECENTER_MODULES)
 	{
+		if (!module.HasExternals)
+		{
+			continue;
+		}
 		var files = GetFiles("./externals/android/*/" + module.AndroidModule);
 		CopyFiles(files, module.DotNetModule + ".Android.Bindings/Jars/");
 	}
@@ -609,7 +627,7 @@ void CleanDirectory(string directoryName)
 
 void HandleError(Exception exception)
 {
-	RunTarget("clean");
+	//RunTarget("clean");
 	throw exception;
 }
 

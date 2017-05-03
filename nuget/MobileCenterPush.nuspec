@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.Azure.Mobile.Push</id>
+    <title>Mobile Center Push</title>
+    <authors>Microsoft Corporation</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>EDIT ME</summary>
+    <description>EDIT ME</description>
+    <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/p2wifj</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.Azure.Mobile" version="$version$" />
+    </dependencies>
+    <version>$version$</version>
+  </metadata>
+  <files>
+
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.targets"  target="build/uap10.0"/>
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.dll" target="ref/uap10.0" />
+
+    <!--x86 -->
+    <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x86/lib/uap10.0" />
+
+    <!-- x64 -->
+    <file src="$windows_dir$/x64/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x64/lib/uap10.0" />
+
+    <!-- ARM -->
+    <file src="$windows_dir$/ARM/Release/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-arm/lib/uap10.0" />
+
+  </files>
+</package>
