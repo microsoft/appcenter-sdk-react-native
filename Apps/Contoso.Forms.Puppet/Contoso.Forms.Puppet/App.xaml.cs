@@ -1,10 +1,10 @@
 ﻿using Microsoft.Azure.Mobile;
-using System.Collections.Generic;
 using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
+using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
 {
@@ -35,6 +35,8 @@ namespace Contoso.Forms.Puppet
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
 
+            Distribute.ReleaseAvailable = OnReleaseAvailable;
+
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
             MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
@@ -45,6 +47,8 @@ namespace Contoso.Forms.Puppet
             
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
+                               typeof(Analytics), typeof(Crashes), typeof(Distribute));
+
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
@@ -155,13 +159,45 @@ namespace Contoso.Forms.Puppet
                     {
                         userConfirmationSelection = UserConfirmation.DontSend;
                     }
-
                     MobileCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
                     Crashes.NotifyUserConfirmation(userConfirmationSelection);
                 });
             });
 
             return true;
+        }
+
+        bool OnReleaseAvailable(ReleaseDetails releaseDetails)
+        {
+            MobileCenterLog.Info(LogTag, "OnReleaseAvailable id=" + releaseDetails.Id
+                                            + " version=" + releaseDetails.Version
+                                            + " releaseNotesUrl=" + releaseDetails.ReleaseNotesUrl);
+            var custom = releaseDetails.ReleaseNotes?.ToLowerInvariant().Contains("custom") ?? false;
+            if (custom)
+            {
+                var title = "Version " + releaseDetails.ShortVersion + " available!";
+                Task answer;
+                if (releaseDetails.MandatoryUpdate)
+                {
+                    answer = Current.MainPage.DisplayAlert(title, releaseDetails.ReleaseNotes, "Update now!");
+                }
+                else
+                {
+                    answer = Current.MainPage.DisplayAlert(title, releaseDetails.ReleaseNotes, "Update now!", "Maybe tomorrow...");
+                }
+                answer.ContinueWith((task) =>
+                {
+                    if (releaseDetails.MandatoryUpdate || (task as Task<bool>).Result)
+                    {
+                        Distribute.NotifyUpdateAction(UpdateAction.Update);
+                    }
+                    else
+                    {
+                        Distribute.NotifyUpdateAction(UpdateAction.Postpone);
+                    }
+                });
+            }
+            return custom;
         }
     }
 }

@@ -7,6 +7,7 @@ using Java.Lang;
 
 namespace Microsoft.Azure.Mobile
 {
+    using System.Reflection;
     using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
 
     /// <summary>
@@ -16,7 +17,7 @@ namespace Microsoft.Azure.Mobile
     {
         /* The key identifier for parsing app secrets */
         private const string PlatformIdentifier = "android";
-        
+
         internal MobileCenter()
         {
         }
@@ -176,9 +177,20 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        private static Application SetWrapperSdkAndGetApplication()
+        static Application SetWrapperSdkAndGetApplication()
         {
-            AndroidMobileCenter.SetWrapperSdk(new AndroidWrapperSdk { WrapperSdkName = WrapperSdk.Name, WrapperSdkVersion = WrapperSdk.Version });
+            var monoAssembly = typeof(Java.Lang.Object).Assembly;
+            var monoAssemblyAttibutes = monoAssembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true);
+            var monoAssemblyVersionAttibutes = monoAssemblyAttibutes as AssemblyInformationalVersionAttribute[];
+            var xamarinAndroidVersion = monoAssemblyVersionAttibutes[0].InformationalVersion;
+            xamarinAndroidVersion = xamarinAndroidVersion.Split(';')[0];
+            var wrapperSdk = new AndroidWrapperSdk
+            {
+                WrapperSdkName = WrapperSdk.Name,
+                WrapperSdkVersion = WrapperSdk.Version,
+                WrapperRuntimeVersion = xamarinAndroidVersion
+            };
+            AndroidMobileCenter.SetWrapperSdk(wrapperSdk);
             return (Application)Application.Context;
         }
 
@@ -190,14 +202,14 @@ namespace Microsoft.Azure.Mobile
                 var propertyInfo = t.GetProperty("BindingType");
                 if (propertyInfo != null)
                 {
-                    var  value = (Type)propertyInfo.GetValue(null, null);
+                    var value = (Type)propertyInfo.GetValue(null, null);
                     if (value != null)
                     {
                         var aClass = Class.FromType((Type)propertyInfo.GetValue(null, null));
                         if (aClass != null)
                         {
                             classes.Add(aClass);
-                        }   
+                        }
                     }
                 }
             }

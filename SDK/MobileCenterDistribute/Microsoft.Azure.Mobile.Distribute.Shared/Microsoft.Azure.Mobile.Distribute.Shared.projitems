@@ -6,10 +6,15 @@
     <SharedGUID>{5AEF073D-7370-41C1-86CD-A61B4DEB9883}</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Distribute.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.Azure.Mobile.Distribute</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Distribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReleaseDetails.cs">
+      <Link>ReleaseDetails.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)DistributeDelegates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserUpdate.cs" />
   </ItemGroup>
 </Project>

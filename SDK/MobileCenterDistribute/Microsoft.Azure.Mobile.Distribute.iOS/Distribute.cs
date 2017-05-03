@@ -1,13 +1,12 @@
 ﻿using System;
 using Foundation;
+using Microsoft.Azure.Mobile.Distribute.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Distribute
 {
-    using iOSDistribute = iOS.Bindings.MSDistribute;
-
     public static partial class Distribute
     {
-        static Type _internalBindingType = typeof(iOSDistribute);
+        static Type _internalBindingType = typeof(MSDistribute);
 
         [Preserve]
         public static Type BindingType
@@ -22,22 +21,23 @@ namespace Microsoft.Azure.Mobile.Distribute
         {
             get
             {
-                return iOSDistribute.IsEnabled();
+                return MSDistribute.IsEnabled();
             }
 
             set
             {
-                iOSDistribute.SetEnabled(value);
+                MSDistribute.SetEnabled(value);
             }
         }
+
         static void PlatformSetInstallUrl(string installUrl)
         {
-            iOSDistribute.SetInstallUrl(installUrl);
+            MSDistribute.SetInstallUrl(installUrl);
         }
 
         static void PlatformSetApiUrl(string apiUrl)
         {
-            iOSDistribute.SetApiUrl(apiUrl);
+            MSDistribute.SetApiUrl(apiUrl);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Mobile.Distribute
         /// <param name="url">The url with parameters.</param>
         public static void OpenUrl(NSUrl url)
         {
-            iOSDistribute.OpenUrl(url);
+            MSDistribute.OpenUrl(url);
         }
 
         /// <summary>
@@ -65,6 +65,63 @@ namespace Microsoft.Azure.Mobile.Distribute
         public static void DontCheckForUpdatesInDebug()
         {
             _internalBindingType = null;
+        }
+
+        static Delegate _delegate;
+
+        static ReleaseAvailableCallback _releaseAvailableCallback;
+
+        static void SetReleaseAvailableCallback(ReleaseAvailableCallback releaseAvailableCallback)
+        {
+            lock (typeof(Distribute))
+            {
+                _releaseAvailableCallback = releaseAvailableCallback;
+                if (_delegate == null && _releaseAvailableCallback != null)
+                {
+                    _delegate = new Delegate();
+                    MSDistribute.SetDelegate(_delegate);
+                }
+            }
+        }
+
+        static void HandleUpdateAction(UpdateAction updateAction)
+        {
+            switch (updateAction)
+            {
+                case UpdateAction.Update:
+                    MSDistribute.NotifyUpdateAction(MSUpdateAction.Update);
+                    break;
+
+                case UpdateAction.Postpone:
+                    MSDistribute.NotifyUpdateAction(MSUpdateAction.Postpone);
+                    break;
+            }
+        }
+
+        public class Delegate : MSDistributeDelegate
+        {
+            public override bool OnReleaseAvailable(MSDistribute distribute, MSReleaseDetails details)
+            {
+                if (_releaseAvailableCallback != null)
+                {
+                    Uri releaseNotesUrl = null;
+                    if (details.ReleaseNotesUrl != null)
+                    {
+                        releaseNotesUrl = new Uri(details.ReleaseNotesUrl.ToString());
+                    }
+                    var releaseDetails = new ReleaseDetails
+                    {
+                        Id = details.Id,
+                        ShortVersion = details.ShortVersion,
+                        Version = details.Version,
+                        ReleaseNotes = details.ReleaseNotes,
+                        ReleaseNotesUrl = releaseNotesUrl,
+                        MandatoryUpdate = details.MandatoryUpdate
+                    };
+                    return _releaseAvailableCallback(releaseDetails);
+                }
+                return false;
+            }
         }
     }
 }
