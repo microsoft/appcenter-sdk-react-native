@@ -27,4 +27,11 @@
     <string name="CrashAsync">Crash Inside Async Task</string>
 	
     <string name="DistributeEnabled">Distribute Enabled</string>
+
+	<string name="crash_confirmation_dialog_title">Unexpected crash found</string>
+    <string name="crash_confirmation_dialog_message">Would you like to send an anonymous report so we can fix the problem?</string>
+    <string name="crash_confirmation_dialog_not_send_button">Don\'t Send</string>
+    <string name="crash_confirmation_dialog_always_send_button">Always Send</string>
+    <string name="crash_confirmation_dialog_send_button">Send</string>
+    <string name="version_x_available">Version {0} available!</string>
 </resources>
