@@ -19,6 +19,12 @@
     <string name="AnalyticsTrackEvent">Track Event</string>
 
     <string name="CrashesEnabled">Crashes Enabled</string>
-
+    <string name="TestCrash">Generate Test Crash</string>
+    <string name="DivideByZero">Divide 42 by 0</string>
+    <string name="CrashWithAggregateException">Crash With Aggregate Exception</string>
+    <string name="CrashWithNullReferenceException">Crash With NullReferenceException</string>
+    <string name="CatchNullReferenceException">Test Catching NullReferenceException</string>
+    <string name="CrashAsync">Crash Inside Async Task</string>
+	
     <string name="DistributeEnabled">Distribute Enabled</string>
 </resources>
