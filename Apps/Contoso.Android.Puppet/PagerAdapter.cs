@@ -1,11 +1,16 @@
-﻿using Android.Support.V4.App;
+﻿using Android.Content;
+using Android.Support.V4.App;
+using Java.Lang;
 
 namespace Contoso.Android.Puppet
 {
     public class PagerAdapter : FragmentStatePagerAdapter
     {
-        public PagerAdapter(FragmentManager fragmentManager) : base(fragmentManager)
+        private readonly Context mContext;
+
+        public PagerAdapter(FragmentManager fragmentManager, Context context) : base(fragmentManager)
         {
+            mContext = context;
         }
 
         public override int Count
@@ -23,6 +28,18 @@ namespace Contoso.Android.Puppet
                 case 3: return new DistributeFragment();
                 default: return null;
             }
+        }
+
+        public override ICharSequence GetPageTitleFormatted(int position)
+		{
+			switch (position)
+			{
+                case 0: return new String(mContext.GetString(Resource.String.MobileCenterTitle));
+				case 1: return new String(mContext.GetString(Resource.String.AnalyticsTitle));
+				case 2: return new String(mContext.GetString(Resource.String.CrashesTitle));
+                case 3: return new String(mContext.GetString(Resource.String.DistributeTitle));
+				default: return null;
+			}
         }
     }
 }

@@ -2,6 +2,8 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Support.Design.Widget;
+using Android.Support.V4.View;
 using Android.Support.V7.App;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
@@ -21,6 +23,14 @@ namespace Contoso.Android.Puppet
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+
+			// Get the ViewPager and set it's PagerAdapter so that it can display items
+            var viewPager = FindViewById(Resource.Id.viewpager) as ViewPager;
+            viewPager.Adapter = new PagerAdapter(SupportFragmentManager, this);
+
+			// Give the TabLayout the ViewPager
+			var tabLayout = FindViewById(Resource.Id.tablayout) as TabLayout;
+			tabLayout.SetupWithViewPager(viewPager);
 
             // Mobile Center integration
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
