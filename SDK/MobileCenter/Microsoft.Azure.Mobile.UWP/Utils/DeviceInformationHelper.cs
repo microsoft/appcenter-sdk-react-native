@@ -26,6 +26,8 @@ namespace Microsoft.Azure.Mobile.Utils
 
         static DeviceInformationHelper()
         {
+            // This must all be done from the leaving background event because DisplayInformation can only be uses
+            // from the main thread
             CoreApplication.LeavingBackground += (o, e) => {
                 lock (LockObject)
                 {
@@ -111,7 +113,6 @@ namespace Microsoft.Azure.Mobile.Utils
             var minor = (version & 0x0000FFFF00000000L) >> 32;
             var build = (version & 0x00000000FFFF0000L) >> 16;
             var revision = version & 0x000000000000FFFFL;
-
             return $"{major}.{minor}.{build}.{revision}";
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile.Utils
+﻿using Windows.Storage;
+
+namespace Microsoft.Azure.Mobile.Utils
 {
     public class ApplicationSettings : IApplicationSettings
     {
@@ -6,30 +8,29 @@
         {
             get
             {
-                return Windows.Storage.ApplicationData.Current.LocalSettings.Values[key];
+                return ApplicationData.Current.LocalSettings.Values[key];
             }
-
             set
             {
-                Windows.Storage.ApplicationData.Current.LocalSettings.Values[key] = value;
+                ApplicationData.Current.LocalSettings.Values[key] = value;
             }
         }
 
         public T GetValue<T>(string key, T defaultValue)
         {
             object result;
-            bool found = Windows.Storage.ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out result);
-            if (!found)
+            var found = ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out result);
+            if (found)
             {
-                this[key] = defaultValue;
-                return defaultValue;
+                return (T)result;
             }
-            return (T)result;
+            this[key] = defaultValue;
+            return defaultValue;
         }
 
         public void Remove(string key)
         {
-            Windows.Storage.ApplicationData.Current.LocalSettings.Values.Remove(key);
+            ApplicationData.Current.LocalSettings.Values.Remove(key);
         }
     }
 }
