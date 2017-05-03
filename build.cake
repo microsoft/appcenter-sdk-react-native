@@ -31,8 +31,6 @@ class MobileCenterModule {
 	{
 		get { return  "Windows" + MainNuspecFilename; }
 	}
-	public bool HasExternals { get; set; }
-
 	public MobileCenterModule(string android, string ios, string dotnet, string mainNuspecFilename) {
 		AndroidModule = android;
 		IosModule = ios;
@@ -225,11 +223,12 @@ Setup(context =>
 Task("Version")
 	.Does(() =>
 {
+	var assemblyInfo = ParseAssemblyInfo("./" + "SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
+	var version = assemblyInfo.AssemblyInformationalVersion;
 	// Read AssemblyInfo.cs and extract versions for modules.
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var assemblyInfo = ParseAssemblyInfo("./" + module.DotNetModule + "/Properties/AssemblyInfo.cs");
-		module.NuGetVersion = assemblyInfo.AssemblyInformationalVersion;
+		module.NuGetVersion = version;
 	}
 });
 
@@ -622,7 +621,7 @@ void CleanDirectory(string directoryName)
 
 void HandleError(Exception exception)
 {
-	//RunTarget("clean");
+	RunTarget("clean");
 	throw exception;
 }
 
