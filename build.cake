@@ -31,16 +31,9 @@ class MobileCenterModule {
 	{
 		get { return  "Windows" + MainNuspecFilename; }
 	}
-	public bool HasExternals { get; set; }
-
 	public MobileCenterModule(string android, string ios, string dotnet, string mainNuspecFilename) {
 		AndroidModule = android;
 		IosModule = ios;
-		DotNetModule = dotnet;
-		MainNuspecFilename = mainNuspecFilename;
-		HasExternals = true;
-	}
-	public MobileCenterModule(string dotnet, string mainNuspecFilename) {
 		DotNetModule = dotnet;
 		MainNuspecFilename = mainNuspecFilename;
 	}
@@ -87,7 +80,7 @@ var MOBILECENTER_MODULES = new [] {
 	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
 	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec"),
 	//																					when we have a pcl part, this should be changed vvvv (remove uwp extension)
-	new MobileCenterModule("mobile-center-push.aar", "MobileCenterPush.framework.zip", "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP", "MobileCenterPush.nuspec")
+	new MobileCenterModule(null, null, "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push", "MobileCenterPush.nuspec")
 };
 
 // Task TARGET for build
@@ -226,11 +219,12 @@ Setup(context =>
 Task("Version")
 	.Does(() =>
 {
+	var assemblyInfo = ParseAssemblyInfo("./" + "SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
+	var version = assemblyInfo.AssemblyInformationalVersion;
 	// Read AssemblyInfo.cs and extract versions for modules.
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		var assemblyInfo = ParseAssemblyInfo("./" + module.DotNetModule + "/Properties/AssemblyInfo.cs");
-		module.NuGetVersion = assemblyInfo.AssemblyInformationalVersion;
+		module.NuGetVersion = version;
 	}
 });
 
@@ -304,7 +298,7 @@ Task("Externals-Android")
 	// Copy files to {DotNetModule}.Android.Bindings/Jars
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		if (!module.HasExternals)
+		if (module.AndroidModule == null)
 		{
 			continue;
 		}
@@ -627,7 +621,7 @@ void CleanDirectory(string directoryName)
 
 void HandleError(Exception exception)
 {
-	//RunTarget("clean");
+	RunTarget("clean");
 	throw exception;
 }
 
