@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile
@@ -20,7 +19,7 @@ namespace Microsoft.Azure.Mobile
         internal MobileCenter()
         {
         }
-    
+
         /// <summary>
         /// This property controls the amount of logs emitted by the SDK.
         /// </summary>
@@ -175,7 +174,7 @@ namespace Microsoft.Azure.Mobile
             foreach (var t in services)
             {
                 var bindingType = GetBindingType(t);
-                if(bindingType != null)
+                if (bindingType != null)
                 {
                     var aClass = GetClassForType(bindingType);
                     if (aClass != null)
@@ -204,7 +203,7 @@ namespace Microsoft.Azure.Mobile
 
         private static void SetWrapperSdk()
         {
-            iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, null, null, null);
+            iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, Constants.Version, null, null, null);
             iOSMobileCenter.SetWrapperSdk(wrapperSdk);
         }
     }

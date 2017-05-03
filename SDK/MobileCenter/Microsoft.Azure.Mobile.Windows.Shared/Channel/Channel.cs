@@ -367,6 +367,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     _mutex.Lock(stateSnapshot);
                 }
             }
+            // If the optional Install ID has no value, default to using empty GUID
             var installId = MobileCenter.InstallId.HasValue ? MobileCenter.InstallId.Value : Guid.Empty;
             var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs);
 
