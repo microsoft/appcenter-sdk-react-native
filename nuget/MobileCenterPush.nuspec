@@ -28,7 +28,7 @@
     <file src="$windows_dir$/x64/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x64/lib/uap10.0" />
 
     <!-- ARM -->
-    <file src="$windows_dir$/ARM/Release/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-arm/lib/uap10.0" />
 
   </files>
 </package>
