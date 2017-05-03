@@ -98,6 +98,8 @@
     <Compile Include="ModulePages\DistributeFragment.cs" />
     <Compile Include="ModulePages\MobileCenterFragment.cs" />
     <Compile Include="PagerAdapter.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="LogLevelActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />

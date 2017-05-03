@@ -1,14 +1,104 @@
-﻿using Android.OS;
+﻿using System;
+using System.Collections.Generic;
+using Android.Content;
+using Android.OS;
 using Android.Support.V4.App;
 using Android.Views;
+using Android.Widget;
+using Microsoft.Azure.Mobile;
 
 namespace Contoso.Android.Puppet
 {
     public class MobileCenterFragment : Fragment
     {
+        private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
+            { LogLevel.Verbose, MobileCenterLog.Verbose },
+            { LogLevel.Debug, MobileCenterLog.Debug },
+            { LogLevel.Info, MobileCenterLog.Info },
+            { LogLevel.Warn, MobileCenterLog.Warn },
+            { LogLevel.Error, MobileCenterLog.Error }
+        };
+        private static readonly IDictionary<LogLevel, string> LogLevelNames = new Dictionary<LogLevel, string> {
+            { LogLevel.Verbose, Constants.Verbose },
+            { LogLevel.Debug, Constants.Debug },
+            { LogLevel.Info, Constants.Info },
+            { LogLevel.Warn, Constants.Warning },
+            { LogLevel.Error, Constants.Error }
+        };
+        private LogLevel mLogWriteLevel = LogLevel.Verbose;
+
+        private Switch MobileCenterEnabledSwitch;
+        private TextView LogLevelLabel;
+        private EditText LogWriteMessageText;
+        private EditText LogWriteTagText;
+        private TextView LogWriteLevelLabel;
+        private Button LogWriteButton;
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             return inflater.Inflate(Resource.Layout.MobileCenter, container, false);
+        }
+
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        {
+            base.OnViewCreated(view, savedInstanceState);
+
+            MobileCenterEnabledSwitch = view.FindViewById(Resource.Id.enabled) as Switch;
+            LogLevelLabel = view.FindViewById(Resource.Id.log_level) as TextView;
+            LogWriteMessageText = view.FindViewById(Resource.Id.write_log_message) as EditText;
+            LogWriteTagText = view.FindViewById(Resource.Id.write_log_tag) as EditText;
+            LogWriteLevelLabel = view.FindViewById(Resource.Id.write_log_level) as TextView;
+            LogWriteButton = view.FindViewById(Resource.Id.write_log) as Button;
+
+            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+            MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
+            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+            LogLevelLabel.Click += LogLevelClicked;
+            LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
+            LogWriteLevelLabel.Click += LogWriteLevelClicked;
+            LogWriteButton.Click += WriteLog;
+        }
+
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            var logLevel = (LogLevel)data.GetIntExtra("log_level", (int)LogLevel.Verbose);
+            switch (requestCode)
+            {
+                case 0:
+                    MobileCenter.LogLevel = logLevel;
+                    LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+                    break;
+                case 1:
+                    mLogWriteLevel = logLevel;
+                    LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
+                    break;
+            }
+        }
+
+        private void LogLevelClicked(object sender, EventArgs e)
+        {
+            var intent = new Intent(Activity.ApplicationContext, typeof(LogLevelActivity));
+            StartActivityForResult(intent, 0);
+        }
+
+        private void LogWriteLevelClicked(object sender, EventArgs e)
+        {
+            var intent = new Intent(Activity.ApplicationContext, typeof(LogLevelActivity));
+            StartActivityForResult(intent, 1);
+        }
+
+        private void UpdateEnabled(object sender, EventArgs e)
+        {
+            MobileCenter.Enabled = MobileCenterEnabledSwitch.Checked;
+            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+        }
+
+        private void WriteLog(object sender, EventArgs e)
+        {
+            string message = LogWriteMessageText.Text;
+            string tag = LogWriteTagText.Text;
+            LogFunctions[mLogWriteLevel](tag, message);
         }
     }
 }
