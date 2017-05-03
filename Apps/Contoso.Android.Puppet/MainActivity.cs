@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Android.App;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Widget;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
@@ -10,7 +11,7 @@ using Microsoft.Azure.Mobile.Distribute;
 namespace Contoso.Android.Puppet
 {
     [Activity(Label = "SXPuppet", MainLauncher = true, Icon = "@drawable/icon")]
-    public class MainActivity : Activity
+    public class MainActivity : AppCompatActivity
     {
         const string LogTag = "MobileCenterXamarinPuppet";
 
@@ -20,21 +21,6 @@ namespace Contoso.Android.Puppet
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-
-            // Get our button from the layout resource,
-            // and attach an event to it
-            var crashButton1 = FindViewById<Button>(Resource.Id.Crash1);
-            crashButton1.Click += delegate
-            {
-                // Crash
-                crashButton1.Text = crashButton1.Text.Substring(42);
-            };
-            var crashButton2 = FindViewById<Button>(Resource.Id.Crash2);
-            crashButton2.Click += delegate
-            {
-                // Crash
-                Java.Lang.Class.ForName("toto");
-            };
 
             // Mobile Center integration
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
