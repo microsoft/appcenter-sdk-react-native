@@ -17,7 +17,8 @@
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>Contoso.Forms.Puppet.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Contoso.Forms.Puppet.UWP_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>8CF9E8BCB32DFE1C33B66818DEEB7AC03A0153B9</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -112,6 +113,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -139,6 +141,10 @@
     <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.UWP\Microsoft.Azure.Mobile.Crashes.UWP.csproj">
       <Project>{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}</Project>
       <Name>Microsoft.Azure.Mobile.Crashes.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.UWP\Microsoft.Azure.Mobile.Push.UWP.csproj">
+      <Project>{8072449c-c6a8-4b36-87dc-173f295d161c}</Project>
+      <Name>Microsoft.Azure.Mobile.Push.UWP</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
