@@ -47,8 +47,6 @@ namespace Contoso.Forms.Puppet
             
             Analytics.TrackEvent("myEvent");
             Analytics.TrackEvent("myEvent2", new Dictionary<string, string> { { "someKey", "someValue" } });
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute));
-
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>

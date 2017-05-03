@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <mc-push-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-push-Platform>
+    <mc-push-Platform Condition="'$(Platform)' == 'ARM'">arm</mc-push-Platform>
+    <mc-push-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-push-Platform>
+    <mc-push-BuildDir>$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(mc-push-Platform)\lib\uap10.0</mc-push-BuildDir>
+    <mc-push-IsCorrectArch Condition="'$(mc-push-Platform)' == 'x86' or '$(mc-push-Platform)' == 'x64' or '$(mc-push-Platform)' == 'arm'">true</mc-push-IsCorrectArch>
+  </PropertyGroup>
+
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-push-IsCorrectArch)' == 'true')">
+      <Reference Include="Microsoft.Azure.Mobile.Push.dll">
+     <HintPath>$(mc-push-BuildDir)\Microsoft.Azure.Mobile.Push.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+  <ItemDefinitionGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>

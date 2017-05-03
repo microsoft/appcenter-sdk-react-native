@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils.Synchronization;
 
 namespace Microsoft.Azure.Mobile.Push
 {
@@ -29,35 +30,27 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
+        /// <summary>
+        /// Push module enabled or disabled
+        /// </summary>
         public static bool Enabled
         {
             get
             {
-                lock (PushLock)
-                {
-                    return Instance.InstanceEnabled;
-                }
+                return Instance.InstanceEnabled;
             }
             set
             {
-                lock (PushLock)
-                {
-                    Instance.InstanceEnabled = value;
-                }
-            }
-        }
-
-        public static void Register()
-        {
-            lock (PushLock)
-            {
-                Instance.InstanceRegister();
+                Instance.InstanceEnabled = value;
             }
         }
 
         #endregion
 
         #region instance
+
+        private readonly StatefulMutex _mutex;
+        private readonly StateKeeper _stateKeeper = new StateKeeper();
 
         public override string ServiceName
         {
@@ -77,17 +70,20 @@ namespace Microsoft.Azure.Mobile.Push
 
         public Push()
         {
+            _mutex = new StatefulMutex(_stateKeeper);
+
             LogSerializer.AddLogType(PushInstallationLog.JsonIdentifier, typeof(PushInstallationLog));
         }
 
         /// <summary>
-        /// 
+        /// Method that is called to signal start of the Push service.
         /// </summary>
         /// <param name="channelGroup"></param>
         public override void OnChannelGroupReady(IChannelGroup channelGroup)
         {
             base.OnChannelGroupReady(channelGroup);
-            //ApplyEnabledState(InstanceEnabled);
+
+            Instance.InstanceRegister();
         }
 
         public override bool InstanceEnabled
@@ -99,24 +95,7 @@ namespace Microsoft.Azure.Mobile.Push
 
             set
             {
-                //bool prevValue = InstanceEnabled;
                 base.InstanceEnabled = value;
-                //if (value != prevValue)
-                //{
-                //    ApplyEnabledState(value);
-                //}
-            }
-        }
-
-        private void ApplyEnabledState(bool enabled)
-        {
-            if (enabled && ChannelGroup != null)
-            {
-                //
-            }
-            else if (!enabled)
-            {
-                //
             }
         }
 
