@@ -140,15 +140,15 @@ namespace Contoso.Android.Puppet
             var builder = new AlertDialog.Builder(this);
             builder.SetTitle(Resource.String.crash_confirmation_dialog_title);
             builder.SetMessage(Resource.String.crash_confirmation_dialog_message);
-            builder.SetPositiveButton(Resource.String.crash_confirmation_dialog_title, delegate
+            builder.SetPositiveButton(Resource.String.crash_confirmation_dialog_send_button, delegate
             {
                 Crashes.NotifyUserConfirmation(UserConfirmation.Send);
             });
-            builder.SetNegativeButton(Resource.String.crash_confirmation_dialog_title, delegate
+            builder.SetNegativeButton(Resource.String.crash_confirmation_dialog_not_send_button, delegate
             {
                 Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
             });
-            builder.SetNeutralButton(Resource.String.crash_confirmation_dialog_title, delegate
+            builder.SetNeutralButton(Resource.String.crash_confirmation_dialog_always_send_button, delegate
             {
                 Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
             });

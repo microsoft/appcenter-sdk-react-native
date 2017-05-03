@@ -50,13 +50,30 @@ namespace Contoso.Android.Puppet
             LogWriteLevelLabel = view.FindViewById(Resource.Id.write_log_level) as TextView;
             LogWriteButton = view.FindViewById(Resource.Id.write_log) as Button;
 
-            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
             MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
-            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
-            LogLevelLabel.Click += LogLevelClicked;
-            LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
-            LogWriteLevelLabel.Click += LogWriteLevelClicked;
+            ((View)LogLevelLabel.Parent).Click += LogLevelClicked;
+            ((View)LogWriteLevelLabel.Parent).Click += LogWriteLevelClicked;
             LogWriteButton.Click += WriteLog;
+
+            UpdateState();
+        }
+
+        public override bool UserVisibleHint
+        {
+            get { return base.UserVisibleHint; }
+            set
+            {
+                base.UserVisibleHint = value;
+                if (value && IsResumed)
+                    UpdateState();
+            }
+        }
+
+        private void UpdateState()
+        {
+            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+            LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
@@ -76,6 +93,12 @@ namespace Contoso.Android.Puppet
             }
         }
 
+        private void UpdateEnabled(object sender, EventArgs e)
+        {
+            MobileCenter.Enabled = MobileCenterEnabledSwitch.Checked;
+            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+        }
+
         private void LogLevelClicked(object sender, EventArgs e)
         {
             var intent = new Intent(Activity.ApplicationContext, typeof(LogLevelActivity));
@@ -86,12 +109,6 @@ namespace Contoso.Android.Puppet
         {
             var intent = new Intent(Activity.ApplicationContext, typeof(LogLevelActivity));
             StartActivityForResult(intent, 1);
-        }
-
-        private void UpdateEnabled(object sender, EventArgs e)
-        {
-            MobileCenter.Enabled = MobileCenterEnabledSwitch.Checked;
-            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
         }
 
         private void WriteLog(object sender, EventArgs e)

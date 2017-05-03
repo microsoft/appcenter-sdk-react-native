@@ -22,6 +22,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
                 <Switch
+                    android:id="@+id/enabled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -38,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
                 <EditText
+                    android:id="@+id/event_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right" />
@@ -51,16 +53,19 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
                 <TextView
+                    android:id="@+id/properties_count"
                     android:text="\?"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right" />
             </LinearLayout>
             <Button
+                android:id="@+id/add_property"
                 android:text="@string/AnalyticsAddProperty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/track_event"
                 android:text="@string/AnalyticsTrackEvent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
