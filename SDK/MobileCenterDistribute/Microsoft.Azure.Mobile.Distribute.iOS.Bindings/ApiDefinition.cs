@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Mobile.Distribute.iOS.Bindings
     [BaseType(typeof(NSObject))]
     interface MSDistributeDelegate
     {
-        // @optional - (BOOL)distribute:(MSDistribute *)distribute onReleaseAvailableWithDetails:(MSReleaseDetails *)details;
-        [Export("distribute:onReleaseAvailableWithDetails:")]
+        // @optional - (BOOL)distribute:(MSDistribute *)distribute releaseAvailableWithDetails:(MSReleaseDetails *)details;
+        [Export("distribute:releaseAvailableWithDetails:")]
         bool OnReleaseAvailable(MSDistribute distribute, MSReleaseDetails details);
     }
 
