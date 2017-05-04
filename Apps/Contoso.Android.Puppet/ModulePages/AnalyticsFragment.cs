@@ -11,20 +11,22 @@ using Microsoft.Azure.Mobile.Analytics;
 
 namespace Contoso.Android.Puppet
 {
+	using AlertDialog = global::Android.Support.V7.App.AlertDialog;
+
     public class AnalyticsFragment : Fragment
     {
         private readonly IDictionary<string, string> mEventProperties = new Dictionary<string, string>();
-
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            return inflater.Inflate(Resource.Layout.Analytics, container, false);
-        }
 
         private Switch AnalyticsEnabledSwitch;
         private EditText EventNameText;
         private TextView PropertiesCountLabel;
         private Button AddPropertyButton;
         private Button TrackEventButton;
+
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            return inflater.Inflate(Resource.Layout.Analytics, container, false);
+        }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
@@ -50,21 +52,20 @@ namespace Contoso.Android.Puppet
             set
             {
                 base.UserVisibleHint = value;
-                if (value && IsResumed)
-                    UpdateState();
+                if (value && IsResumed) UpdateState();
             }
         }
 
         private void UpdateState()
-        {
-            AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
-            AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
+		{
+			AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
+			AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
             PropertiesCountLabel.Text = mEventProperties.Count.ToString();
         }
 
-        private void UpdateEnabled(object sender, EventArgs e)
+        private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            Analytics.Enabled = AnalyticsEnabledSwitch.Checked;
+            Analytics.Enabled = e.IsChecked;
             AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
         }
 
@@ -77,6 +78,26 @@ namespace Contoso.Android.Puppet
 
         private void AddProperty(object sender, EventArgs e)
         {
+            var builder = new AlertDialog.Builder(Activity);
+            builder.SetTitle(Resource.String.add_property_dialog_title);
+            builder.SetMessage(Resource.String.add_property_dialog_message);
+            var layoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent,
+                                                              ViewGroup.LayoutParams.WrapContent);
+            var keyText = new EditText(Activity) { LayoutParameters = layoutParameters, Hint = "Property Name" };
+            var valueText = new EditText(Activity) { LayoutParameters = layoutParameters, Hint = "Property Value" };
+            var view = new LinearLayout(Activity) { Orientation = Orientation.Vertical };
+            view.AddView(keyText);
+            view.AddView(valueText);
+            builder.SetView(view);
+            builder.SetPositiveButton(Resource.String.add_property_dialog_add_button, delegate
+            {
+                mEventProperties.Add(keyText.Text, valueText.Text);
+                PropertiesCountLabel.Text = mEventProperties.Count.ToString();
+            });
+            builder.SetNegativeButton(Resource.String.add_property_dialog_cancel_button, delegate
+            {
+            });
+            builder.Create().Show();
         }
 
         private void TrackEvent(object sender, EventArgs e)

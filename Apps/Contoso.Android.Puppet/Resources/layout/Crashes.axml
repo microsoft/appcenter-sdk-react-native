@@ -22,6 +22,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
                 <Switch
+                    android:id="@+id/enabled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -30,26 +31,32 @@
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider" />
             <Button
+                android:id="@+id/test_crash"
                 android:text="@string/TestCrash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/divide_by_zero"
                 android:text="@string/DivideByZero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/crash_with_aggregate_exception"
                 android:text="@string/CrashWithAggregateException"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/crash_with_null_reference_exception"
                 android:text="@string/CrashWithNullReferenceException"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/catch_null_reference_exception"
                 android:text="@string/CatchNullReferenceException"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/crash_async"
                 android:text="@string/CrashAsync"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

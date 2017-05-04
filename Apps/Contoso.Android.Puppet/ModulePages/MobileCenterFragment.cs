@@ -64,14 +64,13 @@ namespace Contoso.Android.Puppet
             set
             {
                 base.UserVisibleHint = value;
-                if (value && IsResumed)
-                    UpdateState();
+                if (value && IsResumed) UpdateState();
             }
         }
 
         private void UpdateState()
-        {
-            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+		{
+			MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
@@ -93,9 +92,9 @@ namespace Contoso.Android.Puppet
             }
         }
 
-        private void UpdateEnabled(object sender, EventArgs e)
-        {
-            MobileCenter.Enabled = MobileCenterEnabledSwitch.Checked;
+        private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
+		{
+            MobileCenter.Enabled = e.IsChecked;
             MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
         }
 

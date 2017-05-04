@@ -34,4 +34,8 @@
     <string name="crash_confirmation_dialog_always_send_button">Always Send</string>
     <string name="crash_confirmation_dialog_send_button">Send</string>
     <string name="version_x_available">Version {0} available!</string>
+    <string name="add_property_dialog_title">Add Property</string>
+    <string name="add_property_dialog_message">Please enter a property values to add to the event</string>
+    <string name="add_property_dialog_add_button">Add Property</string>
+    <string name="add_property_dialog_cancel_button">Cancel</string>
 </resources>
