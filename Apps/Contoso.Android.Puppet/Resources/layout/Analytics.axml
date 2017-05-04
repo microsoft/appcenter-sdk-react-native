@@ -22,7 +22,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
                 <Switch
-                    android:id="@+id/enabled"
+                    android:id="@+id/enabled_analytics"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

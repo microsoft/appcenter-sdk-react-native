@@ -20,33 +20,24 @@ namespace Contoso.Android.Puppet
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            DistributeEnabledSwitch = view.FindViewById(Resource.Id.enabled) as Switch;
+            // Find views.
+            DistributeEnabledSwitch = view.FindViewById(Resource.Id.enabled_distribute) as Switch;
 
+            // Subscribe to events.
             DistributeEnabledSwitch.CheckedChange += UpdateEnabled;
 
             UpdateState();
         }
 
-        public override bool UserVisibleHint
-        {
-            get { return base.UserVisibleHint; }
-            set
-            {
-                base.UserVisibleHint = value;
-                if (value && IsResumed) UpdateState();
-            }
-        }
-
         private void UpdateState()
-		{
-			DistributeEnabledSwitch.Enabled = MobileCenter.Enabled;
-			DistributeEnabledSwitch.Checked = Distribute.Enabled;
+        {
+            DistributeEnabledSwitch.Enabled = MobileCenter.Enabled;
+            DistributeEnabledSwitch.Checked = Distribute.Enabled;
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
-		{
+        {
             Distribute.Enabled = e.IsChecked;
-            DistributeEnabledSwitch.Checked = Distribute.Enabled;
         }
     }
 }

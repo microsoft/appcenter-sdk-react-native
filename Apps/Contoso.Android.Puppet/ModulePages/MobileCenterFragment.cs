@@ -43,13 +43,15 @@ namespace Contoso.Android.Puppet
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            MobileCenterEnabledSwitch = view.FindViewById(Resource.Id.enabled) as Switch;
+            // Find views.
+            MobileCenterEnabledSwitch = view.FindViewById(Resource.Id.enabled_mobile_center) as Switch;
             LogLevelLabel = view.FindViewById(Resource.Id.log_level) as TextView;
             LogWriteMessageText = view.FindViewById(Resource.Id.write_log_message) as EditText;
             LogWriteTagText = view.FindViewById(Resource.Id.write_log_tag) as EditText;
             LogWriteLevelLabel = view.FindViewById(Resource.Id.write_log_level) as TextView;
             LogWriteButton = view.FindViewById(Resource.Id.write_log) as Button;
 
+            // Subscribe to events.
             MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
             ((View)LogLevelLabel.Parent).Click += LogLevelClicked;
             ((View)LogWriteLevelLabel.Parent).Click += LogWriteLevelClicked;
@@ -58,19 +60,9 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        public override bool UserVisibleHint
-        {
-            get { return base.UserVisibleHint; }
-            set
-            {
-                base.UserVisibleHint = value;
-                if (value && IsResumed) UpdateState();
-            }
-        }
-
         private void UpdateState()
-		{
-			MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+        {
+            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
@@ -93,9 +85,8 @@ namespace Contoso.Android.Puppet
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
-		{
+        {
             MobileCenter.Enabled = e.IsChecked;
-            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
         }
 
         private void LogLevelClicked(object sender, EventArgs e)

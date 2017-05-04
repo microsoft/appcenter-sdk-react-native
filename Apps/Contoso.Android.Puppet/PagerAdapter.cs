@@ -30,16 +30,21 @@ namespace Contoso.Android.Puppet
             }
         }
 
+        public override int GetItemPosition(Object @object)
+        {
+            return PositionNone;
+        }
+
         public override ICharSequence GetPageTitleFormatted(int position)
-		{
-			switch (position)
-			{
+        {
+            switch (position)
+            {
                 case 0: return new String(mContext.GetString(Resource.String.MobileCenterTitle));
-				case 1: return new String(mContext.GetString(Resource.String.AnalyticsTitle));
-				case 2: return new String(mContext.GetString(Resource.String.CrashesTitle));
+                case 1: return new String(mContext.GetString(Resource.String.AnalyticsTitle));
+                case 2: return new String(mContext.GetString(Resource.String.CrashesTitle));
                 case 3: return new String(mContext.GetString(Resource.String.DistributeTitle));
-				default: return null;
-			}
+                default: return null;
+            }
         }
     }
 }

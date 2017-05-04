@@ -28,7 +28,8 @@ namespace Contoso.Android.Puppet
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            CrashesEnabledSwitch = view.FindViewById(Resource.Id.enabled) as Switch;
+            // Find views.
+            CrashesEnabledSwitch = view.FindViewById(Resource.Id.enabled_crashes) as Switch;
             TestCrashButton = view.FindViewById(Resource.Id.test_crash) as Button;
             DivideByZeroButton = view.FindViewById(Resource.Id.divide_by_zero) as Button;
             CrashWithAggregateExceptionButton = view.FindViewById(Resource.Id.crash_with_aggregate_exception) as Button;
@@ -36,6 +37,7 @@ namespace Contoso.Android.Puppet
             CatchNullReferenceExceptionButton = view.FindViewById(Resource.Id.catch_null_reference_exception) as Button;
             CrashAsyncButton = view.FindViewById(Resource.Id.crash_async) as Button;
 
+            // Subscribe to events.
             CrashesEnabledSwitch.CheckedChange += UpdateEnabled;
             TestCrashButton.Click += TestCrash;
             DivideByZeroButton.Click += DivideByZero;
@@ -47,26 +49,15 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        public override bool UserVisibleHint
-        {
-            get { return base.UserVisibleHint; }
-            set
-            {
-                base.UserVisibleHint = value;
-                if (value && IsResumed) UpdateState();
-            }
-        }
-
         private void UpdateState()
-		{
-			CrashesEnabledSwitch.Enabled = MobileCenter.Enabled;
-			CrashesEnabledSwitch.Checked = Crashes.Enabled;
+        {
+            CrashesEnabledSwitch.Enabled = MobileCenter.Enabled;
+            CrashesEnabledSwitch.Checked = Crashes.Enabled;
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-			Crashes.Enabled = e.IsChecked;
-			CrashesEnabledSwitch.Checked = Crashes.Enabled;
+            Crashes.Enabled = e.IsChecked;
         }
 
         private void TestCrash(object sender, EventArgs e)

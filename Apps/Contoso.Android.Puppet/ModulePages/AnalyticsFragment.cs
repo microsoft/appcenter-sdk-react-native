@@ -32,12 +32,14 @@ namespace Contoso.Android.Puppet
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            AnalyticsEnabledSwitch = view.FindViewById(Resource.Id.enabled) as Switch;
+            // Find views.
+            AnalyticsEnabledSwitch = view.FindViewById(Resource.Id.enabled_analytics) as Switch;
             EventNameText = view.FindViewById(Resource.Id.event_name) as EditText;
             PropertiesCountLabel = view.FindViewById(Resource.Id.properties_count) as TextView;
             AddPropertyButton = view.FindViewById(Resource.Id.add_property) as Button;
             TrackEventButton = view.FindViewById(Resource.Id.track_event) as Button;
 
+            // Subscribe to events.
             AnalyticsEnabledSwitch.CheckedChange += UpdateEnabled;
             ((View)PropertiesCountLabel.Parent).Click += Properties;
             AddPropertyButton.Click += AddProperty;
@@ -46,27 +48,16 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        public override bool UserVisibleHint
-        {
-            get { return base.UserVisibleHint; }
-            set
-            {
-                base.UserVisibleHint = value;
-                if (value && IsResumed) UpdateState();
-            }
-        }
-
         private void UpdateState()
-		{
-			AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
-			AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
+        {
+            AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
+            AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
             PropertiesCountLabel.Text = mEventProperties.Count.ToString();
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             Analytics.Enabled = e.IsChecked;
-            AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
         }
 
         private void Properties(object sender, EventArgs e)
