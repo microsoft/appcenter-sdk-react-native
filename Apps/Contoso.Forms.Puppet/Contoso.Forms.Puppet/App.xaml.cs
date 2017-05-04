@@ -41,7 +41,7 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            MobileCenter.Start("uwp=42f4a839-c54c-44da-8072-a2f2a61751b2;android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
+            MobileCenter.Start("uwp=b46e0da7-4e5a-40c1-a306-acc7c30ddc2e;android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute));
 
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
