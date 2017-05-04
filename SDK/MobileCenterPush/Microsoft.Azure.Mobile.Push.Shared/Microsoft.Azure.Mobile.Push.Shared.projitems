@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Push.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PushNotificationReceivedEventArgs.cs" />
   </ItemGroup>
 </Project>

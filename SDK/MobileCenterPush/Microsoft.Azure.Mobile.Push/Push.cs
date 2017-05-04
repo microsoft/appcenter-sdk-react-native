@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile.Push
+﻿using System;
+
+namespace Microsoft.Azure.Mobile.Push
 {
 	public partial class Push
 	{
@@ -7,5 +9,7 @@
             get { return false; }
             set { }
         }
+
+        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
     }
 }

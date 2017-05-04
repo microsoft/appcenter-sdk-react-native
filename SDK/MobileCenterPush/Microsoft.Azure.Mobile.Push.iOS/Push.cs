@@ -23,6 +23,8 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
+        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
+
         /// <summary>
         /// Call this from the corresponding method override in your AppDelegate.
         /// </summary>
