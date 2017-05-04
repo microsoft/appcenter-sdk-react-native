@@ -46,41 +46,6 @@
     <AndroidLinkSkip>Xamarin.Android.Support.v7.AppCompat;Xamarin.Android.Support.Core.UI</AndroidLinkSkip>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-=======
-    <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Analytics.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Analytics.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Crashes.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Crashes.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Distribute, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Distribute.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Distribute.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Distribute.Android.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Distribute.0.9.2\lib\MonoAndroid403\Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
->>>>>>> develop
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
