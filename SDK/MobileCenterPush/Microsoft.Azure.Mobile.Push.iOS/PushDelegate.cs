@@ -1,5 +1,4 @@
 ﻿using System;
-using Foundation;
 using Microsoft.Azure.Mobile.Push.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Push.iOS

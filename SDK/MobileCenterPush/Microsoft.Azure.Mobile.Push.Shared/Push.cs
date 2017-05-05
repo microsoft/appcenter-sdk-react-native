@@ -2,6 +2,9 @@
 
 namespace Microsoft.Azure.Mobile.Push
 {
+    /// <summary>
+    /// Push feature.
+    /// </summary>
     public partial class Push
     {
         /// <summary>
