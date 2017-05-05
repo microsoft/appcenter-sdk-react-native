@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="18" android:versionName="0.10.1-SNAPSHOT" package="com.microsoft.azure.mobile.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="15" />
-	<application android:label="MCFPuppet"></application>
+	<application android:label="MCFPuppet" />
 </manifest>
