@@ -28,9 +28,6 @@ namespace Contoso.Android.Puppet
             // Get the ViewPager and set it's PagerAdapter so that it can display items
             var viewPager = FindViewById(Resource.Id.viewpager) as ViewPager;
             viewPager.Adapter = new PagerAdapter(SupportFragmentManager, this);
-            viewPager.PageSelected += delegate {
-                viewPager.Adapter.NotifyDataSetChanged();
-            };
 
             // Give the TabLayout the ViewPager
             var tabLayout = FindViewById(Resource.Id.tablayout) as TabLayout;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.Content;
 using Android.OS;
-using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using Microsoft.Azure.Mobile;
@@ -13,7 +12,7 @@ namespace Contoso.Android.Puppet
 {
 	using AlertDialog = global::Android.Support.V7.App.AlertDialog;
 
-    public class AnalyticsFragment : Fragment
+    public class AnalyticsFragment : PageFragment
     {
         private readonly IDictionary<string, string> mEventProperties = new Dictionary<string, string>();
 
@@ -48,16 +47,20 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        private void UpdateState()
+        protected override void UpdateState()
         {
-            AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
+            AnalyticsEnabledSwitch.CheckedChange -= UpdateEnabled;
+            AnalyticsEnabledSwitch.Enabled = true;
             AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
+            AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
+            AnalyticsEnabledSwitch.CheckedChange += UpdateEnabled;
             PropertiesCountLabel.Text = mEventProperties.Count.ToString();
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             Analytics.Enabled = e.IsChecked;
+            AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
         }
 
         private void Properties(object sender, EventArgs e)

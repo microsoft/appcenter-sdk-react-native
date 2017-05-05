@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Android.Content;
 using Android.OS;
-using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using Microsoft.Azure.Mobile;
@@ -11,7 +10,7 @@ namespace Contoso.Android.Puppet
 {
     using Result = global::Android.App.Result;
 
-    public class MobileCenterFragment : Fragment
+    public class MobileCenterFragment : PageFragment
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
             { LogLevel.Verbose, MobileCenterLog.Verbose },
@@ -62,9 +61,11 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        private void UpdateState()
+        protected override void UpdateState()
         {
+            MobileCenterEnabledSwitch.CheckedChange -= UpdateEnabled;
             MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+            MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
@@ -93,6 +94,7 @@ namespace Contoso.Android.Puppet
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             MobileCenter.Enabled = e.IsChecked;
+            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
         }
 
         private void LogLevelClicked(object sender, EventArgs e)

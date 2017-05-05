@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Android.OS;
-using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using Microsoft.Azure.Mobile;
@@ -9,7 +8,7 @@ using Microsoft.Azure.Mobile.Crashes;
 
 namespace Contoso.Android.Puppet
 {
-    public class CrashesFragment : Fragment
+    public class CrashesFragment : PageFragment
     {
         private Switch CrashesEnabledSwitch;
         private Button TestCrashButton;
@@ -49,15 +48,19 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        private void UpdateState()
+        protected override void UpdateState()
         {
-            CrashesEnabledSwitch.Enabled = MobileCenter.Enabled;
+            CrashesEnabledSwitch.CheckedChange -= UpdateEnabled;
+            CrashesEnabledSwitch.Enabled = true;
             CrashesEnabledSwitch.Checked = Crashes.Enabled;
+            CrashesEnabledSwitch.Enabled = MobileCenter.Enabled;
+            CrashesEnabledSwitch.CheckedChange += UpdateEnabled;
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             Crashes.Enabled = e.IsChecked;
+            CrashesEnabledSwitch.Checked = Crashes.Enabled;
         }
 
         private void TestCrash(object sender, EventArgs e)

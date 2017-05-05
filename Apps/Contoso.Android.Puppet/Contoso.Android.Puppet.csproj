@@ -103,6 +103,7 @@
     <Compile Include="LogLevelActivity.cs" />
     <Compile Include="PropertiesActivity.cs" />
     <Compile Include="FakeService.cs" />
+    <Compile Include="ModulePages\PageFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />

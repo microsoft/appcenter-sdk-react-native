@@ -30,11 +30,6 @@ namespace Contoso.Android.Puppet
             }
         }
 
-        public override int GetItemPosition(Object @object)
-        {
-            return PositionNone;
-        }
-
         public override ICharSequence GetPageTitleFormatted(int position)
         {
             switch (position)

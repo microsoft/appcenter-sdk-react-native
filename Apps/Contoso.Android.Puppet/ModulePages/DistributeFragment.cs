@@ -1,5 +1,4 @@
 ﻿using Android.OS;
-using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using Microsoft.Azure.Mobile;
@@ -7,7 +6,7 @@ using Microsoft.Azure.Mobile.Distribute;
 
 namespace Contoso.Android.Puppet
 {
-    public class DistributeFragment : Fragment
+    public class DistributeFragment : PageFragment
     {
         private Switch DistributeEnabledSwitch;
 
@@ -29,15 +28,19 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        private void UpdateState()
+        protected override void UpdateState()
         {
-            DistributeEnabledSwitch.Enabled = MobileCenter.Enabled;
+            DistributeEnabledSwitch.CheckedChange -= UpdateEnabled;
+            DistributeEnabledSwitch.Enabled = true;
             DistributeEnabledSwitch.Checked = Distribute.Enabled;
+            DistributeEnabledSwitch.Enabled = MobileCenter.Enabled;
+            DistributeEnabledSwitch.CheckedChange += UpdateEnabled;
         }
 
         private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             Distribute.Enabled = e.IsChecked;
+            DistributeEnabledSwitch.Checked = Distribute.Enabled;
         }
     }
 }
