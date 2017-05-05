@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\PushInstallationLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Push.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PushNotificationEventArgs.cs" />
   </ItemGroup>
 </Project>

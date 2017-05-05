@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.Azure.Mobile.Push;
+using Microsoft.Azure.Mobile.Push.Windows.Shared;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.UWP.Puppet
 {
@@ -27,6 +28,7 @@ namespace Contoso.UWP.Puppet
             MobileCenter.Configure("42f4a839-c54c-44da-8072-a2f2a61751b2");
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Analytics.Enabled = true;
+            Push.PushNotificationReceived += PushNotificationReceivedHandler;
             MobileCenter.Start(typeof(Analytics), typeof(Crashes), typeof(Push));
             MobileCenter.Enabled = true;
             var properties = new Dictionary<string, string>();
@@ -36,6 +38,13 @@ namespace Contoso.UWP.Puppet
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+
+            Push.OnLaunched(args);
         }
 
         /// <summary>
@@ -83,6 +92,21 @@ namespace Contoso.UWP.Puppet
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        private void PushNotificationReceivedHandler(object sender, PushNotificationEventArgs args)
+        {
+            string title = args.Title;
+            string message = args.Message;
+            var customData = args.CustomData;
+
+            string customDataString = string.Empty;
+            foreach (var pair in customData)
+            {
+                customDataString += $"key='{pair.Key}', value='{pair.Value}'";
+            }
+
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
         }
 
         /// <summary>
