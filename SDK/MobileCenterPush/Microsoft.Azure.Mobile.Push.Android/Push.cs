@@ -7,6 +7,7 @@ namespace Microsoft.Azure.Mobile.Push
     public partial class Push
     {
         private static Android.PushListener _pushListener = new Android.PushListener();
+
         static Push()
         {
             _pushListener.OnPushNotificationReceivedAction = notification =>
