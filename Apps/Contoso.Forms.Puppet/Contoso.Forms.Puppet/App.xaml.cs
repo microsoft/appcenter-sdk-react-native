@@ -46,14 +46,18 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+
+            Push.PushNotificationReceived += PrintNotification;
+
+
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-            
+
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                MobileCenterLog.Info(LogTag, " Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
             });
         }
 
@@ -65,6 +69,21 @@ namespace Contoso.Forms.Puppet
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
+        {
+            var printMessage = $"Push notification received:\n\tTitle: {e.Title}" +
+                $"\n\tMessage: {e.Message}";
+            if (e.CustomData != null)
+            {
+                printMessage += "\n\tCustom data:\n";
+                foreach (var key in e.CustomData.Keys)
+                {
+                    printMessage += $"\t\t{key} : {e.CustomData[key]}\n";
+                }
+            }
+            MobileCenterLog.Info(LogTag, printMessage);
         }
 
         void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)

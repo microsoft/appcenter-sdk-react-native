@@ -32,6 +32,11 @@ namespace Microsoft.Azure.Mobile.Push.iOS.Bindings
         [Static]
         [Export("setDelegate:")]
         void SetDelegate([NullAllowed] MSPushDelegate _delegate);
+
+        //+ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo;
+        [Static]
+        [Export("didReceiveRemoteNotification:")]
+        bool DidReceiveRemoteNotification(NSDictionary userInfo);
     }
 
     // @protocol MSCrashesDelegate <NSObject>

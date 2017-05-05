@@ -61,6 +61,11 @@ namespace Microsoft.Azure.Mobile.Push
             MSPush.DidFailToRegisterForRemoteNotificationsWithError(error);
         }
 
+        public static bool DidReceiveRemoteNotification(NSDictionary userInfo)
+        {
+            return MSPush.DidReceiveRemoteNotification(userInfo);
+        }
+
         private static IDictionary<string, string> NSDictionaryToDotNet(NSDictionary<NSString, NSString> nsdict)
         {
             var dict = new Dictionary<string, string>();
