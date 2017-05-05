@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.Forms.Demo.UWP
 {
@@ -77,6 +78,9 @@ namespace Contoso.Forms.Demo.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            // Start Push service only after MobileCenter initialized with other services (e.g. Analytics service)
+            MobileCenter.Start(typeof(Push));
         }
 
         /// <summary>
