@@ -1,6 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
-
 using Foundation;
 
 // This attribute allows you to mark your assemblies as “safe to link”. 

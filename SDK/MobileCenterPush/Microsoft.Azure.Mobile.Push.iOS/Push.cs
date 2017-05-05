@@ -6,10 +6,9 @@ using Microsoft.Azure.Mobile.Push.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Push
 {
-    using iOSPush = iOS.Bindings.MSPush;
     public partial class Push
     {
-        static Type _internalBindingType = typeof(iOSPush);
+        static Type _internalBindingType = typeof(MSPush);
         static PushDelegate _pushDelegate = new PushDelegate();
 
         static Push()
@@ -24,13 +23,13 @@ namespace Microsoft.Azure.Mobile.Push
                 };
                 PlatformPushNotificationReceived?.Invoke(null, pushEventArgs);
             };
-            iOSPush.SetDelegate(_pushDelegate);
+            MSPush.SetDelegate(_pushDelegate);
         }
 
         private static bool PlatformEnabled
         {
-            get { return iOSPush.IsEnabled(); }
-            set { iOSPush.SetEnabled(value); }  
+            get { return MSPush.IsEnabled(); }
+            set { MSPush.SetEnabled(value); }  
         }
 
         [Preserve]
@@ -50,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="deviceToken">Device token.</param>
         public static void RegisteredForRemoteNotifications(NSData deviceToken)
         {
-            iOSPush.DidRegisterForRemoteNotificationsWithDeviceToken(deviceToken);
+            MSPush.DidRegisterForRemoteNotificationsWithDeviceToken(deviceToken);
         }
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="error">Associated error.</param>
         public static void FailedToRegisterForRemoteNotifications(NSError error)
         {
-            iOSPush.DidFailToRegisterForRemoteNotificationsWithError(error);
+            MSPush.DidFailToRegisterForRemoteNotificationsWithError(error);
         }
 
         private static IDictionary<string, string> NSDictionaryToDotNet(NSDictionary<NSString, NSString> nsdict)
