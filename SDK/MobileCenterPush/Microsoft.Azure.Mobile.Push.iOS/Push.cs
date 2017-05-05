@@ -64,7 +64,10 @@ namespace Microsoft.Azure.Mobile.Push
         private static IDictionary<string, string> NSDictionaryToDotNet(NSDictionary<NSString, NSString> nsdict)
         {
             var dict = new Dictionary<string, string>();
-
+            foreach (var key in nsdict.Keys)
+            {
+                dict[key.ToString()] = nsdict.ObjectForKey(key);
+            }
             return dict;
         }
     }
