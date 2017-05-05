@@ -9,6 +9,8 @@ using Microsoft.Azure.Mobile;
 
 namespace Contoso.Android.Puppet
 {
+    using Result = global::Android.App.Result;
+
     public class MobileCenterFragment : Fragment
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
@@ -70,6 +72,10 @@ namespace Contoso.Android.Puppet
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+            if (resultCode != (int)Result.Ok || data == null)
+            {
+                return;
+            }
             var logLevel = (LogLevel)data.GetIntExtra("log_level", (int)LogLevel.Verbose);
             switch (requestCode)
             {
