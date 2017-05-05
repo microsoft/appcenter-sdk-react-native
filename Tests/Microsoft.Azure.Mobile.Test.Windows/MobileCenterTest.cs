@@ -4,6 +4,7 @@ using Microsoft.Azure.Mobile.Test.Windows.Channel;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -14,6 +15,12 @@ namespace Microsoft.Azure.Mobile.Test
         public void InitializeMobileCenterTest()
         {
             MockMobileCenterService.Reset();
+            MobileCenter.Instance = null;
+        }
+
+        [TestCleanup]
+        public void CleanupMobileCenterTest()
+        {
             MobileCenter.Instance = null;
         }
 
@@ -424,7 +431,6 @@ namespace Microsoft.Azure.Mobile.Test
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
-
         /// <summary>
         /// Verify parse when the platform is second of two
         /// </summary>
@@ -474,6 +480,39 @@ namespace Microsoft.Azure.Mobile.Test
             var secrets = $"ios=anotherstring;{platformId}={appSecret};";
             Assert.ThrowsException<MobileCenterException>(
                 () => MobileCenter.GetSecretForPlatform(secrets, platformId + platformId));
+        }
+
+        /// <summary>
+        /// Verify setting custom properties.
+        /// </summary>
+        [TestMethod]
+        public void SetCustomProperties()
+        {
+            var settingsMock = new Mock<IApplicationSettings>();
+            settingsMock.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, true)).Returns(true);
+            var channelGroupMock = new Mock<IChannelGroup>();
+            var channelUnitMock = new Mock<IChannelUnit>();
+            channelGroupMock.Setup(
+                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+                .Returns(channelUnitMock.Object);
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Configure("appsecret");
+
+            /* Set null. */
+            MobileCenter.SetCustomProperties(null);
+            channelUnitMock.Verify(channel => channel.Enqueue(It.IsAny<Log>()), Times.Never());
+
+            /* Set empty. */
+            var empty = new CustomProperties();
+            MobileCenter.SetCustomProperties(empty);
+            channelUnitMock.Verify(channel => channel.Enqueue(It.IsAny<Log>()), Times.Never());
+
+            /* Set normal. */
+            var properties = new CustomProperties();
+            properties.Set("test", "test");
+            MobileCenter.SetCustomProperties(properties);
+            channelUnitMock.Verify(channel => channel.Enqueue(It.Is<CustomPropertiesLog>(log =>
+                log.Properties == properties.Properties)), Times.Once());
         }
     }
 

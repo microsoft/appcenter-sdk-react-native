@@ -128,6 +128,19 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
+        // TODO: Make public when backend is ready.
+        /// <summary>
+        /// Set the custom properties.
+        /// </summary>
+        /// <param name="customProperties">Custom properties object.</param>
+        internal static void SetCustomProperties(CustomProperties customProperties)
+        {
+            lock (MobileCenterLock)
+            {
+                Instance.SetInstanceCustomProperties(customProperties);
+            }
+        }
+
         /// <summary>
         /// Check whether SDK has already been configured or not.
         /// </summary>
@@ -205,6 +218,7 @@ namespace Microsoft.Azure.Mobile
         {
             _applicationSettings = new ApplicationSettings();
             LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
+            LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
         }
 
         // This constructor is only for unit testing
@@ -244,6 +258,18 @@ namespace Microsoft.Azure.Mobile
         {
             _logUrl = logUrl;
             _channelGroup?.SetLogUrl(logUrl);
+        }
+
+        private void SetInstanceCustomProperties(CustomProperties customProperties)
+        {
+            if (customProperties == null || customProperties.Properties.Count == 0)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom properties may not be null or empty");
+                return;
+            }
+            var customPropertiesLog = new CustomPropertiesLog();
+            customPropertiesLog.Properties = customProperties.Properties;
+            _channel.Enqueue(customPropertiesLog);
         }
 
         // Internal for testing

@@ -268,3 +268,6 @@ externals/
 
 # Output directory
 output/
+
+#google-services
+google-services.json

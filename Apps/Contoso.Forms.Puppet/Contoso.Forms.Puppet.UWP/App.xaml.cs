@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Puppet.UWP
 {
@@ -78,6 +79,9 @@ namespace Contoso.Forms.Puppet.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            // Start Push service only after MobileCenter initialized with other services (e.g. Analytics service)
+            MobileCenter.Start(typeof(Push));
         }
 
         /// <summary>
