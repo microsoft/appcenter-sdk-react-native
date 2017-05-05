@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 [assembly: ReferenceAssembly]
 #endif
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("0.10.1.0")]
 [assembly: ComVisible(false)]
