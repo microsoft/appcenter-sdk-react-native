@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Mobile.Push
         private static Android.PushListener _pushListener = new Android.PushListener();
         static Push()
         {
-            _pushListener.OnPushNotificationReceivedAction = (notification) =>
+            _pushListener.OnPushNotificationReceivedAction = notification =>
             {
                 var pushEventArgs = new PushNotificationReceivedEventArgs
                 {
@@ -27,6 +27,7 @@ namespace Microsoft.Azure.Mobile.Push
         	get { return AndroidPush.Enabled; }
         	set { AndroidPush.Enabled = value; }
         }
+
         /// <summary>
         /// Internal SDK property not intended for public use.
         /// </summary>
