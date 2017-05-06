@@ -11,6 +11,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             MobileCenter.Instance = null;
         }
 
+        /// <summary>
+        /// Verify configure with UWP platform id
+        /// </summary>
         [TestMethod]
         public void VerifyPlatformId()
         {
