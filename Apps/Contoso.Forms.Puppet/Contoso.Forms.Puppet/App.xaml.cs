@@ -25,6 +25,15 @@ namespace Contoso.Forms.Puppet
             MainPage = new NavigationPage(new MainPuppetPage());
         }
 
+        static App()
+        {
+            // set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
+        }
+
         protected override void OnStart()
         {
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
@@ -32,11 +41,7 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenterLog.Info(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
 
-            // set event handlers
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
-            Push.PushNotificationReceived += PrintNotification;
+
 
             // set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
@@ -85,7 +90,7 @@ namespace Contoso.Forms.Puppet
             // Handle when your app resumes
         }
 
-        void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
+        static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
             var printMessage = $"Push notification received:\n\tTitle: {e.Title}" +
                 $"\n\tMessage: {e.Message}";
@@ -100,7 +105,7 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Info(LogTag, printMessage);
         }
 
-        void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
+        static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
             MobileCenterLog.Info(LogTag, "Sending error report");
 
@@ -118,7 +123,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
+        static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
             MobileCenterLog.Info(LogTag, "Sent error report");
 
@@ -141,7 +146,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
+        static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
             MobileCenterLog.Info(LogTag, "Failed to send error report");
 
