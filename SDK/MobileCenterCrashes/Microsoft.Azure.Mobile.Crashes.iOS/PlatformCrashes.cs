@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
-using Foundation;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Foundation;
 using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
@@ -16,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override SentErrorReportEventHandler SentErrorReport { get; set; }
         public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        //public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
         CrashesDelegate crashesDelegate { get; set; }
@@ -63,7 +62,6 @@ namespace Microsoft.Azure.Mobile.Crashes
 
             MSCrashes.NotifyWithUserConfirmation(iosUserConfirmation);
         }
-
 
         //public override void TrackException(Exception exception)
         //{

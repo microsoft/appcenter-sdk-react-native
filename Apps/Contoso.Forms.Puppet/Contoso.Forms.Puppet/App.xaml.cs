@@ -4,6 +4,9 @@ using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Contoso.Forms.Puppet
 {
@@ -33,6 +36,7 @@ namespace Contoso.Forms.Puppet
             //set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
+            Crashes.GetErrorAttachments = GetErrorAttachments;
 
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
@@ -160,6 +164,15 @@ namespace Contoso.Forms.Puppet
             });
 
             return true;
+        }
+
+        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        {
+            return new ErrorAttachmentLog[]
+            {
+                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
+            };
         }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)

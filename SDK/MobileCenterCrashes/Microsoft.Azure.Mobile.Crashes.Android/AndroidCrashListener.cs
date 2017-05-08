@@ -1,31 +1,37 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
-{
-    using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
-    using AndroidErrorAttachment = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorAttachment;
-    using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorReport;
+﻿using Com.Microsoft.Azure.Mobile.Crashes;
+using Com.Microsoft.Azure.Mobile.Crashes.Model;
+using Java.Lang;
+using Java.Util;
 
-    class AndroidCrashListener : Java.Lang.Object, AndroidICrashListener
+namespace Microsoft.Azure.Mobile.Crashes
+{
+    class AndroidCrashListener : Object, ICrashesListener
     {
-        private readonly PlatformCrashes _owner;
+        readonly PlatformCrashes _owner;
 
         public AndroidCrashListener(PlatformCrashes owner)
         {
             _owner = owner;
         }
 
-        public AndroidErrorAttachment GetErrorAttachment(AndroidErrorReport androidReport)
+        public IIterable GetErrorAttachments(AndroidErrorReport androidReport)
         {
-            //if (_owner.GetErrorAttachment == null)
-            //{
-            //    return null;
-            //}
+            if (_owner.GetErrorAttachments == null)
+            {
+                return null;
+            }
 
-            //var report = ErrorReportCache.GetErrorReport(androidReport);
-            //var attachment = _owner.GetErrorAttachment(report);
-            //if (attachment != null)
-            //{
-            //    return attachment.internalAttachment;
-            //}
+            var report = ErrorReportCache.GetErrorReport(androidReport);
+            var attachments = _owner.GetErrorAttachments(report);
+            if (attachments != null)
+            {
+                var attachmentList = new ArrayList();
+                foreach (var attachment in attachments)
+                {
+                    attachmentList.Add(attachment.internalAttachment);
+                }
+                return attachmentList;
+            }
 
             return null;
         }
@@ -37,12 +43,12 @@
                 return;
             }
             var report = ErrorReportCache.GetErrorReport(androidReport);
-            var e = new  SendingErrorReportEventArgs();
+            var e = new SendingErrorReportEventArgs();
             e.Report = report;
             _owner.SendingErrorReport(null, e);
         }
 
-        public void OnSendingFailed(AndroidErrorReport androidReport, Java.Lang.Exception exception)
+        public void OnSendingFailed(AndroidErrorReport androidReport, Exception exception)
         {
             if (_owner.FailedToSendErrorReport == null)
             {
@@ -52,7 +58,7 @@
             var e = new FailedToSendErrorReportEventArgs();
             e.Report = report;
             e.Exception = exception;
-            _owner.FailedToSendErrorReport(null, e);        
+            _owner.FailedToSendErrorReport(null, e);
         }
 
         public void OnSendingSucceeded(AndroidErrorReport androidReport)

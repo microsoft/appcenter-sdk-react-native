@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
-        //GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
         //void TrackException(Exception exception);
     }
 }

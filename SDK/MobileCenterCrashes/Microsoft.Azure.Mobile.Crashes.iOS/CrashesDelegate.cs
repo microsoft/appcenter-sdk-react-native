@@ -5,7 +5,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     public class CrashesDelegate : MSCrashesDelegate
     {
-        private readonly PlatformCrashes _owner;
+        readonly PlatformCrashes _owner;
 
         internal CrashesDelegate(PlatformCrashes owner)
         {
@@ -23,22 +23,27 @@ namespace Microsoft.Azure.Mobile.Crashes
             return _owner.ShouldProcessErrorReport(report);
         }
 
-        //public override MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport)
-        //{
-        //    if (_owner.GetErrorAttachment == null) 
-        //    {
-        //        return null;
-        //    }
-              
-        //    var report = ErrorReportCache.GetErrorReport(msReport);
-        //    ErrorAttachment attachment = _owner.GetErrorAttachment(report);
-        //    if (attachment != null)
-        //    {
-        //        return attachment.internalAttachment;
-        //    }
+        public override NSArray AttachmentsWithCrashes(MSCrashes crashes, MSErrorReport msReport)
+        {
+            if (_owner.GetErrorAttachments == null)
+            {
+                return null;
+            }
 
-        //    return null;
-        // }
+            var report = ErrorReportCache.GetErrorReport(msReport);
+            var attachments = _owner.GetErrorAttachments(report);
+            if (attachments != null)
+            {
+                var nsArray = new NSMutableArray();
+                foreach (var attachment in attachments)
+                {
+                    nsArray.Add(attachment.internalAttachment);
+                }
+                return nsArray;
+            }
+
+            return null;
+        }
 
         public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)
         {
