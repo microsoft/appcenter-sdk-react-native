@@ -79,7 +79,6 @@ var MOBILECENTER_MODULES = new [] {
 	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
 	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
 	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec"),
-	//																					when we have a pcl part, this should be changed vvvv (remove uwp extension)
 	new MobileCenterModule(null, null, "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push", "MobileCenterPush.nuspec")
 };
 
@@ -173,34 +172,28 @@ Setup(context =>
 			AssemblyPaths = new string[] {	"nuget/Microsoft.Azure.Mobile.targets",
 								"nuget/Microsoft.Azure.Mobile.Analytics.targets",
 								"nuget/Microsoft.Azure.Mobile.Push.targets",
-								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Release/Microsoft.Azure.Mobile.Crashes.UWP.dll",
+								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll",
 								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Reference/Microsoft.Azure.Mobile.dll",
 								"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Reference/Microsoft.Azure.Mobile.Analytics.dll",
 								"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Reference/Microsoft.Azure.Mobile.Push.dll" }
 		};
 		var uwpX86AssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x86",
-			AssemblyPaths = new string[] { 	"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Analytics.dll",
-								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x86/Release/Microsoft.Azure.Mobile.dll",
+			AssemblyPaths = new string[] { 	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Crashes.dll",
     							"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-   								"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd",
-								"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Push.dll" }
+   								"Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
 		};
 		var uwpX64AssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x64",
-			AssemblyPaths =  new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/x64/Release/Microsoft.Azure.Mobile.dll",
-  									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Analytics.dll",
+			AssemblyPaths =  new string[] {	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Crashes.dll",
    									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-   									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd",
-									"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Push.dll"}
+   									"x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
 		};
 		var uwpArmAssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/ARM",
-			AssemblyPaths =  new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.dll",
-									"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Analytics.dll",
+			AssemblyPaths =  new string[] {  "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Crashes.dll",
 									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd",
-									"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Push.dll"}
+									"ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
 		};
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpAnyCpuAssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX86AssemblyGroup);
