@@ -53,9 +53,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 #endif
         public static event SendingErrorReportEventHandler SendingErrorReport;
 
+#if WINDOWS_UWP
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("This does not exist in UWP and should not be used.")]
+#else
         /// <summary>
         /// Occurs when an error report has been successfully sent.
         /// </summary>
+#endif
         public static event SentErrorReportEventHandler SentErrorReport;
 
 #if WINDOWS_UWP
