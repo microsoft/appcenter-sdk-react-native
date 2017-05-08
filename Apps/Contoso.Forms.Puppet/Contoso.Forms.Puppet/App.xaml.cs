@@ -171,6 +171,7 @@ namespace Contoso.Forms.Puppet
             return new ErrorAttachmentLog[]
             {
                 ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+                null,
                 ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
             };
         }

@@ -37,7 +37,14 @@ namespace Microsoft.Azure.Mobile.Crashes
                 var nsArray = new NSMutableArray();
                 foreach (var attachment in attachments)
                 {
-                    nsArray.Add(attachment.internalAttachment);
+                    if (attachment != null)
+                    {
+                        nsArray.Add(attachment.internalAttachment);
+                    }
+                    else
+                    {
+                        MobileCenterLog.Warn(Crashes.LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
+                    }
                 }
                 return nsArray;
             }

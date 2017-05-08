@@ -28,7 +28,8 @@ namespace Microsoft.Azure.Mobile.Crashes
                 var attachmentList = new ArrayList();
                 foreach (var attachment in attachments)
                 {
-                    attachmentList.Add(attachment.internalAttachment);
+                    /* Let Java SDK warn against null. */
+                    attachmentList.Add(attachment?.internalAttachment);
                 }
                 return attachmentList;
             }
