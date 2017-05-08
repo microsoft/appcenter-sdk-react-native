@@ -43,6 +43,10 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
         }
 
+        // We use the EditorBrowsable attribute to hide the unimplemented APIs from UWP apps.
+        // The APIs will still be visible if this is added as a project reference, but otherwise,
+        // (so if it's added via nuget), they will be hidden. Unless the VS instance has resharper,
+        // which is why we also use the Obsolete attribute.
 #if WINDOWS_UWP
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
