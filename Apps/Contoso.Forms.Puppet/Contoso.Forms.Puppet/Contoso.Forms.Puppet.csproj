@@ -57,7 +57,7 @@
     <EmbeddedResource Include="PropertiesContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\DistributeContentPage.xaml">
+    <EmbeddedResource Include="ModulePages\OthersContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -81,8 +81,8 @@
     <Compile Include="ModulePages\AnalyticsContentPage.xaml.cs">
       <DependentUpon>AnalyticsContentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModulePages\DistributeContentPage.xaml.cs">
-      <DependentUpon>DistributeContentPage.xaml</DependentUpon>
+    <Compile Include="ModulePages\OthersContentPage.xaml.cs">
+      <DependentUpon>OthersContentPage.xaml</DependentUpon>
     </Compile>    
     <Compile Include="Constants.cs" />
     <Compile Include="AddPropertyContentPage.xaml.cs">

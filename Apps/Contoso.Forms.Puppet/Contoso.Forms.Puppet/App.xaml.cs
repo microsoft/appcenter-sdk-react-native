@@ -5,6 +5,8 @@ using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
 using System.Threading.Tasks;
+using System;
+using System.Reflection;
 
 namespace Contoso.Forms.Puppet
 {
@@ -30,15 +32,15 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenterLog.Info(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
 
-            //set event handlers
+            // set event handlers
             Crashes.SendingErrorReport += SendingErrorReportHandler;
             Crashes.SentErrorReport += SentErrorReportHandler;
             Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
 
-            //set callbacks
+            // set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
@@ -47,8 +49,20 @@ namespace Contoso.Forms.Puppet
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
 
-            Push.PushNotificationReceived += PrintNotification;
+            // Need to use reflection because moving this to the Android specific
+            // code causes crash. (Unable to access properties before init is called).
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+            {
+               if (!Properties.ContainsKey(OthersContentPage.FirebaseEnabledKey))
+                {
+                    Properties[OthersContentPage.FirebaseEnabledKey] = false;
+                }
 
+                if ((bool)Properties[OthersContentPage.FirebaseEnabledKey])
+                {
+                    typeof(Push).GetRuntimeMethod("EnableFirebaseAnalytics", new Type[0]).Invoke(null, null);
+                }
+            }
 
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
@@ -150,13 +164,11 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-
         bool ShouldProcess(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Determining whether to process error report");
             return true;
         }
-
 
         bool ConfirmationHandler()
         {
