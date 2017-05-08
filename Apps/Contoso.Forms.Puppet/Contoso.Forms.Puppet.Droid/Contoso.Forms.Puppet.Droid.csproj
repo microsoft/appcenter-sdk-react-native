@@ -90,9 +90,6 @@
     <Reference Include="Xamarin.Firebase.Messaging">
       <HintPath>..\..\..\packages\Xamarin.Firebase.Messaging.42.1021.0\lib\MonoAndroid70\Xamarin.Firebase.Messaging.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\..\..\packages\Xamarin.GooglePlayServices.Base.42.1021.0\lib\MonoAndroid70\Xamarin.GooglePlayServices.Base.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.Annotations.25.3.1\lib\MonoAndroid70\Xamarin.Android.Support.Annotations.dll</HintPath>
     </Reference>
@@ -148,7 +145,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="packages.config" />
@@ -228,7 +224,6 @@
   <Import Project="..\..\..\packages\Xamarin.Firebase.Analytics.Impl.42.1021.0\build\MonoAndroid70\Xamarin.Firebase.Analytics.Impl.targets" Condition="Exists('..\..\..\packages\Xamarin.Firebase.Analytics.Impl.42.1021.0\build\MonoAndroid70\Xamarin.Firebase.Analytics.Impl.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Firebase.Analytics.42.1021.0\build\MonoAndroid70\Xamarin.Firebase.Analytics.targets" Condition="Exists('..\..\..\packages\Xamarin.Firebase.Analytics.42.1021.0\build\MonoAndroid70\Xamarin.Firebase.Analytics.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Firebase.Messaging.42.1021.0\build\MonoAndroid70\Xamarin.Firebase.Messaging.targets" Condition="Exists('..\..\..\packages\Xamarin.Firebase.Messaging.42.1021.0\build\MonoAndroid70\Xamarin.Firebase.Messaging.targets')" />
-  <Import Project="..\..\..\packages\Xamarin.GooglePlayServices.Base.42.1021.0\build\MonoAndroid70\Xamarin.GooglePlayServices.Base.targets" Condition="Exists('..\..\..\packages\Xamarin.GooglePlayServices.Base.42.1021.0\build\MonoAndroid70\Xamarin.GooglePlayServices.Base.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Android.Support.Compat.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Compat.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Android.Support.Core.UI.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Core.UI.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets')" />
