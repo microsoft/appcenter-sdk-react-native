@@ -65,7 +65,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Piyush Joshi (YG3U94CNDA)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>false</MtouchFastDev>
@@ -75,38 +75,39 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <CodesignProvision>Xamarin Demo</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Analytics.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.Analytics.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Analytics.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.Analytics.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Crashes.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.Crashes.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Crashes.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.Crashes.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Distribute, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Distribute.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Distribute.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.Distribute.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Distribute.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Distribute.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Distribute.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.Distribute.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.0.10.0/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
+      <HintPath>../../../packages/Microsoft.Azure.Mobile.0.11.0-r0002-75b8a41/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -124,6 +125,12 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Push">
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Push.0.11.0-r0002-75b8a41\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Push.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Push.iOS.Bindings">
+      <HintPath>..\..\..\packages\Microsoft.Azure.Mobile.Push.0.11.0-r0002-75b8a41\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Push.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +159,7 @@
     <BundleResource Include="Resources\bolt%402x.png" />
     <BundleResource Include="Resources\socket%402x.png" />
     <BundleResource Include="Resources\lightning%402x.png" />
+    <BundleResource Include="Resources\handbag%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj">
