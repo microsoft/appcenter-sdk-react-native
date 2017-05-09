@@ -157,9 +157,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
-/// <summary>
-/// Enables or disables Crashes module.
-/// </summary>
+        /// <summary>
+        /// Enables or disables Crashes module.
+        /// </summary>
 #endif
         public static bool Enabled
         {
@@ -172,12 +172,12 @@ namespace Microsoft.Azure.Mobile.Crashes
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
-/// <summary>
-/// Provides information whether the app crashed in its last session.
-/// </summary>
-/// <value>
-/// <c>true</c> if a crash was recorded in the last session, otherwise <c>false</c>.
-/// </value>
+        /// <summary>
+        /// Provides information whether the app crashed in its last session.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if a crash was recorded in the last session, otherwise <c>false</c>.
+        /// </value>
 #endif
         public static bool HasCrashedInLastSession => PlatformCrashes.HasCrashedInLastSession;
 
