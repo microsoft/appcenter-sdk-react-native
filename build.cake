@@ -53,8 +53,8 @@ var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
 var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.7.0";
-var IOS_SDK_VERSION = "0.7.0";
+var ANDROID_SDK_VERSION = "0.8.0";
+var IOS_SDK_VERSION = "0.8.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -79,7 +79,7 @@ var MOBILECENTER_MODULES = new [] {
 	new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
 	new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
 	new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec"),
-	new MobileCenterModule(null, null, "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push", "MobileCenterPush.nuspec")
+	new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework.zip", "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push", "MobileCenterPush.nuspec")	
 };
 
 // Task TARGET for build
@@ -134,7 +134,9 @@ Setup(context =>
 							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
 							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll",
 							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll" }
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll",
+							"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.iOS/bin/Release/Microsoft.Azure.Mobile.Push.dll",
+    						"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.Push.iOS.Bindings.dll" }
 		};
 		var androidAssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = ANDROID_ASSEMBLIES_FOLDER,
@@ -145,14 +147,17 @@ Setup(context =>
 							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
 							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll",
 							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll" }
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll",
+							"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android/bin/Release/Microsoft.Azure.Mobile.Push.dll",
+   							"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Push.Android.Bindings.dll" }
 		};
 		var pclAssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = PCL_ASSEMBLIES_FOLDER,
 			AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/Microsoft.Azure.Mobile.dll",
 							"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
 							"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/Microsoft.Azure.Mobile.Distribute.dll" }
+							"SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
+							"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push/bin/Release/Microsoft.Azure.Mobile.Push.dll" }
 		};
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
@@ -289,10 +294,6 @@ Task("Externals-Android")
 	// Copy files to {DotNetModule}.Android.Bindings/Jars
 	foreach (var module in MOBILECENTER_MODULES)
 	{
-		if (module.AndroidModule == null)
-		{
-			continue;
-		}
 		var files = GetFiles("./externals/android/*/" + module.AndroidModule);
 		CopyFiles(files, module.DotNetModule + ".Android.Bindings/Jars/");
 	}

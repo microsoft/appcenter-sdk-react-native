@@ -267,6 +267,9 @@ ModelManifest.xml
 tools/
 externals/
 
+# Google services json
+**/google-services.json
+
 # Output directory
 output/
 

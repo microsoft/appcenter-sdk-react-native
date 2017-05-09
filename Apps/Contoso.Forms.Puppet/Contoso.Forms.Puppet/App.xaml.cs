@@ -3,7 +3,10 @@ using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.Azure.Mobile.Push;
 using System.Threading.Tasks;
+using System;
+using System.Reflection;
 
 namespace Contoso.Forms.Puppet
 {
@@ -11,11 +14,24 @@ namespace Contoso.Forms.Puppet
     {
         public const string LogTag = "MobileCenterXamarinPuppet";
 
+        // Mobile Center keys
+        public const string uwpKey = "42f4a839-c54c-44da-8072-a2f2a61751b2";
+        public const string androidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
+        public const string iosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
+
         public App()
         {
             InitializeComponent();
-
             MainPage = new NavigationPage(new MainPuppetPage());
+        }
+
+        static App()
+        {
+            // set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
         }
 
         protected override void OnStart()
@@ -25,15 +41,11 @@ namespace Contoso.Forms.Puppet
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenterLog.Info(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
 
-            //set event handlers
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
 
-            //set callbacks
+
+            // set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
@@ -41,14 +53,30 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            MobileCenter.Start("uwp=b46e0da7-4e5a-40c1-a306-acc7c30ddc2e;android=bff0949b-7970-439d-9745-92cdc59b10fe;ios=b889c4f2-9ac2-4e2e-ae16-dae54f2c5899",
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute));
+
+            // Need to use reflection because moving this to the Android specific
+            // code causes crash. (Unable to access properties before init is called).
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+            {
+               if (!Properties.ContainsKey(OthersContentPage.FirebaseEnabledKey))
+                {
+                    Properties[OthersContentPage.FirebaseEnabledKey] = false;
+                }
+
+                if ((bool)Properties[OthersContentPage.FirebaseEnabledKey])
+                {
+                    typeof(Push).GetRuntimeMethod("EnableFirebaseAnalytics", new Type[0]).Invoke(null, null);
+                }
+            }
+
+            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
+                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                MobileCenterLog.Info(LogTag, " Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
             });
         }
 
@@ -62,7 +90,22 @@ namespace Contoso.Forms.Puppet
             // Handle when your app resumes
         }
 
-        void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
+        static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
+        {
+            var printMessage = $"Push notification received:\n\tTitle: {e.Title}" +
+                $"\n\tMessage: {e.Message}";
+            if (e.CustomData != null)
+            {
+                printMessage += "\n\tCustom data:\n";
+                foreach (var key in e.CustomData.Keys)
+                {
+                    printMessage += $"\t\t{key} : {e.CustomData[key]}\n";
+                }
+            }
+            MobileCenterLog.Info(LogTag, printMessage);
+        }
+
+        static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
             MobileCenterLog.Info(LogTag, "Sending error report");
 
@@ -80,7 +123,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
+        static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
             MobileCenterLog.Info(LogTag, "Sent error report");
 
@@ -103,7 +146,7 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
+        static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
             MobileCenterLog.Info(LogTag, "Failed to send error report");
 
@@ -126,13 +169,11 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-
         bool ShouldProcess(ErrorReport report)
         {
             MobileCenterLog.Info(LogTag, "Determining whether to process error report");
             return true;
         }
-
 
         bool ConfirmationHandler()
         {
