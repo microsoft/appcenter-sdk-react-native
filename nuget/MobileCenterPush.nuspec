@@ -30,6 +30,7 @@
     <version>$version$</version>
   </metadata>
   <files>
+
     <!-- PCL -->
     <file src="$pcl_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10" />
 
@@ -42,17 +43,7 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.Push.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.targets"  target="build/uap10.0"/>
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.dll" target="ref/uap10.0" />
-
-    <!--x86 -->
-    <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x86/lib/uap10.0" />
-
-    <!-- x64 -->
-    <file src="$windows_dir$/x64/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x64/lib/uap10.0" />
-
-    <!-- ARM -->
-    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
 
   </files>
 </package>
