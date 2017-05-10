@@ -3,4 +3,5 @@
     <local:MobileCenterContentPage/>
 	<local:AnalyticsContentPage/>
 	<local:CrashesContentPage/>
+	<local:OthersContentPage/>
 </TabbedPage>
