@@ -104,7 +104,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|AnyCPU'">
     <OutputPath>bin\Reference\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;REFERENCE</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>
