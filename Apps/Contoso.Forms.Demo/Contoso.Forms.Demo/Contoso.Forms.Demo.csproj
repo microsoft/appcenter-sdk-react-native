@@ -52,6 +52,9 @@
     <EmbeddedResource Include="PropertiesContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModulePages\OthersContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -78,6 +81,9 @@
     </Compile>
     <Compile Include="FakeService.cs" />
     <Compile Include="PreserveAttribute.cs" />
+    <Compile Include="ModulePages\OthersContentPage.xaml.cs">
+      <DependentUpon>OthersContentPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
