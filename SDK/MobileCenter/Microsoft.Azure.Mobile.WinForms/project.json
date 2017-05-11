@@ -1,4 +1,4 @@
-{
+﻿{
   "dependencies": {
     "Newtonsoft.Json": "10.0.2",
     "Microsoft.Rest.ClientRuntime": "2.3.6",

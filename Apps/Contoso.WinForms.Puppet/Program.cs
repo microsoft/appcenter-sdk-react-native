@@ -1,8 +1,6 @@
 ﻿using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Contoso.WinForms.Puppet
@@ -19,6 +17,7 @@ namespace Contoso.WinForms.Puppet
             MobileCenter.Configure("42f4a839-c54c-44da-8072-a2f2a61751b2");
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Enabled = true;
+            MobileCenter.Start(typeof(Analytics));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

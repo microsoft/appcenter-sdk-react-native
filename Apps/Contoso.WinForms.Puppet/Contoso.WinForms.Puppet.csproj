@@ -34,15 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form1.cs">
@@ -76,6 +69,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.WinForms\Microsoft.Azure.Mobile.Analytics.WinForms.csproj">
+      <Project>{158e34d9-e93d-4540-82eb-111581143e67}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.WinForms\Microsoft.Azure.Mobile.Crashes.WinForms.csproj">
+      <Project>{6e052322-1aa9-4486-87d0-63dcdb700a87}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes.WinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.WinForms\Microsoft.Azure.Mobile.WinForms.csproj">
       <Project>{e8297044-32bb-4cc9-b580-2535c42cdde4}</Project>
       <Name>Microsoft.Azure.Mobile.WinForms</Name>
