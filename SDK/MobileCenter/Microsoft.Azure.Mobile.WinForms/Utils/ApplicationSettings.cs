@@ -26,8 +26,17 @@ namespace Microsoft.Azure.Mobile.Utils
             set
             {
                 var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
-                config.AppSettings.Settings.Add(new KeyValueConfigurationElement(key, invariant));
-                config.Save();
+                var element = config.AppSettings.Settings[key];
+                if (element == null)
+                {
+                    config.AppSettings.Settings.Add(key, invariant);
+                    config.Save();
+                }
+                else if (element.Value != invariant)
+                {
+                    element.Value = invariant;
+                    config.Save();
+                }
             }
         }
         public void Remove(string key)
