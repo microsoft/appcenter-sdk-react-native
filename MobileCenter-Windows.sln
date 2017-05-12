@@ -69,8 +69,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.UWP.Puppet", "Conto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Test.UWP", "Tests\Microsoft.Azure.Mobile.Test.UWP\Microsoft.Azure.Mobile.Test.UWP.csproj", "{6D86EE4F-2871-4DC3-BCA4-A692DBEAE59D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.Test.UWP", "Tests\Microsoft.Azure.Mobile.Analytics.Test.UWP\Microsoft.Azure.Mobile.Analytics.Test.UWP.csproj", "{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
@@ -415,26 +413,6 @@ Global
 		{6D86EE4F-2871-4DC3-BCA4-A692DBEAE59D}.Release|x86.ActiveCfg = Release|x86
 		{6D86EE4F-2871-4DC3-BCA4-A692DBEAE59D}.Release|x86.Build.0 = Release|x86
 		{6D86EE4F-2871-4DC3-BCA4-A692DBEAE59D}.Release|x86.Deploy.0 = Release|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|ARM.ActiveCfg = Debug|ARM
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|ARM.Build.0 = Debug|ARM
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|ARM.Deploy.0 = Debug|ARM
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|x64.ActiveCfg = Debug|x64
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|x64.Build.0 = Debug|x64
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|x64.Deploy.0 = Debug|x64
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|x86.ActiveCfg = Debug|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|x86.Build.0 = Debug|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Debug|x86.Deploy.0 = Debug|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|Any CPU.ActiveCfg = Release|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|ARM.ActiveCfg = Release|ARM
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|ARM.Build.0 = Release|ARM
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|ARM.Deploy.0 = Release|ARM
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|x64.ActiveCfg = Release|x64
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|x64.Build.0 = Release|x64
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|x64.Deploy.0 = Release|x64
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|x86.ActiveCfg = Release|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|x86.Build.0 = Release|x86
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -470,6 +448,5 @@ Global
 		{41FEBC72-C12B-47E1-B6F6-51D50158C825} = {44E43AB9-E48B-4162-BEAA-2D59651DB6FA}
 		{84BEBC1B-18C9-46F4-821A-49ADFCD97A02} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 		{6D86EE4F-2871-4DC3-BCA4-A692DBEAE59D} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
-		{4845BF78-ED1F-4861-AE0F-30E3970ABAB6} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 	EndGlobalSection
 EndGlobal
