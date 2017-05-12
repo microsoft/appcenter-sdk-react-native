@@ -49,8 +49,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         {
             _channel = channel;
             channelGroup.EnqueuingLog += HandleEnqueuingLog;
-            var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
-            if (sessionsString == null) return;
+            var sessionsString = _applicationSettings.GetValue<string>(StorageKey, string.Empty);
+            if (string.IsNullOrEmpty(sessionsString)) return;
             _sessions = SessionsFromString(sessionsString);
             // Re-write sessions in storage in case of any invalid strings
             _applicationSettings[StorageKey] = SessionsAsString();
