@@ -12,5 +12,7 @@ namespace Microsoft.Azure.Mobile.Push
         private void InstanceRegister()
         {
         }
+
+        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
     }
 }
