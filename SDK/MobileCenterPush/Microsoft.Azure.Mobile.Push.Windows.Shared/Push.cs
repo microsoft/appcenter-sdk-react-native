@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// <summary>
         /// Push module enabled or disabled
         /// </summary>
-        public static bool Enabled
+        public static bool PlatformEnabled
         {
             get
             {
