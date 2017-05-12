@@ -99,6 +99,7 @@
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="MobileCenterTest.cs" />
+    <Compile Include="Utils\ApplicationSettingsTest.cs" />
     <Compile Include="Utils\DeviceInformationHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
