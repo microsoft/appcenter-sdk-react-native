@@ -41,8 +41,6 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
 #if DEBUG
                 throw new MobileCenterException("Failed to register crashes with Watson", e);
-#else
-                throw;
 #endif
             }
         }
