@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BC900C35-E0AD-46D2-BA4A-EF1904820B4A}"
 EndProject
@@ -25,9 +25,19 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Wind
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Analytics.Windows.Shared", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.shproj", "{7CE5BF9E-3650-4151-8B54-C1301AA73606}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterPush", "MobileCenterPush", "{20870E0A-068E-4016-9B51-53B46696352B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Push.Shared", "SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.shproj", "{A5D2FD20-13EE-4CA4-8278-09520CC376CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Push.NET", "Tests\Microsoft.Azure.Mobile.Push.NET\Microsoft.Azure.Mobile.Push.NET.csproj", "{8A885E5E-A160-4AD2-BD03-59E3A6366C32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Push.Test.Windows", "Tests\Microsoft.Azure.Mobile.Push.Test.Windows\Microsoft.Azure.Mobile.Push.Test.Windows.csproj", "{39DFE901-EBE0-4907-871C-D2638FEA2D49}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
+		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{8a885e5e-a160-4ad2-bd03-59e3a6366c32}*SharedItemsImports = 4
+		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{a5d2fd20-13ee-4ca4-8278-09520cc376cd}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
@@ -109,6 +119,38 @@ Global
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}.Release|x64.Build.0 = Release|Any CPU
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}.Release|x86.ActiveCfg = Release|Any CPU
 		{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}.Release|x86.Build.0 = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|x64.Build.0 = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|ARM.Build.0 = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|x64.ActiveCfg = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|x64.Build.0 = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32}.Release|x86.Build.0 = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|ARM.Build.0 = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|x64.Build.0 = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Debug|x86.Build.0 = Debug|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|ARM.ActiveCfg = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|ARM.Build.0 = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|x64.ActiveCfg = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|x64.Build.0 = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|x86.ActiveCfg = Release|Any CPU
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,5 +165,9 @@ Global
 		{C6C4937C-D5F4-4E00-8B51-8D826AD83C5E} = {B699D34F-C961-4E03-89AD-6B00FF643AE8}
 		{B4E6AD1C-21A0-43A4-BD73-ED9BFC19BE6F} = {B699D34F-C961-4E03-89AD-6B00FF643AE8}
 		{7CE5BF9E-3650-4151-8B54-C1301AA73606} = {7D1BE3C5-199E-483C-A62F-D0376346B0D7}
+		{20870E0A-068E-4016-9B51-53B46696352B} = {8E2BC697-ADCD-4395-827D-DDBD0633B145}
+		{A5D2FD20-13EE-4CA4-8278-09520CC376CD} = {20870E0A-068E-4016-9B51-53B46696352B}
+		{8A885E5E-A160-4AD2-BD03-59E3A6366C32} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
+		{39DFE901-EBE0-4907-871C-D2638FEA2D49} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 	EndGlobalSection
 EndGlobal
