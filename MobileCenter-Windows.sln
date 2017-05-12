@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{AA6821F3-930A-49E4-BA3F-D68255F39F1E}"
 EndProject
@@ -65,7 +65,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Dist
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.UWP.Puppet", "Contoso.UWP.Puppet", "{84BEBC1B-18C9-46F4-821A-49ADFCD97A02}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCetnerPush", "MobileCetnerPush", "{CE57D13B-E5A1-4747-9641-AB47F5B95DFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileCenterPush", "MobileCenterPush", "{CE57D13B-E5A1-4747-9641-AB47F5B95DFC}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Push.Windows.Shared", "SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.shproj", "{BA25A66A-FCEA-49C2-A85A-0F6F54463675}"
 EndProject
@@ -76,6 +76,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Push.NET", "Tests\Microsoft.Azure.Mobile.Push.NET\Microsoft.Azure.Mobile.Push.NET.csproj", "{8A885E5E-A160-4AD2-BD03-59E3A6366C32}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WatsonRegistrationUtility", "SDK\MobileCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj", "{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Push", "SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push\Microsoft.Azure.Mobile.Push.csproj", "{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -90,6 +92,7 @@ Global
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{8072449c-c6a8-4b36-87dc-173f295d161c}*SharedItemsImports = 4
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{8a885e5e-a160-4ad2-bd03-59e3a6366c32}*SharedItemsImports = 4
+		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{8ee6b5da-6547-43c8-aeb6-8e0eae3f81c9}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{ba25a66a-fcea-49c2-a85a-0f6f54463675}*SharedItemsImports = 13
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
@@ -821,6 +824,42 @@ Global
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x64.Build.0 = Release|x64
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x86.ActiveCfg = Release|Win32
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Release|x86.Build.0 = Release|Win32
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x64.Build.0 = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x86.Build.0 = Debug|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|Any CPU.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|ARM.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|ARM.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhone.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhone.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhoneSimulator.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x64.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x64.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x86.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x86.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|ARM.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|iPhone.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|x64.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|x64.Build.0 = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -860,5 +899,6 @@ Global
 		{39DFE901-EBE0-4907-871C-D2638FEA2D49} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 		{8A885E5E-A160-4AD2-BD03-59E3A6366C32} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D} = {A60D537E-41F7-44D6-95C8-5DDB77B07308}
+		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9} = {CE57D13B-E5A1-4747-9641-AB47F5B95DFC}
 	EndGlobalSection
 EndGlobal
