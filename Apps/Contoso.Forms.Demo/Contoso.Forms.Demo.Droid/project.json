@@ -3,6 +3,7 @@
     "Microsoft.Azure.Mobile.Analytics": "0.11.1",
     "Microsoft.Azure.Mobile.Crashes": "0.11.1",
     "Microsoft.Azure.Mobile.Distribute": "0.11.1",
+    "Microsoft.Azure.Mobile.Push": "0.11.1",
     "Xamarin.Android.Support.Animated.Vector.Drawable": "25.1.1",
     "Xamarin.Android.Support.Compat": "25.1.1",
     "Xamarin.Android.Support.Core.UI": "25.1.1",
