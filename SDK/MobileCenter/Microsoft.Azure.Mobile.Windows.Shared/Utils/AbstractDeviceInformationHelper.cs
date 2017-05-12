@@ -71,13 +71,14 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private string GetSdkVersion()
         {
-           return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+           return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
         }
 
-    private string GetLocale()
+        private string GetLocale()
         {
             return System.Globalization.CultureInfo.CurrentCulture.Name;
         }
+
         private int GetTimeZoneOffset()
         {
             return (int)TimeZoneInfo.Local.BaseUtcOffset.TotalMinutes;

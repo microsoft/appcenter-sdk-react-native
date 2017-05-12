@@ -52,26 +52,12 @@ namespace Microsoft.Azure.Mobile.Push
         private readonly StatefulMutex _mutex;
         private readonly StateKeeper _stateKeeper = new StateKeeper();
 
-        public override string ServiceName
-        {
-            get
-            {
-                return "Push";
-            }
-        }
+        public override string ServiceName => "Push";
 
-        protected override string ChannelName
-        {
-            get
-            {
-                return "push";
-            }
-        }
-
+        protected override string ChannelName => "push";
         public Push()
         {
             _mutex = new StatefulMutex(_stateKeeper);
-
             LogSerializer.AddLogType(PushInstallationLog.JsonIdentifier, typeof(PushInstallationLog));
         }
 
@@ -79,9 +65,10 @@ namespace Microsoft.Azure.Mobile.Push
         /// Method that is called to signal start of the Push service.
         /// </summary>
         /// <param name="channelGroup"></param>
-        public override void OnChannelGroupReady(IChannelGroup channelGroup)
+        /// <param name="appSecret"></param>
+        public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            base.OnChannelGroupReady(channelGroup);
+            base.OnChannelGroupReady(channelGroup, appSecret);
 
             Instance.InstanceRegister();
         }

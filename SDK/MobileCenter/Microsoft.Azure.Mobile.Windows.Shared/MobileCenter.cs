@@ -18,8 +18,6 @@ namespace Microsoft.Azure.Mobile
         private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
         private const string StartErrorMessage = "Failed to start services";
         private const string ChannelName = "core";
-        private const string CrashesServiceFullType = "Microsoft.Azure.Mobile.Crashes.Crashes";
-        private const string CrashesServiceName = "Crashes";
         private const string DistributeServiceFullType = "Microsoft.Azure.Mobile.Distribute.Distribute";
 
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
@@ -318,32 +316,8 @@ namespace Microsoft.Azure.Mobile
                 }
                 try
                 {
-                    // TL;DR - we must start Crashes from the MobileCenter class because its public API in Windows packages differs
-                    // from that of its PCL counterpart.
-                    //
-                    // Rather unfortunately, it is necessary here to check if the service type is called "Crashes", and if it is, to 
-                    // start it from within the Mobile Center module.
-                    // What distinguishes Crashes from the other services is that it cannot be "bait-and-switched." The PCL version
-                    // of Crashes contains many (albeit unimplemented) APIs, and the Windows Crashes service contains exactly 0 APIs. 
-                    // Since they have different public APIs, bait and switch would fail. Thus, a Windows application that includes the
-                    // PCL version of Crashes (which is likely the case for Xamarin applications), would default to the PCL version of
-                    // Crashes, and the PCL version of Crashes is merely stub APIs (so Crashes service would never be started). So, to
-                    // circumvent this, MobileCenter completely ignores the implementation of Crashes it receives, making no attempt to
-                    // call its start method. Instead, it is left to the Windows implementation of MobileCenter to decide how to start 
-                    // the Crashes service. This is possible because while the Crashes class is not bait and switched, the MobileCenter 
-                    // class necessarily will be, and starting Crashes must always be mediated by MobileCenter.
-                    if (IsCrashesService(serviceType))
-                    {
-                        if (startServiceLog.Services.Contains(CrashesServiceName))
-                        {
-                            ThrowStartedServiceException(CrashesServiceName);
-                        }
-                        StartCrashesService(_appSecret);
-                        startServiceLog.Services.Add(CrashesServiceName);
-                    }
-
-                    // Same comment as crash: we don't support distribute in UWP, not even a custom start.
-                    else if (IsDistributeService(serviceType))
+                    // We don't support distribute in UWP, not even a custom start.
+                    if (IsDistributeService(serviceType))
                     {
                         MobileCenterLog.Warn(MobileCenterLog.LogTag, "Distribute service is not yet supported on UWP.");
                     }
@@ -382,7 +356,7 @@ namespace Microsoft.Azure.Mobile
                 ThrowStartedServiceException(service.GetType().Name);
             }
 
-            service.OnChannelGroupReady(_channelGroup);
+            service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
@@ -401,35 +375,10 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        // TL;DR - we must start Crashes from the MobileCenter class because its public API in Windows packages differs
-        // from that of its PCL counterpart.
-        //
-        // Rather unfortunately, it is necessary here to check if the service type is called "Crashes", and if it is, to 
-        // start it from within the Mobile Center module.
-        // What distinguishes Crashes from the other services is that it cannot be "bait-and-switched." The PCL version
-        // of Crashes contains many (albeit unimplemented) APIs, and the Windows Crashes service contains exactly 0 APIs. 
-        // Since they have different public APIs, bait and switch would fail. Thus, a Windows application that includes the
-        // PCL version of Crashes (which is likely the case for Xamarin applications), would default to the PCL version of
-        // Crashes, and the PCL version of Crashes is merely stub APIs (so Crashes service would never be started). So, to
-        // circumvent this, MobileCenter completely ignores the implementation of Crashes it receives, making no attempt to
-        // call its start method. Instead, it is left to the Windows implementation of MobileCenter to decide how to start 
-        // the Crashes service. This is possible because while the Crashes class is not bait and switched, the MobileCenter 
-        // class necessarily will be, and starting Crashes must always be mediated by MobileCenter.
-        private static bool IsCrashesService(Type serviceType)
-        {
-            return serviceType?.FullName == CrashesServiceFullType;
-        }
-
-        // Same comment as crash: we don't support Distribute in UWP.
+        // We don't support Distribute in UWP.
         private static bool IsDistributeService(Type serviceType)
         {
             return serviceType?.FullName == DistributeServiceFullType;
-        }
-
-        // Registers the Mobile Center application with Watson to enable crash reporting
-        private static void StartCrashesService(string appSecret)
-        {
-            WatsonCrashesStarter.RegisterWithWatson(appSecret);
         }
 
         private void ThrowStartedServiceException(string serviceName)

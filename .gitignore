@@ -32,6 +32,7 @@
 bld/
 [Bb]in/
 [Oo]bj/
+Reference/
 
 # Crash Reporter Frameworks
 CrashReporter.framework/
@@ -265,6 +266,9 @@ ModelManifest.xml
 # Cake directories
 tools/
 externals/
+
+# Google services json
+**/google-services.json
 
 # Output directory
 output/
