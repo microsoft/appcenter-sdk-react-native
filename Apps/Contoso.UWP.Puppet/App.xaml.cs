@@ -4,7 +4,6 @@ using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Push;
-using Microsoft.Azure.Mobile.Push.Windows.Shared;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -94,7 +93,7 @@ namespace Contoso.UWP.Puppet
             }
         }
 
-        private void PushNotificationReceivedHandler(object sender, PushNotificationEventArgs args)
+        private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)
         {
             string title = args.Title;
             string message = args.Message;
@@ -106,7 +105,14 @@ namespace Contoso.UWP.Puppet
                 customDataString += $"key='{pair.Key}', value='{pair.Value}'";
             }
 
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
+            if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(message))
+            {
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
+            }
+            else
+            {
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received customData:{customDataString}");
+            }
         }
 
         /// <summary>

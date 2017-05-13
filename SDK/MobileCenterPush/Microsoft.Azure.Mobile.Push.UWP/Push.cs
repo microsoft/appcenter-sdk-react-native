@@ -2,43 +2,35 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
-using Microsoft.Azure.Mobile.Push.Windows.Shared;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;
-using Windows.Foundation;
-using Windows.Networking.PushNotifications;
 
 namespace Microsoft.Azure.Mobile.Push
 {
     public partial class Push : MobileCenterService
     {
-        /// <summary>
-        /// Event for push notification received
-        /// </summary>
-        public static event TypedEventHandler<object, PushNotificationEventArgs> PushNotificationReceived;
-
         public static void OnLaunched(IActivatedEventArgs e)
         {
             if (e.Kind == ActivationKind.ToastNotification)
             {
                 ToastNotificationActivatedEventArgs args = e as ToastNotificationActivatedEventArgs;
 
-                if (args.Argument != null)
+                if (args != null && !string.IsNullOrEmpty(args.Argument))
                 {
                     var customData = ParseLaunchString(args.Argument);
                     if (customData.Count > 0)
                     {
-                        PushNotificationEventArgs notificationEventData = new PushNotificationEventArgs()
+                        PushNotificationReceivedEventArgs notificationEventData = new PushNotificationReceivedEventArgs()
                         {
                             Title = null,
                             Message = null,
                             CustomData = customData
                         };
 
-                        PushNotificationReceived?.Invoke(null, notificationEventData);
+                        PlatformPushNotificationReceived?.Invoke(null, notificationEventData);
                     }
                 }
             }
@@ -47,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// <summary>
         /// Application in background or not
         /// </summary>
-        private bool applicationInBackground = false;
+        private bool ApplicationInBackground = false;
 
         // Retrieve the push token from platform-specific Push Notification Service,
         // and later use the token to register with Mobile Center backend.
@@ -64,7 +56,14 @@ namespace Microsoft.Azure.Mobile.Push
             var stateSnapshot = _stateKeeper.GetStateSnapshot();
             _mutex.Unlock();
 
-            var pushNotificationChannel = Task.Run(() => CreatePushNotificationChannel()).Result;
+            var pushNotificationChannel = Task.Run(async () => 
+            {
+                var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
+
+                channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+
+                return channel;
+            }).Result;
 
             try
             {
@@ -98,45 +97,36 @@ namespace Microsoft.Azure.Mobile.Push
             _mutex.Unlock();
         }
 
-        private async Task<PushNotificationChannel> CreatePushNotificationChannel()
+        private void OnPushNotificationReceivedHandler(Windows.Networking.PushNotifications.PushNotificationChannel sender, 
+            Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs e)
         {
-            PushNotificationChannel channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
-
-            channel.PushNotificationReceived += OnPushNotification;
-
-            return channel;
-        }
-
-        private void OnPushNotification(object sender, PushNotificationReceivedEventArgs e)
-        {
-            if (e.NotificationType == PushNotificationType.Toast)
+            if (e.NotificationType == Windows.Networking.PushNotifications.PushNotificationType.Toast)
             {
                 XmlDocument content = e.ToastNotification.Content;
                 string notificationContent = content.GetXml();
 
-                MobileCenterLog.Debug(LogTag, $"Received push message: {notificationContent}");
+                MobileCenterLog.Debug(LogTag, $"Received push notification payload: {notificationContent}");
 
-                if (applicationInBackground)
+                if (ApplicationInBackground)
                 {
                     MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
                 }
                 else
                 { 
                     e.Cancel = true;
-                    PushNotificationEventArgs notificationEventData = ParsePushNotificationEventArgs(content);
-                    PushNotificationReceived?.Invoke(sender, notificationEventData);
+                    PushNotificationReceivedEventArgs notificationEventData = ExtractPushNotificationReceivedEventArgsFromXml(content);
+                    PlatformPushNotificationReceived?.Invoke(sender, notificationEventData);
 
                     MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
                 }
-
             }
             else
             {
-                MobileCenterLog.Debug(LogTag, $"We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
+                MobileCenterLog.Debug(LogTag, $"Ignored. We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
             }
         }
 
-        private PushNotificationEventArgs ParsePushNotificationEventArgs(XmlDocument content)
+        private PushNotificationReceivedEventArgs ExtractPushNotificationReceivedEventArgsFromXml(XmlDocument content)
         {
             string title = string.Empty;
             string message = string.Empty;
@@ -167,7 +157,7 @@ namespace Microsoft.Azure.Mobile.Push
                 }
             }
 
-            return new PushNotificationEventArgs()
+            return new PushNotificationReceivedEventArgs()
             {
                 Title = title,
                 Message = message,
@@ -199,11 +189,11 @@ namespace Microsoft.Azure.Mobile.Push
         {
             CoreApplication.LeavingBackground += (sender, e) =>
             {
-                applicationInBackground = false;
+                ApplicationInBackground = false;
             };
             CoreApplication.EnteredBackground += (sender, e) =>
             {
-                applicationInBackground = true;
+                ApplicationInBackground = true;
             };
         }
 
