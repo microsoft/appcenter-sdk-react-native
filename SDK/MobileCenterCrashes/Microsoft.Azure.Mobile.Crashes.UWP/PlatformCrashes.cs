@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
@@ -25,6 +22,8 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override bool Enabled { get; set; }
 
         public override bool HasCrashedInLastSession { get; }
+
+        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
 
         public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
