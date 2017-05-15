@@ -30,15 +30,7 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.targets"  target="build/uap10.0" />
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="ref/uap10.0" />
-
-    <!--x86 -->
-    <file src="$windows_dir$/x86/Microsoft.Azure.Mobile.Analytics.dll" target="runtimes/win10-x86/lib/uap10.0" />
-    <!-- x64 -->
-    <file src="$windows_dir$/x64/Microsoft.Azure.Mobile.Analytics.dll" target="runtimes/win10-x64/lib/uap10.0" />
-    <!-- ARM -->
-    <file src="$windows_dir$/ARM/Microsoft.Azure.Mobile.Analytics.dll"  target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
 
   </files>
 </package>

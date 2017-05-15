@@ -61,5 +61,7 @@ namespace Microsoft.Azure.Mobile.Push
 
             return channel;
         }
+
+        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
     }
 }

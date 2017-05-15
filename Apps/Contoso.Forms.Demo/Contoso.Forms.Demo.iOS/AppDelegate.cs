@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.Azure.Mobile.Push;
 using UIKit;
 
 namespace Contoso.Forms.Demo.iOS
@@ -20,6 +21,16 @@ namespace Contoso.Forms.Demo.iOS
         {
             Distribute.OpenUrl(url);
             return true;
+        }
+
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            Push.RegisteredForRemoteNotifications(deviceToken);
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            Push.FailedToRegisterForRemoteNotifications(error);
         }
     }
 }

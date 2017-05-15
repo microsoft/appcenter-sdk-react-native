@@ -16,18 +16,6 @@
     </dependencies>
   </metadata>
   <files>
-
-    <file src="nuget/Microsoft.Azure.Mobile.Push.targets"  target="build/uap10.0"/>
-    <file src="SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Reference/Microsoft.Azure.Mobile.Push.dll" target="ref/uap10.0" />
-
-    <!--x86 -->
-    <file src="SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x86/lib/uap10.0" />
-
-    <!-- x64 -->
-    <file src="SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-x64/lib/uap10.0" />
-
-    <!-- ARM -->
-    <file src="SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Push.dll" target="runtimes/win10-arm/lib/uap10.0" />
-
+    <file src="SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Release/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
   </files>
 </package>

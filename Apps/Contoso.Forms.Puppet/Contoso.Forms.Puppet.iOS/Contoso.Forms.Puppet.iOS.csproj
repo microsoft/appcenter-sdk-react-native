@@ -26,6 +26,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <CodesignProvision></CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -65,7 +66,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Piyush Joshi (YG3U94CNDA)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>false</MtouchFastDev>
@@ -75,6 +76,7 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <CodesignProvision>Xamarin Puppet</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -120,6 +122,7 @@
     <BundleResource Include="Resources\bolt%402x.png" />
     <BundleResource Include="Resources\socket%402x.png" />
     <BundleResource Include="Resources\lightning%402x.png" />
+    <BundleResource Include="Resources\handbag%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.iOS\Microsoft.Azure.Mobile.Analytics.iOS.csproj">
@@ -157,6 +160,14 @@
     <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.iOS\Microsoft.Azure.Mobile.Distribute.iOS.csproj">
       <Project>{60241627-33BB-45F9-A1B6-6F1CB2BF2C4A}</Project>
       <Name>Microsoft.Azure.Mobile.Distribute.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.iOS\Microsoft.Azure.Mobile.Push.iOS.csproj">
+      <Project>{D8F25BA5-249D-4BB0-A4B1-A3245F2437FF}</Project>
+      <Name>Microsoft.Azure.Mobile.Push.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.iOS.Bindings\Microsoft.Azure.Mobile.Push.iOS.Bindings.csproj">
+      <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
+      <Name>Microsoft.Azure.Mobile.Push.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

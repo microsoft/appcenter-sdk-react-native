@@ -18,7 +18,10 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public void GenerateTestCrash()
         {
+#if WINDOWS_UWP
+#else
             throw new TestCrashException();
+#endif
         }
 
         public abstract void NotifyUserConfirmation(UserConfirmation confirmation);
