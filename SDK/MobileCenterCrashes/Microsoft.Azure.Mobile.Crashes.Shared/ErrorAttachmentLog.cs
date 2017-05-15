@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿using System;
+
+namespace Microsoft.Azure.Mobile.Crashes
 {
     /// <summary>
     /// Error attachment for error report.
