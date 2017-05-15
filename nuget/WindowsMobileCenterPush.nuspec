@@ -16,6 +16,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Release/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
   </files>
 </package>

@@ -20,6 +20,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
   </files>
 </package>

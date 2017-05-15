@@ -16,6 +16,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
+    <file src="S$windows_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
   </files>
 </package>
