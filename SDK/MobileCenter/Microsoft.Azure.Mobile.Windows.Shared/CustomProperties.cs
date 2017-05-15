@@ -11,6 +11,9 @@ namespace Microsoft.Azure.Mobile
     public class CustomProperties
     {
         private static readonly Regex KeyPattern = new Regex("^[a-zA-Z][a-zA-Z0-9]*$");
+        private const int MaxCustomPropertiesCount = 60;
+        private const int MaxCustomPropertiesKeyLength = 128;
+        private const int MaxCustomPropertiesStringValueLength = 128;
 
         internal Dictionary<string, object> Properties { get; }
 
@@ -26,7 +29,25 @@ namespace Microsoft.Azure.Mobile
         /// <param name="key">Key with which the specified value is to be set.</param>
         /// <param name="value">Value to be set with the specified key.</param>
         /// <returns>This instance.</returns>
-        public CustomProperties Set(string key, string value) => SetObject(key, value);
+        public CustomProperties Set(string key, string value)
+        {
+            if (ValidateKey(key))
+            {
+                if (value == null)
+                {
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
+                }
+                else if (value.Length > MaxCustomPropertiesStringValueLength)
+                {
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" value length cannot be longer than " + MaxCustomPropertiesStringValueLength + " characters.");
+                }
+                else
+                {
+                    Properties[key] = value;
+                }
+            }
+            return this;
+        }
 
         /// <summary>
         /// Set the specified property value with the specified key.
@@ -98,7 +119,7 @@ namespace Microsoft.Azure.Mobile
         /// <returns>This instance.</returns>
         public CustomProperties Clear(string key)
         {
-            if (IsValidKey(key))
+            if (ValidateKey(key))
             {
 
                 /* Null value means that key marked to clear. */
@@ -109,30 +130,40 @@ namespace Microsoft.Azure.Mobile
 
         private CustomProperties SetObject(string key, object value)
         {
-            if (IsValidKey(key))
+            if (ValidateKey(key))
             {
-                if (value != null)
+                if (value == null)
                 {
-                    Properties[key] = value;
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
                 }
                 else
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property value cannot be null, did you mean to call clear?");
+                    Properties[key] = value;
                 }
             }
             return this;
         }
 
-        private bool IsValidKey(string key)
+        private bool ValidateKey(string key)
         {
             if (key == null || !KeyPattern.IsMatch(key))
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" must match \"" + KeyPattern + "\"");
                 return false;
             }
+            if (key.Length > MaxCustomPropertiesKeyLength)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" key length cannot be longer than " + MaxCustomPropertiesKeyLength + " characters.");
+                return false;
+            }
             if (Properties.ContainsKey(key))
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" is already set or cleared and will be overridden.");
+            }
+            else if (Properties.Count >= MaxCustomPropertiesCount)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom properties cannot contain more than " + MaxCustomPropertiesCount + " items.");
+                return false;
             }
             return true;
         }

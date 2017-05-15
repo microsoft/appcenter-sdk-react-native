@@ -135,9 +135,9 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
         }
 
-        public override void OnChannelGroupReady(IChannelGroup channelGroup)
+        public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            base.OnChannelGroupReady(channelGroup);
+            base.OnChannelGroupReady(channelGroup, appSecret);
             ApplyEnabledState(InstanceEnabled);
             ApplicationLifecycleHelper.ApplicationResuming += (sender, e) =>
             {

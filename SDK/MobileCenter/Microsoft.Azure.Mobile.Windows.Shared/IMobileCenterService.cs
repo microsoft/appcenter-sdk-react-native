@@ -21,6 +21,8 @@ namespace Microsoft.Azure.Mobile
         /// Method that is called to signal start of service.
         /// </summary>
         /// <param name="channelGroup">The channel group to which the channel should be added</param>
-        void OnChannelGroupReady(IChannelGroup channelGroup);
+        /// <param name="appSecret">The app secret of the current application</param>
+
+        void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret);
     }
 }

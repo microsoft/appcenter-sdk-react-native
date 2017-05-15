@@ -4,12 +4,12 @@
     {
         static ErrorAttachmentLog PlatformAttachmentWithText(string text, string fileName)
         {
-            return null;
+            return new ErrorAttachmentLog();
         }
 
         static ErrorAttachmentLog PlatformAttachmentWithBinary(byte[] data, string filename, string contentType)
         {
-            return null;
+            return new ErrorAttachmentLog();
         }
     }
 }

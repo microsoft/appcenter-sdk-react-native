@@ -78,9 +78,6 @@ namespace Contoso.Forms.Demo.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-
-            // Start Push service only after MobileCenter initialized with other services (e.g. Analytics service)
-            MobileCenter.Start(typeof(Push));
         }
 
         /// <summary>

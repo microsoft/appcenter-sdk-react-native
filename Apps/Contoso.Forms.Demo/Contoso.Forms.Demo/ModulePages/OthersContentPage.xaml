@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Others"
+        xmlns="http://xamarin.com/schemas/2014/forms" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+        x:Class="Contoso.Forms.Demo.OthersContentPage">
+        <TableView Intent="Form">
+            <TableSection Title="Distribute">
+                <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled"/>
+            </TableSection>
+		    <TableSection Title="Push">
+                <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled"/>
+            </TableSection>
+        </TableView>
+</ContentPage>
