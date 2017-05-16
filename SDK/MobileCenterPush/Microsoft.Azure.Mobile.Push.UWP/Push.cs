@@ -5,7 +5,6 @@ using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;
 using Newtonsoft.Json;
 using Microsoft.Azure.Mobile.Utils;
@@ -123,56 +122,67 @@ namespace Microsoft.Azure.Mobile.Push
 
         private PushNotificationReceivedEventArgs ExtractPushNotificationReceivedEventArgsFromXml(XmlDocument content)
         {
-            string title = string.Empty;
-            string message = string.Empty;
-
-            if (content.DocumentElement.ChildNodes != null && content.DocumentElement.ChildNodes[0].NodeName == "visual")
+            var pushNotification = new PushNotificationReceivedEventArgs();
+            var messageNode = content.SelectSingleNode("/toast/visual/binding/text[@id='2']");
+            if (messageNode != null)
             {
-                var node = content.DocumentElement.ChildNodes[0];
-                if (node.ChildNodes != null && node.ChildNodes[0].NodeName == "binding")
+                pushNotification.Message = messageNode.InnerText;
+                pushNotification.Title = content.SelectSingleNode("/toast/visual/binding/text[@id='1']")?.InnerText;
+            }
+
+            // TODO remove this when backend updated to use identifiers
+            else
+            {
+                string firstText = null, secondText = null;
+                foreach (var node in content.SelectNodes("/toast/visual/binding/text"))
                 {
-                    var innerNode = node.ChildNodes[0];
-                    if (innerNode.ChildNodes.Count == 2)
+                    var text = node.InnerText;
+                    if (!string.IsNullOrEmpty(text))
                     {
-                        title = innerNode.ChildNodes[0].InnerText;
-                        message = innerNode.ChildNodes[1].InnerText;
+                        if (firstText == null)
+                        {
+                            firstText = text;
+                        }
+                        else
+                        {
+                            secondText = text;
+                            break;
+                        }
                     }
                 }
-            }
-
-            Dictionary<string, string> customData = new Dictionary<string, string>();
-
-            if (content.ChildNodes != null && content.ChildNodes.Count >= 2)
-            {
-                XmlNamedNodeMap attributes = content.ChildNodes[1].Attributes;
-                if (attributes != null && attributes.Count >= 1)
+                if (secondText == null)
                 {
-                    string launchString = attributes[0].InnerText;
-                    customData = ParseLaunchString(launchString);
+                    pushNotification.Message = firstText;
+                }
+                else
+                {
+                    pushNotification.Title = firstText;
+                    pushNotification.Message = secondText;
                 }
             }
 
-            return new PushNotificationReceivedEventArgs()
-            {
-                Title = title,
-                Message = message,
-                CustomData = customData
-            };
+            // TODO when backend modified to always send custom data, filter push with launch
+            var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
+            pushNotification.CustomData = ParseLaunchString(launch) ?? new Dictionary<string, string>();
+            return pushNotification;
         }
 
         private static Dictionary<string, string> ParseLaunchString(string launchString)
         {
             try
             {
-                var launchJObject = JObject.Parse(launchString);
-                if (launchJObject?["mobile_center"] is JObject mobileCenterData)
+                if (launchString != null)
                 {
-                    var customData = new Dictionary<string, string>();
-                    foreach (var pair in mobileCenterData)
+                    var launchJObject = JObject.Parse(launchString);
+                    if (launchJObject?["mobile_center"] is JObject mobileCenterData)
                     {
-                        customData.Add(pair.Key, pair.Value.ToString());
+                        var customData = new Dictionary<string, string>();
+                        foreach (var pair in mobileCenterData)
+                        {
+                            customData.Add(pair.Key, pair.Value.ToString());
+                        }
+                        return customData;
                     }
-                    return customData;
                 }
                 return null;
             }
