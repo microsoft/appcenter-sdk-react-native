@@ -11,7 +11,7 @@ namespace WatsonRegistrationUtility
 
         public static void Start(string appSecret)
         {
-            WerRegisterCustomMetadata(appSecret, WatsonAppSecretKey);
+            WerRegisterCustomMetadata(WatsonAppSecretKey, appSecret);
         }
     }
 }

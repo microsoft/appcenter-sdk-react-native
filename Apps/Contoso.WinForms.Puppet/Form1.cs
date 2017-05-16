@@ -17,6 +17,7 @@ namespace Contoso.WinForms.Puppet
         private void button1_Click(object sender, System.EventArgs e)
         {
             var x = 42 / int.Parse("0");
+            button1.Text = x.ToString();
         }
     }
 }
