@@ -7,38 +7,34 @@ using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Push
 {
     public partial class Push : MobileCenterService
     {
-        public static void OnLaunched(IActivatedEventArgs e)
+        public static void CheckPushActivation(IActivatedEventArgs e)
         {
-            if (e.Kind == ActivationKind.ToastNotification)
+            if (PlatformPushNotificationReceived != null)
             {
-                ToastNotificationActivatedEventArgs args = e as ToastNotificationActivatedEventArgs;
-
-                if (args != null && !string.IsNullOrEmpty(args.Argument))
+                // Depending on template, the event type and application override method differ.
+                var argument = (e as ToastNotificationActivatedEventArgs)?.Argument ?? (e as LaunchActivatedEventArgs)?.Arguments;
+                if (!string.IsNullOrEmpty(argument) || e.Kind == ActivationKind.ToastNotification)
                 {
-                    var customData = ParseLaunchString(args.Argument);
-                    if (customData.Count > 0)
+                    var customData = ParseLaunchString(argument);
+                    if (customData != null || e.Kind == ActivationKind.ToastNotification)
                     {
-                        PushNotificationReceivedEventArgs notificationEventData = new PushNotificationReceivedEventArgs()
+                        PlatformPushNotificationReceived.Invoke(null, new PushNotificationReceivedEventArgs()
                         {
                             Title = null,
                             Message = null,
-                            CustomData = customData
-                        };
-
-                        PlatformPushNotificationReceived?.Invoke(null, notificationEventData);
+                            CustomData = customData ?? new Dictionary<string, string>()
+                        });
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Application in background or not
-        /// </summary>
         private bool ApplicationInBackground = false;
 
         // Retrieve the push token from platform-specific Push Notification Service,
@@ -56,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Push
             var stateSnapshot = _stateKeeper.GetStateSnapshot();
             _mutex.Unlock();
 
-            var pushNotificationChannel = Task.Run(async () => 
+            var pushNotificationChannel = Task.Run(async () =>
             {
                 var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
 
@@ -97,7 +93,7 @@ namespace Microsoft.Azure.Mobile.Push
             _mutex.Unlock();
         }
 
-        private void OnPushNotificationReceivedHandler(Windows.Networking.PushNotifications.PushNotificationChannel sender, 
+        private void OnPushNotificationReceivedHandler(Windows.Networking.PushNotifications.PushNotificationChannel sender,
             Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs e)
         {
             if (e.NotificationType == Windows.Networking.PushNotifications.PushNotificationType.Toast)
@@ -112,7 +108,7 @@ namespace Microsoft.Azure.Mobile.Push
                     MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
                 }
                 else
-                { 
+                {
                     e.Cancel = true;
                     PushNotificationReceivedEventArgs notificationEventData = ExtractPushNotificationReceivedEventArgsFromXml(content);
                     PlatformPushNotificationReceived?.Invoke(sender, notificationEventData);
@@ -167,22 +163,24 @@ namespace Microsoft.Azure.Mobile.Push
 
         private static Dictionary<string, string> ParseLaunchString(string launchString)
         {
-            var customData = new Dictionary<string, string>();
-            JObject launchJObject = JObject.Parse(launchString);
-            if (launchJObject != null)
+            try
             {
-                var mobileCenterData = (JObject)launchJObject["mobile_center"];
-                if (mobileCenterData != null)
+                var launchJObject = JObject.Parse(launchString);
+                if (launchJObject?["mobile_center"] is JObject mobileCenterData)
                 {
+                    var customData = new Dictionary<string, string>();
                     foreach (var pair in mobileCenterData)
                     {
-                        string key = pair.Key;
-                        string value = (string)pair.Value;
-                        customData.Add(key, value);
+                        customData.Add(pair.Key, pair.Value.ToString());
                     }
+                    return customData;
                 }
+                return null;
             }
-            return customData;
+            catch (JsonReaderException)
+            {
+                return null;
+            }
         }
 
         private void SubscribeToApplicationInBackground()

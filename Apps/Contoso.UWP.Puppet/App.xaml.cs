@@ -43,7 +43,7 @@ namespace Contoso.UWP.Puppet
         {
             base.OnActivated(args);
 
-            Push.OnLaunched(args);
+            Push.CheckPushActivation(args);
         }
 
         /// <summary>
