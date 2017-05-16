@@ -121,8 +121,11 @@ namespace Microsoft.Azure.Mobile.Channel
                 _mutex.Unlock();
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 _mutex.Lock(stateSnapshot);
-                PrepareLog(log);
-                Task.Factory.StartNew(() => PersistLogAsync(log, stateSnapshot));
+                Task.Factory.StartNew(async () =>
+                {
+                    await PrepareLogAsync(log);
+                    await PersistLogAsync(log, stateSnapshot);
+                });
             }
             catch (StatefulMutexException e)
             {
@@ -134,11 +137,11 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private void PrepareLog(Log log)
+        private async Task PrepareLogAsync(Log log)
         {
             if (log.Device == null && _device == null)
             {
-                _device = _deviceInfoHelper.GetDeviceInformation();
+                _device = await _deviceInfoHelper.GetDeviceInformationAsync();
             }
             log.Device = log.Device ?? _device;
             if (log.Toffset == 0L)

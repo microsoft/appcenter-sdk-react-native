@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         internal ISessionTracker SessionTracker;
         internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
-        private bool _hasResumed;
+        private bool _hasStarted;
 
         internal Analytics()
         {
@@ -139,11 +139,19 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             base.OnChannelGroupReady(channelGroup, appSecret);
             ApplyEnabledState(InstanceEnabled);
-            ApplicationLifecycleHelper.ApplicationResuming += (sender, e) =>
+            if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
             {
                 SessionTracker?.Resume();
-                _hasResumed = true;
-            };
+                _hasStarted = true;
+            }
+            else
+            {
+                ApplicationLifecycleHelper.ApplicationStarted += (sender, e) =>
+                {
+                    SessionTracker?.Resume();
+                    _hasStarted = true;
+                };
+            }
             ApplicationLifecycleHelper.ApplicationSuspended += (sender, e) => SessionTracker?.Pause();
         }
 
@@ -153,7 +161,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
                 ApplicationLifecycleHelper.Enabled = true;
-                if (_hasResumed)
+                if (_hasStarted)
                 {
                     SessionTracker.Resume();
                 }
