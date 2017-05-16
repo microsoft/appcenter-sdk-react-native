@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
 
 namespace Contoso.UWP.Puppet
 {
@@ -23,20 +22,8 @@ namespace Contoso.UWP.Puppet
         /// </summary>
         public App()
         {
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Configure("42f4a839-c54c-44da-8072-a2f2a61751b2");
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Analytics.Enabled = true;
-            Push.PushNotificationReceived += PushNotificationReceivedHandler;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes), typeof(Push));
-            MobileCenter.Enabled = true;
-            var properties = new Dictionary<string, string>();
-            properties["key1"] = "value1";
-            properties["key2"] = "value";
-            //Analytics.TrackEvent("event", properties);
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
-            System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -49,9 +36,15 @@ namespace Contoso.UWP.Puppet
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            Push.PushNotificationReceived += PushNotificationReceivedHandler;
+            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+            Push.CheckPushActivation(e);
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -84,7 +77,6 @@ namespace Contoso.UWP.Puppet
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-            Push.CheckPushActivation(e);
         }
 
         private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)
