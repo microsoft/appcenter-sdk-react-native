@@ -16,24 +16,19 @@ namespace Microsoft.Azure.Mobile.Push
 
     public partial class Push : MobileCenterService
     {
-        public static void CheckPushActivation(IActivatedEventArgs e)
+        public static void CheckPushActivation(LaunchActivatedEventArgs e)
         {
-            if (PlatformPushNotificationReceived != null)
+            if (PlatformPushNotificationReceived != null && !string.IsNullOrEmpty(e?.Arguments))
             {
-                // Depending on template, the event type and application override method differ.
-                var argument = (e as ToastNotificationActivatedEventArgs)?.Argument ?? (e as LaunchActivatedEventArgs)?.Arguments;
-                if (!string.IsNullOrEmpty(argument) || e.Kind == ActivationKind.ToastNotification)
+                var customData = ParseLaunchString(e?.Arguments);
+                if (customData != null)
                 {
-                    var customData = ParseLaunchString(argument);
-                    if (customData != null || e.Kind == ActivationKind.ToastNotification)
+                    PlatformPushNotificationReceived.Invoke(null, new PushNotificationReceivedEventArgs()
                     {
-                        PlatformPushNotificationReceived.Invoke(null, new PushNotificationReceivedEventArgs()
-                        {
-                            Title = null,
-                            Message = null,
-                            CustomData = customData ?? new Dictionary<string, string>() // TODO after backend updated to always use launch, filter push instead
-                        });
-                    }
+                        Title = null,
+                        Message = null,
+                        CustomData = customData
+                    });
                 }
             }
         }
@@ -107,63 +102,42 @@ namespace Microsoft.Azure.Mobile.Push
                 }
                 else
                 {
-                    e.Cancel = true;
-                    var notificationEventData = ExtractPushNotificationReceivedEventArgsFromXml(content);
-                    PlatformPushNotificationReceived?.Invoke(sender, notificationEventData);
-                    MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
+                    var pushNotification = ParseMobileCenterPush(content);
+                    if (pushNotification != null)
+                    {
+                        e.Cancel = true;
+                        PlatformPushNotificationReceived?.Invoke(sender, pushNotification);
+                        MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
+                    }
+                    else
+                    {
+                        MobileCenterLog.Debug(LogTag, $"Push ignored. It was not sent through Mobile Center.");
+                    }
                 }
             }
             else
             {
-                MobileCenterLog.Debug(LogTag, $"Ignored. We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
+                MobileCenterLog.Debug(LogTag, $"Push ignored. We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
             }
         }
 
-        private PushNotificationReceivedEventArgs ExtractPushNotificationReceivedEventArgsFromXml(XmlDocument content)
+        private PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
         {
-            var pushNotification = new PushNotificationReceivedEventArgs();
-            var messageNode = content.SelectSingleNode("/toast/visual/binding/text[@id='2']");
-            if (messageNode != null)
-            {
-                pushNotification.Message = messageNode.InnerText;
-                pushNotification.Title = content.SelectSingleNode("/toast/visual/binding/text[@id='1']")?.InnerText;
-            }
-
-            // TODO remove this when backend updated to use identifiers
-            else
-            {
-                string firstText = null, secondText = null;
-                foreach (var node in content.SelectNodes("/toast/visual/binding/text"))
-                {
-                    var text = node.InnerText;
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        if (firstText == null)
-                        {
-                            firstText = text;
-                        }
-                        else
-                        {
-                            secondText = text;
-                            break;
-                        }
-                    }
-                }
-                if (secondText == null)
-                {
-                    pushNotification.Message = firstText;
-                }
-                else
-                {
-                    pushNotification.Title = firstText;
-                    pushNotification.Message = secondText;
-                }
-            }
-
-            // TODO when backend modified to always send custom data, filter push with launch
+            // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
-            pushNotification.CustomData = ParseLaunchString(launch) ?? new Dictionary<string, string>();
-            return pushNotification;
+            var customData = ParseLaunchString(launch);
+            if (customData == null)
+            {
+                return null;
+            }
+
+            // Parse title and message using identifiers
+            return new PushNotificationReceivedEventArgs()
+            {
+                Title = content.SelectSingleNode("/toast/visual/binding/text[@id='1']")?.InnerText,
+                Message = content.SelectSingleNode("/toast/visual/binding/text[@id='2']")?.InnerText,
+                CustomData = customData
+            };
         }
 
         private static Dictionary<string, string> ParseLaunchString(string launchString)
