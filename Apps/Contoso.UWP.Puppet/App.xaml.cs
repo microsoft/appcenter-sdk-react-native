@@ -39,13 +39,6 @@ namespace Contoso.UWP.Puppet
             System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
         }
 
-        protected override void OnActivated(IActivatedEventArgs args)
-        {
-            base.OnActivated(args);
-
-            Push.CheckPushActivation(args);
-        }
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -91,6 +84,7 @@ namespace Contoso.UWP.Puppet
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            Push.CheckPushActivation(e);
         }
 
         private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)
