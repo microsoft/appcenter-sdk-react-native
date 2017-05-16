@@ -111,7 +111,7 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-        public bool HasShownWindow => started && !suspended;
+        public bool HasShownWindow => started;
 
         public bool IsSuspended => suspended;
 
