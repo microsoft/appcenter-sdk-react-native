@@ -38,6 +38,7 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
             }
         }
+
         public void Remove(string key)
         {
             lock (configLock)
