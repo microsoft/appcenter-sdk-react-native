@@ -8,6 +8,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;
 using Newtonsoft.Json;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Push
 {
@@ -35,7 +36,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        private bool ApplicationInBackground = false;
+        private ApplicationLifecycleHelper _lifecycleHelper = new ApplicationLifecycleHelper();
 
         // Retrieve the push token from platform-specific Push Notification Service,
         // and later use the token to register with Mobile Center backend.
@@ -45,8 +46,6 @@ namespace Microsoft.Azure.Mobile.Push
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Push service is not enabled.");
             }
-
-            SubscribeToApplicationInBackground();
 
             _stateKeeper.InvalidateState();
             var stateSnapshot = _stateKeeper.GetStateSnapshot();
@@ -103,7 +102,7 @@ namespace Microsoft.Azure.Mobile.Push
 
                 MobileCenterLog.Debug(LogTag, $"Received push notification payload: {notificationContent}");
 
-                if (ApplicationInBackground)
+                if (_lifecycleHelper.IsSuspended)
                 {
                     MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
                 }
@@ -181,18 +180,6 @@ namespace Microsoft.Azure.Mobile.Push
             {
                 return null;
             }
-        }
-
-        private void SubscribeToApplicationInBackground()
-        {
-            CoreApplication.LeavingBackground += (sender, e) =>
-            {
-                ApplicationInBackground = false;
-            };
-            CoreApplication.EnteredBackground += (sender, e) =>
-            {
-                ApplicationInBackground = true;
-            };
         }
 
         private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
