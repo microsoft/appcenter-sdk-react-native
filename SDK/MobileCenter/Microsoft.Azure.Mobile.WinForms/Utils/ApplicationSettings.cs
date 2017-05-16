@@ -1,54 +1,49 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
     public class ApplicationSettings : IApplicationSettings
     {
-        private readonly Configuration config;
+        private readonly object configLock = new object();
+        private IDictionary<string, string> current;
 
         public ApplicationSettings()
         {
-            var location = Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine(Path.GetDirectoryName(location), "MobileCenter.config");
-            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = path };
-            config = ConfigurationManager.OpenMappedExeConfiguration(executionFileMap, ConfigurationUserLevel.None);
+            current = ReadAll();
         }
 
         public object this[string key]
         {
             get
             {
-                lock (config)
+                lock (configLock)
                 {
-                    return config.AppSettings.Settings[key]?.Value;
+                    string value = null;
+                    current.TryGetValue(key, out value);
+                    return value;
                 }
             }
             set
             {
-                lock (config)
+                var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
+                lock (configLock)
                 {
-                    var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
-                    var element = config.AppSettings.Settings[key];
-                    if (element == null)
-                    {
-                        config.AppSettings.Settings.Add(key, invariant);
-                        config.Save();
-                    }
-                    else if (element.Value != invariant)
-                    {
-                        element.Value = invariant;
-                        config.Save();
-                    }
+                    current[key] = invariant;
+                    SaveValue(key, invariant);
                 }
             }
         }
         public void Remove(string key)
         {
-            lock (config)
+            lock (configLock)
             {
+                current.Remove(key);
+                var config = OpenConfiguration();
                 config.AppSettings.Settings.Remove(key);
                 config.Save();
             }
@@ -56,16 +51,47 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public T GetValue<T>(string key, T defaultValue)
         {
-            lock (config)
+            lock (configLock)
             {
-                if (config.AppSettings.Settings[key] != null)
+                if (current.ContainsKey(key))
                 {
-                    var value = config.AppSettings.Settings[key].Value;
-                    return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(value);
+                    return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
                 }
             }
             this[key] = defaultValue;
             return defaultValue;
+        }
+
+        private IDictionary<string, string> ReadAll()
+        {
+            var config = OpenConfiguration();
+           return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
+        }
+
+        private void SaveValue(string key, string value)
+        {
+            lock (configLock)
+            {
+                var config = OpenConfiguration();
+                var element = config.AppSettings.Settings[key];
+                if (element == null)
+                {
+                    config.AppSettings.Settings.Add(key, value);
+                }
+                else
+                {
+                    element.Value = value;
+                }
+                config.Save();
+            }
+        }
+
+        private static Configuration OpenConfiguration()
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            var path = Path.Combine(Path.GetDirectoryName(location), "MobileCenter.config");
+            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = path };
+            return ConfigurationManager.OpenMappedExeConfiguration(executionFileMap, ConfigurationUserLevel.None);
         }
     }
 }

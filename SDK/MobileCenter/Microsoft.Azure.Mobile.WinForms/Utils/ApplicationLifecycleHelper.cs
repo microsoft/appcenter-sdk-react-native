@@ -23,8 +23,10 @@ namespace Microsoft.Azure.Mobile.Utils
         // storing it in a class field is simplest way to do this.
         private static WinEventDelegate hookDelegate = new WinEventDelegate(WinEventHook);
         private static bool suspended = false;
+        private static bool started = false;
         private static Action Minimize;
         private static Action Restore;
+        private static Action Start;
 
         private static void WinEventHook(IntPtr winEventHookHandle, uint eventType, IntPtr windowHandle, int objectId, int childId, uint eventThreadId, uint eventTimeInMilliseconds)
         {
@@ -34,6 +36,11 @@ namespace Microsoft.Azure.Mobile.Utils
                 return;
             }
             var anyNotMinimized = Application.OpenForms.Cast<Form>().Any(form => form.WindowState != FormWindowState.Minimized);
+            if (!started && anyNotMinimized)
+            {
+                started = true;
+                Start?.Invoke();
+            }
             if (suspended && anyNotMinimized)
             {
                 suspended = false;
@@ -104,8 +111,13 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
+        public bool HasShownWindow => started;
+
+        public bool IsSuspended => suspended;
+
         public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
+        public event EventHandler ApplicationStarted;
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }

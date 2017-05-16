@@ -139,6 +139,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

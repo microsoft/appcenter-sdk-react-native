@@ -6,7 +6,6 @@ using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 using Foundation;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {

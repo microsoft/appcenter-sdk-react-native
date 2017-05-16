@@ -53,8 +53,8 @@ var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
 var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.8.0";
-var IOS_SDK_VERSION = "0.8.0";
+var ANDROID_SDK_VERSION = "0.8.1";
+var IOS_SDK_VERSION = "0.8.1";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -174,10 +174,10 @@ Setup(context =>
 	{
 		var uwpAnyCpuAssemblyGroup = new AssemblyGroup {
 			AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
-			AssemblyPaths = new string[] { "nuget/Microsoft.Azure.Mobile.Crashes.targets",					
-								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll",
+			AssemblyPaths = new string[] { "nuget/Microsoft.Azure.Mobile.Crashes.targets",
 								"SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll",
 								"SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+								"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll",
 								"SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Release/Microsoft.Azure.Mobile.Push.dll" }
 		};
 		var uwpX86AssemblyGroup = new AssemblyGroup {

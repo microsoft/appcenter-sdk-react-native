@@ -49,6 +49,19 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             properties.Clear(invalidKey);
             Assert.AreEqual(0, properties.Properties.Count);
 
+            /* Long key. */
+            var longKey = new string('a', 129);
+            properties.Set(longKey, value1);
+            properties.Set(longKey, value2);
+            properties.Set(longKey, value3);
+            properties.Set(longKey, value4);
+            properties.Set(longKey, value5);
+            properties.Set(longKey, value6);
+            properties.Set(longKey, value7);
+            properties.Set(longKey, value8);
+            properties.Clear(longKey);
+            Assert.AreEqual(0, properties.Properties.Count);
+
             /* Normal keys. */
             properties.Set("t1", value1);
             properties.Set("t2", value2);
@@ -74,6 +87,27 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             Assert.AreEqual(9, properties.Properties.Count);
         }
 
+
+        /// <summary>
+        /// Verify that properties count validated correct.
+        /// </summary>
+        [TestMethod]
+        public void TestPropertiesCountValidate()
+        {
+            const int MaxPropertiesCount = 60;
+            CustomProperties properties = new CustomProperties();
+            Assert.AreEqual(0, properties.Properties.Count);
+            for (int i = 0; i < MaxPropertiesCount; i++)
+            {
+                properties.Set("t" + i, "test");
+                Assert.AreEqual(i + 1, properties.Properties.Count);
+            }
+            properties.Set("over1", "test");
+            Assert.AreEqual(MaxPropertiesCount, properties.Properties.Count);
+            properties.Set("over2", "test");
+            Assert.AreEqual(MaxPropertiesCount, properties.Properties.Count);
+        }
+
         /// <summary>
         /// Verify that string setting correct.
         /// </summary>
@@ -87,6 +121,11 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             /* Null value. */
             string nullValue = null;
             properties.Set(key, nullValue);
+            Assert.AreEqual(0, properties.Properties.Count);
+
+            /* Long value. */
+            string longValue = new string('?', 129);
+            properties.Set(key, longValue);
             Assert.AreEqual(0, properties.Properties.Count);
 
             /* Normal value. */

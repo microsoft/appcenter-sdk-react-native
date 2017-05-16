@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         {
             var addedLog = new CustomPropertiesLog
             {
-                Device = new DeviceInformationHelper().GetDeviceInformation(),
+                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
                 Toffset = TimeHelper.CurrentTimeInMilliseconds(),
                 Properties = new Dictionary<string, object>
                 {
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var log = new CustomPropertiesLog
             {
                 Properties = null,
-                Device = new DeviceInformationHelper().GetDeviceInformation(),
+                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
                 Toffset = TimeHelper.CurrentTimeInMilliseconds()
             };
 
