@@ -93,6 +93,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Push
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{158e34d9-e93d-4540-82eb-111581143e67}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
@@ -728,18 +729,6 @@ Global
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x64.Build.0 = Debug|Any CPU
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Debug|x86.Build.0 = Debug|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|Any CPU.ActiveCfg = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|Any CPU.Build.0 = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|ARM.ActiveCfg = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|ARM.Build.0 = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhone.ActiveCfg = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhone.Build.0 = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|iPhoneSimulator.Build.0 = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x64.ActiveCfg = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x64.Build.0 = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x86.ActiveCfg = Release|Any CPU
-		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Reference|x86.Build.0 = Release|Any CPU
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}.Release|ARM.ActiveCfg = Release|Any CPU
