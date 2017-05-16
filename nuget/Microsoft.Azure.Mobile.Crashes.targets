@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <mc-crashes-Platform Condition="'$(Platform)' == 'Win32'">x86</mc-crashes-Platform>
+    <mc-crashes-Platform Condition="'$(Platform)' == 'ARM'">arm</mc-crashes-Platform>
+    <mc-crashes-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</mc-crashes-Platform>
+    <mc-crashes-ArchDir>$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(mc-crashes-Platform)</mc-crashes-ArchDir>
+    
+    <mc-crashes-IsCorrectArch Condition="'$(mc-crashes-Platform)' == 'x86' or '$(mc-crashes-Platform)' == 'x64' or '$(mc-crashes-Platform)' == 'arm'">true</mc-crashes-IsCorrectArch>
+  </PropertyGroup>
+
+  <Target Name="PlatformCheck" BeforeTargets="ResolveAssemblyReferences"
+    Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-crashes-IsCorrectArch)' != 'true')">
+    <Error  Text="Please build your project specifically for one of the following platforms: x86, x64, ARM" />
+  </Target>
+
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-crashes-IsCorrectArch)' == 'true')">
+      <ReferenceCopyLocalPaths Include="$(mc-crashes-ArchDir)\native\WatsonRegistrationUtility.dll"/>
+      <Reference Include="WatsonRegistrationUtility.winmd">
+        <HintPath>$(mc-crashes-ArchDir)\lib\uap10.0\WatsonRegistrationUtility.winmd</HintPath>
+        <Implementation>WatsonRegistrationUtility.dll</Implementation>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-crashes-IsCorrectArch)' == 'true')">
+      <Reference Include="Microsoft.Azure.Mobile.Crashes.dll">
+        <HintPath>$(mc-crashes-ArchDir)\lib\uap10.0\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+  <ItemDefinitionGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>

@@ -63,7 +63,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void SetupSessionTrackerEvents()
         {
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationStarted += null, null, null);
+
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspended += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
@@ -78,7 +80,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void SetEnabledFalse()
         {
             Analytics.Enabled = false;
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationStarted += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspended += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
@@ -93,9 +96,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void EnableAfterDisabling()
         {
             Analytics.Enabled = false;
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Analytics.Enabled = true;
-
+            _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationStarted += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationSuspended += null, null, null);
             _mockApplicationLifecycle.Raise(lifecycle => lifecycle.ApplicationResuming += null, null, null);
 
@@ -111,7 +114,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void TrackEvent()
         {
             Analytics.Enabled = true;
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var eventName = "eventName";
             var key = "key";
             var val = "val";
@@ -132,7 +135,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void TrackEventInvalid()
         {
             Analytics.Enabled = true;
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             // Event name is null or empty
             Analytics.TrackEvent(null);
@@ -189,7 +192,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TrackEventWhileDisabled()
         {
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Analytics.Enabled = false;
             Analytics.TrackEvent("anevent");
 

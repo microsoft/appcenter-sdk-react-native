@@ -8,6 +8,16 @@ namespace Microsoft.Azure.Mobile.Utils
     public interface IApplicationLifecycleHelper
     {
         /// <summary>
+        /// Indicates whether the application has shown UI
+        /// </summary>
+        bool HasShownWindow { get; }
+
+        /// <summary>
+        /// Indicates whether the application is currently in a suspended state
+        /// </summary>
+        bool IsSuspended { get; }
+
+        /// <summary>
         /// Gets or sets whether the Application lifecycle events fire (but unhandled exception event always fires)
         /// </summary>
         bool Enabled { get; set; }
@@ -21,6 +31,12 @@ namespace Microsoft.Azure.Mobile.Utils
         /// Occurs when the application is about to resume
         /// </summary>
         event EventHandler ApplicationResuming;
+
+        /// <summary>
+        /// Occurs when the application has been started and UI exists
+        /// </summary>
+        event EventHandler ApplicationStarted;
+
 
         /// <summary>
         /// Occurs when an unhandled exception is fired

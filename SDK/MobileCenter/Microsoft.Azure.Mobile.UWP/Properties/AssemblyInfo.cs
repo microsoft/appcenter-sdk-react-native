@@ -14,10 +14,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-#if REFERENCE
-[assembly: ReferenceAssembly]
-#endif
-
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -29,7 +25,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.9.3.0")]
-[assembly: AssemblyInformationalVersion("0.9.3-SNAPSHOT")]
+[assembly: AssemblyFileVersion("0.11.2.0")]
+[assembly: AssemblyInformationalVersion("0.11.2-SNAPSHOT")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Test.UWP")]

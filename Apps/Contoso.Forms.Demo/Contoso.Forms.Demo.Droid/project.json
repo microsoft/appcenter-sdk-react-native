@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "Microsoft.Azure.Mobile.Analytics": "0.11.1",
+    "Microsoft.Azure.Mobile.Crashes": "0.11.1",
+    "Microsoft.Azure.Mobile.Distribute": "0.11.1",
+    "Microsoft.Azure.Mobile.Push": "0.11.1",
+    "Xamarin.Android.Support.Animated.Vector.Drawable": "25.1.1",
+    "Xamarin.Android.Support.Compat": "25.1.1",
+    "Xamarin.Android.Support.Core.UI": "25.1.1",
+    "Xamarin.Android.Support.Core.Utils": "25.1.1",
+    "Xamarin.Android.Support.Design": "25.1.1",
+    "Xamarin.Android.Support.Fragment": "25.1.1",
+    "Xamarin.Android.Support.Media.Compat": "25.1.1",
+    "Xamarin.Android.Support.Transition": "25.1.1",
+    "Xamarin.Android.Support.v4": "25.1.1",
+    "Xamarin.Android.Support.v7.AppCompat": "25.1.1",
+    "Xamarin.Android.Support.v7.CardView": "25.1.1",
+    "Xamarin.Android.Support.v7.MediaRouter": "25.1.1",
+    "Xamarin.Android.Support.v7.Palette": "25.1.1",
+    "Xamarin.Android.Support.v7.RecyclerView": "25.1.1",
+    "Xamarin.Android.Support.Vector.Drawable": "25.1.1",
+    "Xamarin.Build.Download": "0.4.4",
+    "Xamarin.Forms": "2.3.4.231"
+  },
+  "frameworks": {
+    "MonoAndroid,Version=v7.1": {}
+  }
+}

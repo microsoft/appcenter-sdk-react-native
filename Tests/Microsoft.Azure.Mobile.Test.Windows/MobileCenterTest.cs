@@ -4,6 +4,7 @@ using Microsoft.Azure.Mobile.Test.Windows.Channel;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -14,6 +15,12 @@ namespace Microsoft.Azure.Mobile.Test
         public void InitializeMobileCenterTest()
         {
             MockMobileCenterService.Reset();
+            MobileCenter.Instance = null;
+        }
+
+        [TestCleanup]
+        public void CleanupMobileCenterTest()
+        {
             MobileCenter.Instance = null;
         }
 
@@ -74,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Test
             MobileCenter.Start(typeof(MockMobileCenterService));
             MobileCenter.Start(typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -86,7 +93,7 @@ namespace Microsoft.Azure.Mobile.Test
             MobileCenter.Configure("appsecret");
             MobileCenter.Start(typeof(MockMobileCenterService), typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -218,7 +225,7 @@ namespace Microsoft.Azure.Mobile.Test
         {
             MobileCenter.Start(typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Never());
         }
 
         /// <summary>
@@ -230,7 +237,7 @@ namespace Microsoft.Azure.Mobile.Test
             MobileCenter.Configure("appsecret");
             MobileCenter.Start(typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -241,7 +248,7 @@ namespace Microsoft.Azure.Mobile.Test
         {
             MobileCenter.Start("app secret", null, typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -252,7 +259,7 @@ namespace Microsoft.Azure.Mobile.Test
         {
             MobileCenter.Start("app secret", typeof(string), typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -263,7 +270,7 @@ namespace Microsoft.Azure.Mobile.Test
         {
             MobileCenter.Start("app secret", typeof(NullInstanceMobileCenterService), typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
         /// <summary>
@@ -276,7 +283,7 @@ namespace Microsoft.Azure.Mobile.Test
             // ReSharper disable once ExpressionIsAlwaysNull
             MobileCenter.Start(appSecret, typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Never());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Never());
         }
 
         /// <summary>
@@ -289,7 +296,7 @@ namespace Microsoft.Azure.Mobile.Test
             MobileCenter.Start("app secret", typeof(WrongInstanceTypeMobileCenterService),
                 typeof(MockMobileCenterService));
             MockMobileCenterService.Instance.MockInstance.Verify(
-                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>()), Times.Once());
+                service => service.OnChannelGroupReady(It.IsAny<ChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
 
@@ -424,7 +431,6 @@ namespace Microsoft.Azure.Mobile.Test
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
-
         /// <summary>
         /// Verify parse when the platform is second of two
         /// </summary>
@@ -475,6 +481,39 @@ namespace Microsoft.Azure.Mobile.Test
             Assert.ThrowsException<MobileCenterException>(
                 () => MobileCenter.GetSecretForPlatform(secrets, platformId + platformId));
         }
+
+        /// <summary>
+        /// Verify setting custom properties.
+        /// </summary>
+        [TestMethod]
+        public void SetCustomProperties()
+        {
+            var settingsMock = new Mock<IApplicationSettings>();
+            settingsMock.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, true)).Returns(true);
+            var channelGroupMock = new Mock<IChannelGroup>();
+            var channelUnitMock = new Mock<IChannelUnit>();
+            channelGroupMock.Setup(
+                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+                .Returns(channelUnitMock.Object);
+            MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+            MobileCenter.Configure("appsecret");
+
+            /* Set null. */
+            MobileCenter.SetCustomProperties(null);
+            channelUnitMock.Verify(channel => channel.Enqueue(It.IsAny<Log>()), Times.Never());
+
+            /* Set empty. */
+            var empty = new CustomProperties();
+            MobileCenter.SetCustomProperties(empty);
+            channelUnitMock.Verify(channel => channel.Enqueue(It.IsAny<Log>()), Times.Never());
+
+            /* Set normal. */
+            var properties = new CustomProperties();
+            properties.Set("test", "test");
+            MobileCenter.SetCustomProperties(properties);
+            channelUnitMock.Verify(channel => channel.Enqueue(It.Is<CustomPropertiesLog>(log =>
+                log.Properties == properties.Properties)), Times.Once());
+        }
     }
 
     public class NullInstanceMobileCenterService : IMobileCenterService
@@ -483,11 +522,11 @@ namespace Microsoft.Azure.Mobile.Test
         public string ServiceName => nameof(NullInstanceMobileCenterService);
 
         public bool InstanceEnabled { get; set; }
-        public void OnChannelGroupReady(IChannelGroup channelGroup)
+        public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
         }
     }
-    public class WrongInstanceTypeMobileCenterService : Mobile.IMobileCenterService
+    public class WrongInstanceTypeMobileCenterService : IMobileCenterService
     {
         public static Guid Instance => Guid.NewGuid();
         public string ServiceName => nameof(WrongInstanceTypeMobileCenterService);
@@ -495,7 +534,7 @@ namespace Microsoft.Azure.Mobile.Test
         public bool InstanceEnabled { get; set; }
 
 
-        public void OnChannelGroupReady(IChannelGroup channelGroup)
+        public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
         }
     }

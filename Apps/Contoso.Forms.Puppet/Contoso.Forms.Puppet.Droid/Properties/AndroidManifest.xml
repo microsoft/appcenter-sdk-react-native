@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="16" android:versionName="0.9.3-SNAPSHOT" package="com.microsoft.azure.mobile.xamarin.forms.puppet">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="21" android:versionName="0.11.2-SNAPSHOT" package="com.microsoft.azure.mobile.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="15" />
-	<application android:label="MCFPuppet"></application>
+	<application android:label="MCFPuppet">
+		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
+		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="${applicationId}" />
+			</intent-filter>
+		</receiver>
+	</application>
 </manifest>

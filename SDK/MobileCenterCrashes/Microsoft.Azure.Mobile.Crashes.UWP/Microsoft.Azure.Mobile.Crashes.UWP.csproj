@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Crashes.UWP</AssemblyName>
+    <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crashes.cs" />
+    <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.Crashes.UWP.rd.xml" />
   </ItemGroup>
@@ -116,13 +117,19 @@
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
       <Name>Microsoft.Azure.Mobile.UWP</Name>
     </ProjectReference>
+    <!-- Do not include watson utility when compiling for reference|anycpu-->
+    <ProjectReference Condition="'$(Configuration)|$(Platform)' != 'Reference|AnyCPU'" Include="..\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
+      <Project>{b977bf28-3a1c-4a89-a673-a22eddc9d23d}</Project>
+      <Name>WatsonRegistrationUtility</Name>
+    </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|AnyCPU'">
     <OutputPath>bin\Reference\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;REFERENCE</DefineConstants>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>

@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
             MobileCenter.Enabled = true;
-            _testService.OnChannelGroupReady(_mockChannelGroup.Object);
+            _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             _testService.InstanceEnabled = false;
 
@@ -113,7 +113,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             MobileCenter.Enabled = true;
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
             .Returns(true);
-            _testService.OnChannelGroupReady(_mockChannelGroup.Object);
+            _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             _mockChannelGroup.Verify(
                 channelGroup =>
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             _mockSettings.Setup(
                     settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
-            _testService.OnChannelGroupReady(_mockChannelGroup.Object);
+            _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             _mockChannelGroup.Verify(
                 channelGroup =>
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         {
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
             .Returns(false);
-            _testService.OnChannelGroupReady(_mockChannelGroup.Object);
+            _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             Assert.IsTrue(_testService.PublicIsInactive);
         }
@@ -177,7 +177,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         {
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
             .Returns(true);
-            _testService.OnChannelGroupReady(_mockChannelGroup.Object);
+            _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             Assert.IsFalse(_testService.PublicIsInactive);
         }
