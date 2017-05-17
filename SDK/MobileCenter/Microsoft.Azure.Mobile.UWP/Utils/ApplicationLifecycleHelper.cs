@@ -22,16 +22,18 @@ namespace Microsoft.Azure.Mobile.Utils
         public ApplicationLifecycleHelper()
         {
             Enabled = true;
-
             try
             {
                 CoreApplication.MainView.CoreWindow.Activated += InvokeStarted;
+                if (CoreApplication.Views.Count > 0)
+                {
+                    _started = true;
+                }
             }
             catch (System.Runtime.InteropServices.COMException)
             {
                 throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
             }
-
             Application.Current.UnhandledException += (sender, eventArgs) =>
             {
                 UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));

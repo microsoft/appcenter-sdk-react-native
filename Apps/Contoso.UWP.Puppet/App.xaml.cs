@@ -25,7 +25,6 @@ namespace Contoso.UWP.Puppet
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
         }
 
         /// <summary>
@@ -38,11 +37,6 @@ namespace Contoso.UWP.Puppet
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
-
-            var properties = new Dictionary<string, string>();
-            properties["key1"] = "value1";
-            properties["key2"] = "value";
-            //Analytics.TrackEvent("event", properties);
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
