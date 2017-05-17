@@ -55,12 +55,12 @@ namespace Microsoft.Azure.Mobile.Push
             if (Enabled)
             {
                 var stateSnapshot = _stateKeeper.GetStateSnapshot();
-                Task.Run(async () =>
+                Task.Factory.StartNew(async () =>
                 {
                     var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
-                    _mutex.Lock(stateSnapshot);
                     try
                     {
+                        _mutex.Lock(stateSnapshot);
                         var pushToken = channel.Uri;
                         if (!string.IsNullOrEmpty(pushToken))
                         {
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Mobile.Push
                             _channel = channel;
 
                             // Send channel URI to backend
-                            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Push token '{pushToken}'");
+                            MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
                             var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
                             Channel.Enqueue(pushInstallationLog);
 
