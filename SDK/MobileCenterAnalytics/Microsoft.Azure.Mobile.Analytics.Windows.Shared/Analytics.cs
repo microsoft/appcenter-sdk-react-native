@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         // Internal for testing purposes
         internal ISessionTracker SessionTracker;
-        internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
+        internal IApplicationLifecycleHelper ApplicationLifecycleHelper;
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
         private bool _hasStarted;
 
@@ -138,6 +138,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
             base.OnChannelGroupReady(channelGroup, appSecret);
+            ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
             ApplyEnabledState(InstanceEnabled);
             if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
             {

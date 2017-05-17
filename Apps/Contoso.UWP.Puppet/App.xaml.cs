@@ -23,16 +23,6 @@ namespace Contoso.UWP.Puppet
         /// </summary>
         public App()
         {
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Configure("42f4a839-c54c-44da-8072-a2f2a61751b2");
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Analytics.Enabled = true;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes), typeof(Push));
-            MobileCenter.Enabled = true;
-            var properties = new Dictionary<string, string>();
-            properties["key1"] = "value1";
-            properties["key2"] = "value";
-            //Analytics.TrackEvent("event", properties);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             System.Threading.Tasks.Task.Delay(4000).ContinueWith((completed) => Analytics.TrackEvent("delayed event"));
@@ -45,6 +35,14 @@ namespace Contoso.UWP.Puppet
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+
+            var properties = new Dictionary<string, string>();
+            properties["key1"] = "value1";
+            properties["key2"] = "value";
+            //Analytics.TrackEvent("event", properties);
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
