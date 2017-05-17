@@ -138,7 +138,11 @@ namespace Microsoft.Azure.Mobile.Analytics
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
             base.OnChannelGroupReady(channelGroup, appSecret);
-            ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
+            if (ApplicationLifecycleHelper == null)
+            {
+                // If it isn't null, that likely means that a test provided its own lifecycle helper
+                ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
+            }
             ApplyEnabledState(InstanceEnabled);
             if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
             {
@@ -153,6 +157,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                     _hasStarted = true;
                 };
             }
+            ApplicationLifecycleHelper.ApplicationResuming += (sender, e) => SessionTracker?.Resume();
             ApplicationLifecycleHelper.ApplicationSuspended += (sender, e) => SessionTracker?.Pause();
         }
 
