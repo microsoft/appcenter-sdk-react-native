@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile
     {
         private const string PreferenceKeySeparator = "_";
         private const string KeyEnabled = Constants.KeyPrefix + "ServiceEnabled";
-        private readonly object _serviceLock = new object();
+        protected readonly object _serviceLock = new object();
         private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
 
         /// <summary>

@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Mobile.Push
 
         private static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
         {
-            // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key
+            // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key)
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
             var customData = ParseLaunchString(launch);
             if (customData == null)
