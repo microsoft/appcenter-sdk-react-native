@@ -1,67 +1,174 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
+using Windows.Data.Xml.Dom;
 using Windows.Networking.PushNotifications;
 
 namespace Microsoft.Azure.Mobile.Push
 {
+    using WindowsPushNotificationReceivedEventArgs = Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs;
+
     public partial class Push : MobileCenterService
     {
-        // Retrieve the push token from platform-specific Push Notification Service,
-        // and later use the token to register with Mobile Center backend.
-        private void InstanceRegister()
+        private ApplicationLifecycleHelper _lifecycleHelper = new ApplicationLifecycleHelper();
+
+        private PushNotificationChannel _channel;
+
+        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
+
+        /// <summary>
+        /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
+        /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
+        /// </summary>
+        /// <param name="e">OnLaunched method event</param>
+        public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
-            if (!Enabled)
+            if (PlatformPushNotificationReceived != null && Enabled)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Push service is not enabled.");
+                var customData = ParseLaunchString(e?.Arguments);
+                if (customData != null)
+                {
+                    PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                    {
+                        Title = null,
+                        Message = null,
+                        CustomData = customData
+                    });
+                }
             }
+        }
 
-            _stateKeeper.InvalidateState();
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            _mutex.Unlock();
-
-            var pushNotificationChannel = Task.Run(() => CreatePushNotificationChannel()).Result;
-
-            try
+        /// <summary>
+        /// If enabled, register push channel and send URI to backend.
+        /// Also start intercepting pushes.
+        /// If disabled and previously enabled, stop listening for pushes (they will still be received though).
+        /// </summary>
+        private void ApplyEnabledState()
+        {
+            // Since the lock we use is not recursive, caller of this method is expected to execute this method inside lock
+            if (Enabled)
             {
-                _mutex.Lock(stateSnapshot);
+                var stateSnapshot = _stateKeeper.GetStateSnapshot();
+                Task.Factory.StartNew(async () =>
+                {
+                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
+                    try
+                    {
+                        _mutex.Lock(stateSnapshot);
+                        var pushToken = channel.Uri;
+                        if (!string.IsNullOrEmpty(pushToken))
+                        {
+                            // Save channel member
+                            _channel = channel;
+
+                            // Send channel URI to backend
+                            MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+                            var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
+                            Channel.Enqueue(pushInstallationLog);
+
+                            // Subscribe to push
+                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+                        }
+                        else
+                        {
+                            MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                        }
+                    }
+                    catch (StatefulMutexException)
+                    {
+                        MobileCenterLog.Warn(LogTag, "Push Enabled state changed after creating channel.");
+                    }
+                    finally
+                    {
+                        _mutex.Unlock();
+                    }
+                });
             }
-            catch (StatefulMutexException e)
+            else if (_channel != null)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Push service registering with Mobile Center backend has failed", e);
-                return;
+                _channel.PushNotificationReceived -= OnPushNotificationReceivedHandler;
             }
-            finally
+        }
+
+        private void OnPushNotificationReceivedHandler(PushNotificationChannel sender, WindowsPushNotificationReceivedEventArgs e)
+        {
+            if (e.NotificationType == PushNotificationType.Toast)
             {
-                _mutex.Unlock();
-            }
-
-            var pushToken = pushNotificationChannel.Uri;
-
-            if (!string.IsNullOrEmpty(pushToken))
-            {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Push token '{pushToken}'");
-
-                var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
-
-                Channel.Enqueue(pushInstallationLog);
+                var content = e.ToastNotification.Content;
+                MobileCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
+                if (_lifecycleHelper.IsSuspended)
+                {
+                    MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
+                }
+                else
+                {
+                    var pushNotification = ParseMobileCenterPush(content);
+                    if (pushNotification != null)
+                    {
+                        e.Cancel = true;
+                        PlatformPushNotificationReceived?.Invoke(sender, pushNotification);
+                        MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
+                    }
+                    else
+                    {
+                        MobileCenterLog.Debug(LogTag, "Push ignored. It was not sent through Mobile Center.");
+                    }
+                }
             }
             else
             {
-                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                MobileCenterLog.Debug(LogTag, $"Push ignored. We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
+            }
+        }
+
+        private static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
+        {
+            // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key
+            var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
+            var customData = ParseLaunchString(launch);
+            if (customData == null)
+            {
+                return null;
             }
 
-            _mutex.Unlock();
+            // Parse title and message using identifiers
+            return new PushNotificationReceivedEventArgs()
+            {
+                Title = content.SelectSingleNode("/toast/visual/binding/text[@id='1']")?.InnerText,
+                Message = content.SelectSingleNode("/toast/visual/binding/text[@id='2']")?.InnerText,
+                CustomData = customData
+            };
         }
 
-        private async Task<PushNotificationChannel> CreatePushNotificationChannel()
+        private static Dictionary<string, string> ParseLaunchString(string launchString)
         {
-            PushNotificationChannel channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
-
-            return channel;
+            try
+            {
+                if (launchString != null)
+                {
+                    var launchJObject = JObject.Parse(launchString);
+                    if (launchJObject?["mobile_center"] is JObject mobileCenterData)
+                    {
+                        var customData = new Dictionary<string, string>();
+                        foreach (var pair in mobileCenterData)
+                        {
+                            customData.Add(pair.Key, pair.Value.ToString());
+                        }
+                        return customData;
+                    }
+                }
+                return null;
+            }
+            catch (JsonReaderException)
+            {
+                return null;
+            }
         }
-
-        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
     }
 }

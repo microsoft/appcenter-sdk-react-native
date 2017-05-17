@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.UWP.Puppet
 {
@@ -23,8 +22,8 @@ namespace Contoso.UWP.Puppet
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -34,15 +33,18 @@ namespace Contoso.UWP.Puppet
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            Push.PushNotificationReceived += PushNotificationReceivedHandler;
+            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+            Push.CheckLaunchedFromNotification(e);
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -74,6 +76,28 @@ namespace Contoso.UWP.Puppet
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+            }
+        }
+
+        private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)
+        {
+            string title = args.Title;
+            string message = args.Message;
+            var customData = args.CustomData;
+
+            string customDataString = string.Empty;
+            foreach (var pair in customData)
+            {
+                customDataString += $"key='{pair.Key}', value='{pair.Value}'";
+            }
+
+            if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(message))
+            {
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
+            }
+            else
+            {
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received customData:{customDataString}");
             }
         }
 

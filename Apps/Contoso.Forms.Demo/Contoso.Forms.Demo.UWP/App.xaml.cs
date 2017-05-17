@@ -7,7 +7,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.Forms.Demo.UWP
 {
