@@ -43,7 +43,7 @@ namespace Contoso.UWP.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Push.PushNotificationReceived += PushNotificationReceivedHandler;
             MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
-            Push.CheckPushActivation(e);
+            Push.CheckLaunchedFromNotification(e);
 
             Frame rootFrame = Window.Current.Content as Frame;
 

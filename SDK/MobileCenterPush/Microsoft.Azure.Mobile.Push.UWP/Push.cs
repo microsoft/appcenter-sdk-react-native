@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
         /// </summary>
         /// <param name="e">OnLaunched method event</param>
-        public static void CheckPushActivation(LaunchActivatedEventArgs e)
+        public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             if (PlatformPushNotificationReceived != null && Enabled)
             {

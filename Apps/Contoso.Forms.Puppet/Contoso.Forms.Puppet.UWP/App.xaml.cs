@@ -78,7 +78,7 @@ namespace Contoso.Forms.Puppet.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-            Push.CheckPushActivation(e);
+            Push.CheckLaunchedFromNotification(e);
         }
 
         /// <summary>
