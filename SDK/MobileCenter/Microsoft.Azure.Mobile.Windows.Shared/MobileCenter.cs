@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile
         private static MobileCenter _instanceField;
 
         /// <summary>
-        /// Gets or sets the shared instance of Mobile Center. Should only return null if constructor fails.
+        /// Gets or sets the shared instance of Mobile Center. Should never return null.
         /// Setter is for testing.
         /// </summary>
         internal static MobileCenter Instance
