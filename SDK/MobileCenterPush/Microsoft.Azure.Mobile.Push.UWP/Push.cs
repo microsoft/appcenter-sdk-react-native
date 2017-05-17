@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Push
                 var customData = ParseLaunchString(e?.Arguments);
                 if (customData != null)
                 {
-                    PlatformPushNotificationReceived.Invoke(null, new PushNotificationReceivedEventArgs()
+                    PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
                     {
                         Title = null,
                         Message = null,
