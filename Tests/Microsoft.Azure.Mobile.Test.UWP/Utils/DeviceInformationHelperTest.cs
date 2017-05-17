@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Test.UWP.Utils
 {
@@ -12,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         [TestMethod]
         public void VerifySdkName()
         {
-            var device = new DeviceInformationHelper().GetDeviceInformation();
+            var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
             Assert.AreEqual(device.SdkName, "mobilecenter.uwp");
         }
 
@@ -25,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
             const string CountryCode = "US";
             MobileCenter.SetCountryCode(CountryCode);
 
-            var device = new DeviceInformationHelper().GetDeviceInformation();
+            var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
             Assert.AreEqual(device.CarrierCountry, CountryCode);
         }
     }
