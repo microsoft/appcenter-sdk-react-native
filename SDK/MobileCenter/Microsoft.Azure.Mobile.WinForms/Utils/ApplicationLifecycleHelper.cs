@@ -24,9 +24,9 @@ namespace Microsoft.Azure.Mobile.Utils
         private static WinEventDelegate hookDelegate = new WinEventDelegate(WinEventHook);
         private static bool suspended = false;
         private static bool started = false;
-        private static Action Minimize;
-        private static Action Restore;
-        private static Action Start;
+        private static event Action Minimize;
+        private static event Action Restore;
+        private static event Action Start;
 
         private static void WinEventHook(IntPtr winEventHookHandle, uint eventType, IntPtr windowHandle, int objectId, int childId, uint eventThreadId, uint eventTimeInMilliseconds)
         {
@@ -79,6 +79,11 @@ namespace Microsoft.Azure.Mobile.Utils
             ApplicationResuming?.Invoke(null, EventArgs.Empty);
         }
 
+        private void InvokeStarted()
+        {
+            ApplicationStarted?.Invoke(null, EventArgs.Empty);
+        }
+
         private void InvokeSuspended()
         {
             ApplicationSuspended?.Invoke(null, EventArgs.Empty);
@@ -99,11 +104,13 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
                 if (value)
                 {
+                    Start += InvokeStarted;
                     Restore += InvokeResuming;
                     Minimize += InvokeSuspended;
                 }
                 else
                 {
+                    Start -= InvokeStarted;
                     Restore -= InvokeResuming;
                     Minimize -= InvokeSuspended;
                 }
