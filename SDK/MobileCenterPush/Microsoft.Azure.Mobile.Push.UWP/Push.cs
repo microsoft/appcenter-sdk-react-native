@@ -34,26 +34,27 @@ namespace Microsoft.Azure.Mobile.Push
 
         private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
+            IDictionary<string, string> customData = null;
             _mutex.Lock();
             try
             {
                 if (!IsInactive)
                 {
-                    var customData = ParseLaunchString(e?.Arguments);
-                    if (customData != null)
-                    {
-                        PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
-                        {
-                            Title = null,
-                            Message = null,
-                            CustomData = customData
-                        });
-                    }
+                    customData = ParseLaunchString(e?.Arguments);
                 }
             }
             finally
             {
                 _mutex.Unlock();
+            }
+            if (customData != null)
+            {
+                PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                {
+                    Title = null,
+                    Message = null,
+                    CustomData = customData
+                });
             }
         }
 

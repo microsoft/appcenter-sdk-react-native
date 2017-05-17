@@ -90,15 +90,7 @@ namespace Microsoft.Azure.Mobile.Push
         {
             get
             {
-                _mutex.Lock();
-                try
-                {
-                    return base.InstanceEnabled;
-                }
-                finally
-                {
-                    _mutex.Unlock();
-                }
+                return base.InstanceEnabled;
             }
 
             set
