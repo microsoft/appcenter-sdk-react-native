@@ -34,6 +34,10 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
+
+    <!-- WinForms -->
+    <file src="$winforms_dir$/Microsoft.Azure.Mobile.dll" target="lib/net451" />
+
   </files>
 </package>
