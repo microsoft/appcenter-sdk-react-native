@@ -163,6 +163,7 @@ Setup(context =>
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(pclAssemblyGroup);
+		PLATFORM_PATHS.DownloadAssemblyFolders.Add(WINFORMS_ASSEMBLIES_FOLDER);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x86");
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x64");
@@ -210,6 +211,7 @@ Setup(context =>
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX86AssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX64AssemblyGroup);
 		PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpArmAssemblyGroup);
+		PLATFORM_PATHS.UploadAssemblyGroups.Add(winformsAssemblyGroup);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(IOS_ASSEMBLIES_FOLDER);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(ANDROID_ASSEMBLIES_FOLDER);
 		PLATFORM_PATHS.DownloadAssemblyFolders.Add(PCL_ASSEMBLIES_FOLDER);
