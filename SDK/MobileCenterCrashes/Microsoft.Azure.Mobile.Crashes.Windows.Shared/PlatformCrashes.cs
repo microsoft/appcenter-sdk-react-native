@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
     internal class PlatformCrashes : PlatformCrashesBase
     {
-        // Note: in PlatformCrashes we use only callbacks; not events (in Crashes, there are corresponding events)
-
         public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
 
         public override SentErrorReportEventHandler SentErrorReport { get; set; }
@@ -34,6 +29,5 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override void NotifyUserConfirmation(UserConfirmation confirmation)
         {
         }
-
     }
 }
