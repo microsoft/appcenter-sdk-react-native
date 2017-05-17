@@ -80,9 +80,9 @@ namespace Microsoft.Azure.Mobile.Push
                             MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
                         }
                     }
-                    catch (StatefulMutexException e)
+                    catch (StatefulMutexException)
                     {
-                        MobileCenterLog.Warn(MobileCenterLog.LogTag, "The channel operation has been cancelled", e);
+                        MobileCenterLog.Warn(LogTag, "Push Enabled state changed after creating channel.");
                     }
                     finally
                     {
