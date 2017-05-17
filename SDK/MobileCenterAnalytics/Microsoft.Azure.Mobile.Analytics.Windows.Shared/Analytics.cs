@@ -106,10 +106,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             get
             {
-                lock (_serviceLock)
-                {
-                    return base.InstanceEnabled;
-                }
+                return base.InstanceEnabled;
             }
 
             set

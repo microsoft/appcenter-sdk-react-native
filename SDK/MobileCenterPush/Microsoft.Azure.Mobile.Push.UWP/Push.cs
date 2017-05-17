@@ -29,18 +29,31 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="e">OnLaunched method event</param>
         public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
-            if (PlatformPushNotificationReceived != null && Enabled)
+            Instance.InstanceCheckLaunchedFromNotification(e);
+        }
+
+        private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        {
+            _mutex.Lock();
+            try
             {
-                var customData = ParseLaunchString(e?.Arguments);
-                if (customData != null)
+                if (!IsInactive)
                 {
-                    PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                    var customData = ParseLaunchString(e?.Arguments);
+                    if (customData != null)
                     {
-                        Title = null,
-                        Message = null,
-                        CustomData = customData
-                    });
+                        PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                        {
+                            Title = null,
+                            Message = null,
+                            CustomData = customData
+                        });
+                    }
                 }
+            }
+            finally
+            {
+                _mutex.Unlock();
             }
         }
 
@@ -49,11 +62,11 @@ namespace Microsoft.Azure.Mobile.Push
         /// Also start intercepting pushes.
         /// If disabled and previously enabled, stop listening for pushes (they will still be received though).
         /// </summary>
-        private void ApplyEnabledState()
+        private void ApplyEnabledState(bool enabled)
         {
-            // Since the lock we use is not recursive, caller of this method is expected to execute this method inside lock
-            if (Enabled)
+            if (enabled)
             {
+                // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
                 var stateSnapshot = _stateKeeper.GetStateSnapshot();
                 Task.Factory.StartNew(async () =>
                 {
