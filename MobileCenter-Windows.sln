@@ -1,11 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-<<<<<<< Updated upstream
 VisualStudioVersion = 15.0.26430.6
-=======
-VisualStudioVersion = 15.0.26430.4
->>>>>>> Stashed changes
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{AA6821F3-930A-49E4-BA3F-D68255F39F1E}"
 EndProject
@@ -91,13 +87,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.WinForms.Puppet", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WatsonRegistrationUtility", "SDK\MobileCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj", "{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}"
 EndProject
-<<<<<<< Updated upstream
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Push", "SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push\Microsoft.Azure.Mobile.Push.csproj", "{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Push.Shared", "SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.shproj", "{A5D2FD20-13EE-4CA4-8278-09520CC376CD}"
-=======
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Crashes.Windows.Shared", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Windows.Shared\Microsoft.Azure.Mobile.Crashes.Windows.Shared.shproj", "{3F190EDF-F524-4B8D-9031-CD7B045EB6A5}"
->>>>>>> Stashed changes
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -797,11 +789,7 @@ Global
 		{87A5B88A-B001-4D2F-BFD5-6E7129D91973} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 		{44E1971C-3399-4C88-AFE5-54EB53737D31} = {87A5B88A-B001-4D2F-BFD5-6E7129D91973}
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D} = {A60D537E-41F7-44D6-95C8-5DDB77B07308}
-<<<<<<< Updated upstream
 		{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9} = {CE57D13B-E5A1-4747-9641-AB47F5B95DFC}
 		{A5D2FD20-13EE-4CA4-8278-09520CC376CD} = {CE57D13B-E5A1-4747-9641-AB47F5B95DFC}
-=======
-		{3F190EDF-F524-4B8D-9031-CD7B045EB6A5} = {A60D537E-41F7-44D6-95C8-5DDB77B07308}
->>>>>>> Stashed changes
 	EndGlobalSection
 EndGlobal
