@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Mobile.Push
                     }
                     else
                     {
-                        MobileCenterLog.Debug(LogTag, $"Push ignored. It was not sent through Mobile Center.");
+                        MobileCenterLog.Debug(LogTag, "Push ignored. It was not sent through Mobile Center.");
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        private PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
+        private static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
         {
             // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
