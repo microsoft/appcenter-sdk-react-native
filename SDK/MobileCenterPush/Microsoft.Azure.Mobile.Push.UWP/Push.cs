@@ -17,6 +17,12 @@ namespace Microsoft.Azure.Mobile.Push
 
     public partial class Push : MobileCenterService
     {
+        private ApplicationLifecycleHelper _lifecycleHelper = new ApplicationLifecycleHelper();
+
+        private PushNotificationChannel _channel;
+
+        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
+
         /// <summary>
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
@@ -39,14 +45,14 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        private ApplicationLifecycleHelper _lifecycleHelper = new ApplicationLifecycleHelper();
-
-        private PushNotificationChannel _channel;
-
-        // Retrieve the push token from platform-specific Push Notification Service,
-        // and later use the token to register with Mobile Center backend.
-        private void InstanceRegister()
+        /// <summary>
+        /// If enabled, register push channel and send URI to backend.
+        /// Also start intercepting pushes.
+        /// If disabled and previously enabled, stop listening for pushes (they will still be received though).
+        /// </summary>
+        private void ApplyEnabledState()
         {
+            // Since the lock we use is not recursive, caller of this method is expected to execute this method inside lock
             if (Enabled)
             {
                 var stateSnapshot = _stateKeeper.GetStateSnapshot();
@@ -96,8 +102,7 @@ namespace Microsoft.Azure.Mobile.Push
             if (e.NotificationType == PushNotificationType.Toast)
             {
                 var content = e.ToastNotification.Content;
-                var notificationContent = content.GetXml();
-                MobileCenterLog.Debug(LogTag, $"Received push notification payload: {notificationContent}");
+                MobileCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
                 if (_lifecycleHelper.IsSuspended)
                 {
                     MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
@@ -166,7 +171,5 @@ namespace Microsoft.Azure.Mobile.Push
                 return null;
             }
         }
-
-        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
     }
 }

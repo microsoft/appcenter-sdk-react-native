@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Push
             {
                 if (Enabled)
                 {
-                    InstanceRegister();
+                    ApplyEnabledState();
                 }
             }
             finally
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Mobile.Push
                     _stateKeeper.InvalidateState();
                     if (value != oldEnabled)
                     {
-                        InstanceRegister();
+                        ApplyEnabledState();
                     }
                 }
                 finally
