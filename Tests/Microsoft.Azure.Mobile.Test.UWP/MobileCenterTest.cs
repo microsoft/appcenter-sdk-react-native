@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Windows.ApplicationModel.Core;
 
 namespace Microsoft.Azure.Mobile.Test.UWP
 {
@@ -19,7 +20,11 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         [TestMethod]
         public void VerifyPlatformId()
         {
-            MobileCenter.Configure("uwp=appsecret");
+            CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                MobileCenter.Configure("uwp=appsecret");
+            }).AsTask().GetAwaiter().GetResult();
+
             Assert.IsTrue(MobileCenter.Configured);
         }
 
