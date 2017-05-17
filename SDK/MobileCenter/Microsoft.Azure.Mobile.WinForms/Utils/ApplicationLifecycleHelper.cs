@@ -79,6 +79,11 @@ namespace Microsoft.Azure.Mobile.Utils
             ApplicationResuming?.Invoke(null, EventArgs.Empty);
         }
 
+        private void InvokeStarted()
+        {
+            ApplicationStarted?.Invoke(null, EventArgs.Empty);
+        }
+
         private void InvokeSuspended()
         {
             ApplicationSuspended?.Invoke(null, EventArgs.Empty);
@@ -99,13 +104,15 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
                 if (value)
                 {
-                    Restore += InvokeResuming;
-                    Minimize += InvokeSuspended;
+                    Start = InvokeStarted;
+                    Restore = InvokeResuming;
+                    Minimize = InvokeSuspended;
                 }
                 else
                 {
-                    Restore -= InvokeResuming;
-                    Minimize -= InvokeSuspended;
+                    Start = null;
+                    Restore = null;
+                    Minimize = null;
                 }
                 enabled = value;
             }
