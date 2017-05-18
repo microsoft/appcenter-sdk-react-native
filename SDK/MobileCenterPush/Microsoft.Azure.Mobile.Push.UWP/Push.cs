@@ -20,8 +20,6 @@ namespace Microsoft.Azure.Mobile.Push
 
         private PushNotificationChannel _channel;
 
-        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
-
         /// <summary>
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
@@ -29,12 +27,12 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="e">OnLaunched method event</param>
         public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
-            if (PlatformPushNotificationReceived != null && Enabled)
+            if (PushNotificationReceived != null && Enabled)
             {
                 var customData = ParseLaunchString(e?.Arguments);
                 if (customData != null)
                 {
-                    PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                    PushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
                     {
                         Title = null,
                         Message = null,
@@ -112,7 +110,7 @@ namespace Microsoft.Azure.Mobile.Push
                     if (pushNotification != null)
                     {
                         e.Cancel = true;
-                        PlatformPushNotificationReceived?.Invoke(sender, pushNotification);
+                        PushNotificationReceived?.Invoke(sender, pushNotification);
                         MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
                     }
                     else
