@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Storage;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
@@ -89,14 +90,15 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public void Shutdown()
+        public Task Shutdown()
         {
             ThrowIfDisposed();
+            var tasks = new List<Task>();
             lock (_channelGroupLock)
             {
                 foreach (var channel in _channels)
                 {
-                    channel.Shutdown();
+                    tasks.Add(channel.Shutdown());
                 }
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
                 if (!_storage.Shutdown(_shutdownTimeout))
@@ -104,6 +106,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
                 }
             }
+            return Task.WhenAll(tasks);
         }
 
         private static IIngestion DefaultIngestion()

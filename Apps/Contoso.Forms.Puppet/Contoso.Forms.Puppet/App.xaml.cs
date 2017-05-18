@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Mobile;
+﻿using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -17,7 +18,7 @@ namespace Contoso.Forms.Puppet
         public const string LogTag = "MobileCenterXamarinPuppet";
 
         // Mobile Center keys
-        public const string uwpKey = "42f4a839-c54c-44da-8072-a2f2a61751b2";
+        public const string uwpKey = "a678b499-1912-4a94-9d97-25b569284d3a";
         public const string androidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
         public const string iosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
 
@@ -93,17 +94,11 @@ namespace Contoso.Forms.Puppet
 
         static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
-            var printMessage = $"Push notification received:\n\tTitle: {e.Title}" +
-                $"\n\tMessage: {e.Message}";
-            if (e.CustomData != null)
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
-                printMessage += "\n\tCustom data:\n";
-                foreach (var key in e.CustomData.Keys)
-                {
-                    printMessage += $"\t\t{key} : {e.CustomData[key]}\n";
-                }
-            }
-            MobileCenterLog.Info(LogTag, printMessage);
+                var customData = "{" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+                Current.MainPage.DisplayAlert(e.Title, e.Message + "\nCustom data=" + customData, "OK");
+            });
         }
 
         static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)

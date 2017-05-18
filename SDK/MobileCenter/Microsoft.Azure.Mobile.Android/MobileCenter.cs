@@ -182,8 +182,12 @@ namespace Microsoft.Azure.Mobile
             var monoAssembly = typeof(Java.Lang.Object).Assembly;
             var monoAssemblyAttibutes = monoAssembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true);
             var monoAssemblyVersionAttibutes = monoAssemblyAttibutes as AssemblyInformationalVersionAttribute[];
-            var xamarinAndroidVersion = monoAssemblyVersionAttibutes[0].InformationalVersion;
-            xamarinAndroidVersion = xamarinAndroidVersion.Split(';')[0];
+            string xamarinAndroidVersion = null;
+            if (monoAssemblyVersionAttibutes?.Length > 0)
+            {
+                xamarinAndroidVersion = monoAssemblyVersionAttibutes[0].InformationalVersion;
+                xamarinAndroidVersion = xamarinAndroidVersion?.Split(';')[0];
+            }
             var wrapperSdk = new AndroidWrapperSdk
             {
                 WrapperSdkName = WrapperSdk.Name,

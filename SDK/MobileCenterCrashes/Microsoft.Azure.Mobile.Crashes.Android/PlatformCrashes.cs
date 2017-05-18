@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             var callback = new GetLastSessionCrashReportCallback();
             AndroidCrashes.GetLastSessionCrashReport(callback);
-            var androidErrorReport = await callback.Result;
+            var androidErrorReport = await callback.Result.ConfigureAwait(false);
             if (androidErrorReport == null)
                 return null;
             return ErrorReportCache.GetErrorReport(androidErrorReport);

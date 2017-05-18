@@ -12,6 +12,11 @@ namespace Microsoft.Azure.Mobile
         /// <param name="countryCode">The two-letter ISO country code. See <see href="https://www.iso.org/obp/ui/#search"/> for more information.</param>
         public static void SetCountryCode(string countryCode)
         {
+            if (countryCode != null && countryCode.Length != 2)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, $"MobileCenter accept only the two-letter ISO country code.");
+                return;
+            }
             DeviceInformationHelper.SetCountryCode(countryCode);
         }
     }
