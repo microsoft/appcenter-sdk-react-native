@@ -7,6 +7,7 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -26,11 +27,22 @@ namespace Microsoft.Azure.Mobile.Test
             var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
                     c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
-                .Callback(() => Task.Delay(TimeSpan.MaxValue).Wait())
+                .Callback(() => Task.Delay(Timeout.InfiniteTimeSpan).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
-            Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
+            var countdownEvent = new CountdownEvent(2);
+            Func<Task> putTask = () =>
+            {
+                countdownEvent.Signal();
+                return storage.PutLogAsync(StorageTestChannelName, new TestLog());
+            };
+            Task.Run(putTask);
+            Task.Run(putTask);
+            
+            // Wait for tasks started and bit more.
+            countdownEvent.Wait();
+            Task.Delay(100).Wait();
+
             var result = storage.Shutdown(TimeSpan.FromTicks(1));
 
             Assert.IsFalse(result);
@@ -48,8 +60,8 @@ namespace Microsoft.Azure.Mobile.Test
                 .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)))
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
-            Task.Factory.StartNew(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
+            Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
+            Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
             var result = storage.Shutdown(TimeSpan.FromSeconds(100));
             Assert.IsTrue(result);
         }

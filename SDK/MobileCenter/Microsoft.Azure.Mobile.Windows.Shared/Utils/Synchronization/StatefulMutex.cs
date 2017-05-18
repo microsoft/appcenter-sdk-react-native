@@ -55,7 +55,7 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// <seealso cref="Lock(State)"/> 
         public async Task LockAsync(State stateSnapshot)
         {
-            await _mutex.WaitAsync();
+            await _mutex.WaitAsync().ConfigureAwait(false);
             if (!_stateKeeper.IsCurrent(stateSnapshot))
             {
                 Unlock();
@@ -67,9 +67,9 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// Asynchronously locks the mutex and does not verify any state
         /// </summary>
         /// <seealso cref="Lock"/>
-        public async Task LockAsync()
+        public Task LockAsync()
         {
-            await _mutex.WaitAsync();
+            return _mutex.WaitAsync();
         }
 
         /// <summary>

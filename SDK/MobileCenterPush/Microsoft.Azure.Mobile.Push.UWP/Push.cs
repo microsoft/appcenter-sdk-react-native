@@ -71,9 +71,10 @@ namespace Microsoft.Azure.Mobile.Push
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
                 var stateSnapshot = _stateKeeper.GetStateSnapshot();
-                Task.Factory.StartNew(async () =>
+                Task.Run(async () =>
                 {
-                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
+                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync()
+                        .AsTask().ConfigureAwait(false);
                     try
                     {
                         _mutex.Lock(stateSnapshot);
