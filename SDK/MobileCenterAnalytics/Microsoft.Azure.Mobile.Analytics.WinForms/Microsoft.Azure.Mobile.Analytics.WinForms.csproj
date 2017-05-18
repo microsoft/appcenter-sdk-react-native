@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.Azure.Mobile.Analytics</RootNamespace>
     <AssemblyName>Microsoft.Azure.Mobile.Analytics</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
