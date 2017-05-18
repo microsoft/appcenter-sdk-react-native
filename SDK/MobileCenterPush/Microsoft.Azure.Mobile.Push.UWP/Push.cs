@@ -22,6 +22,8 @@ namespace Microsoft.Azure.Mobile.Push
 
         private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
 
+        protected override int TriggerCount => 1;
+
         /// <summary>
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
