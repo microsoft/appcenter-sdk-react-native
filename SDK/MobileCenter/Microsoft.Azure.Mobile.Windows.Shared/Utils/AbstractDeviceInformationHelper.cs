@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Utils
                 LiveUpdatePackageHash = GetLiveUpdatePackageHash()
             };
 
-            return await Task<Ingestion.Models.Device>.Factory.StartNew(() => device);
+            return await Task<Ingestion.Models.Device>.Factory.StartNew(() => device).ConfigureAwait(false);
         }
 
         protected abstract string GetSdkName();

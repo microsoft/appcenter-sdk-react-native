@@ -55,9 +55,9 @@ namespace Microsoft.Azure.Mobile.Push
             if (Enabled)
             {
                 var stateSnapshot = _stateKeeper.GetStateSnapshot();
-                Task.Factory.StartNew(async () =>
+                Task.Run(async () =>
                 {
-                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
+                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync().ConfigureAwait(false);
                     try
                     {
                         _mutex.Lock(stateSnapshot);

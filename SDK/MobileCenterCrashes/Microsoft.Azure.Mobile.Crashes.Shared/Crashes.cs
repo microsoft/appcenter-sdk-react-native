@@ -190,9 +190,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// </summary>
         /// <value>Crash report from the last session, <c>null</c> if there was no crash in the last session.</value>
 #endif
-        public static async Task<ErrorReport> GetLastSessionCrashReportAsync()
+        public static Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return await PlatformCrashes.GetLastSessionCrashReportAsync();
+            return PlatformCrashes.GetLastSessionCrashReportAsync();
         }
 
 #if WINDOWS_UWP

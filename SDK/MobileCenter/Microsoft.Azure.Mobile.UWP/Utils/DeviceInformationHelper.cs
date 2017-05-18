@@ -26,11 +26,11 @@ namespace Microsoft.Azure.Mobile.Utils
         private static readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
-            if (await DisplayInformationEventSemaphore.WaitAsync(DisplayInformationTimeout))
+            if (await DisplayInformationEventSemaphore.WaitAsync(DisplayInformationTimeout).ConfigureAwait(false))
             {
                 DisplayInformationEventSemaphore.Release();
             }
-            return await base.GetDeviceInformationAsync();
+            return await base.GetDeviceInformationAsync().ConfigureAwait(false);
         }
 
         internal static void SetCountryCode(string country)
