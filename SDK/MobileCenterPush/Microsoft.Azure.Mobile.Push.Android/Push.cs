@@ -18,15 +18,15 @@ namespace Microsoft.Azure.Mobile.Push
                     Message = notification.Message,
                     CustomData = notification.CustomData
                 };
-                PlatformPushNotificationReceived?.Invoke(null, pushEventArgs);
+                PushNotificationReceived?.Invoke(null, pushEventArgs);
             };
             AndroidPush.SetListener(_pushListener);
         }
 
         private static bool PlatformEnabled
         {
-        	get { return AndroidPush.Enabled; }
-        	set { AndroidPush.Enabled = value; }
+            get { return AndroidPush.Enabled; }
+            set { AndroidPush.Enabled = value; }
         }
 
         /// <summary>
@@ -37,8 +37,6 @@ namespace Microsoft.Azure.Mobile.Push
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(AndroidPush);
-
-        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
 
         public static void EnableFirebaseAnalytics()
         {
