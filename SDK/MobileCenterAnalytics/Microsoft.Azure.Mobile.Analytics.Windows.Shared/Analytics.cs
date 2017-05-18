@@ -85,7 +85,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         // Internal for testing purposes
         internal ISessionTracker SessionTracker;
-        internal readonly IApplicationLifecycleHelper ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
+        internal IApplicationLifecycleHelper ApplicationLifecycleHelper;
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
         private bool _hasStarted;
 
@@ -104,14 +104,21 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         public override bool InstanceEnabled
         {
-            get { return base.InstanceEnabled; }
+            get
+            {
+                return base.InstanceEnabled;
+            }
+
             set
             {
-                var prevValue = InstanceEnabled;
-                base.InstanceEnabled = value;
-                if (value != prevValue)
+                lock (_serviceLock)
                 {
-                    ApplyEnabledState(value);
+                    var prevValue = InstanceEnabled;
+                    base.InstanceEnabled = value;
+                    if (value != prevValue)
+                    {
+                        ApplyEnabledState(value);
+                    }
                 }
             }
         }
@@ -122,55 +129,70 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private void InstanceTrackEvent(string name, IDictionary<string, string> properties = null)
         {
-            if (IsInactive)
+            lock (_serviceLock)
             {
-                return;
-            }
-            const string type = "Event";
-            if (ValidateName(name, type))
-            {
-                properties = ValidateProperties(properties, name, type);
-                var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-                Channel.Enqueue(log);
+                if (IsInactive)
+                {
+                    return;
+                }
+                const string type = "Event";
+                if (ValidateName(name, type))
+                {
+                    properties = ValidateProperties(properties, name, type);
+                    var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
+                    Channel.Enqueue(log);
+                }
             }
         }
 
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            base.OnChannelGroupReady(channelGroup, appSecret);
-            ApplyEnabledState(InstanceEnabled);
-            if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
+            lock (_serviceLock)
             {
-                SessionTracker?.Resume();
-                _hasStarted = true;
-            }
-            else
-            {
-                ApplicationLifecycleHelper.ApplicationStarted += (sender, e) =>
+                base.OnChannelGroupReady(channelGroup, appSecret);
+                if (ApplicationLifecycleHelper == null)
+                {
+                    // If it isn't null, that likely means that a test provided its own lifecycle helper
+                    ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
+                }
+                ApplyEnabledState(InstanceEnabled);
+                if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
                 {
                     SessionTracker?.Resume();
                     _hasStarted = true;
-                };
+                }
+                else
+                {
+                    ApplicationLifecycleHelper.ApplicationStarted += (sender, e) =>
+                    {
+                        SessionTracker?.Resume();
+                        _hasStarted = true;
+                    };
+                }
+                ApplicationLifecycleHelper.ApplicationResuming += (sender, e) => SessionTracker?.Resume();
+                ApplicationLifecycleHelper.ApplicationSuspended += (sender, e) => SessionTracker?.Pause();
             }
-            ApplicationLifecycleHelper.ApplicationSuspended += (sender, e) => SessionTracker?.Pause();
         }
 
         private void ApplyEnabledState(bool enabled)
         {
-            if (enabled && ChannelGroup != null && SessionTracker == null)
+            lock (_serviceLock)
             {
-                SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
-                ApplicationLifecycleHelper.Enabled = true;
-                if (_hasStarted)
+                if (enabled && ChannelGroup != null && SessionTracker == null)
                 {
-                    SessionTracker.Resume();
+                    SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
+                    ApplicationLifecycleHelper.Enabled = true;
+                    if (_hasStarted)
+                    {
+                        SessionTracker.Resume();
+                    }
                 }
-            }
-            else if (!enabled)
-            {
-                ApplicationLifecycleHelper.Enabled = false;
-                SessionTracker?.ClearSessions();
-                SessionTracker = null;
+                else if (!enabled)
+                {
+                    ApplicationLifecycleHelper.Enabled = false;
+                    SessionTracker?.ClearSessions();
+                    SessionTracker = null;
+                }
             }
         }
 
@@ -229,11 +251,11 @@ namespace Microsoft.Azure.Mobile.Analytics
                 {
                     MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property key length cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyKeyLength));
                 }
-                else if(property.Value == null)
+                else if (property.Value == null)
                 {
                     MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be null. Property '{2}' will be skipped.", logType, logName, property.Key));
                 }
-                else if(property.Value.Length > MaxEventPropertyValueLength)
+                else if (property.Value.Length > MaxEventPropertyValueLength)
                 {
                     MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyValueLength));
                 }

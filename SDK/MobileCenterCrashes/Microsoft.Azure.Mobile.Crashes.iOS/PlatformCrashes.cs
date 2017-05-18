@@ -30,9 +30,9 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool HasCrashedInLastSession => MSCrashes.HasCrashedInLastSession;
 
-        public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
+        public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var msReport = MSCrashes.LastSessionCrashReport;
                 if (msReport == null)

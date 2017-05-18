@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Push.Test.Windows
     public class PushTest
     {
         [TestInitialize]
-        public void InitializeAnalyticsTest()
+        public void InitializePushTest()
         {
             Push.Instance = new Push();
         }
