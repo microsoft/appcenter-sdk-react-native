@@ -18,7 +18,7 @@
   <files>
 
     <!-- WinForms -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WinForms/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net451" />
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WinForms/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net45" />
 
     <!-- UWP -->
     <!-- ".targets" file adds correct references to proper platforms -->

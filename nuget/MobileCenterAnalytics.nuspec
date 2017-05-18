@@ -33,7 +33,7 @@
     <file src="$uwp_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
 
     <!-- WinForms -->
-    <file src="$winforms_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net451" />
+    <file src="$winforms_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net45" />
 
   </files>
 </package>

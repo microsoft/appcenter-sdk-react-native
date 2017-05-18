@@ -30,7 +30,7 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- WinForms -->
-    <file src="$winforms_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net451" />
+    <file src="$winforms_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net45" />
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
