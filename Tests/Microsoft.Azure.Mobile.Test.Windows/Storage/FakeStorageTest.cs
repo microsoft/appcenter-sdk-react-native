@@ -33,18 +33,16 @@ namespace Microsoft.Azure.Mobile.Test
             var countdownEvent = new CountdownEvent(2);
             Func<Task> putTask = () =>
             {
-                try
-                {
-                    return storage.PutLogAsync(StorageTestChannelName, new TestLog());
-                }
-                finally
-                {
-                    countdownEvent.Signal();
-                }
+                countdownEvent.Signal();
+                return storage.PutLogAsync(StorageTestChannelName, new TestLog());
             };
             Task.Run(putTask);
             Task.Run(putTask);
+            
+            // Wait for tasks started and bit more.
             countdownEvent.Wait();
+            Task.Delay(100).Wait();
+
             var result = storage.Shutdown(TimeSpan.FromTicks(1));
 
             Assert.IsFalse(result);
