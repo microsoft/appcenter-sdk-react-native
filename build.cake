@@ -585,7 +585,7 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
 			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
 			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
 			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$uwp_dir$", uwpAssemblies);
-			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$winforms_dir$", uwpAssemblies);
+			ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$winforms_dir$", winformsAssemblies);
 		}
 }).OnError(HandleError);
 
