@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Storage
                         _taskSemaphore.Wait();
                     }
                 }
-                await _mutex.WaitAsync();
+                await _mutex.WaitAsync().ConfigureAwait(false);
                 return new TaskLock(this);
             }
 

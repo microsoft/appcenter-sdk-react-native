@@ -8,6 +8,11 @@ namespace Microsoft.Azure.Mobile.Utils
         public bool IsSuspended { get; private set; }
         public bool Enabled { get; set; }
 
+        public ApplicationLifecycleHelper()
+        {
+            Enabled = true;
+        }
+
         public void InvokeSuspended()
         {
             if (Enabled)

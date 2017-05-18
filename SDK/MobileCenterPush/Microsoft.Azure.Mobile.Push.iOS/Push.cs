@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Mobile.Push
                     Message = notification.Message,
                     CustomData = NSDictionaryToDotNet(notification.CustomData)
                 };
-                PlatformPushNotificationReceived?.Invoke(null, pushEventArgs);
+                PushNotificationReceived?.Invoke(null, pushEventArgs);
             };
             MSPush.SetDelegate(_pushDelegate);
         }

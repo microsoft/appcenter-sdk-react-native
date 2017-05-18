@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{8CDD4942-2E48-4CF7-AC99-85718F238455}"
 EndProject
@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Cras
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WatsonRegistrationUtility", "SDK\MobileCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj", "{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Push.Shared", "SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.shproj", "{A5D2FD20-13EE-4CA4-8278-09520CC376CD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
@@ -48,6 +50,7 @@ Global
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{8072449c-c6a8-4b36-87dc-173f295d161c}*SharedItemsImports = 4
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{8072449c-c6a8-4b36-87dc-173f295d161c}*SharedItemsImports = 4
+		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{a5d2fd20-13ee-4ca4-8278-09520cc376cd}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{ba25a66a-fcea-49c2-a85a-0f6f54463675}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
@@ -547,6 +550,7 @@ Global
 		{F8A48A6B-4B82-4583-BCD2-11F3FB229C2C} = {13744327-9529-490B-A970-06A1D3144117}
 		{6E052322-1AA9-4486-87D0-63DCDB700A87} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
+		{A5D2FD20-13EE-4CA4-8278-09520CC376CD} = {07D963ED-6766-434B-B279-2CDFA2527459}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

@@ -37,11 +37,17 @@ namespace Microsoft.Azure.Mobile.Push
         {
             get
             {
-                return Instance.InstanceEnabled;
+                lock (PushLock)
+                {
+                    return Instance.InstanceEnabled;
+                }
             }
             set
             {
-                Instance.InstanceEnabled = value;
+                lock (PushLock)
+                {
+                    Instance.InstanceEnabled = value;
+                }
             }
         }
 
@@ -68,9 +74,16 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="appSecret"></param>
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            base.OnChannelGroupReady(channelGroup, appSecret);
-
-            Instance.InstanceRegister();
+            _mutex.Lock();
+            try
+            {
+                base.OnChannelGroupReady(channelGroup, appSecret);
+                ApplyEnabledState(Enabled);
+            }
+            finally
+            {
+                _mutex.Unlock();
+            }
         }
 
         public override bool InstanceEnabled
@@ -82,7 +95,21 @@ namespace Microsoft.Azure.Mobile.Push
 
             set
             {
-                base.InstanceEnabled = value;
+                _mutex.Lock();
+                try
+                {
+                    var prevValue = InstanceEnabled;
+                    base.InstanceEnabled = value;
+                    _stateKeeper.InvalidateState();
+                    if (value != prevValue)
+                    {
+                        ApplyEnabledState(value);
+                    }
+                }
+                finally
+                {
+                    _mutex.Unlock();
+                }
             }
         }
 
