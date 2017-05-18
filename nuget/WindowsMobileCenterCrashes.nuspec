@@ -17,8 +17,11 @@
   </metadata>
   <files>
 
+    <!-- WinForms -->
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WinForms/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net45" />
+
     <!-- UWP -->
-    <!-- targets files add correct references to proper platforms -->
+    <!-- ".targets" file adds correct references to proper platforms -->
     <file src="nuget/Microsoft.Azure.Mobile.Crashes.targets" target="build/uap10.0"/>
     <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll" target="ref/uap10.0" />
     
