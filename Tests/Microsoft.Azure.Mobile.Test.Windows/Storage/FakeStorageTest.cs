@@ -30,8 +30,21 @@ namespace Microsoft.Azure.Mobile.Test
                 .Callback(() => Task.Delay(Timeout.InfiniteTimeSpan).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
-            Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
+            var countdownEvent = new CountdownEvent(2);
+            Func<Task> putTask = () =>
+            {
+                try
+                {
+                    return storage.PutLogAsync(StorageTestChannelName, new TestLog());
+                }
+                finally
+                {
+                    countdownEvent.Signal();
+                }
+            };
+            Task.Run(putTask);
+            Task.Run(putTask);
+            countdownEvent.Wait();
             var result = storage.Shutdown(TimeSpan.FromTicks(1));
 
             Assert.IsFalse(result);
