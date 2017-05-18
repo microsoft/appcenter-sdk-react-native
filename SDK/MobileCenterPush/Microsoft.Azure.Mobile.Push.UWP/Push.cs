@@ -20,8 +20,6 @@ namespace Microsoft.Azure.Mobile.Push
 
         private PushNotificationChannel _channel;
 
-        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
-
         protected override int TriggerCount => 1;
 
         /// <summary>
@@ -51,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
             if (customData != null)
             {
-                PlatformPushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                PushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
                 {
                     Title = null,
                     Message = null,
@@ -84,13 +82,13 @@ namespace Microsoft.Azure.Mobile.Push
                             // Save channel member
                             _channel = channel;
 
+                            // Subscribe to push
+                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+
                             // Send channel URI to backend
                             MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
                             var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
-                            Channel.Enqueue(pushInstallationLog);
-
-                            // Subscribe to push
-                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+                            await Channel.Enqueue(pushInstallationLog).ConfigureAwait(false);
                         }
                         else
                         {
@@ -129,7 +127,7 @@ namespace Microsoft.Azure.Mobile.Push
                     if (pushNotification != null)
                     {
                         e.Cancel = true;
-                        PlatformPushNotificationReceived?.Invoke(sender, pushNotification);
+                        PushNotificationReceived?.Invoke(sender, pushNotification);
                         MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
                     }
                     else

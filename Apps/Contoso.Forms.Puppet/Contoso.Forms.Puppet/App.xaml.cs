@@ -91,8 +91,11 @@ namespace Contoso.Forms.Puppet
 
         static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
-            var customData = "{" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
-            Current.MainPage.DisplayAlert(e.Title, e.Message + "\nCustom data=" + customData, "OK");
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                var customData = "{" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+                Current.MainPage.DisplayAlert(e.Title, e.Message + "\nCustom data=" + customData, "OK");
+            });
         }
 
         static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
