@@ -20,6 +20,8 @@ namespace Microsoft.Azure.Mobile.Push
 
         private PushNotificationChannel _channel;
 
+        protected override int TriggerCount => 1;
+
         /// <summary>
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
@@ -27,18 +29,32 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="e">OnLaunched method event</param>
         public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
-            if (PushNotificationReceived != null && Enabled)
+            Instance.InstanceCheckLaunchedFromNotification(e);
+        }
+
+        private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        {
+            IDictionary<string, string> customData = null;
+            _mutex.Lock();
+            try
             {
-                var customData = ParseLaunchString(e?.Arguments);
-                if (customData != null)
+                if (!IsInactive)
                 {
-                    PushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
-                    {
-                        Title = null,
-                        Message = null,
-                        CustomData = customData
-                    });
+                    customData = ParseLaunchString(e?.Arguments);
                 }
+            }
+            finally
+            {
+                _mutex.Unlock();
+            }
+            if (customData != null)
+            {
+                PushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                {
+                    Title = null,
+                    Message = null,
+                    CustomData = customData
+                });
             }
         }
 
@@ -47,15 +63,16 @@ namespace Microsoft.Azure.Mobile.Push
         /// Also start intercepting pushes.
         /// If disabled and previously enabled, stop listening for pushes (they will still be received though).
         /// </summary>
-        private void ApplyEnabledState()
+        private void ApplyEnabledState(bool enabled)
         {
-            // Since the lock we use is not recursive, caller of this method is expected to execute this method inside lock
-            if (Enabled)
+            if (enabled)
             {
+                // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
                 var stateSnapshot = _stateKeeper.GetStateSnapshot();
-                Task.Factory.StartNew(async () =>
+                Task.Run(async () =>
                 {
-                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync();
+                    var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync()
+                        .AsTask().ConfigureAwait(false);
                     try
                     {
                         _mutex.Lock(stateSnapshot);
@@ -65,13 +82,13 @@ namespace Microsoft.Azure.Mobile.Push
                             // Save channel member
                             _channel = channel;
 
+                            // Subscribe to push
+                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+
                             // Send channel URI to backend
                             MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
                             var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
-                            Channel.Enqueue(pushInstallationLog);
-
-                            // Subscribe to push
-                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+                            await Channel.Enqueue(pushInstallationLog).ConfigureAwait(false);
                         }
                         else
                         {
@@ -127,7 +144,7 @@ namespace Microsoft.Azure.Mobile.Push
 
         private static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
         {
-            // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key
+            // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key)
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
             var customData = ParseLaunchString(launch);
             if (customData == null)
