@@ -54,7 +54,7 @@ var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.9.0";
-var IOS_SDK_VERSION = "0.8.2-7";
+var IOS_SDK_VERSION = "0.9.0-1";
 
 var PLATFORM_PATHS = new PlatformPaths();
 

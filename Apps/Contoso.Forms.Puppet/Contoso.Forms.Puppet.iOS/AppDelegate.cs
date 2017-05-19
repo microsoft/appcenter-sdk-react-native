@@ -13,7 +13,7 @@ namespace Contoso.Forms.Puppet.iOS
         {
             Xamarin.Forms.Forms.Init();
             Distribute.DontCheckForUpdatesInDebug();
-            //MSAnalytics.SetDelegate(new AnalyticsDelegate());
+            MSAnalytics.SetDelegate(new AnalyticsDelegate());
             LoadApplication(new App());
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
