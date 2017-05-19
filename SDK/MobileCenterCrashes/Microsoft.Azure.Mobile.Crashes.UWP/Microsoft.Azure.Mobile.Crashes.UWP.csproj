@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crashes.cs" />
+    <Compile Include="ErrorAttachmentLog.cs" />
     <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.Crashes.UWP.rd.xml" />
