@@ -51,13 +51,6 @@ namespace Contoso.iOS.Puppet
             throw new Exception();
         }
 
-        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
-        {
-            Distribute.OpenUrl(url);
-
-            return true;
-        }
-
         public override void OnResignActivation(UIApplication application)
         {
             // Invoked when the application is about to move from active to inactive state.
