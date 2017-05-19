@@ -5,10 +5,8 @@ namespace Microsoft.Azure.Mobile
 {
     public partial class MobileCenter
     {
-        /* 
-         * Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
-         * as-is if no identifier can be found. Logs a message if no identifiers can be found.
-         */
+        // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
+        // as-is if no identifier can be found. Logs a message if no identifiers can be found.
         internal static string GetSecretForPlatform(string secrets, string platformIdentifier)
         {
             if (string.IsNullOrEmpty(secrets))
@@ -16,10 +14,8 @@ namespace Microsoft.Azure.Mobile
                 throw new MobileCenterException("App secrets string is null or empty");
             }
 
-            /* 
-             * If there are no colons, then there are no named identifiers, but log a message in case the developer made 
-             * a typing error.
-             */
+            // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
+            // a typing error.
             if (!secrets.Contains("="))
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
@@ -28,28 +24,32 @@ namespace Microsoft.Azure.Mobile
 
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
 
-            /* 
-             * This assumes that the key contains only lowercase letters, digits, and hyphens 
-             * (and that it has at least one character) 
-             */
-            var pattern = platformIdentifier + @"=([^;]+)";
-            try
+            var platformIndicator = platformIdentifier + "=";
+            var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal) + platformIndicator.Length;
+            if (secretIdx == -1)
             {
-                var match = Regex.Match(secrets, pattern);
-                if (match.Value == string.Empty)
+                throw new MobileCenterException(parseErrorMessage);
+            }
+
+            var platformSecret = string.Empty;
+
+            while (secretIdx < secrets.Length)
+            {
+                var nextChar = secrets[secretIdx++];
+                if (nextChar == ';')
                 {
-                    throw new MobileCenterException(parseErrorMessage);
+                    break;
                 }
-                return match.Groups[1].Value;
+
+                platformSecret += nextChar;
             }
-            catch (ArgumentException e)
+
+            if (platformSecret == string.Empty)
             {
-                throw new MobileCenterException(parseErrorMessage, e);
+                throw new MobileCenterException(parseErrorMessage);
             }
-            catch (RegexMatchTimeoutException e)
-            {
-                throw new MobileCenterException(parseErrorMessage, e);
-            }
+
+            return platformSecret;
         }
     }
 }
