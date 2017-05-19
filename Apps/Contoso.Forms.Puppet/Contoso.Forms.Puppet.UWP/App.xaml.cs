@@ -2,12 +2,12 @@
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.Forms.Puppet.UWP
 {
@@ -38,7 +38,6 @@ namespace Contoso.Forms.Puppet.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
 #if DEBUG
             if (Debugger.IsAttached)
             {
@@ -79,9 +78,7 @@ namespace Contoso.Forms.Puppet.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-
-            // Start Push service only after MobileCenter initialized with other services (e.g. Analytics service)
-            MobileCenter.Start(typeof(Push));
+            Push.CheckLaunchedFromNotification(e);
         }
 
         /// <summary>

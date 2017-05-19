@@ -31,7 +31,7 @@
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Crashes.targets"  target="build/uap10.0"/>
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Crashes.targets" target="build/uap10.0"/>
     <file src="$windows_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="ref/uap10.0" />
     
     <!--x86 -->

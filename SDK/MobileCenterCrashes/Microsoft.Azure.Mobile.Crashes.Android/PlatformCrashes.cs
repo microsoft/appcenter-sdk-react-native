@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override SentErrorReportEventHandler SentErrorReport { get; set; }
         public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        //public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
         public override void NotifyUserConfirmation(UserConfirmation confirmation)
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             var callback = new GetLastSessionCrashReportCallback();
             AndroidCrashes.GetLastSessionCrashReport(callback);
-            var androidErrorReport = await callback.Result;
+            var androidErrorReport = await callback.Result.ConfigureAwait(false);
             if (androidErrorReport == null)
                 return null;
             return ErrorReportCache.GetErrorReport(androidErrorReport);

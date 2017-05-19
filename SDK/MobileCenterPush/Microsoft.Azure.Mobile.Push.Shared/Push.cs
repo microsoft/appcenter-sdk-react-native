@@ -19,16 +19,6 @@ namespace Microsoft.Azure.Mobile.Push
         /// <summary>
         /// Occurs when the application receives a push notification.
         /// </summary>
-        public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived
-        {
-            add
-            {
-                PlatformPushNotificationReceived += value;
-            }
-            remove
-            {
-                PlatformPushNotificationReceived -= value;
-            }
-        }
+        public static event EventHandler<PushNotificationReceivedEventArgs> PushNotificationReceived;
     }
 }

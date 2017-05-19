@@ -78,46 +78,6 @@
     <CodesignProvision>Xamarin Demo</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.Mobile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Analytics.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Analytics.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Crashes.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Crashes.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Distribute, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Distribute.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Distribute.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Distribute.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Distribute.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Push, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Push.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Push.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Push.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../../packages/Microsoft.Azure.Mobile.Push.0.11.1/lib/Xamarin.iOS10/Microsoft.Azure.Mobile.Push.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -151,7 +111,7 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="icon_attribution.txt" />
-    <None Include="packages.config" />
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -170,12 +130,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
-  <Import Project="..\..\packages\Xamarin.Forms.2.3.3.163-pre3\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.3.163-pre3\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-  </Target>
-  <Import Project="..\..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
 </Project>
