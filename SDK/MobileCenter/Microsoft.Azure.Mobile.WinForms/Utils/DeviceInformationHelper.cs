@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Management;
 using System.Reflection;
 using System.Windows.Forms;
@@ -11,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Utils
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
         public static event EventHandler InformationInvalidated;
-        
+
         protected override string GetSdkName()
         {
             return "mobilecenter.winforms";
@@ -44,19 +45,32 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetOsName()
         {
-            return Environment.OSVersion.Platform.ToString();
+            var managementClass = new ManagementClass("Win32_OperatingSystem");
+            foreach (var managementObject in managementClass.GetInstances())
+            {
+                return (string)managementObject["Caption"];
+            }
+            return string.Empty;
         }
 
         protected override string GetOsBuild()
         {
-            var version = Environment.OSVersion.Version;
-            return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+            var managementClass = new ManagementClass("Win32_OperatingSystem");
+            foreach (var managementObject in managementClass.GetInstances())
+            {
+                return $"{(string)managementObject["Version"]}.{(string)managementObject["BuildNumber"]}";
+            }
+            return string.Empty;
         }
 
         protected override string GetOsVersion()
         {
-            var version = Environment.OSVersion.Version;
-            return $"{version.Major}.{version.Minor}.{version.Build}";
+            var managementClass = new ManagementClass("Win32_OperatingSystem");
+            foreach (var managementObject in managementClass.GetInstances())
+            {
+                return (string)managementObject["Version"];
+            }
+            return string.Empty;
         }
 
         protected override string GetAppVersion()
@@ -70,9 +84,22 @@ namespace Microsoft.Azure.Mobile.Utils
         }
 
         protected override string GetScreenSize()
-        {
-            var size = SystemInformation.PrimaryMonitorSize;
-            return $"{size.Width}x{size.Height}";
+        {          
+            const int DESKTOPVERTRES = 117;
+            const int DESKTOPHORZRES = 118;
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                IntPtr desktop = graphics.GetHdc();
+                int height = GetDeviceCaps(desktop, DESKTOPVERTRES);
+                int width = GetDeviceCaps(desktop, DESKTOPHORZRES);
+                return $"{width}x{height}";
+            }
         }
+
+        /*
+         * Import GetDeviceCaps function to retreive scale-independent screen size.
+         */
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
     }
 }
