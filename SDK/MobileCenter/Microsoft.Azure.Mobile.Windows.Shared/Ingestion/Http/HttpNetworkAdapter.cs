@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
     {
         private HttpClient _httpClient;
         private TimeSpan? _timeout;
-        private object _lockObject = new object();
+        private readonly object _lockObject = new object();
 
         public HttpNetworkAdapter(TimeSpan? timeout = null)
         {
@@ -38,7 +38,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
         }
 
+        /// <summary>
+        /// Asynchronously makes an HTTP request
+        /// </summary>
+        /// <param name="request">The request message</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Task containing the HTTP response</returns>
         /// <exception cref="IngestionException"/>
+
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             try
