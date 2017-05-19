@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Utils
             var managementClass = new ManagementClass("Win32_OperatingSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                return $"{(string)managementObject["Version"]}.{(string)managementObject["BuildNumber"]}";
+                return $"{(string)managementObject["Version"]}.{Environment.OSVersion.Version.Revision}";
             }
             return string.Empty;
         }
