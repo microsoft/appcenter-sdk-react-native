@@ -51,9 +51,8 @@
   <ItemGroup>
     <Compile Include="PlatformCrashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ErrorAttachment.cs" />
-    <Compile Include="ErrorBinaryAttachment.cs" />
     <Compile Include="TestCrashException.cs" />
+    <Compile Include="ErrorAttachmentLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

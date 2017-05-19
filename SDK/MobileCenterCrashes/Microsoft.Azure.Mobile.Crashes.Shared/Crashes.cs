@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             };
 
             PlatformCrashes.ShouldProcessErrorReport = null;
-            //PlatformCrashes.GetErrorAttachment = null;
+            PlatformCrashes.GetErrorAttachments = null;
             PlatformCrashes.ShouldAwaitUserConfirmation = null;
 
             /* 
@@ -112,16 +112,16 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
-        ///// <summary>
-        ///// Set this callback to attach custom text and/or binaries to an error report.
-        ///// </summary>
-        //public static GetErrorAttachmentCallback GetErrorAttachment
-        //{
-        //    set
-        //    {
-        //        PlatformCrashes.GetErrorAttachment = value;
-        //    }
-        //}
+        /// <summary>
+        /// Set this callback to attach custom text and/or binaries to an error report.
+        /// </summary>
+        public static GetErrorAttachmentsCallback GetErrorAttachments
+        {
+            set
+            {
+                PlatformCrashes.GetErrorAttachments = value;
+            }
+        }
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 
@@ -190,9 +190,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// </summary>
         /// <value>Crash report from the last session, <c>null</c> if there was no crash in the last session.</value>
 #endif
-        public static async Task<ErrorReport> GetLastSessionCrashReportAsync()
+        public static Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            return await PlatformCrashes.GetLastSessionCrashReportAsync();
+            return PlatformCrashes.GetLastSessionCrashReportAsync();
         }
 
 #if WINDOWS_UWP

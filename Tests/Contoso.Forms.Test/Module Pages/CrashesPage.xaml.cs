@@ -94,7 +94,7 @@ namespace Contoso.Forms.Test
 
         public async void CrashAsync(object sender, EventArgs e)
         {
-            await FakeService.DoStuffInBackground();
+            await FakeService.DoStuffInBackground().ConfigureAwait(false);
         }
 
         void TriggerNullReferenceException()
@@ -111,9 +111,9 @@ namespace Contoso.Forms.Test
 
     static class FakeService
     {
-        internal async static Task DoStuffInBackground()
+        internal static Task DoStuffInBackground()
         {
-            await Task.Run(() => { throw new IOException(TestStrings.IOExceptionMessage); });
+            return Task.Run(() => { throw new IOException(TestStrings.IOExceptionMessage); });
         }
     }
 }

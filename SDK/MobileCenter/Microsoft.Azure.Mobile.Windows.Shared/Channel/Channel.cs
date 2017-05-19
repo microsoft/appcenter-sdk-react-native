@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchScheduled = false;
             _enabled = true;
             DeviceInformationHelper.InformationInvalidated += (sender, e) => InvalidateDeviceCache();
-            Task.Factory.StartNew(CountFromDiskAsync);
+            Task.Run(CountFromDiskAsync);
         }
 
         public void SetEnabled(bool enabled)
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.Mobile.Channel
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
         #endregion
 
-        public void Enqueue(Log log)
+        public Task Enqueue(Log log)
         {
             _mutex.Lock();
             var stateSnapshot = _stateKeeper.GetStateSnapshot();
@@ -116,17 +116,21 @@ namespace Microsoft.Azure.Mobile.Channel
                     _mutex.Unlock();
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
-                    return;
+                    return null;
                 }
                 _mutex.Unlock();
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 _mutex.Lock(stateSnapshot);
-                PrepareLog(log);
-                Task.Factory.StartNew(() => PersistLogAsync(log, stateSnapshot));
+                return Task.Run(async () =>
+                {
+                    await PrepareLogAsync(log).ConfigureAwait(false);
+                    await PersistLogAsync(log, stateSnapshot).ConfigureAwait(false);
+                });
             }
             catch (StatefulMutexException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled", e);
+                return null;
             }
             finally
             {
@@ -134,11 +138,11 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private void PrepareLog(Log log)
+        private async Task PrepareLogAsync(Log log)
         {
             if (log.Device == null && _device == null)
             {
-                _device = _deviceInfoHelper.GetDeviceInformation();
+                _device = await _deviceInfoHelper.GetDeviceInformationAsync().ConfigureAwait(false);
             }
             log.Device = log.Device ?? _device;
             if (log.Toffset == 0L)
@@ -226,7 +230,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private void Suspend(bool deleteLogs, Exception exception)
+        private Task Suspend(bool deleteLogs, Exception exception)
         {
             _enabled = false;
             _batchScheduled = false;
@@ -255,14 +259,14 @@ namespace Microsoft.Azure.Mobile.Channel
                 if (deleteLogs)
                 {
                     _pendingLogCount = 0;
-                    Task.Run(DeleteLogsOnSuspendedAsync);
-                    return;
+                    return Task.Run(DeleteLogsOnSuspendedAsync);
                 }
-                Task.Run(() => _storage.ClearPendingLogStateAsync(Name));
+                return _storage.ClearPendingLogStateAsync(Name);
             }
             catch (StatefulMutexException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "The CountFromDisk operation has been cancelled", e);
+                return null;
             }
         }
 
@@ -305,7 +309,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 _mutex.Unlock();
                 SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                 FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
-                await _mutex.LockAsync(stateSnapshot);
+                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
             }
             if (logs.Count >= ClearBatchSize)
             {
@@ -473,12 +477,12 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public void Shutdown()
+        public Task Shutdown()
         {
             _mutex.Lock();
             try
             {
-                Suspend(false, new CancellationException());
+                return Suspend(false, new CancellationException());
             }
             finally
             {

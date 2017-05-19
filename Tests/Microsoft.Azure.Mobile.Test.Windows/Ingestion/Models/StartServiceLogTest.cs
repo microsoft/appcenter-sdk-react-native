@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         {
             var addedLog = new StartServiceLog
             {
-                Device = new DeviceInformationHelper().GetDeviceInformation(),
+                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
                 Toffset = TimeHelper.CurrentTimeInMilliseconds(),
                 Services = new List<string> {"Service0", "Service1", "Service2"},
                 Sid = Guid.NewGuid()
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var log = new StartServiceLog
             {
                 Services = null,
-                Device = new DeviceInformationHelper().GetDeviceInformation(),
+                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
                 Toffset = TimeHelper.CurrentTimeInMilliseconds()
             };
 
