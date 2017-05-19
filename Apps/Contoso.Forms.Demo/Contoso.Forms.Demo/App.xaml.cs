@@ -31,7 +31,7 @@ namespace Contoso.Forms.Demo
         protected override void OnStart()
         {
             MobileCenter.LogLevel = LogLevel.Verbose;
-			Crashes.GetErrorAttachments = GetErrorAttachments;
+            Crashes.GetErrorAttachments = GetErrorAttachments;
             Distribute.ReleaseAvailable = OnReleaseAvailable;
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
@@ -57,14 +57,14 @@ namespace Contoso.Forms.Demo
             });
         }
 
-	    IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
-		{
-			return new ErrorAttachmentLog[]
-			{
-				ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
-				ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
-			};
-		}
+        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        {
+            return new ErrorAttachmentLog[]
+            {
+                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
+            };
+        }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)
         {
