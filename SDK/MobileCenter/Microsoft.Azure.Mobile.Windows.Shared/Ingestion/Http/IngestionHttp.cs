@@ -17,19 +17,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         internal const string AppSecret = "App-Secret";
         internal const string InstallId = "Install-ID";
 
-        private readonly TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
+        private static readonly TimeSpan RequestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
         private string _baseLogUrl;
         private readonly IHttpNetworkAdapter _httpNetwork;
 
-        public IngestionHttp() : this(new HttpNetworkAdapter())
+        public IngestionHttp() : this(new HttpNetworkAdapter(RequestTimeout))
         {
         }
 
         public IngestionHttp(IHttpNetworkAdapter httpNetwork)
         {
             _httpNetwork = httpNetwork;
-            _httpNetwork.Timeout = _requestTimeout;
         }
 
         /// <exception cref="IngestionException"/>

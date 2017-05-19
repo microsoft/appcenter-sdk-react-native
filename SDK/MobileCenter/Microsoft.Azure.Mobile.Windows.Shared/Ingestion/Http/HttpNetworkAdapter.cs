@@ -7,11 +7,35 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public sealed class HttpNetworkAdapter : IHttpNetworkAdapter
     {
-        private readonly HttpClient _httpClient = new HttpClient();
-        public TimeSpan Timeout
+        private HttpClient _httpClient;
+        private TimeSpan? _timeout;
+        private object _lockObject = new object();
+
+        public HttpNetworkAdapter(TimeSpan? timeout = null)
         {
-            get { return _httpClient.Timeout; }
-            set { _httpClient.Timeout = value; }
+            _timeout = timeout;
+        }
+
+        private HttpClient HttpClient
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    if (_httpClient != null)
+                    {
+                        return _httpClient;
+                    }
+
+                    _httpClient = new HttpClient();
+
+                    if (_timeout.HasValue)
+                    {
+                        _httpClient.Timeout = _timeout.Value;
+                    }
+                    return _httpClient;
+                }
+            }
         }
 
         /// <exception cref="IngestionException"/>
@@ -19,7 +43,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             try
             {
-                return await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                return await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
             }
             catch (InvalidOperationException e)
             {
@@ -33,7 +57,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public void Dispose()
         {
-            _httpClient.Dispose();
+            lock (_lockObject)
+            {
+                if (_httpClient != null)
+                {
+                    _httpClient.Dispose();
+                    _httpClient = null;
+                }
+            } 
         }
     }
 }
