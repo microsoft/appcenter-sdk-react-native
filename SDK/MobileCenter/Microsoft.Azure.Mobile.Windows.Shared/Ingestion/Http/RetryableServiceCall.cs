@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         }
 
         ///<exception cref="IngestionException"/>
-        private async Task RunWithRetriesAsyncHelper()
+        private async Task ExecuteAsyncHelper()
         {
             while (true)
             {
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             try
             {
                 _tokenSource = new CancellationTokenSource();
-                await RunWithRetriesAsyncHelper().ConfigureAwait(false);
+                await ExecuteAsyncHelper().ConfigureAwait(false);
             }
             finally
             {
