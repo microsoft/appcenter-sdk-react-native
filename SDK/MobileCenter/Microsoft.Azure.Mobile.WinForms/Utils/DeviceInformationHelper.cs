@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Management;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Microsoft.Azure.Mobile.Utils
@@ -96,10 +97,10 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-        /*
-         * Import GetDeviceCaps function to retreive scale-independent screen size.
-         */
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        /// <summary>
+        /// Import GetDeviceCaps function to retreive scale-independent screen size.
+        /// </summary>
+        [DllImport("gdi32.dll")]
         static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
     }
 }
