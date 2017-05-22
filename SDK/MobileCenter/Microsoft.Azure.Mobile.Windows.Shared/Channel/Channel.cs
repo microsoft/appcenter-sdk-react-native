@@ -46,9 +46,9 @@ namespace Microsoft.Azure.Mobile.Channel
             Task.Run(CountFromDiskAsync);
         }
 
-        public void SetEnabled(bool enabled)
+        public async Task SetEnabledAsync(bool enabled)
         {
-            _mutex.Lock();
+            await _mutex.LockAsync().ConfigureAwait(false);
             try
             {
                 if (_enabled == enabled)
@@ -60,11 +60,16 @@ namespace Microsoft.Azure.Mobile.Channel
                     _enabled = true;
                     _discardLogs = false;
                     _stateKeeper.InvalidateState();
-                    CheckPendingLogs();
+                    var stateSnapshot = _stateKeeper.GetStateSnapshot();
+
+                    // We need count logs from storage here because CountFromDiskAsync may be aborted.
+                    var logCount = await _storage.CountLogsAsync(Name).ConfigureAwait(false);
+                    _pendingLogCount = logCount;
+                    await CheckPendingLogs(stateSnapshot).ConfigureAwait(false);
                 }
                 else
                 {
-                    Suspend(true, new CancellationException());
+                    await Suspend(true, new CancellationException()).ConfigureAwait(false);
                 }
             }
             finally
@@ -104,37 +109,30 @@ namespace Microsoft.Azure.Mobile.Channel
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
         #endregion
 
-        public Task Enqueue(Log log)
+        public async Task EnqueueAsync(Log log)
         {
-            _mutex.Lock();
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
             try
             {
+                await _mutex.LockAsync().ConfigureAwait(false);
+                var stateSnapshot = _stateKeeper.GetStateSnapshot();
                 if (_discardLogs)
                 {
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is disabled; logs are discarded");
                     _mutex.Unlock();
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
-                    return null;
                 }
                 _mutex.Unlock();
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
-                _mutex.Lock(stateSnapshot);
-                return Task.Run(async () =>
+                await Task.Run(async () =>
                 {
                     await PrepareLogAsync(log).ConfigureAwait(false);
                     await PersistLogAsync(log, stateSnapshot).ConfigureAwait(false);
-                });
+                }).ConfigureAwait(false);
             }
             catch (StatefulMutexException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled", e);
-                return null;
-            }
-            finally
-            {
-                _mutex.Unlock();
             }
         }
 
@@ -168,7 +166,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 _pendingLogCount++;
                 if (_enabled)
                 {
-                    CheckPendingLogs();
+                    await CheckPendingLogs(stateSnapshot).ConfigureAwait(false);
                     return;
                 }
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
@@ -190,39 +188,18 @@ namespace Microsoft.Azure.Mobile.Channel
             _mutex.Unlock();
         }
 
-        public void Clear()
-        {
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            _storage.DeleteLogsAsync(Name).ContinueWith(completedTask =>
-            {
-                try
-                {
-                    _mutex.Lock(stateSnapshot);
-                    _pendingLogCount = 0;
-                    _mutex.Unlock();
-                }
-                catch (StatefulMutexException)
-                {
-                    //Nothing to handle
-                }
-            });
-        }
-
-        private async Task CountFromDiskAsync()
+        public async Task ClearAsync()
         {
             await _mutex.LockAsync().ConfigureAwait(false);
             var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            _mutex.Unlock();
-            var logCount = await _storage.CountLogsAsync(Name).ConfigureAwait(false);
             try
             {
-                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                _pendingLogCount = logCount;
-                CheckPendingLogs();
+                await _storage.DeleteLogsAsync(Name).ConfigureAwait(false);
+                _pendingLogCount = 0;
             }
             catch (StatefulMutexException e)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The CountFromDisk operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled", e);
             }
             finally
             {
@@ -230,7 +207,31 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private Task Suspend(bool deleteLogs, Exception exception)
+        private async Task CountFromDiskAsync()
+        {
+            try
+            {
+                await _mutex.LockAsync().ConfigureAwait(false);
+                var stateSnapshot = _stateKeeper.GetStateSnapshot();
+                _mutex.Unlock();
+                var logCount = await _storage.CountLogsAsync(Name).ConfigureAwait(false);
+                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
+                _pendingLogCount = logCount;
+                await CheckPendingLogs(stateSnapshot).ConfigureAwait(false);
+            }
+            catch (StatefulMutexException)
+            {
+                // The CountFromDisk operation has been cancelled.
+                // This may happen when we call Shutdown right after constructor.
+                // We will call CountLogs when channel will be enabled again.
+            }
+            finally
+            {
+                _mutex.Unlock();
+            }
+        }
+
+        private async Task Suspend(bool deleteLogs, Exception exception)
         {
             _enabled = false;
             _batchScheduled = false;
@@ -259,21 +260,19 @@ namespace Microsoft.Azure.Mobile.Channel
                 if (deleteLogs)
                 {
                     _pendingLogCount = 0;
-                    return Task.Run(DeleteLogsOnSuspendedAsync);
+                    await DeleteLogsOnSuspendedAsync(stateSnapshot).ConfigureAwait(false);
+                    return;
                 }
-                return _storage.ClearPendingLogStateAsync(Name);
+                await _storage.ClearPendingLogStateAsync(Name).ConfigureAwait(false);
             }
             catch (StatefulMutexException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "The CountFromDisk operation has been cancelled", e);
-                return null;
             }
         }
 
-        private async Task DeleteLogsOnSuspendedAsync()
+        private async Task DeleteLogsOnSuspendedAsync(State stateSnapshot)
         {
-            await _mutex.LockAsync().ConfigureAwait(false);
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
             try
             {
                 if (SendingLog != null || FailedToSendLog != null)
@@ -285,15 +284,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to invoke events for logs being deleted.");
                 return;
-            }
-            catch (StatefulMutexException e)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The DeleteLogs operation has been cancelled", e);
-                return;
-            }
-            finally
-            {
-                _mutex.Unlock();
             }
             await _storage.DeleteLogsAsync(Name).ConfigureAwait(false);
         }
@@ -317,49 +307,37 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private async Task TriggerIngestionAsync()
+        private async Task TriggerIngestionAsync(State stateSnapshot)
         {
-            await _mutex.LockAsync().ConfigureAwait(false);
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            try
+            if (!_enabled)
             {
-                if (!_enabled)
-                {
-                    return;
-                }
+                return;
+            }
+            MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                $"triggerIngestion({Name}) pendingLogCount={_pendingLogCount}");
+            _batchScheduled = false;
+            if (_sendingBatches.Count >= _maxParallelBatches)
+            {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag,
-                    $"triggerIngestion({Name}) pendingLogCount={_pendingLogCount}");
-                _batchScheduled = false;
-                if (_sendingBatches.Count >= _maxParallelBatches)
-                {
-                    MobileCenterLog.Debug(MobileCenterLog.LogTag,
-                        "Already sending " + _maxParallelBatches + " batches of analytics data to the server");
-                    return;
-                }
+                    "Already sending " + _maxParallelBatches + " batches of analytics data to the server");
+                return;
+            }
 
-                // Get a batch from storage
-                var logs = new List<Log>();
-                _mutex.Unlock();
-                var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs).ConfigureAwait(false);
-                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                if (batchId != null)
-                {
-                    _sendingBatches.Add(batchId, logs);
-                    _pendingLogCount -= logs.Count;
-                    TriggerIngestion(logs, stateSnapshot, batchId);
-                }
-            }
-            catch (StatefulMutexException e)
+            // Get a batch from storage
+            var logs = new List<Log>();
+            _mutex.Unlock();
+            var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs).ConfigureAwait(false);
+            await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
+            if (batchId != null)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The TriggerIngestion operation has been cancelled", e);
-            }
-            finally
-            {
-                _mutex.Unlock();
+                _sendingBatches.Add(batchId, logs);
+                _pendingLogCount -= logs.Count;
+                await TriggerIngestion(logs, stateSnapshot, batchId).ConfigureAwait(false);
+                await CheckPendingLogs(stateSnapshot).ConfigureAwait(false);
             }
         }
 
-        private void TriggerIngestion(IList<Log> logs, State stateSnapshot, string batchId)
+        private async Task TriggerIngestion(IList<Log> logs, State stateSnapshot, string batchId)
         {
             // Before sending logs, trigger the sending event for this channel
             if (SendingLog != null)
@@ -373,54 +351,41 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             // If the optional Install ID has no value, default to using empty GUID
             var installId = MobileCenter.InstallId.HasValue ? MobileCenter.InstallId.Value : Guid.Empty;
-            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs);
-
-            serviceCall.ServiceCallFailedCallback = exception =>
+            using (var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs))
             {
-                serviceCall.Dispose();
-                HandleSendingFailure(batchId, exception);
-            };
-
-            serviceCall.ServiceCallSucceededCallback = async () =>
-            {
-                serviceCall.Dispose();
-                if (!_stateKeeper.IsCurrent(stateSnapshot))
+                try
                 {
+                    await serviceCall.ExecuteAsync().ConfigureAwait(false);
+                }
+                catch (IngestionException exception)
+                {
+                    HandleSendingFailure(batchId, exception);
                     return;
                 }
-                try
-                {
-                    await _storage.DeleteLogsAsync(Name, batchId).ConfigureAwait(false);
-                }
-                catch (StorageException e)
-                {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
-                }
-                try
-                {
-                    await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                    var removedLogs = _sendingBatches[batchId];
-                    _sendingBatches.Remove(batchId);
-                    if (SentLog != null)
-                    {
-                        foreach (var log in removedLogs)
-                        {
-                            _mutex.Unlock();
-                            SentLog?.Invoke(this, new SentLogEventArgs(log));
-                            _mutex.Lock(stateSnapshot);
-                        }
-                    }
-                    CheckPendingLogs();
-                }
-                catch (StatefulMutexException)
-                {
-                }
-                finally
+            }
+            if (!_stateKeeper.IsCurrent(stateSnapshot))
+            {
+                return;
+            }
+            try
+            {
+                await _storage.DeleteLogsAsync(Name, batchId).ConfigureAwait(false);
+            }
+            catch (StorageException e)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+            }
+            var removedLogs = _sendingBatches[batchId];
+            _sendingBatches.Remove(batchId);
+            if (SentLog != null)
+            {
+                foreach (var log in removedLogs)
                 {
                     _mutex.Unlock();
+                    SentLog?.Invoke(this, new SentLogEventArgs(log));
+                    _mutex.Lock(stateSnapshot);
                 }
-            };
-            serviceCall.Execute();
+            }
         }
 
         private void HandleSendingFailure(string batchId, IngestionException e)
@@ -436,53 +401,61 @@ namespace Microsoft.Azure.Mobile.Channel
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, e));
                 }
             }
-            _mutex.Lock();
-            try
+            Suspend(!isRecoverable, e);
+            if (isRecoverable)
             {
-                Suspend(!isRecoverable, e);
-                if (isRecoverable)
-                {
-                    _pendingLogCount += removedLogs.Count;
-                }
-            }
-            finally
-            {
-                _mutex.Unlock();
+                _pendingLogCount += removedLogs.Count;
             }
         }
 
-        private void CheckPendingLogs()
+        private async Task CheckPendingLogs(State stateSnapshot)
         {
             if (!_enabled)
             {
                 MobileCenterLog.Info(MobileCenterLog.LogTag, "The service has been disabled. Stop processing logs.");
-                return;
             }
 
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");
             if (_pendingLogCount >= _maxLogsPerBatch)
             {
-                Task.Run(TriggerIngestionAsync);
+                await TriggerIngestionAsync(stateSnapshot).ConfigureAwait(false);
             }
             else if (_pendingLogCount > 0 && !_batchScheduled)
             {
                 _batchScheduled = true;
-                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith(async completedTask =>
+
+                // No need wait _batchTimeInterval here.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                Task.Run(async () =>
                 {
+                    await Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ConfigureAwait(false);
                     if (_batchScheduled)
                     {
-                        await TriggerIngestionAsync().ConfigureAwait(false);
+                        try
+                        {
+                            await _mutex.LockAsync().ConfigureAwait(false);
+                            await TriggerIngestionAsync(_stateKeeper.GetStateSnapshot()).ConfigureAwait(false);
+                        }
+                        catch (StatefulMutexException e)
+                        {
+                            MobileCenterLog.Warn(MobileCenterLog.LogTag, "The TriggerIngestion operation has been cancelled", e);
+                        }
+                        finally
+                        {
+                            _mutex.Unlock();
+                        }
                     }
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
         }
 
-        public Task Shutdown()
+        public async Task ShutdownAsync()
         {
-            _mutex.Lock();
+            await _mutex.LockAsync().ConfigureAwait(false);
             try
             {
-                return Suspend(false, new CancellationException());
+                await Suspend(false, new CancellationException()).ConfigureAwait(false);
             }
             finally
             {

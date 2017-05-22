@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             _testService.InstanceEnabled = false;
 
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = It.IsAny<bool>(), Times.Exactly(2));
-            _mockChannel.Verify(channel => channel.SetEnabled(It.IsAny<bool>()), Times.Exactly(2));
+            _mockChannel.Verify(channel => channel.SetEnabledAsync(It.IsAny<bool>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
                     channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
                         It.IsAny<int>()), Times.Once());
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = true, Times.Once());
-            _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
+            _mockChannel.Verify(channel => channel.SetEnabledAsync(true), Times.Once());
             Assert.AreSame(_mockChannelGroup.Object, _testService.PublicChannelGroup);
         }
 
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
                     channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
                         It.IsAny<int>()), Times.Once());
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = false, Times.Once());
-            _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
+            _mockChannel.Verify(channel => channel.SetEnabledAsync(false), Times.Once());
         }
 
         /// <summary>

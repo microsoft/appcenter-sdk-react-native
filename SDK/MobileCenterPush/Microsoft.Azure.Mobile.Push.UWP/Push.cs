@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Mobile.Push
                             // Send channel URI to backend
                             MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
                             var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
-                            await Channel.Enqueue(pushInstallationLog).ConfigureAwait(false);
+                            await Channel.EnqueueAsync(pushInstallationLog).ConfigureAwait(false);
                         }
                         else
                         {

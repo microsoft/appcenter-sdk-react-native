@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,13 +14,13 @@ namespace Microsoft.Azure.Mobile.Storage
             private bool _isShutdown;
             private int _numTasksRemaning;
 
-            public bool Shutdown(TimeSpan timeout)
+            public Task<bool> ShutdownAsync(TimeSpan timeout)
             {
                 lock (_lockObject)
                 {
                     _isShutdown = true;
                 }
-                return _taskSemaphore.Wait(timeout);
+                return _taskSemaphore.WaitAsync(timeout);
             }
 
             public TaskLock GetTaskLock()

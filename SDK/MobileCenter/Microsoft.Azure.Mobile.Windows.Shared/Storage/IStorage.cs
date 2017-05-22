@@ -13,6 +13,6 @@ namespace Microsoft.Azure.Mobile.Storage
         Task<int> CountLogsAsync(string channelName);
         Task ClearPendingLogStateAsync(string channelName);
         Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs);
-        bool Shutdown(TimeSpan timeout);
+        Task<bool> ShutdownAsync(TimeSpan timeout);
     }
 }

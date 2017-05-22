@@ -144,7 +144,7 @@ namespace Microsoft.Azure.Mobile.Test
             MockMobileCenterService.Instance.MockInstance.VerifySet(
                 service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = It.IsAny<bool>(), Times.Never());
-            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(It.IsAny<bool>()), Times.Never());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabledAsync(It.IsAny<bool>()), Times.Never());
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Mobile.Test
             MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal,
                 Times.Once());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = setVal, Times.Once());
-            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(setVal), Times.Once());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabledAsync(setVal), Times.Once());
         }
 
         /// <summary>
@@ -500,18 +500,18 @@ namespace Microsoft.Azure.Mobile.Test
 
             /* Set null. */
             MobileCenter.SetCustomProperties(null);
-            channelUnitMock.Verify(channel => channel.Enqueue(It.IsAny<Log>()), Times.Never());
+            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             /* Set empty. */
             var empty = new CustomProperties();
             MobileCenter.SetCustomProperties(empty);
-            channelUnitMock.Verify(channel => channel.Enqueue(It.IsAny<Log>()), Times.Never());
+            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             /* Set normal. */
             var properties = new CustomProperties();
             properties.Set("test", "test");
             MobileCenter.SetCustomProperties(properties);
-            channelUnitMock.Verify(channel => channel.Enqueue(It.Is<CustomPropertiesLog>(log =>
+            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertiesLog>(log =>
                 log.Properties == properties.Properties)), Times.Once());
         }
     }
