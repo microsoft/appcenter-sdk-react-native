@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
@@ -16,9 +17,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public CancellationToken CancellationToken => _tokenSource.Token;
 
-        public ServiceCallFailedHandler ServiceCallFailedCallback { get; set; }
-        public Action ServiceCallSucceededCallback { get; set; }
-
         protected ServiceCall(IIngestion ingestion, IList<Log> logs, string appSecret, Guid installId)
         {
             Ingestion = ingestion;
@@ -32,21 +30,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _tokenSource.Cancel();
         }
 
-        public virtual void Execute()
+        public virtual async Task ExecuteAsync()
         {
             _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
-            Ingestion.ExecuteCallAsync(this).ContinueWith(completedTask =>
-            {
-                if (completedTask.IsFaulted)
-                {
-                    ServiceCallFailedCallback?.Invoke(completedTask.Exception?.InnerException as IngestionException);
-                }
-                else
-                {
-                    ServiceCallSucceededCallback?.Invoke();
-                }
-            });
+            await Ingestion.ExecuteCallAsync(this).ConfigureAwait(false);
         }
 
         public void Dispose()

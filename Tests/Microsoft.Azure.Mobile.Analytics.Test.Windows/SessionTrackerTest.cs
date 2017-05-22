@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         {
             _sessionTracker.Resume();
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Task.Delay((int)SessionTracker.SessionTimeout).Wait();
             _sessionTracker.Resume();
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Exactly(2));
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Pause();
             _sessionTracker.Resume();
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             var eventArgs = new EnqueuingLogEventArgs(eventLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
             Assert.IsNotNull(eventLog.Sid);
         }
 
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             var eventArgs = new EnqueuingLogEventArgs(sessionLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Never());
         }
 
         /// <summary>

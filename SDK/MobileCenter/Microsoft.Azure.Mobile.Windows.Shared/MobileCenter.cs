@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Mobile
                     return;
                 }
 
-                _channelGroup?.SetEnabled(value);
+                _channelGroup?.SetEnabledAsync(value);
                 _applicationSettings[EnabledKey] = value;
 
                 foreach (var service in _services)
@@ -267,7 +267,7 @@ namespace Microsoft.Azure.Mobile
             }
             var customPropertiesLog = new CustomPropertiesLog();
             customPropertiesLog.Properties = customProperties.Properties;
-            _channel.Enqueue(customPropertiesLog);
+            _channel.EnqueueAsync(customPropertiesLog);
         }
 
         // Internal for testing
@@ -284,7 +284,7 @@ namespace Microsoft.Azure.Mobile
             _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret);
             _applicationLifecycleHelper = new ApplicationLifecycleHelper();
 
-            _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.Shutdown();
+            _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
             if (_logUrl != null)
@@ -342,7 +342,7 @@ namespace Microsoft.Azure.Mobile
             // Enqueue a log indicating which services have been initialized
             if (startServiceLog.Services.Count > 0)
             {
-                _channel.Enqueue(startServiceLog);
+                _channel.EnqueueAsync(startServiceLog);
             }
         }
 

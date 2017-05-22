@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
@@ -15,24 +16,13 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         public Guid InstallId => DecoratedApi.InstallId;
         public virtual CancellationToken CancellationToken => DecoratedApi.CancellationToken;
 
-        public ServiceCallFailedHandler ServiceCallFailedCallback
-        {
-            get { return DecoratedApi.ServiceCallFailedCallback; }
-            set { DecoratedApi.ServiceCallFailedCallback = value; }
-        }
-        public Action ServiceCallSucceededCallback
-        {
-            get { return DecoratedApi.ServiceCallSucceededCallback; }
-            set { DecoratedApi.ServiceCallSucceededCallback = value; }
-        }
-
         protected ServiceCallDecorator(IServiceCall decoratedApi)
         {
             DecoratedApi = decoratedApi;
         }
-        public virtual void Execute()
+        public virtual Task ExecuteAsync()
         {
-            DecoratedApi.Execute();
+            return DecoratedApi.ExecuteAsync();
         }
 
         public virtual void Cancel()

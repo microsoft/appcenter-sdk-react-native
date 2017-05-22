@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             var properties = new Dictionary<string, string> {{key, val}};
             Analytics.TrackEvent(eventName, properties);
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Name == eventName &&
                 log.Properties != null &&
                 log.Properties.Count == 1 &&
@@ -180,38 +180,38 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             // Event name is null or empty
             Analytics.TrackEvent(null);
             Analytics.TrackEvent("");
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Never());
 
             // Event name exceeds max length
             Analytics.TrackEvent(new string('?', 257));
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Never());
 
             // Without properties
             Analytics.TrackEvent("test", null);
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Once());
 
             // Property key is null or empty 
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { "", "test" } });
-            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Properties == null || log.Properties.Count == 0)), Times.Once());
 
             // Property key length exceeds maximum
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 65), "test" } });
-            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Properties == null || log.Properties.Count == 0)), Times.Once());
             
             // Property value is null
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", null } });
-            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Properties == null || log.Properties.Count == 0)), Times.Once());
 
             // Property value length exceeds maximum
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", new string('?', 65) } });
-            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Properties == null || log.Properties.Count == 0)), Times.Once());
 
             // Properties size exceeds maximum
@@ -222,7 +222,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
                 manyProperties["test" + i] = "test" + i;
             }
             Analytics.TrackEvent("test", manyProperties);
-            _mockChannel.Verify(channel => channel.Enqueue(It.Is<EventLog>(log =>
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Properties.Count == 5)), Times.Once());
         }
 
@@ -236,7 +236,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Analytics.Enabled = false;
             Analytics.TrackEvent("anevent");
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<EventLog>()), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Never());
         }
     }
 }

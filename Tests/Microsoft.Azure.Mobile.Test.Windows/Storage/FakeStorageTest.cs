@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -43,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Test
             countdownEvent.Wait();
             Task.Delay(100).Wait();
 
-            var result = storage.Shutdown(TimeSpan.FromTicks(1));
+            var result = storage.ShutdownAsync(TimeSpan.FromTicks(1)).RunNotAsync();
 
             Assert.IsFalse(result);
         }
@@ -62,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Test
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
             Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
             Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
-            var result = storage.Shutdown(TimeSpan.FromSeconds(100));
+            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(100)).RunNotAsync();
             Assert.IsTrue(result);
         }
 
@@ -74,7 +73,8 @@ namespace Microsoft.Azure.Mobile.Test
         {
             var mockConnection = new Mock<IStorageAdapter>();
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            Assert.IsTrue(storage.Shutdown(TimeSpan.FromSeconds(10)));
+            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(10)).RunNotAsync();
+            Assert.IsTrue(result);
             Assert.ThrowsException<StorageException>(
                 () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()).RunNotAsync());
         }

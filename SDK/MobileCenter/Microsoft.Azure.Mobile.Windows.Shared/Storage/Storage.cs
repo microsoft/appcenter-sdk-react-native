@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Threading;
 using Newtonsoft.Json;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using SQLite;
@@ -261,10 +259,9 @@ namespace Microsoft.Azure.Mobile.Storage
         /// </summary>
         /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
         /// <returns>True if remaining tasks completed in time; false otherwise</returns>
-        /// <remarks>This method blocks the calling thread</remarks>
-        public bool Shutdown(TimeSpan timeout)
+        public Task<bool> ShutdownAsync(TimeSpan timeout)
         {
-            return _taskLockSource.Shutdown(timeout);
+            return _taskLockSource.ShutdownAsync(timeout);
         }
 
         private static string GetFullIdentifier(string channelName, string identifier)
