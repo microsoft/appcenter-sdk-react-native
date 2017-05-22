@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils.Synchronization;
 using SQLite;
 
 namespace Microsoft.Azure.Mobile.Storage
@@ -30,7 +31,7 @@ namespace Microsoft.Azure.Mobile.Storage
 
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
-        private readonly TaskLock.TaskLockSource _taskLockSource = new TaskLock.TaskLockSource();
+        private readonly StatefulMutex _mutex = new StatefulMutex();
 
         /// <summary>
         /// Creates an instance of Storage
@@ -45,8 +46,8 @@ namespace Microsoft.Azure.Mobile.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            var taskLock = _taskLockSource.GetTaskLock();
-            Task.Run(InitializeDatabaseAsync).ContinueWith(completedTask => taskLock.Dispose());
+            _mutex.Lock();
+            Task.Run(InitializeDatabaseAsync).ContinueWith(completedTask => _mutex.Unlock());
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task PutLogAsync(string channelName, Log log)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
             {
                 var logJsonString = LogSerializer.Serialize(log);
                 var logEntry = new LogEntry { Channel = channelName, Log = logJsonString };
@@ -73,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName, string batchId)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag,
                     $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
@@ -107,7 +108,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
             {
                 MobileCenterLog.Debug(MobileCenterLog.LogTag,
                     $"Deleting all logs from storage for channel '{channelName}'");
@@ -148,7 +149,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<int> CountLogsAsync(string channelName)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
             {
                 return await _storageAdapter.CountAsync<LogEntry>(entry => entry.Channel == channelName)
                     .ConfigureAwait(false);
@@ -161,7 +162,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <param name="channelName"></param>
         public async Task ClearPendingLogStateAsync(string channelName)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
             {
                 _pendingDbIdentifierGroups.Clear();
                 _pendingDbIdentifiers.Clear();
@@ -178,7 +179,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
             {
                 logs?.Clear();
                 var retrievedLogs = new List<Log>();
@@ -261,7 +262,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <returns>True if remaining tasks completed in time; false otherwise</returns>
         public Task<bool> ShutdownAsync(TimeSpan timeout)
         {
-            return _taskLockSource.ShutdownAsync(timeout);
+            return _mutex.ShutdownAsync(timeout);
         }
 
         private static string GetFullIdentifier(string channelName, string identifier)
@@ -280,7 +281,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// </summary>
         public void Dispose()
         {
-            _taskLockSource.Dispose();
+            _mutex.Dispose();
         }
     }
 }

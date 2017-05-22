@@ -337,6 +337,10 @@ namespace Microsoft.Azure.Mobile.Test
         public void LogUrlIsNotSetByDefault()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
+            var channelUnitMock = new Mock<IChannelUnit>();
+            channelGroupMock.Setup(
+                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+                .Returns(channelUnitMock.Object);
             MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
@@ -350,6 +354,10 @@ namespace Microsoft.Azure.Mobile.Test
         public void SetLogUrlBeforeConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
+            var channelUnitMock = new Mock<IChannelUnit>();
+            channelGroupMock.Setup(
+                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+                .Returns(channelUnitMock.Object);
             MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             var customLogUrl = "www dot log url dot com";
@@ -366,6 +374,10 @@ namespace Microsoft.Azure.Mobile.Test
         public void SetLogUrlAfterConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
+            var channelUnitMock = new Mock<IChannelUnit>();
+            channelGroupMock.Setup(
+                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+                .Returns(channelUnitMock.Object);
             MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");

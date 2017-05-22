@@ -24,8 +24,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLock.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLockSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
@@ -62,7 +60,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\State.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutexException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StateKeeper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
   </ItemGroup>

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Moq;
+using Microsoft.Azure.Mobile.Utils.Synchronization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -75,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Test
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
             var result = storage.ShutdownAsync(TimeSpan.FromSeconds(10)).RunNotAsync();
             Assert.IsTrue(result);
-            Assert.ThrowsException<StorageException>(
+            Assert.ThrowsException<StatefulMutexException>(
                 () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()).RunNotAsync());
         }
 

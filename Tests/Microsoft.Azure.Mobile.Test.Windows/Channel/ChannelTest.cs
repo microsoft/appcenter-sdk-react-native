@@ -22,7 +22,9 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         private readonly TimeSpan _batchTimeSpan = TimeSpan.FromSeconds(1);
         private const int MaxParallelBatches = 3;
         private readonly string _appSecret = Guid.NewGuid().ToString();
-        private const int DefaultWaitTime = 5000;
+
+        // We wait tasks now and don't need wait more
+        private const int DefaultWaitTime = 500;
 
         // Event semaphores for invokation verification
         private const int SendingLogSemaphoreIdx = 0;
