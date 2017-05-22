@@ -88,11 +88,11 @@ namespace Microsoft.Azure.Mobile.Utils
         {          
             const int DESKTOPVERTRES = 117;
             const int DESKTOPHORZRES = 118;
-            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            using (var graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
-                IntPtr desktop = graphics.GetHdc();
-                int height = GetDeviceCaps(desktop, DESKTOPVERTRES);
-                int width = GetDeviceCaps(desktop, DESKTOPHORZRES);
+                var desktop = graphics.GetHdc();
+                var height = GetDeviceCaps(desktop, DESKTOPVERTRES);
+                var width = GetDeviceCaps(desktop, DESKTOPHORZRES);
                 return $"{width}x{height}";
             }
         }
