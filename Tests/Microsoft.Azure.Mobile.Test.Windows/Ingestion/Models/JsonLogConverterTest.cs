@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using System;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -10,6 +11,36 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public override bool Read()
         {
             return true;
+        }
+
+        public override int? ReadAsInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ReadAsString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte[] ReadAsBytes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override decimal? ReadAsDecimal()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DateTime? ReadAsDateTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DateTimeOffset? ReadAsDateTimeOffset()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -60,7 +91,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         private JObject CreateJObjectWithType(string type)
         {
             JObject jObj = new JObject();
-            jObj.Add(LogSerializer.TypeIdKey, TestType);
+            jObj.Add(LogJsonConverter.TypeIdKey, type);
             return jObj;
         }
     }

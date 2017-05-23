@@ -1,5 +1,4 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
-
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models
@@ -275,50 +274,50 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (SdkName == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "SdkName");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(SdkName));
             }
             if (SdkVersion == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "SdkVersion");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(SdkVersion));
             }
             if (Model == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Model");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Model));
             }
             if (OemName == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "OemName");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(OemName));
             }
             if (OsName == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "OsName");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(OsName));
             }
             if (OsVersion == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "OsVersion");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(OsVersion));
             }
             if (Locale == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Locale");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Locale));
             }
             if (ScreenSize == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "ScreenSize");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(ScreenSize));
             }
             if (AppVersion == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "AppVersion");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(AppVersion));
             }
             if (AppBuild == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "AppBuild");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(AppBuild));
             }
         }
     }
