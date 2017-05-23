@@ -60,21 +60,18 @@ namespace Microsoft.Azure.Mobile.Utils
 
         static ApplicationLifecycleHelper()
         {
+            // Use the WPF APIs through reflection, if they are available
+
+            // Find the PresentationFramework assembly, which contains the important APIs
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            Assembly presentationFramework = null;
-            foreach (var assembly in assemblies)
-            {
-                if (assembly.GetName().Name == "PresentationFramework")
-                {
-                    presentationFramework = assembly;
-                    break;
-                }
-            }
+            var presentationFramework = assemblies.FirstOrDefault(assembly => assembly.GetName().Name == "PresentationFramework");
             if (presentationFramework != null)
             {
+                // Store the WPF Application singleton
                 var appType = presentationFramework.GetType("System.Windows.Application");
                 WPFApplication = appType.GetRuntimeProperty("Current")?.GetValue(appType);
 
+                // Store the int corresponding to the "Minimized" state for WPF Windows
                 WPFMinimizedState = (int)presentationFramework.GetType("System.Windows.WindowState")
                     .GetField("Minimized")
                     .GetRawConstantValue();
