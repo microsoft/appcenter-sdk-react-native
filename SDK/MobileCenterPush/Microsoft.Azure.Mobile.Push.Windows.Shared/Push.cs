@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 
 namespace Microsoft.Azure.Mobile.Push

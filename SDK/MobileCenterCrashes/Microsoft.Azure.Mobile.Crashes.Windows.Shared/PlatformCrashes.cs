@@ -21,6 +21,8 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override bool HasCrashedInLastSession { get; }
 
+        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
+
         public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
             return Task.FromResult((ErrorReport)null);

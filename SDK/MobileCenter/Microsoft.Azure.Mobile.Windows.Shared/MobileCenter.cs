@@ -1,9 +1,10 @@
-﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile
 {

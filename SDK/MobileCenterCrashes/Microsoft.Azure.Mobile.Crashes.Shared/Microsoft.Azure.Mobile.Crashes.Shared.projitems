@@ -19,5 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)AndroidErrorDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)iOSErrorDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserConfirmation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorAttachmentLog.cs" />
   </ItemGroup>
 </Project>

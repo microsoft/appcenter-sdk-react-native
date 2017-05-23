@@ -26,9 +26,9 @@ namespace Microsoft.Azure.Mobile.Distribute.iOS.Bindings
         [Export("setInstallUrl:")]
         void SetInstallUrl(string installUrl);
 
-        // + (void)openUrl:(NSURL *)url;
+        // + (void)openURL:(NSURL *)url;
         [Static]
-        [Export("openUrl:")]
+        [Export("openURL:")]
         void OpenUrl(NSUrl url);
 
         // + (void)setDelegate:(id<MSDistributeDelegate>)delegate;
