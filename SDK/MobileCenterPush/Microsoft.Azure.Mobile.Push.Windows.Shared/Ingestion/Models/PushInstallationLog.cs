@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Mobile.Ingestion.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models
+namespace Microsoft.Azure.Mobile.Push.Ingestion.Models
 {
     [JsonObject(JsonIdentifier)]
     public class PushInstallationLog : Log

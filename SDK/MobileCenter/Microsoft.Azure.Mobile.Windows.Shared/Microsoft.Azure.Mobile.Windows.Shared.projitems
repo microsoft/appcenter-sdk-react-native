@@ -21,7 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\CustomPropertiesLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLock.cs" />
@@ -34,7 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateIngestion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\ServiceCallDecorator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StartServiceLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\StartServiceLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\ServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionHttp.cs" />
@@ -43,12 +43,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IIngestion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IServiceCall.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Device.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Log.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogJsonConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogSerializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\Device.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\LogContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\LogJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\LogSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\Models\LogWithProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterService.cs" />
