@@ -45,10 +45,19 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
             return _state.Equals(state);
         }
 
-        public Task<bool> ShutdownAsync(TimeSpan timeout)
+        public async Task ShutdownAsync()
         {
+            await _mutex.WaitAsync().ConfigureAwait(false);
             _isShutdown = true;
-            return _mutex.WaitAsync(timeout);
+            _mutex.Release();
+        }
+
+        public async Task<bool> ShutdownAsync(TimeSpan timeout)
+        {
+            var result = await _mutex.WaitAsync(timeout).ConfigureAwait(false);
+            _isShutdown = true;
+            _mutex.Release();
+            return result;
         }
 
         /// <summary>
@@ -57,11 +66,11 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// <seealso cref="LockAsync"/>
         public void Lock()
         {
+            _mutex.Wait();
             if (_isShutdown)
             {
                 throw new StatefulMutexException(ShutdownExceptionMessage);
             }
-            _mutex.Wait();
         }
 
         /// <summary>
@@ -72,11 +81,11 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// <seealso cref="LockAsync(State)"/> 
         public void Lock(State stateSnapshot)
         {
+            _mutex.Wait();
             if (_isShutdown)
             {
                 throw new StatefulMutexException(ShutdownExceptionMessage);
             }
-            _mutex.Wait();
             if (!IsCurrent(stateSnapshot))
             {
                 throw new StatefulMutexException(StateExceptionMessage);
@@ -87,13 +96,13 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// Asynchronously locks the mutex and does not verify any state
         /// </summary>
         /// <seealso cref="Lock"/>
-        public Task LockAsync()
+        public async Task LockAsync()
         {
+            await _mutex.WaitAsync().ConfigureAwait(false);
             if (_isShutdown)
             {
                 throw new StatefulMutexException(ShutdownExceptionMessage);
             }
-            return _mutex.WaitAsync();
         }
 
         /// <summary>
@@ -104,11 +113,11 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// <seealso cref="Lock(State)"/> 
         public async Task LockAsync(State stateSnapshot)
         {
+            await _mutex.WaitAsync().ConfigureAwait(false);
             if (_isShutdown)
             {
                 throw new StatefulMutexException(ShutdownExceptionMessage);
             }
-            await _mutex.WaitAsync().ConfigureAwait(false);
             if (!IsCurrent(stateSnapshot))
             {
                 Unlock();

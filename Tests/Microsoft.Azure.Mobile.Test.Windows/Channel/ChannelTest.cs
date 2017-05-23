@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void DisableChannel()
         {
-            _channel.SetEnabledAsync(false);
+            _channel.SetEnabledAsync(false).RunNotAsync();
 
             Assert.IsFalse(_channel.IsEnabled);
         }
@@ -70,8 +70,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void EnableChannel()
         {
-            _channel.SetEnabledAsync(false);
-            _channel.SetEnabledAsync(true);
+            _channel.SetEnabledAsync(false).RunNotAsync();
+            _channel.SetEnabledAsync(true).RunNotAsync();
 
             Assert.IsTrue(_channel.IsEnabled);
         }
@@ -237,7 +237,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             Mobile.Channel.Channel channel = new Mobile.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
 
-            //Shutdown channel and store some log
+            // Shutdown channel and store some log
             channel.ShutdownAsync().RunNotAsync();
             channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
