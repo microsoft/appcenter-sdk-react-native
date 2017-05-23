@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
                 Toffset = TimeHelper.CurrentTimeInMilliseconds()
             };
 
-            Assert.ThrowsException<Rest.ValidationException>((Action)log.Validate);
+            Assert.ThrowsException<ValidationException>((Action)log.Validate);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
             base.Validate();
             if (Name == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Name");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, "Name");
             }
         }
     }
