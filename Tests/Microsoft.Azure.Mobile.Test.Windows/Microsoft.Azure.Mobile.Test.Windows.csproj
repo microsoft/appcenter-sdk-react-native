@@ -131,7 +131,6 @@
     <Compile Include="Utils\UnhandledExceptionEventArgsTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="CodeCoverage.runsettings">
       <SubType>Designer</SubType>
     </None>
