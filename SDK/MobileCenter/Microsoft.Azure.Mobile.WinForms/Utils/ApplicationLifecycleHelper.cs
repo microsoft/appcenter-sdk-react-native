@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -10,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Utils
         #region WinEventHook
 
         private delegate void WinEventDelegate(IntPtr winEventHookHandle, uint eventType, IntPtr windowHandle, int objectId, int childId, uint eventThreadId, uint eventTimeInMilliseconds);
-        
+
         [DllImport("user32.dll")]
         private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr eventHookAssemblyHandle, WinEventDelegate eventHookHandle, uint processId, uint threadId, uint dwFlags);
         [DllImport("user32.dll")]
@@ -27,7 +29,8 @@ namespace Microsoft.Azure.Mobile.Utils
         private static Action Minimize;
         private static Action Restore;
         private static Action Start;
-
+        private static readonly dynamic WPFApplication;
+        private static readonly int WPFMinimizedState;
         private static void WinEventHook(IntPtr winEventHookHandle, uint eventType, IntPtr windowHandle, int objectId, int childId, uint eventThreadId, uint eventTimeInMilliseconds)
         {
             // Filter out non-HWND
@@ -35,7 +38,9 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 return;
             }
-            var anyNotMinimized = Application.OpenForms.Cast<Form>().Any(form => form.WindowState != FormWindowState.Minimized);
+
+            var anyNotMinimized = IsAnyWindowNotMinimized();
+
             if (!started && anyNotMinimized)
             {
                 started = true;
@@ -55,12 +60,51 @@ namespace Microsoft.Azure.Mobile.Utils
 
         static ApplicationLifecycleHelper()
         {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Assembly presentationFramework = null;
+            foreach (var assembly in assemblies)
+            {
+                if (assembly.GetName().Name == "PresentationFramework")
+                {
+                    presentationFramework = assembly;
+                    break;
+                }
+            }
+            if (presentationFramework != null)
+            {
+                var appType = presentationFramework.GetType("System.Windows.Application");
+                WPFApplication = appType.GetRuntimeProperty("Current")?.GetValue(appType);
+
+                WPFMinimizedState = (int)presentationFramework.GetType("System.Windows.WindowState")
+                    .GetField("Minimized")
+                    .GetRawConstantValue();
+            }
+
 #pragma warning disable CS0618 // Type or member is obsolete
             // We need Windows thread ID, not managed
             var threadId = AppDomain.GetCurrentThreadId();
 #pragma warning restore CS0618 // Type or member is obsolete
             var hook = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, IntPtr.Zero, hookDelegate, 0, (uint)threadId, WINEVENT_OUTOFCONTEXT);
             Application.ApplicationExit += delegate { UnhookWinEvent(hook); };
+        }
+
+        private static bool IsAnyWindowNotMinimized()
+        {
+            if (WPFApplication != null)
+            {
+                foreach (dynamic window in WPFApplication.Windows)
+                {
+                    if ((int)window.WindowState != WPFMinimizedState && WindowIntersectsWithAnyScreen(window))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            // Running on WinForms
+            return Application.OpenForms.Cast<Form>().Any(form => form.WindowState != FormWindowState.Minimized);
+
         }
 
         #endregion
@@ -116,6 +160,30 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
                 enabled = value;
             }
+        }
+
+        private static Rectangle WindowsRectToRectangle(dynamic windowsRect)
+        {
+            return new Rectangle
+            {
+                X = (int)windowsRect.X,
+                Y = (int)windowsRect.Y,
+                Width = (int)windowsRect.Width,
+                Height = (int)windowsRect.Height
+            };
+        }
+
+        private static bool WindowIntersectsWithAnyScreen(dynamic window)
+        {
+            var windowBounds = WindowsRectToRectangle(window.RestoreBounds);
+            foreach (var screen in Screen.AllScreens)
+            {
+                if (screen.Bounds.IntersectsWith(windowBounds))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool HasShownWindow => started;
