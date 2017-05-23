@@ -87,21 +87,22 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private static bool IsAnyWindowNotMinimized()
         {
-            if (WPFApplication != null)
+            // If not in WPF, query the available forms
+            if (WPFApplication == null)
             {
-                foreach (dynamic window in WPFApplication.Windows)
-                {
-                    if ((int)window.WindowState != WPFMinimizedState && WindowIntersectsWithAnyScreen(window))
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return Application.OpenForms.Cast<Form>().Any(form => form.WindowState != FormWindowState.Minimized);
             }
 
-            // Running on WinForms
-            return Application.OpenForms.Cast<Form>().Any(form => form.WindowState != FormWindowState.Minimized);
-
+            // If in WPF, dynamically query the available windows
+            foreach (var window in WPFApplication.Windows)
+            {
+                // Not minimized is true if WindowState is not Minimized and the window is on screen
+                if ((int)window.WindowState != WPFMinimizedState && WindowIntersectsWithAnyScreen(window))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
