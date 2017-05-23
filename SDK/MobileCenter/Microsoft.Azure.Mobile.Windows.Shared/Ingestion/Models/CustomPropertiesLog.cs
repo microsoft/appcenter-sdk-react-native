@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
@@ -47,7 +46,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -56,7 +55,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
 
             if (Properties == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, nameof(Properties));
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Properties));
             }
         }
         

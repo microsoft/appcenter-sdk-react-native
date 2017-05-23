@@ -1,5 +1,5 @@
-﻿using Moq;
-using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Push.Ingestion.Models;
+using Moq;
 using Microsoft.Rest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

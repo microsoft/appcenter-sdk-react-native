@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         private JObject CreateJObjectWithType(string type)
         {
             JObject jObj = new JObject();
-            jObj.Add(LogSerializer.TypeIdKey, TestType);
+            jObj.Add(LogJsonConverter.TypeIdKey, type);
             return jObj;
         }
     }
