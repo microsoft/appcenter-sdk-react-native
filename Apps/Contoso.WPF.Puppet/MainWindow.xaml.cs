@@ -21,39 +21,37 @@ namespace Contoso.WPF.Puppet
             { LogLevel.Warn, MobileCenterLog.Warn },
             { LogLevel.Error, MobileCenterLog.Error }
         };
-        private static readonly IDictionary<LogLevel, string> LogLevelNames = new Dictionary<LogLevel, string> {
-            { LogLevel.Verbose, Constants.Verbose },
-            { LogLevel.Debug, Constants.Debug },
-            { LogLevel.Info, Constants.Info },
-            { LogLevel.Warn, Constants.Warning },
-            { LogLevel.Error, Constants.Error }
-        };
 
-        public ObservableCollection<Property> properties = new ObservableCollection<Property>();
+        public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
 
         public MainWindow()
         {
             InitializeComponent();
             UpdateState();
             mobileCenterLogLevel.SelectedIndex = (int) MobileCenter.LogLevel;
-            eventProperties.ItemsSource = properties;
+            eventProperties.ItemsSource = Properties;
         }
 
         private void UpdateState()
         {
             mobileCenterEnabled.IsChecked = MobileCenter.Enabled;
             analyticsEnabled.IsChecked = Analytics.Enabled;
-            analyticsEnabled.IsEnabled = MobileCenter.Enabled;
         }
 
         private void mobileCenterEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            MobileCenter.Enabled = (bool) mobileCenterEnabled.IsChecked;
+            if (mobileCenterEnabled.IsChecked.HasValue)
+            {
+                MobileCenter.Enabled = mobileCenterEnabled.IsChecked.Value;
+            }
         }
 
         private void analyticsEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            Analytics.Enabled = (bool) analyticsEnabled.IsChecked;
+            if (analyticsEnabled.IsChecked.HasValue)
+            {
+                Analytics.Enabled = analyticsEnabled.IsChecked.Value;
+            }
         }
 
         private void mobileCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
@@ -81,7 +79,9 @@ namespace Contoso.WPF.Puppet
         private void trackEvent_Click(object sender, RoutedEventArgs e)
         {
             var name = eventName.Text;
-            Analytics.TrackEvent(name, properties.Where(property => property.Key != null && property.Value != null).ToDictionary(property => property.Key, property => property.Value));
+            var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
+                                                 .ToDictionary(property => property.Key, property => property.Value);
+            Analytics.TrackEvent(name, propertiesDictionary);
         }
     }
 }
