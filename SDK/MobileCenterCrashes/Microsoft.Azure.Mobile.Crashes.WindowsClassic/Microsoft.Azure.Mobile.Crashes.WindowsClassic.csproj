@@ -7,8 +7,8 @@
     <ProjectGuid>{DC55C086-714D-4E2F-B6CE-3C14BC3B6646}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Crashes.WindowsClassic</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Crashes.WindowsClassic</AssemblyName>
+    <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
+    <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
