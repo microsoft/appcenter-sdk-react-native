@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Analytics

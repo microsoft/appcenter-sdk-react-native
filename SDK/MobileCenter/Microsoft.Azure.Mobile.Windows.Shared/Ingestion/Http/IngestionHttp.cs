@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {

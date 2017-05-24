@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+﻿using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 using Newtonsoft.Json;

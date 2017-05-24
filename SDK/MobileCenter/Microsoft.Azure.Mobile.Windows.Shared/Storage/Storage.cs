@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
+using Newtonsoft.Json;
 using SQLite;
 
 namespace Microsoft.Azure.Mobile.Storage

@@ -3,6 +3,7 @@ using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -80,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
                 Toffset = TimeHelper.CurrentTimeInMilliseconds()
             };
 
-            Assert.ThrowsException<Rest.ValidationException>((Action)log.Validate);
+            Assert.ThrowsException<ValidationException>((Action)log.Validate);
         }
     }
 }

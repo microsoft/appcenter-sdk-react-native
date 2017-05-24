@@ -1,6 +1,6 @@
 ﻿using Moq;
-using Microsoft.Rest;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models

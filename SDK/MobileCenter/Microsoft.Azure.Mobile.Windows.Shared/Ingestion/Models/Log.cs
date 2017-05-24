@@ -62,14 +62,14 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (Device == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Device");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Device));
             }
             Device.Validate();          
         }
