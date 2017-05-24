@@ -288,7 +288,6 @@ namespace Microsoft.Azure.Mobile
             _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
-            _channel.SetEnabledAsync(true);
             if (_logUrl != null)
             {
                 _channelGroup.SetLogUrl(_logUrl);

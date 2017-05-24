@@ -47,8 +47,8 @@ namespace Microsoft.Azure.Mobile.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            _mutex.Lock();
-            Task.Run(InitializeDatabaseAsync).ContinueWith(completedTask => _mutex.Unlock());
+            var lockHolder = _mutex.GetLock();
+            Task.Run(InitializeDatabaseAsync).ContinueWith(completedTask => lockHolder.Dispose());
         }
 
         /// <summary>

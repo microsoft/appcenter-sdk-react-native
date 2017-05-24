@@ -41,27 +41,12 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchScheduled = false;
             _enabled = true;
             DeviceInformationHelper.InformationInvalidated += (sender, e) => InvalidateDeviceCache();
-        }
-
-        public async Task SetEnabledAsync(bool enabled)
-        {
-            State state;
-            using (await _mutex.GetLockAsync().ConfigureAwait(false))
+            var lockHolder = _mutex.GetLock();
+            Task.Run(() => _storage.CountLogsAsync(Name)).ContinueWith(task =>
             {
-                if (_enabled == enabled)
-                {
-                    return;
-                }
-                state = _mutex.State;
-            }
-            if (enabled)
-            {
-                await ResumeAsync(state).ConfigureAwait(false);
-            }
-            else
-            {
-                await SuspendAsync(state, true, new CancellationException()).ConfigureAwait(false);
-            }
+                _pendingLogCount = task.Result;
+                lockHolder.Dispose();
+            });
         }
 
         /// <summary>
@@ -89,6 +74,27 @@ namespace Microsoft.Azure.Mobile.Channel
         public event EventHandler<SentLogEventArgs> SentLog;
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
         #endregion
+
+        public async Task SetEnabledAsync(bool enabled)
+        {
+            State state;
+            using (await _mutex.GetLockAsync().ConfigureAwait(false))
+            {
+                if (_enabled == enabled)
+                {
+                    return;
+                }
+                state = _mutex.State;
+            }
+            if (enabled)
+            {
+                await ResumeAsync(state).ConfigureAwait(false);
+            }
+            else
+            {
+                await SuspendAsync(state, true, new CancellationException()).ConfigureAwait(false);
+            }
+        }
 
         public async Task EnqueueAsync(Log log)
         {
@@ -173,7 +179,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 _device = null;
             }
         }
-
+        
         public async Task ClearAsync()
         {
             var state = _mutex.State;
@@ -199,13 +205,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     _enabled = true;
                     _discardLogs = false;
-                    _mutex.InvalidateState();
-                    state = _mutex.State;
-                }
-                var logCount = await _storage.CountLogsAsync(Name).ConfigureAwait(false);
-                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
-                {
-                    _pendingLogCount = logCount;
+                    state = _mutex.InvalidateState();
                 }
             }
             catch (StatefulMutexException e)
@@ -226,27 +226,35 @@ namespace Microsoft.Azure.Mobile.Channel
                     _discardLogs = deleteLogs;
                     _mutex.InvalidateState();
                 }
+                if (deleteLogs && FailedToSendLog != null)
+                {
+                    foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
+                    {
+                        FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
+                    }
+                }
+                try
+                {
+                    _ingestion.Close();
+                }
+                catch (IngestionException e)
+                {
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
+                }
+                if (deleteLogs)
+                {
+                    using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
+                    {
+                        _pendingLogCount = 0;
+                    }
+                    await DeleteLogsOnSuspendedAsync().ConfigureAwait(false);
+                }
+                await _storage.ClearPendingLogStateAsync(Name).ConfigureAwait(false);
             }
             catch (StatefulMutexException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled", e);
             }
-            if (deleteLogs && FailedToSendLog != null)
-            {
-                foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
-                {
-                    FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
-                }
-            }
-            try
-            {
-                _ingestion.Close();
-            }
-            catch (IngestionException e)
-            {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
-            }
-            await _storage.ClearPendingLogStateAsync(Name).ConfigureAwait(false);
         }
 
         private async Task DeleteLogsOnSuspendedAsync()
@@ -408,8 +416,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 _batchScheduled = true;
 
                 // No need wait _batchTimeInterval here.
-#pragma warning disable CS4014
-                Task.Run(async () =>
+                var _ = Task.Run(async () =>
                 {
                     await Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ConfigureAwait(false);
                     if (_batchScheduled)
@@ -417,7 +424,6 @@ namespace Microsoft.Azure.Mobile.Channel
                         await TriggerIngestionAsync(_mutex.State).ConfigureAwait(false);
                     }
                 });
-#pragma warning restore CS4014
             }
         }
 

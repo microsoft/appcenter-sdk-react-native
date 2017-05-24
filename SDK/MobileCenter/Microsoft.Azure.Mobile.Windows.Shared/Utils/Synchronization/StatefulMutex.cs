@@ -11,12 +11,10 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
     /// </summary>
     public class StatefulMutex : IDisposable
     {
-        private const string ShutdownExceptionMessage = "Trying to execute task after shutdown requested";
-        private const string StateExceptionMessage = "Cannot lock mutex with expired state";
-
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private State _state = new State();
         private volatile bool _isShutdown;
+        private volatile int _waitingThreads;
 
         /// <summary>
         /// Gets the current state
@@ -30,9 +28,27 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         /// <summary>
         /// Advances the current state
         /// </summary>
-        public void InvalidateState()
+        /// <returns>The new state</returns>
+        public State InvalidateState()
         {
             _state = _state.GetNextState();
+            return _state;
+        }
+
+        private void StartWait()
+        {
+            Interlocked.Increment(ref _waitingThreads);
+            Interlocked.MemoryBarrier();
+            if (_isShutdown)
+            {
+                Interlocked.Decrement(ref _waitingThreads);
+                throw new StatefulMutexException("Trying to execute task after shutdown requested");
+            }
+        }
+
+        private void StopWait()
+        {
+            Interlocked.Decrement(ref _waitingThreads);
         }
 
         /// <summary>
@@ -47,111 +63,58 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
 
         public async Task ShutdownAsync()
         {
-            await _mutex.WaitAsync().ConfigureAwait(false);
             _isShutdown = true;
-            _mutex.Release();
+            Interlocked.MemoryBarrier();
+            while (_waitingThreads > 0)
+            {
+                await _mutex.WaitAsync().ConfigureAwait(false);
+                _mutex.Release();
+            }
         }
 
         public async Task<bool> ShutdownAsync(TimeSpan timeout)
         {
-            var result = await _mutex.WaitAsync(timeout).ConfigureAwait(false);
+            var result = true;
+            var tokenSource = new CancellationTokenSource();
+            var timeoutTask = Task.Delay(timeout, tokenSource.Token);
             _isShutdown = true;
-            _mutex.Release();
+            Interlocked.MemoryBarrier();
+            while (result && _waitingThreads > 0)
+            {
+                var waitTask = _mutex.WaitAsync(tokenSource.Token);
+                var _ = waitTask.ContinueWith(task => _mutex.Release(), TaskContinuationOptions.OnlyOnRanToCompletion);
+                result = await Task.WhenAny(waitTask, timeoutTask).ConfigureAwait(false) != timeoutTask;
+            }
+            tokenSource.Cancel();
             return result;
         }
-
-        /// <summary>
-        /// Locks the mutex and does not verify any state
-        /// </summary>
-        /// <seealso cref="LockAsync"/>
-        public void Lock()
-        {
-            _mutex.Wait();
-            if (_isShutdown)
-            {
-                throw new StatefulMutexException(ShutdownExceptionMessage);
-            }
-        }
-
-        /// <summary>
-        /// Locks the mutex if the given <see cref="State"/> is consistent with the mutex's <see cref="StateKeeper"/> state
-        /// </summary>
-        /// <param name="stateSnapshot">The <see cref="State"/> that must be consistent with the mutex's <see cref="StateKeeper"/> state</param>
-        /// <exception cref="StatefulMutexException">The given state is invalid</exception>
-        /// <seealso cref="LockAsync(State)"/> 
-        public void Lock(State stateSnapshot)
-        {
-            _mutex.Wait();
-            if (_isShutdown)
-            {
-                throw new StatefulMutexException(ShutdownExceptionMessage);
-            }
-            if (!IsCurrent(stateSnapshot))
-            {
-                throw new StatefulMutexException(StateExceptionMessage);
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously locks the mutex and does not verify any state
-        /// </summary>
-        /// <seealso cref="Lock"/>
-        public async Task LockAsync()
-        {
-            await _mutex.WaitAsync().ConfigureAwait(false);
-            if (_isShutdown)
-            {
-                throw new StatefulMutexException(ShutdownExceptionMessage);
-            }
-        }
-
-        /// <summary>
-        /// Locks the mutex if the given <see cref="State"/> is consistent with the mutex's <see cref="StateKeeper"/> state
-        /// </summary>
-        /// <param name="stateSnapshot">The <see cref="State"/> that must be consistent with the mutex's <see cref="StateKeeper"/> state</param>
-        /// <exception cref="StatefulMutexException">The given state is invalid</exception>
-        /// <seealso cref="Lock(State)"/> 
-        public async Task LockAsync(State stateSnapshot)
-        {
-            await _mutex.WaitAsync().ConfigureAwait(false);
-            if (_isShutdown)
-            {
-                throw new StatefulMutexException(ShutdownExceptionMessage);
-            }
-            if (!IsCurrent(stateSnapshot))
-            {
-                Unlock();
-                throw new StatefulMutexException(StateExceptionMessage);
-            }
-        }
-
-        /// <summary>
-        /// Unlocks the mutex. Consecutive calls will not throw an exception
-        /// </summary>
-        public void Unlock()
-        {
-            if (_mutex.CurrentCount != 0)
-            {
-                throw new StatefulMutexException("Trying to unlock not locked mutex");
-            }
-            _mutex.Release();
-        }
-
+        
         public LockHolder GetLock()
         {
-            Lock();
+            StartWait();
+            _mutex.Wait();
+            StopWait();
             return new LockHolder(this);
         }
 
         public async Task<LockHolder> GetLockAsync()
         {
-            await LockAsync().ConfigureAwait(false);
+            StartWait();
+            await _mutex.WaitAsync().ConfigureAwait(false);
+            StopWait();
             return new LockHolder(this);
         }
         
         public async Task<LockHolder> GetLockAsync(State state)
         {
-            await LockAsync(state).ConfigureAwait(false);
+            StartWait();
+            await _mutex.WaitAsync().ConfigureAwait(false);
+            StopWait();
+            if (!IsCurrent(state))
+            {
+                _mutex.Release();
+                throw new StatefulMutexException("Cannot lock mutex with expired state");
+            }
             return new LockHolder(this);
         }
 
@@ -174,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
 
             public void Dispose()
             {
-                _parent.Unlock();
+                _parent._mutex.Release();
             }
         }
     }
