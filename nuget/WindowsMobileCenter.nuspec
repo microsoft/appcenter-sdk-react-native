@@ -25,6 +25,6 @@
   </metadata>
   <files>
     <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
-    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.WinForms/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/net45" />
+    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/net452" />
   </files>
 </package>
