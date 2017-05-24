@@ -75,7 +75,15 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Crashes"/>
+            <TabItem Header="Crashes">
+                <StackPanel>
+                    <GroupBox Header="Crash">
+                        <StackPanel Orientation="Vertical">
+                            <Button Name="CrashWithNullReference" Content="Crash with NullReferenceException" Click="CrashWithNullReference_Click"/>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
             <TabItem Header="Others"/>
         </TabControl>
     </StackPanel>

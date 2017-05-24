@@ -83,5 +83,12 @@ namespace Contoso.WPF.Puppet
                                                  .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
         }
+
+        private void CrashWithNullReference_Click(object sender, RoutedEventArgs e)
+        {
+            string[] values = { "a", null, "c" };
+            var b = values[1].Trim();
+            System.Diagnostics.Debug.WriteLine(b);
+        }
     }
 }
