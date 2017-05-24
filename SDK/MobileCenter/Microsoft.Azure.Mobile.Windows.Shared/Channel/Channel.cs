@@ -318,8 +318,14 @@ namespace Microsoft.Azure.Mobile.Channel
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
                 }
-                await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
-                await CheckPendingLogsAsync(state).ConfigureAwait(false);
+                try
+                {
+                    await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
+                    await CheckPendingLogsAsync(state).ConfigureAwait(false);
+                }
+                catch (StorageException)
+                {
+                }
             }
         }
 
@@ -352,6 +358,7 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 return;
             }
+            StorageException deleteException = null;
             try
             {
                 await _storage.DeleteLogsAsync(Name, batchId).ConfigureAwait(false);
@@ -359,6 +366,7 @@ namespace Microsoft.Azure.Mobile.Channel
             catch (StorageException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+                deleteException = e;
             }
             List<Log> removedLogs;
             using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
@@ -372,6 +380,10 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     SentLog?.Invoke(this, new SentLogEventArgs(log));
                 }
+            }
+            if (deleteException != null)
+            {
+                throw deleteException;
             }
         }
 
