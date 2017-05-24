@@ -18,17 +18,15 @@
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
       </group>
       <group targetFramework="net452">
-        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.6"/>
+        <dependency id="Newtonsoft.Json" version="6.0.1"/>
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
-        <!-- Need to add this dependency explicitly because a lower version gets added otherwise in WinForms -->
-        <dependency id="Newtonsoft.Json" version="9.0.1"/>
       </group>
     </dependencies>
     <version>$version$</version>
   </metadata>
 
   <files>
-    <!-- PCL -->
+    <!-- PCL -->git 
     <file src="$pcl_dir$/Microsoft.Azure.Mobile.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10" />
 
     <!-- Android -->
