@@ -32,6 +32,7 @@ namespace Microsoft.Azure.Mobile.Storage
 
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
+        // Blocking collection is thread safe
         private readonly BlockingCollection<Task> _queue = new BlockingCollection<Task>();
 
         /// <summary>
