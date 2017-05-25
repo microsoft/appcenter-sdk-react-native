@@ -27,24 +27,17 @@ namespace Microsoft.Azure.Mobile.Test
             var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
                     c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
-                .Callback(() => Task.Delay(Timeout.InfiniteTimeSpan).Wait())
+                .Callback(() => Task.Delay(TimeSpan.FromDays(1)).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            var countdownEvent = new CountdownEvent(2);
-            Func<Task> putTask = () =>
-            {
-                countdownEvent.Signal();
-                return storage.PutLogAsync(StorageTestChannelName, new TestLog());
-            };
-            Task.Run(putTask);
-            Task.Run(putTask);
-            
-            // Wait for tasks started and bit more.
-            countdownEvent.Wait();
-            Task.Delay(100).Wait();
+
+            // Ignore warnings because we just want to "fire and forget"
+#pragma warning disable 4014
+            storage.PutLogAsync(StorageTestChannelName, new TestLog());
+            storage.PutLogAsync(StorageTestChannelName, new TestLog());
+#pragma warning restore 4014
 
             var result = storage.Shutdown(TimeSpan.FromTicks(1));
-
             Assert.IsFalse(result);
         }
 
@@ -57,11 +50,16 @@ namespace Microsoft.Azure.Mobile.Test
             var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
                     c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
-                .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)))
+                .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
-            Task.Run(() => storage.PutLogAsync(StorageTestChannelName, new TestLog()));
+
+            // Ignore warnings because we just want to "fire and forget"
+#pragma warning disable 4014
+            storage.PutLogAsync(StorageTestChannelName, new TestLog());
+            storage.PutLogAsync(StorageTestChannelName, new TestLog());
+#pragma warning restore 4014
+
             var result = storage.Shutdown(TimeSpan.FromSeconds(100));
             Assert.IsTrue(result);
         }
