@@ -74,6 +74,11 @@ namespace Contoso.Forms.Puppet
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
+            CustomProperties properties = new CustomProperties();
+            properties.Set("a", "b").Clear("a").Set("score", 3.000001M);
+            properties.Set("now", DateTime.UtcNow);
+            MobileCenter.SetCustomProperties(properties);
+
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
