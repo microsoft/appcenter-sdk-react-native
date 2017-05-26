@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SQLite;
@@ -34,6 +35,8 @@ namespace Microsoft.Azure.Mobile.Storage
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
         // Blocking collection is thread safe
         private readonly BlockingCollection<Task> _queue = new BlockingCollection<Task>();
+        private readonly SemaphoreSlim _flushSemaphore = new SemaphoreSlim(0);
+        private readonly Task _queueFlushTask;
 
         /// <summary>
         /// Creates an instance of Storage
@@ -49,6 +52,7 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             _storageAdapter = adapter;
             _queue.Add(new Task(async () => await InitializeDatabaseAsync()));
+            _queueFlushTask = Task.Run(FlushQueue);
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException("The operation has been cancelled");
             }
-            await FlushQueue().ConfigureAwait(false);
+            _flushSemaphore.Release();
             await task.ConfigureAwait(false);
         }
 
@@ -121,7 +125,7 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException("The operation has been cancelled");
             }
-            await FlushQueue().ConfigureAwait(false);
+            _flushSemaphore.Release();
             await task.ConfigureAwait(false);
         }
 
@@ -173,7 +177,7 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException("The operation has been cancelled");
             }
-            await FlushQueue().ConfigureAwait(false);
+            _flushSemaphore.Release();
             await task.ConfigureAwait(false);
         }
 
@@ -198,15 +202,8 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException("The operation has been cancelled");
             }
-            try
-            {
-                await FlushQueue().ConfigureAwait(false);
-                return await task.ConfigureAwait(false);
-            }
-            catch (AggregateException e)
-            {
-                throw e.InnerException ?? new StorageException();
-            }
+            _flushSemaphore.Release();
+            return await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -228,7 +225,7 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException("The operation has been cancelled");
             }
-            await FlushQueue().ConfigureAwait(false);
+            _flushSemaphore.Release();
             await task.ConfigureAwait(false);
         }
 
@@ -302,7 +299,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException("The operation has been cancelled");
             }
 
-            await FlushQueue().ConfigureAwait(false);
+            _flushSemaphore.Release();
             return await task.ConfigureAwait(false);
         }
 
@@ -342,7 +339,8 @@ namespace Microsoft.Azure.Mobile.Storage
         public bool Shutdown(TimeSpan timeout)
         {
             _queue.CompleteAdding();
-            return FlushQueue().Wait(timeout);
+            _flushSemaphore.Release();
+            return _queueFlushTask.Wait(timeout);
         }
 
         private static string GetFullIdentifier(string channelName, string identifier)
@@ -359,11 +357,28 @@ namespace Microsoft.Azure.Mobile.Storage
         // Flushes the queue
         private async Task FlushQueue()
         {
-            while (_queue.Count > 0)
+            while (true)
             {
+                while (_queue.Count == 0)
+                {
+                    if (_queue.IsAddingCompleted)
+                    {
+                        return;
+                    }
+                    await _flushSemaphore.WaitAsync();
+                }
                 var t = _queue.Take();
                 t.Start();
-                await t.ConfigureAwait(false);
+                try
+                {
+                    await t.ConfigureAwait(false);
+                }
+                catch
+                {
+                    // Can't throw exceptions here because it will cause the FlushQueue to stop
+                    // processing, but if the task faults, the exception will be thrown again 
+                    // because the original creator of this task will await it too.
+                }
             }
         }
 

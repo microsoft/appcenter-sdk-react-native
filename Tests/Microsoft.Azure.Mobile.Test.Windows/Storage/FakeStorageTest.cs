@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading;
 
 namespace Microsoft.Azure.Mobile.Test
 {
