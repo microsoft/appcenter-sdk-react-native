@@ -24,12 +24,12 @@ namespace Microsoft.Azure.Mobile
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
 
             var platformIndicator = platformIdentifier + "=";
-            var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal) + platformIndicator.Length;
+            var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
             if (secretIdx == -1)
             {
                 throw new MobileCenterException(parseErrorMessage);
             }
-
+            secretIdx += platformIndicator.Length;
             var platformSecret = string.Empty;
 
             while (secretIdx < secrets.Length)
