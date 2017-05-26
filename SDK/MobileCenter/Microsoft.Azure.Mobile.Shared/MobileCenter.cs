@@ -52,13 +52,13 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-		/// <summary>
-		/// Set the custom properties.
-		/// </summary>
-		/// <param name="customProperties">Custom properties object.</param>
-		public static void SetCustomProperties(CustomProperties customProperties)
-		{
-            PlaftormSetCustomProperties(customProperties);
-		}
+        /// <summary>
+        /// Set the custom properties.
+        /// </summary>
+        /// <param name="customProperties">Custom properties object.</param>
+        public static void SetCustomProperties(CustomProperties customProperties)
+        {
+            PlatformSetCustomProperties(customProperties);
+        }
     }
 }
