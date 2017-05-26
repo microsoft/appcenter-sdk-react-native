@@ -125,8 +125,8 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         bool IsEqual(MSDevice device);
     }
 
-    // @interface MSDevice : MSWrapperSdk
-    [BaseType(typeof(NSObject))]
+	// @interface MSCustomProperties : NSObject
+	[BaseType(typeof(NSObject))]
     interface MSCustomProperties
     {
         // - (instancetype)setString:(NSString *)value forKey:(NSString *)key;

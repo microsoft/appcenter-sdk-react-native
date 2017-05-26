@@ -23,7 +23,6 @@ namespace Microsoft.Azure.Mobile
             return this;
         }
 
-
         CustomProperties PlatformSet(string key, int value)
         {
             AndroidCustomProperties.Set(key, new Integer(value));
