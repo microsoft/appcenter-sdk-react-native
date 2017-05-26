@@ -207,8 +207,8 @@ namespace Microsoft.Azure.Mobile
             iOSMobileCenter.SetWrapperSdk(wrapperSdk);
         }
 
-		static void PlaftormSetCustomProperties(CustomProperties customProperties)
-		{
-		}
+        static void PlatformSetCustomProperties(CustomProperties customProperties)
+        {
+        }
     }
 }

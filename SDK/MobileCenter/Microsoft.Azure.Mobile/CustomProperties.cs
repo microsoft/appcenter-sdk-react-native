@@ -12,7 +12,6 @@
             return this;
         }
 
-
         CustomProperties PlatformSet(string key, int value)
         {
             return this;
