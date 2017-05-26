@@ -1,13 +1,15 @@
 ﻿using Microsoft.Azure.Mobile;
-using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
-using System.Threading.Tasks;
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
@@ -45,6 +47,7 @@ namespace Contoso.Forms.Puppet
             // set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
+            Crashes.GetErrorAttachments = GetErrorAttachments;
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
@@ -194,6 +197,16 @@ namespace Contoso.Forms.Puppet
             });
 
             return true;
+        }
+
+        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        {
+            return new ErrorAttachmentLog[]
+            {
+                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+                null,
+                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
+            };
         }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorAttachmentLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformCrashes.cs" />
   </ItemGroup>
 </Project>

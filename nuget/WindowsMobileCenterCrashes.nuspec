@@ -17,8 +17,8 @@
   </metadata>
   <files>
 
-    <!-- WinForms -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WinForms/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net45" />
+    <!-- WindowsClassic (WPF and WinForms) -->
+    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" />
 
     <!-- UWP -->
     <!-- ".targets" file adds correct references to proper platforms -->

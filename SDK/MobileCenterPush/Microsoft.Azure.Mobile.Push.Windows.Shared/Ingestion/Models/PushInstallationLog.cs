@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Mobile.Ingestion.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models
+namespace Microsoft.Azure.Mobile.Push.Ingestion.Models
 {
     [JsonObject(JsonIdentifier)]
     public class PushInstallationLog : Log
@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models
         /// <summary>
         /// Validate the PushInstallationLog
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if PushToken is null or empty
         /// </exception>
         public override void Validate()
@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models
 
             if (string.IsNullOrEmpty(this.PushToken))
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "PushToken");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, "PushToken");
             }
         }
     }

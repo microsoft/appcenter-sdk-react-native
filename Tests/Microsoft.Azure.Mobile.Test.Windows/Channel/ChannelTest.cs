@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

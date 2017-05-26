@@ -16,13 +16,6 @@ namespace Contoso.WinForms.Puppet
             { LogLevel.Warn, MobileCenterLog.Warn },
             { LogLevel.Error, MobileCenterLog.Error }
         };
-        private static readonly IDictionary<LogLevel, string> LogLevelNames = new Dictionary<LogLevel, string> {
-            { LogLevel.Verbose, Constants.Verbose },
-            { LogLevel.Debug, Constants.Debug },
-            { LogLevel.Info, Constants.Info },
-            { LogLevel.Warn, Constants.Warning },
-            { LogLevel.Error, Constants.Error }
-        };
 
         public MainForm()
         {
@@ -35,7 +28,6 @@ namespace Contoso.WinForms.Puppet
         {
             mobileCenterEnabled.Checked = MobileCenter.Enabled;
             analyticsEnabled.Checked = Analytics.Enabled;
-            analyticsEnabled.Enabled = MobileCenter.Enabled;
         }
 
         private void mobileCenterEnabled_CheckedChanged(object sender, EventArgs e)
@@ -79,6 +71,13 @@ namespace Contoso.WinForms.Puppet
                     row => row.Cells["Key"].Value?.ToString(),
                     row => row.Cells["Value"].Value?.ToString());
             Analytics.TrackEvent(name, properties);
+        }
+
+        private void CrashWithNullReferenceException_Click(object sender, EventArgs e)
+        {
+            string[] values = { "a", null, "c" };
+            var b = values[1].Trim();
+            System.Diagnostics.Debug.WriteLine(b);
         }
     }
 }

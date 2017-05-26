@@ -74,7 +74,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private string GetSdkVersion()
         {
-           return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+           return GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
         }
 
         private string GetLocale()
