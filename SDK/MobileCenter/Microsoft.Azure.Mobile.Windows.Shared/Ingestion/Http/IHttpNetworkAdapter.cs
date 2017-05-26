@@ -7,8 +7,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public interface IHttpNetworkAdapter : IDisposable
     {
-        TimeSpan Timeout { get; set; }
-
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
     }
 }
