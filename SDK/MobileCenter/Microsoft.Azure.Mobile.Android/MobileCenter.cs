@@ -219,5 +219,10 @@ namespace Microsoft.Azure.Mobile
             }
             return classes.ToArray();
         }
+
+		static void PlaftormSetCustomProperties(CustomProperties customProperties)
+		{
+            AndroidMobileCenter.SetCustomProperties(customProperties.AndroidCustomProperties);
+		}
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="MobileCenterLog.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="CustomProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -68,7 +69,7 @@
       <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
