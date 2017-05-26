@@ -76,6 +76,7 @@
     <Compile Include="Utils\ApplicationLifecycleHelper.cs" />
     <Compile Include="Utils\ApplicationSettings.cs" />
     <Compile Include="Utils\DeviceInformationHelper.cs" />
+    <Compile Include="Utils\WpfHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

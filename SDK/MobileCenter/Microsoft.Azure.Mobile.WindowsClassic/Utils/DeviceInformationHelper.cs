@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetSdkName()
         {
-            return "mobilecenter.windowsclassic";
+            return WpfHelper.IsRunningOnWpf ? "mobilecenter.wpf" : "mobilecenter.winforms";
         }
 
         protected override string GetDeviceModel()
@@ -101,6 +101,6 @@ namespace Microsoft.Azure.Mobile.Utils
         /// Import GetDeviceCaps function to retreive scale-independent screen size.
         /// </summary>
         [DllImport("gdi32.dll")]
-        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+        private static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
     }
 }

@@ -29,8 +29,8 @@ namespace Microsoft.Azure.Mobile.Utils
         private static Action Minimize;
         private static Action Restore;
         private static Action Start;
-        private static readonly dynamic WPFApplication;
-        private static readonly int WPFMinimizedState;
+        private static readonly dynamic WpfApplication;
+        private static readonly int WpfMinimizedState;
         private static void WinEventHook(IntPtr winEventHookHandle, uint eventType, IntPtr windowHandle, int objectId, int childId, uint eventThreadId, uint eventTimeInMilliseconds)
         {
             // Filter out non-HWND
@@ -60,23 +60,22 @@ namespace Microsoft.Azure.Mobile.Utils
 
         static ApplicationLifecycleHelper()
         {
-            // Use the WPF APIs through reflection, if they are available
-
-            // Find the PresentationFramework assembly, which contains the important APIs
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var presentationFramework = assemblies.FirstOrDefault(assembly => assembly.GetName().Name == "PresentationFramework");
-            if (presentationFramework != null)
+            // Retrieve the WPF APIs through reflection, if they are available
+            if (WpfHelper.IsRunningOnWpf)
             {
                 // Store the WPF Application singleton
-                var appType = presentationFramework.GetType("System.Windows.Application");
-                WPFApplication = appType.GetRuntimeProperty("Current")?.GetValue(appType);
+                // This is equivalent to `WpfApplication = System.Windows.Application.Current;`
+                var appType = WpfHelper.PresentationFramework.GetType("System.Windows.Application");
+                WpfApplication = appType.GetRuntimeProperty("Current")?.GetValue(appType);
 
                 // Store the int corresponding to the "Minimized" state for WPF Windows
-                WPFMinimizedState = (int)presentationFramework.GetType("System.Windows.WindowState")
+                // This is equivalent to `WpfMinimizedState = (int)System.Windows.WindowState.Minimized;`
+                WpfMinimizedState = (int)WpfHelper.PresentationFramework.GetType("System.Windows.WindowState")
                     .GetField("Minimized")
                     .GetRawConstantValue();
             }
 
+            
 #pragma warning disable CS0618 // Type or member is obsolete
             // We need Windows thread ID, not managed
             var threadId = AppDomain.GetCurrentThreadId();
@@ -88,16 +87,16 @@ namespace Microsoft.Azure.Mobile.Utils
         private static bool IsAnyWindowNotMinimized()
         {
             // If not in WPF, query the available forms
-            if (WPFApplication == null)
+            if (WpfApplication == null)
             {
                 return Application.OpenForms.Cast<Form>().Any(form => form.WindowState != FormWindowState.Minimized);
             }
 
-            // If in WPF, dynamically query the available windows
-            foreach (var window in WPFApplication.Windows)
+            // If in WPF, query the available windows
+            foreach (var window in WpfApplication.Windows)
             {
-                // Not minimized is true if WindowState is not Minimized and the window is on screen
-                if ((int)window.WindowState != WPFMinimizedState && WindowIntersectsWithAnyScreen(window))
+                // Not minimized is true if WindowState is not "Minimized" and the window is on screen
+                if ((int)window.WindowState != WpfMinimizedState && WindowIntersectsWithAnyScreen(window))
                 {
                     return true;
                 }
@@ -160,7 +159,7 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-        private static System.Drawing.Rectangle WindowsRectToRectangle(dynamic windowsRect)
+        private static Rectangle WindowsRectToRectangle(dynamic windowsRect)
         {
             return new Rectangle
             {
@@ -174,14 +173,7 @@ namespace Microsoft.Azure.Mobile.Utils
         private static bool WindowIntersectsWithAnyScreen(dynamic window)
         {
             var windowBounds = WindowsRectToRectangle(window.RestoreBounds);
-            foreach (var screen in Screen.AllScreens)
-            {
-                if (screen.Bounds.IntersectsWith(windowBounds))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Screen.AllScreens.Any(screen => screen.Bounds.IntersectsWith(windowBounds));
         }
 
         public bool HasShownWindow => started;
