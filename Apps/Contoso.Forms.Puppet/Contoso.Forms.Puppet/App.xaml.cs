@@ -75,8 +75,9 @@ namespace Contoso.Forms.Puppet
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
             CustomProperties properties = new CustomProperties();
-            properties.Set("a", "b").Clear("a").Set("score", 3.000001M);
-            properties.Set("now", DateTime.UtcNow);
+            properties.Set("a", "b").Clear("a").Set("decimal", 3.000001M);
+            properties.Set("text", "hello").Set("score", 3).Set("floating", 3.14f).Set("double", 3.1415);
+            properties.Set("now", DateTime.UtcNow).Set("long", 1000L);
             MobileCenter.SetCustomProperties(properties);
 
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);

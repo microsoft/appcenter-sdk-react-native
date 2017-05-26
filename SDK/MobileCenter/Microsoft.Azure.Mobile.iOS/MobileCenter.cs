@@ -4,8 +4,8 @@ using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile
 {
-    using iOSMobileCenter = Microsoft.Azure.Mobile.iOS.Bindings.MSMobileCenter;
     using iOSLogLevel = Microsoft.Azure.Mobile.iOS.Bindings.MSLogLevel;
+    using iOSMobileCenter = Microsoft.Azure.Mobile.iOS.Bindings.MSMobileCenter;
     using iOSWrapperSdk = Microsoft.Azure.Mobile.iOS.Bindings.MSWrapperSdk;
 
     /// <summary>
@@ -209,6 +209,7 @@ namespace Microsoft.Azure.Mobile
 
         static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
+            iOSMobileCenter.SetCustomProperties(customProperties.IOSCustomProperties);
         }
     }
 }

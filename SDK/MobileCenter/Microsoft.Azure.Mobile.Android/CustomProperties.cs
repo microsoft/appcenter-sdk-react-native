@@ -7,9 +7,9 @@ namespace Microsoft.Azure.Mobile
 {
     public partial class CustomProperties
     {
-        internal AndroidCustomProperties AndroidCustomProperties { get; } = new AndroidCustomProperties();
+        static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal AndroidCustomProperties AndroidCustomProperties { get; } = new AndroidCustomProperties();
 
         CustomProperties PlatformSet(string key, string value)
         {
@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile
 
         CustomProperties PlatformSet(string key, DateTime value)
         {
-            AndroidCustomProperties.Set(key, new Date((long)value.ToUniversalTime().Subtract(_epoch).TotalMilliseconds));
+            AndroidCustomProperties.Set(key, new Date((long)(value.ToUniversalTime() - _epoch).TotalMilliseconds));
             return this;
         }
 
