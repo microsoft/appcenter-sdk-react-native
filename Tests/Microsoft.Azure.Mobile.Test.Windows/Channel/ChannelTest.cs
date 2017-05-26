@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
     {
         private Mobile.Channel.Channel _channel;
         private readonly MockIngestion _mockIngestion = new MockIngestion();
-        private readonly IStorage _storage = new Mobile.Storage.Storage();
+        private IStorage _storage = new Mobile.Storage.Storage();
 
         private const string ChannelName = "channelName";
         private const int MaxLogsPerBatch = 3;
@@ -252,6 +252,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
+            _storage = new Mobile.Storage.Storage();
             _storage.DeleteLogsAsync(ChannelName).Wait();
             _channel = new Mobile.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
                 _appSecret, _mockIngestion, _storage);
