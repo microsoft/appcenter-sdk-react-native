@@ -38,17 +38,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
             : base(toffset, device, sid)
         {
         }
-
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public override void Validate()
-        {
-            base.Validate();
-        }
     }
 }
 

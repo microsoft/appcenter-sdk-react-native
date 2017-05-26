@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLock.cs" />
@@ -46,8 +47,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogJsonConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\LogJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\LogSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
@@ -65,5 +66,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StateKeeper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\" />
   </ItemGroup>
 </Project>

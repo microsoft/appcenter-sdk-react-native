@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
-        //public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
 
         public override Type BindingType { get; }
 
