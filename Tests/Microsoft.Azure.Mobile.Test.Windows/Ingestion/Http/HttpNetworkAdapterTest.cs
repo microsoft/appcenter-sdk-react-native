@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
     [TestClass]
     public class HttpNetworkAdapterTest
     {
-        HttpNetworkAdapter _adapter = new HttpNetworkAdapter();
+        private readonly HttpNetworkAdapter _adapter = new HttpNetworkAdapter();
 
         /// <summary>
         /// Validate that dispose is disposing http client
@@ -21,18 +21,6 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
             _adapter.Dispose();
 
             Assert.ThrowsException<IngestionException>(() => _adapter.SendAsync(new HttpRequestMessage(), CancellationToken.None).RunNotAsync());
-        }
-
-        /// <summary>
-        /// Validate that timeout is saving correctly
-        /// </summary>
-        [TestMethod]
-        public void HttpNetworkAdatapterTimeoutTest()
-        {
-            TimeSpan oneSecond = new TimeSpan(0, 0, 1);
-            _adapter.Timeout = oneSecond;
-
-            Assert.AreEqual(oneSecond, _adapter.Timeout);
         }
     }
 }
