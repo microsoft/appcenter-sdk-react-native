@@ -13,8 +13,6 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
     {
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private State _state = new State();
-        private volatile bool _isShutdown;
-        private volatile int _waitingThreads;
 
         /// <summary>
         /// Gets the current state
@@ -35,22 +33,6 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
             return _state;
         }
 
-        private void StartWait()
-        {
-            Interlocked.Increment(ref _waitingThreads);
-            Interlocked.MemoryBarrier();
-            if (_isShutdown)
-            {
-                Interlocked.Decrement(ref _waitingThreads);
-                throw new StatefulMutexException("Trying to execute task after shutdown requested");
-            }
-        }
-
-        private void StopWait()
-        {
-            Interlocked.Decrement(ref _waitingThreads);
-        }
-
         /// <summary>
         /// Checks if the given state is current
         /// </summary>
@@ -60,56 +42,22 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         {
             return _state.Equals(state);
         }
-
-        public async Task ShutdownAsync()
-        {
-            _isShutdown = true;
-            Interlocked.MemoryBarrier();
-            while (_waitingThreads > 0)
-            {
-                await _mutex.WaitAsync().ConfigureAwait(false);
-                _mutex.Release();
-            }
-        }
-
-        public async Task<bool> ShutdownAsync(TimeSpan timeout)
-        {
-            var result = true;
-            var tokenSource = new CancellationTokenSource();
-            var timeoutTask = Task.Delay(timeout, tokenSource.Token);
-            _isShutdown = true;
-            Interlocked.MemoryBarrier();
-            while (result && _waitingThreads > 0)
-            {
-                var waitTask = _mutex.WaitAsync(tokenSource.Token);
-                var _ = waitTask.ContinueWith(task => _mutex.Release(), TaskContinuationOptions.OnlyOnRanToCompletion);
-                result = await Task.WhenAny(waitTask, timeoutTask).ConfigureAwait(false) != timeoutTask;
-            }
-            tokenSource.Cancel();
-            return result;
-        }
         
         public LockHolder GetLock()
         {
-            StartWait();
             _mutex.Wait();
-            StopWait();
             return new LockHolder(this);
         }
 
         public async Task<LockHolder> GetLockAsync()
         {
-            StartWait();
             await _mutex.WaitAsync().ConfigureAwait(false);
-            StopWait();
             return new LockHolder(this);
         }
         
         public async Task<LockHolder> GetLockAsync(State state)
         {
-            StartWait();
             await _mutex.WaitAsync().ConfigureAwait(false);
-            StopWait();
             if (!IsCurrent(state))
             {
                 _mutex.Release();
@@ -128,7 +76,7 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
 
         public class LockHolder : IDisposable
         {
-            private StatefulMutex _parent;
+            private readonly StatefulMutex _parent;
 
             internal LockHolder(StatefulMutex parent)
             {
