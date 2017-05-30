@@ -121,10 +121,10 @@ namespace Microsoft.Azure.Mobile.Channel
                 _mutex.Unlock();
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 _mutex.Lock(stateSnapshot);
-                return Task.Run(async () =>
+                return Task.Run(() =>
                 {
-                    await PrepareLogAsync(log).ConfigureAwait(false);
-                    await PersistLogAsync(log, stateSnapshot).ConfigureAwait(false);
+                    PrepareLogAsync(log).Wait();
+                    PersistLogAsync(log, stateSnapshot).Wait();
                 });
             }
             catch (StatefulMutexException e)
