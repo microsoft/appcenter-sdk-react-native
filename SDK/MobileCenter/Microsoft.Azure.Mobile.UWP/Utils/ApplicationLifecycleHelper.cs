@@ -34,10 +34,42 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
             }
+            catch (ArgumentException)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag,
+                    "Failed to fully initialize ApplicationLifecycleHelper at this point. This is not necessarily an error.");
+            }
             Application.Current.UnhandledException += (sender, eventArgs) =>
             {
                 UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
             };
+        }
+
+        public void TrySubscribeToCoreWindowActivatedEvent()
+        {
+            if (_started)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag,
+                    "Redundant call to MobileCenter.NotifyOnLaunched(); ignoring this one.");
+                return;
+            }
+            try
+            {
+                CoreApplication.MainView.CoreWindow.Activated += InvokeStarted;
+                if (CoreApplication.Views.Count > 0)
+                {
+                    _started = true;
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
+            }
+            catch (ArgumentException)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag,
+                    "Failed to complete initialization of ApplicationLifecycleHelper. Please ensure that you are calling MobileCenter.NotifyOnLaunched() from the OnLaunched() method.");
+            }
         }
 
         private void InvokeResuming(object sender, object e)

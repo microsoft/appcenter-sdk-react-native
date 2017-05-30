@@ -3,6 +3,7 @@ using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -39,6 +40,8 @@ namespace Contoso.UWP.Puppet
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            BackgroundExecutionManager.RequestAccessAsync().AsTask().Wait();
+            BGTask.RegisterBackgroundTask("", "task", new SystemTrigger(SystemTriggerType.InternetAvailable, false), new SystemCondition(SystemConditionType.InternetAvailable));
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Push.PushNotificationReceived += PushNotificationReceivedHandler;
@@ -123,6 +126,64 @@ namespace Contoso.UWP.Puppet
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            System.Diagnostics.Debug.WriteLine("on background activated");
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            Push.PushNotificationReceived += PushNotificationReceivedHandler;
+            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+        }
+    }
+
+    public class BGTask : IBackgroundTask
+    {
+        public void Run(IBackgroundTaskInstance taskInstance)
+        {
+            System.Diagnostics.Debug.WriteLine("run");
+        }
+        public static BackgroundTaskRegistration RegisterBackgroundTask(string taskEntryPoint,
+            string taskName,
+            IBackgroundTrigger trigger,
+            IBackgroundCondition condition)
+        {
+            //
+            // Check for existing registrations of this background task.
+            //
+
+            foreach (var cur in BackgroundTaskRegistration.AllTasks)
+            {
+
+                if (cur.Value.Name == taskName)
+                {
+                    //
+                    // The task is already registered.
+                    //
+
+                    return (BackgroundTaskRegistration)(cur.Value);
+                }
+            }
+
+            //
+            // Register the background task.
+            //
+
+            var builder = new BackgroundTaskBuilder();
+
+            builder.Name = taskName;
+            builder.SetTrigger(trigger);
+
+            if (condition != null)
+            {
+
+                builder.AddCondition(condition);
+            }
+
+            BackgroundTaskRegistration task = builder.Register();
+
+            return task;
         }
     }
 }
