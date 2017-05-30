@@ -44,7 +44,10 @@ namespace Microsoft.Azure.Mobile.Channel
             var lockHolder = _mutex.GetLock();
             Task.Run(() => _storage.CountLogsAsync(Name)).ContinueWith(task =>
             {
-                _pendingLogCount = task.Result;
+                if (task.IsCompleted)
+                {
+                    _pendingLogCount = task.Result;
+                }
                 lockHolder.Dispose();
             });
         }
