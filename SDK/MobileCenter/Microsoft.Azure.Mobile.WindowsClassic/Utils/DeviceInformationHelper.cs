@@ -56,12 +56,15 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetOsBuild()
         {
-            var managementClass = new ManagementClass("Win32_OperatingSystem");
-            foreach (var managementObject in managementClass.GetInstances())
+            using (var hklmKey = Microsoft.Win32.Registry.LocalMachine)
+            using (var subKey = hklmKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
             {
-                return $"{(string)managementObject["Version"]}.{Environment.OSVersion.Version.Revision}";
+                object majorVersion = subKey.GetValue("CurrentMajorVersionNumber");
+                object minorVersion = subKey.GetValue("CurrentMinorVersionNumber");
+                object buildNumber = subKey.GetValue("CurrentBuildNumber");
+                object revisionNumber = subKey.GetValue("UBR");
+                return $"{majorVersion}.{minorVersion}.{buildNumber}.{revisionNumber}";
             }
-            return string.Empty;
         }
 
         protected override string GetOsVersion()
