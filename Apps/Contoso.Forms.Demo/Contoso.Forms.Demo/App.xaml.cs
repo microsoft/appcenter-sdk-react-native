@@ -35,6 +35,29 @@ namespace Contoso.Forms.Demo
             Distribute.ReleaseAvailable = OnReleaseAvailable;
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+
+            for (var i = 0; i < 100; ++i)
+            {
+                var iter = i;
+                Task.Run(() =>
+                {
+                    Analytics.TrackEvent($"task number {iter}");
+                });
+                Task.Run(() =>
+                {
+                    if (iter % 2 == 0)
+                    {
+                        Analytics.Enabled = true;
+                    }
+                });
+                Task.Run(() =>
+                {
+                    if (iter % 40 == 0)
+                    {
+                        Analytics.Enabled = false;
+                    }
+                });
+            }
         }
 
 

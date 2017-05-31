@@ -120,9 +120,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 await PrepareLogAsync(log, state).ConfigureAwait(false);
                 await PersistLogAsync(log, state).ConfigureAwait(false);
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled");
             }
         }
 
@@ -137,10 +137,6 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
             }
             log.Device = log.Device ?? _device;
-            if (log.Toffset == 0L)
-            {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
-            }
         }
 
         private async Task PersistLogAsync(Log log, State state)
@@ -169,9 +165,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled");
             }
         }
 
@@ -194,9 +190,9 @@ namespace Microsoft.Azure.Mobile.Channel
                     _pendingLogCount = 0;
                 }
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled");
             }
         }
 
@@ -211,9 +207,9 @@ namespace Microsoft.Azure.Mobile.Channel
                     state = _mutex.InvalidateState();
                 }
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Resume operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Resume operation has been cancelled");
             }
             await CheckPendingLogsAsync(state).ConfigureAwait(false);
         }
@@ -254,9 +250,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 await _storage.ClearPendingLogStateAsync(Name).ConfigureAwait(false);
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled");
             }
         }
 
@@ -321,14 +317,9 @@ namespace Microsoft.Azure.Mobile.Channel
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
                 }
-                try
-                {
-                    await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
-                    await CheckPendingLogsAsync(state).ConfigureAwait(false);
-                }
-                catch (StorageException)
-                {
-                }
+
+                await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
+                await CheckPendingLogsAsync(state).ConfigureAwait(false);
             }
         }
 
@@ -361,7 +352,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 return;
             }
-            StorageException deleteException = null;
             try
             {
                 await _storage.DeleteLogsAsync(Name, batchId).ConfigureAwait(false);
@@ -369,7 +359,6 @@ namespace Microsoft.Azure.Mobile.Channel
             catch (StorageException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
-                deleteException = e;
             }
             List<Log> removedLogs;
              {
@@ -382,10 +371,6 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     SentLog?.Invoke(this, new SentLogEventArgs(log));
                 }
-            }
-            if (deleteException != null)
-            {
-                throw deleteException;
             }
         }
 

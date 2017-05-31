@@ -142,25 +142,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag,
                         $"Deleting all logs from storage for channel '{channelName}'");
-                    var fullIdentifiers = new List<string>();
-
-                    foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
-                    {
-                        if (!ChannelMatchesIdentifier(channelName, fullIdentifier))
-                        {
-                            continue;
-                        }
-                        foreach (var id in _pendingDbIdentifierGroups[fullIdentifier])
-                        {
-                            _pendingDbIdentifiers.Remove(id);
-                        }
-                        fullIdentifiers.Add(fullIdentifier);
-                    }
-                    foreach (var fullIdentifier in fullIdentifiers)
-                    {
-                        _pendingDbIdentifierGroups.Remove(fullIdentifier);
-                    }
-
+                    ClearPendingLogStateAsync(channelName, false).Wait();
                     _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
                         .Wait();
                 }
@@ -210,12 +192,32 @@ namespace Microsoft.Azure.Mobile.Storage
         /// Asynchronously clears the stored state of logs that have been retrieved
         /// </summary>
         /// <param name="channelName"></param>
-        public async Task ClearPendingLogStateAsync(string channelName)
+        public async Task ClearPendingLogStateAsync(string channelName, bool verbose = true)
         {
             var task = new Task(() =>
             {
-                _pendingDbIdentifierGroups.Clear();
-                _pendingDbIdentifiers.Clear();
+                var fullIdentifiers = new List<string>();
+
+                foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
+                {
+                    if (!ChannelMatchesIdentifier(channelName, fullIdentifier))
+                    {
+                        continue;
+                    }
+                    foreach (var id in _pendingDbIdentifierGroups[fullIdentifier])
+                    {
+                        _pendingDbIdentifiers.Remove(id);
+                    }
+                    fullIdentifiers.Add(fullIdentifier);
+                }
+                foreach (var fullIdentifier in fullIdentifiers)
+                {
+                    _pendingDbIdentifierGroups.Remove(fullIdentifier);
+                }
+                if (verbose)
+                {
+                    MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Clear pending log states for channel {channelName}");
+                }
             });
             try
             {

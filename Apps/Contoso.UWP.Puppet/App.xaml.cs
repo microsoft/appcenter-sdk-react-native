@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
@@ -46,7 +48,32 @@ namespace Contoso.UWP.Puppet
             Push.CheckLaunchedFromNotification(e);
 
             Frame rootFrame = Window.Current.Content as Frame;
+            List<Task> tasks = new List<Task>();
+            for (var i = 0; i < 100; ++i)
+            {
+                var iter = i;
+                tasks.Add(
+                Task.Run(() =>
+                {
+                    Analytics.TrackEvent($"task number {iter}");
+                }));
+                tasks.Add(Task.Run(() =>
+                {
+                    if (iter % 2 == 0)
+                    {
+                        Analytics.Enabled = true;
+                    }
+                }));
+                tasks.Add(Task.Run(() =>
+                {
+                    if (iter % 40 == 0)
+                    {
+                        Analytics.Enabled = false;
+                    }
+                }));
+            }
 
+            Task.WhenAll(tasks).ContinueWith(t => Analytics.Enabled = true);
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
