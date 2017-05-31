@@ -50,13 +50,13 @@ namespace Microsoft.Azure.Mobile.Push
         }
 
         /// <summary>
-		/// If you are using the event for background push notifications
-        /// and your activity has a launch mode such as singleTop, singleInstance or singleTask,
+        /// If you are using the event for background push notifications
+        /// and your activity has a launch mode Ïsuch as singleTop, singleInstance or singleTask,
         /// need to call this method in your launcher OnNewIntent override method.
-		/// </summary>
-		/// <param name="activity">This activity.</param>
+        /// </summary>
+        /// <param name="activity">This activity.</param>
         /// <param name="intent">Intent from OnNewIntent().</param>
-	    public static void CheckLaunchedFromNotification(Activity activity, Intent intent)
+        public static void CheckLaunchedFromNotification(Activity activity, Intent intent)
         {
             AndroidPush.CheckLaunchedFromNotification(activity, intent);
         }
