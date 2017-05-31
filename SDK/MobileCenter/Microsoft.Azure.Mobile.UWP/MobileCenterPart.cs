@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Windows.ApplicationModel.Activation;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile
 {
@@ -18,6 +19,33 @@ namespace Microsoft.Azure.Mobile
                 return;
             }
             DeviceInformationHelper.SetCountryCode(countryCode);
+        }
+
+        /// <summary>
+        /// Certain scenarios require an additional setup step involving this method. To use this, call "MobileCenter.NotifyOnLaunched(e)" at the end of your OnLaunched method.
+        /// </summary>
+        /// <param name="e">Launch arguments.</param>
+        public static void NotifyOnLaunched(LaunchActivatedEventArgs e)
+        {
+            Instance.InstanceNotifyOnLaunched(e);
+        }
+
+        public void InstanceNotifyOnLaunched(LaunchActivatedEventArgs e)
+        {
+            ApplicationLifecycleHelper.Instance.NotifyOnLaunched();
+
+            foreach (var service in _services)
+            {
+                try
+                {
+                    service.NotifyOnLaunched(e);
+                }
+                catch (MobileCenterException ex)
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag,
+                        $"An error occurred when notifying service {service.ServiceName} of application launch.", ex);
+                }
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Microsoft.Azure.Mobile
     /// <summary>
     /// Provides basic functionality for IMobileCenterServices.
     /// </summary>
-    public abstract class MobileCenterService : IMobileCenterService
+    public abstract partial class MobileCenterService : IMobileCenterService
     {
         private const string PreferenceKeySeparator = "_";
         private const string KeyEnabled = Constants.KeyPrefix + "ServiceEnabled";

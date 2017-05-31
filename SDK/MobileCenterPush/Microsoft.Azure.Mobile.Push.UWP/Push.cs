@@ -14,10 +14,8 @@ namespace Microsoft.Azure.Mobile.Push
 {
     using WindowsPushNotificationReceivedEventArgs = Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs;
 
-    public partial class Push : MobileCenterService
+    public partial class Push
     {
-        private ApplicationLifecycleHelper _lifecycleHelper = new ApplicationLifecycleHelper();
-
         private PushNotificationChannel _channel;
 
         protected override int TriggerCount => 1;
@@ -26,13 +24,8 @@ namespace Microsoft.Azure.Mobile.Push
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
         /// </summary>
-        /// <param name="e">OnLaunched method event</param>
-        public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
-        {
-            Instance.InstanceCheckLaunchedFromNotification(e);
-        }
-
-        private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        /// <param name="e">OnLaunched method event args</param>
+        public override void NotifyOnLaunched(LaunchActivatedEventArgs e)
         {
             IDictionary<string, string> customData = null;
             using (_mutex.GetLock())
@@ -110,7 +103,7 @@ namespace Microsoft.Azure.Mobile.Push
             {
                 var content = e.ToastNotification.Content;
                 MobileCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
-                if (_lifecycleHelper.IsSuspended)
+                if (ApplicationLifecycleHelper.Instance.IsSuspended)
                 {
                     MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
                 }
@@ -146,7 +139,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
 
             // Parse title and message using identifiers
-            return new PushNotificationReceivedEventArgs()
+            return new PushNotificationReceivedEventArgs
             {
                 Title = content.SelectSingleNode("/toast/visual/binding/text[@id='1']")?.InnerText,
                 Message = content.SelectSingleNode("/toast/visual/binding/text[@id='2']")?.InnerText,

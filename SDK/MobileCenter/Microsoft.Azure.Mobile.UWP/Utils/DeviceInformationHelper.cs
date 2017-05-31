@@ -24,6 +24,7 @@ namespace Microsoft.Azure.Mobile.Utils
         private static string _country;
         private static readonly SemaphoreSlim DisplayInformationEventSemaphore = new SemaphoreSlim(0);
         private static readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
+
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
             if (CanReadScreenSize)

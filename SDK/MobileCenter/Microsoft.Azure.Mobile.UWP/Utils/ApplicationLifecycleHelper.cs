@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 
@@ -8,6 +9,15 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         private static bool _started;
         private static bool _suspended;
+        private bool _needsSubscribeToCoreWindowActivatedEvent = true;
+
+        private static ApplicationLifecycleHelper _instance;
+        public static ApplicationLifecycleHelper Instance
+        {
+            get { return _instance ?? (_instance = new ApplicationLifecycleHelper()); }
+            // Setter for testing
+            internal set { _instance = value; }
+        }
 
         /// <summary>
         /// Indicates whether the application has shown UI
@@ -21,7 +31,9 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public ApplicationLifecycleHelper()
         {
-            Enabled = true;
+            const string errorMessage = "Failed to fully initialize ApplicationLifecycleHelper at this point. This is not necessarily an error.";
+            CoreApplication.Resuming += InvokeResuming;
+            CoreApplication.Suspending += InvokeSuspended;
             try
             {
                 CoreApplication.MainView.CoreWindow.Activated += InvokeStarted;
@@ -30,14 +42,13 @@ namespace Microsoft.Azure.Mobile.Utils
                     _started = true;
                 }
             }
-            catch (System.Runtime.InteropServices.COMException)
+            catch (COMException)
             {
-                throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, errorMessage);
             }
             catch (ArgumentException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag,
-                    "Failed to fully initialize ApplicationLifecycleHelper at this point. This is not necessarily an error.");
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, errorMessage);
             }
             Application.Current.UnhandledException += (sender, eventArgs) =>
             {
@@ -45,12 +56,15 @@ namespace Microsoft.Azure.Mobile.Utils
             };
         }
 
-        public void TrySubscribeToCoreWindowActivatedEvent()
+        /// <summary>
+        /// Indicates that OnLaunched has occurred, which is useful when initialization begins at an earlier step in the lifecycle
+        /// </summary>
+        /// <remarks>Virtual for testing</remarks>
+        public virtual void NotifyOnLaunched()
         {
-            if (_started)
+            if (_needsSubscribeToCoreWindowActivatedEvent)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag,
-                    "Redundant call to MobileCenter.NotifyOnLaunched(); ignoring this one.");
+                // Don't log a message because it might be confusing
                 return;
             }
             try
@@ -60,8 +74,9 @@ namespace Microsoft.Azure.Mobile.Utils
                 {
                     _started = true;
                 }
+                _needsSubscribeToCoreWindowActivatedEvent = false;
             }
-            catch (System.Runtime.InteropServices.COMException)
+            catch (COMException)
             {
                 throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
             }
@@ -80,7 +95,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private void InvokeStarted(object sender, object e)
         {
-            // Should only have a single invocation of the started event
+            // Should only have a single invocation of the started event, so unsubscribe here
             CoreApplication.MainView.CoreWindow.Activated -= InvokeStarted;
             _started = true;
             _suspended = false;
@@ -93,36 +108,9 @@ namespace Microsoft.Azure.Mobile.Utils
             ApplicationSuspended?.Invoke(sender, EventArgs.Empty);
         }
 
-        private bool _enabled;
-        public bool Enabled {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                if (value == _enabled)
-                {
-                    return;
-                }
-                if (value)
-                {
-                    CoreApplication.Resuming += InvokeResuming;
-                    CoreApplication.Suspending += InvokeSuspended;
-                }
-                else
-                {
-                    CoreApplication.Resuming -= InvokeResuming;
-                    CoreApplication.Suspending -= InvokeSuspended;
-                }
-                _enabled = value;
-            }
-        }
-
         public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
         public event EventHandler ApplicationStarted;
-
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }
