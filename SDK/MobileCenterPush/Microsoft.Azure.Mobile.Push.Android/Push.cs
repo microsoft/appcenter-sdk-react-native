@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Push
 
         /// <summary>
         /// If you are using the event for background push notifications
-        /// and your activity has a launch mode Ïsuch as singleTop, singleInstance or singleTask,
+        /// and your activity has a launch mode such as singleTop, singleInstance or singleTask,
         /// need to call this method in your launcher OnNewIntent override method.
         /// </summary>
         /// <param name="activity">This activity.</param>
