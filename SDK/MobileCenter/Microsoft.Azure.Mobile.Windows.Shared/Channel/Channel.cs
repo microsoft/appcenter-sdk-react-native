@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Mobile.Channel
             var lockHolder = _mutex.GetLock();
             Task.Run(() => _storage.CountLogsAsync(Name)).ContinueWith(task =>
             {
-                if (task.IsCompleted)
+                if (!task.IsFaulted && !task.IsCanceled)
                 {
                     _pendingLogCount = task.Result;
                 }
@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     _enabled = false;
                     _batchScheduled = false;
                     _discardLogs = deleteLogs;
-                    _mutex.InvalidateState();
+                    state = _mutex.InvalidateState();
                 }
                 if (deleteLogs && FailedToSendLog != null)
                 {
@@ -372,8 +372,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 deleteException = e;
             }
             List<Log> removedLogs;
-            using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
-            {
+             {
                 removedLogs = _sendingBatches[batchId];
                 _sendingBatches.Remove(batchId);
             }
