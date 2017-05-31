@@ -46,12 +46,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetOsName()
         {
-            var managementClass = new ManagementClass("Win32_OperatingSystem");
-            foreach (var managementObject in managementClass.GetInstances())
-            {
-                return (string)managementObject["Caption"];
-            }
-            return string.Empty;
+            return "WINDOWS";
         }
 
         protected override string GetOsBuild()
