@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Storage;
-using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Test
             storage.PutLogAsync(StorageTestChannelName, new TestLog());
 #pragma warning restore 4014
 
-            var result = storage.Shutdown(TimeSpan.FromTicks(1));
+            var result = storage.ShutdownAsync(TimeSpan.FromTicks(1)).RunNotAsync();
             Assert.IsFalse(result);
         }
 
@@ -51,14 +51,14 @@ namespace Microsoft.Azure.Mobile.Test
                 .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-
+            
             // Ignore warnings because we just want to "fire and forget"
 #pragma warning disable 4014
             storage.PutLogAsync(StorageTestChannelName, new TestLog());
             storage.PutLogAsync(StorageTestChannelName, new TestLog());
 #pragma warning restore 4014
 
-            var result = storage.Shutdown(TimeSpan.FromSeconds(100));
+            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(100)).RunNotAsync();
             Assert.IsTrue(result);
         }
 
@@ -70,7 +70,8 @@ namespace Microsoft.Azure.Mobile.Test
         {
             var mockConnection = new Mock<IStorageAdapter>();
             var storage = new Mobile.Storage.Storage(mockConnection.Object);
-            Assert.IsTrue(storage.Shutdown(TimeSpan.FromSeconds(10)));
+            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(10)).RunNotAsync();
+            Assert.IsTrue(result);
             Assert.ThrowsException<StorageException>(
                 () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()).RunNotAsync());
         }

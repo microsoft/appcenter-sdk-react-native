@@ -35,17 +35,12 @@ namespace Microsoft.Azure.Mobile.Push
         private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             IDictionary<string, string> customData = null;
-            _mutex.Lock();
-            try
+            using (_mutex.GetLock())
             {
                 if (!IsInactive)
                 {
                     customData = ParseLaunchString(e?.Arguments);
                 }
-            }
-            finally
-            {
-                _mutex.Unlock();
             }
             if (customData != null)
             {
@@ -68,40 +63,38 @@ namespace Microsoft.Azure.Mobile.Push
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
-                var stateSnapshot = _stateKeeper.GetStateSnapshot();
+                var state = _mutex.State;
                 Task.Run(async () =>
                 {
                     var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync()
                         .AsTask().ConfigureAwait(false);
                     try
                     {
-                        _mutex.Lock(stateSnapshot);
-                        var pushToken = channel.Uri;
-                        if (!string.IsNullOrEmpty(pushToken))
+                        using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                         {
-                            // Save channel member
-                            _channel = channel;
+                            var pushToken = channel.Uri;
+                            if (!string.IsNullOrEmpty(pushToken))
+                            {
+                                // Save channel member
+                                _channel = channel;
 
-                            // Subscribe to push
-                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+                                // Subscribe to push
+                                channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
 
-                            // Send channel URI to backend
-                            MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
-                            var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
-                            await Channel.Enqueue(pushInstallationLog).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                                // Send channel URI to backend
+                                MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+                                var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
+                                await Channel.EnqueueAsync(pushInstallationLog).ConfigureAwait(false);
+                            }
+                            else
+                            {
+                                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                            }
                         }
                     }
                     catch (StatefulMutexException)
                     {
                         MobileCenterLog.Warn(LogTag, "Push Enabled state changed after creating channel.");
-                    }
-                    finally
-                    {
-                        _mutex.Unlock();
                     }
                 });
             }

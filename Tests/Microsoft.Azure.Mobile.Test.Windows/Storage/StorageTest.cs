@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLite;
 

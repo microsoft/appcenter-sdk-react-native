@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _sessions.Add(now, _sid.Value);
             _applicationSettings[StorageKey] = SessionsAsString();
             var startSessionLog = new StartSessionLog { Sid = _sid };
-            _channel.Enqueue(startSessionLog);
+            _channel.EnqueueAsync(startSessionLog);
         }
 
         private string SessionsAsString()

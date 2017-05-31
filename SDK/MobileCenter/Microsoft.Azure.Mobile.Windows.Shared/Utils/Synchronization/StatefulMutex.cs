@@ -12,75 +12,58 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
     public class StatefulMutex : IDisposable
     {
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private readonly StateKeeper _stateKeeper;
+        private State _state = new State();
 
         /// <summary>
-        /// Creates a <see cref="StatefulMutex"/>  with an existing <see cref="StateKeeper"/> 
+        /// Gets the current state
         /// </summary>
-        /// <param name="stateKeeper">Tracks the current state for the mutex</param>
-        public StatefulMutex(StateKeeper stateKeeper)
+        /// <returns>The current state</returns>
+        public State State
         {
-            _stateKeeper = stateKeeper;
+            get { return _state; }
         }
 
         /// <summary>
-        /// Locks the mutex and does not verify any state
+        /// Advances the current state
         /// </summary>
-        /// <seealso cref="LockAsync"/>
-        public void Lock()
+        /// <returns>The new state</returns>
+        public State InvalidateState()
+        {
+            _state = _state.GetNextState();
+            return _state;
+        }
+
+        /// <summary>
+        /// Checks if the given state is current
+        /// </summary>
+        /// <param name="state">The state to test</param>
+        /// <returns>True if the current state is current, false otherwise</returns>
+        public bool IsCurrent(State state)
+        {
+            return _state.Equals(state);
+        }
+        
+        public LockHolder GetLock()
         {
             _mutex.Wait();
+            return new LockHolder(this);
         }
 
-        /// <summary>
-        /// Locks the mutex if the given <see cref="State"/> is consistent with the mutex's <see cref="StateKeeper"/> state
-        /// </summary>
-        /// <param name="stateSnapshot">The <see cref="State"/> that must be consistent with the mutex's <see cref="StateKeeper"/> state</param>
-        /// <exception cref="StatefulMutexException">The given state is invalid</exception>
-        /// <seealso cref="LockAsync(State)"/> 
-        public void Lock(State stateSnapshot)
-        {
-            _mutex.Wait();
-            if (!_stateKeeper.IsCurrent(stateSnapshot))
-            {
-                throw new StatefulMutexException("Cannot lock mutex with expired state");
-            }
-        }
-
-        /// <summary>
-        /// Locks the mutex if the given <see cref="State"/> is consistent with the mutex's <see cref="StateKeeper"/> state
-        /// </summary>
-        /// <param name="stateSnapshot">The <see cref="State"/> that must be consistent with the mutex's <see cref="StateKeeper"/> state</param>
-        /// <exception cref="StatefulMutexException">The given state is invalid</exception>
-        /// <seealso cref="Lock(State)"/> 
-        public async Task LockAsync(State stateSnapshot)
+        public async Task<LockHolder> GetLockAsync()
         {
             await _mutex.WaitAsync().ConfigureAwait(false);
-            if (!_stateKeeper.IsCurrent(stateSnapshot))
-            {
-                Unlock();
-                throw new StatefulMutexException("Cannot lock mutex with expired state");
-            }
+            return new LockHolder(this);
         }
-
-        /// <summary>
-        /// Asynchronously locks the mutex and does not verify any state
-        /// </summary>
-        /// <seealso cref="Lock"/>
-        public Task LockAsync()
+        
+        public async Task<LockHolder> GetLockAsync(State state)
         {
-            return _mutex.WaitAsync();
-        }
-
-        /// <summary>
-        /// Unlocks the mutex. Consecutive calls will not throw an exception
-        /// </summary>
-        public void Unlock()
-        {
-            if (_mutex.CurrentCount == 0)
+            await _mutex.WaitAsync().ConfigureAwait(false);
+            if (!IsCurrent(state))
             {
                 _mutex.Release();
+                throw new StatefulMutexException("Cannot lock mutex with expired state");
             }
+            return new LockHolder(this);
         }
 
         /// <summary>
@@ -91,5 +74,19 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
             _mutex.Dispose();
         }
 
+        public class LockHolder : IDisposable
+        {
+            private readonly StatefulMutex _parent;
+
+            internal LockHolder(StatefulMutex parent)
+            {
+                _parent = parent;
+            }
+
+            public void Dispose()
+            {
+                _parent._mutex.Release();
+            }
+        }
     }
 }
