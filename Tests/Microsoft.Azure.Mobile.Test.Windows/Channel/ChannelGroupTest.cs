@@ -148,13 +148,13 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             {
                 _channelGroup.AddChannel(mockedChannel);
             }
-            _channelGroup.SetEnabled(true);
-            _channelGroup.SetEnabled(false);
+            _channelGroup.SetEnabledAsync(true);
+            _channelGroup.SetEnabledAsync(false);
 
             foreach (var channelMock in channelMocks.Select(mock => mock as Mock<IChannelUnit>))
             {
-                channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => p)), Times.Once());
-                channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => !p)), Times.Once());
+                channelMock.Verify(channel => channel.SetEnabledAsync(It.Is<bool>(p => p)), Times.Once());
+                channelMock.Verify(channel => channel.SetEnabledAsync(It.Is<bool>(p => !p)), Times.Once());
             }
         }
 
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void TestDisposeChannelGroup()
         {
             _channelGroup.Dispose();
-            Assert.ThrowsException<ObjectDisposedException>(() => _channelGroup.SetEnabled(true));
+            Assert.ThrowsException<ObjectDisposedException>(() => _channelGroup.SetEnabledAsync(true));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             var addedChannel =
                 _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Mobile.Channel.Channel;
 
-            _channelGroup.Shutdown();
+            _channelGroup.ShutdownAsync().RunNotAsync();
 
             Assert.IsFalse(addedChannel.IsEnabled);
         }

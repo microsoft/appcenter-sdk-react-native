@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     foreach (var call in callsCopy)
                     {
                         _calls.Remove(call);
-                        call.Execute();
+                        call.ExecuteAsync();
                     }
                 }
                 else

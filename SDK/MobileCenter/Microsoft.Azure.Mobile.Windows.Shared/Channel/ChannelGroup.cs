@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Storage;
-using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Channel
 {
@@ -78,19 +77,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public void SetEnabled(bool enabled)
-        {
-            ThrowIfDisposed();
-            lock (_channelGroupLock)
-            {
-                foreach (var channel in _channels)
-                {
-                    channel.SetEnabled(enabled);
-                }
-            }
-        }
-
-        public Task Shutdown()
+        public Task SetEnabledAsync(bool enabled)
         {
             ThrowIfDisposed();
             var tasks = new List<Task>();
@@ -98,15 +85,29 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 foreach (var channel in _channels)
                 {
-                    tasks.Add(channel.Shutdown());
-                }
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
-                if (!_storage.Shutdown(_shutdownTimeout))
-                {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
+                    tasks.Add(channel.SetEnabledAsync(enabled));
                 }
             }
             return Task.WhenAll(tasks);
+        }
+
+        public async Task ShutdownAsync()
+        {
+            ThrowIfDisposed();
+            var tasks = new List<Task>();
+            lock (_channelGroupLock)
+            {
+                foreach (var channel in _channels)
+                {
+                    tasks.Add(channel.ShutdownAsync());
+                }
+            }
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
+            if (!await _storage.ShutdownAsync(_shutdownTimeout).ConfigureAwait(false))
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
+            }
         }
 
         private static IIngestion DefaultIngestion()

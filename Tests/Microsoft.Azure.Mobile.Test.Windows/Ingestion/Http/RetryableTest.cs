@@ -19,13 +19,6 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         private Mock<IHttpNetworkAdapter> _adapter;
         private IIngestion _retryableIngestion;
 
-        private const int DefaultWaitTime = 5000;
-
-        /* Event semaphores for invokation verification */
-        private const int SucceededCallbackSemaphoreIdx = 0;
-        private const int FailedCallbackSemaphoreIdx = 1;
-        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0) };
-
         [TestInitialize]
         public void InitializeRetryableTest()
         {
@@ -167,12 +160,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             var call = PrepareServiceCall();
+            call.ExecuteAsync().RunNotAsync();
 
-            SetupEventCallbacks(call);
-
-            call.Execute();
-
-            Assert.IsTrue(SuccessCallbackOccurred());
+            // No throw any exception
         }
 
         [TestMethod]
@@ -180,12 +170,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
             var call = PrepareServiceCall();
-
-            SetupEventCallbacks(call);
-
-            call.Execute();
-
-            Assert.IsTrue(FailedCallbackOccurred());
+            Assert.ThrowsException<HttpIngestionException>(() => { call.ExecuteAsync().RunNotAsync(); });
         }
 
         /// <summary>
@@ -259,41 +244,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             public Task Wait() { OnRequest?.Invoke(); return _task.Task; }
             public void Set() => _task.TrySetResult(true);
         }
-
-        private void SetupEventCallbacks(IServiceCall call)
-        {
-            foreach (var sem in _eventSemaphores)
-            {
-                if (sem.CurrentCount != 0)
-                {
-                    sem.Release(sem.CurrentCount);
-                }
-            }
-
-            call.ServiceCallSucceededCallback += () => _eventSemaphores[SucceededCallbackSemaphoreIdx].Release();
-            call.ServiceCallFailedCallback += (e) => _eventSemaphores[FailedCallbackSemaphoreIdx].Release();
-        }
-
-        private bool SuccessCallbackOccurred(int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[SucceededCallbackSemaphoreIdx], 1, waitTime);
-        }
-
-        private bool FailedCallbackOccurred(int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[FailedCallbackSemaphoreIdx], 1, waitTime);
-        }
-
-        private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)
-        {
-            var enteredAll = true;
-            for (var i = 0; i < numTimes; ++i)
-            {
-                enteredAll &= semaphore.Wait(waitTime);
-            }
-            return enteredAll;
-        }
-
+        
         public class TestServiceCall : ServiceCallDecorator
         {
             public TestServiceCall(IServiceCall decoratedApi) : base(decoratedApi)

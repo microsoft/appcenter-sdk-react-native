@@ -335,12 +335,20 @@ namespace Microsoft.Azure.Mobile.Storage
         /// </summary>
         /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
         /// <returns>True if remaining tasks completed in time; false otherwise</returns>
-        /// <remarks>This method blocks the calling thread</remarks>
-        public bool Shutdown(TimeSpan timeout)
+        public async Task<bool> ShutdownAsync(TimeSpan timeout)
         {
             _queue.CompleteAdding();
             _flushSemaphore.Release();
-            return _queueFlushTask.Wait(timeout);
+            var tokenSource = new CancellationTokenSource();
+            try
+            {
+                var timeoutTask = Task.Delay(timeout, tokenSource.Token);
+                return await Task.WhenAny(_queueFlushTask, timeoutTask).ConfigureAwait(false) != timeoutTask;
+            }
+            finally
+            {
+                tokenSource.Cancel();
+            }
         }
 
         private static string GetFullIdentifier(string channelName, string identifier)

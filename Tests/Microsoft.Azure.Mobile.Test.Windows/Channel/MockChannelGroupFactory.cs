@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Channel
             _channelGroupMock = channelGroupMock;
         }
 
-        private readonly  Mock<IChannelGroup> _channelGroupMock;
+        private readonly Mock<IChannelGroup> _channelGroupMock;
 
         public IChannelGroup CreateChannelGroup(string appSecret)
         {

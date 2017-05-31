@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 {
                     properties = ValidateProperties(properties, name, type);
                     var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-                    Channel.Enqueue(log);
+                    Channel.EnqueueAsync(log);
                 }
             }
         }
