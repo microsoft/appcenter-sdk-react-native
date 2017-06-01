@@ -143,34 +143,24 @@ namespace Contoso.UWP.Puppet
             IBackgroundTrigger trigger,
             IBackgroundCondition condition)
         {
-            //
             // Check for existing registrations of this background task.
-            //
-
             foreach (var cur in BackgroundTaskRegistration.AllTasks)
             {
                 if (cur.Value.Name == taskName)
                 {
-                    //
                     // The task is already registered.
-                    //
                     return (BackgroundTaskRegistration)cur.Value;
                 }
             }
 
-            //
             // Register the background task.
-            //
             var builder = new BackgroundTaskBuilder {Name = taskName};
             builder.SetTrigger(trigger);
-
             if (condition != null)
             {
                 builder.AddCondition(condition);
             }
-
             var task = builder.Register();
-
             return task;
         }
     }

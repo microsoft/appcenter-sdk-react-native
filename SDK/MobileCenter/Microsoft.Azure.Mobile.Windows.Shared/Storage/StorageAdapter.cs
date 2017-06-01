@@ -25,12 +25,6 @@ namespace Microsoft.Azure.Mobile.Storage
             {
                 throw new StorageException(e);
             }
-            catch (NullReferenceException e)
-            {
-                // TODO this will need further investigation at some point but
-                // this sometimes seems to throw a nullreferenceexception
-                throw new StorageException(e);
-            }
         }
 
         public async Task<List<T>> GetAsync<T>(Expression<Func<T, bool>> pred, int limit) where T : new()
