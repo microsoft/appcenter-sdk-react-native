@@ -52,21 +52,15 @@ namespace Contoso.UWP.Puppet
             for (var i = 0; i < 100; ++i)
             {
                 var iter = i;
-                tasks.Add(
-                Task.Run(() =>
-                {
-                    Analytics.TrackEvent($"task number {iter}");
-                }));
                 tasks.Add(Task.Run(() =>
                 {
+                    Analytics.TrackEvent($"task number {iter}");
+
                     if (iter % 2 == 0)
                     {
                         Analytics.Enabled = true;
                     }
-                }));
-                tasks.Add(Task.Run(() =>
-                {
-                    if (iter % 40 == 0)
+                    if (iter == 2)
                     {
                         Analytics.Enabled = false;
                     }

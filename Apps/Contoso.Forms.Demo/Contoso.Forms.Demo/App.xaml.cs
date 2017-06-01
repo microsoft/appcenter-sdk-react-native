@@ -36,7 +36,7 @@ namespace Contoso.Forms.Demo
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
-            for (var i = 0; i < 100; ++i)
+            for (var i = 0; i < 1; ++i)
             {
                 var iter = i;
                 Task.Run(() =>
@@ -47,14 +47,14 @@ namespace Contoso.Forms.Demo
                 {
                     if (iter % 2 == 0)
                     {
-                        Analytics.Enabled = true;
+                       // Analytics.Enabled = true;
                     }
                 });
                 Task.Run(() =>
                 {
                     if (iter % 40 == 0)
                     {
-                        Analytics.Enabled = false;
+                      //  Analytics.Enabled = false;
                     }
                 });
             }
