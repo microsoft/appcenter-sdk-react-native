@@ -10,11 +10,6 @@ namespace Microsoft.Azure.Mobile.Crashes
 {
     public partial class Crashes : IMobileCenterService
     {
-        public void NotifyOnLaunched(LaunchActivatedEventArgs e)
-        {
-            // Nothing to do.
-        }
-
         public string ServiceName => "Crashes";
 
         public bool InstanceEnabled { get; set; }

@@ -30,8 +30,8 @@ namespace Contoso.UWP.Puppet
             Suspending += OnSuspending;
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));
-            //Push.PushNotificationReceived += PushNotificationReceivedHandler;
+            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+            Push.PushNotificationReceived += PushNotificationReceivedHandler;
         }
 
         /// <summary>
@@ -80,6 +80,7 @@ namespace Contoso.UWP.Puppet
             }
             // Ensure the current window is active
             Window.Current.Activate();
+            Push.CheckLaunchedFromNotification(e);
         }
 
         private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)

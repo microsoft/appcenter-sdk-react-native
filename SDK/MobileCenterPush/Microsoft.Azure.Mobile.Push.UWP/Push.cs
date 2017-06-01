@@ -20,12 +20,18 @@ namespace Microsoft.Azure.Mobile.Push
 
         protected override int TriggerCount => 1;
 
+
         /// <summary>
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
         /// </summary>
         /// <param name="e">OnLaunched method event args</param>
-        public void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        {
+            Instance.InstanceCheckLaunchedFromNotification(e);
+        }
+
+        private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             IDictionary<string, string> customData = null;
             using (_mutex.GetLock())
