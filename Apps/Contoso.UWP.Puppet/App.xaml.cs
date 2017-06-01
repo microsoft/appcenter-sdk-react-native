@@ -48,26 +48,7 @@ namespace Contoso.UWP.Puppet
             Push.CheckLaunchedFromNotification(e);
 
             Frame rootFrame = Window.Current.Content as Frame;
-            List<Task> tasks = new List<Task>();
-            for (var i = 0; i < 100; ++i)
-            {
-                var iter = i;
-                tasks.Add(Task.Run(() =>
-                {
-                    Analytics.TrackEvent($"task number {iter}");
 
-                    if (iter % 2 == 0)
-                    {
-                        Analytics.Enabled = true;
-                    }
-                    if (iter == 2)
-                    {
-                        Analytics.Enabled = false;
-                    }
-                }));
-            }
-
-            Task.WhenAll(tasks).ContinueWith(t => Analytics.Enabled = true);
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)

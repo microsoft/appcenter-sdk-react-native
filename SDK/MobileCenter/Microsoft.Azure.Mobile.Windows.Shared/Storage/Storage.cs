@@ -95,7 +95,6 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag,
                         $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
-
                     var identifiers = _pendingDbIdentifierGroups[GetFullIdentifier(channelName, batchId)];
                     _pendingDbIdentifierGroups.Remove(GetFullIdentifier(channelName, batchId));
                     var deletedIdsMessage = "The IDs for deleting log(s) is/ are:";
@@ -243,14 +242,12 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
-
             var task = new Task<string>(() =>
             {
                 logs?.Clear();
                 var retrievedLogs = new List<Log>();
                 MobileCenterLog.Debug(MobileCenterLog.LogTag,
                     $"Trying to get up to {limit} logs from storage for {channelName}");
-
                 var idPairs = new List<Tuple<Guid?, long>>();
                 var failedToDeserializeALog = false;
                 var retrievedEntries =
