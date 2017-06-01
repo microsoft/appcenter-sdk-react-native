@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            _queue.Add(new Task(async () => await InitializeDatabaseAsync()));
+            _queue.Add(new Task(() => InitializeDatabaseAsync().Wait()));
             _queueFlushTask = Task.Run(FlushQueue);
         }
 

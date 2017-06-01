@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -9,8 +14,8 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         private static bool _started;
         private static bool _suspended;
-        private bool _needsSubscribeToCoreWindowActivatedEvent = true;
 
+        // Singleton instance of ApplicationLifecycleHelper
         private static ApplicationLifecycleHelper _instance;
         public static ApplicationLifecycleHelper Instance
         {
@@ -31,60 +36,24 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public ApplicationLifecycleHelper()
         {
-            const string errorMessage = "Failed to fully initialize ApplicationLifecycleHelper at this point. This is not necessarily an error.";
+            // Subscribe to Resuming and Suspending events
             CoreApplication.Resuming += InvokeResuming;
             CoreApplication.Suspending += InvokeSuspended;
-            try
+
+            if (ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
             {
-                CoreApplication.MainView.CoreWindow.Activated += InvokeStarted;
-                if (CoreApplication.Views.Count > 0)
-                {
-                    _started = true;
-                }
+                CoreApplication.LeavingBackground += InvokeStarted;
             }
-            catch (COMException)
+            else
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, errorMessage);
-            }
-            catch (ArgumentException)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, errorMessage);
+                // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
+                // the start
+                _started = true;
             }
             Application.Current.UnhandledException += (sender, eventArgs) =>
             {
                 UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
             };
-        }
-
-        /// <summary>
-        /// Indicates that OnLaunched has occurred, which is useful when initialization begins at an earlier step in the lifecycle
-        /// </summary>
-        /// <remarks>Virtual for testing</remarks>
-        public virtual void NotifyOnLaunched()
-        {
-            if (_needsSubscribeToCoreWindowActivatedEvent)
-            {
-                // Don't log a message because it might be confusing
-                return;
-            }
-            try
-            {
-                CoreApplication.MainView.CoreWindow.Activated += InvokeStarted;
-                if (CoreApplication.Views.Count > 0)
-                {
-                    _started = true;
-                }
-                _needsSubscribeToCoreWindowActivatedEvent = false;
-            }
-            catch (COMException)
-            {
-                throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
-            }
-            catch (ArgumentException)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag,
-                    "Failed to complete initialization of ApplicationLifecycleHelper. Please ensure that you are calling MobileCenter.NotifyOnLaunched() from the OnLaunched() method.");
-            }
         }
 
         private void InvokeResuming(object sender, object e)
@@ -95,8 +64,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private void InvokeStarted(object sender, object e)
         {
-            // Should only have a single invocation of the started event, so unsubscribe here
-            CoreApplication.MainView.CoreWindow.Activated -= InvokeStarted;
+            CoreApplication.LeavingBackground -= InvokeStarted;
             _started = true;
             _suspended = false;
             ApplicationStarted?.Invoke(sender, EventArgs.Empty);

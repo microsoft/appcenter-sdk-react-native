@@ -1,11 +1,7 @@
 ﻿using System;
-using Windows.ApplicationModel.Activation;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.ApplicationModel.Core;
-using Moq;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Test.MockServices;
 
 namespace Microsoft.Azure.Mobile.Test.UWP
 {
@@ -46,24 +42,6 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             MobileCenter.SetCountryCode("INVALID");
             DeviceInformationHelper.InformationInvalidated -= OnInformationInvalidated;
             Assert.AreEqual(informationInvalidated, 1);
-        }
-
-        /// <summary>
-        /// Verify that all services are notified, even if one throws an exception
-        /// </summary>
-        [TestMethod]
-        public void NotifyOnLaunched()
-        {
-            var mockApplicationLifecycleHelper = new Mock<ApplicationLifecycleHelper>();
-            ApplicationLifecycleHelper.Instance = mockApplicationLifecycleHelper.Object;
-
-            // This test assumes that the order in which NotifyOnLaunched is invoked on services equals the
-            // order in which they were passed to the start method
-            MobileCenter.Start("appsecret", typeof(GoodMockService), typeof(ThrowsOnNotifyOnLaunchedMockService));
-            MobileCenter.NotifyOnLaunched(default(LaunchActivatedEventArgs));
-
-            mockApplicationLifecycleHelper.Verify(lifecycleHelper => lifecycleHelper.NotifyOnLaunched(), Times.Once());
-            GoodMockService.Instance.MockServiceInstance.Verify(service => service.NotifyOnLaunched(It.IsAny<LaunchActivatedEventArgs>()), Times.Once());
         }
     }
 }

@@ -72,7 +72,24 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-      
+        public static void RetrieveDisplayInformation()
+        {
+            lock (LockObject)
+            {
+                if (_didSetUpScreenSizeEvent)
+                {
+                    return;
+                }
+                DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
+                {
+                    RefreshDisplayCache();
+                };
+                _didSetUpScreenSizeEvent = true;
+                RefreshDisplayCache();
+                DisplayInformationEventSemaphore.Release();
+            }
+        }
+
         //NOTE: This method MUST be called from the UI thread
         public static void RefreshDisplayCache()
         {

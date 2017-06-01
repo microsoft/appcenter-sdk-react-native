@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
         /// </summary>
         /// <param name="e">OnLaunched method event args</param>
-        public override void NotifyOnLaunched(LaunchActivatedEventArgs e)
+        public void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             IDictionary<string, string> customData = null;
             using (_mutex.GetLock())

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -23,8 +25,13 @@ namespace Contoso.UWP.Puppet
         /// </summary>
         public App()
         {
+            CoreApplication.EnablePrelaunch(true);
             InitializeComponent();
             Suspending += OnSuspending;
+            MobileCenter.LogLevel = LogLevel.Verbose;
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));
+            //Push.PushNotificationReceived += PushNotificationReceivedHandler;
         }
 
         /// <summary>
@@ -40,13 +47,9 @@ namespace Contoso.UWP.Puppet
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            BackgroundExecutionManager.RemoveAccess();
             BackgroundExecutionManager.RequestAccessAsync().AsTask().Wait();
             BGTask.RegisterBackgroundTask("", "task", new SystemTrigger(SystemTriggerType.InternetAvailable, false), new SystemCondition(SystemConditionType.InternetAvailable));
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Push.PushNotificationReceived += PushNotificationReceivedHandler;
-            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
-            MobileCenter.NotifyOnLaunched(e);
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -68,18 +71,15 @@ namespace Contoso.UWP.Puppet
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if (rootFrame.Content == null)
             {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
 
         private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)
@@ -114,6 +114,7 @@ namespace Contoso.UWP.Puppet
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
+
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
         /// without knowing whether the application will be terminated or resumed with the contents
@@ -127,23 +128,15 @@ namespace Contoso.UWP.Puppet
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
-
-        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
-        {
-            System.Diagnostics.Debug.WriteLine("on background activated");
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Push.PushNotificationReceived += PushNotificationReceivedHandler;
-            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
-        }
     }
 
     public class BGTask : IBackgroundTask
     {
         public void Run(IBackgroundTaskInstance taskInstance)
         {
-            System.Diagnostics.Debug.WriteLine("run");
         }
+
+        // Adapted from Microsoft documentation
         public static BackgroundTaskRegistration RegisterBackgroundTask(string taskEntryPoint,
             string taskName,
             IBackgroundTrigger trigger,
@@ -155,33 +148,27 @@ namespace Contoso.UWP.Puppet
 
             foreach (var cur in BackgroundTaskRegistration.AllTasks)
             {
-
                 if (cur.Value.Name == taskName)
                 {
                     //
                     // The task is already registered.
                     //
-
-                    return (BackgroundTaskRegistration)(cur.Value);
+                    return (BackgroundTaskRegistration)cur.Value;
                 }
             }
 
             //
             // Register the background task.
             //
-
-            var builder = new BackgroundTaskBuilder();
-
-            builder.Name = taskName;
+            var builder = new BackgroundTaskBuilder {Name = taskName};
             builder.SetTrigger(trigger);
 
             if (condition != null)
             {
-
                 builder.AddCondition(condition);
             }
 
-            BackgroundTaskRegistration task = builder.Register();
+            var task = builder.Register();
 
             return task;
         }
