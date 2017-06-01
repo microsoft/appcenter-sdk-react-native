@@ -17,7 +17,6 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Gets or sets the log verbosity level.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         internal static LogLevel Level
         {
             get
