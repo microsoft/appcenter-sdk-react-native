@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Utils
     /// </summary>
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        private static string _cachedScreenSize;
+        private static string _cachedScreenSize = "unknown";
         private static bool _didSetUpScreenSizeEvent;
         private static readonly bool CanReadScreenSize;
         public static event EventHandler InformationInvalidated;
@@ -24,12 +24,14 @@ namespace Microsoft.Azure.Mobile.Utils
         private static string _country;
         private static readonly SemaphoreSlim DisplayInformationEventSemaphore = new SemaphoreSlim(0);
         private static readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
+
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
-            if (await DisplayInformationEventSemaphore.WaitAsync(DisplayInformationTimeout).ConfigureAwait(false))
+            if (CanReadScreenSize)
             {
-                DisplayInformationEventSemaphore.Release();
+                await DisplayInformationEventSemaphore.WaitAsync(DisplayInformationTimeout).ConfigureAwait(false);
             }
+
             return await base.GetDeviceInformationAsync().ConfigureAwait(false);
         }
 
@@ -70,7 +72,24 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-      
+        public static void RetrieveDisplayInformation()
+        {
+            lock (LockObject)
+            {
+                if (_didSetUpScreenSizeEvent)
+                {
+                    return;
+                }
+                DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
+                {
+                    RefreshDisplayCache();
+                };
+                _didSetUpScreenSizeEvent = true;
+                RefreshDisplayCache();
+                DisplayInformationEventSemaphore.Release();
+            }
+        }
+
         //NOTE: This method MUST be called from the UI thread
         public static void RefreshDisplayCache()
         {
@@ -99,7 +118,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private static string ScreenSizeFromDisplayInfo(DisplayInformation displayInfo)
         {
-            return CanReadScreenSize ? $"{displayInfo.ScreenWidthInRawPixels}x{displayInfo.ScreenHeightInRawPixels}" : null;
+            return CanReadScreenSize ? $"{displayInfo.ScreenWidthInRawPixels}x{displayInfo.ScreenHeightInRawPixels}" : "unknown";
         }
 
         protected override string GetSdkName()
