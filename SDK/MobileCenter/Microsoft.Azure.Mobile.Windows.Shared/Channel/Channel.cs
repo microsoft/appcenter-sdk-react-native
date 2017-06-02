@@ -218,16 +218,22 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             try
             {
+                IEnumerable<Log> unsentBatches = null;
                 using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
                     _enabled = false;
                     _batchScheduled = false;
                     _discardLogs = deleteLogs;
+                    if (deleteLogs && FailedToSendLog != null)
+                    {
+                        unsentBatches = _sendingBatches.Values.SelectMany(batch => batch);
+                    }
+                    _sendingBatches.Clear();
                     state = _mutex.InvalidateState();
                 }
-                if (deleteLogs && FailedToSendLog != null)
+                if (unsentBatches != null)
                 {
-                    foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
+                    foreach (var log in unsentBatches)
                     {
                         FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
                     }
@@ -317,7 +323,6 @@ namespace Microsoft.Azure.Mobile.Channel
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
                 }
-
                 await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
                 await CheckPendingLogsAsync(state).ConfigureAwait(false);
             }
@@ -361,7 +366,8 @@ namespace Microsoft.Azure.Mobile.Channel
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
             }
             List<Log> removedLogs;
-             {
+            using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
+            {
                 removedLogs = _sendingBatches[batchId];
                 _sendingBatches.Remove(batchId);
             }
