@@ -202,7 +202,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 return false;
             }
-                        var key = sessions.Keys.Where(num => num <= log.Toffset).DefaultIfEmpty(-1).Max();
+            var key = sessions.Keys.Where(num => num <= log.Toffset).DefaultIfEmpty(-1).Max();
             if (key == -1)
             {
                 return false;

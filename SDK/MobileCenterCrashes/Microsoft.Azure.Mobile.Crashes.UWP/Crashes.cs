@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel.Activation;
 using Microsoft.Azure.Mobile.Channel;
 #if REFERENCE
 #else

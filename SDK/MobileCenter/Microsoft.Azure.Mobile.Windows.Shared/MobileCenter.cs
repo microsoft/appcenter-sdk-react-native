@@ -24,7 +24,6 @@ namespace Microsoft.Azure.Mobile
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object MobileCenterLock = new object();
 
-        private IApplicationLifecycleHelper _applicationLifecycleHelper;
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
@@ -283,9 +282,7 @@ namespace Microsoft.Azure.Mobile
             // If a factory has been supplied, use it to construct the channel group - this is designed for testing.
             // Normal scenarios will use new ChannelGroup(string).
             _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret);
-            _applicationLifecycleHelper = new ApplicationLifecycleHelper();
-
-            _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
+            ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
             if (_logUrl != null)

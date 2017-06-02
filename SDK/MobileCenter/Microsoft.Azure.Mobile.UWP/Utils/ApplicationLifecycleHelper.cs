@@ -1,6 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -8,6 +14,16 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         private static bool _started;
         private static bool _suspended;
+
+        // Singleton instance of ApplicationLifecycleHelper
+        private static ApplicationLifecycleHelper _instance;
+        public static ApplicationLifecycleHelper Instance
+        {
+            get { return _instance ?? (_instance = new ApplicationLifecycleHelper()); }
+
+            // Setter for testing
+            internal set { _instance = value; }
+        }
 
         /// <summary>
         /// Indicates whether the application has shown UI
@@ -21,18 +37,19 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public ApplicationLifecycleHelper()
         {
-            Enabled = true;
-            try
+            // Subscribe to Resuming and Suspending events
+            CoreApplication.Resuming += InvokeResuming;
+            CoreApplication.Suspending += InvokeSuspended;
+
+            if (ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
             {
-                CoreApplication.MainView.CoreWindow.Activated += InvokeStarted;
-                if (CoreApplication.Views.Count > 0)
-                {
-                    _started = true;
-                }
+                CoreApplication.LeavingBackground += InvokeStarted;
             }
-            catch (System.Runtime.InteropServices.COMException)
+            else
             {
-                throw new MobileCenterException("Failed to initialize ApplicationLifecycleHelper; are you accessing Mobile Center from your App() constructor? Initialization should be done in OnLaunched()/OnStart().");
+                // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
+                // the start
+                _started = true;
             }
             Application.Current.UnhandledException += (sender, eventArgs) =>
             {
@@ -48,8 +65,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         private void InvokeStarted(object sender, object e)
         {
-            // Should only have a single invocation of the started event
-            CoreApplication.MainView.CoreWindow.Activated -= InvokeStarted;
+            CoreApplication.LeavingBackground -= InvokeStarted;
             _started = true;
             _suspended = false;
             ApplicationStarted?.Invoke(sender, EventArgs.Empty);
@@ -61,36 +77,9 @@ namespace Microsoft.Azure.Mobile.Utils
             ApplicationSuspended?.Invoke(sender, EventArgs.Empty);
         }
 
-        private bool _enabled;
-        public bool Enabled {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                if (value == _enabled)
-                {
-                    return;
-                }
-                if (value)
-                {
-                    CoreApplication.Resuming += InvokeResuming;
-                    CoreApplication.Suspending += InvokeSuspended;
-                }
-                else
-                {
-                    CoreApplication.Resuming -= InvokeResuming;
-                    CoreApplication.Suspending -= InvokeSuspended;
-                }
-                _enabled = value;
-            }
-        }
-
         public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
         public event EventHandler ApplicationStarted;
-
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }

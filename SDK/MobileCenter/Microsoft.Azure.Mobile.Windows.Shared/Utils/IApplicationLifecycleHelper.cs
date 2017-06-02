@@ -18,11 +18,6 @@ namespace Microsoft.Azure.Mobile.Utils
         bool IsSuspended { get; }
 
         /// <summary>
-        /// Gets or sets whether the Application lifecycle events fire (but unhandled exception event always fires)
-        /// </summary>
-        bool Enabled { get; set; }
-
-        /// <summary>
         /// Occurs when the application has just been suspended
         /// </summary>
         event EventHandler ApplicationSuspended;
