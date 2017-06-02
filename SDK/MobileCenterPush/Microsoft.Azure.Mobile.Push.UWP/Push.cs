@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Mobile.Push
         {
             try
             {
-                if (launchString != null)
+                if (!string.IsNullOrEmpty(launchString))
                 {
                     var launchJObject = JObject.Parse(launchString);
                     if (launchJObject?["mobile_center"] is JObject mobileCenterData)
