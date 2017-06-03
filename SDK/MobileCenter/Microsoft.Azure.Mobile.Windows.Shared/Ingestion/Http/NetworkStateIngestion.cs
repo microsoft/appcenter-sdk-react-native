@@ -6,61 +6,26 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
-    public class NetworkUnavailableException : IngestionException
-    {
-    }
-
     public class NetworkStateIngestion : IngestionDecorator
     {
         private readonly HashSet<IServiceCall> _calls = new HashSet<IServiceCall>();
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
-        private readonly INetworkStateAdapter _networkState;
+        private readonly INetworkStateAdapter _networkStateAdapter;
 
         public NetworkStateIngestion(IIngestion decoratedApi) :
             this(decoratedApi, new NetworkStateAdapter())
         {
         }
 
-        public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkState)
+        public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkStateAdapter)
             : base(decoratedApi)
         {
-            _networkState = networkState;
-            _networkState.NetworkAddressChanged += HandleNetworkAddressChanged;
-        }
-
-        private void HandleNetworkAddressChanged(object sender, EventArgs e)
-        {
-            _mutex.Wait();
-            try
-            {
-                if (_networkState.IsConnected)
-                {
-                    var callsCopy = new HashSet<IServiceCall>(_calls);
-                    foreach (var call in callsCopy)
-                    {
-                        _calls.Remove(call);
-                        call.ExecuteAsync();
-                    }
-                }
-                else
-                {
-                    foreach (var call in _calls)
-                    {
-                        PauseServiceCall(call);
-                    }
-                }
-            }
-            finally
-            {
-                _mutex.Release();
-            }
+            _networkStateAdapter = networkStateAdapter;
         }
 
         public override void Close()
         {
-            //TODO what if already closed?
             _mutex.Wait();
-            _networkState.NetworkAddressChanged -= HandleNetworkAddressChanged;
             foreach (var call in _calls)
             {
                 PauseServiceCall(call);
@@ -92,28 +57,58 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return new NetworkStateServiceCall(call, this);
         }
 
-        /// <exception cref="NetworkUnavailableException"/>
         public override async Task ExecuteCallAsync(IServiceCall call)
         {
             await _mutex.WaitAsync().ConfigureAwait(false);
             _calls.Add(call);
             _mutex.Release();
-
-            if (_networkState.IsConnected)
+            try
+            {
+                await ExecuteCallAsyncHelper(call);
+            }
+            finally
+            {
+                // Regardless of success, the call must be removed from the collection
+                RemoveCall(call);
+            }
+        }
+        private async Task ExecuteCallAsyncHelper(IServiceCall call)
+        {
+            if (_networkStateAdapter.IsConnected)
             {
                 try
                 {
                     await base.ExecuteCallAsync(call).ConfigureAwait(false);
                 }
-                finally
+                // Recursion case in case network goes out during the base ExecuteCallAsync call
+                catch (NetworkIngestionException)
                 {
-                    RemoveCall(call);
+                    // Since we caught a NetworkIngestionException, just wait for network and then retry
+                    await PauseExecutionUntilNetworkBecomesAvailable().ConfigureAwait(false);
+                    await ExecuteCallAsyncHelper(call).ConfigureAwait(false);
+                }
+                return;
+            }
+
+            // Recursion case
+            await PauseExecutionUntilNetworkBecomesAvailable().ConfigureAwait(false);
+            await ExecuteCallAsyncHelper(call).ConfigureAwait(false);
+        }
+
+        private async Task PauseExecutionUntilNetworkBecomesAvailable()
+        {
+            // No connection; wait until network returns to continue execution
+            var networkSemaphore = new SemaphoreSlim(0);
+            void NetworkStateChangeHandler(object sender, EventArgs e)
+            {
+                if (_networkStateAdapter.IsConnected)
+                {
+                    networkSemaphore.Release();
                 }
             }
-            else
-            {
-                throw new NetworkUnavailableException();
-            }
+            _networkStateAdapter.NetworkStatusChanged += NetworkStateChangeHandler;
+            await networkSemaphore.WaitAsync().ConfigureAwait(false);
+            _networkStateAdapter.NetworkStatusChanged -= NetworkStateChangeHandler;
         }
 
         private void RemoveCall(IServiceCall call)

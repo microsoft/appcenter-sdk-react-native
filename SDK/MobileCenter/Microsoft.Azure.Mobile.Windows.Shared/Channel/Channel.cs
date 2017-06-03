@@ -222,30 +222,36 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             try
             {
+                IEnumerable<Log> unsentLogs = null;
                 using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
                     _enabled = false;
                     _batchScheduled = false;
                     _discardLogs = deleteLogs;
+                    if (deleteLogs)
+                    {
+                        unsentLogs = _sendingBatches.Values.SelectMany(batch => batch);
+                        _sendingBatches.Clear();
+                    }
                     state = _mutex.InvalidateState();
                 }
-                if (deleteLogs && FailedToSendLog != null)
+                if (unsentLogs  != null)
                 {
-                    foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
+                    foreach (var log in unsentLogs)
                     {
                         FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
                     }
                 }
-                try
-                {
-                    _ingestion.Close();
-                }
-                catch (IngestionException e)
-                {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
-                }
                 if (deleteLogs)
                 {
+                    try
+                    {
+                        _ingestion.Close();
+                    }
+                    catch (IngestionException e)
+                    {
+                        MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
+                    }
                     using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                     {
                         _pendingLogCount = 0;
@@ -357,6 +363,11 @@ namespace Microsoft.Azure.Mobile.Channel
                     return;
                 }
             }
+            await HandleSendingSuccessAsync(state, batchId).ConfigureAwait(false);
+        }
+
+        private async Task HandleSendingSuccessAsync(State state, string batchId)
+        {
             if (!_mutex.IsCurrent(state))
             {
                 return;
@@ -372,7 +383,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 deleteException = e;
             }
             List<Log> removedLogs;
-             {
+            {
                 removedLogs = _sendingBatches[batchId];
                 _sendingBatches.Remove(batchId);
             }
@@ -392,7 +403,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private async Task HandleSendingFailureAsync(State state, string batchId, IngestionException e)
         {
             var isRecoverable = e?.IsRecoverable ?? false;
-            MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed", e);
+            MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed: {e?.Message}");
             List<Log> removedLogs;
             using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
             {

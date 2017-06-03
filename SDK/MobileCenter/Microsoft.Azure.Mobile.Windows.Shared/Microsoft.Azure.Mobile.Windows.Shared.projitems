@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
