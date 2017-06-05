@@ -1,6 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Utils;
-
-namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.Azure.Mobile
 {
     public partial class MobileCenter
     {
