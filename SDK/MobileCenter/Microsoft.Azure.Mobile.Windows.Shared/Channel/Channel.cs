@@ -137,10 +137,12 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
             }
             log.Device = log.Device ?? _device;
-            if (log.Toffset == 0L)
-            {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
-            }
+
+            // TODO Change to timestamp
+            //if (log.Toffset == 0L)
+            //{
+            //    log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
+            //}
         }
 
         private async Task PersistLogAsync(Log log, State state)

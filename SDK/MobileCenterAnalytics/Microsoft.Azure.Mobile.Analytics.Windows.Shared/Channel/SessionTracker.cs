@@ -198,17 +198,19 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         internal static bool SetExistingSessionId(Log log, IDictionary<long, Guid> sessions)
         {
-            if (log.Toffset <= 0)
-            {
-                return false;
-            }
-            var key = sessions.Keys.Where(num => num <= log.Toffset).DefaultIfEmpty(-1).Max();
-            if (key == -1)
-            {
-                return false;
-            }
-            log.Sid = sessions[key];
-            return true;
+            return false;
+            // TODO Change to timestamp
+            //if (log.Toffset <= 0)
+            //{
+            //    return false;
+            //}
+            //var key = sessions.Keys.Where(num => num <= log.Toffset).DefaultIfEmpty(-1).Max();
+            //if (key == -1)
+            //{
+            //    return false;
+            //}
+            //log.Sid = sessions[key];
+            //return true;
         }
     }
 }

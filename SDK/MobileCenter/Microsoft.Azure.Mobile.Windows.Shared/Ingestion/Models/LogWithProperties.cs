@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models
 {
@@ -15,9 +16,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the LogWithProperties class.
         /// </summary>
-        /// <param name="toffset">Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
+        /// <param name="timestamp">Log timestamp.</param>
+        /// <param name="device">Description of the device emitting the log.</param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -26,11 +26,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        /// <param name="properties">Additional key/value pair parameters.
-        /// </param>
-        ///<param name="device">Description of the device emitting the log</param>
-        protected LogWithProperties(long toffset, Device device, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(toffset, device, sid)
+        /// <param name="properties">Additional key/value pair parameters.</param>
+        protected LogWithProperties(DateTime? timestamp, Device device, Guid? sid = default(Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
+            : base(timestamp, device, sid)
         {
             Properties = properties;
         }

@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
@@ -136,7 +135,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             // Save times
             foreach (var log in logContainer.Logs)
             {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
+                // TODO Change to timestamp
+                //log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
             }
 
             // Serialize request

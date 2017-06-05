@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models
@@ -22,10 +23,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the Log class
         /// </summary>
-        /// <param name="toffset">>Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
-        /// <param name="device">Device and SDK information</param>
+        /// <param name="timestamp">Log timestamp.</param>
+        /// <param name="device">Description of the device emitting the log.</param>
         /// <param name="services">Names of services which started with SDK</param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
@@ -34,8 +33,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// feature).
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.</param>
-        public StartServiceLog(long toffset, Device device, IEnumerable<string> services, System.Guid? sid = default(System.Guid?))
-            : base(toffset, device, sid)
+        public StartServiceLog(DateTime? timestamp, Device device, IEnumerable<string> services, Guid? sid = default(Guid?))
+            : base(timestamp, device, sid)
         {
             Services = new List<string>(services);
         }
