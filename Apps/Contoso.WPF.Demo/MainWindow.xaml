@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Contoso.WPF.Demo"
         mc:Ignorable="d"
-        Title="Mobile Center WPF Puppet App" Height="257.794" Width="335">
+        Title="Mobile Center WPF Demo App" Height="257.794" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Mobile Center">

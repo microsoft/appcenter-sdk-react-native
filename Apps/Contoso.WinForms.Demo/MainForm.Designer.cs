@@ -379,7 +379,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Mobile Center Puppet App";
+            this.Text = "Mobile Center Demo App";
             this.tabs.ResumeLayout(false);
             this.mobileCenter.ResumeLayout(false);
             this.logBox.ResumeLayout(false);
