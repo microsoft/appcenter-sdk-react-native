@@ -132,13 +132,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         {
             var logContainer = new LogContainer(logs);
 
-            // Save times
-            foreach (var log in logContainer.Logs)
-            {
-                // TODO Change to timestamp
-                //log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
-            }
-
             // Serialize request
             var requestContent = LogSerializer.Serialize(logContainer);
             return requestContent;
