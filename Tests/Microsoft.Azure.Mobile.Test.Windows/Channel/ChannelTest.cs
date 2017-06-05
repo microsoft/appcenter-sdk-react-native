@@ -223,7 +223,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void DisposeChannelTest()
         {
             _channel.Dispose();
-            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _channel.SetEnabledAsync(true));
+            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _channel.SetEnabledAsync(true)).RunNotAsync();
         }
 
         /// <summary>
