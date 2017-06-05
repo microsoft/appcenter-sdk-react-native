@@ -219,7 +219,7 @@ namespace Microsoft.Azure.Mobile
                 }
 
                 _channelGroup?.SetEnabled(value);
-                _applicationSettings[EnabledKey] = value;
+                _applicationSettings.SetValue(EnabledKey, value);
 
                 foreach (var service in _services)
                 {

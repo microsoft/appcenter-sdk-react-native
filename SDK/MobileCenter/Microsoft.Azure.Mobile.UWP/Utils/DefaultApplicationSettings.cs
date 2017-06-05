@@ -4,19 +4,7 @@ namespace Microsoft.Azure.Mobile.Utils
 {
     public class DefaultApplicationSettings : IApplicationSettings
     {
-        public object this[string key]
-        {
-            get
-            {
-                return ApplicationData.Current.LocalSettings.Values[key];
-            }
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values[key] = value;
-            }
-        }
-
-        public T GetValue<T>(string key, T defaultValue)
+        public T GetValue<T>(string key, T defaultValue = default(T))
         {
             object result;
             var found = ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out result);
@@ -24,8 +12,18 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 return (T)result;
             }
-            this[key] = defaultValue;
+            SetValue(key, defaultValue);
             return defaultValue;
+        }
+
+        public void SetValue(string key, object value)
+        {
+            ApplicationData.Current.LocalSettings.Values[key] = value;
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return ApplicationData.Current.LocalSettings.Values.ContainsKey(key);
         }
 
         public void Remove(string key)

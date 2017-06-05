@@ -10,13 +10,7 @@ namespace Microsoft.Azure.Mobile.Utils
     public class DefaultApplicationSettings : IApplicationSettings
     {
         private static readonly Dictionary<object, object> Settings = new Dictionary<object, object>();
-
-        public object this[string key]
-        {
-            get { return Settings[key]; }
-            set { Settings[key] = value; }
-        }
-
+        
         public T GetValue<T>(string key, T defaultValue)
         {
             object result;
@@ -25,8 +19,17 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 return (T) result;
             }
-            this[key] = defaultValue;
+            SetValue(key, defaultValue);
             return defaultValue;
+        }
+        public void SetValue(string key, object value)
+        {
+            Settings[key] = value;
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return Settings.ContainsKey(key);
         }
 
         public void Remove(string key)
