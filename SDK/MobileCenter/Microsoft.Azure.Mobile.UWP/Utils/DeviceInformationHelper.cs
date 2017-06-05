@@ -7,7 +7,6 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 using Windows.UI.Xaml;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
