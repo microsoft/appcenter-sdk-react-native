@@ -1,16 +1,17 @@
-﻿using Moq;
+﻿using System;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
-    using Device = Microsoft.Azure.Mobile.Ingestion.Models.Device;
+    using Device = Mobile.Ingestion.Models.Device;
 
     [TestClass]
     public class PageLogTest
     {
-        private const long TOffset = 0;
+        private static readonly DateTime? Timestamp = null;
         private const string Name = "Name";
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
 
             PageLog emptyLog = new PageLog();
-            PageLog log = new PageLog(TOffset, mockDevice.Object, Name);
+            PageLog log = new PageLog(Timestamp, mockDevice.Object, Name);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
@@ -39,7 +40,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             const string NullName = null;
             var mockDevice = new Mock<Device>();
 
-            PageLog log = new PageLog(TOffset, mockDevice.Object, NullName);
+            PageLog log = new PageLog(Timestamp, mockDevice.Object, NullName);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
     }
