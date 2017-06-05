@@ -1,15 +1,32 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using System;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Push.Ingestion.Models
 {
+    using Device = Mobile.Ingestion.Models.Device;
+
     [JsonObject(JsonIdentifier)]
     public class PushInstallationLog : Log
     {
         internal const string JsonIdentifier = "push_installation";
 
-        public PushInstallationLog(long toffset, Mobile.Ingestion.Models.Device device, string pushToken, System.Guid? sid = default(System.Guid?))
-            : base(toffset, device, sid)
+        /// <summary>
+        /// Initializes a new instance of the PushInstallationLog class.
+        /// </summary>
+        /// <param name="timestamp">Log timestamp.</param>
+        /// <param name="device">Description of the device emitting the log.</param>
+        /// <param name="pushToken">The Windows Push Notification handle for this installation.</param>
+        /// <param name="sid">When tracking an analytics session, logs can be
+        /// part of the session by specifying this identifier.
+        /// This attribute is optional, a missing value means the session
+        /// tracking is disabled (like when using only error reporting
+        /// feature).
+        /// Concrete types like StartSessionLog or PageLog are always part of a
+        /// session and always include this identifier.
+        /// </param>
+        public PushInstallationLog(DateTime? timestamp, Device device, string pushToken, Guid? sid = default(Guid?))
+            : base(timestamp, device, sid)
         {
             PushToken = pushToken;
         }

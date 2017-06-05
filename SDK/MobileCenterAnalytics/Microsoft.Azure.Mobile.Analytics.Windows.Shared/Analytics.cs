@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 if (ValidateName(name, type))
                 {
                     properties = ValidateProperties(properties, name, type);
-                    var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
+                    var log = new EventLog(null, null, Guid.NewGuid(), name, null, properties);
                     Channel.EnqueueAsync(log);
                 }
             }
