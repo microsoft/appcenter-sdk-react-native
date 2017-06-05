@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetAppNamespace()
         {
-             return Assembly.GetEntryAssembly().EntryPoint.DeclaringType.Namespace;
+             return Assembly.GetEntryAssembly()?.EntryPoint.DeclaringType?.Namespace;
         }
 
         protected override string GetDeviceOemName()
