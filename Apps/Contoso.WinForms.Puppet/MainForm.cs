@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
 
-namespace Contoso.WinForms.Puppet
+namespace Contoso.WinForms.Demo
 {
     public partial class MainForm : Form
     {

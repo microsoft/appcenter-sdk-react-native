@@ -4,7 +4,7 @@ using Microsoft.Azure.Mobile.Crashes;
 using System;
 using System.Windows.Forms;
 
-namespace Contoso.WinForms.Puppet
+namespace Contoso.WinForms.Demo
 {
     static class Program
     {

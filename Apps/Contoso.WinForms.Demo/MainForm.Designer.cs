@@ -1,4 +1,4 @@
-﻿namespace Contoso.WinForms.Puppet
+﻿namespace Contoso.WinForms.Demo
 {
     partial class MainForm
     {
