@@ -324,8 +324,15 @@ namespace Microsoft.Azure.Mobile.Channel
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
                 }
-                await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
-                await CheckPendingLogsAsync(state).ConfigureAwait(false);
+                try
+                {
+                    await TriggerIngestionAsync(state, logs, batchId).ConfigureAwait(false);
+                    await CheckPendingLogsAsync(state).ConfigureAwait(false);
+                }
+                catch (StorageException)
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Something went wrong sending logs to ingestion");
+                }
             }
         }
 
@@ -365,18 +372,22 @@ namespace Microsoft.Azure.Mobile.Channel
             catch (StorageException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+                throw;
             }
-            List<Log> removedLogs;
-            using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
+            finally
             {
-                removedLogs = _sendingBatches[batchId];
-                _sendingBatches.Remove(batchId);
-            }
-            if (SentLog != null)
-            {
-                foreach (var log in removedLogs)
+                List<Log> removedLogs;
+                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
-                    SentLog?.Invoke(this, new SentLogEventArgs(log));
+                    removedLogs = _sendingBatches[batchId];
+                    _sendingBatches.Remove(batchId);
+                }
+                if (SentLog != null)
+                {
+                    foreach (var log in removedLogs)
+                    {
+                        SentLog?.Invoke(this, new SentLogEventArgs(log));
+                    }
                 }
             }
         }
