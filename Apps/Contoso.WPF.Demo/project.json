@@ -1,0 +1,12 @@
+﻿{
+  "dependencies": {
+    "Microsoft.Azure.Mobile.Analytics": "0.12.1-SNAPSHOT",
+    "Microsoft.Azure.Mobile.Crashes": "0.12.1-SNAPSHOT"
+  },
+  "frameworks": {
+    "net452": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}
