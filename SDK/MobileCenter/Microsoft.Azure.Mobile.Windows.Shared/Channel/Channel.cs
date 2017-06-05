@@ -137,10 +137,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
             }
             log.Device = log.Device ?? _device;
-<<<<<<< HEAD
-=======
             log.Timestamp = log.Timestamp ?? DateTime.Now;
->>>>>>> develop
         }
 
         private async Task PersistLogAsync(Log log, State state)
