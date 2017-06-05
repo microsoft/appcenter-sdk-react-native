@@ -74,7 +74,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public void Dispose()
         {
-            _httpClient?.Dispose();
+            lock (_lockObject)
+            {
+                _httpClient?.Dispose();
+                _httpClient = null;
+            }
         }
     }
 }
