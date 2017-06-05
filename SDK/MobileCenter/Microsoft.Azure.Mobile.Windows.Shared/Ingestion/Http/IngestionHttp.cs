@@ -77,11 +77,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             //No-op
         }
 
-        public void Open()
-        {
-            
-        }
-
         public void SetLogUrl(string logUrl)
         {
             _baseLogUrl = logUrl;
