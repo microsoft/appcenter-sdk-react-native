@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Push;
 using Windows.ApplicationModel;

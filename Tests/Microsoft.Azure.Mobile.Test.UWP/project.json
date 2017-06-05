@@ -2,8 +2,8 @@
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Moq": "4.7.12",
-    "MSTest.TestAdapter": "1.1.17",
-    "MSTest.TestFramework": "1.1.17"
+    "MSTest.TestAdapter": "1.1.18",
+    "MSTest.TestFramework": "1.1.18"
   },
   "frameworks": {
     "uap10.0": {}

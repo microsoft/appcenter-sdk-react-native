@@ -1,17 +1,17 @@
-﻿using Moq;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
-    
-    using Device = Microsoft.Azure.Mobile.Ingestion.Models.Device;
+    using Device = Mobile.Ingestion.Models.Device;
 
     [TestClass]
     public class LogWithPopertiesTest
     {
-        private const long TOffset = 0;
+        private static readonly DateTime? Timestamp = null;
 
         /// <summary>
         /// Verify that instance is constructed properly.
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
 
             LogWithProperties emptyLog = new TestLogWithProperties();
-            LogWithProperties log = new TestLogWithProperties(TOffset, mockDevice.Object);
+            LogWithProperties log = new TestLogWithProperties(Timestamp, mockDevice.Object);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
     class TestLogWithProperties : LogWithProperties
     {
         public TestLogWithProperties() { }
-        public TestLogWithProperties(long toffset, Device device, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(toffset, device, sid, properties) { }
+        public TestLogWithProperties(DateTime? timestamp, Device device, Guid? sid = default(Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
+            : base(timestamp, device, sid, properties) { }
     }
 }

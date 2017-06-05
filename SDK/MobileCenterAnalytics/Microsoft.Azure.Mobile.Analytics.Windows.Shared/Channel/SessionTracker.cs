@@ -1,10 +1,10 @@
-﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using System.Linq;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
+using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Analytics.Channel
 {
@@ -50,11 +50,17 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _channel = channel;
             channelGroup.EnqueuingLog += HandleEnqueuingLog;
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
-            if (sessionsString == null) return;
+            if (sessionsString == null)
+            {
+                return;
+            }
             _sessions = SessionsFromString(sessionsString);
             // Re-write sessions in storage in case of any invalid strings
             _applicationSettings[StorageKey] = SessionsAsString();
-            if (_sessions.Count == 0) return;
+            if (_sessions.Count == 0)
+            {
+                return;
+            }
             var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
@@ -125,7 +131,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 return;
             }
-
             if (_sessions.Count == StorageMaxSessions)
             {
                 _sessions.Remove(_sessions.Keys.Min());
@@ -142,7 +147,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             var sessionsString = "";
             foreach (var pair in _sessions)
             {
-                if (sessionsString != "") sessionsString += StorageEntrySeparator;
+                if (sessionsString != "")
+                {
+                    sessionsString += StorageEntrySeparator;
+                }
                 sessionsString += pair.Key.ToString() + StorageKeyValueSeparator + pair.Value;
             }
             return sessionsString;
@@ -151,7 +159,11 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         internal static Dictionary<long, Guid> SessionsFromString(string sessionsString)
         {
             var sessionsDict = new Dictionary<long, Guid>();
-            if (sessionsString == null) return sessionsDict;
+            if (sessionsString == null)
+            {
+                return sessionsDict;
+            }
+
             var sessions = sessionsString.Split(StorageEntrySeparator);
 
             foreach (var sessionString in sessions)
@@ -198,11 +210,12 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
 
         internal static bool SetExistingSessionId(Log log, IDictionary<long, Guid> sessions)
         {
-            if (log.Toffset <= 0)
+            if (log.Timestamp == null)
             {
                 return false;
             }
-            var key = sessions.Keys.Where(num => num <= log.Toffset).DefaultIfEmpty(-1).Max();
+            var logTime = log.Timestamp.Value.Ticks / TimeSpan.TicksPerMillisecond;
+            var key = sessions.Keys.Where(num => num <= logTime).DefaultIfEmpty(-1).Max();
             if (key == -1)
             {
                 return false;

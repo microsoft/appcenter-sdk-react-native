@@ -95,7 +95,6 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag,
                         $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
-
                     var identifiers = _pendingDbIdentifierGroups[GetFullIdentifier(channelName, batchId)];
                     _pendingDbIdentifierGroups.Remove(GetFullIdentifier(channelName, batchId));
                     var deletedIdsMessage = "The IDs for deleting log(s) is/ are:";
@@ -142,25 +141,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag,
                         $"Deleting all logs from storage for channel '{channelName}'");
-                    var fullIdentifiers = new List<string>();
-
-                    foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
-                    {
-                        if (!ChannelMatchesIdentifier(channelName, fullIdentifier))
-                        {
-                            continue;
-                        }
-                        foreach (var id in _pendingDbIdentifierGroups[fullIdentifier])
-                        {
-                            _pendingDbIdentifiers.Remove(id);
-                        }
-                        fullIdentifiers.Add(fullIdentifier);
-                    }
-                    foreach (var fullIdentifier in fullIdentifiers)
-                    {
-                        _pendingDbIdentifierGroups.Remove(fullIdentifier);
-                    }
-
+                    ClearPendingLogState(channelName);
                     _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
                         .Wait();
                 }
@@ -214,8 +195,8 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             var task = new Task(() =>
             {
-                _pendingDbIdentifierGroups.Clear();
-                _pendingDbIdentifiers.Clear();
+                ClearPendingLogState(channelName);
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Clear pending log states for channel {channelName}");
             });
             try
             {
@@ -229,6 +210,28 @@ namespace Microsoft.Azure.Mobile.Storage
             await task.ConfigureAwait(false);
         }
 
+        private void ClearPendingLogState(string channelName)
+        {
+            var fullIdentifiers = new List<string>();
+
+            foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
+            {
+                if (!ChannelMatchesIdentifier(channelName, fullIdentifier))
+                {
+                    continue;
+                }
+                foreach (var id in _pendingDbIdentifierGroups[fullIdentifier])
+                {
+                    _pendingDbIdentifiers.Remove(id);
+                }
+                fullIdentifiers.Add(fullIdentifier);
+            }
+            foreach (var fullIdentifier in fullIdentifiers)
+            {
+                _pendingDbIdentifierGroups.Remove(fullIdentifier);
+            }
+        }
+
         /// <summary>
         /// Asynchronously retrieves logs from storage and flags them to avoid duplicate retrievals on subsequent calls
         /// </summary>
@@ -239,14 +242,12 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
-
             var task = new Task<string>(() =>
             {
                 logs?.Clear();
                 var retrievedLogs = new List<Log>();
                 MobileCenterLog.Debug(MobileCenterLog.LogTag,
                     $"Trying to get up to {limit} logs from storage for {channelName}");
-
                 var idPairs = new List<Tuple<Guid?, long>>();
                 var failedToDeserializeALog = false;
                 var retrievedEntries =

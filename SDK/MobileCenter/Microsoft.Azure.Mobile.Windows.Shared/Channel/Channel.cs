@@ -120,9 +120,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 await PrepareLogAsync(log, state).ConfigureAwait(false);
                 await PersistLogAsync(log, state).ConfigureAwait(false);
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled");
             }
         }
 
@@ -137,10 +137,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
             }
             log.Device = log.Device ?? _device;
-            if (log.Toffset == 0L)
-            {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
-            }
+            log.Timestamp = log.Timestamp ?? DateTime.Now;
         }
 
         private async Task PersistLogAsync(Log log, State state)
@@ -169,9 +166,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled");
             }
         }
 
@@ -194,9 +191,9 @@ namespace Microsoft.Azure.Mobile.Channel
                     _pendingLogCount = 0;
                 }
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled");
             }
         }
 
@@ -211,9 +208,9 @@ namespace Microsoft.Azure.Mobile.Channel
                     state = _mutex.InvalidateState();
                 }
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Resume operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Resume operation has been cancelled");
             }
             await CheckPendingLogsAsync(state).ConfigureAwait(false);
         }
@@ -260,9 +257,9 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 await _storage.ClearPendingLogStateAsync(Name).ConfigureAwait(false);
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled", e);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled");
             }
         }
 
@@ -334,6 +331,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 catch (StorageException)
                 {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Something went wrong sending logs to ingestion");
                 }
             }
         }
@@ -372,7 +370,6 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 return;
             }
-            StorageException deleteException = null;
             try
             {
                 await _storage.DeleteLogsAsync(Name, batchId).ConfigureAwait(false);
@@ -380,23 +377,22 @@ namespace Microsoft.Azure.Mobile.Channel
             catch (StorageException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
-                deleteException = e;
             }
-            List<Log> removedLogs;
+            finally
             {
-                removedLogs = _sendingBatches[batchId];
-                _sendingBatches.Remove(batchId);
-            }
-            if (SentLog != null)
-            {
-                foreach (var log in removedLogs)
+                List<Log> removedLogs;
+                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
-                    SentLog?.Invoke(this, new SentLogEventArgs(log));
+                    removedLogs = _sendingBatches[batchId];
+                    _sendingBatches.Remove(batchId);
                 }
-            }
-            if (deleteException != null)
-            {
-                throw deleteException;
+                if (SentLog != null)
+                {
+                    foreach (var log in removedLogs)
+                    {
+                        SentLog?.Invoke(this, new SentLogEventArgs(log));
+                    }
+                }
             }
         }
 
