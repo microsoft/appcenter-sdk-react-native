@@ -1,8 +1,9 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using System.IO;
+using System.Reflection;
+using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Windows.Storage;
 
-namespace Microsoft.Azure.Mobile.Test.UWP.Utils
+namespace Microsoft.Azure.Mobile.Test.WindowsClassic.Utils
 {
     [TestClass]
     public class ApplicationSettingsTest
@@ -12,7 +13,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         [TestInitialize]
         public void InitializeMobileCenterTest()
         {
-            ApplicationData.Current.LocalSettings.Values.Clear();
+            var location = Assembly.GetExecutingAssembly().Location;
+            var path = Path.Combine(Path.GetDirectoryName(location), "MobileCenter.config");
+            File.Delete(path);
             settings = new ApplicationSettings();
         }
 

@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Mobile
                         return;
                     }
                     Channel?.SetEnabled(value);
-                    _applicationSettings[EnabledPreferenceKey] = value;
+                    _applicationSettings.SetValue(EnabledPreferenceKey, value);
                     MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
                 }
             }
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Mobile
                 ChannelGroup = channelGroup;
                 Channel = channelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
                 var enabled = MobileCenter.Enabled && InstanceEnabled;
-                _applicationSettings[EnabledPreferenceKey] = enabled;
+                _applicationSettings.SetValue(EnabledPreferenceKey, enabled);
                 Channel.SetEnabled(enabled);
             }
         }

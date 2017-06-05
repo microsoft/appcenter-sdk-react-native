@@ -16,26 +16,35 @@ namespace Microsoft.Azure.Mobile.Utils
         {
             current = ReadAll();
         }
-
-        public object this[string key]
+        
+        public T GetValue<T>(string key, T defaultValue = default(T))
         {
-            get
+            lock (configLock)
             {
-                lock (configLock)
+                if (current.ContainsKey(key))
                 {
-                    string value = null;
-                    current.TryGetValue(key, out value);
-                    return value;
+                    return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
                 }
             }
-            set
+            SetValue(key, defaultValue);
+            return defaultValue;
+        }
+
+        public void SetValue(string key, object value)
+        {
+            var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
+            lock (configLock)
             {
-                var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
-                lock (configLock)
-                {
-                    current[key] = invariant;
-                    SaveValue(key, invariant);
-                }
+                current[key] = invariant;
+                SaveValue(key, invariant);
+            }
+        }
+
+        public bool ContainsKey(string key)
+        {
+            lock (configLock)
+            {
+                return current.ContainsKey(key);
             }
         }
 
@@ -48,25 +57,6 @@ namespace Microsoft.Azure.Mobile.Utils
                 config.AppSettings.Settings.Remove(key);
                 config.Save();
             }
-        }
-
-        public T GetValue<T>(string key, T defaultValue)
-        {
-            lock (configLock)
-            {
-                if (current.ContainsKey(key))
-                {
-                    return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
-                }
-            }
-            this[key] = defaultValue;
-            return defaultValue;
-        }
-
-        private IDictionary<string, string> ReadAll()
-        {
-            var config = OpenConfiguration();
-           return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
         private void SaveValue(string key, string value)
@@ -85,6 +75,12 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
                 config.Save();
             }
+        }
+
+        private static IDictionary<string, string> ReadAll()
+        {
+            var config = OpenConfiguration();
+            return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
         private static Configuration OpenConfiguration()
