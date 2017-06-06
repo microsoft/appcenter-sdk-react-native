@@ -1,11 +1,11 @@
-﻿using Microsoft.Azure.Mobile.Push.Ingestion.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.Data.Xml.Dom;
 using Windows.Networking.PushNotifications;
@@ -19,7 +19,6 @@ namespace Microsoft.Azure.Mobile.Push
         private PushNotificationChannel _channel;
 
         protected override int TriggerCount => 1;
-
 
         /// <summary>
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
@@ -134,7 +133,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        private static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
+        internal static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
         {
             // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key)
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
@@ -153,7 +152,7 @@ namespace Microsoft.Azure.Mobile.Push
             };
         }
 
-        private static Dictionary<string, string> ParseLaunchString(string launchString)
+        internal static Dictionary<string, string> ParseLaunchString(string launchString)
         {
             try
             {
