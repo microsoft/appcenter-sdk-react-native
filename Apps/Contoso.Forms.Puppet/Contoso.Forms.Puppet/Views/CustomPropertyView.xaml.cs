@@ -52,7 +52,7 @@ namespace Contoso.Forms.Puppet
         {
             foreach (PropertyTypes propertyType in Enum.GetValues(typeof(PropertyTypes)))
             {
-                PropertyType.Items.Add(propertyType.ToString("g"));
+                PropertyType.Items.Add(propertyType.ToString());
             }
             PropertyType.SelectedIndex = 0;
         }
@@ -87,7 +87,9 @@ namespace Contoso.Forms.Puppet
         private void NumberEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(e.NewTextValue))
+            {
                 return;
+            }
             long newValue;
             if (!long.TryParse(e.NewTextValue, out newValue))
             {

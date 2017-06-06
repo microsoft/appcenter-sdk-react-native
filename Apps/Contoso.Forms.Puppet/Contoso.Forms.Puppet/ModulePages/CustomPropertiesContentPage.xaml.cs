@@ -32,7 +32,5 @@ namespace Contoso.Forms.Puppet
             }
             MobileCenter.SetCustomProperties(customProperties);
         }
-
-
     }
 }
