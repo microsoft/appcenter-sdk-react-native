@@ -7,6 +7,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
     [TestClass]
     public class UWPPushTest
     {
+        /// <summary>
+        /// Verify ParseLaunchString works when launch string is null
+        /// </summary>
         [TestMethod]
         public void ParseLaunchStringWhenStringIsNull()
         {
@@ -14,6 +17,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             Assert.IsNull(result);
         }
 
+        /// <summary>
+        /// Verify ParseLaunchString works when launch string is empty
+        /// </summary>
         [TestMethod]
         public void ParseLaunchStringWhenStringIsEmpty()
         {
@@ -21,6 +27,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             Assert.IsNull(result);
         }
 
+        /// <summary>
+        /// Verify ParseLaunchString works when launch string is not valid Json
+        /// </summary>
         [TestMethod]
         public void ParseLaunchStringWhenStringContainsInvalidJson()
         {
@@ -28,6 +37,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             Assert.IsNull(actualResult);
         }
 
+        /// <summary>
+        /// Verify ParseLaunchString works when launch string doesn't contain "mobile_center"
+        /// </summary>
         [TestMethod]
         public void ParseLaunchStringWhenStringDoesNotContainMobileCenter()
         {
@@ -35,6 +47,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             Assert.IsNull(actualResult);
         }
 
+        /// <summary>
+        /// Verify ParseLaunchString works
+        /// </summary>
         [TestMethod]
         public void ParseLaunchString()
         {
@@ -50,6 +65,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             Assert.AreEqual(expectedResult["key2"], actualResult["key2"]);
         }
 
+        /// <summary>
+        /// Verify ParseMobileCenterPush works when custom data is null
+        /// </summary>
         [TestMethod]
         public void ParseMobileCenterPushWhenCustomDataIsNull()
         {
@@ -59,6 +77,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             Assert.IsNull(actualResult);
         }
 
+        /// <summary>
+        /// Verify ParseMobileCenterPush works
+        /// </summary>
         [TestMethod]
         public void ParseMobileCenterPush()
         {
