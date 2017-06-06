@@ -377,6 +377,7 @@ namespace Microsoft.Azure.Mobile.Channel
             catch (StorageException e)
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+                throw;
             }
             finally
             {
