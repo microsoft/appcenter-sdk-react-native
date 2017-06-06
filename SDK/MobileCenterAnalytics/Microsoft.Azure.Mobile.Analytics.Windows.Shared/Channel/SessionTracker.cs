@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             if (string.IsNullOrEmpty(sessionsString)) return;
             _sessions = SessionsFromString(sessionsString);
             // Re-write sessions in storage in case of any invalid strings
-            _applicationSettings[StorageKey] = SessionsAsString();
+            _applicationSettings.SetValue(StorageKey, SessionsAsString());
             if (_sessions.Count == 0) return;
             var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
             MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
             _sid = Guid.NewGuid();
             _sessions.Add(now, _sid.Value);
-            _applicationSettings[StorageKey] = SessionsAsString();
+            _applicationSettings.SetValue(StorageKey, SessionsAsString());
             var startSessionLog = new StartSessionLog { Sid = _sid };
             _channel.Enqueue(startSessionLog);
         }
