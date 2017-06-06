@@ -1,0 +1,50 @@
+{
+  "name": "mobile-center-push",
+  "version": "0.1.0",
+  "description": "React Native plugin for Mobile Center Push",
+  "main": "Push.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/mobile-center-sdk-react-native.git"
+  },
+  "keywords": [
+    "react-native",
+    "mobile-center",
+    "push"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/mobile-center-sdk-react-native/issues"
+  },
+  "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native#readme",
+  "dependencies": {
+    "mobile-center-link-scripts": "0.1.6"
+  },
+  "rnpm": {
+    "params": [
+      {
+        "type": "list",
+        "name": "whenToEnablePush",
+        "message": "For the Android app, should sending push notifications be enabled automatically?",
+        "choices": [
+          {
+            "name": "Enable Automatically",
+            "value": "ALWAYS_SEND"
+          },
+          {
+            "name": "Enable in JavaScript",
+            "value": "ENABLE_IN_JS"
+          }
+        ]
+      }
+    ],
+    "android": {
+      "packageInstance": "new RNPushPackage(MainApplication.this, ${whenToEnablePush})"
+    },
+    "commands": {
+      "prelink": "node node_modules/mobile-center-push/scripts/prelink",
+      "postlink": "node node_modules/mobile-center-push/scripts/postlink"
+    }
+  }
+}
