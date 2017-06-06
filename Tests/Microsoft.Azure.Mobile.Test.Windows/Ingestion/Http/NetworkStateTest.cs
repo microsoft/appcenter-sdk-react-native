@@ -67,7 +67,10 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             _networkState.IsConnected = false;
-            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            var completedInTime = false;
+            _networkStateIngestion.ExecuteCallAsync(call).ContinueWith(task => completedInTime = true);
+            Task.Delay(TimeSpan.FromSeconds(5)).Wait();
+            Assert.IsFalse(completedInTime);
             VerifyAdapterSend(Times.Never());
         }
 
@@ -80,10 +83,10 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             _networkState.IsConnected = false;
-            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            var task = _networkStateIngestion.ExecuteCallAsync(call);
             VerifyAdapterSend(Times.Never());
             _networkState.IsConnected = true;
-            _networkStateIngestion.WaitAllCalls().RunNotAsync();
+            task.Wait();
             VerifyAdapterSend(Times.Once());
         }
 

@@ -37,7 +37,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to execute service call", e);
                 }
                 await _retryIntervals[_retryCount++]().ConfigureAwait(false);
-                _tokenSource.Token.ThrowIfCancellationRequested();
+                if (_tokenSource.Token.IsCancellationRequested)
+                {
+                    throw new IngestionException("The operation has been cancelled");
+                }
             }
         }
 

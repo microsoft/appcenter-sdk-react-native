@@ -14,18 +14,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         public override async Task ExecuteAsync()
         {
-            try
-            {
-                await _networkIngestion.ExecuteCallAsync(DecoratedApi).ConfigureAwait(false);
-            }
-            catch (Exception exception)
-            {
-                if (exception is NetworkUnavailableException)
-                {
-                    return;
-                }
-                throw exception;
-            }
+            await _networkIngestion.ExecuteCallAsync(DecoratedApi).ConfigureAwait(false);
         }
     }
 }

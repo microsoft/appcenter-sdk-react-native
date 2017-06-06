@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             _intervals[2].OnRequest += () => Assert.Fail();
 
             // Run all chain not async
-            Assert.ThrowsException<TaskCanceledException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<IngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
 
             // Must be sent 2 times: 1 - main, 1 - repeat
             VerifyAdapterSend(Times.Exactly(2));
