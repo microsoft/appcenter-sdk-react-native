@@ -426,6 +426,7 @@ namespace Microsoft.Azure.Mobile.Channel
             if (!_enabled)
             {
                 MobileCenterLog.Info(MobileCenterLog.LogTag, "The service has been disabled. Stop processing logs.");
+                return;
             }
 
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");

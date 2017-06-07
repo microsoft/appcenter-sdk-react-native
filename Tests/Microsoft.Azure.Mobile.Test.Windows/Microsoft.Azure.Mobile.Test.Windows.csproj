@@ -101,12 +101,14 @@
     <Compile Include="Channel\ChannelGroupTest.cs" />
     <Compile Include="Channel\ChannelTest.cs" />
     <Compile Include="CustomPropertiesTest.cs" />
+    <Compile Include="IngestionExceptions.cs" />
     <Compile Include="Ingestion\Http\HttpNetworkAdapterTest.cs" />
     <Compile Include="Ingestion\Http\IngestionHttpExceptionTest.cs" />
     <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
     <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
     <Compile Include="Ingestion\Http\RetryableTest.cs" />
     <Compile Include="Ingestion\Http\ServiceCallTest.cs" />
+    <Compile Include="Ingestion\Http\TestServiceCall.cs" />
     <Compile Include="Ingestion\IngestionExceptionTest.cs" />
     <Compile Include="Ingestion\Models\CustomPropertiesLogTest.cs" />
     <Compile Include="Ingestion\Models\JsonLogConverterTest.cs" />

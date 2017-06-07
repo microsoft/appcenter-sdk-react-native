@@ -244,12 +244,5 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             public Task Wait() { OnRequest?.Invoke(); return _task.Task; }
             public void Set() => _task.TrySetResult(true);
         }
-        
-        public class TestServiceCall : ServiceCallDecorator
-        {
-            public TestServiceCall(IServiceCall decoratedApi) : base(decoratedApi)
-            {
-            }
-        }
     }
 }

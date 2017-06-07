@@ -37,11 +37,12 @@ namespace Microsoft.Azure.Mobile.Test
             return completedTask;
         }
 
-        public static Task GetFaultedTask()
+        public static Task GetFaultedTask(Exception e)
         {
-            var task = Task.Factory.StartNew(() => { throw new IngestionException(); });
+            Task task = null;
             try
             {
+                task = Task.Factory.StartNew(() => { throw e; });
                 task.Wait();
             }
             catch (Exception)
