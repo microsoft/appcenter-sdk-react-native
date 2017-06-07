@@ -19,6 +19,8 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     return;
                 }
 
+                System.Diagnostics.Debug.WriteLine("Change network connected state to " + (value ? "true" : "false"));
+
                 _isConnected = value;
                 NetworkStatusChanged?.Invoke(this, EventArgs.Empty);
             }
