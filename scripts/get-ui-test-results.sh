@@ -4,16 +4,21 @@
 #	Running locally:	./get-ui-test-results.sh {ANDROID_TEST_RUN_ID} {IOS_TEST_RUN_ID}
 #	Running on bitrise: ./get-ui-test-results.sh
 
+# The MOBILE_CENTER_USERNAME environment variable must be set
+if [ -z ${MOBILE_CENTER_USERNAME+x} ]; then
+	echo "Error - the environment variable MOBILE_CENTER_USERNAME must be set."
+	exit 1
+fi
+
 # Define constants
 
 # Mobile Center constants
-USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
 IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
-ANDROID_APP="$MOBILE_CENTER_TEST_APP_USERNAME/$ANDROID_APP_NAME"
-IOS_APP="$MOBILE_CENTER_TEST_APP_USERNAME/$IOS_APP_NAME"
-ANDROID_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_TEST_APP_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_TEST_APP_USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_APP="$MOBILE_CENTER_USERNAME/$ANDROID_APP_NAME"
+IOS_APP="$MOBILE_CENTER_USERNAME/$IOS_APP_NAME"
+ANDROID_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 
 # Text attribute constants
 RED=$(tput setaf 1)
@@ -80,12 +85,6 @@ test_status() {
 		fi
 	fi
 }
-
-# The MOBILE_CENTER_TEST_APP_USERNAME environment variable must be set
-if [ -z ${MOBILE_CENTER_TEST_APP_USERNAME+x} ]; then
-	echo "Error - the environment variable MOBILE_CENTER_TEST_APP_USERNAME must be set."
-	exit 1
-fi
 
 # Log in to mobile center
 ./mobile-center-login.sh
