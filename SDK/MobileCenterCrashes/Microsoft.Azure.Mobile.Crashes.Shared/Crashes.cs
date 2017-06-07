@@ -11,6 +11,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         static Crashes()
         {
+#pragma warning disable 618
             PlatformCrashes.SendingErrorReport += (sender, e) =>
             {
                 SendingErrorReport?.Invoke(sender, e);
@@ -37,6 +38,7 @@ namespace Microsoft.Azure.Mobile.Crashes
              * So instead we use the property explicitly here to preserve the method call even after optimization.
              */
             var type = BindingType;
+#pragma warning restore 618
         }
 
         internal Crashes()

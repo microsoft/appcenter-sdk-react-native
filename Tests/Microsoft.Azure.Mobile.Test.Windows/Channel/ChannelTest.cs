@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -15,14 +16,16 @@ namespace Microsoft.Azure.Mobile.Test.Channel
     {
         private Mobile.Channel.Channel _channel;
         private readonly MockIngestion _mockIngestion = new MockIngestion();
-        private readonly IStorage _storage = new Mobile.Storage.Storage();
+        private IStorage _storage = new Mobile.Storage.Storage();
 
         private const string ChannelName = "channelName";
         private const int MaxLogsPerBatch = 3;
         private readonly TimeSpan _batchTimeSpan = TimeSpan.FromSeconds(1);
         private const int MaxParallelBatches = 3;
         private readonly string _appSecret = Guid.NewGuid().ToString();
-        private const int DefaultWaitTime = 5000;
+
+        // We wait tasks now and don't need wait more
+        private const int DefaultWaitTime = 500;
 
         // Event semaphores for invokation verification
         private const int SendingLogSemaphoreIdx = 0;
@@ -57,7 +60,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void DisableChannel()
         {
-            _channel.SetEnabledAsync(false);
+            _channel.SetEnabledAsync(false).RunNotAsync();
 
             Assert.IsFalse(_channel.IsEnabled);
         }
@@ -68,8 +71,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void EnableChannel()
         {
-            _channel.SetEnabledAsync(false);
-            _channel.SetEnabledAsync(true);
+            _channel.SetEnabledAsync(false).RunNotAsync();
+            _channel.SetEnabledAsync(true).RunNotAsync();
 
             Assert.IsTrue(_channel.IsEnabled);
         }
@@ -220,7 +223,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void DisposeChannelTest()
         {
             _channel.Dispose();
-            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _channel.SetEnabledAsync(true));
+            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _channel.SetEnabledAsync(true)).RunNotAsync();
         }
 
         /// <summary>
@@ -235,7 +238,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             Mobile.Channel.Channel channel = new Mobile.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
 
-            //Shutdown channel and store some log
+            // Shutdown channel and store some log
             channel.ShutdownAsync().RunNotAsync();
             channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
@@ -246,6 +249,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
+            _storage = new Mobile.Storage.Storage();
             _storage.DeleteLogsAsync(ChannelName).RunNotAsync();
             _channel = new Mobile.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
                 _appSecret, _mockIngestion, _storage);

@@ -1,11 +1,11 @@
-﻿using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.Data.Xml.Dom;
 using Windows.Networking.PushNotifications;
@@ -14,10 +14,8 @@ namespace Microsoft.Azure.Mobile.Push
 {
     using WindowsPushNotificationReceivedEventArgs = Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs;
 
-    public partial class Push : MobileCenterService
+    public partial class Push
     {
-        private ApplicationLifecycleHelper _lifecycleHelper = new ApplicationLifecycleHelper();
-
         private PushNotificationChannel _channel;
 
         protected override int TriggerCount => 1;
@@ -26,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Push
         /// Call this method at the end of Application.OnLaunched with the same parameter as OnLaunched.
         /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
         /// </summary>
-        /// <param name="e">OnLaunched method event</param>
+        /// <param name="e">OnLaunched method event args</param>
         public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             Instance.InstanceCheckLaunchedFromNotification(e);
@@ -35,17 +33,12 @@ namespace Microsoft.Azure.Mobile.Push
         private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
             IDictionary<string, string> customData = null;
-            _mutex.Lock();
-            try
+            using (_mutex.GetLock())
             {
                 if (!IsInactive)
                 {
                     customData = ParseLaunchString(e?.Arguments);
                 }
-            }
-            finally
-            {
-                _mutex.Unlock();
             }
             if (customData != null)
             {
@@ -68,40 +61,38 @@ namespace Microsoft.Azure.Mobile.Push
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
-                var stateSnapshot = _stateKeeper.GetStateSnapshot();
+                var state = _mutex.State;
                 Task.Run(async () =>
                 {
                     var channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync()
                         .AsTask().ConfigureAwait(false);
                     try
                     {
-                        _mutex.Lock(stateSnapshot);
-                        var pushToken = channel.Uri;
-                        if (!string.IsNullOrEmpty(pushToken))
+                        using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                         {
-                            // Save channel member
-                            _channel = channel;
+                            var pushToken = channel.Uri;
+                            if (!string.IsNullOrEmpty(pushToken))
+                            {
+                                // Save channel member
+                                _channel = channel;
 
-                            // Subscribe to push
-                            channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
+                                // Subscribe to push
+                                channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
 
-                            // Send channel URI to backend
-                            MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
-                            var pushInstallationLog = new PushInstallationLog(0, null, pushToken, Guid.NewGuid());
-                            await Channel.EnqueueAsync(pushInstallationLog).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                                // Send channel URI to backend
+                                MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+                                var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid());
+                                await Channel.EnqueueAsync(pushInstallationLog).ConfigureAwait(false);
+                            }
+                            else
+                            {
+                                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                            }
                         }
                     }
                     catch (StatefulMutexException)
                     {
                         MobileCenterLog.Warn(LogTag, "Push Enabled state changed after creating channel.");
-                    }
-                    finally
-                    {
-                        _mutex.Unlock();
                     }
                 });
             }
@@ -117,7 +108,7 @@ namespace Microsoft.Azure.Mobile.Push
             {
                 var content = e.ToastNotification.Content;
                 MobileCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
-                if (_lifecycleHelper.IsSuspended)
+                if (ApplicationLifecycleHelper.Instance.IsSuspended)
                 {
                     MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
                 }
@@ -142,7 +133,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        private static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
+        internal static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
         {
             // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key)
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();
@@ -153,7 +144,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
 
             // Parse title and message using identifiers
-            return new PushNotificationReceivedEventArgs()
+            return new PushNotificationReceivedEventArgs
             {
                 Title = content.SelectSingleNode("/toast/visual/binding/text[@id='1']")?.InnerText,
                 Message = content.SelectSingleNode("/toast/visual/binding/text[@id='2']")?.InnerText,
@@ -161,11 +152,11 @@ namespace Microsoft.Azure.Mobile.Push
             };
         }
 
-        private static Dictionary<string, string> ParseLaunchString(string launchString)
+        internal static Dictionary<string, string> ParseLaunchString(string launchString)
         {
             try
             {
-                if (launchString != null)
+                if (!string.IsNullOrEmpty(launchString))
                 {
                     var launchJObject = JObject.Parse(launchString);
                     if (launchJObject?["mobile_center"] is JObject mobileCenterData)

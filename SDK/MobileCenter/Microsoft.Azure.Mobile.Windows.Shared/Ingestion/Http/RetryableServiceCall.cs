@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         }
 
         ///<exception cref="IngestionException"/>
-        private async Task RunWithRetriesAsyncHelper()
+        private async Task ExecuteAsyncHelper()
         {
             while (true)
             {
@@ -37,7 +37,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to execute service call", e);
                 }
                 await _retryIntervals[_retryCount++]().ConfigureAwait(false);
-                _tokenSource.Token.ThrowIfCancellationRequested();
+                if (_tokenSource.Token.IsCancellationRequested)
+                {
+                    throw new IngestionException("The operation has been cancelled");
+                }
             }
         }
 
@@ -52,7 +55,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             try
             {
                 _tokenSource = new CancellationTokenSource();
-                await RunWithRetriesAsyncHelper().ConfigureAwait(false);
+                await ExecuteAsyncHelper().ConfigureAwait(false);
             }
             finally
             {

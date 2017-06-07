@@ -62,6 +62,18 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             properties.Clear(longKey);
             Assert.AreEqual(0, properties.Properties.Count);
 
+            /* Empty keys. */
+            properties.Set(string.Empty, value1);
+            properties.Set(string.Empty, value2);
+            properties.Set(string.Empty, value3);
+            properties.Set(string.Empty, value4);
+            properties.Set(string.Empty, value5);
+            properties.Set(string.Empty, value6);
+            properties.Set(string.Empty, value7);
+            properties.Set(string.Empty, value8);
+            properties.Clear(string.Empty);
+            Assert.AreEqual(0, properties.Properties.Count);
+
             /* Normal keys. */
             properties.Set("t1", value1);
             properties.Set("t2", value2);
@@ -144,7 +156,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             var key = "test";
             CustomProperties properties = new CustomProperties();
             Assert.AreEqual(0, properties.Properties.Count);
-            
+
             /* Normal value. */
             var normalValue = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             properties.Set(key, normalValue);

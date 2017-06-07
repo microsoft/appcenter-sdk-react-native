@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Windows.ApplicationModel.Activation;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile
 {
@@ -14,7 +15,7 @@ namespace Microsoft.Azure.Mobile
         {
             if (countryCode != null && countryCode.Length != 2)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, $"MobileCenter accept only the two-letter ISO country code.");
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center accepts only the two-letter ISO country code.");
                 return;
             }
             DeviceInformationHelper.SetCountryCode(countryCode);

@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             var addedChannel =
                 _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Mobile.Channel.Channel;
 
-            _channelGroup.ShutdownAsync();
+            _channelGroup.ShutdownAsync().RunNotAsync();
 
             Assert.IsFalse(addedChannel.IsEnabled);
         }

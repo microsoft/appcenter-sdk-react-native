@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Analytics
@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         }
 
         /// <summary>
-        ///     Enable or disable Analytics module.
+        /// Enable or disable Analytics module.
         /// </summary>
         public static bool Enabled
         {
@@ -85,7 +85,6 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         // Internal for testing purposes
         internal ISessionTracker SessionTracker;
-        internal IApplicationLifecycleHelper ApplicationLifecycleHelper;
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
         private bool _hasStarted;
 
@@ -96,10 +95,9 @@ namespace Microsoft.Azure.Mobile.Analytics
             LogSerializer.AddLogType(StartSessionLog.JsonIdentifier, typeof(StartSessionLog));
         }
 
-        internal Analytics(ISessionTrackerFactory sessionTrackerFactory, IApplicationLifecycleHelper lifecycleHelper) : this()
+        internal Analytics(ISessionTrackerFactory sessionTrackerFactory) : this()
         {
             _sessionTrackerFactory = sessionTrackerFactory;
-            ApplicationLifecycleHelper = lifecycleHelper;
         }
 
         public override bool InstanceEnabled
@@ -139,7 +137,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 if (ValidateName(name, type))
                 {
                     properties = ValidateProperties(properties, name, type);
-                    var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
+                    var log = new EventLog(null, null, Guid.NewGuid(), name, null, properties);
                     Channel.EnqueueAsync(log);
                 }
             }
@@ -150,27 +148,12 @@ namespace Microsoft.Azure.Mobile.Analytics
             lock (_serviceLock)
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
-                if (ApplicationLifecycleHelper == null)
-                {
-                    // If it isn't null, that likely means that a test provided its own lifecycle helper
-                    ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
-                }
                 ApplyEnabledState(InstanceEnabled);
-                if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
+                if (ApplicationLifecycleHelper.Instance.HasShownWindow &&
+                    !ApplicationLifecycleHelper.Instance.IsSuspended)
                 {
-                    SessionTracker?.Resume();
-                    _hasStarted = true;
+                    ApplicationStartedEventHandler(null, null);
                 }
-                else
-                {
-                    ApplicationLifecycleHelper.ApplicationStarted += (sender, e) =>
-                    {
-                        SessionTracker?.Resume();
-                        _hasStarted = true;
-                    };
-                }
-                ApplicationLifecycleHelper.ApplicationResuming += (sender, e) => SessionTracker?.Resume();
-                ApplicationLifecycleHelper.ApplicationSuspended += (sender, e) => SessionTracker?.Pause();
             }
         }
 
@@ -181,7 +164,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 if (enabled && ChannelGroup != null && SessionTracker == null)
                 {
                     SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
-                    ApplicationLifecycleHelper.Enabled = true;
+                    SubscribeToApplicationLifecycleEvents();
                     if (_hasStarted)
                     {
                         SessionTracker.Resume();
@@ -189,7 +172,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 }
                 else if (!enabled)
                 {
-                    ApplicationLifecycleHelper.Enabled = false;
+                    UnsbscribeFromApplicationLifecycleEvents();
                     SessionTracker?.ClearSessions();
                     SessionTracker = null;
                 }
@@ -220,6 +203,35 @@ namespace Microsoft.Azure.Mobile.Analytics
                 return false;
             }
             return true;
+        }
+
+        private void SubscribeToApplicationLifecycleEvents()
+        {
+            ApplicationLifecycleHelper.Instance.ApplicationStarted += ApplicationStartedEventHandler;
+            ApplicationLifecycleHelper.Instance.ApplicationResuming += ApplicationResumingEventHandler;
+            ApplicationLifecycleHelper.Instance.ApplicationSuspended += ApplicationSuspendedEventHandler;
+        }
+        private void UnsbscribeFromApplicationLifecycleEvents()
+        {
+            ApplicationLifecycleHelper.Instance.ApplicationStarted -= ApplicationStartedEventHandler;
+            ApplicationLifecycleHelper.Instance.ApplicationResuming -= ApplicationResumingEventHandler;
+            ApplicationLifecycleHelper.Instance.ApplicationSuspended -= ApplicationSuspendedEventHandler;
+        }
+
+        private void ApplicationStartedEventHandler(object sender, EventArgs e)
+        {
+            SessionTracker?.Resume();
+            _hasStarted = true;
+        }
+
+        private void ApplicationResumingEventHandler(object sender, EventArgs e)
+        {
+            SessionTracker?.Resume();
+        }
+
+        private void ApplicationSuspendedEventHandler(object sender, EventArgs e)
+        {
+            SessionTracker?.Pause();
         }
 
         /// <summary>

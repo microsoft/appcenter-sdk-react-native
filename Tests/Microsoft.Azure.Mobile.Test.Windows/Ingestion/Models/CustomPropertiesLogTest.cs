@@ -1,8 +1,9 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -27,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             Assert.IsNull(log.Device);
             Assert.AreEqual(0, log.Properties.Count);
             Assert.IsNull(log.Sid);
-            Assert.AreEqual(0, log.Toffset);
+            Assert.AreEqual(null, log.Timestamp);
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var addedLog = new CustomPropertiesLog
             {
                 Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Toffset = TimeHelper.CurrentTimeInMilliseconds(),
+                Timestamp = DateTime.Now,
                 Properties = new Dictionary<string, object>
                 {
                     { "t1", "test" },
@@ -77,10 +78,10 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             {
                 Properties = null,
                 Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Toffset = TimeHelper.CurrentTimeInMilliseconds()
+                Timestamp = DateTime.Now
             };
 
-            Assert.ThrowsException<Rest.ValidationException>((Action)log.Validate);
+            Assert.ThrowsException<ValidationException>((Action)log.Validate);
         }
     }
 }

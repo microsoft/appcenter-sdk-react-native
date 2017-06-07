@@ -28,7 +28,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
-            Analytics.Instance = new Analytics(factory, _applicationLifecycleHelper);
+            ApplicationLifecycleHelper.Instance = _applicationLifecycleHelper;
+            Analytics.Instance = new Analytics(factory);
         }
         
         /// <summary>
@@ -136,12 +137,12 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void EnableAfterDisabling()
         {
             Analytics.Enabled = false;
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty); 
             Analytics.Enabled = true;
+
             _applicationLifecycleHelper.InvokeStarted();
             _applicationLifecycleHelper.InvokeSuspended();
             _applicationLifecycleHelper.InvokeResuming();
-
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
             _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));

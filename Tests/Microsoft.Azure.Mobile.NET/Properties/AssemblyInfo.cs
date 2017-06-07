@@ -37,3 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyInformationalVersion("0.12.1-SNAPSHOT")]
 
 [assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Test.Windows")]
+[assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Analytics.Test.Windows")]
