@@ -1,4 +1,6 @@
 rootProject.name = 'TestApp'
+include ':mobile-center-push'
+project(':mobile-center-push').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-push/android')
 include ':mobile-center-analytics'
 project(':mobile-center-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-analytics/android')
 include ':mobile-center-crashes'
