@@ -1,5 +1,16 @@
 **** Bumping version numbers, for components that change (or whose static dependencies change) ***
 
+  I'm trying to follow this convention now for version numbers, to make things a simpler and have an overall RN SDK
+  version number when we can:
+  - If just one component changes (and API not backwards compatible), bump the version number for it.
+    For instance, if 0.5.0 is prevailing version in the RN SDK and Android (but not iOS) native SDK gets updated, we can
+    update Android components in the RN SDK to 0.6.0.
+  - If several components change (and API not backwards compatible) then bump the version number for all, skipping component versions
+    if necessary to have a consistent prevailing version for the RN SDK.
+    For instance, in the scenario above, if later the both iOS and Android native SDKs change, then bump
+    the version number for Android components from 0.6 to 0.7 and for iOS components from 0.5 to 0.7 (skipping 0.6).
+    0.7 becomes the new prevailing version number for the RN SDK.
+
   RNMobileCenter Android
     mobile-center-sdk-react-native/RNMobileCenter/android/build.gradle
       Add 1 to versionCode (it's just a counter that need be unique)
@@ -24,6 +35,10 @@
     mobile-center-analytics/package.json
     mobile-center-analytics/scripts/postlink.js (for iOS pod dependencies)
     mobile-center-analytics/android/build.gradle (dependences at bottom)
+
+    mobile-center-push/package.json
+    mobile-center-push/scripts/postlink.js (for iOS pod dependencies)
+    mobile-center-push/android/build.gradle (versionCode, versionName, and dependences at bottom)
 
     mobile-center-link-script/package.json
 
