@@ -16,7 +16,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
 }).then(function (file) {
     console.log('Added code to initialize iOS Crashes SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
-        { pod: 'MobileCenter', version: '0.9.0' },
+        { pod: 'MobileCenter/MobileCenterPush', version: '0.9.0' },
         { pod: 'RNMobileCenter', version: '0.5.0' }
     ]).catch(function (e) {
         console.log(`
