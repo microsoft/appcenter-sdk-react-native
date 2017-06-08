@@ -18,7 +18,7 @@
       Ensure com.microsoft.azure.mobile:mobile-center (at the bottom) is correct
 
   RNMobileCenter iOS
-    mobile-center-sdk-react-native/RNMobileCenter.podspec
+    mobile-center-sdk-react-native/RNMobileCenter/Products/RNMobileCenter.podspec
       Bump the version num s.version
       Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
     RNMobileCenter.m
