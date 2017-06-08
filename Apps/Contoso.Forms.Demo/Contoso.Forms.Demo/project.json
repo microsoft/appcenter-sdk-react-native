@@ -5,7 +5,7 @@
     "Microsoft.Azure.Mobile.Distribute": "0.12.0",
     "Microsoft.Azure.Mobile.Push": "0.12.0",
     "Xamarin.Forms": "2.3.4.231",
-    "NETStandard.Library": "1.6.0"
+    "NETStandard.Library": "1.6.1"
   },
   "frameworks": {
     "netstandard1.0": {
