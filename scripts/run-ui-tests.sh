@@ -22,21 +22,26 @@ if ! [ -z ${IN_BITRISE+x} ]; then # We are in bitrise environment
 	BUILD_TARGET=$3
 fi
 
+# The MOBILE_CENTER_USERNAME environment variable must be set
+if [ -z ${MOBILE_CENTER_USERNAME+x} ]; then
+	echo "Error - the environment variable MOBILE_CENTER_USERNAME must be set."
+	exit 1
+fi
+
 # Define test parameters
 LOCALE="en-US"
-USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
 # For a larger suite, go to portal, pretend to start a test suite, select devices, click next until you see CLI instructions and copy the hash code
 IOS_DEVICES=8551ba4e # just one device.
 ANDROID_DEVICES=f0b8289c # just one device.
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
 IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
-ANDROID_APP="$MOBILE_CENTER_TEST_APP_USERNAME/$ANDROID_APP_NAME"
-IOS_APP="$MOBILE_CENTER_TEST_APP_USERNAME/$IOS_APP_NAME"
+ANDROID_APP="$MOBILE_CENTER_USERNAME/$ANDROID_APP_NAME"
+IOS_APP="$MOBILE_CENTER_USERNAME/$IOS_APP_NAME"
 TEST_SERIES="master"
 
 # Define results constants
-ANDROID_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_TEST_APP_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_TEST_APP_USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 ANDROID_INFORMATION_FILE="android_info.txt"
 IOS_INFORMATION_FILE="ios_info.txt"
 ANDROID_PLATFORM_NAME="Android"
@@ -96,12 +101,6 @@ initialize_tests() {
   	--build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
 	echo $?
 }
-
-# The MOBILE_CENTER_TEST_APP_USERNAME environment variable must be set
-if [ -z ${MOBILE_CENTER_TEST_APP_USERNAME+x} ]; then
-	echo "Error - the environment variable MOBILE_CENTER_TEST_APP_USERNAME must be set."
-	exit 1
-fi
 
 # Log in to mobile center
 ./mobile-center-login.sh

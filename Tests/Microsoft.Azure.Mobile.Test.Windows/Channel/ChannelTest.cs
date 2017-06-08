@@ -8,6 +8,7 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Microsoft.Azure.Mobile.Ingestion;
 
 namespace Microsoft.Azure.Mobile.Test.Channel
 {
@@ -42,6 +43,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestInitialize]
         public void InitializeChannelTest()
         {
+            _mockIngestion.CallShouldSucceed = true;
+            _mockIngestion.Open();
             SetChannelWithTimeSpan(_batchTimeSpan);
         }
 
@@ -247,6 +250,44 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             // Not throw any exception
         }
 
+        /// <summary>
+        /// Verify that when a recoverable http error occurs, ingestion
+        /// stays open
+        /// </summary>
+        [TestMethod]
+        public void IngestionNotClosedOnRecoverableHttpError()
+        {
+            _mockIngestion.CallShouldSucceed = false;
+            _mockIngestion.TaskError = new RecoverableIngestionException();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+
+            // wait for SendingLog event
+            _eventSemaphores[SendingLogSemaphoreIdx].Wait();
+            // wait up to 20 seconds for suspend to finish
+            bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
+            Assert.IsTrue(disabled);
+            Assert.IsFalse(_mockIngestion.IsClosed);
+        }
+
+        /// <summary>
+        /// Verify that if a non-recoverable http error occurs, ingestion
+        /// is closed
+        /// </summary>
+        [TestMethod]
+        public void IngestionClosedOnNonRecoverableHttpError()
+        {
+            _mockIngestion.CallShouldSucceed = false;
+            _mockIngestion.TaskError = new NonRecoverableIngestionException();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+
+            // wait up to 20 seconds for suspend to finish
+            bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
+            Assert.IsTrue(disabled);
+
+            Assert.IsTrue(_mockIngestion.IsClosed);
+            Assert.IsFalse(_channel.IsEnabled);
+        }
+
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
             _storage = new Mobile.Storage.Storage();
@@ -300,6 +341,19 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         private bool SendingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
         {
             return EventWithSemaphoreOccurred(_eventSemaphores[SendingLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private bool WaitForChannelDisable(TimeSpan timeout)
+        {
+            var task = Task.Run(async () =>
+            {
+                while (_channel.IsEnabled)
+                {
+                    await Task.Delay(100);
+                }
+            });
+
+            return task.Wait(timeout);
         }
 
         private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)

@@ -429,39 +429,22 @@ Task("MergeAssemblies")
 	.IsDependentOn("Version")
 	.Does(()=>
 {
-	CleanDirectory("output");
-
 	Information("Beginning complete package creation...");
-	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 
-	if (IsRunningOnUnix())
-	{
-		//extract the uwp packages
-		CleanDirectory(UWP_ASSEMBLIES_FOLDER);
-		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, UWP_ASSEMBLIES_FOLDER);
-	}
-	else
-	{
-		//extract the ios packages
-		CleanDirectory(IOS_ASSEMBLIES_FOLDER);
-		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, IOS_ASSEMBLIES_FOLDER);
-		
-		//extract the android packages
-		CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
-		files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, ANDROID_ASSEMBLIES_FOLDER);
-	}
+	// Copy the downloaded files to their proper locations so the structure is as if
+	// the downloaded assemblies were built locally (for the nuspecs to work)
 	foreach (var assemblyFolder in PLATFORM_PATHS.DownloadAssemblyFolders)
 	{
 		CleanDirectory(assemblyFolder);
 		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + assemblyFolder + "/*");
 		CopyFiles(files, assemblyFolder);
 	}
+
+	// Create NuGet packages
 	foreach (var module in MOBILECENTER_MODULES)
 	{
 		// Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
+		var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 		CopyFile("nuget/" + module.MainNuspecFilename, specCopyName);
 		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
 		ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
@@ -480,15 +463,9 @@ Task("MergeAssemblies")
 		// Clean up
 		DeleteFiles(specCopyName);
 	}
-
-	DeleteDirectory(PCL_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(ANDROID_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(IOS_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(UWP_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(DOWNLOADED_ASSEMBLIES_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
-}).OnError(HandleError);
+}).OnError(HandleError).Finally(()=>RunTarget("RemoveTemporaries"));
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
