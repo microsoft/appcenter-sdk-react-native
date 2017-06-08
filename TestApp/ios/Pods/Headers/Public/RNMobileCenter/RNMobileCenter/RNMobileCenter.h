@@ -1,1 +1,1 @@
-../../../../RNMobileCenter/RNMobileCenter/RNMobileCenter.framework/Headers/RNMobileCenter.h
+../../../../../../../RNMobileCenter/Products/RNMobileCenter/RNMobileCenter.framework/Headers/RNMobileCenter.h

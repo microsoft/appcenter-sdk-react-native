@@ -8,6 +8,8 @@
  */
 
 #import "AppDelegate.h"
+#import <RNPush/RNPush.h>
+
 #import <RNAnalytics/RNAnalytics.h>
 
 #import <RNCrashes/RNCrashes.h>
@@ -21,11 +23,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation;                  
+  NSURL *jsCodeLocation;
 
   //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
-  
+  [MSMobileCenter setLogLevel: MSLogLevelVerbose]; 
+
+  [RNPush registerWithInitiallyEnabled:true];  // Initialize Mobile Center push
+
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
   [RNCrashes register];  // Initialize Mobile Center crashes

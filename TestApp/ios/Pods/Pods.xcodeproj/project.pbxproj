@@ -12,18 +12,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0420ED8542194AAA860B1A578CBE1969 /* MobileCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterAnalytics.framework; path = "MobileCenter-SDK-iOS/MobileCenterAnalytics.framework"; sourceTree = "<group>"; };
-		11401A03A7760F75E1F344289111C44D /* MobileCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterCrashes.framework; path = "MobileCenter-SDK-iOS/MobileCenterCrashes.framework"; sourceTree = "<group>"; };
-		127BB4D7A514D752E690027FCAD2712E /* RNMobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RNMobileCenter.framework; path = RNMobileCenter/RNMobileCenter.framework; sourceTree = "<group>"; };
 		26BE5155635AE37EC98CFD01CFE1131E /* Pods-TestApp-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TestApp-dummy.m"; sourceTree = "<group>"; };
 		3FDAE7DC80934639401CDFF6D3020D42 /* libPods-TestApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-TestApp.a"; path = "libPods-TestApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B4B787E2F397EC21D592CF637480A6 /* Pods-TestApp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TestApp-resources.sh"; sourceTree = "<group>"; };
+		4A0F1E36A20131BB7901B2B64055E155 /* MobileCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterAnalytics.framework; path = "MobileCenter-SDK-iOS/MobileCenterAnalytics.framework"; sourceTree = "<group>"; };
+		5034972FC5C585EC136C1A003008E63C /* MobileCenterPush.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterPush.framework; path = "MobileCenter-SDK-iOS/MobileCenterPush.framework"; sourceTree = "<group>"; };
+		5DC3A10F82EC184A67FC6D53E8BC1D23 /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenter.framework; path = "MobileCenter-SDK-iOS/MobileCenter.framework"; sourceTree = "<group>"; };
+		7E7CB39633AE2EA1774F3581F473A05C /* RNMobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RNMobileCenter.framework; path = RNMobileCenter/RNMobileCenter.framework; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A21022CC422B922C667A96123754D85F /* Pods-TestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TestApp.release.xcconfig"; sourceTree = "<group>"; };
+		ACB71D9760ACBC3FC129AB7660DEB802 /* MobileCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenterCrashes.framework; path = "MobileCenter-SDK-iOS/MobileCenterCrashes.framework"; sourceTree = "<group>"; };
 		B1E91F310544CF6C2E6D8872011AC47E /* Pods-TestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CEA384AF969667F9DF368211A04DF437 /* Pods-TestApp-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TestApp-acknowledgements.markdown"; sourceTree = "<group>"; };
-		D836CCEDA076134C839DB10B629A5953 /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCenter.framework; path = "MobileCenter-SDK-iOS/MobileCenter.framework"; sourceTree = "<group>"; };
 		EBBDC347AD16AC20004D2D0227273F3A /* Pods-TestApp-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TestApp-acknowledgements.plist"; sourceTree = "<group>"; };
 		FFECA133A58326FBBB70FA419A599D3F /* Pods-TestApp-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TestApp-frameworks.sh"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,39 +56,32 @@
 			path = "Target Support Files/Pods-TestApp";
 			sourceTree = "<group>";
 		};
-		0F8B8E770E5F62D5C7EB9415FBE7DF3C /* MobileCenter */ = {
+		1093F116477B501642D72A6A4FD4BB35 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				65FF0CEEF41664B36B67AD9AE48A3E96 /* MobileCenter */,
-				11E4F600AB14A8AC4026B1C21167B392 /* MobileCenterAnalytics */,
-				C42A49CF64BDDE516600958AF0D40B0B /* MobileCenterCrashes */,
+				BA58FB675640FA6532A91A4CD04ABC3C /* RNMobileCenter */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		1E93B8A69EF45BED04C2F79B9DA379DA /* MobileCenter */ = {
+			isa = PBXGroup;
+			children = (
+				6F68834751C5B347B707F476FF822EAD /* Frameworks */,
+			);
+			name = MobileCenter;
+			sourceTree = "<group>";
+		};
+		49118E441E815D0B9ABFE728E710D560 /* MobileCenter */ = {
+			isa = PBXGroup;
+			children = (
+				1E93B8A69EF45BED04C2F79B9DA379DA /* MobileCenter */,
+				9031B1CC800ECCECE74DEFB47193B12E /* MobileCenterAnalytics */,
+				EBCF58505443F8BAB7FA1B2A7468B6D5 /* MobileCenterCrashes */,
+				7A07D984C6AAEA0E6EE6016AF647E046 /* MobileCenterPush */,
 			);
 			name = MobileCenter;
 			path = MobileCenter;
-			sourceTree = "<group>";
-		};
-		11E4F600AB14A8AC4026B1C21167B392 /* MobileCenterAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				4968CA0CE276E6E3984FA5AF0D8B4C24 /* Frameworks */,
-			);
-			name = MobileCenterAnalytics;
-			sourceTree = "<group>";
-		};
-		15F86BCAED8044B3BEEC8590550A58C4 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				127BB4D7A514D752E690027FCAD2712E /* RNMobileCenter.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		4968CA0CE276E6E3984FA5AF0D8B4C24 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0420ED8542194AAA860B1A578CBE1969 /* MobileCenterAnalytics.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		61C723BA83C8FCB52353E9AB53ECF0B0 /* Targets Support Files */ = {
@@ -98,18 +92,10 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		65FF0CEEF41664B36B67AD9AE48A3E96 /* MobileCenter */ = {
+		6F68834751C5B347B707F476FF822EAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A10AF577783A090C4314504D35581EA5 /* Frameworks */,
-			);
-			name = MobileCenter;
-			sourceTree = "<group>";
-		};
-		684B4778CAA4359E957690AFB0C48AB7 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				11401A03A7760F75E1F344289111C44D /* MobileCenterCrashes.framework */,
+				5DC3A10F82EC184A67FC6D53E8BC1D23 /* MobileCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -122,23 +108,65 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
+		7A07D984C6AAEA0E6EE6016AF647E046 /* MobileCenterPush */ = {
+			isa = PBXGroup;
+			children = (
+				E20F91C5E0CBE0D8291563835C7BB9FD /* Frameworks */,
+			);
+			name = MobileCenterPush;
+			sourceTree = "<group>";
+		};
+		7B7CAFCB63FEBC11364550A75F22E4EF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7E7CB39633AE2EA1774F3581F473A05C /* RNMobileCenter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				1093F116477B501642D72A6A4FD4BB35 /* Development Pods */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				E919E1692C8A1DA7EBD5CDC41EAC23E0 /* Pods */,
+				947EF8C6C91365CE21FF2468FB6954DD /* Pods */,
 				FC2A3BB9400941069146A7634E955C7C /* Products */,
 				61C723BA83C8FCB52353E9AB53ECF0B0 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		A10AF577783A090C4314504D35581EA5 /* Frameworks */ = {
+		83CF1A9D0B8716A7CC5EF77538C0F0A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D836CCEDA076134C839DB10B629A5953 /* MobileCenter.framework */,
+				4A0F1E36A20131BB7901B2B64055E155 /* MobileCenterAnalytics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9031B1CC800ECCECE74DEFB47193B12E /* MobileCenterAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				83CF1A9D0B8716A7CC5EF77538C0F0A0 /* Frameworks */,
+			);
+			name = MobileCenterAnalytics;
+			sourceTree = "<group>";
+		};
+		947EF8C6C91365CE21FF2468FB6954DD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				49118E441E815D0B9ABFE728E710D560 /* MobileCenter */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BA58FB675640FA6532A91A4CD04ABC3C /* RNMobileCenter */ = {
+			isa = PBXGroup;
+			children = (
+				7B7CAFCB63FEBC11364550A75F22E4EF /* Frameworks */,
+			);
+			name = RNMobileCenter;
+			path = ../../../RNMobileCenter/Products;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -149,30 +177,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C42A49CF64BDDE516600958AF0D40B0B /* MobileCenterCrashes */ = {
+		E20F91C5E0CBE0D8291563835C7BB9FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				684B4778CAA4359E957690AFB0C48AB7 /* Frameworks */,
+				5034972FC5C585EC136C1A003008E63C /* MobileCenterPush.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EBCF58505443F8BAB7FA1B2A7468B6D5 /* MobileCenterCrashes */ = {
+			isa = PBXGroup;
+			children = (
+				F542BAF1DCD3A83055597432513ADDED /* Frameworks */,
 			);
 			name = MobileCenterCrashes;
 			sourceTree = "<group>";
 		};
-		E3EC0189E194298D1CED5AAA19235AB9 /* RNMobileCenter */ = {
+		F542BAF1DCD3A83055597432513ADDED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				15F86BCAED8044B3BEEC8590550A58C4 /* Frameworks */,
+				ACB71D9760ACBC3FC129AB7660DEB802 /* MobileCenterCrashes.framework */,
 			);
-			name = RNMobileCenter;
-			path = RNMobileCenter;
-			sourceTree = "<group>";
-		};
-		E919E1692C8A1DA7EBD5CDC41EAC23E0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0F8B8E770E5F62D5C7EB9415FBE7DF3C /* MobileCenter */,
-				E3EC0189E194298D1CED5AAA19235AB9 /* RNMobileCenter */,
-			);
-			name = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FC2A3BB9400941069146A7634E955C7C /* Products */ = {
