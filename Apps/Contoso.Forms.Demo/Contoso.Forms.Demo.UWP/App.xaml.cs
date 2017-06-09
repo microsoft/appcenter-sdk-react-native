@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.Forms.Demo.UWP
 {
@@ -80,6 +81,8 @@ namespace Contoso.Forms.Demo.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            Push.CheckLaunchedFromNotification(e);
         }
 
         /// <summary>
