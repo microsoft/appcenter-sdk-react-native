@@ -337,7 +337,7 @@ Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 
 // Pack NuGets for appropriate platform
 Task("NuGet")
-	.IsDependentOn("Build")
+	.IsDependentOn("PrepareAssemblies")
 	.IsDependentOn("Version")
 	.Does(()=>
 {
@@ -345,17 +345,36 @@ Task("NuGet")
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
 	CleanDirectory("output");
 
+	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
+
 	// Packaging NuGets.
 	foreach (var module in MOBILECENTER_MODULES)
 	{
 		var nuspecFilename = IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename;
-		var spec = GetFiles("./nuget/" + nuspecFilename);
+
+		// Skipping not exists modules.
+		if (!FileExists("nuget/" + nuspecFilename))
+		{
+			continue;
+		}
+
+		// Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
+		CopyFile("nuget/" + nuspecFilename, specCopyName);
+		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$windows_dir$", UWP_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
+
+		var spec = GetFiles(specCopyName);
 		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {
 			BasePath = basePath,
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
+
+		// Clean up
+		DeleteFiles(specCopyName);
 	}
 	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
 }).OnError(HandleError);
