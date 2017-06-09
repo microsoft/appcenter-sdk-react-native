@@ -352,6 +352,12 @@ Task("NuGet")
 	{
 		var nuspecFilename = IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename;
 
+		// Skipping not exists modules.
+		if (!FileExists("nuget/" + nuspecFilename))
+		{
+			continue;
+		}
+
 		// Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
 		CopyFile("nuget/" + nuspecFilename, specCopyName);
 		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
