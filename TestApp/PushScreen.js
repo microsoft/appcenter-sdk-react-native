@@ -38,7 +38,7 @@ export default class PushScreen extends React.Component {
   async toggleEnabled() {
     await Push.setEnabled(! this.state.pushEnabled);
 
-    const pushEnabled = await Push.getEnabled();
+    const pushEnabled = await Push.isEnabled();
     this.setState({pushEnabled: pushEnabled});
   }
 
