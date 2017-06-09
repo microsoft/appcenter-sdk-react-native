@@ -6,4 +6,9 @@ project(':mobile-center-analytics').projectDir = new File(rootProject.projectDir
 include ':mobile-center-crashes'
 project(':mobile-center-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-crashes/android')
 
+include 'RNMobileCenter'
+project(':RNMobileCenter').projectDir = new File(rootProject.projectDir, '../../RNMobileCenter/android')
+
 include ':app'
+
+
