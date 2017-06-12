@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.analytics;
+package com.microsoft.azure.mobile.react.push;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
