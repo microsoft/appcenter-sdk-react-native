@@ -7,31 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		548694041D8384E600E6685A /* RNPush.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 548694031D8384E600E6685A /* RNPush.h */; };
-		548694061D8384E600E6685A /* RNPush.m in Sources */ = {isa = PBXBuildFile; fileRef = 548694051D8384E600E6685A /* RNPush.m */; };
+		BA189FAF1EEE74F100CAD13F /* RNPush.m in Sources */ = {isa = PBXBuildFile; fileRef = BA189FAE1EEE74F100CAD13F /* RNPush.m */; };
+		BA189FB01EEE74F100CAD13F /* RNPush.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA189FAD1EEE74F100CAD13F /* RNPush.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		548693FE1D8384E600E6685A /* CopyFiles */ = {
+		BA189FA81EEE74F100CAD13F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				548694041D8384E600E6685A /* RNPush.h in CopyFiles */,
+				BA189FB01EEE74F100CAD13F /* RNPush.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		548694001D8384E600E6685A /* libRNPush.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPush.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		548694031D8384E600E6685A /* RNPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPush.h; sourceTree = "<group>"; };
-		548694051D8384E600E6685A /* RNPush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPush.m; sourceTree = "<group>"; };
+		BA189FAA1EEE74F100CAD13F /* libRNPush.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPush.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA189FAD1EEE74F100CAD13F /* RNPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPush.h; sourceTree = "<group>"; };
+		BA189FAE1EEE74F100CAD13F /* RNPush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPush.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		548693FD1D8384E600E6685A /* Frameworks */ = {
+		BA189FA71EEE74F100CAD13F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,27 +41,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		548693F71D8384E600E6685A = {
+		BA189FA11EEE74F100CAD13F = {
 			isa = PBXGroup;
 			children = (
-				548694021D8384E600E6685A /* RNPush */,
-				548694011D8384E600E6685A /* Products */,
+				BA189FAC1EEE74F100CAD13F /* RNPush */,
+				BA189FAB1EEE74F100CAD13F /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		548694011D8384E600E6685A /* Products */ = {
+		BA189FAB1EEE74F100CAD13F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				548694001D8384E600E6685A /* libRNPush.a */,
+				BA189FAA1EEE74F100CAD13F /* libRNPush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		548694021D8384E600E6685A /* RNPush */ = {
+		BA189FAC1EEE74F100CAD13F /* RNPush */ = {
 			isa = PBXGroup;
 			children = (
-				548694031D8384E600E6685A /* RNPush.h */,
-				548694051D8384E600E6685A /* RNPush.m */,
+				BA189FAD1EEE74F100CAD13F /* RNPush.h */,
+				BA189FAE1EEE74F100CAD13F /* RNPush.m */,
 			);
 			path = RNPush;
 			sourceTree = "<group>";
@@ -69,13 +69,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		548693FF1D8384E600E6685A /* RNPush */ = {
+		BA189FA91EEE74F100CAD13F /* RNPush */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 548694091D8384E600E6685A /* Build configuration list for PBXNativeTarget "RNPush" */;
+			buildConfigurationList = BA189FB31EEE74F100CAD13F /* Build configuration list for PBXNativeTarget "RNPush" */;
 			buildPhases = (
-				548693FC1D8384E600E6685A /* Sources */,
-				548693FD1D8384E600E6685A /* Frameworks */,
-				548693FE1D8384E600E6685A /* CopyFiles */,
+				BA189FA61EEE74F100CAD13F /* Sources */,
+				BA189FA71EEE74F100CAD13F /* Frameworks */,
+				BA189FA81EEE74F100CAD13F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -83,57 +83,59 @@
 			);
 			name = RNPush;
 			productName = RNPush;
-			productReference = 548694001D8384E600E6685A /* libRNPush.a */;
+			productReference = BA189FAA1EEE74F100CAD13F /* libRNPush.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		548693F81D8384E600E6685A /* Project object */ = {
+		BA189FA21EEE74F100CAD13F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
-					548693FF1D8384E600E6685A = {
-						CreatedOnToolsVersion = 7.3.1;
+					BA189FA91EEE74F100CAD13F = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 548693FB1D8384E600E6685A /* Build configuration list for PBXProject "RNPush" */;
+			buildConfigurationList = BA189FA51EEE74F100CAD13F /* Build configuration list for PBXProject "RNPush" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 548693F71D8384E600E6685A;
-			productRefGroup = 548694011D8384E600E6685A /* Products */;
+			mainGroup = BA189FA11EEE74F100CAD13F;
+			productRefGroup = BA189FAB1EEE74F100CAD13F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				548693FF1D8384E600E6685A /* RNPush */,
+				BA189FA91EEE74F100CAD13F /* RNPush */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		548693FC1D8384E600E6685A /* Sources */ = {
+		BA189FA61EEE74F100CAD13F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				548694061D8384E600E6685A /* RNPush.m in Sources */,
+				BA189FAF1EEE74F100CAD13F /* RNPush.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		548694071D8384E600E6685A /* Debug */ = {
+		BA189FB11EEE74F100CAD13F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -141,6 +143,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -175,11 +178,12 @@
 			};
 			name = Debug;
 		};
-		548694081D8384E600E6685A /* Release */ = {
+		BA189FB21EEE74F100CAD13F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -187,6 +191,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -215,58 +220,59 @@
 			};
 			name = Release;
 		};
-		5486940A1D8384E600E6685A /* Debug */ = {
+		BA189FB41EEE74F100CAD13F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../../ios/**",
 					"$(inherited)",
+					"$(SRCROOT)/../../../ios/**",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNMobileCenter/ios/RNMobileCenter";
 			};
 			name = Debug;
 		};
-		5486940B1D8384E600E6685A /* Release */ = {
+		BA189FB51EEE74F100CAD13F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../../ios/**",
 					"$(inherited)",
+					"$(SRCROOT)/../../../ios/**",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNMobileCenter/ios/RNMobileCenter";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		548693FB1D8384E600E6685A /* Build configuration list for PBXProject "RNPush" */ = {
+		BA189FA51EEE74F100CAD13F /* Build configuration list for PBXProject "RNPush" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				548694071D8384E600E6685A /* Debug */,
-				548694081D8384E600E6685A /* Release */,
+				BA189FB11EEE74F100CAD13F /* Debug */,
+				BA189FB21EEE74F100CAD13F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		548694091D8384E600E6685A /* Build configuration list for PBXNativeTarget "RNPush" */ = {
+		BA189FB31EEE74F100CAD13F /* Build configuration list for PBXNativeTarget "RNPush" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5486940A1D8384E600E6685A /* Debug */,
-				5486940B1D8384E600E6685A /* Release */,
+				BA189FB41EEE74F100CAD13F /* Debug */,
+				BA189FB51EEE74F100CAD13F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 548693F81D8384E600E6685A /* Project object */;
+	rootObject = BA189FA21EEE74F100CAD13F /* Project object */;
 }
