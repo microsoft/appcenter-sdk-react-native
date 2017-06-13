@@ -2,6 +2,6 @@
 
 @interface RNPush : NSObject
 
-+ (void)registerWithInitiallyEnabled:(BOOL)enabled;
++ (void)registerAndEnable;
 
 @end

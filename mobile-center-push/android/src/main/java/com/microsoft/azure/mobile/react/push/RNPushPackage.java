@@ -13,19 +13,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class RNPushPackage implements ReactPackage {
-    private static final String ENABLE_IN_JS = "ENABLE_IN_JS";
     private RNPushModule module;
 
-    public RNPushPackage(Application application, boolean startEnable) {
-        this.module = new RNPushModule(application, startEnable);
-    }
-
-    public RNPushPackage(Application application, String startEnabled) {
-        if (startEnabled.equals(ENABLE_IN_JS)){
-            this.module = new RNPushModule(application, false);
-        } else {
-            this.module = new RNPushModule(application, true);
-        }
+    public RNPushPackage(Application application) {
+        this.module = new RNPushModule(application);
     }
 
     @Override

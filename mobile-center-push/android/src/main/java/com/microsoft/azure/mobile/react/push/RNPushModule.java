@@ -15,12 +15,9 @@ import com.microsoft.azure.mobile.push.Push;
 import org.json.JSONException;
 
 public class RNPushModule extends BaseJavaModule {
-    public RNPushModule(Application application, boolean startEnabled) {
+    public RNPushModule(Application application) {
         RNMobileCenter.configureMobileCenter(application);
 
-        if (!startEnabled) {
-            Push.setEnabled(startEnabled);
-        }
         Push.enableFirebaseAnalytics(application); //TODO: ask user if he wanted to enable it by default?
         //TODO: add listener before to be notified whenver a push notification recieved?
         MobileCenter.start(Push.class);

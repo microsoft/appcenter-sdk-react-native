@@ -28,12 +28,9 @@
 
 RCT_EXPORT_MODULE();
 
-+ (void)registerWithInitiallyEnabled:(BOOL) enabled
++ (void)registerAndEnable
 {
     [RNMobileCenter configureMobileCenter];
-    if (!enabled) {
-        [MSPush setEnabled:enabled];
-    }
     [MSMobileCenter startService:[MSPush class]];
 }
 
