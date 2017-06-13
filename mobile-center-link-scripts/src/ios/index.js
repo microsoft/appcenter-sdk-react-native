@@ -22,9 +22,8 @@ try {
 } catch (e) {
     debug('Could not fine AppDelegate.m at ', appDelegatePath);
     throw Error(`
-        Could not find AppDelegate.m file for this project, so could not add the framework for iOS
-        You may have to add the framework manually. 
-        Looked in ${pjson.name} the files - ${appDelegatePaths}
+        Could not find AppDelegate.m file for this project, so could not add the framework for iOS.
+        You may have to add the framework manually.
     `);
 }
 
