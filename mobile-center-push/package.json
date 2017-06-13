@@ -22,25 +22,8 @@
     "mobile-center-link-scripts": "0.1.6"
   },
   "rnpm": {
-    "params": [
-      {
-        "type": "list",
-        "name": "whenToEnablePush",
-        "message": "For the Android app, should sending push notifications be enabled automatically?",
-        "choices": [
-          {
-            "name": "Enable Automatically",
-            "value": "ALWAYS_SEND"
-          },
-          {
-            "name": "Enable in JavaScript",
-            "value": "ENABLE_IN_JS"
-          }
-        ]
-      }
-    ],
     "android": {
-      "packageInstance": "new RNPushPackage(MainApplication.this, ${whenToEnablePush})"
+      "packageInstance": "new RNPushPackage(MainApplication.this)"
     },
     "commands": {
       "prelink": "node node_modules/mobile-center-push/scripts/prelink",
