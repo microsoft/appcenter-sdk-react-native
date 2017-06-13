@@ -21,7 +21,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     ]).catch(function (e) {
         console.log(`
             Could not install dependencies using CocoaPods.
-            Please refer the documentation to install dependencies manually.
+            Please refer to the documentation to install dependencies manually.
 
             Error Reason - ${e.message}
         `)
