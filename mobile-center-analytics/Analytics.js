@@ -7,8 +7,8 @@ module.exports = {
     },
 
     // async - returns a Promise
-    getEnabled() {
-        return RNAnalytics.getEnabled();
+    isEnabled() {
+        return RNAnalytics.isEnabled();
     },
 
     // async - returns a Promise

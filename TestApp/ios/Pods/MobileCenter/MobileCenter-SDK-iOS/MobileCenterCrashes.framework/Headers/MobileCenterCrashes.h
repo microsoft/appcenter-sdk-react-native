@@ -2,5 +2,5 @@
 
 #import "MSCrashes.h"
 #import "MSCrashesDelegate.h"
-#import "MSErrorAttachment.h"
-#import "MSErrorBinaryAttachment.h"
+#import "MSErrorAttachmentLog.h"
+#import "MSErrorAttachmentLog+Utility.h"

@@ -41,7 +41,7 @@ RCT_EXPORT_MODULE();
     [MSMobileCenter startService:[MSAnalytics class]];
 }
 
-RCT_EXPORT_METHOD(getEnabled:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                     rejecter:(RCTPromiseRejectBlock)reject)
 {
     resolve([NSNumber numberWithBool:[MSAnalytics isEnabled]]);

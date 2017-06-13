@@ -8,10 +8,9 @@
  */
 
 #import "AppDelegate.h"
+#import <RNPush/RNPush.h>
 #import <RNAnalytics/RNAnalytics.h>
-
 #import <RNCrashes/RNCrashes.h>
-
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -21,16 +20,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation;                  
+  NSURL *jsCodeLocation;
 
-  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
-  
+  [RNPush registerAndEnable];  // Initialize Mobile Center push
+
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
   [RNCrashes register];  // Initialize Mobile Center crashes
 
- 
+  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  [MSMobileCenter setLogLevel: MSLogLevelVerbose]; 
+
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

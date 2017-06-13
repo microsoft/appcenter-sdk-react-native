@@ -1,0 +1,33 @@
+{
+  "name": "mobile-center-push",
+  "version": "0.5.0",
+  "description": "React Native plugin for Mobile Center Push",
+  "main": "Push.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/mobile-center-sdk-react-native.git"
+  },
+  "keywords": [
+    "react-native",
+    "mobile-center",
+    "push"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/mobile-center-sdk-react-native/issues"
+  },
+  "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native#readme",
+  "dependencies": {
+    "mobile-center-link-scripts": "0.1.6"
+  },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new RNPushPackage(MainApplication.this)"
+    },
+    "commands": {
+      "prelink": "node node_modules/mobile-center-push/scripts/prelink",
+      "postlink": "node node_modules/mobile-center-push/scripts/postlink"
+    }
+  }
+}
