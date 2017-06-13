@@ -1,4 +1,4 @@
-Microsoft Mobile Center Analytics Plugin for React Native
+Microsoft Mobile Center Push Plugin for React Native
 
 Copyright (c) Microsoft Corporation
 
