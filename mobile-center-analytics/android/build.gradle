@@ -22,6 +22,6 @@ dependencies {
     compile 'com.microsoft.azure.mobile:mobile-center-analytics:0.9.+'
 
     //for testing with TestApp
-    compile (name:'RNMobileCenter', ext:'aar')
+    compile project(':RNMobileCenter')
     //compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.5.+'
 }
