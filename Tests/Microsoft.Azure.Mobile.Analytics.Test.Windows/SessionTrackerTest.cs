@@ -55,6 +55,20 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
         }
 
+        [TestMethod]
+        public void ResumeAfterTimeoutAndSendEvent()
+        {
+            _sessionTracker.Resume();
+            _sessionTracker.Pause();
+            Task.Delay((int)SessionTracker.SessionTimeout).Wait();
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
+
+            _sessionTracker.Resume();
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(new EventLog()));
+
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
+        }
+
         /// <summary>
         /// Verify that after a pause that is not long enough to be a timeout, the session tracker does not send a start session log
         /// </summary>
