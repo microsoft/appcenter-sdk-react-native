@@ -55,6 +55,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
         }
 
+        /// <summary>
+        /// Verify that after a timeout, if we resume and send a log at the same time, only 1 new session is started
+        /// </summary>
         [TestMethod]
         public void ResumeAfterTimeoutAndSendEvent()
         {
