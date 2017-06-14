@@ -619,7 +619,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.demoapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.demoapp;
 				PRODUCT_NAME = DemoApp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -642,7 +642,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.testapp-com.microsoft.azure.mobile.reactnative.demoapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.demoapp;
 				PRODUCT_NAME = DemoApp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
