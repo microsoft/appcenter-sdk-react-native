@@ -138,6 +138,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             _sid = Guid.NewGuid();
             _sessions.Add(now, _sid.Value);
             _applicationSettings[StorageKey] = SessionsAsString();
+            _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             var startSessionLog = new StartSessionLog { Sid = _sid };
             _channel.EnqueueAsync(startSessionLog);
         }
