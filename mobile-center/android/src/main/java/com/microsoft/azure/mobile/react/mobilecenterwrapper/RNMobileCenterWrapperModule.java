@@ -25,6 +25,6 @@ public class RNMobileCenterWrapperModule extends BaseJavaModule {
 
     @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
-        RNMobileCenter.setCustomProperties();
+        RNMobileCenter.setCustomProperties(RNUtils.toCustomProperties(properties));
     }
 }

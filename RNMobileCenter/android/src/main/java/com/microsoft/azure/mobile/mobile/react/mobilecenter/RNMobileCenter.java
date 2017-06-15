@@ -2,7 +2,11 @@ package com.microsoft.azure.mobile.react.mobilecenter;
 
 import android.app.Application;
 
+import java.util.Map;
+import java.util.Date;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.io.InputStream;
 
@@ -39,10 +43,7 @@ public class RNMobileCenter {
         MobileCenter.setWrapperSdk(wrapperSdk);
     }
 
-    public static void setCustomProperties(){
-        CustomProperties properties = new CustomProperties();
-        //For testing
-        properties.set("color", "blue").set("score", 10);
+    public static void setCustomProperties(CustomProperties properties){
         MobileCenter.setCustomProperties(properties);
     }
 
