@@ -18,4 +18,6 @@
 + (MSWrapperSdk *) getWrapperSdk;
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk;
 
++ (void) setCustomProperties: (NSDictionary*)properties;
+
 @end

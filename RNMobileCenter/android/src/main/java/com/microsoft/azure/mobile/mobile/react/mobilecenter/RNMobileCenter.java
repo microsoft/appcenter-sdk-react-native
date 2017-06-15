@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 
+import com.microsoft.azure.mobile.CustomProperties;
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.ingestion.models.WrapperSdk;
 
@@ -36,6 +37,13 @@ public class RNMobileCenter {
     public static void setWrapperSdk(WrapperSdk wrapperSdk) {
         RNMobileCenter.wrapperSdk = wrapperSdk;
         MobileCenter.setWrapperSdk(wrapperSdk);
+    }
+
+    public static void setCustomProperties(){
+        CustomProperties properties = new CustomProperties();
+        //For testing
+        properties.set("color", "blue").set("score", 10);
+        MobileCenter.setCustomProperties(properties);
     }
 
     public static WrapperSdk getWrapperSdk() {
