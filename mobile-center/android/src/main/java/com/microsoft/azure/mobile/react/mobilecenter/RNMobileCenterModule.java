@@ -1,0 +1,46 @@
+package com.microsoft.azure.mobile.react.mobilecenterv2;
+
+import android.app.Application;
+
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.BaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+
+import com.microsoft.azure.mobile.MobileCenter;
+
+import org.json.JSONException;
+
+public class RNMobileCenterModule extends BaseJavaModule {
+
+    public RNMobileCenterModule(Application application) {
+
+    }
+
+    @Override
+    public String getName() {
+        return "RNMobileCenter";
+    }
+
+    @ReactMethod
+    public void setCustomProperties(ReadableMap properties) {
+        CustomMobileCenter.setCustomPropertiesNew(RNUtils.toCustomProperties(properties));
+    }
+
+    @ReactMethod
+    public void setEnabled(boolean enabled) {
+        MobileCenter.setEnabled(enabled);
+    }
+
+    @ReactMethod
+    public void setLogLevel(int logLevel) {
+        MobileCenter.setLogLevel(logLevel);
+    }
+
+    @ReactMethod
+    public void getLogLevel(final Promise promise) {
+        int logLevel = MobileCenter.getLogLevel();
+        promise.resolve(logLevel);
+    }
+}

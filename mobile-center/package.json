@@ -22,7 +22,7 @@
   },
   "rnpm": {
     "android": {
-      "packageInstance": "new RNMobileCenterWrapper(MainApplication.this)"
+      "packageInstance": "new RNMobileCenterPackage(MainApplication.this)"
     },
     "commands": {
       "prelink": "node node_modules/mobile-center/scripts/prelink",

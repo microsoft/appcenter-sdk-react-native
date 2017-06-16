@@ -1,10 +1,18 @@
 let ReactNative = require('react-native');
-let RNMobileCenter = require("react-native").NativeModules.RNMobileCenterWrapper;
+let RNMobileCenter = require("react-native").NativeModules.RNMobileCenter;
 
 let MobileCenter = {
     // async - returns a Promise
-    setCustomProperties(properties) {
+    async setCustomProperties(properties) {
         return RNMobileCenter.setCustomProperties(properties);
+    },
+
+    async getLogLevel() {
+        return RNMobileCenter.getLogLevel();
+    },
+
+    async setLogLevel(logLevel){
+        return RNMobileCenter.setLogLevel(logLevel);
     }
 };
 

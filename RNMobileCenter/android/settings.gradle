@@ -1,3 +1,0 @@
-include ':RNMobileCenter'
-
-rootProject.name = 'mobile-center-react-native'

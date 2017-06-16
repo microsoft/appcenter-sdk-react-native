@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 
 import Push from 'mobile-center-push';
-import MobileCenter from 'mobile-center';
 import SharedStyles from './SharedStyles';
 
 export default class PushScreen extends React.Component {
@@ -43,15 +42,6 @@ export default class PushScreen extends React.Component {
     this.setState({pushEnabled: pushEnabled});
   }
 
-  asyn setCustomProperties() {
-    let properties = {
-        'color': 'red',
-        'number': 2
-    };
-
-    await MobileCenter.setCustomProperties(properties);
-  }
-
   render() {
     return (
       <View style={SharedStyles.container}>
@@ -66,12 +56,6 @@ export default class PushScreen extends React.Component {
           <TouchableOpacity onPress={this.toggleEnabled.bind(this)}>
             <Text style={SharedStyles.toggleEnabled}>
               toggle
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.setCustomProperties.bind(this)}>
-            <Text style={SharedStyles.toggleEnabled}>
-              setCustomProperties
             </Text>
           </TouchableOpacity>
 

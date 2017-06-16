@@ -1,0 +1,28 @@
+// Bintray constants
+
+ext {
+    siteUrl = 'https://github.com/Microsoft/mobile-center-sdk-react-native'
+    gitUrl = 'https://github.com/Microsoft/mobile-center-sdk-react-native.git'
+    groupId = 'com.microsoft.azure.mobile.react'
+    sdkDescription = 'Mobile Center SDK for Android react-native'
+
+    Properties properties = new Properties()
+    File file = rootProject.file('local.properties')
+
+    if (file.exists()) {
+        properties.load(file.newDataInputStream())
+    }
+
+    bintrayUser = properties.getProperty("bintray.user")
+    bintrayKey = properties.getProperty("bintray.key")
+    bintrayUserOrg = properties.getProperty("bintray.user.org")
+    bintrayRepo = properties.getProperty("bintray.repo")
+
+    licenseName = 'The MIT License (MIT)'
+    licenseSite = 'https://opensource.org/licenses/MIT'
+    licenseCode = 'MIT'
+
+    developerId = 'microsoft'
+    developerName = 'Microsoft'
+    developerEmail = 'mobiledevopssdk@microsoft.com'
+}
