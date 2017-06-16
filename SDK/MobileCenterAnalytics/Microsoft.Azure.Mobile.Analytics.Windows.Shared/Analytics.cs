@@ -5,6 +5,7 @@ using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
@@ -40,23 +41,25 @@ namespace Microsoft.Azure.Mobile.Analytics
         }
 
         /// <summary>
-        /// Enable or disable Analytics module.
+        /// Check whether the Analytics service is enabled or not.
         /// </summary>
-        public static bool Enabled
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
         {
-            get
+            lock (AnalyticsLock)
             {
-                lock (AnalyticsLock)
-                {
-                    return Instance.InstanceEnabled;
-                }
+                return Task.FromResult(Instance.InstanceEnabled);
             }
-            set
+        }
+
+        /// <summary>
+        /// Enable or disable the Analytics service.
+        /// </summary>
+        public static void SetEnabled(bool enabled)
+        {
+            lock (AnalyticsLock)
             {
-                lock (AnalyticsLock)
-                {
-                    Instance.InstanceEnabled = value;
-                }
+                Instance.InstanceEnabled = enabled;
             }
         }
 

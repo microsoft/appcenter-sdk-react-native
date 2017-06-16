@@ -49,10 +49,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void GetEnabled()
         {
-            Analytics.Enabled = false;
-            var valWhenFalse = Analytics.Enabled;
-            Analytics.Enabled = true;
-            var valWhenTrue = Analytics.Enabled;
+            Analytics.SetEnabled(false);
+            var valWhenFalse = Analytics.IsEnabledAsync().Result;
+            Analytics.SetEnabled(true);
+            var valWhenTrue = Analytics.IsEnabledAsync().Result;
 
             Assert.IsFalse(valWhenFalse);
             Assert.IsTrue(valWhenTrue);
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void SetEnabledFalse()
         {
-            Analytics.Enabled = false;
+            Analytics.SetEnabled(false);
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             _applicationLifecycleHelper.InvokeStarted();
             _applicationLifecycleHelper.InvokeSuspended();
@@ -136,9 +136,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void EnableAfterDisabling()
         {
-            Analytics.Enabled = false;
+            Analytics.SetEnabled(false);
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty); 
-            Analytics.Enabled = true;
+            Analytics.SetEnabled(true);
 
             _applicationLifecycleHelper.InvokeStarted();
             _applicationLifecycleHelper.InvokeSuspended();
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TrackEvent()
         {
-            Analytics.Enabled = true;
+            Analytics.SetEnabled(true);
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var eventName = "eventName";
             var key = "key";
@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TrackEventInvalid()
         {
-            Analytics.Enabled = true;
+            Analytics.SetEnabled(true);
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             // Event name is null or empty
@@ -234,7 +234,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void TrackEventWhileDisabled()
         {
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            Analytics.Enabled = false;
+            Analytics.SetEnabled(false);
             Analytics.TrackEvent("anevent");
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Never());
