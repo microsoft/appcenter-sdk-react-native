@@ -17,7 +17,7 @@ import CrashesScreen from './CrashesScreen';
 import AnalyticsScreen from './AnalyticsScreen';
 import PushScreen from './PushScreen';
 
-const TestApp = StackNavigator({
+const DemoApp = StackNavigator({
   Main: {screen: MainScreen},
   Crashes: {screen: CrashesScreen},
   Analytics: {screen: AnalyticsScreen},
