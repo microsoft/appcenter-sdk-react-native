@@ -4,17 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.Azure.Mobile;
 using Com.Microsoft.Azure.Mobile.Crashes.Model;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
+    using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.AndroidCrashes;
+    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
+    using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
+    using AndroidManagedErrorLog = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.ManagedErrorLog;
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
-    using AndroidManagedErrorLog = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.ManagedErrorLog;
-    using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.AndroidCrashes;
-    using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
-    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
 
     class PlatformCrashes : PlatformCrashesBase
     {
@@ -50,40 +49,33 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Type BindingType => typeof(AndroidCrashes);
 
-        public override bool Enabled
+        public override Task<bool> IsEnabledAsync()
         {
-            get { return AndroidCrashes.Enabled; }
-            set { AndroidCrashes.Enabled = value; }
+            var consumer = new Consumer<bool>();
+            AndroidCrashes.IsEnabled().ThenAccept(consumer);
+            return consumer.Task;
         }
 
-        public override bool HasCrashedInLastSession => AndroidCrashes.HasCrashedInLastSession;
+        public override void SetEnabled(bool enabled)
+        {
+            AndroidCrashes.SetEnabled(enabled);
+        }
+
+        public override Task<bool> HasCrashedInLastSessionAsync()
+        {
+            var consumer = new Consumer<bool>();
+            AndroidCrashes.HasCrashedInLastSession().ThenAccept(consumer);
+            return consumer.Task;
+        }
 
         public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            var callback = new GetLastSessionCrashReportCallback();
-            AndroidCrashes.GetLastSessionCrashReport(callback);
-            var androidErrorReport = await callback.Result.ConfigureAwait(false);
+            var consumer = new Consumer<AndroidErrorReport>();
+            AndroidCrashes.LastSessionCrashReport.ThenAccept(consumer);
+            var androidErrorReport = await consumer.Task.ConfigureAwait(false);
             if (androidErrorReport == null)
                 return null;
             return ErrorReportCache.GetErrorReport(androidErrorReport);
-        }
-
-        class GetLastSessionCrashReportCallback : Java.Lang.Object, IResultCallback
-        {
-            AndroidErrorReport _result;
-
-            internal Task<AndroidErrorReport> Result { get; }
-
-            internal GetLastSessionCrashReportCallback()
-            {
-                Result = new Task<AndroidErrorReport>(() => _result);
-            }
-
-            public void OnResult(Java.Lang.Object result)
-            {
-                _result = result as AndroidErrorReport;
-                Result.Start();
-            }
         }
 
         //public override void TrackException(Exception exception)

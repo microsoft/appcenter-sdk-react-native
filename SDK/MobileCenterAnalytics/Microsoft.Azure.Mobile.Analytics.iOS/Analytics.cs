@@ -6,6 +6,7 @@ using Foundation;
 namespace Microsoft.Azure.Mobile.Analytics
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using iOSAnalytics = iOS.Bindings.MSAnalytics;
 
     /// <summary>
@@ -27,12 +28,20 @@ namespace Microsoft.Azure.Mobile.Analytics
         public static Type BindingType => typeof(iOSAnalytics);
 
         /// <summary>
-        /// Enable or disable Analytics module.
+        /// Check whether the Analytics service is enabled or not.
         /// </summary>
-        public static bool Enabled
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
         {
-            get { return iOSAnalytics.IsEnabled(); }
-            set { iOSAnalytics.SetEnabled(value); }
+            return Task.FromResult(iOSAnalytics.IsEnabled());
+        }
+
+        /// <summary>
+        /// Enable or disable the Analytics service.
+        /// </summary>
+        public static void SetEnabled(bool enabled)
+        {
+            iOSAnalytics.SetEnabled(enabled);
         }
 
         /// <summary>

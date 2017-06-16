@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
@@ -12,9 +13,20 @@ namespace Microsoft.Azure.Mobile.Analytics
         }
 
         /// <summary>
-        ///     Enable or disable Analytics module.
+        /// Check whether the Analytics service is enabled or not.
         /// </summary>
-        public static bool Enabled { get; set; }
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
+        {
+            return Task.FromResult(false);
+        }
+
+        /// <summary>
+        /// Enable or disable the Analytics service.
+        /// </summary>
+        public static void SetEnabled(bool enabled)
+        {
+        }
 
         ///// <summary>
         ///// Enable or disable automatic page tracking.

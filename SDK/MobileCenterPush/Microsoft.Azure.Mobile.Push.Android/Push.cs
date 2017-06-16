@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Push;
 
@@ -23,10 +24,16 @@ namespace Microsoft.Azure.Mobile.Push
             AndroidPush.SetListener(_pushListener);
         }
 
-        private static bool PlatformEnabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get { return AndroidPush.Enabled; }
-            set { AndroidPush.Enabled = value; }
+            var consumer = new Consumer<bool>();
+            AndroidPush.IsEnabled().ThenAccept(consumer);
+            return consumer.Task;
+        }
+
+        static void PlatformSetEnabled(bool enabled)
+        {
+            AndroidPush.SetEnabled(enabled);
         }
 
         /// <summary>

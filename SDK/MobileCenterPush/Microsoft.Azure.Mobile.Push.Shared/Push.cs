@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Push
 {
@@ -8,12 +9,20 @@ namespace Microsoft.Azure.Mobile.Push
     public partial class Push
     {
         /// <summary>
-        /// Enable or disable Push module.
+        /// Check whether the Push service is enabled or not.
         /// </summary>
-        public static bool Enabled
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
         {
-            get { return PlatformEnabled; }
-            set { PlatformEnabled = value; }
+            return PlatformIsEnabledAsync();
+        }
+
+        /// <summary>
+        /// Enable or disable the Push service.
+        /// </summary>
+        public static void SetEnabled(bool enabled)
+        {
+            PlatformSetEnabled(enabled);
         }
 
         /// <summary>

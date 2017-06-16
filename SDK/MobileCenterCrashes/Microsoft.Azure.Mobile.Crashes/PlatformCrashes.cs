@@ -20,9 +20,19 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Type BindingType { get; }
 
-        public override bool Enabled { get; set; }
+        public override Task<bool> IsEnabledAsync()
+        {
+            return Task.FromResult(false);
+        }
 
-        public override bool HasCrashedInLastSession { get; }
+        public override void SetEnabled(bool enabled)
+        {
+        }
+
+        public override Task<bool> HasCrashedInLastSessionAsync()
+        {
+            return Task.FromResult(false);
+        }
 
         public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {

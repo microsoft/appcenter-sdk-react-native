@@ -1,8 +1,17 @@
-﻿namespace Microsoft.Azure.Mobile.Distribute
+﻿using System.Threading.Tasks;
+
+namespace Microsoft.Azure.Mobile.Distribute
 {
     public static partial class Distribute
     {
-        static bool PlatformEnabled { get; set; }
+        static Task<bool> PlatformIsEnabledAsync()
+        {
+            return Task.FromResult(false);
+        }
+
+        static void PlatformSetEnabled(bool enabled)
+        {
+        }
 
         static void PlatformSetInstallUrl(string installUrl)
         {

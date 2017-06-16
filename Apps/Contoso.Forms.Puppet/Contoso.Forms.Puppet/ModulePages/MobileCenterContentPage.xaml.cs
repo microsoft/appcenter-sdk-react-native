@@ -42,12 +42,11 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
-            MobileCenterEnabledSwitchCell.On = MobileCenter.Enabled;
-
+            MobileCenterEnabledSwitchCell.On = await MobileCenter.IsEnabledAsync();
         }
 
         void LogLevelCellTapped(object sender, EventArgs e)
@@ -80,7 +79,7 @@ namespace Contoso.Forms.Puppet
 
         void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            MobileCenter.Enabled = e.Value;
+            MobileCenter.SetEnabled(e.Value);
         }
 
         void UpdateLogWriteLevelLabel()

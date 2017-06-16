@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Distribute
 {
@@ -8,19 +8,20 @@ namespace Microsoft.Azure.Mobile.Distribute
     public static partial class Distribute
     {
         /// <summary>
-        /// Enable or disable Distribute module.
+        /// Check whether the Distribute service is enabled or not.
         /// </summary>
-        public static bool Enabled
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
         {
-            get
-            {
-                return PlatformEnabled;
-            }
+            return PlatformIsEnabledAsync();
+        }
 
-            set
-            {
-                PlatformEnabled = value;
-            }
+        /// <summary>
+        /// Enable or disable the Distribute service.
+        /// </summary>
+        public static void SetEnabled(bool enabled)
+        {
+            PlatformSetEnabled(enabled);
         }
 
         /// <summary>

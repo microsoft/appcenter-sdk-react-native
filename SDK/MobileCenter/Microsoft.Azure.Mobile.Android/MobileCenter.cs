@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Android.App;
 using Com.Microsoft.Azure.Mobile;
 using Java.Lang;
@@ -8,24 +7,21 @@ using Java.Lang;
 namespace Microsoft.Azure.Mobile
 {
     using System.Reflection;
+    using System.Threading.Tasks;
+    using Com.Microsoft.Azure.Mobile.Utils.Async;
+    using Java.Util;
     using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
 
-    /// <summary>
-    /// SDK core used to initialize, start and control specific service.
-    /// </summary>
     public partial class MobileCenter
     {
         /* The key identifier for parsing app secrets */
-        private const string PlatformIdentifier = "android";
+        const string PlatformIdentifier = "android";
 
         internal MobileCenter()
         {
         }
 
-        /// <summary>
-        /// This property controls the amount of logs emitted by the SDK.
-        /// </summary>
-        public static LogLevel LogLevel
+        static LogLevel PlatformLogLevel
         {
             get
             {
@@ -84,19 +80,12 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
-        /// </summary>
-        /// <param name="logUrl">Base URL to use for server communication.</param>
-        public static void SetLogUrl(string logUrl)
+        static void PlatformSetLogUrl(string logUrl)
         {
             AndroidMobileCenter.SetLogUrl(logUrl);
         }
 
-        /// <summary>
-        /// Check whether SDK has already been configured or not.
-        /// </summary>
-        public static bool Configured
+        static bool PlatformConfigured
         {
             get
             {
@@ -104,33 +93,17 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Configure the SDK.
-        /// This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        public static void Configure(string appSecret)
+        static void PlatformConfigure(string appSecret)
         {
             AndroidMobileCenter.Configure(SetWrapperSdkAndGetApplication(), appSecret);
         }
 
-        /// <summary>
-        /// Start services.
-        /// This may be called only once per service per application process lifetime.
-        /// </summary>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(params Type[] services)
+        static void PlatformStart(params Type[] services)
         {
             AndroidMobileCenter.Start(GetServices(services));
         }
 
-        /// <summary>
-        /// Initialize the SDK with the list of services to start.
-        /// This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(string appSecret, params Type[] services)
+        static void PlatformStart(string appSecret, params Type[] services)
         {
             string parsedSecret;
             try
@@ -145,36 +118,28 @@ namespace Microsoft.Azure.Mobile
             AndroidMobileCenter.Start(SetWrapperSdkAndGetApplication(), parsedSecret, GetServices(services));
         }
 
-
-        /// <summary>
-        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been started.
-        /// </summary>
-        /// <remarks>
-        /// The default state is <c>true</c> and updating the state is persisted into local application storage.
-        /// </remarks>
-        public static bool Enabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get { return AndroidMobileCenter.Enabled; }
-            set { AndroidMobileCenter.Enabled = value; }
+            var consumer = new Consumer<bool>();
+            AndroidMobileCenter.IsEnabled().ThenAccept(consumer);
+            return consumer.Task;
         }
 
-        /// <summary>
-        /// Get the unique installation identifier for this application installation on this device.
-        /// </summary>
-        /// <remarks>
-        /// The identifier is lost if clearing application data or uninstalling application.
-        /// </remarks>
-        public static Guid? InstallId
+        static void PlatformSetEnabled(bool enabled)
         {
-            get
+            AndroidMobileCenter.SetEnabled(enabled);
+        }
+
+        static async Task<Guid?> PlatformGetInstallIdAsync()
+        {
+            var consumer = new Consumer<UUID>();
+            AndroidMobileCenter.InstallId.ThenAccept(consumer);
+            var installId = await consumer.Task.ConfigureAwait(false);
+            if (installId != null)
             {
-                var installId = AndroidMobileCenter.InstallId;
-                if (installId != null)
-                {
-                    return Guid.Parse(installId.ToString());
-                }
-                return null;
+                return Guid.Parse(installId.ToString());
             }
+            return null;
         }
 
         static Application SetWrapperSdkAndGetApplication()
@@ -198,7 +163,7 @@ namespace Microsoft.Azure.Mobile
             return (Application)Application.Context;
         }
 
-        private static Class[] GetServices(IEnumerable<Type> services)
+        static Class[] GetServices(IEnumerable<Type> services)
         {
             var classes = new List<Class>();
             foreach (var t in services)

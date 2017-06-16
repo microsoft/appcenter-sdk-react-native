@@ -6,13 +6,15 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// <summary>
     /// Interface to abstract <see cref="Crashes"/> features between different platforms.
     /// </summary>
-    internal interface IPlatformCrashes
+    interface IPlatformCrashes
     {
         Type BindingType { get; }
 
-        bool Enabled { get; set; }
+        Task<bool> IsEnabledAsync();
 
-        bool HasCrashedInLastSession { get; }
+        void SetEnabled(bool enabled);
+
+        Task<bool> HasCrashedInLastSessionAsync();
 
         Task<ErrorReport> GetLastSessionCrashReportAsync();
 

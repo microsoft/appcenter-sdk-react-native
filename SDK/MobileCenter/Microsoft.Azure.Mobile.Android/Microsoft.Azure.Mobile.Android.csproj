@@ -55,6 +55,7 @@
     <Compile Include="MobileCenterLog.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Consumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
