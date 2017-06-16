@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RNMobileCenterWrapperPackage implements ReactPackage {
-    private RNPushModule module;
+    private RNMobileCenterWrapperModule module;
 
     public RNMobileCenterWrapperPackage(Application application) {
         this.module = new RNMobileCenterWrapperModule(application);
