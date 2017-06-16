@@ -16,37 +16,37 @@ namespace Contoso.Forms.Test
 
         void EnableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.Enabled = true;
+            MobileCenter.SetEnabled(true);
             UpdateEnabledStateLabels();
         }
 
         void EnableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.Enabled = true;
+            Crashes.SetEnabled(true);
             UpdateEnabledStateLabels();
         }
 
         void EnableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.Enabled = true;
+            Analytics.SetEnabled(true);
             UpdateEnabledStateLabels();
         }
 
         void DisableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.Enabled = false;
+            MobileCenter.SetEnabled(false);
             UpdateEnabledStateLabels();
         }
 
         void DisableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.Enabled = false;
+            Crashes.SetEnabled(false);
             UpdateEnabledStateLabels();
         }
 
         void DisableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.Enabled = false;
+            Analytics.SetEnabled(false);
             UpdateEnabledStateLabels();
         }
 
@@ -63,7 +63,15 @@ namespace Contoso.Forms.Test
         {
             if (CrashesEnabledLabel != null)
             {
-                CrashesEnabledLabel.Text = Crashes.Enabled ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
+                Crashes.IsEnabledAsync().ContinueWith(
+                    enabled =>
+                    {
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                        {
+                            CrashesEnabledLabel.Text = enabled.Result ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
+                        });
+                    }
+                );
             }
         }
 
@@ -71,7 +79,15 @@ namespace Contoso.Forms.Test
         {
             if (AnalyticsEnabledLabel != null)
             {
-                AnalyticsEnabledLabel.Text = Analytics.Enabled ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
+                Analytics.IsEnabledAsync().ContinueWith(
+                    enabled =>
+                    {
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                        {
+                            AnalyticsEnabledLabel.Text = enabled.Result ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
+                        });
+                    }
+                );
             }
         }
 
@@ -79,7 +95,15 @@ namespace Contoso.Forms.Test
         {
             if (MobileCenterEnabledLabel != null)
             {
-                MobileCenterEnabledLabel.Text = MobileCenter.Enabled ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
+                MobileCenter.IsEnabledAsync().ContinueWith(
+                    enabled =>
+                    {
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                        {
+                            MobileCenterEnabledLabel.Text = enabled.Result ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
+                        });
+                    }
+                );
             }
         }
 

@@ -16,7 +16,7 @@ namespace Contoso.Forms.Test
             base.OnAppearing();
             if (InstallIdLabel != null)
             {
-                InstallIdLabel.Text = MobileCenter.InstallId?.ToString();
+                InstallIdLabel.Text = MobileCenter.GetInstallIdAsync().Result?.ToString();
             }
         }
 
