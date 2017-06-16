@@ -348,7 +348,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
 
             // If the optional Install ID has no value, default to using empty GUID
-            var rawInstallId = await MobileCenter.GetInstallIdAsync();
+            var rawInstallId = await MobileCenter.GetInstallIdAsync().ConfigureAwait(false);
             var installId = rawInstallId.HasValue ? rawInstallId.Value : Guid.Empty;
             using (var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs))
             {
