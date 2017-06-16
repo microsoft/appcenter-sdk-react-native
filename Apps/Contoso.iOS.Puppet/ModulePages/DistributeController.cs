@@ -14,14 +14,14 @@ namespace Contoso.iOS.Puppet
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            DistributeEnabledSwitch.On = Distribute.Enabled;
-            DistributeEnabledSwitch.Enabled = MobileCenter.Enabled;
+            DistributeEnabledSwitch.On = Distribute.IsEnabledAsync().Result;
+            DistributeEnabledSwitch.Enabled = MobileCenter.IsEnabledAsync().Result;
         }
 
         partial void UpdateEnabled()
         {
-            Distribute.Enabled = DistributeEnabledSwitch.On;
-            DistributeEnabledSwitch.On = Distribute.Enabled;
+            Distribute.SetEnabled(DistributeEnabledSwitch.On);
+            DistributeEnabledSwitch.On = Distribute.IsEnabledAsync().Result;
         }
     }
 }

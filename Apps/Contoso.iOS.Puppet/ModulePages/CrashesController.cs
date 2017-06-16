@@ -15,14 +15,14 @@ namespace Contoso.iOS.Puppet
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            CrashesEnabledSwitch.On = Crashes.Enabled;
-            CrashesEnabledSwitch.Enabled = MobileCenter.Enabled;
+            CrashesEnabledSwitch.On = Crashes.IsEnabledAsync().Result;
+            CrashesEnabledSwitch.Enabled = MobileCenter.IsEnabledAsync().Result;
         }
 
         partial void UpdateEnabled()
         {
-            Crashes.Enabled = CrashesEnabledSwitch.On;
-            CrashesEnabledSwitch.On = Crashes.Enabled;
+            Crashes.SetEnabled(CrashesEnabledSwitch.On);
+            CrashesEnabledSwitch.On = Crashes.IsEnabledAsync().Result;
         }
 
         partial void TestCrash()

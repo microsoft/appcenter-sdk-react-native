@@ -41,8 +41,8 @@ namespace Contoso.iOS.Puppet
                 MobileCenterLog.Verbose("THETAG", "THEMESSAGE", e);
             }
 
-            Analytics.Enabled = true;
-            System.Diagnostics.Debug.WriteLine("ANALYTICS: " + Analytics.Enabled.ToString());
+            Analytics.SetEnabled(true);
+            System.Diagnostics.Debug.WriteLine("ANALYTICS: " + Analytics.IsEnabledAsync().Result);
             return true;
         }
 
