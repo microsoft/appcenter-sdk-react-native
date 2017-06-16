@@ -48,19 +48,19 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        protected override void UpdateState()
+        protected override async void UpdateState()
         {
             CrashesEnabledSwitch.CheckedChange -= UpdateEnabled;
             CrashesEnabledSwitch.Enabled = true;
-            CrashesEnabledSwitch.Checked = Crashes.Enabled;
-            CrashesEnabledSwitch.Enabled = MobileCenter.Enabled;
+            CrashesEnabledSwitch.Checked = await Crashes.IsEnabledAsync();
+            CrashesEnabledSwitch.Enabled = await MobileCenter.IsEnabledAsync();
             CrashesEnabledSwitch.CheckedChange += UpdateEnabled;
         }
 
-        private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            Crashes.Enabled = e.IsChecked;
-            CrashesEnabledSwitch.Checked = Crashes.Enabled;
+            Crashes.SetEnabled(e.IsChecked);
+            CrashesEnabledSwitch.Checked = await Crashes.IsEnabledAsync();
         }
 
         private void TestCrash(object sender, EventArgs e)

@@ -47,20 +47,20 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        protected override void UpdateState()
+        protected override async void UpdateState()
         {
             AnalyticsEnabledSwitch.CheckedChange -= UpdateEnabled;
             AnalyticsEnabledSwitch.Enabled = true;
-            AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
-            AnalyticsEnabledSwitch.Enabled = MobileCenter.Enabled;
+            AnalyticsEnabledSwitch.Checked = await Analytics.IsEnabledAsync();
+            AnalyticsEnabledSwitch.Enabled = await MobileCenter.IsEnabledAsync();
             AnalyticsEnabledSwitch.CheckedChange += UpdateEnabled;
             PropertiesCountLabel.Text = mEventProperties.Count.ToString();
         }
 
-        private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            Analytics.Enabled = e.IsChecked;
-            AnalyticsEnabledSwitch.Checked = Analytics.Enabled;
+            Analytics.SetEnabled(e.IsChecked);
+            AnalyticsEnabledSwitch.Checked = await Analytics.IsEnabledAsync();
         }
 
         private void Properties(object sender, EventArgs e)

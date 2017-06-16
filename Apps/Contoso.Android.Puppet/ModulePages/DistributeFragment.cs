@@ -28,19 +28,19 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        protected override void UpdateState()
+        protected override async void UpdateState()
         {
             DistributeEnabledSwitch.CheckedChange -= UpdateEnabled;
             DistributeEnabledSwitch.Enabled = true;
-            DistributeEnabledSwitch.Checked = Distribute.Enabled;
-            DistributeEnabledSwitch.Enabled = MobileCenter.Enabled;
+            DistributeEnabledSwitch.Checked = await Distribute.IsEnabledAsync();
+            DistributeEnabledSwitch.Enabled = await MobileCenter.IsEnabledAsync();
             DistributeEnabledSwitch.CheckedChange += UpdateEnabled;
         }
 
-        private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            Distribute.Enabled = e.IsChecked;
-            DistributeEnabledSwitch.Checked = Distribute.Enabled;
+            Distribute.SetEnabled(e.IsChecked);
+            DistributeEnabledSwitch.Checked = await Distribute.IsEnabledAsync();
         }
     }
 }
