@@ -26,9 +26,7 @@ namespace Microsoft.Azure.Mobile.Push
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            var consumer = new Consumer<bool>();
-            AndroidPush.IsEnabled().ThenAccept(consumer);
-            return consumer.Task;
+            return Task.Run(() => (bool)AndroidPush.IsEnabled().Get());
         }
 
         static void PlatformSetEnabled(bool enabled)

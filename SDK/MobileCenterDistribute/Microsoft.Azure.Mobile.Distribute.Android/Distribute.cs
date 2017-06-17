@@ -13,9 +13,7 @@ namespace Microsoft.Azure.Mobile.Distribute
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            var consumer = new Consumer<bool>();
-            AndroidDistribute.IsEnabled().ThenAccept(consumer);
-            return consumer.Task;
+            return Task.Run(() => (bool)AndroidDistribute.IsEnabled().Get());
         }
 
         static void PlatformSetEnabled(bool enabled)
