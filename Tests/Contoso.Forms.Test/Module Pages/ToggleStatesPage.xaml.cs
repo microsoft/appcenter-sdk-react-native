@@ -63,15 +63,7 @@ namespace Contoso.Forms.Test
         {
             if (CrashesEnabledLabel != null)
             {
-                Crashes.IsEnabledAsync().ContinueWith(
-                    enabled =>
-                    {
-                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                        {
-                            CrashesEnabledLabel.Text = enabled.Result ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
-                        });
-                    }
-                );
+                CrashesEnabledLabel.Text = Crashes.IsEnabledAsync().Result ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
             }
         }
 
@@ -79,15 +71,7 @@ namespace Contoso.Forms.Test
         {
             if (AnalyticsEnabledLabel != null)
             {
-                Analytics.IsEnabledAsync().ContinueWith(
-                    enabled =>
-                    {
-                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                        {
-                            AnalyticsEnabledLabel.Text = enabled.Result ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
-                        });
-                    }
-                );
+                AnalyticsEnabledLabel.Text = Analytics.IsEnabledAsync().Result ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
             }
         }
 
@@ -95,15 +79,7 @@ namespace Contoso.Forms.Test
         {
             if (MobileCenterEnabledLabel != null)
             {
-                MobileCenter.IsEnabledAsync().ContinueWith(
-                    enabled =>
-                    {
-                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                        {
-                            MobileCenterEnabledLabel.Text = enabled.Result ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
-                        });
-                    }
-                );
+                MobileCenterEnabledLabel.Text = MobileCenter.IsEnabledAsync().Result ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
             }
         }
 

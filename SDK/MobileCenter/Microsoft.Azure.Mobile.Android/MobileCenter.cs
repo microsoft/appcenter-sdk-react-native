@@ -120,9 +120,7 @@ namespace Microsoft.Azure.Mobile
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            var consumer = new Consumer<bool>();
-            AndroidMobileCenter.IsEnabled().ThenAccept(consumer);
-            return consumer.Task;
+            return Task.Run(() => (bool)AndroidMobileCenter.IsEnabled().Get());
         }
 
         static void PlatformSetEnabled(bool enabled)
@@ -130,16 +128,16 @@ namespace Microsoft.Azure.Mobile
             AndroidMobileCenter.SetEnabled(enabled);
         }
 
-        static async Task<Guid?> PlatformGetInstallIdAsync()
+        static Task<Guid?> PlatformGetInstallIdAsync()
         {
-            var consumer = new Consumer<UUID>();
-            AndroidMobileCenter.InstallId.ThenAccept(consumer);
-            var installId = await consumer.Task.ConfigureAwait(false);
-            if (installId != null)
+            return Task.Run(() =>
             {
-                return Guid.Parse(installId.ToString());
-            }
-            return null;
+                if (AndroidMobileCenter.InstallId.Get() is Java.Util.UUID installId)
+                {
+                    return Guid.Parse(installId.ToString());
+                }
+                return (Guid?)null;
+            });
         }
 
         static Application SetWrapperSdkAndGetApplication()

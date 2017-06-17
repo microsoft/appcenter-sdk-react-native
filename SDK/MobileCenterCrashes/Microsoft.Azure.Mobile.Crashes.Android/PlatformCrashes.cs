@@ -51,9 +51,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Task<bool> IsEnabledAsync()
         {
-            var consumer = new Consumer<bool>();
-            AndroidCrashes.IsEnabled().ThenAccept(consumer);
-            return consumer.Task;
+            return Task.Run(() => (bool)AndroidCrashes.IsEnabled().Get());
         }
 
         public override void SetEnabled(bool enabled)
@@ -63,19 +61,18 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Task<bool> HasCrashedInLastSessionAsync()
         {
-            var consumer = new Consumer<bool>();
-            AndroidCrashes.HasCrashedInLastSession().ThenAccept(consumer);
-            return consumer.Task;
+            return Task.Run(() => (bool)AndroidCrashes.HasCrashedInLastSession().Get());
         }
 
-        public override async Task<ErrorReport> GetLastSessionCrashReportAsync()
+        public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
-            var consumer = new Consumer<AndroidErrorReport>();
-            AndroidCrashes.LastSessionCrashReport.ThenAccept(consumer);
-            var androidErrorReport = await consumer.Task.ConfigureAwait(false);
-            if (androidErrorReport == null)
-                return null;
-            return ErrorReportCache.GetErrorReport(androidErrorReport);
+            return Task.Run(() =>
+            {
+                var androidErrorReport = AndroidCrashes.LastSessionCrashReport.Get() as AndroidErrorReport;
+                if (androidErrorReport == null)
+                    return null;
+                return ErrorReportCache.GetErrorReport(androidErrorReport);
+            });
         }
 
         //public override void TrackException(Exception exception)

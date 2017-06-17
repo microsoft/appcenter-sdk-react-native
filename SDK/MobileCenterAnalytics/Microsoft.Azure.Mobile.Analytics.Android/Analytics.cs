@@ -30,9 +30,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <returns>A task with result being true if enabled, false if disabled.</returns>
         public static Task<bool> IsEnabledAsync()
         {
-            var consumer = new Consumer<bool>();
-            AndroidAnalytics.IsEnabled().ThenAccept(consumer);
-            return consumer.Task;
+            return Task.Run(() => (bool)AndroidAnalytics.IsEnabled().Get());
         }
 
         /// <summary>
