@@ -132,7 +132,8 @@ namespace Microsoft.Azure.Mobile
         {
             return Task.Run(() =>
             {
-                if (AndroidMobileCenter.InstallId.Get() is Java.Util.UUID installId)
+                var installId = AndroidMobileCenter.InstallId.Get() as Java.Util.UUID;
+                if (installId != null)
                 {
                     return Guid.Parse(installId.ToString());
                 }
