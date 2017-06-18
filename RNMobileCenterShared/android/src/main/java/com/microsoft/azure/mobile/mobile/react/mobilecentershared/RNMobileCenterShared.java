@@ -71,17 +71,4 @@ public class RNMobileCenterShared {
 
         return RNMobileCenterShared.appSecret;
     }
-
-    public static void setEnabled(boolean enabled) {
-        MobileCenter.setEnabled(enabled);
-    }
-
-    public static void setLogLevel(int logLevel) {
-        MobileCenter.setLogLevel(logLevel);
-    }
-
-    public static int getLogLevel() {
-        return MobileCenter.getLogLevel();
-    }
-
 }
