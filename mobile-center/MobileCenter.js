@@ -3,8 +3,8 @@ let RNMobileCenter = require("react-native").NativeModules.RNMobileCenter;
 
 let MobileCenter = {
     // async - returns a Promise
-    async setCustomProperties(properties) {
-        return RNMobileCenter.setCustomProperties(properties);
+    async setEnabled(enabled) {
+        return RNPush.setEnabled(enabled);
     },
 
     async getLogLevel() {
@@ -13,6 +13,10 @@ let MobileCenter = {
 
     async setLogLevel(logLevel){
         return RNMobileCenter.setLogLevel(logLevel);
+    },
+
+    async setCustomProperties(properties) {
+        return RNMobileCenter.setCustomProperties(properties);
     }
 };
 

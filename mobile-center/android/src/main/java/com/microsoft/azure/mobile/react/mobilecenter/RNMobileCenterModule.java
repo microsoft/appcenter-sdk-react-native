@@ -24,11 +24,6 @@ public class RNMobileCenterModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setCustomProperties(ReadableMap properties) {
-        CustomMobileCenter.setCustomPropertiesNew(RNUtils.toCustomProperties(properties));
-    }
-
-    @ReactMethod
     public void setEnabled(boolean enabled) {
         MobileCenter.setEnabled(enabled);
     }
@@ -42,5 +37,10 @@ public class RNMobileCenterModule extends BaseJavaModule {
     public void getLogLevel(final Promise promise) {
         int logLevel = MobileCenter.getLogLevel();
         promise.resolve(logLevel);
+    }
+
+    @ReactMethod
+    public void setCustomProperties(ReadableMap properties) {
+        CustomMobileCenter.setCustomPropertiesNew(RNUtils.toCustomProperties(properties));
     }
 }
