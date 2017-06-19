@@ -15,12 +15,20 @@ import com.microsoft.azure.mobile.push.Push;
 import org.json.JSONException;
 
 public class RNPushModule extends BaseJavaModule {
+    private RNPushEventListener mPushListener;
+
     public RNPushModule(Application application) {
         RNMobileCenter.configureMobileCenter(application);
+        this.mPushListener = new RNPushEventListener();
 
-        Push.enableFirebaseAnalytics(application); //TODO: ask user if he wanted to enable it by default?
-        //TODO: add listener before to be notified whenver a push notification recieved?
+        Push.setListener(mPushListener);
         MobileCenter.start(Push.class);
+    }
+
+    public void setReactApplicationContext(ReactApplicationContext reactContext) {
+        if (this.mPushListener != null) {
+            this.mPushListener.setReactApplicationContext(reactContext);
+        }
     }
 
     @Override
@@ -38,3 +46,4 @@ public class RNPushModule extends BaseJavaModule {
         promise.resolve(Push.isEnabled());
     }
 }
+Contact GitHub API Training Shop Blog About

@@ -13,16 +13,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class RNPushPackage implements ReactPackage {
-    private RNPushModule module;
+    private RNPushModule mPushModule;
 
     public RNPushPackage(Application application) {
-        this.module = new RNPushModule(application);
+        this.mPushModule = new RNPushModule(application);
     }
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+        this.mPushModule.setReactApplicationContext(reactContext);
+
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(this.module);
+        modules.add(this.mPushModule);
         return modules;
     }
 
