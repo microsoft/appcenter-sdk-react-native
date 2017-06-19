@@ -126,12 +126,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        // TODO: Make public when backend is ready.
-        /// <summary>
-        /// Set the custom properties.
-        /// </summary>
-        /// <param name="customProperties">Custom properties object.</param>
-        internal static void SetCustomProperties(CustomProperties customProperties)
+        internal static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
             lock (MobileCenterLock)
             {
