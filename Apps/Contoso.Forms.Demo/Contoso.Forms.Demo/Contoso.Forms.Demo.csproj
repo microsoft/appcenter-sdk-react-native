@@ -54,6 +54,14 @@
     <EmbeddedResource Include="ModulePages\OthersContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomPropertyView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModulePages\CustomPropertiesContentPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -83,9 +91,18 @@
     <Compile Include="ModulePages\OthersContentPage.xaml.cs">
       <DependentUpon>OthersContentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomPropertyView.xaml.cs">
+      <DependentUpon>CustomPropertyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModulePages\CustomPropertiesContentPage.xaml.cs">
+      <DependentUpon>CustomPropertiesContentPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
