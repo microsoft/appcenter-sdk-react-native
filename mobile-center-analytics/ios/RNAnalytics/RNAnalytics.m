@@ -19,7 +19,7 @@
 #endif
 
 @import MobileCenterAnalytics;
-@import RNMobileCenter;
+@import RNMobileCenterShared;
 
 @interface RNAnalytics () <RCTBridgeModule>
 @end
@@ -30,7 +30,7 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithInitiallyEnabled:(BOOL) enabled
 {
-    [RNMobileCenter configureMobileCenter];
+    [RNMobileCenterShared configureMobileCenter];
     if (!enabled) {
         // Avoid starting an analytics session.
         // Note that we don't call this if startEnabled is true, because

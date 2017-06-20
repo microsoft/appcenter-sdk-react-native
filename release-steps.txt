@@ -23,7 +23,7 @@
       Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
     RNMobileCenter.m
       Update the version number used for `initWithWrapperSdkVersion:`.  That should match s.version in
-      RNMobileCewnter.podspec (and for Android the wrapper SDK version comes from the version number
+      RNMobileCenter.podspec (and for Android the wrapper SDK version comes from the version number
       in build.gradle)
 
 
@@ -59,7 +59,7 @@
     RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture armv7):    current ar archive random library
     RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture i386):    current ar archive random library
     RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture x86_64):    current ar archive random library
-    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture arm64):    current ar archive random library  
+    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture arm64):    current ar archive random library
 
   - Zip up the framework:
     cd mobile-center-sdk-react-native/RNMobileCenter
@@ -114,7 +114,7 @@
   - cd into MobileCenterDemoApp folder and react-native run-ios
 
 
-*** More info *** 
+*** More info ***
 
   More about the fat framework build process:
 

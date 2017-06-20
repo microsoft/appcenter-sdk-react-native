@@ -21,7 +21,7 @@
 #import "RNCrashesUtils.h"
 
 @import MobileCenterCrashes;
-@import RNMobileCenter;
+@import RNMobileCenterShared;
 
 
 @interface RNCrashes () <RCTBridgeModule>
@@ -46,7 +46,7 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithCrashDelegate:(id<RNCrashesDelegate>)delegate
 {
-  [RNMobileCenter configureMobileCenter];
+  [RNMobileCenterShared configureMobileCenter];
   [MSCrashes setDelegate:delegate];
 
   //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging

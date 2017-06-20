@@ -8,6 +8,7 @@
  */
 
 #import "AppDelegate.h"
+#import <RNMobileCenter/RNMobileCenter.h>
 #import <RNPush/RNPush.h>
 #import <RNAnalytics/RNAnalytics.h>
 #import <RNCrashes/RNCrashes.h>
@@ -22,6 +23,8 @@
 {
   NSURL *jsCodeLocation;
 
+  [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes
+
   [RNPush registerAndEnable];  // Initialize Mobile Center push
 
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
@@ -29,7 +32,7 @@
   [RNCrashes register];  // Initialize Mobile Center crashes
 
   //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose]; 
+  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 

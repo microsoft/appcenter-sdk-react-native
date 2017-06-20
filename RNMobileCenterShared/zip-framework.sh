@@ -5,6 +5,6 @@ if [ -f $zipfilename ] ; then
     rm $zipfilename
     echo "  removed old zip"
 fi
-cp ../../LICENSE RNMobileCenter
-zip -r $zipfilename RNMobileCenter
+cp ../../LICENSE RNMobileCenterShared
+zip -r $zipfilename RNMobileCenterShared
 echo "output is here: Products/$zipfilename"

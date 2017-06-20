@@ -19,7 +19,7 @@
 #endif
 
 @import MobileCenterPush;
-@import RNMobileCenter;
+@import RNMobileCenterShared;
 
 @interface RNPush () <RCTBridgeModule>
 @end
@@ -30,7 +30,7 @@ RCT_EXPORT_MODULE();
 
 + (void)registerAndEnable
 {
-    [RNMobileCenter configureMobileCenter];
+    [RNMobileCenterShared configureMobileCenter];
     [MSMobileCenter startService:[MSPush class]];
 }
 

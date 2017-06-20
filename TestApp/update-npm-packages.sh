@@ -6,5 +6,5 @@ rm -rf node_modules/mobile-center-crashes
 rm -rf node_modules/mobile-center-analytics
 rm -rf node_modules/mobile-center-push
 npm install
-mkdir -p ios/Pods/RNMobileCenter
-cp -R ../RNMobileCenter/Products/RNMobileCenter ios/Pods/RNMobileCenter
+mkdir -p ios/Pods/RNMobileCenterShared
+cp -R ../RNMobileCenterShared/Products/RNMobileCenterShared ios/Pods/RNMobileCenterShared
