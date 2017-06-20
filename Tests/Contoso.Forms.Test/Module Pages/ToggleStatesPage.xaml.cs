@@ -16,37 +16,37 @@ namespace Contoso.Forms.Test
 
         void EnableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.SetEnabled(true);
+            MobileCenter.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
         void EnableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.SetEnabled(true);
+            Crashes.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
         void EnableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.SetEnabled(true);
+            Analytics.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
         void DisableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.SetEnabled(false);
+            MobileCenter.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
         void DisableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.SetEnabled(false);
+            Crashes.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
         void DisableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.SetEnabled(false);
+            Analytics.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
