@@ -145,6 +145,7 @@ namespace Microsoft.Azure.Mobile
             PlatformStart(appSecret, services);
         }
 
+        /// <summary>
         /// Set the custom properties.
         /// </summary>
         /// <param name="customProperties">Custom properties object.</param>

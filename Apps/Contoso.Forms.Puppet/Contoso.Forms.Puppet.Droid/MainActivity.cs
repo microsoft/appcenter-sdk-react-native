@@ -5,6 +5,7 @@ using Com.Microsoft.Azure.Mobile.Analytics;
 using Com.Microsoft.Azure.Mobile.Analytics.Channel;
 using Com.Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.Forms.Puppet.Droid
 {
