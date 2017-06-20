@@ -5,6 +5,6 @@ namespace Microsoft.Azure.Mobile
         public const string Name = "mobilecenter.xamarin";
 
         /* We can't use reflection for assemblyInformationalVersion on iOS with "Link All" optimization. */
-        internal const string Version = "0.13.0-SNAPSHOT";
+        internal const string Version = "0.13.1-SNAPSHOT";
     }
 }
