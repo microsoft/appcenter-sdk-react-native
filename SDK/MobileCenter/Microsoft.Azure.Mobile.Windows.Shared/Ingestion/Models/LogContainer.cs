@@ -30,18 +30,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (Logs == null)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.CannotBeNull, "Logs");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Logs));
             }
-            if (Logs.Count < 1)
+            if (Logs.Count == 0)
             {
-                throw new Rest.ValidationException(Rest.ValidationRules.MinItems, "Logs", 1);
+                throw new ValidationException(ValidationException.Rule.CannotBeEmpty, nameof(Logs));
             }
             foreach (var element in Logs)
             {

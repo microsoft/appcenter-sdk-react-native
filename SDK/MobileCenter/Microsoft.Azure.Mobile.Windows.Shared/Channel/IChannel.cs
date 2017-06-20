@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Mobile.Channel
         /// Enable or disable the channel
         /// </summary>
         /// <param name="enabled">Value indicating whether channel should be enabled or disabled</param>
-        void SetEnabled(bool enabled);
+        Task SetEnabledAsync(bool enabled);
 
         /// <summary>
         /// Stop all calls in progress and deactivate this channel
         /// </summary>
-        Task Shutdown();
+        Task ShutdownAsync();
     }
 }

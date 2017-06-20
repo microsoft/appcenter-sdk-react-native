@@ -9,6 +9,7 @@ using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Linq;
 
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
@@ -24,7 +25,9 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
             _networkState = new NetworkStateAdapter();
-            _networkStateIngestion = new NetworkStateIngestion(new IngestionHttp(_adapter.Object), _networkState);
+
+            var httpIngestion = new IngestionHttp(_adapter.Object);
+            _networkStateIngestion = new NetworkStateIngestion(httpIngestion, _networkState);
         }
 
         /// <summary>
@@ -67,12 +70,15 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             _networkState.IsConnected = false;
-            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            var completedInTime = false;
+            _networkStateIngestion.ExecuteCallAsync(call).ContinueWith(task => completedInTime = true);
+            Task.Delay(TimeSpan.FromSeconds(5)).Wait();
+            Assert.IsFalse(completedInTime);
             VerifyAdapterSend(Times.Never());
         }
 
         /// <summary>
-        /// Verify that call resended when network is available again.
+        /// Verify that call resent when network is available again.
         /// </summary>
         [TestMethod]
         public void NetworkStateIngestionComeBackOnline()
@@ -80,11 +86,36 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
             _networkState.IsConnected = false;
-            Assert.ThrowsException<NetworkUnavailableException>(() => _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync());
+            var task = _networkStateIngestion.ExecuteCallAsync(call);
             VerifyAdapterSend(Times.Never());
             _networkState.IsConnected = true;
-            _networkStateIngestion.WaitAllCalls().RunNotAsync();
+            task.Wait();
             VerifyAdapterSend(Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that multiple calls are resent when network is available again.
+        /// </summary>
+        [TestMethod]
+        public void NetworkStateIngestionComeBackOnlineMultipleCalls()
+        {
+            int numCalls = 5;
+            var calls = new List<IServiceCall>();
+            for (int i = 0; i < numCalls; ++i)
+            {
+                calls.Add(PrepareServiceCall());
+            }
+            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _networkState.IsConnected = false;
+
+            var tasks = new List<Task>();
+            foreach (var call in calls)
+            {
+                tasks.Add(_networkStateIngestion.ExecuteCallAsync(call));
+            }
+            _networkState.IsConnected = true;
+            Task.WaitAll(tasks.ToArray());
+            VerifyAdapterSend(Times.Exactly(numCalls));
         }
 
         /// <summary>

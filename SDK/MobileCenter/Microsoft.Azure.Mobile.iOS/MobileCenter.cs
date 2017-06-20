@@ -4,8 +4,8 @@ using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile
 {
-    using iOSMobileCenter = Microsoft.Azure.Mobile.iOS.Bindings.MSMobileCenter;
     using iOSLogLevel = Microsoft.Azure.Mobile.iOS.Bindings.MSLogLevel;
+    using iOSMobileCenter = Microsoft.Azure.Mobile.iOS.Bindings.MSMobileCenter;
     using iOSWrapperSdk = Microsoft.Azure.Mobile.iOS.Bindings.MSWrapperSdk;
 
     /// <summary>
@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile
     public partial class MobileCenter
     {
         /* The key identifier for parsing app secrets */
-        private const string PlatformIdentifier = "ios";
+        const string PlatformIdentifier = "ios";
 
         internal MobileCenter()
         {
@@ -168,7 +168,7 @@ namespace Microsoft.Azure.Mobile
         /// </remarks>
         public static Guid? InstallId => Guid.Parse(iOSMobileCenter.InstallId().AsString());
 
-        private static Class[] GetServices(IEnumerable<Type> services)
+        static Class[] GetServices(IEnumerable<Type> services)
         {
             var classes = new List<Class>();
             foreach (var t in services)
@@ -186,7 +186,7 @@ namespace Microsoft.Azure.Mobile
             return classes.ToArray();
         }
 
-        private static Class GetClassForType(Type type)
+        static Class GetClassForType(Type type)
         {
             IntPtr classHandle = Class.GetHandle(type);
             if (classHandle != IntPtr.Zero)
@@ -196,15 +196,20 @@ namespace Microsoft.Azure.Mobile
             return null;
         }
 
-        private static Type GetBindingType(Type type)
+        static Type GetBindingType(Type type)
         {
             return (Type)type.GetProperty("BindingType").GetValue(null, null);
         }
 
-        private static void SetWrapperSdk()
+        static void SetWrapperSdk()
         {
             iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, Constants.Version, null, null, null);
             iOSMobileCenter.SetWrapperSdk(wrapperSdk);
+        }
+
+        static void PlatformSetCustomProperties(CustomProperties customProperties)
+        {
+            iOSMobileCenter.SetCustomProperties(customProperties.IOSCustomProperties);
         }
     }
 }

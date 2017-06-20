@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UWPPushTest.cs" />
     <Compile Include="UnitTestApp.xaml.cs">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
@@ -112,7 +113,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Microsoft.Azure.Mobile.Test.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\UnitTestApp.rd.xml" />
@@ -128,6 +128,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.UWP\Microsoft.Azure.Mobile.Push.UWP.csproj">
+      <Project>{8072449c-c6a8-4b36-87dc-173f295d161c}</Project>
+      <Name>Microsoft.Azure.Mobile.Push.UWP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
       <Name>Microsoft.Azure.Mobile.UWP</Name>

@@ -1,16 +1,16 @@
-﻿using Moq;
-using Microsoft.Rest;
+﻿using System;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
-    using Device = Microsoft.Azure.Mobile.Ingestion.Models.Device;
+    using Device = Mobile.Ingestion.Models.Device;
 
     [TestClass]
     public class LogTest
     {
-        private const long TOffset = 0;
+        private static readonly DateTime? Timestamp = null;
 
         /// <summary>
         /// Verify that instance is constructed properly.
@@ -21,13 +21,13 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
             
             Log emptyLog = new TestLog();
-            Log log = new TestLog(TOffset, mockDevice.Object);
+            Log log = new TestLog(Timestamp, mockDevice.Object);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
 
-            Assert.AreEqual(default(System.Guid?), log.Sid);
-            Assert.AreEqual(TOffset, log.Toffset);
+            Assert.AreEqual(default(Guid?), log.Sid);
+            Assert.AreEqual(Timestamp, log.Timestamp);
             Assert.AreEqual(mockDevice.Object, log.Device);
         }
 
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestValidateThrowsExceptionWhenDeviceIsNull()
         {
             const Device nullDevice = null;
-            Log log = new TestLog(TOffset, nullDevice);
+            Log log = new TestLog(Timestamp, nullDevice);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
 
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void TestValidateCallsDeviceValidateWhenDeviceIsNotNull()
         {
             var mockDevice = new Mock<Device>();
-            Log log = new TestLog(TOffset, mockDevice.Object);
+            Log log = new TestLog(Timestamp, mockDevice.Object);
             log.Validate();
 
             mockDevice.Verify(device => device.Validate());

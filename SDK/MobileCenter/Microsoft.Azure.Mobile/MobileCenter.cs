@@ -82,5 +82,9 @@ namespace Microsoft.Azure.Mobile
         {
             Debug.WriteLine(ErrorMessage);
         }
+
+        static void PlatformSetCustomProperties(CustomProperties customProperties)
+        {
+        }
     }
 }

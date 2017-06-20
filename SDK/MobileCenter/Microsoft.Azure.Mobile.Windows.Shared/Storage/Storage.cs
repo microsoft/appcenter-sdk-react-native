@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 using SQLite;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Storage
 {
@@ -32,7 +33,10 @@ namespace Microsoft.Azure.Mobile.Storage
 
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
-        private readonly TaskLock.TaskLockSource _taskLockSource = new TaskLock.TaskLockSource();
+        // Blocking collection is thread safe
+        private readonly BlockingCollection<Task> _queue = new BlockingCollection<Task>();
+        private readonly SemaphoreSlim _flushSemaphore = new SemaphoreSlim(0);
+        private readonly Task _queueFlushTask;
 
         /// <summary>
         /// Creates an instance of Storage
@@ -47,8 +51,8 @@ namespace Microsoft.Azure.Mobile.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            var taskLock = _taskLockSource.GetTaskLock();
-            Task.Run(InitializeDatabaseAsync).ContinueWith(completedTask => taskLock.Dispose());
+            _queue.Add(new Task(() => InitializeDatabaseAsync().Wait()));
+            _queueFlushTask = Task.Run(FlushQueue);
         }
 
         /// <summary>
@@ -59,12 +63,22 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task PutLogAsync(string channelName, Log log)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            var task = new Task(() =>
             {
                 var logJsonString = LogSerializer.Serialize(log);
-                var logEntry = new LogEntry { Channel = channelName, Log = logJsonString };
-                await _storageAdapter.InsertAsync(logEntry).ConfigureAwait(false);
-            }   
+                var logEntry = new LogEntry {Channel = channelName, Log = logJsonString};
+                _storageAdapter.InsertAsync(logEntry).Wait();
+            });
+            try
+            {
+                _queue.Add(task);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been cancelled");
+            }
+            _flushSemaphore.Release();
+            await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -75,12 +89,12 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName, string batchId)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            var task = new Task(() =>
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag,
-                    $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
                 try
                 {
+                    MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                        $"Deleting logs from storage for channel '{channelName}' with batch id '{batchId}'");
                     var identifiers = _pendingDbIdentifierGroups[GetFullIdentifier(channelName, batchId)];
                     _pendingDbIdentifierGroups.Remove(GetFullIdentifier(channelName, batchId));
                     var deletedIdsMessage = "The IDs for deleting log(s) is/ are:";
@@ -92,14 +106,26 @@ namespace Microsoft.Azure.Mobile.Storage
                     MobileCenterLog.Debug(MobileCenterLog.LogTag, deletedIdsMessage);
                     foreach (var id in identifiers)
                     {
-                        await _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName && entry.Id == id).ConfigureAwait(false);
+                        _storageAdapter
+                            .DeleteAsync<LogEntry>(entry => entry.Channel == channelName && entry.Id == id)
+                            .Wait();
                     }
                 }
                 catch (KeyNotFoundException e)
                 {
                     throw new StorageException(e);
                 }
+            });
+            try
+            {
+                _queue.Add(task);
             }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been cancelled");
+            }
+            _flushSemaphore.Release();
+            await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -109,37 +135,31 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task DeleteLogsAsync(string channelName)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            var task = new Task(() =>
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag,
-                    $"Deleting all logs from storage for channel '{channelName}'");
-                var fullIdentifiers = new List<string>();
                 try
                 {
-                    foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
-                    {
-                        if (!ChannelMatchesIdentifier(channelName, fullIdentifier))
-                        {
-                            continue;
-                        }
-                        foreach (var id in _pendingDbIdentifierGroups[fullIdentifier])
-                        {
-                            _pendingDbIdentifiers.Remove(id);
-                        }
-                        fullIdentifiers.Add(fullIdentifier);
-                    }
-                    foreach (var fullIdentifier in fullIdentifiers)
-                    {
-                        _pendingDbIdentifierGroups.Remove(fullIdentifier);
-                    }
+                    MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                        $"Deleting all logs from storage for channel '{channelName}'");
+                    ClearPendingLogState(channelName);
+                    _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
+                        .Wait();
                 }
                 catch (KeyNotFoundException e)
                 {
                     throw new StorageException(e);
                 }
-                await _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
-                    .ConfigureAwait(false);
+            });
+            try
+            {
+                _queue.Add(task);
             }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been cancelled");
+            }
+            _flushSemaphore.Release();
+            await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -150,11 +170,21 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<int> CountLogsAsync(string channelName)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            var task = new Task<int>(() =>
             {
-                return await _storageAdapter.CountAsync<LogEntry>(entry => entry.Channel == channelName)
-                    .ConfigureAwait(false);
+                return _storageAdapter.CountAsync<LogEntry>(entry => entry.Channel == channelName)
+                    .Result;
+            });
+            try
+            {
+                _queue.Add(task);
             }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been cancelled");
+            }
+            _flushSemaphore.Release();
+            return await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -163,10 +193,42 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <param name="channelName"></param>
         public async Task ClearPendingLogStateAsync(string channelName)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            var task = new Task(() =>
             {
-                _pendingDbIdentifierGroups.Clear();
-                _pendingDbIdentifiers.Clear();
+                ClearPendingLogState(channelName);
+                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Clear pending log states for channel {channelName}");
+            });
+            try
+            {
+                _queue.Add(task);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been cancelled");
+            }
+            _flushSemaphore.Release();
+            await task.ConfigureAwait(false);
+        }
+
+        private void ClearPendingLogState(string channelName)
+        {
+            var fullIdentifiers = new List<string>();
+
+            foreach (var fullIdentifier in _pendingDbIdentifierGroups.Keys)
+            {
+                if (!ChannelMatchesIdentifier(channelName, fullIdentifier))
+                {
+                    continue;
+                }
+                foreach (var id in _pendingDbIdentifierGroups[fullIdentifier])
+                {
+                    _pendingDbIdentifiers.Remove(id);
+                }
+                fullIdentifiers.Add(fullIdentifier);
+            }
+            foreach (var fullIdentifier in fullIdentifiers)
+            {
+                _pendingDbIdentifierGroups.Remove(fullIdentifier);
             }
         }
 
@@ -180,17 +242,17 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <exception cref="StorageException"/>
         public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
-            using (await _taskLockSource.GetTaskLockAsync().ConfigureAwait(false))
+            var task = new Task<string>(() =>
             {
                 logs?.Clear();
                 var retrievedLogs = new List<Log>();
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Trying to get up to {limit} logs from storage for {channelName}");
-
+                MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                    $"Trying to get up to {limit} logs from storage for {channelName}");
                 var idPairs = new List<Tuple<Guid?, long>>();
                 var failedToDeserializeALog = false;
                 var retrievedEntries =
-                    await _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName, limit)
-                        .ConfigureAwait(false);
+                    _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName, limit)
+                        .Result;
                 foreach (var entry in retrievedEntries)
                 {
                     if (_pendingDbIdentifiers.Contains(entry.Id))
@@ -207,7 +269,8 @@ namespace Microsoft.Azure.Mobile.Storage
                     {
                         MobileCenterLog.Error(MobileCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                         failedToDeserializeALog = true;
-                        await _storageAdapter.DeleteAsync<LogEntry>(row => row.Id == entry.Id).ConfigureAwait(false);
+                        _storageAdapter.DeleteAsync<LogEntry>(row => row.Id == entry.Id)
+                            .Wait();
                     }
                 }
                 if (failedToDeserializeALog)
@@ -216,7 +279,8 @@ namespace Microsoft.Azure.Mobile.Storage
                 }
                 if (idPairs.Count == 0)
                 {
-                    MobileCenterLog.Debug(MobileCenterLog.LogTag, $"No available logs in storage for channel '{channelName}'");
+                    MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                        $"No available logs in storage for channel '{channelName}'");
                     return null;
                 }
 
@@ -225,7 +289,19 @@ namespace Microsoft.Azure.Mobile.Storage
                 ProcessLogIds(channelName, batchId, idPairs);
                 logs?.AddRange(retrievedLogs);
                 return batchId;
+            });
+
+            try
+            {
+                _queue.Add(task);
             }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been cancelled");
+            }
+
+            _flushSemaphore.Release();
+            return await task.ConfigureAwait(false);
         }
 
         private void ProcessLogIds(string channelName, string batchId, IEnumerable<Tuple<Guid?, long>> idPairs)
@@ -245,7 +321,6 @@ namespace Microsoft.Azure.Mobile.Storage
        
         private async Task InitializeDatabaseAsync()
         {
-            // The mutex should already be owned and the task should be started
             try
             {
                 await _storageAdapter.CreateTableAsync<LogEntry>().ConfigureAwait(false);
@@ -261,10 +336,20 @@ namespace Microsoft.Azure.Mobile.Storage
         /// </summary>
         /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
         /// <returns>True if remaining tasks completed in time; false otherwise</returns>
-        /// <remarks>This method blocks the calling thread</remarks>
-        public bool Shutdown(TimeSpan timeout)
+        public async Task<bool> ShutdownAsync(TimeSpan timeout)
         {
-            return _taskLockSource.Shutdown(timeout);
+            _queue.CompleteAdding();
+            _flushSemaphore.Release();
+            var tokenSource = new CancellationTokenSource();
+            try
+            {
+                var timeoutTask = Task.Delay(timeout, tokenSource.Token);
+                return await Task.WhenAny(_queueFlushTask, timeoutTask).ConfigureAwait(false) != timeoutTask;
+            }
+            finally
+            {
+                tokenSource.Cancel();
+            }
         }
 
         private static string GetFullIdentifier(string channelName, string identifier)
@@ -278,12 +363,40 @@ namespace Microsoft.Azure.Mobile.Storage
             return identifier.Substring(0, lastDelimiterIndex) == channelName;
         }
 
+        // Flushes the queue
+        private async Task FlushQueue()
+        {
+            while (true)
+            {
+                while (_queue.Count == 0)
+                {
+                    if (_queue.IsAddingCompleted)
+                    {
+                        return;
+                    }
+                    await _flushSemaphore.WaitAsync();
+                }
+                var t = _queue.Take();
+                t.Start();
+                try
+                {
+                    await t.ConfigureAwait(false);
+                }
+                catch
+                {
+                    // Can't throw exceptions here because it will cause the FlushQueue to stop
+                    // processing, but if the task faults, the exception will be thrown again 
+                    // because the original creator of this task will await it too.
+                }
+            }
+        }
+
         /// <summary>
         /// Disposes the storage object
         /// </summary>
         public void Dispose()
         {
-            _taskLockSource.Dispose();
+            _queue.CompleteAdding();
         }
     }
 }

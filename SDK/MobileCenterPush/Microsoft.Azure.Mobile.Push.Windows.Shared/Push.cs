@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Push.Shared.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
 
 namespace Microsoft.Azure.Mobile.Push
@@ -55,15 +55,14 @@ namespace Microsoft.Azure.Mobile.Push
 
         #region instance
 
-        private readonly StatefulMutex _mutex;
-        private readonly StateKeeper _stateKeeper = new StateKeeper();
+        private readonly StatefulMutex _mutex = new StatefulMutex();
 
         public override string ServiceName => "Push";
 
         protected override string ChannelName => "push";
+
         public Push()
         {
-            _mutex = new StatefulMutex(_stateKeeper);
             LogSerializer.AddLogType(PushInstallationLog.JsonIdentifier, typeof(PushInstallationLog));
         }
 
@@ -74,15 +73,10 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="appSecret"></param>
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            _mutex.Lock();
-            try
+            using (_mutex.GetLock())
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(Enabled);
-            }
-            finally
-            {
-                _mutex.Unlock();
             }
         }
 
@@ -95,20 +89,15 @@ namespace Microsoft.Azure.Mobile.Push
 
             set
             {
-                _mutex.Lock();
-                try
+                using (_mutex.GetLock())
                 {
                     var prevValue = InstanceEnabled;
                     base.InstanceEnabled = value;
-                    _stateKeeper.InvalidateState();
+                    _mutex.InvalidateState();
                     if (value != prevValue)
                     {
                         ApplyEnabledState(value);
                     }
-                }
-                finally
-                {
-                    _mutex.Unlock();
                 }
             }
         }

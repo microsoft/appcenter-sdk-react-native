@@ -1,9 +1,10 @@
-﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile
 {
@@ -23,7 +24,6 @@ namespace Microsoft.Azure.Mobile
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object MobileCenterLock = new object();
 
-        private IApplicationLifecycleHelper _applicationLifecycleHelper;
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
@@ -126,12 +126,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        // TODO: Make public when backend is ready.
-        /// <summary>
-        /// Set the custom properties.
-        /// </summary>
-        /// <param name="customProperties">Custom properties object.</param>
-        internal static void SetCustomProperties(CustomProperties customProperties)
+        internal static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
             lock (MobileCenterLock)
             {
@@ -241,7 +236,7 @@ namespace Microsoft.Azure.Mobile
                     return;
                 }
 
-                _channelGroup?.SetEnabled(value);
+                _channelGroup?.SetEnabledAsync(value);
                 _applicationSettings[EnabledKey] = value;
 
                 foreach (var service in _services)
@@ -267,7 +262,7 @@ namespace Microsoft.Azure.Mobile
             }
             var customPropertiesLog = new CustomPropertiesLog();
             customPropertiesLog.Properties = customProperties.Properties;
-            _channel.Enqueue(customPropertiesLog);
+            _channel.EnqueueAsync(customPropertiesLog);
         }
 
         // Internal for testing
@@ -282,9 +277,7 @@ namespace Microsoft.Azure.Mobile
             // If a factory has been supplied, use it to construct the channel group - this is designed for testing.
             // Normal scenarios will use new ChannelGroup(string).
             _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret);
-            _applicationLifecycleHelper = new ApplicationLifecycleHelper();
-
-            _applicationLifecycleHelper.UnhandledExceptionOccurred += (sender, e) => _channelGroup.Shutdown();
+            ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
             if (_logUrl != null)
@@ -342,7 +335,7 @@ namespace Microsoft.Azure.Mobile
             // Enqueue a log indicating which services have been initialized
             if (startServiceLog.Services.Count > 0)
             {
-                _channel.Enqueue(startServiceLog);
+                _channel.EnqueueAsync(startServiceLog);
             }
         }
 

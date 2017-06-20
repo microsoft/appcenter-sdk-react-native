@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Storage;
 using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Microsoft.Azure.Mobile.Ingestion;
 
 namespace Microsoft.Azure.Mobile.Test.Channel
 {
@@ -15,14 +17,16 @@ namespace Microsoft.Azure.Mobile.Test.Channel
     {
         private Mobile.Channel.Channel _channel;
         private readonly MockIngestion _mockIngestion = new MockIngestion();
-        private readonly IStorage _storage = new Mobile.Storage.Storage();
+        private IStorage _storage = new Mobile.Storage.Storage();
 
         private const string ChannelName = "channelName";
         private const int MaxLogsPerBatch = 3;
         private readonly TimeSpan _batchTimeSpan = TimeSpan.FromSeconds(1);
         private const int MaxParallelBatches = 3;
         private readonly string _appSecret = Guid.NewGuid().ToString();
-        private const int DefaultWaitTime = 5000;
+
+        // We wait tasks now and don't need wait more
+        private const int DefaultWaitTime = 500;
 
         // Event semaphores for invokation verification
         private const int SendingLogSemaphoreIdx = 0;
@@ -39,6 +43,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestInitialize]
         public void InitializeChannelTest()
         {
+            _mockIngestion.CallShouldSucceed = true;
+            _mockIngestion.Open();
             SetChannelWithTimeSpan(_batchTimeSpan);
         }
 
@@ -57,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void DisableChannel()
         {
-            _channel.SetEnabled(false);
+            _channel.SetEnabledAsync(false).RunNotAsync();
 
             Assert.IsFalse(_channel.IsEnabled);
         }
@@ -68,8 +74,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void EnableChannel()
         {
-            _channel.SetEnabled(false);
-            _channel.SetEnabled(true);
+            _channel.SetEnabledAsync(false).RunNotAsync();
+            _channel.SetEnabledAsync(true).RunNotAsync();
 
             Assert.IsTrue(_channel.IsEnabled);
         }
@@ -88,7 +94,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
                 sem.Release();
             };
 
-            _channel.Enqueue(log);
+            _channel.EnqueueAsync(log).RunNotAsync();
             Assert.IsTrue(sem.Wait(DefaultWaitTime));
         }
 
@@ -101,7 +107,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             SetChannelWithTimeSpan(TimeSpan.FromHours(1));
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.Enqueue(new TestLog());
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
             Assert.IsTrue(SendingLogOccurred(1));
         }
@@ -112,9 +118,9 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void EnqueueWhileDisabled()
         {
-            _channel.SetEnabled(false);
+            _channel.SetEnabledAsync(false).RunNotAsync();
             var log = new TestLog();
-            _channel.Enqueue(log);
+            _channel.EnqueueAsync(log).RunNotAsync();
             Assert.IsFalse(SentLogOccurred(1));
         }
 
@@ -123,7 +129,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.Enqueue(new TestLog());
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
@@ -134,7 +140,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.Enqueue(new TestLog());
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(SentLogOccurred(MaxLogsPerBatch));
@@ -146,7 +152,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             MakeIngestionCallsFail();
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.Enqueue(new TestLog());
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
@@ -171,13 +177,13 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void ChannelInvokesSendingLogEventAfterEnabling()
         {
-            _channel.Shutdown().Wait();
+            _channel.ShutdownAsync().RunNotAsync();
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.Enqueue(new TestLog())?.Wait();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
-            _channel.SetEnabled(true);
+            _channel.SetEnabledAsync(true).RunNotAsync();
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
         }
@@ -185,13 +191,13 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         /// <summary>
         /// Validate that FailedToSendLog calls when channel is disabled
         /// </summary>
-      [TestMethod]
+        [TestMethod]
         public void ChannelInvokesFailedToSendLogEventAfterDisabling()
         {
-            _channel.SetEnabled(false);
+            _channel.SetEnabledAsync(false).RunNotAsync();
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.Enqueue(new TestLog());
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
@@ -204,13 +210,11 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void ClearLogs()
         {
-            _channel.Shutdown().Wait();
-            _channel.Enqueue(new TestLog());
+            _channel.ShutdownAsync().RunNotAsync();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
-            Task.Delay(DefaultWaitTime).Wait();
-
-            _channel.Clear();
-            _channel.SetEnabled(true);
+            _channel.ClearAsync().RunNotAsync();
+            _channel.SetEnabledAsync(true).RunNotAsync();
 
             Assert.IsFalse(SendingLogOccurred(1));
         }
@@ -222,7 +226,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void DisposeChannelTest()
         {
             _channel.Dispose();
-            Assert.ThrowsException<ObjectDisposedException>(() => _channel.SetEnabled(true));
+            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _channel.SetEnabledAsync(true)).RunNotAsync();
         }
 
         /// <summary>
@@ -237,21 +241,57 @@ namespace Microsoft.Azure.Mobile.Test.Channel
 
             Mobile.Channel.Channel channel = new Mobile.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
 
-            //Shutdown channel and store some log
-            channel.Shutdown();
-            channel.Enqueue(new TestLog());
+            // Shutdown channel and store some log
+            channel.ShutdownAsync().RunNotAsync();
+            channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
-            //Wait while log is saving
-            Task.Delay(1000).Wait();
-
-            channel.SetEnabled(true);
+            channel.SetEnabledAsync(true).RunNotAsync();
 
             // Not throw any exception
         }
 
+        /// <summary>
+        /// Verify that when a recoverable http error occurs, ingestion
+        /// stays open
+        /// </summary>
+        [TestMethod]
+        public void IngestionNotClosedOnRecoverableHttpError()
+        {
+            _mockIngestion.CallShouldSucceed = false;
+            _mockIngestion.TaskError = new RecoverableIngestionException();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+
+            // wait for SendingLog event
+            _eventSemaphores[SendingLogSemaphoreIdx].Wait();
+            // wait up to 20 seconds for suspend to finish
+            bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
+            Assert.IsTrue(disabled);
+            Assert.IsFalse(_mockIngestion.IsClosed);
+        }
+
+        /// <summary>
+        /// Verify that if a non-recoverable http error occurs, ingestion
+        /// is closed
+        /// </summary>
+        [TestMethod]
+        public void IngestionClosedOnNonRecoverableHttpError()
+        {
+            _mockIngestion.CallShouldSucceed = false;
+            _mockIngestion.TaskError = new NonRecoverableIngestionException();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+
+            // wait up to 20 seconds for suspend to finish
+            bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
+            Assert.IsTrue(disabled);
+
+            Assert.IsTrue(_mockIngestion.IsClosed);
+            Assert.IsFalse(_channel.IsEnabled);
+        }
+
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
-            _storage.DeleteLogsAsync(ChannelName).Wait();
+            _storage = new Mobile.Storage.Storage();
+            _storage.DeleteLogsAsync(ChannelName).RunNotAsync();
             _channel = new Mobile.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
                 _appSecret, _mockIngestion, _storage);
             MakeIngestionCallsSucceed();
@@ -301,6 +341,19 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         private bool SendingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
         {
             return EventWithSemaphoreOccurred(_eventSemaphores[SendingLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private bool WaitForChannelDisable(TimeSpan timeout)
+        {
+            var task = Task.Run(async () =>
+            {
+                while (_channel.IsEnabled)
+                {
+                    await Task.Delay(100);
+                }
+            });
+
+            return task.Wait(timeout);
         }
 
         private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)

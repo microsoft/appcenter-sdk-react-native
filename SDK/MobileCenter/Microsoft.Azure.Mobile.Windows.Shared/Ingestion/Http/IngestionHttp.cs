@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
@@ -17,19 +17,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         internal const string AppSecret = "App-Secret";
         internal const string InstallId = "Install-ID";
 
-        private readonly TimeSpan _requestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
+        private static readonly TimeSpan RequestTimeout = TimeSpan.FromMilliseconds(80000); //TODO not sure what to use here
         private const int MaximumCharactersDisplayedForAppSecret = 8;
         private string _baseLogUrl;
         private readonly IHttpNetworkAdapter _httpNetwork;
 
-        public IngestionHttp() : this(new HttpNetworkAdapter())
+        public IngestionHttp() : this(new HttpNetworkAdapter(RequestTimeout))
         {
         }
 
         public IngestionHttp(IHttpNetworkAdapter httpNetwork)
         {
             _httpNetwork = httpNetwork;
-            _httpNetwork.Timeout = _requestTimeout;
         }
 
         /// <exception cref="IngestionException"/>
@@ -132,12 +131,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private string CreateLogsContent(IList<Log> logs)
         {
             var logContainer = new LogContainer(logs);
-
-            // Save times
-            foreach (var log in logContainer.Logs)
-            {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds() - log.Toffset;
-            }
 
             // Serialize request
             var requestContent = LogSerializer.Serialize(logContainer);
