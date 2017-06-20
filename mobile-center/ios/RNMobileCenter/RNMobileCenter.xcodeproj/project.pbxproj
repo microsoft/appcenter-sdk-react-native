@@ -7,31 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C35AEB5A1EF2945300931F0C /* RNMobileCenterWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AEB591EF2945300931F0C /* RNMobileCenterWrapper.m */; };
-		C35AEB5B1EF2945300931F0C /* RNMobileCenterWrapper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C35AEB581EF2945300931F0C /* RNMobileCenterWrapper.h */; };
+		C35AEC261EF91F9300931F0C /* RNMobileCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AEC251EF91F9300931F0C /* RNMobileCenter.m */; };
+		C35AEC271EF91F9300931F0C /* RNMobileCenter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C35AEC241EF91F9300931F0C /* RNMobileCenter.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C35AEB531EF2945300931F0C /* CopyFiles */ = {
+		C35AEC1F1EF91F9300931F0C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				C35AEB5B1EF2945300931F0C /* RNMobileCenterWrapper.h in CopyFiles */,
+				C35AEC271EF91F9300931F0C /* RNMobileCenter.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C35AEB551EF2945300931F0C /* libRNMobileCenterWrapper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenterWrapper.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C35AEB581EF2945300931F0C /* RNMobileCenterWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenterWrapper.h; sourceTree = "<group>"; };
-		C35AEB591EF2945300931F0C /* RNMobileCenterWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenterWrapper.m; sourceTree = "<group>"; };
+		C35AEC211EF91F9300931F0C /* libRNMobileCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C35AEC241EF91F9300931F0C /* RNMobileCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenter.h; sourceTree = "<group>"; };
+		C35AEC251EF91F9300931F0C /* RNMobileCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C35AEB521EF2945300931F0C /* Frameworks */ = {
+		C35AEC1E1EF91F9300931F0C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,96 +41,96 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C35AEB4C1EF2945300931F0C = {
+		C35AEC181EF91F9300931F0C = {
 			isa = PBXGroup;
 			children = (
-				C35AEB571EF2945300931F0C /* RNMobileCenterWrapper */,
-				C35AEB561EF2945300931F0C /* Products */,
+				C35AEC231EF91F9300931F0C /* RNMobileCenter */,
+				C35AEC221EF91F9300931F0C /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		C35AEB561EF2945300931F0C /* Products */ = {
+		C35AEC221EF91F9300931F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C35AEB551EF2945300931F0C /* libRNMobileCenterWrapper.a */,
+				C35AEC211EF91F9300931F0C /* libRNMobileCenter.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C35AEB571EF2945300931F0C /* RNMobileCenterWrapper */ = {
+		C35AEC231EF91F9300931F0C /* RNMobileCenter */ = {
 			isa = PBXGroup;
 			children = (
-				C35AEB581EF2945300931F0C /* RNMobileCenterWrapper.h */,
-				C35AEB591EF2945300931F0C /* RNMobileCenterWrapper.m */,
+				C35AEC241EF91F9300931F0C /* RNMobileCenter.h */,
+				C35AEC251EF91F9300931F0C /* RNMobileCenter.m */,
 			);
-			path = RNMobileCenterWrapper;
+			path = RNMobileCenter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C35AEB541EF2945300931F0C /* RNMobileCenterWrapper */ = {
+		C35AEC201EF91F9300931F0C /* RNMobileCenter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C35AEB5E1EF2945300931F0C /* Build configuration list for PBXNativeTarget "RNMobileCenterWrapper" */;
+			buildConfigurationList = C35AEC2A1EF91F9300931F0C /* Build configuration list for PBXNativeTarget "RNMobileCenter" */;
 			buildPhases = (
-				C35AEB511EF2945300931F0C /* Sources */,
-				C35AEB521EF2945300931F0C /* Frameworks */,
-				C35AEB531EF2945300931F0C /* CopyFiles */,
+				C35AEC1D1EF91F9300931F0C /* Sources */,
+				C35AEC1E1EF91F9300931F0C /* Frameworks */,
+				C35AEC1F1EF91F9300931F0C /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = RNMobileCenterWrapper;
-			productName = RNMobileCenterWrapper;
-			productReference = C35AEB551EF2945300931F0C /* libRNMobileCenterWrapper.a */;
+			name = RNMobileCenter;
+			productName = RNMobileCenter;
+			productReference = C35AEC211EF91F9300931F0C /* libRNMobileCenter.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C35AEB4D1EF2945300931F0C /* Project object */ = {
+		C35AEC191EF91F9300931F0C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
-					C35AEB541EF2945300931F0C = {
+					C35AEC201EF91F9300931F0C = {
 						CreatedOnToolsVersion = 8.3.3;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = C35AEB501EF2945300931F0C /* Build configuration list for PBXProject "RNMobileCenterWrapper" */;
+			buildConfigurationList = C35AEC1C1EF91F9300931F0C /* Build configuration list for PBXProject "RNMobileCenter" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = C35AEB4C1EF2945300931F0C;
-			productRefGroup = C35AEB561EF2945300931F0C /* Products */;
+			mainGroup = C35AEC181EF91F9300931F0C;
+			productRefGroup = C35AEC221EF91F9300931F0C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C35AEB541EF2945300931F0C /* RNMobileCenterWrapper */,
+				C35AEC201EF91F9300931F0C /* RNMobileCenter */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C35AEB511EF2945300931F0C /* Sources */ = {
+		C35AEC1D1EF91F9300931F0C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C35AEB5A1EF2945300931F0C /* RNMobileCenterWrapper.m in Sources */,
+				C35AEC261EF91F9300931F0C /* RNMobileCenter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C35AEB5C1EF2945300931F0C /* Debug */ = {
+		C35AEC281EF91F9300931F0C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -178,7 +178,7 @@
 			};
 			name = Debug;
 		};
-		C35AEB5D1EF2945300931F0C /* Release */ = {
+		C35AEC291EF91F9300931F0C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -220,7 +220,7 @@
 			};
 			name = Release;
 		};
-		C35AEB5F1EF2945300931F0C /* Debug */ = {
+		C35AEC2B1EF91F9300931F0C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
@@ -229,7 +229,7 @@
 			};
 			name = Debug;
 		};
-		C35AEB601EF2945300931F0C /* Release */ = {
+		C35AEC2C1EF91F9300931F0C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
@@ -241,24 +241,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C35AEB501EF2945300931F0C /* Build configuration list for PBXProject "RNMobileCenterWrapper" */ = {
+		C35AEC1C1EF91F9300931F0C /* Build configuration list for PBXProject "RNMobileCenter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C35AEB5C1EF2945300931F0C /* Debug */,
-				C35AEB5D1EF2945300931F0C /* Release */,
+				C35AEC281EF91F9300931F0C /* Debug */,
+				C35AEC291EF91F9300931F0C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C35AEB5E1EF2945300931F0C /* Build configuration list for PBXNativeTarget "RNMobileCenterWrapper" */ = {
+		C35AEC2A1EF91F9300931F0C /* Build configuration list for PBXNativeTarget "RNMobileCenter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C35AEB5F1EF2945300931F0C /* Debug */,
-				C35AEB601EF2945300931F0C /* Release */,
+				C35AEC2B1EF91F9300931F0C /* Debug */,
+				C35AEC2C1EF91F9300931F0C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = C35AEB4D1EF2945300931F0C /* Project object */;
+	rootObject = C35AEC191EF91F9300931F0C /* Project object */;
 }

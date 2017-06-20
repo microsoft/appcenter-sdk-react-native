@@ -62,15 +62,4 @@ static MSWrapperSdk * wrapperSdk;
     [MSMobileCenter setWrapperSdk:sdk];
 }
 
-+ (void) setCustomProperties:(NSDictionary*)properties {
-    //TODO: check if key is valid (match regular expression pattern ^[a-zA-Z][a-zA-Z0-9]*$)
-    //TODO: check if property's value isone of the following datatypes: NSString, NSNumber, BOOL and NSDate.
-    MSCustomProperties *customProperties = [MSCustomProperties new];
-    //replace this to real values from dict
-    [customProperties setString:@"blue" forKey:@"color"];
-    [customProperties setNumber:@(10) forKey:@"score"];
-
-    [MSMobileCenter setCustomProperties:customProperties];
-}
-
 @end
