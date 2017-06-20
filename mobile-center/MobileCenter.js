@@ -4,7 +4,7 @@ let RNMobileCenter = require("react-native").NativeModules.RNMobileCenter;
 let MobileCenter = {
     // async - returns a Promise
     async setEnabled(enabled) {
-        return RNPush.setEnabled(enabled);
+        return RNMobileCenter.setEnabled(enabled);
     },
 
     async getLogLevel() {

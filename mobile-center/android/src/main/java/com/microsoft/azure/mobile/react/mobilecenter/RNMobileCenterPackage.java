@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.mobilecenterv2;
+package com.microsoft.azure.mobile.react.mobilecenter;
 
 import android.app.Application;
 

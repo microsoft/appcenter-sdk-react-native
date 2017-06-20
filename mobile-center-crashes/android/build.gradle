@@ -21,6 +21,6 @@ dependencies {
     compile 'com.facebook.react:react-native:0.19.+'
     compile 'com.microsoft.azure.mobile:mobile-center-crashes:0.9.+'
 
-    //compile project(':RNMobileCenter')   // For testing with TestApp
-    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.5.+'
+    compile project(':RNMobileCenterShared')   // For testing with TestApp
+    //compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.5.+'
 }

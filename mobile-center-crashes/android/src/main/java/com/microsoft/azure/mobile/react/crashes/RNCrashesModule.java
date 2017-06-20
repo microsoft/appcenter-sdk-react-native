@@ -14,7 +14,7 @@ import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.crashes.Crashes;
 import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
-import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenter;
+import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
 import com.microsoft.azure.mobile.ResultCallback;
 
 import org.json.JSONException;
@@ -36,7 +36,7 @@ public class RNCrashesModule extends BaseJavaModule {
             Crashes.setListener(crashListener);
         }
 
-        RNMobileCenter.configureMobileCenter(application);
+        RNMobileCenterShared.configureMobileCenter(application);
         MobileCenter.start(Crashes.class);
     }
 
@@ -63,7 +63,7 @@ public class RNCrashesModule extends BaseJavaModule {
         Crashes.getLastSessionCrashReport(new ResultCallback<ErrorReport>() {
             @Override
             public void onResult(ErrorReport errorReport) {
-                promise.resolve(errorReport != null ? 
+                promise.resolve(errorReport != null ?
                     RNCrashesUtils.convertErrorReportToWritableMapOrEmpty(errorReport)
                     : null);
             }
@@ -107,7 +107,7 @@ public class RNCrashesModule extends BaseJavaModule {
         }).start();
     }
 
-    @ReactMethod 
+    @ReactMethod
     public void crashUserResponse(boolean send, ReadableMap attachments, Promise promise) {
         int response = send ? Crashes.SEND : Crashes.DONT_SEND;
         if (mCrashListener != null) {

@@ -8,7 +8,7 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
-import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenter;
+import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.analytics.Analytics;
 
@@ -16,7 +16,7 @@ import org.json.JSONException;
 
 public class RNAnalyticsModule extends BaseJavaModule {
     public RNAnalyticsModule(Application application, boolean startEnabled) {
-        RNMobileCenter.configureMobileCenter(application);
+        RNMobileCenterShared.configureMobileCenter(application);
         if (!startEnabled) {
             // Avoid starting an analytics session.
             // Note that we don't call this if startEnabled is true, because

@@ -8,7 +8,7 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
-import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenter;
+import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.push.Push;
 
@@ -18,7 +18,7 @@ public class RNPushModule extends BaseJavaModule {
     private RNPushEventListener mPushListener;
 
     public RNPushModule(Application application) {
-        RNMobileCenter.configureMobileCenter(application);
+        RNMobileCenterShared.configureMobileCenter(application);
         this.mPushListener = new RNPushEventListener();
 
         Push.setListener(mPushListener);

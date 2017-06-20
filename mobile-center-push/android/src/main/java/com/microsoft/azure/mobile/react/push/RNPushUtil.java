@@ -21,15 +21,15 @@ public class RNPushUtil {
     }
 
     public static void logError(String message) {
-        Log.e("RNPush", message);
+        Log.e(LOG_TAG, message);
     }
 
     public static void logInfo(String message) {
-        Log.i("RNPush", message);
+        Log.i(LOG_TAG, message);
     }
 
     public static void logDebug(String message) {
-        Log.d("RNPush", message);
+        Log.d(LOG_TAG, message);
     }
 
     public static WritableMap convertPushNotificationToWritableMap(PushNotification pushNotification) throws JSONException {

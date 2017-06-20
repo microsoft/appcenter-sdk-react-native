@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.mobilecenterv2;
+package com.microsoft.azure.mobile.react.mobilecenter;
 import com.microsoft.azure.mobile.MobileCenter;
 
 import com.microsoft.azure.mobile.CustomProperties;
