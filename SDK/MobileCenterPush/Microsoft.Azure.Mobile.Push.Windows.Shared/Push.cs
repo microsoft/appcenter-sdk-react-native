@@ -39,11 +39,12 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        static void PlatformSetEnabled(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
             lock (PushLock)
             {
                 Instance.InstanceEnabled = enabled;
+                return Task.FromResult((object)null);
             }
         }
 
