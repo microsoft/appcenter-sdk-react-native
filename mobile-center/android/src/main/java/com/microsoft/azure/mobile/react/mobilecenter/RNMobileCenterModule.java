@@ -41,6 +41,6 @@ public class RNMobileCenterModule extends BaseJavaModule {
 
     @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
-        CustomMobileCenter.setCustomPropertiesNew(RNUtils.toCustomProperties(properties));
+        MobileCenter.setCustomProperties(RNUtils.toCustomProperties(properties));
     }
 }

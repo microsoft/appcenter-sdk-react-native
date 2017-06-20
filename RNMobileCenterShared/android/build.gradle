@@ -110,7 +110,7 @@ repositories {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.azure.mobile:mobile-center:0.9.+'
+    compile 'com.microsoft.azure.mobile:mobile-center:0.10.+'
 }
 
 artifacts {
