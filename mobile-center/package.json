@@ -1,6 +1,6 @@
 {
   "name": "mobile-center",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "description": "Node module that contains common functionality needed to mobile-center-* modules",
   "main": "MobileCenter.js",
   "repository": {
