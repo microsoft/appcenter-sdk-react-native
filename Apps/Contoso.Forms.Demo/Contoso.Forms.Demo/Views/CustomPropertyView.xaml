@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Contoso.Forms.Demo.CustomPropertyView">
+  <ContentView.Content>
+        <Frame OutlineColor="DarkGray">
+            <StackLayout Orientation="Vertical">
+                <Entry x:Name="PropertyKey"></Entry>
+                <Picker x:Name="PropertyType" SelectedIndexChanged="PropertyType_SelectedIndexChanged"></Picker>
+                <StackLayout x:Name="PropertyValueHolder"/>
+            </StackLayout>
+        </Frame>
+    </ContentView.Content>
+</ContentView>
