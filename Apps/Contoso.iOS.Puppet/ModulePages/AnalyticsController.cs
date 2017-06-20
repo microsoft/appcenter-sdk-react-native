@@ -67,7 +67,7 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateEnabled()
         {
-            Analytics.SetEnabled(AnalyticsEnabledSwitch.On);
+            Analytics.SetEnabledAsync(AnalyticsEnabledSwitch.On).Wait();
             AnalyticsEnabledSwitch.On = Analytics.IsEnabledAsync().Result;
         }
 

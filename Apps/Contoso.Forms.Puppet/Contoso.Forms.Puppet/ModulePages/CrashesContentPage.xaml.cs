@@ -38,9 +38,9 @@ namespace Contoso.Forms.Puppet
 #pragma warning restore CS0219
         }
 
-        void UpdateEnabled(object sender, ToggledEventArgs e)
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            Crashes.SetEnabled(e.Value);
+            await Crashes.SetEnabledAsync(e.Value);
         }
 
         void GenerateTestCrash(object sender, EventArgs e)

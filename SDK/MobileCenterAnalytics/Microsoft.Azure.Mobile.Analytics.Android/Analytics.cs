@@ -30,15 +30,18 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <returns>A task with result being true if enabled, false if disabled.</returns>
         public static Task<bool> IsEnabledAsync()
         {
-            return Task.Run(() => (bool)AndroidAnalytics.IsEnabled().Get());
+            var future = AndroidAnalytics.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
         }
 
         /// <summary>
         /// Enable or disable the Analytics service.
         /// </summary>
-        public static void SetEnabled(bool enabled)
+        /// <returns>A task to monitor the operation.</returns>
+        public static Task SetEnabledAsync(bool enabled)
         {
-            AndroidAnalytics.SetEnabled(enabled);
+            var future = AndroidAnalytics.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         ///// <summary>

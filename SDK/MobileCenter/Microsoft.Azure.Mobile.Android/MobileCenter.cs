@@ -120,19 +120,22 @@ namespace Microsoft.Azure.Mobile
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.Run(() => (bool)AndroidMobileCenter.IsEnabled().Get());
+            var future = AndroidMobileCenter.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
         }
 
-        static void PlatformSetEnabled(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
-            AndroidMobileCenter.SetEnabled(enabled);
+            var future = AndroidMobileCenter.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         static Task<Guid?> PlatformGetInstallIdAsync()
         {
+            var future = AndroidMobileCenter.InstallId;
             return Task.Run(() =>
             {
-                var installId = AndroidMobileCenter.InstallId.Get() as Java.Util.UUID;
+                var installId = future.Get() as UUID;
                 if (installId != null)
                 {
                     return Guid.Parse(installId.ToString());

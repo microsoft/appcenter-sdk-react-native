@@ -28,12 +28,14 @@ namespace Microsoft.Azure.Mobile.Push
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.Run(() => (bool)AndroidPush.IsEnabled().Get());
+            var future = AndroidPush.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
         }
 
-        static void PlatformSetEnabled(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
-            AndroidPush.SetEnabled(enabled);
+            var future = AndroidPush.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         /// <summary>

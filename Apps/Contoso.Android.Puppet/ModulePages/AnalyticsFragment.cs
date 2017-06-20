@@ -59,7 +59,7 @@ namespace Contoso.Android.Puppet
 
         private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            Analytics.SetEnabled(e.IsChecked);
+            await Analytics.SetEnabledAsync(e.IsChecked);
             AnalyticsEnabledSwitch.Checked = await Analytics.IsEnabledAsync();
         }
 

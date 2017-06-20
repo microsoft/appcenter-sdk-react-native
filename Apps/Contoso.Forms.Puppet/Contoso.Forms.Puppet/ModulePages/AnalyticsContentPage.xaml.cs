@@ -77,9 +77,9 @@ namespace Contoso.Forms.Puppet
 
         }
 
-        void UpdateEnabled(object sender, ToggledEventArgs e)
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            Analytics.SetEnabled(e.Value);
+            await Analytics.SetEnabledAsync(e.Value);
         }
 
         void RefreshPropCount()

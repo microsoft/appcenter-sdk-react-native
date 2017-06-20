@@ -13,12 +13,14 @@ namespace Microsoft.Azure.Mobile.Distribute
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.Run(() => (bool)AndroidDistribute.IsEnabled().Get());
+            var future = AndroidDistribute.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
         }
 
-        static void PlatformSetEnabled(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
-            AndroidDistribute.SetEnabled(enabled);
+            var future = AndroidDistribute.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         static void PlatformSetInstallUrl(string installUrl)

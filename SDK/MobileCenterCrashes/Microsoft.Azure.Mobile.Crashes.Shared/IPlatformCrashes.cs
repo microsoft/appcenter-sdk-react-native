@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         Task<bool> IsEnabledAsync();
 
-        void SetEnabled(bool enabled);
+        Task SetEnabledAsync(bool enabled);
 
         Task<bool> HasCrashedInLastSessionAsync();
 

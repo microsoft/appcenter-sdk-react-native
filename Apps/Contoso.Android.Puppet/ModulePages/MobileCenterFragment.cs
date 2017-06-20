@@ -93,7 +93,7 @@ namespace Contoso.Android.Puppet
 
         private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            MobileCenter.SetEnabled(e.IsChecked);
+            await MobileCenter.SetEnabledAsync(e.IsChecked);
             MobileCenterEnabledSwitch.Checked = await MobileCenter.IsEnabledAsync();
         }
 

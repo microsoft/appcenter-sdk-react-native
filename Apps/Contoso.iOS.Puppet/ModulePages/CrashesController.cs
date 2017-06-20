@@ -21,7 +21,7 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateEnabled()
         {
-            Crashes.SetEnabled(CrashesEnabledSwitch.On);
+            Crashes.SetEnabledAsync(CrashesEnabledSwitch.On).Wait();
             CrashesEnabledSwitch.On = Crashes.IsEnabledAsync().Result;
         }
 

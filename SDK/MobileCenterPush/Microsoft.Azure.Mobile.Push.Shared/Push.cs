@@ -17,12 +17,13 @@ namespace Microsoft.Azure.Mobile.Push
             return PlatformIsEnabledAsync();
         }
 
-        /// <summary>
-        /// Enable or disable the Push service.
-        /// </summary>
-        public static void SetEnabled(bool enabled)
+		/// <summary>
+		/// Enable or disable the Push service.
+		/// </summary>
+		/// <returns>A task to monitor the operation.</returns>
+		public static Task SetEnabledAsync(bool enabled)
         {
-            PlatformSetEnabled(enabled);
+            return PlatformSetEnabledAsync(enabled);
         }
 
         /// <summary>

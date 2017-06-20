@@ -23,8 +23,9 @@ namespace Microsoft.Azure.Mobile
             return Task.FromResult(false);
         }
 
-        static void PlatformSetEnabled(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
+            return Task.FromResult((object)null);
         }
 
         static Task<Guid?> PlatformGetInstallIdAsync()

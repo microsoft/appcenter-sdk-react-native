@@ -172,13 +172,14 @@ namespace Microsoft.Azure.Mobile.Crashes
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
-        /// <summary>
-        /// Enable or disable the Crashes service.
-        /// </summary>
+		/// <summary>
+		/// Enable or disable the Crashes service.
+		/// </summary>
+		/// <returns>A task to monitor the operation.</returns>
 #endif
-        public static void SetEnabled(bool enabled)
+		public static Task SetEnabledAsync(bool enabled)
         {
-            PlatformCrashes.SetEnabled(enabled);
+            return PlatformCrashes.SetEnabledAsync(enabled);
         }
 
 #if WINDOWS_UWP

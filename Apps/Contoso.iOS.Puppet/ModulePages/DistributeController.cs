@@ -20,7 +20,7 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateEnabled()
         {
-            Distribute.SetEnabled(DistributeEnabledSwitch.On);
+            Distribute.SetEnabledAsync(DistributeEnabledSwitch.On).Wait();
             DistributeEnabledSwitch.On = Distribute.IsEnabledAsync().Result;
         }
     }

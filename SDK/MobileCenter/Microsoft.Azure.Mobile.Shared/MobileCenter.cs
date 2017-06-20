@@ -84,9 +84,10 @@ namespace Microsoft.Azure.Mobile
         ///     Enable or disable the SDK as a whole. 
         ///     Updating the state propagates the value to all services that have been started.
         /// </summary>
-        public static void SetEnabled(bool enabled)
+        /// <returns>A task to monitor the operation.</returns>
+        public static Task SetEnabledAsync(bool enabled)
         {
-            PlatformSetEnabled(enabled);
+            return PlatformSetEnabledAsync(enabled);
         }
 
         /// <summary>

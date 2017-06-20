@@ -77,9 +77,9 @@ namespace Contoso.Forms.Puppet
             LogFunctions[LogWriteLevel](tag, message);
         }
 
-        void UpdateEnabled(object sender, ToggledEventArgs e)
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            MobileCenter.SetEnabled(e.Value);
+            await MobileCenter.SetEnabledAsync(e.Value);
         }
 
         void UpdateLogWriteLevelLabel()

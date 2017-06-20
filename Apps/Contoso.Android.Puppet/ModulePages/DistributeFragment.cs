@@ -39,7 +39,7 @@ namespace Contoso.Android.Puppet
 
         private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            Distribute.SetEnabled(e.IsChecked);
+            await Distribute.SetEnabledAsync(e.IsChecked);
             DistributeEnabledSwitch.Checked = await Distribute.IsEnabledAsync();
         }
     }

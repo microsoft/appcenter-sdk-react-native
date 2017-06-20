@@ -51,24 +51,28 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Task<bool> IsEnabledAsync()
         {
-            return Task.Run(() => (bool)AndroidCrashes.IsEnabled().Get());
+            var future = AndroidCrashes.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
         }
 
-        public override void SetEnabled(bool enabled)
+        public override Task SetEnabledAsync(bool enabled)
         {
-            AndroidCrashes.SetEnabled(enabled);
+            var future = AndroidCrashes.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         public override Task<bool> HasCrashedInLastSessionAsync()
         {
-            return Task.Run(() => (bool)AndroidCrashes.HasCrashedInLastSession().Get());
+            var future = AndroidCrashes.HasCrashedInLastSession();
+            return Task.Run(() => (bool)future.Get());
         }
 
         public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
+            var future = AndroidCrashes.LastSessionCrashReport;
             return Task.Run(() =>
             {
-                var androidErrorReport = AndroidCrashes.LastSessionCrashReport.Get() as AndroidErrorReport;
+                var androidErrorReport = future.Get() as AndroidErrorReport;
                 if (androidErrorReport == null)
                     return null;
                 return ErrorReportCache.GetErrorReport(androidErrorReport);

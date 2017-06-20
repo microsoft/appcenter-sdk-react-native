@@ -64,7 +64,7 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateEnabled()
         {
-            MobileCenter.SetEnabled(MobileCenterEnabledSwitch.On);
+            MobileCenter.SetEnabledAsync(MobileCenterEnabledSwitch.On).Wait();
             MobileCenterEnabledSwitch.On = MobileCenter.IsEnabledAsync().Result;
         }
 

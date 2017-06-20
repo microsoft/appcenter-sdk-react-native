@@ -44,14 +44,14 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
+        async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
         {
-            Distribute.SetEnabled(e.Value);
+            await Distribute.SetEnabledAsync(e.Value);
         }
 
-        void UpdatePushEnabled(object sender, ToggledEventArgs e)
+        async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
-	        Push.SetEnabled(e.Value);
+	        await Push.SetEnabledAsync(e.Value);
         }
 
         void UpdateFirebaseAnalyticsEnabled(object sender, ToggledEventArgs e)

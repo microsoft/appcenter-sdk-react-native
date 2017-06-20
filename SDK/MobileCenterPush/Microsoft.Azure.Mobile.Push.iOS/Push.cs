@@ -32,9 +32,10 @@ namespace Microsoft.Azure.Mobile.Push
             return Task.FromResult(MSPush.IsEnabled());
         }
 
-        static void PlatformSetEnabled(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
             MSPush.SetEnabled(enabled);
+            return Task.FromResult((object)null);
         }
 
         [Preserve]
