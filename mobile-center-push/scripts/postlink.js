@@ -10,6 +10,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     console.log('Added code to initialize iOS Push SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter', version: '0.10.1' },
+        { pod: 'MobileCenter/Push', version: '0.10.1' },
         { pod: 'RNMobileCenterShared', version: '0.6.0' }
     ]).catch(function (e) {
         console.log(`
