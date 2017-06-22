@@ -33,7 +33,7 @@ public class RNPushUtil {
     }
 
     public static WritableMap convertPushNotificationToWritableMap(PushNotification pushNotification) throws JSONException {
-        if(pushNotification == null) {
+        if (pushNotification == null) {
             return Arguments.createMap();
         } else {
             WritableMap pushNotificationMap = Arguments.createMap();
@@ -42,14 +42,14 @@ public class RNPushUtil {
             Map customData = pushNotification.getCustomData();
             pushNotificationMap.putString("title", title);
             pushNotificationMap.putString("message", message);
-            if(!customData.isEmpty()) {
+            if (!customData.isEmpty()) {
                 WritableMap cp = Arguments.createMap();
                 Iterator iterator = customData.entrySet().iterator();
 
-                while(iterator.hasNext()) {
-                    Entry pair = (Entry)iterator.next();
+                while (iterator.hasNext()) {
+                    Entry pair = (Entry) iterator.next();
                     Object value = pair.getValue();
-                    cp.putString((String)pair.getKey(), (String)value);
+                    cp.putString((String) pair.getKey(), (String) value);
                 }
 
                 iterator.remove();
