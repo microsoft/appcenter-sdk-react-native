@@ -19,7 +19,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:0.19.+'
-
-    compile project(':RNMobileCenterShared')   // For testing with TestApp
     compile 'com.microsoft.azure.mobile:mobile-center:0.10.+'
+
+    //compile project(':RNMobileCenterShared')   // For testing with TestApp
+    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.6.+'
 }
