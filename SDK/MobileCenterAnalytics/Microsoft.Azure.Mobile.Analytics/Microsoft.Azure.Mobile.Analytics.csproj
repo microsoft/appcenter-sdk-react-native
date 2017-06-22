@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-     <!-- Workaround for bug using Mono versions under 5.0.1 inspired by https://github.com/dsplaisted/NetStandardTFMFix/tree/master/NetStandardTFM -->
+    <!-- Workaround for bug using Mono versions under 5.0.1 inspired by https://github.com/dsplaisted/NetStandardTFMFix/tree/master/NetStandardTFM -->
     <TargetFrameworkMonikerAssemblyAttributesPath>$(IntermediateOutputPath)AssemblyTFMAttribute.cs</TargetFrameworkMonikerAssemblyAttributesPath>
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
@@ -57,16 +57,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <!-- Workaround for bug using Mono versions under 5.0.1 inspired by https://github.com/dsplaisted/NetStandardTFMFix/tree/master/NetStandardTFM -->
   <Target Name="_SetTargetFrameworkMonikerAttribute" BeforeTargets="GenerateTargetFrameworkMonikerAttribute">
     <PropertyGroup>
-      
       <RealTargetFrameworkMoniker>.NETStandard,Version=v1.0</RealTargetFrameworkMoniker>
       <RealTargetFrameworkMonikerDisplayName>$(RealTargetFrameworkMoniker)</RealTargetFrameworkMonikerDisplayName>
       <TargetFrameworkMonikerAssemblyAttributeText Condition="'$(RealTargetFrameworkMoniker)' != '' and '$(TargetingClr2Framework)' != 'true'">

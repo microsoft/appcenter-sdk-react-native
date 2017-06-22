@@ -33,6 +33,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 Reference/
+AssemblyTFMAttribute.cs
 
 # Crash Reporter Frameworks
 CrashReporter.framework/

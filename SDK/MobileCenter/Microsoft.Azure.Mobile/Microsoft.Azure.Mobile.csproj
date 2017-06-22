@@ -59,18 +59,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-
-<!-- Workaround for bug using Mono versions under 5.0.1 inspired by https://github.com/dsplaisted/NetStandardTFMFix/tree/master/NetStandardTFM -->
+  <!-- Workaround for bug using Mono versions under 5.0.1 inspired by https://github.com/dsplaisted/NetStandardTFMFix/tree/master/NetStandardTFM -->
   <Target Name="_SetTargetFrameworkMonikerAttribute" BeforeTargets="GenerateTargetFrameworkMonikerAttribute">
     <PropertyGroup>
-      
       <RealTargetFrameworkMoniker>.NETStandard,Version=v1.0</RealTargetFrameworkMoniker>
       <RealTargetFrameworkMonikerDisplayName>$(RealTargetFrameworkMoniker)</RealTargetFrameworkMonikerDisplayName>
       <TargetFrameworkMonikerAssemblyAttributeText Condition="'$(RealTargetFrameworkMoniker)' != '' and '$(TargetingClr2Framework)' != 'true'">
