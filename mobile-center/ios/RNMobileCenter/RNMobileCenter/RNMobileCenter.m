@@ -49,7 +49,7 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    if (properties == nil){
+    if (properties == nil) {
         resolve(nil);
         return;
     }
