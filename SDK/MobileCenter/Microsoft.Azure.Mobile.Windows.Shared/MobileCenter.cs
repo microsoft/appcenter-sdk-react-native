@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Mobile
             lock (MobileCenterLock)
             {
                 Instance.InstanceEnabled = enabled;
-                return Task.FromResult((object)null);
+                return Task.FromResult(default(object));
             }
         }
 

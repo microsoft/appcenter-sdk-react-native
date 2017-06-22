@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <returns>A task to monitor the operation.</returns>
         public static Task SetEnabledAsync(bool enabled)
         {
-            return Task.FromResult((object)null);
+            return Task.FromResult(default(object));
         }
 
         ///// <summary>

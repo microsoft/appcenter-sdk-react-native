@@ -128,7 +128,7 @@ namespace Microsoft.Azure.Mobile
         static Task PlatformSetEnabledAsync(bool enabled)
         {
             iOSMobileCenter.SetEnabled(enabled);
-            return Task.FromResult((object)null);
+            return Task.FromResult(default(object));
         }
 
         static Task<Guid?> PlatformGetInstallIdAsync()

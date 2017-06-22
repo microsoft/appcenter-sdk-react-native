@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Mobile.Analytics
         public static Task SetEnabledAsync(bool enabled)
         {
             iOSAnalytics.SetEnabled(enabled);
-            return Task.FromResult((object)null);
+            return Task.FromResult(default(object));
         }
 
         /// <summary>

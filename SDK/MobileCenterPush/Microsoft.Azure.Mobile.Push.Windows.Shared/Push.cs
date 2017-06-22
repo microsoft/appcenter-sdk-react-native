@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Mobile.Push
             lock (PushLock)
             {
                 Instance.InstanceEnabled = enabled;
-                return Task.FromResult((object)null);
+                return Task.FromResult(default(object));
             }
         }
 

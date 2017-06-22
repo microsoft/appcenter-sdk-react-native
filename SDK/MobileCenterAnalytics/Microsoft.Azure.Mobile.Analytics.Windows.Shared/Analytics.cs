@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             lock (AnalyticsLock)
             {
                 Instance.InstanceEnabled = enabled;
-                return Task.FromResult((object)null);
+                return Task.FromResult(default(object));
             }
         }
 

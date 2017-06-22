@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Distribute
 
         static Task PlatformSetEnabledAsync(bool enabled)
         {
-            return Task.FromResult((object)null);
+            return Task.FromResult(default(object));
         }
 
         static void PlatformSetInstallUrl(string installUrl)

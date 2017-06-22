@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override Task SetEnabledAsync(bool enabled)
         {
             MSCrashes.SetEnabled(enabled);
-            return Task.FromResult((object)null);
+            return Task.FromResult(default(object));
         }
 
         public override Task<bool> HasCrashedInLastSessionAsync()
