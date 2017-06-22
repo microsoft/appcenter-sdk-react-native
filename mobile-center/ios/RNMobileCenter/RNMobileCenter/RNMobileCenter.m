@@ -16,6 +16,8 @@
 #import "RCTUtils.h"
 #endif
 
+@import MobileCenter;
+
 @interface RNMobileCenter () <RCTBridgeModule>
 @end
 
