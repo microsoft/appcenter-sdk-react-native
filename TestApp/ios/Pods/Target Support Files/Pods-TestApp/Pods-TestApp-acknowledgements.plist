@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			<key>License</key>
 			<string>MIT</string>
 			<key>Title</key>
-			<string>RNMobileCenter</string>
+			<string>RNMobileCenterShared</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

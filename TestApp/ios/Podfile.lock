@@ -10,21 +10,21 @@ PODS:
   - MobileCenter/Push (0.10.1):
     - MobileCenter/Core
   - RNMobileCenterShared (0.6.0):
-    - MobileCenter (~> 0.10.0)
+    - MobileCenter (~> 0.10.1)
 
 DEPENDENCIES:
-  - MobileCenter (~> 0.10.0)
+  - MobileCenter (~> 0.10.1)
   - MobileCenter/Push (~> 0.10.1)
   - RNMobileCenterShared (from `../../RNMobileCenterShared/Products/`)
 
 EXTERNAL SOURCES:
   RNMobileCenterShared:
-    :path: "../../RNMobileCenterShared/Products/"
+    :path: ../../RNMobileCenterShared/Products/
 
 SPEC CHECKSUMS:
   MobileCenter: 2ef7c02fd337dbde11cf15552c2006db2c3774c3
-  RNMobileCenterShared: 86c11a5451a12eaca9ba81f7c06218f4788c6ff4
+  RNMobileCenterShared: ce2419041c33e7e3059de9dda6ec5dfb869f49cb
 
-PODFILE CHECKSUM: ae1bf021c3ad6ef6084fe9f4bcc112b546303315
+PODFILE CHECKSUM: ea6cdbe2d15079650ca588f2e6a9bf824d076140
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.2.0
