@@ -370,7 +370,7 @@ Task("NuGet")
 		NuGetPack(spec, new NuGetPackSettings {
 			BasePath = basePath,
 			Verbosity = NuGetVerbosity.Detailed,
-			Version = module.NuGetVersion
+			Version = "0.5.0-test"//module.NuGetVersion
 		});
 
 		// Clean up
