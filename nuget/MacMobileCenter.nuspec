@@ -13,15 +13,17 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-        <group targetFramework="netstandard1.0">
-            <dependency id="NETStandard.Library" version="1.6.1" />
+        <!-- Use dependency groups for iOS and Android so that additional dependencies aren't added to them -->
+        <group targetFramework="MonoAndroid403">
+        </group>
+        <group targetFramework="Xamarin.iOS10">
         </group>
     </dependencies>
   </metadata>
   <files>
 
-    <!-- .NET Standard -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.dll" target="lib/netstandard1.0" />
+    <!-- Portable -->
+    <file src="$pcl_dir$/Microsoft.Azure.Mobile.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10" />
 
     <!-- Android -->
     <file src="$android_dir$/Microsoft.Azure.Mobile.dll" target="lib/MonoAndroid403" />

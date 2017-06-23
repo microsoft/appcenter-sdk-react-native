@@ -252,7 +252,7 @@ Task("MacBuild")
 	RunTarget("Externals");
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Mac.sln");
-	DotNetBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
+	MSBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
 }).OnError(HandleError);
 
 // Building Windows code task
@@ -262,11 +262,11 @@ Task("WindowsBuild")
 {
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
@@ -332,7 +332,7 @@ Task("Default").IsDependentOn("NuGet").IsDependentOn("RemoveTemporaries");
 // Build tests
 Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 {
-	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+	MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 });
 
 // Pack NuGets for appropriate platform
@@ -478,10 +478,10 @@ Task("TestApps").IsDependentOn("UITest").Does(() =>
 	// Build tests and package the applications
 	// It is important that the entire solution is built before rebuilding the iOS and Android versions
 	// due to an apparent bug that causes improper linking of the forms application to iOS
-	DotNetBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
+	MSBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
 	MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Release|iPhone");
 	AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
-	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+	MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 }).OnError(HandleError);
 
 Task("RestoreTestPackages").Does(() =>
