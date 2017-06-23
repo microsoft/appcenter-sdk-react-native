@@ -13,9 +13,6 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-        <group targetFramework="netstandard1.0">
-            <dependency id="NETStandard.Library" version="1.6.1" />
-        </group>
         <!-- Use dependency groups for iOS and Android so that additional dependencies aren't added to them -->
         <group targetFramework="MonoAndroid403">
         </group>
