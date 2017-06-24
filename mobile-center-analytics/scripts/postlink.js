@@ -1,10 +1,14 @@
 var rnpmlink = require('mobile-center-link-scripts');
 var package = require('./../package.json');
 
-var prompt = package.rnpm.params[0];
-prompt.message = prompt.message.replace(/Android/, 'iOS');
-rnpmlink.inquirer.prompt(prompt)
-.then(function (answer) {
+return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
+    console.log('App Secret for iOS written to ' + file);
+
+    var prompt = package.rnpm.params[0];
+    prompt.message = prompt.message.replace(/Android/, 'iOS');
+
+    return rnpmlink.inquirer.prompt(prompt);
+}).then(function (answer) {
     var code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
         '  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics' :
         '  [RNAnalytics registerWithInitiallyEnabled:false];  // Initialize Mobile Center analytics'

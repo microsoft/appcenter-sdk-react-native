@@ -1,12 +1,8 @@
 var rnpmlink = require('mobile-center-link-scripts');
 var package = require('./../package.json');
 
-return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
-    console.log('App Secret for iOS written to ' + file);
-
-    return rnpmlink.ios.initInAppDelegate('#import <RNMobileCenter/RNMobileCenter.h>', "");
-}).then(function(file){
-    return rnpmlink.ios.addPodDeps([
+rnpmlink.ios.initInAppDelegate('#import <RNMobileCenter/RNMobileCenter.h>', "");
+return rnpmlink.ios.addPodDeps([
         { pod: 'RNMobileCenterShared', version: '0.6.0' },
         { pod: 'MobileCenter', version: '0.10.1' }
     ]).catch(function (e) {
@@ -18,12 +14,6 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
         `)
         return Promise.resolve();
     });
-});
-
-
-
-
-
 
 
 
