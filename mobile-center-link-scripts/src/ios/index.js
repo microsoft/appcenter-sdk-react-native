@@ -28,17 +28,29 @@ try {
 }
 
 module.exports = {
-    initMobileCenterConfig: function(file) {
+    initMobileCenterConfig: function(alwaysPromptForAppSecret) {
         var config = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
+        var currentAppSecret = config.get('AppSecret');
+
+        // We always prompt for the app secret for the mobile-center package. For other packages, we only prompt for
+        // it if not already set. That way we minimize prompts in the normal getting started scenario, but still allow
+        // updating the app secret for the app, if the user really wants, by them redo'ing the link on mobile-center
+        if (currentAppSecret && !alwaysPromptForAppSecret)
+            return Promise.resolve(null);
+
         return inquirer.prompt([{
             type: 'input',
-            default: config.get('AppSecret'),
+            default: currentAppSecret,
             message: 'What is the iOS App Secret?',
             name: 'AppSecret',
         }]).then(function(answers) {
             try {
                 config.set('AppSecret', answers['AppSecret']);
-                return config.save();
+                return config.save()
+                    .then(function (file) {
+                        console.log('App Secret for iOS written to ' + file);
+                        return file;
+                    });
             } catch (e) {
                 debug('Could not save config', e);
                 Promise.reject(e);

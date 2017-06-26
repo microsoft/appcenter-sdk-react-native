@@ -1,8 +1,8 @@
 var rnpmlink = require('mobile-center-link-scripts');
 var package = require('./../package.json');
 
-rnpmlink.ios.initInAppDelegate('#import <RNMobileCenter/RNMobileCenter.h>', "");
-return rnpmlink.ios.addPodDeps([
+return rnpmlink.ios.initMobileCenterConfig(true).then(function (file) {
+    return rnpmlink.ios.addPodDeps([
         { pod: 'RNMobileCenterShared', version: '0.6.0' },
         { pod: 'MobileCenter', version: '0.10.1' }
     ]).catch(function (e) {
@@ -13,7 +13,5 @@ return rnpmlink.ios.addPodDeps([
             Error Reason - ${e.message}
         `)
         return Promise.resolve();
-    });
-
-
-
+    })
+});

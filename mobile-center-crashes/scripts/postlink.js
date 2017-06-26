@@ -1,9 +1,7 @@
 var rnpmlink = require('mobile-center-link-scripts');
 var package = require('./../package.json');
 
-return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
-    console.log('App Secret for iOS written to ' + file);
-
+return rnpmlink.ios.initMobileCenterConfig(false).then(function (file) {
     var prompt = package.rnpm.params[0];
     prompt.message = prompt.message.replace(/Android/, 'iOS');
 
