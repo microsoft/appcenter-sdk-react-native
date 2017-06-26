@@ -2,4 +2,6 @@
 
 @interface RNMobileCenter : NSObject
 
++ (void) register;
+
 @end

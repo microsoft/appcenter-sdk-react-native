@@ -8,6 +8,7 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
+import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
 import com.microsoft.azure.mobile.MobileCenter;
 
 import org.json.JSONException;
@@ -15,7 +16,7 @@ import org.json.JSONException;
 public class RNMobileCenterModule extends BaseJavaModule {
 
     public RNMobileCenterModule(Application application) {
-
+        RNMobileCenterShared.configureMobileCenter(application);
     }
 
     @Override

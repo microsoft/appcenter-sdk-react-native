@@ -17,6 +17,7 @@
 #endif
 
 @import MobileCenter;
+@import RNMobileCenterShared;
 
 @interface RNMobileCenter () <RCTBridgeModule>
 @end
@@ -24,6 +25,11 @@
 @implementation RNMobileCenter
 
 RCT_EXPORT_MODULE();
+
++ (void)register
+{
+    [RNMobileCenterShared configureMobileCenter];
+}
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)enabled
                   resolver:(RCTPromiseResolveBlock)resolve
