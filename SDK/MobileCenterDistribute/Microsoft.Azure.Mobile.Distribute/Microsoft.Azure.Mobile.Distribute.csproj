@@ -8,7 +8,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.Azure.Mobile.Distribute</RootNamespace>
     <AssemblyName>Microsoft.Azure.Mobile.Distribute</AssemblyName>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
@@ -39,9 +40,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Distribute.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
   </ItemGroup>
   <Import Project="..\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
