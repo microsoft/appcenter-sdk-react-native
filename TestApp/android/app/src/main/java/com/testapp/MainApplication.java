@@ -5,8 +5,9 @@ import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.microsoft.azure.mobile.react.push.RNPushPackage;
-import com.microsoft.azure.mobile.react.analytics.RNAnalyticsPackage;
 import com.microsoft.azure.mobile.react.crashes.RNCrashesPackage;
+import com.microsoft.azure.mobile.react.analytics.RNAnalyticsPackage;
+import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenterPackage;
 import com.microsoft.azure.mobile.MobileCenter;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -30,8 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNPushPackage(MainApplication.this),
+            new RNCrashesPackage(MainApplication.this, getResources().getString(R.string.mobileCenterCrashes_whenToSendCrashes)),
             new RNAnalyticsPackage(MainApplication.this, getResources().getString(R.string.mobileCenterAnalytics_whenToEnableAnalytics)),
-            new RNCrashesPackage(MainApplication.this, getResources().getString(R.string.mobileCenterCrashes_whenToSendCrashes))
+            new RNMobileCenterPackage(MainApplication.this)
       );
     }
   };

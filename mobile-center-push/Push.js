@@ -1,6 +1,9 @@
 let ReactNative = require('react-native');
 let RNPush = require("react-native").NativeModules.RNPush;
 
+const pushNotificationReceivedEvent = "MobileCenterPushNotificationReceived";
+
+
 let Push = {
     // async - returns a Promise
     setEnabled(enabled) {
@@ -11,6 +14,12 @@ let Push = {
     isEnabled() {
         return RNPush.isEnabled();
     },
+
+    addEventListener(listenerMap) {
+        if (listenerMap.pushNotificationReceived) {
+            ReactNative.DeviceEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.pushNotificationReceived);
+        }
+    }
 };
 
 module.exports = Push;

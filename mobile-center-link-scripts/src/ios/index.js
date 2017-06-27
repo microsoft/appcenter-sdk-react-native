@@ -28,17 +28,30 @@ try {
 }
 
 module.exports = {
-    initMobileCenterConfig: function(file) {
+    initMobileCenterConfig: function() {
         var config = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
+        var currentAppSecret = config.get('AppSecret');
+
+        // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
+        // if they want
+        if (currentAppSecret) {
+            console.log(`iOS App Secret is '${currentAppSecret}' set in ${config.plistPath}`);
+            return Promise.resolve(null);
+        }
+
         return inquirer.prompt([{
             type: 'input',
-            default: config.get('AppSecret'),
+            default: currentAppSecret,
             message: 'What is the iOS App Secret?',
             name: 'AppSecret',
         }]).then(function(answers) {
             try {
                 config.set('AppSecret', answers['AppSecret']);
-                return config.save();
+                return config.save()
+                    .then(function (file) {
+                        console.log(`App Secret for iOS written to ${file}`);
+                        return file;
+                    });
             } catch (e) {
                 debug('Could not save config', e);
                 Promise.reject(e);
@@ -60,6 +73,9 @@ module.exports = {
     },
 
     addPodDeps: function(pods) {
+        if (process.platform !== "darwin") {
+            return Promise.reject(new Error("Since you are not running on a Mac, CocoaPods installation steps will be skipped."));
+        }
         if (!PodFile.isCocoaPodsInstalled()) {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }

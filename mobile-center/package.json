@@ -1,0 +1,32 @@
+{
+  "name": "mobile-center",
+  "version": "0.6.0",
+  "description": "Node module that contains common functionality needed to mobile-center-* modules",
+  "main": "MobileCenter.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/mobile-center-sdk-react-native.git"
+  },
+  "keywords": [
+    "react-native",
+    "mobile-center"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/mobile-center-sdk-react-native/issues"
+  },
+  "homepage": "https://github.com/microsoft/mobile-center-sdk-react-native#readme",
+  "dependencies": {
+    "mobile-center-link-scripts": "0.6.0"
+  },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new RNMobileCenterPackage(MainApplication.this)"
+    },
+    "commands": {
+      "prelink": "node node_modules/mobile-center/scripts/prelink",
+      "postlink": "node node_modules/mobile-center/scripts/postlink"
+    }
+  }
+}

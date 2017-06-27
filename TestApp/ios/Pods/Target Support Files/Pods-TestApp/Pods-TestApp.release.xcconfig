@@ -1,8 +1,8 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/MobileCenter/MobileCenter-SDK-iOS" "${PODS_ROOT}/../../../RNMobileCenter/Products/RNMobileCenter"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/MobileCenter/MobileCenter-SDK-iOS" "${PODS_ROOT}/../../../RNMobileCenterShared/Products/RNMobileCenterShared"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MobileCenter" "${PODS_ROOT}/Headers/Public/RNMobileCenter"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/MobileCenter" -isystem "${PODS_ROOT}/Headers/Public/RNMobileCenter"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"c++" -l"z" -framework "CoreTelephony" -framework "Foundation" -framework "MobileCenter" -framework "MobileCenterAnalytics" -framework "MobileCenterCrashes" -framework "MobileCenterPush" -framework "RNMobileCenter" -framework "SystemConfiguration" -framework "UIKit" -weak_framework "UserNotifications"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MobileCenter" "${PODS_ROOT}/Headers/Public/RNMobileCenterShared"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/MobileCenter" -isystem "${PODS_ROOT}/Headers/Public/RNMobileCenterShared"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"c++" -l"z" -framework "CoreTelephony" -framework "Foundation" -framework "MobileCenter" -framework "MobileCenterAnalytics" -framework "MobileCenterCrashes" -framework "MobileCenterPush" -framework "RNMobileCenterShared" -framework "SystemConfiguration" -framework "UIKit" -weak_framework "UserNotifications"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods

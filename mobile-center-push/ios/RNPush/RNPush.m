@@ -19,18 +19,59 @@
 #endif
 
 @import MobileCenterPush;
-@import RNMobileCenter;
+@import RNMobileCenterShared;
+
+#import "RNPushUtils.h"
+#import "RNPushDelegate.h"
+
 
 @interface RNPush () <RCTBridgeModule>
 @end
 
 @implementation RNPush
 
+@synthesize bridge = _bridge;
+
+static id<RNPushDelegate> pushDelegate;
+
 RCT_EXPORT_MODULE();
+
+- (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification {
+    NSString *message = pushNotification.message;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self) {
+        [pushDelegate setBridge:self.bridge];
+    }
+    
+    return self;
+}
+
+-(void)setBridge:(RCTBridge*) bridgeValue
+{
+    _bridge = bridgeValue;
+    [pushDelegate setBridge:bridgeValue];
+}
+
+- (RCTBridge*) bridge {
+    return _bridge;
+}
+
+- (NSDictionary *)constantsToExport
+{
+    return @{};
+}
 
 + (void)registerAndEnable
 {
-    [RNMobileCenter configureMobileCenter];
+    pushDelegate = [[RNPushDelegateBase alloc] init];
+
+    [RNMobileCenterShared configureMobileCenter];
+    [MSPush setDelegate:pushDelegate];
     [MSMobileCenter startService:[MSPush class]];
 }
 

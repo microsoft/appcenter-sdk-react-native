@@ -1,13 +1,15 @@
 rootProject.name = 'TestApp'
 include ':mobile-center-push'
 project(':mobile-center-push').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-push/android')
-include ':mobile-center-analytics'
-project(':mobile-center-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-analytics/android')
 include ':mobile-center-crashes'
 project(':mobile-center-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-crashes/android')
+include ':mobile-center-analytics'
+project(':mobile-center-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-analytics/android')
+include ':mobile-center'
+project(':mobile-center').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center/android')
 
-include 'RNMobileCenter'
-project(':RNMobileCenter').projectDir = new File(rootProject.projectDir, '../../RNMobileCenter/android')
+include 'RNMobileCenterShared'
+project(':RNMobileCenterShared').projectDir = new File(rootProject.projectDir, '../../RNMobileCenterShared/android')
 
 include ':app'
 
