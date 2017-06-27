@@ -73,6 +73,9 @@ module.exports = {
     },
 
     addPodDeps: function(pods) {
+        if (process.platform !== "darwin") {
+            return Promise.reject(new Error("Since you are not running on a Mac, CocoaPods installation steps will be skipped."));
+        }
         if (!PodFile.isCocoaPodsInstalled()) {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
