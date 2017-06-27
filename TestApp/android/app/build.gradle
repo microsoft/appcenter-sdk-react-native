@@ -138,8 +138,8 @@ android {
 
 dependencies {
     compile project(':mobile-center-push')
-    compile project(':mobile-center-analytics')
     compile project(':mobile-center-crashes')
+    compile project(':mobile-center-analytics')
     compile project(':mobile-center')
     compile fileTree(dir: "libs", include: ["*.jar"])
     // From node_modules

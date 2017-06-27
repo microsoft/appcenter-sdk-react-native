@@ -23,6 +23,8 @@
 {
   NSURL *jsCodeLocation;
 
+  [RNMobileCenter register];  // Initialize Mobile Center 
+
   [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes
 
   [RNPush registerAndEnable];  // Initialize Mobile Center push
