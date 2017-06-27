@@ -12,7 +12,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
         '  [RNAnalytics registerWithInitiallyEnabled:false];  // Initialize Mobile Center analytics'
     return rnpmlink.ios.initInAppDelegate('#import <RNAnalytics/RNAnalytics.h>', code);
 }).then(function (file) {
-    console.log('Added code to initialize iOS Crashes SDK in ' + file);
+    console.log('Added code to initialize iOS Analytics SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter', version: '0.10.1' },
         { pod: 'RNMobileCenterShared', version: '0.6.0' }
