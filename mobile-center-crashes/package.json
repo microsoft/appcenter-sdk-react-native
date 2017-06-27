@@ -28,7 +28,7 @@
       {
         "type": "list",
         "name": "whenToSendCrashes",
-        "message": "For the Android app, should crashes be sent automatically, or processed in JavaScript before being sent?",
+        "message": "For the Android app, should crashes be sent automatically or processed in JavaScript before being sent?",
         "choices": [
           {
             "name": "Automatically",
