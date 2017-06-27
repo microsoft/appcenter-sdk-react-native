@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		BA189FAF1EEE74F100CAD13F /* RNPush.m in Sources */ = {isa = PBXBuildFile; fileRef = BA189FAE1EEE74F100CAD13F /* RNPush.m */; };
 		BA189FB01EEE74F100CAD13F /* RNPush.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA189FAD1EEE74F100CAD13F /* RNPush.h */; };
+		C35A03971F0275DC00931F0C /* RNPushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35A03961F0275DC00931F0C /* RNPushDelegate.m */; };
+		C35A039A1F02764000931F0C /* RNPushUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C35A03991F02764000931F0C /* RNPushUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +30,10 @@
 		BA189FAA1EEE74F100CAD13F /* libRNPush.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPush.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA189FAD1EEE74F100CAD13F /* RNPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPush.h; sourceTree = "<group>"; };
 		BA189FAE1EEE74F100CAD13F /* RNPush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPush.m; sourceTree = "<group>"; };
+		C35A03951F02759F00931F0C /* RNPushDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPushDelegate.h; sourceTree = "<group>"; };
+		C35A03961F0275DC00931F0C /* RNPushDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPushDelegate.m; sourceTree = "<group>"; };
+		C35A03981F02761B00931F0C /* RNPushUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPushUtils.h; sourceTree = "<group>"; };
+		C35A03991F02764000931F0C /* RNPushUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPushUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +68,10 @@
 			children = (
 				BA189FAD1EEE74F100CAD13F /* RNPush.h */,
 				BA189FAE1EEE74F100CAD13F /* RNPush.m */,
+				C35A03951F02759F00931F0C /* RNPushDelegate.h */,
+				C35A03961F0275DC00931F0C /* RNPushDelegate.m */,
+				C35A03981F02761B00931F0C /* RNPushUtils.h */,
+				C35A03991F02764000931F0C /* RNPushUtils.m */,
 			);
 			path = RNPush;
 			sourceTree = "<group>";
@@ -123,7 +133,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C35A03971F0275DC00931F0C /* RNPushDelegate.m in Sources */,
 				BA189FAF1EEE74F100CAD13F /* RNPush.m in Sources */,
+				C35A039A1F02764000931F0C /* RNPushUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +283,7 @@
 				BA189FB51EEE74F100CAD13F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
