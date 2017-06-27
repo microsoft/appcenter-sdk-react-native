@@ -1,7 +1,7 @@
 var rnpmlink = require('mobile-center-link-scripts');
 var package = require('./../package.json');
 
-return rnpmlink.ios.initMobileCenterConfig(true).then(function (file) {
+return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     var code = '  [RNMobileCenter register];  // Initialize Mobile Center '
     return rnpmlink.ios.initInAppDelegate('#import <RNMobileCenter/RNMobileCenter.h>', code);
 }).then(function (file) {
