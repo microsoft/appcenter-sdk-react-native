@@ -35,9 +35,9 @@ export default class MobileCenterScreen extends React.Component {
     component.setState({logLevel: logLevel});
   }
 
-  async toggleLogLevel() {
+  async toggleVerboseLogging() {
     const logLevel = await MobileCenter.getLogLevel();
-    const newLogLEvel = logLevel == 1 ? 0 : 1;
+    const newLogLEvel = logLevel === MobileCenter.LogLevelWarning ? MobileCenter.LogLevelVerbose : MobileCenter.LogLevelWarning;
     await MobileCenter.setLogLevel(newLogLEvel); //just for testing
     this.setState({logLevel: newLogLEvel});
   }
@@ -62,15 +62,15 @@ export default class MobileCenterScreen extends React.Component {
           <Text style={SharedStyles.enabledText}>
             Log level: {this.state.logLevel}
           </Text>
-          <TouchableOpacity onPress={this.toggleLogLevel.bind(this)}>
+          <TouchableOpacity onPress={this.toggleVerboseLogging.bind(this)}>
             <Text style={SharedStyles.toggleEnabled}>
-              toggle log level
+              toggle verbose
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={this.setCustomProperties.bind(this)}>
             <Text style={SharedStyles.toggleEnabled}>
-              setCustomProperties
+              Set Custom Properties
             </Text>
           </TouchableOpacity>
 
