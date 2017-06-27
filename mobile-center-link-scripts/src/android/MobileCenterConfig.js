@@ -45,7 +45,7 @@ MobileCenterConfig.searchForFile = function (cwd) {
     });
     if (MobileCenterConfigPaths.length > 1) {
         debug(MobileCenterConfigPaths);
-        throw new Error(`Found more than one mobile-center-config.json in this project and hence, could not write App Secret.
+        throw new Error(`Found more than one mobile-center-config.json in this project and hence could not write App Secret.
             Please add "app_secret" to the correct mobile-center-config.json file
             mobile-center-config.json found at ${MobileCenterConfigPaths}
         `);
