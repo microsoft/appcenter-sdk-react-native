@@ -243,7 +243,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNCrashes;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNMobileCenter/ios/RNMobileCenter";
 			};
 			name = Debug;
 		};
@@ -259,7 +258,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNCrashes;
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNMobileCenter/ios/RNMobileCenter";
 			};
 			name = Release;
 		};
