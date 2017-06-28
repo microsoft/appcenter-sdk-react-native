@@ -5,5 +5,8 @@ react-native unlink mobile-center
 react-native unlink mobile-center-crashes
 react-native unlink mobile-center-analytics
 react-native unlink mobile-center-push
+echo 'Removing old Pods...'
+rm -rf ios/Pods
+rm -rf ios/Podfile.lock
 echo 'Linking...'
 react-native link
