@@ -11,23 +11,27 @@
     the version number for Android components from 0.6 to 0.7 and for iOS components from 0.5 to 0.7 (skipping 0.6).
     0.7 becomes the new prevailing version number for the RN SDK.
 
-  RNMobileCenter Android
-    mobile-center-sdk-react-native/RNMobileCenter/android/build.gradle
+  RNMobileCenterShared Android
+    RNMobileCenterShared/android/build.gradle
       Add 1 to versionCode (it's just a counter that need be unique)
       Bump the version in versionName
-      Ensure com.microsoft.azure.mobile:mobile-center (at the bottom) is correct
+      Ensure com.microsoft.azure.mobile:mobile-center dependency version (at the bottom) is correct
 
-  RNMobileCenter iOS
-    mobile-center-sdk-react-native/RNMobileCenter/Products/RNMobileCenter.podspec
+  RNMobileCenterShared iOS
+    RNMobileCenterShared/Products/RNMobileCenterShared.podspec
       Bump the version num s.version
-      Ensure s.dependency 'MobileCenter' dependency (at the bottom) is correct
-    RNMobileCenter.m
+      Ensure s.dependency 'MobileCenter' dependency version (at the bottom) is correct
+    RNMobileCenterShared.m
       Update the version number used for `initWithWrapperSdkVersion:`.  That should match s.version in
-      RNMobileCenter.podspec (and for Android the wrapper SDK version comes from the version number
+      RNMobileCenterShared.podspec (and for Android the wrapper SDK version comes from the version number
       in build.gradle)
 
 
   NPM modules
+    mobile-center/package.json
+    mobile-center/scripts/postlink.js (for iOS pod dependencies)
+    mobile-center/android/build.gradle (versionCode, versionName, and dependences at bottom)
+
     mobile-center-crashes/package.json
     mobile-center-crashes/scripts/postlink.js (for iOS pod dependencies)
     mobile-center-crashes/android/build.gradle (versionCode, versionName, and dependences at bottom)
@@ -46,23 +50,23 @@
 
 - Download the latest Mobile Center frameworks zip from https://github.com/Microsoft/mobile-center-sdk-ios/releases.
   - Unzip it.
-  - Open up RNMobileCenter/ios/RNMobileCenter.xcodeproj in Xcode
-  - Drag in MobileCenter.framework; check "Copy items if needed"; Add to the RNMobileCenter target
+  - Open up RNMobileCenterShared/ios/RNMobileCenterShared.xcodeproj in Xcode
+  - Drag in MobileCenter.framework; check "Copy items if needed"; Add to the RNMobileCenterShared target
   - Switch the scheme to "Fat framework" (Product/Scheme menu)
   - Ensure the Destination is Generic iOS Device (though I'm not sure it matters); ensure the "Fat Framework" target is selected
   - Build (Product / Build For / Running)
   - For validation do:
-    cd RNMobileCenter
-    file  ./Products/RNMobileCenter/RNMobileCenter.framework/RNMobileCenter
+    cd RNMobileCenterShared
+    file  ./Products/RNMobileCenterShared/RNMobileCenterShared.framework/RNMobileCenterShared
     And confirm you see output like this:
-    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter: Mach-O universal binary with 4 architectures: [arm_v7: current ar archive random library] [i386: current ar archive random library] [x86_64: current ar archive random library] [arm64: current ar archive random library]
-    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture armv7):    current ar archive random library
-    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture i386):    current ar archive random library
-    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture x86_64):    current ar archive random library
-    RNMobileCenter/RNMobileCenter.framework/RNMobileCenter (for architecture arm64):    current ar archive random library
+    RNMobileCenterShared/RNMobileCenterShared.framework/RNMobileCenterShared: Mach-O universal binary with 4 architectures: [arm_v7: current ar archive random library] [i386: current ar archive random library] [x86_64: current ar archive random library] [arm64: current ar archive random library]
+    RNMobileCenterShared/RNMobileCenterShared.framework/RNMobileCenterShared (for architecture armv7):    current ar archive random library
+    RNMobileCenterShared/RNMobileCenterShared.framework/RNMobileCenterShared (for architecture i386):    current ar archive random library
+    RNMobileCenterShared/RNMobileCenterShared.framework/RNMobileCenterShared (for architecture x86_64):    current ar archive random library
+    RNMobileCenterShared/RNMobileCenterShared.framework/RNMobileCenterShared (for architecture arm64):    current ar archive random library
 
   - Zip up the framework:
-    cd mobile-center-sdk-react-native/RNMobileCenter
+    cd mobile-center-sdk-react-native/RNMobileCenterShared
     ./zip-framework.sh
 
 *** Publishing for iOS ***
@@ -73,15 +77,15 @@
 
   To publish the updated CocoaPod:
   - cd mobile-center-sdk-react-native
-  - Ensure you are a contributor to the cocopod; if you aren't, have the original contributor add your email address as a maintainer
-  - Create a session (using your name and email):  pod trunk register joe.blow@microsoft.com 'Joe Blow' --description='macbook pro'
+  - Ensure you are a contributor to the CocoaPod; if you aren't, have the original contributor add your email address as a maintainer
+  - Create a session (using your name and email, not joe blow):  pod trunk register joe.blow@microsoft.com 'Joe Blow' --description='macbook pro'
   - Click on the link in the email that arrives to complete creating the session
   - Lint the update:
-    pod spec lint RNMobileCenter.podspec  --allow-warnings
+    pod spec lint RNMobileCenterShared.podspec  --allow-warnings
 
     The only warning should be:  There was a problem validating the URL https://mobile.azure.com.
   - Publish the update:
-    pod trunk push RNMobileCenter.podspec --allow-warnings
+    pod trunk push RNMobileCenterShared.podspec --allow-warnings
   - As a double check, ensure that everything looks OK with the published podspec here:  https://cocoapods.org/?q=RNMobileCenter
 
 *** Building and publishing for Android ***
@@ -113,6 +117,16 @@
   - Run Demo app
   - cd into MobileCenterDemoApp folder and react-native run-ios
 
+*** Creating the iOS xcodeproj for a new module ***  
+  When it comes time to add a new module to the SDK (e.g. for say mobile-center-identity), create the xcode project for it as follows to be consistent with other modules:
+  - In Xcode create a new project, type Cocoa Touch Static library
+  - In Xcode go Build Settings for the Target; look at the Customized view
+  - Open another project (e.g. mobile-center-crashes) as an example; there also bring up Build Settings for the Target, Customized view
+  - Visually compare the settings between the two, updating the new project to be consistent. Especially, you need to update Framework Search Paths, Header Search Paths,
+    and User Header Search Paths settings. Maybe iOS Deployment Target should change as well.
+  - Do the same visual comparison for the Project Build Settings that you did for the Target. There are a couple settings there we change from their defaults.
+    When someone goes thru these steps next time, feel free to update this doc and list those settings.
+  - When you're done you can also do a textual diff of the project.pbxproj files, to ensure that all the remaining differences look reasonable. That's a good double check.
 
 *** More info ***
 
