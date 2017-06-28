@@ -8,5 +8,8 @@ react-native unlink mobile-center-push
 echo 'Removing old Pods...'
 rm -rf ios/Pods
 rm -rf ios/Podfile.lock
+echo 'Copying RNMobileCenter pod manually'
+mkdir -p ios/Pods/RNMobileCenterShared
+cp -R ../RNMobileCenterShared/Products/RNMobileCenterShared ios/Pods/RNMobileCenterShared
 echo 'Linking...'
 react-native link
