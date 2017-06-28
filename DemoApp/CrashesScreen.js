@@ -149,7 +149,7 @@ export default class CrashesScreen extends Component {
           <Text style={styles.lastSessionInfo}>
             {this.state.sendStatus}
           </Text>
-
+    
           <Text style={styles.lastSessionHeader}>Last session:</Text>
           <Text style={styles.lastSessionInfo}>
             {this.state.lastSessionStatus}
