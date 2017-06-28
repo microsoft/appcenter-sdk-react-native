@@ -49,21 +49,25 @@ let Crashes = {
                 });
             reports = reportsWithAttachmentFunction;
             */
-            
+
             callback(reports, function (response) {
                 RNCrashes.crashUserResponse(response, errorAttachments);
             });
 	    });
     },
 
-    addEventListener(listenerMap) {
-        if (listenerMap.willSendCrash) {
+    setEventListener(listenerMap) {
+        ReactNative.DeviceEventEmitter.removeAllListeners(willSendEvent);
+        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidSucceed);
+        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidFail);
+
+        if (listenerMap && listenerMap.willSendCrash) {
             ReactNative.DeviceEventEmitter.addListener(willSendEvent, listenerMap.willSendCrash);
         }
-        if (listenerMap.didSendCrash) {
+        if (listenerMap && listenerMap.didSendCrash) {
             ReactNative.DeviceEventEmitter.addListener(sendDidSucceed, listenerMap.didSendCrash);
         }
-        if (listenerMap.failedSendingCrash) {
+        if (listenerMap && listenerMap.failedSendingCrash) {
             ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
         }
     }

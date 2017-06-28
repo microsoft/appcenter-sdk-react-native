@@ -79,7 +79,7 @@ export default class CrashesScreen extends Component {
         return;
       }
 
-      Crashes.addEventListener({
+      Crashes.setEventListener({
         willSendCrash: function () {
           status += `Will send crash\n`;
           component.setState({sendStatus: status});
@@ -149,7 +149,7 @@ export default class CrashesScreen extends Component {
           <Text style={styles.lastSessionInfo}>
             {this.state.sendStatus}
           </Text>
-    
+
           <Text style={styles.lastSessionHeader}>Last session:</Text>
           <Text style={styles.lastSessionInfo}>
             {this.state.lastSessionStatus}
