@@ -33,7 +33,7 @@ export default class PushScreen extends React.Component {
     const pushEnabled = await Push.isEnabled();
     component.setState({pushEnabled: pushEnabled});
 
-    Push.setEvenetListener({
+    Push.setEventListener({
        pushNotificationReceived: function (pushNotification) {
           let msg =  pushNotification.message;
           if (pushNotification.customProperties){
