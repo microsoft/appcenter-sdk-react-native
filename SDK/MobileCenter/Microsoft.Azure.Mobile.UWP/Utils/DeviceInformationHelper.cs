@@ -51,75 +51,57 @@ namespace Microsoft.Azure.Mobile.Utils
             if (CanReadScreenSize &&
                 ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
             {
-                CoreApplication.LeavingBackground += async (sender, e) =>
+                CoreApplication.LeavingBackground += (sender, e) =>
                 {
-                    // In this callback, there is UI available. But the callback will not necessarily
-                    // be executed on the UI thread (e.g. Unity applications).
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-                        Windows.UI.Core.CoreDispatcherPriority.Normal,
-                        () =>
+                    lock (LockObject)
+                    {
+                        if (_didSetUpScreenSizeEvent)
                         {
-                            lock (LockObject)
-                            {
-                                if (_didSetUpScreenSizeEvent)
-                                {
-                                    return;
-                                }
-                                DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
-                                {
-                                    RefreshDisplayCache();
-                                };
-                                _didSetUpScreenSizeEvent = true;
-                                RefreshDisplayCache();
-                                DisplayInformationEventSemaphore.Release();
-                            }
-                        });
+                            return;
+                        }
+                        DisplayInformation.GetForCurrentView().OrientationChanged += async (displayInfo, obj) =>
+                        {
+                            await RefreshDisplayCache().ConfigureAwait(false);
+                        };
+                        _didSetUpScreenSizeEvent = true;
+                        RefreshDisplayCache().Wait();
+                        DisplayInformationEventSemaphore.Release();
+                    }
                 };
             }
         }
 
-        public static void RetrieveDisplayInformation()
+        public static async Task RefreshDisplayCache()
         {
-            lock (LockObject)
-            {
-                if (_didSetUpScreenSizeEvent)
+            // This can only succeed on the UI thread due to limitations of
+            // the DisplayInformation class
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                () =>
                 {
-                    return;
-                }
-                DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
-                {
-                    RefreshDisplayCache();
-                };
-                _didSetUpScreenSizeEvent = true;
-                RefreshDisplayCache();
-                DisplayInformationEventSemaphore.Release();
-            }
-        }
-
-        //NOTE: This method MUST be called from the UI thread
-        public static void RefreshDisplayCache()
-        {
-            lock (LockObject)
-            {
-                DisplayInformation displayInfo = null;
-                try
-                {
-                    // This can throw exceptions that aren't well documented, so catch-all and ignore
-                    displayInfo = DisplayInformation.GetForCurrentView();
-                }
-                catch (Exception e)
-                {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Could not get display information.", e);
-                    return;
-                }
-                if (_cachedScreenSize == ScreenSizeFromDisplayInfo(displayInfo))
-                {
-                    return;
-                }
-                _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Cached screen size updated to {_cachedScreenSize}");
-                InformationInvalidated?.Invoke(null, EventArgs.Empty);
-            }
+                    lock (LockObject)
+                    {
+                        DisplayInformation displayInfo = null;
+                        try
+                        {
+                            // This can throw exceptions that aren't well documented, so catch-all and ignore
+                            displayInfo = DisplayInformation.GetForCurrentView();
+                        }
+                        catch (Exception e)
+                        {
+                            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Could not get display information.", e);
+                            return;
+                        }
+                        if (_cachedScreenSize == ScreenSizeFromDisplayInfo(displayInfo))
+                        {
+                            return;
+                        }
+                        _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
+                        MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                            $"Cached screen size updated to {_cachedScreenSize}");
+                        InformationInvalidated?.Invoke(null, EventArgs.Empty);
+                    }
+                });
         }
 
         private static string ScreenSizeFromDisplayInfo(DisplayInformation displayInfo)
