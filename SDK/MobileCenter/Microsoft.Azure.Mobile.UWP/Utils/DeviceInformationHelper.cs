@@ -51,22 +51,29 @@ namespace Microsoft.Azure.Mobile.Utils
             if (CanReadScreenSize &&
                 ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
             {
-                CoreApplication.LeavingBackground += (sender, e) =>
+                CoreApplication.LeavingBackground += async (sender, e) =>
                 {
-                    lock (LockObject)
-                    {
-                        if (_didSetUpScreenSizeEvent)
+                    // In this callback, there is UI available. But the callback will not necessarily
+                    // be executed on the UI thread (e.g. Unity applications).
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                        Windows.UI.Core.CoreDispatcherPriority.Normal,
+                        () =>
                         {
-                            return;
-                        }
-                        DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
-                        {
-                            RefreshDisplayCache();
-                        };
-                        _didSetUpScreenSizeEvent = true;
-                        RefreshDisplayCache();
-                        DisplayInformationEventSemaphore.Release();
-                    }
+                            lock (LockObject)
+                            {
+                                if (_didSetUpScreenSizeEvent)
+                                {
+                                    return;
+                                }
+                                DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
+                                {
+                                    RefreshDisplayCache();
+                                };
+                                _didSetUpScreenSizeEvent = true;
+                                RefreshDisplayCache();
+                                DisplayInformationEventSemaphore.Release();
+                            }
+                        });
                 };
             }
         }
