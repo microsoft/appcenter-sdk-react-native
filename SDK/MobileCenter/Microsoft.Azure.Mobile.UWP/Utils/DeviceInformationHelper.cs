@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
-            await _screenSizeProvider.IsAvailableAsync(DisplayInformationTimeout).ConfigureAwait(false);
+            await _screenSizeProvider.WaitUntilReadyAsync().ConfigureAwait(false);
             return await base.GetDeviceInformationAsync().ConfigureAwait(false);
         }
 

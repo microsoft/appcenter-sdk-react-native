@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Utils
             get { return Height == -1 || Width == -1 ? null : $"{Width}x{Height}"; }
         }
 
-        // Waits until the screen size is available (until timeout)
-        public abstract Task<bool> IsAvailableAsync(TimeSpan timeout);
+        // Waits until the screen size is available (or definitely unavailable)
+        public abstract Task WaitUntilReadyAsync();
     }
 }

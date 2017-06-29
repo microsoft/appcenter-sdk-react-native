@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Utils
         // Either of these == -1 translates to screen size of null.
         private int _cachedScreenHeight = -1;
         private int _cachedScreenWidth = -1;
-
+        private bool _ready;
         private const string FailureMessage = "Could not determine display size.";
 
         public DefaultScreenSizeProvider()
@@ -35,6 +35,7 @@ namespace Microsoft.Azure.Mobile.Utils
                 {
                     var displayInfo = DisplayInformation.GetForCurrentView();
                     UpdateDisplayInformation(displayInfo, null);
+                    _displayInformationEventSemaphore.Release();
 
                     // Try to detect a change in screen size by attaching handlers to these events.
                     displayInfo.OrientationChanged += UpdateDisplayInformation;
@@ -58,7 +59,6 @@ namespace Microsoft.Azure.Mobile.Utils
                 var resolutionChanged = newHeight != _cachedScreenHeight || newWidth != _cachedScreenWidth;
                 _cachedScreenHeight = newHeight;
                 _cachedScreenWidth = newWidth;
-                _displayInformationEventSemaphore.Release();
                 if (resolutionChanged)
                 {
                     // Don't want to invoke this on the UI thread, so wrap in a task to be safe.
@@ -70,19 +70,14 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-        public override int Height
-        {
-            get { return _cachedScreenHeight; }
-        }
+        public override int Height => _cachedScreenHeight;
 
-        public override int Width
-        {
-            get { return _cachedScreenWidth; }
-        }
+        public override int Width => _cachedScreenWidth;
 
-        public override async Task<bool> IsAvailableAsync(TimeSpan timeout)
+        public override async Task WaitUntilReadyAsync()
         {
-            return await _displayInformationEventSemaphore.WaitAsync(timeout).ConfigureAwait(false);
+            await _displayInformationEventSemaphore.WaitAsync().ConfigureAwait(false);
+            _displayInformationEventSemaphore.Release();
         }
 
         public override event EventHandler ScreenSizeChanged;
