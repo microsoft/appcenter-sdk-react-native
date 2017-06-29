@@ -44,6 +44,8 @@ public class RNUtils {
         }
     };
 
+    // This code in general purpose for possible future use, but for now we only support
+    // maps with single string field, used to encode a date
     private static Object toObject(@Nullable ReadableMap readableMap, String key) {
         if (readableMap == null) {
             return null;
@@ -83,6 +85,8 @@ public class RNUtils {
         return result;
     }
 
+    // This code in general purpose for possible future use, but for now we only support
+    // maps with single string field, used to encode a date
     private static Map<String, Object> toMap(@Nullable ReadableMap readableMap) {
         if (readableMap == null) {
             return null;
@@ -167,7 +171,7 @@ public class RNUtils {
                         break;
                 }
             } else {
-                logError("Unable to parse key %s as it is not in ^[a-zA-Z][a-zA-Z0-9]*$");
+                logError("Unable to parse key %s as it does not conform to the the valid key name pattern: ^[a-zA-Z][a-zA-Z0-9]*$");
             }
         }
 
