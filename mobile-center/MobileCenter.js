@@ -40,16 +40,22 @@ let MobileCenter = {
 
     // async - returns a Promise
     setCustomProperties(properties) {
-        //ReadableMap doesnt support Date type by default, so pass it along as Map Object in this case
-        if (Platform.OS === 'android'){
+        // Android ReadableMap doesn't support Date type, so pass Dates as a Map Object to work around that
+        if (Platform.OS === 'android') {
+            let newProperties = {};
             Object.keys(properties).forEach((key) => {
-                if (properties[key] instanceof Date) {
-                    properties[key] = {
-                        //name should be in sync with Java part
-                        "RNDate": properties[key].toISOString()
+                let value = properties[key];
+                if (value instanceof Date) {
+                    newProperties[key] = {
+                        // RNDate name should be in sync with the matching Java code
+                        "RNDate": value.toISOString()
                     };
                 }
+                else {
+                    newProperties[key] = value;
+                }
             });
+            properties = newProperties;
         }
         return RNMobileCenter.setCustomProperties(properties);
     }
