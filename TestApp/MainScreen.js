@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Alert, Button, View } from 'react-native';
+import { AppState, Alert, Button, Text, View, ToastAndroid } from 'react-native';
 import SharedStyles from './SharedStyles';
 import Push from 'mobile-center-push';
 
@@ -16,10 +16,6 @@ export default class MainScreen extends Component {
 
   constructor() {
     super();
-    this.state = {
-      lastSessionStatus: "",
-      sendStatus: ""
-    };
   }
 
   async componentDidMount() {
@@ -27,15 +23,24 @@ export default class MainScreen extends Component {
 
     Push.setEventListener({
       pushNotificationReceived: function (pushNotification) {
-        let msg =  pushNotification.message;
+        const state = AppState.currentState;
+
+        let msg = pushNotification.message;
+        if (! msg) {
+          msg = "<no message-Android backgnd?>"
+        }
         if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
           msg += ' with custom properties:\n';
           msg += JSON.stringify(pushNotification.customProperties);
         }
-        Alert.alert(
-          pushNotification.title,
-          msg
-        );
+
+        if (state === 'active') {
+          Alert.alert(pushNotification.title, msg);
+        }
+        else {
+          // This case should only happen on Android
+          ToastAndroid.show('Background notification:\n' + msg, ToastAndroid.LONG);
+        }
       }
     });
   }

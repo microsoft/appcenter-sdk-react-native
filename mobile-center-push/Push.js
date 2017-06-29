@@ -19,6 +19,8 @@ let Push = {
         ReactNative.DeviceEventEmitter.removeAllListeners(pushNotificationReceivedEvent);
         if (listenerMap && listenerMap.pushNotificationReceived) {
             ReactNative.DeviceEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.pushNotificationReceived);
+
+            return RNPush.sendAndClearInitialNotification();
         }
     }
 };

@@ -45,4 +45,9 @@ public class RNPushModule extends BaseJavaModule {
     public void isEnabled(Promise promise) {
         promise.resolve(Push.isEnabled());
     }
+
+    @ReactMethod
+    public void sendAndClearInitialNotification(Promise promise) {
+        mPushListener.sendAndClearInitialNotification();
+    }
 }

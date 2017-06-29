@@ -89,4 +89,11 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
     resolve(nil);
 }
 
+RCT_EXPORT_METHOD(sendAndClearInitialNotification:(RCTPromiseResolveBlock)resolve
+                    rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [pushDelegate sendAndClearInitialNotification];
+    resolve(nil);
+}
+
 @end

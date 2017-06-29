@@ -14,8 +14,14 @@
 
 @required
 - (void) setBridge: (RCTBridge*) bridge;
+
+@required
+- (void) sendAndClearInitialNotification;
+
 @end
 
 @interface RNPushDelegateBase : NSObject<RNPushDelegate>
 @property RCTBridge* bridge;
+@property BOOL saveInitialNotification;
+@property NSDictionary* initialNotification;
 @end

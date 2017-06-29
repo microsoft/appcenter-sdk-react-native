@@ -16,11 +16,33 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"MobileCenterPushNotific
 
 - (instancetype) init
 {
+    self.saveInitialNotification = true;
+    self.initialNotification = nil;
     return self;
 }
 
 - (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification {
-    [self.bridge.eventDispatcher sendAppEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
-}
+    // If saveInitialNotification is true, assume we've just been launched and save the first notification we receive.
+    // This handles the scenario that when the user taps on a background notification to launch the app, the launch notification
+    // gets sent to this native callback before the JS callback has a chance to register. So we need to save that notification off,
+    // then send it when the JS callback regsters & stop saving notifications after
+    if (self.saveInitialNotification) {
+        if (self.initialNotification == nil) {
+            self.initialNotification = convertNotificationToJS(pushNotification);
+        }
+    }
+    else {
+        [self.bridge.eventDispatcher sendAppEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
+    }
+}   
+
+- (void) sendAndClearInitialNotification
+{
+    if (self.initialNotification) {
+        [self.bridge.eventDispatcher sendAppEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
+        self.initialNotification = nil;
+    }
+    self.saveInitialNotification = false;
+}   
 
 @end
