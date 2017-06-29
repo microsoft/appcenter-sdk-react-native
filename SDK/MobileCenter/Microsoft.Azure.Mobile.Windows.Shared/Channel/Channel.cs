@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private readonly string _appSecret;
         private readonly IStorage _storage;
         private readonly IIngestion _ingestion;
-        private static readonly IDeviceInformationHelper DeviceInfoHelper = new DeviceInformationHelper();
+        private readonly IDeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
         private readonly Dictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
         private readonly int _maxParallelBatches;
         private readonly int _maxLogsPerBatch;
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             if (log.Device == null && _device == null)
             {
-                var device = await DeviceInfoHelper.GetDeviceInformationAsync().ConfigureAwait(false);
+                var device = await _deviceInfoHelper.GetDeviceInformationAsync().ConfigureAwait(false);
                 using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
                     _device = device;

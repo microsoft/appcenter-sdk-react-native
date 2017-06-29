@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 
@@ -15,113 +11,60 @@ namespace Microsoft.Azure.Mobile.Utils
         private readonly SemaphoreSlim _displayInformationEventSemaphore = new SemaphoreSlim(0);
         private readonly object _lockObject = new object();
 
-        private int _cachedScreenHeight;
-        private int _cachedScreenWidth;
-
-        private bool _didSetUpScreenSizeEvent;
-        private readonly bool CanReadScreenSize;
-        //TODO unknown default
+        // Either of these == -1 translates to screen size of "unknown"
+        private int _cachedScreenHeight = -1;
+        private int _cachedScreenWidth = -1;
 
         public DefaultScreenSizeProvider()
-        {
-            var context = TaskScheduler.FromCurrentSynchronizationContext();
-            Task.Factory.StartNew(() =>
+        {                
+            if (!ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenHeightInRawPixels") ||
+                !ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenWidthInRawPixels"))
+            {
+                _displayInformationEventSemaphore.Release();
+                return;
+            }
+            try
+            {
+                var context = TaskScheduler.FromCurrentSynchronizationContext();
+                Task.Factory.StartNew(() =>
                 {
                     var displayInfo = DisplayInformation.GetForCurrentView();
-                    _cachedScreenHeight = (int) displayInfo.ScreenHeightInRawPixels;
-                    _cachedScreenWidth = (int) displayInfo.ScreenWidthInRawPixels;
-                    System.Diagnostics.Debug.WriteLine("Screen size is now " + ScreenSize);
-                    _displayInformationEventSemaphore.Release();
-                }, new CancellationToken(), TaskCreationOptions.PreferFairness, context)
-                .ContinueWith(
-                    (task) => ScreenSizeChanged?.Invoke(null, EventArgs.Empty));
-        }
-
-        /*
-        public DefaultScreenSizeProvider()
-        {
-            CanReadScreenSize =
-                ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenHeightInRawPixels") &&
-                ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenWidthInRawPixels");
-
-            // This must all be done from the leaving background event because DisplayInformation can only be used
-            // from the main thread
-            if (CanReadScreenSize &&
-                ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
+                    UpdateDisplayInformation(displayInfo, null);
+                    
+                    // Try to detect a change in screen size by attaching handlers to these events
+                    displayInfo.OrientationChanged += UpdateDisplayInformation;
+                    displayInfo.DpiChanged += UpdateDisplayInformation;
+                    displayInfo.ColorProfileChanged += UpdateDisplayInformation;
+                }, new CancellationToken(), TaskCreationOptions.PreferFairness, context);
+            }
+            catch (InvalidOperationException)
             {
-                CoreApplication.LeavingBackground += (sender, e) =>
-                {
-                    lock (_lockObject)
-                    {
-                        if (_didSetUpScreenSizeEvent)
-                        {
-                            return;
-                        }
-
-                        CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-                                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                () =>
-                                {
-                                    DisplayInformation.GetForCurrentView().OrientationChanged +=
-                                        (displayInfo, obj) =>
-                                        {
-                                            // Do this in a task to avoid a deadlock
-                                            Task.Run(() =>
-                                            {
-                                                RefreshDisplayCache().Wait();
-                                            });
-                                        };
-                                })
-                            .AsTask()
-                            .Wait();
-
-                        _didSetUpScreenSizeEvent = true;
-
-                        // Do this in a task to avoid a deadlock
-                        Task.Run(() =>
-                        {
-                            RefreshDisplayCache().Wait();
-                            _displayInformationEventSemaphore.Release();
-                        });
-                    }
-                };
+                _displayInformationEventSemaphore.Release();
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Display size could not be determined.");
             }
         }
 
-        public async Task RefreshDisplayCache()
+        private void UpdateDisplayInformation(DisplayInformation displayInfo, object e)
         {
-            // This can only succeed on the UI thread due to limitations of
-            // the DisplayInformation class
-            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                () =>
+            lock (_lockObject)
+            {
+                var newHeight = (int)displayInfo.ScreenHeightInRawPixels;
+                var newWidth = (int)displayInfo.ScreenWidthInRawPixels;
+                var resolutionChanged = newHeight != _cachedScreenHeight || newWidth != _cachedScreenWidth;
+                _cachedScreenHeight = newHeight;
+                _cachedScreenWidth = newWidth;
+                _displayInformationEventSemaphore.Release();
+                if (resolutionChanged)
                 {
-                    lock (_lockObject)
+                    // Don't want to invoke this on the UI thread, so wrap in a task to be safe
+                    Task.Run(() =>
                     {
-                        DisplayInformation displayInfo = null;
-                        try
-                        {
-                            // This can throw exceptions that aren't well documented, so catch-all and ignore
-                            displayInfo = DisplayInformation.GetForCurrentView();
-                        }
-                        catch (Exception e)
-                        {
-                            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Could not get display information.", e);
-                            return;
-                        }
-                        if (_cachedScreenHeight == (int)displayInfo.ScreenHeightInRawPixels &&
-                            _cachedScreenWidth == (int)displayInfo.ScreenWidthInRawPixels)
-                        {
-                            return;
-                        }
-                        _cachedScreenHeight = (int)displayInfo.ScreenHeightInRawPixels;
-                        _cachedScreenWidth = (int)displayInfo.ScreenWidthInRawPixels;
-
                         ScreenSizeChanged?.Invoke(null, EventArgs.Empty);
-                    }
-                });
+                    });
+                }
+            }
         }
-        */
+
         public override int Height
         {
             get { return _cachedScreenHeight; }

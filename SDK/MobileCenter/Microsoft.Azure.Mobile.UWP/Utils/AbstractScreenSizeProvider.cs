@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    abstract class AbstractScreenSizeProvider : IScreenSizeProvider
+    internal abstract class AbstractScreenSizeProvider : IScreenSizeProvider
     {
         public abstract int Height { get; }
         public abstract int Width { get; }
@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public string ScreenSize
         {
-            get { return $"{Width}x{Height}"; }
+            get { return Height == -1 || Width == -1 ? "unknown" : $"{Width}x{Height}"; }
         }
 
         public abstract Task<bool> IsAvaliableAsync(TimeSpan timeout);
