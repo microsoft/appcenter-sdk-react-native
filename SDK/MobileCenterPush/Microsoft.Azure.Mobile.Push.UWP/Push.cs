@@ -68,9 +68,9 @@ namespace Microsoft.Azure.Mobile.Push
                         .AsTask().ConfigureAwait(false);
                     try
                     {
-                        var pushToken = channel.Uri;
                         using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                         {
+                            var pushToken = channel.Uri;
                             if (!string.IsNullOrEmpty(pushToken))
                             {
                                 // Save channel member
@@ -81,14 +81,19 @@ namespace Microsoft.Azure.Mobile.Push
 
                                 // Send channel URI to backend
                                 MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+
+                                var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid());
+
+                                // Do not await the call to EnqueueAsync or the UI thread can be blocked!
+#pragma warning disable CS4014
+                                Channel.EnqueueAsync(pushInstallationLog);
+#pragma warning restore
                             }
                             else
                             {
                                 MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
                             }
                         }
-                        var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid());
-                        await Channel.EnqueueAsync(pushInstallationLog).ConfigureAwait(false);
                     }
                     catch (StatefulMutexException)
                     {
