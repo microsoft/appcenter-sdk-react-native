@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    public abstract class AbstractScreenSizeProvider : IScreenSizeProvider
+    public abstract class BaseScreenSizeProvider : IScreenSizeProvider
     {
         // Display height in pixels; -1 indicates unknown
         public abstract int Height { get; }
@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Utils
         // Screen size
         public string ScreenSize
         {
-            get { return Height == -1 || Width == -1 ? "unknown" : $"{Width}x{Height}"; }
+            get { return Height == -1 || Width == -1 ? null : $"{Width}x{Height}"; }
         }
 
         // Waits until the screen size is available (until timeout)
