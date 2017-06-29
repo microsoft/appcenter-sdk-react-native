@@ -496,6 +496,11 @@ namespace Microsoft.Azure.Mobile.Test
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(channelUnitMock.Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+
+            /* Set before Mobile Center is configured. */
+            MobileCenter.SetCustomProperties(new CustomProperties());
+            Assert.IsTrue(true);
+
             MobileCenter.Configure("appsecret");
 
             /* Set null. */
