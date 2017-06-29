@@ -19,6 +19,15 @@ namespace Microsoft.Azure.Mobile.Utils
         private static string _country;
         private static readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
         private readonly IScreenSizeProvider _screenSizeProvider;
+        private static IScreenSizeProviderFactory _screenSizeProviderFactory =
+            new DefaultScreenSizeProviderFactory();
+
+        // This method must be called *before* any instance of DeviceInformationHelper has been created
+        // for a custom screen size provider to be used
+        public static void SetScreenSizeProviderFactory(IScreenSizeProviderFactory factory)
+        {
+            _screenSizeProviderFactory = factory;
+        }
 
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
@@ -32,13 +41,9 @@ namespace Microsoft.Azure.Mobile.Utils
             InformationInvalidated?.Invoke(null, EventArgs.Empty);
         }
 
-        public DeviceInformationHelper() : this(new DefaultScreenSizeProvider())
+        public DeviceInformationHelper()
         {
-        }
-
-        public DeviceInformationHelper(IScreenSizeProvider screenSizeProvider)
-        {
-            _screenSizeProvider = screenSizeProvider;
+            _screenSizeProvider = _screenSizeProviderFactory.CreateScreenSizeProvider();
             _screenSizeProvider.ScreenSizeChanged += (sender, e) =>
             {
                 InformationInvalidated?.Invoke(sender, e);

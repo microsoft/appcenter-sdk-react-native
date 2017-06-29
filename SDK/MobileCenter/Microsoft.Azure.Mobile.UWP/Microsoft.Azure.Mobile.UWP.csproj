@@ -166,6 +166,8 @@
     <Compile Include="Utils\ApplicationSettings.cs" />
     <Compile Include="Utils\DefaultScreenSizeProvider.cs" />
     <Compile Include="Utils\DeviceInformationHelper.cs" />
+    <Compile Include="Utils\DefaultScreenSizeProviderFactory.cs" />
+    <Compile Include="Utils\IScreenSizeProviderFactory.cs" />
     <Compile Include="Utils\IScreenSizeProvider.cs" />
   </ItemGroup>
   <ItemGroup>

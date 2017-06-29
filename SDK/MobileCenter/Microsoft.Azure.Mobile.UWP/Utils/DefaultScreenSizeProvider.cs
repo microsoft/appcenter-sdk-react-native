@@ -15,22 +15,27 @@ namespace Microsoft.Azure.Mobile.Utils
         private int _cachedScreenHeight = -1;
         private int _cachedScreenWidth = -1;
 
+        private const string FailureMessage = "Could not determine display size.";
+
         public DefaultScreenSizeProvider()
         {                
             if (!ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenHeightInRawPixels") ||
                 !ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenWidthInRawPixels"))
             {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
                 _displayInformationEventSemaphore.Release();
                 return;
             }
             try
             {
+                // CurrentSynchronization context is essentially the UI context, which is needed
+                // to get display information. It isn't guaranteed to be available, so try/catch
                 var context = TaskScheduler.FromCurrentSynchronizationContext();
                 Task.Factory.StartNew(() =>
                 {
                     var displayInfo = DisplayInformation.GetForCurrentView();
                     UpdateDisplayInformation(displayInfo, null);
-                    
+
                     // Try to detect a change in screen size by attaching handlers to these events
                     displayInfo.OrientationChanged += UpdateDisplayInformation;
                     displayInfo.DpiChanged += UpdateDisplayInformation;
@@ -40,10 +45,10 @@ namespace Microsoft.Azure.Mobile.Utils
             catch (InvalidOperationException)
             {
                 _displayInformationEventSemaphore.Release();
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Display size could not be determined.");
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
             }
         }
-
+       
         private void UpdateDisplayInformation(DisplayInformation displayInfo, object e)
         {
             lock (_lockObject)
