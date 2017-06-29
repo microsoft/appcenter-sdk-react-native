@@ -21,6 +21,6 @@ namespace Microsoft.Azure.Mobile.Utils
         }
 
         // Waits until the screen size is available (until timeout)
-        public abstract Task<bool> IsAvaliableAsync(TimeSpan timeout);
+        public abstract Task<bool> IsAvailableAsync(TimeSpan timeout);
     }
 }

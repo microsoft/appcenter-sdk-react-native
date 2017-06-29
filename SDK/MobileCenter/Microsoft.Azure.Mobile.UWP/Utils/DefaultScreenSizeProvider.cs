@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Utils
             get { return _cachedScreenWidth; }
         }
 
-        public override async Task<bool> IsAvaliableAsync(TimeSpan timeout)
+        public override async Task<bool> IsAvailableAsync(TimeSpan timeout)
         {
             return await _displayInformationEventSemaphore.WaitAsync(timeout).ConfigureAwait(false);
         }

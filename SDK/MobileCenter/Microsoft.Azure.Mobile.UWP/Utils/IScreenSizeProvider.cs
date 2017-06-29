@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Mobile.Utils
         string ScreenSize { get; }
 
         // Wait until screen size is available (up to a timeout)
-        Task<bool> IsAvaliableAsync(TimeSpan timeout);
+        Task<bool> IsAvailableAsync(TimeSpan timeout);
 
         // Indicates the screen resolution has changed
         event EventHandler ScreenSizeChanged;
