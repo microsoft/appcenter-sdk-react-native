@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    public abstract class BaseScreenSizeProvider : IScreenSizeProvider
+    public abstract class ScreenSizeProviderBase : IScreenSizeProvider
     {
         // Display height in pixels; -1 indicates unknown
         public abstract int Height { get; }
