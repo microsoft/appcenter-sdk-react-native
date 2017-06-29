@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 6
-        versionName "0.6.0"
+        versionCode 7
+        versionName "0.7.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -22,5 +22,5 @@ dependencies {
     compile 'com.microsoft.azure.mobile:mobile-center-push:0.10.+'
 
     //compile project(':RNMobileCenterShared')   // For testing with TestApp
-    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.6.+'
+    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.7.+'
 }

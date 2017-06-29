@@ -9,7 +9,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter', version: '0.10.1' },
         { pod: 'MobileCenter/Push', version: '0.10.1' },
-        { pod: 'RNMobileCenterShared', version: '0.6.0' }
+        { pod: 'RNMobileCenterShared', version: '0.7.0' }
     ]).catch(function (e) {
         console.log(`
             Could not install dependencies using CocoaPods.
