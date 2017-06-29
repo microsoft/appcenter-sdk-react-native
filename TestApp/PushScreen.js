@@ -32,21 +32,6 @@ export default class PushScreen extends React.Component {
 
     const pushEnabled = await Push.isEnabled();
     component.setState({pushEnabled: pushEnabled});
-
-    Push.setEventListener({
-       pushNotificationReceived: function (pushNotification) {
-          let msg =  pushNotification.message;
-          if (pushNotification.customProperties){
-            pushNotification.customProperties.Key1 ?
-              msg += pushNotification.customProperties.Key1 :
-              msg += ' with custom properties';
-           }
-        Alert.alert(
-            pushNotification.title,
-            msg
-          );
-      }
-    });
   }
 
   async toggleEnabled() {
@@ -55,8 +40,6 @@ export default class PushScreen extends React.Component {
     const pushEnabled = await Push.isEnabled();
     this.setState({pushEnabled: pushEnabled});
   }
-
-
 
   render() {
     return (

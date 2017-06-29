@@ -5,8 +5,9 @@
  */
 
 import React, { Component } from 'react';
-import { Button, View } from 'react-native';
+import { Alert, Button, View } from 'react-native';
 import SharedStyles from './SharedStyles';
+import Push from 'mobile-center-push';
 
 export default class MainScreen extends Component {
   static navigationOptions = {
@@ -19,6 +20,24 @@ export default class MainScreen extends Component {
       lastSessionStatus: "",
       sendStatus: ""
     };
+  }
+
+  async componentDidMount() {
+    const component = this;
+
+    Push.setEventListener({
+      pushNotificationReceived: function (pushNotification) {
+        let msg =  pushNotification.message;
+        if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
+          msg += ' with custom properties:\n';
+          msg += JSON.stringify(pushNotification.customProperties);
+        }
+        Alert.alert(
+          pushNotification.title,
+          msg
+        );
+      }
+    });
   }
 
   render() {

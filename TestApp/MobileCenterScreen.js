@@ -25,7 +25,7 @@ export default class MobileCenterScreen extends React.Component {
     this.state = {
       mobileCenterEnabled: false,
       installId: "uninitialized",
-      logLevel: -1
+      logLevel: -1   // default to something invalid; shouldn't show in UI
     };
   }
 
