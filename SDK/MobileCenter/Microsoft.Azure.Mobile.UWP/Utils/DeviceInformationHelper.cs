@@ -17,7 +17,6 @@ namespace Microsoft.Azure.Mobile.Utils
     {
         public static event EventHandler InformationInvalidated;
         private static string _country;
-        private static readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
         private readonly IScreenSizeProvider _screenSizeProvider;
         private static IScreenSizeProviderFactory _screenSizeProviderFactory =
             new DefaultScreenSizeProviderFactory();

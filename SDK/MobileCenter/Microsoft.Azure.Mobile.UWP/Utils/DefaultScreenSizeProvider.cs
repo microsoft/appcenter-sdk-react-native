@@ -14,7 +14,6 @@ namespace Microsoft.Azure.Mobile.Utils
         // Either of these == -1 translates to screen size of null.
         private int _cachedScreenHeight = -1;
         private int _cachedScreenWidth = -1;
-        private bool _ready;
         private const string FailureMessage = "Could not determine display size.";
 
         public DefaultScreenSizeProvider()
