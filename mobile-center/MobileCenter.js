@@ -12,19 +12,32 @@ let MobileCenter = {
     LogLevelNone: 99,        // Logging is disabled
 
     // async - returns a Promise
-    async setEnabled(enabled) {
-        return RNMobileCenter.setEnabled(enabled);
-    },
-
-    async getLogLevel() {
+    getLogLevel() {
         return RNMobileCenter.getLogLevel();
     },
 
-    async setLogLevel(logLevel){
+    // async - returns a Promise
+    setLogLevel(logLevel){
         return RNMobileCenter.setLogLevel(logLevel);
     },
 
-    async setCustomProperties(properties) {
+    // async - returns a Promise
+    getInstallId() {
+        return RNMobileCenter.getInstallId();
+    },
+
+    // async - returns a Promise
+    isEnabled() {
+        return RNMobileCenter.isEnabled();
+    },
+
+    // async - returns a Promise
+    setEnabled(enabled) {
+        return RNMobileCenter.setEnabled(enabled);
+    },
+
+    // async - returns a Promise
+    setCustomProperties(properties) {
         return RNMobileCenter.setCustomProperties(properties);
     }
 };

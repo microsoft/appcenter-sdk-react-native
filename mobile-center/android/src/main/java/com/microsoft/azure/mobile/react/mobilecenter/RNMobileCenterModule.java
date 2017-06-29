@@ -30,6 +30,11 @@ public class RNMobileCenterModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void isEnabled(Promise promise) {
+        promise.resolve(MobileCenter.isEnabled());
+    }
+
+    @ReactMethod
     public void setLogLevel(int logLevel) {
         MobileCenter.setLogLevel(logLevel);
     }
@@ -38,6 +43,12 @@ public class RNMobileCenterModule extends BaseJavaModule {
     public void getLogLevel(final Promise promise) {
         int logLevel = MobileCenter.getLogLevel();
         promise.resolve(logLevel);
+    }
+
+    @ReactMethod
+    public void getInstallId(final Promise promise) {
+        String installId = MobileCenter.getInstallId().toString();
+        promise.resolve(installId);
     }
 
     @ReactMethod

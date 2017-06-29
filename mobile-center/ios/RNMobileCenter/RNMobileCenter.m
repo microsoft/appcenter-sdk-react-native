@@ -39,6 +39,12 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)enabled
     resolve(nil);
 }
 
+RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([NSNumber numberWithBool:[MSMobileCenter isEnabled]]);
+}
+
 RCT_EXPORT_METHOD(setLogLevel:(NSInteger)logLevel
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -51,6 +57,12 @@ RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
     resolve([NSNumber numberWithInt:[MSMobileCenter logLevel]]);
+}
+
+RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([[MSMobileCenter installId] UUIDString]);
 }
 
 RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
