@@ -60,7 +60,9 @@ export default class MobileCenterScreen extends React.Component {
   async setCustomProperties() {
     let properties = {
         'color': 'red',
-        'number': 2
+        'number': 2,
+        'isEnabled': true,
+        'MyCustomDate': new Date()
     };
 
     MobileCenter.setCustomProperties(properties);

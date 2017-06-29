@@ -1,4 +1,5 @@
 let ReactNative = require('react-native');
+import { Platform } from 'react-native';
 let RNMobileCenter = require("react-native").NativeModules.RNMobileCenter;
 
 let MobileCenter = {
@@ -10,6 +11,7 @@ let MobileCenter = {
     LogLevelError: 6,        // Errors will be logged
     LogLevelAssert: 7,       // Only critical errors will be logged
     LogLevelNone: 99,        // Logging is disabled
+
 
     // async - returns a Promise
     getLogLevel() {
@@ -38,6 +40,17 @@ let MobileCenter = {
 
     // async - returns a Promise
     setCustomProperties(properties) {
+        //ReadableMap doesnt support Date type by default, so pass it along as Map Object in this case
+        if (Platform.OS === 'android'){
+            Object.keys(properties).forEach((key) => {
+                if (properties[key] instanceof Date) {
+                    properties[key] = {
+                        //name should be in sync with Java part
+                        "RNDate": properties[key].toISOString()
+                    };
+                }
+            });
+        }
         return RNMobileCenter.setCustomProperties(properties);
     }
 };
