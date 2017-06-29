@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Push
             }
             if (customData != null)
             {
-                PushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs()
+                PushNotificationReceived?.Invoke(null, new PushNotificationReceivedEventArgs
                 {
                     Title = null,
                     Message = null,
@@ -81,8 +81,13 @@ namespace Microsoft.Azure.Mobile.Push
 
                                 // Send channel URI to backend
                                 MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+
                                 var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid());
-                                await Channel.EnqueueAsync(pushInstallationLog).ConfigureAwait(false);
+
+                                // Do not await the call to EnqueueAsync or the UI thread can be blocked!
+#pragma warning disable CS4014
+                                Channel.EnqueueAsync(pushInstallationLog);
+#pragma warning restore
                             }
                             else
                             {
