@@ -39,6 +39,10 @@ namespace Microsoft.Azure.Mobile.Utils
         public DeviceInformationHelper(IScreenSizeProvider screenSizeProvider)
         {
             _screenSizeProvider = screenSizeProvider;
+            _screenSizeProvider.ScreenSizeChanged += (sender, e) =>
+            {
+                InformationInvalidated?.Invoke(sender, e);
+            };
         }
 
         protected override string GetSdkName()

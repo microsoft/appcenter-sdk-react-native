@@ -12,9 +12,8 @@ namespace Microsoft.Azure.Mobile.Utils
 {
     class DefaultScreenSizeProvider : AbstractScreenSizeProvider
     {
-        private readonly SemaphoreSlim DisplayInformationEventSemaphore = new SemaphoreSlim(0);
-        private readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
-        private readonly object LockObject = new object();
+        private readonly SemaphoreSlim _displayInformationEventSemaphore = new SemaphoreSlim(0);
+        private readonly object _lockObject = new object();
 
         private int _cachedScreenHeight;
         private int _cachedScreenWidth;
@@ -22,6 +21,23 @@ namespace Microsoft.Azure.Mobile.Utils
         private bool _didSetUpScreenSizeEvent;
         private readonly bool CanReadScreenSize;
         //TODO unknown default
+
+        public DefaultScreenSizeProvider()
+        {
+            var context = TaskScheduler.FromCurrentSynchronizationContext();
+            Task.Factory.StartNew(() =>
+                {
+                    var displayInfo = DisplayInformation.GetForCurrentView();
+                    _cachedScreenHeight = (int) displayInfo.ScreenHeightInRawPixels;
+                    _cachedScreenWidth = (int) displayInfo.ScreenWidthInRawPixels;
+                    System.Diagnostics.Debug.WriteLine("Screen size is now " + ScreenSize);
+                    _displayInformationEventSemaphore.Release();
+                }, new CancellationToken(), TaskCreationOptions.PreferFairness, context)
+                .ContinueWith(
+                    (task) => ScreenSizeChanged?.Invoke(null, EventArgs.Empty));
+        }
+
+        /*
         public DefaultScreenSizeProvider()
         {
             CanReadScreenSize =
@@ -35,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 CoreApplication.LeavingBackground += (sender, e) =>
                 {
-                    lock (LockObject)
+                    lock (_lockObject)
                     {
                         if (_didSetUpScreenSizeEvent)
                         {
@@ -65,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Utils
                         Task.Run(() =>
                         {
                             RefreshDisplayCache().Wait();
-                            DisplayInformationEventSemaphore.Release();
+                            _displayInformationEventSemaphore.Release();
                         });
                     }
                 };
@@ -80,7 +96,7 @@ namespace Microsoft.Azure.Mobile.Utils
                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    lock (LockObject)
+                    lock (_lockObject)
                     {
                         DisplayInformation displayInfo = null;
                         try
@@ -105,7 +121,7 @@ namespace Microsoft.Azure.Mobile.Utils
                     }
                 });
         }
-
+        */
         public override int Height
         {
             get { return _cachedScreenHeight; }
@@ -118,7 +134,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public override async Task<bool> IsAvaliableAsync(TimeSpan timeout)
         {
-            return await DisplayInformationEventSemaphore.WaitAsync(DisplayInformationTimeout).ConfigureAwait(false);
+            return await _displayInformationEventSemaphore.WaitAsync(timeout).ConfigureAwait(false);
         }
 
         public override event EventHandler ScreenSizeChanged;

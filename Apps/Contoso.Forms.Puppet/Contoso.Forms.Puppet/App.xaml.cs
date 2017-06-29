@@ -26,19 +26,6 @@ namespace Contoso.Forms.Puppet
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
-        }
-
-        static App()
-        {
-            // set event handlers in static constructor to avoid duplication
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
-            Push.PushNotificationReceived += PrintNotification;
-        }
-
-        protected override void OnStart()
-        {
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
@@ -72,7 +59,7 @@ namespace Contoso.Forms.Puppet
             }
 
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
             MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
             MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
@@ -80,6 +67,20 @@ namespace Contoso.Forms.Puppet
             {
                 MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
             });
+        }
+
+        static App()
+        {
+            // set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
+        }
+
+        protected override void OnStart()
+        {
+
         }
 
         protected override void OnSleep()
