@@ -27,7 +27,7 @@
 
   [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes
 
-  [RNPush registerAndEnable];  // Initialize Mobile Center push
+  [RNPush register];  // Initialize Mobile Center push
 
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 

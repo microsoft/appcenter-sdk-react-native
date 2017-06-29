@@ -2,6 +2,6 @@
 
 @interface RNPush : NSObject
 
-+ (void)registerAndEnable;
++ (void)register;
 
 @end

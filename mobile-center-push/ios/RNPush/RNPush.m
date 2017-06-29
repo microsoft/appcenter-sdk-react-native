@@ -66,7 +66,7 @@ RCT_EXPORT_MODULE();
     return @{};
 }
 
-+ (void)registerAndEnable
++ (void)register
 {
     pushDelegate = [[RNPushDelegateBase alloc] init];
 
