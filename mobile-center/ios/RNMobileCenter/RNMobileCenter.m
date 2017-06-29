@@ -76,6 +76,12 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
 
     MSCustomProperties *customProperties = [MSCustomProperties new];
 
+    // TODO: Normally dates are fine here but we noticed weird behavior where on an iPhone 6 simulator, running debug, iOS 10.3
+    // has dates end up as "string" type not "date_time". Max and Bret tried various combinations and iPhone 6 simulator running
+    // non-debug, or iPhone 7 simulator on iOS 10.3 (debug or non-debug), or iPhone 6 simulator debug on max's machine (running iOS 9.x)
+    // all worked. But that one combination of iPhone 6 simulator, debug, iOS 10.3 (on Bret's machine) consistently saw the
+    // date properties end up as string type not "date_time" when sent to server. There's an issue there somewhere, which we
+    // should ideally identify, but ignoring for now.
     for (NSString *key in properties) {
         if ([[properties valueForKey:key] isKindOfClass:[NSString class]]) {
             [customProperties setString:[properties objectForKey:key] forKey:key];
