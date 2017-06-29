@@ -162,12 +162,11 @@ public class RNUtils {
                     case Map:
                         //as ReadableMap doesn't have support for getting Date type pass it via Map object
                         Date resultDate = tryToGetDate(readableMap.getMap(key));
-                        if (resultDate != null){
+                        if (resultDate != null) {
                             properties.set(key, resultDate);
                         } else {
                             logError("Unable to get date for custom property key");
                         }
-
                         break;
                 }
             } else {
