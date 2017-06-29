@@ -255,6 +255,11 @@ namespace Microsoft.Azure.Mobile
 
         private void SetInstanceCustomProperties(CustomProperties customProperties)
         {
+            if (!Configured)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center must be enabled before setting custom properties.");
+                return;
+            }
             if (customProperties == null || customProperties.Properties.Count == 0)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom properties may not be null or empty");
