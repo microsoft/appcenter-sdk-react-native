@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Mobile.Utils
     /// <summary>
     /// In most UWP apps, the DefaultScreenSizeProvider will do, but some
     /// applications need to use different techniques to get the screen
-    /// size (e.g., Unity)
+    /// size (e.g., Unity).
     /// </summary>
     public interface IScreenSizeProvider
     {

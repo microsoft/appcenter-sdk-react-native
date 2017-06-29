@@ -11,7 +11,7 @@ namespace Microsoft.Azure.Mobile.Utils
         private readonly SemaphoreSlim _displayInformationEventSemaphore = new SemaphoreSlim(0);
         private readonly object _lockObject = new object();
 
-        // Either of these == -1 translates to screen size of "unknown"
+        // Either of these == -1 translates to screen size of null.
         private int _cachedScreenHeight = -1;
         private int _cachedScreenWidth = -1;
 
@@ -29,14 +29,14 @@ namespace Microsoft.Azure.Mobile.Utils
             try
             {
                 // CurrentSynchronization context is essentially the UI context, which is needed
-                // to get display information. It isn't guaranteed to be available, so try/catch
+                // to get display information. It isn't guaranteed to be available, so try/catch.
                 var context = TaskScheduler.FromCurrentSynchronizationContext();
                 Task.Factory.StartNew(() =>
                 {
                     var displayInfo = DisplayInformation.GetForCurrentView();
                     UpdateDisplayInformation(displayInfo, null);
 
-                    // Try to detect a change in screen size by attaching handlers to these events
+                    // Try to detect a change in screen size by attaching handlers to these events.
                     displayInfo.OrientationChanged += UpdateDisplayInformation;
                     displayInfo.DpiChanged += UpdateDisplayInformation;
                     displayInfo.ColorProfileChanged += UpdateDisplayInformation;
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Utils
                 _displayInformationEventSemaphore.Release();
                 if (resolutionChanged)
                 {
-                    // Don't want to invoke this on the UI thread, so wrap in a task to be safe
+                    // Don't want to invoke this on the UI thread, so wrap in a task to be safe.
                     Task.Run(() =>
                     {
                         ScreenSizeChanged?.Invoke(null, EventArgs.Empty);

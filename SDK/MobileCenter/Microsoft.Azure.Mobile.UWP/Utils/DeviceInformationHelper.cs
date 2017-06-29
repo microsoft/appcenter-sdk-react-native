@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Utils
             new DefaultScreenSizeProviderFactory();
 
         // This method must be called *before* any instance of DeviceInformationHelper has been created
-        // for a custom screen size provider to be used
+        // for a custom screen size provider to be used.
         public static void SetScreenSizeProviderFactory(IScreenSizeProviderFactory factory)
         {
             _screenSizeProviderFactory = factory;
