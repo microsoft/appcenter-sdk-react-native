@@ -33,13 +33,13 @@ namespace Microsoft.Azure.Mobile.Utils
                 Task.Factory.StartNew(() =>
                 {
                     var displayInfo = DisplayInformation.GetForCurrentView();
-                    UpdateDisplayInformation(displayInfo, null);
+                    UpdateDisplayInformation((int)displayInfo.ScreenHeightInRawPixels, (int)displayInfo.ScreenWidthInRawPixels);
                     _displayInformationEventSemaphore.Release();
 
                     // Try to detect a change in screen size by attaching handlers to these events.
-                    displayInfo.OrientationChanged += UpdateDisplayInformation;
-                    displayInfo.DpiChanged += UpdateDisplayInformation;
-                    displayInfo.ColorProfileChanged += UpdateDisplayInformation;
+                    displayInfo.OrientationChanged += UpdateDisplayInformationHandler;
+                    displayInfo.DpiChanged += UpdateDisplayInformationHandler;
+                    displayInfo.ColorProfileChanged += UpdateDisplayInformationHandler;
                 }, new CancellationToken(), TaskCreationOptions.PreferFairness, context);
             }
             catch (InvalidOperationException)
@@ -48,24 +48,30 @@ namespace Microsoft.Azure.Mobile.Utils
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
             }
         }
-       
-        private void UpdateDisplayInformation(DisplayInformation displayInfo, object e)
+
+        private void UpdateDisplayInformationHandler(DisplayInformation displayInfo, object e)
+        {
+            UpdateDisplayInformation((int)displayInfo.ScreenHeightInRawPixels, (int)displayInfo.ScreenWidthInRawPixels);
+        }
+
+        internal Task UpdateDisplayInformation(int newScreenHeight, int newScreenWidth)
         {
             lock (_lockObject)
             {
-                var newHeight = (int)displayInfo.ScreenHeightInRawPixels;
-                var newWidth = (int)displayInfo.ScreenWidthInRawPixels;
+                var newHeight = newScreenHeight;
+                var newWidth = newScreenWidth;
                 var resolutionChanged = newHeight != _cachedScreenHeight || newWidth != _cachedScreenWidth;
                 _cachedScreenHeight = newHeight;
                 _cachedScreenWidth = newWidth;
                 if (resolutionChanged)
                 {
                     // Don't want to invoke this on the UI thread, so wrap in a task to be safe.
-                    Task.Run(() =>
+                    return Task.Run(() =>
                     {
                         ScreenSizeChanged?.Invoke(null, EventArgs.Empty);
                     });
                 }
+                return Task.CompletedTask;
             }
         }
 
