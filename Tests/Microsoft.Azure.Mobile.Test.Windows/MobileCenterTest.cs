@@ -499,7 +499,7 @@ namespace Microsoft.Azure.Mobile.Test
 
             // Set before Mobile Center is configured. 
             MobileCenter.SetCustomProperties(new CustomProperties());
-            Assert.IsTrue(true);
+            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             MobileCenter.Configure("appsecret");
 
