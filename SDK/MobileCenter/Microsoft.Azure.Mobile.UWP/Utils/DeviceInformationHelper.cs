@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
-using Windows.UI.Xaml;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetAppNamespace()
         {
-            return Application.Current.GetType().Namespace;
+            return Package.Current.Id.Name;
         }
 
         protected override string GetDeviceOemName()
@@ -102,13 +102,13 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetAppVersion()
         {
-            var packageVersion = Windows.ApplicationModel.Package.Current.Id.Version;
+            var packageVersion = Package.Current.Id.Version;
             return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}.{packageVersion.Revision}";
         }
 
         protected override string GetAppBuild()
         {
-            var packageVersion = Windows.ApplicationModel.Package.Current.Id.Version;
+            var packageVersion = Package.Current.Id.Version;
             return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}.{packageVersion.Revision}";
         }
 
