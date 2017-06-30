@@ -497,22 +497,22 @@ namespace Microsoft.Azure.Mobile.Test
                 .Returns(channelUnitMock.Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
 
-            /* Set before Mobile Center is configured. */
+            // Set before Mobile Center is configured. 
             MobileCenter.SetCustomProperties(new CustomProperties());
             Assert.IsTrue(true);
 
             MobileCenter.Configure("appsecret");
 
-            /* Set null. */
+            // Set null.
             MobileCenter.SetCustomProperties(null);
             channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
-            /* Set empty. */
+            // Set empty.
             var empty = new CustomProperties();
             MobileCenter.SetCustomProperties(empty);
             channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
-            /* Set normal. */
+            // Set normal.
             var properties = new CustomProperties();
             properties.Set("test", "test");
             MobileCenter.SetCustomProperties(properties);
