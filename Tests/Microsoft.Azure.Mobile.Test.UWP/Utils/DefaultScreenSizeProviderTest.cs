@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         public void VerifyNewScreenSizeIsSet()
         {
             var newScreenHeight = 1;
-            var newScreenWidth = 1;
+            var newScreenWidth = 2;
             var screenSizeProvider = new DefaultScreenSizeProvider();
 
             screenSizeProvider.UpdateDisplayInformation(newScreenHeight, newScreenWidth).Wait();
