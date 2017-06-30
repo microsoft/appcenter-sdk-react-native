@@ -4,6 +4,8 @@ using Android.OS;
 using Com.Microsoft.Azure.Mobile.Analytics;
 using Com.Microsoft.Azure.Mobile.Analytics.Channel;
 using Com.Microsoft.Azure.Mobile.Ingestion.Models;
+using HockeyApp.Android;
+using HockeyApp.Android.Utils;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Push;
 
@@ -24,6 +26,13 @@ namespace Contoso.Forms.Puppet.Droid
             AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
 
             LoadApplication(new App());
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            HockeyLog.LogLevel = 2;
+            CrashManager.Register(this, "2c7e569100194bafa2a30f5c648d44fe");
         }
 
         protected override void OnNewIntent(Android.Content.Intent intent)
