@@ -257,7 +257,7 @@ namespace Microsoft.Azure.Mobile
         {
             if (!Configured)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center must be enabled before setting custom properties.");
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center hasn't been configured. You need to call MobileCenter.Start with appSecret or MobileCenter.Configure first.");
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
