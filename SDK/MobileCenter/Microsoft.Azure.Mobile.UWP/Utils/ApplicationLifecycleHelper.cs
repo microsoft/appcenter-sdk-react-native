@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.UI.Core;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -51,10 +46,17 @@ namespace Microsoft.Azure.Mobile.Utils
                 // the start
                 _started = true;
             }
-            Application.Current.UnhandledException += (sender, eventArgs) =>
+            try
             {
-                UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
-            };
+                Application.Current.UnhandledException += (sender, eventArgs) =>
+                {
+                    UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
+                };
+            }
+            catch (Exception exception)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Cannot subscribe to unhandled exceptions from XAML application", exception);
+            }
         }
 
         private void InvokeResuming(object sender, object e)
