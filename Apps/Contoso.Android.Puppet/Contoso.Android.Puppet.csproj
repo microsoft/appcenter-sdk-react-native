@@ -104,6 +104,7 @@
     <Compile Include="PropertiesActivity.cs" />
     <Compile Include="FakeService.cs" />
     <Compile Include="ModulePages\PageFragment.cs" />
+    <Compile Include="CrashActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />

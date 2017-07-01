@@ -25,6 +25,7 @@
     <string name="CrashWithNullReferenceException">Crash With NullReferenceException</string>
     <string name="CatchNullReferenceException">Test Catching NullReferenceException</string>
     <string name="CrashAsync">Crash Inside Async Task</string>
+	<string name="CrashSuperNotCalled">Crash Java: SuperNotCalledException</string>
 	
     <string name="DistributeEnabled">Distribute Enabled</string>
 

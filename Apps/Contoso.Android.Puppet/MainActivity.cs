@@ -71,6 +71,7 @@ namespace Contoso.Android.Puppet
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
                 MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable);
             });
         }
 
