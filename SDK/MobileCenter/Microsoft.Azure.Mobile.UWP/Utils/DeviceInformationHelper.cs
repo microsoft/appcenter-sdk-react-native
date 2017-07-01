@@ -15,22 +15,22 @@ namespace Microsoft.Azure.Mobile.Utils
     /// </summary>
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        private static string _cachedScreenSize = "unknown";
-        private static bool _didSetUpScreenSizeEvent;
-        private static readonly bool CanReadScreenSize;
         public static event EventHandler InformationInvalidated;
-        private static readonly object LockObject = new object();
         private static string _country;
-        private static readonly SemaphoreSlim DisplayInformationEventSemaphore = new SemaphoreSlim(0);
-        private static readonly TimeSpan DisplayInformationTimeout = TimeSpan.FromSeconds(2);
+        private readonly IScreenSizeProvider _screenSizeProvider;
+        private static IScreenSizeProviderFactory _screenSizeProviderFactory =
+            new DefaultScreenSizeProviderFactory();
+
+        // This method must be called *before* any instance of DeviceInformationHelper has been created
+        // for a custom screen size provider to be used.
+        public static void SetScreenSizeProviderFactory(IScreenSizeProviderFactory factory)
+        {
+            _screenSizeProviderFactory = factory;
+        }
 
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
-            if (CanReadScreenSize)
-            {
-                await DisplayInformationEventSemaphore.WaitAsync(DisplayInformationTimeout).ConfigureAwait(false);
-            }
-
+            await _screenSizeProvider.WaitUntilReadyAsync().ConfigureAwait(false);
             return await base.GetDeviceInformationAsync().ConfigureAwait(false);
         }
 
@@ -40,84 +40,13 @@ namespace Microsoft.Azure.Mobile.Utils
             InformationInvalidated?.Invoke(null, EventArgs.Empty);
         }
 
-        static DeviceInformationHelper()
+        public DeviceInformationHelper()
         {
-            CanReadScreenSize =
-                ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenHeightInRawPixels") &&
-                ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenWidthInRawPixels");
-
-            // This must all be done from the leaving background event because DisplayInformation can only be used
-            // from the main thread
-            if (CanReadScreenSize &&
-                ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
+            _screenSizeProvider = _screenSizeProviderFactory.CreateScreenSizeProvider();
+            _screenSizeProvider.ScreenSizeChanged += (sender, e) =>
             {
-                CoreApplication.LeavingBackground += (sender, e) =>
-                {
-                    lock (LockObject)
-                    {
-                        if (_didSetUpScreenSizeEvent)
-                        {
-                            return;
-                        }
-                        DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
-                        {
-                            RefreshDisplayCache();
-                        };
-                        _didSetUpScreenSizeEvent = true;
-                        RefreshDisplayCache();
-                        DisplayInformationEventSemaphore.Release();
-                    }
-                };
-            }
-        }
-
-        public static void RetrieveDisplayInformation()
-        {
-            lock (LockObject)
-            {
-                if (_didSetUpScreenSizeEvent)
-                {
-                    return;
-                }
-                DisplayInformation.GetForCurrentView().OrientationChanged += (displayInfo, obj) =>
-                {
-                    RefreshDisplayCache();
-                };
-                _didSetUpScreenSizeEvent = true;
-                RefreshDisplayCache();
-                DisplayInformationEventSemaphore.Release();
-            }
-        }
-
-        //NOTE: This method MUST be called from the UI thread
-        public static void RefreshDisplayCache()
-        {
-            lock (LockObject)
-            {
-                DisplayInformation displayInfo = null;
-                try
-                {
-                    // This can throw exceptions that aren't well documented, so catch-all and ignore
-                    displayInfo = DisplayInformation.GetForCurrentView();
-                }
-                catch (Exception e)
-                {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Could not get display information.", e);
-                    return;
-                }
-                if (_cachedScreenSize == ScreenSizeFromDisplayInfo(displayInfo))
-                {
-                    return;
-                }
-                _cachedScreenSize = ScreenSizeFromDisplayInfo(displayInfo);
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Cached screen size updated to {_cachedScreenSize}");
-                InformationInvalidated?.Invoke(null, EventArgs.Empty);
-            }
-        }
-
-        private static string ScreenSizeFromDisplayInfo(DisplayInformation displayInfo)
-        {
-            return CanReadScreenSize ? $"{displayInfo.ScreenWidthInRawPixels}x{displayInfo.ScreenHeightInRawPixels}" : "unknown";
+                InformationInvalidated?.Invoke(sender, e);
+            };
         }
 
         protected override string GetSdkName()
@@ -185,10 +114,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         protected override string GetScreenSize()
         {
-            lock (LockObject)
-            {
-                return _cachedScreenSize;
-            }
+            return _screenSizeProvider.ScreenSize;
         }
 
         protected override string GetCarrierCountry()
