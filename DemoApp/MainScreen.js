@@ -9,6 +9,7 @@ import { AppState, Alert, Button, Text, View, ToastAndroid } from 'react-native'
 import SharedStyles from './SharedStyles';
 import Push from 'mobile-center-push';
 
+
 export default class MainScreen extends Component {
   static navigationOptions = {
     title: 'DemoApp',
@@ -16,33 +17,6 @@ export default class MainScreen extends Component {
 
   constructor() {
     super();
-  }
-
-  async componentDidMount() {
-    const component = this;
-
-    Push.setEventListener({
-      pushNotificationReceived: function (pushNotification) {
-        const state = AppState.currentState;
-
-        let msg = pushNotification.message;
-        if (! msg) {
-          msg = "<no message-Android backgnd?>"
-        }
-        if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-          msg += ' with custom properties:\n';
-          msg += JSON.stringify(pushNotification.customProperties);
-        }
-
-        if (state === 'active') {
-          Alert.alert(pushNotification.title, msg);
-        }
-        else {
-          // This case should only happen on Android
-          ToastAndroid.show('Background notification:\n' + msg, ToastAndroid.LONG);
-        }
-      }
-    });
   }
 
   render() {
@@ -84,3 +58,35 @@ export default class MainScreen extends Component {
   }
 }
 
+Push.setEventListener({
+  pushNotificationReceived: function (pushNotification) {
+    let message = pushNotification.message;
+    let title = pushNotification.title;
+
+    if (message === null || message === undefined) {
+      // Android messages received in the background don't include a message. On Android, that fact can be used to
+      // check if the message was received in the background or foreground. For iOS the message is always present.
+      title = "Android background"
+      message = "<empty>"
+    }
+
+    // Any custom name/value pairs added in the portal are in customProperties
+    if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
+      message += '\nCustom properties:\n' + JSON.stringify(pushNotification.customProperties);
+    }
+
+    if (AppState.currentState === 'active') {
+      Alert.alert(title, message);
+    }
+    else {
+      // Sometimes the push callback is received shortly before the app is fully active in the foreground. This
+      // only seems to happen on Android, not iOS. In this case you'll want to save off the notification info
+      // and wait until the app is fully shown in the foreground before displaying any UI. You could
+      // use AppState.addEventListener to be notified when the app is fully in the foreground.
+      
+      if (Platform.OS === "android") {
+        ToastAndroid.show('Notification while inactive:\n' + message, ToastAndroid.LONG);
+      }
+    }
+  }
+});
