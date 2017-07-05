@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -17,6 +18,7 @@ namespace Contoso.Android.Puppet
         private Button CrashWithNullReferenceExceptionButton;
         private Button CatchNullReferenceExceptionButton;
         private Button CrashAsyncButton;
+        private Button CrashSuperNotCalledButton;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -35,6 +37,7 @@ namespace Contoso.Android.Puppet
             CrashWithNullReferenceExceptionButton = view.FindViewById(Resource.Id.crash_with_null_reference_exception) as Button;
             CatchNullReferenceExceptionButton = view.FindViewById(Resource.Id.catch_null_reference_exception) as Button;
             CrashAsyncButton = view.FindViewById(Resource.Id.crash_async) as Button;
+            CrashSuperNotCalledButton = view.FindViewById(Resource.Id.crash_super_not_called) as Button;
 
             // Subscribe to events.
             CrashesEnabledSwitch.CheckedChange += UpdateEnabled;
@@ -44,6 +47,7 @@ namespace Contoso.Android.Puppet
             CrashWithNullReferenceExceptionButton.Click += CrashWithNullReferenceException;
             CatchNullReferenceExceptionButton.Click += CatchNullReferenceException;
             CrashAsyncButton.Click += CrashAsync;
+            CrashSuperNotCalledButton.Click += CrashSuperNotCalled;
 
             UpdateState();
         }
@@ -113,6 +117,11 @@ namespace Contoso.Android.Puppet
         async private void CrashAsync(object sender, EventArgs e)
         {
             await FakeService.DoStuffInBackground();
+        }
+
+        private void CrashSuperNotCalled(object sender, EventArgs e)
+        {
+            StartActivity(new Intent(Activity, typeof(CrashActivity)));
         }
 
         static Exception PrepareException()
