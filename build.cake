@@ -489,7 +489,11 @@ Task("RestoreTestPackages").Does(() =>
 	NuGetRestore("./MobileCenter-SDK-Test.sln");
 	NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
 	NuGetUpdate("./Tests/iOS/packages.config");
-	NuGetUpdate("./Tests/Droid/packages.config");
+	NuGetUpdate("./Tests/Droid/packages.config", new NuGetUpdateSettings {
+
+		// workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-target
+		Source = new string[] { EnvironmentVariable("NUGET_URL") }
+	});
 }).OnError(HandleError);
 
 // Remove any uploaded nugets from azure storage
