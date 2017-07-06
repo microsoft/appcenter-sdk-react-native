@@ -65,7 +65,7 @@ export default class MobileCenterScreen extends React.Component {
         'MyCustomDate': new Date()
     };
 
-    MobileCenter.setCustomProperties(properties);
+    await MobileCenter.setCustomProperties(properties);
   }
 
   render() {
