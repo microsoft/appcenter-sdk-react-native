@@ -131,23 +131,23 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
     {
         // - (instancetype)setString:(NSString *)value forKey:(NSString *)key;
         [Export("setString:forKey:")]
-        void Set(string value, string key);
+        void Set([NullAllowed] string value, [NullAllowed] string key);
 
         // - (instancetype)setNumber:(NSNumber *)value forKey:(NSString *)key;
         [Export("setNumber:forKey:")]
-        void Set(NSNumber value, string key);
+        void Set(NSNumber value, [NullAllowed] string key);
 
         // - (instancetype)setBool:(BOOL)value forKey:(NSString *)key;
         [Export("setBool:forKey:")]
-        void Set(bool value, string key);
+        void Set(bool value, [NullAllowed] string key);
 
         // - (instancetype)setDate:(NSDate *)value forKey:(NSString *)key;
         [Export("setDate:forKey:")]
-        void Set(NSDate value, string key);
+        void Set(NSDate value, [NullAllowed] string key);
 
         // - (instancetype)clearPropertyForKey:(NSString *)key;
         [Export("clearPropertyForKey:")]
-        void Clear(string key);
+        void Clear([NullAllowed] string key);
     }
 
     // @interface MSMobileCenter : NSObject
