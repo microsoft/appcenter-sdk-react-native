@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Mobile
 
         static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
-            iOSMobileCenter.SetCustomProperties(customProperties.IOSCustomProperties);
+            iOSMobileCenter.SetCustomProperties(customProperties?.IOSCustomProperties);
         }
     }
 }

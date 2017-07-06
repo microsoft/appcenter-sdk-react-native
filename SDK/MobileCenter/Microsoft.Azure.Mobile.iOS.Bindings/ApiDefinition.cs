@@ -227,7 +227,7 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         // + (void)setCustomProperties:(MSCustomProperties *)customProperties;
         [Static]
         [Export("setCustomProperties:")]
-        void SetCustomProperties(MSCustomProperties properties);
+        void SetCustomProperties([NullAllowed] MSCustomProperties properties);
     }
 
     // @protocol MSService <NSObject>
