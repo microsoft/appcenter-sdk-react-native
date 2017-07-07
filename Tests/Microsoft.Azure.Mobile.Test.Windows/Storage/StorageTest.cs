@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestInitialize]
         public void InitializeStorageTest()
         {
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
+            _storage.DeleteLogs(StorageTestChannelName);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void PutOneLog()
         {
             var addedLog = TestLog.CreateTestLog();
-            _storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
+            _storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0];
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void DeleteLogsNoBatchId()
         {
             PutNLogs(5);
-            _storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
+            _storage.DeleteLogs(StorageTestChannelName);
             var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(0, count);
         }
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Mobile.Test
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
             var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
-            _storage.DeleteLogsAsync(StorageTestChannelName, batchId).RunNotAsync();
+            _storage.DeleteLogs(StorageTestChannelName, batchId);
             var numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             Assert.AreEqual(numLogsToAdd - retrievedLogs.Count, numLogsRemaining);
         }
@@ -177,7 +177,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void GetLogsFromChannelWithSimilarNames()
         {
             var fakeChannelName = StorageTestChannelName.Substring(0, StorageTestChannelName.Length - 1);
-            _storage.PutLogAsync(StorageTestChannelName, TestLog.CreateTestLog()).RunNotAsync();
+            _storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog());
             var retrievedLogs = new List<Log>();
             var batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).RunNotAsync();
             Assert.IsNull(batchId);
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Mobile.Test
             var retrievedLogsFirstTry = new List<Log>();
             var retrievedLogsSecondTry = new List<Log>();
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
-            _storage.ClearPendingLogStateAsync(StorageTestChannelName).RunNotAsync();
+            _storage.ClearPendingLogState(StorageTestChannelName);
             _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogsFirstTry);
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogsSecondTry);
@@ -209,6 +209,10 @@ namespace Microsoft.Azure.Mobile.Test
         {
             var invalidLogEntry = new Mobile.Storage.Storage.LogEntry { Channel = StorageTestChannelName, Log = "good luck deserializing me!" };
             var connection = new SQLiteConnection("Microsoft.Azure.Mobile.Storage");
+
+            // Perform an arbitrary operation and wait on it to complete so that database is free when invalid log
+            // is inserted.
+            _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
             connection.Insert(invalidLogEntry);
             var logs = new List<Log>();
             var batchId = _storage.GetLogsAsync(StorageTestChannelName, 4, logs).RunNotAsync();
@@ -228,9 +232,8 @@ namespace Microsoft.Azure.Mobile.Test
             {
                 var testLog = TestLog.CreateTestLog();
                 addedLogs.Add(testLog);
-                putLogTasks[i] = _storage.PutLogAsync(StorageTestChannelName, testLog);
+                putLogTasks[i] = _storage.PutLog(StorageTestChannelName, testLog);
             }
-            Task.WaitAll(putLogTasks);
             return addedLogs;
         }
 

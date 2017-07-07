@@ -42,11 +42,22 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         {
             return _state.Equals(state);
         }
-        
+
         public LockHolder GetLock()
         {
             _mutex.Wait();
             return new LockHolder(this);
+        }
+
+        public LockHolder GetLock(State state)
+        {
+            _mutex.Wait();
+            if (IsCurrent(state))
+            {
+                return new LockHolder(this);
+            }
+            _mutex.Release();
+            throw new StatefulMutexException("Cannot lock mutex with expired state");
         }
 
         public async Task<LockHolder> GetLockAsync()
@@ -58,12 +69,12 @@ namespace Microsoft.Azure.Mobile.Utils.Synchronization
         public async Task<LockHolder> GetLockAsync(State state)
         {
             await _mutex.WaitAsync().ConfigureAwait(false);
-            if (!IsCurrent(state))
+            if (IsCurrent(state))
             {
-                _mutex.Release();
-                throw new StatefulMutexException("Cannot lock mutex with expired state");
+                return new LockHolder(this);
             }
-            return new LockHolder(this);
+            _mutex.Release();
+            throw new StatefulMutexException("Cannot lock mutex with expired state");
         }
 
         /// <summary>

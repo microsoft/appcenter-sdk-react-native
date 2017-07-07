@@ -31,8 +31,8 @@ namespace Microsoft.Azure.Mobile.Test
 
             // Ignore warnings because we just want to "fire and forget"
 #pragma warning disable 4014
-            storage.PutLogAsync(StorageTestChannelName, new TestLog());
-            storage.PutLogAsync(StorageTestChannelName, new TestLog());
+            storage.PutLog(StorageTestChannelName, new TestLog());
+            storage.PutLog(StorageTestChannelName, new TestLog());
 #pragma warning restore 4014
 
             var result = storage.ShutdownAsync(TimeSpan.FromTicks(1)).RunNotAsync();
@@ -54,8 +54,8 @@ namespace Microsoft.Azure.Mobile.Test
             
             // Ignore warnings because we just want to "fire and forget"
 #pragma warning disable 4014
-            storage.PutLogAsync(StorageTestChannelName, new TestLog());
-            storage.PutLogAsync(StorageTestChannelName, new TestLog());
+            storage.PutLog(StorageTestChannelName, new TestLog());
+            storage.PutLog(StorageTestChannelName, new TestLog());
 #pragma warning restore 4014
 
             var result = storage.ShutdownAsync(TimeSpan.FromSeconds(100)).RunNotAsync();
@@ -110,8 +110,8 @@ namespace Microsoft.Azure.Mobile.Test
                 .Throws(new StorageException());
             var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
 
-            Assert.ThrowsException<StorageException>(() => fakeStorage.PutLogAsync("channel_name", new TestLog()).RunNotAsync());
-            Assert.ThrowsException<StorageException>(() => fakeStorage.DeleteLogsAsync("channel_name", string.Empty).RunNotAsync());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.PutLog("channel_name", new TestLog()).RunNotAsync());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.DeleteLogs("channel_name", string.Empty).RunNotAsync());
             Assert.ThrowsException<StorageException>(() => fakeStorage.CountLogsAsync("channel_name").RunNotAsync());
             Assert.ThrowsException<StorageException>(() => fakeStorage.GetLogsAsync("channel_name", 1, new List<Log>()).RunNotAsync());
         }

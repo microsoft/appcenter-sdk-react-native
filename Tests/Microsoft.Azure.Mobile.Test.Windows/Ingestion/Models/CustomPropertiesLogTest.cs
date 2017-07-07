@@ -54,8 +54,8 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             };
 
             var storage = new Mobile.Storage.Storage();
-            storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
-            storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
+            storage.DeleteLogs(StorageTestChannelName);
+            storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
             storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0] as CustomPropertiesLog;
