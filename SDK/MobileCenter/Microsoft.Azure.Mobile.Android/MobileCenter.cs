@@ -137,7 +137,7 @@ namespace Microsoft.Azure.Mobile
             {
                 parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
             }
-            catch (ArgumentException ex)
+            catch (MobileCenterException ex)
             {
                 MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
                 return;

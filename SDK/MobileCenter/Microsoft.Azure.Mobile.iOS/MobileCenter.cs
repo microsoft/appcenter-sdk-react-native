@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Mobile
             {
                 parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
             }
-            catch (ArgumentException ex)
+            catch (MobileCenterException ex)
             {
                 MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
                 return;
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Mobile
 
         static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
-            iOSMobileCenter.SetCustomProperties(customProperties.IOSCustomProperties);
+            iOSMobileCenter.SetCustomProperties(customProperties?.IOSCustomProperties);
         }
     }
 }
