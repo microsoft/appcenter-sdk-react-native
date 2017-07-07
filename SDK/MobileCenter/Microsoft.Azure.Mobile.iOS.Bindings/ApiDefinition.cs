@@ -162,12 +162,12 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         // +(void)configureWithAppSecret:(NSString *)appSecret;
         [Static]
         [Export("configureWithAppSecret:")]
-        void ConfigureWithAppSecret(string appSecret);
+        void ConfigureWithAppSecret([NullAllowed] string appSecret);
 
         // +(void)start:(NSString *)appSecret withServices:(NSArray<Class> *)services;
         [Static]
         [Export("start:withServices:")]
-        void Start(string appSecret, Class[] services);
+        void Start([NullAllowed] string appSecret, Class[] services);
 
         // +(void)startService:(Class)service;
         [Static]
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         // +(void)setLogUrl:(NSString *)setLogUrl;
         [Static]
         [Export("setLogUrl:")]
-        void SetLogUrl(string logUrl);
+        void SetLogUrl([NullAllowed] string logUrl);
 
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]
