@@ -77,18 +77,16 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        public Task SetEnabledAsync(bool enabled)
+        public void SetEnabled(bool enabled)
         {
             ThrowIfDisposed();
-            var tasks = new List<Task>();
             lock (_channelGroupLock)
             {
                 foreach (var channel in _channels)
                 {
-                    tasks.Add(channel.SetEnabledAsync(enabled));
+                    channel.SetEnabled(enabled);
                 }
             }
-            return Task.WhenAll(tasks);
         }
 
         public async Task ShutdownAsync()
