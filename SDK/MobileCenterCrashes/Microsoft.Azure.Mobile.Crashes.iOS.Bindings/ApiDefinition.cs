@@ -97,6 +97,11 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Static]
         [Export("notifyWithUserConfirmation:")]
         void NotifyWithUserConfirmation(MSUserConfirmation userConfirmation);
+
+        //+(void)disableMachExceptionHandler;
+        [Static]
+        [Export("disableMachExceptionHandler")]
+        void DisableMachExceptionHandler();
     }
 
     // @protocol MSCrashesDelegate <NSObject>
