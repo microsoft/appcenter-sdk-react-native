@@ -1,7 +1,6 @@
 ﻿using System;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
-using Windows.UI.Xaml;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -46,17 +45,23 @@ namespace Microsoft.Azure.Mobile.Utils
                 // the start
                 _started = true;
             }
-            try
+
+            // Subscribe to unhandled errors events
+            CoreApplication.UnhandledErrorDetected += (sender, eventArgs) =>
             {
-                Application.Current.UnhandledException += (sender, eventArgs) =>
+                try
                 {
-                    UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
-                };
-            }
-            catch (Exception exception)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Cannot subscribe to unhandled exceptions from XAML application", exception);
-            }
+                    // intentionally propagating exception to get the exception object that crashed the app.
+                    eventArgs.UnhandledError.Propagate();
+                }
+                catch (Exception exception)
+                {
+                    UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(exception));
+
+                    // If we don't throw exception - app will not be crashed. We need to throw to not change the app behavior.
+                    throw;
+                }
+            };
         }
 
         private void InvokeResuming(object sender, object e)
