@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void DisableChannel()
         {
-            _channel.SetEnabledAsync(false).RunNotAsync();
+            _channel.SetEnabled(false);
 
             Assert.IsFalse(_channel.IsEnabled);
         }
@@ -74,8 +74,8 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void EnableChannel()
         {
-            _channel.SetEnabledAsync(false).RunNotAsync();
-            _channel.SetEnabledAsync(true).RunNotAsync();
+            _channel.SetEnabled(false);
+            _channel.SetEnabled(true);
 
             Assert.IsTrue(_channel.IsEnabled);
         }
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void EnqueueWhileDisabled()
         {
-            _channel.SetEnabledAsync(false).RunNotAsync();
+            _channel.SetEnabled(false);
             var log = new TestLog();
             _channel.EnqueueAsync(log).RunNotAsync();
             Assert.IsFalse(SentLogOccurred(1));
@@ -183,7 +183,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
                 _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
-            _channel.SetEnabledAsync(true).RunNotAsync();
+            _channel.SetEnabled(true);
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
         }
@@ -194,7 +194,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void ChannelInvokesFailedToSendLogEventAfterDisabling()
         {
-            _channel.SetEnabledAsync(false).RunNotAsync();
+            _channel.SetEnabled(false);
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
                 _channel.EnqueueAsync(new TestLog()).RunNotAsync();
@@ -214,7 +214,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
             _channel.ClearAsync().RunNotAsync();
-            _channel.SetEnabledAsync(true).RunNotAsync();
+            _channel.SetEnabled(true);
 
             Assert.IsFalse(SendingLogOccurred(1));
         }
@@ -226,7 +226,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void DisposeChannelTest()
         {
             _channel.Dispose();
-            Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => _channel.SetEnabledAsync(true)).RunNotAsync();
+            Assert.ThrowsException<ObjectDisposedException>(() => _channel.SetEnabled(true));
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void ThrowStorageExceptionInDeleteLogsTime()
         {
             var storage = new Mock<IStorage>();
-            storage.Setup(s => s.DeleteLogsAsync(It.IsAny<string>(), It.IsAny<string>())).Throws<StorageException>();
+            storage.Setup(s => s.DeleteLogs(It.IsAny<string>(), It.IsAny<string>())).Throws<StorageException>();
             storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>())).Returns(Task.FromResult(""));
 
             Mobile.Channel.Channel channel = new Mobile.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
@@ -245,7 +245,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             channel.ShutdownAsync().RunNotAsync();
             channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
-            channel.SetEnabledAsync(true).RunNotAsync();
+            channel.SetEnabled(true);
 
             // Not throw any exception
         }
@@ -291,7 +291,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
             _storage = new Mobile.Storage.Storage();
-            _storage.DeleteLogsAsync(ChannelName).RunNotAsync();
+            _storage.DeleteLogs(ChannelName);
             _channel = new Mobile.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
                 _appSecret, _mockIngestion, _storage);
             MakeIngestionCallsSucceed();

@@ -79,6 +79,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         static PlatformCrashes()
         {
             /* Peform custom setup around the native SDK's for setting signal handlers */
+            MSCrashes.DisableMachExceptionHandler();
             MSWrapperExceptionManager.SetDelegate(new CrashesInitializationDelegate());
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }

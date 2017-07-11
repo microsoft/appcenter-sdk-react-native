@@ -8,7 +8,7 @@ namespace Microsoft.Azure.Mobile.Test.Storage
 {
     public class MockStorage : IStorage
     {
-        public Task ClearPendingLogStateAsync(string channelName)
+        public Task ClearPendingLogState(string channelName)
         {
             return TaskExtension.GetCompletedTask();
         }
@@ -18,12 +18,12 @@ namespace Microsoft.Azure.Mobile.Test.Storage
             return TaskExtension.GetCompletedTask(1);
         }
 
-        public Task DeleteLogsAsync(string channelName)
+        public Task DeleteLogs(string channelName)
         {
             return TaskExtension.GetCompletedTask();
         }
 
-        public Task DeleteLogsAsync(string channelName, string batchId)
+        public Task DeleteLogs(string channelName, string batchId)
         {
             return TaskExtension.GetCompletedTask();
         }
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Test.Storage
             return TaskExtension.GetCompletedTask(Guid.NewGuid().ToString());
         }
 
-        public Task PutLogAsync(string channelName, Log log)
+        public Task PutLog(string channelName, Log log)
         {
             return TaskExtension.GetCompletedTask();
         }

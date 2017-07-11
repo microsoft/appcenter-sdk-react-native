@@ -148,13 +148,13 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             {
                 _channelGroup.AddChannel(mockedChannel);
             }
-            _channelGroup.SetEnabledAsync(true);
-            _channelGroup.SetEnabledAsync(false);
+            _channelGroup.SetEnabled(true);
+            _channelGroup.SetEnabled(false);
 
             foreach (var channelMock in channelMocks.Select(mock => mock as Mock<IChannelUnit>))
             {
-                channelMock.Verify(channel => channel.SetEnabledAsync(It.Is<bool>(p => p)), Times.Once());
-                channelMock.Verify(channel => channel.SetEnabledAsync(It.Is<bool>(p => !p)), Times.Once());
+                channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => p)), Times.Once());
+                channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => !p)), Times.Once());
             }
         }
 
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         public void TestDisposeChannelGroup()
         {
             _channelGroup.Dispose();
-            Assert.ThrowsException<ObjectDisposedException>(() => _channelGroup.SetEnabledAsync(true));
+            Assert.ThrowsException<ObjectDisposedException>(() => _channelGroup.SetEnabled(true));
         }
 
         /// <summary>

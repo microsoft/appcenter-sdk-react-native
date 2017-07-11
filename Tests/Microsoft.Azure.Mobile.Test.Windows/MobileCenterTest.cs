@@ -144,7 +144,7 @@ namespace Microsoft.Azure.Mobile.Test
             MockMobileCenterService.Instance.MockInstance.VerifySet(
                 service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = It.IsAny<bool>(), Times.Never());
-            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabledAsync(It.IsAny<bool>()), Times.Never());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(It.IsAny<bool>()), Times.Never());
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Microsoft.Azure.Mobile.Test
             MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal,
                 Times.Once());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = setVal, Times.Once());
-            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabledAsync(setVal), Times.Once());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(setVal), Times.Once());
         }
 
         /// <summary>

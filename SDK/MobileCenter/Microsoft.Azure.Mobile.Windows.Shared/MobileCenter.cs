@@ -202,7 +202,7 @@ namespace Microsoft.Azure.Mobile
                     return;
                 }
 
-                _channelGroup?.SetEnabledAsync(value);
+                _channelGroup?.SetEnabled(value);
                 _applicationSettings[EnabledKey] = value;
 
                 foreach (var service in _services)

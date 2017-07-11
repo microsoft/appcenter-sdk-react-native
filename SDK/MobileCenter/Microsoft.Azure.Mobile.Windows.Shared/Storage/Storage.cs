@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Storage
         {
             _storageAdapter = adapter;
             _queue.Add(new Task(() => InitializeDatabaseAsync().Wait()));
-            _queueFlushTask = Task.Run(FlushQueue);
+            _queueFlushTask = Task.Run(FlushQueueAsync);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <param name="channelName">The name of the channel associated with the log</param>
         /// <param name="log">The log to add</param>
         /// <exception cref="StorageException"/>
-        public async Task PutLogAsync(string channelName, Log log)
+        public Task PutLog(string channelName, Log log)
         {
             var task = new Task(() =>
             {
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException("The operation has been cancelled");
             }
             _flushSemaphore.Release();
-            await task.ConfigureAwait(false);
+            return task;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// <param name="channelName">The name of the channel associated with the batch</param>
         /// <param name="batchId">The batch identifier</param>
         /// <exception cref="StorageException"/>
-        public async Task DeleteLogsAsync(string channelName, string batchId)
+        public Task DeleteLogs(string channelName, string batchId)
         {
             var task = new Task(() =>
             {
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException("The operation has been cancelled");
             }
             _flushSemaphore.Release();
-            await task.ConfigureAwait(false);
+            return task;
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Microsoft.Azure.Mobile.Storage
         /// </summary>
         /// <param name="channelName">Name of the channel to delete logs for</param>
         /// <exception cref="StorageException"/>
-        public async Task DeleteLogsAsync(string channelName)
+        public Task DeleteLogs(string channelName)
         {
             var task = new Task(() =>
             {
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 {
                     MobileCenterLog.Debug(MobileCenterLog.LogTag,
                         $"Deleting all logs from storage for channel '{channelName}'");
-                    ClearPendingLogState(channelName);
+                    ClearPendingLogStateWithoutEnqueue(channelName);
                     _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
                         .Wait();
                 }
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException("The operation has been cancelled");
             }
             _flushSemaphore.Release();
-            await task.ConfigureAwait(false);
+            return task;
         }
 
         /// <summary>
@@ -191,11 +191,11 @@ namespace Microsoft.Azure.Mobile.Storage
         /// Asynchronously clears the stored state of logs that have been retrieved
         /// </summary>
         /// <param name="channelName"></param>
-        public async Task ClearPendingLogStateAsync(string channelName)
+        public Task ClearPendingLogState(string channelName)
         {
             var task = new Task(() =>
             {
-                ClearPendingLogState(channelName);
+                ClearPendingLogStateWithoutEnqueue(channelName);
                 MobileCenterLog.Debug(MobileCenterLog.LogTag, $"Clear pending log states for channel {channelName}");
             });
             try
@@ -207,10 +207,10 @@ namespace Microsoft.Azure.Mobile.Storage
                 throw new StorageException("The operation has been cancelled");
             }
             _flushSemaphore.Release();
-            await task.ConfigureAwait(false);
+            return task;
         }
 
-        private void ClearPendingLogState(string channelName)
+        private void ClearPendingLogStateWithoutEnqueue(string channelName)
         {
             var fullIdentifiers = new List<string>();
 
@@ -364,7 +364,7 @@ namespace Microsoft.Azure.Mobile.Storage
         }
 
         // Flushes the queue
-        private async Task FlushQueue()
+        private async Task FlushQueueAsync()
         {
             while (true)
             {
