@@ -28,6 +28,6 @@ using System.Runtime.InteropServices;
 [assembly: ReferenceAssembly]
 #endif
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("0.13.2.0")]
+[assembly: AssemblyFileVersion("0.14.0.0")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Test.UWP")]
