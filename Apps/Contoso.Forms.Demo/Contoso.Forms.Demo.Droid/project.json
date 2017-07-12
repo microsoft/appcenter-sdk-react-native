@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "Microsoft.Azure.Mobile.Analytics": "0.13.1",
-    "Microsoft.Azure.Mobile.Crashes": "0.13.1",
-    "Microsoft.Azure.Mobile.Distribute": "0.13.1",
-    "Microsoft.Azure.Mobile.Push": "0.13.1",
+    "Microsoft.Azure.Mobile.Analytics": "0.14.0",
+    "Microsoft.Azure.Mobile.Crashes": "0.14.0",
+    "Microsoft.Azure.Mobile.Distribute": "0.14.0",
+    "Microsoft.Azure.Mobile.Push": "0.14.0",
     "Xamarin.Android.Support.Animated.Vector.Drawable": "25.1.1",
     "Xamarin.Android.Support.Compat": "25.1.1",
     "Xamarin.Android.Support.Core.UI": "25.1.1",
