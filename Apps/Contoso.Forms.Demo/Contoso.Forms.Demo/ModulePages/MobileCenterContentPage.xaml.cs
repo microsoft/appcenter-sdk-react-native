@@ -15,15 +15,15 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            MobileCenterEnabledSwitchCell.On = MobileCenter.Enabled;
+            MobileCenterEnabledSwitchCell.On = await MobileCenter.IsEnabledAsync();
         }
 
-        void UpdateEnabled(object sender, ToggledEventArgs e)
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            MobileCenter.Enabled = e.Value;
+            await MobileCenter.SetEnabledAsync(e.Value);
         }
     }
 }
