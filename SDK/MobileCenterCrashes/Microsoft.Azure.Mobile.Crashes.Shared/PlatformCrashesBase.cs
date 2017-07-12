@@ -10,9 +10,11 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         public abstract Type BindingType { get; }
 
-        public abstract bool Enabled { get; set; }
+        public abstract Task<bool> IsEnabledAsync();
 
-        public abstract bool HasCrashedInLastSession { get; }
+        public abstract Task SetEnabledAsync(bool enabled);
+
+        public abstract Task<bool> HasCrashedInLastSessionAsync();
 
         public abstract Task<ErrorReport> GetLastSessionCrashReportAsync();
 

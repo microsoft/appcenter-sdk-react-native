@@ -350,7 +350,9 @@ namespace Microsoft.Azure.Mobile.Channel
             }
 
             // If the optional Install ID has no value, default to using empty GUID
-            var installId = MobileCenter.InstallId.HasValue ? MobileCenter.InstallId.Value : Guid.Empty;
+            // TODO When InstallId will really be async, we should not use Result anymore
+            var rawInstallId = MobileCenter.GetInstallIdAsync().Result;
+            var installId = rawInstallId.HasValue ? rawInstallId.Value : Guid.Empty;
             using (var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs))
             {
                 serviceCall.ExecuteAsync().ContinueWith(completedTask =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ObjCRuntime;
 
 namespace Microsoft.Azure.Mobile
@@ -8,9 +9,6 @@ namespace Microsoft.Azure.Mobile
     using iOSMobileCenter = Microsoft.Azure.Mobile.iOS.Bindings.MSMobileCenter;
     using iOSWrapperSdk = Microsoft.Azure.Mobile.iOS.Bindings.MSWrapperSdk;
 
-    /// <summary>
-    /// SDK core used to initialize, start and control specific service.
-    /// </summary>
     public partial class MobileCenter
     {
         /* The key identifier for parsing app secrets */
@@ -20,10 +18,7 @@ namespace Microsoft.Azure.Mobile
         {
         }
 
-        /// <summary>
-        /// This property controls the amount of logs emitted by the SDK.
-        /// </summary>
-        public static LogLevel LogLevel
+        static LogLevel PlatformLogLevel
         {
             get
             {
@@ -81,19 +76,12 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
-        /// </summary>
-        /// <param name="logUrl">Base URL to use for server communication.</param>
-        public static void SetLogUrl(string logUrl)
+        static void PlatformSetLogUrl(string logUrl)
         {
             iOSMobileCenter.SetLogUrl(logUrl);
         }
 
-        /// <summary>
-        /// Check whether SDK has already been configured or not.
-        /// </summary>
-        public static bool Configured
+        static bool PlatformConfigured
         {
             get
             {
@@ -101,23 +89,13 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Configure the SDK.
-        /// This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        public static void Configure(string appSecret)
+        static void PlatformConfigure(string appSecret)
         {
             SetWrapperSdk();
             iOSMobileCenter.ConfigureWithAppSecret(appSecret);
         }
 
-        /// <summary>
-        /// Start services.
-        /// This may be called only once per service per application process lifetime.
-        /// </summary>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(params Type[] services)
+        static void PlatformStart(params Type[] services)
         {
             SetWrapperSdk();
             foreach (var service in GetServices(services))
@@ -126,13 +104,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Initialize the SDK with the list of services to start.
-        /// This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(string appSecret, params Type[] services)
+        static void PlatformStart(string appSecret, params Type[] services)
         {
             SetWrapperSdk();
             string parsedSecret;
@@ -148,25 +120,22 @@ namespace Microsoft.Azure.Mobile
             iOSMobileCenter.Start(parsedSecret, GetServices(services));
         }
 
-        /// <summary>
-        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been started.
-        /// </summary>
-        /// <remarks>
-        /// The default state is <c>true</c> and updating the state is persisted into local application storage.
-        /// </remarks>
-        public static bool Enabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get { return iOSMobileCenter.IsEnabled(); }
-            set { iOSMobileCenter.SetEnabled(value); }
+            return Task.FromResult(iOSMobileCenter.IsEnabled());
         }
 
-        /// <summary>
-        /// Get the unique installation identifier for this application installation on this device.
-        /// </summary>
-        /// <remarks>
-        /// The identifier is lost if clearing application data or uninstalling application.
-        /// </remarks>
-        public static Guid? InstallId => Guid.Parse(iOSMobileCenter.InstallId().AsString());
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            iOSMobileCenter.SetEnabled(enabled);
+            return Task.FromResult(default(object));
+        }
+
+        static Task<Guid?> PlatformGetInstallIdAsync()
+        {
+            Guid? installId = Guid.Parse(iOSMobileCenter.InstallId().AsString());
+            return Task.FromResult(installId);
+        }
 
         static Class[] GetServices(IEnumerable<Type> services)
         {
