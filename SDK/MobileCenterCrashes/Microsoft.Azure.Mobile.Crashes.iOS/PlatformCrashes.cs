@@ -22,13 +22,21 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Type BindingType => typeof(MSCrashes);
 
-        public override bool Enabled
+        public override Task<bool> IsEnabledAsync()
         {
-            get { return MSCrashes.IsEnabled(); }
-            set { MSCrashes.SetEnabled(value); }
+            return Task.FromResult(MSCrashes.IsEnabled());
         }
 
-        public override bool HasCrashedInLastSession => MSCrashes.HasCrashedInLastSession;
+        public override Task SetEnabledAsync(bool enabled)
+        {
+            MSCrashes.SetEnabled(enabled);
+            return Task.FromResult(default(object));
+        }
+
+        public override Task<bool> HasCrashedInLastSessionAsync()
+        {
+            return Task.FromResult(MSCrashes.HasCrashedInLastSession);
+        }
 
         public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
@@ -71,6 +79,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         static PlatformCrashes()
         {
             /* Peform custom setup around the native SDK's for setting signal handlers */
+            MSCrashes.DisableMachExceptionHandler();
             MSWrapperExceptionManager.SetDelegate(new CrashesInitializationDelegate());
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }

@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         {
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
-            MobileCenter.Enabled = true;
+            MobileCenter.SetEnabledAsync(true).Wait();
             _testService.InstanceEnabled = false;
 
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = false, Times.Once());
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         {
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
-            MobileCenter.Enabled = false;
+            MobileCenter.SetEnabledAsync(false).Wait();
 
             _testService.InstanceEnabled = true;
 
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
             _mockSettings.Setup(
                     settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
-            MobileCenter.Enabled = true;
+            MobileCenter.SetEnabledAsync(true).Wait();
 
             _testService.InstanceEnabled = true;
 
@@ -95,13 +95,13 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         {
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
-            MobileCenter.Enabled = true;
+            MobileCenter.SetEnabledAsync(true).Wait();
             _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             _testService.InstanceEnabled = false;
 
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = It.IsAny<bool>(), Times.Exactly(2));
-            _mockChannel.Verify(channel => channel.SetEnabledAsync(It.IsAny<bool>()), Times.Exactly(2));
+            _mockChannel.Verify(channel => channel.SetEnabled(It.IsAny<bool>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestMethod]
         public void OnChannelGroupReady()
         {
-            MobileCenter.Enabled = true;
+            MobileCenter.SetEnabledAsync(true).Wait();
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
             .Returns(true);
             _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
                     channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
                         It.IsAny<int>()), Times.Once());
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = true, Times.Once());
-            _mockChannel.Verify(channel => channel.SetEnabledAsync(true), Times.Once());
+            _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
             Assert.AreSame(_mockChannelGroup.Object, _testService.PublicChannelGroup);
         }
 
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestMethod]
         public void OnChannelGroupReadyMobileCenterIsDisabled()
         {
-            MobileCenter.Enabled = false;
+            MobileCenter.SetEnabledAsync(false).Wait();
             _mockSettings.Setup(
                     settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
                     channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
                         It.IsAny<int>()), Times.Once());
             _mockSettings.VerifySet(settings => settings[_testService.PublicEnabledPreferenceKey] = false, Times.Once());
-            _mockChannel.Verify(channel => channel.SetEnabledAsync(false), Times.Once());
+            _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
         }
 
         /// <summary>

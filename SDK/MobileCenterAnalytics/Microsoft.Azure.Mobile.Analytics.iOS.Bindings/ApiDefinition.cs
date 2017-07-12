@@ -19,12 +19,12 @@ namespace Microsoft.Azure.Mobile.Analytics.iOS.Bindings
         // +(void)trackEvent:(NSString *)eventName;
         [Static]
         [Export("trackEvent:")]
-        void TrackEvent(string eventName);
+        void TrackEvent([NullAllowed] string eventName);
 
         // +(void)trackEvent:(NSString *)eventName withProperties:(NSDictionary *)properties;
         [Static]
         [Export("trackEvent:withProperties:")]
-        void TrackEvent(string eventName, NSDictionary properties);
+        void TrackEvent([NullAllowed] string eventName, [NullAllowed] NSDictionary properties);
 
         // +(void)setDelegate:(id<MSAnalyticsDelegate> _Nullable)delegate;
         [Static]

@@ -53,8 +53,8 @@ var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
 var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.10.0";
-var IOS_SDK_VERSION = "0.10.1";
+var ANDROID_SDK_VERSION = "0.11.1";
+var IOS_SDK_VERSION = "0.11.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -489,7 +489,11 @@ Task("RestoreTestPackages").Does(() =>
 	NuGetRestore("./MobileCenter-SDK-Test.sln");
 	NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
 	NuGetUpdate("./Tests/iOS/packages.config");
-	NuGetUpdate("./Tests/Droid/packages.config");
+	NuGetUpdate("./Tests/Droid/packages.config", new NuGetUpdateSettings {
+
+		// workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-target
+		Source = new string[] { EnvironmentVariable("NUGET_URL") }
+	});
 }).OnError(HandleError);
 
 // Remove any uploaded nugets from azure storage

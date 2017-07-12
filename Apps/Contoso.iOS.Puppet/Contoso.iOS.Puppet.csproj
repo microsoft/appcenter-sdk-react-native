@@ -190,4 +190,9 @@
     <BundleResource Include="Resources\socket%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+
+  <!-- https://bugzilla.xamarin.com/show_bug.cgi?id=56246 -->
+  <PropertyGroup>
+    <CscToolExe>mcs.exe</CscToolExe>
+  </PropertyGroup>
 </Project>

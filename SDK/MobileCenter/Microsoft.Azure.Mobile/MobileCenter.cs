@@ -2,12 +2,10 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile
 {
-    /// <summary>
-    /// SDK core used to initialize, start and control specific service.
-    /// </summary>
     public partial class MobileCenter
     {
         internal MobileCenter()
@@ -15,70 +13,43 @@ namespace Microsoft.Azure.Mobile
         }
 
         /* Error message to display for unsupported targets. */
-        private const string ErrorMessage =
+        const string ErrorMessage =
             "[MobileCenter] ASSERT: Cannot use Mobile Center on this target. If you are on Android or iOS or UWP, you must add the NuGet packages in the Android and iOS and UWP projects as well. Other targets are not yet supported.";
 
-        /// <summary>
-        ///     This property controls the amount of logs emitted by the SDK.
-        /// </summary>
-        public static LogLevel LogLevel { get; set; }
-        /// <summary>
-        ///     Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been
-        ///     started.
-        /// </summary>
-        /// <remarks>
-        ///     The default state is <c>true</c> and updating the state is persisted into local application storage.
-        /// </remarks>
-        public static bool Enabled { get; set; }
+        static LogLevel PlatformLogLevel { get; set; }
 
-        /// <summary>
-        ///     Get the unique installation identifier for this application installation on this device.
-        /// </summary>
-        /// <remarks>
-        ///     The identifier is lost if clearing application data or uninstalling application.
-        /// </remarks>
-        public static Guid? InstallId { get; }
+        static Task<bool> PlatformIsEnabledAsync()
+        {
+            return Task.FromResult(false);
+        }
 
-        /// <summary>
-        ///     Change the base URL (scheme + authority + port only) used to communicate with the backend.
-        /// </summary>
-        /// <param name="logUrl">Base URL to use for server communication.</param>
-        public static void SetLogUrl(string logUrl)
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            return Task.FromResult(default(object));
+        }
+
+        static Task<Guid?> PlatformGetInstallIdAsync()
+        {
+            return Task.FromResult((Guid?)null);
+        }
+
+        static void PlatformSetLogUrl(string logUrl)
         {
         }
 
-        /// <summary>
-        /// Check whether SDK has already been configured or not.
-        /// </summary>
-        public static bool Configured { get; }
+        static bool PlatformConfigured { get; }
 
-        /// <summary>
-        ///     Configure the SDK.
-        ///     This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        public static void Configure(string appSecret)
+        static void PlatformConfigure(string appSecret)
         {
             Debug.WriteLine(ErrorMessage);
         }
 
-        /// <summary>
-        ///     Start services.
-        ///     This may be called only once per service per application process lifetime.
-        /// </summary>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(params Type[] services)
+        static void PlatformStart(params Type[] services)
         {
             Debug.WriteLine(ErrorMessage);
         }
 
-        /// <summary>
-        ///     Initialize the SDK with the list of services to start.
-        ///     This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(string appSecret, params Type[] services)
+        static void PlatformStart(string appSecret, params Type[] services)
         {
             Debug.WriteLine(ErrorMessage);
         }

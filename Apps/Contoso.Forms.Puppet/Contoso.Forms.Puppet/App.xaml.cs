@@ -51,7 +51,6 @@ namespace Contoso.Forms.Puppet
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
-            MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
@@ -74,8 +73,18 @@ namespace Contoso.Forms.Puppet
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
-            MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
-            MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+            MobileCenter.IsEnabledAsync().ContinueWith(enabled =>
+            {
+                MobileCenterLog.Info(LogTag, "MobileCenter.Enabled=" + enabled.Result);
+            });
+            MobileCenter.GetInstallIdAsync().ContinueWith(installId =>
+            {
+                MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + installId.Result);
+            });
+            Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
+            {
+                MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
+            });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
                 MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);

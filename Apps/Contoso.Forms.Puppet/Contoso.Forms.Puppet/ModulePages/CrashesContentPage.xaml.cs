@@ -18,11 +18,11 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            CrashesEnabledSwitchCell.On = Crashes.Enabled;
-            CrashesEnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
+            CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
+            CrashesEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
         }
 
         void TestCrash(object sender, EventArgs e)
@@ -38,9 +38,9 @@ namespace Contoso.Forms.Puppet
 #pragma warning restore CS0219
         }
 
-        void UpdateEnabled(object sender, ToggledEventArgs e)
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            Crashes.Enabled = e.Value;
+            await Crashes.SetEnabledAsync(e.Value);
         }
 
         void GenerateTestCrash(object sender, EventArgs e)

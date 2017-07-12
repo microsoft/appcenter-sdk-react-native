@@ -5,6 +5,7 @@ using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile
 {
@@ -32,7 +33,7 @@ namespace Microsoft.Azure.Mobile
         private string _logUrl;
         private bool _instanceConfigured;
         private string _appSecret;
-        
+
         #region static
 
         // The shared instance of MobileCenter
@@ -60,10 +61,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Controls the amount of logs emitted by the SDK.
-        /// </summary>
-        public static LogLevel LogLevel
+        static LogLevel PlatformLogLevel
         {
             get
             {
@@ -81,44 +79,31 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Enable or disable the SDK as a whole. Updating the property propagates the value to all services that have been
-        /// started.
-        /// </summary>
-        /// <remarks>
-        /// The default state is <c>true</c> and updating the state is persisted into local application storage.
-        /// </remarks>
-        public static bool Enabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get
+            // This is not really async for now, signature was introduced for Android
+            // It's fine for callers of the current implementation to use Wait().
+            lock (MobileCenterLock)
             {
-                lock (MobileCenterLock)
-                {
-                    return Instance.InstanceEnabled;
-                }
-            }
-            set
-            {
-                lock (MobileCenterLock)
-                {
-                    Instance.InstanceEnabled = value;
-                }
+                return Task.FromResult(Instance.InstanceEnabled);
             }
         }
 
-        /// <summary>
-        /// Get the unique installation identifier for this application installation on this device.
-        /// </summary>
-        /// <remarks>
-        /// The identifier is lost if clearing application data or uninstalling application.
-        /// </remarks>
-        public static Guid? InstallId => Instance._applicationSettings.GetValue(InstallIdKey, Guid.NewGuid());
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            lock (MobileCenterLock)
+            {
+                Instance.InstanceEnabled = enabled;
+                return Task.FromResult(default(object));
+            }
+        }
 
-        /// <summary>
-        /// Change the base URL (scheme + authority + port only) used to communicate with the backend.
-        /// </summary>
-        /// <param name="logUrl">Base URL to use for server communication.</param>
-        public static void SetLogUrl(string logUrl)
+        static Task<Guid?> PlatformGetInstallIdAsync()
+        {
+            return Task.FromResult((Guid?)Instance._applicationSettings.GetValue(InstallIdKey, Guid.NewGuid()));
+        }
+
+        static void PlatformSetLogUrl(string logUrl)
         {
             lock (MobileCenterLock)
             {
@@ -134,10 +119,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Check whether SDK has already been configured or not.
-        /// </summary>
-        public static bool Configured
+        static bool PlatformConfigured
         {
             get
             {
@@ -148,12 +130,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Configure the SDK.
-        /// This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        public static void Configure(string appSecret)
+        static void PlatformConfigure(string appSecret)
         {
             lock (MobileCenterLock)
             {
@@ -168,12 +145,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Start services.
-        /// This may be called only once per service per application process lifetime.
-        /// </summary>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(params Type[] services)
+        static void PlatformStart(params Type[] services)
         {
             lock (MobileCenterLock)
             {
@@ -188,13 +160,7 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        /// <summary>
-        /// Initialize the SDK with the list of services to start.
-        /// This may be called only once per application process lifetime.
-        /// </summary>
-        /// <param name="appSecret">A unique and secret key used to identify the application.</param>
-        /// <param name="services">List of services to use.</param>
-        public static void Start(string appSecret, params Type[] services)
+        static void PlatformStart(string appSecret, params Type[] services)
         {
             lock (MobileCenterLock)
             {
@@ -236,7 +202,7 @@ namespace Microsoft.Azure.Mobile
                     return;
                 }
 
-                _channelGroup?.SetEnabledAsync(value);
+                _channelGroup?.SetEnabled(value);
                 _applicationSettings[EnabledKey] = value;
 
                 foreach (var service in _services)
@@ -255,6 +221,11 @@ namespace Microsoft.Azure.Mobile
 
         private void SetInstanceCustomProperties(CustomProperties customProperties)
         {
+            if (!Configured)
+            {
+                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center hasn't been configured. You need to call MobileCenter.Start with appSecret or MobileCenter.Configure first.");
+                return;
+            }
             if (customProperties == null || customProperties.Properties.Count == 0)
             {
                 MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom properties may not be null or empty");

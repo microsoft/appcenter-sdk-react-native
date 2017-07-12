@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Analytics;
 
@@ -24,12 +25,23 @@ namespace Microsoft.Azure.Mobile.Analytics
         public static Type BindingType => typeof(AndroidAnalytics);
 
         /// <summary>
-        /// Enable or disable Analytics module.
+        /// Check whether the Analytics service is enabled or not.
         /// </summary>
-        public static bool Enabled
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
         {
-            get { return AndroidAnalytics.Enabled; }
-            set { AndroidAnalytics.Enabled = value; }
+            var future = AndroidAnalytics.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
+        }
+
+        /// <summary>
+        /// Enable or disable the Analytics service.
+        /// </summary>
+        /// <returns>A task to monitor the operation.</returns>
+        public static Task SetEnabledAsync(bool enabled)
+        {
+            var future = AndroidAnalytics.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         ///// <summary>

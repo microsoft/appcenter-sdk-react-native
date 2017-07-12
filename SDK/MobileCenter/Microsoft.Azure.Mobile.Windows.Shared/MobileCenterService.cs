@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Mobile
                 lock (_serviceLock)
                 {
                     var enabledString = value ? "enabled" : "disabled";
-                    if (value && !MobileCenter.Enabled)
+                    if (value && !MobileCenter.IsEnabledAsync().Result)
                     {
                         MobileCenterLog.Error(LogTag,
                             "The SDK is disabled. Set MobileCenter.Enabled to 'true' before enabling a specific service.");
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Mobile
                         MobileCenterLog.Info(LogTag, $"{ServiceName} service has already been {enabledString}.");
                         return;
                     }
-                    Channel?.SetEnabledAsync(value);
+                    Channel?.SetEnabled(value);
                     _applicationSettings[EnabledPreferenceKey] = value;
                     MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
                 }
@@ -116,9 +116,9 @@ namespace Microsoft.Azure.Mobile
             {
                 ChannelGroup = channelGroup;
                 Channel = channelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                var enabled = MobileCenter.Enabled && InstanceEnabled;
+                var enabled = MobileCenter.IsEnabledAsync().Result && InstanceEnabled;
                 _applicationSettings[EnabledPreferenceKey] = enabled;
-                Channel.SetEnabledAsync(enabled);
+                Channel.SetEnabled(enabled);
             }
         }
 

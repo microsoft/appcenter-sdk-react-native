@@ -120,8 +120,8 @@ namespace Microsoft.Azure.Mobile.Test
             settingsMock.SetupSequence(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true).Returns(false);
 
-            Assert.IsTrue(MobileCenter.Enabled);
-            Assert.IsFalse(MobileCenter.Enabled);
+            Assert.IsTrue(MobileCenter.IsEnabledAsync().Result);
+            Assert.IsFalse(MobileCenter.IsEnabledAsync().Result);
             settingsMock.Verify(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()),
                 Times.Exactly(2));
         }
@@ -139,12 +139,12 @@ namespace Microsoft.Azure.Mobile.Test
                 .Returns(new Mock<IChannelUnit>().Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
-            MobileCenter.Enabled = MobileCenter.Enabled;
+            MobileCenter.SetEnabledAsync(MobileCenter.IsEnabledAsync().Result).Wait();
 
             MockMobileCenterService.Instance.MockInstance.VerifySet(
                 service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = It.IsAny<bool>(), Times.Never());
-            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabledAsync(It.IsAny<bool>()), Times.Never());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(It.IsAny<bool>()), Times.Never());
         }
 
         /// <summary>
@@ -160,13 +160,13 @@ namespace Microsoft.Azure.Mobile.Test
                 .Returns(new Mock<IChannelUnit>().Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
-            var setVal = !MobileCenter.Enabled;
-            MobileCenter.Enabled = setVal;
+            var setVal = !MobileCenter.IsEnabledAsync().Result;
+            MobileCenter.SetEnabledAsync(setVal).Wait();
 
             MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal,
                 Times.Once());
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = setVal, Times.Once());
-            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabledAsync(setVal), Times.Once());
+            channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(setVal), Times.Once());
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Microsoft.Azure.Mobile.Test
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(new Mock<IChannelUnit>().Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
-            MobileCenter.Enabled = false;
+            MobileCenter.SetEnabledAsync(false).Wait();
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
 
             settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = false, Times.Once());
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.Mobile.Test
             var fakeInstallId = Guid.NewGuid();
             settings[MobileCenter.InstallIdKey] = fakeInstallId;
             MobileCenter.Instance = new MobileCenter(settings);
-            var installId = MobileCenter.InstallId;
+            var installId = MobileCenter.GetInstallIdAsync().Result;
 
             Assert.IsTrue(installId.HasValue);
             Assert.AreEqual(installId.Value, fakeInstallId);
@@ -496,18 +496,23 @@ namespace Microsoft.Azure.Mobile.Test
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(channelUnitMock.Object);
             MobileCenter.Instance = new MobileCenter(settingsMock.Object, new MockChannelGroupFactory(channelGroupMock));
+
+            // Set before Mobile Center is configured. 
+            MobileCenter.SetCustomProperties(new CustomProperties());
+            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+
             MobileCenter.Configure("appsecret");
 
-            /* Set null. */
+            // Set null.
             MobileCenter.SetCustomProperties(null);
             channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
-            /* Set empty. */
+            // Set empty.
             var empty = new CustomProperties();
             MobileCenter.SetCustomProperties(empty);
             channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
-            /* Set normal. */
+            // Set normal.
             var properties = new CustomProperties();
             properties.Set("test", "test");
             MobileCenter.SetCustomProperties(properties);

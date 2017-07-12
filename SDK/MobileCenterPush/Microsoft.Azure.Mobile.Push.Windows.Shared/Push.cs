@@ -2,6 +2,7 @@
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils.Synchronization;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Push
 {
@@ -30,24 +31,20 @@ namespace Microsoft.Azure.Mobile.Push
             }
         }
 
-        /// <summary>
-        /// Push module enabled or disabled
-        /// </summary>
-        private static bool PlatformEnabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get
+            lock (PushLock)
             {
-                lock (PushLock)
-                {
-                    return Instance.InstanceEnabled;
-                }
+                return Task.FromResult(Instance.InstanceEnabled);
             }
-            set
+        }
+
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            lock (PushLock)
             {
-                lock (PushLock)
-                {
-                    Instance.InstanceEnabled = value;
-                }
+                Instance.InstanceEnabled = enabled;
+                return Task.FromResult(default(object));
             }
         }
 
@@ -76,7 +73,7 @@ namespace Microsoft.Azure.Mobile.Push
             using (_mutex.GetLock())
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
-                ApplyEnabledState(Enabled);
+                ApplyEnabledState(IsEnabledAsync().Result);
             }
         }
 
