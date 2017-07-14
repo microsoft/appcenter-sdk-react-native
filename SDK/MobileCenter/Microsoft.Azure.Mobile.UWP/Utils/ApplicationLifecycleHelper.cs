@@ -51,14 +51,14 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 try
                 {
-                    // intentionally propagating exception to get the exception object that crashed the app.
+                    // Intentionally propagating exception to get the exception object that crashed the app.
                     eventArgs.UnhandledError.Propagate();
                 }
                 catch (Exception exception)
                 {
                     UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(exception));
 
-                    // If we don't throw exception - app will not be crashed. We need to throw to not change the app behavior.
+                    // Since UnhandledError.Propagate marks the error as Handled, rethrow in order to only Log and not Handle.
                     throw;
                 }
             };
