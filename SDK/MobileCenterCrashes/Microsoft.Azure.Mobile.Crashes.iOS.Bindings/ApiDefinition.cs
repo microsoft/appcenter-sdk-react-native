@@ -214,38 +214,58 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
     [Protocol, Model]
     [BaseType(typeof(NSObject))]
-    interface MSWrapperCrashesInitializationDelegate
-    {
-        //- (BOOL) setUpCrashHandlers;
-        [Export("setUpCrashHandlers")]
-        bool SetUpCrashHandlers();
+    interface MSCrashHandlerSetupDelegate
+   {
+        //- (void) willSetUpCrashHandlers;
+       [Export("willSetUpCrashHandlers")]
+        void WillSetUpCrashHandlers();
+
+        //- (void) didSetUpCrashHandlers;
+        [Export("didSetUpCrashHandlers")]
+        void DidSetUpCrashHandlers();
+
+		//- (BOOL) shouldEnableUncaughtExceptionHandler;
+		[Export("shouldEnableUncaughtExceptionHandler")]
+		bool ShouldEnableUncaughtExceptionHandler();
     }
 
     // @interface MSWrapperExceptionManager : NSObject
     [BaseType(typeof(NSObject))]
     interface MSWrapperExceptionManager
     {
-        // +(void)setWrapperException:(MSException *)exception;
+        //+ (void) saveWrapperException:(MSWrapperException*) wrapperException;
         [Static]
-        [Export("setWrapperException:")]
-        void SetWrapperException(MSException exception);
+        [Export("saveWrapperException:")]
+        void SaveWrapperException(MSWrapperException wrapperException);
 
+		//+ (MSWrapperException*) loadWrapperExceptionWithUUID:(NSString*) uuid;
         [Static]
-        [Export("setWrapperExceptionData:")]
-        void SetWrapperExceptionData(NSData wrapperExceptionData);
-
-        [Static]
-        [Export("loadWrapperExceptionDataWithUUIDString:")]
-        NSData LoadWrapperExceptionData(string uuidString);
-
-        //+ (void)setDelegate:(id<MSWrapperCrashesInitializer>) delegate
-        [Static]
-        [Export("setDelegate:")]
-        void SetDelegate(MSWrapperCrashesInitializationDelegate _delegate);
-
-        //+ (void)startCrashReportingFromWrapperSdk;
-        [Static]
-        [Export("startCrashReportingFromWrapperSdk")]
-        void StartCrashReportingFromWrapperSdk();
+		[Export("loadWrapperExceptionWithUUID:")]
+		MSWrapperException LoadWrapperExceptionWithUUID(string uuidString);
     }
+
+    [BaseType(typeof(NSObject))]
+    interface MSWrapperException
+    {
+		//@property(nonatomic, strong) MSException* exception;
+        [Export("exception")]
+        MSException Exception { get; set; }
+
+        //@property(nonatomic, strong) NSData* exceptionData;
+        [Export("exceptionData")]
+        NSData ExceptionData { get; set; }
+
+        //@property(nonatomic, copy) NSDate* timestamp;
+        [Export("timestamp")]
+        NSDate Timestamp { get; set; }
+	}
+
+    [BaseType(typeof(NSObject))]
+    interface MSWrapperCrashesHelper
+    {
+        //+ (void) setCrashHandlerSetupDelegate:(id<MSCrashHandlerSetupDelegate>) delegate;
+        [Static]
+        [Export("setCrashHandlerSetupDelegate:")]
+        void SetCrashHandlerSetupDelegate(MSCrashHandlerSetupDelegate del);
+	}
 }
