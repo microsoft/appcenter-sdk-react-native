@@ -255,9 +255,8 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("exceptionData")]
         NSData ExceptionData { get; set; }
 
-        //@property(nonatomic, copy) NSDate* timestamp;
-        [Export("timestamp")]
-        NSDate Timestamp { get; set; }
+        [Export("pid")]
+        NSNumber ProcessId { get; set; }
 	}
 
     [BaseType(typeof(NSObject))]

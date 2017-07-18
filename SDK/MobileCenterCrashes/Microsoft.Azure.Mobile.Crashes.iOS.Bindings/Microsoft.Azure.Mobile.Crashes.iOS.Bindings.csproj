@@ -53,6 +53,9 @@
     <NativeReference Include="..\..\..\externals\ios\MobileCenterCrashes.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
+      <LinkerFlags>-lc++</LinkerFlags>
+	  <ForceLoad>true</ForceLoad>
+      <IsCxx>True</IsCxx>
     </NativeReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />

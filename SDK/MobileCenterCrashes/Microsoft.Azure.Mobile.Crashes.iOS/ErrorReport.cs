@@ -28,10 +28,9 @@ namespace Microsoft.Azure.Mobile.Crashes
                                              (uint)msReport.AppProcessIdentifier);
 
             MSWrapperException wrapperException = MSWrapperExceptionManager.LoadWrapperExceptionWithUUID(msReport.IncidentIdentifier);
-            NSData wrapperExceptionData = wrapperException.ExceptionData;
-            if (wrapperExceptionData != null)
+            if (wrapperException != null && wrapperException.ExceptionData != null)
             {
-                Exception = CrashesUtils.DeserializeException(wrapperExceptionData.ToArray());
+				Exception = CrashesUtils.DeserializeException(wrapperException.ExceptionData.ToArray());
             }
         }
 

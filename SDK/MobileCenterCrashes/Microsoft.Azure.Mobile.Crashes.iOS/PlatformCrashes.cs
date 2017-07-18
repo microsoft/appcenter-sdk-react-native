@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 Exception = exception,
                 ExceptionData = wrapperExceptionData,
-                Timestamp = NSDate.Now
+                ProcessId = new NSNumber(Process.GetCurrentProcess().Id)
             };
 
             MSWrapperExceptionManager.SaveWrapperException(wrapperException);
