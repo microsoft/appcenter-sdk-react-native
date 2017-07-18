@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
-using Windows.UI.Xaml;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.UI.Core;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -51,9 +45,22 @@ namespace Microsoft.Azure.Mobile.Utils
                 // the start
                 _started = true;
             }
-            Application.Current.UnhandledException += (sender, eventArgs) =>
+
+            // Subscribe to unhandled errors events
+            CoreApplication.UnhandledErrorDetected += (sender, eventArgs) =>
             {
-                UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(eventArgs.Exception));
+                try
+                {
+                    // Intentionally propagating exception to get the exception object that crashed the app.
+                    eventArgs.UnhandledError.Propagate();
+                }
+                catch (Exception exception)
+                {
+                    UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(exception));
+
+                    // Since UnhandledError.Propagate marks the error as Handled, rethrow in order to only Log and not Handle.
+                    throw;
+                }
             };
         }
 
