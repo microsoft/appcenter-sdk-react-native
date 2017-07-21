@@ -40,15 +40,7 @@ function addConfigToProject(file) {
     return new Promise(function (resolve, reject) {
         debug(`Trying to add ${file} to XCode project`);
 
-        var globString;
-        if (pjson && pjson.name) {
-            globString = `**/${(pjson.name.replace(/-/g, ''))}`;
-        }
-        else {
-            globString = `ios/*`;
-        }
-        globString += '.xcodeproj/project.pbxproj';
-
+        var globString = 'ios/*.xcodeproj/project.pbxproj'
         var projectPaths = glob.sync(globString, { ignore: 'node_modules/**' });
 
         if (projectPaths.length !== 1) {
