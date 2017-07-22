@@ -91,7 +91,6 @@ namespace Microsoft.Azure.Mobile.Analytics
         // Internal for testing purposes
         internal ISessionTracker SessionTracker;
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
-        private bool _hasStarted;
 
         internal Analytics()
         {
@@ -154,10 +153,9 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
-                if (ApplicationLifecycleHelper.Instance.HasShownWindow &&
-                    !ApplicationLifecycleHelper.Instance.IsSuspended)
+                if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                 {
-                    ApplicationStartedEventHandler(null, null);
+                    ApplicationResumingEventHandler(null, null);
                 }
             }
         }
@@ -170,7 +168,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 {
                     SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
                     SubscribeToApplicationLifecycleEvents();
-                    if (_hasStarted)
+                    if (ApplicationLifecycleHelper.Instance.HasStarted)
                     {
                         SessionTracker.Resume();
                     }
@@ -204,7 +202,8 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
             if (name.Length > MaxEventNameLength)
             {
-                MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : name length cannot be longer than {2} characters.", logType, name, MaxEventNameLength));
+                MobileCenterLog.Error(LogTag,
+                    $"{logType} '{name}' : name length cannot be longer than {MaxEventNameLength} characters.");
                 return false;
             }
             return true;
@@ -212,21 +211,13 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         private void SubscribeToApplicationLifecycleEvents()
         {
-            ApplicationLifecycleHelper.Instance.ApplicationStarted += ApplicationStartedEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationResuming += ApplicationResumingEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationSuspended += ApplicationSuspendedEventHandler;
         }
         private void UnsbscribeFromApplicationLifecycleEvents()
         {
-            ApplicationLifecycleHelper.Instance.ApplicationStarted -= ApplicationStartedEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationResuming -= ApplicationResumingEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationSuspended -= ApplicationSuspendedEventHandler;
-        }
-
-        private void ApplicationStartedEventHandler(object sender, EventArgs e)
-        {
-            SessionTracker?.Resume();
-            _hasStarted = true;
         }
 
         private void ApplicationResumingEventHandler(object sender, EventArgs e)

@@ -8,9 +8,9 @@ namespace Microsoft.Azure.Mobile.Utils
     public interface IApplicationLifecycleHelper
     {
         /// <summary>
-        /// Indicates whether the application has shown UI
+        /// Indicates whether the application has started with UI (if possible to determine)
         /// </summary>
-        bool HasShownWindow { get; }
+        bool HasStarted { get; }
 
         /// <summary>
         /// Indicates whether the application is currently in a suspended state
@@ -23,16 +23,12 @@ namespace Microsoft.Azure.Mobile.Utils
         event EventHandler ApplicationSuspended;
 
         /// <summary>
-        /// Occurs when the application is about to resume
+        /// Occurs when the application is about to resume.
+        /// Note that in UWP, this corresponds to CoreApplication.LeavingBackground for builds 14393 and up,
+        /// but to CoreApplication.Resuming for builds under 14393.
         /// </summary>
         event EventHandler ApplicationResuming;
-
-        /// <summary>
-        /// Occurs when the application has been started and UI exists
-        /// </summary>
-        event EventHandler ApplicationStarted;
-
-
+    
         /// <summary>
         /// Occurs when an unhandled exception is fired
         /// </summary>

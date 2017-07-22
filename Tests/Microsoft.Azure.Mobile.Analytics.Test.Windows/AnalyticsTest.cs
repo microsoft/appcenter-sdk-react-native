@@ -65,21 +65,20 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void SetupSessionTrackerEvents()
         {
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            _applicationLifecycleHelper.InvokeStarted();
             _applicationLifecycleHelper.InvokeSuspended();
             _applicationLifecycleHelper.InvokeResuming();
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
-            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
+            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
         }
 
         /// <summary>
         /// Verify that Analytics starts the session tracker at startup even if the start event already occurred
         /// </summary>
         [TestMethod]
-        public void StartAnalyticsAfterStartWasInvoked()
+        public void StartAnalyticsAfterResumeWasInvoked()
         {
-            _applicationLifecycleHelper.InvokeStarted();
+            _applicationLifecycleHelper.InvokeResuming();
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
@@ -90,9 +89,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         /// but lifecycle is in suspended state.
         /// </summary>
         [TestMethod]
-        public void StartAnalyticsAfterStartWasInvokedWhileSuspended()
+        public void StartAnalyticsAfterResumeWasInvokedWhileSuspended()
         {
-            _applicationLifecycleHelper.InvokeStarted();
+            _applicationLifecycleHelper.InvokeResuming();
             _applicationLifecycleHelper.InvokeSuspended();
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
@@ -104,9 +103,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         /// OnChannelGroupReady, but is resumed after
         /// </summary>
         [TestMethod]
-        public void StartAnalyticsAfterStartWasInvokedAndNotSuspended()
+        public void StartAnalyticsAfterResumeWasInvokedAndNotSuspended()
         {
-            _applicationLifecycleHelper.InvokeStarted();
+            _applicationLifecycleHelper.InvokeResuming();
             _applicationLifecycleHelper.InvokeSuspended();
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             _applicationLifecycleHelper.InvokeResuming();
@@ -122,7 +121,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         {
             Analytics.SetEnabledAsync(false).Wait();
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            _applicationLifecycleHelper.InvokeStarted();
+            _applicationLifecycleHelper.InvokeResuming();
             _applicationLifecycleHelper.InvokeSuspended();
             _applicationLifecycleHelper.InvokeResuming();
 
@@ -140,7 +139,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty); 
             Analytics.SetEnabledAsync(true).Wait();
 
-            _applicationLifecycleHelper.InvokeStarted();
+            _applicationLifecycleHelper.InvokeResuming();
             _applicationLifecycleHelper.InvokeSuspended();
             _applicationLifecycleHelper.InvokeResuming();
 

@@ -22,28 +22,40 @@ namespace Microsoft.Azure.Mobile.Utils
         /// <summary>
         /// Indicates whether the application has shown UI
         /// </summary>
-        public bool HasShownWindow => _started;
+        public bool HasStarted => _started;
         
         /// <summary>
-        /// Indicates whether the application is currently in a suspended state
+        /// Indicates whether the application is currently in a suspended state. This
+        /// value can only really be known once "HasStarted" is true
         /// </summary>
         public bool IsSuspended => _suspended;
 
         public ApplicationLifecycleHelper()
         {
             // Subscribe to Resuming and Suspending events
-            CoreApplication.Resuming += InvokeResuming;
             CoreApplication.Suspending += InvokeSuspended;
 
             if (ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
             {
-                CoreApplication.LeavingBackground += InvokeStarted;
+                CoreApplication.LeavingBackground += InvokeResuming;
+                // If the application has anything visible, then it has already started,
+                // so invoke the resuming event immediately
+                foreach (var view in CoreApplication.Views)
+                {
+                    if (view.CoreWindow.Visible)
+                    {
+                        InvokeResuming(null, EventArgs.Empty);
+                        break;
+                    }
+                }
+                _suspended = !_started;
             }
             else
             {
                 // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
-                // the start
-                _started = true;
+                // the start so invoke resuming (and subscribe to future resume events)
+                CoreApplication.Resuming += InvokeResuming;
+                TriggerResumingIfUiAvailable();
             }
 
             // Subscribe to unhandled errors events
@@ -64,18 +76,41 @@ namespace Microsoft.Azure.Mobile.Utils
             };
         }
 
-        private void InvokeResuming(object sender, object e)
+        private void TriggerResumingIfUiAvailable()
         {
-            _suspended = false;
-            ApplicationResuming?.Invoke(sender, EventArgs.Empty);
+            try
+            {
+               var _ = CoreApplication.MainView?.CoreWindow?.Dispatcher.RunAsync(
+                   CoreDispatcherPriority.Normal, () =>
+                    {
+                        // If started while this task was queued, return.
+                        if (_started)
+                        {
+                            return;
+                        }
+                        foreach (var view in CoreApplication.Views)
+                        {
+                            if (view.CoreWindow != null && view.CoreWindow.Visible)
+                            {
+                                // Don't need to trigger the events on UI thread
+                                Task.Run(() => InvokeResuming(null, EventArgs.Empty));
+                                return;
+                            }
+                        }
+                    });
+            }
+            catch (COMException)
+            {
+                // If MainView can't be accessed, it hasn't been created, and thus
+                // the UI hasn't appeared yet.
+            }
         }
 
-        private void InvokeStarted(object sender, object e)
+        private void InvokeResuming(object sender, object e)
         {
-            CoreApplication.LeavingBackground -= InvokeStarted;
             _started = true;
             _suspended = false;
-            ApplicationStarted?.Invoke(sender, EventArgs.Empty);
+            ApplicationResuming?.Invoke(sender, EventArgs.Empty);
         }
 
         private void InvokeSuspended(object sender, object e)
@@ -86,7 +121,6 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
-        public event EventHandler ApplicationStarted;
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }
