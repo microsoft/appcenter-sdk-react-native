@@ -40,7 +40,7 @@ function addConfigToProject(file) {
     return new Promise(function (resolve, reject) {
         debug(`Trying to add ${file} to XCode project`);
 
-        var globString = `**/${(pjson && pjson.name ? pjson.name : '*')}.xcodeproj/project.pbxproj`
+        var globString = 'ios/*.xcodeproj/project.pbxproj'
         var projectPaths = glob.sync(globString, { ignore: 'node_modules/**' });
 
         if (projectPaths.length !== 1) {
@@ -66,7 +66,7 @@ function addConfigToProject(file) {
                 var relativeFilePath = path.relative(path.resolve(projectPath, '../..'), file);
                 var plistPbxFile = project.addFile(relativeFilePath, project.getFirstProject().firstProject.mainGroup);
                 if (plistPbxFile === null) {
-                    debug(`Looks like ${file} was already added to ${this.projectPath}`);
+                    debug(`Looks like ${file} was already added to ${projectPath}`);
                     resolve(file);
                     return;
                 }
