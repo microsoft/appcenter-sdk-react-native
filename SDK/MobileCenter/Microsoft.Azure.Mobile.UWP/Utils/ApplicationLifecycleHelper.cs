@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public ApplicationLifecycleHelper()
         {
-.            // Subscribe to Resuming and Suspending events
+            // Subscribe to Resuming and Suspending events.
             CoreApplication.Suspending += InvokeSuspended;
 
             // If the "LeavingBackground" event is present, use that for Resuming. Else, use CoreApplication.Resuming.
