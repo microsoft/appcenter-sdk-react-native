@@ -28,7 +28,6 @@ namespace Contoso.Forms.Puppet
             MainPage = new NavigationPage(new MainPuppetPage());
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                 typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-
         }
 
         static App()
