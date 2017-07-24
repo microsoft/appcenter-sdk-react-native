@@ -13,8 +13,7 @@ import {
   View,
   Switch,
   ScrollView,
-  TouchableOpacity,
-  NativeModules
+  TouchableOpacity
 } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
@@ -65,7 +64,7 @@ export default class CrashesScreen extends Component {
   }
 
   nativeCrash() {
-    NativeModules.TestCrash.crash();
+    Crashes.generateTestCrash();
   }
 
   sendCrashes() {
