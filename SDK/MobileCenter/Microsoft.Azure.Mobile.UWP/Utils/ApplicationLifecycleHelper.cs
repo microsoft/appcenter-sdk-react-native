@@ -24,13 +24,7 @@ namespace Microsoft.Azure.Mobile.Utils
         }
 
         /// <summary>
-        /// Indicates whether the application has shown UI
-        /// </summary>
-        public bool HasStarted => _started;
-        
-        /// <summary>
-        /// Indicates whether the application is currently in a suspended state. This
-        /// value can only really be known once "HasStarted" is true
+        /// Indicates whether the application is currently in a suspended state. 
         /// </summary>
         public bool IsSuspended => _suspended;
 
@@ -87,6 +81,7 @@ namespace Microsoft.Azure.Mobile.Utils
             var needsResume = false;
             try
             {
+                // Don't use CurrentSynchronizationContext as that seems to cause an error in Unity applications
                 var asyncAction = CoreApplication.MainView?.CoreWindow?.Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
                     {

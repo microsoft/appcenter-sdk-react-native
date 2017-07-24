@@ -8,11 +8,6 @@ namespace Microsoft.Azure.Mobile.Utils
     public interface IApplicationLifecycleHelper
     {
         /// <summary>
-        /// Indicates whether the application has started with UI (if possible to determine)
-        /// </summary>
-        bool HasStarted { get; }
-
-        /// <summary>
         /// Indicates whether the application is currently in a suspended state
         /// </summary>
         bool IsSuspended { get; }

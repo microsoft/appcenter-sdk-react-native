@@ -11,8 +11,6 @@ namespace Microsoft.Azure.Mobile.Utils
             // Setter for testing
             internal set { _instance = value; }
         }
-
-        public bool HasStarted { get; private set; }
         public bool IsSuspended { get; private set; }
 
         // Internal for testing
@@ -28,7 +26,6 @@ namespace Microsoft.Azure.Mobile.Utils
             // Need to notify DeviceInformationHelper to refresh display cache here too because there is no guarantee that 
             // it will automatically happen beforehand
             DeviceInformationHelper.RefreshDisplayCache();
-            HasStarted = true;
             IsSuspended = false;
             ApplicationResuming?.Invoke(null, null);
         }
