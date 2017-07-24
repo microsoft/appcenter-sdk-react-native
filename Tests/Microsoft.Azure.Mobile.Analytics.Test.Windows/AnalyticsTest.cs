@@ -64,6 +64,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void SetupSessionTrackerEvents()
         {
+            _applicationLifecycleHelper.InvokeSuspended();
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             _applicationLifecycleHelper.InvokeSuspended();
             _applicationLifecycleHelper.InvokeResuming();
@@ -139,7 +140,6 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty); 
             Analytics.SetEnabledAsync(true).Wait();
 
-            _applicationLifecycleHelper.InvokeResuming();
             _applicationLifecycleHelper.InvokeSuspended();
             _applicationLifecycleHelper.InvokeResuming();
 

@@ -153,10 +153,6 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
-                if (!ApplicationLifecycleHelper.Instance.IsSuspended)
-                {
-                    ApplicationResumingEventHandler(null, null);
-                }
             }
         }
 
@@ -168,7 +164,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 {
                     SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
                     SubscribeToApplicationLifecycleEvents();
-                    if (ApplicationLifecycleHelper.Instance.HasStarted)
+                    if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                     {
                         SessionTracker.Resume();
                     }
