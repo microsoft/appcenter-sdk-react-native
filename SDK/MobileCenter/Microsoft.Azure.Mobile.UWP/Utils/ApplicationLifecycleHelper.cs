@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public ApplicationLifecycleHelper()
         {
-            // Subscribe to Resuming and Suspending events
+.            // Subscribe to Resuming and Suspending events
             CoreApplication.Suspending += InvokeSuspended;
 
             // If the "LeavingBackground" event is present, use that for Resuming. Else, use CoreApplication.Resuming.
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Utils
                 CoreApplication.LeavingBackground += InvokeResuming;
 
                 // If the application has anything visible, then it has already started,
-                // so invoke the resuming event immediately
+                // so invoke the resuming event immediately.
                 HasStartedAndNeedsResume().ContinueWith(completedTask =>
                 {
                     if (completedTask.Result)
@@ -51,12 +51,12 @@ namespace Microsoft.Azure.Mobile.Utils
             else
             {
                 // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
-                // the start so invoke resuming (and subscribe to future resume events)
+                // the start so invoke resuming (and subscribe to future resume events).
                 CoreApplication.Resuming += InvokeResuming;
                 InvokeResuming(null, EventArgs.Empty);
             }
 
-            // Subscribe to unhandled errors events
+            // Subscribe to unhandled errors events.
             CoreApplication.UnhandledErrorDetected += (sender, eventArgs) =>
             {
                 try
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Utils
             var needsResume = false;
             try
             {
-                // Don't use CurrentSynchronizationContext as that seems to cause an error in Unity applications
+                // Don't use CurrentSynchronizationContext as that seems to cause an error in Unity applications.
                 var asyncAction = CoreApplication.MainView?.CoreWindow?.Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
                     {
