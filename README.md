@@ -9,6 +9,8 @@ The Mobile Center SDK uses a modular architecture so you can use any or all of t
 
 2. **Mobile Center Crashes**: Mobile Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to Mobile Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
 
+3. **Mobile Center Push**: Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal. We use APNS for iOS apps and FCM for Android. You can also segment your user base based on a set of properties and send them targeted notifications.
+
 ## 1. Get started
 It is super easy to use Mobile Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/) is available as well.
 
