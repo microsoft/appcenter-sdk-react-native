@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
+using Windows.UI.Core;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
@@ -20,33 +24,39 @@ namespace Microsoft.Azure.Mobile.Utils
         }
 
         /// <summary>
-        /// Indicates whether the application has shown UI
-        /// </summary>
-        public bool HasShownWindow => _started;
-        
-        /// <summary>
-        /// Indicates whether the application is currently in a suspended state
+        /// Indicates whether the application is currently in a suspended state. 
         /// </summary>
         public bool IsSuspended => _suspended;
 
         public ApplicationLifecycleHelper()
         {
-            // Subscribe to Resuming and Suspending events
-            CoreApplication.Resuming += InvokeResuming;
+            // Subscribe to Resuming and Suspending events.
             CoreApplication.Suspending += InvokeSuspended;
 
+            // If the "LeavingBackground" event is present, use that for Resuming. Else, use CoreApplication.Resuming.
             if (ApiInformation.IsEventPresent(typeof(CoreApplication).FullName, "LeavingBackground"))
             {
-                CoreApplication.LeavingBackground += InvokeStarted;
+                CoreApplication.LeavingBackground += InvokeResuming;
+
+                // If the application has anything visible, then it has already started,
+                // so invoke the resuming event immediately.
+                HasStartedAndNeedsResume().ContinueWith(completedTask =>
+                {
+                    if (completedTask.Result)
+                    {
+                        InvokeResuming(null, EventArgs.Empty);
+                    }
+                });
             }
             else
             {
                 // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
-                // the start
-                _started = true;
+                // the start so invoke resuming (and subscribe to future resume events).
+                CoreApplication.Resuming += InvokeResuming;
+                InvokeResuming(null, EventArgs.Empty);
             }
 
-            // Subscribe to unhandled errors events
+            // Subscribe to unhandled errors events.
             CoreApplication.UnhandledErrorDetected += (sender, eventArgs) =>
             {
                 try
@@ -64,18 +74,46 @@ namespace Microsoft.Azure.Mobile.Utils
             };
         }
 
-        private void InvokeResuming(object sender, object e)
+        // Determines whether the application has started already and is not suspended, 
+        // but ApplicationLifecycleHelper has not yet fired an initial "resume" event.
+        private async Task<bool> HasStartedAndNeedsResume()
         {
-            _suspended = false;
-            ApplicationResuming?.Invoke(sender, EventArgs.Empty);
+            var needsResume = false;
+            try
+            {
+                // Don't use CurrentSynchronizationContext as that seems to cause an error in Unity applications.
+                var asyncAction = CoreApplication.MainView?.CoreWindow?.Dispatcher.RunAsync(
+                    CoreDispatcherPriority.Normal, () =>
+                    {
+                        // If started already, a resume has already occurred.
+                        if (_started)
+                        {
+                            return;
+                        }
+                        if (CoreApplication.Views.Any(view => view.CoreWindow != null && 
+                                                                view.CoreWindow.Visible))
+                        {
+                            needsResume = true;
+                        }
+                    });
+                if (asyncAction != null)
+                {
+                    await asyncAction;
+                }
+            }
+            catch (COMException)
+            {
+                // If MainView can't be accessed, a COMException is thrown. It means that the
+                // MainView hasn't been created, and thus the UI hasn't appeared yet.
+            }
+            return needsResume;
         }
 
-        private void InvokeStarted(object sender, object e)
+        private void InvokeResuming(object sender, object e)
         {
-            CoreApplication.LeavingBackground -= InvokeStarted;
             _started = true;
             _suspended = false;
-            ApplicationStarted?.Invoke(sender, EventArgs.Empty);
+            ApplicationResuming?.Invoke(sender, EventArgs.Empty);
         }
 
         private void InvokeSuspended(object sender, object e)
@@ -86,7 +124,6 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
-        public event EventHandler ApplicationStarted;
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }

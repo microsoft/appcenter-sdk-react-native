@@ -26,6 +26,8 @@ namespace Contoso.Forms.Puppet
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
+            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
+                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
         }
 
         static App()
@@ -70,8 +72,6 @@ namespace Contoso.Forms.Puppet
                 }
             }
 
-            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
             MobileCenter.IsEnabledAsync().ContinueWith(enabled =>
             {

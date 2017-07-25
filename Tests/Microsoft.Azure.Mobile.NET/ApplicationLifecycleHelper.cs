@@ -11,8 +11,6 @@ namespace Microsoft.Azure.Mobile.Utils
             // Setter for testing
             internal set { _instance = value; }
         }
-
-        public bool HasShownWindow { get; private set; }
         public bool IsSuspended { get; private set; }
 
         // Internal for testing
@@ -33,17 +31,6 @@ namespace Microsoft.Azure.Mobile.Utils
         }
 
         // Internal for testing
-        internal void InvokeStarted()
-        {
-            // Need to notify DeviceInformationHelper to refresh display cache here too because there is no guarantee that 
-            // it will automatically happen beforehand
-            DeviceInformationHelper.RefreshDisplayCache();
-            HasShownWindow = true;
-            IsSuspended = false;
-            ApplicationStarted?.Invoke(null, null);
-        }
-
-        // Internal for testing
         public void InvokeUnhandledException()
         {
             UnhandledExceptionOccurred?.Invoke(null, new UnhandledExceptionOccurredEventArgs(new Exception()));
@@ -51,7 +38,6 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public event EventHandler ApplicationSuspended;
         public event EventHandler ApplicationResuming;
-        public event EventHandler ApplicationStarted;
         public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }
