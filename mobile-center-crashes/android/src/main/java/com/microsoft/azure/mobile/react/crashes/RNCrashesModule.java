@@ -1,34 +1,26 @@
 package com.microsoft.azure.mobile.react.crashes;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableNativeMap;
-
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.crashes.Crashes;
 import com.microsoft.azure.mobile.crashes.model.ErrorReport;
-
 import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
-import com.microsoft.azure.mobile.ResultCallback;
+import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("WeakerAccess")
 public class RNCrashesModule extends BaseJavaModule {
-    private RNCrashesListenerBase mCrashListener;
 
-    private static final String HasCrashedInLastSessionKey = "hasCrashedInLastSession";
-    private static final String LastCrashReportKey = "lastCrashReport";
+    private RNCrashesListenerBase mCrashListener;
 
     public RNCrashesModule(Application application, RNCrashesListenerBase crashListener) {
         this.mCrashListener = crashListener;
@@ -54,28 +46,28 @@ public class RNCrashesModule extends BaseJavaModule {
 
     @Override
     public Map<String, Object> getConstants() {
-        final Map<String, Object> constants = new HashMap<>();
-        return constants;
+        return new HashMap<>();
     }
 
     @ReactMethod
     public void lastSessionCrashReport(final Promise promise) {
-        Crashes.getLastSessionCrashReport(new ResultCallback<ErrorReport>() {
+        Crashes.getLastSessionCrashReport().thenAccept(new MobileCenterConsumer<ErrorReport>() {
+
             @Override
-            public void onResult(ErrorReport errorReport) {
+            public void accept(ErrorReport errorReport) {
                 promise.resolve(errorReport != null ?
-                    RNCrashesUtils.convertErrorReportToWritableMapOrEmpty(errorReport)
-                    : null);
+                        RNCrashesUtils.convertErrorReportToWritableMapOrEmpty(errorReport)
+                        : null);
             }
         });
     }
 
     @ReactMethod
     public void hasCrashedInLastSession(final Promise promise) {
-        Crashes.getLastSessionCrashReport(new ResultCallback<ErrorReport>() {
+        Crashes.hasCrashedInLastSession().thenAccept(new MobileCenterConsumer<Boolean>() {
+
             @Override
-            public void onResult(ErrorReport errorReport) {
-                Boolean hasCrashed = errorReport != null;
+            public void accept(Boolean hasCrashed) {
                 promise.resolve(hasCrashed);
             }
         });
@@ -88,13 +80,25 @@ public class RNCrashesModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setEnabled(boolean shouldEnable) {
-        Crashes.setEnabled(shouldEnable);
+    public void setEnabled(boolean enabled, final Promise promise) {
+        Crashes.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
+
+            @Override
+            public void accept(Void result) {
+                promise.resolve(result);
+            }
+        });
     }
 
     @ReactMethod
-    public void isEnabled(Promise promise) {
-        promise.resolve(Crashes.isEnabled());
+    public void isEnabled(final Promise promise) {
+        Crashes.isEnabled().thenAccept(new MobileCenterConsumer<Boolean>() {
+
+            @Override
+            public void accept(Boolean enabled) {
+                promise.resolve(enabled);
+            }
+        });
     }
 
     @ReactMethod

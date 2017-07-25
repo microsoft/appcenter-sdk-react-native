@@ -2,17 +2,17 @@ package com.microsoft.azure.mobile.react.mobilecenter;
 
 import android.app.Application;
 
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.BaseJavaModule;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-
-import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
 import com.microsoft.azure.mobile.MobileCenter;
+import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
+import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
 
-import org.json.JSONException;
+import java.util.UUID;
 
+@SuppressWarnings("WeakerAccess")
 public class RNMobileCenterModule extends BaseJavaModule {
 
     public RNMobileCenterModule(Application application) {
@@ -25,13 +25,25 @@ public class RNMobileCenterModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setEnabled(boolean enabled) {
-        MobileCenter.setEnabled(enabled);
+    public void setEnabled(boolean enabled, final Promise promise) {
+        MobileCenter.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
+
+            @Override
+            public void accept(Void result) {
+                promise.resolve(result);
+            }
+        });
     }
 
     @ReactMethod
-    public void isEnabled(Promise promise) {
-        promise.resolve(MobileCenter.isEnabled());
+    public void isEnabled(final Promise promise) {
+        MobileCenter.isEnabled().thenAccept(new MobileCenterConsumer<Boolean>() {
+
+            @Override
+            public void accept(Boolean enabled) {
+                promise.resolve(enabled);
+            }
+        });
     }
 
     @ReactMethod
@@ -47,8 +59,13 @@ public class RNMobileCenterModule extends BaseJavaModule {
 
     @ReactMethod
     public void getInstallId(final Promise promise) {
-        String installId = MobileCenter.getInstallId().toString();
-        promise.resolve(installId);
+        MobileCenter.getInstallId().thenAccept(new MobileCenterConsumer<UUID>() {
+
+            @Override
+            public void accept(UUID installId) {
+                promise.resolve(installId == null ? null : installId.toString());
+            }
+        });
     }
 
     @ReactMethod

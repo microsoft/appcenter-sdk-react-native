@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 7
-        versionName "0.7.0"
+        versionCode 8
+        versionName "0.8.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -19,8 +19,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:0.19.+'
-    compile 'com.microsoft.azure.mobile:mobile-center-crashes:0.10.+'
+    compile 'com.microsoft.azure.mobile:mobile-center-crashes:0.11.+'
 
     //compile project(':RNMobileCenterShared')   // For testing with TestApp
-    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.7.+'
+    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.8.+'
 }
