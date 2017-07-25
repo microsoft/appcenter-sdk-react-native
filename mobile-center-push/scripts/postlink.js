@@ -7,9 +7,9 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
 }).then(function (file) {
     console.log('Added code to initialize iOS Push SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
-        { pod: 'MobileCenter', version: '0.10.1' },
-        { pod: 'MobileCenter/Push', version: '0.10.1' },
-        { pod: 'RNMobileCenterShared', version: '0.7.0' }
+        { pod: 'MobileCenter', version: '0.11.0' },
+        { pod: 'MobileCenter/Push', version: '0.11.0' },
+        { pod: 'RNMobileCenterShared', version: '0.8.0' }
     ]).catch(function (e) {
         console.log(`
             Could not install dependencies using CocoaPods.
