@@ -52,6 +52,7 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 
-# Source maps
+# Source maps and debug files
 /index.ios.map
 /unused.jsbundle*
+/.vscode/.react
