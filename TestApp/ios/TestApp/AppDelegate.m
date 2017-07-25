@@ -23,6 +23,9 @@
 {
   NSURL *jsCodeLocation;
 
+  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
+  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+
   [RNMobileCenter register];  // Initialize Mobile Center 
 
   [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes
@@ -32,9 +35,6 @@
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
   [RNCrashes register];  // Initialize Mobile Center crashes
-
-  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
