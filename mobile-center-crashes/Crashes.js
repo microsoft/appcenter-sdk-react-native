@@ -34,26 +34,32 @@ let Crashes = {
     process(callback) {
         return RNCrashes.getCrashReports().then(function (reports) {
             let errorAttachments = {};
-            /* TODO: Re-enable error attachment when the feature becomes available.
-            let errorAttachments = {};
             let reportsWithAttachmentFunction = reports.map(function (report) {
-                function addAttachment(attachment) {
-                    if (typeof attachment != "string") {
-                    throw new Error("Only string attachments are supported, received " + typeof attachment);
+                function addTextAttachment(text, filename) {
+                    if (typeof text != "string") {
+                        throw new Error("Only string attachments are supported, received " + typeof attachment);
                     }
-                    errorAttachments[report.id] = attachment;
+                    if (typeof filename != "string") {
+                        throw new Error("Expected string type for filename but got " + typeof attachment);
+                    }
+                    if (!errorAttachments[report.id]) {
+                        errorAttachments[report.id] = [];
+                    }
+                    errorAttachments[report.id].push({
+                        text: text,
+                        filename: filename
+                    });
                 }
                 return Object.assign({
-                    addAttachment
-                    }, report);
-                });
+                    addTextAttachment
+                }, report);
+            });
             reports = reportsWithAttachmentFunction;
-            */
 
             callback(reports, function (response) {
                 RNCrashes.crashUserResponse(response, errorAttachments);
             });
-	    });
+        });
     },
 
     setEventListener(listenerMap) {

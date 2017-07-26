@@ -104,6 +104,8 @@ public class RNCrashesModule extends BaseJavaModule {
     @ReactMethod
     public void generateTestCrash(final Promise promise) {
         new Thread(new Runnable() {
+
+            @Override
             public void run() {
                 Crashes.generateTestCrash();
                 promise.reject(new Exception("generateTestCrash failed to generate a crash"));
@@ -115,9 +117,7 @@ public class RNCrashesModule extends BaseJavaModule {
     public void crashUserResponse(boolean send, ReadableMap attachments, Promise promise) {
         int response = send ? Crashes.SEND : Crashes.DONT_SEND;
         if (mCrashListener != null) {
-            mCrashListener.reportUserResponse(response);
-            //TODO: Re-enable error attachment when the feature becomes available.
-            //mCrashListener.provideAttachments(attachments);
+            mCrashListener.setAttachments(attachments);
         }
         Crashes.notifyUserConfirmation(response);
         promise.resolve("");

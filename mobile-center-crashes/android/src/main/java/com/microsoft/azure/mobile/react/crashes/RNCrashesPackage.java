@@ -1,7 +1,6 @@
 package com.microsoft.azure.mobile.react.crashes;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
@@ -24,11 +23,11 @@ public class RNCrashesPackage implements ReactPackage {
         this.mCrashesModule = new RNCrashesModule(application, crashListener);
     }
 
-   public RNCrashesPackage(Application application, String crashListenerType) {
+    public RNCrashesPackage(Application application, String crashListenerType) {
         // Construct the module up-front to enable crash reporting ASAP
         RNCrashesUtils.logDebug("Creating crashes module with crashListener " + crashListenerType);
         RNCrashesListenerBase crashListener;
-        if (crashListenerType.equals(CRASH_LISTENER_ASK_JAVASCRIPT)){
+        if (crashListenerType.equals(CRASH_LISTENER_ASK_JAVASCRIPT)) {
             crashListener = new RNCrashesListenerAlwaysAsk();
         } else {
             crashListener = new RNCrashesListenerAlwaysSend();

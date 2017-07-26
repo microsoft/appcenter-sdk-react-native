@@ -99,6 +99,8 @@ export default class CrashesScreen extends Component {
           crashes += "\n\n";
         }
         crashes += report.exceptionReason;
+        report.addTextAttachment("Hello attachment!", "hello.txt");
+        report.addTextAttachment("Another attachment!", "hello2.txt");
       }
 
       Alert.alert(
