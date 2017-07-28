@@ -18,7 +18,7 @@ import {
 
 import { StackNavigator } from 'react-navigation';
 import Crashes from 'mobile-center-crashes';
-import {FooClass} from './js/FooClass';
+import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
 
 export default class CrashesScreen extends Component {
@@ -36,26 +36,26 @@ export default class CrashesScreen extends Component {
     const component = this;
 
     const crashesEnabled = await Crashes.isEnabled();
-    component.setState({crashesEnabled: crashesEnabled});
+    component.setState({ crashesEnabled: crashesEnabled });
 
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
 
     status += `Crashed: ${crashedInLastSession ? "yes" : "no"}\n\n`;
-    component.setState({lastSessionStatus: status});
+    component.setState({ lastSessionStatus: status });
 
     if (crashedInLastSession) {
       const crashReport = await Crashes.lastSessionCrashReport()
 
       status += JSON.stringify(crashReport, null, 4);
-      component.setState({lastSessionStatus: status});
+      component.setState({ lastSessionStatus: status });
     }
   }
 
   async toggleEnabled() {
-    await Crashes.setEnabled(! this.state.crashesEnabled);
+    await Crashes.setEnabled(!this.state.crashesEnabled);
 
     const crashesEnabled = await Crashes.isEnabled();
-    this.setState({crashesEnabled: crashesEnabled});
+    this.setState({ crashesEnabled: crashesEnabled });
   }
 
   jsCrash() {
@@ -74,22 +74,22 @@ export default class CrashesScreen extends Component {
 
       if (reports.length === 0) {
         status += `Nothing to send\n`;
-        component.setState({sendStatus: status});
+        component.setState({ sendStatus: status });
         return;
       }
 
       Crashes.setEventListener({
         willSendCrash: function () {
           status += `Will send crash\n`;
-          component.setState({sendStatus: status});
+          component.setState({ sendStatus: status });
         },
         didSendCrash: function () {
           status += `Did send crash\n`;
-          component.setState({sendStatus: status});
+          component.setState({ sendStatus: status });
         },
         failedSendingCrash: function () {
           status += `Failed sending crash\n`;
-          component.setState({sendStatus: status});
+          component.setState({ sendStatus: status });
         }
       });
 
@@ -107,11 +107,11 @@ export default class CrashesScreen extends Component {
         `Send ${reports.length} crash(es)?`,
         crashes,
         [
-          {text: 'Send', onPress: () => send(true) },
-          {text: 'Ignore', onPress: () => send(false), style: 'cancel'},
+          { text: 'Send', onPress: () => send(true) },
+          { text: 'Ignore', onPress: () => send(false), style: 'cancel' },
         ]
       );
-    });
+    }).then(() => console.log("Crashes were processed"));
   }
 
   render() {

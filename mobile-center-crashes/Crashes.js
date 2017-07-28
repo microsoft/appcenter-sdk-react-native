@@ -31,8 +31,14 @@ let Crashes = {
         return RNCrashes.setEnabled(shouldEnable);
     },
 
-    process(callback) {
-        return RNCrashes.getCrashReports().then(function (reports) {
+    async process(callback) {
+
+        // Checking enabled will make sure the callback is executed after the Android SDK has finished loading
+        // crash reports in background. We could call getCrashReports too soon otherwise in case
+        // it takes a lot of time.
+        const enabled = await RNCrashes.isEnabled();
+        if (enabled) {
+            const reports = await RNCrashes.getCrashReports();
             let errorAttachments = {};
             let reportsWithAttachmentFunction = reports.map(function (report) {
                 function addTextAttachment(text, filename) {
@@ -55,11 +61,10 @@ let Crashes = {
                 }, report);
             });
             reports = reportsWithAttachmentFunction;
-
             callback(reports, function (response) {
                 RNCrashes.crashUserResponse(response, errorAttachments);
             });
-        });
+        }
     },
 
     setEventListener(listenerMap) {
