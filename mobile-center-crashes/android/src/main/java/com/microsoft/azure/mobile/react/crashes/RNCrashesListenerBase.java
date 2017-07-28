@@ -1,5 +1,6 @@
 package com.microsoft.azure.mobile.react.crashes;
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -62,9 +63,16 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
                 if (jsAttachmentsForReport != null) {
                     for (int i = 0; i < jsAttachmentsForReport.size(); i++) {
                         ReadableMap jsAttachment = jsAttachmentsForReport.getMap(i);
-                        String text = jsAttachment.getString("text");
-                        String filename = jsAttachment.getString("filename");
-                        attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, filename));
+                        String fileName = jsAttachment.getString("fileName");
+                        if (jsAttachment.hasKey("text")) {
+                            String text = jsAttachment.getString("text");
+                            attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, fileName));
+                        } else {
+                            String encodedData = jsAttachment.getString("data");
+                            byte[] data = Base64.decode(encodedData, Base64.DEFAULT);
+                            String contentType = jsAttachment.getString("contentType");
+                            attachmentLogs.add(ErrorAttachmentLog.attachmentWithBinary(data, fileName, contentType));
+                        }
                     }
                 }
                 return attachmentLogs;

@@ -41,23 +41,33 @@ let Crashes = {
             const reports = await RNCrashes.getCrashReports();
             let errorAttachments = {};
             let reportsWithAttachmentFunction = reports.map(function (report) {
-                function addTextAttachment(text, filename) {
-                    if (typeof text != "string") {
-                        throw new Error("Only string attachments are supported, received " + typeof attachment);
-                    }
-                    if (typeof filename != "string") {
-                        throw new Error("Expected string type for filename but got " + typeof attachment);
-                    }
+
+                // Add text attachment to an error report
+                function addTextAttachment(text, fileName) {
                     if (!errorAttachments[report.id]) {
                         errorAttachments[report.id] = [];
                     }
                     errorAttachments[report.id].push({
                         text: text,
-                        filename: filename
+                        fileName: fileName
                     });
-                }
+                };
+
+                // Add binary attachment to an error report, binary must be passed as a base64 string
+                function addBinaryAttachment(data, fileName, contentType) {
+                    if (!errorAttachments[report.id]) {
+                        errorAttachments[report.id] = [];
+                    }
+                    errorAttachments[report.id].push({
+                        data: data,
+                        fileName: fileName,
+                        contentType: contentType
+                    });
+                };
+
                 return Object.assign({
-                    addTextAttachment
+                    addTextAttachment,
+                    addBinaryAttachment
                 }, report);
             });
             reports = reportsWithAttachmentFunction;
