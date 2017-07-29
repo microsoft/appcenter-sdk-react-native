@@ -10,9 +10,6 @@
 
 #import "RNCrashesUtils.h"
 
-//TODO: Re-enable error attachment when the feature becomes available.
-//@import MobileCenterCrashes.MSErrorAttachment;
-
 static NSString *ON_BEFORE_SENDING_EVENT = @"MobileCenterErrorReportOnBeforeSending";
 static NSString *ON_SENDING_FAILED_EVENT = @"MobileCenterErrorReportOnSendingFailed";
 static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSendingSucceeded";
@@ -61,25 +58,52 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
     [self.bridge.eventDispatcher sendAppEventWithName:ON_SENDING_FAILED_EVENT body:convertReportToJS(errorReport)];
 }
 
-/*TODO: Re-enable error attachment when the feature becomes available.
 - (void) provideAttachments: (NSDictionary*) attachments
 {
     self.attachments = attachments;
 }
- */
 
-/*TODO: Re-enable error attachment when the feature becomes available.
-- (MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport
+- (NSArray<MSErrorAttachmentLog *> *)attachmentsWithCrashes:(MSCrashes *)crashes
+                                             forErrorReport:(MSErrorReport *)errorReport
 {
-    NSObject* attachment = [self.attachments objectForKey:[errorReport incidentIdentifier]];
-    if (attachment && [attachment isKindOfClass:[NSString class]]) {
-        NSString * stringAttachment = (NSString *)attachment;
-        return [MSErrorAttachment attachmentWithText:stringAttachment];
-    }
+    id attachmentLogs = [[NSMutableArray alloc] init];
+    id attachmentsForErrorReport = [self.attachments objectForKey:[errorReport incidentIdentifier]];
+    if (attachmentsForErrorReport && [attachmentsForErrorReport isKindOfClass:[NSArray class]]) {
+        for (id attachment in (NSArray *) attachmentsForErrorReport) {
+            if (attachment && [attachment isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *attachmentDict = (NSDictionary *) attachment;
+                id fileName = [attachmentDict objectForKey:@"fileName"];
+                NSString *fileNameString = nil;
+                if (fileName && [fileName isKindOfClass:[NSString class]]) {
+                    fileNameString = (NSString *) fileName;
+                }
 
-    return nil;
+                // Check for text versus binary attachment.
+                id text = [attachmentDict objectForKey:@"text"];
+                if (text && [text isKindOfClass:[NSString class]]) {
+                    id attachmentLog = [MSErrorAttachmentLog attachmentWithText:text filename:fileNameString];
+                    [attachmentLogs addObject:attachmentLog];
+                }
+                else {
+                    id data = [attachmentDict objectForKey:@"data"];
+                    if (data && [data isKindOfClass:[NSString class]]) {
+
+                        // Binary data is passed as a base64 string from Javascript, decode it.
+                        NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:data options:NSDataBase64DecodingIgnoreUnknownCharacters];
+                        id contentType = [attachmentDict objectForKey:@"contentType"];
+                        NSString *contentTypeString = nil;
+                        if (contentType && [contentType isKindOfClass:[NSString class]]) {
+                            contentTypeString = (NSString *) contentType;
+                        }
+                        id attachmentLog = [MSErrorAttachmentLog attachmentWithBinary:decodedData filename:fileNameString contentType:contentTypeString];
+                        [attachmentLogs addObject:attachmentLog];
+                    }
+                }
+            }
+        }
+    }
+    return attachmentLogs;
 }
-*/
 
 - (NSArray<MSErrorReport *>*) getAndClearReports
 {
