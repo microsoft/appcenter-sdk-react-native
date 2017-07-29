@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'Copy Java/JS changes made inside node_modules to git...'
+echo 'Copy SDK code changes made inside node_modules to git...'
 cd `dirname $0`
 for i in '' '-analytics' '-crashes' '-push'
 do
