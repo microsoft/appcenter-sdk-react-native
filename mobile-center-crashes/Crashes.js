@@ -31,29 +31,50 @@ let Crashes = {
         return RNCrashes.setEnabled(shouldEnable);
     },
 
-    process(callback) {
-        return RNCrashes.getCrashReports().then(function (reports) {
-            let errorAttachments = {};
-            /* TODO: Re-enable error attachment when the feature becomes available.
+    async process(callback) {
+
+        // Checking enabled will make sure the callback is executed after the Android SDK has finished loading
+        // crash reports in background. We could call getCrashReports too soon otherwise in case
+        // it takes a lot of time.
+        const enabled = await RNCrashes.isEnabled();
+        if (enabled) {
+            const reports = await RNCrashes.getCrashReports();
             let errorAttachments = {};
             let reportsWithAttachmentFunction = reports.map(function (report) {
-                function addAttachment(attachment) {
-                    if (typeof attachment != "string") {
-                    throw new Error("Only string attachments are supported, received " + typeof attachment);
-                    }
-                    errorAttachments[report.id] = attachment;
-                }
-                return Object.assign({
-                    addAttachment
-                    }, report);
-                });
-            reports = reportsWithAttachmentFunction;
-            */
 
+                // Add text attachment to an error report
+                function addTextAttachment(text, fileName) {
+                    if (!errorAttachments[report.id]) {
+                        errorAttachments[report.id] = [];
+                    }
+                    errorAttachments[report.id].push({
+                        text: text,
+                        fileName: fileName
+                    });
+                };
+
+                // Add binary attachment to an error report, binary must be passed as a base64 string
+                function addBinaryAttachment(data, fileName, contentType) {
+                    if (!errorAttachments[report.id]) {
+                        errorAttachments[report.id] = [];
+                    }
+                    errorAttachments[report.id].push({
+                        data: data,
+                        fileName: fileName,
+                        contentType: contentType
+                    });
+                };
+
+                return Object.assign({
+                    addTextAttachment,
+                    addBinaryAttachment
+                }, report);
+            });
+            reports = reportsWithAttachmentFunction;
             callback(reports, function (response) {
                 RNCrashes.crashUserResponse(response, errorAttachments);
             });
-	    });
+        }
     },
 
     setEventListener(listenerMap) {

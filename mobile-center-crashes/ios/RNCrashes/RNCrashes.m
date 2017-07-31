@@ -158,8 +158,7 @@ RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attac
     if ([crashDelegate respondsToSelector:@selector(reportUserResponse:)]) {
         [crashDelegate reportUserResponse:response];
     }
-    //TODO: Re-enable error attachment when the feature becomes available.
-    //[crashDelegate provideAttachments:attachments];
+    [crashDelegate provideAttachments:attachments];
     [MSCrashes notifyWithUserConfirmation:response];
     resolve(@"");
 }
