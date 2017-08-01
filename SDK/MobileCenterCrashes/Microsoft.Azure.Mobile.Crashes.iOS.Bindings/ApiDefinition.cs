@@ -224,9 +224,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("didSetUpCrashHandlers")]
         void DidSetUpCrashHandlers();
 
-		//- (BOOL) shouldEnableUncaughtExceptionHandler;
-		[Export("shouldEnableUncaughtExceptionHandler")]
-		bool ShouldEnableUncaughtExceptionHandler();
+        //- (BOOL) shouldEnableUncaughtExceptionHandler;
+        [Export("shouldEnableUncaughtExceptionHandler")]
+        bool ShouldEnableUncaughtExceptionHandler();
     }
 
     // @interface MSWrapperExceptionManager : NSObject
@@ -238,16 +238,16 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("saveWrapperException:")]
         void SaveWrapperException(MSWrapperException wrapperException);
 
-		//+ (MSWrapperException*) loadWrapperExceptionWithUUID:(NSString*) uuid;
+        //+ (MSWrapperException*) loadWrapperExceptionWithUUID:(NSString*) uuid;
         [Static]
-		[Export("loadWrapperExceptionWithUUID:")]
-		MSWrapperException LoadWrapperExceptionWithUUID(string uuidString);
+        [Export("loadWrapperExceptionWithUUID:")]
+        MSWrapperException LoadWrapperExceptionWithUUID(string uuidString);
     }
 
     [BaseType(typeof(NSObject))]
     interface MSWrapperException
     {
-		//@property(nonatomic, strong) MSException* exception;
+        //@property(nonatomic, strong) MSException* exception;
         [Export("exception")]
         MSException Exception { get; set; }
 
@@ -257,7 +257,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
         [Export("pid")]
         NSNumber ProcessId { get; set; }
-	}
+    }
 
     [BaseType(typeof(NSObject))]
     interface MSWrapperCrashesHelper
@@ -266,5 +266,5 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Static]
         [Export("setCrashHandlerSetupDelegate:")]
         void SetCrashHandlerSetupDelegate(MSCrashHandlerSetupDelegate del);
-	}
+    }
 }

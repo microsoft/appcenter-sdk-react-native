@@ -35,45 +35,45 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
         // In Mono 4.8, it is possible to chain the mono signal handlers to the PLCrashReporter signal handlers, so
         // if the APIs for this are available, it is preferable to use them.
-		public override void WillSetUpCrashHandlers()
+        public override void WillSetUpCrashHandlers()
         {
             var type = Type.GetType("Mono.Runtime");
-			var removeSignalHandlers = type?.GetMethod("RemoveSignalHandlers", BindingFlags.Public | BindingFlags.Static);
+            var removeSignalHandlers = type?.GetMethod("RemoveSignalHandlers", BindingFlags.Public | BindingFlags.Static);
             if (removeSignalHandlers != null)
             {
-				removeSignalHandlers.Invoke(null, null);
+                removeSignalHandlers.Invoke(null, null);
                 return;
-			}
+            }
 
             // Mono 4.8+ APIs must be unavailable
 
-			// Allocate space to store the Mono handlers
-			sigbus = Marshal.AllocHGlobal(512);
-			sigsegv = Marshal.AllocHGlobal(512);
-			sigfpe = Marshal.AllocHGlobal(512);
+            // Allocate space to store the Mono handlers
+            sigbus = Marshal.AllocHGlobal(512);
+            sigsegv = Marshal.AllocHGlobal(512);
+            sigfpe = Marshal.AllocHGlobal(512);
 
-			// Store Mono's SIGSEGV, SIGBUS, and SIGFPE handlers
-			sigaction(Signal.SIGBUS, IntPtr.Zero, sigbus);
-			sigaction(Signal.SIGSEGV, IntPtr.Zero, sigsegv);
-			sigaction(Signal.SIGFPE, IntPtr.Zero, sigfpe);
+            // Store Mono's SIGSEGV, SIGBUS, and SIGFPE handlers
+            sigaction(Signal.SIGBUS, IntPtr.Zero, sigbus);
+            sigaction(Signal.SIGSEGV, IntPtr.Zero, sigsegv);
+            sigaction(Signal.SIGFPE, IntPtr.Zero, sigfpe);
         }
 
-		// In Mono 4.8, it is possible to chain the mono signal handlers to the PLCrashReporter signal handlers, so
-		// if the APIs for this are available, it is preferable to use them.
-		public override void DidSetUpCrashHandlers()
+        // In Mono 4.8, it is possible to chain the mono signal handlers to the PLCrashReporter signal handlers, so
+        // if the APIs for this are available, it is preferable to use them.
+        public override void DidSetUpCrashHandlers()
         {
-			var type = Type.GetType("Mono.Runtime");
-			var installSignalHandlers = type?.GetMethod("InstallSignalHandlers", BindingFlags.Public | BindingFlags.Static);
+            var type = Type.GetType("Mono.Runtime");
+            var installSignalHandlers = type?.GetMethod("InstallSignalHandlers", BindingFlags.Public | BindingFlags.Static);
             if (installSignalHandlers != null)
             {
                 installSignalHandlers.Invoke(null, null);
                 return;
             }
 
-			// Mono 4.8+ APIs must be unavailable
+            // Mono 4.8+ APIs must be unavailable
 
-			// Restore Mono SIGSEGV, SIGBUS, and SIGFPE handlers
-			sigaction(Signal.SIGBUS, sigbus, IntPtr.Zero);
+            // Restore Mono SIGSEGV, SIGBUS, and SIGFPE handlers
+            sigaction(Signal.SIGBUS, sigbus, IntPtr.Zero);
             sigaction(Signal.SIGSEGV, sigsegv, IntPtr.Zero);
             sigaction(Signal.SIGFPE, sigfpe, IntPtr.Zero);
 
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
             Marshal.FreeHGlobal(sigfpe);
         }
 
-		public override bool ShouldEnableUncaughtExceptionHandler()
+        public override bool ShouldEnableUncaughtExceptionHandler()
         {
             return false;
         }
