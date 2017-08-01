@@ -83,6 +83,7 @@ module.exports = {
         pods.forEach(function(pod) {
             podFile.addPodLine(pod.pod, pod.podspec, pod.version);
         });
+        podFile.eraseOldLines();
         podFile.save();
         return podFile.install();
     }

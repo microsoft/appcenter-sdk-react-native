@@ -20,7 +20,7 @@
   "requires_arc": true,
   "vendored_frameworks": "RNMobileCenterShared/RNMobileCenterShared.framework",
   "dependencies": {
-    "MobileCenter": [
+    "MobileCenter/Core": [
       "~> 0.11.0"
     ]
   }

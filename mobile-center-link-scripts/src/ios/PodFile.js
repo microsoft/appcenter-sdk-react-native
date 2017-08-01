@@ -12,16 +12,30 @@ var Podfile = function (file) {
     this.fileContents = fs.readFileSync(file, 'utf-8');
 };
 
+Podfile.prototype.eraseOldLines = function() {
+    this.fileContents = this.fileContents.replace(new RegExp("pod 'MobileCenter'.*"), '');
+}
+
 Podfile.prototype.addPodLine = function (pod, podspec, version) {
-    if (this.fileContents.match(new RegExp(`pod\\s+'${pod}'`))) {
-        debug(`${pod} already present in ${this.file}`);
-        return;
-    }
+    debug(`addPodLine pod=${pod} podspec=${podspec} version=${version}`);
     var line = `pod '${pod}'`;
     if (podspec) {
         line = `${line}, :podspec => '${podspec}'`;
     } else if (version) {
         line = `${line}, '~> ${version}'`;
+    }
+    var podLinePattern = new RegExp(`pod\\s+'${pod}'.*`);
+    var existingLines = this.fileContents.match(podLinePattern);
+    if (existingLines) {
+        var existingLine = existingLines[0];
+        if (existingLine.match(":path")) {
+            debug(`${pod} set to specific path, not updating it.`);
+            return;
+        }
+        debug(`${pod} already present in ${this.file}: ${existingLine}, updating it`);
+        this.fileContents = this.fileContents.replace(podLinePattern, line);
+        debug(`Replace ${existingLine} by ${line}`);
+        return;
     }
     var patterns = this.fileContents.match(/# Pods for .*/);
     if (patterns === null) {
