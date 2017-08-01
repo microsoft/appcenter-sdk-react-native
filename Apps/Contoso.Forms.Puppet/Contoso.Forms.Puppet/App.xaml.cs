@@ -20,7 +20,7 @@ namespace Contoso.Forms.Puppet
         // Mobile Center keys
         public const string uwpKey = "a678b499-1912-4a94-9d97-25b569284d3a";
         public const string androidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
-        public const string iosKey = "b68a1abe-f3f1-4bbb-b752-1b1f5daa43ef";
+        public const string iosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
 
         public App()
         {
@@ -53,7 +53,7 @@ namespace Contoso.Forms.Puppet
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
-            //MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
 

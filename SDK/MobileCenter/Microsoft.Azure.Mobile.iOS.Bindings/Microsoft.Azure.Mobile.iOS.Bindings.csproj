@@ -28,7 +28,7 @@
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-<!--		<CustomCommands>
+		<CustomCommands>
 		  <CustomCommands>
 		    <Command>
 		      <type>BeforeBuild</type>
@@ -41,7 +41,7 @@
 		      <workingdir>${ProjectDir}/../../..</workingdir>
 		    </Command>
 		  </CustomCommands>
-		</CustomCommands>-->
+		</CustomCommands>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="System" />
