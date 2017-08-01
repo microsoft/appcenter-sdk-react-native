@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native#readme",
   "dependencies": {
-    "mobile-center-link-scripts": "0.8.0"
+    "mobile-center": "0.8.0"
   },
   "rnpm": {
     "params": [
