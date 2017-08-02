@@ -240,7 +240,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
         //+ (MSWrapperException*) loadWrapperExceptionWithUUID:(NSString*) uuid;
         [Static]
-        [Export("loadWrapperExceptionWithUUID:")]
+        [Export("loadWrapperExceptionWithUUIDString:")]
         MSWrapperException LoadWrapperExceptionWithUUID(string uuidString);
     }
 
@@ -248,14 +248,14 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
     interface MSWrapperException
     {
         //@property(nonatomic, strong) MSException* exception;
-        [Export("exception")]
+        [Export("modelException")]
         MSException Exception { get; set; }
 
         //@property(nonatomic, strong) NSData* exceptionData;
         [Export("exceptionData")]
         NSData ExceptionData { get; set; }
 
-        [Export("pid")]
+        [Export("processId")]
         NSNumber ProcessId { get; set; }
     }
 
