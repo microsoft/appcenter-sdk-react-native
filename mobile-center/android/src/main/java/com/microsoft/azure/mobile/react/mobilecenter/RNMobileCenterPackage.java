@@ -26,7 +26,7 @@ public class RNMobileCenterPackage implements ReactPackage {
         return modules;
     }
 
-    // No @Override to support applications depending on java 0.47.0+
+    // No @Override to support applications using React Native 0.47.0 or later
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
