@@ -28,7 +28,7 @@ public class RNPushPackage implements ReactPackage {
         return modules;
     }
 
-    @Override
+    // No @Override to support applications using React Native 0.47.0 or later
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
