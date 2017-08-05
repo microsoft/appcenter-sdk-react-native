@@ -1,0 +1,16 @@
+# source 'git@github.com:Microsoft/mobile-center-sdk-specs.git'
+
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'DemoApp' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for DemoApp
+  pod 'MobileCenter/Push', '~> 0.11.0'
+  pod 'MobileCenter/Crashes', '~> 0.11.0'
+  pod 'MobileCenter/Analytics', '~> 0.11.0'
+  pod 'RNMobileCenterShared', '~> 0.8.0'
+
+end

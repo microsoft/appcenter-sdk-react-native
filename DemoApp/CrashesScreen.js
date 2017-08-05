@@ -13,13 +13,12 @@ import {
   View,
   Switch,
   ScrollView,
-  TouchableOpacity,
-  NativeModules
+  TouchableOpacity
 } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
 import Crashes from 'mobile-center-crashes';
-import {FooClass} from './js/FooClass';
+import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
 
 export default class CrashesScreen extends Component {
@@ -37,26 +36,26 @@ export default class CrashesScreen extends Component {
     const component = this;
 
     const crashesEnabled = await Crashes.isEnabled();
-    component.setState({crashesEnabled: crashesEnabled});
+    component.setState({ crashesEnabled: crashesEnabled });
 
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
 
     status += `Crashed: ${crashedInLastSession ? "yes" : "no"}\n\n`;
-    component.setState({lastSessionStatus: status});
+    component.setState({ lastSessionStatus: status });
 
     if (crashedInLastSession) {
       const crashReport = await Crashes.lastSessionCrashReport()
 
       status += JSON.stringify(crashReport, null, 4);
-      component.setState({lastSessionStatus: status});
+      component.setState({ lastSessionStatus: status });
     }
   }
 
   async toggleEnabled() {
-    await Crashes.setEnabled(! this.state.crashesEnabled);
+    await Crashes.setEnabled(!this.state.crashesEnabled);
 
     const crashesEnabled = await Crashes.isEnabled();
-    this.setState({crashesEnabled: crashesEnabled});
+    this.setState({ crashesEnabled: crashesEnabled });
   }
 
   jsCrash() {
@@ -65,7 +64,7 @@ export default class CrashesScreen extends Component {
   }
 
   nativeCrash() {
-    NativeModules.TestCrash.crash();
+    Crashes.generateTestCrash();
   }
 
   sendCrashes() {
@@ -75,22 +74,22 @@ export default class CrashesScreen extends Component {
 
       if (reports.length === 0) {
         status += `Nothing to send\n`;
-        component.setState({sendStatus: status});
+        component.setState({ sendStatus: status });
         return;
       }
 
       Crashes.setEventListener({
         willSendCrash: function () {
           status += `Will send crash\n`;
-          component.setState({sendStatus: status});
+          component.setState({ sendStatus: status });
         },
         didSendCrash: function () {
           status += `Did send crash\n`;
-          component.setState({sendStatus: status});
+          component.setState({ sendStatus: status });
         },
         failedSendingCrash: function () {
           status += `Failed sending crash\n`;
-          component.setState({sendStatus: status});
+          component.setState({ sendStatus: status });
         }
       });
 
@@ -100,17 +99,19 @@ export default class CrashesScreen extends Component {
           crashes += "\n\n";
         }
         crashes += report.exceptionReason;
+        report.addTextAttachment("Hello attachment!", "hello.txt");
+        report.addBinaryAttachment(testIcon, "logo.png", "image/png");
       }
 
       Alert.alert(
         `Send ${reports.length} crash(es)?`,
         crashes,
         [
-          {text: 'Send', onPress: () => send(true) },
-          {text: 'Ignore', onPress: () => send(false), style: 'cancel'},
+          { text: 'Send', onPress: () => send(true) },
+          { text: 'Ignore', onPress: () => send(false), style: 'cancel' },
         ]
       );
-    });
+    }).then(() => console.log("Crashes were processed"));
   }
 
   render() {
@@ -178,3 +179,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+const testIcon = `iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGP
+C/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3Cc
+ulE8AAAA1VBMVEXLLmPLLWPLLWLMMWXLLGLMMmbcdJftt8nYY4vKLGHSSXfp
+qL799fj////oobnVVYDUUX3LL2TccpX12OL88fXrsMT56O7NNWjhhaT56O3S
+SHfTT3z56e777vPcc5bQQXH22+Tuvc7sssX++vv66/DuvM3sssbYZIv22uT7
+7vLvvs79+PrUUH3OOmzjjqr66u/99vj23OXZZo3YYIn89Pf++fv22uPYYorX
+YIjZaI767PHuusz99/nbb5TPQHDqqsD55+3ggqL55ez11+HRSHfUUn7TT3vg
+lpRpAAAAAWJLR0QN9rRh9QAAAJpJREFUGNNjYMAKGJmYmZD5LKxs7BxMDJws
+UD4nFzcPLx8LA7+AIJjPKiQsIirGJy4hKSwFUsMpLSMrJ6+gqKTMqyLACRRg
+klflUVPX4NXU0lbRAQkwMOnqiegbGBoZmyAJaJqamVtABYBaDNgtDXmtrG0g
+AkBDNW3tFFRFTaGGgqyVtXfgE3d0cnZhQXYYk6ubIA6nY3oOGQAAubQPeKPu
+sH8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTctMDctMjhUMDM6NDE6MTUrMDI6
+MDAk+3aMAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE3LTA3LTI4VDAzOjQxOjE1
+KzAyOjAwVabOMAAAAABJRU5ErkJggg==`;
