@@ -105,12 +105,7 @@ RCT_EXPORT_METHOD(lastSessionCrashReport:(RCTPromiseResolveBlock)resolve
 {
     void (^fetchLastSessionCrashReport)() = ^void() {
         MSErrorReport *report = [MSCrashes lastSessionCrashReport];
-        NSDictionary *jsonReport = convertReportToJS(report);
-        if (jsonReport && [jsonReport count] > 0) {
-            resolve(convertReportToJS(report));
-        } else {
-            resolve(nil);
-        }
+        resolve(convertReportToJS(report));
     };
     dispatch_async(dispatch_get_main_queue(), fetchLastSessionCrashReport);
 }
