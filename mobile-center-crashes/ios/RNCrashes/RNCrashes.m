@@ -95,7 +95,7 @@ RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve
 {
     void (^fetchHasCrashedInLastSession)() = ^void() {
         MSErrorReport *report = [MSCrashes lastSessionCrashReport];
-        resolve(@(report != nil));
+        resolve(report != nil ? @YES : @NO);
     };
     dispatch_async(dispatch_get_main_queue(), fetchHasCrashedInLastSession);
 }

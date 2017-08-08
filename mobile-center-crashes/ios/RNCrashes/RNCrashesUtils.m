@@ -85,7 +85,7 @@ static NSDictionary *serializeDeviceToDictionary(MSDevice* device) {
 
 NSDictionary* convertReportToJS(MSErrorReport* report) {
     if (report == nil) {
-        return @{};
+        return nil;
     }
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
     NSString * identifier = [report incidentIdentifier];
