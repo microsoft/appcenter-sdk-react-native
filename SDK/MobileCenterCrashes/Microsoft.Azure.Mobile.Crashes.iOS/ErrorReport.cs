@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             MSWrapperException wrapperException = MSWrapperExceptionManager.LoadWrapperExceptionWithUUID(msReport.IncidentIdentifier);
             if (wrapperException != null && wrapperException.ExceptionData != null)
             {
-				Exception = CrashesUtils.DeserializeException(wrapperException.ExceptionData.ToArray());
+                Exception = CrashesUtils.DeserializeException(wrapperException.ExceptionData.ToArray());
             }
         }
 

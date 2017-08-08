@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 return true;
             }
 
-            var report = ErrorReportCache.GetErrorReport(msReport);
+            var report = new ErrorReport(msReport);
             return _owner.ShouldProcessErrorReport(report);
         }
 
@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 return null;
             }
 
-            var report = ErrorReportCache.GetErrorReport(msReport);
+            var report = new ErrorReport(msReport);
             var attachments = _owner.GetErrorAttachments(report);
             if (attachments != null)
             {
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 return;
             }
 
-            var report = ErrorReportCache.GetErrorReport(msReport);
+            var report = new ErrorReport(msReport);
             var e = new SendingErrorReportEventArgs();
             e.Report = report;
             _owner.SendingErrorReport(null, e);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             if (_owner.SentErrorReport != null)
             {
-                var report = ErrorReportCache.GetErrorReport(msReport);
+                var report = new ErrorReport(msReport);
                 var e = new SentErrorReportEventArgs();
                 e.Report = report;
                 _owner.SentErrorReport(null, e);
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             if (_owner.FailedToSendErrorReport != null)
             {
-                var report = ErrorReportCache.GetErrorReport(msReport);
+                var report = new ErrorReport(msReport);
                 var e = new FailedToSendErrorReportEventArgs();
                 e.Report = report;
                 e.Exception = error;

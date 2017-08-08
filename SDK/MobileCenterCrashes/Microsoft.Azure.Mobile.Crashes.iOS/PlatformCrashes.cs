@@ -43,9 +43,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return Task.Run(() =>
             {
                 var msReport = MSCrashes.LastSessionCrashReport;
-                if (msReport == null)
-                    return null;
-                return ErrorReportCache.GetErrorReport(msReport);
+                return (msReport == null) ? null : new ErrorReport(msReport);
             });
         }
 
@@ -111,7 +109,6 @@ namespace Microsoft.Azure.Mobile.Crashes
                 ExceptionData = wrapperExceptionData,
                 ProcessId = new NSNumber(Process.GetCurrentProcess().Id)
             };
-
             MSWrapperExceptionManager.SaveWrapperException(wrapperException);
         }
 
