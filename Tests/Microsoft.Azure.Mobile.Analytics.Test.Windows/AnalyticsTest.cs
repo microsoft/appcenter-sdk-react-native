@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Channel;
@@ -184,9 +185,11 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 
             // Event name exceeds max length
             Analytics.TrackEvent(new string('?', 257));
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
+                log.Name.Length == 256)), Times.Once());
 
             // Without properties
+            _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", null);
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<EventLog>()), Times.Once());
 
@@ -200,7 +203,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 65), "test" } });
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-                log.Properties == null || log.Properties.Count == 0)), Times.Once());
+                log.Properties.First().Key.Length == 64)), Times.Once());
             
             // Property value is null
             _mockChannel.ResetCalls();
@@ -212,7 +215,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", new string('?', 65) } });
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-                log.Properties == null || log.Properties.Count == 0)), Times.Once());
+                log.Properties.First().Value.Length == 64)), Times.Once());
 
             // Properties size exceeds maximum
             _mockChannel.ResetCalls();
