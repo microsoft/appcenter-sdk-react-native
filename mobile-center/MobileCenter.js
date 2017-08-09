@@ -1,5 +1,4 @@
-let ReactNative = require('react-native');
-import { Platform } from 'react-native';
+let Platform = require('react-native').Platform;
 let RNMobileCenter = require("react-native").NativeModules.RNMobileCenter;
 
 let MobileCenter = {

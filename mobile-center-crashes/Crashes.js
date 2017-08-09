@@ -31,50 +31,58 @@ let Crashes = {
         return RNCrashes.setEnabled(shouldEnable);
     },
 
-    async process(callback) {
+    // async - returns a Promise
+    process(callback) {
 
         // Checking enabled will make sure the callback is executed after the Android SDK has finished loading
         // crash reports in background. We could call getCrashReports too soon otherwise in case
         // it takes a lot of time.
-        const enabled = await RNCrashes.isEnabled();
-        if (enabled) {
-            const reports = await RNCrashes.getCrashReports();
-            let errorAttachments = {};
-            let reportsWithAttachmentFunction = reports.map(function (report) {
+        return RNCrashes.isEnabled()
+            .then(enabled => {
+                if (enabled) {
+                    return RNCrashes.getCrashReports();
+                }
+            })
+            .then(reports => {
+                if (!reports) {
+                    return;
+                }
+                let errorAttachments = {};
+                let reportsWithAttachmentFunction = reports.map(function (report) {
 
-                // Add text attachment to an error report
-                function addTextAttachment(text, fileName) {
-                    if (!errorAttachments[report.id]) {
-                        errorAttachments[report.id] = [];
-                    }
-                    errorAttachments[report.id].push({
-                        text: text,
-                        fileName: fileName
-                    });
-                };
+                    // Add text attachment to an error report
+                    function addTextAttachment(text, fileName) {
+                        if (!errorAttachments[report.id]) {
+                            errorAttachments[report.id] = [];
+                        }
+                        errorAttachments[report.id].push({
+                            text: text,
+                            fileName: fileName
+                        });
+                    };
 
-                // Add binary attachment to an error report, binary must be passed as a base64 string
-                function addBinaryAttachment(data, fileName, contentType) {
-                    if (!errorAttachments[report.id]) {
-                        errorAttachments[report.id] = [];
-                    }
-                    errorAttachments[report.id].push({
-                        data: data,
-                        fileName: fileName,
-                        contentType: contentType
-                    });
-                };
+                    // Add binary attachment to an error report, binary must be passed as a base64 string
+                    function addBinaryAttachment(data, fileName, contentType) {
+                        if (!errorAttachments[report.id]) {
+                            errorAttachments[report.id] = [];
+                        }
+                        errorAttachments[report.id].push({
+                            data: data,
+                            fileName: fileName,
+                            contentType: contentType
+                        });
+                    };
 
-                return Object.assign({
-                    addTextAttachment,
-                    addBinaryAttachment
-                }, report);
+                    return Object.assign({
+                        addTextAttachment,
+                        addBinaryAttachment
+                    }, report);
+                });
+                reports = reportsWithAttachmentFunction;
+                callback(reports, function (response) {
+                    RNCrashes.crashUserResponse(response, errorAttachments);
+                });
             });
-            reports = reportsWithAttachmentFunction;
-            callback(reports, function (response) {
-                RNCrashes.crashUserResponse(response, errorAttachments);
-            });
-        }
     },
 
     setEventListener(listenerMap) {
