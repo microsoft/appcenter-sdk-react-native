@@ -42,3 +42,5 @@ android/keystores/debug.keystore
 
 *.keystore
 *~
+
+google-services.json
