@@ -198,7 +198,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
             if (name.Length > MaxEventNameLength)
             {
-                MobileCenterLog.Error(LogTag,
+                MobileCenterLog.Warn(LogTag,
                     $"{logType} '{name}' : name length cannot be longer than {MaxEventNameLength} characters. Name will be truncated.");
                 name = name.Substring(0, MaxEventNameLength);
                 return true;
