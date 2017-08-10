@@ -72,7 +72,6 @@ namespace Contoso.Forms.Puppet
                 }
             }
 
-
             MobileCenter.IsEnabledAsync().ContinueWith(enabled =>
             {
                 MobileCenterLog.Info(LogTag, "MobileCenter.Enabled=" + enabled.Result);

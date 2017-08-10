@@ -43,9 +43,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return Task.Run(() =>
             {
                 var msReport = MSCrashes.LastSessionCrashReport;
-                if (msReport == null)
-                    return null;
-                return ErrorReportCache.GetErrorReport(msReport);
+                return (msReport == null) ? null : new ErrorReport(msReport);
             });
         }
 
@@ -80,7 +78,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             /* Peform custom setup around the native SDK's for setting signal handlers */
             MSCrashes.DisableMachExceptionHandler();
-            MSWrapperExceptionManager.SetDelegate(new CrashesInitializationDelegate());
+            MSWrapperCrashesHelper.SetCrashHandlerSetupDelegate(new CrashesInitializationDelegate());
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
@@ -102,11 +100,16 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             Exception systemException = e.ExceptionObject as Exception;
             MSException exception = GenerateiOSException(systemException);
-            MSWrapperExceptionManager.SetWrapperException(exception);
-
             byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
             NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
-            MSWrapperExceptionManager.SetWrapperExceptionData(wrapperExceptionData);
+
+            MSWrapperException wrapperException = new MSWrapperException
+            {
+                Exception = exception,
+                ExceptionData = wrapperExceptionData,
+                ProcessId = new NSNumber(Process.GetCurrentProcess().Id)
+            };
+            MSWrapperExceptionManager.SaveWrapperException(wrapperException);
         }
 
         private static MSException GenerateiOSException(Exception exception)
