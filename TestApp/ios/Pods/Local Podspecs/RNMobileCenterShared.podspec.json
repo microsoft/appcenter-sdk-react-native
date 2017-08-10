@@ -21,7 +21,7 @@
   "vendored_frameworks": "RNMobileCenterShared/RNMobileCenterShared.framework",
   "dependencies": {
     "MobileCenter/Core": [
-      "~> 0.11.0"
+      "~> 0.11.1"
     ]
   }
 }
