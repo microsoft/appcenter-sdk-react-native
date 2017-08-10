@@ -5,10 +5,9 @@
  */
 
 import React, { Component } from 'react';
-import { AppState, Alert, Button, Text, View, ToastAndroid } from 'react-native';
+import { AppState, Alert, Button, Text, View, Platform, ToastAndroid } from 'react-native';
 import SharedStyles from './SharedStyles';
 import Push from 'mobile-center-push';
-
 
 export default class MainScreen extends Component {
   static navigationOptions = {

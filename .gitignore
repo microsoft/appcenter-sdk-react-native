@@ -33,6 +33,7 @@ local.properties
 #
 node_modules/
 npm-debug.log
+yarn.lock
 
 # BUCK
 buck-out/
@@ -42,3 +43,5 @@ android/keystores/debug.keystore
 
 *.keystore
 *~
+
+google-services.json

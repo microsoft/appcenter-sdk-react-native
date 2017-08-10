@@ -126,38 +126,21 @@
   It's primary purpose is to validate, after releasing an SDK update, that integrating the SDK into a new projeect
   all works as expected.
 
-  The DemoApp source in the mobile-center-sdk-reat-native repo doesn't have the SDK integrated.
-  We have a separate repo where we fully configure the SDK integration then build it.
-
-  - git clone git@github.com:BretJohnson/rn-sdk-demo-app.git
-    The local repoo directory must be a sibling of the mobile-center-sdk-react-native directory.
-  - cd rn-sdk-demo-app
-  - ./update.sh
-    This script copies the latest DemoApp code from the mobile-center-sdk-react-native tree,
-    then installs the SDK.
-    If you get an error like this: "Unable to find a specification for `RNMobileCenterShared (~> 0.6.0)`"
-    then you probably need to do a "pod repo update" to get the latest version of all pods on your machine.
-  - Provide the app secrets (copy paste from message above) when prompted
-  - I usually configure analytics for "Enabled Automatically" and crashes for "Processed in JavaScript by user"
-  - Do a git diff (I typically use VSCode) and ensure everything looks reasonable, commiting most of the changes.
-    Check the version numbers in package.json and Podfile to ensure it's grabbing the right component versions.
-    For a few files you'll want to undo the changes to keep the customizations that were there before:
-      Do that to keep the Android signing config (build.gradle signing changes and keystore file)
-      Also undo the project.pbxproj signing-related diffs to keep the iOS signing configuration.
-      And keep the previous google-services.json file, for Firebase push config.
-    Commit all the other changes & push them up, to build the DemoApp with the latest SDK integrated.
   The DemoApp is configured in Mobile Center, here:
-    https://mobile.azure.com/orgs/ReactNativeTesting/apps/reactnativesdkdemoapp-ios
-    https://mobile.azure.com/orgs/ReactNativeTesting/apps/reactnativesdkdemoapp-android
+    https://mobile.azure.com/orgs/mobile-center-sdk/apps/React-Native-Demo-iOS
+    https://mobile.azure.com/orgs/mobile-center-sdk/apps/React-Native-Demo-Android
   Let Mobile Center build with the latest SDK, then install and test it out on your iOS and Android device.
 
 *** Updating the Demo app, post release ***
 
   - Build Demo app
-  - cd into MobileCenterDemoApp folder and npm install
-  - run react-native link to hook up the native sources and specify app secret
-  - Run Demo app
-  - cd into MobileCenterDemoApp folder and react-native run-ios
+  - cd into MobileCenterDemoApp
+  - npm install mobile-center mobile-center-analytics mobile-center-crashes mobile-center-push --save
+  - run react-native link
+  - answer automatic for analytics and process in javascript for Crashes.
+  - revert the android changes in strings.xml due to a linker bug on update (it will duplicate some strings).
+  - Run Demo app and test everything looks good.
+  - make a PR for the changes.
 
 *** Creating the iOS xcodeproj for a new module ***  
   When it comes time to add a new module to the SDK (e.g. for say mobile-center-identity), create the xcode project for it as follows to be consistent with other modules:

@@ -1,0 +1,1 @@
+../../../../MobileCenter/MobileCenter-SDK-iOS/MobileCenter.framework/Headers/MSCustomProperties.h

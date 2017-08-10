@@ -7,18 +7,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "15.3.2",
-    "react-native": "0.37.0",
+    "mobile-center": "^0.8.0",
+    "mobile-center-analytics": "^0.8.0",
+    "mobile-center-crashes": "^0.8.0",
+    "mobile-center-push": "^0.8.0",
+    "react": "15.4.2",
+    "react-native": "0.40.0",
     "react-navigation": "^1.0.0-beta.11"
   },
-  "jest": {
-    "preset": "jest-react-native"
-  },
   "devDependencies": {
-    "babel-jest": "17.0.0",
-    "babel-preset-react-native": "1.9.0",
-    "jest": "17.0.0",
-    "jest-react-native": "17.0.0",
-    "react-test-renderer": "15.3.2"
+    "babel-jest": "18.0.0",
+    "babel-preset-react-native": "1.9.1",
+    "jest": "18.1.0",
+    "react-test-renderer": "15.4.2"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }
