@@ -97,15 +97,6 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file("shared-insecure-keystore.jks")
-            storePassword "password"
-            keyAlias "app"
-            keyPassword "password"
-        }
-    }
-
     splits {
         abi {
             reset()
@@ -118,7 +109,6 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -142,10 +132,8 @@ dependencies {
     compile project(':mobile-center-analytics')
     compile project(':mobile-center')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    // From node_modules
-    //  compile 'com.google.firebase:firebase-messaging:+'
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.facebook.react:react-native:+'
+    compile 'com.facebook.react:react-native:+'  // From node_modules
     compile 'com.google.firebase:firebase-messaging:10.0.1'
 }
 
