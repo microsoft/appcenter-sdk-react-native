@@ -15,7 +15,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     console.log('Added code to initialize iOS Crashes SDK in ' + file);
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter/Crashes', version: '0.11.1' },
-        { pod: 'RNMobileCenterShared', version: '0.8.0' } // in case people don't link mobile-center (core)
+        { pod: 'RNMobileCenterShared', version: '0.8.1' } // in case people don't link mobile-center (core)
     ]).catch(function (e) {
         console.log(`
             Could not install dependencies using CocoaPods.
