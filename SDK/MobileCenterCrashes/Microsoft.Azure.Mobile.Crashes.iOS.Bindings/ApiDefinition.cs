@@ -215,9 +215,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
     [Protocol, Model]
     [BaseType(typeof(NSObject))]
     interface MSCrashHandlerSetupDelegate
-   {
+    {
         //- (void) willSetUpCrashHandlers;
-       [Export("willSetUpCrashHandlers")]
+        [Export("willSetUpCrashHandlers")]
         void WillSetUpCrashHandlers();
 
         //- (void) didSetUpCrashHandlers;
