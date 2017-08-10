@@ -97,15 +97,6 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file("shared-insecure-keystore.jks")
-            storePassword "password"
-            keyAlias "app"
-            keyPassword "password"
-        }
-    }
-
     splits {
         abi {
             reset()
@@ -118,7 +109,6 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
