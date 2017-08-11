@@ -16,7 +16,7 @@ import {
   NativeModules
 } from 'react-native';
 
-import MobileCenter from 'mobile-center';
+import MobileCenter, { CustomProperties } from 'mobile-center';
 import SharedStyles from './SharedStyles';
 
 export default class MobileCenterScreen extends React.Component {
@@ -34,37 +34,48 @@ export default class MobileCenterScreen extends React.Component {
     const component = this;
 
     const mobileCenterEnabled = await MobileCenter.isEnabled();
-    component.setState({mobileCenterEnabled: mobileCenterEnabled});
+    component.setState({ mobileCenterEnabled: mobileCenterEnabled });
 
     const installId = await MobileCenter.getInstallId();
-    component.setState({installId: installId});
+    component.setState({ installId: installId });
 
     const logLevel = await MobileCenter.getLogLevel();
-    component.setState({logLevel: logLevel});
+    component.setState({ logLevel: logLevel });
   }
 
   async toggleEnabled() {
-    await MobileCenter.setEnabled(! this.state.mobileCenterEnabled);
+    await MobileCenter.setEnabled(!this.state.mobileCenterEnabled);
 
     const mobileCenterEnabled = await MobileCenter.isEnabled();
-    this.setState({mobileCenterEnabled: mobileCenterEnabled});
+    this.setState({ mobileCenterEnabled: mobileCenterEnabled });
   }
 
-  async toggleVerboseLogging() {
-    const logLevel = await MobileCenter.getLogLevel();
-    const newLogLEvel = logLevel === MobileCenter.LogLevelWarning ? MobileCenter.LogLevelVerbose : MobileCenter.LogLevelWarning;
-    await MobileCenter.setLogLevel(newLogLEvel); //just for testing
-    this.setState({logLevel: newLogLEvel});
+  async toggleLogging() {
+    let logLevel = await MobileCenter.getLogLevel();
+    switch (logLevel) {
+
+      case MobileCenter.LogLevelAssert:
+        logLevel = MobileCenter.LogLevelNone;
+        break;
+
+      case MobileCenter.LogLevelNone:
+        logLevel = MobileCenter.LogLevelVerbose;
+        break;
+
+      default:
+        logLevel++;
+    }
+    await MobileCenter.setLogLevel(logLevel);
+    this.setState({ logLevel: logLevel });
   }
 
   async setCustomProperties() {
-    let properties = {
-        'color': 'red',
-        'number': 2,
-        'isEnabled': true,
-        'MyCustomDate': new Date()
-    };
-
+    const properties = new CustomProperties().
+    set('pi', 3.14)
+    .clear('old')
+    .set('optin', true)
+    .set('score', 7)
+    .set('now', new Date());
     await MobileCenter.setCustomProperties(properties);
   }
 
@@ -95,9 +106,9 @@ export default class MobileCenterScreen extends React.Component {
           <Text style={SharedStyles.enabledText}>
             Log level: {this.state.logLevel}
           </Text>
-          <TouchableOpacity onPress={this.toggleVerboseLogging.bind(this)}>
+          <TouchableOpacity onPress={this.toggleLogging.bind(this)}>
             <Text style={SharedStyles.toggleEnabled}>
-              toggle verbose
+              Change log level
             </Text>
           </TouchableOpacity>
 
