@@ -56,7 +56,7 @@ MobileCenter.CustomProperties = class {
     set(key, value) {
         if (typeof key === 'string') {
             let valueType = typeof value;
-            switch (typeof value) {
+            switch (valueType) {
 
                 case 'string':
                 case 'number':

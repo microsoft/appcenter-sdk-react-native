@@ -73,6 +73,7 @@ export default class MobileCenterScreen extends React.Component {
     const properties = new CustomProperties().
     set('pi', 3.14)
     .clear('old')
+    .set('color', 'blue')
     .set('optin', true)
     .set('score', 7)
     .set('now', new Date());
