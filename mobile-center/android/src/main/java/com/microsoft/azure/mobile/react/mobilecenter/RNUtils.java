@@ -136,44 +136,35 @@ public class RNUtils {
         Log.d(LOG_TAG, message);
     }
 
-    public static CustomProperties toCustomProperties(ReadableMap readableMap) {
+    static CustomProperties toCustomProperties(ReadableMap readableMap) {
         CustomProperties properties = new CustomProperties();
+        ReadableMapKeySetIterator keyIt = readableMap.keySetIterator();
+        while (keyIt.hasNextKey()) {
+            String key = keyIt.nextKey();
+            ReadableMap valueObject = readableMap.getMap(key);
+            String type = valueObject.getString("type");
+            switch (type) {
+                case "clear":
+                    properties.clear(key);
+                    break;
 
-        ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+                case "string":
+                    properties.set(key, valueObject.getString("value"));
+                    break;
 
-        while (iterator.hasNextKey()) {
-            String key = iterator.nextKey();
-            ReadableType type = readableMap.getType(key);
+                case "number":
+                    properties.set(key, valueObject.getDouble("value"));
+                    break;
 
-            final Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9]*$");
-            if (pattern.matcher(key).matches()) {
-                switch (type) {
-                    case Null:
-                        break;
-                    case Boolean:
-                        properties.set(key, readableMap.getBoolean(key));
-                        break;
-                    case Number:
-                        properties.set(key, readableMap.getInt(key));
-                        break;
-                    case String:
-                        properties.set(key, readableMap.getString(key));
-                        break;
-                    case Map:
-                        //as ReadableMap doesn't have support for getting Date type pass it via Map object
-                        Date resultDate = tryToGetDate(readableMap.getMap(key));
-                        if (resultDate != null) {
-                            properties.set(key, resultDate);
-                        } else {
-                            logError("Unable to get date for custom property key");
-                        }
-                        break;
-                }
-            } else {
-                logError("Unable to parse key %s as it does not conform to the the valid key name pattern: ^[a-zA-Z][a-zA-Z0-9]*$");
+                case "boolean":
+                    properties.set(key, valueObject.getBoolean("value"));
+                    break;
+
+                case "date-time":
+                    properties.set(key, new Date((long) valueObject.getDouble("value")));
+                    break;
             }
         }
-
         return properties;
     }
 }

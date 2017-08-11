@@ -1,16 +1,18 @@
-let Platform = require('react-native').Platform;
-let RNMobileCenter = require("react-native").NativeModules.RNMobileCenter;
+let RNMobileCenter = require('react-native').NativeModules.RNMobileCenter;
+let MobileCenterLog = require('mobile-center/mobile-center-log');
+
+const logTag = 'MobileCenter';
 
 let MobileCenter = {
-    // By design, these constants match both the iOS SDK values in MSContants.h and the standard Android values in android.util.Log
-    LogLevelVerbose: 2,      // Logging will be very chatty
-    LogLevelDebug: 3,        // Debug information will be logged
-    LogLevelInfo: 4,         // Information will be logged
-    LogLevelWarning: 5,      // Errors and warnings will be logged
-    LogLevelError: 6,        // Errors will be logged
-    LogLevelAssert: 7,       // Only critical errors will be logged
-    LogLevelNone: 99,        // Logging is disabled
 
+    // By design, these constants match both the iOS SDK values in MSContants.h and the standard Android values in android.util.Log
+    LogLevelVerbose: MobileCenterLog.LogLevelVerbose,  // Logging will be very chatty
+    LogLevelDebug: MobileCenterLog.LogLevelDebug,      // Debug information will be logged
+    LogLevelInfo: MobileCenterLog.LogLevelInfo,        // Information will be logged
+    LogLevelWarning: MobileCenterLog.LogLevelWarning,  // Errors and warnings will be logged
+    LogLevelError: MobileCenterLog.LogLevelError,      // Errors will be logged
+    LogLevelAssert: MobileCenterLog.LogLevelAssert,    // Only critical errors will be logged
+    LogLevelNone: MobileCenterLog.LogLevelNone,        // Logging is disabled
 
     // async - returns a Promise
     getLogLevel() {
@@ -18,7 +20,7 @@ let MobileCenter = {
     },
 
     // async - returns a Promise
-    setLogLevel(logLevel){
+    setLogLevel(logLevel) {
         return RNMobileCenter.setLogLevel(logLevel);
     },
 
@@ -39,25 +41,54 @@ let MobileCenter = {
 
     // async - returns a Promise
     setCustomProperties(properties) {
-        // Android ReadableMap doesn't support Date type, so pass Dates as a Map Object to work around that
-        if (Platform.OS === 'android') {
-            let newProperties = {};
-            Object.keys(properties).forEach((key) => {
-                let value = properties[key];
-                if (value instanceof Date) {
-                    newProperties[key] = {
-                        // RNDate name should be in sync with the matching Java code
-                        "RNDate": value.toISOString()
-                    };
-                }
-                else {
-                    newProperties[key] = value;
-                }
-            });
-            properties = newProperties;
+        if (properties instanceof MobileCenter.CustomProperties) {
+            return RNMobileCenter.setCustomProperties(properties);
         }
-        return RNMobileCenter.setCustomProperties(properties);
+        else {
+            let type = Object.prototype.toString.apply(properties);
+            MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
+        }
     }
 };
+
+MobileCenter.CustomProperties = class {
+
+    set(key, value) {
+        if (typeof key === 'string') {
+            let valueType = typeof value;
+            switch (valueType) {
+
+                case 'string':
+                case 'number':
+                case 'boolean':
+                    this[key] = { type: valueType, value: value };
+                    break;
+
+                case 'object':
+                    if (value instanceof Date) {
+                        this[key] = { type: 'date-time', value: value.getTime() };
+                        break;
+                    }
+
+                default:
+                    MobileCenterLog.error(logTag, 'CustomProperties: Invalid value type, expected string|number|boolean|Date.');
+            }
+        }
+        else {
+            MobileCenterLog.error(logTag, 'CustomProperties: Invalid key type, expected string.');
+        }
+        return this;
+    }
+
+    clear(key) {
+        if (typeof key === 'string') {
+            this[key] = { type: 'clear' };
+        }
+        else {
+            MobileCenterLog.error(logTag, 'CustomProperties: Invalid key type, expected string.');
+        }
+        return this;
+    }
+}
 
 module.exports = MobileCenter;
