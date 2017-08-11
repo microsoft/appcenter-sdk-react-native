@@ -215,33 +215,33 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		925FD9611F3D0FFA00F247F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E714F3E4D56744698254E8FC /* RNMobileCenter.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C35AEC211EF91F9300931F0C;
-			remoteInfo = RNMobileCenter;
-		};
-		925FD9661F3D0FFA00F247F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8CB05FA209914A34975B1A06 /* RNAnalytics.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 548694001D8384E600E6685A;
-			remoteInfo = RNAnalytics;
-		};
-		925FD96B1F3D0FFA00F247F6 /* PBXContainerItemProxy */ = {
+		9C29AAB71F3CD6CE00E158C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF65994CAAFF484A84047C8E /* RNCrashes.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5419C2701D824AA700DDF3A1;
 			remoteInfo = RNCrashes;
 		};
-		925FD9701F3D0FFA00F247F6 /* PBXContainerItemProxy */ = {
+		9C29AABC1F3CD6CE00E158C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 719AC3EEC4914594BA99C740 /* RNPush.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = BA189FAA1EEE74F100CAD13F;
 			remoteInfo = RNPush;
+		};
+		9C29AAC11F3CD6CE00E158C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CB05FA209914A34975B1A06 /* RNAnalytics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 548694001D8384E600E6685A;
+			remoteInfo = RNAnalytics;
+		};
+		9C29AAC61F3CD6CE00E158C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E714F3E4D56744698254E8FC /* RNMobileCenter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C35AEC211EF91F9300931F0C;
+			remoteInfo = RNMobileCenter;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -515,34 +515,34 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		925FD9451F3D0FFA00F247F6 /* Products */ = {
+		9C29AA9B1F3CD6CE00E158C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				925FD9621F3D0FFA00F247F6 /* libRNMobileCenter.a */,
+				9C29AAB81F3CD6CE00E158C7 /* libRNCrashes.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		925FD9631F3D0FFA00F247F6 /* Products */ = {
+		9C29AAB91F3CD6CE00E158C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				925FD9671F3D0FFA00F247F6 /* libRNAnalytics.a */,
+				9C29AABD1F3CD6CE00E158C7 /* libRNPush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		925FD9681F3D0FFA00F247F6 /* Products */ = {
+		9C29AABE1F3CD6CE00E158C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				925FD96C1F3D0FFA00F247F6 /* libRNCrashes.a */,
+				9C29AAC21F3CD6CE00E158C7 /* libRNAnalytics.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		925FD96D1F3D0FFA00F247F6 /* Products */ = {
+		9C29AAC31F3CD6CE00E158C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				925FD9711F3D0FFA00F247F6 /* libRNPush.a */,
+				9C29AAC71F3CD6CE00E158C7 /* libRNMobileCenter.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -670,19 +670,19 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 925FD9631F3D0FFA00F247F6 /* Products */;
+					ProductGroup = 9C29AABE1F3CD6CE00E158C7 /* Products */;
 					ProjectRef = 8CB05FA209914A34975B1A06 /* RNAnalytics.xcodeproj */;
 				},
 				{
-					ProductGroup = 925FD9681F3D0FFA00F247F6 /* Products */;
+					ProductGroup = 9C29AA9B1F3CD6CE00E158C7 /* Products */;
 					ProjectRef = FF65994CAAFF484A84047C8E /* RNCrashes.xcodeproj */;
 				},
 				{
-					ProductGroup = 925FD9451F3D0FFA00F247F6 /* Products */;
+					ProductGroup = 9C29AAC31F3CD6CE00E158C7 /* Products */;
 					ProjectRef = E714F3E4D56744698254E8FC /* RNMobileCenter.xcodeproj */;
 				},
 				{
-					ProductGroup = 925FD96D1F3D0FFA00F247F6 /* Products */;
+					ProductGroup = 9C29AAB91F3CD6CE00E158C7 /* Products */;
 					ProjectRef = 719AC3EEC4914594BA99C740 /* RNPush.xcodeproj */;
 				},
 			);
@@ -870,32 +870,32 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		925FD9621F3D0FFA00F247F6 /* libRNMobileCenter.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNMobileCenter.a;
-			remoteRef = 925FD9611F3D0FFA00F247F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		925FD9671F3D0FFA00F247F6 /* libRNAnalytics.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNAnalytics.a;
-			remoteRef = 925FD9661F3D0FFA00F247F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		925FD96C1F3D0FFA00F247F6 /* libRNCrashes.a */ = {
+		9C29AAB81F3CD6CE00E158C7 /* libRNCrashes.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNCrashes.a;
-			remoteRef = 925FD96B1F3D0FFA00F247F6 /* PBXContainerItemProxy */;
+			remoteRef = 9C29AAB71F3CD6CE00E158C7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		925FD9711F3D0FFA00F247F6 /* libRNPush.a */ = {
+		9C29AABD1F3CD6CE00E158C7 /* libRNPush.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNPush.a;
-			remoteRef = 925FD9701F3D0FFA00F247F6 /* PBXContainerItemProxy */;
+			remoteRef = 9C29AABC1F3CD6CE00E158C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C29AAC21F3CD6CE00E158C7 /* libRNAnalytics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNAnalytics.a;
+			remoteRef = 9C29AAC11F3CD6CE00E158C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C29AAC71F3CD6CE00E158C7 /* libRNMobileCenter.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNMobileCenter.a;
+			remoteRef = 9C29AAC61F3CD6CE00E158C7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -941,13 +941,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TestApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4EBAFDA2A74CA812DABBCDC7 /* [CP] Copy Pods Resources */ = {

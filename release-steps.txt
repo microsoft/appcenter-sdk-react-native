@@ -38,7 +38,7 @@
 
     mobile-center-analytics/package.json
     mobile-center-analytics/scripts/postlink.js (for iOS pod dependencies)
-    mobile-center-analytics/android/build.gradle (dependences at bottom)
+    mobile-center-analytics/android/build.gradle (versionCode, versionName, and dependences at bottom)
 
     mobile-center-push/package.json
     mobile-center-push/scripts/postlink.js (for iOS pod dependencies)
