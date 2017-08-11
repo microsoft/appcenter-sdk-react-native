@@ -604,6 +604,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = L4RARDNZ2Y;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -940,13 +941,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DemoApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4EBAFDA2A74CA812DABBCDC7 /* [CP] Copy Pods Resources */ = {
@@ -1083,6 +1087,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.demoapp;
 				PRODUCT_NAME = DemoApp;
+				PROVISIONING_PROFILE = "7a12f129-e0ce-4ba5-95fb-b64b88211489";
+				PROVISIONING_PROFILE_SPECIFIER = "React Native Demo App";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1104,6 +1110,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.demoapp;
 				PRODUCT_NAME = DemoApp;
+				PROVISIONING_PROFILE = "7a12f129-e0ce-4ba5-95fb-b64b88211489";
+				PROVISIONING_PROFILE_SPECIFIER = "React Native Demo App";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
