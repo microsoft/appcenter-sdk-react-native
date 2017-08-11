@@ -604,6 +604,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = L4RARDNZ2Y;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1086,6 +1087,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.testapp;
 				PRODUCT_NAME = TestApp;
+				PROVISIONING_PROFILE = "19123b1d-f0d0-4552-8bd5-a65a59f483df";
+				PROVISIONING_PROFILE_SPECIFIER = "React Native Test App";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1107,6 +1110,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.testapp;
 				PRODUCT_NAME = TestApp;
+				PROVISIONING_PROFILE = "19123b1d-f0d0-4552-8bd5-a65a59f483df";
+				PROVISIONING_PROFILE_SPECIFIER = "React Native Test App";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
