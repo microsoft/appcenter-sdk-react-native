@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 msFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
                 frameList.Add(msFrame);
             }
-            return frameList.Count == 0 ? null : frameList.ToArray();
+            return frameList.ToArray();
         }
 
 #pragma warning restore XS0001 // Find usages of mono todo items
