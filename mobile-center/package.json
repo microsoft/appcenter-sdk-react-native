@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/microsoft/mobile-center-sdk-react-native/issues"
   },
-  "homepage": "https://github.com/microsoft/mobile-center-sdk-react-native/mobile-center#readme",
+  "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native/blob/master/mobile-center/README.md",
   "dependencies": {
     "mobile-center-link-scripts": "0.8.1"
   },
