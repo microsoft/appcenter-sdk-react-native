@@ -59,12 +59,12 @@ module.exports = {
         });
     },
 
-    initInAppDelegate: function(header, initCode) {
+    initInAppDelegate: function(header, initCode, oldInitCodeRegExp) {
         debug('Starting to write AppDelegate', appDelegatePath);
         try {
             var appDelegate = new AppDelegate(appDelegatePath);
             appDelegate.addHeader(header);
-            appDelegate.addInitCode(initCode);
+            appDelegate.addInitCode(initCode, oldInitCodeRegExp);
             return appDelegate.save();
         } catch (e) {
             debug('Could not change AppDelegate', e);
