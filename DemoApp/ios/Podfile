@@ -13,4 +13,5 @@ target 'DemoApp' do
   pod 'MobileCenter/Analytics', '~> 0.11.2'
   pod 'RNMobileCenterShared', '~> 0.8.1'
 
+  platform :ios, '8.0'
 end
