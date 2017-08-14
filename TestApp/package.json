@@ -10,10 +10,10 @@
     "mobile-center": "../mobile-center",
     "mobile-center-analytics": "../mobile-center-analytics",
     "mobile-center-crashes": "../mobile-center-crashes",
-    "mobile-center-push": "../mobile-center-push",
     "mobile-center-link-scripts": "../mobile-center-link-scripts",
-    "react": "15.4.2",
-    "react-native": "0.40.0",
+    "mobile-center-push": "../mobile-center-push",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.47.1",
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
