@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Mobile
         // Internals for testing
         internal const string EnabledKey = Constants.KeyPrefix + "Enabled";
         internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
-        private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
-        private const string StartErrorMessage = "Failed to start services";
+        private const string ConfigurationErrorMessage = "Failed to configure Mobile Center.";
+        private const string StartErrorMessage = "Failed to start services.";
         private const string ChannelName = "core";
         private const string DistributeServiceFullType = "Microsoft.Azure.Mobile.Distribute.Distribute";
 
@@ -241,7 +241,8 @@ namespace Microsoft.Azure.Mobile
         {
             if (_instanceConfigured)
             {
-                throw new MobileCenterException("Multiple attempts to configure Mobile Center");
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Mobile Center may only be configured once.");
+                return;
             }
             _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
@@ -297,9 +298,9 @@ namespace Microsoft.Azure.Mobile
                         startServiceLog.Services.Add(serviceInstance.ServiceName);
                     }
                 }
-                catch (MobileCenterException ex)
+                catch (MobileCenterException)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", ex);
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.");
                 }
             }
 
@@ -314,13 +315,12 @@ namespace Microsoft.Azure.Mobile
         {
             if (service == null)
             {
-                throw new MobileCenterException("Service instance is null; static 'Instance' property either doesn't exist or returned null");
+                throw new MobileCenterException("Attempted to start an invalid Mobile Center service.");
             }
             if (_services.Contains(service))
             {
-                ThrowStartedServiceException(service.GetType().Name);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started the service with class name '{service.GetType().Name}'");
             }
-
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
@@ -335,8 +335,7 @@ namespace Microsoft.Azure.Mobile
             }
             catch (MobileCenterException ex)
             {
-                var message = _instanceConfigured ? StartErrorMessage : ConfigurationErrorMessage;
-                MobileCenterLog.Error(MobileCenterLog.LogTag, message, ex);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, ex.Message);
             }
         }
 
