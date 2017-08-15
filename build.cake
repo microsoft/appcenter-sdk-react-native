@@ -310,7 +310,7 @@ Task("Externals-Ios")
 	Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
 	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
-	var files = GetFiles("./externals/ios/*/*.framework/MobileCenter*");
+	var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
 	foreach (var file in files)
 	{
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
