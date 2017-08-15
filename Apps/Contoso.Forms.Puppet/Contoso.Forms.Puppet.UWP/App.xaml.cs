@@ -7,7 +7,10 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Push;
+using Microsoft.Azure.Mobile.Utils;
 
 namespace Contoso.Forms.Puppet.UWP
 {
@@ -22,6 +25,7 @@ namespace Contoso.Forms.Puppet.UWP
         /// </summary>
         public App()
         {
+
             // Set the country before initialization occurs so Mobile Center can send the field to the backend
             // Note that the country code provided does not reflect the physical device location, but rather the
             // country that corresponds to the culture it uses. You may wish to retrieve the country code using
@@ -78,7 +82,8 @@ namespace Contoso.Forms.Puppet.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-
+            MobileCenter.Start("a678b499-1912-4a94-9d97-25b569284d3a",
+                typeof(Analytics));
             Push.CheckLaunchedFromNotification(e);
         }
 
@@ -105,5 +110,6 @@ namespace Contoso.Forms.Puppet.UWP
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
     }
 }

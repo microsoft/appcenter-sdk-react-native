@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
+using Windows.UI.Core;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    class DefaultScreenSizeProvider : ScreenSizeProviderBase
+    public class DefaultScreenSizeProvider : ScreenSizeProviderBase
     {
+        // Timeout choice is arbitrary, but it is better than pausing the SDK indefinitely
+        // when running without every starting the UI.
+        private readonly TimeSpan _displayInformationTimeout = TimeSpan.FromSeconds(3);
         private readonly SemaphoreSlim _displayInformationEventSemaphore = new SemaphoreSlim(0);
         private readonly object _lockObject = new object();
 
@@ -17,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Utils
         private const string FailureMessage = "Could not determine display size.";
 
         public DefaultScreenSizeProvider()
-        {                
+        {
             if (!ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenHeightInRawPixels") ||
                 !ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenWidthInRawPixels"))
             {
@@ -25,30 +31,48 @@ namespace Microsoft.Azure.Mobile.Utils
                 _displayInformationEventSemaphore.Release();
                 return;
             }
-            try
+
+            // Only try to get screen size once resuming event is invoked, because there's no point
+            // in trying beforehand
+            ApplicationLifecycleHelper.Instance.ApplicationResuming += (sender, e) =>
             {
-                // CurrentSynchronization context is essentially the UI context, which is needed
-                // to get display information. It isn't guaranteed to be available, so try/catch.
-                var context = TaskScheduler.FromCurrentSynchronizationContext();
-                Task.Factory.StartNew(() =>
+                try
                 {
-                    var displayInfo = DisplayInformation.GetForCurrentView();
-                    UpdateDisplayInformation((int)displayInfo.ScreenHeightInRawPixels, (int)displayInfo.ScreenWidthInRawPixels);
+                    CoreApplication.MainView?.CoreWindow?.Dispatcher?.RunAsync(
+                        CoreDispatcherPriority.Normal, () =>
+                        {
+                            DisplayInformation displayInfo = null;
+                            try
+                            {
+                                // The exceptions that this method can throw are not documented,
+                                // so a catch-all is necessary.
+                                displayInfo = DisplayInformation.GetForCurrentView();
+                            }
+                            catch
+                            {
+                                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+                                _displayInformationEventSemaphore.Release();
+                                return;
+                            }
+                            UpdateDisplayInformation((int) displayInfo.ScreenHeightInRawPixels,
+                                    (int) displayInfo.ScreenWidthInRawPixels);
+                                //_displayInformationEventSemaphore.Release();
+
+                                // Try to detect a change in screen size by attaching handlers to these events.
+                                displayInfo.OrientationChanged += UpdateDisplayInformationHandler;
+                                displayInfo.DpiChanged += UpdateDisplayInformationHandler;
+                                displayInfo.ColorProfileChanged += UpdateDisplayInformationHandler;
+                            });
+                }
+                catch (COMException)
+                {
+                    // This is reached if the MainView is not ready to be accessed yet
                     _displayInformationEventSemaphore.Release();
-
-                    // Try to detect a change in screen size by attaching handlers to these events.
-                    displayInfo.OrientationChanged += UpdateDisplayInformationHandler;
-                    displayInfo.DpiChanged += UpdateDisplayInformationHandler;
-                    displayInfo.ColorProfileChanged += UpdateDisplayInformationHandler;
-                }, new CancellationToken(), TaskCreationOptions.PreferFairness, context);
-            }
-            catch (InvalidOperationException)
-            {
-                _displayInformationEventSemaphore.Release();
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
-            }
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+                }
+            };
         }
-
+        
         private void UpdateDisplayInformationHandler(DisplayInformation displayInfo, object e)
         {
             UpdateDisplayInformation((int)displayInfo.ScreenHeightInRawPixels, (int)displayInfo.ScreenWidthInRawPixels);
@@ -81,7 +105,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         public override async Task WaitUntilReadyAsync()
         {
-            await _displayInformationEventSemaphore.WaitAsync().ConfigureAwait(false);
+            await _displayInformationEventSemaphore.WaitAsync(_displayInformationTimeout).ConfigureAwait(false);
             _displayInformationEventSemaphore.Release();
         }
 
