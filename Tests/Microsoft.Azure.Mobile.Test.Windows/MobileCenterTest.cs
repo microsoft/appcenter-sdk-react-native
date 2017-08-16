@@ -321,13 +321,19 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
-        /// Verify that configuring a Mobile Center instance multiple times throws an error
+        /// Verify that configuring a Mobile Center instance multiple times does not throw an error
         /// </summary>
         [TestMethod]
         public void ConfigureMobileCenterMultipleTimes()
         {
-            MobileCenter.Instance.InstanceConfigure("appsecret");
-            Assert.ThrowsException<MobileCenterException>(() => MobileCenter.Instance.InstanceConfigure("appsecret"));
+            try
+            {
+                MobileCenter.Instance.InstanceConfigure("appsecret");
+            }
+            catch (MobileCenterException)
+            {
+                Assert.Fail();
+            }
         }
 
         /// <summary>

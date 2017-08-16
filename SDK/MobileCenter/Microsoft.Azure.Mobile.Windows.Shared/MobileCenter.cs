@@ -320,6 +320,7 @@ namespace Microsoft.Azure.Mobile
             if (_services.Contains(service))
             {
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started the service with class name '{service.GetType().Name}'");
+                return;
             }
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
