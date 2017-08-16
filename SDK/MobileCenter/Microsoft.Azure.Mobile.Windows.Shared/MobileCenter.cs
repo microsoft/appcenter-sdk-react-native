@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Models;
@@ -25,6 +26,7 @@ namespace Microsoft.Azure.Mobile
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object MobileCenterLock = new object();
 
+        private static IApplicationSettingsFactory _applicationSettingsFactory = new DefaultApplicationSettingsFactory();
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
@@ -77,6 +79,15 @@ namespace Microsoft.Azure.Mobile
                     MobileCenterLog.Level = value;
                 }
             }
+        }
+
+        // This method must be called *before* instance of MobileCenter has been created
+        // for a custom application settings to be used.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static void SetApplicationSettingsFactory(IApplicationSettingsFactory factory)
+        {
+            _applicationSettingsFactory = factory;
         }
 
         static Task<bool> PlatformIsEnabledAsync()
@@ -175,7 +186,7 @@ namespace Microsoft.Azure.Mobile
         // Creates a new instance of MobileCenter
         private MobileCenter()
         {
-            _applicationSettings = new ApplicationSettings();
+            _applicationSettings = _applicationSettingsFactory.CreateApplicationSettings();
             LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
             LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
         }

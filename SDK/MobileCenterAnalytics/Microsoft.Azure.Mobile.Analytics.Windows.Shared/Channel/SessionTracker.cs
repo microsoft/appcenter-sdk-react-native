@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
-        private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
+        private readonly DefaultApplicationSettings _applicationSettings = new DefaultApplicationSettings();
         private readonly object _lockObject = new object();
 
         // This field is purely for testing

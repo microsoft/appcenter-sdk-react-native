@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile
         private const string PreferenceKeySeparator = "_";
         private const string KeyEnabled = Constants.KeyPrefix + "ServiceEnabled";
         protected readonly object _serviceLock = new object();
-        private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
+        private readonly IApplicationSettings _applicationSettings = new DefaultApplicationSettings();
 
         /// <summary>
         /// Channel associated with this service. Should be disposed only by ChannelGroup.

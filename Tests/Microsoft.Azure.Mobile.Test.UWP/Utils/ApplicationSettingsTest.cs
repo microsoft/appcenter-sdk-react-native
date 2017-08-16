@@ -7,7 +7,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
     [TestClass]
     public class ApplicationSettingsTest
     {
-        private readonly IApplicationSettings settings = new ApplicationSettings();
+        private readonly IApplicationSettings settings = new DefaultApplicationSettings();
 
         [TestInitialize]
         public void InitializeMobileCenterTest()
