@@ -1,6 +1,8 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Microsoft.Azure.Mobile.Push;
 
 namespace Contoso.Forms.Demo.Droid
 {
@@ -17,6 +19,12 @@ namespace Contoso.Forms.Demo.Droid
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             LoadApplication(new App());
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+            Push.CheckLaunchedFromNotification(this, intent);
         }
     }
 }
