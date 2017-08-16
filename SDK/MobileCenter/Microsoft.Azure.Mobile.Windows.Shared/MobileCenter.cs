@@ -198,6 +198,11 @@ namespace Microsoft.Azure.Mobile
             _channelGroupFactory = channelGroupFactory;
         }
 
+        internal IApplicationSettings ApplicationSettings
+        {
+            get { return _applicationSettings; }
+        }
+
         private bool InstanceEnabled
         {
             get

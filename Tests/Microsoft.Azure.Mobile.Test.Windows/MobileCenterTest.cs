@@ -207,7 +207,7 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetInstallId()
         {
-            var settings = new ApplicationSettings();
+            var settings = new DefaultApplicationSettings();
             var fakeInstallId = Guid.NewGuid();
             settings[MobileCenter.InstallIdKey] = fakeInstallId;
             MobileCenter.Instance = new MobileCenter(settings);
@@ -343,7 +343,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void LogUrlIsNotSetByDefault()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
-            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+            MobileCenter.Instance = new MobileCenter(new DefaultApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
             channelGroupMock.Verify(channelGroup => channelGroup.SetLogUrl(It.IsAny<string>()), Times.Never());
@@ -356,7 +356,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void SetLogUrlBeforeConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
-            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+            MobileCenter.Instance = new MobileCenter(new DefaultApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             var customLogUrl = "www dot log url dot com";
             MobileCenter.SetLogUrl(customLogUrl);
@@ -372,7 +372,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void SetLogUrlAfterConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
-            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+            MobileCenter.Instance = new MobileCenter(new DefaultApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
             var customLogUrl = "www dot log url dot com";
