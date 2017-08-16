@@ -5,13 +5,18 @@ namespace Microsoft.Azure.Mobile.Test.Windows
 {
     public class TestMobileCenterService : MobileCenterService
     {
-        public TestMobileCenterService(IApplicationSettings settings) : base(settings)
+        private readonly IApplicationSettings _settings;
+
+        public TestMobileCenterService(IApplicationSettings settings)
         {
+            _settings = settings;
         }
 
         public TestMobileCenterService()
         {
         }
+
+        protected override IApplicationSettings ApplicationSettings => _settings ?? base.ApplicationSettings;
 
         protected override string ChannelName => "test_service";
         public override string ServiceName => "TestService";

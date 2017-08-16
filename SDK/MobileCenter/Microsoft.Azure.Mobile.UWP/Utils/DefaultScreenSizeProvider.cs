@@ -6,7 +6,7 @@ using Windows.Graphics.Display;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    class DefaultScreenSizeProvider : ScreenSizeProviderBase
+    public class DefaultScreenSizeProvider : ScreenSizeProviderBase
     {
         private readonly SemaphoreSlim _displayInformationEventSemaphore = new SemaphoreSlim(0);
         private readonly object _lockObject = new object();

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
-using Windows.ApplicationModel.Core;
-using Windows.Foundation.Metadata;
-using Windows.Graphics.Display;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
