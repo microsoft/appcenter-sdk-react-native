@@ -55,6 +55,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 return;
             }
             _sessions = SessionsFromString(sessionsString);
+
             // Re-write sessions in storage in case of any invalid strings
             _applicationSettings[StorageKey] = SessionsAsString();
             if (_sessions.Count == 0)

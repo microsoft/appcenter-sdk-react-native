@@ -163,11 +163,11 @@ namespace Microsoft.Azure.Mobile.Analytics
                 if (enabled && ChannelGroup != null && SessionTracker == null)
                 {
                     SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
-                    SubscribeToApplicationLifecycleEvents();
                     if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                     {
                         SessionTracker.Resume();
                     }
+                    SubscribeToApplicationLifecycleEvents();
                 }
                 else if (!enabled)
                 {
