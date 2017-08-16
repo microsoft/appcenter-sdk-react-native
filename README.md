@@ -1,3 +1,7 @@
+[![NPM Version](https://img.shields.io/npm/v/mobile-center.svg)](https://www.npmjs.com/package/mobile-center)
+[![NPM Downloads](https://img.shields.io/npm/dm/mobile-center.svg)](https://www.npmjs.com/package/mobile-center)
+[![license](https://img.shields.io/badge/license-MIT%20License-00AAAA.svg)](https://github.com/Microsoft/mobile-center-sdk-react-native/blob/master/LICENSE)
+
 # Mobile Center SDK for React Native
 
 Mobile Center is mission control for mobile apps.
