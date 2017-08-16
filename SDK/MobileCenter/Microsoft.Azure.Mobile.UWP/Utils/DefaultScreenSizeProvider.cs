@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Utils
     public class DefaultScreenSizeProvider : ScreenSizeProviderBase
     {
         // Timeout choice is arbitrary, but it is better than pausing the SDK indefinitely
-        // when running without every starting the UI.
+        // when running without ever starting the UI.
         private readonly TimeSpan _displayInformationTimeout = TimeSpan.FromSeconds(3);
         private readonly SemaphoreSlim _displayInformationEventSemaphore = new SemaphoreSlim(0);
         private readonly object _lockObject = new object();
@@ -33,7 +33,7 @@ namespace Microsoft.Azure.Mobile.Utils
             }
 
             // Only try to get screen size once resuming event is invoked, because there's no point
-            // in trying beforehand
+            // in trying beforehand.
             ApplicationLifecycleHelper.Instance.ApplicationResuming += (sender, e) =>
             {
                 try
@@ -56,17 +56,17 @@ namespace Microsoft.Azure.Mobile.Utils
                             }
                             UpdateDisplayInformation((int) displayInfo.ScreenHeightInRawPixels,
                                     (int) displayInfo.ScreenWidthInRawPixels);
-                                //_displayInformationEventSemaphore.Release();
+                            _displayInformationEventSemaphore.Release();
 
-                                // Try to detect a change in screen size by attaching handlers to these events.
-                                displayInfo.OrientationChanged += UpdateDisplayInformationHandler;
-                                displayInfo.DpiChanged += UpdateDisplayInformationHandler;
-                                displayInfo.ColorProfileChanged += UpdateDisplayInformationHandler;
-                            });
+                            // Try to detect a change in screen size by attaching handlers to these events.
+                            displayInfo.OrientationChanged += UpdateDisplayInformationHandler;
+                            displayInfo.DpiChanged += UpdateDisplayInformationHandler;
+                            displayInfo.ColorProfileChanged += UpdateDisplayInformationHandler;
+                        });
                 }
                 catch (COMException)
                 {
-                    // This is reached if the MainView is not ready to be accessed yet
+                    // This is reached if the MainView is not ready to be accessed yet.
                     _displayInformationEventSemaphore.Release();
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
                 }
