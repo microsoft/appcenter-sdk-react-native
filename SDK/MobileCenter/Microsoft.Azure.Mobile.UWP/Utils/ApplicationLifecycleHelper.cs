@@ -11,7 +11,9 @@ namespace Microsoft.Azure.Mobile.Utils
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
         private static bool _started;
-        private static bool _suspended;
+        
+        // Considered to be suspended until can verify that has started
+        private static bool _suspended = true;
 
         // Singleton instance of ApplicationLifecycleHelper
         private static ApplicationLifecycleHelper _instance;
