@@ -91,7 +91,6 @@ namespace Microsoft.Azure.Mobile.Analytics
         // Internal for testing purposes
         internal ISessionTracker SessionTracker;
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
-        private bool _hasStarted;
 
         internal Analytics()
         {
@@ -139,7 +138,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                     return;
                 }
                 const string type = "Event";
-                if (ValidateName(name, type))
+                if (ValidateName(ref name, type))
                 {
                     properties = ValidateProperties(properties, name, type);
                     var log = new EventLog(null, null, Guid.NewGuid(), name, null, properties);
@@ -154,11 +153,6 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
-                if (ApplicationLifecycleHelper.Instance.HasShownWindow &&
-                    !ApplicationLifecycleHelper.Instance.IsSuspended)
-                {
-                    ApplicationStartedEventHandler(null, null);
-                }
             }
         }
 
@@ -169,11 +163,11 @@ namespace Microsoft.Azure.Mobile.Analytics
                 if (enabled && ChannelGroup != null && SessionTracker == null)
                 {
                     SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
-                    SubscribeToApplicationLifecycleEvents();
-                    if (_hasStarted)
+                    if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                     {
                         SessionTracker.Resume();
                     }
+                    SubscribeToApplicationLifecycleEvents();
                 }
                 else if (!enabled)
                 {
@@ -195,38 +189,32 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <param name="name">Log name to validate.</param>
         /// <param name="logType">Log type.</param>
         /// <returns><c>true</c> if validation succeeds, otherwise <с>false</с>.</returns>
-        private bool ValidateName(string name, string logType)
+        private bool ValidateName(ref string name, string logType)
         {
             if (string.IsNullOrEmpty(name))
             {
-                MobileCenterLog.Error(LogTag, logType + " name cannot be null or empty.");
+                MobileCenterLog.Error(LogTag, $"{logType} name cannot be null or empty.");
                 return false;
             }
             if (name.Length > MaxEventNameLength)
             {
-                MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : name length cannot be longer than {2} characters.", logType, name, MaxEventNameLength));
-                return false;
+                MobileCenterLog.Warn(LogTag,
+                    $"{logType} '{name}' : name length cannot be longer than {MaxEventNameLength} characters. Name will be truncated.");
+                name = name.Substring(0, MaxEventNameLength);
+                return true;
             }
             return true;
         }
 
         private void SubscribeToApplicationLifecycleEvents()
         {
-            ApplicationLifecycleHelper.Instance.ApplicationStarted += ApplicationStartedEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationResuming += ApplicationResumingEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationSuspended += ApplicationSuspendedEventHandler;
         }
         private void UnsbscribeFromApplicationLifecycleEvents()
         {
-            ApplicationLifecycleHelper.Instance.ApplicationStarted -= ApplicationStartedEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationResuming -= ApplicationResumingEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationSuspended -= ApplicationSuspendedEventHandler;
-        }
-
-        private void ApplicationStartedEventHandler(object sender, EventArgs e)
-        {
-            SessionTracker?.Resume();
-            _hasStarted = true;
         }
 
         private void ApplicationResumingEventHandler(object sender, EventArgs e)
@@ -257,29 +245,41 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 if (result.Count >= MaxEventProperties)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : properties cannot contain more than {2} items. Skipping other properties.", logType, logName, MaxEventProperties));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : properties cannot contain more than {MaxEventProperties} items. Skipping other properties.");
                     break;
                 }
-                if (string.IsNullOrEmpty(property.Key))
+
+                // Skip empty property.
+                var key = property.Key;
+                var value = property.Value;
+                if (string.IsNullOrEmpty(key))
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : a property key cannot be null or empty. Property will be skipped.", logType, logName));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : a property key cannot be null or empty. Property will be skipped.");
+                    break;
                 }
-                else if (property.Key.Length > MaxEventPropertyKeyLength)
+                if (value == null)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property key length cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyKeyLength));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : property '{key}' : property value cannot be null. Property will be skipped.");
+                    break;
                 }
-                else if (property.Value == null)
+
+                // Truncate exceeded property.
+                if (key.Length > MaxEventPropertyKeyLength)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be null. Property '{2}' will be skipped.", logType, logName, property.Key));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : property '{key}' : property key length cannot be longer than {MaxEventPropertyKeyLength} characters. Property key will be truncated.");
+                    key = key.Substring(0, MaxEventPropertyKeyLength);
                 }
-                else if (property.Value.Length > MaxEventPropertyValueLength)
+                if (value.Length > MaxEventPropertyValueLength)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyValueLength));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : property '{key}' : property value length cannot be longer than {MaxEventPropertyValueLength} characters. Property value will be truncated.");
+                    value = value.Substring(0, MaxEventPropertyValueLength);
                 }
-                else
-                {
-                    result.Add(property.Key, property.Value);
-                }
+                result.Add(key, value);
             }
             return result;
         }

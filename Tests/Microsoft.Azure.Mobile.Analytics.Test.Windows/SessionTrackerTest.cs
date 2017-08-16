@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
-            ApplicationSettings.Reset();
+            DefaultApplicationSettings.Reset();
             _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
             SessionTracker.SessionTimeout = 500;
         }
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Resume();
             _sessionTracker.ClearSessions();
 
-            Assert.IsTrue(ApplicationSettings.IsEmpty);
+            Assert.IsTrue(DefaultApplicationSettings.IsEmpty);
         }
 
         /// <summary>

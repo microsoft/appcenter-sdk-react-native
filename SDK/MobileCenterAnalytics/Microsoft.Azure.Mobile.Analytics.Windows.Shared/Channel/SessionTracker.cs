@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
-        private readonly ApplicationSettings _applicationSettings = new ApplicationSettings();
+        private readonly DefaultApplicationSettings _applicationSettings = new DefaultApplicationSettings();
         private readonly object _lockObject = new object();
 
         // This field is purely for testing
@@ -55,8 +55,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 return;
             }
             _sessions = SessionsFromString(sessionsString);
+
             // Re-write sessions in storage in case of any invalid strings
-            _applicationSettings[StorageKey] = SessionsAsString();
+            _applicationSettings.SetValue(StorageKey, SessionsAsString());
             if (_sessions.Count == 0)
             {
                 return;
@@ -137,7 +138,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
             _sid = Guid.NewGuid();
             _sessions.Add(now, _sid.Value);
-            _applicationSettings[StorageKey] = SessionsAsString();
+            _applicationSettings.SetValue(StorageKey, SessionsAsString());
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             var startSessionLog = new StartSessionLog { Sid = _sid };
             _channel.EnqueueAsync(startSessionLog);

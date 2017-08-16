@@ -54,7 +54,6 @@
     <Compile Include="ErrorAttachmentLog.cs" />
     <Compile Include="ErrorReport.cs" />
     <Compile Include="CrashesDelegate.cs" />
-    <Compile Include="ErrorReportCache.cs" />
     <Compile Include="CrashesPart.cs" />
   </ItemGroup>
   <ItemGroup>
