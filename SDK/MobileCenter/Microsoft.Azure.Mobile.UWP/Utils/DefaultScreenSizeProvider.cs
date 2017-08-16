@@ -34,45 +34,56 @@ namespace Microsoft.Azure.Mobile.Utils
 
             // Only try to get screen size once resuming event is invoked, because there's no point
             // in trying beforehand.
-            ApplicationLifecycleHelper.Instance.ApplicationResuming += (sender, e) =>
+            ApplicationLifecycleHelper.Instance.ApplicationResuming += SetUpDisplayInformation;
+        }
+
+        // Subscribe to the proper events and try to 
+        private void SetUpDisplayInformation(object sender, EventArgs e)
+        {
+            try
             {
-                try
-                {
-                    CoreApplication.MainView?.CoreWindow?.Dispatcher?.RunAsync(
-                        CoreDispatcherPriority.Normal, () =>
+                CoreApplication.MainView?.CoreWindow?.Dispatcher?.RunAsync(
+                    CoreDispatcherPriority.Normal, () =>
+                    {
+                        try
                         {
-                            DisplayInformation displayInfo = null;
-                            try
-                            {
-                                // The exceptions that this method can throw are not documented,
-                                // so a catch-all is necessary.
-                                displayInfo = DisplayInformation.GetForCurrentView();
-                            }
-                            catch
-                            {
-                                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
-                                _displayInformationEventSemaphore.Release();
-                                return;
-                            }
-                            UpdateDisplayInformation((int) displayInfo.ScreenHeightInRawPixels,
-                                    (int) displayInfo.ScreenWidthInRawPixels);
-                            _displayInformationEventSemaphore.Release();
+                            // The exceptions that display information can throw are not documented,
+                            // so a catch-all is necessary.
+                            var displayInfo = DisplayInformation.GetForCurrentView();
+                            UpdateDisplayInformation((int)displayInfo.ScreenHeightInRawPixels,
+                                (int)displayInfo.ScreenWidthInRawPixels);
 
                             // Try to detect a change in screen size by attaching handlers to these events.
+                            // Since this code can execute multiple times on the same displayInfo, prevent
+                            // duplicate handlers by removing and then setting them.
+                            displayInfo.OrientationChanged -= UpdateDisplayInformationHandler;
                             displayInfo.OrientationChanged += UpdateDisplayInformationHandler;
+                            displayInfo.DpiChanged -= UpdateDisplayInformationHandler;
                             displayInfo.DpiChanged += UpdateDisplayInformationHandler;
+                            displayInfo.ColorProfileChanged -= UpdateDisplayInformationHandler;
                             displayInfo.ColorProfileChanged += UpdateDisplayInformationHandler;
-                        });
-                }
-                catch (COMException)
-                {
-                    // This is reached if the MainView is not ready to be accessed yet.
-                    _displayInformationEventSemaphore.Release();
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
-                }
-            };
+
+                            // If everything succeeded, we must unsubscribe from the resuming event.
+                            ApplicationLifecycleHelper.Instance.ApplicationResuming -= SetUpDisplayInformation;
+                        }
+                        catch
+                        {
+                            MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+                        }
+                        finally
+                        {
+                            _displayInformationEventSemaphore.Release();
+                        }
+                    });
+            }
+            catch (COMException)
+            {
+                // This is reached if the MainView is not ready to be accessed yet.
+                _displayInformationEventSemaphore.Release();
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+            }
         }
-        
+
         private void UpdateDisplayInformationHandler(DisplayInformation displayInfo, object e)
         {
             UpdateDisplayInformation((int)displayInfo.ScreenHeightInRawPixels, (int)displayInfo.ScreenWidthInRawPixels);
