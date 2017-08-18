@@ -26,8 +26,6 @@ namespace Contoso.Forms.Puppet
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
-            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
         }
 
         static App()
@@ -56,7 +54,9 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-
+            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
+                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+            
             // Need to use reflection because moving this to the Android specific
             // code causes crash. (Unable to access properties before init is called).
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
