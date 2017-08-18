@@ -39,15 +39,16 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
-        private readonly DefaultApplicationSettings _applicationSettings = new DefaultApplicationSettings();
+        private readonly IApplicationSettings _applicationSettings;
         private readonly object _lockObject = new object();
 
         // This field is purely for testing
         internal int NumSessions => _sessions.Count;
 
-        public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
+        public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
         {
             _channel = channel;
+            _applicationSettings = applicationSettings;
             channelGroup.EnqueuingLog += HandleEnqueuingLog;
             var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
             if (sessionsString == null)
