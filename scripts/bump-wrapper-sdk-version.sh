@@ -33,7 +33,7 @@ cat ./mobile-center/package.json | jq -r '.version = env.newVersion' | jq -r '.d
 cat ./mobile-center-crashes/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."mobile-center-link-scripts" = env.newVersion' > ./mobile-center-crashes/package.json.temp && mv ./mobile-center-crashes/package.json.temp ./mobile-center-crashes/package.json 
 cat ./mobile-center-analytics/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."mobile-center-link-scripts" = env.newVersion' > ./mobile-center-analytics/package.json.temp && mv ./mobile-center-analytics/package.json.temp ./mobile-center-analytics/package.json
 cat ./mobile-center-push/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."mobile-center-link-scripts" = env.newVersion' > ./mobile-center-push/package.json.temp && mv ./mobile-center-push/package.json.temp ./mobile-center-push/package.json
-cat ./mobile-center-link-scripts/package.json | jq -r '.version = env.newVersion' > ./mobile-center-link-scripts/package.json.temp && mv ./mobile-center-link-scripts/package.json./temp ./mobile-center-link-scripts/package.json
+cat ./mobile-center-link-scripts/package.json | jq -r '.version = env.newVersion' > ./mobile-center-link-scripts/package.json.temp && mv ./mobile-center-link-scripts/package.json.temp ./mobile-center-link-scripts/package.json
 
 # Update wrapperk sdk version and android VersionCode in Android build.gradle for mobile-center, mobile-center-crashes, mobile-center-analytics,
 # mobile-center-push and RNMobileCenterShared projects
