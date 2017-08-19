@@ -11,40 +11,14 @@
     the version number for Android components from 0.6 to 0.7 and for iOS components from 0.5 to 0.7 (skipping 0.6).
     0.7 becomes the new prevailing version number for the RN SDK.
 
-  RNMobileCenterShared Android
-    RNMobileCenterShared/android/build.gradle
-      Add 1 to versionCode (it's just a counter that need be unique)
-      Bump the version in versionName
-      Ensure com.microsoft.azure.mobile:mobile-center dependency version (at the bottom) is correct
+  First, make sure the iOS/Android native sdk version has been updated. 
 
-  RNMobileCenterShared iOS
-    RNMobileCenterShared/Products/RNMobileCenterShared.podspec
-      Bump the version num s.version
-      Ensure s.dependency 'MobileCenter' dependency version (at the bottom) is correct
-    RNMobileCenterShared.m
-      Update the version number used for `initWithWrapperSdkVersion:`.  That should match s.version in
-      RNMobileCenterShared.podspec (and for Android the wrapper SDK version comes from the version number
-      in build.gradle)
-
-
-  NPM modules
-    mobile-center/package.json
-    mobile-center/scripts/postlink.js (for iOS pod dependencies)
-    mobile-center/android/build.gradle (versionCode, versionName, and dependences at bottom)
-
-    mobile-center-crashes/package.json
-    mobile-center-crashes/scripts/postlink.js (for iOS pod dependencies)
-    mobile-center-crashes/android/build.gradle (versionCode, versionName, and dependences at bottom)
-
-    mobile-center-analytics/package.json
-    mobile-center-analytics/scripts/postlink.js (for iOS pod dependencies)
-    mobile-center-analytics/android/build.gradle (versionCode, versionName, and dependences at bottom)
-
-    mobile-center-push/package.json
-    mobile-center-push/scripts/postlink.js (for iOS pod dependencies)
-    mobile-center-push/android/build.gradle (versionCode, versionName, and dependences at bottom)
-
-    mobile-center-link-script/package.json
+  Then, run the follow command to bump the wrapper sdk version:
+    bash ./scripts/bump-wrapper-sdk-version.sh --oldWrapperSdkVersion=<old_version> --newWrapperSdkVersion=<new_version> --oldAndroidVersionCode=<old_version> --newAndroidVersionCode=<new_version>
+  
+  Note that "oldWrapperSdkVersion" is the latest version of Mobile Center React Native SDK that we release (https://github.com/Microsoft/mobile-center-sdk-react-native/releases),
+  and "oldAndroidVersionCode" is "versionCode" in the ./mobile-center/android/build.gradle file. For example, when we want to release v0.8.2 of this SDK, the bash command to run should be:
+    bash ./scripts/bump-wrapper-sdk-version.sh --oldWrapperSdkVersion=0.8.1 --newWrapperSdkVersion=0.8.2 --oldAndroidVersionCode=9 --newAndroidVersionCode=10  
 
 *** Building for iOS ***
 
