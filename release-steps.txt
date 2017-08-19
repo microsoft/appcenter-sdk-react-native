@@ -48,7 +48,7 @@
 
 *** Building for iOS ***
 
-- Download the latest Mobile Center frameworks zip from https://github.com/Microsoft/mobile-center-sdk-ios/releases.
+  - Download the latest Mobile Center frameworks zip from https://github.com/Microsoft/mobile-center-sdk-ios/releases.
   - Unzip it.
   - Open up RNMobileCenterShared/ios/RNMobileCenterShared.xcodeproj in Xcode
   - Drag in MobileCenter.framework; check "Copy items if needed"; Add to the RNMobileCenterShared target
@@ -76,14 +76,16 @@
   - Publish the release; it will tag the source, so ideally try to make sure it's matched to the binary
 
   To publish the updated CocoaPod:
-  - cd mobile-center-sdk-react-native
+  - cd mobile-center-sdk-react-native/RNMobileCenterShared/Products
   - Ensure you are a contributor to the CocoaPod; if you aren't, have the original contributor add your email address as a maintainer
   - Create a session (using your name and email, not joe blow):  pod trunk register joe.blow@microsoft.com 'Joe Blow' --description='macbook pro'
   - Click on the link in the email that arrives to complete creating the session
+  - As a sanity check, fetch the latest changes of pod repo:
+    pod repo update
   - Lint the update:
     pod spec lint RNMobileCenterShared.podspec  --allow-warnings
 
-    The only warning should be:  There was a problem validating the URL https://mobile.azure.com.
+    The only warning might be:  There was a problem validating the URL https://mobile.azure.com.
   - Publish the update:
     pod trunk push RNMobileCenterShared.podspec --allow-warnings
   - As a double check, ensure that everything looks OK with the published podspec here:  https://cocoapods.org/?q=RNMobileCenter
