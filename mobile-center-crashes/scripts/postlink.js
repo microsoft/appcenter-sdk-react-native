@@ -1,8 +1,8 @@
 var rnpmlink = require('mobile-center-link-scripts');
-var package = require('./../package.json');
+var npmPackages = require('./../package.json');
 
 return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
-    var prompt = package.rnpm.params[0];
+    var prompt = npmPackages.rnpm.params[0];
     prompt.message = prompt.message.replace(/Android/, 'iOS');
 
     return rnpmlink.inquirer.prompt(prompt);

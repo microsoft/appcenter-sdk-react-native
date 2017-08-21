@@ -29,5 +29,13 @@
       "prelink": "node node_modules/mobile-center-push/scripts/prelink",
       "postlink": "node node_modules/mobile-center-push/scripts/postlink"
     }
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-plugin-react": "^7.2.1"
+  },
+  "scripts": {
+    "lint": "eslint ."
   }
 }
