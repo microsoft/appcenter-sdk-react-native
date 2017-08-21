@@ -49,5 +49,4 @@
       "postlink": "node node_modules/mobile-center-crashes/scripts/postlink"
     }
   }
-
 }
