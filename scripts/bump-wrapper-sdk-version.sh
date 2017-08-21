@@ -22,6 +22,24 @@ while [ "$1" != "" ]; do
     shift
 done
 
+# Exit if any of the parameters have not been set
+if [ -z $oldWrapperSdkVersion ]; then
+    echo "oldWrapperSdkVersion cannot be empty"
+    exit 1
+fi
+if [ -z $newWrapperSdkVersion ]; then
+    echo "newWrapperSdkVersion cannot be empty"
+    exit 1
+fi
+if [ -z $oldAndroidVersionCode ]; then
+    echo "oldAndroidVersionCode cannot be empty"
+    exit 1
+fi
+if [ -z $newAndroidVersionCode ]; then
+    echo "newAndroidVersionCode cannot be empty"
+    exit 1
+fi
+
 echo "React-Native SDK $oldWrapperSdkVersion will be updated to $newWrapperSdkVersion"
 echo "React-Native SDK Android VersionCode $oldAndroidVersionCode will be updated to $newAndroidVersionCode"
 
