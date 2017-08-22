@@ -1,4 +1,4 @@
-var rnpmlink = require('mobile-center-link-scripts');
+const rnpmlink = require('mobile-center-link-scripts');
 
 return rnpmlink.ios.initMobileCenterConfig().then(function (file) {
     var code = '  [RNPush register];  // Initialize Mobile Center push';
