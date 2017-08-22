@@ -1,10 +1,10 @@
-let RNMobileCenter = require('react-native').NativeModules.RNMobileCenter;
+const RNMobileCenter = require('react-native').NativeModules.RNMobileCenter;
 
 function format(tag, msg) {
     return `[${tag}] ${msg}`;
 }
 
-let MobileCenterLog = {
+const MobileCenterLog = {
 
     // By design, these constants match both the iOS SDK values in MSContants.h and the standard Android values in android.util.Log
     LogLevelVerbose: 2,      // Logging will be very chatty
@@ -16,7 +16,7 @@ let MobileCenterLog = {
     LogLevelNone: 99,        // Logging is disabled
 
     warn(tag, msg) {
-        RNMobileCenter.getLogLevel().then(logLevel => {
+        RNMobileCenter.getLogLevel().then((logLevel) => {
             if (logLevel <= MobileCenterLog.LogLevelWarning) {
                 console.warn(format(tag, msg));
             }
@@ -24,12 +24,12 @@ let MobileCenterLog = {
     },
 
     error(tag, msg) {
-        RNMobileCenter.getLogLevel().then(logLevel => {
+        RNMobileCenter.getLogLevel().then((logLevel) => {
             if (logLevel <= MobileCenterLog.LogLevelError) {
                 console.error(format(tag, msg));
             }
         });
     }
-}
+};
 
 module.exports = MobileCenterLog;
