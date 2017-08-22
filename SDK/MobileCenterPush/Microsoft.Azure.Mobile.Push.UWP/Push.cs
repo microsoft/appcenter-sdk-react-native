@@ -27,17 +27,26 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="e">OnLaunched method event args</param>
         public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
-            Instance.InstanceCheckLaunchedFromNotification(e);
+            Instance.InstanceCheckLaunchedFromNotification(e?.Arguments);
         }
 
-        private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        /// <summary>
+        /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
+        /// </summary>
+        /// <param name="args">The arguments that are passed to the app during its launch activation.</param>
+        public static void CheckLaunchedFromNotification(string args)
+        {
+            Instance.InstanceCheckLaunchedFromNotification(args);
+        }
+
+        private void InstanceCheckLaunchedFromNotification(string args)
         {
             IDictionary<string, string> customData = null;
             using (_mutex.GetLock())
             {
                 if (!IsInactive)
                 {
-                    customData = ParseLaunchString(e?.Arguments);
+                    customData = ParseLaunchString(args);
                 }
             }
             if (customData != null)
