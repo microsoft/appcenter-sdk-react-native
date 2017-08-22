@@ -42,7 +42,7 @@ const MobileCenter = {
     // async - returns a Promise
     setCustomProperties(properties) {
         if (properties instanceof MobileCenter.CustomProperties) {
-            RNMobileCenter.setCustomProperties(properties);
+            return RNMobileCenter.setCustomProperties(properties);
         } else {
             const type = Object.prototype.toString.apply(properties);
             MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
