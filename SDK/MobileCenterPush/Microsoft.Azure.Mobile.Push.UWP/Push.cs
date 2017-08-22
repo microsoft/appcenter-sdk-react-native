@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
@@ -30,16 +31,8 @@ namespace Microsoft.Azure.Mobile.Push
             Instance.InstanceCheckLaunchedFromNotification(e?.Arguments);
         }
 
-        /// <summary>
-        /// This method call is needed to handle click on push to trigger the portable PushNotificationReceived event.
-        /// </summary>
-        /// <param name="args">The arguments that are passed to the app during its launch activation.</param>
-        public static void CheckLaunchedFromNotification(string args)
-        {
-            Instance.InstanceCheckLaunchedFromNotification(args);
-        }
-
-        private void InstanceCheckLaunchedFromNotification(string args)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void InstanceCheckLaunchedFromNotification(string args)
         {
             IDictionary<string, string> customData = null;
             using (_mutex.GetLock())
