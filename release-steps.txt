@@ -13,12 +13,11 @@
 
   First, make sure the iOS/Android native sdk version has been updated. 
 
-  Then, run the follow command to bump the wrapper sdk version:
-    bash ./scripts/bump-wrapper-sdk-version.sh --oldWrapperSdkVersion=<old_version> --newWrapperSdkVersion=<new_version> --oldAndroidVersionCode=<old_version> --newAndroidVersionCode=<new_version>
+  Then, from the root folder, run the follow command to bump the wrapper sdk version:
+    bash ./scripts/bump-wrapper-sdk-version.sh --newWrapperSdkVersion=<new_version>
   
-  Note that "oldWrapperSdkVersion" is the latest version of Mobile Center React Native SDK that we release (https://github.com/Microsoft/mobile-center-sdk-react-native/releases),
-  and "oldAndroidVersionCode" is "versionCode" in the ./mobile-center/android/build.gradle file. For example, when we want to release v0.8.2 of this SDK, the bash command to run should be:
-    bash ./scripts/bump-wrapper-sdk-version.sh --oldWrapperSdkVersion=0.8.1 --newWrapperSdkVersion=0.8.2 --oldAndroidVersionCode=9 --newAndroidVersionCode=10  
+  For example, when we want to release v0.8.2 of this SDK, the bash command to run should be:
+    bash ./scripts/bump-wrapper-sdk-version.sh --newWrapperSdkVersion=0.8.2
 
 *** Building for iOS ***
 
