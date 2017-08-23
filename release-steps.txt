@@ -13,7 +13,7 @@
 
   First, make sure the iOS/Android native sdk version has been updated. 
 
-  Then, from the root folder, run the follow command to bump the wrapper sdk version:
+  Then, from the root folder, run the following command to bump the wrapper sdk version:
     bash ./scripts/bump-wrapper-sdk-version.sh --newWrapperSdkVersion=<new_version>
   
   For example, when we want to release v0.8.2 of this SDK, the bash command to run should be:
