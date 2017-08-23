@@ -5,30 +5,36 @@ while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
     VALUE=`echo $1 | awk -F= '{print $2}'`
     case $PARAM in
-        --oldWrapperSdkVersion)
-            oldWrapperSdkVersion=$VALUE
-            ;;
         --newWrapperSdkVersion)
             newWrapperSdkVersion=$VALUE
-            ;;
-        --oldAndroidVersionCode)
-            oldAndroidVersionCode=$VALUE
-            ;;
-        --newAndroidVersionCode)
-            newAndroidVersionCode=$VALUE
             ;;
         *)
     esac
     shift
 done
 
+# Exit if newWrapperSdkVersion has not been set
+if [ -z $newWrapperSdkVersion ]; then
+    echo "--newWrapperSdkVersion cannot be empty. Please pass in new sdk version as parameter."
+    exit 1
+fi
+
+# Find out the old wrapper sdk version
+oldWrapperSdkVersionString=$(grep versionName ./mobile-center/android/build.gradle)
+[[ ${oldWrapperSdkVersionString} =~ ([0-9]+.[0-9]+.[0-9]+) ]]
+oldWrapperSdkVersion="${BASH_REMATCH[1]}"
+
+# Find out the old Android versionCode
+oldAndroidVersionCodeString=$(grep versionCode ./mobile-center/android/build.gradle)
+[[ ${oldAndroidVersionCodeString} =~ ([0-9]+) ]]
+oldAndroidVersionCode="${BASH_REMATCH[1]}"
+
+# Compute the new Android versionCode by adding one to old Android versionCode
+newAndroidVersionCode=$(($oldAndroidVersionCode + 1))
+
 # Exit if any of the parameters have not been set
 if [ -z $oldWrapperSdkVersion ]; then
     echo "oldWrapperSdkVersion cannot be empty"
-    exit 1
-fi
-if [ -z $newWrapperSdkVersion ]; then
-    echo "newWrapperSdkVersion cannot be empty"
     exit 1
 fi
 if [ -z $oldAndroidVersionCode ]; then
