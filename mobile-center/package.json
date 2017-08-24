@@ -28,5 +28,16 @@
       "prelink": "node node_modules/mobile-center/scripts/prelink",
       "postlink": "node node_modules/mobile-center/scripts/postlink"
     }
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.2.1"
+  },
+  "scripts": {
+    "lint": "eslint ."
   }
 }

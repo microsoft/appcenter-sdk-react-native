@@ -25,5 +25,13 @@
     "plist": "1.2.0",
     "which": "^1.2.11",
     "xcode": "^0.8.9"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-plugin-react": "^7.2.1"
+  },
+  "scripts": {
+    "lint": "eslint ."
   }
 }

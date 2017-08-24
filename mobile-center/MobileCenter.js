@@ -1,9 +1,9 @@
-let RNMobileCenter = require('react-native').NativeModules.RNMobileCenter;
-let MobileCenterLog = require('mobile-center/mobile-center-log');
+const RNMobileCenter = require('react-native').NativeModules.RNMobileCenter;
+const MobileCenterLog = require('mobile-center/mobile-center-log');
 
 const logTag = 'MobileCenter';
 
-let MobileCenter = {
+const MobileCenter = {
 
     // By design, these constants match both the iOS SDK values in MSContants.h and the standard Android values in android.util.Log
     LogLevelVerbose: MobileCenterLog.LogLevelVerbose,  // Logging will be very chatty
@@ -43,38 +43,36 @@ let MobileCenter = {
     setCustomProperties(properties) {
         if (properties instanceof MobileCenter.CustomProperties) {
             return RNMobileCenter.setCustomProperties(properties);
-        }
-        else {
-            let type = Object.prototype.toString.apply(properties);
+        } else {
+            const type = Object.prototype.toString.apply(properties);
             MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
         }
     }
 };
 
 MobileCenter.CustomProperties = class {
-
     set(key, value) {
         if (typeof key === 'string') {
-            let valueType = typeof value;
+            const valueType = typeof value;
             switch (valueType) {
-
                 case 'string':
                 case 'number':
                 case 'boolean':
-                    this[key] = { type: valueType, value: value };
+                    this[key] = { type: valueType, value };
                     break;
 
                 case 'object':
                     if (value instanceof Date) {
                         this[key] = { type: 'date-time', value: value.getTime() };
-                        break;
+                    } else {
+                        MobileCenterLog.error(logTag, 'CustomProperties: Invalid value type, expected string|number|boolean|Date.');
                     }
+                    break;
 
                 default:
                     MobileCenterLog.error(logTag, 'CustomProperties: Invalid value type, expected string|number|boolean|Date.');
             }
-        }
-        else {
+        } else {
             MobileCenterLog.error(logTag, 'CustomProperties: Invalid key type, expected string.');
         }
         return this;
@@ -83,12 +81,11 @@ MobileCenter.CustomProperties = class {
     clear(key) {
         if (typeof key === 'string') {
             this[key] = { type: 'clear' };
-        }
-        else {
+        } else {
             MobileCenterLog.error(logTag, 'CustomProperties: Invalid key type, expected string.');
         }
         return this;
     }
-}
+};
 
 module.exports = MobileCenter;
