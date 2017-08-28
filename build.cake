@@ -54,7 +54,7 @@ var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.11.2";
-var IOS_SDK_VERSION = "0.11.2";
+var IOS_SDK_VERSION = "0.12.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -69,7 +69,7 @@ var PLATFORM_PATHS = new PlatformPaths();
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
 var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
@@ -310,16 +310,16 @@ Task("Externals-Ios")
 	Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
 	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
-	var files = GetFiles("./externals/ios/*/*.framework/MobileCenter*");
+	var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
 	foreach (var file in files)
 	{
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
 
 	// Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
-	if(DirectoryExists("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle"))
+	if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
 	{
-		MoveDirectory("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
+		MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
 	}
 }).OnError(HandleError);
 
