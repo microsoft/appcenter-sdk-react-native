@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Azure.Mobile.Channel;
+using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Test.Windows.Channel;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Microsoft.Azure.Mobile.Ingestion.Models;
 
 namespace Microsoft.Azure.Mobile.Test
 {
@@ -143,7 +143,7 @@ namespace Microsoft.Azure.Mobile.Test
 
             MockMobileCenterService.Instance.MockInstance.VerifySet(
                 service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
-            settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = It.IsAny<bool>(), Times.Never());
+            settingsMock.Verify(settings => settings.SetValue(MobileCenter.EnabledKey, It.IsAny<bool>()), Times.Never());
             channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(It.IsAny<bool>()), Times.Never());
         }
 
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Mobile.Test
 
             MockMobileCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal,
                 Times.Once());
-            settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = setVal, Times.Once());
+            settingsMock.Verify(settings => settings.SetValue(MobileCenter.EnabledKey, setVal), Times.Once());
             channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(setVal), Times.Once());
         }
 
@@ -185,7 +185,7 @@ namespace Microsoft.Azure.Mobile.Test
             MobileCenter.SetEnabledAsync(false).Wait();
             MobileCenter.Start("appsecret", typeof(MockMobileCenterService));
 
-            settingsMock.VerifySet(settings => settings[MobileCenter.EnabledKey] = false, Times.Once());
+            settingsMock.Verify(settings => settings.SetValue(MobileCenter.EnabledKey, false), Times.Once());
         }
 
         /// <summary>
@@ -207,9 +207,9 @@ namespace Microsoft.Azure.Mobile.Test
         [TestMethod]
         public void GetInstallId()
         {
-            var settings = new ApplicationSettings();
+            var settings = new DefaultApplicationSettings();
             var fakeInstallId = Guid.NewGuid();
-            settings[MobileCenter.InstallIdKey] = fakeInstallId;
+            settings.SetValue(MobileCenter.InstallIdKey, fakeInstallId);
             MobileCenter.Instance = new MobileCenter(settings);
             var installId = MobileCenter.GetInstallIdAsync().Result;
 
@@ -321,13 +321,19 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
-        /// Verify that configuring a Mobile Center instance multiple times throws an error
+        /// Verify that configuring a Mobile Center instance multiple times does not throw an error
         /// </summary>
         [TestMethod]
         public void ConfigureMobileCenterMultipleTimes()
         {
-            MobileCenter.Instance.InstanceConfigure("appsecret");
-            Assert.ThrowsException<MobileCenterException>(() => MobileCenter.Instance.InstanceConfigure("appsecret"));
+            try
+            {
+                MobileCenter.Instance.InstanceConfigure("appsecret");
+            }
+            catch (MobileCenterException)
+            {
+                Assert.Fail();
+            }
         }
 
         /// <summary>
@@ -337,7 +343,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void LogUrlIsNotSetByDefault()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
-            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+            MobileCenter.Instance = new MobileCenter(new DefaultApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
             channelGroupMock.Verify(channelGroup => channelGroup.SetLogUrl(It.IsAny<string>()), Times.Never());
@@ -350,7 +356,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void SetLogUrlBeforeConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
-            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+            MobileCenter.Instance = new MobileCenter(new DefaultApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             var customLogUrl = "www dot log url dot com";
             MobileCenter.SetLogUrl(customLogUrl);
@@ -366,7 +372,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void SetLogUrlAfterConfigure()
         {
             var channelGroupMock = new Mock<IChannelGroup>();
-            MobileCenter.Instance = new MobileCenter(new ApplicationSettings(),
+            MobileCenter.Instance = new MobileCenter(new DefaultApplicationSettings(),
                 new MockChannelGroupFactory(channelGroupMock));
             MobileCenter.Configure("appsecret");
             var customLogUrl = "www dot log url dot com";

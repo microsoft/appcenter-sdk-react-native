@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Models;
@@ -17,14 +18,15 @@ namespace Microsoft.Azure.Mobile
         // Internals for testing
         internal const string EnabledKey = Constants.KeyPrefix + "Enabled";
         internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
-        private const string ConfigurationErrorMessage = "Failed to configure Mobile Center";
-        private const string StartErrorMessage = "Failed to start services";
+        private const string ConfigurationErrorMessage = "Failed to configure Mobile Center.";
+        private const string StartErrorMessage = "Failed to start services.";
         private const string ChannelName = "core";
         private const string DistributeServiceFullType = "Microsoft.Azure.Mobile.Distribute.Distribute";
 
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object MobileCenterLock = new object();
 
+        private static IApplicationSettingsFactory _applicationSettingsFactory = new DefaultApplicationSettingsFactory();
         private readonly IApplicationSettings _applicationSettings;
         private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
@@ -77,6 +79,15 @@ namespace Microsoft.Azure.Mobile
                     MobileCenterLog.Level = value;
                 }
             }
+        }
+
+        // This method must be called *before* instance of MobileCenter has been created
+        // for a custom application settings to be used.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static void SetApplicationSettingsFactory(IApplicationSettingsFactory factory)
+        {
+            _applicationSettingsFactory = factory;
         }
 
         static Task<bool> PlatformIsEnabledAsync()
@@ -175,7 +186,7 @@ namespace Microsoft.Azure.Mobile
         // Creates a new instance of MobileCenter
         private MobileCenter()
         {
-            _applicationSettings = new ApplicationSettings();
+            _applicationSettings = _applicationSettingsFactory.CreateApplicationSettings();
             LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
             LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
         }
@@ -185,6 +196,11 @@ namespace Microsoft.Azure.Mobile
         {
             _applicationSettings = applicationSettings;
             _channelGroupFactory = channelGroupFactory;
+        }
+
+        internal IApplicationSettings ApplicationSettings
+        {
+            get { return _applicationSettings; }
         }
 
         private bool InstanceEnabled
@@ -203,7 +219,7 @@ namespace Microsoft.Azure.Mobile
                 }
 
                 _channelGroup?.SetEnabled(value);
-                _applicationSettings[EnabledKey] = value;
+                _applicationSettings.SetValue(EnabledKey, value);
 
                 foreach (var service in _services)
                 {
@@ -241,7 +257,8 @@ namespace Microsoft.Azure.Mobile
         {
             if (_instanceConfigured)
             {
-                throw new MobileCenterException("Multiple attempts to configure Mobile Center");
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Mobile Center may only be configured once.");
+                return;
             }
             _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
@@ -297,9 +314,9 @@ namespace Microsoft.Azure.Mobile
                         startServiceLog.Services.Add(serviceInstance.ServiceName);
                     }
                 }
-                catch (MobileCenterException ex)
+                catch (MobileCenterException)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", ex);
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.");
                 }
             }
 
@@ -314,13 +331,13 @@ namespace Microsoft.Azure.Mobile
         {
             if (service == null)
             {
-                throw new MobileCenterException("Service instance is null; static 'Instance' property either doesn't exist or returned null");
+                throw new MobileCenterException("Attempted to start an invalid Mobile Center service.");
             }
             if (_services.Contains(service))
             {
-                ThrowStartedServiceException(service.GetType().Name);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started the service with class name '{service.GetType().Name}'");
+                return;
             }
-
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
             MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
@@ -335,8 +352,7 @@ namespace Microsoft.Azure.Mobile
             }
             catch (MobileCenterException ex)
             {
-                var message = _instanceConfigured ? StartErrorMessage : ConfigurationErrorMessage;
-                MobileCenterLog.Error(MobileCenterLog.LogTag, message, ex);
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, ex.Message);
             }
         }
 

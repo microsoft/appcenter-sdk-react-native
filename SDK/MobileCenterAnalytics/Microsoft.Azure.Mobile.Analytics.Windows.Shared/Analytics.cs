@@ -162,12 +162,12 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 if (enabled && ChannelGroup != null && SessionTracker == null)
                 {
-                    SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
-                    SubscribeToApplicationLifecycleEvents();
+                    SessionTracker = CreateSessionTracker(ChannelGroup, Channel, ApplicationSettings);
                     if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                     {
                         SessionTracker.Resume();
                     }
+                    SubscribeToApplicationLifecycleEvents();
                 }
                 else if (!enabled)
                 {
@@ -178,9 +178,9 @@ namespace Microsoft.Azure.Mobile.Analytics
             }
         }
 
-        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
+        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
         {
-            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
+            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel, applicationSettings) ?? new SessionTracker(channelGroup, channel, applicationSettings);
         }
 
         /// <summary>

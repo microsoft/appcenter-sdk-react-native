@@ -15,6 +15,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
     {
         private Mock<IChannelGroup> _mockChannelGroup;
         private Mock<IChannelUnit> _mockChannel;
+        private Mock<IApplicationSettings> _mockSettings;
         private SessionTracker _sessionTracker;
 
         [TestInitialize]
@@ -25,8 +26,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
-            ApplicationSettings.Reset();
-            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
+            _mockSettings = new Mock<IApplicationSettings>();
+            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object, _mockSettings.Object);
             SessionTracker.SessionTimeout = 500;
         }
 
@@ -94,7 +95,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Resume();
             _sessionTracker.ClearSessions();
 
-            Assert.IsTrue(ApplicationSettings.IsEmpty);
+            _mockSettings.Verify(channel => channel.Remove(SessionTracker.StorageKey), Times.Once);
         }
 
         /// <summary>

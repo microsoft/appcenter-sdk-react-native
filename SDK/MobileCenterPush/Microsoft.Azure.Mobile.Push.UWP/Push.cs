@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Push.Ingestion.Models;
 using Microsoft.Azure.Mobile.Utils;
@@ -27,17 +28,18 @@ namespace Microsoft.Azure.Mobile.Push
         /// <param name="e">OnLaunched method event args</param>
         public static void CheckLaunchedFromNotification(LaunchActivatedEventArgs e)
         {
-            Instance.InstanceCheckLaunchedFromNotification(e);
+            Instance.InstanceCheckLaunchedFromNotification(e?.Arguments);
         }
 
-        private void InstanceCheckLaunchedFromNotification(LaunchActivatedEventArgs e)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void InstanceCheckLaunchedFromNotification(string args)
         {
             IDictionary<string, string> customData = null;
             using (_mutex.GetLock())
             {
                 if (!IsInactive)
                 {
-                    customData = ParseLaunchString(e?.Arguments);
+                    customData = ParseLaunchString(args);
                 }
             }
             if (customData != null)
