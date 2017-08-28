@@ -26,9 +26,10 @@ namespace Microsoft.Azure.Mobile
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object MobileCenterLock = new object();
 
-        private static IApplicationSettingsFactory _applicationSettingsFactory = new DefaultApplicationSettingsFactory();
+        private static IApplicationSettingsFactory _applicationSettingsFactory;
+        private static IChannelGroupFactory _channelGroupFactory;
+
         private readonly IApplicationSettings _applicationSettings;
-        private readonly IChannelGroupFactory _channelGroupFactory;
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
@@ -88,6 +89,15 @@ namespace Microsoft.Azure.Mobile
         public static void SetApplicationSettingsFactory(IApplicationSettingsFactory factory)
         {
             _applicationSettingsFactory = factory;
+        }
+
+        // This method must be called *before* instance of MobileCenter has been created
+        // for a custom application settings to be used.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static void SetChannelGroupFactory(IChannelGroupFactory factory)
+        {
+            _channelGroupFactory = factory;
         }
 
         static Task<bool> PlatformIsEnabledAsync()
@@ -186,16 +196,9 @@ namespace Microsoft.Azure.Mobile
         // Creates a new instance of MobileCenter
         private MobileCenter()
         {
-            _applicationSettings = _applicationSettingsFactory.CreateApplicationSettings();
+            _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
             LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
             LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
-        }
-
-        // This constructor is only for unit testing
-        internal MobileCenter(IApplicationSettings applicationSettings, IChannelGroupFactory channelGroupFactory = null)
-        {
-            _applicationSettings = applicationSettings;
-            _channelGroupFactory = channelGroupFactory;
         }
 
         internal IApplicationSettings ApplicationSettings

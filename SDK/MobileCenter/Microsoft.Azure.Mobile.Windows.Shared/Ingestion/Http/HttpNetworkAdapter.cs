@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
         }
 
-        private HttpRequestMessage CreateRequest(string uri, IDictionary<string, string> headers, string jsonContent)
+        internal HttpRequestMessage CreateRequest(string uri, IDictionary<string, string> headers, string jsonContent)
         {
             // Create HTTP transport objects.
             var request = new HttpRequestMessage

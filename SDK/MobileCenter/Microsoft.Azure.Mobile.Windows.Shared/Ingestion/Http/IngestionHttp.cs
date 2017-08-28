@@ -18,10 +18,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         private string _baseLogUrl;
         private readonly IHttpNetworkAdapter _httpNetwork;
 
-        public IngestionHttp() : this(new HttpNetworkAdapter())
-        {
-        }
-
         public IngestionHttp(IHttpNetworkAdapter httpNetwork)
         {
             _httpNetwork = httpNetwork;
@@ -68,7 +64,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             return new HttpServiceCall(this, logs, appSecret, installId);
         }
 
-        private IDictionary<string, string> CreateHeaders(string appSecret, Guid installId)
+        internal IDictionary<string, string> CreateHeaders(string appSecret, Guid installId)
         {
             // Log headers.
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, "Headers: " +
