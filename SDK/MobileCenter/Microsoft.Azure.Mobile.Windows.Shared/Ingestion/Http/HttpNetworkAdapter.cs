@@ -75,7 +75,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(uri),
-                Content = new StringContent(jsonContent, Encoding.UTF8, ContentTypeValue)
             };
 
             // Set Headers.
@@ -83,6 +82,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 request.Headers.Add(header.Key, header.Value);
             }
+
+            // Request content.
+            request.Content = new StringContent(jsonContent, Encoding.UTF8);
+            request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(ContentTypeValue);
             return request;
         }
 

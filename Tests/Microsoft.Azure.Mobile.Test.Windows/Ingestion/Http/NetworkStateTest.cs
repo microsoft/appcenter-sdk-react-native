@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Linq;
 
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
     [TestClass]
-    public class NetworkStateTest
+    public class NetworkStateTest : HttpIngestionTest
     {
-        private Mock<IHttpNetworkAdapter> _adapter;
         private NetworkStateAdapter _networkState;
         private NetworkStateIngestion _networkStateIngestion;
 
@@ -53,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void NetworkStateIngestionOnline()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _networkState.IsConnected = true;
             _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync();
             VerifyAdapterSend(Times.Once());
@@ -68,7 +64,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void NetworkStateIngestionOffline()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _networkState.IsConnected = false;
             var completedInTime = false;
             _networkStateIngestion.ExecuteCallAsync(call).ContinueWith(task => completedInTime = true);
@@ -84,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void NetworkStateIngestionComeBackOnline()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _networkState.IsConnected = false;
             var task = _networkStateIngestion.ExecuteCallAsync(call);
             VerifyAdapterSend(Times.Never());
@@ -105,7 +101,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             {
                 calls.Add(PrepareServiceCall());
             }
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _networkState.IsConnected = false;
 
             var tasks = new List<Task>();
@@ -127,25 +123,6 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var installId = Guid.NewGuid();
             var logs = new List<Log>();
             return _networkStateIngestion.PrepareServiceCall(appSecret, installId, logs);
-        }
-
-        /// <summary>
-        /// Helper for setup responce.
-        /// </summary>
-        private void SetupAdapterSendResponse(HttpResponseMessage response)
-        {
-            _adapter
-                .Setup(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.Run(() => response));
-        }
-
-        /// <summary>
-        /// Helper for verify SendAsync call.
-        /// </summary>
-        private void VerifyAdapterSend(Times times)
-        {
-            _adapter
-                .Verify(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), times);
         }
     }
 }

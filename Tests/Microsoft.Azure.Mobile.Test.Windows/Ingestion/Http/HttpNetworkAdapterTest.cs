@@ -1,9 +1,8 @@
-﻿using Microsoft.Azure.Mobile.Ingestion;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Net.Http;
-using System.Threading;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
 {
@@ -13,14 +12,26 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
         private readonly HttpNetworkAdapter _adapter = new HttpNetworkAdapter();
 
         /// <summary>
-        /// Validate that dispose is disposing http client
+        /// Verify that adapter create request correctly.
         /// </summary>
         [TestMethod]
-        public void HttpNetworkAdapterDisposeTest()
+        public void CreateRequest()
         {
-            _adapter.Dispose();
+            var uri = "https://test";
+            var appSecret = Guid.NewGuid().ToString();
+            var installId = Guid.NewGuid().ToString();
+            var headers = new Dictionary<string, string>
+            {
+                { IngestionHttp.AppSecret, appSecret },
+                { IngestionHttp.InstallId, installId }
+            };
+            var jsonContent = "{}";
+            var request = _adapter.CreateRequest(uri, headers, jsonContent);
 
-            Assert.ThrowsException<IngestionException>(() => _adapter.SendAsync(new HttpRequestMessage(), CancellationToken.None).RunNotAsync());
+            Assert.AreEqual(request.Method, HttpMethod.Post);
+            Assert.IsTrue(request.Headers.Contains(IngestionHttp.AppSecret));
+            Assert.IsTrue(request.Headers.Contains(IngestionHttp.InstallId));
+            Assert.IsInstanceOfType(request.Content, typeof(StringContent));
         }
     }
 }
