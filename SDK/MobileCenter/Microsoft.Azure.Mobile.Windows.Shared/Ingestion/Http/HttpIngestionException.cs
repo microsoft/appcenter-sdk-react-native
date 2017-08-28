@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public class HttpIngestionException : IngestionException
     {
-        public HttpMethod Method { get; set; }
+        public string Method { get; set; }
         public Uri RequestUri { get; set; }
         public string RequestContent { get; set; }
-        public HttpStatusCode StatusCode { get; set; }
+        public int StatusCode { get; set; }
         public string ResponseContent { get; set; }
         public override bool IsRecoverable
         {
