@@ -6,7 +6,7 @@ PODS:
     - MobileCenter/Core
   - MobileCenter/Push (0.11.2):
     - MobileCenter/Core
-  - RNMobileCenterShared (0.8.1):
+  - RNMobileCenterShared (0.9.0):
     - MobileCenter/Core (~> 0.11.2)
 
 DEPENDENCIES:
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   MobileCenter: c08c239253ce523eb18f38958f68ea429ceafc08
-  RNMobileCenterShared: 111278ba8775b9497d802a7e6787eee83a9d72df
+  RNMobileCenterShared: 497725d6d2e8929d0a4a62332b9161188304666a
 
 PODFILE CHECKSUM: 55a6cb35588fb5b1bca1ae425dc36ee4684324be
 
