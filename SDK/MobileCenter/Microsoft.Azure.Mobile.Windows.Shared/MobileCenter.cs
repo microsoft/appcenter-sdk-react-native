@@ -88,7 +88,10 @@ namespace Microsoft.Azure.Mobile
         [Obsolete]
         public static void SetApplicationSettingsFactory(IApplicationSettingsFactory factory)
         {
-            _applicationSettingsFactory = factory;
+            lock (MobileCenterLock)
+            {
+                _applicationSettingsFactory = factory;
+            }
         }
 
         // This method must be called *before* instance of MobileCenter has been created
@@ -97,7 +100,10 @@ namespace Microsoft.Azure.Mobile
         [Obsolete]
         public static void SetChannelGroupFactory(IChannelGroupFactory factory)
         {
-            _channelGroupFactory = factory;
+            lock (MobileCenterLock)
+            {
+                _channelGroupFactory = factory;
+            }
         }
 
         static Task<bool> PlatformIsEnabledAsync()
@@ -196,9 +202,12 @@ namespace Microsoft.Azure.Mobile
         // Creates a new instance of MobileCenter
         private MobileCenter()
         {
-            _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
-            LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
-            LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
+            lock (MobileCenterLock)
+            {
+                _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
+                LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
+                LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
+            }
         }
 
         internal IApplicationSettings ApplicationSettings
