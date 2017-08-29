@@ -8,7 +8,6 @@ using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Microsoft.Azure.Mobile.Ingestion;
 
 namespace Microsoft.Azure.Mobile.Test.Channel
 {

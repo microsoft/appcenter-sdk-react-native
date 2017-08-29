@@ -11,16 +11,16 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
         {
             HttpIngestionException exception = new HttpIngestionException("Test exception message");
 
-            exception.StatusCode = System.Net.HttpStatusCode.ServiceUnavailable;
+            exception.StatusCode = (int) System.Net.HttpStatusCode.ServiceUnavailable;
             Assert.IsTrue(exception.IsRecoverable);
 
-            exception.StatusCode = System.Net.HttpStatusCode.RequestTimeout;
+            exception.StatusCode = (int) System.Net.HttpStatusCode.RequestTimeout;
             Assert.IsTrue(exception.IsRecoverable);
 
-            exception.StatusCode = (System.Net.HttpStatusCode)429;
+            exception.StatusCode = 429;
             Assert.IsTrue(exception.IsRecoverable);
 
-            exception.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+            exception.StatusCode = (int) System.Net.HttpStatusCode.InternalServerError;
             Assert.IsTrue(exception.IsRecoverable);
         }
     }
