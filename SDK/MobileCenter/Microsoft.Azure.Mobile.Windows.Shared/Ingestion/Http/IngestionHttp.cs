@@ -32,8 +32,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
             var baseUrl = string.IsNullOrEmpty(_baseLogUrl) ? DefaultBaseUrl : _baseLogUrl;
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {baseUrl + ApiVersion}...");
+
+            // Create request headers.
             var requestHeaders = CreateHeaders(call.AppSecret, call.InstallId);
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, "Headers: " +
+                    $"{AppSecret}={GetRedactedAppSecret(call.AppSecret)}, " +
+                    $"{InstallId}={call.InstallId}");
+
+            // Create request content.
             var requestContent = CreateLogsContent(call.Logs);
+            MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
+            
+            // Send request.
             await _httpNetwork.SendAsync(baseUrl + ApiVersion, requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);
         }
 
@@ -66,10 +76,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
 
         internal IDictionary<string, string> CreateHeaders(string appSecret, Guid installId)
         {
-            // Log headers.
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, "Headers: " +
-                    $"{AppSecret}={GetRedactedAppSecret(appSecret)}, " +
-                    $"{InstallId}={installId}");
             return new Dictionary<string, string>
             {
                 { AppSecret, appSecret },
