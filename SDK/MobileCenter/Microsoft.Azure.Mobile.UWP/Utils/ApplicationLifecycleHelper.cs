@@ -92,8 +92,8 @@ namespace Microsoft.Azure.Mobile.Utils
                         {
                             return;
                         }
-                        if (CoreApplication.Views.Any(view => view.CoreWindow != null && 
-                                                                view.CoreWindow.Visible))
+                        if (CoreApplication.Views.Any(view => view.CoreWindow != null &&
+                                                              view.CoreWindow.Visible))
                         {
                             needsResume = true;
                         }
@@ -105,7 +105,12 @@ namespace Microsoft.Azure.Mobile.Utils
             }
             catch (COMException)
             {
-                // If MainView can't be accessed, a COMException is thrown. It means that the
+                // If MainView can't be accessed, a COMException or InvalidOperationException is thrown. It means that the
+                // MainView hasn't been created, and thus the UI hasn't appeared yet.
+            }
+            catch (InvalidOperationException)
+            {
+                // If MainView can't be accessed, a COMException or InvalidOperationException is thrown. It means that the
                 // MainView hasn't been created, and thus the UI hasn't appeared yet.
             }
             return needsResume;
