@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = 'RNMobileCenterShared/RNMobileCenterShared.framework'
 
-  s.dependency 'MobileCenter/Core', '~> 0.11.2'
+  s.dependency 'MobileCenter/Core', '~> 0.12.0'
 end
