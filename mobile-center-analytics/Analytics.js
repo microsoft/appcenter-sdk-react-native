@@ -1,4 +1,4 @@
-let RNAnalytics = require("react-native").NativeModules.RNAnalytics;
+const RNAnalytics = require('react-native').NativeModules.RNAnalytics;
 
 module.exports = {
     // async - returns a Promise
@@ -27,19 +27,19 @@ module.exports = {
 function sanitizeProperties(props) {
     // Only string:string mappings are supported currently.
 
-    var result = {};
+    const result = {};
 
-    for(let i in props) {
+    for (const i in props) {
         switch (typeof props[i]) {
-        case "string":
-        case "number":
-        case "boolean":
-            result[i] = ""+props[i];
+        case 'string':
+        case 'number':
+        case 'boolean':
+            result[i] = `${props[i]}`;
             break;
-        case "undefined":
+        case 'undefined':
             break;
             default:
-            throw new Error("Properties cannot be serialized. Object must only contain strings");
+            throw new Error('Properties cannot be serialized. Object must only contain strings');
         }
     }
 

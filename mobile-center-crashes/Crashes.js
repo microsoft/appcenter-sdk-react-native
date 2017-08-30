@@ -1,9 +1,10 @@
-let ReactNative = require('react-native');
+const ReactNative = require('react-native');
+
 const RNCrashes = ReactNative.NativeModules.RNCrashes;
 
-const willSendEvent = "MobileCenterErrorReportOnBeforeSending";
-const sendDidSucceed = "MobileCenterErrorReportOnSendingSucceeded";
-const sendDidFail = "MobileCenterErrorReportOnSendingFailed";
+const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
+const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
+const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
 let Crashes = {
     // async - returns a Promise
@@ -33,33 +34,31 @@ let Crashes = {
 
     // async - returns a Promise
     process(callback) {
-
         // Checking enabled will make sure the callback is executed after the Android SDK has finished loading
         // crash reports in background. We could call getCrashReports too soon otherwise in case
         // it takes a lot of time.
         return RNCrashes.isEnabled()
-            .then(enabled => {
+            .then((enabled) => {
                 if (enabled) {
                     return RNCrashes.getCrashReports();
                 }
             })
-            .then(reports => {
+            .then((reports) => {
                 if (!reports) {
                     return;
                 }
-                let errorAttachments = {};
-                let reportsWithAttachmentFunction = reports.map(function (report) {
-
+                const errorAttachments = {};
+                const reportsWithAttachmentFunction = reports.map((report) => {
                     // Add text attachment to an error report
                     function addTextAttachment(text, fileName) {
                         if (!errorAttachments[report.id]) {
                             errorAttachments[report.id] = [];
                         }
                         errorAttachments[report.id].push({
-                            text: text,
-                            fileName: fileName
+                            text,
+                            fileName
                         });
-                    };
+                    }
 
                     // Add binary attachment to an error report, binary must be passed as a base64 string
                     function addBinaryAttachment(data, fileName, contentType) {
@@ -67,11 +66,11 @@ let Crashes = {
                             errorAttachments[report.id] = [];
                         }
                         errorAttachments[report.id].push({
-                            data: data,
-                            fileName: fileName,
-                            contentType: contentType
+                            data,
+                            fileName,
+                            contentType
                         });
-                    };
+                    }
 
                     return Object.assign({
                         addTextAttachment,
@@ -79,7 +78,7 @@ let Crashes = {
                     }, report);
                 });
                 reports = reportsWithAttachmentFunction;
-                callback(reports, function (response) {
+                callback(reports, (response) => {
                     RNCrashes.crashUserResponse(response, errorAttachments);
                 });
             });

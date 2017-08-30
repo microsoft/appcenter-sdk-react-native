@@ -11,8 +11,8 @@
     "mobile-center-analytics": "^0.8.1",
     "mobile-center-crashes": "^0.8.1",
     "mobile-center-push": "^0.8.1",
-    "react": "15.4.2",
-    "react-native": "0.40.0",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.47.1",
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {

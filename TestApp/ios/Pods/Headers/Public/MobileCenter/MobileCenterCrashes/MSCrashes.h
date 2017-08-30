@@ -1,1 +1,1 @@
-../../../../MobileCenter/MobileCenter-SDK-iOS/MobileCenterCrashes.framework/Headers/MSCrashes.h
+../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenterCrashes.framework/Headers/MSCrashes.h
