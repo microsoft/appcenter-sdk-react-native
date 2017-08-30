@@ -14,7 +14,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(() => {
 }).then((file) => {
     console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
     return rnpmlink.ios.addPodDeps([
-        { pod: 'MobileCenter/Analytics', version: '0.12.0' },
+        { pod: 'MobileCenter/Analytics', version: '0.12.1' },
         { pod: 'RNMobileCenterShared', version: '0.9.0' } // in case people don't link mobile-center (core)
     ]).catch((e) => {
         console.log(`
