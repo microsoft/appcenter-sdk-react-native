@@ -45,3 +45,5 @@ echo "${gradleFileContent/\'MobileCenter\/Push\', version\: \'$oldiOSSdkVersion\
 
 gradleFileContent="$(cat ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)"
 echo "${gradleFileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}"   > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
+
+echo "done."
