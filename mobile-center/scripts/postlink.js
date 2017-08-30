@@ -6,7 +6,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(() => {
 }).then((file) => {
     console.log(`Added code to initialize iOS Mobile Center SDK in ${file}`);
     return rnpmlink.ios.addPodDeps([
-        { pod: 'RNMobileCenterShared', version: '0.8.1' }
+        { pod: 'RNMobileCenterShared', version: '0.9.0' }
     ]).catch((e) => {
         console.log(`
             Could not install dependencies using CocoaPods.
