@@ -33,7 +33,7 @@ fi
 echo "React-Native iOS version $oldiOSSdkVersion will be updated to $newiOSSdkVersion"
 
 # Update iOS sdk version in postlink.js for mobile-center-crashes, mobile-center-analytics,
-# mobile-center-push and RNMobileCenterShared projects
+# mobile-center-push projects
 fileContent="$(cat ./mobile-center-crashes/scripts/postlink.js)"
 echo "${fileContent/\'MobileCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Crashes', version: '$newiOSSdkVersion'}" > ./mobile-center-crashes/scripts/postlink.js
 
@@ -43,6 +43,7 @@ echo "${fileContent/\'MobileCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'
 fileContent="$(cat ./mobile-center-push/scripts/postlink.js)"
 echo "${fileContent/\'MobileCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Push', version: '$newiOSSdkVersion'}" > ./mobile-center-push/scripts/postlink.js
 
+# Update iOS sdk version in RNMobileCenterShared podspec
 fileContent="$(cat ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)"
 echo "${fileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}" > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
 
