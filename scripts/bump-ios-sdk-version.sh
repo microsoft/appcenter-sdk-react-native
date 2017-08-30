@@ -34,16 +34,16 @@ echo "React-Native iOS version $oldiOSSdkVersion will be updated to $newiOSSdkVe
 
 # Update iOS sdk version in postlink.js for mobile-center-crashes, mobile-center-analytics,
 # mobile-center-push and RNMobileCenterShared projects
-gradleFileContent="$(cat ./mobile-center-crashes/scripts/postlink.js)"
-echo "${gradleFileContent/\'MobileCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Crashes', version: '$newiOSSdkVersion'}" > ./mobile-center-crashes/scripts/postlink.js
+fileContent="$(cat ./mobile-center-crashes/scripts/postlink.js)"
+echo "${fileContent/\'MobileCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Crashes', version: '$newiOSSdkVersion'}" > ./mobile-center-crashes/scripts/postlink.js
 
-gradleFileContent="$(cat ./mobile-center-analytics/scripts/postlink.js)"
-echo "${gradleFileContent/\'MobileCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Analytics', version: '$newiOSSdkVersion'}" > ./mobile-center-analytics/scripts/postlink.js
+fileContent="$(cat ./mobile-center-analytics/scripts/postlink.js)"
+echo "${fileContent/\'MobileCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Analytics', version: '$newiOSSdkVersion'}" > ./mobile-center-analytics/scripts/postlink.js
 
-gradleFileContent="$(cat ./mobile-center-push/scripts/postlink.js)"
-echo "${gradleFileContent/\'MobileCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Push', version: '$newiOSSdkVersion'}" > ./mobile-center-push/scripts/postlink.js
+fileContent="$(cat ./mobile-center-push/scripts/postlink.js)"
+echo "${fileContent/\'MobileCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Push', version: '$newiOSSdkVersion'}" > ./mobile-center-push/scripts/postlink.js
 
-gradleFileContent="$(cat ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)"
-echo "${gradleFileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}" > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
+fileContent="$(cat ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)"
+echo "${fileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}" > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
 
 echo "done."
