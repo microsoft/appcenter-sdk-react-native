@@ -30,7 +30,7 @@ if [ -z $oldiOSSdkVersion ]; then
     exit 1
 fi
 
-echo "React-Native Android version $oldiOSSdkVersion will be updated to $newiOSSdkVersion"
+echo "React-Native iOS version $oldiOSSdkVersion will be updated to $newiOSSdkVersion"
 
 # Update iOS sdk version in postlink.js for mobile-center-crashes, mobile-center-analytics,
 # mobile-center-push and RNMobileCenterShared projects
