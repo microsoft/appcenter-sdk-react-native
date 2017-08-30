@@ -1,1 +1,1 @@
-../../../../MobileCenter/MobileCenter-SDK-iOS/MobileCenterPush.framework/Headers/MSPush.h
+../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenterPush.framework/Headers/MSPush.h

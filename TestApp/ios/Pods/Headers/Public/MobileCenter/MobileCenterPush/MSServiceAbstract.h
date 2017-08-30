@@ -1,1 +1,1 @@
-../../../../MobileCenter/MobileCenter-SDK-iOS/MobileCenterPush.framework/Headers/MSServiceAbstract.h
+../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenterPush.framework/Headers/MSServiceAbstract.h
