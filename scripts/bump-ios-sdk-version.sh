@@ -44,6 +44,6 @@ gradleFileContent="$(cat ./mobile-center-push/scripts/postlink.js)"
 echo "${gradleFileContent/\'MobileCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Push', version: '$newiOSSdkVersion'}" > ./mobile-center-push/scripts/postlink.js
 
 gradleFileContent="$(cat ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)"
-echo "${gradleFileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}"   > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
+echo "${gradleFileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}" > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
 
 echo "done."
