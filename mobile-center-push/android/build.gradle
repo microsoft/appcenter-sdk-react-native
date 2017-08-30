@@ -22,5 +22,5 @@ dependencies {
     compile 'com.microsoft.azure.mobile:mobile-center-push:0.11.2'
 
     //compile project(':RNMobileCenterShared')   // For testing with TestApp
-    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.8.+'
+    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:+'
 }
