@@ -10,6 +10,11 @@ namespace Microsoft.Azure.Mobile.Utils
 {
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
+        public event EventHandler ApplicationSuspended;
+        public event EventHandler ApplicationResuming;
+        public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
+
+        // True if InvokeResuming has been called at least once during the current process
         private static bool _started;
         
         // Considered to be suspended until can verify that has started
@@ -53,7 +58,11 @@ namespace Microsoft.Azure.Mobile.Utils
             else
             {
                 // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
-                // the start so invoke resuming (and subscribe to future resume events).
+                // the start so invoke resuming (and subscribe to future resume events). If InvokeResuming were not called here,
+                // the resuming event wouldn't be invoked until the *next* time the application is resumed, which is a problem
+                // if the application is not currently suspended. The side effect is that regardless of whether UI is available
+                // ever in the process, InvokeResuming will be called at least once (in the case where LeavingBackground isn't
+                // available).
                 CoreApplication.Resuming += InvokeResuming;
                 InvokeResuming(null, EventArgs.Empty);
             }
@@ -63,7 +72,7 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 try
                 {
-                    // Intentionally propagating exception to get the exception object that crashed the app.
+                    // Intentionally propagate exception to get the exception object that crashed the app.
                     eventArgs.UnhandledError.Propagate();
                 }
                 catch (Exception exception)
@@ -78,7 +87,7 @@ namespace Microsoft.Azure.Mobile.Utils
 
         // Determines whether the application has started already and is not suspended, 
         // but ApplicationLifecycleHelper has not yet fired an initial "resume" event.
-        private async Task<bool> HasStartedAndNeedsResume()
+        private static async Task<bool> HasStartedAndNeedsResume()
         {
             var needsResume = false;
             try
@@ -92,8 +101,8 @@ namespace Microsoft.Azure.Mobile.Utils
                         {
                             return;
                         }
-                        if (CoreApplication.Views.Any(view => view.CoreWindow != null && 
-                                                                view.CoreWindow.Visible))
+                        if (CoreApplication.Views.Any(view => view.CoreWindow != null &&
+                                                              view.CoreWindow.Visible))
                         {
                             needsResume = true;
                         }
@@ -103,10 +112,12 @@ namespace Microsoft.Azure.Mobile.Utils
                     await asyncAction;
                 }
             }
-            catch (COMException)
+            catch (Exception e) when (e is COMException || e is InvalidOperationException)
             {
-                // If MainView can't be accessed, a COMException is thrown. It means that the
+                // If MainView can't be accessed, a COMException or InvalidOperationException is thrown. It means that the
                 // MainView hasn't been created, and thus the UI hasn't appeared yet.
+                MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                    "Not invoking resume immediately because UI is not ready.");
             }
             return needsResume;
         }
@@ -123,9 +134,5 @@ namespace Microsoft.Azure.Mobile.Utils
             _suspended = true;
             ApplicationSuspended?.Invoke(sender, EventArgs.Empty);
         }
-
-        public event EventHandler ApplicationSuspended;
-        public event EventHandler ApplicationResuming;
-        public event EventHandler<UnhandledExceptionOccurredEventArgs> UnhandledExceptionOccurred;
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
@@ -13,10 +11,9 @@ using Moq;
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
     [TestClass]
-    public class RetryableTest
+    public class RetryableTest : HttpIngestionTest
     {
         private TestInterval[] _intervals;
-        private Mock<IHttpNetworkAdapter> _adapter;
         private IIngestion _retryableIngestion;
 
         [TestInitialize]
@@ -60,7 +57,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void RetryableIngestionSuccess()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
             VerifyAdapterSend(Times.Once());
 
@@ -75,11 +72,11 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
             // Run code after this interval immideatly
             _intervals[0].Set();
             // On first delay: replace response (next will be succeed)
-            _intervals[0].OnRequest += () => SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _intervals[0].OnRequest += () => SetupAdapterSendResponse(HttpStatusCode.OK);
             // Checks send times on N delay moment
             _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
             _intervals[1].OnRequest += () => Assert.Fail();
@@ -99,13 +96,13 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
             // Run code after this intervals immideatly
             _intervals[0].Set();
             _intervals[1].Set();
             _intervals[2].Set();
             // On third delay: replace response (next will be succeed)
-            _intervals[2].OnRequest += () => SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _intervals[2].OnRequest += () => SetupAdapterSendResponse(HttpStatusCode.OK);
             // Checks send times on N delay moment
             _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
             _intervals[1].OnRequest += () => VerifyAdapterSend(Times.Exactly(2));
@@ -126,7 +123,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
             // Run code after this intervals immideatly
             _intervals[0].Set();
             _intervals[1].Set();
@@ -150,7 +147,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void RetryableIngestionException()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.BadRequest));
+            SetupAdapterSendResponse(HttpStatusCode.BadRequest);
             Assert.ThrowsException<HttpIngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Once());
         }
@@ -158,7 +155,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         [TestMethod]
         public void ServiceCallSuccessCallbackTest()
         {
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             var call = PrepareServiceCall();
             call.ExecuteAsync().RunNotAsync();
 
@@ -168,7 +165,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         [TestMethod]
         public void ServiceCallFailedCallbackTest()
         {
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
+            SetupAdapterSendResponse(HttpStatusCode.NotFound);
             var call = PrepareServiceCall();
             Assert.ThrowsException<HttpIngestionException>(() => { call.ExecuteAsync().RunNotAsync(); });
         }
@@ -214,25 +211,6 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var installId = Guid.NewGuid();
             var logs = new List<Log>();
             return _retryableIngestion.PrepareServiceCall(appSecret, installId, logs);
-        }
-
-        /// <summary>
-        /// Helper for setup responce.
-        /// </summary>
-        private void SetupAdapterSendResponse(HttpResponseMessage response)
-        {
-            _adapter
-                .Setup(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.Run(() => response));
-        }
-
-        /// <summary>
-        /// Helper for verify SendAsync call.
-        /// </summary>
-        private void VerifyAdapterSend(Times times)
-        {
-            _adapter
-                .Verify(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), times);
         }
 
         public class TestInterval

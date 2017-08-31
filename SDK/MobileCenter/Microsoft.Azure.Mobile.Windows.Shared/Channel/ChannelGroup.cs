@@ -22,7 +22,15 @@ namespace Microsoft.Azure.Mobile.Channel
         public event EventHandler<SentLogEventArgs> SentLog;
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
 
-        public ChannelGroup(string appSecret) : this(DefaultIngestion(), DefaultStorage(), appSecret) { }
+        public ChannelGroup(string appSecret)
+            : this(appSecret, null)
+        {
+        }
+
+        public ChannelGroup(string appSecret, IHttpNetworkAdapter httpNetwork)
+            : this(DefaultIngestion(httpNetwork), DefaultStorage(), appSecret)
+        {
+        }
 
         internal ChannelGroup(IIngestion ingestion, IStorage storage, string appSecret)
         {
@@ -108,9 +116,9 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        private static IIngestion DefaultIngestion()
+        private static IIngestion DefaultIngestion(IHttpNetworkAdapter httpNetwork = null)
         {
-            return new NetworkStateIngestion(new RetryableIngestion(new IngestionHttp()));
+            return new NetworkStateIngestion(new RetryableIngestion(new IngestionHttp(httpNetwork ?? new HttpNetworkAdapter())));
         }
 
         private static IStorage DefaultStorage()

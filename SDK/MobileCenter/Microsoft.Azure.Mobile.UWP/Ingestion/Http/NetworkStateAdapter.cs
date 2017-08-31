@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.NetworkInformation;
 using Windows.Networking.Connectivity;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
@@ -18,6 +17,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 return NetworkInformation.GetInternetConnectionProfile()?.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;          
             }
         }
+
         public event EventHandler NetworkStatusChanged;
     }
 }
