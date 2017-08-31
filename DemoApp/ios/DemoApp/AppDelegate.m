@@ -28,13 +28,13 @@
 
   [RNMobileCenter register];  // Initialize Mobile Center 
 
-  [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes
+  [RNCrashes register];  // Initialize Mobile Center crashes
 
   [RNPush register];  // Initialize Mobile Center push
 
   [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
-  [RNCrashes register];  // Initialize Mobile Center crashes
+
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 

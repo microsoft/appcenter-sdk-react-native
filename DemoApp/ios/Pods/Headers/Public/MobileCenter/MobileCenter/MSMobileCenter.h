@@ -1,1 +1,1 @@
-../../../../MobileCenter/MobileCenter-SDK-iOS/MobileCenter.framework/Headers/MSMobileCenter.h
+../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenter.framework/Headers/MSMobileCenter.h
