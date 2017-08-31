@@ -1,1 +1,1 @@
-../../../../MobileCenter/MobileCenter-SDK-iOS/MobileCenter.framework/Headers/MSLogWithProperties.h
+../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenter.framework/Headers/MSLogWithProperties.h

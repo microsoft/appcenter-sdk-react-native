@@ -1,4 +1,4 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/MobileCenter/MobileCenter-SDK-iOS" "${PODS_ROOT}/RNMobileCenterShared/RNMobileCenterShared"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/MobileCenter/MobileCenter-SDK-Apple/iOS" "${PODS_ROOT}/RNMobileCenterShared/RNMobileCenterShared"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MobileCenter" "${PODS_ROOT}/Headers/Public/RNMobileCenterShared"
 OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/MobileCenter" -isystem "${PODS_ROOT}/Headers/Public/RNMobileCenterShared"
