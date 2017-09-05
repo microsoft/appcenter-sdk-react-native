@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Distribute;
@@ -10,17 +11,16 @@ namespace Microsoft.Azure.Mobile.Distribute
         [Preserve]
         public static Type BindingType => typeof(AndroidDistribute);
 
-        static bool PlatformEnabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get
-            {
-                return AndroidDistribute.Enabled;
-            }
+            var future = AndroidDistribute.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
+        }
 
-            set
-            {
-                AndroidDistribute.Enabled = value;
-            }
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            var future = AndroidDistribute.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         static void PlatformSetInstallUrl(string installUrl)

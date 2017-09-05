@@ -10,6 +10,6 @@ namespace Microsoft.Azure.Mobile.Channel
         /// Enqueue a log for processing
         /// </summary>
         /// <param name="log"></param>
-        Task Enqueue(Log log);
+        Task EnqueueAsync(Log log);
     }
 }

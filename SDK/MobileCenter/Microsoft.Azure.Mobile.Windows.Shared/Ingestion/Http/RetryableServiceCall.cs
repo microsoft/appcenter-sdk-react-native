@@ -19,22 +19,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         }
 
         ///<exception cref="IngestionException"/>
-        public async Task RunWithRetriesAsync()
-        {
-            await _mutex.WaitAsync().ConfigureAwait(false);
-            try
-            {
-                _tokenSource = new CancellationTokenSource();
-                await RunWithRetriesAsyncHelper().ConfigureAwait(false);
-            }
-            finally
-            {
-                _mutex.Release();
-            }
-        }
-
-        ///<exception cref="IngestionException"/>
-        private async Task RunWithRetriesAsyncHelper()
+        private async Task ExecuteAsyncHelper()
         {
             while (true)
             {
@@ -52,7 +37,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to execute service call", e);
                 }
                 await _retryIntervals[_retryCount++]().ConfigureAwait(false);
-                _tokenSource.Token.ThrowIfCancellationRequested();
+                if (_tokenSource.Token.IsCancellationRequested)
+                {
+                    throw new IngestionException("The operation has been cancelled");
+                }
             }
         }
 
@@ -61,19 +49,18 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _tokenSource?.Cancel();
         }
 
-        public override void Execute()
+        public override async Task ExecuteAsync()
         {
-            RunWithRetriesAsync().ContinueWith(completedTask =>
+            await _mutex.WaitAsync().ConfigureAwait(false);
+            try
             {
-                if (completedTask.IsFaulted)
-                {
-                    ServiceCallFailedCallback?.Invoke(completedTask.Exception?.InnerException as IngestionException);
-                }
-                else
-                {
-                    ServiceCallSucceededCallback?.Invoke();
-                }
-            });
+                _tokenSource = new CancellationTokenSource();
+                await ExecuteAsyncHelper().ConfigureAwait(false);
+            }
+            finally
+            {
+                _mutex.Release();
+            }
         }
 
         protected override void Dispose(bool disposing)

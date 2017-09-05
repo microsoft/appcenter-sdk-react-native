@@ -41,21 +41,14 @@ namespace Contoso.iOS.Puppet
                 MobileCenterLog.Verbose("THETAG", "THEMESSAGE", e);
             }
 
-            Analytics.Enabled = true;
-            System.Diagnostics.Debug.WriteLine("ANALYTICS: " + Analytics.Enabled.ToString());
+            Analytics.SetEnabledAsync(true);
+            System.Diagnostics.Debug.WriteLine("ANALYTICS: " + Analytics.IsEnabledAsync().Result);
             return true;
         }
 
         private void ThrowAnException()
         {
             throw new Exception();
-        }
-
-        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
-        {
-            Distribute.OpenUrl(url);
-
-            return true;
         }
 
         public override void OnResignActivation(UIApplication application)

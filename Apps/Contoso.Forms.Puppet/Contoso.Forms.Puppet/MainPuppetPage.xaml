@@ -3,5 +3,6 @@
     <local:MobileCenterContentPage/>
 	<local:AnalyticsContentPage/>
 	<local:CrashesContentPage/>
+    <local:CustomPropertiesContentPage/>
 	<local:OthersContentPage/>
 </TabbedPage>

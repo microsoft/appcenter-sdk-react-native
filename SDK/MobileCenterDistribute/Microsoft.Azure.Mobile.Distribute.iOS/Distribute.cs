@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Foundation;
 using Microsoft.Azure.Mobile.Distribute.iOS.Bindings;
 
@@ -17,17 +18,15 @@ namespace Microsoft.Azure.Mobile.Distribute
             }
         }
 
-        static bool PlatformEnabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get
-            {
-                return MSDistribute.IsEnabled();
-            }
+            return Task.FromResult(MSDistribute.IsEnabled());
+        }
 
-            set
-            {
-                MSDistribute.SetEnabled(value);
-            }
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            MSDistribute.SetEnabled(enabled);
+            return Task.FromResult(default(object));
         }
 
         static void PlatformSetInstallUrl(string installUrl)

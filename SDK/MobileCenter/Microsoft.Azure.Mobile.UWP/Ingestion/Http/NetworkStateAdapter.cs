@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.NetworkInformation;
+using Windows.Networking.Connectivity;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
@@ -7,9 +7,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
     {
         public NetworkStateAdapter()
         {
-            NetworkChange.NetworkAddressChanged += (sender, args) => NetworkAddressChanged?.Invoke(sender, args);
+            NetworkInformation.NetworkStatusChanged += sender => NetworkStatusChanged?.Invoke(sender, EventArgs.Empty);
         }
-        public bool IsConnected => NetworkInterface.GetIsNetworkAvailable();
-        public event EventHandler NetworkAddressChanged;
+
+        public bool IsConnected
+        {
+            get
+            {
+                return NetworkInformation.GetInternetConnectionProfile()?.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;          
+            }
+        }
+
+        public event EventHandler NetworkStatusChanged;
     }
 }

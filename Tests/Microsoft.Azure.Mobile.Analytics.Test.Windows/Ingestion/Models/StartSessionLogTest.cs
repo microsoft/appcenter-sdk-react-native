@@ -1,6 +1,7 @@
-﻿using Moq;
+﻿using System;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -9,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
     [TestClass]
     public class StartSessionLogTest
     {
-        private const long TOffset = 0;
+        private readonly DateTime? Timestamp = null;
 
         /// <summary>
         /// Verify that instance is constructed properly.
@@ -20,7 +21,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
 
             StartSessionLog emptyLog = new StartSessionLog();
-            StartSessionLog log = new StartSessionLog(TOffset, mockDevice.Object);
+            StartSessionLog log = new StartSessionLog(Timestamp, mockDevice.Object);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);

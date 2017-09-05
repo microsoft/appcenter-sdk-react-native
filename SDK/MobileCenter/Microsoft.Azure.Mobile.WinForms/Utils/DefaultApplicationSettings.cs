@@ -7,35 +7,21 @@ using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    public class ApplicationSettings : IApplicationSettings
+    public class DefaultApplicationSettings : IApplicationSettings
     {
         private readonly object configLock = new object();
         private IDictionary<string, string> current;
 
-        public ApplicationSettings()
+        public DefaultApplicationSettings()
         {
             current = ReadAll();
         }
 
-        public object this[string key]
+        public bool ContainsKey(string key)
         {
-            get
+            lock (configLock)
             {
-                lock (configLock)
-                {
-                    string value = null;
-                    current.TryGetValue(key, out value);
-                    return value;
-                }
-            }
-            set
-            {
-                var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
-                lock (configLock)
-                {
-                    current[key] = invariant;
-                    SaveValue(key, invariant);
-                }
+                return current.ContainsKey(key);
             }
         }
 
@@ -59,14 +45,24 @@ namespace Microsoft.Azure.Mobile.Utils
                     return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
                 }
             }
-            this[key] = defaultValue;
+            SetValue(key, defaultValue);
             return defaultValue;
+        }
+
+        public void SetValue(string key, object value)
+        {
+            var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
+            lock (configLock)
+            {
+                current[key] = invariant;
+                SaveValue(key, invariant);
+            }
         }
 
         private IDictionary<string, string> ReadAll()
         {
             var config = OpenConfiguration();
-           return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
+            return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
         private void SaveValue(string key, string value)

@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 await base.ExecuteCallAsync(call).ConfigureAwait(false);
                 return;
             }
-            await retryableCall.RunWithRetriesAsync().ConfigureAwait(false);
+            await retryableCall.ExecuteAsync().ConfigureAwait(false);
         }
 
         private static Func<Task> GetDelayFunc(TimeSpan[] intervals, int retry)

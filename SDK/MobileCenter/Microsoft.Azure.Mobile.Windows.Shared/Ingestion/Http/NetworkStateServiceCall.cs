@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
     public class NetworkStateServiceCall : ServiceCallDecorator
@@ -9,24 +12,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             _networkIngestion = networkIngestion;
         }
 
-        public override void Execute()
+        public override async Task ExecuteAsync()
         {
-            _networkIngestion.ExecuteCallAsync(DecoratedApi).ContinueWith(completedTask =>
-            {
-                if (completedTask.IsFaulted)
-                {
-                    var innerException = completedTask.Exception?.InnerException;
-                    if (innerException is NetworkUnavailableException)
-                    {
-                        return;
-                    }
-                    ServiceCallFailedCallback?.Invoke(innerException as IngestionException);
-                }
-                else
-                {
-                    ServiceCallSucceededCallback?.Invoke();
-                }
-            });
+            await _networkIngestion.ExecuteCallAsync(DecoratedApi).ConfigureAwait(false);
         }
     }
 }

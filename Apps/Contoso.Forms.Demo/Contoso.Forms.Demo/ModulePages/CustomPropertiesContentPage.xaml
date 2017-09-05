@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="Custom Properties"
+        xmlns="http://xamarin.com/schemas/2014/forms" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+        x:Class="Contoso.Forms.Demo.CustomPropertiesContentPage">
+    <StackLayout Orientation="Vertical">
+        <ScrollView Orientation="Vertical">
+            <StackLayout Orientation="Vertical" x:Name="PropertiesContainer">
+            </StackLayout>
+        </ScrollView>
+        <Button Text="Add property" Clicked="AddProperty_Clicked" x:Name="AddProperty"/>
+        <Button Text="Send" Clicked="Send_Clicked" x:Name="Send"/>
+    </StackLayout>
+</ContentPage>

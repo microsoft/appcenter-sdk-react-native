@@ -16,13 +16,24 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
 
-        //public override GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
 
         public override Type BindingType { get; }
 
-        public override bool Enabled { get; set; }
+        public override Task<bool> IsEnabledAsync()
+        {
+            return Task.FromResult(false);
+        }
 
-        public override bool HasCrashedInLastSession { get; }
+        public override Task SetEnabledAsync(bool enabled)
+        {
+            return Task.FromResult(default(object));
+        }
+
+        public override Task<bool> HasCrashedInLastSessionAsync()
+        {
+            return Task.FromResult(false);
+        }
 
         public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {

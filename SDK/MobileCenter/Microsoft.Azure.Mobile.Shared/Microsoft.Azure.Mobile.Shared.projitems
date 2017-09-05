@@ -15,5 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLogShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
+
+using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
 {
+    using Device = Mobile.Ingestion.Models.Device;
+
     /// <summary>
     /// Event log.
     /// </summary>
@@ -21,13 +25,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the EventLog class.
         /// </summary>
-        /// <param name="toffset">Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
-        /// <param name="id">Unique identifier for this event.
-        /// </param>
-        /// <param name="name">Name of the event.
-        /// </param>
+        /// <param name="timestamp">Log timestamp.</param>
+        /// <param name="device">Description of the device emitting the log.</param>
+        /// <param name="id">Unique identifier for this event.</param>
+        /// <param name="name">Name of the event.</param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -38,8 +39,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
-        public EventLog(long toffset, Mobile.Ingestion.Models.Device device, System.Guid id, string name, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(toffset, device, sid, properties)
+        public EventLog(DateTime? timestamp, Device device, Guid id, string name, Guid? sid = default(Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
+            : base(timestamp, device, sid, properties)
         {
             Id = id;
             Name = name;
@@ -50,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         ///
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public System.Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets name of the event.
@@ -62,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -70,7 +71,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
             base.Validate();
             if (Name == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Name");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, "Name");
             }
         }
     }

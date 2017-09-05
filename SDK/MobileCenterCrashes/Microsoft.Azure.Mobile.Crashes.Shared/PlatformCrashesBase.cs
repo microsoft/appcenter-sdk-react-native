@@ -10,9 +10,11 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         public abstract Type BindingType { get; }
 
-        public abstract bool Enabled { get; set; }
+        public abstract Task<bool> IsEnabledAsync();
 
-        public abstract bool HasCrashedInLastSession { get; }
+        public abstract Task SetEnabledAsync(bool enabled);
+
+        public abstract Task<bool> HasCrashedInLastSessionAsync();
 
         public abstract Task<ErrorReport> GetLastSessionCrashReportAsync();
 
@@ -32,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         public abstract FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         public abstract ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public abstract ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
-        //public abstract GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        public abstract GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
         //public abstract void TrackException(Exception exception);
     }
 }

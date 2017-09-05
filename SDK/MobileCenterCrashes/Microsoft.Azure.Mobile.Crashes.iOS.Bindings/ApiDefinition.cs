@@ -97,6 +97,11 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Static]
         [Export("notifyWithUserConfirmation:")]
         void NotifyWithUserConfirmation(MSUserConfirmation userConfirmation);
+
+        //+(void)disableMachExceptionHandler;
+        [Static]
+        [Export("disableMachExceptionHandler")]
+        void DisableMachExceptionHandler();
     }
 
     // @protocol MSCrashesDelegate <NSObject>
@@ -108,9 +113,9 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Export("crashes:shouldProcessErrorReport:")]
         bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport);
 
-        //// @optional -(MSErrorAttachment *)attachmentWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
-        //[Export("attachmentWithCrashes:forErrorReport:")]
-        //MSErrorAttachment AttachmentWithCrashes(MSCrashes crashes, MSErrorReport msReport);
+        // @optional - (NSArray<MSErrorAttachmentLog *> *)attachmentsWithCrashes:(MSCrashes *)crashes forErrorReport:(MSErrorReport *)errorReport;
+        [Export("attachmentsWithCrashes:forErrorReport:")]
+        NSArray AttachmentsWithCrashes(MSCrashes crashes, MSErrorReport msReport);
 
         // @optional -(void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport;
         [Export("crashes:willSendErrorReport:")]
@@ -125,62 +130,20 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error);
     }
 
-    //// @interface MSErrorAttachment : NSObject
-    //[BaseType(typeof(NSObject))]
-    //interface MSErrorAttachment
-    //{
-    //    // @property (nonatomic) NSString * _Nullable textAttachment;
-    //    [NullAllowed, Export("textAttachment")]
-    //    string TextAttachment { get; set; }
+    // @interface MSErrorAttachmentLog : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSErrorAttachmentLog
+    {
+        // + (MSErrorAttachmentLog *)attachmentWithText:(NSString *)text filename:(NSString *)filename;
+        [Static]
+        [Export("attachmentWithText:filename:")]
+        MSErrorAttachmentLog AttachmentWithText(string text, [NullAllowed] string fileName);
 
-    //    // @property (nonatomic) MSErrorBinaryAttachment * _Nullable binaryAttachment;
-    //    [NullAllowed, Export("binaryAttachment", ArgumentSemantic.Assign)]
-    //    MSErrorBinaryAttachment BinaryAttachment { get; set; }
-
-    //    // -(BOOL)isEqual:(MSErrorAttachment * _Nullable)attachment;
-    //    [Export("isEqual:")]
-    //    bool IsEqual([NullAllowed] MSErrorAttachment attachment);
-
-    //    // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text;
-    //    [Static]
-    //    [Export("attachmentWithText:")]
-    //    MSErrorAttachment AttachmentWithText(string text);
-
-    //    // +(MSErrorAttachment * _Nonnull)attachmentWithBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
-    //    [Static]
-    //    [Export("attachmentWithBinaryData:filename:mimeType:")]
-    //    MSErrorAttachment AttachmentWithBinaryData(NSData data, [NullAllowed] string filename, string mimeType);
-
-    //    // +(MSErrorAttachment * _Nonnull)attachmentWithText:(NSString * _Nonnull)text andBinaryData:(NSData * _Nonnull)data filename:(NSString * _Nullable)filename mimeType:(NSString * _Nonnull)mimeType;
-    //    [Static]
-    //    [Export("attachmentWithText:andBinaryData:filename:mimeType:")]
-    //    MSErrorAttachment AttachmentWithText(string text, NSData data, [NullAllowed] string filename, string mimeType);
-    //}
-
-    //// @interface MSErrorBinaryAttachment : NSObject
-    //[BaseType(typeof(NSObject))]
-    //interface MSErrorBinaryAttachment
-    //{
-    //    // @property (readonly, nonatomic) NSString * _Nullable fileName;
-    //    [NullAllowed, Export("fileName")]
-    //    string FileName { get; }
-
-    //    // @property (readonly, nonatomic) NSData * _Nonnull data;
-    //    [Export("data")]
-    //    NSData Data { get; }
-
-    //    // @property (readonly, nonatomic) NSString * _Nonnull contentType;
-    //    [Export("contentType")]
-    //    string ContentType { get; }
-
-    //    // -(BOOL)isEqual:(MSErrorBinaryAttachment * _Nullable)attachment;
-    //    [Export("isEqual:")]
-    //    bool IsEqual([NullAllowed] MSErrorBinaryAttachment attachment);
-
-    //    // -(instancetype _Nonnull)initWithFileName:(NSString * _Nullable)fileName attachmentData:(NSData * _Nonnull)data contentType:(NSString * _Nonnull)contentType;
-    //    [Export("initWithFileName:attachmentData:contentType:")]
-    //    IntPtr Constructor([NullAllowed] string fileName, NSData data, string contentType);
-    //}
+        // + (MSErrorAttachmentLog *)attachmentWithBinary:(NSData *)data filename:(NSString*)filename contentType:(NSString*)contentType;
+        [Static]
+        [Export("attachmentWithBinary:filename:contentType:")]
+        MSErrorAttachmentLog AttachmentWithBinaryData(NSData data, [NullAllowed] string filename, string contentType);
+    }
 
     // @interface MSException : NSObject
     [BaseType(typeof(NSObject))]
@@ -251,38 +214,57 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
     [Protocol, Model]
     [BaseType(typeof(NSObject))]
-    interface MSWrapperCrashesInitializationDelegate
+    interface MSCrashHandlerSetupDelegate
     {
-        //- (BOOL) setUpCrashHandlers;
-        [Export("setUpCrashHandlers")]
-        bool SetUpCrashHandlers();
+        //- (void) willSetUpCrashHandlers;
+        [Export("willSetUpCrashHandlers")]
+        void WillSetUpCrashHandlers();
+
+        //- (void) didSetUpCrashHandlers;
+        [Export("didSetUpCrashHandlers")]
+        void DidSetUpCrashHandlers();
+
+        //- (BOOL) shouldEnableUncaughtExceptionHandler;
+        [Export("shouldEnableUncaughtExceptionHandler")]
+        bool ShouldEnableUncaughtExceptionHandler();
     }
 
     // @interface MSWrapperExceptionManager : NSObject
     [BaseType(typeof(NSObject))]
     interface MSWrapperExceptionManager
     {
-        // +(void)setWrapperException:(MSException *)exception;
+        //+ (void) saveWrapperException:(MSWrapperException*) wrapperException;
         [Static]
-        [Export("setWrapperException:")]
-        void SetWrapperException(MSException exception);
+        [Export("saveWrapperException:")]
+        void SaveWrapperException(MSWrapperException wrapperException);
 
+        //+ (MSWrapperException*) loadWrapperExceptionWithUUID:(NSString*) uuid;
         [Static]
-        [Export("setWrapperExceptionData:")]
-        void SetWrapperExceptionData(NSData wrapperExceptionData);
+        [Export("loadWrapperExceptionWithUUIDString:")]
+        MSWrapperException LoadWrapperExceptionWithUUID(string uuidString);
+    }
 
-        [Static]
-        [Export("loadWrapperExceptionDataWithUUIDString:")]
-        NSData LoadWrapperExceptionData(string uuidString);
+    [BaseType(typeof(NSObject))]
+    interface MSWrapperException
+    {
+        //@property(nonatomic, strong) MSException* exception;
+        [Export("modelException")]
+        MSException Exception { get; set; }
 
-        //+ (void)setDelegate:(id<MSWrapperCrashesInitializer>) delegate
-        [Static]
-        [Export("setDelegate:")]
-        void SetDelegate(MSWrapperCrashesInitializationDelegate _delegate);
+        //@property(nonatomic, strong) NSData* exceptionData;
+        [Export("exceptionData")]
+        NSData ExceptionData { get; set; }
 
-        //+ (void)startCrashReportingFromWrapperSdk;
+        [Export("processId")]
+        NSNumber ProcessId { get; set; }
+    }
+
+    [BaseType(typeof(NSObject))]
+    interface MSWrapperCrashesHelper
+    {
+        //+ (void) setCrashHandlerSetupDelegate:(id<MSCrashHandlerSetupDelegate>) delegate;
         [Static]
-        [Export("startCrashReportingFromWrapperSdk")]
-        void StartCrashReportingFromWrapperSdk();
+        [Export("setCrashHandlerSetupDelegate:")]
+        void SetCrashHandlerSetupDelegate(MSCrashHandlerSetupDelegate del);
     }
 }

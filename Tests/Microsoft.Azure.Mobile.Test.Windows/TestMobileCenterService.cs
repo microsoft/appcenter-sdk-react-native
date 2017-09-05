@@ -1,18 +1,9 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
 
 namespace Microsoft.Azure.Mobile.Test.Windows
 {
     public class TestMobileCenterService : MobileCenterService
     {
-        public TestMobileCenterService(IApplicationSettings settings) : base(settings)
-        {
-        }
-
-        public TestMobileCenterService()
-        {
-        }
-
         protected override string ChannelName => "test_service";
         public override string ServiceName => "TestService";
 

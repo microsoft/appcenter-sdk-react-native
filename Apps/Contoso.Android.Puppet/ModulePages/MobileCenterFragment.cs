@@ -61,10 +61,10 @@ namespace Contoso.Android.Puppet
             UpdateState();
         }
 
-        protected override void UpdateState()
+        protected override async void UpdateState()
         {
             MobileCenterEnabledSwitch.CheckedChange -= UpdateEnabled;
-            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+            MobileCenterEnabledSwitch.Checked = await MobileCenter.IsEnabledAsync();
             MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
             LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
@@ -91,10 +91,10 @@ namespace Contoso.Android.Puppet
             }
         }
 
-        private void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            MobileCenter.Enabled = e.IsChecked;
-            MobileCenterEnabledSwitch.Checked = MobileCenter.Enabled;
+            await MobileCenter.SetEnabledAsync(e.IsChecked);
+            MobileCenterEnabledSwitch.Checked = await MobileCenter.IsEnabledAsync();
         }
 
         private void LogLevelClicked(object sender, EventArgs e)

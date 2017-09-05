@@ -34,14 +34,17 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         [TestMethod]
         public void SetCountryCode()
         {
-            const string CountryCode = "US";
-            int informationInvalidated = 0;
-            EventHandler OnInformationInvalidated = delegate { informationInvalidated++; };
-            DeviceInformationHelper.InformationInvalidated += OnInformationInvalidated;
-            MobileCenter.SetCountryCode(CountryCode);
-            MobileCenter.SetCountryCode("INVALID");
-            DeviceInformationHelper.InformationInvalidated -= OnInformationInvalidated;
-            Assert.AreEqual(informationInvalidated, 1);
+            var informationInvalidated = false;
+
+            void InformationInvalidated(object sender, EventArgs e)
+            {
+                informationInvalidated = true;
+            }
+
+            DeviceInformationHelper.InformationInvalidated += InformationInvalidated;
+            MobileCenter.SetCountryCode("US");
+            DeviceInformationHelper.InformationInvalidated -= InformationInvalidated;
+            Assert.AreEqual(informationInvalidated, true);
         }
     }
 }

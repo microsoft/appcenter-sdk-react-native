@@ -1,6 +1,3 @@
-USERNAME="$MOBILE_CENTER_USERNAME" # 'MOBILE_CENTER_USERNAME' environment variable must be set
-PASSWORD="$MOBILE_CENTER_PASSWORD" # 'MOBILE_CENTER_PASSWORD' environment variable must be set
-
 # Download and install NPM if it is not already installed
 npm -v &>/dev/null
 if [ $? -ne 0 ]; then
@@ -27,7 +24,7 @@ fi
 
 # Log in to Mobile Center
 echo "Logging in to mobile center..."
-mobile-center login -u "$USERNAME" -p "$PASSWORD"
+mobile-center login --token "$MOBILE_CENTER_API_TOKEN"
 if [ $? -ne 0 ]; then
     echo "An error occured while logging into Mobile Center."
     exit 1

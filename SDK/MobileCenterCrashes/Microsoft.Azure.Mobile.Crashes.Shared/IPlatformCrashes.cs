@@ -6,13 +6,15 @@ namespace Microsoft.Azure.Mobile.Crashes
     /// <summary>
     /// Interface to abstract <see cref="Crashes"/> features between different platforms.
     /// </summary>
-    internal interface IPlatformCrashes
+    interface IPlatformCrashes
     {
         Type BindingType { get; }
 
-        bool Enabled { get; set; }
+        Task<bool> IsEnabledAsync();
 
-        bool HasCrashedInLastSession { get; }
+        Task SetEnabledAsync(bool enabled);
+
+        Task<bool> HasCrashedInLastSessionAsync();
 
         Task<ErrorReport> GetLastSessionCrashReportAsync();
 
@@ -26,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
         ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
-        //GetErrorAttachmentCallback GetErrorAttachment { get; set; }
+        GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
         //void TrackException(Exception exception);
     }
 }

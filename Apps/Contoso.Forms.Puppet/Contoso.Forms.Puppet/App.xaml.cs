@@ -1,13 +1,15 @@
 ﻿using Microsoft.Azure.Mobile;
-using Xamarin.Forms;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
-using System.Threading.Tasks;
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
@@ -45,14 +47,16 @@ namespace Contoso.Forms.Puppet
             // set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
+            Crashes.GetErrorAttachments = GetErrorAttachments;
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
             MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
-            MobileCenterLog.Assert(LogTag, "MobileCenter.InstallId (before configure)=" + MobileCenter.InstallId);
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-
+            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
+                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+            
             // Need to use reflection because moving this to the Android specific
             // code causes crash. (Unable to access properties before init is called).
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
@@ -68,11 +72,18 @@ namespace Contoso.Forms.Puppet
                 }
             }
 
-            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-
-            MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + MobileCenter.InstallId);
-            MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + Crashes.HasCrashedInLastSession);
+            MobileCenter.IsEnabledAsync().ContinueWith(enabled =>
+            {
+                MobileCenterLog.Info(LogTag, "MobileCenter.Enabled=" + enabled.Result);
+            });
+            MobileCenter.GetInstallIdAsync().ContinueWith(installId =>
+            {
+                MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + installId.Result);
+            });
+            Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
+            {
+                MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
+            });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
                 MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
@@ -194,6 +205,16 @@ namespace Contoso.Forms.Puppet
             });
 
             return true;
+        }
+
+        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        {
+            return new ErrorAttachmentLog[]
+            {
+                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
+                null,
+                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
+            };
         }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)

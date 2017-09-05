@@ -125,6 +125,31 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         bool IsEqual(MSDevice device);
     }
 
+	// @interface MSCustomProperties : NSObject
+	[BaseType(typeof(NSObject))]
+    interface MSCustomProperties
+    {
+        // - (instancetype)setString:(NSString *)value forKey:(NSString *)key;
+        [Export("setString:forKey:")]
+        void Set([NullAllowed] string value, [NullAllowed] string key);
+
+        // - (instancetype)setNumber:(NSNumber *)value forKey:(NSString *)key;
+        [Export("setNumber:forKey:")]
+        void Set(NSNumber value, [NullAllowed] string key);
+
+        // - (instancetype)setBool:(BOOL)value forKey:(NSString *)key;
+        [Export("setBool:forKey:")]
+        void Set(bool value, [NullAllowed] string key);
+
+        // - (instancetype)setDate:(NSDate *)value forKey:(NSString *)key;
+        [Export("setDate:forKey:")]
+        void Set(NSDate value, [NullAllowed] string key);
+
+        // - (instancetype)clearPropertyForKey:(NSString *)key;
+        [Export("clearPropertyForKey:")]
+        void Clear([NullAllowed] string key);
+    }
+
     // @interface MSMobileCenter : NSObject
     [BaseType(typeof(NSObject))]
     interface MSMobileCenter
@@ -137,12 +162,12 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         // +(void)configureWithAppSecret:(NSString *)appSecret;
         [Static]
         [Export("configureWithAppSecret:")]
-        void ConfigureWithAppSecret(string appSecret);
+        void ConfigureWithAppSecret([NullAllowed] string appSecret);
 
         // +(void)start:(NSString *)appSecret withServices:(NSArray<Class> *)services;
         [Static]
         [Export("start:withServices:")]
-        void Start(string appSecret, Class[] services);
+        void Start([NullAllowed] string appSecret, Class[] services);
 
         // +(void)startService:(Class)service;
         [Static]
@@ -157,7 +182,7 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         // +(void)setLogUrl:(NSString *)setLogUrl;
         [Static]
         [Export("setLogUrl:")]
-        void SetLogUrl(string logUrl);
+        void SetLogUrl([NullAllowed] string logUrl);
 
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]
@@ -198,6 +223,11 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         [Static]
         [Export("isDebuggerAttached")]
         bool IsDebuggerAttached();
+
+        // + (void)setCustomProperties:(MSCustomProperties *)customProperties;
+        [Static]
+        [Export("setCustomProperties:")]
+        void SetCustomProperties([NullAllowed] MSCustomProperties properties);
     }
 
     // @protocol MSService <NSObject>

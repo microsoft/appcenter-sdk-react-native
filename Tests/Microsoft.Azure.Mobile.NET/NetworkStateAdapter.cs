@@ -18,12 +18,11 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 {
                     return;
                 }
-
                 _isConnected = value;
-                NetworkAddressChanged?.Invoke(this, EventArgs.Empty);
+                NetworkStatusChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public event EventHandler NetworkAddressChanged;
+        public event EventHandler NetworkStatusChanged;
     }
 }

@@ -33,11 +33,11 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            EnabledSwitchCell.On = Analytics.Enabled;
-            EnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
+            EnabledSwitchCell.On = await Analytics.IsEnabledAsync();
+            EnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
         }
 
         void AddProperty(object sender, EventArgs e)
@@ -75,9 +75,9 @@ namespace Contoso.Forms.Demo
 
         }
 
-        void UpdateEnabled(object sender, ToggledEventArgs e)
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            Analytics.Enabled = e.Value;
+            await Analytics.SetEnabledAsync(e.Value);
         }
 
         void RefreshPropCount()

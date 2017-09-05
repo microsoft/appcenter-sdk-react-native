@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
@@ -13,18 +11,10 @@ using Moq;
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
     [TestClass]
-    public class RetryableTest
+    public class RetryableTest : HttpIngestionTest
     {
         private TestInterval[] _intervals;
-        private Mock<IHttpNetworkAdapter> _adapter;
         private IIngestion _retryableIngestion;
-
-        private const int DefaultWaitTime = 5000;
-
-        /* Event semaphores for invokation verification */
-        private const int SucceededCallbackSemaphoreIdx = 0;
-        private const int FailedCallbackSemaphoreIdx = 1;
-        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0) };
 
         [TestInitialize]
         public void InitializeRetryableTest()
@@ -67,7 +57,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void RetryableIngestionSuccess()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
             VerifyAdapterSend(Times.Once());
 
@@ -82,11 +72,11 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
             // Run code after this interval immideatly
             _intervals[0].Set();
             // On first delay: replace response (next will be succeed)
-            _intervals[0].OnRequest += () => SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _intervals[0].OnRequest += () => SetupAdapterSendResponse(HttpStatusCode.OK);
             // Checks send times on N delay moment
             _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
             _intervals[1].OnRequest += () => Assert.Fail();
@@ -106,13 +96,13 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
             // Run code after this intervals immideatly
             _intervals[0].Set();
             _intervals[1].Set();
             _intervals[2].Set();
             // On third delay: replace response (next will be succeed)
-            _intervals[2].OnRequest += () => SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            _intervals[2].OnRequest += () => SetupAdapterSendResponse(HttpStatusCode.OK);
             // Checks send times on N delay moment
             _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
             _intervals[1].OnRequest += () => VerifyAdapterSend(Times.Exactly(2));
@@ -133,7 +123,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
             // Run code after this intervals immideatly
             _intervals[0].Set();
             _intervals[1].Set();
@@ -144,7 +134,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             _intervals[2].OnRequest += () => Assert.Fail();
 
             // Run all chain not async
-            Assert.ThrowsException<TaskCanceledException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<IngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
 
             // Must be sent 2 times: 1 - main, 1 - repeat
             VerifyAdapterSend(Times.Exactly(2));
@@ -157,7 +147,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void RetryableIngestionException()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.BadRequest));
+            SetupAdapterSendResponse(HttpStatusCode.BadRequest);
             Assert.ThrowsException<HttpIngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Once());
         }
@@ -165,27 +155,19 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         [TestMethod]
         public void ServiceCallSuccessCallbackTest()
         {
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             var call = PrepareServiceCall();
+            call.ExecuteAsync().RunNotAsync();
 
-            SetupEventCallbacks(call);
-
-            call.Execute();
-
-            Assert.IsTrue(SuccessCallbackOccurred());
+            // No throw any exception
         }
 
         [TestMethod]
         public void ServiceCallFailedCallbackTest()
         {
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
+            SetupAdapterSendResponse(HttpStatusCode.NotFound);
             var call = PrepareServiceCall();
-
-            SetupEventCallbacks(call);
-
-            call.Execute();
-
-            Assert.IsTrue(FailedCallbackOccurred());
+            Assert.ThrowsException<HttpIngestionException>(() => { call.ExecuteAsync().RunNotAsync(); });
         }
 
         /// <summary>
@@ -231,25 +213,6 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             return _retryableIngestion.PrepareServiceCall(appSecret, installId, logs);
         }
 
-        /// <summary>
-        /// Helper for setup responce.
-        /// </summary>
-        private void SetupAdapterSendResponse(HttpResponseMessage response)
-        {
-            _adapter
-                .Setup(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.Run(() => response));
-        }
-
-        /// <summary>
-        /// Helper for verify SendAsync call.
-        /// </summary>
-        private void VerifyAdapterSend(Times times)
-        {
-            _adapter
-                .Verify(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), times);
-        }
-
         public class TestInterval
         {
             private volatile TaskCompletionSource<bool> _task = new TaskCompletionSource<bool>();
@@ -258,47 +221,6 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 
             public Task Wait() { OnRequest?.Invoke(); return _task.Task; }
             public void Set() => _task.TrySetResult(true);
-        }
-
-        private void SetupEventCallbacks(IServiceCall call)
-        {
-            foreach (var sem in _eventSemaphores)
-            {
-                if (sem.CurrentCount != 0)
-                {
-                    sem.Release(sem.CurrentCount);
-                }
-            }
-
-            call.ServiceCallSucceededCallback += () => _eventSemaphores[SucceededCallbackSemaphoreIdx].Release();
-            call.ServiceCallFailedCallback += (e) => _eventSemaphores[FailedCallbackSemaphoreIdx].Release();
-        }
-
-        private bool SuccessCallbackOccurred(int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[SucceededCallbackSemaphoreIdx], 1, waitTime);
-        }
-
-        private bool FailedCallbackOccurred(int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[FailedCallbackSemaphoreIdx], 1, waitTime);
-        }
-
-        private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)
-        {
-            var enteredAll = true;
-            for (var i = 0; i < numTimes; ++i)
-            {
-                enteredAll &= semaphore.Wait(waitTime);
-            }
-            return enteredAll;
-        }
-
-        public class TestServiceCall : ServiceCallDecorator
-        {
-            public TestServiceCall(IServiceCall decoratedApi) : base(decoratedApi)
-            {
-            }
         }
     }
 }

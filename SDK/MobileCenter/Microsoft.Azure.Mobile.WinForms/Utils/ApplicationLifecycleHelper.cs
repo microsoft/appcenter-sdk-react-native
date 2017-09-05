@@ -7,6 +7,16 @@ namespace Microsoft.Azure.Mobile.Utils
 {
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
+        // Singleton instance of ApplicationLifecycleHelper
+        private static ApplicationLifecycleHelper _instance;
+        public static ApplicationLifecycleHelper Instance
+        {
+            get { return _instance ?? (_instance = new ApplicationLifecycleHelper()); }
+
+            // Setter for testing
+            internal set { _instance = value; }
+        }
+
         #region WinEventHook
 
         private delegate void WinEventDelegate(IntPtr winEventHookHandle, uint eventType, IntPtr windowHandle, int objectId, int childId, uint eventThreadId, uint eventTimeInMilliseconds);
