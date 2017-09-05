@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Microsoft.Azure.Mobile.Ingestion.Models;
@@ -13,9 +10,8 @@ using Moq;
 namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
 {
     [TestClass]
-    public class IngestionHttpTest
+    public class IngestionHttpTest : HttpIngestionTest
     {
-        private Mock<IHttpNetworkAdapter> _adapter;
         private IngestionHttp _ingestionHttp;
 
         [TestInitialize]
@@ -32,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void IngestionHttpStatusCodeOk()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _ingestionHttp.ExecuteCallAsync(call).RunNotAsync();
             VerifyAdapterSend(Times.Once());
 
@@ -46,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         public void IngestionHttpStatusCodeError()
         {
             var call = PrepareServiceCall();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.NotFound));
+            SetupAdapterSendResponse(HttpStatusCode.NotFound);
             Assert.ThrowsException<HttpIngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
             VerifyAdapterSend(Times.Once());
         }
@@ -59,7 +55,7 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             call.Cancel();
-            SetupAdapterSendResponse(new HttpResponseMessage(HttpStatusCode.OK));
+            SetupAdapterSendResponse(HttpStatusCode.OK);
             _ingestionHttp.ExecuteCallAsync(call).RunNotAsync();
             VerifyAdapterSend(Times.Never());
         }
@@ -82,19 +78,17 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
         }
 
         /// <summary>
-        /// Verify that ingestion create ServiceCall correctly.
+        /// Verify that ingestion create headers correctly.
         /// </summary>
         [TestMethod]
-        public void IngestionHttpCreateRequest()
+        public void IngestionHttpCreateHeaders()
         {
             var appSecret = Guid.NewGuid().ToString();
             var installId = Guid.NewGuid();
-            var logs = string.Empty;
-            var request = _ingestionHttp.CreateRequest(appSecret, installId, logs);
-
-            Assert.AreEqual(request.Method, HttpMethod.Post);
-            Assert.IsTrue(request.Headers.Contains(IngestionHttp.AppSecret));
-            Assert.IsTrue(request.Headers.Contains(IngestionHttp.InstallId));
+            var headers = _ingestionHttp.CreateHeaders(appSecret, installId);
+            
+            Assert.IsTrue(headers.ContainsKey(IngestionHttp.AppSecret));
+            Assert.IsTrue(headers.ContainsKey(IngestionHttp.InstallId));
         }
 
         /// <summary>
@@ -106,25 +100,6 @@ namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
             var installId = Guid.NewGuid();
             var logs = new List<Log>();
             return _ingestionHttp.PrepareServiceCall(appSecret, installId, logs);
-        }
-
-        /// <summary>
-        /// Helper for setup responce.
-        /// </summary>
-        private void SetupAdapterSendResponse(HttpResponseMessage response)
-        {
-            _adapter
-                .Setup(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.Run(() => response));
-        }
-
-        /// <summary>
-        /// Helper for verify SendAsync call.
-        /// </summary>
-        private void VerifyAdapterSend(Times times)
-        {
-            _adapter
-                .Verify(a => a.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), times);
         }
     }
 }

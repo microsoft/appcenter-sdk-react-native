@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile.Test.WindowsClassic.Utils
             var location = Assembly.GetExecutingAssembly().Location;
             var path = Path.Combine(Path.GetDirectoryName(location), "MobileCenter.config");
             File.Delete(path);
-            settings = new ApplicationSettings();
+            settings = new DefaultApplicationSettings();
         }
 
         /// <summary>

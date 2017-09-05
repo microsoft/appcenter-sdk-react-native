@@ -15,6 +15,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
     {
         private Mock<IChannelGroup> _mockChannelGroup;
         private Mock<IChannelUnit> _mockChannel;
+        private Mock<IApplicationSettings> _mockSettings;
         private SessionTracker _sessionTracker;
 
         [TestInitialize]
@@ -25,8 +26,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
-            ApplicationSettings.Reset();
-            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
+            _mockSettings = new Mock<IApplicationSettings>();
+            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object, _mockSettings.Object);
             SessionTracker.SessionTimeout = 500;
         }
 
@@ -38,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         {
             _sessionTracker.Resume();
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
         }
 
         /// <summary>
@@ -52,7 +53,24 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             Task.Delay((int)SessionTracker.SessionTimeout).Wait();
             _sessionTracker.Resume();
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Exactly(2));
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
+        }
+
+        /// <summary>
+        /// Verify that after a timeout, if we resume and send a log at the same time, only 1 new session is started
+        /// </summary>
+        [TestMethod]
+        public void ResumeAfterTimeoutAndSendEvent()
+        {
+            _sessionTracker.Resume();
+            _sessionTracker.Pause();
+            Task.Delay((int)SessionTracker.SessionTimeout).Wait();
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
+
+            _sessionTracker.Resume();
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(new EventLog()));
+
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -65,7 +83,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Pause();
             _sessionTracker.Resume();
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
         }
 
         /// <summary>
@@ -77,7 +95,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Resume();
             _sessionTracker.ClearSessions();
 
-            Assert.IsTrue(ApplicationSettings.IsEmpty);
+            _mockSettings.Verify(channel => channel.Remove(SessionTracker.StorageKey), Times.Once);
         }
 
         /// <summary>
@@ -87,7 +105,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void HandleEnqueuingLogDuringSession()
         {
             _sessionTracker.Resume();
-            var eventLog = new EventLog {Toffset = 2};
+            var eventLog = new EventLog { Timestamp = DateTime.Now };
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(eventLog));
             Assert.IsNotNull(eventLog.Sid);
         }
@@ -99,9 +117,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         public void HandleEnueuingSecondLogDuringSession()
         {
             _sessionTracker.Resume();
-            var time = TimeHelper.CurrentTimeInMilliseconds();
-            var firstLog = new EventLog { Toffset = time };
-            var secondLog = new EventLog { Toffset = time + 1 };
+            var time = DateTime.Now;
+            var firstLog = new EventLog { Timestamp = time };
+            var secondLog = new EventLog { Timestamp = time.AddMilliseconds(1) };
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(firstLog));
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(secondLog));
 
@@ -120,7 +138,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             var eventArgs = new EnqueuingLogEventArgs(eventLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
             Assert.IsNotNull(eventLog.Sid);
         }
 
@@ -135,7 +153,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             var eventArgs = new EnqueuingLogEventArgs(sessionLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
-            _mockChannel.Verify(channel => channel.Enqueue(It.IsAny<StartSessionLog>()), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Never());
         }
 
         /// <summary>
@@ -184,7 +202,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TestSetSessionIdLessThan()
         {
-            var log = new EventLog { Toffset = 430 };
+            var time = new DateTime(430 * TimeSpan.TicksPerMillisecond);
+            var log = new EventLog { Timestamp = time };
             var intendedSid = Guid.NewGuid();
             var sessions = new Dictionary<long, Guid> { { 4, Guid.Empty }, { 429, intendedSid }, { 431, Guid.Empty } };
             var success = SessionTracker.SetExistingSessionId(log, sessions);
@@ -200,7 +219,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TestSetSessionIdEqualTo()
         {
-            var log = new EventLog { Toffset = 430 };
+            var time = new DateTime(430 * TimeSpan.TicksPerMillisecond);
+            var log = new EventLog { Timestamp = time };
             var intendedSid = Guid.NewGuid();
             var sessions = new Dictionary<long, Guid> { { 4, Guid.Empty }, { 430, intendedSid }, { 431, Guid.Empty } };
             var success = SessionTracker.SetExistingSessionId(log, sessions);
@@ -215,7 +235,8 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         [TestMethod]
         public void TestSetSessionIdNone()
         {
-            var log = new EventLog { Toffset = 430 };
+            var time = new DateTime(430 * TimeSpan.TicksPerMillisecond);
+            var log = new EventLog { Timestamp = time };
             var sessions = new Dictionary<long, Guid> { { 431, Guid.Empty }, { 632, Guid.Empty }, { 461, Guid.Empty } };
             var success = SessionTracker.SetExistingSessionId(log, sessions);
 

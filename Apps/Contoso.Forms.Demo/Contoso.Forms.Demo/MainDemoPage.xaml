@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabbedPage Title="Mobile Center Demo App" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Demo;assembly=Contoso.Forms.Demo" x:Class="Contoso.Forms.Demo.MainDemoPage">
-    <local:MobileCenterContentPage/>
-	<local:AnalyticsContentPage/>
-	<local:CrashesContentPage/>
-	<local:OthersContentPage/>
+    <local:MobileCenterContentPage />
+    <local:AnalyticsContentPage />
+    <local:CrashesContentPage />
+    <local:CustomPropertiesContentPage />
+    <local:OthersContentPage />
 </TabbedPage>

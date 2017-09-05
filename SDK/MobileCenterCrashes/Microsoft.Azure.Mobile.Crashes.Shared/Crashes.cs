@@ -11,6 +11,7 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         static Crashes()
         {
+#pragma warning disable 618
             PlatformCrashes.SendingErrorReport += (sender, e) =>
             {
                 SendingErrorReport?.Invoke(sender, e);
@@ -21,7 +22,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 SentErrorReport?.Invoke(sender, e);
             };
 
-            PlatformCrashes.FailedToSendErrorReport += (sender, e) => 
+            PlatformCrashes.FailedToSendErrorReport += (sender, e) =>
             {
                 FailedToSendErrorReport?.Invoke(sender, e);
             };
@@ -37,6 +38,7 @@ namespace Microsoft.Azure.Mobile.Crashes
              * So instead we use the property explicitly here to preserve the method call even after optimization.
              */
             var type = BindingType;
+#pragma warning restore 618
         }
 
         internal Crashes()
@@ -152,23 +154,35 @@ namespace Microsoft.Azure.Mobile.Crashes
 #endif
         public static Type BindingType => PlatformCrashes.BindingType;
 
-#if USES_WATSON
-
+#if WINDOWS_UWP
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
         /// <summary>
-        /// Enables or disables Crashes module.
+        /// Check whether the Crashes service is enabled or not.
         /// </summary>
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
 #endif
-        public static bool Enabled
+        public static Task<bool> IsEnabledAsync()
         {
-            get { return PlatformCrashes.Enabled; }
-            set { PlatformCrashes.Enabled = value; }
+            return PlatformCrashes.IsEnabledAsync();
         }
 
-#if USES_WATSON
+#if WINDOWS_UWP
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("This does not exist in UWP and should not be used.")]
+#else
+		/// <summary>
+		/// Enable or disable the Crashes service.
+		/// </summary>
+		/// <returns>A task to monitor the operation.</returns>
+#endif
+		public static Task SetEnabledAsync(bool enabled)
+        {
+            return PlatformCrashes.SetEnabledAsync(enabled);
+        }
 
+#if WINDOWS_UWP
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -176,10 +190,10 @@ namespace Microsoft.Azure.Mobile.Crashes
         /// Provides information whether the app crashed in its last session.
         /// </summary>
         /// <value>
-        /// <c>true</c> if a crash was recorded in the last session, otherwise <c>false</c>.
+        /// Task with result being <c>true</c> if a crash was recorded in the last session, otherwise <c>false</c>.
         /// </value>
 #endif
-        public static bool HasCrashedInLastSession => PlatformCrashes.HasCrashedInLastSession;
+        public static Task<bool> HasCrashedInLastSessionAsync() => PlatformCrashes.HasCrashedInLastSessionAsync();
 
 #if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]

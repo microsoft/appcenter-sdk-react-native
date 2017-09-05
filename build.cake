@@ -54,8 +54,8 @@ var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
 var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "0.9.0";
-var IOS_SDK_VERSION = "0.9.0";
+var ANDROID_SDK_VERSION = "0.12.0";
+var IOS_SDK_VERSION = "0.12.1";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -70,7 +70,7 @@ var PLATFORM_PATHS = new PlatformPaths();
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-iOS-" + IOS_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
 var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
@@ -262,7 +262,7 @@ Task("MacBuild")
 	RunTarget("Externals");
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Mac.sln");
-	DotNetBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
+	MSBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
 }).OnError(HandleError);
 
 // Building Windows code task
@@ -272,11 +272,11 @@ Task("WindowsBuild")
 {
 	// Build solution
 	NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
-	DotNetBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
+	MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
@@ -320,16 +320,16 @@ Task("Externals-Ios")
 	Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
 	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
-	var files = GetFiles("./externals/ios/*/*.framework/MobileCenter*");
+	var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
 	foreach (var file in files)
 	{
 		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
 	}
 
 	// Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
-	if(DirectoryExists("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle"))
+	if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
 	{
-		MoveDirectory("./externals/ios/MobileCenter-SDK-iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
+		MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
 	}
 }).OnError(HandleError);
 
@@ -342,12 +342,12 @@ Task("Default").IsDependentOn("NuGet").IsDependentOn("RemoveTemporaries");
 // Build tests
 Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 {
-	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+	MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 });
 
 // Pack NuGets for appropriate platform
 Task("NuGet")
-	.IsDependentOn("Build")
+	.IsDependentOn("PrepareAssemblies")
 	.IsDependentOn("Version")
 	.Does(()=>
 {
@@ -355,17 +355,37 @@ Task("NuGet")
 	var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
 	CleanDirectory("output");
 
+	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
+
 	// Packaging NuGets.
 	foreach (var module in MOBILECENTER_MODULES)
 	{
 		var nuspecFilename = IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename;
-		var spec = GetFiles("./nuget/" + nuspecFilename);
+
+		// Skipping not exists modules.
+		if (!FileExists("nuget/" + nuspecFilename))
+		{
+			continue;
+		}
+
+		// Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
+		CopyFile("nuget/" + nuspecFilename, specCopyName);
+		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$windows_classic_dir$", WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
+		ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
+
+		var spec = GetFiles(specCopyName);
 		Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
 		NuGetPack(spec, new NuGetPackSettings {
 			BasePath = basePath,
 			Verbosity = NuGetVerbosity.Detailed,
 			Version = module.NuGetVersion
 		});
+
+		// Clean up
+		DeleteFiles(specCopyName);
 	}
 	MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
 }).OnError(HandleError);
@@ -426,44 +446,22 @@ Task("MergeAssemblies")
 	.IsDependentOn("Version")
 	.Does(()=>
 {
-		CleanDirectory("output");
-
 	Information("Beginning complete package creation...");
-	var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 
-	if (IsRunningOnUnix())
-	{
-		//extract the uwp assemblies
-		CleanDirectory(UWP_ASSEMBLIES_FOLDER);
-		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + UWP_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, UWP_ASSEMBLIES_FOLDER);
-
-		//extract the windows classic assemblies
-		CleanDirectory(WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
-		files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + WINDOWS_CLASSIC_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
-	}
-	else
-	{
-		//extract the ios assemblies
-		CleanDirectory(IOS_ASSEMBLIES_FOLDER);
-		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + IOS_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, IOS_ASSEMBLIES_FOLDER);
-		
-		//extract the android assemblies
-		CleanDirectory(ANDROID_ASSEMBLIES_FOLDER);
-		files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + ANDROID_ASSEMBLIES_FOLDER + "/*.dll");
-		CopyFiles(files, ANDROID_ASSEMBLIES_FOLDER);
-	}
+	// Copy the downloaded files to their proper locations so the structure is as if
+	// the downloaded assemblies were built locally (for the nuspecs to work)
 	foreach (var assemblyFolder in PLATFORM_PATHS.DownloadAssemblyFolders)
 	{
 		CleanDirectory(assemblyFolder);
 		var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + assemblyFolder + "/*");
 		CopyFiles(files, assemblyFolder);
 	}
+
+	// Create NuGet packages
 	foreach (var module in MOBILECENTER_MODULES)
 	{
 		// Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
+		var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 		CopyFile("nuget/" + module.MainNuspecFilename, specCopyName);
 		ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
 		ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
@@ -483,26 +481,19 @@ Task("MergeAssemblies")
 		// Clean up
 		DeleteFiles(specCopyName);
 	}
-
-	DeleteDirectory(PCL_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(ANDROID_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(IOS_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(UWP_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(WINDOWS_CLASSIC_ASSEMBLIES_FOLDER, true);
-	DeleteDirectory(DOWNLOADED_ASSEMBLIES_FOLDER, true);
 	CleanDirectory("output");
 	MoveFiles("*.nupkg", "output");
-}).OnError(HandleError);
+}).OnError(HandleError).Finally(()=>RunTarget("RemoveTemporaries"));
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
 	// Build tests and package the applications
 	// It is important that the entire solution is built before rebuilding the iOS and Android versions
 	// due to an apparent bug that causes improper linking of the forms application to iOS
-	DotNetBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
+	MSBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
 	MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Release|iPhone");
 	AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
-	DotNetBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
+	MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 }).OnError(HandleError);
 
 Task("RestoreTestPackages").Does(() =>
@@ -510,7 +501,11 @@ Task("RestoreTestPackages").Does(() =>
 	NuGetRestore("./MobileCenter-SDK-Test.sln");
 	NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
 	NuGetUpdate("./Tests/iOS/packages.config");
-	NuGetUpdate("./Tests/Droid/packages.config");
+	NuGetUpdate("./Tests/Droid/packages.config", new NuGetUpdateSettings {
+
+		// workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-target
+		Source = new string[] { EnvironmentVariable("NUGET_URL") }
+	});
 }).OnError(HandleError);
 
 // Remove any uploaded nugets from azure storage

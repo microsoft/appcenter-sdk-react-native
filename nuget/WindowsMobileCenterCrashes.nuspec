@@ -8,37 +8,38 @@
     <summary>Microsoft Visual Studio Mobile Center Crashes package provides crash reporting capabilities for your mobile applications.</summary>
     <description>This package contains functionalities to collect crash reports for your application.</description>
     <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
+    <tags>mobilecenter</tags>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
-    <iconUrl>https://aka.ms/p2wifj</iconUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
       <dependency id="Microsoft.Azure.Mobile" version="$version$" />
     </dependencies>
   </metadata>
   <files>
 
-    <!-- WindowsClassic (WPF and WinForms) -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" />
+    <!-- WinForms -->
+    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" />
 
     <!-- UWP -->
-    <!-- ".targets" file adds correct references to proper platforms -->
-    <file src="nuget/Microsoft.Azure.Mobile.Crashes.targets" target="build/uap10.0"/>
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll" target="ref/uap10.0" />
+    <!-- targets files add correct references to proper platforms -->
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Crashes.targets" target="build/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="ref/uap10.0" />
     
     <!--x86 -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
-    <file src="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll" target="runtimes/win10-x86/native"/>
-    <file src="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" target="runtimes/win10-x86/lib/uap10.0" />
+    <file src="$uwp_dir$/x86/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
+    <file src="$uwp_dir$/x86/WatsonRegistrationUtility.dll" target="runtimes/win10-x86/native"/>
+    <file src="$uwp_dir$/x86/WatsonRegistrationUtility.winmd" target="runtimes/win10-x86/lib/uap10.0" />
 
     <!-- x64 -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-x64/lib/uap10.0" />
-    <file src="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll" target="runtimes/win10-x64/native"/>
-    <file src="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0" />
+    <file src="$uwp_dir$/x64/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-x64/lib/uap10.0" />
+    <file src="$uwp_dir$/x64/WatsonRegistrationUtility.dll" target="runtimes/win10-x64/native"/>
+    <file src="$uwp_dir$/x64/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0" />
 
     <!-- ARM -->
-    <file src="SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-arm/lib/uap10.0" />
-    <file src="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll" target="runtimes/win10-arm/native"/>
-    <file src="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$uwp_dir$/ARM/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$uwp_dir$/ARM/WatsonRegistrationUtility.dll" target="runtimes/win10-arm/native"/>
+    <file src="$uwp_dir$/ARM/WatsonRegistrationUtility.winmd" target="runtimes/win10-arm/lib/uap10.0" />
 
   </files>
 </package>

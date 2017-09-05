@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Android.App;
+using Android.Content;
 using Android.Runtime;
 using Com.Microsoft.Azure.Mobile.Push;
 
@@ -6,7 +9,7 @@ namespace Microsoft.Azure.Mobile.Push
 {
     public partial class Push
     {
-        private static Android.PushListener _pushListener = new Android.PushListener();
+        static Android.PushListener _pushListener = new Android.PushListener();
 
         static Push()
         {
@@ -23,10 +26,16 @@ namespace Microsoft.Azure.Mobile.Push
             AndroidPush.SetListener(_pushListener);
         }
 
-        private static bool PlatformEnabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get { return AndroidPush.Enabled; }
-            set { AndroidPush.Enabled = value; }
+            var future = AndroidPush.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
+        }
+
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            var future = AndroidPush.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         /// <summary>
@@ -38,9 +47,25 @@ namespace Microsoft.Azure.Mobile.Push
         [Preserve]
         public static Type BindingType => typeof(AndroidPush);
 
+        /// <summary>
+        /// Enables firebase analytics collection.
+        /// It's disabled by default unless you call this method.
+        /// </summary>
         public static void EnableFirebaseAnalytics()
         {
-            AndroidPush.EnableFirebaseAnalytics(global::Android.App.Application.Context);
+            AndroidPush.EnableFirebaseAnalytics(Application.Context);
+        }
+
+        /// <summary>
+        /// If you are using the event for background push notifications
+        /// and your activity has a launch mode such as singleTop, singleInstance or singleTask,
+        /// need to call this method in your launcher OnNewIntent override method.
+        /// </summary>
+        /// <param name="activity">This activity.</param>
+        /// <param name="intent">Intent from OnNewIntent().</param>
+        public static void CheckLaunchedFromNotification(Activity activity, Intent intent)
+        {
+            AndroidPush.CheckLaunchedFromNotification(activity, intent);
         }
     }
 }

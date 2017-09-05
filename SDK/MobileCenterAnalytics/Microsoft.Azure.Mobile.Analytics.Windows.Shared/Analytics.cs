@@ -5,6 +5,7 @@ using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Analytics.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Analytics
 {
@@ -40,23 +41,27 @@ namespace Microsoft.Azure.Mobile.Analytics
         }
 
         /// <summary>
-        ///     Enable or disable Analytics module.
+        /// Check whether the Analytics service is enabled or not.
         /// </summary>
-        public static bool Enabled
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
         {
-            get
+            lock (AnalyticsLock)
             {
-                lock (AnalyticsLock)
-                {
-                    return Instance.InstanceEnabled;
-                }
+                return Task.FromResult(Instance.InstanceEnabled);
             }
-            set
+        }
+
+        /// <summary>
+        /// Enable or disable the Analytics service.
+        /// </summary>
+        /// <returns>A task to monitor the operation.</returns>
+        public static Task SetEnabledAsync(bool enabled)
+        {
+            lock (AnalyticsLock)
             {
-                lock (AnalyticsLock)
-                {
-                    Instance.InstanceEnabled = value;
-                }
+                Instance.InstanceEnabled = enabled;
+                return Task.FromResult(default(object));
             }
         }
 
@@ -85,9 +90,7 @@ namespace Microsoft.Azure.Mobile.Analytics
 
         // Internal for testing purposes
         internal ISessionTracker SessionTracker;
-        internal IApplicationLifecycleHelper ApplicationLifecycleHelper;
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
-        private bool _hasStarted;
 
         internal Analytics()
         {
@@ -96,10 +99,9 @@ namespace Microsoft.Azure.Mobile.Analytics
             LogSerializer.AddLogType(StartSessionLog.JsonIdentifier, typeof(StartSessionLog));
         }
 
-        internal Analytics(ISessionTrackerFactory sessionTrackerFactory, IApplicationLifecycleHelper lifecycleHelper) : this()
+        internal Analytics(ISessionTrackerFactory sessionTrackerFactory) : this()
         {
             _sessionTrackerFactory = sessionTrackerFactory;
-            ApplicationLifecycleHelper = lifecycleHelper;
         }
 
         public override bool InstanceEnabled
@@ -136,11 +138,11 @@ namespace Microsoft.Azure.Mobile.Analytics
                     return;
                 }
                 const string type = "Event";
-                if (ValidateName(name, type))
+                if (ValidateName(ref name, type))
                 {
                     properties = ValidateProperties(properties, name, type);
-                    var log = new EventLog(0, null, Guid.NewGuid(), name, null, properties);
-                    Channel.Enqueue(log);
+                    var log = new EventLog(null, null, Guid.NewGuid(), name, null, properties);
+                    Channel.EnqueueAsync(log);
                 }
             }
         }
@@ -150,27 +152,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             lock (_serviceLock)
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
-                if (ApplicationLifecycleHelper == null)
-                {
-                    // If it isn't null, that likely means that a test provided its own lifecycle helper
-                    ApplicationLifecycleHelper = new ApplicationLifecycleHelper();
-                }
                 ApplyEnabledState(InstanceEnabled);
-                if (ApplicationLifecycleHelper.HasShownWindow && !ApplicationLifecycleHelper.IsSuspended)
-                {
-                    SessionTracker?.Resume();
-                    _hasStarted = true;
-                }
-                else
-                {
-                    ApplicationLifecycleHelper.ApplicationStarted += (sender, e) =>
-                    {
-                        SessionTracker?.Resume();
-                        _hasStarted = true;
-                    };
-                }
-                ApplicationLifecycleHelper.ApplicationResuming += (sender, e) => SessionTracker?.Resume();
-                ApplicationLifecycleHelper.ApplicationSuspended += (sender, e) => SessionTracker?.Pause();
             }
         }
 
@@ -180,25 +162,25 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 if (enabled && ChannelGroup != null && SessionTracker == null)
                 {
-                    SessionTracker = CreateSessionTracker(ChannelGroup, Channel);
-                    ApplicationLifecycleHelper.Enabled = true;
-                    if (_hasStarted)
+                    SessionTracker = CreateSessionTracker(ChannelGroup, Channel, ApplicationSettings);
+                    if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                     {
                         SessionTracker.Resume();
                     }
+                    SubscribeToApplicationLifecycleEvents();
                 }
                 else if (!enabled)
                 {
-                    ApplicationLifecycleHelper.Enabled = false;
+                    UnsbscribeFromApplicationLifecycleEvents();
                     SessionTracker?.ClearSessions();
                     SessionTracker = null;
                 }
             }
         }
 
-        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel)
+        private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
         {
-            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel) ?? new SessionTracker(channelGroup, channel);
+            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel, applicationSettings) ?? new SessionTracker(channelGroup, channel, applicationSettings);
         }
 
         /// <summary>
@@ -207,19 +189,42 @@ namespace Microsoft.Azure.Mobile.Analytics
         /// <param name="name">Log name to validate.</param>
         /// <param name="logType">Log type.</param>
         /// <returns><c>true</c> if validation succeeds, otherwise <с>false</с>.</returns>
-        private bool ValidateName(string name, string logType)
+        private bool ValidateName(ref string name, string logType)
         {
             if (string.IsNullOrEmpty(name))
             {
-                MobileCenterLog.Error(LogTag, logType + " name cannot be null or empty.");
+                MobileCenterLog.Error(LogTag, $"{logType} name cannot be null or empty.");
                 return false;
             }
             if (name.Length > MaxEventNameLength)
             {
-                MobileCenterLog.Error(LogTag, string.Format("{0} '{1}' : name length cannot be longer than {2} characters.", logType, name, MaxEventNameLength));
-                return false;
+                MobileCenterLog.Warn(LogTag,
+                    $"{logType} '{name}' : name length cannot be longer than {MaxEventNameLength} characters. Name will be truncated.");
+                name = name.Substring(0, MaxEventNameLength);
+                return true;
             }
             return true;
+        }
+
+        private void SubscribeToApplicationLifecycleEvents()
+        {
+            ApplicationLifecycleHelper.Instance.ApplicationResuming += ApplicationResumingEventHandler;
+            ApplicationLifecycleHelper.Instance.ApplicationSuspended += ApplicationSuspendedEventHandler;
+        }
+        private void UnsbscribeFromApplicationLifecycleEvents()
+        {
+            ApplicationLifecycleHelper.Instance.ApplicationResuming -= ApplicationResumingEventHandler;
+            ApplicationLifecycleHelper.Instance.ApplicationSuspended -= ApplicationSuspendedEventHandler;
+        }
+
+        private void ApplicationResumingEventHandler(object sender, EventArgs e)
+        {
+            SessionTracker?.Resume();
+        }
+
+        private void ApplicationSuspendedEventHandler(object sender, EventArgs e)
+        {
+            SessionTracker?.Pause();
         }
 
         /// <summary>
@@ -240,29 +245,41 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 if (result.Count >= MaxEventProperties)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : properties cannot contain more than {2} items. Skipping other properties.", logType, logName, MaxEventProperties));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : properties cannot contain more than {MaxEventProperties} items. Skipping other properties.");
                     break;
                 }
-                if (string.IsNullOrEmpty(property.Key))
+
+                // Skip empty property.
+                var key = property.Key;
+                var value = property.Value;
+                if (string.IsNullOrEmpty(key))
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : a property key cannot be null or empty. Property will be skipped.", logType, logName));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : a property key cannot be null or empty. Property will be skipped.");
+                    break;
                 }
-                else if (property.Key.Length > MaxEventPropertyKeyLength)
+                if (value == null)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property key length cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyKeyLength));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : property '{key}' : property value cannot be null. Property will be skipped.");
+                    break;
                 }
-                else if (property.Value == null)
+
+                // Truncate exceeded property.
+                if (key.Length > MaxEventPropertyKeyLength)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be null. Property '{2}' will be skipped.", logType, logName, property.Key));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : property '{key}' : property key length cannot be longer than {MaxEventPropertyKeyLength} characters. Property key will be truncated.");
+                    key = key.Substring(0, MaxEventPropertyKeyLength);
                 }
-                else if (property.Value.Length > MaxEventPropertyValueLength)
+                if (value.Length > MaxEventPropertyValueLength)
                 {
-                    MobileCenterLog.Warn(LogTag, string.Format("{0} '{1}' : property '{2}' : property value cannot be longer than {3} characters. Property '{2}' will be skipped.", logType, logName, property.Key, MaxEventPropertyValueLength));
+                    MobileCenterLog.Warn(LogTag,
+                        $"{logType} '{logName}' : property '{key}' : property value length cannot be longer than {MaxEventPropertyValueLength} characters. Property value will be truncated.");
+                    value = value.Substring(0, MaxEventPropertyValueLength);
                 }
-                else
-                {
-                    result.Add(property.Key, property.Value);
-                }
+                result.Add(key, value);
             }
             return result;
         }

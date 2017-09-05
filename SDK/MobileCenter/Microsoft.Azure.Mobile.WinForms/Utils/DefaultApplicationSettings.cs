@@ -7,17 +7,36 @@ using System.Reflection;
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    public class ApplicationSettings : IApplicationSettings
+    public class DefaultApplicationSettings : IApplicationSettings
     {
         private readonly object configLock = new object();
         private IDictionary<string, string> current;
 
-        public ApplicationSettings()
+        public DefaultApplicationSettings()
         {
             current = ReadAll();
         }
-        
-        public T GetValue<T>(string key, T defaultValue = default(T))
+
+        public bool ContainsKey(string key)
+        {
+            lock (configLock)
+            {
+                return current.ContainsKey(key);
+            }
+        }
+
+        public void Remove(string key)
+        {
+            lock (configLock)
+            {
+                current.Remove(key);
+                var config = OpenConfiguration();
+                config.AppSettings.Settings.Remove(key);
+                config.Save();
+            }
+        }
+
+        public T GetValue<T>(string key, T defaultValue)
         {
             lock (configLock)
             {
@@ -40,23 +59,10 @@ namespace Microsoft.Azure.Mobile.Utils
             }
         }
 
-        public bool ContainsKey(string key)
+        private IDictionary<string, string> ReadAll()
         {
-            lock (configLock)
-            {
-                return current.ContainsKey(key);
-            }
-        }
-
-        public void Remove(string key)
-        {
-            lock (configLock)
-            {
-                current.Remove(key);
-                var config = OpenConfiguration();
-                config.AppSettings.Settings.Remove(key);
-                config.Save();
-            }
+            var config = OpenConfiguration();
+            return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
         private void SaveValue(string key, string value)
@@ -75,12 +81,6 @@ namespace Microsoft.Azure.Mobile.Utils
                 }
                 config.Save();
             }
-        }
-
-        private static IDictionary<string, string> ReadAll()
-        {
-            var config = OpenConfiguration();
-            return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
         private static Configuration OpenConfiguration()

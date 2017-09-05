@@ -26,13 +26,11 @@ namespace Microsoft.Azure.Mobile.Channel
         private bool _discardLogs;
         private bool _batchScheduled;
         private TimeSpan _batchTimeInterval;
-        private readonly StatefulMutex _mutex;
-        private readonly StateKeeper _stateKeeper = new StateKeeper();
+        private readonly StatefulMutex _mutex = new StatefulMutex();
 
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
             string appSecret, IIngestion ingestion, IStorage storage)
         {
-            _mutex = new StatefulMutex(_stateKeeper);
             Name = name;
             _maxParallelBatches = maxParallelBatches;
             _maxLogsPerBatch = maxLogsPerBatch;
@@ -43,34 +41,15 @@ namespace Microsoft.Azure.Mobile.Channel
             _batchScheduled = false;
             _enabled = true;
             DeviceInformationHelper.InformationInvalidated += (sender, e) => InvalidateDeviceCache();
-            Task.Run(CountFromDiskAsync);
-        }
-
-        public void SetEnabled(bool enabled)
-        {
-            _mutex.Lock();
-            try
+            var lockHolder = _mutex.GetLock();
+            Task.Run(() => _storage.CountLogsAsync(Name)).ContinueWith(task =>
             {
-                if (_enabled == enabled)
+                if (!task.IsFaulted && !task.IsCanceled)
                 {
-                    return;
+                    _pendingLogCount = task.Result;
                 }
-                if (enabled)
-                {
-                    _enabled = true;
-                    _discardLogs = false;
-                    _stateKeeper.InvalidateState();
-                    CheckPendingLogs();
-                }
-                else
-                {
-                    Suspend(true, new CancellationException());
-                }
-            }
-            finally
-            {
-                _mutex.Unlock();
-            }
+                lockHolder.Dispose();
+            });
         }
 
         /// <summary>
@@ -80,14 +59,9 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             get
             {
-                _mutex.Lock();
-                try
+                using (_mutex.GetLock())
                 {
                     return _enabled;
-                }
-                finally
-                {
-                    _mutex.Unlock();
                 }
             }
         }
@@ -104,58 +78,73 @@ namespace Microsoft.Azure.Mobile.Channel
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
         #endregion
 
-        public Task Enqueue(Log log)
+        public void SetEnabled(bool enabled)
         {
-            _mutex.Lock();
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            try
+            State state;
+            using (_mutex.GetLock())
             {
-                if (_discardLogs)
+                if (_enabled == enabled)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is disabled; logs are discarded");
-                    _mutex.Unlock();
-                    SendingLog?.Invoke(this, new SendingLogEventArgs(log));
-                    FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
-                    return null;
+                    return;
                 }
-                _mutex.Unlock();
-                EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
-                _mutex.Lock(stateSnapshot);
-                return Task.Run(async () =>
-                {
-                    await PrepareLogAsync(log).ConfigureAwait(false);
-                    await PersistLogAsync(log, stateSnapshot).ConfigureAwait(false);
-                });
+                state = _mutex.State;
             }
-            catch (StatefulMutexException e)
+            if (enabled)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled", e);
-                return null;
+                Resume(state);
             }
-            finally
+            else
             {
-                _mutex.Unlock();
+                Suspend(state, true, new CancellationException());
             }
         }
 
-        private async Task PrepareLogAsync(Log log)
+        public async Task EnqueueAsync(Log log)
+        {
+            try
+            {
+                State state;
+                bool discardLogs;
+                using (await _mutex.GetLockAsync().ConfigureAwait(false))
+                {
+                    state = _mutex.State;
+                    discardLogs = _discardLogs;
+                }
+                if (discardLogs)
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is disabled; logs are discarded");
+                    SendingLog?.Invoke(this, new SendingLogEventArgs(log));
+                    FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
+                }
+                EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
+                await PrepareLogAsync(log, state).ConfigureAwait(false);
+                await PersistLogAsync(log, state).ConfigureAwait(false);
+            }
+            catch (StatefulMutexException)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled");
+            }
+        }
+
+        private async Task PrepareLogAsync(Log log, State state)
         {
             if (log.Device == null && _device == null)
             {
-                _device = await _deviceInfoHelper.GetDeviceInformationAsync().ConfigureAwait(false);
+                var device = await _deviceInfoHelper.GetDeviceInformationAsync().ConfigureAwait(false);
+                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
+                {
+                    _device = device;
+                }
             }
             log.Device = log.Device ?? _device;
-            if (log.Toffset == 0L)
-            {
-                log.Toffset = TimeHelper.CurrentTimeInMilliseconds();
-            }
+            log.Timestamp = log.Timestamp ?? DateTime.Now;
         }
 
-        private async Task PersistLogAsync(Log log, State stateSnapshot)
+        private async Task PersistLogAsync(Log log, State state)
         {
             try
             {
-                await _storage.PutLogAsync(Name, log).ConfigureAwait(false);
+                await _storage.PutLog(Name, log).ConfigureAwait(false);
             }
             catch (StorageException e)
             {
@@ -164,166 +153,155 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             try
             {
-                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                _pendingLogCount++;
-                if (_enabled)
+                bool enabled;
+                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
-                    CheckPendingLogs();
+                    _pendingLogCount++;
+                    enabled = _enabled;
+                }
+                if (enabled)
+                {
+                    CheckPendingLogs(state);
                     return;
                 }
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled", e);
-            }
-            finally
-            {
-                _mutex.Unlock();
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled");
             }
         }
 
         public void InvalidateDeviceCache()
         {
-            _mutex.Lock();
-            _device = null;
-            _mutex.Unlock();
-        }
-
-        public void Clear()
-        {
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            _storage.DeleteLogsAsync(Name).ContinueWith(completedTask =>
+            using (_mutex.GetLock())
             {
-                try
+                _device = null;
+            }
+        }
+        
+        public async Task ClearAsync()
+        {
+            var state = _mutex.State;
+            await _storage.DeleteLogs(Name).ConfigureAwait(false);
+            try
+            {
+                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
-                    _mutex.Lock(stateSnapshot);
                     _pendingLogCount = 0;
-                    _mutex.Unlock();
                 }
-                catch (StatefulMutexException)
-                {
-                    //Nothing to handle
-                }
-            });
-        }
-
-        private async Task CountFromDiskAsync()
-        {
-            await _mutex.LockAsync().ConfigureAwait(false);
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            _mutex.Unlock();
-            var logCount = await _storage.CountLogsAsync(Name).ConfigureAwait(false);
-            try
-            {
-                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                _pendingLogCount = logCount;
-                CheckPendingLogs();
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The CountFromDisk operation has been cancelled", e);
-            }
-            finally
-            {
-                _mutex.Unlock();
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled");
             }
         }
 
-        private Task Suspend(bool deleteLogs, Exception exception)
+        private void Resume(State state)
         {
-            _enabled = false;
-            _batchScheduled = false;
-            _discardLogs = deleteLogs;
-            _stateKeeper.InvalidateState();
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
             try
             {
-                if (deleteLogs && FailedToSendLog != null)
+                using (_mutex.GetLock(state))
                 {
-                    foreach (var log in _sendingBatches.Values.SelectMany(batch => batch))
+                    _enabled = true;
+                    _discardLogs = false;
+                    state = _mutex.InvalidateState();
+                }
+            }
+            catch (StatefulMutexException)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Resume operation has been cancelled");
+            }
+            CheckPendingLogs(state);
+        }
+
+        private void Suspend(State state, bool deleteLogs, Exception exception)
+        {
+            try
+            {
+                IEnumerable<Log> unsentLogs = null;
+                using (_mutex.GetLock(state))
+                {
+                    _enabled = false;
+                    _batchScheduled = false;
+                    _discardLogs = deleteLogs;
+                    if (deleteLogs)
                     {
-                        _mutex.Unlock();
-                        FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
-                        _mutex.Lock(stateSnapshot);
+                        unsentLogs = _sendingBatches.Values.SelectMany(batch => batch);
+                        _sendingBatches.Clear();
                     }
+                    state = _mutex.InvalidateState();
                 }
-                try
+                if (unsentLogs  != null)
                 {
-                    _ingestion.Close();
-                }
-                catch (IngestionException e)
-                {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
+                    foreach (var log in unsentLogs)
+                    {
+                        FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
+                    }
                 }
                 if (deleteLogs)
                 {
-                    _pendingLogCount = 0;
-                    return Task.Run(DeleteLogsOnSuspendedAsync);
+                    try
+                    {
+                        _ingestion.Close();
+                    }
+                    catch (IngestionException e)
+                    {
+                        MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
+                    }
+                    using (_mutex.GetLock(state))
+                    {
+                        _pendingLogCount = 0;
+                        TriggerDeleteLogsOnSuspending();
+                    }
                 }
-                return _storage.ClearPendingLogStateAsync(Name);
+                _storage.ClearPendingLogState(Name);
             }
-            catch (StatefulMutexException e)
+            catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The CountFromDisk operation has been cancelled", e);
-                return null;
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled");
             }
         }
 
-        private async Task DeleteLogsOnSuspendedAsync()
+        private void TriggerDeleteLogsOnSuspending()
         {
-            await _mutex.LockAsync().ConfigureAwait(false);
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            try
+            if (SendingLog == null && FailedToSendLog == null)
             {
-                if (SendingLog != null || FailedToSendLog != null)
-                {
-                    await SignalDeletingLogs(stateSnapshot).ConfigureAwait(false);
-                }
-            }
-            catch (StorageException)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to invoke events for logs being deleted.");
+                _storage.DeleteLogs(Name);
                 return;
             }
-            catch (StatefulMutexException e)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The DeleteLogs operation has been cancelled", e);
-                return;
-            }
-            finally
-            {
-                _mutex.Unlock();
-            }
-            await _storage.DeleteLogsAsync(Name).ConfigureAwait(false);
+            SignalDeletingLogs().ContinueWith(completedTask => _storage.DeleteLogs(Name));
         }
 
-        private async Task SignalDeletingLogs(State stateSnapshot)
+        private Task SignalDeletingLogs()
         {
             var logs = new List<Log>();
-            _mutex.Unlock();
-            await _storage.GetLogsAsync(Name, ClearBatchSize, logs).ConfigureAwait(false);
-            await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-            foreach (var log in logs)
-            {
-                _mutex.Unlock();
-                SendingLog?.Invoke(this, new SendingLogEventArgs(log));
-                FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
-                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-            }
-            if (logs.Count >= ClearBatchSize)
-            {
-                await SignalDeletingLogs(stateSnapshot).ConfigureAwait(false);
-            }
+            return _storage.GetLogsAsync(Name, ClearBatchSize, logs)
+                .ContinueWith(completedTask =>
+                {
+                    if (completedTask.IsFaulted)
+                    {
+                        MobileCenterLog.Warn(MobileCenterLog.LogTag,
+                            "Failed to invoke events for logs being deleted.");
+                        return;
+                    }
+                    foreach (var log in logs)
+                    {
+                        SendingLog?.Invoke(this, new SendingLogEventArgs(log));
+                        FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
+                    }
+                    if (logs.Count >= ClearBatchSize)
+                    {
+                        SignalDeletingLogs();
+                    }
+                });
         }
 
-        private async Task TriggerIngestionAsync()
+        private async Task TriggerIngestionAsync(State state)
         {
-            await _mutex.LockAsync().ConfigureAwait(false);
-            var stateSnapshot = _stateKeeper.GetStateSnapshot();
-            try
+            using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
             {
-                if (!_enabled)
+                if (!_enabled || !_batchScheduled)
                 {
                     return;
                 }
@@ -336,99 +314,109 @@ namespace Microsoft.Azure.Mobile.Channel
                         "Already sending " + _maxParallelBatches + " batches of analytics data to the server");
                     return;
                 }
+            }
 
-                // Get a batch from storage
-                var logs = new List<Log>();
-                _mutex.Unlock();
-                var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs).ConfigureAwait(false);
-                await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                if (batchId != null)
+            // Get a batch from storage
+            var logs = new List<Log>();
+            var batchId = await _storage.GetLogsAsync(Name, _maxLogsPerBatch, logs).ConfigureAwait(false);
+            if (batchId != null)
+            {
+                using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
                 {
                     _sendingBatches.Add(batchId, logs);
                     _pendingLogCount -= logs.Count;
-                    TriggerIngestion(logs, stateSnapshot, batchId);
                 }
-            }
-            catch (StatefulMutexException e)
-            {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The TriggerIngestion operation has been cancelled", e);
-            }
-            finally
-            {
-                _mutex.Unlock();
+                try
+                {
+                    TriggerIngestion(state, logs, batchId);
+                    CheckPendingLogs(state);
+                }
+                catch (StorageException)
+                {
+                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Something went wrong sending logs to ingestion");
+                }
             }
         }
 
-        private void TriggerIngestion(IList<Log> logs, State stateSnapshot, string batchId)
+        private void TriggerIngestion(State state, IList<Log> logs, string batchId)
         {
             // Before sending logs, trigger the sending event for this channel
             if (SendingLog != null)
             {
                 foreach (var eventArgs in logs.Select(log => new SendingLogEventArgs(log)))
                 {
-                    _mutex.Unlock();
                     SendingLog?.Invoke(this, eventArgs);
-                    _mutex.Lock(stateSnapshot);
                 }
             }
+
             // If the optional Install ID has no value, default to using empty GUID
-            var installId = MobileCenter.InstallId.HasValue ? MobileCenter.InstallId.Value : Guid.Empty;
-            var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs);
-
-            serviceCall.ServiceCallFailedCallback = exception =>
+            // TODO When InstallId will really be async, we should not use Result anymore
+            var rawInstallId = MobileCenter.GetInstallIdAsync().Result;
+            var installId = rawInstallId.HasValue ? rawInstallId.Value : Guid.Empty;
+            using (var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs))
             {
-                serviceCall.Dispose();
-                HandleSendingFailure(batchId, exception);
-            };
-
-            serviceCall.ServiceCallSucceededCallback = async () =>
-            {
-                serviceCall.Dispose();
-                if (!_stateKeeper.IsCurrent(stateSnapshot))
+                serviceCall.ExecuteAsync().ContinueWith(completedTask =>
                 {
-                    return;
-                }
-                try
-                {
-                    await _storage.DeleteLogsAsync(Name, batchId).ConfigureAwait(false);
-                }
-                catch (StorageException e)
-                {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
-                }
-                try
-                {
-                    await _mutex.LockAsync(stateSnapshot).ConfigureAwait(false);
-                    var removedLogs = _sendingBatches[batchId];
-                    _sendingBatches.Remove(batchId);
-                    if (SentLog != null)
+                    var ingestionException = completedTask.Exception?.InnerException as IngestionException;
+                    if (ingestionException == null)
                     {
-                        foreach (var log in removedLogs)
-                        {
-                            _mutex.Unlock();
-                            SentLog?.Invoke(this, new SentLogEventArgs(log));
-                            _mutex.Lock(stateSnapshot);
-                        }
+                        HandleSendingSuccess(state, batchId);
                     }
-                    CheckPendingLogs();
-                }
-                catch (StatefulMutexException)
-                {
-                }
-                finally
-                {
-                    _mutex.Unlock();
-                }
-            };
-            serviceCall.Execute();
+                    else
+                    {
+                        HandleSendingFailure(state, batchId, ingestionException);
+                    }
+                });
+            }
         }
 
-        private void HandleSendingFailure(string batchId, IngestionException e)
+        private void HandleSendingSuccess(State state, string batchId)
+        {
+            if (!_mutex.IsCurrent(state))
+            {
+                return;
+            }
+            try
+            {
+                _storage.DeleteLogs(Name, batchId);
+            }
+            catch (StorageException e)
+            {
+                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+                throw;
+            }
+            finally
+            {
+                List<Log> removedLogs;
+                using (_mutex.GetLock(state))
+                {
+                    removedLogs = _sendingBatches[batchId];
+                    _sendingBatches.Remove(batchId);
+                }
+                if (SentLog != null)
+                {
+                    foreach (var log in removedLogs)
+                    {
+                        SentLog?.Invoke(this, new SentLogEventArgs(log));
+                    }
+                }
+            }
+        }
+
+        private void HandleSendingFailure(State state, string batchId, IngestionException e)
         {
             var isRecoverable = e?.IsRecoverable ?? false;
-            MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed", e);
-            var removedLogs = _sendingBatches[batchId];
-            _sendingBatches.Remove(batchId);
+            MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed: {e?.Message}");
+            List<Log> removedLogs;
+            using (_mutex.GetLock(state))
+            {
+                removedLogs = _sendingBatches[batchId];
+                _sendingBatches.Remove(batchId);
+                if (isRecoverable)
+                {
+                    _pendingLogCount += removedLogs.Count;
+                }
+            }
             if (!isRecoverable && FailedToSendLog != null)
             {
                 foreach (var log in removedLogs)
@@ -436,22 +424,10 @@ namespace Microsoft.Azure.Mobile.Channel
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, e));
                 }
             }
-            _mutex.Lock();
-            try
-            {
-                Suspend(!isRecoverable, e);
-                if (isRecoverable)
-                {
-                    _pendingLogCount += removedLogs.Count;
-                }
-            }
-            finally
-            {
-                _mutex.Unlock();
-            }
+            Suspend(state, !isRecoverable, e);
         }
 
-        private void CheckPendingLogs()
+        private void CheckPendingLogs(State state)
         {
             if (!_enabled)
             {
@@ -460,34 +436,39 @@ namespace Microsoft.Azure.Mobile.Channel
             }
 
             MobileCenterLog.Debug(MobileCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");
-            if (_pendingLogCount >= _maxLogsPerBatch)
+            using (_mutex.GetLock())
             {
-                Task.Run(TriggerIngestionAsync);
-            }
-            else if (_pendingLogCount > 0 && !_batchScheduled)
-            {
-                _batchScheduled = true;
-                Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ContinueWith(async completedTask =>
+                if (_pendingLogCount >= _maxLogsPerBatch)
                 {
-                    if (_batchScheduled)
+                    _batchScheduled = true;
+                    Task.Run(async () =>
                     {
-                        await TriggerIngestionAsync().ConfigureAwait(false);
-                    }
-                });
+                        await TriggerIngestionAsync(state).ConfigureAwait(false);
+                    });
+                }
+                else if (_pendingLogCount > 0 && !_batchScheduled)
+                {
+                    _batchScheduled = true;
+                    
+                    // No need wait _batchTimeInterval here.
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay((int) _batchTimeInterval.TotalMilliseconds).ConfigureAwait(false);
+                        if (_batchScheduled)
+                        {
+                            await TriggerIngestionAsync(_mutex.State).ConfigureAwait(false);
+                        }
+                    });
+                }
             }
         }
 
-        public Task Shutdown()
+        public Task ShutdownAsync()
         {
-            _mutex.Lock();
-            try
-            {
-                return Suspend(false, new CancellationException());
-            }
-            finally
-            {
-                _mutex.Unlock();
-            }
+            Suspend(_mutex.State, false, new CancellationException());
+
+            // Nothing to wait on; just suspend and return a task
+            return Task.FromResult(default(object));
         }
 
         public void Dispose()

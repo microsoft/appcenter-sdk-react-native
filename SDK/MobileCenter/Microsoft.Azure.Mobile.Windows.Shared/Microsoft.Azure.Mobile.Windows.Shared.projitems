@@ -21,12 +21,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLock.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Storage\TaskLockSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
@@ -59,11 +58,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationLifecycleHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettingsFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\State.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutexException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StateKeeper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
   </ItemGroup>

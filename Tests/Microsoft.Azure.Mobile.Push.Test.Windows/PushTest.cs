@@ -21,11 +21,11 @@ namespace Microsoft.Azure.Mobile.Push.Test.Windows
         [TestMethod]
         public void GetEnabled()
         {
-            Push.Enabled = false;
-            Assert.IsFalse(Push.Enabled);
+            Push.SetEnabledAsync(false).Wait();
+            Assert.IsFalse(Push.IsEnabledAsync().Result);
 
-            Push.Enabled = true;
-            Assert.IsTrue(Push.Enabled);
+            Push.SetEnabledAsync(true).Wait();
+            Assert.IsTrue(Push.IsEnabledAsync().Result);
         }
     }
 }

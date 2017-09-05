@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Models.Serialization
 {
@@ -12,7 +12,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models.Serialization
         {
             SerializationSettings = new JsonSerializerSettings
             {
-                
                 Formatting = Formatting.Indented,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
@@ -35,7 +34,6 @@ namespace Microsoft.Azure.Mobile.Ingestion.Models.Serialization
         public static string Serialize(Log log)
         {
             return JsonConvert.SerializeObject(log, SerializationSettings);
-
         }
 
         public static Log DeserializeLog(string json)

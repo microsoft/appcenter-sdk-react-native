@@ -12,7 +12,11 @@ namespace Microsoft.Azure.Mobile
         private const string PreferenceKeySeparator = "_";
         private const string KeyEnabled = Constants.KeyPrefix + "ServiceEnabled";
         protected readonly object _serviceLock = new object();
-        private readonly IApplicationSettings _applicationSettings = new ApplicationSettings();
+
+        /// <summary>
+        /// Application settings.
+        /// </summary>
+        protected virtual IApplicationSettings ApplicationSettings => MobileCenter.Instance.ApplicationSettings;
 
         /// <summary>
         /// Channel associated with this service. Should be disposed only by ChannelGroup.
@@ -59,16 +63,6 @@ namespace Microsoft.Azure.Mobile
         /// </summary>
         protected virtual int TriggerMaxParallelRequests => Constants.DefaultTriggerMaxParallelRequests;
 
-        protected MobileCenterService()
-        {
-        }
-
-        // This constructor is only for testing
-        internal MobileCenterService(IApplicationSettings settings)
-        {
-            _applicationSettings = settings;
-        }
-
         /// <summary>
         /// Gets or sets whether service is enabled
         /// </summary>
@@ -78,7 +72,7 @@ namespace Microsoft.Azure.Mobile
             {
                 lock (_serviceLock)
                 {
-                    return _applicationSettings.GetValue(EnabledPreferenceKey, true);
+                    return ApplicationSettings.GetValue(EnabledPreferenceKey, true);
                 }
             }
             set
@@ -86,7 +80,7 @@ namespace Microsoft.Azure.Mobile
                 lock (_serviceLock)
                 {
                     var enabledString = value ? "enabled" : "disabled";
-                    if (value && !MobileCenter.Enabled)
+                    if (value && !MobileCenter.IsEnabledAsync().Result)
                     {
                         MobileCenterLog.Error(LogTag,
                             "The SDK is disabled. Set MobileCenter.Enabled to 'true' before enabling a specific service.");
@@ -98,7 +92,7 @@ namespace Microsoft.Azure.Mobile
                         return;
                     }
                     Channel?.SetEnabled(value);
-                    _applicationSettings.SetValue(EnabledPreferenceKey, value);
+                    ApplicationSettings.SetValue(EnabledPreferenceKey, value);
                     MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
                 }
             }
@@ -116,8 +110,8 @@ namespace Microsoft.Azure.Mobile
             {
                 ChannelGroup = channelGroup;
                 Channel = channelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                var enabled = MobileCenter.Enabled && InstanceEnabled;
-                _applicationSettings.SetValue(EnabledPreferenceKey, enabled);
+                var enabled = MobileCenter.IsEnabledAsync().Result && InstanceEnabled;
+                ApplicationSettings.SetValue(EnabledPreferenceKey, enabled);
                 Channel.SetEnabled(enabled);
             }
         }

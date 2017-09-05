@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             Assert.IsNull(log.Device);
             Assert.AreEqual(0, log.Services.Count);
             Assert.IsNull(log.Sid);
-            Assert.AreEqual(0, log.Toffset);
+            Assert.AreEqual(null, log.Timestamp);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         public void CheckInitialValuesWithServices()
         {
             var servicesNames = new List<string> { "Service0", "Service1", "Service2" };
-            var log = new StartServiceLog(0, null, servicesNames);
+            var log = new StartServiceLog(null, null, servicesNames);
 
             Assert.IsNotNull(log.Services);
             foreach (var serviceName in log.Services)
@@ -56,14 +56,14 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             var addedLog = new StartServiceLog
             {
                 Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Toffset = TimeHelper.CurrentTimeInMilliseconds(),
+                Timestamp = DateTime.Now,
                 Services = new List<string> {"Service0", "Service1", "Service2"},
                 Sid = Guid.NewGuid()
             };
 
             var storage = new Mobile.Storage.Storage();
-            storage.DeleteLogsAsync(StorageTestChannelName).RunNotAsync();
-            storage.PutLogAsync(StorageTestChannelName, addedLog).RunNotAsync();
+            storage.DeleteLogs(StorageTestChannelName);
+            storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
             storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0] as StartServiceLog;
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             {
                 Services = null,
                 Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Toffset = TimeHelper.CurrentTimeInMilliseconds()
+                Timestamp = DateTime.Now
             };
 
             Assert.ThrowsException<ValidationException>((Action)log.Validate);

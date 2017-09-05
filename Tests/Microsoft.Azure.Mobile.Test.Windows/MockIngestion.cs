@@ -9,12 +9,16 @@ namespace Microsoft.Azure.Mobile.Test
 {
     public sealed class MockIngestion : IIngestion
     {
+
         public bool CallShouldSucceed { get; set; }
         public bool CloseShouldSucceed { get; set; }
+        public bool IsClosed { get; set; }
+        public Exception TaskError = new IngestionException();
 
         public MockIngestion()
         {
             CallShouldSucceed = CloseShouldSucceed = true;
+            IsClosed = false;
         }
 
         public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
@@ -24,7 +28,7 @@ namespace Microsoft.Azure.Mobile.Test
 
         public Task ExecuteCallAsync(IServiceCall call)
         {
-            return CallShouldSucceed ? TaskExtension.GetCompletedTask() : TaskExtension.GetFaultedTask();
+            return CallShouldSucceed ? TaskExtension.GetCompletedTask() : TaskExtension.GetFaultedTask(TaskError);
         }
 
         public void Close()
@@ -33,6 +37,12 @@ namespace Microsoft.Azure.Mobile.Test
             {
                 throw new IngestionException();
             }
+            IsClosed = true;
+        }
+
+        public void Open()
+        {
+            IsClosed = false;
         }
 
         public void SetLogUrl(string logUrl)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Foundation;
 using Microsoft.Azure.Mobile.Push.iOS;
 using Microsoft.Azure.Mobile.Push.iOS.Bindings;
@@ -26,16 +27,21 @@ namespace Microsoft.Azure.Mobile.Push
             MSPush.SetDelegate(_pushDelegate);
         }
 
-        private static bool PlatformEnabled
+        static Task<bool> PlatformIsEnabledAsync()
         {
-            get { return MSPush.IsEnabled(); }
-            set { MSPush.SetEnabled(value); }  
+            return Task.FromResult(MSPush.IsEnabled());
+        }
+
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            MSPush.SetEnabled(enabled);
+            return Task.FromResult(default(object));
         }
 
         [Preserve]
         public static Type BindingType
         {
-        	get
+            get
             {
                 return _internalBindingType;
             }

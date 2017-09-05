@@ -16,37 +16,37 @@ namespace Contoso.Forms.Test
 
         void EnableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.Enabled = true;
+            MobileCenter.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
         void EnableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.Enabled = true;
+            Crashes.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
         void EnableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.Enabled = true;
+            Analytics.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
         void DisableMobileCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.Enabled = false;
+            MobileCenter.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
         void DisableCrashes(object sender, System.EventArgs e)
         {
-            Crashes.Enabled = false;
+            Crashes.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
         void DisableAnalytics(object sender, System.EventArgs e)
         {
-            Analytics.Enabled = false;
+            Analytics.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
@@ -63,7 +63,7 @@ namespace Contoso.Forms.Test
         {
             if (CrashesEnabledLabel != null)
             {
-                CrashesEnabledLabel.Text = Crashes.Enabled ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
+                CrashesEnabledLabel.Text = Crashes.IsEnabledAsync().Result ? TestStrings.CrashesEnabledText : TestStrings.CrashesDisabledText;
             }
         }
 
@@ -71,7 +71,7 @@ namespace Contoso.Forms.Test
         {
             if (AnalyticsEnabledLabel != null)
             {
-                AnalyticsEnabledLabel.Text = Analytics.Enabled ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
+                AnalyticsEnabledLabel.Text = Analytics.IsEnabledAsync().Result ? TestStrings.AnalyticsEnabledText : TestStrings.AnalyticsDisabledText;
             }
         }
 
@@ -79,7 +79,7 @@ namespace Contoso.Forms.Test
         {
             if (MobileCenterEnabledLabel != null)
             {
-                MobileCenterEnabledLabel.Text = MobileCenter.Enabled ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
+                MobileCenterEnabledLabel.Text = MobileCenter.IsEnabledAsync().Result ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
             }
         }
 

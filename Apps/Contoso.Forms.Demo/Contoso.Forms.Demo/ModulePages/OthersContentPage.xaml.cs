@@ -19,22 +19,22 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            DistributeEnabledSwitchCell.On = Distribute.Enabled;
-            DistributeEnabledSwitchCell.IsEnabled = MobileCenter.Enabled;
-            PushEnabledSwitchCell.On = Push.Enabled;
+            DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
+            DistributeEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
         }
 
-        void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
+        async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
         {
-            Distribute.Enabled = e.Value;
+            await Distribute.SetEnabledAsync(e.Value);
         }
 
-        void UpdatePushEnabled(object sender, ToggledEventArgs e)
+        async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
-	        Push.Enabled = e.Value;
+            await Push.SetEnabledAsync(e.Value);
         }
     }
 }

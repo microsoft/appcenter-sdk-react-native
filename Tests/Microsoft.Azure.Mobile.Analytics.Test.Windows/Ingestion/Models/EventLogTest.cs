@@ -1,8 +1,8 @@
-﻿using Moq;
-using System;
+﻿using System;
 using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
 {
@@ -11,9 +11,9 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
     [TestClass]
     public class EventLogTest
     {
-        private const long      TOffset = 0;
-        private const string    Name    = "Name";
-        private readonly Guid   Id      = Guid.Empty;
+        private readonly DateTime? Timestamp = null;
+        private const string Name = "Name";
+        private readonly Guid Id = Guid.Empty;
 
         /// <summary>
         /// Verify that instance is constructed properly.
@@ -23,8 +23,8 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
         {
             var mockDevice = new Mock<Device>();
 
-            EventLog emptyLog = new EventLog();
-            EventLog log = new EventLog(TOffset, mockDevice.Object, Id, Name);
+            var emptyLog = new EventLog();
+            var log = new EventLog(Timestamp, mockDevice.Object, Id, Name);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
             const string NullName = null;
             var mockDevice = new Mock<Device>();
 
-            EventLog log = new EventLog(TOffset, mockDevice.Object, Id, NullName);
+            var log = new EventLog(Timestamp, mockDevice.Object, Id, NullName);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
     }

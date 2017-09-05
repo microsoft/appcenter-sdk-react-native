@@ -60,6 +60,8 @@
 		<NativeReference Include="..\..\..\externals\ios\MobileCenter.a">
 			<Kind>Static</Kind>
 			<ForceLoad>True</ForceLoad>
+			<Frameworks></Frameworks>
+			<LinkerFlags>-lsqlite3</LinkerFlags>
 		</NativeReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />

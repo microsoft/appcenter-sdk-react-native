@@ -13,7 +13,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         public void InitializeMobileCenterTest()
         {
             ApplicationData.Current.LocalSettings.Values.Clear();
-            settings = new ApplicationSettings();
+            settings = new DefaultApplicationSettings();
         }
 
         /// <summary>
@@ -49,8 +49,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         [TestMethod]
         public void VerifyRemove()
         {
-            const string key = "test";
-            Assert.IsFalse(settings.ContainsKey(key));
+            const string key = "test"; Assert.IsFalse(settings.ContainsKey(key));
             settings.SetValue(key, 42);
             Assert.IsTrue(settings.ContainsKey(key));
             Assert.AreEqual(42, settings.GetValue<int>(key));

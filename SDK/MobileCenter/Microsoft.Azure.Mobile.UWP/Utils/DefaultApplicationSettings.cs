@@ -2,7 +2,7 @@
 
 namespace Microsoft.Azure.Mobile.Utils
 {
-    public class ApplicationSettings : IApplicationSettings
+    public class DefaultApplicationSettings : IApplicationSettings
     {
         public T GetValue<T>(string key, T defaultValue = default(T))
         {

@@ -22,22 +22,28 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override Type BindingType => typeof(MSCrashes);
 
-        public override bool Enabled
+        public override Task<bool> IsEnabledAsync()
         {
-            get { return MSCrashes.IsEnabled(); }
-            set { MSCrashes.SetEnabled(value); }
+            return Task.FromResult(MSCrashes.IsEnabled());
         }
 
-        public override bool HasCrashedInLastSession => MSCrashes.HasCrashedInLastSession;
+        public override Task SetEnabledAsync(bool enabled)
+        {
+            MSCrashes.SetEnabled(enabled);
+            return Task.FromResult(default(object));
+        }
+
+        public override Task<bool> HasCrashedInLastSessionAsync()
+        {
+            return Task.FromResult(MSCrashes.HasCrashedInLastSession);
+        }
 
         public override Task<ErrorReport> GetLastSessionCrashReportAsync()
         {
             return Task.Run(() =>
             {
                 var msReport = MSCrashes.LastSessionCrashReport;
-                if (msReport == null)
-                    return null;
-                return ErrorReportCache.GetErrorReport(msReport);
+                return (msReport == null) ? null : new ErrorReport(msReport);
             });
         }
 
@@ -71,7 +77,8 @@ namespace Microsoft.Azure.Mobile.Crashes
         static PlatformCrashes()
         {
             /* Peform custom setup around the native SDK's for setting signal handlers */
-            MSWrapperExceptionManager.SetDelegate(new CrashesInitializationDelegate());
+            MSCrashes.DisableMachExceptionHandler();
+            MSWrapperCrashesHelper.SetCrashHandlerSetupDelegate(new CrashesInitializationDelegate());
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
@@ -93,11 +100,16 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
             Exception systemException = e.ExceptionObject as Exception;
             MSException exception = GenerateiOSException(systemException);
-            MSWrapperExceptionManager.SetWrapperException(exception);
-
             byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
             NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
-            MSWrapperExceptionManager.SetWrapperExceptionData(wrapperExceptionData);
+
+            MSWrapperException wrapperException = new MSWrapperException
+            {
+                Exception = exception,
+                ExceptionData = wrapperExceptionData,
+                ProcessId = new NSNumber(Process.GetCurrentProcess().Id)
+            };
+            MSWrapperExceptionManager.SaveWrapperException(wrapperException);
         }
 
         private static MSException GenerateiOSException(Exception exception)
@@ -149,7 +161,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                 msFrame.FileName = AnonymizePath(dotnetFrame.GetFileName());
                 frameList.Add(msFrame);
             }
-            return frameList.Count == 0 ? null : frameList.ToArray();
+            return frameList.ToArray();
         }
 
 #pragma warning restore XS0001 // Find usages of mono todo items

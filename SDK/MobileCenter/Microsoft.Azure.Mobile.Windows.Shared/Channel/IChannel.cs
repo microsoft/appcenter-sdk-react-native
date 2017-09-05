@@ -37,6 +37,6 @@ namespace Microsoft.Azure.Mobile.Channel
         /// <summary>
         /// Stop all calls in progress and deactivate this channel
         /// </summary>
-        Task Shutdown();
+        Task ShutdownAsync();
     }
 }

@@ -8,9 +8,10 @@
     <summary>Microsoft Visual Studio Mobile Center. Common package for every Mobile Center service.</summary>
     <description>This package contains the basic functionalities that all Mobile Center services use to communicate with the backend.</description>
     <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
+    <tags>mobilecenter</tags>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
-    <iconUrl>https://aka.ms/p2wifj</iconUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
       <group targetFramework="uap10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2"/>
@@ -24,7 +25,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
-    <file src="SDK/MobileCenter/Microsoft.Azure.Mobile.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.dll" target="lib/net452" />
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
+    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" />
   </files>
 </package>

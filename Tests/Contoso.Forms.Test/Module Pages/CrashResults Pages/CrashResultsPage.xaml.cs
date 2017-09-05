@@ -21,7 +21,7 @@ namespace Contoso.Forms.Test
 
             if (HasCrashedInLastSessionLabel != null)
             {
-                if (Crashes.HasCrashedInLastSession)
+                if (Crashes.HasCrashedInLastSessionAsync().Result)
                 {
                     HasCrashedInLastSessionLabel.Text = TestStrings.HasCrashedInLastSessionText;
                 }
@@ -115,7 +115,7 @@ namespace Contoso.Forms.Test
         {
             if (HasCrashedInLastSessionLabel != null)
             {
-                if (Crashes.HasCrashedInLastSession)
+                if (Crashes.HasCrashedInLastSessionAsync().Result)
                 {
                     HasCrashedInLastSessionLabel.Text = TestStrings.HasCrashedInLastSessionText;
                 }
