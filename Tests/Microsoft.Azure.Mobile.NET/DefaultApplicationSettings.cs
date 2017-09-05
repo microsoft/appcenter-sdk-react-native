@@ -32,16 +32,6 @@ namespace Microsoft.Azure.Mobile.Utils
             return Settings.ContainsKey(key);
         }
 
-        public void SetValue(string key, object value)
-        {
-            Settings[key] = value;
-        }
-
-        public bool ContainsKey(string key)
-        {
-            return Settings.ContainsKey(key);
-        }
-
         public void Remove(string key)
         {
             Settings.Remove(key);
