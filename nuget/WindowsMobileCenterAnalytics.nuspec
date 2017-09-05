@@ -18,6 +18,6 @@
   </metadata>
   <files>
     <file src="$uwp_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
-    <file src="$winforms_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net45" />
+    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net452" />
   </files>
 </package>

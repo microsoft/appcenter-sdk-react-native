@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Contoso.WinForms.Puppet.Properties {
+namespace Contoso.WinForms.Demo.Properties {
     using System;
     
     

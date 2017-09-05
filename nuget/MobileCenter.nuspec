@@ -19,10 +19,8 @@
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
       </group>
       <group targetFramework="net452">
-        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.6"/>
+        <dependency id="Newtonsoft.Json" version="6.0.1"/>
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
-        <!-- Need to add this dependency explicitly because a lower version gets added otherwise in WinForms -->
-        <dependency id="Newtonsoft.Json" version="9.0.1"/>
       </group>
       <!-- Use empty dependency groups for iOS and Android so that additional dependencies aren't added to them -->
       <group targetFramework="MonoAndroid403">
@@ -49,8 +47,8 @@
     <!-- UWP -->
     <file src="$uwp_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
 
-    <!-- WinForms -->
-    <file src="$winforms_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" />
+    <!-- Windows Classic Desktop (WPF and WinForms) -->
+    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" />
 
   </files>
 </package>

@@ -19,7 +19,7 @@
   <files>
 
     <!-- WinForms -->
-    <file src="$winforms_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net45" />
+    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" />
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
