@@ -34,15 +34,15 @@ namespace Contoso.WPF.Demo
 
         private void UpdateState()
         {
-            mobileCenterEnabled.IsChecked = MobileCenter.Enabled;
-            analyticsEnabled.IsChecked = Analytics.Enabled;
+            mobileCenterEnabled.IsChecked = MobileCenter.IsEnabledAsync().Result;
+            analyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
         private void mobileCenterEnabled_Checked(object sender, RoutedEventArgs e)
         {
             if (mobileCenterEnabled.IsChecked.HasValue)
             {
-                MobileCenter.Enabled = mobileCenterEnabled.IsChecked.Value;
+                MobileCenter.SetEnabledAsync(mobileCenterEnabled.IsChecked.Value).Wait();
             }
         }
 
@@ -50,7 +50,7 @@ namespace Contoso.WPF.Demo
         {
             if (analyticsEnabled.IsChecked.HasValue)
             {
-                Analytics.Enabled = analyticsEnabled.IsChecked.Value;
+                Analytics.SetEnabledAsync(analyticsEnabled.IsChecked.Value).Wait();
             }
         }
 

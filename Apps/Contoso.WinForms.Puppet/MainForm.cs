@@ -26,18 +26,18 @@ namespace Contoso.WinForms.Demo
 
         private void UpdateState()
         {
-            mobileCenterEnabled.Checked = MobileCenter.Enabled;
-            analyticsEnabled.Checked = Analytics.Enabled;
+            mobileCenterEnabled.Checked = MobileCenter.IsEnabledAsync().Result;
+            analyticsEnabled.Checked = Analytics.IsEnabledAsync().Result;
         }
 
         private void mobileCenterEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            MobileCenter.Enabled = mobileCenterEnabled.Checked;
+            MobileCenter.SetEnabledAsync(mobileCenterEnabled.Checked).Wait();
         }
 
         private void analyticsEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            Analytics.Enabled = analyticsEnabled.Checked;
+            Analytics.SetEnabledAsync(analyticsEnabled.Checked).Wait();
         }
 
         private void mobileCenterLogLevel_SelectedIndexChanged(object sender, EventArgs e)
