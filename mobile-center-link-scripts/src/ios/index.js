@@ -17,17 +17,16 @@ var appDelegatePaths = glob.sync("**/AppDelegate.m", { ignore: "node_modules/**"
 var appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
 debug('AppDelegate.m path - ' + appDelegatePath);
 
-try {
-    fs.accessSync(appDelegatePath, fs.F_OK);
-} catch (e) {
-    debug('Could not fine AppDelegate.m at ', appDelegatePath);
-    throw Error(`
-        Could not find AppDelegate.m file for this project, so could not add the framework for iOS.
-        You may have to add the framework manually.
-    `);
-}
-
 module.exports = {
+    checkIfAppDelegateExists: function() {
+        try {
+            fs.accessSync(appDelegatePath, fs.F_OK);
+        } catch (e) {
+            debug(`Could not find AppDelegate.m file at ${appDelegatePath}, so could not add the framework for iOS.`);
+            return Promise.reject();
+        }
+    },
+
     initMobileCenterConfig: function() {
         var config = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         var currentAppSecret = config.get('AppSecret');
