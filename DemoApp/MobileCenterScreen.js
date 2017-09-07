@@ -71,12 +71,12 @@ export default class MobileCenterScreen extends React.Component {
 
   async setCustomProperties() {
     const properties = new CustomProperties().
-    set('pi', 3.14)
-    .clear('old')
-    .set('color', 'blue')
-    .set('optin', true)
-    .set('score', 7)
-    .set('now', new Date());
+      set('pi', 3.14)
+      .clear('old')
+      .set('color', 'blue')
+      .set('optin', true)
+      .set('score', 7)
+      .set('now', new Date());
     await MobileCenter.setCustomProperties(properties);
   }
 

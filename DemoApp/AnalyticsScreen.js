@@ -32,14 +32,14 @@ export default class AnalyticsScreen extends React.Component {
     const component = this;
 
     const analyticsEnabled = await Analytics.isEnabled();
-    component.setState({analyticsEnabled: analyticsEnabled});
+    component.setState({ analyticsEnabled: analyticsEnabled });
   }
 
   async toggleEnabled() {
-    await Analytics.setEnabled(! this.state.analyticsEnabled);
+    await Analytics.setEnabled(!this.state.analyticsEnabled);
 
     const analyticsEnabled = await Analytics.isEnabled();
-    this.setState({analyticsEnabled: analyticsEnabled});
+    this.setState({ analyticsEnabled: analyticsEnabled });
   }
 
   render() {
@@ -70,7 +70,7 @@ export default class AnalyticsScreen extends React.Component {
               Track Event - event property value truncated after 64 characters
             </Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", data)}>
             <Text style={SharedStyles.button}>
               Track Event badly (Don't do this, only strings are supported)
