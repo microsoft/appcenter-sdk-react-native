@@ -32,14 +32,14 @@ export default class AnalyticsScreen extends React.Component {
     const component = this;
 
     const analyticsEnabled = await Analytics.isEnabled();
-    component.setState({analyticsEnabled: analyticsEnabled});
+    component.setState({ analyticsEnabled: analyticsEnabled });
   }
 
   async toggleEnabled() {
-    await Analytics.setEnabled(! this.state.analyticsEnabled);
+    await Analytics.setEnabled(!this.state.analyticsEnabled);
 
     const analyticsEnabled = await Analytics.isEnabled();
-    this.setState({analyticsEnabled: analyticsEnabled});
+    this.setState({ analyticsEnabled: analyticsEnabled });
   }
 
   render() {
@@ -62,6 +62,12 @@ export default class AnalyticsScreen extends React.Component {
           <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", { page: "Home page" })}>
             <Text style={SharedStyles.button}>
               Track Event
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", { propertyValueTooLong: "12345678901234567890123456789012345678901234567890123456789012345" })}>
+            <Text style={SharedStyles.button}>
+              Track Event - event property value truncated after 64 characters
             </Text>
           </TouchableOpacity>
 
