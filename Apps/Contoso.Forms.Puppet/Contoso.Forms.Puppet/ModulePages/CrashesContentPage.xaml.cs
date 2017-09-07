@@ -24,7 +24,8 @@ namespace Contoso.Forms.Puppet
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
             CrashesEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
         }
- async void UpdateEnabled(object sender, ToggledEventArgs e)
+
+        async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
             await Crashes.SetEnabledAsync(e.Value);
         }
