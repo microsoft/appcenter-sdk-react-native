@@ -38,19 +38,14 @@ namespace Contoso.Forms.Puppet
             }
             catch (Exception e)
             {
-                HandleOrThrow(e);
-            }
-        }
-
-        private void HandleOrThrow(Exception e)
-        {
-            if (HandleExceptionsSwitchCell.On)
-            {
-                Crashes.TrackException(e);
-            }
-            else
-            {
-                throw e;
+                if (HandleExceptionsSwitchCell.On)
+                {
+                    Crashes.TrackException(e);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
@@ -145,7 +140,14 @@ namespace Contoso.Forms.Puppet
             }
             catch (Exception ex)
             {
-                HandleOrThrow(ex);
+                if (HandleExceptionsSwitchCell.On)
+                {
+                    Crashes.TrackException(ex);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
     }
