@@ -8,12 +8,13 @@ var MobileCenterConfig = require('./MobileCenterConfig');
 module.exports = {
     checkIfAndroidDirectoryExists: function() {
         try {
-            fs.statSync('./android').isDirectory();
+            if (fs.statSync('./android').isDirectory()) {
+                return Promise.resolve();
+            }
         } catch (e) {
-            debug(`Could not find android directory`);
-            return Promise.reject();
+            debug('Could not find /android directory in your application.');
         }
-        return Promise.resolve();
+        return Promise.reject();
     },
 
     initMobileCenterConfig: function (alwaysPromptForAppSecret) {
