@@ -25,11 +25,11 @@ import PushScreen from './PushScreen';
 import MobileCenterScreen from './MobileCenterScreen';
 
 const TestApp = StackNavigator({
-  Main: {screen: MainScreen},
-  Crashes: {screen: CrashesScreen},
-  Analytics: {screen: AnalyticsScreen},
-  Push: {screen: PushScreen},
-  MobileCenter: {screen: MobileCenterScreen}
+  Main: { screen: MainScreen },
+  Crashes: { screen: CrashesScreen },
+  Analytics: { screen: AnalyticsScreen },
+  Push: { screen: PushScreen },
+  MobileCenter: { screen: MobileCenterScreen }
 });
 
 AppRegistry.registerComponent('TestApp', () => TestApp);

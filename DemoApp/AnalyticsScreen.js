@@ -32,14 +32,14 @@ export default class AnalyticsScreen extends React.Component {
     const component = this;
 
     const analyticsEnabled = await Analytics.isEnabled();
-    component.setState({analyticsEnabled: analyticsEnabled});
+    component.setState({ analyticsEnabled: analyticsEnabled });
   }
 
   async toggleEnabled() {
-    await Analytics.setEnabled(! this.state.analyticsEnabled);
+    await Analytics.setEnabled(!this.state.analyticsEnabled);
 
     const analyticsEnabled = await Analytics.isEnabled();
-    this.setState({analyticsEnabled: analyticsEnabled});
+    this.setState({ analyticsEnabled: analyticsEnabled });
   }
 
   render() {
