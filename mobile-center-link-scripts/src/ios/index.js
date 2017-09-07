@@ -25,6 +25,7 @@ module.exports = {
             debug(`Could not find AppDelegate.m file at ${appDelegatePath}, so could not add the framework for iOS.`);
             return Promise.reject();
         }
+        return Promise.resolve();
     },
 
     initMobileCenterConfig: function() {
