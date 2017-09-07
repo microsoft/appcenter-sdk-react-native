@@ -65,6 +65,12 @@ export default class AnalyticsScreen extends React.Component {
             </Text>
           </TouchableOpacity>
 
+          <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", { propertyValueTooLong: "12345678901234567890123456789012345678901234567890123456789012345" })}>
+            <Text style={SharedStyles.button}>
+              Track Event - event property value truncated after 64 characters
+            </Text>
+          </TouchableOpacity>
+          
           <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", data)}>
             <Text style={SharedStyles.button}>
               Track Event badly (Don't do this, only strings are supported)
