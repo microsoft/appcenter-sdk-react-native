@@ -18,7 +18,7 @@ var appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : n
 debug('AppDelegate.m path - ' + appDelegatePath);
 
 module.exports = {
-    checkIfAppDelegateExists: function() {
+    checkIfAppDelegateExists: function () {
         try {
             fs.accessSync(appDelegatePath, fs.F_OK);
         } catch (e) {
@@ -28,7 +28,7 @@ module.exports = {
         return Promise.resolve();
     },
 
-    initMobileCenterConfig: function() {
+    initMobileCenterConfig: function () {
         var config = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         var currentAppSecret = config.get('AppSecret');
 
@@ -44,7 +44,7 @@ module.exports = {
             default: currentAppSecret,
             message: 'What is the iOS App Secret?',
             name: 'AppSecret',
-        }]).then(function(answers) {
+        }]).then(function (answers) {
             try {
                 config.set('AppSecret', answers['AppSecret']);
                 return config.save()
@@ -59,7 +59,7 @@ module.exports = {
         });
     },
 
-    initInAppDelegate: function(header, initCode, oldInitCodeRegExp) {
+    initInAppDelegate: function (header, initCode, oldInitCodeRegExp) {
         debug('Starting to write AppDelegate', appDelegatePath);
         try {
             var appDelegate = new AppDelegate(appDelegatePath);
@@ -72,7 +72,7 @@ module.exports = {
         }
     },
 
-    addPodDeps: function(pods) {
+    addPodDeps: function (pods) {
         if (process.platform !== "darwin") {
             return Promise.reject(new Error("Since you are not running on a Mac, CocoaPods installation steps will be skipped."));
         }
@@ -80,7 +80,7 @@ module.exports = {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
         var podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
-        pods.forEach(function(pod) {
+        pods.forEach(function (pod) {
             podFile.addPodLine(pod.pod, pod.podspec, pod.version);
         });
         podFile.eraseOldLines();

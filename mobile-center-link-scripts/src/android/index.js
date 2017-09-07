@@ -6,7 +6,7 @@ var debug = require('debug')('mobile-center-link:android:index');
 
 var MobileCenterConfig = require('./MobileCenterConfig');
 module.exports = {
-    checkIfAndroidDirectoryExists: function() {
+    checkIfAndroidDirectoryExists: function () {
         try {
             if (fs.statSync('./android').isDirectory()) {
                 return Promise.resolve();
