@@ -2,4 +2,12 @@ const rnpmlink = require('mobile-center-link-scripts');
 
 console.log('Configuring Mobile Center Push');
 
-return rnpmlink.android.initMobileCenterConfig(false);
+return rnpmlink.android.checkIfAndroidDirectoryExists()
+.then(() => {
+    rnpmlink.android.initMobileCenterConfig(false)
+        .catch((e) => {
+            console.log(`Could not create mobile center config file. Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
+    })
+.catch(() => Promise.resolve());
