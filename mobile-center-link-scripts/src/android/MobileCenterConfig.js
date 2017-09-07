@@ -28,9 +28,9 @@ MobileCenterConfig.prototype.set = function (key, value) {
 };
 
 MobileCenterConfig.prototype.save = function () {
-    try{
+    try {
         mkdirp.sync(path.dirname(this.MobileCenterConfigPath));
-    } catch(e){
+    } catch (e) {
         debug(e.message);
     }
     fs.writeFileSync(this.MobileCenterConfigPath, JSON.stringify(this.MobileCenterConfig, null, 4));

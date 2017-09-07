@@ -34,35 +34,35 @@ export default class MobileCenterScreen extends React.Component {
     const component = this;
 
     const mobileCenterEnabled = await MobileCenter.isEnabled();
-    component.setState({mobileCenterEnabled: mobileCenterEnabled});
+    component.setState({ mobileCenterEnabled: mobileCenterEnabled });
 
     const installId = await MobileCenter.getInstallId();
-    component.setState({installId: installId});
+    component.setState({ installId: installId });
 
     const logLevel = await MobileCenter.getLogLevel();
-    component.setState({logLevel: logLevel});
+    component.setState({ logLevel: logLevel });
   }
 
   async toggleEnabled() {
-    await MobileCenter.setEnabled(! this.state.mobileCenterEnabled);
+    await MobileCenter.setEnabled(!this.state.mobileCenterEnabled);
 
     const mobileCenterEnabled = await MobileCenter.isEnabled();
-    this.setState({mobileCenterEnabled: mobileCenterEnabled});
+    this.setState({ mobileCenterEnabled: mobileCenterEnabled });
   }
 
   async toggleVerboseLogging() {
     const logLevel = await MobileCenter.getLogLevel();
     const newLogLEvel = logLevel === MobileCenter.LogLevelWarning ? MobileCenter.LogLevelVerbose : MobileCenter.LogLevelWarning;
     await MobileCenter.setLogLevel(newLogLEvel); //just for testing
-    this.setState({logLevel: newLogLEvel});
+    this.setState({ logLevel: newLogLEvel });
   }
 
   async setCustomProperties() {
     let properties = {
-        'color': 'red',
-        'number': 2,
-        'isEnabled': true,
-        'MyCustomDate': new Date()
+      'color': 'red',
+      'number': 2,
+      'isEnabled': true,
+      'MyCustomDate': new Date()
     };
 
     await MobileCenter.setCustomProperties(properties);

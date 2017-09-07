@@ -45,7 +45,7 @@ export default class MainScreen extends Component {
           }
         />
 
-         <Button
+        <Button
           title="Test Mobile Center"
           onPress={() =>
             navigate('MobileCenter')

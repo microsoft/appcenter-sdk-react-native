@@ -31,15 +31,15 @@ function sanitizeProperties(props) {
 
     for (const i in props) {
         switch (typeof props[i]) {
-        case 'string':
-        case 'number':
-        case 'boolean':
-            result[i] = `${props[i]}`;
-            break;
-        case 'undefined':
-            break;
+            case 'string':
+            case 'number':
+            case 'boolean':
+                result[i] = `${props[i]}`;
+                break;
+            case 'undefined':
+                break;
             default:
-            throw new Error('Properties cannot be serialized. Object must only contain strings');
+                throw new Error('Properties cannot be serialized. Object must only contain strings');
         }
     }
 
