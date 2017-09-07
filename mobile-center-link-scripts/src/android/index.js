@@ -2,9 +2,21 @@ var fs = require('fs');
 
 var glob = require('glob');
 var inquirer = require('inquirer');
+var debug = require('debug')('mobile-center-link:android:index');
 
 var MobileCenterConfig = require('./MobileCenterConfig');
 module.exports = {
+    checkIfAndroidDirectoryExists: function() {
+        try {
+            if (fs.statSync('./android').isDirectory()) {
+                return Promise.resolve();
+            }
+        } catch (e) {
+            debug('Could not find /android directory in your application.');
+        }
+        return Promise.reject();
+    },
+
     initMobileCenterConfig: function (alwaysPromptForAppSecret) {
         var config = new MobileCenterConfig(MobileCenterConfig.searchForFile());
         var currentAppSecret = config.get('app_secret');

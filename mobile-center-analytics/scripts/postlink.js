@@ -1,17 +1,34 @@
 const rnpmlink = require('mobile-center-link-scripts');
 const npmPackages = require('./../package.json');
 
-return rnpmlink.ios.initMobileCenterConfig().then(() => {
+return rnpmlink.ios.checkIfAppDelegateExists()
+.then(() => {
+    rnpmlink.ios.initMobileCenterConfig()
+        .catch((e) => {
+            console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
+    })
+.then(() => {
     const prompt = npmPackages.rnpm.params[0];
     prompt.message = prompt.message.replace(/Android/, 'iOS');
-
-    return rnpmlink.inquirer.prompt(prompt);
-}).then((answer) => {
+    return rnpmlink.inquirer.prompt(prompt)
+        .catch((e) => {
+            console.log(`Could not determine when to enable Mobile Center analytics. Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
+    })
+.then((answer) => {
     const code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
         '  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics' :
         '  [RNAnalytics registerWithInitiallyEnabled:false];  // Initialize Mobile Center analytics';
-    return rnpmlink.ios.initInAppDelegate('#import <RNAnalytics/RNAnalytics.h>', code, /.*\[RNAnalytics register.*/g);
-}).then((file) => {
+    return rnpmlink.ios.initInAppDelegate('#import <RNAnalytics/RNAnalytics.h>', code, /.*\[RNAnalytics register.*/g)
+        .catch((e) => {
+            console.log(`Could not initialize Mobile Center analytics in AppDelegate. Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
+    })
+.then((file) => {
     console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter/Analytics', version: '0.12.1' },
@@ -23,6 +40,7 @@ return rnpmlink.ios.initMobileCenterConfig().then(() => {
 
             Error Reason - ${e.message}
         `);
-        return Promise.resolve();
+        return Promise.reject();
     });
-});
+})
+.catch(() => Promise.resolve());
