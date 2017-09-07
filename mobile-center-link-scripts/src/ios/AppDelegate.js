@@ -1,7 +1,7 @@
-var fs = require('fs');
-var debug = require('debug')('mobile-center-link:ios:AppDelegate');
+const fs = require('fs');
+const debug = require('debug')('mobile-center-link:ios:AppDelegate');
 
-var AppDelegate = function (file) {
+const AppDelegate = function (file) {
     this.appDelegatePath = file;
     this.appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf-8');
     debug('Read contents for appDelegate from ', file);
@@ -13,7 +13,7 @@ AppDelegate.prototype.addHeader = function (header) {
         if (match === null) {
             throw Error(`
         Could not find line '#import "AppDelegate.h"' in file AppDelegate.m.
-        Update AppDelegate.m so that text is present, as we match on it and insert '` + header + `' after for Mobile Center SDK integration.
+        Update AppDelegate.m so that text is present, as we match on it and insert '${header}' after for Mobile Center SDK integration.
 `);
         }
 
@@ -34,19 +34,16 @@ AppDelegate.prototype.addInitCode = function (code, oldCodeRegExp) {
         }
     }
     if (this.appDelegateContents.indexOf(code) === -1) {
-
         /* If new code not found but old code found, replace. */
         if (oldCodeMatches) {
             this.appDelegateContents = this.appDelegateContents.replace(oldCodeMatches[0], code);
             debug('Replaced code', code, 'to file', this.appDelegatePath);
-        }
-        else {
-
+        } else {
             const match = this.appDelegateContents.match(/NSURL \*jsCodeLocation;[ \t]*\r*\n/);
             if (match === null) {
                 throw Error(`
         Could not find line "NSURL \*jsCodeLocation;" in file AppDelegate.m.
-        Update AppDelegate.m so that text is present, as we match on it and insert '` + code + `' after for Mobile Center SDK integration.
+        Update AppDelegate.m so that text is present, as we match on it and insert '${code}' after for Mobile Center SDK integration.
 `);
             }
 

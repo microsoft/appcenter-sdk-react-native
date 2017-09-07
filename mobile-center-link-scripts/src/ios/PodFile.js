@@ -1,34 +1,34 @@
-var fs = require('fs');
-var path = require('path');
-var childProcess = require('child_process');
+const fs = require('fs');
+const path = require('path');
+const childProcess = require('child_process');
 
-var glob = require('glob');
-var which = require('which').sync;
-var debug = require('debug')('mobile-center-link:ios:Podfile');
+const glob = require('glob');
+const which = require('which').sync;
+const debug = require('debug')('mobile-center-link:ios:Podfile');
 
-var Podfile = function (file) {
+const Podfile = function (file) {
     debug(`Podfile located at ${file}`);
     this.file = file;
     this.fileContents = fs.readFileSync(file, 'utf-8');
 };
 
-Podfile.prototype.eraseOldLines = function() {
+Podfile.prototype.eraseOldLines = function eraseOldLines() {
     this.fileContents = this.fileContents.replace(new RegExp("pod 'MobileCenter'.*"), '');
-}
+};
 
 Podfile.prototype.addPodLine = function (pod, podspec, version) {
     debug(`addPodLine pod=${pod} podspec=${podspec} version=${version}`);
-    var line = `pod '${pod}'`;
+    let line = `pod '${pod}'`;
     if (podspec) {
         line = `${line}, :podspec => '${podspec}'`;
     } else if (version) {
         line = `${line}, '~> ${version}'`;
     }
-    var podLinePattern = new RegExp(`pod\\s+'${pod}'.*`);
-    var existingLines = this.fileContents.match(podLinePattern);
+    const podLinePattern = new RegExp(`pod\\s+'${pod}'.*`);
+    const existingLines = this.fileContents.match(podLinePattern);
     if (existingLines) {
-        var existingLine = existingLines[0];
-        if (existingLine.match(":path")) {
+        const existingLine = existingLines[0];
+        if (existingLine.match(':path')) {
             debug(`${pod} set to specific path, not updating it.`);
             return;
         }
@@ -37,7 +37,7 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
         debug(`Replace ${existingLine} by ${line}`);
         return;
     }
-    var patterns = this.fileContents.match(/# Pods for .*/);
+    const patterns = this.fileContents.match(/# Pods for .*/);
     if (patterns === null) {
         throw new Error(
     `
@@ -46,7 +46,7 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
     the "target" section, then rerun the react-native link. Mobile Center pods will be added below the comment.
     `);
     }
-    var pattern = patterns[0];
+    const pattern = patterns[0];
     this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
     debug(`${line} ===> ${this.file}`);
 };
@@ -58,11 +58,11 @@ Podfile.prototype.save = function () {
 };
 
 Podfile.prototype.install = function () {
-    var cwd = path.dirname(this.file)
-    return new Promise(function (resolve, reject) {
+    const cwd = path.dirname(this.file);
+    return new Promise((resolve, reject) => {
         debug(`Installing pods in ${this.file}`);
-        var process = childProcess.spawn('pod', ['install'], {
-            cwd: cwd,
+        const process = childProcess.spawn('pod', ['install'], {
+            cwd,
             stdio: 'inherit'
         });
 
@@ -72,17 +72,17 @@ Podfile.prototype.install = function () {
 };
 
 Podfile.searchForFile = function (cwd) {
-    var podFilePaths = glob.sync(path.join(cwd, 'Podfile'), { ignore: "node_modules/**" });
+    const podFilePaths = glob.sync(path.join(cwd, 'Podfile'), { ignore: 'node_modules/**' });
     if (podFilePaths.length === 1) {
         return podFilePaths[0];
     } else if (podFilePaths.length === 0) {
         debug(`No podfile found in ${cwd}`);
-        childProcess.execSync('pod init', { cwd: cwd });
+        childProcess.execSync('pod init', { cwd });
         // Remove tests sub-specification or it breaks the project
-        var podfile = path.join(cwd, 'Podfile');
-        var contents = fs.readFileSync(podfile, {encoding: 'utf-8'});
-        var subspecRegex = /target '[^']*Tests' do[\s\S]*?end/m;
-        fs.writeFileSync(podfile, contents.replace(subspecRegex, ""));
+        const podfile = path.join(cwd, 'Podfile');
+        const contents = fs.readFileSync(podfile, { encoding: 'utf-8' });
+        const subspecRegex = /target '[^']*Tests' do[\s\S]*?end/m;
+        fs.writeFileSync(podfile, contents.replace(subspecRegex, ''));
         return podfile;
     }
 };

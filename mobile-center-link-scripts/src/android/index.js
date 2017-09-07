@@ -1,12 +1,12 @@
-var fs = require('fs');
+const fs = require('fs');
 
-var glob = require('glob');
-var inquirer = require('inquirer');
-var debug = require('debug')('mobile-center-link:android:index');
+const inquirer = require('inquirer');
+const debug = require('debug')('mobile-center-link:android:index');
 
-var MobileCenterConfig = require('./MobileCenterConfig');
+const MobileCenterConfig = require('./MobileCenterConfig');
+
 module.exports = {
-    checkIfAndroidDirectoryExists: function () {
+    checkIfAndroidDirectoryExists() {
         try {
             if (fs.statSync('./android').isDirectory()) {
                 return Promise.resolve();
@@ -17,9 +17,9 @@ module.exports = {
         return Promise.reject();
     },
 
-    initMobileCenterConfig: function (alwaysPromptForAppSecret) {
-        var config = new MobileCenterConfig(MobileCenterConfig.searchForFile());
-        var currentAppSecret = config.get('app_secret');
+    initMobileCenterConfig() {
+        const config = new MobileCenterConfig(MobileCenterConfig.searchForFile());
+        const currentAppSecret = config.get('app_secret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
@@ -33,9 +33,9 @@ module.exports = {
             default: currentAppSecret,
             message: 'What is the Android App Secret?',
             name: 'app_secret',
-        }]).then(function (answers) {
-            config.set('app_secret', answers['app_secret']);
-            var file = config.save();
+        }]).then((answers) => {
+            config.set('app_secret', answers.app_secret);
+            const file = config.save();
             console.log(`App Secret for Android written to ${file}`);
             return file;
         });
