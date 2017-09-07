@@ -24,10 +24,38 @@ namespace Contoso.Forms.Puppet
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
             CrashesEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
         }
-
-        void TestCrash(object sender, EventArgs e)
+ async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            Crashes.GenerateTestCrash();
+            await Crashes.SetEnabledAsync(e.Value);
+        }
+
+        void HandleOrThrow(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                HandleOrThrow(e);
+            }
+        }
+
+        private void HandleOrThrow(Exception e)
+        {
+            if (HandleExceptionsSwitchCell.On)
+            {
+                Crashes.TrackException(e);
+            }
+            else
+            {
+                throw e;
+            }
+        }
+
+        void TestException(object sender, EventArgs e)
+        {
+            HandleOrThrow(() => Crashes.GenerateTestCrash());
         }
 
         void DivideByZero(object sender, EventArgs e)
@@ -36,16 +64,6 @@ namespace Contoso.Forms.Puppet
 #pragma warning disable CS0219
             int x = (42 / int.Parse("0"));
 #pragma warning restore CS0219
-        }
-
-        async void UpdateEnabled(object sender, ToggledEventArgs e)
-        {
-            await Crashes.SetEnabledAsync(e.Value);
-        }
-
-        void GenerateTestCrash(object sender, EventArgs e)
-        {
-            Crashes.GenerateTestCrash();
         }
 
         void CatchNullReferenceException(object sender, EventArgs e)
@@ -60,9 +78,9 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        void CrashWithNullReferenceException(object sender, EventArgs e)
+        void NullReferenceException(object sender, EventArgs e)
         {
-            TriggerNullReferenceException();
+            HandleOrThrow(() => TriggerNullReferenceException());
         }
 
         void TriggerNullReferenceException()
@@ -77,9 +95,9 @@ namespace Contoso.Forms.Puppet
             System.Diagnostics.Debug.WriteLine("");
         }
 
-        void CrashWithAggregateException(object sender, EventArgs e)
+        void AggregateException(object sender, EventArgs e)
         {
-            throw PrepareException();
+            HandleOrThrow(() => throw PrepareException());
         }
 
         static Exception PrepareException()
@@ -118,9 +136,16 @@ namespace Contoso.Forms.Puppet
             }
         }
 
-        public async void CrashAsync(object sender, EventArgs e)
+        public async void AsyncException(object sender, EventArgs e)
         {
-            await FakeService.DoStuffInBackground();
+            try
+            {
+                await FakeService.DoStuffInBackground();
+            }
+            catch (Exception ex)
+            {
+                HandleOrThrow(ex);
+            }
         }
     }
 }

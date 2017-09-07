@@ -69,10 +69,10 @@ namespace Microsoft.Azure.Mobile.Crashes
             MSCrashes.NotifyWithUserConfirmation(iosUserConfirmation);
         }
 
-        //public override void TrackException(Exception exception)
-        //{
-        //	throw new NotImplementedException();
-        //}
+        public override void TrackException(Exception exception)
+        {
+            // TODO
+        }
 
         static PlatformCrashes()
         {

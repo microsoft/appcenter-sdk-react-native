@@ -230,10 +230,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         ///// Track an exception.
         ///// </summary>
         ///// <param name="exception">An exception.</param>
-        //public static void TrackException(Exception exception)
-        //{
-        //    PlatformCrashes.TrackException(exception);
-        //}
+        public static void TrackException(Exception exception)
+        {
+            PlatformCrashes.TrackException(exception);
+        }
     }
 }
-
