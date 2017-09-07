@@ -3,20 +3,22 @@ const npmPackages = require('./../package.json');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
 .then(() => {
-    return initMobileCenterConfig()
+    rnpmlink.ios.initMobileCenterConfig()
         .catch((e) => {
             console.log(`Could not create mobile center config file. Error Reason - ${e.message}`);
             return Promise.reject();
         });
-}).then(() => {
+    })
+.then(() => {
     const prompt = npmPackages.rnpm.params[0];
     prompt.message = prompt.message.replace(/Android/, 'iOS');
     return rnpmlink.inquirer.prompt(prompt)
         .catch((e) => {
             console.log(`Could not find answer of whenToEnableAnalytics. Error Reason - ${e.message}`);
-            return Promise.reject();   
-        });     
-}).then((answer) => {
+            return Promise.reject();
+        });
+    })
+.then((answer) => {
     const code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
         '  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics' :
         '  [RNAnalytics registerWithInitiallyEnabled:false];  // Initialize Mobile Center analytics';
@@ -25,7 +27,8 @@ return rnpmlink.ios.checkIfAppDelegateExists()
             console.log(`Could not initialize Mobile Center analytics in AppDelegate. Error Reason - ${e.message}`);
             return Promise.reject();
         });
-}).then((file) => {
+    })
+.then((file) => {
     console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
     return rnpmlink.ios.addPodDeps([
         { pod: 'MobileCenter/Analytics', version: '0.12.1' },
@@ -39,4 +42,5 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         `);
         return Promise.reject();
     });
-}).catch(() => Promose.resolve());
+})
+.catch(() => Promise.resolve());
