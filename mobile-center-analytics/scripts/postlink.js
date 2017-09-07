@@ -5,7 +5,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
 .then(() => {
     rnpmlink.ios.initMobileCenterConfig()
         .catch((e) => {
-            console.log(`Could not create mobile center config file. Error Reason - ${e.message}`);
+            console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
             return Promise.reject();
         });
     })
@@ -14,7 +14,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     prompt.message = prompt.message.replace(/Android/, 'iOS');
     return rnpmlink.inquirer.prompt(prompt)
         .catch((e) => {
-            console.log(`Could not find answer of whenToEnableAnalytics. Error Reason - ${e.message}`);
+            console.log(`Could not determine when to enable Mobile Center analytics. Error Reason - ${e.message}`);
             return Promise.reject();
         });
     })

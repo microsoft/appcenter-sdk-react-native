@@ -4,7 +4,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
 .then(() => {
     rnpmlink.ios.initMobileCenterConfig()
         .catch((e) => {
-            console.log(`Could not create mobile center config file. Error Reason - ${e.message}`);
+            console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
             return Promise.reject();
         });
     })
@@ -25,6 +25,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         console.log(`
             Could not install dependencies using CocoaPods.
             Please refer to the documentation to install dependencies manually.
+
             Error Reason - ${e.message}
         `);
         return Promise.reject();
