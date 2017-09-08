@@ -96,7 +96,7 @@ IList<ApplicationInfo> Applications = new List<ApplicationInfo>
 Setup(context =>
 {
     // Arguments:
-    //  -environment (-e):  App "environment" ("prod" or "int") -- Default is "prod"
+    //  -environment (-e):  App "environment" ("prod" or "int") -- Default is "int"
     //  -group (-g):        Distribution group name -- Default is "Private Release Script Group"
     //  -mandatory (-m):    Should the release be mandatory ("true" or "false") -- Default is "false"
     //  -platform (-p):     ios, android, or uwp -- Default is ios
