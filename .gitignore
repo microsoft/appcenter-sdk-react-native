@@ -273,5 +273,8 @@ externals/
 # Output directory
 output/
 
+# Archives directory
+archives/
+
 #google-services
 google-services.json
