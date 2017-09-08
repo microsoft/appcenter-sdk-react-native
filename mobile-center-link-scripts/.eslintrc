@@ -27,6 +27,7 @@
         "no-console": 0,
         "no-multi-spaces": [2, { "ignoreEOLComments": true }],
         "func-names": 0,
-        "no-useless-escape": 0
+        "no-useless-escape": 0,
+        "import/no-dynamic-require": 0
     }
 }
