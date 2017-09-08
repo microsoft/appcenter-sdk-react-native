@@ -12,7 +12,7 @@ const Podfile = function (file) {
     this.fileContents = fs.readFileSync(file, 'utf-8');
 };
 
-Podfile.prototype.eraseOldLines = function eraseOldLines() {
+Podfile.prototype.eraseOldLines = function () {
     this.fileContents = this.fileContents.replace(new RegExp("pod 'MobileCenter'.*"), '');
 };
 
