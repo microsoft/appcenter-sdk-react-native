@@ -26,7 +26,7 @@ MobileCenterConfigPlist.prototype.set = function (key, value) {
     this.parsedInfoPlist[key] = value;
 };
 
-MobileCenterConfigPlist.prototype.save = function (key, value) {
+MobileCenterConfigPlist.prototype.save = function () {
     const plistContents = plist.build(this.parsedInfoPlist);
     fs.writeFileSync(this.plistPath, plistContents);
     debug(`Saved App Secret in ${this.plistPath}`);
@@ -35,7 +35,6 @@ MobileCenterConfigPlist.prototype.save = function (key, value) {
 };
 
 function addConfigToProject(file) {
-    const pjson = require(path.join(process.cwd(), './package.json'));
     return new Promise(((resolve, reject) => {
         debug(`Trying to add ${file} to XCode project`);
 
@@ -89,14 +88,14 @@ MobileCenterConfigPlist.searchForFile = function (cwd) {
         ignore: 'node_modules/**'
     });
     if (configPaths.length > 1) {
-        debug(MobileCenterConfigPaths);
+        debug(configPaths);
         throw new Error(`Found more than one MobileCenter-Config.plist in this project and hence, could not write App Secret.
             Please add "AppSecret" to the correct MobileCenter-Config.plist file
-            MobileCenter-config.plist found at ${MobileCenterConfigPaths}
+            MobileCenter-config.plist found at ${configPaths}
         `);
     } else if (configPaths.length === 1) {
         return configPaths[0];
-    } else if (configPaths.length === 0) {
+    } else {
         return path.join(cwd, 'MobileCenter-Config.plist');
     }
 };

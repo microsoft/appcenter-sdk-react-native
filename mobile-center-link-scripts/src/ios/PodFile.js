@@ -73,9 +73,12 @@ Podfile.prototype.install = function () {
 
 Podfile.searchForFile = function (cwd) {
     const podFilePaths = glob.sync(path.join(cwd, 'Podfile'), { ignore: 'node_modules/**' });
-    if (podFilePaths.length === 1) {
+    if (podFilePaths.length > 1) {
+        debug(podFilePaths);
+        throw new Error('Found more than one Podfile in this project');
+    } else if (podFilePaths.length === 1) {
         return podFilePaths[0];
-    } else if (podFilePaths.length === 0) {
+    } else {
         debug(`No podfile found in ${cwd}`);
         childProcess.execSync('pod init', { cwd });
         // Remove tests sub-specification or it breaks the project

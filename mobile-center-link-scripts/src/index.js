@@ -1,5 +1,9 @@
+const android = require('./android');
+const ios = require('./ios');
+const inquirer = require('inquirer');
+
 module.exports = {
-    android: require('./android'),
-    ios: require('./ios'),
-    inquirer: require('inquirer')
+    android,
+    ios,
+    inquirer
 };

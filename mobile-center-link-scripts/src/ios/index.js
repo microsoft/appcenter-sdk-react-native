@@ -5,7 +5,7 @@ const debug = require('debug')('mobile-center-link:ios:index');
 const glob = require('glob');
 const inquirer = require('inquirer');
 
-// Assumption - react-native link is always called from the top of hte project
+// Assumption - react-native link is always called from the top of the project
 // As indicated in https://github.com/facebook/react-native/blob/4082a546495c5d9f4c6fd1b0c2f64e9bc7a88bc7/local-cli/link/getProjectDependencies.js#L7
 const pjson = require(path.join(process.cwd(), './package.json'));
 
@@ -54,7 +54,7 @@ module.exports = {
                     });
             } catch (e) {
                 debug('Could not save config', e);
-                Promise.reject(e);
+                return Promise.reject(e);
             }
         });
     },
@@ -95,9 +95,8 @@ function findFileByAppName(array, appName) {
     if (array.length === 0 || !appName) return null;
 
     for (let i = 0; i < array.length; i++) {
-        const path = array[i];
-        if (path && path.indexOf(appName) !== -1) {
-            return path;
+        if (array[i] && array[i].indexOf(appName) !== -1) {
+            return array[i];
         }
     }
 
