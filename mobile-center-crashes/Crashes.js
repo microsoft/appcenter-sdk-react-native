@@ -1,5 +1,7 @@
 const ReactNative = require('react-native');
+const MobileCenterLog = require('mobile-center/mobile-center-log');
 
+const logTag = 'MobileCenter';
 const RNCrashes = ReactNative.NativeModules.RNCrashes;
 
 const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
@@ -42,6 +44,8 @@ let Crashes = {
                 if (enabled) {
                     return RNCrashes.getCrashReports();
                 }
+                MobileCenterLog.error(logTag, 'Could not get crash reports when Mobile Center crashes has not been enabled.');
+                return Promise.reject();
             })
             .then((reports) => {
                 if (!reports) {
