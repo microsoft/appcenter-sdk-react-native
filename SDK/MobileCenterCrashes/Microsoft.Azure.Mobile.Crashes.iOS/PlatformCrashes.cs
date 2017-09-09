@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public override void TrackException(Exception exception)
         {
-            // TODO
+            MSCrashes.TrackModelException(GenerateiOSException(exception, false));
         }
 
         static PlatformCrashes()
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception systemException = e.ExceptionObject as Exception;
-            MSException exception = GenerateiOSException(systemException);
+            MSException exception = GenerateiOSException(systemException, true);
             byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
             NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
 
@@ -112,13 +112,13 @@ namespace Microsoft.Azure.Mobile.Crashes
             MSWrapperExceptionManager.SaveWrapperException(wrapperException);
         }
 
-        private static MSException GenerateiOSException(Exception exception)
+        private static MSException GenerateiOSException(Exception exception, bool structuredFrames)
         {
             var msException = new MSException();
             msException.Type = exception.GetType().FullName;
             msException.Message = exception.Message;
             msException.StackTrace = exception.StackTrace;
-            msException.Frames = GenerateStackFrames(exception);
+            msException.Frames = structuredFrames ? GenerateStackFrames(exception) : null;
             msException.WrapperSdkName = WrapperSdk.Name;
 
             var aggregateException = exception as AggregateException;
@@ -128,12 +128,12 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 foreach (Exception innerException in aggregateException.InnerExceptions)
                 {
-                    innerExceptions.Add(GenerateiOSException(innerException));
+                    innerExceptions.Add(GenerateiOSException(innerException, structuredFrames));
                 }
             }
             else if (exception.InnerException != null)
             {
-                innerExceptions.Add(GenerateiOSException(exception.InnerException));
+                innerExceptions.Add(GenerateiOSException(exception.InnerException, structuredFrames));
             }
 
             msException.InnerExceptions = innerExceptions.Count > 0 ? innerExceptions.ToArray() : null;

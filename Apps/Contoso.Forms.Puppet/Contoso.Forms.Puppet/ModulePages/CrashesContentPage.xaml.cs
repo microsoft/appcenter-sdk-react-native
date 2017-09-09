@@ -58,7 +58,7 @@ namespace Contoso.Forms.Puppet
         {
             /* This is supposed to cause a crash, so we don't care that the variable 'x' is never used */
 #pragma warning disable CS0219
-            int x = (42 / int.Parse("0"));
+            HandleOrThrow(() => (42 / int.Parse("0")).ToString());
 #pragma warning restore CS0219
         }
 
