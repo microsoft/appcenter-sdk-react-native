@@ -28,20 +28,18 @@ function sanitizeProperties(props) {
     // Only string:string mappings are supported currently.
 
     const result = {};
-
-    for (const i in props) {
-        switch (typeof props[i]) {
+    Object.keys(props).forEach((key) => {
+        switch (typeof props[key]) {
             case 'string':
             case 'number':
             case 'boolean':
-                result[i] = `${props[i]}`;
+                result[key] = `${props[key]}`;
                 break;
             case 'undefined':
                 break;
             default:
                 throw new Error('Properties cannot be serialized. Object must only contain strings');
         }
-    }
-
+    });
     return result;
 }
