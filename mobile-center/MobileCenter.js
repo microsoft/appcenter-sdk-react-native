@@ -43,10 +43,10 @@ const MobileCenter = {
     setCustomProperties(properties) {
         if (properties instanceof MobileCenter.CustomProperties) {
             return RNMobileCenter.setCustomProperties(properties);
-        } else {
-            const type = Object.prototype.toString.apply(properties);
-            MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
         }
+        const type = Object.prototype.toString.apply(properties);
+        MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
+        return Promise.resolve();
     }
 };
 
