@@ -36,7 +36,7 @@ let Crashes = {
 
     // async - returns a Promise
     process(callback) {
-        // Checking enabled will make sure the callback is executed after the Android SDK has finished loading
+        // Calling .isEnabled() will make sure the callback is executed after the Android SDK has finished loading
         // crash reports in background. We could call getCrashReports too soon otherwise in case
         // it takes a lot of time.
         return RNCrashes.isEnabled()
@@ -44,8 +44,8 @@ let Crashes = {
                 if (enabled) {
                     return RNCrashes.getCrashReports();
                 }
-                MobileCenterLog.error(logTag, 'Could not get crash reports when Mobile Center crashes has not been enabled.');
-                return Promise.reject();
+                MobileCenterLog.error(logTag, 'Could not get crash reports when Mobile Center crashes is not enabled.');
+                return Promise.reject('Mobile Center crashes is not enabled.');
             })
             .then((reports) => {
                 if (!reports) {

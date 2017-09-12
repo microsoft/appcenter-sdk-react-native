@@ -46,7 +46,7 @@ const MobileCenter = {
         }
         const type = Object.prototype.toString.apply(properties);
         MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
-        return Promise.resolve();
+        return Promise.reject('Could not set custom properties because of invalid type.');
     }
 };
 
