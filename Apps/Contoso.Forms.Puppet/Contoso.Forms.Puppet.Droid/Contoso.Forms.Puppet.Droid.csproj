@@ -209,6 +209,14 @@
       <Project>{80B9A47A-7A97-4E5A-9706-43ACB25A7240}</Project>
       <Name>Microsoft.Azure.Mobile.Push.Android.Bindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.Android.Bindings\Microsoft.Azure.Mobile.Rum.Android.Bindings.csproj">
+      <Project>{7E130457-B427-4043-A5A2-9484CB5809BF}</Project>
+      <Name>Microsoft.Azure.Mobile.Rum.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.Android\Microsoft.Azure.Mobile.Rum.Android.csproj">
+      <Project>{7F7FA7ED-1386-41B5-A11E-656B7F85A8F9}</Project>
+      <Name>Microsoft.Azure.Mobile.Rum.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="proguard.cfg" />
