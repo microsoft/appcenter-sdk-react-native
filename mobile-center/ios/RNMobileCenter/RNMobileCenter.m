@@ -85,7 +85,8 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
                     [customProperties setNumber:value forKey:key];
                 }
                 else if ([typeString isEqualToString:@"boolean"]) {
-                    [customProperties setBool:value forKey:key];
+                    NSNumber *num = value;
+                    [customProperties setBool:[num boolValue] forKey:key];
                 }
                 else if ([typeString isEqualToString:@"date-time"]) {
                     NSDate *date = [RCTConvert NSDate:value];
