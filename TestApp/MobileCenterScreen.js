@@ -75,6 +75,7 @@ export default class MobileCenterScreen extends React.Component {
       .clear('old')
       .set('color', 'blue')
       .set('optin', true)
+      .set('optout', false)
       .set('score', 7)
       .set('now', new Date());
     await MobileCenter.setCustomProperties(properties);
