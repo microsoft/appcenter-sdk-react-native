@@ -7,16 +7,13 @@
 import React, { Component } from 'react';
 import {
   Alert,
-  Button,
   StyleSheet,
   Text,
   View,
-  Switch,
   ScrollView,
   TouchableOpacity
 } from 'react-native';
 
-import { StackNavigator } from 'react-navigation';
 import Crashes from 'mobile-center-crashes';
 import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
@@ -26,25 +23,29 @@ export default class CrashesScreen extends Component {
     super();
     this.state = {
       crashesEnabled: false,
-      lastSessionStatus: "",
-      sendStatus: ""
+      lastSessionStatus: '',
+      sendStatus: ''
     };
+    this.toggleEnabled = this.toggleEnabled.bind(this);
+    this.jsCrash = this.jsCrash.bind(this);
+    this.nativeCrash = this.nativeCrash.bind(this);
+    this.sendCrashes = this.sendCrashes.bind(this);
   }
 
   async componentDidMount() {
-    let status = "";
+    let status = '';
     const component = this;
 
     const crashesEnabled = await Crashes.isEnabled();
-    component.setState({ crashesEnabled: crashesEnabled });
+    component.setState({ crashesEnabled });
 
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
 
-    status += `Crashed: ${crashedInLastSession ? "yes" : "no"}\n\n`;
+    status += `Crashed: ${crashedInLastSession ? 'yes' : 'no'}\n\n`;
     component.setState({ lastSessionStatus: status });
 
     if (crashedInLastSession) {
-      const crashReport = await Crashes.lastSessionCrashReport()
+      const crashReport = await Crashes.lastSessionCrashReport();
 
       status += JSON.stringify(crashReport, null, 4);
       component.setState({ lastSessionStatus: status });
@@ -55,11 +56,11 @@ export default class CrashesScreen extends Component {
     await Crashes.setEnabled(!this.state.crashesEnabled);
 
     const crashesEnabled = await Crashes.isEnabled();
-    this.setState({ crashesEnabled: crashesEnabled });
+    this.setState({ crashesEnabled });
   }
 
   jsCrash() {
-    var foo = new FooClass();
+    const foo = new FooClass();
     foo.method1();
   }
 
@@ -69,39 +70,39 @@ export default class CrashesScreen extends Component {
 
   sendCrashes() {
     const component = this;
-    Crashes.process(function (reports, send) {
-      let status = "";
+    Crashes.process((reports, send) => {
+      let status = '';
 
       if (reports.length === 0) {
-        status += `Nothing to send\n`;
+        status += 'Nothing to send\n';
         component.setState({ sendStatus: status });
         return;
       }
 
       Crashes.setEventListener({
-        willSendCrash: function () {
-          status += `Will send crash\n`;
+        willSendCrash() {
+          status += 'Will send crash\n';
           component.setState({ sendStatus: status });
         },
-        didSendCrash: function () {
-          status += `Did send crash\n`;
+        didSendCrash() {
+          status += 'Did send crash\n';
           component.setState({ sendStatus: status });
         },
-        failedSendingCrash: function () {
-          status += `Failed sending crash\n`;
+        failedSendingCrash() {
+          status += 'Failed sending crash\n';
           component.setState({ sendStatus: status });
         }
       });
 
-      let crashes = "";
-      for (const report of reports) {
+      let crashes = '';
+      reports.forEach((report) => {
         if (crashes.length > 0) {
-          crashes += "\n\n";
+          crashes += '\n\n';
         }
         crashes += report.exceptionReason;
-        report.addTextAttachment("Hello attachment!", "hello.txt");
-        report.addBinaryAttachment(testIcon, "logo.png", "image/png");
-      }
+        report.addTextAttachment('Hello attachment!', 'hello.txt');
+        report.addBinaryAttachment(testIcon, 'logo.png', 'image/png');
+      });
 
       Alert.alert(
         `Send ${reports.length} crash(es)?`,
@@ -111,7 +112,7 @@ export default class CrashesScreen extends Component {
           { text: 'Ignore', onPress: () => send(false), style: 'cancel' },
         ]
       );
-    }).then(() => console.log("Crashes were processed"));
+    }).then(() => console.log('Crashes were processed'));
   }
 
   render() {
@@ -123,26 +124,26 @@ export default class CrashesScreen extends Component {
           </Text>
 
           <Text style={SharedStyles.enabledText}>
-            Crashes enabled: {this.state.crashesEnabled ? "yes" : "no"}
+            Crashes enabled: {this.state.crashesEnabled ? 'yes' : 'no'}
           </Text>
-          <TouchableOpacity onPress={this.toggleEnabled.bind(this)}>
+          <TouchableOpacity onPress={this.toggleEnabled}>
             <Text style={SharedStyles.toggleEnabled}>
               toggle
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.jsCrash.bind(this)}>
+          <TouchableOpacity onPress={this.jsCrash}>
             <Text style={styles.button}>
               Crash JavaScript
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.nativeCrash.bind(this)}>
+          <TouchableOpacity onPress={this.nativeCrash}>
             <Text style={styles.button}>
               Crash native code
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.sendCrashes.bind(this)}>
+          <TouchableOpacity onPress={this.sendCrashes}>
             <Text style={styles.button}>
               Send crashes
             </Text>

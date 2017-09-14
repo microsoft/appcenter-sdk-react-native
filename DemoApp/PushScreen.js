@@ -4,16 +4,12 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Alert,
-  AppRegistry,
-  StyleSheet,
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
-  NativeModules
+  TouchableOpacity
 } from 'react-native';
 
 import Push from 'mobile-center-push';
@@ -25,20 +21,21 @@ export default class PushScreen extends React.Component {
     this.state = {
       pushEnabled: false
     };
+    this.toggleEnabled = this.toggleEnabled.bind(this);
   }
 
   async componentDidMount() {
     const component = this;
 
     const pushEnabled = await Push.isEnabled();
-    component.setState({ pushEnabled: pushEnabled });
+    component.setState({ pushEnabled });
   }
 
   async toggleEnabled() {
     await Push.setEnabled(!this.state.pushEnabled);
 
     const pushEnabled = await Push.isEnabled();
-    this.setState({ pushEnabled: pushEnabled });
+    this.setState({ pushEnabled });
   }
 
   render() {
@@ -50,9 +47,9 @@ export default class PushScreen extends React.Component {
           </Text>
 
           <Text style={SharedStyles.enabledText}>
-            Push enabled: {this.state.pushEnabled ? "yes" : "no"}
+            Push enabled: {this.state.pushEnabled ? 'yes' : 'no'}
           </Text>
-          <TouchableOpacity onPress={this.toggleEnabled.bind(this)}>
+          <TouchableOpacity onPress={this.toggleEnabled}>
             <Text style={SharedStyles.toggleEnabled}>
               toggle
             </Text>
