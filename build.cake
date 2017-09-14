@@ -150,7 +150,9 @@ Setup(context =>
                             "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
                             "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll",
                             "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android/bin/Release/Microsoft.Azure.Mobile.Push.dll",
-                               "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Push.Android.Bindings.dll" }
+                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Push.Android.Bindings.dll",
+                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum.Android/bin/Release/Microsoft.Azure.Mobile.Rum.dll",
+                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Rum.Android.Bindings.dll" }
         };
         var pclAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = PCL_ASSEMBLIES_FOLDER,
@@ -158,7 +160,8 @@ Setup(context =>
                             "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
                             "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
                             "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push/bin/Release/Microsoft.Azure.Mobile.Push.dll" }
+                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push/bin/Release/Microsoft.Azure.Mobile.Push.dll",
+                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum/bin/Release/Microsoft.Azure.Mobile.Rum.dll" }
         };
         PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
