@@ -4,16 +4,12 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Alert,
-  AppRegistry,
-  StyleSheet,
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
-  NativeModules
+  TouchableOpacity
 } from 'react-native';
 
 import Analytics from 'mobile-center-analytics';
@@ -25,23 +21,24 @@ export default class AnalyticsScreen extends React.Component {
     this.state = {
       analyticsEnabled: false
     };
+    this.toggleEnabled = this.toggleEnabled.bind(this);
   }
 
   async componentDidMount() {
-    let status = "";
     const component = this;
 
     const analyticsEnabled = await Analytics.isEnabled();
-    component.setState({ analyticsEnabled: analyticsEnabled });
+    component.setState({ analyticsEnabled });
   }
 
   async toggleEnabled() {
     await Analytics.setEnabled(!this.state.analyticsEnabled);
 
     const analyticsEnabled = await Analytics.isEnabled();
-    this.setState({ analyticsEnabled: analyticsEnabled });
+    this.setState({ analyticsEnabled });
   }
 
+  /* eslint-disable no-undef */
   render() {
     return (
       <View style={SharedStyles.container}>
@@ -51,29 +48,29 @@ export default class AnalyticsScreen extends React.Component {
           </Text>
 
           <Text style={SharedStyles.enabledText}>
-            Analytics enabled: {this.state.analyticsEnabled ? "yes" : "no"}
+            Analytics enabled: {this.state.analyticsEnabled ? 'yes' : 'no'}
           </Text>
-          <TouchableOpacity onPress={this.toggleEnabled.bind(this)}>
+          <TouchableOpacity onPress={this.toggleEnabled}>
             <Text style={SharedStyles.toggleEnabled}>
               toggle
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", { page: "Home page" })}>
+          <TouchableOpacity onPress={() => Analytics.trackEvent('Button press', { page: 'Home page' })}>
             <Text style={SharedStyles.button}>
               Track Event
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", { propertyValueTooLong: "12345678901234567890123456789012345678901234567890123456789012345" })}>
+          <TouchableOpacity onPress={() => Analytics.trackEvent('Button press', { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' })}>
             <Text style={SharedStyles.button}>
               Track Event - event property value truncated after 64 characters
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => Analytics.trackEvent("Button press", data)}>
+          <TouchableOpacity onPress={() => Analytics.trackEvent('Button press', data)}>
             <Text style={SharedStyles.button}>
-              Track Event badly (Don't do this, only strings are supported)
+              Track Event badly (Do not do this, only strings are supported)
             </Text>
           </TouchableOpacity>
 
@@ -81,4 +78,5 @@ export default class AnalyticsScreen extends React.Component {
       </View>
     );
   }
+  /* eslint-enable no-undef */
 }

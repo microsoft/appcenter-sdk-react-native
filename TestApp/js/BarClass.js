@@ -10,7 +10,7 @@ export class BarClass {
     }
 
     static crashApp(value1, value2) {
-      var thisVariableIsUndefined;
+      let thisVariableIsUndefined;
       thisVariableIsUndefined.invokingFunctionOnUndefined();
     }
 }
