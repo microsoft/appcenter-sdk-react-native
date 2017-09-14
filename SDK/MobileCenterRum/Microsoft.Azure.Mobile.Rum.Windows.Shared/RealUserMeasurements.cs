@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Microsoft.Azure.Mobile.Channel;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
-using Microsoft.Azure.Mobile.Utils.Synchronization;
 
 namespace Microsoft.Azure.Mobile.Rum
 {
@@ -105,5 +102,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 }
             }
         }
+
+        #endregion
     }
 }

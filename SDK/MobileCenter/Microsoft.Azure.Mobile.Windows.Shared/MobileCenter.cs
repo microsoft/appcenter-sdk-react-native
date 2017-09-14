@@ -326,9 +326,9 @@ namespace Microsoft.Azure.Mobile
                         startServiceLog.Services.Add(serviceInstance.ServiceName);
                     }
                 }
-                catch (MobileCenterException)
+                catch (MobileCenterException e)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.");
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", e);
                 }
             }
 
