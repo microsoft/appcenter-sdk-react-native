@@ -89,6 +89,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Rum.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Rum", "SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum\Microsoft.Azure.Mobile.Rum.csproj", "{254D5434-9087-4F05-A43F-23A790E42024}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Rum.UWP", "SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.UWP\Microsoft.Azure.Mobile.Rum.UWP.csproj", "{BCD888D1-A62F-458C-A72B-9DF731EE1A55}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Rum.Windows.Shared", "SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.Windows.Shared\Microsoft.Azure.Mobile.Rum.Windows.Shared.shproj", "{7EEA1E57-8244-42A4-AA3E-CFB995E86467}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
@@ -101,6 +105,7 @@ Global
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{41febc72-c12b-47e1-b6f6-51d50158c825}*SharedItemsImports = 4
 		SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems*{5aef073d-7370-41c1-86cd-a61b4deb9883}*SharedItemsImports = 13
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{7ce5bf9e-3650-4151-8b54-c1301aa73606}*SharedItemsImports = 13
+		SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.Windows.Shared\Microsoft.Azure.Mobile.Rum.Windows.Shared.projitems*{7eea1e57-8244-42a4-aa3e-cfb995e86467}*SharedItemsImports = 13
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{8072449c-c6a8-4b36-87dc-173f295d161c}*SharedItemsImports = 4
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{8072449c-c6a8-4b36-87dc-173f295d161c}*SharedItemsImports = 4
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{8a885e5e-a160-4ad2-bd03-59e3a6366c32}*SharedItemsImports = 4
@@ -110,6 +115,8 @@ Global
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems*{a5d2fd20-13ee-4ca4-8278-09520cc376cd}*SharedItemsImports = 13
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Windows.Shared\Microsoft.Azure.Mobile.Windows.Shared.projitems*{b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f}*SharedItemsImports = 13
 		SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems*{ba25a66a-fcea-49c2-a85a-0f6f54463675}*SharedItemsImports = 13
+		SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.Shared\Microsoft.Azure.Mobile.Rum.Shared.projitems*{bcd888d1-a62f-458c-a72b-9df731ee1a55}*SharedItemsImports = 4
+		SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.Windows.Shared\Microsoft.Azure.Mobile.Rum.Windows.Shared.projitems*{bcd888d1-a62f-458c-a72b-9df731ee1a55}*SharedItemsImports = 4
 		SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
 		SDK\MobileCenter\Microsoft.Azure.Mobile.Shared\Microsoft.Azure.Mobile.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
 		SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems*{db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2}*SharedItemsImports = 13
@@ -941,6 +948,42 @@ Global
 		{254D5434-9087-4F05-A43F-23A790E42024}.Release|x64.Build.0 = Release|Any CPU
 		{254D5434-9087-4F05-A43F-23A790E42024}.Release|x86.ActiveCfg = Release|Any CPU
 		{254D5434-9087-4F05-A43F-23A790E42024}.Release|x86.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|ARM.ActiveCfg = Debug|ARM
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|ARM.Build.0 = Debug|ARM
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|x64.ActiveCfg = Debug|x64
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|x64.Build.0 = Debug|x64
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|x86.ActiveCfg = Debug|x86
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Debug|x86.Build.0 = Debug|x86
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|Any CPU.ActiveCfg = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|Any CPU.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|ARM.ActiveCfg = Release|ARM
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|ARM.Build.0 = Release|ARM
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|iPhone.ActiveCfg = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|iPhone.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|iPhoneSimulator.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|x64.ActiveCfg = Release|x64
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|x64.Build.0 = Release|x64
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|x86.ActiveCfg = Release|x86
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Reference|x86.Build.0 = Release|x86
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|ARM.ActiveCfg = Release|ARM
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|ARM.Build.0 = Release|ARM
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|iPhone.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|x64.ActiveCfg = Release|x64
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|x64.Build.0 = Release|x64
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|x86.ActiveCfg = Release|x86
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -986,6 +1029,8 @@ Global
 		{2C6C128A-4416-41F7-AA9A-48AD4679701D} = {52B933EB-4C7D-4646-B12B-DF6BBAD7921A}
 		{8E7B80C4-D22A-4F80-A7AE-E3882E72FFB3} = {2C6C128A-4416-41F7-AA9A-48AD4679701D}
 		{254D5434-9087-4F05-A43F-23A790E42024} = {2C6C128A-4416-41F7-AA9A-48AD4679701D}
+		{BCD888D1-A62F-458C-A72B-9DF731EE1A55} = {2C6C128A-4416-41F7-AA9A-48AD4679701D}
+		{7EEA1E57-8244-42A4-AA3E-CFB995E86467} = {2C6C128A-4416-41F7-AA9A-48AD4679701D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D73D2729-A5FC-462C-A06E-F3862F9435E5}
