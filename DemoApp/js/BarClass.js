@@ -9,8 +9,10 @@ export class BarClass {
     this.crashApp(value1, value2);
   }
 
+  /* eslint-disable */
   static crashApp(value1, value2) {
     var thisVariableIsUndefined;
     thisVariableIsUndefined.invokingFunctionOnUndefined();
   }
+  /* eslint-enable */
 }
