@@ -4,7 +4,6 @@
  * @flow
  */
 
-import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 
 const SharedStyles = StyleSheet.create({

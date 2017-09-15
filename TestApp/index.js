@@ -4,16 +4,8 @@
  * @flow
  */
 
-import React, { Component } from 'react';
 import {
-  Alert,
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  NativeModules
+  AppRegistry
 } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
