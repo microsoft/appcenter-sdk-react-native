@@ -6,9 +6,10 @@
     <SharedGUID>7eea1e57-8244-42a4-aa3e-cfb995e86467</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Rum.Windows.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.Azure.Mobile.Rum</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)RealUserMeasurements.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestUrl.cs" />
   </ItemGroup>
 </Project>

@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         //      0x80072EE7: WININET_E_NAME_NOT_RESOLVED
         //      0x80072EFD: WININET_E_CANNOT_CONNECT
         private static readonly uint[] NetworkUnavailableCodes = { 0x80072EE7, 0x80072EFD };
-        
+
         private HttpClient HttpClient
         {
             get
@@ -38,9 +38,9 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
         }
 
         /// <exception cref="IngestionException"/>
-        public async Task<string> SendAsync(string uri, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken)
+        public async Task<string> SendAsync(string uri, HttpMethod method, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken)
         {
-            using (var request = CreateRequest(uri, headers, jsonContent))
+            using (var request = CreateRequest(uri, method, headers, jsonContent))
             using (var response = await SendRequestAsync(request, cancellationToken).ConfigureAwait(false))
             {
                 if (response == null)
@@ -68,12 +68,12 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             }
         }
 
-        internal HttpRequestMessage CreateRequest(string uri, IDictionary<string, string> headers, string jsonContent)
+        internal HttpRequestMessage CreateRequest(string uri, HttpMethod method, IDictionary<string, string> headers, string jsonContent)
         {
             // Create HTTP transport objects.
             var request = new HttpRequestMessage
             {
-                Method = HttpMethod.Post,
+                Method = method,
                 RequestUri = new Uri(uri),
             };
 
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             {
                 // If the HResult indicates a network outage, throw a NetworkIngestionException so
                 // it can be dealt with properly
-                if (Array.Exists(NetworkUnavailableCodes, code => code == (uint) e.HResult))
+                if (Array.Exists(NetworkUnavailableCodes, code => code == (uint)e.HResult))
                 {
                     throw new NetworkIngestionException();
                 }
