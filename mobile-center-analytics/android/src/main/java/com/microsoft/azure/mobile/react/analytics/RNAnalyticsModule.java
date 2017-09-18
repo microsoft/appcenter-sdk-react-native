@@ -18,14 +18,11 @@ public class RNAnalyticsModule extends BaseJavaModule {
 
     public RNAnalyticsModule(Application application, boolean startEnabled) {
         RNMobileCenterShared.configureMobileCenter(application);
-        if (!startEnabled) {
-            // Avoid starting an analytics session.
-            // Note that we don't call this if startEnabled is true, because
-            // that causes a session to try and start before Analytics is started.
-            Analytics.setEnabled(false);
-        }
         //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
         MobileCenter.start(Analytics.class);
+        if (!startEnabled) {
+            Analytics.setEnabled(false);
+        }
     }
 
     @Override
