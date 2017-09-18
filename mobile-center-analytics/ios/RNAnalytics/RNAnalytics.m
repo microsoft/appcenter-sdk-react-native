@@ -31,11 +31,11 @@ RCT_EXPORT_MODULE();
 + (void)registerWithInitiallyEnabled:(BOOL) enabled
 {
     [RNMobileCenterShared configureMobileCenter];
-    //[MSAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
     [MSMobileCenter startService:[MSAnalytics class]];
     if (!enabled) {
         [MSAnalytics setEnabled:enabled];
     }
+    //[MSAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve

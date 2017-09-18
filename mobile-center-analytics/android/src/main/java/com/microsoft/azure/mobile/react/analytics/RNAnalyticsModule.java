@@ -18,11 +18,11 @@ public class RNAnalyticsModule extends BaseJavaModule {
 
     public RNAnalyticsModule(Application application, boolean startEnabled) {
         RNMobileCenterShared.configureMobileCenter(application);
-        //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
         MobileCenter.start(Analytics.class);
         if (!startEnabled) {
             Analytics.setEnabled(false);
         }
+        //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
     }
 
     @Override
