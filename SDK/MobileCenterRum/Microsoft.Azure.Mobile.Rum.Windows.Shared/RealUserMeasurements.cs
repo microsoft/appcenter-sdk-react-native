@@ -13,16 +13,28 @@ namespace Microsoft.Azure.Mobile.Rum
     {
         #region static
 
-        // Rum configuration endpoint
+        // Rum configuration endpoint.
         private const string ConfigurationEndpoint = "https://rumconfig.trafficmanager.net";
 
-        // JSON configuration file name
+        // JSON configuration file name.
         private const string ConfigurationFileName = "rumConfig.js";
 
-        // Empty headers to use for HTTP
-        private readonly IDictionary<string, string> Headers = new Dictionary<string, string>();
+        // Warm up image path.
+        private const string WarmUpImage = "trans.gif";
 
-        private static readonly object PushLock = new object();
+        // TestUrl image path.
+        private const string SeventeenkImage = "17k.gif";
+
+        // Flag to support https.
+        private const int FlagHttps = 1;
+
+        // Flag to use the 17k image to test.
+        private const int FlagSeventeenk = 12;
+
+        // Empty headers to use for HTTP
+        private static readonly IDictionary<string, string> Headers = new Dictionary<string, string>();
+
+        private static readonly object RealUserMeasurementsLock = new object();
 
         private static RealUserMeasurements _instanceField;
 
@@ -30,42 +42,42 @@ namespace Microsoft.Azure.Mobile.Rum
         {
             get
             {
-                lock (PushLock)
+                lock (RealUserMeasurementsLock)
                 {
                     return _instanceField ?? (_instanceField = new RealUserMeasurements());
                 }
             }
             set
             {
-                lock (PushLock)
+                lock (RealUserMeasurementsLock)
                 {
                     _instanceField = value;
                 }
             }
         }
 
-        static Task<bool> PlatformIsEnabledAsync()
+        private static Task<bool> PlatformIsEnabledAsync()
         {
-            lock (PushLock)
+            lock (RealUserMeasurementsLock)
             {
                 return Task.FromResult(Instance.InstanceEnabled);
             }
         }
 
-        static Task PlatformSetEnabledAsync(bool enabled)
+        private static Task PlatformSetEnabledAsync(bool enabled)
         {
-            lock (PushLock)
+            lock (RealUserMeasurementsLock)
             {
                 Instance.InstanceEnabled = enabled;
                 return Task.FromResult(default(object));
             }
         }
 
-        static void PlatformSetRumKey(string rumKey)
+        private static void PlatformSetRumKey(string rumKey)
         {
         }
 
-        static void PlatformSetConfigurationUrl(string url)
+        private static void PlatformSetConfigurationUrl(string url)
         {
             Instance.InstanceSetConfigurationUrl(url);
         }
@@ -80,10 +92,7 @@ namespace Microsoft.Azure.Mobile.Rum
 
         public override bool InstanceEnabled
         {
-            get
-            {
-                return base.InstanceEnabled;
-            }
+            get => base.InstanceEnabled;
 
             set
             {
@@ -145,62 +154,109 @@ namespace Microsoft.Azure.Mobile.Rum
         private async Task GetRemoteConfigurationAsync()
         {
             // TODO handle network state, requires huge refactoring to reuse ingestion logic here...
-            var _httpNetworkAdapter = new HttpNetworkAdapter();
+            var httpNetworkAdapter = new HttpNetworkAdapter();
 
             // TODO manage cancel on disable
-            var request = await _httpNetworkAdapter.SendAsync($"{_configurationUrl}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+            var request = await httpNetworkAdapter.SendAsync($"{_configurationUrl}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
 
             // Parse configuration
             _configuration = JObject.Parse(request);
 
             // Prepare random weighted selection
-            var endpoints = _configuration["e"] as JArray;
-            var totalWeight = 0;
-            var weightedEndpoints = new List<JObject>(endpoints.Count);
-            foreach (JObject endpoint in endpoints)
+            if (_configuration["e"] is JArray endpoints)
             {
-                var weight = endpoint["w"].Value<Int32>();
-                if (weight > 0)
+                var totalWeight = 0;
+                var weightedEndpoints = new List<JObject>(endpoints.Count);
+                foreach (var jToken in endpoints)
                 {
-                    totalWeight += weight;
-                    endpoint.Add("cumulatedWeight", totalWeight);
-                    weightedEndpoints.Add(endpoint);
-                }
-            }
-
-            // Select n endpoints randomly with respect to weight
-            var testUrls = new List<TestUrl>();
-            var random = new Random();
-            var testCount = Math.Min(_configuration["n"].Value<Int32>(), weightedEndpoints.Count);
-            for (int n = 0; n < testCount; n++)
-            {
-                // Select random endpoint
-                var randomWeight = Math.Floor(random.NextDouble() * totalWeight);
-                JObject endpoint = null;
-                for (int i = 0; i < weightedEndpoints.Count; i++)
-                {
-                    var weightedEndpoint = weightedEndpoints[i];
-                    var cumulatedWeight = weightedEndpoint["cumulatedWeight"].Value<Int32>();
-                    if (endpoint == null)
+                    var endpoint = (JObject)jToken;
+                    var weight = endpoint["w"].Value<int>();
+                    if (weight > 0)
                     {
-                        if (randomWeight <= cumulatedWeight)
+                        totalWeight += weight;
+                        endpoint.Add("cumulatedWeight", totalWeight);
+                        weightedEndpoints.Add(endpoint);
+                    }
+                }
+
+                // Select n endpoints randomly with respect to weight
+                var testUrls = new List<TestUrl>();
+                var random = new Random();
+                var testCount = Math.Min(_configuration["n"].Value<int>(), weightedEndpoints.Count);
+                for (var n = 0; n < testCount; n++)
+                {
+                    // Select random endpoint
+                    var randomWeight = Math.Floor(random.NextDouble() * totalWeight);
+                    JObject endpoint = null;
+                    for (var i = 0; i < weightedEndpoints.Count; i++)
+                    {
+                        var weightedEndpoint = weightedEndpoints[i];
+                        var cumulatedWeight = weightedEndpoint["cumulatedWeight"].Value<int>();
+                        if (endpoint == null)
                         {
-                            endpoint = weightedEndpoint;
-                            weightedEndpoints.RemoveAt(i--);
+                            if (randomWeight <= cumulatedWeight)
+                            {
+                                endpoint = weightedEndpoint;
+                                weightedEndpoints.RemoveAt(i--);
+                            }
+                        }
+
+                        // Update subsequent endpoints cumulated weights since we removed an element.
+                        else
+                        {
+                            cumulatedWeight -= endpoint["w"].Value<int>();
+                            weightedEndpoint["cumulatedWeight"] = cumulatedWeight;
                         }
                     }
 
-                    // Update subsequent endpoints cumulated weights since we removed an element.
-                    else
+                    // Update total weight since we removed the picked endpoint.
+                    if (endpoint == null)
                     {
-                        cumulatedWeight -= endpoint["w"].Value<Int32>();
-                        weightedEndpoint["cumulatedWeight"] = cumulatedWeight;
+                        continue;
                     }
-                }
+                    totalWeight -= endpoint["w"].Value<int>();
+                    MobileCenterLog.Verbose(LogTag, "e=" + endpoint);
 
-                // Update total weight since we removed the picked endpoint.
-                totalWeight -= endpoint["w"].Value<Int32>();
-                MobileCenterLog.Verbose(LogTag, "e=" + endpoint);
+                    // Use endpoint to generate test urls.
+                    var protocolSuffix = "";
+                    var measurementType = endpoint["m"].Value<int>();
+                    if ((measurementType & FlagHttps) > 0)
+                    {
+                        protocolSuffix = "s";
+                    }
+                    var requestId = endpoint["e"].Value<string>();
+
+                    // Handle backward compatibility with FPv1.
+                    var baseUrl = requestId;
+                    if (!requestId.Contains("."))
+                    {
+                        baseUrl += ".clo.footprintdns.com";
+                    }
+
+                    // Port this Javascript behavior regarding url and requestId.
+                    else if (requestId.StartsWith("*") && requestId.Length > 2)
+                    {
+                        var domain = requestId.Substring(2);
+                        var uuid = Guid.NewGuid().ToString();
+                        baseUrl = uuid + "." + domain;
+                        requestId = domain.Equals("clo.footprintdns.com", StringComparison.OrdinalIgnoreCase) ? uuid : domain;
+                    }
+
+                    // Generate test urls.
+                    var probeId = Guid.NewGuid().ToString();
+                    var testUrl = $"http{protocolSuffix}://{baseUrl}/apc/{WarmUpImage}?{probeId}";
+                    testUrls.Add(new TestUrl { Url = testUrl, RequestId = requestId, Object = WarmUpImage, Conn = "cold" });
+                    MobileCenterLog.Verbose(LogTag, testUrl);
+                    var testImage = (measurementType & FlagSeventeenk) > 0 ? SeventeenkImage : WarmUpImage;
+                    probeId = Guid.NewGuid().ToString();
+                    testUrl = $"http{protocolSuffix}://{baseUrl}/apc/{testImage}?{probeId}";
+                    testUrls.Add(new TestUrl { Url = testUrl, RequestId = requestId, Object = testImage, Conn = "warm" });
+                    MobileCenterLog.Verbose(LogTag, testUrl);
+                }
+            }
+            else
+            {
+                throw new MobileCenterException("Invalid remote configuration for Rum.");
             }
         }
 
