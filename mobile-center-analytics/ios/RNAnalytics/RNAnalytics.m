@@ -31,14 +31,11 @@ RCT_EXPORT_MODULE();
 + (void)registerWithInitiallyEnabled:(BOOL) enabled
 {
     [RNMobileCenterShared configureMobileCenter];
+    [MSMobileCenter startService:[MSAnalytics class]];
     if (!enabled) {
-        // Avoid starting an analytics session.
-        // Note that we don't call this if startEnabled is true, because
-        // that causes a session to try and start before MSAnalytics is started.
         [MSAnalytics setEnabled:enabled];
     }
     //[MSAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
-    [MSMobileCenter startService:[MSAnalytics class]];
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
