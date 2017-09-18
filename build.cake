@@ -307,24 +307,24 @@ Task("Externals-Android")
 Task("Externals-Ios")
     .Does(() =>
 {
-	CleanDirectory("./externals/ios");
+    CleanDirectory("./externals/ios");
 
-	// Download zip file containing MobileCenter frameworks
-	DownloadFile(IOS_URL, "./externals/ios/ios.zip");
-	Unzip("./externals/ios/ios.zip", "./externals/ios/");
+    // Download zip file containing MobileCenter frameworks
+    DownloadFile(IOS_URL, "./externals/ios/ios.zip");
+    Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
-	// Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
-	var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
-	foreach (var file in files)
-	{
-		MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
-	}
+    // Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
+    var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
+    foreach (var file in files)
+    {
+        MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
+    }
 
-	// Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
-	if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
-	{
-		MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
-	}
+    // Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
+    if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
+    {
+        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
+    }
 }).OnError(HandleError);
 
 // Create a common externals task depending on platform specific ones
@@ -391,7 +391,6 @@ Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
         ReplaceTextInFiles("./nuget/" + module.MainNuspecFilename, "$version$", module.NuGetVersion);
     }
 });
-
 
 // Upload assemblies to Azure storage
 Task("UploadAssemblies")
@@ -540,7 +539,7 @@ Task("RemoveTemporaries").Does(()=>
     var dirs = GetDirectories(TEMPORARY_PREFIX + "*");
     foreach (var directory in dirs)
     {
-        DeleteDirectory(directory, true);
+        DeleteDirectoryIfExists(directory.ToString());
     }
     DeleteFiles("./nuget/*.temp.nuspec");
 });
@@ -605,7 +604,7 @@ void DeleteDirectoryIfExists(string directoryName)
 {
     if (DirectoryExists(directoryName))
     {
-        DeleteDirectory(directoryName, true);	
+        DeleteDirectory(directoryName, new DeleteDirectorySettings { Force = true, Recursive = true });	
     }
 }
 
