@@ -32,10 +32,5 @@ namespace Microsoft.Azure.Mobile.Rum
         {
             AndroidRealUserMeasurements.SetRumKey(rumKey);
         }
-
-        static void PlatformSetConfigurationUrl(string url)
-        {
-            AndroidRealUserMeasurements.SetConfigurationUrl(url);
-        }
     }
 }

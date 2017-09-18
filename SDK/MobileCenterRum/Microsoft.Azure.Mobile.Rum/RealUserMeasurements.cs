@@ -17,9 +17,5 @@ namespace Microsoft.Azure.Mobile.Rum
         static void PlatformSetRumKey(string rumKey)
         {
         }
-
-        static void PlatformSetConfigurationUrl(string url)
-        {
-        }
     }
 }
