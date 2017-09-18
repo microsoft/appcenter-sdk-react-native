@@ -14,10 +14,10 @@ namespace Microsoft.Azure.Mobile.Rum
         #region static
 
         // Rum configuration endpoint.
-        private const string ConfigurationEndpoint = "https://rumconfig.trafficmanager.net";
+        private const string ConfigurationEndpoint = "http://www.atmrum.net/conf/v1/atm";
 
         // JSON configuration file name.
-        private const string ConfigurationFileName = "rumConfig.js";
+        private const string ConfigurationFileName = "fpconfig.min.json";
 
         // Warm up image path.
         private const string WarmUpImage = "trans.gif";
@@ -77,16 +77,9 @@ namespace Microsoft.Azure.Mobile.Rum
         {
         }
 
-        private static void PlatformSetConfigurationUrl(string url)
-        {
-            Instance.InstanceSetConfigurationUrl(url);
-        }
-
         #endregion
 
         #region instance
-
-        private string _configurationUrl = ConfigurationEndpoint;
 
         private JObject _configuration;
 
@@ -111,14 +104,6 @@ namespace Microsoft.Azure.Mobile.Rum
         public override string ServiceName => "RealUserMeasurements";
 
         protected override string ChannelName => "rum";
-
-        private void InstanceSetConfigurationUrl(string url)
-        {
-            lock (_serviceLock)
-            {
-                _configurationUrl = url;
-            }
-        }
 
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
@@ -157,7 +142,7 @@ namespace Microsoft.Azure.Mobile.Rum
             var httpNetworkAdapter = new HttpNetworkAdapter();
 
             // TODO manage cancel on disable
-            var request = await httpNetworkAdapter.SendAsync($"{_configurationUrl}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+            var request = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
 
             // Parse configuration
             _configuration = JObject.Parse(request);
