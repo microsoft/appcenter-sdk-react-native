@@ -33,13 +33,5 @@ namespace Microsoft.Azure.Mobile.Rum
         {
             PlatformSetRumKey(rumKey);
         }
-
-        /// <summary>
-        /// Configure url to get JSON configuration.
-        /// </summary>
-        public static void SetConfigurationUrl(string url)
-        {
-            PlatformSetConfigurationUrl(url);
-        }
     }
 }

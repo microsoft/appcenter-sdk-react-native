@@ -56,7 +56,6 @@ namespace Contoso.Forms.Puppet
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
             RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
-            RealUserMeasurements.SetConfigurationUrl("https://gist.githubusercontent.com/guperrot/353d39917c7f9d333cbe867c4815a7a6/raw");
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
 
