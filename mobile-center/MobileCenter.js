@@ -53,12 +53,12 @@ const MobileCenter = {
 MobileCenter.CustomProperties = class {
     set(key, value) {
         if (typeof key === 'string') {
-            const valueType = typeof value;
-            switch (valueType) {
+            const type = typeof value;
+            switch (type) {
                 case 'string':
                 case 'number':
                 case 'boolean':
-                    this[key] = { type: valueType, value };
+                    this[key] = { type, value };
                     break;
 
                 case 'object':
