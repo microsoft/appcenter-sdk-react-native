@@ -5,6 +5,7 @@ using System;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -77,6 +78,10 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private static void PlatformSetRumKey(string rumKey)
         {
+            lock (RealUserMeasurementsLock)
+            {
+                Instance.InstanceSetRumKey(rumKey);
+            }
         }
 
         // All unique identifiers in Rum have no dash.
@@ -88,6 +93,8 @@ namespace Microsoft.Azure.Mobile.Rum
         #endregion
 
         #region instance
+
+        private string _rumKey;
 
         private JObject _configuration;
 
@@ -107,6 +114,24 @@ namespace Microsoft.Azure.Mobile.Rum
                     }
                 }
             }
+        }
+
+        private void InstanceSetRumKey(string rumKey)
+        {
+            if (rumKey == null)
+            {
+                MobileCenterLog.Error(LogTag, "Rum key is invalid.");
+                return;
+            }
+            rumKey = rumKey.Trim();
+            if (rumKey.Length != 32)
+            {
+                MobileCenterLog.Error(LogTag, "Rum key is invalid.");
+                return;
+            }
+
+            // TODO handle key changes with async task (take a snapshot)
+            _rumKey = rumKey;
         }
 
         public override string ServiceName => "RealUserMeasurements";
@@ -129,6 +154,11 @@ namespace Microsoft.Azure.Mobile.Rum
             {
                 if (enabled)
                 {
+                    if (_rumKey == null)
+                    {
+                        MobileCenterLog.Error(LogTag, "Rum key must be configured before start.");
+                        return;
+                    }
                     Task.Run(async () =>
                     {
                         try
@@ -156,13 +186,13 @@ namespace Microsoft.Azure.Mobile.Rum
             _configuration = JObject.Parse(request);
 
             // Prepare random weighted selection
+            var configurationOk = false;
             if (_configuration["e"] is JArray endpoints)
             {
                 var totalWeight = 0;
                 var weightedEndpoints = new List<JObject>(endpoints.Count);
-                foreach (var jToken in endpoints)
+                foreach (var endpoint in endpoints.OfType<JObject>())
                 {
-                    var endpoint = (JObject)jToken;
                     var weight = endpoint["w"].Value<int>();
                     if (weight > 0)
                     {
@@ -266,8 +296,49 @@ namespace Microsoft.Azure.Mobile.Rum
                 // Generate report.
                 var jsonReport = JsonConvert.SerializeObject(testUrls);
                 MobileCenterLog.Verbose(LogTag, $"Report payload={jsonReport}");
+
+                // Send it.
+                if (_configuration["r"] is JArray reportEndpoints)
+                {
+                    configurationOk = true;
+                    var reportId = ProbeId();
+                    var reportQueryString = $"?MonitorID=atm&rid={reportId}&w3c=false&prot=https&v=2017061301&tag={_rumKey}&DATA={Uri.EscapeDataString(jsonReport)}";
+                    var hadFailure = false;
+                    var hadSuccess = false;
+                    foreach (var reportEndpoint in reportEndpoints)
+                    {
+                        var reportEndpointId = reportEndpoint.Value<string>();
+                        var reportUrl = $"http://{reportEndpointId}{reportQueryString}";
+                        MobileCenterLog.Verbose(LogTag, "Calling " + reportUrl);
+                        try
+                        {
+                            await httpNetworkAdapter.SendAsync(reportUrl, HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+                            hadSuccess = true;
+                        }
+                        catch (Exception e)
+                        {
+                            hadFailure = true;
+                            MobileCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpointId}", e);
+                        }
+                    }
+                    if (hadFailure)
+                    {
+                        if (hadSuccess)
+                        {
+                            MobileCenterLog.Warn(LogTag, "Measurements report failed on some report endpoints.");
+                        }
+                        else
+                        {
+                            MobileCenterLog.Error(LogTag, "Measurements report failed on all report endpoints.");
+                        }
+                    }
+                    else
+                    {
+                        MobileCenterLog.Info(LogTag, "Measurements reported to all report endpoints.");
+                    }
+                }
             }
-            else
+            if (!configurationOk)
             {
                 throw new MobileCenterException("Invalid remote configuration for Rum.");
             }
