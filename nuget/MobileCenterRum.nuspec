@@ -26,5 +26,8 @@
     <file src="$android_dir$/Microsoft.Azure.Mobile.Rum.dll" target="lib/MonoAndroid403" />
     <file src="$android_dir$/Microsoft.Azure.Mobile.Rum.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
+    <!-- UWP -->
+    <file src="$windows_dir$/Microsoft.Azure.Mobile.Rum.dll" target="lib/uap10.0" />
+
   </files>
 </package>
