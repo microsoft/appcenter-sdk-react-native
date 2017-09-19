@@ -1,10 +1,10 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Azure.Mobile.Analytics": "0.15.1-r0003-60291c4",
-    "Microsoft.Azure.Mobile.Crashes": "0.15.1-r0003-60291c4",
-    "Microsoft.Azure.Mobile.Distribute": "0.15.1-r0003-60291c4",
-    "Microsoft.Azure.Mobile.Push": "0.15.1-r0003-60291c4",
-    "Microsoft.Azure.Mobile.Rum": "0.15.1-r0003-60291c4",
+    "Microsoft.Azure.Mobile.Analytics": "0.15.1-r0007-a8d0a0f",
+    "Microsoft.Azure.Mobile.Crashes": "0.15.1-r0007-a8d0a0f",
+    "Microsoft.Azure.Mobile.Distribute": "0.15.1-r0007-a8d0a0f",
+    "Microsoft.Azure.Mobile.Push": "0.15.1-r0007-a8d0a0f",
+    "Microsoft.Azure.Mobile.Rum": "0.15.1-r0007-a8d0a0f",
     "Xamarin.Android.Support.Animated.Vector.Drawable": "25.1.1",
     "Xamarin.Android.Support.Compat": "25.1.1",
     "Xamarin.Android.Support.Core.UI": "25.1.1",
