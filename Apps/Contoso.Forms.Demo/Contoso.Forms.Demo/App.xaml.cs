@@ -42,7 +42,6 @@ namespace Contoso.Forms.Demo
             Crashes.GetErrorAttachments = GetErrorAttachments;
             Distribute.ReleaseAvailable = OnReleaseAvailable;
             RealUserMeasurements.SetRumKey("aa177c9874374b3983ba864ad1ae956d");
-            RealUserMeasurements.SetConfigurationUrl("https://gist.githubusercontent.com/guperrot/353d39917c7f9d333cbe867c4815a7a6/raw");
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
 
