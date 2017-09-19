@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Azure.Mobile.Rum
@@ -228,7 +229,7 @@ namespace Microsoft.Azure.Mobile.Rum
                     else if (requestId.StartsWith("*") && requestId.Length > 2)
                     {
                         var domain = requestId.Substring(2);
-                        var uuid = Guid.NewGuid().ToString();
+                        var uuid = ProbeId();
                         baseUrl = uuid + "." + domain;
                         requestId = domain.Equals("clo.footprintdns.com", StringComparison.OrdinalIgnoreCase) ? uuid : domain;
                     }
@@ -238,15 +239,16 @@ namespace Microsoft.Azure.Mobile.Rum
                     var testUrl = $"http{protocolSuffix}://{baseUrl}/apc/{WarmUpImage}?{probeId}";
                     testUrls.Add(new TestUrl { Url = testUrl, RequestId = requestId, Object = WarmUpImage, Conn = "cold" });
                     var testImage = (measurementType & FlagSeventeenk) > 0 ? SeventeenkImage : WarmUpImage;
-                    probeId = Guid.NewGuid().ToString();
+                    probeId = ProbeId();
                     testUrl = $"http{protocolSuffix}://{baseUrl}/apc/{testImage}?{probeId}";
                     testUrls.Add(new TestUrl { Url = testUrl, RequestId = requestId, Object = testImage, Conn = "warm" });
                 }
 
                 // Run the tests.
                 var stopWatch = new Stopwatch();
-                foreach (var testUrl in testUrls)
+                for (var i = 0; i < testUrls.Count; i++)
                 {
+                    var testUrl = testUrls[i];
                     MobileCenterLog.Verbose(LogTag, "Calling " + testUrl.Url);
                     try
                     {
@@ -256,9 +258,14 @@ namespace Microsoft.Azure.Mobile.Rum
                     }
                     catch (Exception e)
                     {
+                        testUrls.RemoveAt(i--);
                         MobileCenterLog.Error(LogTag, testUrl.Url + " call failed", e);
                     }
                 }
+
+                // Generate report.
+                var jsonReport = JsonConvert.SerializeObject(testUrls);
+                MobileCenterLog.Verbose(LogTag, $"Report payload={jsonReport}");
             }
             else
             {

@@ -92,21 +92,10 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 RequestUri = new Uri(uri),
             };
 
-            // Set Headers, look for Accept header
-            var acceptHeaderSet = false;
+            // Set Headers.
             foreach (var header in headers)
             {
                 request.Headers.Add(header.Key, header.Value);
-                if (header.Key.Equals(HttpRequestHeader.Accept.ToString()))
-                {
-                    acceptHeaderSet = true;
-                }
-            }
-
-            // Accept everything by default
-            if (!acceptHeaderSet)
-            {
-                request.Headers.Add(HttpRequestHeader.Accept.ToString(), "*/*");
             }
 
             // Request content.
