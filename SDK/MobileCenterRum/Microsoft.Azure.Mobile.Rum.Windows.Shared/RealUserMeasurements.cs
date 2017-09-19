@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System;
 using System.Net.Http;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 
@@ -75,6 +76,12 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private static void PlatformSetRumKey(string rumKey)
         {
+        }
+
+        // All unique identifiers in Rum have no dash.
+        private static string ProbeId()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "");
         }
 
         #endregion
@@ -200,7 +207,6 @@ namespace Microsoft.Azure.Mobile.Rum
                         continue;
                     }
                     totalWeight -= endpoint["w"].Value<int>();
-                    MobileCenterLog.Verbose(LogTag, "e=" + endpoint);
 
                     // Use endpoint to generate test urls.
                     var protocolSuffix = "";
@@ -228,15 +234,30 @@ namespace Microsoft.Azure.Mobile.Rum
                     }
 
                     // Generate test urls.
-                    var probeId = Guid.NewGuid().ToString();
+                    var probeId = ProbeId();
                     var testUrl = $"http{protocolSuffix}://{baseUrl}/apc/{WarmUpImage}?{probeId}";
                     testUrls.Add(new TestUrl { Url = testUrl, RequestId = requestId, Object = WarmUpImage, Conn = "cold" });
-                    MobileCenterLog.Verbose(LogTag, testUrl);
                     var testImage = (measurementType & FlagSeventeenk) > 0 ? SeventeenkImage : WarmUpImage;
                     probeId = Guid.NewGuid().ToString();
                     testUrl = $"http{protocolSuffix}://{baseUrl}/apc/{testImage}?{probeId}";
                     testUrls.Add(new TestUrl { Url = testUrl, RequestId = requestId, Object = testImage, Conn = "warm" });
-                    MobileCenterLog.Verbose(LogTag, testUrl);
+                }
+
+                // Run the tests.
+                var stopWatch = new Stopwatch();
+                foreach (var testUrl in testUrls)
+                {
+                    MobileCenterLog.Verbose(LogTag, "Calling " + testUrl.Url);
+                    try
+                    {
+                        stopWatch.Restart();
+                        await httpNetworkAdapter.SendAsync(testUrl.Url, HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+                        testUrl.Result = stopWatch.ElapsedMilliseconds;
+                    }
+                    catch (Exception e)
+                    {
+                        MobileCenterLog.Error(LogTag, testUrl.Url + " call failed", e);
+                    }
                 }
             }
             else

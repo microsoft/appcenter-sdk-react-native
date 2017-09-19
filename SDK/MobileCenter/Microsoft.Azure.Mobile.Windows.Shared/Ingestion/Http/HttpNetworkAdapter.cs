@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -48,11 +49,25 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     throw new IngestionException("Null response received");
                 }
                 var responseContent = "(null)";
+                string contentType = null;
                 if (response.Content != null)
                 {
                     responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    if (response.Content.Headers.TryGetValues("Content-Type", out var contentTypeHeaders))
+                    {
+                        contentType = contentTypeHeaders.FirstOrDefault();
+                    }
                 }
-                MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={responseContent}");
+                string logPayload;
+                if (contentType == null || contentType.StartsWith("text/") || contentType.StartsWith("application/"))
+                {
+                    logPayload = responseContent;
+                }
+                else
+                {
+                    logPayload = "<binary>";
+                }
+                MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}");
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     throw new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")
@@ -77,10 +92,21 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 RequestUri = new Uri(uri),
             };
 
-            // Set Headers.
+            // Set Headers, look for Accept header
+            var acceptHeaderSet = false;
             foreach (var header in headers)
             {
                 request.Headers.Add(header.Key, header.Value);
+                if (header.Key.Equals(HttpRequestHeader.Accept.ToString()))
+                {
+                    acceptHeaderSet = true;
+                }
+            }
+
+            // Accept everything by default
+            if (!acceptHeaderSet)
+            {
+                request.Headers.Add(HttpRequestHeader.Accept.ToString(), "*/*");
             }
 
             // Request content.
