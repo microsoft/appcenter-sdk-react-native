@@ -182,7 +182,8 @@ Setup(context =>
                                 "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll",
                                 "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
                                 "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll",
-                                "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Release/Microsoft.Azure.Mobile.Push.dll" }
+                                "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Release/Microsoft.Azure.Mobile.Push.dll",
+                                "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum.UWP/bin/Release/Microsoft.Azure.Mobile.Rum.dll" }
         };
         var uwpX86AssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x86",
