@@ -1,11 +1,9 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Http;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -190,24 +188,24 @@ namespace Microsoft.Azure.Mobile.Rum
             var httpNetworkAdapter = new HttpNetworkAdapter();
 
             // Get remote configuration.
-            var request = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", cancellationToken);
+            var jsonConfiguration = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", cancellationToken);
 
             // Parse configuration.
-            var configuration = JObject.Parse(request);
+            var configuration = JsonConvert.DeserializeObject<RumConfiguration>(jsonConfiguration);
 
             // Prepare random weighted selection.
             var configurationOk = false;
-            if (configuration["e"] is JArray endpoints)
+            if (configuration.TestEndpoints != null)
             {
                 var totalWeight = 0;
-                var weightedEndpoints = new List<JObject>(endpoints.Count);
-                foreach (var endpoint in endpoints.OfType<JObject>())
+                var weightedEndpoints = new List<TestEndpoint>(configuration.TestEndpoints.Count);
+                foreach (var endpoint in configuration.TestEndpoints)
                 {
-                    var weight = endpoint["w"].Value<int>();
+                    var weight = endpoint.Weight;
                     if (weight > 0)
                     {
                         totalWeight += weight;
-                        endpoint.Add("cumulatedWeight", totalWeight);
+                        endpoint.CumulatedWeight = totalWeight;
                         weightedEndpoints.Add(endpoint);
                     }
                 }
@@ -215,16 +213,16 @@ namespace Microsoft.Azure.Mobile.Rum
                 // Select n endpoints randomly with respect to weight.
                 var testUrls = new List<TestUrl>();
                 var random = new Random();
-                var testCount = Math.Min(configuration["n"].Value<int>(), weightedEndpoints.Count);
+                var testCount = Math.Min(configuration.TestCount, weightedEndpoints.Count);
                 for (var n = 0; n < testCount; n++)
                 {
                     // Select random endpoint
                     var randomWeight = Math.Floor(random.NextDouble() * totalWeight);
-                    JObject endpoint = null;
+                    TestEndpoint endpoint = null;
                     for (var i = 0; i < weightedEndpoints.Count; i++)
                     {
                         var weightedEndpoint = weightedEndpoints[i];
-                        var cumulatedWeight = weightedEndpoint["cumulatedWeight"].Value<int>();
+                        var cumulatedWeight = weightedEndpoint.CumulatedWeight;
                         if (endpoint == null)
                         {
                             if (randomWeight <= cumulatedWeight)
@@ -237,8 +235,7 @@ namespace Microsoft.Azure.Mobile.Rum
                         // Update subsequent endpoints cumulated weights since we removed an element.
                         else
                         {
-                            cumulatedWeight -= endpoint["w"].Value<int>();
-                            weightedEndpoint["cumulatedWeight"] = cumulatedWeight;
+                            weightedEndpoint.CumulatedWeight -= endpoint.Weight;
                         }
                     }
 
@@ -247,16 +244,16 @@ namespace Microsoft.Azure.Mobile.Rum
                     {
                         continue;
                     }
-                    totalWeight -= endpoint["w"].Value<int>();
+                    totalWeight -= endpoint.Weight;
 
                     // Use endpoint to generate test urls.
                     var protocolSuffix = "";
-                    var measurementType = endpoint["m"].Value<int>();
+                    var measurementType = endpoint.MeasurementType;
                     if ((measurementType & FlagHttps) > 0)
                     {
                         protocolSuffix = "s";
                     }
-                    var requestId = endpoint["e"].Value<string>();
+                    var requestId = endpoint.Url;
 
                     // Handle backward compatibility with FPv1.
                     var baseUrl = requestId;
@@ -312,17 +309,16 @@ namespace Microsoft.Azure.Mobile.Rum
                 MobileCenterLog.Verbose(LogTag, $"Report payload={jsonReport}");
 
                 // Send it.
-                if (configuration["r"] is JArray reportEndpoints)
+                if (configuration.ReportEndpoints != null)
                 {
                     configurationOk = true;
                     var reportId = ProbeId();
                     var reportQueryString = $"?MonitorID=atm&rid={reportId}&w3c=false&prot=https&v=2017061301&tag={rumKey}&DATA={Uri.EscapeDataString(jsonReport)}";
                     var hadFailure = false;
                     var hadSuccess = false;
-                    foreach (var reportEndpoint in reportEndpoints)
+                    foreach (var reportEndpoint in configuration.ReportEndpoints)
                     {
-                        var reportEndpointId = reportEndpoint.Value<string>();
-                        var reportUrl = $"http://{reportEndpointId}{reportQueryString}";
+                        var reportUrl = $"http://{reportEndpoint}{reportQueryString}";
                         MobileCenterLog.Verbose(LogTag, "Calling " + reportUrl);
                         try
                         {
@@ -336,7 +332,7 @@ namespace Microsoft.Azure.Mobile.Rum
                         catch (Exception e)
                         {
                             hadFailure = true;
-                            MobileCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpointId}", e);
+                            MobileCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpoint}", e);
                         }
                     }
                     if (hadFailure)
