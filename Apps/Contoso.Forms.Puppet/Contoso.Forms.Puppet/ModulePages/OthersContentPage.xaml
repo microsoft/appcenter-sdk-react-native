@@ -11,5 +11,8 @@
                 <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled"/>
 			    <SwitchCell Text="Firebase Analytics Enabled" On="true" x:Name="FirebaseAnalyticsEnabledSwitchCell" OnChanged="UpdateFirebaseAnalyticsEnabled"/>
             </TableSection>
+            <TableSection Title="Rum">
+                <SwitchCell Text="Rum Enabled" On="true" x:Name="RumEnabledSwitchCell" OnChanged="UpdateRumEnabled"/>
+            </TableSection>
         </TableView>
 </ContentPage>
