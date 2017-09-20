@@ -41,7 +41,9 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private static RealUserMeasurements _instanceField;
 
-        private static RealUserMeasurements Instance
+        // ReSharper disable once MemberCanBePrivate.Global
+        // (Used by reflection from the core).
+        public static RealUserMeasurements Instance
         {
             get
             {
@@ -124,8 +126,6 @@ namespace Microsoft.Azure.Mobile.Rum
                     MobileCenterLog.Error(LogTag, "Rum key is invalid.");
                     return;
                 }
-
-                // TODO handle key changes with async task (take a snapshot)
                 _rumKey = rumKey;
             }
         }
@@ -150,16 +150,22 @@ namespace Microsoft.Azure.Mobile.Rum
             {
                 if (enabled)
                 {
-                    if (_rumKey == null)
+                    // Snapshot RUM key for this run, updates will work only if disabling/enabling again.
+                    var rumKey = _rumKey;
+                    if (rumKey == null)
                     {
                         MobileCenterLog.Error(LogTag, "Rum key must be configured before start.");
                         return;
                     }
+
+                    // Create cancellation token and snapshot it for the task to avoid race conditions.
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    _cancellationTokenSource = cancellationTokenSource;
                     Task.Run(async () =>
                     {
                         try
                         {
-                            await RunTestsAsync();
+                            await RunTestsAsync(rumKey, cancellationTokenSource);
                         }
                         catch (OperationCanceledException)
                         {
@@ -169,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Rum
                         {
                             MobileCenterLog.Error(LogTag, "Could not run tests.", e);
                         }
-                    });
+                    }, cancellationTokenSource.Token);
                 }
                 else
                 {
@@ -178,14 +184,10 @@ namespace Microsoft.Azure.Mobile.Rum
             }
         }
 
-        private async Task RunTestsAsync()
+        private async Task RunTestsAsync(string rumKey, CancellationTokenSource cancellationTokenSource)
         {
-            // Create or update cancel token
-            lock (_serviceLock)
-            {
-                _cancellationTokenSource = new CancellationTokenSource();
-            }
-            var cancellationToken = _cancellationTokenSource.Token;
+            // Get cancellation token.
+            var cancellationToken = cancellationTokenSource.Token;
 
             // TODO handle network state, requires refactoring to reuse ingestion logic here
             var httpNetworkAdapter = new HttpNetworkAdapter();
@@ -317,7 +319,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 {
                     configurationOk = true;
                     var reportId = ProbeId();
-                    var reportQueryString = $"?MonitorID=atm&rid={reportId}&w3c=false&prot=https&v=2017061301&tag={_rumKey}&DATA={Uri.EscapeDataString(jsonReport)}";
+                    var reportQueryString = $"?MonitorID=atm&rid={reportId}&w3c=false&prot=https&v=2017061301&tag={rumKey}&DATA={Uri.EscapeDataString(jsonReport)}";
                     var hadFailure = false;
                     var hadSuccess = false;
                     foreach (var reportEndpoint in reportEndpoints)
