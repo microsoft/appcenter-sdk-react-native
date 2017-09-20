@@ -110,7 +110,7 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
                         .emit(ON_SENDING_FAILED_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
             }
         } catch (JSONException e) {
-            RNCrashesUtils.logError("Failed to send onBeforeSending event:");
+            RNCrashesUtils.logError("Failed to send onSendingFailed event:");
             RNCrashesUtils.logError(Log.getStackTraceString(e));
         }
     }
