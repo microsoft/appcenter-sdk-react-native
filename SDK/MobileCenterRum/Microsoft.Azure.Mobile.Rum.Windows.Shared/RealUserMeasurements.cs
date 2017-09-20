@@ -158,14 +158,14 @@ namespace Microsoft.Azure.Mobile.Rum
                         return;
                     }
 
-                    // Create cancellation token and snapshot it for the task to avoid race conditions.
-                    var cancellationTokenSource = new CancellationTokenSource();
-                    _cancellationTokenSource = cancellationTokenSource;
+                    // Create cancellation token and snapshot token for the task to avoid race conditions.
+                    _cancellationTokenSource = new CancellationTokenSource();
+                    var cancellationToken = _cancellationTokenSource.Token;
                     Task.Run(async () =>
                     {
                         try
                         {
-                            await RunTestsAsync(rumKey, cancellationTokenSource);
+                            await RunTestsAsync(rumKey, cancellationToken);
                         }
                         catch (OperationCanceledException)
                         {
@@ -175,7 +175,7 @@ namespace Microsoft.Azure.Mobile.Rum
                         {
                             MobileCenterLog.Error(LogTag, "Could not run tests.", e);
                         }
-                    }, cancellationTokenSource.Token);
+                    }, cancellationToken);
                 }
                 else
                 {
@@ -184,11 +184,8 @@ namespace Microsoft.Azure.Mobile.Rum
             }
         }
 
-        private async Task RunTestsAsync(string rumKey, CancellationTokenSource cancellationTokenSource)
+        private async Task RunTestsAsync(string rumKey, CancellationToken cancellationToken)
         {
-            // Get cancellation token.
-            var cancellationToken = cancellationTokenSource.Token;
-
             // TODO handle network state, requires refactoring to reuse ingestion logic here
             var httpNetworkAdapter = new HttpNetworkAdapter();
 
