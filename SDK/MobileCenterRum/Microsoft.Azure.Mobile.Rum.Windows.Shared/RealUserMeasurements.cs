@@ -187,6 +187,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 }
                 else
                 {
+                    _cancellationTokenSource?.Cancel();
                     DisposeCancellationSource();
                 }
             }
@@ -194,8 +195,6 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private void DisposeCancellationSource()
         {
-            MobileCenterLog.Debug(LogTag, "Cleanup cancellation token.");
-            _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = null;
         }
