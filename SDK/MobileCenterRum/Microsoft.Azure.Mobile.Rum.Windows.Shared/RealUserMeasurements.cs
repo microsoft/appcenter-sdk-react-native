@@ -41,20 +41,13 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private static RealUserMeasurements _instanceField;
 
-        public static RealUserMeasurements Instance
+        private static RealUserMeasurements Instance
         {
             get
             {
                 lock (RealUserMeasurementsLock)
                 {
                     return _instanceField ?? (_instanceField = new RealUserMeasurements());
-                }
-            }
-            set
-            {
-                lock (RealUserMeasurementsLock)
-                {
-                    _instanceField = value;
                 }
             }
         }
@@ -95,8 +88,6 @@ namespace Microsoft.Azure.Mobile.Rum
         #region instance
 
         private string _rumKey;
-
-        private JObject _configuration;
 
         public override bool InstanceEnabled
         {
@@ -163,7 +154,7 @@ namespace Microsoft.Azure.Mobile.Rum
                     {
                         try
                         {
-                            await GetRemoteConfigurationAsync();
+                            await RunTestsAsync();
                         }
                         catch (Exception e)
                         {
@@ -174,7 +165,7 @@ namespace Microsoft.Azure.Mobile.Rum
             }
         }
 
-        private async Task GetRemoteConfigurationAsync()
+        private async Task RunTestsAsync()
         {
             // TODO handle network state, requires huge refactoring to reuse ingestion logic here...
             var httpNetworkAdapter = new HttpNetworkAdapter();
@@ -183,11 +174,11 @@ namespace Microsoft.Azure.Mobile.Rum
             var request = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
 
             // Parse configuration
-            _configuration = JObject.Parse(request);
+            var configuration = JObject.Parse(request);
 
             // Prepare random weighted selection
             var configurationOk = false;
-            if (_configuration["e"] is JArray endpoints)
+            if (configuration["e"] is JArray endpoints)
             {
                 var totalWeight = 0;
                 var weightedEndpoints = new List<JObject>(endpoints.Count);
@@ -205,7 +196,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 // Select n endpoints randomly with respect to weight
                 var testUrls = new List<TestUrl>();
                 var random = new Random();
-                var testCount = Math.Min(_configuration["n"].Value<int>(), weightedEndpoints.Count);
+                var testCount = Math.Min(configuration["n"].Value<int>(), weightedEndpoints.Count);
                 for (var n = 0; n < testCount; n++)
                 {
                     // Select random endpoint
@@ -298,7 +289,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 MobileCenterLog.Verbose(LogTag, $"Report payload={jsonReport}");
 
                 // Send it.
-                if (_configuration["r"] is JArray reportEndpoints)
+                if (configuration["r"] is JArray reportEndpoints)
                 {
                     configurationOk = true;
                     var reportId = ProbeId();
