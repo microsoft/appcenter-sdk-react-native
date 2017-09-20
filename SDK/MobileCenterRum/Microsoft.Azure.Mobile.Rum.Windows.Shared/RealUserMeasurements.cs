@@ -1,14 +1,14 @@
 ﻿using Microsoft.Azure.Mobile.Channel;
 using Microsoft.Azure.Mobile.Ingestion.Http;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Net.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Rum
 {
@@ -89,6 +89,8 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private string _rumKey;
 
+        private CancellationTokenSource _cancellationTokenSource;
+
         public override bool InstanceEnabled
         {
             get => base.InstanceEnabled;
@@ -109,20 +111,23 @@ namespace Microsoft.Azure.Mobile.Rum
 
         private void InstanceSetRumKey(string rumKey)
         {
-            if (rumKey == null)
+            lock (_serviceLock)
             {
-                MobileCenterLog.Error(LogTag, "Rum key is invalid.");
-                return;
-            }
-            rumKey = rumKey.Trim();
-            if (rumKey.Length != 32)
-            {
-                MobileCenterLog.Error(LogTag, "Rum key is invalid.");
-                return;
-            }
+                if (rumKey == null)
+                {
+                    MobileCenterLog.Error(LogTag, "Rum key is invalid.");
+                    return;
+                }
+                rumKey = rumKey.Trim();
+                if (rumKey.Length != 32)
+                {
+                    MobileCenterLog.Error(LogTag, "Rum key is invalid.");
+                    return;
+                }
 
-            // TODO handle key changes with async task (take a snapshot)
-            _rumKey = rumKey;
+                // TODO handle key changes with async task (take a snapshot)
+                _rumKey = rumKey;
+            }
         }
 
         public override string ServiceName => "RealUserMeasurements";
@@ -156,27 +161,42 @@ namespace Microsoft.Azure.Mobile.Rum
                         {
                             await RunTestsAsync();
                         }
+                        catch (OperationCanceledException)
+                        {
+                            MobileCenterLog.Debug(LogTag, "Measurements were canceled.");
+                        }
                         catch (Exception e)
                         {
                             MobileCenterLog.Error(LogTag, "Could not run tests.", e);
                         }
                     });
                 }
+                else
+                {
+                    _cancellationTokenSource?.Cancel();
+                }
             }
         }
 
         private async Task RunTestsAsync()
         {
-            // TODO handle network state, requires huge refactoring to reuse ingestion logic here...
+            // Create or update cancel token
+            lock (_serviceLock)
+            {
+                _cancellationTokenSource = new CancellationTokenSource();
+            }
+            var cancellationToken = _cancellationTokenSource.Token;
+
+            // TODO handle network state, requires refactoring to reuse ingestion logic here
             var httpNetworkAdapter = new HttpNetworkAdapter();
 
-            // TODO manage cancel on disable
-            var request = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+            // Get remote configuration.
+            var request = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", cancellationToken);
 
-            // Parse configuration
+            // Parse configuration.
             var configuration = JObject.Parse(request);
 
-            // Prepare random weighted selection
+            // Prepare random weighted selection.
             var configurationOk = false;
             if (configuration["e"] is JArray endpoints)
             {
@@ -193,7 +213,7 @@ namespace Microsoft.Azure.Mobile.Rum
                     }
                 }
 
-                // Select n endpoints randomly with respect to weight
+                // Select n endpoints randomly with respect to weight.
                 var testUrls = new List<TestUrl>();
                 var random = new Random();
                 var testCount = Math.Min(configuration["n"].Value<int>(), weightedEndpoints.Count);
@@ -274,8 +294,12 @@ namespace Microsoft.Azure.Mobile.Rum
                     try
                     {
                         stopWatch.Restart();
-                        await httpNetworkAdapter.SendAsync(testUrl.Url, HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+                        await httpNetworkAdapter.SendAsync(testUrl.Url, HttpMethod.Get, Headers, "", cancellationToken);
                         testUrl.Result = stopWatch.ElapsedMilliseconds;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
                     }
                     catch (Exception e)
                     {
@@ -303,8 +327,12 @@ namespace Microsoft.Azure.Mobile.Rum
                         MobileCenterLog.Verbose(LogTag, "Calling " + reportUrl);
                         try
                         {
-                            await httpNetworkAdapter.SendAsync(reportUrl, HttpMethod.Get, Headers, "", new CancellationTokenSource().Token);
+                            await httpNetworkAdapter.SendAsync(reportUrl, HttpMethod.Get, Headers, "", cancellationToken);
                             hadSuccess = true;
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            throw;
                         }
                         catch (Exception e)
                         {
