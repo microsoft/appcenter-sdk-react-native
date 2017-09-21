@@ -43,22 +43,22 @@ const MobileCenter = {
     setCustomProperties(properties) {
         if (properties instanceof MobileCenter.CustomProperties) {
             return RNMobileCenter.setCustomProperties(properties);
-        } else {
-            const type = Object.prototype.toString.apply(properties);
-            MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
         }
+        const type = Object.prototype.toString.apply(properties);
+        MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
+        return Promise.reject('Could not set custom properties because of invalid type.');
     }
 };
 
 MobileCenter.CustomProperties = class {
     set(key, value) {
         if (typeof key === 'string') {
-            const valueType = typeof value;
-            switch (valueType) {
+            const type = typeof value;
+            switch (type) {
                 case 'string':
                 case 'number':
                 case 'boolean':
-                    this[key] = { type: valueType, value };
+                    this[key] = { type, value };
                     break;
 
                 case 'object':

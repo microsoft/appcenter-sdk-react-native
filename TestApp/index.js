@@ -4,16 +4,8 @@
  * @flow
  */
 
-import React, { Component } from 'react';
 import {
-  Alert,
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  NativeModules
+  AppRegistry
 } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
@@ -25,11 +17,11 @@ import PushScreen from './PushScreen';
 import MobileCenterScreen from './MobileCenterScreen';
 
 const TestApp = StackNavigator({
-  Main: {screen: MainScreen},
-  Crashes: {screen: CrashesScreen},
-  Analytics: {screen: AnalyticsScreen},
-  Push: {screen: PushScreen},
-  MobileCenter: {screen: MobileCenterScreen}
+  Main: { screen: MainScreen },
+  Crashes: { screen: CrashesScreen },
+  Analytics: { screen: AnalyticsScreen },
+  Push: { screen: PushScreen },
+  MobileCenter: { screen: MobileCenterScreen }
 });
 
 AppRegistry.registerComponent('TestApp', () => TestApp);

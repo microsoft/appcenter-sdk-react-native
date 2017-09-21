@@ -1,16 +1,16 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var mkdirp = require('mkdirp');
-var glob = require('glob');
-var debug = require('debug')('mobile-center-link:android:MobileCenterConfig');
+const mkdirp = require('mkdirp');
+const glob = require('glob');
+const debug = require('debug')('mobile-center-link:android:MobileCenterConfig');
 
 /**
  * Class to get and set values in MobileCenter Config file for Android - aka mobile-center-config.json
  */
-var MobileCenterConfig = function (file) {
+const MobileCenterConfig = function (file) {
     this.MobileCenterConfigPath = file;
-    this.MobileCenterConfig = {}
+    this.MobileCenterConfig = {};
     try {
         this.MobileCenterConfig = JSON.parse(fs.readFileSync(this.MobileCenterConfigPath), 'utf-8');
         debug('Read contents from ', file);
@@ -28,9 +28,9 @@ MobileCenterConfig.prototype.set = function (key, value) {
 };
 
 MobileCenterConfig.prototype.save = function () {
-    try{
+    try {
         mkdirp.sync(path.dirname(this.MobileCenterConfigPath));
-    } catch(e){
+    } catch (e) {
         debug(e.message);
     }
     fs.writeFileSync(this.MobileCenterConfigPath, JSON.stringify(this.MobileCenterConfig, null, 4));
@@ -39,7 +39,7 @@ MobileCenterConfig.prototype.save = function () {
 };
 
 MobileCenterConfig.searchForFile = function (cwd) {
-    var MobileCenterConfigPaths = glob.sync('**/mobile-center-config.json', {
+    const MobileCenterConfigPaths = glob.sync('**/mobile-center-config.json', {
         ignore: ['node_modules/**', '**/build/**'],
         cwd: cwd || process.cwd()
     });
@@ -49,8 +49,7 @@ MobileCenterConfig.searchForFile = function (cwd) {
             Please add "app_secret" to the correct mobile-center-config.json file
             mobile-center-config.json found at ${MobileCenterConfigPaths}
         `);
-    }
-    else if (MobileCenterConfigPaths.length === 1) {
+    } else if (MobileCenterConfigPaths.length === 1) {
         return MobileCenterConfigPaths[0];
     } else {
         return path.join('android', 'app', 'src', 'main', 'assets', 'mobile-center-config.json');

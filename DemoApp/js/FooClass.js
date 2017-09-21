@@ -4,21 +4,18 @@
  * @flow
  */
 
-import {BarClass} from './BarClass';
+import { BarClass } from './BarClass';
 
 export class FooClass {
-    constructor() {
-    }
+  method1(value) {
+    return this.method2(value);
+  }
 
-    method1(value) {
-      return this.method2(value);
-    }
+  method2(value) {
+    return this.fooInnermostMethod(value);
+  }
 
-    method2(value) {
-      return this.fooInnermostMethod(value);
-    }
-
-    fooInnermostMethod(value) {
-      return BarClass.barMethod1();
-    }
+  fooInnermostMethod() {
+    return BarClass.barMethod1();
+  }
 }

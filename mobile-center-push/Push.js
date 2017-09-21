@@ -15,6 +15,7 @@ const Push = {
         return RNPush.isEnabled();
     },
 
+    // async - returns a Promise
     setEventListener(listenerMap) {
         ReactNative.DeviceEventEmitter.removeAllListeners(pushNotificationReceivedEvent);
         if (listenerMap && listenerMap.pushNotificationReceived) {
@@ -22,6 +23,7 @@ const Push = {
 
             return RNPush.sendAndClearInitialNotification();
         }
+        return Promise.resolve();
     }
 };
 

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."    
   },
   "dependencies": {
     "mobile-center": "../mobile-center",
@@ -13,12 +14,18 @@
     "mobile-center-link-scripts": "../mobile-center-link-scripts",
     "mobile-center-push": "../mobile-center-push",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.47.1",
+    "react-native": "0.48.3",
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",    
     "babel-jest": "18.0.0",
     "babel-preset-react-native": "1.9.1",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.2.1",
     "jest": "18.1.0",
     "react-test-renderer": "15.4.2"
   },
