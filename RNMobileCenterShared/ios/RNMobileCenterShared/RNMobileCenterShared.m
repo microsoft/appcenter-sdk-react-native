@@ -28,7 +28,7 @@ static MSWrapperSdk * wrapperSdk;
   if (![MSMobileCenter isConfigured]) {
       MSWrapperSdk * wrapperSdk =
         [[MSWrapperSdk alloc]
-            initWithWrapperSdkVersion:@"0.9.0"
+            initWithWrapperSdkVersion:@"0.9.1"
             wrapperSdkName:@"mobilecenter.react-native"
             wrapperRuntimeVersion:nil
             liveUpdateReleaseLabel:nil
