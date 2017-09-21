@@ -23,7 +23,6 @@
 /* Begin PBXBuildFile section */
 		5419C25A1D81FDA300DDF3A1 /* RNMobileCenterShared.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNMobileCenterShared.h */; };
 		5419C25C1D81FDA300DDF3A1 /* RNMobileCenterShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* RNMobileCenterShared.m */; };
-		9C374CA51F55D89B0057A0DB /* MobileCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C374CA41F55D89B0057A0DB /* MobileCenter.framework */; };
 		CB4D6D781DB6DE940080D9D6 /* RNMobileCenterShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* RNMobileCenterShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -44,7 +43,7 @@
 		5419C2561D81FDA300DDF3A1 /* libRNMobileCenterShared.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenterShared.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* RNMobileCenterShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenterShared.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* RNMobileCenterShared.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenterShared.m; sourceTree = "<group>"; };
-		9C374CA41F55D89B0057A0DB /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileCenter.framework; sourceTree = "<group>"; };
+		9CA05A181F745A570067651B /* MobileCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileCenter.framework; sourceTree = "<group>"; };
 		BA0D8B051E57C298005C4596 /* Global.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Global.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C374CA51F55D89B0057A0DB /* MobileCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +63,7 @@
 			children = (
 				5419C2581D81FDA300DDF3A1 /* RNMobileCenterShared */,
 				5419C2571D81FDA300DDF3A1 /* Products */,
-				9C374CA41F55D89B0057A0DB /* MobileCenter.framework */,
+				9CA05A181F745A570067651B /* MobileCenter.framework */,
 			);
 			sourceTree = "<group>";
 		};
