@@ -31,7 +31,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     .then((file) => {
         console.log(`Added code to initialize iOS Crashes SDK in ${file}`);
         return rnpmlink.ios.addPodDeps([
-            { pod: 'MobileCenter/Crashes', version: '0.12.1' },
+            { pod: 'MobileCenter/Crashes', version: '0.12.2' },
             { pod: 'RNMobileCenterShared', version: '0.9.0' } // in case people don't link mobile-center (core)
         ]).catch((e) => {
             console.log(`
