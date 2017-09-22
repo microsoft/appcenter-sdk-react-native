@@ -1,13 +1,10 @@
 const rnpmlink = require('mobile-center-link-scripts');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
-    .then(() => {
-        rnpmlink.ios.initMobileCenterConfig()
-            .catch((e) => {
-                console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
-                return Promise.reject();
-            });
-    })
+    .then(() => rnpmlink.ios.initMobileCenterConfig().catch((e) => {
+        console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
+        return Promise.reject();
+    }))
     .then(() => {
         const code = '  [RNPush register];  // Initialize Mobile Center push';
         return rnpmlink.ios.initInAppDelegate('#import <RNPush/RNPush.h>', code)
