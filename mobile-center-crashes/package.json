@@ -1,6 +1,6 @@
 {
   "name": "mobile-center-crashes",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "React Native plugin for Mobile Center Crashes",
   "main": "Crashes.js",
   "repository": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native/blob/master/mobile-center-crashes/README.md",
   "dependencies": {
-    "mobile-center": "0.9.1"
+    "mobile-center": "0.9.2"
   },
   "rnpm": {
     "params": [
