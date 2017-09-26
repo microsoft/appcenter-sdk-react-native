@@ -64,6 +64,7 @@ cat ./mobile-center-link-scripts/package.json | jq -r '.version = env.newVersion
 
 gradleFileContent="$(cat ./mobile-center/android/build.gradle)"
 gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+gradleFileContent=`echo "${gradleFileContent/com.microsoft.azure.mobile.react\:mobile-center-react-native\:$oldWrapperSdkVersion/com.microsoft.azure.mobile.react:mobile-center-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./mobile-center/android/build.gradle
 
 gradleFileContent="$(cat ./mobile-center-crashes/android/build.gradle)"
