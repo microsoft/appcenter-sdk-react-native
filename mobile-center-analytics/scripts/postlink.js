@@ -2,13 +2,10 @@ const rnpmlink = require('mobile-center-link-scripts');
 const npmPackages = require('./../package.json');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
-    .then(() => {
-        rnpmlink.ios.initMobileCenterConfig()
-            .catch((e) => {
-                console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
-                return Promise.reject();
-            });
-    })
+    .then(() => rnpmlink.ios.initMobileCenterConfig().catch((e) => {
+        console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
+        return Promise.reject();
+    }))
     .then(() => {
         const prompt = npmPackages.rnpm.params[0];
         prompt.message = prompt.message.replace(/Android/, 'iOS');
