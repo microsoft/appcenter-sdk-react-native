@@ -1,13 +1,14 @@
 #!/bin/bash
 # Bump version of Mobile Center React Native SDK for release
 
+set -e
+
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
     VALUE=`echo $1 | awk -F= '{print $2}'`
     case $PARAM in
         --newWrapperSdkVersion)
-            newWrapperSdkVersion=$VALUE
-            ;;
+            newWrapperSdkVersion=$VALUE ;;
         *)
     esac
     shift
