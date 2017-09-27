@@ -1,5 +1,6 @@
 const RNMobileCenter = require('react-native').NativeModules.RNMobileCenter;
 const MobileCenterLog = require('mobile-center/mobile-center-log');
+const PackageJson = require('./package.json');
 
 const logTag = 'MobileCenter';
 
@@ -47,6 +48,10 @@ const MobileCenter = {
         const type = Object.prototype.toString.apply(properties);
         MobileCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
         return Promise.reject('Could not set custom properties because of invalid type.');
+    },
+
+    getSdkVersion() {
+        return PackageJson.version;
     }
 };
 
