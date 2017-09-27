@@ -1,13 +1,14 @@
 #!/bin/bash
 # Update Mobile Center React Native SDK to reference a new version of Mobile Center Android SDK
 
+set -e
+
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
     VALUE=`echo $1 | awk -F= '{print $2}'`
     case $PARAM in
         --newAndroidSdkVersion)
-            newAndroidSdkVersion=$VALUE
-            ;;
+            newAndroidSdkVersion=$VALUE ;;
         *)
     esac
     shift

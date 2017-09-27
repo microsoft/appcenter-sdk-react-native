@@ -1,13 +1,14 @@
 #!/bin/bash
 # Bump version of Mobile Center React Native SDK for release
 
+set -e
+
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
     VALUE=`echo $1 | awk -F= '{print $2}'`
     case $PARAM in
         --newWrapperSdkVersion)
-            newWrapperSdkVersion=$VALUE
-            ;;
+            newWrapperSdkVersion=$VALUE ;;
         *)
     esac
     shift
@@ -64,18 +65,22 @@ cat ./mobile-center-link-scripts/package.json | jq -r '.version = env.newVersion
 
 gradleFileContent="$(cat ./mobile-center/android/build.gradle)"
 gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+gradleFileContent=`echo "${gradleFileContent/com.microsoft.azure.mobile.react\:mobile-center-react-native\:$oldWrapperSdkVersion/com.microsoft.azure.mobile.react:mobile-center-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./mobile-center/android/build.gradle
 
 gradleFileContent="$(cat ./mobile-center-crashes/android/build.gradle)"
 gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+gradleFileContent=`echo "${gradleFileContent/com.microsoft.azure.mobile.react\:mobile-center-react-native\:$oldWrapperSdkVersion/com.microsoft.azure.mobile.react:mobile-center-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./mobile-center-crashes/android/build.gradle
 
 gradleFileContent="$(cat ./mobile-center-analytics/android/build.gradle)"
 gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+gradleFileContent=`echo "${gradleFileContent/com.microsoft.azure.mobile.react\:mobile-center-react-native\:$oldWrapperSdkVersion/com.microsoft.azure.mobile.react:mobile-center-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./mobile-center-analytics/android/build.gradle
 
 gradleFileContent="$(cat ./mobile-center-push/android/build.gradle)"
 gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+gradleFileContent=`echo "${gradleFileContent/com.microsoft.azure.mobile.react\:mobile-center-react-native\:$oldWrapperSdkVersion/com.microsoft.azure.mobile.react:mobile-center-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./mobile-center-push/android/build.gradle
 
 gradleFileContent="$(cat ./RNMobileCenterShared/android/build.gradle)"
