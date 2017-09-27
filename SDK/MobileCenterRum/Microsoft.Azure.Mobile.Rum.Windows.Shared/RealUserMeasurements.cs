@@ -15,10 +15,10 @@ namespace Microsoft.Azure.Mobile.Rum
         #region static
 
         // Rum configuration endpoint.
-        private const string ConfigurationEndpoint = "http://www.atmrum.net/conf/v1/atm";
-
-        // JSON configuration file name.
-        private const string ConfigurationFileName = "fpconfig.min.json";
+        private static readonly string[] ConfigurationEndpoints =
+        {
+            "http://www.atmrum.net/conf/v1/atm/fpconfig.min.json"
+        };
 
         // Warm up image path.
         private const string WarmUpImage = "trans.gif";
@@ -205,13 +205,12 @@ namespace Microsoft.Azure.Mobile.Rum
             using (var httpNetworkAdapter = new HttpNetworkAdapter())
             {
                 // Get remote configuration.
-                var jsonConfiguration = await httpNetworkAdapter.SendAsync($"{ConfigurationEndpoint}/{ConfigurationFileName}", HttpMethod.Get, Headers, "", cancellationToken);
+                var jsonConfiguration = await GetRemoteConfigurationAsync(cancellationToken, httpNetworkAdapter, 0);
 
                 // Parse configuration.
                 var configuration = JsonConvert.DeserializeObject<RumConfiguration>(jsonConfiguration);
 
                 // Prepare random weighted selection.
-                var configurationOk = false;
                 if (configuration.TestEndpoints != null)
                 {
                     var totalWeight = 0;
@@ -328,19 +327,19 @@ namespace Microsoft.Azure.Mobile.Rum
                     // Send it.
                     if (configuration.ReportEndpoints != null)
                     {
-                        configurationOk = true;
                         var reportId = ProbeId();
-                        var reportQueryString = $"?MonitorID=atm&rid={reportId}&w3c=false&prot=https&v=2017061301&tag={rumKey}&DATA={Uri.EscapeDataString(jsonReport)}";
-                        var hadFailure = false;
-                        var hadSuccess = false;
+                        var reportQueryString = $"?MonitorID=atm-mc&rid={reportId}&w3c=false&prot=https&v=2017061301&tag={rumKey}&DATA={Uri.EscapeDataString(jsonReport)}";
                         foreach (var reportEndpoint in configuration.ReportEndpoints)
                         {
-                            var reportUrl = $"http://{reportEndpoint}{reportQueryString}";
+                            var reportUrl = $"https://{reportEndpoint}{reportQueryString}";
                             MobileCenterLog.Verbose(LogTag, "Calling " + reportUrl);
                             try
                             {
                                 await httpNetworkAdapter.SendAsync(reportUrl, HttpMethod.Get, Headers, "", cancellationToken);
-                                hadSuccess = true;
+                                MobileCenterLog.Info(LogTag, "Measurements reported successfully.");
+
+                                // Stop when we encounter the first working report endpoint.
+                                return;
                             }
                             catch (OperationCanceledException)
                             {
@@ -348,31 +347,39 @@ namespace Microsoft.Azure.Mobile.Rum
                             }
                             catch (Exception e)
                             {
-                                hadFailure = true;
+                                // Fall back on next report endpoint.
                                 MobileCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpoint}", e);
                             }
                         }
-                        if (hadFailure)
-                        {
-                            if (hadSuccess)
-                            {
-                                MobileCenterLog.Warn(LogTag, "Measurements report failed on some report endpoints.");
-                            }
-                            else
-                            {
-                                MobileCenterLog.Error(LogTag, "Measurements report failed on all report endpoints.");
-                            }
-                        }
-                        else
-                        {
-                            MobileCenterLog.Info(LogTag, "Measurements reported to all report endpoints.");
-                        }
+                        MobileCenterLog.Error(LogTag, "Measurements report failed on all report endpoints.");
+                        return;
                     }
                 }
-                if (!configurationOk)
+                throw new MobileCenterException("Invalid remote configuration for Rum.");
+            }
+        }
+
+        private async Task<string> GetRemoteConfigurationAsync(CancellationToken cancellationToken, IHttpNetworkAdapter httpNetworkAdapter, int configurationUrlIndex)
+        {
+            var url = ConfigurationEndpoints[configurationUrlIndex];
+            try
+            {
+                MobileCenterLog.Verbose(LogTag, "Calling " + url);
+                return await httpNetworkAdapter.SendAsync(url, HttpMethod.Get, Headers, "", cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                // Fallback next url if any
+                if (++configurationUrlIndex < ConfigurationEndpoints.Length)
                 {
-                    throw new MobileCenterException("Invalid remote configuration for Rum.");
+                    MobileCenterLog.Error(LogTag, "Could not get configuration file at " + url, e);
+                    return await GetRemoteConfigurationAsync(cancellationToken, httpNetworkAdapter, configurationUrlIndex);
                 }
+                throw;
             }
         }
 
