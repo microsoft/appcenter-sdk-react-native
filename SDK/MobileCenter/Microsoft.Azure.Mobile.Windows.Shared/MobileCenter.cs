@@ -195,6 +195,56 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static string CorrelationId
+        {
+            get
+            {
+                lock (MobileCenterLock)
+                {
+                    return Instance.InstanceCorrelationId;
+                }
+            }
+            set
+            {
+                lock (MobileCenterLock)
+                {
+                    Instance.InstanceCorrelationId = value;
+                }
+                CorrelationIdChanged?.Invoke(null, value);
+            }
+        }
+
+        // Atomically checks if the CorrelationId equals "testValue" and updates the value if true.
+        // Returns "true" if value was changed.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static bool TestAndSetCorrelationId(string testValue, string setValue)
+        {
+            bool didChangeValue = false;
+            lock (MobileCenterLock)
+            {
+                if (testValue == CorrelationId)
+                {
+                    // Can't use the property setter here because that would cause the
+                    // event to trigger within the lock, which is not allowed.
+                    // (And calling the setter outside the lock would not be atomic).
+                    Instance.InstanceCorrelationId = setValue;
+                    didChangeValue = true;
+                }
+            }
+            if (didChangeValue)
+            {
+                CorrelationIdChanged?.Invoke(null, setValue);
+            }
+            return didChangeValue;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static event EventHandler<string> CorrelationIdChanged;
+
         #endregion
 
         #region instance
@@ -367,6 +417,7 @@ namespace Microsoft.Azure.Mobile
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, ex.Message);
             }
         }
+        private string InstanceCorrelationId { get; set; }
 
         // We don't support Distribute in UWP.
         private static bool IsDistributeService(Type serviceType)

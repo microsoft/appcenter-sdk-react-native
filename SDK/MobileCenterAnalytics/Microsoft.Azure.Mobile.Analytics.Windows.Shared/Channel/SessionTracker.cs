@@ -138,6 +138,9 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 _sessions.Remove(_sessions.Keys.Min());
             }
             _sid = Guid.NewGuid();
+#pragma warning disable CS0612 // Type or member is obsolete
+            MobileCenter.CorrelationId = _sid.Value.ToString();
+#pragma warning restore CS0612 // Type or member is obsolete
             _sessions.Add(now, _sid.Value);
             _applicationSettings.SetValue(StorageKey, SessionsAsString());
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
@@ -166,9 +169,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 return sessionsDict;
             }
-
             var sessions = sessionsString.Split(StorageEntrySeparator);
-
             foreach (var sessionString in sessions)
             {
                 var splitSession = sessionString.Split(StorageKeyValueSeparator);

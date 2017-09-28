@@ -35,6 +35,23 @@ namespace Microsoft.Azure.Mobile.Crashes
 #if REFERENCE
 #else
                 WatsonRegistrationManager.Start(appSecret);
+                MobileCenter.CorrelationIdChanged += (s, id) =>
+                {
+                    // Checking for null and setting id needs to be atomic to avoid
+                    // overwriting. But only do that if the id argument is null to avoid
+                    // needlessly waiting on the lock.
+                    if (id == null &&
+                        MobileCenter.TestAndSetCorrelationId(null, Guid.NewGuid()))
+                    {
+                        // Return here to avoid setting the correlation id twice.
+                        return;
+                    }
+                    WatsonRegistrationManager.SetCorrelationId(id);
+                };
+
+                // Checking for null and setting id needs to be atomic to avoid
+                // overwriting
+                MobileCenter.TestAndSetCorrelationId(null, Guid.NewGuid());
 #endif
             }
             catch (Exception e)
