@@ -169,9 +169,13 @@ namespace Microsoft.Azure.Mobile.Rum
                         {
                             MobileCenterLog.Debug(LogTag, "Measurements were canceled.");
                         }
+                        catch (MobileCenterException e)
+                        {
+                            MobileCenterLog.Error(LogTag, $"Could not run measurements: {e.Message}");
+                        }
                         catch (Exception e)
                         {
-                            MobileCenterLog.Error(LogTag, "Could not run tests.", e);
+                            MobileCenterLog.Error(LogTag, "Could not run measurements.", e);
                         }
                         finally
                         {
@@ -205,7 +209,7 @@ namespace Microsoft.Azure.Mobile.Rum
             using (var httpNetworkAdapter = new HttpNetworkAdapter())
             {
                 // Get remote configuration.
-                var jsonConfiguration = await GetRemoteConfigurationAsync(cancellationToken, httpNetworkAdapter, 0);
+                var jsonConfiguration = await GetRemoteConfigurationAsync(cancellationToken, httpNetworkAdapter);
 
                 // Parse configuration.
                 var configuration = JsonConvert.DeserializeObject<RumConfiguration>(jsonConfiguration);
@@ -359,28 +363,25 @@ namespace Microsoft.Azure.Mobile.Rum
             }
         }
 
-        private async Task<string> GetRemoteConfigurationAsync(CancellationToken cancellationToken, IHttpNetworkAdapter httpNetworkAdapter, int configurationUrlIndex)
+        private async Task<string> GetRemoteConfigurationAsync(CancellationToken cancellationToken, IHttpNetworkAdapter httpNetworkAdapter)
         {
-            var url = ConfigurationEndpoints[configurationUrlIndex];
-            try
+            foreach (var url in ConfigurationEndpoints)
             {
-                MobileCenterLog.Verbose(LogTag, "Calling " + url);
-                return await httpNetworkAdapter.SendAsync(url, HttpMethod.Get, Headers, "", cancellationToken);
-            }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
-            catch (Exception e)
-            {
-                // Fallback next url if any
-                if (++configurationUrlIndex < ConfigurationEndpoints.Length)
+                try
+                {
+                    MobileCenterLog.Verbose(LogTag, "Calling " + url);
+                    return await httpNetworkAdapter.SendAsync(url, HttpMethod.Get, Headers, "", cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception e)
                 {
                     MobileCenterLog.Error(LogTag, "Could not get configuration file at " + url, e);
-                    return await GetRemoteConfigurationAsync(cancellationToken, httpNetworkAdapter, configurationUrlIndex);
                 }
-                throw;
             }
+            throw new MobileCenterException("Could not get configuration on any endpoint.");
         }
 
         #endregion
