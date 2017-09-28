@@ -242,11 +242,7 @@ namespace Microsoft.Azure.Mobile.Rum
                     MobileCenterLog.Verbose(LogTag, "Calling " + url);
                     return await httpNetworkAdapter.SendAsync(url, HttpMethod.Get, Headers, "", cancellationToken);
                 }
-                catch (OperationCanceledException)
-                {
-                    throw;
-                }
-                catch (Exception e)
+                catch (Exception e) when (!(e is OperationCanceledException))
                 {
                     MobileCenterLog.Error(LogTag, "Could not get configuration file at " + url, e);
                 }
@@ -356,11 +352,7 @@ namespace Microsoft.Azure.Mobile.Rum
                     await httpNetworkAdapter.SendAsync(testUrl.Url, HttpMethod.Get, Headers, "", cancellationToken);
                     testUrl.Result = stopWatch.ElapsedMilliseconds;
                 }
-                catch (OperationCanceledException)
-                {
-                    throw;
-                }
-                catch (Exception e)
+                catch (Exception e) when (!(e is OperationCanceledException))
                 {
                     testUrls.RemoveAt(i--);
                     MobileCenterLog.Error(LogTag, testUrl.Url + " call failed", e);
@@ -391,11 +383,7 @@ namespace Microsoft.Azure.Mobile.Rum
                         // Stop when we encounter the first working report endpoint.
                         return;
                     }
-                    catch (OperationCanceledException)
-                    {
-                        throw;
-                    }
-                    catch (Exception e)
+                    catch (Exception e) when (!(e is OperationCanceledException))
                     {
                         // Fall back on next report endpoint.
                         MobileCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpoint}", e);
