@@ -1,10 +1,10 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Azure.Mobile.Analytics": "0.15.2-r0001-87521e9",
-    "Microsoft.Azure.Mobile.Crashes": "0.15.2-r0001-87521e9",
-    "Microsoft.Azure.Mobile.Distribute": "0.15.2-r0001-87521e9",
-    "Microsoft.Azure.Mobile.Push": "0.15.2-r0001-87521e9",
-    "Microsoft.Azure.Mobile.Rum": "0.15.2-r0001-87521e9",
+    "Microsoft.Azure.Mobile.Analytics": "0.15.2-r0003-8e5a971",
+    "Microsoft.Azure.Mobile.Crashes": "0.15.2-r0003-8e5a971",
+    "Microsoft.Azure.Mobile.Distribute": "0.15.2-r0003-8e5a971",
+    "Microsoft.Azure.Mobile.Push": "0.15.2-r0003-8e5a971",
+    "Microsoft.Azure.Mobile.Rum": "0.15.2-r0003-8e5a971",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Xamarin.Forms": "2.3.4.231"
   },
