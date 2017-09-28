@@ -111,14 +111,14 @@ fi
 # Build tests
 pushd ..
 echo "Cleaning..."
-sh $BUILD_SCRIPT -t $CLEAN_TARGET # clean so that we don't accidentally update to snapshot
+sh $BUILD_SCRIPT -t=$CLEAN_TARGET # clean so that we don't accidentally update to snapshot
 if [ $? -ne 0 ]; then
     echo "An error occured while cleaning."
     popd
     exit 1
 fi
 echo "Building target \"$BUILD_TARGET\"..."
-sh $BUILD_SCRIPT -t $BUILD_TARGET
+sh $BUILD_SCRIPT -t=$BUILD_TARGET
 if [ $? -ne 0 ]; then
     echo "An error occured while building tests."
     popd
