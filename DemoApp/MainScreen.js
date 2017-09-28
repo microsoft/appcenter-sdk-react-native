@@ -5,11 +5,19 @@
  */
 
 import React, { Component } from 'react';
-import { AppState, Alert, Button, View, Platform, ToastAndroid } from 'react-native';
+import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
+import MobileCenter from 'mobile-center';
 import Push from 'mobile-center-push';
 import SharedStyles from './SharedStyles';
 
 export default class MainScreen extends Component {
+  constructor() {
+    super();
+    this.state = {
+      wrapperSdkVersion: MobileCenter.getSdkVersion()
+    };
+  }
+
   static navigationOptions = {
     title: 'DemoApp',
   };
@@ -19,35 +27,13 @@ export default class MainScreen extends Component {
 
     return (
       <View style={SharedStyles.container}>
-
-        <Button
-          title="Test Crashes"
-          onPress={() =>
-            navigate('Crashes')
-          }
-        />
-
-        <Button
-          title="Test Analytics"
-          onPress={() =>
-            navigate('Analytics')
-          }
-        />
-
-        <Button
-          title="Test Push"
-          onPress={() =>
-            navigate('Push')
-          }
-        />
-
-        <Button
-          title="Test Mobile Center"
-          onPress={() =>
-            navigate('MobileCenter')
-          }
-        />
-
+        <Text style={SharedStyles.heading}>
+          React Native SDK version {this.state.wrapperSdkVersion}
+        </Text>
+        <Button title="Test Crashes" onPress={() => navigate('Crashes')} />
+        <Button title="Test Analytics" onPress={() => navigate('Analytics')} />
+        <Button title="Test Push" onPress={() => navigate('Push')} />
+        <Button title="Test Other Mobile Center APIs" onPress={() => navigate('MobileCenter')} />
       </View>
     );
   }
