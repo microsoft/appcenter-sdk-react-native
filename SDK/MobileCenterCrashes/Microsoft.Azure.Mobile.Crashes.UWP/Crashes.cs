@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                     // overwriting. But only do that if the id argument is null to avoid
                     // needlessly waiting on the lock.
                     if (id == null &&
-                        MobileCenter.TestAndSetCorrelationId(null, Guid.NewGuid()))
+                        MobileCenter.TestAndSetCorrelationId(null, Guid.NewGuid().ToString()))
                     {
                         // Return here to avoid setting the correlation id twice.
                         return;
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
                 // Checking for null and setting id needs to be atomic to avoid
                 // overwriting
-                MobileCenter.TestAndSetCorrelationId(null, Guid.NewGuid());
+                MobileCenter.TestAndSetCorrelationId(null, Guid.NewGuid().ToString());
 #endif
             }
             catch (Exception e)
