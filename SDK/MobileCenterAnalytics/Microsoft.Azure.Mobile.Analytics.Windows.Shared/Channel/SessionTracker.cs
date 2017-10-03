@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private const char StorageEntrySeparator = '/';
         private readonly IChannelUnit _channel;
         private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
-        private Guid? _sid;
+        internal Guid? _sid;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;

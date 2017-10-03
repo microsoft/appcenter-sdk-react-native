@@ -271,5 +271,70 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 
             Assert.IsFalse(SessionTracker.HasSessionTimedOut(now, lastQueuedLogTime, lastResumedTime, lastPausedTime));
         }
+
+        /// <summary>
+        /// Verify Mobile Center Correlation ID is set when a session starts and current Correlation ID is null
+        /// </summary>
+        [TestMethod]
+        public void NullCorrelationIdIsSetWhenSessionStarts()
+        {
+#pragma warning disable CS0612 // Type or member is obsolete
+
+            // Correlation ID is Null.
+            MobileCenter.CorrelationId = null;
+            _sessionTracker.Resume();
+            Assert.AreEqual(_sessionTracker._sid.ToString(), MobileCenter.CorrelationId);
+#pragma warning restore CS0612 // Type or member is obsolete
+        }
+
+        /// <summary>
+        /// Verify Mobile Center Correlation ID is set when a session starts and current Correlation ID has a value
+        /// </summary>
+        [TestMethod]
+        public void CorrelationIdIsSetWhenSessionStarts()
+        {
+#pragma warning disable CS0612 // Type or member is obsolete
+
+            // Correlation ID is not null.
+            MobileCenter.CorrelationId = "some value";
+            _sessionTracker.Resume();
+            Assert.AreEqual(_sessionTracker._sid.ToString(), MobileCenter.CorrelationId);
+#pragma warning restore CS0612 // Type or member is obsolete
+        }
+
+        /// <summary>
+        /// Verify Mobile Center Correlation ID remains when the session expires and hasn't yet restarted
+        /// </summary>
+        [TestMethod]
+        public void VerifyCorrelationIdRemainsWhenSessionExpires()
+        {
+#pragma warning disable CS0612 // Type or member is obsolete
+            _sessionTracker.Resume();
+            var originalSessionId = _sessionTracker._sid;
+
+            // Cause session expiration.
+            _sessionTracker.Pause();
+            Task.Delay((int)SessionTracker.SessionTimeout).Wait();
+
+            Assert.AreEqual(originalSessionId.ToString(), MobileCenter.CorrelationId);
+#pragma warning restore CS0612 // Type or member is obsolete
+        }
+
+        /// <summary>
+        /// Verify Mobile Center Correlation ID is set when the session id changes
+        /// </summary>
+        [TestMethod]
+        public void VerifyCorrelationIdIsUpdatedWhenSessionChanges()
+        {
+#pragma warning disable CS0612 // Type or member is obsolete
+            _sessionTracker.Resume();
+
+            // Cause session expiration and start new session.
+            _sessionTracker.Pause();
+            Task.Delay((int)SessionTracker.SessionTimeout).Wait();
+            _sessionTracker.Resume();
+            Assert.AreEqual(_sessionTracker._sid.ToString(), MobileCenter.CorrelationId);
+#pragma warning restore CS0612 // Type or member is obsolete
+        }
     }
 }
