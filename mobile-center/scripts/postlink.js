@@ -1,13 +1,10 @@
 const rnpmlink = require('mobile-center-link-scripts');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
-    .then(() => {
-        rnpmlink.ios.initMobileCenterConfig()
-            .catch((e) => {
-                console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
-                return Promise.reject();
-            });
-    })
+    .then(() => rnpmlink.ios.initMobileCenterConfig().catch((e) => {
+        console.log(`Could not create or update Mobile Center config file (MobileCenter-Config.plist). Error Reason - ${e.message}`);
+        return Promise.reject();
+    }))
     .then(() => {
         const code = '  [RNMobileCenter register];  // Initialize Mobile Center ';
         return rnpmlink.ios.initInAppDelegate('#import <RNMobileCenter/RNMobileCenter.h>', code)
@@ -19,7 +16,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     .then((file) => {
         console.log(`Added code to initialize iOS Mobile Center SDK in ${file}`);
         return rnpmlink.ios.addPodDeps([
-            { pod: 'RNMobileCenterShared', version: '0.9.1' }
+            { pod: 'RNMobileCenterShared', version: '0.9.2' }
         ]).catch((e) => {
             console.log(`
             Could not install dependencies using CocoaPods.

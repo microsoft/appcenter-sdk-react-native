@@ -65,7 +65,7 @@ module.exports = {
             const appDelegate = new AppDelegate(appDelegatePath);
             appDelegate.addHeader(header);
             appDelegate.addInitCode(initCode, oldInitCodeRegExp);
-            return appDelegate.save();
+            return Promise.resolve(appDelegate.save());
         } catch (e) {
             debug('Could not change AppDelegate', e);
             return Promise.reject(e);
