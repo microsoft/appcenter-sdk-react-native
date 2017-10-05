@@ -19,20 +19,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         {
             MobileCenter.Start("secret", typeof(Crashes.Crashes));
 #pragma warning disable CS0612 // Type or member is obsolete
-            Assert.IsNotNull(MobileCenter.CorrelationId);
-#pragma warning restore CS0612 // Type or member is obsolete
-        }
-
-        /// <summary>
-        /// Verify that crashes replaces a null correlation id.
-        /// </summary>
-        [TestMethod]
-        public void CrashesSetsCorrelationIdWhenMadeNull()
-        {
-            MobileCenter.Start("secret", typeof(Crashes.Crashes));
-#pragma warning disable CS0612 // Type or member is obsolete
-            MobileCenter.CorrelationId = null;
-            Assert.IsNotNull(MobileCenter.CorrelationId);
+            Assert.IsNotNull(MobileCenter.Instance.InstanceCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
         }
 
@@ -43,11 +30,11 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         [TestMethod]
         public void CrashesLeavesExistingCorrelationId()
         {
-            var originalCorrelationId = "hi";
+            var originalCorrelationId = Guid.NewGuid();
 #pragma warning disable CS0612 // Type or member is obsolete
-            MobileCenter.CorrelationId = originalCorrelationId;
+            MobileCenter.Instance.InstanceCorrelationId = originalCorrelationId;
             MobileCenter.Start("secret", typeof(Crashes.Crashes));
-            Assert.AreEqual(originalCorrelationId, MobileCenter.CorrelationId);
+            Assert.AreEqual(originalCorrelationId, MobileCenter.Instance.InstanceCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
         }
     }

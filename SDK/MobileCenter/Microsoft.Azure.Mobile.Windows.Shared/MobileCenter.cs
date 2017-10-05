@@ -194,56 +194,34 @@ namespace Microsoft.Azure.Mobile
                 Instance.StartInstanceAndConfigure(appSecret, services);
             }
         }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete]
-        public static string CorrelationId
-        {
-            get
-            {
-                lock (MobileCenterLock)
-                {
-                    return Instance.InstanceCorrelationId;
-                }
-            }
-            set
-            {
-                lock (MobileCenterLock)
-                {
-                    Instance.InstanceCorrelationId = value;
-                }
-                CorrelationIdChanged?.Invoke(null, value);
-            }
-        }
-
+ 
         // Atomically checks if the CorrelationId equals "testValue" and updates the value if true.
-        // Returns "true" if value was changed.
+        // Returns "true" if value was changed. If not, the current value is assigned to setValue.
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
-        public static bool TestAndSetCorrelationId(string testValue, string setValue)
+        public static bool TestAndSetCorrelationId(Guid testValue, ref Guid setValue)
         {
-            bool didChangeValue = false;
             lock (MobileCenterLock)
             {
-                if (testValue == CorrelationId)
+                if (testValue == Instance.InstanceCorrelationId)
                 {
                     // Can't use the property setter here because that would cause the
                     // event to trigger within the lock, which is not allowed.
                     // (And calling the setter outside the lock would not be atomic).
                     Instance.InstanceCorrelationId = setValue;
-                    didChangeValue = true;
+                    CorrelationIdChanged?.Invoke(null, setValue);
+                    return true;
                 }
+                setValue = Instance.InstanceCorrelationId;
             }
-            if (didChangeValue)
-            {
-                CorrelationIdChanged?.Invoke(null, setValue);
-            }
-            return didChangeValue;
+            return false;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
-        public static event EventHandler<string> CorrelationIdChanged;
+        // Note: Do not access the CorrelationId property in this event handler!
+        // Doing so on a different thread can cause deadlocks.
+        public static event EventHandler<Guid> CorrelationIdChanged;
 
         #endregion
 
@@ -417,7 +395,7 @@ namespace Microsoft.Azure.Mobile
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, ex.Message);
             }
         }
-        private string InstanceCorrelationId { get; set; }
+        internal Guid InstanceCorrelationId = Guid.Empty;
 
         // We don't support Distribute in UWP.
         private static bool IsDistributeService(Type serviceType)

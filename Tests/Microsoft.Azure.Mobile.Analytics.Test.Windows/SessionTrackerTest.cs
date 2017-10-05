@@ -276,47 +276,31 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         /// Verify Mobile Center Correlation ID is set when a session starts and current Correlation ID is null
         /// </summary>
         [TestMethod]
-        public void NullCorrelationIdIsSetWhenSessionStarts()
+        public void EmptyCorrelationIdIsSetWhenSessionStarts()
         {
 #pragma warning disable CS0612 // Type or member is obsolete
 
-            // Correlation ID is Null.
-            MobileCenter.CorrelationId = null;
+            // Correlation ID is Empty.
+            MobileCenter.Instance.InstanceCorrelationId = Guid.Empty;
             _sessionTracker.Resume();
-            Assert.AreEqual(_sessionTracker._sid.ToString(), MobileCenter.CorrelationId);
+
+            // Guid.Empty should not be equal to correlation id.
+            Assert.IsFalse(MobileCenter.TestAndSetCorrelationId(Guid.Empty, ref MobileCenter.Instance.InstanceCorrelationId));
 #pragma warning restore CS0612 // Type or member is obsolete
         }
 
         /// <summary>
-        /// Verify Mobile Center Correlation ID is set when a session starts and current Correlation ID has a value
+        /// Verify Sid is set to initial correlation id when a session starts and Correlation ID has a value
         /// </summary>
         [TestMethod]
-        public void CorrelationIdIsSetWhenSessionStarts()
+        public void SidIsInitialCorrelationId()
         {
 #pragma warning disable CS0612 // Type or member is obsolete
 
-            // Correlation ID is not null.
-            MobileCenter.CorrelationId = "some value";
+            var initialCorrelationId = Guid.NewGuid();
+            MobileCenter.Instance.InstanceCorrelationId = initialCorrelationId;
             _sessionTracker.Resume();
-            Assert.AreEqual(_sessionTracker._sid.ToString(), MobileCenter.CorrelationId);
-#pragma warning restore CS0612 // Type or member is obsolete
-        }
-
-        /// <summary>
-        /// Verify Mobile Center Correlation ID remains when the session expires and hasn't yet restarted
-        /// </summary>
-        [TestMethod]
-        public void VerifyCorrelationIdRemainsWhenSessionExpires()
-        {
-#pragma warning disable CS0612 // Type or member is obsolete
-            _sessionTracker.Resume();
-            var originalSessionId = _sessionTracker._sid;
-
-            // Cause session expiration.
-            _sessionTracker.Pause();
-            Task.Delay((int)SessionTracker.SessionTimeout).Wait();
-
-            Assert.AreEqual(originalSessionId.ToString(), MobileCenter.CorrelationId);
+            Assert.AreEqual(_sessionTracker._sid, initialCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
         }
 
@@ -333,7 +317,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Pause();
             Task.Delay((int)SessionTracker.SessionTimeout).Wait();
             _sessionTracker.Resume();
-            Assert.AreEqual(_sessionTracker._sid.ToString(), MobileCenter.CorrelationId);
+            Assert.IsTrue(MobileCenter.TestAndSetCorrelationId(_sessionTracker._sid, ref MobileCenter.Instance.InstanceCorrelationId));
 #pragma warning restore CS0612 // Type or member is obsolete
         }
     }
