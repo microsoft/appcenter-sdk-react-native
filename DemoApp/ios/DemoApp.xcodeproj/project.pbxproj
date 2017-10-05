@@ -533,6 +533,7 @@
 				89F88C6A029642FBBE798101 /* MobileCenter-Config.plist */,
 				0EB72F20BED454EC228E3839 /* Pods */,
 				7CEB12F3AC0DC2C3E6F80770 /* Frameworks */,
+				9C557D761F85C0E8000B229C /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -577,6 +578,17 @@
 				92CD77601F35422900F5D69D /* libRNMobileCenter.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9C557D761F85C0E8000B229C /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				FD76F8589B1C4E6299C87CEE /* libRNMobileCenter.a */,
+				B813A5261DA444B68E7DB1F9 /* libRNAnalytics.a */,
+				0DEDB46F476D4FE7BF194D91 /* libRNCrashes.a */,
+				EE37988AB3CB47EC80E93533 /* libRNPush.a */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
