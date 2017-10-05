@@ -53,5 +53,23 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>cs-CZ</string>
+		<string>de-DE</string>
+		<string>es-ES</string>
+		<string>fr-FR</string>
+		<string>it-IT</string>
+		<string>ja-JP</string>
+		<string>ko-KR</string>
+		<string>pl-PL</string>
+		<string>pt-BR</string>
+		<string>ru-RU</string>
+		<string>tr-TR</string>
+		<string>zh-CN</string>
+		<string>zh-TW</string>
+	</array>
 </dict>
 </plist>
