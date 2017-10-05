@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name              = 'RNMobileCenterShared'
-  s.version           = '0.9.2'
+  s.version           = '0.10.0'
   s.summary           = 'React Native plugin for Mobile Center'
   s.license           = { :type => 'MIT',  :file => 'RNMobileCenterShared/LICENSE' }
   s.homepage          = 'https://mobile.azure.com'
@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = 'RNMobileCenterShared/RNMobileCenterShared.framework'
 
-  s.dependency 'MobileCenter/Core', '~> 0.12.3'
+  s.dependency 'MobileCenter/Core', '~> 0.13.0'
 end
