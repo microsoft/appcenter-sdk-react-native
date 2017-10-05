@@ -3,7 +3,9 @@
 #import "MSConstants.h"
 
 @class MSWrapperSdk;
+#if !TARGET_OS_TV
 @class MSCustomProperties;
+#endif
 
 @interface MSMobileCenter : NSObject
 
@@ -96,12 +98,14 @@
  */
 + (void)setWrapperSdk:(MSWrapperSdk *)wrapperSdk;
 
+#if !TARGET_OS_TV
 /**
  * Set the custom properties.
  *
  * @param customProperties Custom properties object.
  */
 + (void)setCustomProperties:(MSCustomProperties *)customProperties;
+#endif
 
 /**
  * Check whether the application delegate forwarder is enabled or not.
@@ -133,5 +137,12 @@
  * @return BOOL if the debugger is attached.
  */
 + (BOOL)isDebuggerAttached;
+
+/**
+ * Get the current version of MobileCenter SDK.
+ *
+ * @return The current version of MobileCenter SDK.
+ */
++ (NSString *)sdkVersion;
 
 @end
