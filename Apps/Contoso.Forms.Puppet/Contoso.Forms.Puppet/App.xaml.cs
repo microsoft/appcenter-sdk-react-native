@@ -26,19 +26,7 @@ namespace Contoso.Forms.Puppet
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
-        }
 
-        static App()
-        {
-            // set event handlers in static constructor to avoid duplication
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
-            Push.PushNotificationReceived += PrintNotification;
-        }
-
-        protected override void OnStart()
-        {
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
@@ -56,7 +44,7 @@ namespace Contoso.Forms.Puppet
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                 typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-            
+
             // Need to use reflection because moving this to the Android specific
             // code causes crash. (Unable to access properties before init is called).
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
@@ -80,6 +68,7 @@ namespace Contoso.Forms.Puppet
             {
                 MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + installId.Result);
             });
+            MobileCenterLog.Info(LogTag, "MobileCenter.SdkVersion=" + MobileCenter.SdkVersion);
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
                 MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
@@ -90,14 +79,13 @@ namespace Contoso.Forms.Puppet
             });
         }
 
-        protected override void OnSleep()
+        static App()
         {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
+            // set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
         }
 
         static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
