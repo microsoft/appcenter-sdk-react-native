@@ -77,9 +77,6 @@ Task("UpdateDemoVersion").Does(()=>
 	// Note: nuget update does not work with projects using project.json
 	// Replace version in all the demo application
 	ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
-
-	// And restore packages
-	NuGetRestore("MobileCenter-Demo-Mac.sln");
 });
 
 Task("StartNewVersion").Does(()=>
