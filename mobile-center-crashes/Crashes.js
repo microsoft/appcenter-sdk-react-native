@@ -3,10 +3,13 @@ const MobileCenterLog = require('mobile-center/mobile-center-log');
 
 const logTag = 'MobileCenter';
 const RNCrashes = ReactNative.NativeModules.RNCrashes;
+const RNWrapperCrashesHelper = ReactNative.NativeModules.RNWrapperCrashesHelper;
 
 const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
+
+reports = new Array(0);
 
 let Crashes = {
     // async - returns a Promise
@@ -34,6 +37,10 @@ let Crashes = {
         return RNCrashes.setEnabled(shouldEnable);
     },
 
+    // async - returns a Promise
+    notifyWithUserConfirmation(userConfirmation) {
+        //TODO implement
+    },
     // async - returns a Promise
     process(callback) {
         // Calling .isEnabled() will make sure the callback is executed after the Android SDK has finished loading
@@ -91,17 +98,52 @@ let Crashes = {
     setEventListener(listenerMap) {
         ReactNative.DeviceEventEmitter.removeAllListeners(willSendEvent);
         ReactNative.DeviceEventEmitter.removeAllListeners(sendDidSucceed);
-        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidFail);
-
-        if (listenerMap && listenerMap.willSendCrash) {
+        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidFail);   
+        if (!listenerMap) {
+            return;
+        }
+        if (listenerMap.willSendCrash) {
             ReactNative.DeviceEventEmitter.addListener(willSendEvent, listenerMap.willSendCrash);
         }
-        if (listenerMap && listenerMap.didSendCrash) {
+        if (listenerMap.didSendCrash) {
             ReactNative.DeviceEventEmitter.addListener(sendDidSucceed, listenerMap.didSendCrash);
         }
-        if (listenerMap && listenerMap.failedSendingCrash) {
+        if (listenerMap.failedSendingCrash) {
             ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
         }
+        RNWrapperCrashesHelper.getUnprocessedCrashReports()
+        .then((reports) =>
+        {
+            filteredReports = new Array();
+            errorAttachments = {};
+            reports.forEach((report) => {
+                if (!listenerMap.shouldProcess ||
+                    listenerMap.shouldProcess(report)) {
+                    filteredReports.push(report);
+                    if (listenerMap.getErrorAttachments) {
+                        attachments = listenerMap.getErrorAttachments(report);
+                        //TODO need to convert attachments?
+                        //TODO check necessary?
+                        if (attachments && attachments.length > 0) {
+                            // Add the error attachments
+                            errorAttachments[report["id"]] = attachments;
+                        }
+                    }
+                }
+            });
+
+            //TODO need to send error attachments in the right place.
+            RNWrapperCrashesHelper.sendCrashReportsOrAwaitUserConfirmationForFilteredList(filteredReports);
+            
+            if (listnerMap.shouldAwaitUserConfirmation &&
+                listenerMap.shouldAwaitUserConfirmation()) {
+                    // TODO don't send attachments here, but make sure they get sent when notified
+                }
+            else {
+                //TODO notifyWithUserConfirmation(send);
+                // TODO don't send attachments here, but make sure they get sent when notified.
+                }
+        });
     }
 };
 
