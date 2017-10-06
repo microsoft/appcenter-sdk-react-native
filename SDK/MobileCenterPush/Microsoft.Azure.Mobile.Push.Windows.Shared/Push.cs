@@ -89,10 +89,10 @@ namespace Microsoft.Azure.Mobile.Push
                 using (_mutex.GetLock())
                 {
                     var prevValue = InstanceEnabled;
-                    base.InstanceEnabled = value;
-                    _mutex.InvalidateState();
                     if (value != prevValue)
                     {
+                        base.InstanceEnabled = value;
+                        _mutex.InvalidateState();
                         ApplyEnabledState(value);
                     }
                 }
