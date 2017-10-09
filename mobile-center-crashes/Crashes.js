@@ -9,7 +9,23 @@ const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
-reports = new Array(0);
+let UserConfirmation = {
+    Send : 1,
+    DontSend : 2,
+    AlwaySend : 3
+}
+
+let ErrorAttachmentLog = {
+    // Create text attachment for an error report
+    attachmentWithText(text, fileName) {
+        return { text, fileName };
+    },
+
+    // Create binary attachment for an error report, binary must be passed as a base64 string
+    attachmentWithBinary(data, fileName, contentType) {
+        return { data, fileName, contentType };
+    }
+};
 
 let Crashes = {
     // async - returns a Promise
@@ -39,60 +55,7 @@ let Crashes = {
 
     // async - returns a Promise
     notifyWithUserConfirmation(userConfirmation) {
-        //TODO implement
-    },
-    // async - returns a Promise
-    process(callback) {
-        // Calling .isEnabled() will make sure the callback is executed after the Android SDK has finished loading
-        // crash reports in background. We could call getCrashReports too soon otherwise in case
-        // it takes a lot of time.
-        return RNCrashes.isEnabled()
-            .then((enabled) => {
-                if (enabled) {
-                    return RNCrashes.getCrashReports();
-                }
-                MobileCenterLog.error(logTag, 'Could not get crash reports when Mobile Center crashes is not enabled.');
-                return Promise.reject('Mobile Center crashes is not enabled.');
-            })
-            .then((reports) => {
-                if (!reports) {
-                    return;
-                }
-                const errorAttachments = {};
-                const reportsWithAttachmentFunction = reports.map((report) => {
-                    // Add text attachment to an error report
-                    function addTextAttachment(text, fileName) {
-                        if (!errorAttachments[report.id]) {
-                            errorAttachments[report.id] = [];
-                        }
-                        errorAttachments[report.id].push({
-                            text,
-                            fileName
-                        });
-                    }
-
-                    // Add binary attachment to an error report, binary must be passed as a base64 string
-                    function addBinaryAttachment(data, fileName, contentType) {
-                        if (!errorAttachments[report.id]) {
-                            errorAttachments[report.id] = [];
-                        }
-                        errorAttachments[report.id].push({
-                            data,
-                            fileName,
-                            contentType
-                        });
-                    }
-
-                    return Object.assign({
-                        addTextAttachment,
-                        addBinaryAttachment
-                    }, report);
-                });
-                reports = reportsWithAttachmentFunction;
-                callback(reports, (response) => {
-                    RNCrashes.crashUserResponse(response, errorAttachments);
-                });
-            });
+        RNCrashes.notifyWithUserConfirmation(userConfirmation);
     },
 
     setEventListener(listenerMap) {
@@ -112,37 +75,21 @@ let Crashes = {
             ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
         }
         RNWrapperCrashesHelper.getUnprocessedCrashReports()
-        .then((reports) =>
-        {
-            filteredReports = new Array();
-            errorAttachments = {};
+        .then((reports) => {
+            filteredReports = [];
             reports.forEach((report) => {
                 if (!listenerMap.shouldProcess ||
                     listenerMap.shouldProcess(report)) {
                     filteredReports.push(report);
                     if (listenerMap.getErrorAttachments) {
-                        attachments = listenerMap.getErrorAttachments(report);
-                        //TODO need to convert attachments?
-                        //TODO check necessary?
-                        if (attachments && attachments.length > 0) {
-                            // Add the error attachments
-                            errorAttachments[report["id"]] = attachments;
-                        }
+                        errorAttachments = listenerMap.getErrorAttachments(report);
+
+                        // Send error attachments for the report.
+                        RNWrapperCrashesHelper.sendErrorAttachments(errorAttachments, report["id"]);
                     }
                 }
             });
-
-            //TODO need to send error attachments in the right place.
             RNWrapperCrashesHelper.sendCrashReportsOrAwaitUserConfirmationForFilteredList(filteredReports);
-            
-            if (listnerMap.shouldAwaitUserConfirmation &&
-                listenerMap.shouldAwaitUserConfirmation()) {
-                    // TODO don't send attachments here, but make sure they get sent when notified
-                }
-            else {
-                //TODO notifyWithUserConfirmation(send);
-                // TODO don't send attachments here, but make sure they get sent when notified.
-                }
         });
     }
 };

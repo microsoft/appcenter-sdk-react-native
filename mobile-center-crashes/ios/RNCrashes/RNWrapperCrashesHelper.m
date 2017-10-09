@@ -28,11 +28,6 @@
 
 RCT_EXPORT_MODULE();
 
-+ (void)setAutomaticProcessing:(BOOL)automaticProcessing;
-{
-  [MSWrapperCrashesHelper setAutomaticProcessing:automaticProcessing];
-}
-
 /**
  * Gets a list of unprocessed crash reports.
  */
@@ -62,12 +57,11 @@ RCT_EXPORT_METHOD(sendCrashReportsOrAwaitUserConfirmationForFilteredList:(NSArra
  * Sends error attachments for a particular error report.
  */
 RCT_EXPORT_METHOD(sendErrorAttachments:(NSArray *)errorAttachments
-                  forErrorReport:(NSDictionary *)errorReport
+                  forIncidentIdentifier:(NSString *)incidentId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  //TODO convert items!
-  [MSWrapperCrashesHelper sendErrorAttachments:errorAttachments forErrorReport:errorReport];
+  [MSWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments) withIncidentIdentifier:incidentId];
   resolve(nil);
 }
 

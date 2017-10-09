@@ -17,7 +17,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     })
     .then((answer) => {
         const code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
-            '  [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes' :
+            '  [RNCrashes registerWithAutomaticProcessing];  // Initialize Mobile Center crashes' :
             '  [RNCrashes register];  // Initialize Mobile Center crashes';
         return rnpmlink.ios.initInAppDelegate('#import <RNCrashes/RNCrashes.h>', code, /.*\[RNCrashes register.*/g)
             .catch((e) => {

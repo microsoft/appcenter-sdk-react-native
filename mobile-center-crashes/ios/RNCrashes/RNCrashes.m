@@ -19,6 +19,7 @@
 #endif
 
 #import "RNCrashesUtils.h"
+#import <MobileCenterCrashes/MSWrapperCrashesHelper.h>
 
 @import MobileCenterCrashes;
 @import RNMobileCenterShared;
@@ -30,36 +31,29 @@
 
 @implementation RNCrashes
 
-@synthesize bridge = _bridge;
-
-static id<RNCrashesDelegate> crashDelegate;
-
-// iOS crash processing has a half second delay https://github.com/Microsoft/MobileCenter-SDK-iOS/blob/develop/MobileCenterCrashes/MobileCenterCrashes/MSCrashes.m#L296
-static BOOL crashProcessingDelayFinished = NO;
+static const int kMSUserConfirmationSendJS = 1;
+static const int kMSUserConfirmationDontSendJS = 2;
+static const int kMSUserConfirmationAlwaysSendJS = 3;
 
 RCT_EXPORT_MODULE();
 
 + (void)register
 {
-    [RNCrashes registerWithCrashDelegate:[[RNCrashesDelegateBase alloc] init]];
+    [RNMobileCenterShared configureMobileCenter];
+    [MSWrapperCrashesHelper setAutomaticProcessing:NO];
+    
+    //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
+
+    [MSMobileCenter startService:[MSCrashes class]];
 }
 
-+ (void)registerWithCrashDelegate:(id<RNCrashesDelegate>)delegate
++ (void)registerWithAutomaticProcessing
 {
-  [RNMobileCenterShared configureMobileCenter];
-  [MSCrashes setDelegate:delegate];
+    [RNMobileCenterShared configureMobileCenter];
+    
+    //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
-  //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
-
-  crashDelegate = delegate;
-  [MSCrashes setUserConfirmationHandler:[delegate shouldAwaitUserConfirmationHandler]];
-  [MSMobileCenter startService:[MSCrashes class]];
-  [self performSelector:@selector(crashProcessingDelayDidFinish) withObject:nil afterDelay:0.5];
-}
-
-+ (void)crashProcessingDelayDidFinish
-{
-    crashProcessingDelayFinished = YES;
+    [MSMobileCenter startService:[MSCrashes class]];
 }
 
 - (instancetype)init
@@ -69,20 +63,9 @@ RCT_EXPORT_MODULE();
     // Normally the bridge is nil at this point, but I left this code here anyway.
     // When the RNCrashes setBridge setter is called, below, is when the bridge is actually provided.
     if (self) {
-        [crashDelegate setBridge:self.bridge];
     }
 
     return self;
-}
-
--(void)setBridge:(RCTBridge*) bridgeValue
-{
-    _bridge = bridgeValue;
-    [crashDelegate setBridge:bridgeValue];
-}
-
-- (RCTBridge*) bridge {
-    return _bridge;
 }
 
 - (NSDictionary *)constantsToExport
@@ -108,19 +91,6 @@ RCT_EXPORT_METHOD(lastSessionCrashReport:(RCTPromiseResolveBlock)resolve
         resolve(convertReportToJS(report));
     };
     dispatch_async(dispatch_get_main_queue(), fetchLastSessionCrashReport);
-}
-
-RCT_EXPORT_METHOD(getCrashReports:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-{
-    void (^fetchCrashReports)() = ^void() {
-        resolve(convertReportsToJS([crashDelegate getAndClearReports]));
-    };
-    if (crashProcessingDelayFinished){
-        fetchCrashReports();
-    } else {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC /2), dispatch_get_main_queue(), fetchCrashReports);
-    }
 }
 
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
@@ -150,17 +120,24 @@ RCT_EXPORT_METHOD(generateTestCrash:(RCTPromiseResolveBlock)resolve
     reject(@"crash_failed", @"Failed to crash!", nil);
 }
 
-RCT_EXPORT_METHOD(crashUserResponse:(BOOL)send attachments:(NSDictionary *)attachments
-                resolver:(RCTPromiseResolveBlock)resolve
-                rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(notifyWithUserConfirmation:(int)userConfirmation
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
-    MSUserConfirmation response = send ? MSUserConfirmationSend : MSUserConfirmationDontSend;
-    if ([crashDelegate respondsToSelector:@selector(reportUserResponse:)]) {
-        [crashDelegate reportUserResponse:response];
+    switch (userConfirmation) {
+        case kMSUserConfirmationSendJS:
+            [MSCrashes notifyWithUserConfirmation:MSUserConfirmationSend];
+            break;
+        case kMSUserConfirmationDontSendJS:
+            [MSCrashes notifyWithUserConfirmation:MSUserConfirmationDontSend];
+            break;
+        case kMSUserConfirmationAlwaysSendJS:
+            [MSCrashes notifyWithUserConfirmation:MSUserConfirmationAlways];
+            break;
+        default:
+            reject(@"notify_user_confirmation_failed", @"Invalid user confirmation value!", nil);
     }
-    [crashDelegate provideAttachments:attachments];
-    [MSCrashes notifyWithUserConfirmation:response];
-    resolve(@"");
+    resolve(nil);
 }
 
 @end

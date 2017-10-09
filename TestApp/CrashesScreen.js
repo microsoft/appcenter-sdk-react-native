@@ -29,13 +29,13 @@ export default class CrashesScreen extends Component {
     this.toggleEnabled = this.toggleEnabled.bind(this);
     this.jsCrash = this.jsCrash.bind(this);
     this.nativeCrash = this.nativeCrash.bind(this);
-    this.sendCrashes = this.sendCrashes.bind(this);
   }
 
   async componentDidMount() {
     let status = '';
     const component = this;
-
+    this.sendCrashes();
+    
     const crashesEnabled = await Crashes.isEnabled();
     component.setState({ crashesEnabled });
 
@@ -70,49 +70,41 @@ export default class CrashesScreen extends Component {
 
   sendCrashes() {
     const component = this;
-    Crashes.process((reports, send) => {
-      let status = '';
+    let status = '';    
+    Crashes.setEventListener({
+      shouldProcess(report) {
+        console.log('Should process report with id: ' + report["id"] + '\n');       
+        return true;
+      },
 
-      if (reports.length === 0) {
-        status += 'Nothing to send\n';
+      shouldAwaitUserConfirmation() {
+        console.log('Should await user confirmation\n');
+        return false;
+      },
+
+      getErrorAttachments(report) {
+        console.log('Get error attachments for report with id: ' + report["id"] + '\n');                
+        return [
+          ErrorAttachmentLog.attachmentWithText("hello", "hello.txt"),
+          ErrorAttachmentLog.attachmentWithBinay("base64string", "icon.png", "image/png")
+        ];
+      },
+
+      willSendCrash() {
+        console.log('Will send crash\n');
         component.setState({ sendStatus: status });
-        return;
+      },
+
+      didSendCrash() {
+        console.log('Did send crash\n');
+        component.setState({ sendStatus: status });
+      },
+
+      failedSendingCrash() {
+        console.log('Failed sending crash\n');
+        component.setState({ sendStatus: status });
       }
-
-      Crashes.setEventListener({
-        willSendCrash() {
-          status += 'Will send crash\n';
-          component.setState({ sendStatus: status });
-        },
-        didSendCrash() {
-          status += 'Did send crash\n';
-          component.setState({ sendStatus: status });
-        },
-        failedSendingCrash() {
-          status += 'Failed sending crash\n';
-          component.setState({ sendStatus: status });
-        }
-      });
-
-      let crashes = '';
-      reports.forEach((report) => {
-        if (crashes.length > 0) {
-          crashes += '\n\n';
-        }
-        crashes += report.exceptionReason;
-        report.addTextAttachment('Hello attachment!', 'hello.txt');
-        report.addBinaryAttachment(testIcon, 'logo.png', 'image/png');
-      });
-
-      Alert.alert(
-        `Send ${reports.length} crash(es)?`,
-        crashes,
-        [
-          { text: 'Send', onPress: () => send(true) },
-          { text: 'Ignore', onPress: () => send(false), style: 'cancel' },
-        ]
-      );
-    }).then(() => console.log('Crashes were processed'));
+    });
   }
 
   render() {
@@ -142,16 +134,6 @@ export default class CrashesScreen extends Component {
               Crash native code
             </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.sendCrashes}>
-            <Text style={styles.button}>
-              Send crashes
-            </Text>
-          </TouchableOpacity>
-          <Text style={styles.lastSessionInfo}>
-            {this.state.sendStatus}
-          </Text>
-
           <Text style={styles.lastSessionHeader}>Last session:</Text>
           <Text style={styles.lastSessionInfo}>
             {this.state.lastSessionStatus}
