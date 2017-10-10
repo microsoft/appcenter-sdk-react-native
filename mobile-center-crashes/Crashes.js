@@ -3,14 +3,12 @@ const MobileCenterLog = require('mobile-center/mobile-center-log');
 
 const logTag = 'MobileCenter';
 const RNCrashes = ReactNative.NativeModules.RNCrashes;
-const RNWrapperCrashesHelper = ReactNative.NativeModules.RNWrapperCrashesHelper;
 
 const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
 getErrorAttachmentsMethod = function() {};
-
 
 let UserConfirmation = {
     Send : 1,
@@ -78,7 +76,7 @@ let Crashes = {
             ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
         }
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
-        RNWrapperCrashesHelper.getUnprocessedCrashReports()
+        RNCrashes.getUnprocessedCrashReports()
         .then((reports) => {
             filteredReports = [];
             filteredReportIds = [];
@@ -89,8 +87,7 @@ let Crashes = {
                     filteredReportIds.push(report["id"]);
                 }
             });
-            
-            RNWrapperCrashesHelper.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
+            RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
                 if (alwaysSend) {
                     Helper.sendErrorAttachments(listenerMap.getErrorAttachments, filteredReports);
                 }
@@ -109,7 +106,7 @@ let Helper = {
         }
         errorReports.forEach((report) => {
             attachments = getErrorAttachmentsMethod(report);
-            RNWrapperCrashesHelper.sendErrorAttachments(attachments, report["id"]);
+            RNCrashes.sendErrorAttachments(attachments, report["id"]);
         });
     }
 };

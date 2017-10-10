@@ -140,4 +140,42 @@ RCT_EXPORT_METHOD(notifyWithUserConfirmation:(int)userConfirmation
     resolve(nil);
 }
 
+#pragma mark MSWrapperCrashesHelper Methods
+
+/**
+ * Gets a list of unprocessed crash reports.
+ */
+RCT_EXPORT_METHOD(getUnprocessedCrashReports:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  void (^fetchUnprocessedCrashReports)() = ^void() {
+    NSArray *unprocessedCrashReports = [MSWrapperCrashesHelper getUnprocessedCrashReports];
+    resolve(convertReportsToJS(unprocessedCrashReports));
+  };
+  dispatch_async(dispatch_get_main_queue(), fetchUnprocessedCrashReports);
+}
+
+/**
+ * Resumes processing for a list of error reports that is a subset of the unprocessed reports.
+ */
+RCT_EXPORT_METHOD(sendCrashReportsOrAwaitUserConfirmationForFilteredIds:(NSArray *)filteredIds
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  BOOL alwaysSend = [MSWrapperCrashesHelper sendCrashReportsOrAwaitUserConfirmationForFilteredIds:filteredIds];
+  resolve([NSNumber numberWithBool:alwaysSend]);
+}
+
+/**
+ * Sends error attachments for a particular error report.
+ */
+RCT_EXPORT_METHOD(sendErrorAttachments:(NSArray *)errorAttachments
+                  forIncidentIdentifier:(NSString *)incidentId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  [MSWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments) withIncidentIdentifier:incidentId];
+  resolve(nil);
+}
+
 @end
