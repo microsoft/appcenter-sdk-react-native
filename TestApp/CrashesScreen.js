@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import Crashes from 'mobile-center-crashes';
+import ErrorAttachmentLog from 'mobile-center-crashes';
 import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
 
@@ -70,7 +71,6 @@ export default class CrashesScreen extends Component {
 
   sendCrashes() {
     const component = this;
-    let status = '';    
     Crashes.setEventListener({
       shouldProcess(report) {
         console.log('Should process report with id: ' + report["id"] + '\n');       
@@ -82,7 +82,7 @@ export default class CrashesScreen extends Component {
         return false;
       },
 
-      getErrorAttachments(report) {
+      getErrorAttachments(report) {        
         console.log('Get error attachments for report with id: ' + report["id"] + '\n');                
         return [
           ErrorAttachmentLog.attachmentWithText("hello", "hello.txt"),
@@ -92,17 +92,14 @@ export default class CrashesScreen extends Component {
 
       willSendCrash() {
         console.log('Will send crash\n');
-        component.setState({ sendStatus: status });
       },
 
       didSendCrash() {
         console.log('Did send crash\n');
-        component.setState({ sendStatus: status });
       },
 
       failedSendingCrash() {
         console.log('Failed sending crash\n');
-        component.setState({ sendStatus: status });
       }
     });
   }

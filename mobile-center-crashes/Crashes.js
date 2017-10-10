@@ -13,7 +13,7 @@ let UserConfirmation = {
     Send : 1,
     DontSend : 2,
     AlwaySend : 3
-}
+};
 
 let ErrorAttachmentLog = {
     // Create text attachment for an error report
@@ -53,7 +53,6 @@ let Crashes = {
         return RNCrashes.setEnabled(shouldEnable);
     },
 
-    // async - returns a Promise
     notifyWithUserConfirmation(userConfirmation) {
         RNCrashes.notifyWithUserConfirmation(userConfirmation);
     },
@@ -61,7 +60,7 @@ let Crashes = {
     setEventListener(listenerMap) {
         ReactNative.DeviceEventEmitter.removeAllListeners(willSendEvent);
         ReactNative.DeviceEventEmitter.removeAllListeners(sendDidSucceed);
-        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidFail);   
+        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidFail);
         if (!listenerMap) {
             return;
         }
