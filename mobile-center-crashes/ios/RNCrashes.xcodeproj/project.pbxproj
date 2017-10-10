@@ -11,9 +11,7 @@
 		3525CF9D1F87FF960051A0A6 /* RNWrapperCrashesHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3525CF9B1F87F4340051A0A6 /* RNWrapperCrashesHelper.h */; };
 		5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNCrashes.h */; };
 		5419C2761D824AA700DDF3A1 /* RNCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2751D824AA700DDF3A1 /* RNCrashes.m */; };
-		BA7994FF1E24DD4D00569B1F /* RNCrashesDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB4D6D6B1DB6C6DB0080D9D6 /* RNCrashesDelegate.h */; };
 		BA7995001E24DD6100569B1F /* RNCrashesUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB4D6D6D1DB6C6DB0080D9D6 /* RNCrashesUtils.h */; };
-		CB4D6D6F1DB6C6DB0080D9D6 /* RNCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D6D6C1DB6C6DB0080D9D6 /* RNCrashesDelegate.m */; };
 		CB4D6D701DB6C6DB0080D9D6 /* RNCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D6D6E1DB6C6DB0080D9D6 /* RNCrashesUtils.m */; };
 /* End PBXBuildFile section */
 
@@ -26,7 +24,6 @@
 			files = (
 				3525CF9D1F87FF960051A0A6 /* RNWrapperCrashesHelper.h in CopyFiles */,
 				BA7995001E24DD6100569B1F /* RNCrashesUtils.h in CopyFiles */,
-				BA7994FF1E24DD4D00569B1F /* RNCrashesDelegate.h in CopyFiles */,
 				5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,8 +36,6 @@
 		5419C2701D824AA700DDF3A1 /* libRNCrashes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNCrashes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2731D824AA700DDF3A1 /* RNCrashes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNCrashes.h; sourceTree = "<group>"; };
 		5419C2751D824AA700DDF3A1 /* RNCrashes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNCrashes.m; sourceTree = "<group>"; };
-		CB4D6D6B1DB6C6DB0080D9D6 /* RNCrashesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCrashesDelegate.h; sourceTree = "<group>"; };
-		CB4D6D6C1DB6C6DB0080D9D6 /* RNCrashesDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCrashesDelegate.m; sourceTree = "<group>"; };
 		CB4D6D6D1DB6C6DB0080D9D6 /* RNCrashesUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCrashesUtils.h; sourceTree = "<group>"; };
 		CB4D6D6E1DB6C6DB0080D9D6 /* RNCrashesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCrashesUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,8 +70,6 @@
 		5419C2721D824AA700DDF3A1 /* RNCrashes */ = {
 			isa = PBXGroup;
 			children = (
-				CB4D6D6B1DB6C6DB0080D9D6 /* RNCrashesDelegate.h */,
-				CB4D6D6C1DB6C6DB0080D9D6 /* RNCrashesDelegate.m */,
 				CB4D6D6D1DB6C6DB0080D9D6 /* RNCrashesUtils.h */,
 				CB4D6D6E1DB6C6DB0080D9D6 /* RNCrashesUtils.m */,
 				5419C2731D824AA700DDF3A1 /* RNCrashes.h */,
@@ -146,7 +139,6 @@
 				5419C2761D824AA700DDF3A1 /* RNCrashes.m in Sources */,
 				3525CF9A1F87F4290051A0A6 /* RNWrapperCrashesHelper.m in Sources */,
 				CB4D6D701DB6C6DB0080D9D6 /* RNCrashesUtils.m in Sources */,
-				CB4D6D6F1DB6C6DB0080D9D6 /* RNCrashesDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
