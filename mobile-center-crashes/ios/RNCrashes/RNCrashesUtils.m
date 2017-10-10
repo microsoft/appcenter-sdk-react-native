@@ -94,7 +94,7 @@ NSDictionary* convertReportToJS(MSErrorReport* report) {
     if (identifier) {
         dict[@"id"] = identifier;
     }
-    
+
     NSUInteger processIdentifier = [report appProcessIdentifier];
     dict[@"appProcessIdentifier"] = @(processIdentifier);
     
@@ -152,7 +152,6 @@ NSArray* convertJSAttachmentsToNativeAttachments(NSArray* jsAttachments) {
                 if (contentType && [contentType isKindOfClass:[NSString class]]) {
                     contentTypeString = (NSString *) contentType;
                 }
-                //TODO init with
                 id attachmentLog = [MSErrorAttachmentLog attachmentWithBinary:decodedData filename:fileNameString contentType:contentTypeString];
                 [attachmentLogs addObject:attachmentLog];
             }

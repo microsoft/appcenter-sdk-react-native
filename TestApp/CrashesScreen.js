@@ -14,8 +14,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Crashes from 'mobile-center-crashes';
-import ErrorAttachmentLog from 'mobile-center-crashes';
+import { Crashes, ErrorAttachmentLog } from 'mobile-center-crashes';
 import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
 
@@ -70,10 +69,9 @@ export default class CrashesScreen extends Component {
   }
 
   sendCrashes() {
-    const component = this;
     Crashes.setEventListener({
       shouldProcess(report) {
-        console.log('Should process report with id: ' + report["id"] + '\n');       
+        console.log('Should process report with id: ' + report["id"] + '\n');
         return true;
       },
 
@@ -86,7 +84,7 @@ export default class CrashesScreen extends Component {
         console.log('Get error attachments for report with id: ' + report["id"] + '\n');                
         return [
           ErrorAttachmentLog.attachmentWithText("hello", "hello.txt"),
-          ErrorAttachmentLog.attachmentWithBinay("base64string", "icon.png", "image/png")
+          ErrorAttachmentLog.attachmentWithBinary("base64string", "icon.png", "image/png")
         ];
       },
 

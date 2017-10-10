@@ -9,6 +9,9 @@ const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
+getErrorAttachmentsMethod = function() {};
+
+
 let UserConfirmation = {
     Send : 1,
     DontSend : 2,
@@ -55,6 +58,7 @@ let Crashes = {
 
     notifyWithUserConfirmation(userConfirmation) {
         RNCrashes.notifyWithUserConfirmation(userConfirmation);
+        Helper.sendErrorAttachments(getErrorAttachmentsMethod, filteredReports);
     },
 
     setEventListener(listenerMap) {
@@ -73,22 +77,39 @@ let Crashes = {
         if (listenerMap.failedSendingCrash) {
             ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
         }
+        getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNWrapperCrashesHelper.getUnprocessedCrashReports()
         .then((reports) => {
             filteredReports = [];
+            filteredReportIds = [];
             reports.forEach((report) => {
                 if (!listenerMap.shouldProcess ||
                     listenerMap.shouldProcess(report)) {
                     filteredReports.push(report);
-                    if (listenerMap.getErrorAttachments) {
-                        errorAttachments = listenerMap.getErrorAttachments(report);
-
-                        // Send error attachments for the report.
-                        RNWrapperCrashesHelper.sendErrorAttachments(errorAttachments, report["id"]);
-                    }
+                    filteredReportIds.push(report["id"]);
                 }
             });
-            RNWrapperCrashesHelper.sendCrashReportsOrAwaitUserConfirmationForFilteredList(filteredReports);
+            
+            RNWrapperCrashesHelper.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
+                if (alwaysSend) {
+                    Helper.sendErrorAttachments(listenerMap.getErrorAttachments, filteredReports);
+                }
+                else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
+                    Crashes.notifyWithUserConfirmation(UserConfirmation.Send);
+                }
+            });
+        });
+    }
+};
+
+let Helper = {
+    sendErrorAttachments(getErrorAttachmentsMethod, errorReports) {
+        if (!getErrorAttachmentsMethod || !errorReports) {
+            return;
+        }
+        errorReports.forEach((report) => {
+            attachments = getErrorAttachmentsMethod(report);
+            RNWrapperCrashesHelper.sendErrorAttachments(attachments, report["id"]);
         });
     }
 };
@@ -103,4 +124,6 @@ if (Crashes && RNCrashes && RNCrashes.isDebuggerAttached) {
     }, Crashes);
 }
 
-module.exports = Crashes;
+
+
+module.exports = { Crashes, ErrorAttachmentLog, UserConfirmation };

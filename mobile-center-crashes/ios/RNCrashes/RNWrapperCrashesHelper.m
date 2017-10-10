@@ -44,13 +44,12 @@ RCT_EXPORT_METHOD(getUnprocessedCrashReports:(RCTPromiseResolveBlock)resolve
 /**
  * Resumes processing for a list of error reports that is a subset of the unprocessed reports.
  */
-RCT_EXPORT_METHOD(sendCrashReportsOrAwaitUserConfirmationForFilteredList:(NSArray *)filteredList
+RCT_EXPORT_METHOD(sendCrashReportsOrAwaitUserConfirmationForFilteredIds:(NSArray *)filteredIds
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  //TODO convert filteredList to an array of error reports
-  [MSWrapperCrashesHelper sendCrashReportsOrAwaitUserConfirmationForFilteredList:filteredList];
-  resolve(nil);
+  BOOL alwaysSend = [MSWrapperCrashesHelper sendCrashReportsOrAwaitUserConfirmationForFilteredIds:filteredIds];
+  resolve([NSNumber numberWithBool:alwaysSend]);
 }
 
 /**
