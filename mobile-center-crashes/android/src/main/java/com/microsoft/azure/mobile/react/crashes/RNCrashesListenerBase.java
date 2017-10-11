@@ -3,9 +3,11 @@ package com.microsoft.azure.mobile.react.crashes;
 import android.util.Base64;
 import android.util.Log;
 
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.microsoft.azure.mobile.crashes.AbstractCrashesListener;
 import com.microsoft.azure.mobile.crashes.ingestion.models.ErrorAttachmentLog;
@@ -13,10 +15,12 @@ import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 
 import org.json.JSONException;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 abstract class RNCrashesListenerBase extends AbstractCrashesListener {
 
@@ -30,7 +34,11 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
 
     private List<ErrorReport> mPendingReports = new ArrayList<>();
 
+    private List<Map.Entry<String, WritableMap>> mPendingEvents = new ArrayList<>();
+
     private ReadableMap mAttachments;
+
+    private boolean mLifecycleListenerInstalled = false;
 
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
@@ -88,11 +96,7 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
     public final void onBeforeSending(ErrorReport report) {
         RNCrashesUtils.logInfo("Sending error report: " + report.getId());
         try {
-            if (this.mReactApplicationContext != null) {
-                this.mReactApplicationContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(ON_BEFORE_SENDING_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
-            }
+            sendEvent(ON_BEFORE_SENDING_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
         } catch (JSONException e) {
             RNCrashesUtils.logError("Failed to send onBeforeSending event:");
             RNCrashesUtils.logError(Log.getStackTraceString(e));
@@ -104,11 +108,7 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
         RNCrashesUtils.logError("Failed to send error report: " + report.getId());
         RNCrashesUtils.logError(Log.getStackTraceString(reason));
         try {
-            if (this.mReactApplicationContext != null) {
-                this.mReactApplicationContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(ON_SENDING_FAILED_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
-            }
+            sendEvent(ON_SENDING_FAILED_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
         } catch (JSONException e) {
             RNCrashesUtils.logError("Failed to send onSendingFailed event:");
             RNCrashesUtils.logError(Log.getStackTraceString(e));
@@ -119,14 +119,48 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
     public final void onSendingSucceeded(ErrorReport report) {
         RNCrashesUtils.logInfo("Successfully Sent error report: " + report.getId());
         try {
-            if (this.mReactApplicationContext != null) {
-                this.mReactApplicationContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(ON_SENDING_SUCCEEDED_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
-            }
+            sendEvent(ON_SENDING_SUCCEEDED_EVENT, RNCrashesUtils.convertErrorReportToWritableMap(report));
         } catch (JSONException e) {
             RNCrashesUtils.logError("Failed to send onSendingSucceeded event:");
             RNCrashesUtils.logError(Log.getStackTraceString(e));
         }
     }
+
+    private void sendEvent(String eventType, WritableMap report) {
+        if (this.mReactApplicationContext != null) {
+            if (this.mReactApplicationContext.hasActiveCatalystInstance()) {
+                this.mReactApplicationContext
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit(eventType, report);
+            } else {
+                this.mPendingEvents.add(new AbstractMap.SimpleEntry<>(eventType, report));
+                if (!this.mLifecycleListenerInstalled) {
+                    this.mReactApplicationContext.addLifecycleEventListener(lifecycleEventListener);
+                    this.mLifecycleListenerInstalled = true;
+                }
+            }
+        }
+    }
+
+    private void replayPendingEvents() {
+        for (Map.Entry<String, WritableMap> event: this.mPendingEvents) {
+            sendEvent(event.getKey(), event.getValue());
+        }
+        this.mPendingEvents.clear();
+    }
+
+    private LifecycleEventListener lifecycleEventListener = new LifecycleEventListener() {
+        @Override
+        public void onHostResume() {
+            mReactApplicationContext.removeLifecycleEventListener(lifecycleEventListener);
+            mLifecycleListenerInstalled = false;
+            replayPendingEvents();
+        }
+        
+        @Override
+        public void onHostPause(){}
+
+        @Override
+        public void onHostDestroy(){}
+    };
 }
