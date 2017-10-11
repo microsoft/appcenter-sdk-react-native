@@ -5,7 +5,8 @@ const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
-let getErrorAttachmentsMethod = {};
+// This is set later if and when the user provides a value for the getErrorAttachments callback
+let getErrorAttachmentsMethod = () => {};
 const filteredReports = [];
 
 const UserConfirmation = {
@@ -86,7 +87,7 @@ let Crashes = {
             });
             RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
                 if (alwaysSend) {
-                    Helper.sendErrorAttachments(listenerMap.getErrorAttachments, filteredReports);
+                    Helper.sendErrorAttachments(filteredReports);
                 } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
                     Crashes.notifyWithUserConfirmation(UserConfirmation.Send);
                 }
@@ -96,7 +97,7 @@ let Crashes = {
 };
 
 let Helper = {
-    sendErrorAttachments(getErrorAttachmentsMethod, errorReports) {
+    sendErrorAttachments(errorReports) {
         if (!getErrorAttachmentsMethod || !errorReports) {
             return;
         }
