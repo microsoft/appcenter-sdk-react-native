@@ -38,8 +38,6 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
 
     private ReadableMap mAttachments;
 
-    private boolean mLifecycleListenerInstalled = false;
-
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
         this.mReactApplicationContext = reactApplicationContext;
@@ -134,10 +132,7 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
                     .emit(eventType, report);
             } else {
                 this.mPendingEvents.add(new AbstractMap.SimpleEntry<>(eventType, report));
-                if (!this.mLifecycleListenerInstalled) {
-                    this.mReactApplicationContext.addLifecycleEventListener(lifecycleEventListener);
-                    this.mLifecycleListenerInstalled = true;
-                }
+                this.mReactApplicationContext.addLifecycleEventListener(lifecycleEventListener);
             }
         }
     }
@@ -153,7 +148,6 @@ abstract class RNCrashesListenerBase extends AbstractCrashesListener {
         @Override
         public void onHostResume() {
             mReactApplicationContext.removeLifecycleEventListener(lifecycleEventListener);
-            mLifecycleListenerInstalled = false;
             replayPendingEvents();
         }
         
