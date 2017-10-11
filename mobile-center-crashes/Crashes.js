@@ -1,22 +1,20 @@
 const ReactNative = require('react-native');
-const MobileCenterLog = require('mobile-center/mobile-center-log');
 
-const logTag = 'MobileCenter';
 const RNCrashes = ReactNative.NativeModules.RNCrashes;
-
 const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
-getErrorAttachmentsMethod = function() {};
+let getErrorAttachmentsMethod = {};
+const filteredReports = [];
 
-let UserConfirmation = {
-    Send : 1,
-    DontSend : 2,
-    AlwaySend : 3
+const UserConfirmation = {
+    Send: 1,
+    DontSend: 2,
+    AlwaySend: 3
 };
 
-let ErrorAttachmentLog = {
+const ErrorAttachmentLog = {
     // Create text attachment for an error report
     attachmentWithText(text, fileName) {
         return { text, fileName };
@@ -78,20 +76,18 @@ let Crashes = {
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNCrashes.getUnprocessedCrashReports()
         .then((reports) => {
-            filteredReports = [];
-            filteredReportIds = [];
+            const filteredReportIds = [];
             reports.forEach((report) => {
                 if (!listenerMap.shouldProcess ||
                     listenerMap.shouldProcess(report)) {
                     filteredReports.push(report);
-                    filteredReportIds.push(report["id"]);
+                    filteredReportIds.push(report.id);
                 }
             });
             RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
                 if (alwaysSend) {
                     Helper.sendErrorAttachments(listenerMap.getErrorAttachments, filteredReports);
-                }
-                else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
+                } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
                     Crashes.notifyWithUserConfirmation(UserConfirmation.Send);
                 }
             });
@@ -105,8 +101,8 @@ let Helper = {
             return;
         }
         errorReports.forEach((report) => {
-            attachments = getErrorAttachmentsMethod(report);
-            RNCrashes.sendErrorAttachments(attachments, report["id"]);
+            const attachments = getErrorAttachmentsMethod(report);
+            RNCrashes.sendErrorAttachments(attachments, report.id);
         });
     }
 };
@@ -120,7 +116,5 @@ if (Crashes && RNCrashes && RNCrashes.isDebuggerAttached) {
         },
     }, Crashes);
 }
-
-
 
 module.exports = { Crashes, ErrorAttachmentLog, UserConfirmation };
