@@ -7,13 +7,13 @@ const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
 
 // This is set later if and when the user provides a value for the getErrorAttachments callback
-let getErrorAttachmentsMethod = () => {};
+let getErrorAttachmentsMethod = () => { };
 const filteredReports = [];
 
 const UserConfirmation = {
     Send: 1,
     DontSend: 2,
-    AlwaySend: 3
+    AlwaysSend: 3
 };
 
 const ErrorAttachmentLog = {
@@ -55,9 +55,11 @@ let Crashes = {
         return RNCrashes.setEnabled(shouldEnable);
     },
 
-    notifyWithUserConfirmation(userConfirmation) {
+    notifyUserConfirmation(userConfirmation) {
         RNCrashes.notifyWithUserConfirmation(userConfirmation);
-        Helper.sendErrorAttachments(filteredReports);
+        if (userConfirmation != UserConfirmation.DontSend) {
+            Helper.sendErrorAttachments(filteredReports);
+        }
     },
 
     setEventListener(listenerMap) {
@@ -79,21 +81,23 @@ let Crashes = {
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNCrashes.getUnprocessedCrashReports()
             .then((reports) => {
-                const filteredReportIds = [];
-                reports.forEach((report) => {
-                    if (!listenerMap.shouldProcess ||
-                        listenerMap.shouldProcess(report)) {
-                        filteredReports.push(report);
-                        filteredReportIds.push(report.id);
-                    }
-                });
-                RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
-                    if (alwaysSend) {
-                        Helper.sendErrorAttachments(filteredReports);
-                    } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
-                        Crashes.notifyWithUserConfirmation(UserConfirmation.Send);
-                    }
-                });
+                if (reports.length > 0) {
+                    const filteredReportIds = [];
+                    reports.forEach((report) => {
+                        if (!listenerMap.shouldProcess ||
+                            listenerMap.shouldProcess(report)) {
+                            filteredReports.push(report);
+                            filteredReportIds.push(report.id);
+                        }
+                    });
+                    RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
+                        if (alwaysSend) {
+                            Helper.sendErrorAttachments(filteredReports);
+                        } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
+                            Crashes.notifyUserConfirmation(UserConfirmation.Send);
+                        }
+                    });
+                }
             });
     }
 };
@@ -110,14 +114,9 @@ let Helper = {
     }
 };
 
-// Android does not have "isDebuggerAttached" method
-if (Crashes && RNCrashes && RNCrashes.isDebuggerAttached) {
-    Crashes = Object.assign({
-        // async - returns a Promise
-        isDebuggerAttached() {
-            return RNCrashes.isDebuggerAttached();
-        },
-    }, Crashes);
-}
+// Exports with "curly braces".
+Crashes.UserConfirmation = UserConfirmation;
+Crashes.ErrorAttachmentLog = ErrorAttachmentLog;
 
-module.exports = { Crashes, ErrorAttachmentLog, UserConfirmation };
+// Export main class without "curly braces".
+module.exports = Crashes;
