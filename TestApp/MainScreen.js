@@ -99,7 +99,7 @@ Crashes.setEventListener({
     console.log('Get error attachments for report with id: ' + report["id"] + '\n');
     return [
       ErrorAttachmentLog.attachmentWithText("hello", "hello.txt"),
-      ErrorAttachmentLog.attachmentWithBinary("base64string", "icon.png", "image/png")
+      ErrorAttachmentLog.attachmentWithBinary(testIcon, "icon.png", "image/png")
     ];
   },
 

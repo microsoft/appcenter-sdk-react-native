@@ -30,6 +30,7 @@ const ErrorAttachmentLog = {
 };
 
 let Crashes = {
+
     // async - returns a Promise
     generateTestCrash() {
         return RNCrashes.generateTestCrash();
@@ -102,9 +103,9 @@ let Crashes = {
     }
 };
 
-let Helper = {
+const Helper = {
     sendErrorAttachments(errorReports) {
-        if (!getErrorAttachmentsMethod || !errorReports) {
+        if (!getErrorAttachmentsMethod) {
             return;
         }
         errorReports.forEach((report) => {
