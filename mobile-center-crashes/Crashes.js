@@ -1,6 +1,7 @@
 const ReactNative = require('react-native');
 
-const RNCrashes = ReactNative.NativeModules.RNCrashes;
+const { RNCrashes } = ReactNative.NativeModules;
+
 const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
 const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
 const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
@@ -16,6 +17,7 @@ const UserConfirmation = {
 };
 
 const ErrorAttachmentLog = {
+
     // Create text attachment for an error report
     attachmentWithText(text, fileName) {
         return { text, fileName };
@@ -55,7 +57,7 @@ let Crashes = {
 
     notifyWithUserConfirmation(userConfirmation) {
         RNCrashes.notifyWithUserConfirmation(userConfirmation);
-        Helper.sendErrorAttachments(getErrorAttachmentsMethod, filteredReports);
+        Helper.sendErrorAttachments(filteredReports);
     },
 
     setEventListener(listenerMap) {
@@ -76,23 +78,23 @@ let Crashes = {
         }
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNCrashes.getUnprocessedCrashReports()
-        .then((reports) => {
-            const filteredReportIds = [];
-            reports.forEach((report) => {
-                if (!listenerMap.shouldProcess ||
-                    listenerMap.shouldProcess(report)) {
-                    filteredReports.push(report);
-                    filteredReportIds.push(report.id);
-                }
+            .then((reports) => {
+                const filteredReportIds = [];
+                reports.forEach((report) => {
+                    if (!listenerMap.shouldProcess ||
+                        listenerMap.shouldProcess(report)) {
+                        filteredReports.push(report);
+                        filteredReportIds.push(report.id);
+                    }
+                });
+                RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
+                    if (alwaysSend) {
+                        Helper.sendErrorAttachments(filteredReports);
+                    } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
+                        Crashes.notifyWithUserConfirmation(UserConfirmation.Send);
+                    }
+                });
             });
-            RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
-                if (alwaysSend) {
-                    Helper.sendErrorAttachments(filteredReports);
-                } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
-                    Crashes.notifyWithUserConfirmation(UserConfirmation.Send);
-                }
-            });
-        });
     }
 };
 
