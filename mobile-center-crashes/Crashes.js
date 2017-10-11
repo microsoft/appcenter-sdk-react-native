@@ -29,7 +29,7 @@ const ErrorAttachmentLog = {
     }
 };
 
-let Crashes = {
+const Crashes = {
 
     // async - returns a Promise
     generateTestCrash() {
@@ -58,7 +58,7 @@ let Crashes = {
 
     notifyUserConfirmation(userConfirmation) {
         RNCrashes.notifyWithUserConfirmation(userConfirmation);
-        if (userConfirmation != UserConfirmation.DontSend) {
+        if (userConfirmation !== UserConfirmation.DontSend) {
             Helper.sendErrorAttachments(filteredReports);
         }
     },
