@@ -1,42 +1,45 @@
 package com.microsoft.azure.mobile.react.crashes;
 
 import android.app.Application;
+import android.util.Base64;
+import android.util.Log;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.crashes.Crashes;
+import com.microsoft.azure.mobile.crashes.WrapperSdkExceptionManager;
+import com.microsoft.azure.mobile.crashes.ingestion.models.ErrorAttachmentLog;
 import com.microsoft.azure.mobile.crashes.model.ErrorReport;
 import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
 import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class RNCrashesModule extends BaseJavaModule {
 
-    private RNCrashesListenerBase mCrashListener;
+    private RNCrashesListener mCrashListener;
 
-    public RNCrashesModule(Application application, RNCrashesListenerBase crashListener) {
-        this.mCrashListener = crashListener;
-        if (crashListener != null) {
-            Crashes.setListener(crashListener);
-        }
-
+    public RNCrashesModule(Application application, boolean automaticProcessing) {
+        mCrashListener = new RNCrashesListener();
+        WrapperSdkExceptionManager.setAutomaticProcessing(automaticProcessing);
+        Crashes.setListener(mCrashListener);
         RNMobileCenterShared.configureMobileCenter(application);
         MobileCenter.start(Crashes.class);
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {
         RNCrashesUtils.logDebug("Setting react context");
-        if (this.mCrashListener != null) {
-            this.mCrashListener.setReactApplicationContext(reactContext);
-        }
+        this.mCrashListener.setReactApplicationContext(reactContext);
     }
 
     @Override
@@ -74,12 +77,6 @@ public class RNCrashesModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void getCrashReports(Promise promise) {
-        List<ErrorReport> pendingReports = this.mCrashListener.getAndClearReports();
-        promise.resolve(RNCrashesUtils.convertErrorReportsToWritableArrayOrEmpty(pendingReports));
-    }
-
-    @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
         Crashes.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
 
@@ -114,12 +111,58 @@ public class RNCrashesModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void crashUserResponse(boolean send, ReadableMap attachments, Promise promise) {
-        int response = send ? Crashes.SEND : Crashes.DONT_SEND;
-        if (mCrashListener != null) {
-            mCrashListener.setAttachments(attachments);
+    public void notifyWithUserConfirmation(int userConfirmation) {
+        Crashes.notifyUserConfirmation(userConfirmation - 1);
+    }
+
+    @ReactMethod
+    public void getUnprocessedCrashReports(final Promise promise) {
+        WrapperSdkExceptionManager.getUnprocessedErrorReports().thenAccept(new MobileCenterConsumer<Collection<ErrorReport>>() {
+
+            @Override
+            public void accept(Collection<ErrorReport> errorReports) {
+                promise.resolve(RNCrashesUtils.convertErrorReportsToWritableArrayOrEmpty(errorReports));
+            }
+        });
+    }
+
+    @ReactMethod
+    public void sendCrashReportsOrAwaitUserConfirmationForFilteredIds(ReadableArray filteredReportIds, final Promise promise) {
+        int size = filteredReportIds.size();
+        Collection<String> filteredReportIdsAsList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            filteredReportIdsAsList.add(filteredReportIds.getString(i));
         }
-        Crashes.notifyUserConfirmation(response);
-        promise.resolve("");
+        WrapperSdkExceptionManager.sendCrashReportsOrAwaitUserConfirmation(filteredReportIdsAsList).thenAccept(new MobileCenterConsumer<Boolean>() {
+
+            @Override
+            public void accept(Boolean alwaysSend) {
+                promise.resolve(alwaysSend);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void sendErrorAttachments(ReadableArray attachments, String errorId) {
+        try {
+            Collection<ErrorAttachmentLog> attachmentLogs = new LinkedList<>();
+            for (int i = 0; i < attachments.size(); i++) {
+                ReadableMap jsAttachment = attachments.getMap(i);
+                String fileName = jsAttachment.getString("fileName");
+                if (jsAttachment.hasKey("text")) {
+                    String text = jsAttachment.getString("text");
+                    attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, fileName));
+                } else {
+                    String encodedData = jsAttachment.getString("data");
+                    byte[] data = Base64.decode(encodedData, Base64.DEFAULT);
+                    String contentType = jsAttachment.getString("contentType");
+                    attachmentLogs.add(ErrorAttachmentLog.attachmentWithBinary(data, fileName, contentType));
+                }
+            }
+            WrapperSdkExceptionManager.sendErrorAttachments(errorId, attachmentLogs);
+        } catch (Exception e) {
+            RNCrashesUtils.logError("Failed to get error attachment for report: " + errorId);
+            RNCrashesUtils.logError(Log.getStackTraceString(e));
+        }
     }
 }
