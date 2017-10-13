@@ -75,14 +75,14 @@ Push.setEventListener({
   }
 });
 
-Crashes.setEventListener({
+Crashes.setListener({
   shouldProcess(report) {
-    console.log('Should process report with id: ' + report["id"] + '\n');
+    console.log(`Should process report with id: ${report.id}'`);
     return true;
   },
 
   shouldAwaitUserConfirmation() {
-    console.log('Should await user confirmation\n');
+    console.log('Should await user confirmation');
     Alert.alert(
       'One or more crashes were detected, do you want to report them?',
       null,
@@ -96,23 +96,23 @@ Crashes.setEventListener({
   },
 
   getErrorAttachments(report) {
-    console.log('Get error attachments for report with id: ' + report["id"] + '\n');
+    console.log(`Get error attachments for report with id: ${report.id}'`);
     return [
-      ErrorAttachmentLog.attachmentWithText("hello", "hello.txt"),
-      ErrorAttachmentLog.attachmentWithBinary(testIcon, "icon.png", "image/png")
+      ErrorAttachmentLog.attachmentWithText('hello', 'hello.txt'),
+      ErrorAttachmentLog.attachmentWithBinary(testIcon, 'icon.png', 'image/png')
     ];
   },
 
-  willSendCrash() {
-    console.log('Will send crash\n');
+  onBeforeSending() {
+    console.log('Will send crash');
   },
 
-  didSendCrash() {
-    console.log('Did send crash\n');
+  onSendingSucceeded() {
+    console.log('Did send crash');
   },
 
-  failedSendingCrash() {
-    console.log('Failed sending crash\n');
+  onSendingFailed() {
+    console.log('Failed sending crash');
   }
 });
 

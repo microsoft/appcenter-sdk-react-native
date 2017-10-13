@@ -4,9 +4,9 @@ const MobileCenterLog = require('mobile-center/mobile-center-log');
 const { RNCrashes } = ReactNative.NativeModules;
 
 const LOG_TAG = 'MobileCenterCrashes';
-const EVENT_SENDING = 'MobileCenterErrorReportOnBeforeSending';
-const EVENT_SENT = 'MobileCenterErrorReportOnSendingSucceeded';
-const EVENT_FAILED_TO_SEND = 'MobileCenterErrorReportOnSendingFailed';
+const EVENT_BEFORE_SENDING = 'MobileCenterErrorReportOnBeforeSending';
+const EVENT_SENDING_SUCCEEDED = 'MobileCenterErrorReportOnSendingSucceeded';
+const EVENT_SENDING_FAILED = 'MobileCenterErrorReportOnSendingFailed';
 
 // This is set later if and when the user provides a value for the getErrorAttachments callback
 let getErrorAttachmentsMethod = () => { };
@@ -71,25 +71,25 @@ const Crashes = {
                 return;
         }
         if (userConfirmation !== UserConfirmation.DONT_SEND) {
-            Helper.sendErrorAttachments(filteredReports);
+            Helper.sendErrorAttachments();
         }
     },
 
     setEventListener(listenerMap) {
-        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING);
-        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENT);
-        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_FAILED_TO_SEND);
+        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_BEFORE_SENDING);
+        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING_SUCCEEDED);
+        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING_FAILED);
         if (!listenerMap) {
             return;
         }
-        if (listenerMap.willSendCrash) {
-            ReactNative.DeviceEventEmitter.addListener(EVENT_SENDING, listenerMap.willSendCrash);
+        if (listenerMap.onBeforeSending) {
+            ReactNative.DeviceEventEmitter.addListener(EVENT_BEFORE_SENDING, listenerMap.onBeforeSending);
         }
-        if (listenerMap.didSendCrash) {
-            ReactNative.DeviceEventEmitter.addListener(EVENT_SENT, listenerMap.didSendCrash);
+        if (listenerMap.onSendingSucceeded) {
+            ReactNative.DeviceEventEmitter.addListener(EVENT_SENDING_SUCCEEDED, listenerMap.onSendingSucceeded);
         }
-        if (listenerMap.failedSendingCrash) {
-            ReactNative.DeviceEventEmitter.addListener(EVENT_FAILED_TO_SEND, listenerMap.failedSendingCrash);
+        if (listenerMap.onSendingFailed) {
+            ReactNative.DeviceEventEmitter.addListener(EVENT_SENDING_FAILED, listenerMap.onSendingFailed);
         }
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNCrashes.getUnprocessedCrashReports()
@@ -105,7 +105,7 @@ const Crashes = {
                     });
                     RNCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
                         if (alwaysSend) {
-                            Helper.sendErrorAttachments(filteredReports);
+                            Helper.sendErrorAttachments();
                         } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
                             Crashes.notifyUserConfirmation(UserConfirmation.SEND);
                         }
@@ -116,11 +116,11 @@ const Crashes = {
 };
 
 const Helper = {
-    sendErrorAttachments(errorReports) {
+    sendErrorAttachments() {
         if (!getErrorAttachmentsMethod) {
             return;
         }
-        errorReports.forEach((report) => {
+        filteredReports.forEach((report) => {
             const attachments = getErrorAttachmentsMethod(report);
             RNCrashes.sendErrorAttachments(attachments, report.id);
         });
