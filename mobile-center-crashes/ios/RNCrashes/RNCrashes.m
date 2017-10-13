@@ -19,6 +19,7 @@
 #endif
 
 #import "RNCrashesUtils.h"
+#import "RNCrashesDelegate.h"
 #import <MobileCenterCrashes/MSWrapperCrashesHelper.h>
 
 @import MobileCenterCrashes;
@@ -41,7 +42,7 @@ RCT_EXPORT_MODULE();
 {
     [RNMobileCenterShared configureMobileCenter];
     [MSWrapperCrashesHelper setAutomaticProcessing:NO];
-    
+    [MSCrashes setDelegate:[RNCrashesDelegate new]];
     //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
     [MSMobileCenter startService:[MSCrashes class]];
@@ -50,7 +51,7 @@ RCT_EXPORT_MODULE();
 + (void)registerWithAutomaticProcessing
 {
     [RNMobileCenterShared configureMobileCenter];
-    
+    [MSCrashes setDelegate:[RNCrashesDelegate new]];
     //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
     [MSMobileCenter startService:[MSCrashes class]];
