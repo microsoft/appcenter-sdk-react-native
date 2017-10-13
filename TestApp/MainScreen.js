@@ -87,9 +87,9 @@ Crashes.setEventListener({
       'One or more crashes were detected, do you want to report them?',
       null,
       [
-        { text: 'Yes, and ask me again if it occurs again.', onPress: () => Crashes.notifyUserConfirmation(UserConfirmation.Send) },
-        { text: 'Yes, always send them', onPress: () => Crashes.notifyUserConfirmation(UserConfirmation.AlwaysSend) },
-        { text: 'Don\'t send at this time', onPress: () => Crashes.notifyUserConfirmation(UserConfirmation.DontSend) },
+        { text: 'Yes, and ask me again if it occurs again.', onPress: () => Crashes.notifyUserConfirmation(UserConfirmation.SEND) },
+        { text: 'Yes, always send them', onPress: () => Crashes.notifyUserConfirmation(UserConfirmation.ALWAYS_SEND) },
+        { text: 'Don\'t send at this time', onPress: () => Crashes.notifyUserConfirmation(UserConfirmation.DONT_SEND) },
       ]
     );
     return true;

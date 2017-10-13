@@ -27,6 +27,21 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class RNCrashesModule extends BaseJavaModule {
 
+    /**
+     * Constant for DO NOT SEND crash report.
+     */
+    private static final int DONT_SEND = 0;
+
+    /**
+     * Constant for SEND crash report.
+     */
+    private static final int SEND = 1;
+
+    /**
+     * Constant for ALWAYS SEND crash reports.
+     */
+    private static final int ALWAYS_SEND = 2;
+
     private RNCrashesListener mCrashListener;
 
     public RNCrashesModule(Application application, boolean automaticProcessing) {
@@ -112,7 +127,25 @@ public class RNCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void notifyWithUserConfirmation(int userConfirmation) {
-        Crashes.notifyUserConfirmation(userConfirmation - 1);
+
+        /* Translate JS constant to Android. Android uses different order of enum than JS/iOS/.NET. */
+        switch (userConfirmation) {
+
+            case DONT_SEND:
+                userConfirmation = Crashes.DONT_SEND;
+                break;
+
+            case SEND:
+                userConfirmation = Crashes.SEND;
+                break;
+
+            case ALWAYS_SEND:
+                userConfirmation = Crashes.ALWAYS_SEND;
+                break;
+        }
+
+        /* Pass translated value, if not translated, native SDK should check the value itself for error. */
+        Crashes.notifyUserConfirmation(userConfirmation);
     }
 
     @ReactMethod

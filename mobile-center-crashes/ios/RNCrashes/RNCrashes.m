@@ -31,9 +31,9 @@
 
 @implementation RNCrashes
 
+static const int kMSUserConfirmationDontSendJS = 0;
 static const int kMSUserConfirmationSendJS = 1;
-static const int kMSUserConfirmationDontSendJS = 2;
-static const int kMSUserConfirmationAlwaysSendJS = 3;
+static const int kMSUserConfirmationAlwaysSendJS = 2;
 
 RCT_EXPORT_MODULE();
 
@@ -125,11 +125,11 @@ RCT_EXPORT_METHOD(notifyWithUserConfirmation:(int)userConfirmation
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
     switch (userConfirmation) {
-        case kMSUserConfirmationSendJS:
-            [MSCrashes notifyWithUserConfirmation:MSUserConfirmationSend];
-            break;
         case kMSUserConfirmationDontSendJS:
             [MSCrashes notifyWithUserConfirmation:MSUserConfirmationDontSend];
+            break;
+        case kMSUserConfirmationSendJS:
+            [MSCrashes notifyWithUserConfirmation:MSUserConfirmationSend];
             break;
         case kMSUserConfirmationAlwaysSendJS:
             [MSCrashes notifyWithUserConfirmation:MSUserConfirmationAlways];

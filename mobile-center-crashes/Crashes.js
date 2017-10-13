@@ -1,19 +1,21 @@
 const ReactNative = require('react-native');
+const MobileCenterLog = require('mobile-center/mobile-center-log');
 
 const { RNCrashes } = ReactNative.NativeModules;
 
-const willSendEvent = 'MobileCenterErrorReportOnBeforeSending';
-const sendDidSucceed = 'MobileCenterErrorReportOnSendingSucceeded';
-const sendDidFail = 'MobileCenterErrorReportOnSendingFailed';
+const LOG_TAG = 'MobileCenterCrashes';
+const EVENT_SENDING = 'MobileCenterErrorReportOnBeforeSending';
+const EVENT_SENT = 'MobileCenterErrorReportOnSendingSucceeded';
+const EVENT_FAILED_TO_SEND = 'MobileCenterErrorReportOnSendingFailed';
 
 // This is set later if and when the user provides a value for the getErrorAttachments callback
 let getErrorAttachmentsMethod = () => { };
 const filteredReports = [];
 
 const UserConfirmation = {
-    Send: 1,
-    DontSend: 2,
-    AlwaysSend: 3
+    DONT_SEND: 0,
+    SEND: 1,
+    ALWAYS_SEND: 2
 };
 
 const ErrorAttachmentLog = {
@@ -57,27 +59,37 @@ const Crashes = {
     },
 
     notifyUserConfirmation(userConfirmation) {
-        RNCrashes.notifyWithUserConfirmation(userConfirmation);
-        if (userConfirmation !== UserConfirmation.DontSend) {
+        switch (userConfirmation) {
+            case UserConfirmation.DONT_SEND:
+            case UserConfirmation.SEND:
+            case UserConfirmation.ALWAYS_SEND:
+                RNCrashes.notifyWithUserConfirmation(userConfirmation);
+                break;
+
+            default:
+                MobileCenterLog.error(LOG_TAG, 'Crashes.notifyUserConfirmation: Invalid parameter value.');
+                return;
+        }
+        if (userConfirmation !== UserConfirmation.DONT_SEND) {
             Helper.sendErrorAttachments(filteredReports);
         }
     },
 
     setEventListener(listenerMap) {
-        ReactNative.DeviceEventEmitter.removeAllListeners(willSendEvent);
-        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidSucceed);
-        ReactNative.DeviceEventEmitter.removeAllListeners(sendDidFail);
+        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING);
+        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENT);
+        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_FAILED_TO_SEND);
         if (!listenerMap) {
             return;
         }
         if (listenerMap.willSendCrash) {
-            ReactNative.DeviceEventEmitter.addListener(willSendEvent, listenerMap.willSendCrash);
+            ReactNative.DeviceEventEmitter.addListener(EVENT_SENDING, listenerMap.willSendCrash);
         }
         if (listenerMap.didSendCrash) {
-            ReactNative.DeviceEventEmitter.addListener(sendDidSucceed, listenerMap.didSendCrash);
+            ReactNative.DeviceEventEmitter.addListener(EVENT_SENT, listenerMap.didSendCrash);
         }
         if (listenerMap.failedSendingCrash) {
-            ReactNative.DeviceEventEmitter.addListener(sendDidFail, listenerMap.failedSendingCrash);
+            ReactNative.DeviceEventEmitter.addListener(EVENT_FAILED_TO_SEND, listenerMap.failedSendingCrash);
         }
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNCrashes.getUnprocessedCrashReports()
@@ -95,7 +107,7 @@ const Crashes = {
                         if (alwaysSend) {
                             Helper.sendErrorAttachments(filteredReports);
                         } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
-                            Crashes.notifyUserConfirmation(UserConfirmation.Send);
+                            Crashes.notifyUserConfirmation(UserConfirmation.SEND);
                         }
                     });
                 }
@@ -112,6 +124,9 @@ const Helper = {
             const attachments = getErrorAttachmentsMethod(report);
             RNCrashes.sendErrorAttachments(attachments, report.id);
         });
+
+        // Prevent multipe calls if shouldAwaitUserConfirmation is false and user calling notifyUserConfirmation for some reason
+        filteredReports.length = 0;
     }
 };
 
