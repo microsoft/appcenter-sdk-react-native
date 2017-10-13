@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3581FE7F1F916EDD003E3876 /* RNCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3581FE7D1F916EDD003E3876 /* RNCrashesDelegate.m */; };
 		5419C2741D824AA700DDF3A1 /* RNCrashes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2731D824AA700DDF3A1 /* RNCrashes.h */; };
 		5419C2761D824AA700DDF3A1 /* RNCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C2751D824AA700DDF3A1 /* RNCrashes.m */; };
 		BA7995001E24DD6100569B1F /* RNCrashesUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CB4D6D6D1DB6C6DB0080D9D6 /* RNCrashesUtils.h */; };
@@ -28,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3581FE7D1F916EDD003E3876 /* RNCrashesDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNCrashesDelegate.m; path = RNCrashes/RNCrashesDelegate.m; sourceTree = "<group>"; };
+		3581FE7E1F916EDD003E3876 /* RNCrashesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNCrashesDelegate.h; path = RNCrashes/RNCrashesDelegate.h; sourceTree = "<group>"; };
 		5419C2701D824AA700DDF3A1 /* libRNCrashes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNCrashes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2731D824AA700DDF3A1 /* RNCrashes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNCrashes.h; sourceTree = "<group>"; };
 		5419C2751D824AA700DDF3A1 /* RNCrashes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNCrashes.m; sourceTree = "<group>"; };
@@ -49,6 +52,8 @@
 		5419C2671D824AA700DDF3A1 = {
 			isa = PBXGroup;
 			children = (
+				3581FE7E1F916EDD003E3876 /* RNCrashesDelegate.h */,
+				3581FE7D1F916EDD003E3876 /* RNCrashesDelegate.m */,
 				5419C2721D824AA700DDF3A1 /* RNCrashes */,
 				5419C2711D824AA700DDF3A1 /* Products */,
 			);
@@ -129,6 +134,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3581FE7F1F916EDD003E3876 /* RNCrashesDelegate.m in Sources */,
 				5419C2761D824AA700DDF3A1 /* RNCrashes.m in Sources */,
 				CB4D6D701DB6C6DB0080D9D6 /* RNCrashesUtils.m in Sources */,
 			);
