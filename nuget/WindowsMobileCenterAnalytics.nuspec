@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.Mobile.Analytics</id>
-    <title>Mobile Center Analytics</title>
-    <authors>Microsoft Corporation</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Microsoft Visual Studio Mobile Center Analytics package provides analytics capabilities for your mobile applications.</summary>
+    <id>Microsoft.Azure.AppCenter.Analytics</id>
+    <title>App Center Analytics</title>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center Analytics package provides analytics capabilities for your mobile applications.</summary>
     <description>This package contains functionalities to collect session, device properties, events etc… for your application.</description>
-    <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
-    <tags>mobilecenter</tags>
-    <projectUrl>https://aka.ms/telgml</projectUrl>
-    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter analytics mobilecenter</tags>
+    <projectUrl>https://aka.ms/telgml</projectUrl> <!-- TODO - change link -->
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl> <!-- TODO - change link -->
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl> <!-- TODO - change link -->
     <dependencies>
-      <dependency id="Microsoft.Azure.Mobile" version="$version$" />
+      <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.AppCenter.Analytics.dll" target="lib/uap10.0" />
   </files>
 </package>
