@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import {
-  Alert,
   StyleSheet,
   Text,
   View,
@@ -34,7 +33,7 @@ export default class CrashesScreen extends Component {
   async componentDidMount() {
     let status = '';
     const component = this;
-    
+
     const crashesEnabled = await Crashes.isEnabled();
     component.setState({ crashesEnabled });
 
