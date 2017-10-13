@@ -14,7 +14,7 @@ static NSString *ON_BEFORE_SENDING_EVENT = @"MobileCenterErrorReportOnBeforeSend
 static NSString *ON_SENDING_FAILED_EVENT = @"MobileCenterErrorReportOnSendingFailed";
 static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSendingSucceeded";
 
-@implementation RNCrashesDelegateBase
+@implementation RNCrashesDelegate
 
 - (void) crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport
 {
