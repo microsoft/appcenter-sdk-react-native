@@ -41,7 +41,7 @@ static const int kMSUserConfirmationDontSendJS = 0;
 static const int kMSUserConfirmationSendJS = 1;
 static const int kMSUserConfirmationAlwaysSendJS = 2;
 
-static const dispatch_once_t onceToken;
+static dispatch_once_t onceToken;
 static RNCrashesDelegate *crashesDelegate = nil;
 
 RCT_EXPORT_MODULE();
@@ -200,7 +200,7 @@ RCT_EXPORT_METHOD(sendErrorAttachments:(NSArray *)errorAttachments
 
 + (RNCrashesDelegate*) sharedCrashesDelegate {
     dispatch_once(&onceToken, ^{
-        if (crasahesDelegate == nil) {
+        if (crashesDelegate == nil) {
             crashesDelegate = [RNCrashesDelegate new];
         }
     });
