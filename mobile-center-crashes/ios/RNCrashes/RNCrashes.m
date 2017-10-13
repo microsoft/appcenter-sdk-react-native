@@ -20,7 +20,11 @@
 
 #import "RNCrashesUtils.h"
 #import "RNCrashesDelegate.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wincomplete-umbrella"
 #import <MobileCenterCrashes/MSWrapperCrashesHelper.h>
+#pragma GCC diagnostic pop
 
 @import MobileCenterCrashes;
 @import RNMobileCenterShared;
@@ -32,9 +36,13 @@
 
 @implementation RNCrashes
 
+@synthesize bridge = _bridge;
+
 static const int kMSUserConfirmationDontSendJS = 0;
 static const int kMSUserConfirmationSendJS = 1;
 static const int kMSUserConfirmationAlwaysSendJS = 2;
+
+static RNCrashesDelegate *crashesDelegate = [RNCrashesDelegate new];
 
 RCT_EXPORT_MODULE();
 
@@ -42,7 +50,7 @@ RCT_EXPORT_MODULE();
 {
     [RNMobileCenterShared configureMobileCenter];
     [MSWrapperCrashesHelper setAutomaticProcessing:NO];
-    [MSCrashes setDelegate:[RNCrashesDelegate new]];
+    [MSCrashes setDelegate:crashesDelegate];
     //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
     [MSMobileCenter startService:[MSCrashes class]];
@@ -51,7 +59,7 @@ RCT_EXPORT_MODULE();
 + (void)registerWithAutomaticProcessing
 {
     [RNMobileCenterShared configureMobileCenter];
-    [MSCrashes setDelegate:[RNCrashesDelegate new]];
+    [MSCrashes setDelegate:crashesDelegate];
     //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
     [MSMobileCenter startService:[MSCrashes class]];
@@ -64,9 +72,20 @@ RCT_EXPORT_MODULE();
     // Normally the bridge is nil at this point, but I left this code here anyway.
     // When the RNCrashes setBridge setter is called, below, is when the bridge is actually provided.
     if (self) {
+        [crashesDelegate setBridge:self.bridge];
     }
 
     return self;
+}
+
+-(void)setBridge:(RCTBridge*) bridgeValue
+{
+    _bridge = bridgeValue;
+    [crashesDelegate setBridge:bridgeValue];
+}
+
+- (RCTBridge*) bridge {
+    return _bridge;
 }
 
 - (NSDictionary *)constantsToExport
@@ -150,7 +169,7 @@ RCT_EXPORT_METHOD(getUnprocessedCrashReports:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
   void (^fetchUnprocessedCrashReports)() = ^void() {
-    NSArray *unprocessedCrashReports = [MSWrapperCrashesHelper getUnprocessedCrashReports];
+    NSArray *unprocessedCrashReports = [MSWrapperCrashesHelper unprocessedCrashReports];
     resolve(convertReportsToJS(unprocessedCrashReports));
   };
   dispatch_async(dispatch_get_main_queue(), fetchUnprocessedCrashReports);
