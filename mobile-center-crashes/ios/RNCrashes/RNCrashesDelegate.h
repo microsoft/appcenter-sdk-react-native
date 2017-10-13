@@ -13,5 +13,7 @@
 
 @interface RNCrashesDelegate : NSObject<MSCrashesDelegate>
 
+@property RCTBridge* bridge;
+
 @end
 
