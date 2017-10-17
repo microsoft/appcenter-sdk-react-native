@@ -15,7 +15,7 @@ namespace Contoso.Forms.Puppet
 {
     public partial class App
     {
-        private const string LogTag = "MobileCenterXamarinPuppet";
+        public const string LogTag = "MobileCenterXamarinPuppet";
 
         // Mobile Center keys
         private const string UwpKey = "a678b499-1912-4a94-9d97-25b569284d3a";
