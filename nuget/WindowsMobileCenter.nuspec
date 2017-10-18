@@ -9,9 +9,9 @@
     <description>This package contains the basic functionalities that all App Center services use to communicate with the backend.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter mobilecenter</tags>
-    <projectUrl>https://aka.ms/telgml</projectUrl> <!-- TODO - change link -->
-    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl> <!-- TODO - change link -->
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl> <!-- TODO - change link -->
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
       <group targetFramework="uap10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2"/>

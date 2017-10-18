@@ -9,9 +9,9 @@
     <description>This package provides capability to display in-app updates to your app users when a new version of the application is released.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter distribute mobilecenter</tags>
-    <projectUrl>https://aka.ms/telgml</projectUrl> <!-- TODO - change link -->
-    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl> <!-- TODO - change link -->
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl> <!-- TODO - change link -->
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
       <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
     </dependencies>

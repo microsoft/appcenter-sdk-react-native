@@ -9,10 +9,9 @@
     <description>This package contains the basic functionalities that all App Center services use to communicate with the backend.</description> 
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter mobilecenter</tags>
-    <projectUrl>https://aka.ms/telgml</projectUrl> <!-- TODO - change link -->
-    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl> <!-- TODO - change link -->
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl> <!-- TODO - change link -->
-    <version>0.16.0</version>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
         <!-- Use dependency groups for iOS and Android so that additional dependencies aren't added to them -->
         <group targetFramework="MonoAndroid403">
