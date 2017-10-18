@@ -3,12 +3,14 @@
   <metadata>
     <id>Microsoft.Azure.AppCenter.Distribute</id>
     <title>App Center Distribute</title>
-    <authors>Microsoft Corporation</authors>
+    <authors>Microsoft</authors>
+    <owners>app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Distribute package provides in-app update capabilities for your mobile applications.</summary>
     <description>This package provides capability to display in-app updates to your app users when a new version of the application is released.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter distribute mobilecenter</tags>
+    <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>

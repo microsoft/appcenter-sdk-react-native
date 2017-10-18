@@ -4,11 +4,13 @@
     <id>Microsoft.Azure.AppCenter.Push</id>
     <title>Mobile Center Push</title>
     <authors>Microsoft</authors>
+    <owners>app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Push package provides push notification capabilities for your mobile applications.</summary>
     <description>This package contains functionalities to send push notifications to users of your application from our portal.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter push mobilecenter</tags>
+    <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>

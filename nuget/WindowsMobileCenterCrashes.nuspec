@@ -4,11 +4,13 @@
     <id>Microsoft.Azure.AppCenter.Crashes</id>
     <title>pp Center Crashes</title>
     <authors>Microsoft</authors>
+    <owners>app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Crashes package provides crash reporting capabilities for your mobile applications.</summary>
     <description>This package contains functionalities to collect crash reports for your application.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter crashes mobilecenter</tags>
+    <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>

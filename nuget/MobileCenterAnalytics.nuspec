@@ -4,11 +4,13 @@
     <id>Microsoft.Azure.AppCenter.Analytics</id>
     <title>App Center Analytics</title>
     <authors>Microsoft</authors>
+    <owners>app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Analytics package provides analytics capabilities for your mobile applications.</summary>
     <description>This package contains functionalities to collect session, device properties, events etc… for your application.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter analytics mobilecenter</tags>
+    <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
