@@ -4,7 +4,7 @@
     <id>Microsoft.Azure.AppCenter.Push</id>
     <title>App Center Push</title>
     <authors>Microsoft</authors>
-    <owners>app-center</owners>
+    <owners>microsoft,app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Push package provides push notification capabilities for your mobile applications</summary>
     <description>This package contains functionalities to send push notifications to users of your application from our portal</description>

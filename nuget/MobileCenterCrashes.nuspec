@@ -4,7 +4,7 @@
     <id>Microsoft.Azure.AppCenter.Crashes</id>
     <title>App Center Crashes</title>
     <authors>Microsoft</authors>
-    <owners>app-center</owners>
+    <owners>microsoft,app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Crashes package provides crash reporting capabilities for your mobile applications.</summary>
     <description>This package contains functionalities to collect crash reports for your application.</description>

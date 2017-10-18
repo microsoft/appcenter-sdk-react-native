@@ -4,7 +4,7 @@
     <id>Microsoft.Azure.AppCenter</id>
     <title>App Center</title>
     <authors>Microsoft</authors>
-    <owners>app-center</owners>
+    <owners>microsoft,app-center</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center. Common package for every App Center service.</summary>
     <description>This package contains the basic functionalities that all App Center services use to communicate with the backend.</description>
