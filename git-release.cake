@@ -30,13 +30,13 @@ Task("GitRelease")
     }
     assets = assets.Substring(0,assets.Length-1);
     GitReleaseManagerCreate(username, password, owner, repo, new GitReleaseManagerCreateSettings {
-        Prerelease        = true,
-        Assets            = assets,
-        TargetCommitish   = "master",
-        InputFilePath = releaseFile.Path.FullPath,
-        Name = publishVersion
+        Prerelease      = true,
+        Assets          = assets,
+        TargetCommitish = "master",
+        InputFilePath   = releaseFile.Path.FullPath,
+        Name            = publishVersion
     });
-    GitReleaseManagerPublish(username, password, owner, repo,  publishVersion);
+    GitReleaseManagerPublish(username, password, owner, repo, publishVersion);
     DeleteFile(releaseFile);
 });
 RunTarget(TARGET);

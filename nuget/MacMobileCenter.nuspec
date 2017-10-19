@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.Mobile</id>
-    <title>Mobile Center</title>
-    <authors>Microsoft Corporation</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Microsoft Visual Studio Mobile Center. Common package for every Mobile Center service.</summary>
-    <description>This package contains the basic functionalities that all Mobile Center services use to communicate with the backend.</description>
-    <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
-    <tags>mobilecenter</tags>
+    <id>Microsoft.Azure.AppCenter</id>
+    <title>App Center</title>
+    <authors>Microsoft</authors>
+    <owners>microsoft,app-center</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center. Common package for every App Center service.</summary> 
+    <description>This package contains the basic functionalities that all App Center services use to communicate with the backend.</description> 
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter mobilecenter</tags>
+    <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
@@ -23,14 +25,14 @@
   <files>
 
     <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10" />
+    <file src="$pcl_dir$/Microsoft.Azure.AppCenter.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.Azure.Mobile.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.Azure.Mobile.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.Azure.AppCenter.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.Azure.AppCenter.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <file src="$ios_dir$/Microsoft.Azure.Mobile.dll" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.Azure.Mobile.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.Azure.AppCenter.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.Azure.AppCenter.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
   </files>
 </package>

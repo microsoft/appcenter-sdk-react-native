@@ -1,22 +1,24 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.Mobile.Push</id>
+    <id>Microsoft.Azure.AppCenter.Push</id>
     <title>Mobile Center Push</title>
-    <authors>Microsoft Corporation</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Microsoft Visual Studio Mobile Center Push package provides push notification capabilities for your mobile applications</summary>
-    <description>This package contains functionalities to send push notifications to users of your application from our portal</description>
-    <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>
-    <tags>mobilecenter</tags>
+    <authors>Microsoft</authors>
+    <owners>microsoft,app-center</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center Push package provides push notification capabilities for your mobile applications.</summary>
+    <description>This package contains functionalities to send push notifications to users of your application from our portal.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter push mobilecenter</tags>
+    <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.Azure.Mobile" version="$version$" />
+      <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
+    <file src="$windows_dir$/Microsoft.Azure.AppCenter.Push.dll" target="lib/uap10.0" />
   </files>
 </package>
