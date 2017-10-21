@@ -2,6 +2,7 @@ const ReactNative = require('react-native');
 const MobileCenterLog = require('mobile-center/mobile-center-log');
 
 const { RNCrashes } = ReactNative.NativeModules;
+const crashesEventEmitter = new ReactNative.NativeEventEmitter(RNCrashes);
 
 const LOG_TAG = 'MobileCenterCrashes';
 const EVENT_BEFORE_SENDING = 'MobileCenterErrorReportOnBeforeSending';
@@ -76,20 +77,20 @@ const Crashes = {
     },
 
     setEventListener(listenerMap) {
-        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_BEFORE_SENDING);
-        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING_SUCCEEDED);
-        ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING_FAILED);
+        crashesEventEmitter.removeAllListeners(EVENT_BEFORE_SENDING);
+        crashesEventEmitter.removeAllListeners(EVENT_SENDING_SUCCEEDED);
+        crashesEventEmitter.removeAllListeners(EVENT_SENDING_FAILED);
         if (!listenerMap) {
             return;
         }
         if (listenerMap.onBeforeSending) {
-            ReactNative.DeviceEventEmitter.addListener(EVENT_BEFORE_SENDING, listenerMap.onBeforeSending);
+            crashesEventEmitter.addListener(EVENT_BEFORE_SENDING, listenerMap.onBeforeSending);
         }
         if (listenerMap.onSendingSucceeded) {
-            ReactNative.DeviceEventEmitter.addListener(EVENT_SENDING_SUCCEEDED, listenerMap.onSendingSucceeded);
+            crashesEventEmitter.addListener(EVENT_SENDING_SUCCEEDED, listenerMap.onSendingSucceeded);
         }
         if (listenerMap.onSendingFailed) {
-            ReactNative.DeviceEventEmitter.addListener(EVENT_SENDING_FAILED, listenerMap.onSendingFailed);
+            crashesEventEmitter.addListener(EVENT_SENDING_FAILED, listenerMap.onSendingFailed);
         }
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
         RNCrashes.getUnprocessedCrashReports()
