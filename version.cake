@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
+#addin nuget:?package=Cake.Incubator
 
 using System.Net;
 using System.Text;

@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
+#addin nuget:?package=Cake.Incubator
 #tool "nuget:?package=gitreleasemanager"
 
 // Task TARGET for build
