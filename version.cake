@@ -164,8 +164,8 @@ void IncrementRevisionNumber(bool useHash)
 
 string GetPCLBaseSemanticVersion()
 {
-	var assemblyInfo = ParseAssemblyInfo("./SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	return GetBaseVersion(assemblyInfo.AssemblyInformationalVersion);
+    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
+	return GetBaseVersion(project.NetCore.Version);
 }
 
 string GetShortCommitHash()

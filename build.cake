@@ -1,8 +1,9 @@
 #tool nuget:?package=XamarinComponent
-#addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
-#addin "Cake.AzureStorage"
 #addin nuget:?package=Cake.Git
+#addin nuget:?package=Cake.Incubator
+#addin nuget:?package=Cake.Xamarin
+#addin "Cake.AzureStorage"
 
 using System.Net;
 using System.Text;
@@ -171,6 +172,7 @@ Setup(context =>
         PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(pclAssemblyGroup);
+        PLATFORM_PATHS.UploadAssemblyGroups.Add(netStandardAssemblyGroup);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x86");
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x64");
@@ -225,9 +227,9 @@ Setup(context =>
 Task("Version")
     .Does(() =>
 {
-    var assemblyInfo = ParseAssemblyInfo("./" + "SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-    var version = assemblyInfo.AssemblyInformationalVersion;
-    // Read AssemblyInfo.cs and extract versions for modules.
+    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
+    var version = project.NetCore.Version;
+    // Extract versions for modules.
     foreach (var module in MOBILECENTER_MODULES)
     {
         module.NuGetVersion = version;
@@ -238,7 +240,7 @@ Task("Version")
 Task("PackageId")
     .Does(() =>
 {
-    // Read AssemblyInfo.cs and extract package ids for modules.
+    // Extract package ids for modules.
     foreach (var module in MOBILECENTER_MODULES)
     {
         var nuspecText = FileReadText("./nuget/" + module.MainNuspecFilename);
