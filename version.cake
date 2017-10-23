@@ -5,6 +5,8 @@
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", ""));
@@ -91,6 +93,9 @@ Task("StartNewVersion").Does(()=>
 	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
 	var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
 	ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")", "Demo");
+
+	// Replace version in new csproj files
+	UpdateNewProjSdkVersion(newVersion);
 
 	// Update wrapper sdk version
 	UpdateWrapperSdkVersion(snapshotVersion);
@@ -228,6 +233,23 @@ void UpdateWrapperSdkVersion(string newVersion)
 	var patternString = "Version = \"[^\"]+\";";
 	var newString = "Version = \"" + newVersion + "\";";
 	ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
+}
+
+void UpdateNewProjSdkVersion(string newVersion)
+{
+	var csprojFiles = GetFiles("SDK/**/*.csproj");
+	foreach (var file in csprojFiles)
+	{
+		var csproj = XDocument.Load(file.FullPath);
+
+		// Check if csproj with new format
+		if (csproj.Root.Attribute("Sdk")?.Value != "Microsoft.NET.Sdk")
+			continue;
+
+		var version = csproj.XPathSelectElement("/Project/PropertyGroup/Version");
+		version.SetValue(newVersion);
+		csproj.Save(file.FullPath);
+	}
 }
 
 // Gets the revision number from a version string containing revision -r****
