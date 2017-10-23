@@ -1,6 +1,6 @@
 {
   "name": "RNMobileCenterShared",
-  "version": "0.10.0",
+  "version": "0.10.1-prerelease",
   "summary": "React Native plugin for Mobile Center",
   "license": {
     "type": "MIT",
@@ -12,7 +12,7 @@
     "Microsoft": "mobilecentersdk@microsoft.com"
   },
   "source": {
-    "http": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/releases/download/0.10.0/MobileCenter-SDK-ReactNative-iOS-Pod-0.10.0.zip"
+    "http": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/releases/download/0.10.1-prerelease/MobileCenter-SDK-ReactNative-iOS-Pod-0.10.1-prerelease.zip"
   },
   "platforms": {
     "ios": "8.0"
