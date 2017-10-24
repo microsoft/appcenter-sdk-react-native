@@ -9,6 +9,7 @@ using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
+using Microsoft.Azure.Mobile.Rum;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -42,8 +43,9 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+            RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
             MobileCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
-                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
 
             // Need to use reflection because moving this to the Android specific
             // code causes crash. (Unable to access properties before init is called).
@@ -222,7 +224,7 @@ namespace Contoso.Forms.Puppet
                 }
                 answer.ContinueWith((task) =>
                 {
-                    if (releaseDetails.MandatoryUpdate || ((Task<bool>) task).Result)
+                    if (releaseDetails.MandatoryUpdate || ((Task<bool>)task).Result)
                     {
                         Distribute.NotifyUpdateAction(UpdateAction.Update);
                     }
