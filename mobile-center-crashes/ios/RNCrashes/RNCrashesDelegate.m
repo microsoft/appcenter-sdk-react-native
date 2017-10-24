@@ -9,7 +9,7 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"MobileCenterErrorReportOnSending
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[ON_BEFORE_SENDING_EVENT, ON_SENDING_FAILED_EVENT, ON_SENDING_SUCCEEDED_EVENT];
+    return @[ON_BEFORE_SENDING_EVENT, ON_SENDING_FAILED_EVENT, ON_SENDING_SUCCEEDED_EVENT];
 }
 
 - (void) crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport
