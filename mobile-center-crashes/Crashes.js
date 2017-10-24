@@ -75,7 +75,7 @@ const Crashes = {
         }
     },
 
-    setEventListener(listenerMap) {
+    setListener(listenerMap) {
         ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_BEFORE_SENDING);
         ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING_SUCCEEDED);
         ReactNative.DeviceEventEmitter.removeAllListeners(EVENT_SENDING_FAILED);

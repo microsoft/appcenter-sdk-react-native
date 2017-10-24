@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "lint": "eslint ."    
+    "lint": "eslint ."
   },
   "dependencies": {
     "mobile-center": "../mobile-center",
@@ -18,7 +18,7 @@
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",    
+    "babel-eslint": "^7.2.3",
     "babel-jest": "18.0.0",
     "babel-preset-react-native": "1.9.1",
     "eslint": "^4.5.0",
