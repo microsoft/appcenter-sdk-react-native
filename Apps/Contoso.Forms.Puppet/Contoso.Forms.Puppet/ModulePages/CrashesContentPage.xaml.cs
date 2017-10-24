@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using Xamarin.Forms;
@@ -36,16 +37,9 @@ namespace Contoso.Forms.Puppet
             {
                 action();
             }
-            catch (Exception e)
+            catch (Exception e) when (HandleExceptionsSwitchCell.On)
             {
-                if (HandleExceptionsSwitchCell.On)
-                {
-                    Crashes.TrackException(e);
-                }
-                else
-                {
-                    throw;
-                }
+                TrackException(e);
             }
         }
 
@@ -138,17 +132,15 @@ namespace Contoso.Forms.Puppet
             {
                 await FakeService.DoStuffInBackground();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (HandleExceptionsSwitchCell.On)
             {
-                if (HandleExceptionsSwitchCell.On)
-                {
-                    Crashes.TrackException(ex);
-                }
-                else
-                {
-                    throw;
-                }
+                TrackException(ex);
             }
+        }
+
+        private void TrackException(Exception e)
+        {
+            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackException").Invoke(null, new object[] { e });
         }
     }
 }
