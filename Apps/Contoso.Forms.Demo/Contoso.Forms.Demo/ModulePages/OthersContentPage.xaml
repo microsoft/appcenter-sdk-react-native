@@ -10,8 +10,5 @@
 		    <TableSection Title="Push">
                 <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled"/>
             </TableSection>
-            <TableSection Title="Rum">
-                <SwitchCell Text="Rum Enabled" On="true" x:Name="RumEnabledSwitchCell" OnChanged="UpdateRumEnabled"/>
-            </TableSection>
     </TableView>
 </ContentPage>

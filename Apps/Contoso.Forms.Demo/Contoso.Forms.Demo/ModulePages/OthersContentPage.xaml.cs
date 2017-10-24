@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
-using Microsoft.Azure.Mobile.Rum;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -28,8 +27,6 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = mcEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = mcEnabled;
-            RumEnabledSwitchCell.On = await RealUserMeasurements.IsEnabledAsync();
-            RumEnabledSwitchCell.IsEnabled = mcEnabled;
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -40,11 +37,6 @@ namespace Contoso.Forms.Demo
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
             await Push.SetEnabledAsync(e.Value);
-        }
-
-        async void UpdateRumEnabled(object sender, ToggledEventArgs e)
-        {
-            await RealUserMeasurements.SetEnabledAsync(e.Value);
         }
     }
 }

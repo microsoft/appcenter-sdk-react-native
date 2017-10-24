@@ -7,7 +7,6 @@ using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
-using Microsoft.Azure.Mobile.Rum;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -41,9 +40,8 @@ namespace Contoso.Forms.Demo
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             Crashes.GetErrorAttachments = GetErrorAttachments;
             Distribute.ReleaseAvailable = OnReleaseAvailable;
-            RealUserMeasurements.SetRumKey("aa177c9874374b3983ba864ad1ae956d");
             MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
+                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
             MobileCenter.GetInstallIdAsync().ContinueWith(installId =>
             {
