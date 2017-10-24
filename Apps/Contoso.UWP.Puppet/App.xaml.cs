@@ -30,6 +30,7 @@ namespace Contoso.UWP.Puppet
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+            Push.SetEnabledAsync(true);
             Push.PushNotificationReceived += PushNotificationReceivedHandler;
         }
 

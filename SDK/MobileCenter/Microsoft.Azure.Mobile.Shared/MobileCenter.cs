@@ -72,6 +72,14 @@ namespace Microsoft.Azure.Mobile
         }
 
         /// <summary>
+        /// Get the current version of MobileCenter SDK.
+        /// </summary>
+        public static string SdkVersion
+        {
+            get { return WrapperSdk.Version; }
+        }
+
+        /// <summary>
         /// Check whether the SDK is enabled or not as a whole.
         /// </summary>
         /// <returns>A task with result being true if enabled, false if disabled.</returns>

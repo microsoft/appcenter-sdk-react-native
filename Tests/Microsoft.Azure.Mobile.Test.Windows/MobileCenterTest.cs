@@ -87,6 +87,15 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
+        /// Verify sdk version.
+        /// </summary>
+        [TestMethod]
+        public void VerifySdkVersion()
+        {
+            Assert.AreEqual(WrapperSdk.Version, MobileCenter.SdkVersion);
+        }
+
+        /// <summary>
         /// Verify that starting the same service twice (separately) only calls its OnChannelGroupReady
         /// </summary>
         [TestMethod]

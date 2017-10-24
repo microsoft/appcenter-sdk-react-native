@@ -94,6 +94,7 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CorrelationIdTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DefaultScreenSizeProviderTest.cs" />
     <Compile Include="UWPPushTest.cs" />
@@ -129,6 +130,26 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj">
+      <Project>{200073bf-fa7e-42af-8ed5-aa50be7c0295}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
+      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
+      <Name>Microsoft.Azure.Mobile.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.UWP\Microsoft.Azure.Mobile.Crashes.UWP.csproj">
+      <Project>{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj">
+      <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
+      <Name>Microsoft.Azure.Mobile.Crashes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
+      <Project>{b977bf28-3a1c-4a89-a673-a22eddc9d23d}</Project>
+      <Name>WatsonRegistrationUtility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.UWP\Microsoft.Azure.Mobile.Push.UWP.csproj">
       <Project>{8072449c-c6a8-4b36-87dc-173f295d161c}</Project>
       <Name>Microsoft.Azure.Mobile.Push.UWP</Name>
