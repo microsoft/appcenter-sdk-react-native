@@ -63,6 +63,7 @@ namespace Microsoft.Azure.Mobile.Push
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
+                MobileCenterLog.Debug(LogTag, "Getting push token...");
                 var state = _mutex.State;
                 Task.Run(async () =>
                 {

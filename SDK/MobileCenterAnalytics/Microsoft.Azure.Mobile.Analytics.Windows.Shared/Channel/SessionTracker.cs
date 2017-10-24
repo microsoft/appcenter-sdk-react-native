@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private const char StorageEntrySeparator = '/';
         private readonly IChannelUnit _channel;
         private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
-        private Guid? _sid;
+        internal Guid _sid = Guid.Empty;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                     return;
                 }
                 SendStartSessionIfNeeded();
-                e.Log.Sid = _sid;
+                e.Log.Sid = _sid == Guid.Empty ? null : new Guid?(_sid);
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (_sid != null && !HasSessionTimedOut(now))
+            if (_sid != Guid.Empty && !HasSessionTimedOut(now))
             {
                 return;
             }
@@ -138,7 +138,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 _sessions.Remove(_sessions.Keys.Min());
             }
             _sid = Guid.NewGuid();
-            _sessions.Add(now, _sid.Value);
+#pragma warning disable CS0612 // Type or member is obsolete
+            MobileCenter.TestAndSetCorrelationId(Guid.Empty, ref _sid);
+#pragma warning restore CS0612 // Type or member is obsolete
+            _sessions.Add(now, _sid);
             _applicationSettings.SetValue(StorageKey, SessionsAsString());
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             var startSessionLog = new StartSessionLog { Sid = _sid };
@@ -166,9 +169,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 return sessionsDict;
             }
-
             var sessions = sessionsString.Split(StorageEntrySeparator);
-
             foreach (var sessionString in sessions)
             {
                 var splitSession = sessionString.Split(StorageKeyValueSeparator);

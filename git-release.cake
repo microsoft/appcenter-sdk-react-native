@@ -17,12 +17,11 @@ Task("GitRelease")
     var owner = "Microsoft";
     var repo = "mobile-center-sdk-dotnet";
 
-    // Oddly, there is no obvious API to create a file, so we have to create a file by copying an existing
-    // file and replacing its contents
+    System.IO.File.Create("tempRelease.md").Dispose();
     var releaseFile = File("tempRelease.md");
-    CopyFile(File("SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs"), releaseFile);
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
-    // Build a string containing paths to NuGet packages
+
+    // Build a string containing paths to NuGet packages.
     var files = GetFiles("../../**/*Microsoft.Azure.Mobile*.nupkg");
     var assets = string.Empty;
     foreach (var file in files)
