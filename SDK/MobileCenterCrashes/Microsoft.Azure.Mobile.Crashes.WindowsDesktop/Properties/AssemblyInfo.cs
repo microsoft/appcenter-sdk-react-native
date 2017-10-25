@@ -8,14 +8,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Microsoft.Azure.Mobile.Crashes")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Microsoft.Azure.Mobile.Crashes")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dc55c086-714d-4e2f-b6ce-3c14bc3b6646")]
+[assembly: NeutralResourcesLanguage("en")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,5 +28,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("0.0.0.0")]
 [assembly: AssemblyFileVersion("0.17.0.0")]
 [assembly: AssemblyInformationalVersion("0.17.0-SNAPSHOT")]
-[assembly: ComVisible(false)]
-
