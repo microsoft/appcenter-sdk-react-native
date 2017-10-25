@@ -48,7 +48,8 @@
     <file src="$uwp_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
 
     <!-- Windows Classic Desktop (WPF and WinForms) -->
-    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" />
+    <!-- TODO: Uncomment when it's time to release these. -->
+    <!--file src="$windows_classic_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" /-->
 
   </files>
 </package>

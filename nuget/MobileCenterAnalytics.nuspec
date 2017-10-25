@@ -33,8 +33,9 @@
     <!-- UWP -->
     <file src="$uwp_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
 
-    <!-- WindowsClassic (WPF and WinForms) -->
-    <file src="$windows_classic_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net452" />
+    <!-- Windows Classic (WPF and WinForms) -->
+    <!-- TODO: Uncomment when it's time to release these. -->
+    <!-- file src="$windows_classic_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net452" / -->
 
   </files>
 </package>
