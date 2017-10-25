@@ -31,7 +31,11 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/uap10.0" />
+
+    <!-- Windows Classic (WPF and WinForms) -->
+    <!-- TODO: Uncomment when it's time to release these. -->
+    <!-- file src="$windows_desktop_dir$/Microsoft.Azure.Mobile.Analytics.dll" target="lib/net452" / -->
 
   </files>
 </package>

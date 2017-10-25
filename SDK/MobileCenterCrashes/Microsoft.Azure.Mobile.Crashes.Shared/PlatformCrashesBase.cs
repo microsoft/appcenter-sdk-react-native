@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public void GenerateTestCrash()
         {
-#if WINDOWS_UWP
+#if USES_WATSON
 #else
             throw new TestCrashException();
 #endif
