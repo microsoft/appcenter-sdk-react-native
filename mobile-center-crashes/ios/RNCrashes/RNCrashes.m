@@ -83,7 +83,7 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    void (^fetchHasCrashedInLastSession)() = ^void() {
+    void (^fetchHasCrashedInLastSession)(void) = ^void() {
         MSErrorReport *report = [MSCrashes lastSessionCrashReport];
         resolve(report != nil ? @YES : @NO);
     };
@@ -93,7 +93,7 @@ RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(lastSessionCrashReport:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    void (^fetchLastSessionCrashReport)() = ^void() {
+    void (^fetchLastSessionCrashReport)(void) = ^void() {
         MSErrorReport *report = [MSCrashes lastSessionCrashReport];
         resolve(convertReportToJS(report));
     };

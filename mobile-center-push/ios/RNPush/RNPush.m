@@ -31,7 +31,6 @@ static id<RNPushDelegate> pushDelegate;
 RCT_EXPORT_MODULE();
 
 - (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification {
-    NSString *message = pushNotification.message;
 }
 
 - (instancetype)init

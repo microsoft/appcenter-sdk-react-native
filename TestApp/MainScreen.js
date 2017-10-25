@@ -40,8 +40,8 @@ export default class MainScreen extends Component {
   }
 }
 
-Push.setEventListener({
-  pushNotificationReceived(pushNotification) {
+Push.setListener({
+  onPushNotificationReceived(pushNotification) {
     let message = pushNotification.message;
     let title = pushNotification.title;
 

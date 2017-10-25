@@ -18,10 +18,10 @@ const Push = {
     },
 
     // async - returns a Promise
-    setEventListener(listenerMap) {
+    setListener(listenerMap) {
         pushEventEmitter.removeAllListeners(pushNotificationReceivedEvent);
-        if (listenerMap && listenerMap.pushNotificationReceived) {
-            pushEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.pushNotificationReceived);
+        if (listenerMap && listenerMap.onPushNotificationReceived) {
+            pushEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.onPushNotificationReceived);
 
             return RNPush.sendAndClearInitialNotification();
         }

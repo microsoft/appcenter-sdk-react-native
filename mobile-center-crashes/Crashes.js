@@ -76,7 +76,7 @@ const Crashes = {
         }
     },
 
-    setEventListener(listenerMap) {
+    setListener(listenerMap) {
         crashesEventEmitter.removeAllListeners(EVENT_BEFORE_SENDING);
         crashesEventEmitter.removeAllListeners(EVENT_SENDING_SUCCEEDED);
         crashesEventEmitter.removeAllListeners(EVENT_SENDING_FAILED);
