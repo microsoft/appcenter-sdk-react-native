@@ -123,6 +123,10 @@
       <Project>{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}</Project>
       <Name>Microsoft.Azure.Mobile.Push</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum\Microsoft.Azure.Mobile.Rum.csproj">
+      <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
+      <Name>Microsoft.Azure.Mobile.Rum</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ModulePages\CustomPropertiesContentPage.xaml">

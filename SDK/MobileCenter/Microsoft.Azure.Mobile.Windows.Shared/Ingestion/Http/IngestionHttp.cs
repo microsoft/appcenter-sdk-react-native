@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Ingestion.Models;
 using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using System.Net.Http;
 
 namespace Microsoft.Azure.Mobile.Ingestion.Http
 {
@@ -44,7 +45,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
             MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
             
             // Send request.
-            await _httpNetwork.SendAsync(baseUrl + ApiVersion, requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);
+            await _httpNetwork.SendAsync(baseUrl + ApiVersion, HttpMethod.Post, requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);
         }
 
         public void Close()

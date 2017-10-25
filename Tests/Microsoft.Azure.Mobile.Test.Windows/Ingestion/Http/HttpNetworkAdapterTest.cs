@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
                 { IngestionHttp.InstallId, installId }
             };
             var jsonContent = "{}";
-            var request = _adapter.CreateRequest(uri, headers, jsonContent);
+            var request = _adapter.CreateRequest(uri, HttpMethod.Post, headers, jsonContent);
 
             Assert.AreEqual(request.Method, HttpMethod.Post);
             Assert.IsTrue(request.Headers.Contains(IngestionHttp.AppSecret));
