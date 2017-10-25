@@ -227,13 +227,12 @@ namespace Microsoft.Azure.Mobile.Crashes
         }
 
         ///// <summary>
-        ///// Track an exception.
+        ///// Track an exception. TODO make it public once backend supports it.
         ///// </summary>
         ///// <param name="exception">An exception.</param>
-        //public static void TrackException(Exception exception)
-        //{
-        //    PlatformCrashes.TrackException(exception);
-        //}
+        internal static void TrackException(Exception exception)
+        {
+            PlatformCrashes.TrackException(exception);
+        }
     }
 }
-
