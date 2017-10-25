@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Microsoft.Azure.Mobile.UWP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Microsoft.Azure.Mobile.UWP")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
+[assembly: AssemblyProduct("Microsoft.Azure.Mobile")]
+[assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.15.1.0")]
-[assembly: AssemblyInformationalVersion("0.15.1-SNAPSHOT")]
+[assembly: AssemblyFileVersion("0.17.0.0")]
+[assembly: AssemblyInformationalVersion("0.17.0-SNAPSHOT")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Test.UWP")]

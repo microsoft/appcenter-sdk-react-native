@@ -1,5 +1,5 @@
 #!/bin/bash
 # Note: Run this from within the root directory
 
-./build.sh -t "MergeAssemblies" -StorageId $1
+./build.sh -t="MergeAssemblies" -StorageId=$1
 

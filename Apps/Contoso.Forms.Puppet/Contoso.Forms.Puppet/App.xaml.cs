@@ -13,32 +13,20 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class App : Application
+    public partial class App
     {
         public const string LogTag = "MobileCenterXamarinPuppet";
 
         // Mobile Center keys
-        public const string uwpKey = "a678b499-1912-4a94-9d97-25b569284d3a";
-        public const string androidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
-        public const string iosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
+        private const string UwpKey = "a678b499-1912-4a94-9d97-25b569284d3a";
+        private const string AndroidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
+        private const string IosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
 
         public App()
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
-        }
 
-        static App()
-        {
-            // set event handlers in static constructor to avoid duplication
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
-            Push.PushNotificationReceived += PrintNotification;
-        }
-
-        protected override void OnStart()
-        {
             MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
             MobileCenter.LogLevel = LogLevel.Verbose;
             MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
@@ -54,9 +42,9 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
+            MobileCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
                 typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-            
+
             // Need to use reflection because moving this to the Android specific
             // code causes crash. (Unable to access properties before init is called).
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
@@ -80,6 +68,7 @@ namespace Contoso.Forms.Puppet
             {
                 MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + installId.Result);
             });
+            MobileCenterLog.Info(LogTag, "MobileCenter.SdkVersion=" + MobileCenter.SdkVersion);
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
                 MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
@@ -90,14 +79,13 @@ namespace Contoso.Forms.Puppet
             });
         }
 
-        protected override void OnSleep()
+        static App()
         {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
+            // set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
         }
 
         static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
@@ -113,8 +101,7 @@ namespace Contoso.Forms.Puppet
         {
             MobileCenterLog.Info(LogTag, "Sending error report");
 
-            var args = e as SendingErrorReportEventArgs;
-            ErrorReport report = args.Report;
+            var report = e.Report;
 
             //test some values
             if (report.Exception != null)
@@ -131,8 +118,7 @@ namespace Contoso.Forms.Puppet
         {
             MobileCenterLog.Info(LogTag, "Sent error report");
 
-            var args = e as SentErrorReportEventArgs;
-            ErrorReport report = args.Report;
+            var report = e.Report;
 
             //test some values
             if (report.Exception != null)
@@ -154,8 +140,7 @@ namespace Contoso.Forms.Puppet
         {
             MobileCenterLog.Info(LogTag, "Failed to send error report");
 
-            var args = e as FailedToSendErrorReportEventArgs;
-            ErrorReport report = args.Report;
+            var report = e.Report;
 
             //test some values
             if (report.Exception != null)
@@ -207,9 +192,9 @@ namespace Contoso.Forms.Puppet
             return true;
         }
 
-        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        static IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
         {
-            return new ErrorAttachmentLog[]
+            return new[]
             {
                 ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
                 null,
@@ -237,7 +222,7 @@ namespace Contoso.Forms.Puppet
                 }
                 answer.ContinueWith((task) =>
                 {
-                    if (releaseDetails.MandatoryUpdate || (task as Task<bool>).Result)
+                    if (releaseDetails.MandatoryUpdate || ((Task<bool>) task).Result)
                     {
                         Distribute.NotifyUpdateAction(UpdateAction.Update);
                     }

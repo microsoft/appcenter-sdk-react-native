@@ -34,6 +34,17 @@ namespace Microsoft.Azure.Mobile.Crashes
 #if REFERENCE
 #else
                 WatsonRegistrationManager.Start(appSecret);
+#pragma warning disable CS0612 // Type or member is obsolete
+                MobileCenter.CorrelationIdChanged += (s, id) =>
+                {
+                    WatsonRegistrationManager.SetCorrelationId(id.ToString());
+                };
+
+                // Checking for null and setting id needs to be atomic to avoid
+                // overwriting
+                Guid newId = Guid.NewGuid();
+                MobileCenter.TestAndSetCorrelationId(Guid.Empty, ref newId);
+#pragma warning restore CS0612 // Type or member is obsolete
 #endif
             }
             catch (Exception e)

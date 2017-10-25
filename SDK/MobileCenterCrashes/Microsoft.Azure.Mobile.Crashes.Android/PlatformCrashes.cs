@@ -4,14 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.Runtime;
+using Com.Microsoft.Azure.Mobile.Crashes;
 using Com.Microsoft.Azure.Mobile.Crashes.Model;
 using Java.Lang;
 
 namespace Microsoft.Azure.Mobile.Crashes
 {
-    using AndroidCrashes = Com.Microsoft.Azure.Mobile.Crashes.AndroidCrashes;
-    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
-    using AndroidICrashListener = Com.Microsoft.Azure.Mobile.Crashes.ICrashesListener;
     using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
     using Exception = System.Exception;
@@ -80,12 +78,12 @@ namespace Microsoft.Azure.Mobile.Crashes
             });
         }
 
-        //public override void TrackException(Exception exception)
-        //{
-        //    AndroidCrashes.Instance.TrackException(GenerateModelException(exception));
-        //}
+        public override void TrackException(Exception exception)
+        {
+            WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false));
+        }
 
-        private AndroidICrashListener _crashListener;
+        private ICrashesListener _crashListener;
 
         /// <summary>
         /// Empty model stack frame used for comparison to optimize JSON payload.
@@ -110,27 +108,23 @@ namespace Microsoft.Azure.Mobile.Crashes
             MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", exception);
             if (!(exception is Java.Lang.Exception))
             {
-                var modelException = GenerateModelException(exception);
+                var modelException = GenerateModelException(exception, true);
                 byte[] rawException = CrashesUtils.SerializeException(exception);
-                AndroidExceptionDataManager.SaveWrapperException(Thread.CurrentThread(), modelException, rawException);
+                WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), modelException, rawException);
             }
         }
 
 #pragma warning disable XS0001 // Find usages of mono todo items
 
-        /// <summary>
-        /// Generate structured data for a dotnet exception.
-        /// </summary>
-        /// <param name="exception">Exception.</param>
-        /// <returns>Structured data for the exception.</returns>
-        private static ModelException GenerateModelException(Exception exception)
+        // Generate structured data for a dotnet exception.
+        private static ModelException GenerateModelException(Exception exception, bool structuredFrames)
         {
             var modelException = new ModelException
             {
                 Type = exception.GetType().FullName,
                 Message = exception.Message,
                 StackTrace = exception.StackTrace,
-                Frames = GenerateModelStackFrames(new StackTrace(exception, true)),
+                Frames = structuredFrames ? GenerateModelStackFrames(new StackTrace(exception, true)) : null,
                 WrapperSdkName = WrapperSdk.Name
             };
             var aggregateException = exception as AggregateException;
@@ -139,12 +133,15 @@ namespace Microsoft.Azure.Mobile.Crashes
                 modelException.InnerExceptions = new List<ModelException>();
                 foreach (var innerException in aggregateException.InnerExceptions)
                 {
-                    modelException.InnerExceptions.Add(GenerateModelException(innerException));
+                    modelException.InnerExceptions.Add(GenerateModelException(innerException, structuredFrames));
                 }
             }
             else if (exception.InnerException != null)
             {
-                modelException.InnerExceptions = new List<ModelException> { GenerateModelException(exception.InnerException) };
+                modelException.InnerExceptions = new List<ModelException>
+                {
+                    GenerateModelException(exception.InnerException, structuredFrames)
+                };
             }
             return modelException;
         }
@@ -160,7 +157,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                     ClassName = frame.GetMethod()?.DeclaringType?.FullName,
                     MethodName = frame.GetMethod()?.Name,
                     FileName = frame.GetFileName(),
-                    LineNumber = frame.GetFileLineNumber() != 0 ? new Java.Lang.Integer(frame.GetFileLineNumber()) : null
+                    LineNumber = frame.GetFileLineNumber() != 0 ? new Integer(frame.GetFileLineNumber()) : null
                 }).Where(modelFrame => !modelFrame.Equals(EmptyModelFrame)));
             }
             return modelFrames;

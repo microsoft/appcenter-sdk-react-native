@@ -42,5 +42,9 @@ namespace Microsoft.Azure.Mobile.Crashes
         public override void NotifyUserConfirmation(UserConfirmation confirmation)
         {
         }
+
+        public override void TrackException(Exception exception)
+        {
+        }
     }
 }
