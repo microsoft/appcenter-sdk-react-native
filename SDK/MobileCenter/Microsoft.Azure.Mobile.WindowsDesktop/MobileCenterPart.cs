@@ -2,6 +2,6 @@
 {
     public partial class MobileCenter
     {
-        private const string PlatformIdentifier = "windowsclassicdesktop";
+        private const string PlatformIdentifier = "windowsdesktop";
     }
 }

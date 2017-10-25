@@ -2,11 +2,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Test.WindowsClassic")]
+[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Test.WindowsDesktop")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Test.WindowsClassic")]
+[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Test.WindowsDesktop")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

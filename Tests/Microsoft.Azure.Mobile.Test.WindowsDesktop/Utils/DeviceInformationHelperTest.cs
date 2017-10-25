@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Test.WindowsClassic.Utils
+namespace Microsoft.Azure.Mobile.Test.WindowsDesktop.Utils
 {
     [TestClass]
     public class DeviceInformationHelperTest

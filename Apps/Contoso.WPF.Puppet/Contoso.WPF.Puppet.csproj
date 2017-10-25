@@ -101,17 +101,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.WindowsClassic\Microsoft.Azure.Mobile.Analytics.WindowsClassic.csproj">
+    <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.WindowsDesktop\Microsoft.Azure.Mobile.Analytics.WindowsDesktop.csproj">
       <Project>{1f6c139a-29bb-4e74-8df2-f8ccab399a67}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.WindowsClassic</Name>
+      <Name>Microsoft.Azure.Mobile.Analytics.WindowsDesktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.WindowsClassic\Microsoft.Azure.Mobile.Crashes.WindowsClassic.csproj">
+    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.WindowsDesktop\Microsoft.Azure.Mobile.Crashes.WindowsDesktop.csproj">
       <Project>{dc55c086-714d-4e2f-b6ce-3c14bc3b6646}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes.WindowsClassic</Name>
+      <Name>Microsoft.Azure.Mobile.Crashes.WindowsDesktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.WindowsClassic\Microsoft.Azure.Mobile.WindowsClassic.csproj">
+    <ProjectReference Include="..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.WindowsDesktop\Microsoft.Azure.Mobile.WindowsDesktop.csproj">
       <Project>{1e9ec0aa-3e32-4551-80c4-e4f3e53d7590}</Project>
-      <Name>Microsoft.Azure.Mobile.WindowsClassic</Name>
+      <Name>Microsoft.Azure.Mobile.WindowsDesktop</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

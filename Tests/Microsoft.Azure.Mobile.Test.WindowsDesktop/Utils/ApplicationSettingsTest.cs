@@ -3,7 +3,7 @@ using System.Reflection;
 using Microsoft.Azure.Mobile.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.WindowsClassic.Utils
+namespace Microsoft.Azure.Mobile.Test.WindowsDesktop.Utils
 {
     [TestClass]
     public class ApplicationSettingsTest

@@ -41,11 +41,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Push
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Test.UWP", "Tests\Microsoft.Azure.Mobile.Test.UWP\Microsoft.Azure.Mobile.Test.UWP.csproj", "{6D86EE4F-2871-4DC3-BCA4-A692DBEAE59D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Test.WindowsClassic", "Tests\Microsoft.Azure.Mobile.Test.WindowsClassic\Microsoft.Azure.Mobile.Test.WindowsClassic.csproj", "{C4674357-EFBA-43AA-9DB8-DE62A3309EB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Test.WindowsDesktop", "Tests\Microsoft.Azure.Mobile.Test.WindowsDesktop\Microsoft.Azure.Mobile.Test.WindowsDesktop.csproj", "{C4674357-EFBA-43AA-9DB8-DE62A3309EB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.WindowsClassic", "SDK\MobileCenter\Microsoft.Azure.Mobile.WindowsClassic\Microsoft.Azure.Mobile.WindowsClassic.csproj", "{1E9EC0AA-3E32-4551-80C4-E4F3E53D7590}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.WindowsDesktop", "SDK\MobileCenter\Microsoft.Azure.Mobile.WindowsDesktop\Microsoft.Azure.Mobile.WindowsDesktop.csproj", "{1E9EC0AA-3E32-4551-80C4-E4F3E53D7590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.WindowsClassic", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.WindowsClassic\Microsoft.Azure.Mobile.Analytics.WindowsClassic.csproj", "{1F6C139A-29BB-4E74-8DF2-F8CCAB399A67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Analytics.WindowsDesktop", "SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.WindowsDesktop\Microsoft.Azure.Mobile.Analytics.WindowsDesktop.csproj", "{1F6C139A-29BB-4E74-8DF2-F8CCAB399A67}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

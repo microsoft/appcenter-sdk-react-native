@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.WindowsClassic
+namespace Microsoft.Azure.Mobile.Test.WindowsDesktop
 {
     [TestClass]
     public class MobileCenterTest
@@ -12,12 +12,12 @@ namespace Microsoft.Azure.Mobile.Test.WindowsClassic
         }
 
         /// <summary>
-        /// Verify configure with WindowsClassic platform id
+        /// Verify configure with WindowsDesktop platform id
         /// </summary>
         [TestMethod]
         public void VerifyPlatformId()
         {
-            MobileCenter.Configure("windowsclassicdesktop=appsecret");
+            MobileCenter.Configure("windowsdesktop=appsecret");
             Assert.IsTrue(MobileCenter.Configured);
         }
     }

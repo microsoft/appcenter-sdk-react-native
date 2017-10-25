@@ -49,9 +49,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.WindowsClassic\Microsoft.Azure.Mobile.WindowsClassic.csproj">
+    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.WindowsDesktop\Microsoft.Azure.Mobile.WindowsDesktop.csproj">
       <Project>{1e9ec0aa-3e32-4551-80c4-e4f3e53d7590}</Project>
-      <Name>Microsoft.Azure.Mobile.WindowsClassic</Name>
+      <Name>Microsoft.Azure.Mobile.WindowsDesktop</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.Azure.Mobile.Analytics.Windows.Shared\Microsoft.Azure.Mobile.Analytics.Windows.Shared.projitems" Label="Shared" />

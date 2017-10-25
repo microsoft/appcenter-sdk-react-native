@@ -49,7 +49,7 @@
 
     <!-- Windows Classic Desktop (WPF and WinForms) -->
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!--file src="$windows_classic_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" /-->
+    <!--file src="$windows_desktop_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" /-->
 
   </files>
 </package>

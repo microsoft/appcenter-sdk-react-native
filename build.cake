@@ -47,7 +47,7 @@ var MAC_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "MacAssemblies.zip";
 var WINDOWS_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "WindowsAssemblies.zip";
 
 // Assembly folders
-var WINDOWS_CLASSIC_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "WindowsClassicAssemblies";
+var WINDOWS_CLASSIC_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "WindowsDesktopAssemblies";
 var UWP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "UWPAssemblies";
 var IOS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "iOSAssemblies";
 var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
@@ -177,9 +177,9 @@ Setup(context =>
         var windowsClassicAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = WINDOWS_CLASSIC_ASSEMBLIES_FOLDER,
             AssemblyPaths = new string[] {
-                "SDK/MobileCenter/Microsoft.Azure.Mobile.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.dll",
-                "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-                "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WindowsClassic/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" }
+                "SDK/MobileCenter/Microsoft.Azure.Mobile.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.dll",
+                "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+                "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" }
             };
         var uwpAnyCpuAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
@@ -372,7 +372,7 @@ Task("NuGet")
         CopyFile("nuget/" + nuspecFilename, specCopyName);
         ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$windows_classic_dir$", WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
+        ReplaceTextInFiles(specCopyName, "$windows_desktop_dir$", WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
 
@@ -466,7 +466,7 @@ Task("MergeAssemblies")
         ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$windows_classic_dir$", WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
+        ReplaceTextInFiles(specCopyName, "$windows_desktop_dir$", WINDOWS_CLASSIC_ASSEMBLIES_FOLDER);
 
         var spec = GetFiles(specCopyName);
 
@@ -578,7 +578,7 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
         ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
         ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
         ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$uwp_dir$", uwpAssemblies);
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_classic_dir$", windowsClassicAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_desktop_dir$", windowsClassicAssemblies);
     }
 }).OnError(HandleError);
 

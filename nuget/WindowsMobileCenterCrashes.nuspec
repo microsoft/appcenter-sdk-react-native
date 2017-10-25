@@ -20,7 +20,7 @@
 
     <!-- WinForms -->
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!--file src="$windows_classic_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" /-->
+    <!--file src="$windows_desktop_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" /-->
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
