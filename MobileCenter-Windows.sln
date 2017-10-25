@@ -80,9 +80,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.WinForms.Puppet", "Contoso.WinForms.Puppet", "{87A5B88A-B001-4D2F-BFD5-6E7129D91973}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.WinForms.Puppet", "Apps\Contoso.WinForms.Puppet\Contoso.WinForms.Puppet.csproj", "{44E1971C-3399-4C88-AFE5-54EB53737D31}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DC55C086-714D-4E2F-B6CE-3C14BC3B6646} = {DC55C086-714D-4E2F-B6CE-3C14BC3B6646}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WatsonRegistrationUtility", "SDK\MobileCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj", "{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}"
 EndProject
@@ -93,9 +90,6 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.Azure.Mobile.Crashes.Windows.Shared", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.Windows.Shared\Microsoft.Azure.Mobile.Crashes.Windows.Shared.shproj", "{3F190EDF-F524-4B8D-9031-CD7B045EB6A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.WPF.Puppet", "Apps\Contoso.WPF.Puppet\Contoso.WPF.Puppet.csproj", "{951ABE8D-7AF6-4162-8639-E78B022B1048}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DC55C086-714D-4E2F-B6CE-3C14BC3B6646} = {DC55C086-714D-4E2F-B6CE-3C14BC3B6646}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Azure.Mobile.Crashes.WindowsDesktop", "SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.WindowsDesktop\Microsoft.Azure.Mobile.Crashes.WindowsDesktop.csproj", "{DC55C086-714D-4E2F-B6CE-3C14BC3B6646}"
 EndProject
@@ -900,6 +894,8 @@ Global
 		{AA7C64B6-2E77-4DA5-95ED-AA367D004A8F} = {B4CC6E15-D93C-4FC0-AB00-4690F23C237C}
 		{1E9EC0AA-3E32-4551-80C4-E4F3E53D7590} = {A0839AAC-BC4D-4DDE-9ACB-C094BC599C16}
 		{1F6C139A-29BB-4E74-8DF2-F8CCAB399A67} = {95CACF52-25AA-4C05-B587-2BBF4B5514D1}
+		{FD1A546D-5E89-46D1-8AE1-4BC41C7AAE8C} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
+		{B4CC6E15-D93C-4FC0-AB00-4690F23C237C} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {328868E2-F749-412D-B82F-84A683A1719C}
