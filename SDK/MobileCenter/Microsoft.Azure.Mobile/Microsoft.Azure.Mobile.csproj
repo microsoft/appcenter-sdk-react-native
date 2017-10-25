@@ -7,7 +7,7 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.Azure.Mobile.Core</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>0.17.0</Version>
+    <Version>0.17.0-SNAPSHOT</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />
