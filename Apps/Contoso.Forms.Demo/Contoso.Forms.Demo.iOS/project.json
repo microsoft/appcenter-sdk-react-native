@@ -1,4 +1,4 @@
-{
+﻿{
   "dependencies": {
     "Microsoft.Azure.Mobile.Analytics": "0.16.0",
     "Microsoft.Azure.Mobile.Crashes": "0.16.0",
