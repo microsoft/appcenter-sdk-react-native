@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterChannel;
+﻿using Microsoft.AppCenter.Channel;
 using Moq;
 
 namespace Microsoft.AppCenter.Test

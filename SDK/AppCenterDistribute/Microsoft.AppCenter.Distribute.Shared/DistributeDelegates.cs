@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterDistribute
+﻿namespace Microsoft.AppCenter.Distribute
 {
     /// <summary>
     /// Release available callback.

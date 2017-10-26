@@ -61,7 +61,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
                 Sid = Guid.NewGuid()
             };
 
-            var storage = new Mobile.Storage.Storage();
+            var storage = new Microsoft.AppCenter.Storage.Storage();
             storage.DeleteLogs(StorageTestChannelName);
             storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();

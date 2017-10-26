@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterUtils
+﻿namespace Microsoft.AppCenter.Utils
 {
     public class DefaultScreenSizeProviderFactory : IScreenSizeProviderFactory
     {

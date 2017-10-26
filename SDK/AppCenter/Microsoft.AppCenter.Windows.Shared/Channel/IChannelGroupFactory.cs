@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterChannel
+﻿namespace Microsoft.AppCenter.Channel
 {
     public interface IChannelGroupFactory
     {

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
-    using Device = Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     /// <summary>
     /// Page view log (as in screens or activities).

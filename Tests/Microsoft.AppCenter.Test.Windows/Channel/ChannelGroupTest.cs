@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             const string channelName = "some_channel";
             var addedChannel =
-                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Mobile.Channel.Channel;
+                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Microsoft.AppCenter.Channel.Channel;
 
             Assert.IsNotNull(addedChannel);
             Assert.AreEqual(channelName, addedChannel.Name);
@@ -173,7 +173,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             const string channelName = "some_channel";
             var addedChannel =
-                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Mobile.Channel.Channel;
+                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Microsoft.AppCenter.Channel.Channel;
 
             _channelGroup.ShutdownAsync().RunNotAsync();
 

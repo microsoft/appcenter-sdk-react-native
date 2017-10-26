@@ -3,7 +3,7 @@ using Microsoft.AppCenter.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
 {
-    using Device = Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     class TestLog: Log
     {

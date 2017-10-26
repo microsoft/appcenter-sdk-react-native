@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterAnalytics.Channel
+﻿namespace Microsoft.AppCenter.Analytics.Channel
 {
     public interface ISessionTracker
     {

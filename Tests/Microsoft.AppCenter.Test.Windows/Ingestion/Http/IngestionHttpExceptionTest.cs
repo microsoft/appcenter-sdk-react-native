@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterIngestion.Http;
+﻿using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http

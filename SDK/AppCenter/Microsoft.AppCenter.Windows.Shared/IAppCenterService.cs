@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterChannel;
+﻿using Microsoft.AppCenter.Channel;
 
 namespace Microsoft.AppCenter
 {
