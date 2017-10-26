@@ -78,12 +78,12 @@ var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
 // Available AppCenter modules.
 var MOBILECENTER_MODULES = new [] {
-    new AppCenterModule("mobile-center-release.aar", "AppCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
-    new AppCenterModule("mobile-center-analytics-release.aar", "AppCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
-    new AppCenterModule("mobile-center-crashes-release.aar", "AppCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
-    new AppCenterModule("mobile-center-distribute-release.aar", "AppCenterDistribute.framework.zip", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
-    new AppCenterModule("mobile-center-push-release.aar", "AppCenterPush.framework.zip", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
-    new AppCenterModule("mobile-center-rum-release.aar", null, "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
+    new AppCenterModule("app-center-release.aar", "AppCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
+    new AppCenterModule("app-center-analytics-release.aar", "AppCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
+    new AppCenterModule("app-center-crashes-release.aar", "AppCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
+    new AppCenterModule("app-center-distribute-release.aar", "AppCenterDistribute.framework.zip", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
+    new AppCenterModule("app-center-push-release.aar", "AppCenterPush.framework.zip", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
+    new AppCenterModule("app-center-rum-release.aar", null, "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
 };
 
 // Task TARGET for build

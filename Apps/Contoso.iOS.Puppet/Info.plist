@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>MCPuppet</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.microsoft.azure.mobile.xamarin.puppet</string>
+	<string>com.microsoft.appcenter.xamarin.puppet</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.17.0</string>
 	<key>CFBundleVersion</key>
@@ -39,7 +39,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
 			<key>CFBundleURLName</key>
-			<string>com.microsoft.azure.mobile.xamarin.puppet</string>
+			<string>com.microsoft.appcenter.xamarin.puppet</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>appcenter-b889c4f2-9ac2-4e2e-ae16-dae54f2c5899</string>
