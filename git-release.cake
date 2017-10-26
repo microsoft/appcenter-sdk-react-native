@@ -9,7 +9,7 @@ Task("Default").IsDependentOn("GitRelease");
 
 // Create a tag and release on GitHub
 Task("GitRelease")
-	.Does(() =>
+    .Does(() =>
 {
     var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
     var publishVersion = project.NetCore.Version;

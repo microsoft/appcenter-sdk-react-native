@@ -1,6 +1,6 @@
-[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xamarin.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/releases/latest)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/appcenter-sdk-xamarin.svg)](https://github.com/Microsoft/appcenter-sdk-xamarin/releases/latest)
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.AppCenter.svg)](https://www.nuget.org/packages/Microsoft.AppCenter/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/blob/master/license.txt)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/appcenter-sdk-xamarin/blob/master/license.txt)
 
 # App Center SDK for Xamarin / UWP
 
@@ -18,7 +18,7 @@ The App Center SDK uses a modular architecture so you can use any or all of the 
 4. **App Center Push**: App Center Push enables you to send push notifications to users of your app from the App Center portal. We use APNS for iOS apps, FCM for Android and WNS for UWP apps. You can also segment your user base based on a set of properties and send them targeted notifications.
 
 ## 1. Get started
-It is super easy to use App Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/getting-started/xamarin) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/) is available as well.
+It is super easy to use App Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/xamarin) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/appcenter/sdk/) is available as well.
 
 ## 2. Contributing
 
@@ -36,7 +36,7 @@ You must sign a [Contributor License Agreement](https://cla.microsoft.com/) befo
 
 ### 3.1 Intercom
 
-If you have further questions, want to provide feedback or you are running into issues, log in to the [App Center portal](https://mobile.azure.com) and use the blue Intercom button on the bottom right to start a conversation with us.
+If you have further questions, want to provide feedback or you are running into issues, log in to the [App Center portal](https://appcenter.ms) and use the blue Intercom button on the bottom right to start a conversation with us.
 
 ### 3.2 Twitter
-We're on Twitter as [@mobilecenter](https://www.twitter.com/mobilecenter).
+We're on Twitter as [@appcenter](https://www.twitter.com/appcenter).
