@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
     /// <summary>
     /// Core SDK module.

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Analytics.Channel
+﻿namespace Microsoft.AAppCenterAnalytics.Channel
 {
     public interface ISessionTracker
     {

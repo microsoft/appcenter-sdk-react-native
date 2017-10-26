@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     /// <summary>
     /// Utility for getting time information

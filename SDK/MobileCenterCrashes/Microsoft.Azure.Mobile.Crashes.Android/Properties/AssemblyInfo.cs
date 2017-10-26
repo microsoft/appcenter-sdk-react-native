@@ -5,11 +5,11 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Crashes.Android")]
+[assembly: AssemblyTitle("Microsoft.AppCenter.Crashes.Android")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Crashes.Android")]
+[assembly: AssemblyProduct("Microsoft.AppCenter.Crashes.Android")]
 [assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile.Push
+﻿namespace Microsoft.AAppCenterPush
 {
-    public partial class Push : MobileCenterService
+    public partial class Push : AppCenterService
     {
         private void ApplyEnabledState(bool enabled)
         {

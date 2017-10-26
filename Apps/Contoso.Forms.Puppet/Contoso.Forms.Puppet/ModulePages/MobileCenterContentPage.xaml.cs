@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile;
+﻿using Microsoft.AAppCenter
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -6,7 +6,7 @@ using Xamarin.Forms;
 namespace Contoso.Forms.Puppet
 {
     [Android.Runtime.Preserve(AllMembers = true)]
-    public partial class MobileCenterContentPage : ContentPage
+    public partial class AppCenterContentPage : ContentPage
     {
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
@@ -14,16 +14,16 @@ namespace Contoso.Forms.Puppet
         Dictionary<LogLevel, string> LogLevelNames;
         LogLevel LogWriteLevel;
 
-        public MobileCenterContentPage()
+        public AppCenterContentPage()
         {
             InitializeComponent();
 
             LogFunctions = new Dictionary<LogLevel, Action<string, string>>();
-            LogFunctions.Add(LogLevel.Verbose, MobileCenterLog.Verbose);
-            LogFunctions.Add(LogLevel.Debug, MobileCenterLog.Debug);
-            LogFunctions.Add(LogLevel.Info, MobileCenterLog.Info);
-            LogFunctions.Add(LogLevel.Warn, MobileCenterLog.Warn);
-            LogFunctions.Add(LogLevel.Error, MobileCenterLog.Error);
+            LogFunctions.Add(LogLevel.Verbose, AppCenterLog.Verbose);
+            LogFunctions.Add(LogLevel.Debug, AppCenterLog.Debug);
+            LogFunctions.Add(LogLevel.Info, AppCenterLog.Info);
+            LogFunctions.Add(LogLevel.Warn, AppCenterLog.Warn);
+            LogFunctions.Add(LogLevel.Error, AppCenterLog.Error);
 
             LogLevelNames = new Dictionary<LogLevel, string>();
             LogLevelNames.Add(LogLevel.Verbose, Constants.Verbose);
@@ -45,8 +45,8 @@ namespace Contoso.Forms.Puppet
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
-            MobileCenterEnabledSwitchCell.On = await MobileCenter.IsEnabledAsync();
+            LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
+            AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
         }
 
         void LogLevelCellTapped(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace Contoso.Forms.Puppet
             var page = new LogLevelPage();
             page.LevelSelected += (LogLevel level) =>
             {
-                MobileCenter.LogLevel = level;
+                AppCenter.LogLevel = level;
             };
             ((NavigationPage)Application.Current.MainPage).PushAsync(page);
         }
@@ -79,7 +79,7 @@ namespace Contoso.Forms.Puppet
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            await MobileCenter.SetEnabledAsync(e.Value);
+            await AppCenter.SetEnabledAsync(e.Value);
         }
 
         void UpdateLogWriteLevelLabel()

@@ -6,8 +6,8 @@
     <ProjectGuid>{AD38DEE9-8A74-4B04-93C3-0831B55E7254}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Distribute</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Distribute</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Distribute</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Distribute</AssemblyName>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -55,15 +55,15 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Distribute.Android.Bindings\Microsoft.Azure.Mobile.Distribute.Android.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.Distribute.Android.Bindings\Microsoft.AppCenter.Distribute.Android.Bindings.csproj">
       <Project>{11D31A79-0F09-4708-8097-3D1C5D886547}</Project>
-      <Name>Microsoft.Azure.Mobile.Distribute.Android.Bindings</Name>
+      <Name>Microsoft.AppCenter.Distribute.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Distribute.Shared\Microsoft.Azure.Mobile.Distribute.Shared.projitems')" />
+  <Import Project="..\Microsoft.AppCenter.Distribute.Shared\Microsoft.AppCenter.Distribute.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Distribute.Shared\Microsoft.AppCenter.Distribute.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

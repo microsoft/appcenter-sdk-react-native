@@ -1,10 +1,10 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Test.UWP.Utils
+namespace Microsoft.AppCenter.Test.UWP.Utils
 {
     [TestClass]
     public class DeviceInformationHelperTest
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         public void VerifyCarrierCountry()
         {
             const string CountryCode = "US";
-            MobileCenter.SetCountryCode(CountryCode);
+            AppCenter.SetCountryCode(CountryCode);
 
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
             Assert.AreEqual(device.CarrierCountry, CountryCode);

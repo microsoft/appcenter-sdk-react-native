@@ -1,7 +1,7 @@
 ﻿using Foundation;
 using UIKit;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics.iOS.Bindings;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics.iOS.Bindings;
 using System.Collections.Generic;
 
 namespace Contoso.Forms.Test.iOS
@@ -18,7 +18,7 @@ namespace Contoso.Forms.Test.iOS
             Xamarin.Calabash.Start();
 #endif
             MSAnalytics.SetDelegate(new AnalyticsDelegate());
-            MobileCenter.Configure("f52dd054-e31f-4ff9-9f24-4e8d7942705b");
+            AppCenter.Configure("f52dd054-e31f-4ff9-9f24-4e8d7942705b");
 
             LoadApplication(new App());
 

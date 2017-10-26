@@ -89,7 +89,7 @@
             this.mobileCenter.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.mobileCenter.Size = new System.Drawing.Size(568, 369);
             this.mobileCenter.TabIndex = 0;
-            this.mobileCenter.Text = "Mobile Center";
+            this.mobileCenter.Text = "App Center";
             this.mobileCenter.UseVisualStyleBackColor = true;
             // 
             // logBox
@@ -227,7 +227,7 @@
             this.mobileCenterEnabled.Name = "mobileCenterEnabled";
             this.mobileCenterEnabled.Size = new System.Drawing.Size(540, 37);
             this.mobileCenterEnabled.TabIndex = 1;
-            this.mobileCenterEnabled.Text = "Mobile Center Enabled";
+            this.mobileCenterEnabled.Text = "App Center Enabled";
             this.mobileCenterEnabled.UseVisualStyleBackColor = true;
             this.mobileCenterEnabled.CheckedChanged += new System.EventHandler(this.mobileCenterEnabled_CheckedChanged);
             // 
@@ -379,7 +379,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Mobile Center Demo App";
+            this.Text = "App Center Demo App";
             this.tabs.ResumeLayout(false);
             this.mobileCenter.ResumeLayout(false);
             this.logBox.ResumeLayout(false);

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite;
 
-namespace Microsoft.Azure.Mobile.Test
+namespace Microsoft.AppCenter.Test
 {
     public class TestSqliteException : SQLiteException
     {

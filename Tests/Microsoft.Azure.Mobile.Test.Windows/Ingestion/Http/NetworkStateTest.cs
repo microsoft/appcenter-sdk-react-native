@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion;
-using Microsoft.Azure.Mobile.Ingestion.Http;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion;
+using Microsoft.AppCenter.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
+namespace Microsoft.AppCenter.Test.Ingestion.Http
 {
     [TestClass]
     public class NetworkStateTest : HttpIngestionTest

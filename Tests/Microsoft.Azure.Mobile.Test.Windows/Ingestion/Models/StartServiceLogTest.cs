@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
 {
     [TestClass]
     public class StartServiceLogTest

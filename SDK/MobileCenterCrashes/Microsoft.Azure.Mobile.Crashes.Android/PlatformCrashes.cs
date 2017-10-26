@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.Azure.Mobile.Crashes;
-using Com.Microsoft.Azure.Mobile.Crashes.Model;
+using Com.Microsoft.AppCenter.Crashes;
+using Com.Microsoft.AppCenter.Crashes.Model;
 using Java.Lang;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
-    using ModelException = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.Exception;
-    using ModelStackFrame = Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models.StackFrame;
+    using ModelException = Com.Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
+    using ModelStackFrame = Com.Microsoft.AppCenter.Crashes.Ingestion.Models.StackFrame;
     using Exception = System.Exception;
 
     class PlatformCrashes : PlatformCrashesBase
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         static PlatformCrashes()
         {
-            MobileCenterLog.Info(Crashes.LogTag, "Set up Xamarin crash handler.");
+            AppCenterLog.Info(Crashes.LogTag, "Set up Xamarin crash handler.");
             AndroidEnvironment.UnhandledExceptionRaiser += OnUnhandledException;
         }
 
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         private static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
         {
             var exception = e.Exception;
-            MobileCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", exception);
+            AppCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", exception);
             if (!(exception is Java.Lang.Exception))
             {
                 var modelException = GenerateModelException(exception, true);

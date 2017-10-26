@@ -44,7 +44,7 @@
     <EmbeddedResource Include="ModulePages\CrashesContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\MobileCenterContentPage.xaml">
+    <EmbeddedResource Include="ModulePages\AppCenterContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="ModulePages\AnalyticsContentPage.xaml">
@@ -80,8 +80,8 @@
     <Compile Include="ModulePages\CrashesContentPage.xaml.cs">
       <DependentUpon>CrashesContentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModulePages\MobileCenterContentPage.xaml.cs">
-      <DependentUpon>MobileCenterContentPage.xaml</DependentUpon>
+    <Compile Include="ModulePages\AppCenterContentPage.xaml.cs">
+      <DependentUpon>AppCenterContentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModulePages\AnalyticsContentPage.xaml.cs">
       <DependentUpon>AnalyticsContentPage.xaml</DependentUpon>
@@ -103,29 +103,29 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics\Microsoft.Azure.Mobile.Analytics.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics\Microsoft.AppCenter.Analytics.csproj">
       <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics</Name>
+      <Name>Microsoft.AppCenter.Analytics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes\Microsoft.Azure.Mobile.Crashes.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes\Microsoft.AppCenter.Crashes.csproj">
       <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes</Name>
+      <Name>Microsoft.AppCenter.Crashes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute\Microsoft.Azure.Mobile.Distribute.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute\Microsoft.AppCenter.Distribute.csproj">
       <Project>{41febc72-c12b-47e1-b6f6-51d50158c825}</Project>
-      <Name>Microsoft.Azure.Mobile.Distribute</Name>
+      <Name>Microsoft.AppCenter.Distribute</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter\Microsoft.AppCenter.csproj">
       <Project>{3fe04b97-48de-4895-8612-ecbdfebd917c}</Project>
-      <Name>Microsoft.Azure.Mobile</Name>
+      <Name>Microsoft.AppCenter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push\Microsoft.Azure.Mobile.Push.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push\Microsoft.AppCenter.Push.csproj">
       <Project>{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}</Project>
-      <Name>Microsoft.Azure.Mobile.Push</Name>
+      <Name>Microsoft.AppCenter.Push</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum\Microsoft.Azure.Mobile.Rum.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum\Microsoft.AppCenter.Rum.csproj">
       <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
-      <Name>Microsoft.Azure.Mobile.Rum</Name>
+      <Name>Microsoft.AppCenter.Rum</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

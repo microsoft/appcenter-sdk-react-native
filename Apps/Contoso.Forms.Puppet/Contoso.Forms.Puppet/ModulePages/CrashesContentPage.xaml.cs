@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -23,7 +23,7 @@ namespace Contoso.Forms.Puppet
         {
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
-            CrashesEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
         }
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)

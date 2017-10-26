@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using Com.Microsoft.Azure.Mobile.Push;
+using Com.Microsoft.AppCenter.Push;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.AppCenter.Push
 {
     public partial class Push
     {

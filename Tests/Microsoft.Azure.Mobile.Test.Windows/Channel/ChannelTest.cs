@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Storage;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Channel
+namespace Microsoft.AppCenter.Test.Channel
 {
     [TestClass]
     public class ChannelTest

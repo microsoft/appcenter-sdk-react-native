@@ -2,6 +2,6 @@
 <metadata>
 	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.http']" />
 	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.utils.storage']" />
-	<attr path="/api/package[@name='com.microsoft.azure.mobile']/class[@name='MobileCenter']" name="managedName">AndroidMobileCenter</attr>
+	<attr path="/api/package[@name='com.microsoft.azure.mobile']/class[@name='AppCenter']" name="managedName">AndroidAppCenter</attr>
 	<attr path="/api/package[@name='com.microsoft.azure.mobile']/class[@name='CustomProperties']" name="managedName">AndroidCustomProperties</attr>
 </metadata>

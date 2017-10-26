@@ -12,7 +12,7 @@ fi
 
 # Define constants
 
-# Mobile Center constants
+# App Center constants
 ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
 IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
 ANDROID_APP="$MOBILE_CENTER_USERNAME/$ANDROID_APP_NAME"
@@ -58,7 +58,7 @@ print_results () {
 	fi
 }
 
-# This function contacts the Mobile Center backend to determine the specified test's current
+# This function contacts the App Center backend to determine the specified test's current
 # status. Echoes 0 for in progress, 1 for passed, 2 for failed.
 # Usage: test_status {TEST_RUN_ID} {APP_NAME}
 test_status() {

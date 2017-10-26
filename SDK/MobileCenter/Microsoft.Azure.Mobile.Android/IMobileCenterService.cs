@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
-    public interface IMobileCenterService
+    public interface IAppCenterService
     {
         /* This interface should remain empty */
     }

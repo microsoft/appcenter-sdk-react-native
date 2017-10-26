@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Analytics
+﻿namespace Microsoft.AAppCenterAnalytics
 {
     /// <summary>
     /// Analytics SDK module.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion;
-using Microsoft.Azure.Mobile.Ingestion.Http;
-using Microsoft.Azure.Mobile.Storage;
+using Microsoft.AppCenter.Ingestion;
+using Microsoft.AppCenter.Ingestion.Http;
+using Microsoft.AppCenter.Storage;
 
-namespace Microsoft.Azure.Mobile.Channel
+namespace Microsoft.AppCenter.Channel
 {
     public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
     {
@@ -48,13 +48,13 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
+        /// <exception cref="AppCenterException">Attempted to add duplicate channel to group</exception>
         public IChannelUnit AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches)
         {
             ThrowIfDisposed();
             lock (_channelGroupLock)
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"AddChannel({name})");
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"AddChannel({name})");
                 var newChannel = new Channel(name, maxLogsPerBatch, batchTimeInterval, maxParallelBatches, AppSecret,
                     _ingestion, _storage);
                 AddChannel(newChannel);
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
         }
 
-        /// <exception cref="MobileCenterException">Attempted to add duplicate channel to group</exception>
+        /// <exception cref="AppCenterException">Attempted to add duplicate channel to group</exception>
         public void AddChannel(IChannelUnit channel)
         {
             ThrowIfDisposed();
@@ -70,13 +70,13 @@ namespace Microsoft.Azure.Mobile.Channel
             {
                 if (channel == null)
                 {
-                    throw new MobileCenterException("Attempted to add null channel to group");
+                    throw new AppCenterException("Attempted to add null channel to group");
                 }
                 var added = _channels.Add(channel);
                 if (!added)
                 {
                     // The benefit of throwing an exception in this case is debatable. Might make sense to allow this.
-                    throw new MobileCenterException("Attempted to add duplicate channel to group");
+                    throw new AppCenterException("Attempted to add duplicate channel to group");
                 }
                 channel.EnqueuingLog += AnyChannelEnqueuingLog;
                 channel.SendingLog += AnyChannelSendingLog;
@@ -109,10 +109,10 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
             }
             await Task.WhenAll(tasks).ConfigureAwait(false);
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, "Waiting for storage to finish operations");
+            AppCenterLog.Debug(AppCenterLog.LogTag, "Waiting for storage to finish operations");
             if (!await _storage.ShutdownAsync(_shutdownTimeout).ConfigureAwait(false))
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
             }
         }
 

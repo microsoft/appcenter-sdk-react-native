@@ -1,8 +1,8 @@
 ﻿using System;
 using Foundation;
-using Microsoft.Azure.Mobile.iOS.Bindings;
+using Microsoft.AppCenter.iOS.Bindings;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     public partial class CustomProperties
     {

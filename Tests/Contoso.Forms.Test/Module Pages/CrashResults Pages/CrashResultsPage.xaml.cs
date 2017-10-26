@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Crashes;
+﻿using Microsoft.AAppCenterCrashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Test

@@ -3,7 +3,7 @@ using System.Reflection;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Distribute.Android.Bindings")]
+[assembly: AssemblyTitle("Microsoft.AppCenter.Distribute.Android.Bindings")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]

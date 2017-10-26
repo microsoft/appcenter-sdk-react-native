@@ -1,6 +1,6 @@
-﻿using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
+﻿using Com.Microsoft.AAppCenterCrashes.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     public partial class ErrorAttachmentLog
     {

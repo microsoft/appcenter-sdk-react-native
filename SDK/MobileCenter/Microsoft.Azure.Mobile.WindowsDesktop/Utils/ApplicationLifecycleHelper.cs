@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {

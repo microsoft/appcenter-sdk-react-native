@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion;
-using Microsoft.Azure.Mobile.Ingestion.Http;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion;
+using Microsoft.AppCenter.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Test
+namespace Microsoft.AppCenter.Test
 {
     public sealed class MockIngestion : IIngestion
     {

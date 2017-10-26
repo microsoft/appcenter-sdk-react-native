@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     /// <summary>
     /// Callback type for determining whether a particular error report should be processed.

@@ -11,7 +11,7 @@ Task("Default").IsDependentOn("GitRelease");
 Task("GitRelease")
 	.Does(() =>
 {
-    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
+    var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
     var publishVersion = project.NetCore.Version;
     var username = "user";
     var password = Argument<string>("GithubToken");
@@ -23,7 +23,7 @@ Task("GitRelease")
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
 
     // Build a string containing paths to NuGet packages.
-    var files = GetFiles("../../**/*Microsoft.Azure.Mobile*.nupkg");
+    var files = GetFiles("../../**/*Microsoft.AppCenter*.nupkg");
     var assets = string.Empty;
     foreach (var file in files)
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     internal class PlatformCrashes : PlatformCrashesBase
     {

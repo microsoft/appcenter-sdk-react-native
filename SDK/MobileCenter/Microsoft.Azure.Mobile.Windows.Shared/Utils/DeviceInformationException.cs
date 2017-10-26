@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
-    public class DeviceInformationException : MobileCenterException
+    public class DeviceInformationException : AppCenterException
     {
     }
 }

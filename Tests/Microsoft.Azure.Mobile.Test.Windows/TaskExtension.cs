@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion;
+using Microsoft.AppCenter.Ingestion;
 
-namespace Microsoft.Azure.Mobile.Test
+namespace Microsoft.AppCenter.Test
 {
     public static class TaskExtension
     {

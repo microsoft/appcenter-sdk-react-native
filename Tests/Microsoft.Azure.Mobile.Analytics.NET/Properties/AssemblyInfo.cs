@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Analytics.NET")]
+[assembly: AssemblyTitle("Microsoft.AppCenter.Analytics.NET")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Analytics.NET")]
+[assembly: AssemblyProduct("Microsoft.AppCenter.Analytics.NET")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -36,4 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("0.17.0.0")]
 [assembly: AssemblyInformationalVersion("0.17.0-SNAPSHOT")]
 
-[assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Analytics.Test.Windows")]
+[assembly: InternalsVisibleTo("Microsoft.AppCenter.Analytics.Test.Windows")]

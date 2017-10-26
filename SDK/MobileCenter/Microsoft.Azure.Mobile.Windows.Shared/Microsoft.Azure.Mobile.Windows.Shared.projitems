@@ -6,7 +6,7 @@
     <SharedGUID>b4e6ad1c-21a0-43a4-bd73-ed9bfc19be6f</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Windows.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.AppCenter.Windows.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Channel\CancellationException.cs" />
@@ -27,7 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IMobileCenterService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IAppCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\INetworkStateAdapter.cs" />
@@ -49,9 +49,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\LogJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\LogSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\LogWithProperties.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MobileCenter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterLog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MobileCenterService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCenterLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\Storage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageException.cs" />

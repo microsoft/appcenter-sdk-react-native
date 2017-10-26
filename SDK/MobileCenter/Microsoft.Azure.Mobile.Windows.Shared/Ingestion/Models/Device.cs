@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
     /// <summary>
     /// Device characteristics.

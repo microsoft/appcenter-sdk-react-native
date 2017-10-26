@@ -3,7 +3,7 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Crashes.Android.Bindings")]
+[assembly: AssemblyTitle("Microsoft.AppCenter.Crashes.Android.Bindings")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]

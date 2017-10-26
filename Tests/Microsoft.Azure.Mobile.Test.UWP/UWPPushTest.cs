@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.Data.Xml.Dom;
 
-namespace Microsoft.Azure.Mobile.Test.UWP
+namespace Microsoft.AppCenter.Test.UWP
 {
     [TestClass]
     public class UWPPushTest
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         /// Verify ParseLaunchString works when launch string doesn't contain "mobile_center"
         /// </summary>
         [TestMethod]
-        public void ParseLaunchStringWhenStringDoesNotContainMobileCenter()
+        public void ParseLaunchStringWhenStringDoesNotContainAppCenter()
         {
             var actualResult = Push.Push.ParseLaunchString("{\"foobar\":{\"key1\":\"value1\",\"key2\":\"value2\"}}");
             Assert.IsNull(actualResult);
@@ -66,27 +66,27 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         }
 
         /// <summary>
-        /// Verify ParseMobileCenterPush works when custom data is null
+        /// Verify ParseAppCenterPush works when custom data is null
         /// </summary>
         [TestMethod]
-        public void ParseMobileCenterPushWhenCustomDataIsNull()
+        public void ParseAppCenterPushWhenCustomDataIsNull()
         {
             var xmlContent = new XmlDocument();
             xmlContent.LoadXml("<?xml version=\"1.0\" encoding=\"utf-16\"?><toast><visual><binding template=\"ToastImageAndText02\"><text id=\"1\">test-title</text><text id=\"2\">hello world</text></binding></visual></toast>");
-            var actualResult = Push.Push.ParseMobileCenterPush(xmlContent);
+            var actualResult = Push.Push.ParseAppCenterPush(xmlContent);
             Assert.IsNull(actualResult);
         }
 
         /// <summary>
-        /// Verify ParseMobileCenterPush works
+        /// Verify ParseAppCenterPush works
         /// </summary>
         [TestMethod]
-        public void ParseMobileCenterPush()
+        public void ParseAppCenterPush()
         {
             var xmlContent = new XmlDocument();
 
             xmlContent.LoadXml("<?xml version=\"1.0\" encoding=\"utf-16\"?><toast launch=\"{&quot;mobile_center&quot;:{&quot;key1&quot;:&quot;value1&quot;,&quot;key2&quot;:&quot;value2&quot;}}\"><visual><binding template=\"ToastImageAndText02\"><text id=\"1\">test-title</text><text id=\"2\">hello world</text></binding></visual></toast>");
-            var actualResult = Push.Push.ParseMobileCenterPush(xmlContent);
+            var actualResult = Push.Push.ParseAppCenterPush(xmlContent);
 
             var expectedResult = new Push.PushNotificationReceivedEventArgs
             {

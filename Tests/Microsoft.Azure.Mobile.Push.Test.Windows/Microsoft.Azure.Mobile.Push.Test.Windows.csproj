@@ -7,8 +7,8 @@
     <ProjectGuid>{39DFE901-EBE0-4907-871C-D2638FEA2D49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Push.Test.Windows</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Push.Test.Windows</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Push.Test.Windows</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Push.Test.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -76,13 +76,13 @@
     <Compile Include="PushTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.NET\Microsoft.AppCenter.NET.csproj">
       <Project>{e76dc547-2b63-4911-971c-767587ebfab6}</Project>
-      <Name>Microsoft.Azure.Mobile.NET</Name>
+      <Name>Microsoft.AppCenter.NET</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Push.NET\Microsoft.Azure.Mobile.Push.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.Push.NET\Microsoft.AppCenter.Push.NET.csproj">
       <Project>{8a885e5e-a160-4ad2-bd03-59e3a6366c32}</Project>
-      <Name>Microsoft.Azure.Mobile.Push.NET</Name>
+      <Name>Microsoft.AppCenter.Push.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

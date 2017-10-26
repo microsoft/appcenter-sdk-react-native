@@ -358,9 +358,9 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>10805zumoTestUser.MobileCenter-Forms-UWP-Puppet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.AppCenter-Forms-UWP-Puppet</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>MobileCenter-Forms-UWP-Puppet</ReservedName>
+      <ReservedName>AppCenter-Forms-UWP-Puppet</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>

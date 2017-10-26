@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Utils.Synchronization
+﻿namespace Microsoft.AAppCenterUtils.Synchronization
 {
     /// <summary>
     /// Represents a particular state

@@ -1,5 +1,5 @@
-﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Http;
+﻿using Microsoft.AAppCenterChannel;
+using Microsoft.AppCenter.Ingestion.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Rum
+namespace Microsoft.AppCenter.Rum
 {
-    public partial class RealUserMeasurements : MobileCenterService
+    public partial class RealUserMeasurements : AppCenterService
     {
         #region static
 
@@ -115,13 +115,13 @@ namespace Microsoft.Azure.Mobile.Rum
             {
                 if (rumKey == null)
                 {
-                    MobileCenterLog.Error(LogTag, "Rum key is invalid.");
+                    AppCenterLog.Error(LogTag, "Rum key is invalid.");
                     return;
                 }
                 rumKey = rumKey.Trim();
                 if (rumKey.Length != 32)
                 {
-                    MobileCenterLog.Error(LogTag, "Rum key is invalid.");
+                    AppCenterLog.Error(LogTag, "Rum key is invalid.");
                     return;
                 }
                 _rumKey = rumKey;
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Mobile.Rum
                     var rumKey = _rumKey;
                     if (rumKey == null)
                     {
-                        MobileCenterLog.Error(LogTag, "Rum key must be configured before start.");
+                        AppCenterLog.Error(LogTag, "Rum key must be configured before start.");
                         return;
                     }
 
@@ -167,15 +167,15 @@ namespace Microsoft.Azure.Mobile.Rum
                         }
                         catch (OperationCanceledException)
                         {
-                            MobileCenterLog.Debug(LogTag, "Measurements were canceled.");
+                            AppCenterLog.Debug(LogTag, "Measurements were canceled.");
                         }
-                        catch (MobileCenterException e)
+                        catch (AppCenterException e)
                         {
-                            MobileCenterLog.Error(LogTag, $"Could not run measurements: {e.Message}");
+                            AppCenterLog.Error(LogTag, $"Could not run measurements: {e.Message}");
                         }
                         catch (Exception e)
                         {
-                            MobileCenterLog.Error(LogTag, "Could not run measurements.", e);
+                            AppCenterLog.Error(LogTag, "Could not run measurements.", e);
                         }
                         finally
                         {
@@ -228,7 +228,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 }
                 else
                 {
-                    throw new MobileCenterException("Configuration does not contain test endpoints.");
+                    throw new AppCenterException("Configuration does not contain test endpoints.");
                 }
             }
         }
@@ -239,15 +239,15 @@ namespace Microsoft.Azure.Mobile.Rum
             {
                 try
                 {
-                    MobileCenterLog.Verbose(LogTag, "Calling " + url);
+                    AppCenterLog.Verbose(LogTag, "Calling " + url);
                     return await httpNetworkAdapter.SendAsync(url, HttpMethod.Get, Headers, "", cancellationToken);
                 }
                 catch (Exception e) when (!(e is OperationCanceledException))
                 {
-                    MobileCenterLog.Error(LogTag, "Could not get configuration file at " + url, e);
+                    AppCenterLog.Error(LogTag, "Could not get configuration file at " + url, e);
                 }
             }
-            throw new MobileCenterException("Could not get configuration on any endpoint.");
+            throw new AppCenterException("Could not get configuration on any endpoint.");
         }
 
         private static List<TestUrl> GenerateTestUrls(RumConfiguration configuration)
@@ -345,7 +345,7 @@ namespace Microsoft.Azure.Mobile.Rum
             for (var i = 0; i < testUrls.Count; i++)
             {
                 var testUrl = testUrls[i];
-                MobileCenterLog.Verbose(LogTag, "Calling " + testUrl.Url);
+                AppCenterLog.Verbose(LogTag, "Calling " + testUrl.Url);
                 try
                 {
                     stopWatch.Restart();
@@ -355,7 +355,7 @@ namespace Microsoft.Azure.Mobile.Rum
                 catch (Exception e) when (!(e is OperationCanceledException))
                 {
                     testUrls.RemoveAt(i--);
-                    MobileCenterLog.Error(LogTag, testUrl.Url + " call failed", e);
+                    AppCenterLog.Error(LogTag, testUrl.Url + " call failed", e);
                 }
             }
         }
@@ -364,7 +364,7 @@ namespace Microsoft.Azure.Mobile.Rum
         {
             // Generate report.
             var jsonReport = JsonConvert.SerializeObject(testUrls);
-            MobileCenterLog.Verbose(LogTag, $"Report payload={jsonReport}");
+            AppCenterLog.Verbose(LogTag, $"Report payload={jsonReport}");
 
             // Send it.
             if (configuration.ReportEndpoints != null)
@@ -374,11 +374,11 @@ namespace Microsoft.Azure.Mobile.Rum
                 foreach (var reportEndpoint in configuration.ReportEndpoints)
                 {
                     var reportUrl = $"https://{reportEndpoint}{reportQueryString}";
-                    MobileCenterLog.Verbose(LogTag, "Calling " + reportUrl);
+                    AppCenterLog.Verbose(LogTag, "Calling " + reportUrl);
                     try
                     {
                         await httpNetworkAdapter.SendAsync(reportUrl, HttpMethod.Get, Headers, "", cancellationToken);
-                        MobileCenterLog.Info(LogTag, "Measurements reported successfully.");
+                        AppCenterLog.Info(LogTag, "Measurements reported successfully.");
 
                         // Stop when we encounter the first working report endpoint.
                         return;
@@ -386,14 +386,14 @@ namespace Microsoft.Azure.Mobile.Rum
                     catch (Exception e) when (!(e is OperationCanceledException))
                     {
                         // Fall back on next report endpoint.
-                        MobileCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpoint}", e);
+                        AppCenterLog.Error(LogTag, $"Failed to report measurements at {reportEndpoint}", e);
                     }
                 }
-                MobileCenterLog.Error(LogTag, "Measurements report failed on all report endpoints.");
+                AppCenterLog.Error(LogTag, "Measurements report failed on all report endpoints.");
             }
             else
             {
-                throw new MobileCenterException("Configuration does not contain report endpoints.");
+                throw new AppCenterException("Configuration does not contain report endpoints.");
             }
         }
 

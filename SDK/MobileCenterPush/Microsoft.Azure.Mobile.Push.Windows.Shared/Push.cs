@@ -1,12 +1,12 @@
-﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
-using Microsoft.Azure.Mobile.Push.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils.Synchronization;
+﻿using Microsoft.AAppCenterChannel;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Push.Ingestion.Models;
+using Microsoft.AppCenter.Utils.Synchronization;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.AppCenter.Push
 {
-    public partial class Push : MobileCenterService
+    public partial class Push : AppCenterService
     {
         #region static
         private static readonly object PushLock = new object();

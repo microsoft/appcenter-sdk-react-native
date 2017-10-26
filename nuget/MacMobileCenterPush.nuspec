@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.AppCenter.Push</id>
+    <id>Microsoft.AppCenter.Push</id>
     <title>App Center Push</title>
     <authors>Microsoft</authors>
     <owners>microsoft,app-center</owners>
@@ -16,10 +16,10 @@
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
         <group>
-            <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
+            <dependency id="Microsoft.AppCenter" version="$version$" />
         </group>
         <group targetFramework="MonoAndroid403">
-            <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
+            <dependency id="Microsoft.AppCenter" version="$version$" />
             <dependency id="Xamarin.Firebase.Messaging" version="42.1001.0"/>
             <dependency id="Xamarin.Firebase.Core" version="42.1001.0"/>
         </group>
@@ -29,18 +29,18 @@
   <files>
 
     <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Push.dll" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
-    <file src="$netstandard_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Push.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Push.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Push.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Push.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Push.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.Push.dll" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.Push.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Push.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Push.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
   </files>
 </package>

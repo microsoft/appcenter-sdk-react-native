@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Ingestion
+namespace Microsoft.AppCenter.Ingestion
 {
     public interface IServiceCall : IDisposable
     {

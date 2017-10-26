@@ -1,7 +1,7 @@
 ﻿using Foundation;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
+using Microsoft.AppCenter.Crashes.iOS.Bindings;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     public partial class ErrorAttachmentLog
     {

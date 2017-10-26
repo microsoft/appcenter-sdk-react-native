@@ -7,8 +7,8 @@
     <ProjectGuid>{8A885E5E-A160-4AD2-BD03-59E3A6366C32}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Push.NET</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Push.NET</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Push.NET</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Push.NET</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,16 +50,16 @@
     <Compile Include="Push.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.NET\Microsoft.AppCenter.NET.csproj">
       <Project>{e76dc547-2b63-4911-971c-767587ebfab6}</Project>
-      <Name>Microsoft.Azure.Mobile.NET</Name>
+      <Name>Microsoft.AppCenter.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Windows.Shared\Microsoft.Azure.Mobile.Push.Windows.Shared.projitems" Label="Shared" />
-  <Import Project="..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.Windows.Shared\Microsoft.AppCenter.Push.Windows.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.Shared\Microsoft.AppCenter.Push.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

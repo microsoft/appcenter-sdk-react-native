@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using Microsoft.AAppCenterIngestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.Ingestion.Models
+namespace Microsoft.AppCenter.Test.Ingestion.Models
 {
-    using Device = Microsoft.Azure.Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     [TestClass]
     public class DeviceTest

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Utils;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     /// <summary>
-    /// Provides basic functionality for IMobileCenterServices.
+    /// Provides basic functionality for IAppCenterServices.
     /// </summary>
-    public abstract class MobileCenterService : IMobileCenterService
+    public abstract class AppCenterService : IAppCenterService
     {
         private const string PreferenceKeySeparator = "_";
         private const string KeyEnabled = Constants.KeyPrefix + "ServiceEnabled";
@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Application settings.
         /// </summary>
-        protected virtual IApplicationSettings ApplicationSettings => MobileCenter.Instance.ApplicationSettings;
+        protected virtual IApplicationSettings ApplicationSettings => AppCenter.Instance.ApplicationSettings;
 
         /// <summary>
         /// Channel associated with this service. Should be disposed only by ChannelGroup.
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Mobile
         /// <summary>
         /// Log tag for this service.
         /// </summary>
-        public virtual string LogTag => MobileCenterLog.LogTag + ServiceName;
+        public virtual string LogTag => AppCenterLog.LogTag + ServiceName;
 
         /// <summary>
         /// Settings dictionary key for whether this service is enabled.
@@ -80,20 +80,20 @@ namespace Microsoft.Azure.Mobile
                 lock (_serviceLock)
                 {
                     var enabledString = value ? "enabled" : "disabled";
-                    if (value && !MobileCenter.IsEnabledAsync().Result)
+                    if (value && !AppCenter.IsEnabledAsync().Result)
                     {
-                        MobileCenterLog.Error(LogTag,
-                            "The SDK is disabled. Set MobileCenter.Enabled to 'true' before enabling a specific service.");
+                        AppCenterLog.Error(LogTag,
+                            "The SDK is disabled. Set AppCenter.Enabled to 'true' before enabling a specific service.");
                         return;
                     }
                     if (value == InstanceEnabled)
                     {
-                        MobileCenterLog.Info(LogTag, $"{ServiceName} service has already been {enabledString}.");
+                        AppCenterLog.Info(LogTag, $"{ServiceName} service has already been {enabledString}.");
                         return;
                     }
                     Channel?.SetEnabled(value);
                     ApplicationSettings.SetValue(EnabledPreferenceKey, value);
-                    MobileCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
+                    AppCenterLog.Info(LogTag, $"{ServiceName} service has been {enabledString}");
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Mobile
             {
                 ChannelGroup = channelGroup;
                 Channel = channelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                var enabled = MobileCenter.IsEnabledAsync().Result && InstanceEnabled;
+                var enabled = AppCenter.IsEnabledAsync().Result && InstanceEnabled;
                 ApplicationSettings.SetValue(EnabledPreferenceKey, enabled);
                 Channel.SetEnabled(enabled);
             }
@@ -124,7 +124,7 @@ namespace Microsoft.Azure.Mobile
                 {
                     if (Channel == null)
                     {
-                        MobileCenterLog.Error(MobileCenterLog.LogTag,
+                        AppCenterLog.Error(AppCenterLog.LogTag,
                             $"{ServiceName} service not initialized; discarding calls.");
                         return true;
                     }
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Mobile
                         return false;
                     }
 
-                    MobileCenterLog.Info(MobileCenterLog.LogTag,
+                    AppCenterLog.Info(AppCenterLog.LogTag,
                         $"{ServiceName} service not enabled; discarding calls.");
                     return true;
                 }

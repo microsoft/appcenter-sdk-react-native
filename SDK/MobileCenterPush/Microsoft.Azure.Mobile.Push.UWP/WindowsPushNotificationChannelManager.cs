@@ -1,7 +1,7 @@
 ﻿using Windows.Foundation;
 using Windows.Networking.PushNotifications;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.AppCenter.Push
 {
     interface IWindowsPushNotificationChannelManager
     {

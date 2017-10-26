@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.AppCenter.Push
 {
     /// <summary>
     /// Push feature.

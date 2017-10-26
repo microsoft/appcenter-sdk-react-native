@@ -1,4 +1,4 @@
-Microsoft Mobile Center SDK for Xamarin
+Microsoft App Center SDK for Xamarin
 
 Copyright (c) Microsoft Corporation
 

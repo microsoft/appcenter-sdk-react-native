@@ -6,8 +6,8 @@
     <ProjectGuid>{D8F25BA5-249D-4BB0-A4B1-A3245F2437FF}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Push.iOS</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Push</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Push.iOS</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Push</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -54,11 +54,11 @@
     <Compile Include="PushDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Push.iOS.Bindings\Microsoft.Azure.Mobile.Push.iOS.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.Push.iOS.Bindings\Microsoft.AppCenter.Push.iOS.Bindings.csproj">
       <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
-      <Name>Microsoft.Azure.Mobile.Push.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.Push.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems')" />
+  <Import Project="..\Microsoft.AppCenter.Push.Shared\Microsoft.AppCenter.Push.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Push.Shared\Microsoft.AppCenter.Push.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

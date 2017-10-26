@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     internal static class CrashesUtils
     {
@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
             catch (SerializationException e)
             {
-                MobileCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection", e);
+                AppCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection", e);
                 ms = new MemoryStream();
                 formatter.Serialize(ms, e);
             }
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
             catch(SerializationException e)
             {
-                MobileCenterLog.Warn(Crashes.LogTag, "Failed to deserialize exception for client side inspection", e);
+                AppCenterLog.Warn(Crashes.LogTag, "Failed to deserialize exception for client side inspection", e);
                 deserializedException = e;
             }
 

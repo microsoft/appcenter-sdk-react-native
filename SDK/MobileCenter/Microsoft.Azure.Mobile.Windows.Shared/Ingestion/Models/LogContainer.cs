@@ -3,7 +3,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
     public class LogContainer
     {

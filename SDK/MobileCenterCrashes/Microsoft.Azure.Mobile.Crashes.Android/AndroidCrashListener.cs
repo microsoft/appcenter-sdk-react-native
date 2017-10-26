@@ -1,9 +1,9 @@
-﻿using Com.Microsoft.Azure.Mobile.Crashes;
-using Com.Microsoft.Azure.Mobile.Crashes.Model;
+﻿using Com.Microsoft.AAppCenterCrashes;
+using Com.Microsoft.AppCenter.Crashes.Model;
 using Java.Lang;
 using Java.Util;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     class AndroidCrashListener : Object, ICrashesListener
     {

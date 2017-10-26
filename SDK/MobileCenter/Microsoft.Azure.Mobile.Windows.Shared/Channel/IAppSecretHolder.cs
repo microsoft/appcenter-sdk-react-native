@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Channel
+﻿namespace Microsoft.AAppCenterChannel
 {
     /* Capability interface for having an app secret */
     public interface IAppSecretHolder

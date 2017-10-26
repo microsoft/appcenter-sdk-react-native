@@ -12,7 +12,7 @@
   <mp:PhoneIdentity PhoneProductId="da6d3d34-876e-488c-9342-7a7e4daa110b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Microsoft.Azure.Mobile.Test.UWP</DisplayName>
+    <DisplayName>Microsoft.AppCenter.Test.UWP</DisplayName>
     <PublisherDisplayName>Alexander Chocron</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -27,12 +27,12 @@
   <Applications>
     <Application Id="vstest.executionengine.universal.App"
         Executable="$targetnametoken$.exe"
-        EntryPoint="Microsoft.Azure.Mobile.Test.UWP.App">
+        EntryPoint="Microsoft.AppCenter.Test.UWP.App">
       <uap:VisualElements
-        DisplayName="Microsoft.Azure.Mobile.Test.UWP"
+        DisplayName="Microsoft.AppCenter.Test.UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Microsoft.Azure.Mobile.Test.UWP"
+        Description="Microsoft.AppCenter.Test.UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

@@ -6,8 +6,8 @@
     <ProjectGuid>{42D541D7-B7C9-45A7-8D4D-8FB5A00668B3}</ProjectGuid>
     <ProjectTypeGuids>{10368E6C-D01B-4462-8E8B-01FC667A7035};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Crashes.Android.Bindings</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Crashes.Android.Bindings</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Crashes.Android.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Crashes.Android.Bindings</AssemblyName>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
@@ -64,9 +64,9 @@
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />

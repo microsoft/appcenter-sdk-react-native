@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Networking.Connectivity;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Http
+namespace Microsoft.AppCenter.Ingestion.Http
 {
     public class NetworkStateAdapter : INetworkStateAdapter
     {

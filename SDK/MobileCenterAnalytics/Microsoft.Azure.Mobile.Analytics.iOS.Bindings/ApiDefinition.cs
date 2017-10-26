@@ -1,6 +1,6 @@
 using Foundation;
 
-namespace Microsoft.Azure.Mobile.Analytics.iOS.Bindings
+namespace Microsoft.AppCenter.Analytics.iOS.Bindings
 {
     // @interface MSAnalytics : MSService
     [BaseType(typeof(NSObject))]

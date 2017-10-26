@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {

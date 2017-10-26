@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Utils;
 
-namespace Microsoft.Azure.Mobile.Analytics.Channel
+namespace Microsoft.AppCenter.Analytics.Channel
 {
     internal class SessionTracker : ISessionTracker
     {
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 return;
             }
             var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
-            MobileCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
+            AppCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 
         public void Pause()
@@ -73,10 +73,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 if (_currentSessionState == SessionState.Inactive)
                 {
-                    MobileCenterLog.Warn(Analytics.Instance.LogTag, "Trying to pause already inactive session.");
+                    AppCenterLog.Warn(Analytics.Instance.LogTag, "Trying to pause already inactive session.");
                     return;
                 }
-                MobileCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Pause");
+                AppCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Pause");
                 _lastPausedTime = TimeHelper.CurrentTimeInMilliseconds();
                 _currentSessionState = SessionState.Inactive;
             }
@@ -88,10 +88,10 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             {
                 if (_currentSessionState == SessionState.Active)
                 {
-                    MobileCenterLog.Warn(Analytics.Instance.LogTag, "Trying to resume already active session.");
+                    AppCenterLog.Warn(Analytics.Instance.LogTag, "Trying to resume already active session.");
                     return;
                 }
-                MobileCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Resume");
+                AppCenterLog.Debug(Analytics.Instance.LogTag, "SessionTracker.Resume");
                 _lastResumedTime = TimeHelper.CurrentTimeInMilliseconds();
                 _currentSessionState = SessionState.Active;
                 SendStartSessionIfNeeded();
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
             _sid = Guid.NewGuid();
 #pragma warning disable CS0612 // Type or member is obsolete
-            MobileCenter.TestAndSetCorrelationId(Guid.Empty, ref _sid);
+            AppCenter.TestAndSetCorrelationId(Guid.Empty, ref _sid);
 #pragma warning restore CS0612 // Type or member is obsolete
             _sessions.Add(now, _sid);
             _applicationSettings.SetValue(StorageKey, SessionsAsString());
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
                 }
                 catch (FormatException e) //TODO other exceptions?
                 {
-                    MobileCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
+                    AppCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
                 }
             }
             return sessionsDict;
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Channel
             }
             var isBackgroundForLong = (lastPausedTime >= lastResumedTime) && ((now - lastPausedTime) >= SessionTimeout);
             var wasBackgroundForLong = (lastResumedTime - Math.Max(lastPausedTime, lastQueuedLogTime)) >= SessionTimeout;
-            MobileCenterLog.Debug(Analytics.Instance.LogTag, $"noLogSentForLong={noLogSentForLong} " +
+            AppCenterLog.Debug(Analytics.Instance.LogTag, $"noLogSentForLong={noLogSentForLong} " +
                                                     $"isBackgroundForLong={isBackgroundForLong} " +
                                                     $"wasBackgroundForLong={wasBackgroundForLong}");
             return noLogSentForLong && (isBackgroundForLong || wasBackgroundForLong);

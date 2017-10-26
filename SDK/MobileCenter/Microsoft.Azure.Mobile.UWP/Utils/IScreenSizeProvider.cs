@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     /// <summary>
     /// In most UWP apps, the DefaultScreenSizeProvider will do, but some

@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
-    public class CancellationException : MobileCenterException
+    public class CancellationException : AppCenterException
     {
         public CancellationException() : base("Request cancelled because channel is disabled.") { }
     }

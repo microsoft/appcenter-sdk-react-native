@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Http
+namespace Microsoft.AppCenter.Ingestion.Http
 {
     public class NetworkStateServiceCall : ServiceCallDecorator
     {

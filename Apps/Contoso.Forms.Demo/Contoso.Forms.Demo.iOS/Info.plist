@@ -49,7 +49,7 @@
 			<string>com.microsoft.azure.mobile.xamarin.forms.demo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>mobilecenter-fe2bf05d-f4f9-48a6-83d9-ea8033fbb644</string>
+				<string>appcenter-fe2bf05d-f4f9-48a6-83d9-ea8033fbb644</string>
 			</array>
 		</dict>
 	</array>

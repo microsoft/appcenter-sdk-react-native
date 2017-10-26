@@ -6,8 +6,8 @@
     <ProjectGuid>{9417E221-3287-47AC-BD56-5223057DC389}</ProjectGuid>
     <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Push.iOS.Bindings</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Push.iOS.Bindings</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Push.iOS.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Push.iOS.Bindings</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,7 +42,7 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\MobileCenterPush.a">
+    <NativeReference Include="..\..\..\externals\ios\AppCenterPush.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
     </NativeReference>

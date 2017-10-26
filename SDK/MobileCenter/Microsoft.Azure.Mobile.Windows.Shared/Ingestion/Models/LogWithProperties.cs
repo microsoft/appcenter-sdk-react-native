@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
     public abstract class LogWithProperties : Log
     {

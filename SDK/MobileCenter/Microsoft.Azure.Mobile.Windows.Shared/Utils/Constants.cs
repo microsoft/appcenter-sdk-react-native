@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     /// <summary>
     /// Various constants used by the SDK.
     /// </summary>
     public static class Constants
     {
-        // Prefix for Mobile Center application settings
-        public const string KeyPrefix = "MobileCenter";
+        // Prefix for App Center application settings
+        public const string KeyPrefix = "AppCenter";
 
         // Channel constants
         public const int DefaultTriggerCount = 50;

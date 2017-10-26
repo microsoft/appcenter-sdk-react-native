@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     /// <summary>
     /// This class is used to log messages consistent with those emitted by the SDK.
     /// Note: To track events, use <code>Analytics.TrackEvent</code>.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static partial class MobileCenterLog
+    public static partial class AppCenterLog
     {
         /// <summary>
         /// Writes a log and an exception at the <see cref="LogLevel.Verbose"/> level.

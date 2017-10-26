@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Models
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
 {
     using Device = Mobile.Ingestion.Models.Device;
 

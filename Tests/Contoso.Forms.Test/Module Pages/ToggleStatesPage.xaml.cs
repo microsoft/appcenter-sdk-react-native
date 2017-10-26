@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile;
+﻿using Microsoft.AAppCenterAnalytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter;
 
 using Xamarin.Forms;
 
@@ -14,9 +14,9 @@ namespace Contoso.Forms.Test
             UpdateEnabledStateLabels();
         }
 
-        void EnableMobileCenter(object sender, System.EventArgs e)
+        void EnableAppCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.SetEnabledAsync(true).Wait();
+            AppCenter.SetEnabledAsync(true).Wait();
             UpdateEnabledStateLabels();
         }
 
@@ -32,9 +32,9 @@ namespace Contoso.Forms.Test
             UpdateEnabledStateLabels();
         }
 
-        void DisableMobileCenter(object sender, System.EventArgs e)
+        void DisableAppCenter(object sender, System.EventArgs e)
         {
-            MobileCenter.SetEnabledAsync(false).Wait();
+            AppCenter.SetEnabledAsync(false).Wait();
             UpdateEnabledStateLabels();
         }
 
@@ -53,7 +53,7 @@ namespace Contoso.Forms.Test
         void UpdateEnabledStateLabels()
         {
             ForceLayout();
-            UpdateMobileCenterLabel();
+            UpdateAppCenterLabel();
             UpdateCrashesLabel();
             UpdateAnalyticsLabel();
             ForceLayout();
@@ -75,11 +75,11 @@ namespace Contoso.Forms.Test
             }
         }
 
-        void UpdateMobileCenterLabel()
+        void UpdateAppCenterLabel()
         {
-            if (MobileCenterEnabledLabel != null)
+            if (AppCenterEnabledLabel != null)
             {
-                MobileCenterEnabledLabel.Text = MobileCenter.IsEnabledAsync().Result ? TestStrings.MobileCenterEnabledText : TestStrings.MobileCenterDisabledText;
+                AppCenterEnabledLabel.Text = AppCenter.IsEnabledAsync().Result ? TestStrings.AppCenterEnabledText : TestStrings.AppCenterDisabledText;
             }
         }
 

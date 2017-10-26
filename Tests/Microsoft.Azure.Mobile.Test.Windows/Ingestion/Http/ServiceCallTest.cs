@@ -1,9 +1,9 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Azure.Mobile.Ingestion;
+using Microsoft.AppCenter.Ingestion;
 
-namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
 {
     [TestClass]
     public class ServiceCallTest

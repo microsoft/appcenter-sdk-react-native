@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.AAppCenterCrashes
 {
     /// <summary>
     /// Error report details pertinent only to devices running Android.

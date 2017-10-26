@@ -1,7 +1,7 @@
-﻿using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterChannel;
+using Microsoft.AppCenter.Utils;
 
-namespace Microsoft.Azure.Mobile.Analytics.Channel
+namespace Microsoft.AppCenter.Analytics.Channel
 {
     public interface ISessionTrackerFactory
     {

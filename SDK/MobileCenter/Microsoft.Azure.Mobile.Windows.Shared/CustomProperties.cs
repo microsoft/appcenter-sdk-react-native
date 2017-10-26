@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     public partial class CustomProperties
     {
@@ -19,11 +19,11 @@ namespace Microsoft.Azure.Mobile
             {
                 if (value == null)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
+                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
                 }
                 else if (value.Length > MaxCustomPropertiesStringValueLength)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" value length cannot be longer than " + MaxCustomPropertiesStringValueLength + " characters.");
+                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" value length cannot be longer than " + MaxCustomPropertiesStringValueLength + " characters.");
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Mobile
             {
                 if (value == null)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
+                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
                 }
                 else
                 {
@@ -78,21 +78,21 @@ namespace Microsoft.Azure.Mobile
         {
             if (key == null || !KeyPattern.IsMatch(key))
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" must match \"" + KeyPattern + "\"");
+                AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" must match \"" + KeyPattern + "\"");
                 return false;
             }
             if (key.Length > MaxCustomPropertiesKeyLength)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" key length cannot be longer than " + MaxCustomPropertiesKeyLength + " characters.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" key length cannot be longer than " + MaxCustomPropertiesKeyLength + " characters.");
                 return false;
             }
             if (Properties.ContainsKey(key))
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom property \"" + key + "\" is already set or cleared and will be overridden.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" is already set or cleared and will be overridden.");
             }
             else if (Properties.Count >= MaxCustomPropertiesCount)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom properties cannot contain more than " + MaxCustomPropertiesCount + " items.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties cannot contain more than " + MaxCustomPropertiesCount + " items.");
                 return false;
             }
             return true;

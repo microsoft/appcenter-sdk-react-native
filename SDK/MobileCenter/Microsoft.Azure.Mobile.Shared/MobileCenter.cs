@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     /// <summary>
     /// SDK core used to initialize, start and control specific service.
     /// </summary>
-    public partial class MobileCenter
+    public partial class AppCenter
     {
         // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
@@ -14,14 +14,14 @@ namespace Microsoft.Azure.Mobile
         {
             if (string.IsNullOrEmpty(secrets))
             {
-                throw new MobileCenterException("App secrets string is null or empty");
+                throw new AppCenterException("App secrets string is null or empty");
             }
 
             // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
             // a typing error.
             if (!secrets.Contains("="))
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
+                AppCenterLog.Debug(AppCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
             }
 
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Mobile
             var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
             if (secretIdx == -1)
             {
-                throw new MobileCenterException(parseErrorMessage);
+                throw new AppCenterException(parseErrorMessage);
             }
             secretIdx += platformIndicator.Length;
             var platformSecret = string.Empty;
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Mobile
 
             if (platformSecret == string.Empty)
             {
-                throw new MobileCenterException(parseErrorMessage);
+                throw new AppCenterException(parseErrorMessage);
             }
 
             return platformSecret;
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Mobile
         }
 
         /// <summary>
-        /// Get the current version of MobileCenter SDK.
+        /// Get the current version of AppCenter SDK.
         /// </summary>
         public static string SdkVersion
         {

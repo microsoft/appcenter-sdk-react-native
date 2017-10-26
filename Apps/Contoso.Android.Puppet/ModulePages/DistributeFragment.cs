@@ -1,8 +1,8 @@
 ﻿using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Distribute;
 
 namespace Contoso.Android.Puppet
 {
@@ -33,7 +33,7 @@ namespace Contoso.Android.Puppet
             DistributeEnabledSwitch.CheckedChange -= UpdateEnabled;
             DistributeEnabledSwitch.Enabled = true;
             DistributeEnabledSwitch.Checked = await Distribute.IsEnabledAsync();
-            DistributeEnabledSwitch.Enabled = await MobileCenter.IsEnabledAsync();
+            DistributeEnabledSwitch.Enabled = await AppCenter.IsEnabledAsync();
             DistributeEnabledSwitch.CheckedChange += UpdateEnabled;
         }
 

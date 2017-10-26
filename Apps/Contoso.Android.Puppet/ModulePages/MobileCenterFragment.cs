@@ -4,20 +4,20 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 
 namespace Contoso.Android.Puppet
 {
     using Result = global::Android.App.Result;
 
-    public class MobileCenterFragment : PageFragment
+    public class AppCenterFragment : PageFragment
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, MobileCenterLog.Verbose },
-            { LogLevel.Debug, MobileCenterLog.Debug },
-            { LogLevel.Info, MobileCenterLog.Info },
-            { LogLevel.Warn, MobileCenterLog.Warn },
-            { LogLevel.Error, MobileCenterLog.Error }
+            { LogLevel.Verbose, AppCenterLog.Verbose },
+            { LogLevel.Debug, AppCenterLog.Debug },
+            { LogLevel.Info, AppCenterLog.Info },
+            { LogLevel.Warn, AppCenterLog.Warn },
+            { LogLevel.Error, AppCenterLog.Error }
         };
         private static readonly IDictionary<LogLevel, string> LogLevelNames = new Dictionary<LogLevel, string> {
             { LogLevel.Verbose, Constants.Verbose },
@@ -28,7 +28,7 @@ namespace Contoso.Android.Puppet
         };
         private LogLevel mLogWriteLevel = LogLevel.Verbose;
 
-        private Switch MobileCenterEnabledSwitch;
+        private Switch AppCenterEnabledSwitch;
         private TextView LogLevelLabel;
         private EditText LogWriteMessageText;
         private EditText LogWriteTagText;
@@ -37,7 +37,7 @@ namespace Contoso.Android.Puppet
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.MobileCenter, container, false);
+            return inflater.Inflate(Resource.Layout.AppCenter, container, false);
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -45,7 +45,7 @@ namespace Contoso.Android.Puppet
             base.OnViewCreated(view, savedInstanceState);
 
             // Find views.
-            MobileCenterEnabledSwitch = view.FindViewById(Resource.Id.enabled_mobile_center) as Switch;
+            AppCenterEnabledSwitch = view.FindViewById(Resource.Id.enabled_mobile_center) as Switch;
             LogLevelLabel = view.FindViewById(Resource.Id.log_level) as TextView;
             LogWriteMessageText = view.FindViewById(Resource.Id.write_log_message) as EditText;
             LogWriteTagText = view.FindViewById(Resource.Id.write_log_tag) as EditText;
@@ -53,7 +53,7 @@ namespace Contoso.Android.Puppet
             LogWriteButton = view.FindViewById(Resource.Id.write_log) as Button;
 
             // Subscribe to events.
-            MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
+            AppCenterEnabledSwitch.CheckedChange += UpdateEnabled;
             ((View)LogLevelLabel.Parent).Click += LogLevelClicked;
             ((View)LogWriteLevelLabel.Parent).Click += LogWriteLevelClicked;
             LogWriteButton.Click += WriteLog;
@@ -63,10 +63,10 @@ namespace Contoso.Android.Puppet
 
         protected override async void UpdateState()
         {
-            MobileCenterEnabledSwitch.CheckedChange -= UpdateEnabled;
-            MobileCenterEnabledSwitch.Checked = await MobileCenter.IsEnabledAsync();
-            MobileCenterEnabledSwitch.CheckedChange += UpdateEnabled;
-            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+            AppCenterEnabledSwitch.CheckedChange -= UpdateEnabled;
+            AppCenterEnabledSwitch.Checked = await AppCenter.IsEnabledAsync();
+            AppCenterEnabledSwitch.CheckedChange += UpdateEnabled;
+            LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
 
@@ -81,8 +81,8 @@ namespace Contoso.Android.Puppet
             switch (requestCode)
             {
                 case 0:
-                    MobileCenter.LogLevel = logLevel;
-                    LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+                    AppCenter.LogLevel = logLevel;
+                    LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
                     break;
                 case 1:
                     mLogWriteLevel = logLevel;
@@ -93,8 +93,8 @@ namespace Contoso.Android.Puppet
 
         private async void UpdateEnabled(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            await MobileCenter.SetEnabledAsync(e.IsChecked);
-            MobileCenterEnabledSwitch.Checked = await MobileCenter.IsEnabledAsync();
+            await AppCenter.SetEnabledAsync(e.IsChecked);
+            AppCenterEnabledSwitch.Checked = await AppCenter.IsEnabledAsync();
         }
 
         private void LogLevelClicked(object sender, EventArgs e)

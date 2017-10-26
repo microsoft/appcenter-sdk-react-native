@@ -82,7 +82,7 @@ Task("UpdateDemoVersion").Does(()=>
 
     // Note: nuget update does not work with projects using project.json
     // Replace version in all the demo application
-    ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.Azure.Mobile[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
+    ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.AppCenter[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
 });
 
 Task("StartNewVersion").Does(()=>
@@ -176,7 +176,7 @@ void IncrementRevisionNumber(bool useHash)
 
 string GetPCLBaseSemanticVersion()
 {
-    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
+    var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
     return GetBaseVersion(project.NetCore.Version);
 }
 
@@ -193,7 +193,7 @@ string GetLatestNuGetVersion()
     var nugetUser = EnvironmentVariable("NUGET_USER");
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
+    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.AppCenter'&includePrerelease=true";
     HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
@@ -238,7 +238,7 @@ void UpdateWrapperSdkVersion(string newVersion)
 {
     var patternString = "Version = \"[^\"]+\";";
     var newString = "Version = \"" + newVersion + "\";";
-    ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
+    ReplaceRegexInFiles("SDK/AppCenter/Microsoft.AppCenter.Shared/WrapperSdk.cs", patternString, newString);
 }
 
 void UpdateNewProjSdkVersion(string newVersion)

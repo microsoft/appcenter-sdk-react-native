@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion
+namespace Microsoft.AppCenter.UWP.Ingestion
 {
     using Mobile;
     using UWP;
     using IMicrosoft.Azure;
-    using IMicrosoft.Azure.Mobile;
-    using IMicrosoft.Azure.Mobile.UWP;
+    using IMicrosoft.AppCenter;
+    using IMicrosoft.AppCenter.UWP;
     using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.UWP;
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
     using Models;
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
     /// <summary>
     /// Microsoft Avalanche Ingestion REST API.
     /// </summary>
-    public partial class Microsoft.Ingestion : Microsoft.Rest.ServiceClient<Microsoft.Azure.Mobile.UWP.Ingestion>, IMicrosoft.Azure.Mobile.UWP.Ingestion
+    public partial class Microsoft.Ingestion : Microsoft.Rest.ServiceClient<Microsoft.AppCenter.UWP.Ingestion>, IMicrosoft.AppCenter.UWP.Ingestion
     {
         /// <summary>
         /// The base URI of the service.
@@ -45,18 +45,18 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
         public string ApiVersion { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the Microsoft.Azure.Mobile.UWP.Ingestion class.
+        /// Initializes a new instance of the Microsoft.AppCenter.UWP.Ingestion class.
         /// </summary>
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
         /// </param>
-        public Microsoft.Azure.Mobile.UWP.Ingestion(params System.Net.Http.DelegatingHandler[] handlers) : base(handlers)
+        public Microsoft.AppCenter.UWP.Ingestion(params System.Net.Http.DelegatingHandler[] handlers) : base(handlers)
         {
             this.Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the Microsoft.Azure.Mobile.UWP.Ingestion class.
+        /// Initializes a new instance of the Microsoft.AppCenter.UWP.Ingestion class.
         /// </summary>
         /// <param name='rootHandler'>
         /// Optional. The http client handler used to handle http transport.
@@ -64,13 +64,13 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
         /// </param>
-        public Microsoft.Azure.Mobile.UWP.Ingestion(System.Net.Http.HttpClientHandler rootHandler, params System.Net.Http.DelegatingHandler[] handlers) : base(rootHandler, handlers)
+        public Microsoft.AppCenter.UWP.Ingestion(System.Net.Http.HttpClientHandler rootHandler, params System.Net.Http.DelegatingHandler[] handlers) : base(rootHandler, handlers)
         {
             this.Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the Microsoft.Azure.Mobile.UWP.Ingestion class.
+        /// Initializes a new instance of the Microsoft.AppCenter.UWP.Ingestion class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public Microsoft.Azure.Mobile.UWP.Ingestion(System.Uri baseUri, params System.Net.Http.DelegatingHandler[] handlers) : this(handlers)
+        public Microsoft.AppCenter.UWP.Ingestion(System.Uri baseUri, params System.Net.Http.DelegatingHandler[] handlers) : this(handlers)
         {
             if (baseUri == null)
             {
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
         }
 
         /// <summary>
-        /// Initializes a new instance of the Microsoft.Azure.Mobile.UWP.Ingestion class.
+        /// Initializes a new instance of the Microsoft.AppCenter.UWP.Ingestion class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public Microsoft.Azure.Mobile.UWP.Ingestion(System.Uri baseUri, System.Net.Http.HttpClientHandler rootHandler, params System.Net.Http.DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        public Microsoft.AppCenter.UWP.Ingestion(System.Uri baseUri, System.Net.Http.HttpClientHandler rootHandler, params System.Net.Http.DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (baseUri == null)
             {

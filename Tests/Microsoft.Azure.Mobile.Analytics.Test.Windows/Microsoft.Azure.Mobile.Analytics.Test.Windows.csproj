@@ -7,8 +7,8 @@
     <ProjectGuid>{4CFBAE12-D17F-49FF-B41D-C861EEB965C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Analytics.Test.Windows</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Analytics.Test.Windows</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Analytics.Test.Windows</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Analytics.Test.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -83,13 +83,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.NET\Microsoft.Azure.Mobile.Analytics.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.Analytics.NET\Microsoft.AppCenter.Analytics.NET.csproj">
       <Project>{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.NET</Name>
+      <Name>Microsoft.AppCenter.Analytics.NET</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.NET\Microsoft.AppCenter.NET.csproj">
       <Project>{e76dc547-2b63-4911-971c-767587ebfab6}</Project>
-      <Name>Microsoft.Azure.Mobile.NET</Name>
+      <Name>Microsoft.AppCenter.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

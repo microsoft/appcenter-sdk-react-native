@@ -1,7 +1,7 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Push.iOS.Bindings;
+using Microsoft.AppCenter.Push.iOS.Bindings;
 
-namespace Microsoft.Azure.Mobile.Push.iOS
+namespace Microsoft.AppCenter.Push.iOS
 {
     public class PushDelegate : MSPushDelegate
     {

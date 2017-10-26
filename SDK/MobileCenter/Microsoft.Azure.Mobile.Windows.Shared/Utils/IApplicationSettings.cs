@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Utils
+﻿namespace Microsoft.AAppCenterUtils
 {
     /// <summary>
     /// Represents a store of persistent application settings that is behaves like a dictionary.

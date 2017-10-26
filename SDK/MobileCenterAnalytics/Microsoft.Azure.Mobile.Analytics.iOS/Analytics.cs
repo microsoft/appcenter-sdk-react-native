@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Foundation;
 
-namespace Microsoft.Azure.Mobile.Analytics
+namespace Microsoft.AppCenter.Analytics
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Mobile.Analytics
     /// <summary>
     /// Analytics feature.
     /// </summary>
-    public class Analytics : MobileCenterService
+    public class Analytics : AppCenterService
     {
         internal Analytics()
         {

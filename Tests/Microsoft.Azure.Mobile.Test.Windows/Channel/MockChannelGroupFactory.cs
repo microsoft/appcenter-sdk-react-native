@@ -1,7 +1,7 @@
-﻿using Microsoft.Azure.Mobile.Channel;
+﻿using Microsoft.AAppCenterChannel;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Channel
+namespace Microsoft.AppCenter.Test.Channel
 {
     public class MockChannelGroupFactory : IChannelGroupFactory
     {

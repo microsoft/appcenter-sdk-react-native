@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
-    public static partial class MobileCenterLog
+    public static partial class AppCenterLog
     {
         /// <summary>
         /// The log tag for this SDK. All logs emitted at the SDK level will contain this tag.

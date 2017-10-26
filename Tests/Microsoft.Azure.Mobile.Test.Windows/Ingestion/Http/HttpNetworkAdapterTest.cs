@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Microsoft.Azure.Mobile.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion.Http
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
 {
     [TestClass]
     public class HttpNetworkAdapterTest

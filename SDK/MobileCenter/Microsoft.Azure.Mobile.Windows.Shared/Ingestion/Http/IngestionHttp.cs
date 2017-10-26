@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using System.Net.Http;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Http
+namespace Microsoft.AppCenter.Ingestion.Http
 {
     public sealed class IngestionHttp : IIngestion
     {
@@ -32,17 +32,17 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 return;
             }
             var baseUrl = string.IsNullOrEmpty(_baseLogUrl) ? DefaultBaseUrl : _baseLogUrl;
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"Calling {baseUrl + ApiVersion}...");
+            AppCenterLog.Verbose(AppCenterLog.LogTag, $"Calling {baseUrl + ApiVersion}...");
 
             // Create request headers.
             var requestHeaders = CreateHeaders(call.AppSecret, call.InstallId);
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, "Headers: " +
+            AppCenterLog.Verbose(AppCenterLog.LogTag, "Headers: " +
                     $"{AppSecret}={GetRedactedAppSecret(call.AppSecret)}, " +
                     $"{InstallId}={call.InstallId}");
 
             // Create request content.
             var requestContent = CreateLogsContent(call.Logs);
-            MobileCenterLog.Verbose(MobileCenterLog.LogTag, requestContent);
+            AppCenterLog.Verbose(AppCenterLog.LogTag, requestContent);
             
             // Send request.
             await _httpNetwork.SendAsync(baseUrl + ApiVersion, HttpMethod.Post, requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);

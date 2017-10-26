@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Microsoft.Azure.Mobile.Distribute.iOS.Bindings
+namespace Microsoft.AppCenter.Distribute.iOS.Bindings
 {
     // @interface MSDistribute : MSService
     [BaseType(typeof(NSObject))]

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.Windows
+namespace Microsoft.AppCenter.Test.Windows
 {
     [TestClass]
     public class CustomPropertiesTest

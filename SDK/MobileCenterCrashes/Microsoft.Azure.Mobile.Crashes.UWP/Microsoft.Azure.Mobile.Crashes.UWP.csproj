@@ -7,8 +7,8 @@
     <ProjectGuid>{2F715D51-643C-4F7F-9EA4-6554D4EECCB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Crashes</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Crashes</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Crashes</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Crashes</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -108,12 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.Crashes.UWP.rd.xml" />
+    <EmbeddedResource Include="Properties\Microsoft.AppCenter.Crashes.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
-      <Name>Microsoft.Azure.Mobile.UWP</Name>
+      <Name>Microsoft.AppCenter.UWP</Name>
     </ProjectReference>
     <!-- Do not include watson utility when compiling for reference|anycpu-->
     <ProjectReference Condition="'$(Configuration)|$(Platform)' != 'Reference|AnyCPU'" Include="..\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
@@ -121,8 +121,8 @@
       <Name>WatsonRegistrationUtility</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Shared\Microsoft.Azure.Mobile.Crashes.Shared.projitems" Label="Shared" />
-  <Import Project="..\Microsoft.Azure.Mobile.Crashes.Windows.Shared\Microsoft.Azure.Mobile.Crashes.Windows.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

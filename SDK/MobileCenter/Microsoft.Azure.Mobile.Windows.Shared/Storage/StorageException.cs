@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Storage
+namespace Microsoft.AppCenter.Storage
 {
-    internal class StorageException : MobileCenterException
+    internal class StorageException : AppCenterException
     {
         private const string DefaultMessage = "The storage operation failed";
         public StorageException(string message) : base(message) { }

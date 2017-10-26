@@ -1,12 +1,12 @@
-﻿using Microsoft.Azure.Mobile;
+﻿using Microsoft.AAppCenter
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
     [Android.Runtime.Preserve(AllMembers = true)]
-    public partial class MobileCenterContentPage : ContentPage
+    public partial class AppCenterContentPage : ContentPage
     {
-        public MobileCenterContentPage()
+        public AppCenterContentPage()
         {
             InitializeComponent();
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
@@ -18,12 +18,12 @@ namespace Contoso.Forms.Demo
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            MobileCenterEnabledSwitchCell.On = await MobileCenter.IsEnabledAsync();
+            AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
         }
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
-            await MobileCenter.SetEnabledAsync(e.Value);
+            await AppCenter.SetEnabledAsync(e.Value);
         }
     }
 }

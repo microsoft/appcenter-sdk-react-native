@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Storage
+namespace Microsoft.AppCenter.Storage
 {
     public interface IStorage : IDisposable
     {

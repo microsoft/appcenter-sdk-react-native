@@ -6,8 +6,8 @@
     <ProjectGuid>{34771DC0-9684-45BE-9C9C-5A686468722C}</ProjectGuid>
     <ProjectTypeGuids>{10368E6C-D01B-4462-8E8B-01FC667A7035};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Analytics.Android.Bindings</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Analytics.Android.Bindings</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Analytics.Android.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Analytics.Android.Bindings</AssemblyName>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
@@ -60,9 +60,9 @@
     <LibraryProjectZip Include="Jars\mobile-center-analytics-release.aar" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

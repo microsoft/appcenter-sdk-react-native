@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Rum
+namespace Microsoft.AppCenter.Rum
 {
     public partial class RealUserMeasurements
     {

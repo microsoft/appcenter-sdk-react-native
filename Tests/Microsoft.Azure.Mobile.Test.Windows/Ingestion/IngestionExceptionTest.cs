@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.Mobile.Ingestion;
+﻿using Microsoft.AAppCenterIngestion;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Microsoft.Azure.Mobile.Test.Windows.Ingestion
+namespace Microsoft.AppCenter.Test.Windows.Ingestion
 {
     [TestClass]
     public class IngestionExceptionTest

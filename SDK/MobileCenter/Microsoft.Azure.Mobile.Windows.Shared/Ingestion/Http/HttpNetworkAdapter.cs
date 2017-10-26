@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Http
+namespace Microsoft.AppCenter.Ingestion.Http
 {
     public sealed class HttpNetworkAdapter : IHttpNetworkAdapter
     {
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 {
                     logPayload = "<binary>";
                 }
-                MobileCenterLog.Verbose(MobileCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}");
+                AppCenterLog.Verbose(AppCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}");
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     throw new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")

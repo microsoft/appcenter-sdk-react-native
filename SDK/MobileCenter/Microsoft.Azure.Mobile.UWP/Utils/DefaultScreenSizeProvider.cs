@@ -7,7 +7,7 @@ using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     public class DefaultScreenSizeProvider : ScreenSizeProviderBase
     {
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Mobile.Utils
             if (!ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenHeightInRawPixels") ||
                 !ApiInformation.IsPropertyPresent(typeof(DisplayInformation).FullName, "ScreenWidthInRawPixels"))
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+                AppCenterLog.Warn(AppCenterLog.LogTag, FailureMessage);
                 _displayInformationEventSemaphore.Release();
                 return;
             }
@@ -68,7 +68,7 @@ namespace Microsoft.Azure.Mobile.Utils
                         }
                         catch
                         {
-                            MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+                            AppCenterLog.Warn(AppCenterLog.LogTag, FailureMessage);
                         }
                         finally
                         {
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 // This is reached if the MainView is not ready to be accessed yet.
                 _displayInformationEventSemaphore.Release();
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, FailureMessage);
+                AppCenterLog.Warn(AppCenterLog.LogTag, FailureMessage);
             }
         }
 

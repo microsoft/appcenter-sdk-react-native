@@ -2,11 +2,11 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Http;
 using Moq;
 using System.Net.Http;
 
-namespace Microsoft.Azure.Mobile.Test.Ingestion.Http
+namespace Microsoft.AppCenter.Test.Ingestion.Http
 {
     public class HttpIngestionTest
     {

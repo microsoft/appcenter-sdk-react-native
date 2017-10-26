@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Ingestion.Http
+﻿namespace Microsoft.AAppCenterIngestion.Http
 {
     public class TestServiceCall : ServiceCallDecorator
     {

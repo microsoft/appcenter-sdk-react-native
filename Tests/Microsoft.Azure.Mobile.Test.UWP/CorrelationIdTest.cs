@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter.Crashes;
 
-namespace Microsoft.Azure.Mobile.Test.UWP
+namespace Microsoft.AppCenter.Test.UWP
 {
     [TestClass]
     public class CorrelationIdTest
@@ -17,9 +17,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         [TestMethod]
         public void CrashesSetsCorrelationId()
         {
-            MobileCenter.Start("secret", typeof(Crashes.Crashes));
+            AppCenter.Start("secret", typeof(Crashes.Crashes));
 #pragma warning disable CS0612 // Type or member is obsolete
-            Assert.IsNotNull(MobileCenter.Instance.InstanceCorrelationId);
+            Assert.IsNotNull(AppCenter.Instance.InstanceCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
         }
 
@@ -32,9 +32,9 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         {
             var originalCorrelationId = Guid.NewGuid();
 #pragma warning disable CS0612 // Type or member is obsolete
-            MobileCenter.Instance.InstanceCorrelationId = originalCorrelationId;
-            MobileCenter.Start("secret", typeof(Crashes.Crashes));
-            Assert.AreEqual(originalCorrelationId, MobileCenter.Instance.InstanceCorrelationId);
+            AppCenter.Instance.InstanceCorrelationId = originalCorrelationId;
+            AppCenter.Start("secret", typeof(Crashes.Crashes));
+            Assert.AreEqual(originalCorrelationId, AppCenter.Instance.InstanceCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
         }
     }

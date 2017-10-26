@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Foundation;
-using Microsoft.Azure.Mobile.Push.iOS;
-using Microsoft.Azure.Mobile.Push.iOS.Bindings;
+using Microsoft.AppCenter.Push.iOS;
+using Microsoft.AppCenter.Push.iOS.Bindings;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.AppCenter.Push
 {
     public partial class Push
     {

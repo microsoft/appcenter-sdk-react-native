@@ -1,23 +1,23 @@
-﻿using Microsoft.Azure.Mobile.Channel;
+﻿using Microsoft.AAppCenterChannel;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test
+namespace Microsoft.AppCenter.Test
 {
-    public class MockMobileCenterService : IMobileCenterService
+    public class MockAppCenterService : IAppCenterService
     {
-        public string ServiceName => nameof(MockMobileCenterService);
-        private static MockMobileCenterService _instanceField;
+        public string ServiceName => nameof(MockAppCenterService);
+        private static MockAppCenterService _instanceField;
 
         public static void Reset()
         {
-            _instanceField = new MockMobileCenterService();
+            _instanceField = new MockAppCenterService();
         }
-        public static MockMobileCenterService Instance => _instanceField ?? (_instanceField = new MockMobileCenterService());
-        public Mock<IMobileCenterService> MockInstance { get; }
+        public static MockAppCenterService Instance => _instanceField ?? (_instanceField = new MockAppCenterService());
+        public Mock<IAppCenterService> MockInstance { get; }
 
-        public MockMobileCenterService()
+        public MockAppCenterService()
         {
-            MockInstance = new Mock<IMobileCenterService>();
+            MockInstance = new Mock<IAppCenterService>();
         }
 
         public bool InstanceEnabled {

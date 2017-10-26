@@ -1,7 +1,7 @@
-﻿using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Distribute;
-using Microsoft.Azure.Mobile.Push;
-using Microsoft.Azure.Mobile.Rum;
+﻿using Microsoft.AAppCenter
+using Microsoft.AppCenter.Distribute;
+using Microsoft.AppCenter.Push;
+using Microsoft.AppCenter.Rum;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -31,7 +31,7 @@ namespace Contoso.Forms.Puppet
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var mcEnabled = await MobileCenter.IsEnabledAsync();
+            var mcEnabled = await AppCenter.IsEnabledAsync();
             DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
             DistributeEnabledSwitchCell.IsEnabled = mcEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();

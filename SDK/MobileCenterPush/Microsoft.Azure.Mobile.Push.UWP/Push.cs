@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Push.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
-using Microsoft.Azure.Mobile.Utils.Synchronization;
+using Microsoft.AppCenter.Push.Ingestion.Models;
+using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Synchronization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Activation;
 using Windows.Data.Xml.Dom;
 using Windows.Networking.PushNotifications;
 
-namespace Microsoft.Azure.Mobile.Push
+namespace Microsoft.AppCenter.Push
 {
     using WindowsPushNotificationReceivedEventArgs = Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs;
 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Mobile.Push
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
-                MobileCenterLog.Debug(LogTag, "Getting push token...");
+                AppCenterLog.Debug(LogTag, "Getting push token...");
                 var state = _mutex.State;
                 Task.Run(async () =>
                 {
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Mobile.Push
                                 channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
 
                                 // Send channel URI to backend
-                                MobileCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+                                AppCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
 
                                 var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid());
 
@@ -94,13 +94,13 @@ namespace Microsoft.Azure.Mobile.Push
                             }
                             else
                             {
-                                MobileCenterLog.Error(LogTag, "Push service registering with Mobile Center backend has failed.");
+                                AppCenterLog.Error(LogTag, "Push service registering with App Center backend has failed.");
                             }
                         }
                     }
                     catch (StatefulMutexException)
                     {
-                        MobileCenterLog.Warn(LogTag, "Push Enabled state changed after creating channel.");
+                        AppCenterLog.Warn(LogTag, "Push Enabled state changed after creating channel.");
                     }
                 });
             }
@@ -115,33 +115,33 @@ namespace Microsoft.Azure.Mobile.Push
             if (e.NotificationType == PushNotificationType.Toast)
             {
                 var content = e.ToastNotification.Content;
-                MobileCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
+                AppCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
                 if (ApplicationLifecycleHelper.Instance.IsSuspended)
                 {
-                    MobileCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
+                    AppCenterLog.Debug(LogTag, "Application in background. Push callback will be called when user clicks the toast notification.");
                 }
                 else
                 {
-                    var pushNotification = ParseMobileCenterPush(content);
+                    var pushNotification = ParseAppCenterPush(content);
                     if (pushNotification != null)
                     {
                         e.Cancel = true;
                         PushNotificationReceived?.Invoke(sender, pushNotification);
-                        MobileCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
+                        AppCenterLog.Debug(LogTag, "Application in foreground. Intercept push notification and invoke push callback.");
                     }
                     else
                     {
-                        MobileCenterLog.Debug(LogTag, "Push ignored. It was not sent through Mobile Center.");
+                        AppCenterLog.Debug(LogTag, "Push ignored. It was not sent through App Center.");
                     }
                 }
             }
             else
             {
-                MobileCenterLog.Debug(LogTag, $"Push ignored. We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
+                AppCenterLog.Debug(LogTag, $"Push ignored. We only handle Toast notifications but PushNotificationType is '{e.NotificationType}'.");
             }
         }
 
-        internal static PushNotificationReceivedEventArgs ParseMobileCenterPush(XmlDocument content)
+        internal static PushNotificationReceivedEventArgs ParseAppCenterPush(XmlDocument content)
         {
             // Check if mobile center push (it always has launch attribute with JSON object having mobile_center key)
             var launch = content.SelectSingleNode("/toast/@launch")?.NodeValue.ToString();

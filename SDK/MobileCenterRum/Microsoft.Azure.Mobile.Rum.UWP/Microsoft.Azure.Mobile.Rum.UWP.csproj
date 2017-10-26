@@ -7,8 +7,8 @@
     <ProjectGuid>{BCD888D1-A62F-458C-A72B-9DF731EE1A55}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Rum</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Rum</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Rum</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Rum</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.14393.0</TargetPlatformVersion>
@@ -108,16 +108,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Microsoft.Azure.Mobile.Rum.UWP.rd.xml" />
+    <EmbeddedResource Include="Properties\Microsoft.AppCenter.Rum.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
-      <Name>Microsoft.Azure.Mobile.UWP</Name>
+      <Name>Microsoft.AppCenter.UWP</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Rum.Shared\Microsoft.Azure.Mobile.Rum.Shared.projitems" Label="Shared" />
-  <Import Project="..\Microsoft.Azure.Mobile.Rum.Windows.Shared\Microsoft.Azure.Mobile.Rum.Windows.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.AppCenter.Rum.Windows.Shared\Microsoft.AppCenter.Rum.Windows.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
     /// <summary>
     /// Log level threshold for logs emitted by the SDK.

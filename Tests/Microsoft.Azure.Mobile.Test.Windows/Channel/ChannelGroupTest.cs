@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion;
-using Microsoft.Azure.Mobile.Storage;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion;
+using Microsoft.AppCenter.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Channel
+namespace Microsoft.AppCenter.Test.Channel
 {
     [TestClass]
     public class ChannelGroupTest
@@ -120,7 +120,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
             var channelMock = new Mock<IChannelUnit>();
             _channelGroup.AddChannel(channelMock.Object);
 
-            Assert.ThrowsException<MobileCenterException>(() => _channelGroup.AddChannel(channelMock.Object));
+            Assert.ThrowsException<AppCenterException>(() => _channelGroup.AddChannel(channelMock.Object));
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.Mobile.Test.Channel
         [TestMethod]
         public void TestAddNullChannel()
         {
-            Assert.ThrowsException<MobileCenterException>(() => _channelGroup.AddChannel(null));
+            Assert.ThrowsException<AppCenterException>(() => _channelGroup.AddChannel(null));
         }
 
         /// <summary>

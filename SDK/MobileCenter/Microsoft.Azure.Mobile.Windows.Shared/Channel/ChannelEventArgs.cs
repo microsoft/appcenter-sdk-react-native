@@ -1,7 +1,7 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Channel
+namespace Microsoft.AppCenter.Channel
 {
     public abstract class ChannelEventArgs : EventArgs
     {

@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.Storage;
 
-namespace Microsoft.Azure.Mobile.Test.UWP.Utils
+namespace Microsoft.AppCenter.Test.UWP.Utils
 {
     [TestClass]
     public class ApplicationSettingsTest
@@ -10,7 +10,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
         private IApplicationSettings settings;
 
         [TestInitialize]
-        public void InitializeMobileCenterTest()
+        public void InitializeAppCenterTest()
         {
             ApplicationData.Current.LocalSettings.Values.Clear();
             settings = new DefaultApplicationSettings();

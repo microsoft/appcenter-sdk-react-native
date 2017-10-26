@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Distribute
+namespace Microsoft.AppCenter.Distribute
 {
     /// <summary>
     /// Distribute feature.

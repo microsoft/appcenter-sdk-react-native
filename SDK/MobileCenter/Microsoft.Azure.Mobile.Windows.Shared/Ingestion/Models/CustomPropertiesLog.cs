@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
     /// <summary>
     /// The custom properties log model.

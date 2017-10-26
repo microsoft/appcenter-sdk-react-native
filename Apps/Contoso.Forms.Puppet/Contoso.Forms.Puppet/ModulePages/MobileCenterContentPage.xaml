@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Mobile Center" xmlns:local="clr-namespace:Contoso.Forms.Puppet"
-        xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.MobileCenterContentPage">
+<ContentPage Title="App Center" xmlns:local="clr-namespace:Contoso.Forms.Puppet"
+        xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AppCenterContentPage">
     <TableView Intent="Form">
         <TableSection>
-            <SwitchCell Text="Mobile Center Enabled" On="true" x:Name="MobileCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
+            <SwitchCell Text="App Center Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
         </TableSection>
         <TableSection>
             <ViewCell Tapped="LogLevelCellTapped">

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.Mobile.Rum</id>
-    <title>Mobile Center Real User Measurements</title>
+    <id>Microsoft.AppCenter.Rum</id>
+    <title>App Center Real User Measurements</title>
     <authors>Microsoft Corporation</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>TODO</summary>
@@ -13,24 +13,24 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.Azure.Mobile" version="$version$" />
+      <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
     <version>$version$</version>
   </metadata>
   <files>
 
     <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.Rum.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Rum.dll" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
-    <file src="$netstandard_dir$/Microsoft.Azure.Mobile.Rum.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Rum.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.Azure.Mobile.Rum.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.Azure.Mobile.Rum.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Rum.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Rum.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- UWP -->
-    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Rum.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Rum.dll" target="lib/uap10.0" />
 
   </files>
 </package>

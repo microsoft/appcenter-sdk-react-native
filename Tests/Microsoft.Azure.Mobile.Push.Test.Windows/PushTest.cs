@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Push.Test.Windows
+namespace Microsoft.AppCenter.Push.Test.Windows
 {
     [TestClass]
     public class PushTest

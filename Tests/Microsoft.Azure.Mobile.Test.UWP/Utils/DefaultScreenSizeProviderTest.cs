@@ -1,10 +1,10 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
 
-namespace Microsoft.Azure.Mobile.Test.UWP.Utils
+namespace Microsoft.AppCenter.Test.UWP.Utils
 {
     [TestClass]
     public class DefaultScreenSizeProviderTest

@@ -3,7 +3,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
     public abstract class Log
     {

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Microsoft.Azure.Mobile.Push.Shared\Microsoft.Azure.Mobile.Push.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.AppCenter.Push.Shared\Microsoft.AppCenter.Push.Shared.projitems" Label="Shared" />
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;portable-net45+win8+wpa81+wp8</TargetFrameworks>
     <Optimize>true</Optimize>
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
-    <Product>Microsoft.Azure.Mobile.Push</Product>
+    <Product>Microsoft.AppCenter.Push</Product>
     <Company>Microsoft Corporation</Company>
     <Version>0.17.0-SNAPSHOT</Version>
   </PropertyGroup>

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Ingestion;
-using Microsoft.Azure.Mobile.Storage;
-using Microsoft.Azure.Mobile.Utils;
-using Microsoft.Azure.Mobile.Utils.Synchronization;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion;
+using Microsoft.AppCenter.Storage;
+using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Synchronization;
 
-namespace Microsoft.Azure.Mobile.Channel
+namespace Microsoft.AppCenter.Channel
 {
     public sealed class Channel : IChannelUnit
     {
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 if (discardLogs)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is disabled; logs are discarded");
+                    AppCenterLog.Warn(AppCenterLog.LogTag, "Channel is disabled; logs are discarded");
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
                 }
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Enqueue operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The Enqueue operation has been cancelled");
             }
         }
 
@@ -148,7 +148,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             catch (StorageException e)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Error persisting log", e);
+                AppCenterLog.Error(AppCenterLog.LogTag, "Error persisting log", e);
                 return;
             }
             try
@@ -164,11 +164,11 @@ namespace Microsoft.Azure.Mobile.Channel
                     CheckPendingLogs(state);
                     return;
                 }
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "Channel is temporarily disabled; log was saved to disk");
             }
             catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The PersistLog operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The PersistLog operation has been cancelled");
             }
         }
 
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Clear operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The Clear operation has been cancelled");
             }
         }
 
@@ -210,7 +210,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Resume operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The Resume operation has been cancelled");
             }
             CheckPendingLogs(state);
         }
@@ -247,7 +247,7 @@ namespace Microsoft.Azure.Mobile.Channel
                     }
                     catch (IngestionException e)
                     {
-                        MobileCenterLog.Error(MobileCenterLog.LogTag, "Failed to close ingestion", e);
+                        AppCenterLog.Error(AppCenterLog.LogTag, "Failed to close ingestion", e);
                     }
                     using (_mutex.GetLock(state))
                     {
@@ -259,7 +259,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             catch (StatefulMutexException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "The Suspend operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The Suspend operation has been cancelled");
             }
         }
 
@@ -281,7 +281,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     if (completedTask.IsFaulted)
                     {
-                        MobileCenterLog.Warn(MobileCenterLog.LogTag,
+                        AppCenterLog.Warn(AppCenterLog.LogTag,
                             "Failed to invoke events for logs being deleted.");
                         return;
                     }
@@ -305,12 +305,12 @@ namespace Microsoft.Azure.Mobile.Channel
                 {
                     return;
                 }
-                MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                AppCenterLog.Debug(AppCenterLog.LogTag,
                     $"triggerIngestion({Name}) pendingLogCount={_pendingLogCount}");
                 _batchScheduled = false;
                 if (_sendingBatches.Count >= _maxParallelBatches)
                 {
-                    MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                    AppCenterLog.Debug(AppCenterLog.LogTag,
                         "Already sending " + _maxParallelBatches + " batches of analytics data to the server");
                     return;
                 }
@@ -333,7 +333,7 @@ namespace Microsoft.Azure.Mobile.Channel
                 }
                 catch (StorageException)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Something went wrong sending logs to ingestion");
+                    AppCenterLog.Warn(AppCenterLog.LogTag, "Something went wrong sending logs to ingestion");
                 }
             }
         }
@@ -351,7 +351,7 @@ namespace Microsoft.Azure.Mobile.Channel
 
             // If the optional Install ID has no value, default to using empty GUID
             // TODO When InstallId will really be async, we should not use Result anymore
-            var rawInstallId = MobileCenter.GetInstallIdAsync().Result;
+            var rawInstallId = AppCenter.GetInstallIdAsync().Result;
             var installId = rawInstallId.HasValue ? rawInstallId.Value : Guid.Empty;
             using (var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs))
             {
@@ -382,7 +382,7 @@ namespace Microsoft.Azure.Mobile.Channel
             }
             catch (StorageException e)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
+                AppCenterLog.Warn(AppCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
                 throw;
             }
             finally
@@ -406,7 +406,7 @@ namespace Microsoft.Azure.Mobile.Channel
         private void HandleSendingFailure(State state, string batchId, IngestionException e)
         {
             var isRecoverable = e?.IsRecoverable ?? false;
-            MobileCenterLog.Error(MobileCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed: {e?.Message}");
+            AppCenterLog.Error(AppCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed: {e?.Message}");
             List<Log> removedLogs;
             using (_mutex.GetLock(state))
             {
@@ -431,11 +431,11 @@ namespace Microsoft.Azure.Mobile.Channel
         {
             if (!_enabled)
             {
-                MobileCenterLog.Info(MobileCenterLog.LogTag, "The service has been disabled. Stop processing logs.");
+                AppCenterLog.Info(AppCenterLog.LogTag, "The service has been disabled. Stop processing logs.");
                 return;
             }
 
-            MobileCenterLog.Debug(MobileCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");
+            AppCenterLog.Debug(AppCenterLog.LogTag, $"CheckPendingLogs({Name}) pending log count: {_pendingLogCount}");
             using (_mutex.GetLock())
             {
                 if (_pendingLogCount >= _maxLogsPerBatch)

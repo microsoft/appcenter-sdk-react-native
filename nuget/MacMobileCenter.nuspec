@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.AppCenter</id>
+    <id>Microsoft.AppCenter</id>
     <title>App Center</title>
     <authors>Microsoft</authors>
     <owners>microsoft,app-center</owners>
@@ -25,17 +25,17 @@
   <files>
 
     <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.dll" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
-    <file src="$netstandard_dir$/Microsoft.Azure.Mobile.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.dll" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
   </files>
 </package>

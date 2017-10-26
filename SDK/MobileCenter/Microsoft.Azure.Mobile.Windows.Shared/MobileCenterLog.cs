@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
-    public static partial class MobileCenterLog
+    public static partial class AppCenterLog
     {
         /// <summary>
         /// The log tag for this SDK. All logs emitted at the SDK level will contain this tag.
@@ -31,9 +31,9 @@ namespace Microsoft.Azure.Mobile
                 }
             }
         }
-        static MobileCenterLog()
+        static AppCenterLog()
         {
-            LogTag = "MobileCenter";
+            LogTag = "AppCenter";
             if (Debugger.IsAttached)
             {
                 _level = LogLevel.Warn;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Storage;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Storage;
 
-namespace Microsoft.Azure.Mobile.Test.Storage
+namespace Microsoft.AppCenter.Test.Storage
 {
     public class MockStorage : IStorage
     {

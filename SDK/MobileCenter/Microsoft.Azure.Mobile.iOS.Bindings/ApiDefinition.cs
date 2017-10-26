@@ -2,7 +2,7 @@ using Foundation;
 using ObjCRuntime;
 using System;
 
-namespace Microsoft.Azure.Mobile.iOS.Bindings
+namespace Microsoft.AppCenter.iOS.Bindings
 {
     interface IMSService { }
 
@@ -150,14 +150,14 @@ namespace Microsoft.Azure.Mobile.iOS.Bindings
         void Clear([NullAllowed] string key);
     }
 
-    // @interface MSMobileCenter : NSObject
+    // @interface MSAppCenter : NSObject
     [BaseType(typeof(NSObject))]
-    interface MSMobileCenter
+    interface MSAppCenter
     {
         // +(instancetype)sharedInstance;
         [Static]
         [Export("sharedInstance")]
-        MSMobileCenter SharedInstance();
+        MSAppCenter SharedInstance();
 
         // +(void)configureWithAppSecret:(NSString *)appSecret;
         [Static]

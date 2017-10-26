@@ -1,14 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Azure.Mobile.Test.WindowsDesktop
+namespace Microsoft.AppCenter.Test.WindowsDesktop
 {
     [TestClass]
-    public class MobileCenterTest
+    public class AppCenterTest
     {
         [TestInitialize]
-        public void InitializeMobileCenterTest()
+        public void InitializeAppCenterTest()
         {
-            MobileCenter.Instance = null;
+            AppCenter.Instance = null;
         }
 
         /// <summary>
@@ -17,8 +17,8 @@ namespace Microsoft.Azure.Mobile.Test.WindowsDesktop
         [TestMethod]
         public void VerifyPlatformId()
         {
-            MobileCenter.Configure("windowsdesktop=appsecret");
-            Assert.IsTrue(MobileCenter.Configured);
+            AppCenter.Configure("windowsdesktop=appsecret");
+            Assert.IsTrue(AppCenter.Configured);
         }
     }
 }

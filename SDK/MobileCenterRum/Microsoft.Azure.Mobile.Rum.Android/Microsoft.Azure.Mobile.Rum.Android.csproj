@@ -6,8 +6,8 @@
     <ProjectGuid>{7F7FA7ED-1386-41B5-A11E-656B7F85A8F9}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Rum.Android</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Rum</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Rum.Android</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Rum</AssemblyName>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Microsoft.Azure.Mobile.Rum.Android.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.AppCenter.Rum.Android.xml</DocumentationFile>
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -54,15 +54,15 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Rum.Android.Bindings\Microsoft.Azure.Mobile.Rum.Android.Bindings.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.Rum.Android.Bindings\Microsoft.AppCenter.Rum.Android.Bindings.csproj">
       <Project>{7E130457-B427-4043-A5A2-9484CB5809BF}</Project>
-      <Name>Microsoft.Azure.Mobile.Rum.Android.Bindings</Name>
+      <Name>Microsoft.AppCenter.Rum.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.Android.Bindings\Microsoft.Azure.Mobile.Android.Bindings.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.Azure.Mobile.Android.Bindings</Name>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Microsoft.Azure.Mobile.Rum.Shared\Microsoft.Azure.Mobile.Rum.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.Azure.Mobile.Rum.Shared\Microsoft.Azure.Mobile.Rum.Shared.projitems')" />
+  <Import Project="..\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

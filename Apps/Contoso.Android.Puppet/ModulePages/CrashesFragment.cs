@@ -4,8 +4,8 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 
 namespace Contoso.Android.Puppet
 {
@@ -57,7 +57,7 @@ namespace Contoso.Android.Puppet
             CrashesEnabledSwitch.CheckedChange -= UpdateEnabled;
             CrashesEnabledSwitch.Enabled = true;
             CrashesEnabledSwitch.Checked = await Crashes.IsEnabledAsync();
-            CrashesEnabledSwitch.Enabled = await MobileCenter.IsEnabledAsync();
+            CrashesEnabledSwitch.Enabled = await AppCenter.IsEnabledAsync();
             CrashesEnabledSwitch.CheckedChange += UpdateEnabled;
         }
 

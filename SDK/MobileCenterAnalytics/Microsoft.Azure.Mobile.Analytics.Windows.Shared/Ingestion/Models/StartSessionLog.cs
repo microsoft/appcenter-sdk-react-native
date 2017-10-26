@@ -2,9 +2,9 @@
 
 using System;
 using Newtonsoft.Json;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Analytics.Ingestion.Models
+namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
     using Device = Mobile.Ingestion.Models.Device;
 

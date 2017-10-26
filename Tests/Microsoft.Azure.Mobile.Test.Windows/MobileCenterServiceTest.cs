@@ -1,24 +1,24 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Test.Utils;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Test.Utils;
+using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Windows
+namespace Microsoft.AppCenter.Test.Windows
 {    
     [TestClass]
-    public class MobileCenterServiceTest
+    public class AppCenterServiceTest
     {
-        private TestMobileCenterService _testService;
+        private TestAppCenterService _testService;
         private Mock<IApplicationSettings> _mockSettings;
         private Mock<IChannelUnit> _mockChannel;
         private Mock<IChannelGroup> _mockChannelGroup;
 
         [TestInitialize]
-        public void InitializeMobileCenterServiceTest()
+        public void InitializeAppCenterServiceTest()
         {
-            _testService = new TestMobileCenterService();
+            _testService = new TestAppCenterService();
             _mockSettings = new Mock<IApplicationSettings>();
             _mockChannel = new Mock<IChannelUnit>();
             _mockChannelGroup = new Mock<IChannelGroup>();
@@ -27,9 +27,9 @@ namespace Microsoft.Azure.Mobile.Test.Windows
                     channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
                         It.IsAny<int>())).Returns(_mockChannel.Object);
 
-            MobileCenter.Instance = null;
+            AppCenter.Instance = null;
 #pragma warning disable 612
-            MobileCenter.SetApplicationSettingsFactory(new MockApplicationSettingsFactory(_mockSettings));
+            AppCenter.SetApplicationSettingsFactory(new MockApplicationSettingsFactory(_mockSettings));
 #pragma warning restore 612
         }
 
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestMethod]
         public void SetEnabledDifferentValueNoChannel()
         {
-            _mockSettings.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
+            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
@@ -66,9 +66,9 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         /// Verify that setting the enabling a service when mobile center is disabled has no effect
         /// </summary>
         [TestMethod]
-        public void EnableServiceWhenMobileCenterIsDisabled()
+        public void EnableServiceWhenAppCenterIsDisabled()
         {
-            _mockSettings.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
+            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(false);
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestMethod]
         public void SetEnabledSameValue()
         {
-            _mockSettings.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
+            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestMethod]
         public void SetEnabledDifferentValue()
         {
-            _mockSettings.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
+            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         [TestMethod]
         public void OnChannelGroupReady()
         {
-            _mockSettings.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
+            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);
@@ -135,12 +135,12 @@ namespace Microsoft.Azure.Mobile.Test.Windows
         }
 
         /// <summary>
-        /// Verify that even if a service is enabled, OnChannelGroupReady disables everything if Mobile Center is disabled
+        /// Verify that even if a service is enabled, OnChannelGroupReady disables everything if App Center is disabled
         /// </summary>
         [TestMethod]
-        public void OnChannelGroupReadyMobileCenterIsDisabled()
+        public void OnChannelGroupReadyAppCenterIsDisabled()
         {
-            _mockSettings.Setup(settings => settings.GetValue(MobileCenter.EnabledKey, It.IsAny<bool>()))
+            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(false);
             _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
                 .Returns(true);

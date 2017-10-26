@@ -6,7 +6,7 @@
     <SharedGUID>3f190edf-f524-4b8d-9031-cd7b045eb6a5</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Crashes.Windows.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.AppCenter.Crashes.Windows.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />

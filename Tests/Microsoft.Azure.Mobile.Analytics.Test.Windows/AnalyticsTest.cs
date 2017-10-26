@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Azure.Mobile.Analytics.Channel;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Analytics.Channel;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
+namespace Microsoft.AppCenter.Analytics.Test.Windows
 {
     [TestClass]
     public class AnalyticsTest

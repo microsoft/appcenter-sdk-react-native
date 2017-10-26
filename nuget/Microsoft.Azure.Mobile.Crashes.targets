@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup Condition=" ('$(TargetPlatformIdentifier)' == 'UAP') AND ('$(mc-crashes-IsCorrectArch)' == 'true')">
-      <Reference Include="Microsoft.Azure.AppCenter.Crashes.dll">
-        <HintPath>$(mc-crashes-ArchDir)\lib\uap10.0\Microsoft.Azure.AppCenter.Crashes.dll</HintPath>
+      <Reference Include="Microsoft.AppCenter.Crashes.dll">
+        <HintPath>$(mc-crashes-ArchDir)\lib\uap10.0\Microsoft.AppCenter.Crashes.dll</HintPath>
       </Reference>
     </ItemGroup>
 

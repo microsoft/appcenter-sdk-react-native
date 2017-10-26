@@ -4,17 +4,17 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
-    public partial class MobileCenter
+    public partial class AppCenter
     {
-        internal MobileCenter()
+        internal AppCenter()
         {
         }
 
         /* Error message to display for unsupported targets. */
         const string ErrorMessage =
-            "[MobileCenter] ASSERT: Cannot use Mobile Center on this target. If you are on Android or iOS or UWP, you must add the NuGet packages in the Android and iOS and UWP projects as well. Other targets are not yet supported.";
+            "[AppCenter] ASSERT: Cannot use App Center on this target. If you are on Android or iOS or UWP, you must add the NuGet packages in the Android and iOS and UWP projects as well. Other targets are not yet supported.";
 
         static LogLevel PlatformLogLevel { get; set; }
 

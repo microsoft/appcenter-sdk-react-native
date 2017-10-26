@@ -1,11 +1,11 @@
-﻿using Microsoft.Azure.Mobile.Ingestion;
+﻿using Microsoft.AAppCenterIngestion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     public class RecoverableIngestionException : IngestionException
     {

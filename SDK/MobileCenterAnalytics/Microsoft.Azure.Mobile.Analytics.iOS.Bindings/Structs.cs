@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Analytics.iOS.Bindings
+namespace Microsoft.AppCenter.Analytics.iOS.Bindings
 {
 }

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Http
+namespace Microsoft.AppCenter.Ingestion.Http
 {
     public class RetryableServiceCall : ServiceCallDecorator
     {
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                     {
                         throw;
                     }
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Failed to execute service call", e);
+                    AppCenterLog.Warn(AppCenterLog.LogTag, "Failed to execute service call", e);
                 }
                 await _retryIntervals[_retryCount++]().ConfigureAwait(false);
                 if (_tokenSource.Token.IsCancellationRequested)

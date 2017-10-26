@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SQLite;
 
-namespace Microsoft.Azure.Mobile.Storage
+namespace Microsoft.AppCenter.Storage
 {
     internal class StorageAdapter : IStorageAdapter
     {

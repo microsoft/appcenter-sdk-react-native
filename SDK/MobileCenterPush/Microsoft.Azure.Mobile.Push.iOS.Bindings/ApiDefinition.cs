@@ -2,7 +2,7 @@
 using Foundation;
 using ObjCRuntime;
 
-namespace Microsoft.Azure.Mobile.Push.iOS.Bindings
+namespace Microsoft.AppCenter.Push.iOS.Bindings
 {
     // @interface MSPush : MSServiceAbstract
     [BaseType(typeof(NSObject))]

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Channel
+﻿namespace Microsoft.AAppCenterChannel
 {
     public interface IChannelGroupFactory
     {

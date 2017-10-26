@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Mobile.Analytics.Channel;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterAnalytics.Channel;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Utils;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
+namespace Microsoft.AppCenter.Analytics.Test.Windows
 {
     public class SessionTrackerFactory : ISessionTrackerFactory
     {

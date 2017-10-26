@@ -4,7 +4,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models.Serialization
+namespace Microsoft.AppCenter.Ingestion.Models.Serialization
 {
     public class LogJsonConverter : JsonConverter
     {

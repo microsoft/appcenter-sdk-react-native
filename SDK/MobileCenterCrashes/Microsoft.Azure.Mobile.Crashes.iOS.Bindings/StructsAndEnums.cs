@@ -1,7 +1,7 @@
 using System;
 using ObjCRuntime;
 
-namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings {
+namespace Microsoft.AppCenter.Crashes.iOS.Bindings {
 	[Native]
 	public enum MSErrorLogSetting : ulong
 	{

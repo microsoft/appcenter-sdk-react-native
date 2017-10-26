@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Http
+namespace Microsoft.AppCenter.Ingestion.Http
 {
     public class RetryableIngestion : IngestionDecorator
     {
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.Mobile.Ingestion.Http
                 var delayMilliseconds = (int)(intervals[retry].TotalMilliseconds / 2.0);
                 delayMilliseconds += await GetRandomIntAsync(delayMilliseconds).ConfigureAwait(false);
                 var message = $"Try #{retry} failed and will be retried in {delayMilliseconds} ms";
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, message);
+                AppCenterLog.Warn(AppCenterLog.LogTag, message);
                 await Task.Delay(delayMilliseconds).ConfigureAwait(false);
             };
         }

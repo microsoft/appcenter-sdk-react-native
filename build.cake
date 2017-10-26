@@ -9,8 +9,8 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
-// MobileCenter module class definition.
-class MobileCenterModule {
+// AppCenter module class definition.
+class AppCenterModule {
     public string AndroidModule { get; set; }
     public string IosModule { get; set; }
     public string DotNetModule { get; set; }
@@ -32,7 +32,7 @@ class MobileCenterModule {
     {
         get { return  "Windows" + MainNuspecFilename; }
     }
-    public MobileCenterModule(string android, string ios, string dotnet, string mainNuspecFilename) {
+    public AppCenterModule(string android, string ios, string dotnet, string mainNuspecFilename) {
         AndroidModule = android;
         IosModule = ios;
         DotNetModule = dotnet;
@@ -71,19 +71,19 @@ var PLATFORM_PATHS = new PlatformPaths();
  */
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
+var ANDROID_URL = SDK_STORAGE_URL + "AppCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "AppCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
 var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
-// Available MobileCenter modules.
+// Available AppCenter modules.
 var MOBILECENTER_MODULES = new [] {
-    new MobileCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/MobileCenter/Microsoft.Azure.Mobile", "MobileCenter.nuspec"),
-    new MobileCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics", "MobileCenterAnalytics.nuspec"),
-    new MobileCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes", "MobileCenterCrashes.nuspec"),
-    new MobileCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute", "MobileCenterDistribute.nuspec"),
-    new MobileCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework.zip", "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push", "MobileCenterPush.nuspec"),
-    new MobileCenterModule("mobile-center-rum-release.aar", null, "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum", "MobileCenterRum.nuspec")
+    new AppCenterModule("mobile-center-release.aar", "AppCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
+    new AppCenterModule("mobile-center-analytics-release.aar", "AppCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
+    new AppCenterModule("mobile-center-crashes-release.aar", "AppCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
+    new AppCenterModule("mobile-center-distribute-release.aar", "AppCenterDistribute.framework.zip", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
+    new AppCenterModule("mobile-center-push-release.aar", "AppCenterPush.framework.zip", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
+    new AppCenterModule("mobile-center-rum-release.aar", null, "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
 };
 
 // Task TARGET for build
@@ -131,49 +131,49 @@ Setup(context =>
     {
         var iosAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = IOS_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll",
-                            "SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.iOS.Bindings.dll",
-                            "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-                            "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll",
-                            "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-                            "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.iOS/bin/Release/Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll",
-                            "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-                            "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.iOS/bin/Release/Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.iOS/bin/Release/Microsoft.Azure.Mobile.Push.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.iOS.Bindings/bin/Release/Microsoft.Azure.Mobile.Push.iOS.Bindings.dll" }
+            AssemblyPaths = new string[] {  "SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll",
+                            "SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.iOS.Bindings.dll",
+                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.iOS/bin/Release/Microsoft.AppCenter.Analytics.dll",
+                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.iOS/bin/Release/Microsoft.AppCenter.Analytics.iOS.Bindings.dll",
+                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.iOS/bin/Release/Microsoft.AppCenter.Crashes.dll",
+                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.iOS/bin/Release/Microsoft.AppCenter.Crashes.iOS.Bindings.dll",
+                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.iOS/bin/Release/Microsoft.AppCenter.Distribute.dll",
+                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.iOS/bin/Release/Microsoft.AppCenter.Distribute.iOS.Bindings.dll",
+                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS/bin/Release/Microsoft.AppCenter.Push.dll",
+                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS.Bindings/bin/Release/Microsoft.AppCenter.Push.iOS.Bindings.dll" }
         };
         var androidAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = ANDROID_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.dll",
-                            "SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.Android.Bindings.dll",
-                            "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-                            "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll",
-                            "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.dll",
-                            "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.Android/bin/Release/Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll",
-                            "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.dll",
-                            "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute.Android/bin/Release/Microsoft.Azure.Mobile.Distribute.Android.Bindings.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android/bin/Release/Microsoft.Azure.Mobile.Push.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Push.Android.Bindings.dll",
-                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum.Android/bin/Release/Microsoft.Azure.Mobile.Rum.dll",
-                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum.Android.Bindings/bin/Release/Microsoft.Azure.Mobile.Rum.Android.Bindings.dll" }
+            AssemblyPaths = new string[] {  "SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.dll",
+                            "SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.Android.Bindings.dll",
+                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.Android/bin/Release/Microsoft.AppCenter.Analytics.dll",
+                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.Android/bin/Release/Microsoft.AppCenter.Analytics.Android.Bindings.dll",
+                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.Android/bin/Release/Microsoft.AppCenter.Crashes.dll",
+                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.Android/bin/Release/Microsoft.AppCenter.Crashes.Android.Bindings.dll",
+                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.Android/bin/Release/Microsoft.AppCenter.Distribute.dll",
+                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.Android/bin/Release/Microsoft.AppCenter.Distribute.Android.Bindings.dll",
+                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android/bin/Release/Microsoft.AppCenter.Push.dll",
+                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/bin/Release/Microsoft.AppCenter.Push.Android.Bindings.dll",
+                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android/bin/Release/Microsoft.AppCenter.Rum.dll",
+                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android.Bindings/bin/Release/Microsoft.AppCenter.Rum.Android.Bindings.dll" }
         };
         var pclAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = PCL_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.Azure.Mobile.dll",
-                            "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.Azure.Mobile.Analytics.dll",
-                            "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.Azure.Mobile.Crashes.dll",
-                            "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.Azure.Mobile.Distribute.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.Azure.Mobile.Push.dll",
-                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.Azure.Mobile.Rum.dll" }
+            AssemblyPaths = new string[] {	"SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll",
+                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll",
+                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll",
+                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Distribute.dll",
+                            "SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Push.dll",
+                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Rum.dll" }
         };
         var netStandardAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = NETSTANDARD_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile/bin/Release/netstandard1.0/Microsoft.Azure.Mobile.dll",
-                            "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics/bin/Release/netstandard1.0/Microsoft.Azure.Mobile.Analytics.dll",
-                            "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes/bin/Release/netstandard1.0/Microsoft.Azure.Mobile.Crashes.dll",
-                            "SDK/MobileCenterDistribute/Microsoft.Azure.Mobile.Distribute/bin/Release/netstandard1.0/Microsoft.Azure.Mobile.Distribute.dll",
-                            "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push/bin/Release/netstandard1.0/Microsoft.Azure.Mobile.Push.dll",
-                            "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum/bin/Release/netstandard1.0/Microsoft.Azure.Mobile.Rum.dll" }
+            AssemblyPaths = new string[] {	"SDK/AppCenter/Microsoft.AppCenter/bin/Release/netstandard1.0/Microsoft.AppCenter.dll",
+                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/netstandard1.0/Microsoft.AppCenter.Analytics.dll",
+                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/netstandard1.0/Microsoft.AppCenter.Crashes.dll",
+                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/netstandard1.0/Microsoft.AppCenter.Distribute.dll",
+                            "SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/netstandard1.0/Microsoft.AppCenter.Push.dll",
+                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/netstandard1.0/Microsoft.AppCenter.Rum.dll" }
         };
         PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
@@ -193,34 +193,34 @@ Setup(context =>
         var windowsDesktopAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = WINDOWS_DESKTOP_ASSEMBLIES_FOLDER,
             AssemblyPaths = new string[] {
-                "SDK/MobileCenter/Microsoft.Azure.Mobile.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.dll",
-                "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-                "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" }
+                "SDK/AppCenter/Microsoft.AppCenter.WindowsDesktop/bin/Release/Microsoft.AppCenter.dll",
+                "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.WindowsDesktop/bin/Release/Microsoft.AppCenter.Analytics.dll",
+                "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.WindowsDesktop/bin/Release/Microsoft.AppCenter.Crashes.dll" }
             };
         var uwpAnyCpuAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] { "nuget/Microsoft.Azure.Mobile.Crashes.targets",
-                                "SDK/MobileCenter/Microsoft.Azure.Mobile.UWP/bin/Release/Microsoft.Azure.Mobile.dll",
-                                "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.UWP/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
-                                "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/Reference/Microsoft.Azure.Mobile.Crashes.dll",
-                                "SDK/MobileCenterPush/Microsoft.Azure.Mobile.Push.UWP/bin/Release/Microsoft.Azure.Mobile.Push.dll",
-                                "SDK/MobileCenterRum/Microsoft.Azure.Mobile.Rum.UWP/bin/Release/Microsoft.Azure.Mobile.Rum.dll" }
+            AssemblyPaths = new string[] { "nuget/Microsoft.AppCenter.Crashes.targets",
+                                "SDK/AppCenter/Microsoft.AppCenter.UWP/bin/Release/Microsoft.AppCenter.dll",
+                                "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.UWP/bin/Release/Microsoft.AppCenter.Analytics.dll",
+                                "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/Reference/Microsoft.AppCenter.Crashes.dll",
+                                "SDK/AppCenterPush/Microsoft.AppCenter.Push.UWP/bin/Release/Microsoft.AppCenter.Push.dll",
+                                "SDK/AppCenterRum/Microsoft.AppCenter.Rum.UWP/bin/Release/Microsoft.AppCenter.Rum.dll" }
         };
         var uwpX86AssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x86",
-            AssemblyPaths = new string[] { 	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/x86/Release/Microsoft.Azure.Mobile.Crashes.dll",
+            AssemblyPaths = new string[] { 	"SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/x86/Release/Microsoft.AppCenter.Crashes.dll",
                                 "Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
                                    "Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
         };
         var uwpX64AssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x64",
-            AssemblyPaths =  new string[] {	"SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/x64/Release/Microsoft.Azure.Mobile.Crashes.dll",
+            AssemblyPaths =  new string[] {	"SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/x64/Release/Microsoft.AppCenter.Crashes.dll",
                                        "x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
                                        "x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
         };
         var uwpArmAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/ARM",
-            AssemblyPaths =  new string[] {  "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.UWP/bin/ARM/Release/Microsoft.Azure.Mobile.Crashes.dll",
+            AssemblyPaths =  new string[] {  "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/ARM/Release/Microsoft.AppCenter.Crashes.dll",
                                     "ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
                                     "ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
         };
@@ -243,7 +243,7 @@ Setup(context =>
 Task("Version")
     .Does(() =>
 {
-    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
+    var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
     var version = project.NetCore.Version;
     // Extract versions for modules.
     foreach (var module in MOBILECENTER_MODULES)
@@ -279,8 +279,8 @@ Task("MacBuild")
     // Run externals here instead of using dependency so that this doesn't get called on windows
     RunTarget("Externals");
     // Build solution
-    NuGetRestore("./MobileCenter-SDK-Build-Mac.sln");
-    MSBuild("./MobileCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
+    NuGetRestore("./AppCenter-SDK-Build-Mac.sln");
+    MSBuild("./AppCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
 }).OnError(HandleError);
 
 // Building Windows code task
@@ -289,12 +289,12 @@ Task("WindowsBuild")
     .Does(() => 
 {
     // Build solution
-    NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
-    MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
-    MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
-    MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
-    MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
-    MSBuild("./MobileCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
+    NuGetRestore("./AppCenter-SDK-Build-Windows.sln");
+    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
+    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
+    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
+    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
+    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
@@ -333,21 +333,21 @@ Task("Externals-Ios")
 {
     CleanDirectory("./externals/ios");
 
-    // Download zip file containing MobileCenter frameworks
+    // Download zip file containing AppCenter frameworks
     DownloadFile(IOS_URL, "./externals/ios/ios.zip");
     Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
-    // Copy the MobileCenter binaries directly from the frameworks and add the ".a" extension
-    var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
+    // Copy the AppCenter binaries directly from the frameworks and add the ".a" extension
+    var files = GetFiles("./externals/ios/*/iOS/*.framework/AppCenter*");
     foreach (var file in files)
     {
         MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
     }
 
     // Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
-    if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
+    if(DirectoryExists("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle"))
     {
-        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
+        MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle", "./externals/ios/AppCenterDistributeResources.bundle");
     }
 }).OnError(HandleError);
 
@@ -406,7 +406,7 @@ Task("NuGet")
         // Clean up
         DeleteFiles(specCopyName);
     }
-    MoveFiles("Microsoft.Azure.Mobile*.nupkg", "output");
+    MoveFiles("Microsoft.AppCenter*.nupkg", "output");
 }).OnError(HandleError);
 
 // Add version to nuspecs for vsts (the release definition does not have the solutions and thus cannot extract a version from them)
@@ -509,7 +509,7 @@ Task("TestApps").IsDependentOn("UITest").Does(() =>
     // Build tests and package the applications
     // It is important that the entire solution is built before rebuilding the iOS and Android versions
     // due to an apparent bug that causes improper linking of the forms application to iOS
-    MSBuild("./MobileCenter-SDK-Test.sln", c => c.Configuration = "Release");
+    MSBuild("./AppCenter-SDK-Test.sln", c => c.Configuration = "Release");
     MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Release|iPhone");
     AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
     MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
@@ -517,7 +517,7 @@ Task("TestApps").IsDependentOn("UITest").Does(() =>
 
 Task("RestoreTestPackages").Does(() =>
 {
-    NuGetRestore("./MobileCenter-SDK-Test.sln");
+    NuGetRestore("./AppCenter-SDK-Test.sln");
     NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
     NuGetUpdate("./Tests/iOS/packages.config");
     NuGetUpdate("./Tests/Droid/packages.config", new NuGetUpdateSettings {

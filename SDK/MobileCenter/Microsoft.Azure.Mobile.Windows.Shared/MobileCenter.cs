@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models;
-using Microsoft.Azure.Mobile.Utils;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     /// <summary>
     /// SDK core used to initialize, start and control specific service.
     /// </summary>
-    public partial class MobileCenter
+    public partial class AppCenter
     {
         // Internals for testing
         internal const string EnabledKey = Constants.KeyPrefix + "Enabled";
         internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
-        private const string ConfigurationErrorMessage = "Failed to configure Mobile Center.";
+        private const string ConfigurationErrorMessage = "Failed to configure App Center.";
         private const string StartErrorMessage = "Failed to start services.";
         private const string ChannelName = "core";
-        private const string DistributeServiceFullType = "Microsoft.Azure.Mobile.Distribute.Distribute";
+        private const string DistributeServiceFullType = "Microsoft.AppCenter.Distribute.Distribute";
 
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
-        private static readonly object MobileCenterLock = new object();
+        private static readonly object AppCenterLock = new object();
 
         private static IApplicationSettingsFactory _applicationSettingsFactory;
         private static IChannelGroupFactory _channelGroupFactory;
@@ -32,32 +32,32 @@ namespace Microsoft.Azure.Mobile
         private readonly IApplicationSettings _applicationSettings;
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
-        private readonly HashSet<IMobileCenterService> _services = new HashSet<IMobileCenterService>();
+        private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
         private string _logUrl;
         private bool _instanceConfigured;
         private string _appSecret;
 
         #region static
 
-        // The shared instance of MobileCenter
-        private static MobileCenter _instanceField;
+        // The shared instance of AppCenter
+        private static AppCenter _instanceField;
 
         /// <summary>
-        /// Gets or sets the shared instance of Mobile Center. Should never return null.
+        /// Gets or sets the shared instance of App Center. Should never return null.
         /// Setter is for testing.
         /// </summary>
-        internal static MobileCenter Instance
+        internal static AppCenter Instance
         {
             get
             {
-                lock (MobileCenterLock)
+                lock (AppCenterLock)
                 {
-                    return _instanceField ?? (_instanceField = new MobileCenter());
+                    return _instanceField ?? (_instanceField = new AppCenter());
                 }
             }
             set
             {
-                lock (MobileCenterLock)
+                lock (AppCenterLock)
                 {
                     _instanceField = value;
                 }
@@ -68,39 +68,39 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                lock (MobileCenterLock)
+                lock (AppCenterLock)
                 {
-                    return MobileCenterLog.Level;
+                    return AppCenterLog.Level;
                 }
             }
             set
             {
-                lock (MobileCenterLock)
+                lock (AppCenterLock)
                 {
-                    MobileCenterLog.Level = value;
+                    AppCenterLog.Level = value;
                 }
             }
         }
 
-        // This method must be called *before* instance of MobileCenter has been created
+        // This method must be called *before* instance of AppCenter has been created
         // for a custom application settings to be used.
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public static void SetApplicationSettingsFactory(IApplicationSettingsFactory factory)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 _applicationSettingsFactory = factory;
             }
         }
 
-        // This method must be called *before* instance of MobileCenter has been created
+        // This method must be called *before* instance of AppCenter has been created
         // for a custom application settings to be used.
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete]
         public static void SetChannelGroupFactory(IChannelGroupFactory factory)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 _channelGroupFactory = factory;
             }
@@ -110,7 +110,7 @@ namespace Microsoft.Azure.Mobile
         {
             // This is not really async for now, signature was introduced for Android
             // It's fine for callers of the current implementation to use Wait().
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 return Task.FromResult(Instance.InstanceEnabled);
             }
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Mobile
 
         static Task PlatformSetEnabledAsync(bool enabled)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 Instance.InstanceEnabled = enabled;
                 return Task.FromResult(default(object));
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Mobile
 
         static void PlatformSetLogUrl(string logUrl)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 Instance.SetInstanceLogUrl(logUrl);
             }
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.Mobile
 
         internal static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 Instance.SetInstanceCustomProperties(customProperties);
             }
@@ -150,7 +150,7 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                lock (MobileCenterLock)
+                lock (AppCenterLock)
                 {
                     return Instance._instanceConfigured;
                 }
@@ -159,37 +159,37 @@ namespace Microsoft.Azure.Mobile
 
         static void PlatformConfigure(string appSecret)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 try
                 {
                     Instance.InstanceConfigure(appSecret);
                 }
-                catch (MobileCenterException ex)
+                catch (AppCenterException ex)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, ConfigurationErrorMessage, ex);
+                    AppCenterLog.Error(AppCenterLog.LogTag, ConfigurationErrorMessage, ex);
                 }
             }
         }
 
         static void PlatformStart(params Type[] services)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 try
                 {
                     Instance.StartInstance(services);
                 }
-                catch (MobileCenterException ex)
+                catch (AppCenterException ex)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, StartErrorMessage, ex);
+                    AppCenterLog.Error(AppCenterLog.LogTag, StartErrorMessage, ex);
                 }
             }
         }
 
         static void PlatformStart(string appSecret, params Type[] services)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 Instance.StartInstanceAndConfigure(appSecret, services);
             }
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.Mobile
         [Obsolete]
         public static bool TestAndSetCorrelationId(Guid testValue, ref Guid setValue)
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 if (testValue == Instance.InstanceCorrelationId)
                 {
@@ -227,10 +227,10 @@ namespace Microsoft.Azure.Mobile
 
         #region instance
 
-        // Creates a new instance of MobileCenter
-        private MobileCenter()
+        // Creates a new instance of AppCenter
+        private AppCenter()
         {
-            lock (MobileCenterLock)
+            lock (AppCenterLock)
             {
                 _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
                 LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.Mobile
                 var enabledTerm = value ? "enabled" : "disabled";
                 if (InstanceEnabled == value)
                 {
-                    MobileCenterLog.Info(MobileCenterLog.LogTag, $"Mobile Center has already been {enabledTerm}.");
+                    AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
                     return;
                 }
 
@@ -265,7 +265,7 @@ namespace Microsoft.Azure.Mobile
                 {
                     service.InstanceEnabled = value;
                 }
-                MobileCenterLog.Info(MobileCenterLog.LogTag, $"Mobile Center has been {enabledTerm}.");
+                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
             }
         }
 
@@ -279,12 +279,12 @@ namespace Microsoft.Azure.Mobile
         {
             if (!Configured)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center hasn't been configured. You need to call MobileCenter.Start with appSecret or MobileCenter.Configure first.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Custom properties may not be null or empty");
+                AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty");
                 return;
             }
             var customPropertiesLog = new CustomPropertiesLog();
@@ -297,7 +297,7 @@ namespace Microsoft.Azure.Mobile
         {
             if (_instanceConfigured)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Mobile Center may only be configured once.");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "App Center may only be configured once.");
                 return;
             }
             _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
@@ -313,18 +313,18 @@ namespace Microsoft.Azure.Mobile
                 _channelGroup.SetLogUrl(_logUrl);
             }
             _instanceConfigured = true;
-            MobileCenterLog.Assert(MobileCenterLog.LogTag, "Mobile Center SDK configured successfully.");
+            AppCenterLog.Assert(AppCenterLog.LogTag, "App Center SDK configured successfully.");
         }
 
         internal void StartInstance(params Type[] services)
         {
             if (services == null)
             {
-                throw new MobileCenterException("Services array is null.");
+                throw new AppCenterException("Services array is null.");
             }
             if (!_instanceConfigured)
             {
-                throw new MobileCenterException("Mobile Center has not been configured.");
+                throw new AppCenterException("App Center has not been configured.");
             }
 
             var startServiceLog = new StartServiceLog();
@@ -333,7 +333,7 @@ namespace Microsoft.Azure.Mobile
             {
                 if (serviceType == null)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, "Skipping null service. Please check that you did not pass a null argument.");
+                    AppCenterLog.Warn(AppCenterLog.LogTag, "Skipping null service. Please check that you did not pass a null argument.");
                     continue;
                 }
                 try
@@ -341,22 +341,22 @@ namespace Microsoft.Azure.Mobile
                     // We don't support distribute in UWP, not even a custom start.
                     if (IsDistributeService(serviceType))
                     {
-                        MobileCenterLog.Warn(MobileCenterLog.LogTag, "Distribute service is not yet supported on UWP.");
+                        AppCenterLog.Warn(AppCenterLog.LogTag, "Distribute service is not yet supported on UWP.");
                     }
                     else
                     {
-                        var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IMobileCenterService;
+                        var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IAppCenterService;
                         if (serviceInstance == null)
                         {
-                            throw new MobileCenterException("Service type does not contain static 'Instance' property of type IMobileCenterService");
+                            throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService");
                         }
                         StartService(serviceInstance);
                         startServiceLog.Services.Add(serviceInstance.ServiceName);
                     }
                 }
-                catch (MobileCenterException e)
+                catch (AppCenterException e)
                 {
-                    MobileCenterLog.Error(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", e);
+                    AppCenterLog.Error(AppCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", e);
                 }
             }
 
@@ -367,20 +367,20 @@ namespace Microsoft.Azure.Mobile
             }
         }
 
-        private void StartService(IMobileCenterService service)
+        private void StartService(IAppCenterService service)
         {
             if (service == null)
             {
-                throw new MobileCenterException("Attempted to start an invalid Mobile Center service.");
+                throw new AppCenterException("Attempted to start an invalid App Center service.");
             }
             if (_services.Contains(service))
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Mobile Center has already started the service with class name '{service.GetType().Name}'");
+                AppCenterLog.Warn(AppCenterLog.LogTag, $"App Center has already started the service with class name '{service.GetType().Name}'");
                 return;
             }
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
-            MobileCenterLog.Info(MobileCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
+            AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
 
         public void StartInstanceAndConfigure(string appSecret, params Type[] services)
@@ -390,9 +390,9 @@ namespace Microsoft.Azure.Mobile
                 InstanceConfigure(appSecret);
                 StartInstance(services);
             }
-            catch (MobileCenterException ex)
+            catch (AppCenterException ex)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, ex.Message);
+                AppCenterLog.Warn(AppCenterLog.LogTag, ex.Message);
             }
         }
         internal Guid InstanceCorrelationId = Guid.Empty;
@@ -405,7 +405,7 @@ namespace Microsoft.Azure.Mobile
 
         private void ThrowStartedServiceException(string serviceName)
         {
-            throw new MobileCenterException($"Mobile Center has already started a service of type '{serviceName}'.");
+            throw new AppCenterException($"App Center has already started a service of type '{serviceName}'.");
         }
         #endregion
     }

@@ -8,8 +8,8 @@
           <CodeCoverage>
             <ModulePaths>
               <Include>
-                <ModulePath>.*\Microsoft.Azure.Mobile.NET.dll$</ModulePath>
-                <ModulePath>.*\Microsoft.Azure.Mobile.Analytics.NET.dll$</ModulePath>                        
+                <ModulePath>.*\Microsoft.AppCenter.NET.dll$</ModulePath>
+                <ModulePath>.*\Microsoft.AppCenter.Analytics.NET.dll$</ModulePath>                        
               </Include>
               <Exclude>
                 <ModulePath>.*Test.Windows.dll</ModulePath>
@@ -20,7 +20,7 @@
                 <Function>.*\.ApplicationSettings\..*</Function>
                 <Function>.*\.DeviceInformationHelper\..*</Function>
                 <Function>.*\.NetworkStateAdapter\..*</Function>
-                <Function>.*\.MobileCenterPart\..*</Function>
+                <Function>.*\.AppCenterPart\..*</Function>
                 <Function>.*\.WatsonCrashesStarter\..*</Function>
                 <Function>.*\.ApplicationLifecycleHelper\..*</Function>
               </Exclude>

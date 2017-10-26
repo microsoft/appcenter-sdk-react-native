@@ -6,7 +6,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.UI.Core;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
@@ -116,7 +116,7 @@ namespace Microsoft.Azure.Mobile.Utils
             {
                 // If MainView can't be accessed, a COMException or InvalidOperationException is thrown. It means that the
                 // MainView hasn't been created, and thus the UI hasn't appeared yet.
-                MobileCenterLog.Debug(MobileCenterLog.LogTag,
+                AppCenterLog.Debug(AppCenterLog.LogTag,
                     "Not invoking resume immediately because UI is not ready.");
             }
             return needsResume;

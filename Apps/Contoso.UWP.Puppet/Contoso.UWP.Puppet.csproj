@@ -129,21 +129,21 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj">
+    <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.UWP\Microsoft.AppCenter.Analytics.UWP.csproj">
       <Project>{200073bf-fa7e-42af-8ed5-aa50be7c0295}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.UWP</Name>
+      <Name>Microsoft.AppCenter.Analytics.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.UWP\Microsoft.Azure.Mobile.Crashes.UWP.csproj">
+    <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.UWP\Microsoft.AppCenter.Crashes.UWP.csproj">
       <Project>{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes.UWP</Name>
+      <Name>Microsoft.AppCenter.Crashes.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.UWP\Microsoft.Azure.Mobile.Push.UWP.csproj">
+    <ProjectReference Include="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.UWP\Microsoft.AppCenter.Push.UWP.csproj">
       <Project>{8072449C-C6A8-4B36-87DC-173F295D161C}</Project>
-      <Name>Microsoft.Azure.Mobile.Push.UWP</Name>
+      <Name>Microsoft.AppCenter.Push.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
+    <ProjectReference Include="..\..\SDK\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
-      <Name>Microsoft.Azure.Mobile.UWP</Name>
+      <Name>Microsoft.AppCenter.UWP</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

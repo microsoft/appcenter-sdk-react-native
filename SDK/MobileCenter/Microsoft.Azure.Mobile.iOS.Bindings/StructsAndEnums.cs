@@ -1,7 +1,7 @@
 using System;
 using ObjCRuntime;
 
-namespace Microsoft.Azure.Mobile.iOS.Bindings
+namespace Microsoft.AppCenter.iOS.Bindings
 {
 	[Native]
 	public enum MSLogLevel : ulong

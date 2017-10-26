@@ -39,30 +39,30 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Test setting enabling all services */
-            ServiceStateHelper.MobileCenterEnabled = true;
-            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            ServiceStateHelper.AppCenterEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             ServiceStateHelper.AnalyticsEnabled = true;
             Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
             ServiceStateHelper.CrashesEnabled = true;
             Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
 
-            /* Test that disabling MobileCenter disables everything */
-            ServiceStateHelper.MobileCenterEnabled = false;
-            Assert.IsFalse(ServiceStateHelper.MobileCenterEnabled);
+            /* Test that disabling AppCenter disables everything */
+            ServiceStateHelper.AppCenterEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
 
             /* Test disabling individual services */
-            ServiceStateHelper.MobileCenterEnabled = true;
-            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            ServiceStateHelper.AppCenterEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             ServiceStateHelper.AnalyticsEnabled = false;
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             ServiceStateHelper.CrashesEnabled = false;
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
 
-            /* Test that enabling MobileCenter enables everything, regardless of previous states */
-            ServiceStateHelper.MobileCenterEnabled = true;
-            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            /* Test that enabling AppCenter enables everything, regardless of previous states */
+            ServiceStateHelper.AppCenterEnabled = true;
+            Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
         }
@@ -74,38 +74,38 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Make sure Crashes enabled state is persistent */
-            ServiceStateHelper.MobileCenterEnabled = true;
+            ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.CrashesEnabled = false;
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
             app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToTogglePageButton);
-            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
 
             /* Make sure Analytics enabled state is persistent */
-            ServiceStateHelper.MobileCenterEnabled = true;
+            ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.AnalyticsEnabled = false;
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToTogglePageButton);
-            Assert.IsTrue(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
 
-            /* Make sure MobileCenter enabled state is persistent */
-            ServiceStateHelper.MobileCenterEnabled = false;
-            Assert.IsFalse(ServiceStateHelper.MobileCenterEnabled);
+            /* Make sure AppCenter enabled state is persistent */
+            ServiceStateHelper.AppCenterEnabled = false;
+            Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToTogglePageButton);
-            Assert.IsFalse(ServiceStateHelper.MobileCenterEnabled);
+            Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
 
             /* Reset services to enabled */
-            ServiceStateHelper.MobileCenterEnabled = true;
+            ServiceStateHelper.AppCenterEnabled = true;
         }
 
 

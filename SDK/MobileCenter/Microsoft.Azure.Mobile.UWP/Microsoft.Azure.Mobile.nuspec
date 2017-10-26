@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
-    <id>Microsoft.Azure.Mobile</id>
+    <id>Microsoft.AppCenter</id>
     <version>0.8.584-SNAPSHOT</version>
-    <title>Microsoft.Azure.Mobile</title>
+    <title>Microsoft.AppCenter</title>
     <authors>alchocro</authors>
     <owners>alchocro</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -19,16 +19,16 @@
     </dependencies>
     <references>
 	<reference file="WatsonRegistrationUtility.winmd" />
-        <reference file="Microsoft.Azure.Mobile.dll"/>
+        <reference file="Microsoft.AppCenter.dll"/>
     </references>
   </metadata>
 <files>
-      <file src="C:\Users\alchocro\Documents\MobileCenter\mobile-center-sdk-dotnet\Release\WatsonRegistrationUtility\WatsonRegistrationUtility.pri" target="lib\uap10.0\WatsonRegistrationUtility.pri" />
+      <file src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\Release\WatsonRegistrationUtility\WatsonRegistrationUtility.pri" target="lib\uap10.0\WatsonRegistrationUtility.pri" />
 
-      <file src="C:\Users\alchocro\Documents\MobileCenter\mobile-center-sdk-dotnet\Release\WatsonRegistrationUtility\WatsonRegistrationUtility.dll" target="lib\uap10.0\WatsonRegistrationUtility.dll" />
+      <file src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\Release\WatsonRegistrationUtility\WatsonRegistrationUtility.dll" target="lib\uap10.0\WatsonRegistrationUtility.dll" />
 
-      <file src="C:\Users\alchocro\Documents\MobileCenter\mobile-center-sdk-dotnet\SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\bin\x86\Release\Microsoft.Azure.Mobile.dll" target="lib\uap10.0\Microsoft.Azure.Mobile.dll" />
+      <file src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\SDK\AppCenter\Microsoft.AppCenter.UWP\bin\x86\Release\Microsoft.AppCenter.dll" target="lib\uap10.0\Microsoft.AppCenter.dll" />
 
-      <file target="lib\uap10.0\WatsonRegistrationUtility.winmd" src="C:\Users\alchocro\Documents\MobileCenter\mobile-center-sdk-dotnet\SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\bin\x86\Release\WatsonRegistrationUtility.winmd" />
+      <file target="lib\uap10.0\WatsonRegistrationUtility.winmd" src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\SDK\AppCenter\Microsoft.AppCenter.UWP\bin\x86\Release\WatsonRegistrationUtility.winmd" />
 </files>
 </package>

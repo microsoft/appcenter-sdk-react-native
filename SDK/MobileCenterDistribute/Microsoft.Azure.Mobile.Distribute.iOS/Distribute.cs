@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Foundation;
-using Microsoft.Azure.Mobile.Distribute.iOS.Bindings;
+using Microsoft.AppCenter.Distribute.iOS.Bindings;
 
-namespace Microsoft.Azure.Mobile.Distribute
+namespace Microsoft.AppCenter.Distribute
 {
     public static partial class Distribute
     {
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Mobile.Distribute
         /// <summary>
         /// Do not check for updates in case the app is launched with a debug configuration.
         /// In case you want to use in-app updated, place this method call into your
-        /// app delegate's FinishedLaunching method BEFORE you call MobileCenter.Start(...)
+        /// app delegate's FinishedLaunching method BEFORE you call AppCenter.Start(...)
         /// or before you init the forms application object if you use Xamarin Forms.
         /// </summary>
         /// <remarks>

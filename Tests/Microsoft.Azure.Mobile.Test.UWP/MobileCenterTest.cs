@@ -1,17 +1,17 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.ApplicationModel.Core;
 
-namespace Microsoft.Azure.Mobile.Test.UWP
+namespace Microsoft.AppCenter.Test.UWP
 {
     [TestClass]
-    public class MobileCenterTest
+    public class AppCenterTest
     {
         [TestInitialize]
-        public void InitializeMobileCenterTest()
+        public void InitializeAppCenterTest()
         {
-            MobileCenter.Instance = null;
+            AppCenter.Instance = null;
         }
 
         /// <summary>
@@ -22,10 +22,10 @@ namespace Microsoft.Azure.Mobile.Test.UWP
         {
             CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                MobileCenter.Configure("uwp=appsecret");
+                AppCenter.Configure("uwp=appsecret");
             }).AsTask().GetAwaiter().GetResult();
 
-            Assert.IsTrue(MobileCenter.Configured);
+            Assert.IsTrue(AppCenter.Configured);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Mobile.Test.UWP
             }
 
             DeviceInformationHelper.InformationInvalidated += InformationInvalidated;
-            MobileCenter.SetCountryCode("US");
+            AppCenter.SetCountryCode("US");
             DeviceInformationHelper.InformationInvalidated -= InformationInvalidated;
             Assert.AreEqual(informationInvalidated, true);
         }

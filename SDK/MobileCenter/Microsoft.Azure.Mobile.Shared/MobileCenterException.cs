@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
-    public class MobileCenterException : Exception
+    public class AppCenterException : Exception
     {
-        public MobileCenterException(string message) : base(message) { }
-        public MobileCenterException(string message, Exception innerException) : base(message, innerException) { }
+        public AppCenterException(string message) : base(message) { }
+        public AppCenterException(string message, Exception innerException) : base(message, innerException) { }
     }
 }

@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace Contoso.iOS.Puppet
 {
-	[Register ("MobileCenterController")]
-	partial class MobileCenterController
+	[Register ("AppCenterController")]
+	partial class AppCenterController
 	{
 		[Outlet]
 		UIKit.UILabel LogLevelLabel { get; set; }
@@ -25,7 +25,7 @@ namespace Contoso.iOS.Puppet
 		UIKit.UITextField LogWriteTag { get; set; }
 
 		[Outlet]
-		UIKit.UISwitch MobileCenterEnabledSwitch { get; set; }
+		UIKit.UISwitch AppCenterEnabledSwitch { get; set; }
 
 		[Action ("UpdateEnabled")]
 		partial void UpdateEnabled ();
@@ -35,9 +35,9 @@ namespace Contoso.iOS.Puppet
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (MobileCenterEnabledSwitch != null) {
-				MobileCenterEnabledSwitch.Dispose ();
-				MobileCenterEnabledSwitch = null;
+			if (AppCenterEnabledSwitch != null) {
+				AppCenterEnabledSwitch.Dispose ();
+				AppCenterEnabledSwitch = null;
 			}
 
 			if (LogLevelLabel != null) {

@@ -4,7 +4,7 @@ using Windows.ApplicationModel;
 using Windows.System.Profile;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     /// <summary>
     /// Implements the abstract device information helper class

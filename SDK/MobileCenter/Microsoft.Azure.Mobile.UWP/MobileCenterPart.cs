@@ -1,9 +1,9 @@
 ﻿using Windows.ApplicationModel.Activation;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Utils;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
-    public partial class MobileCenter
+    public partial class AppCenter
     {
         private const string PlatformIdentifier = "uwp";
 
@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Mobile
         {
             if (countryCode != null && countryCode.Length != 2)
             {
-                MobileCenterLog.Error(MobileCenterLog.LogTag, "Mobile Center accepts only the two-letter ISO country code.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "App Center accepts only the two-letter ISO country code.");
                 return;
             }
             DeviceInformationHelper.SetCountryCode(countryCode);

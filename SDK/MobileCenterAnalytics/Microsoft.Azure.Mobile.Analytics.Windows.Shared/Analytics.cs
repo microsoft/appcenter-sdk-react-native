@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Analytics.Channel;
-using Microsoft.Azure.Mobile.Ingestion.Models.Serialization;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Analytics.Channel;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Analytics
+namespace Microsoft.AppCenter.Analytics
 {
-    public class Analytics : MobileCenterService
+    public class Analytics : AppCenterService
     {
         #region static
 
@@ -193,12 +193,12 @@ namespace Microsoft.Azure.Mobile.Analytics
         {
             if (string.IsNullOrEmpty(name))
             {
-                MobileCenterLog.Error(LogTag, $"{logType} name cannot be null or empty.");
+                AppCenterLog.Error(LogTag, $"{logType} name cannot be null or empty.");
                 return false;
             }
             if (name.Length > MaxEventNameLength)
             {
-                MobileCenterLog.Warn(LogTag,
+                AppCenterLog.Warn(LogTag,
                     $"{logType} '{name}' : name length cannot be longer than {MaxEventNameLength} characters. Name will be truncated.");
                 name = name.Substring(0, MaxEventNameLength);
                 return true;
@@ -245,7 +245,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             {
                 if (result.Count >= MaxEventProperties)
                 {
-                    MobileCenterLog.Warn(LogTag,
+                    AppCenterLog.Warn(LogTag,
                         $"{logType} '{logName}' : properties cannot contain more than {MaxEventProperties} items. Skipping other properties.");
                     break;
                 }
@@ -255,13 +255,13 @@ namespace Microsoft.Azure.Mobile.Analytics
                 var value = property.Value;
                 if (string.IsNullOrEmpty(key))
                 {
-                    MobileCenterLog.Warn(LogTag,
+                    AppCenterLog.Warn(LogTag,
                         $"{logType} '{logName}' : a property key cannot be null or empty. Property will be skipped.");
                     break;
                 }
                 if (value == null)
                 {
-                    MobileCenterLog.Warn(LogTag,
+                    AppCenterLog.Warn(LogTag,
                         $"{logType} '{logName}' : property '{key}' : property value cannot be null. Property will be skipped.");
                     break;
                 }
@@ -269,13 +269,13 @@ namespace Microsoft.Azure.Mobile.Analytics
                 // Truncate exceeded property.
                 if (key.Length > MaxEventPropertyKeyLength)
                 {
-                    MobileCenterLog.Warn(LogTag,
+                    AppCenterLog.Warn(LogTag,
                         $"{logType} '{logName}' : property '{key}' : property key length cannot be longer than {MaxEventPropertyKeyLength} characters. Property key will be truncated.");
                     key = key.Substring(0, MaxEventPropertyKeyLength);
                 }
                 if (value.Length > MaxEventPropertyValueLength)
                 {
-                    MobileCenterLog.Warn(LogTag,
+                    AppCenterLog.Warn(LogTag,
                         $"{logType} '{logName}' : property '{key}' : property value length cannot be longer than {MaxEventPropertyValueLength} characters. Property value will be truncated.");
                     value = value.Substring(0, MaxEventPropertyValueLength);
                 }

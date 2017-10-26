@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Azure.Mobile.Distribute
+namespace Microsoft.AppCenter.Distribute
 {
     /// <summary>
     /// Release details.

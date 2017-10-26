@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.AppCenter.Crashes</id>
+    <id>Microsoft.AppCenter.Crashes</id>
     <title>App Center Crashes</title>
     <authors>Microsoft</authors>
     <owners>microsoft,app-center</owners>
@@ -15,47 +15,47 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
+      <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
     <version>$version$</version>
   </metadata>
   <files>
 
     <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
-    <file src="$netstandard_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Crashes.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Crashes.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Crashes.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.Crashes.dll" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- WindowsDesktop (WPF and WinForms) -->
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!-- file src="$windows_desktop_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/net452" /-->
+    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net452" /-->
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
-    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Crashes.targets" target="build/uap10.0"/>
-    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="ref/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.targets" target="build/uap10.0"/>
+    <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="ref/uap10.0" />
     
     <!--x86 -->
-    <file src="$uwp_dir$/x86/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
+    <file src="$uwp_dir$/x86/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
     <file src="$uwp_dir$/x86/WatsonRegistrationUtility.dll"  target="runtimes/win10-x86/native"/>
     <file src="$uwp_dir$/x86/WatsonRegistrationUtility.winmd" target="runtimes/win10-x86/lib/uap10.0" />
 
     <!-- x64 -->
-    <file src="$uwp_dir$/x64/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-x64/lib/uap10.0" />
+    <file src="$uwp_dir$/x64/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-x64/lib/uap10.0" />
     <file src="$uwp_dir$/x64/WatsonRegistrationUtility.dll"  target="runtimes/win10-x64/native"/>
     <file src="$uwp_dir$/x64/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0" />
 
     <!-- ARM -->
-    <file src="$uwp_dir$/ARM/Microsoft.Azure.Mobile.Crashes.dll" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$uwp_dir$/ARM/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-arm/lib/uap10.0" />
     <file src="$uwp_dir$/ARM/WatsonRegistrationUtility.dll"  target="runtimes/win10-arm/native"/>
     <file src="$uwp_dir$/ARM/WatsonRegistrationUtility.winmd" target="runtimes/win10-arm/lib/uap10.0" />
 

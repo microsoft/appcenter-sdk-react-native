@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Distribute
+﻿namespace Microsoft.AAppCenterDistribute
 {
     /// <summary>
     /// User update action.

@@ -3,7 +3,7 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
+namespace Microsoft.AppCenter.Crashes.iOS.Bindings
 {
     // @interface MSErrorReport : NSObject
     [BaseType(typeof(NSObject))]
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
 
         // @property (readonly, nonatomic) MSDevice * device;
         [Export("device")]
-        Microsoft.Azure.Mobile.iOS.Bindings.MSDevice Device { get; }
+        Microsoft.AppCenter.iOS.Bindings.MSDevice Device { get; }
 
         // @property (readonly, assign, nonatomic) NSUInteger appProcessIdentifier;
         [Export("appProcessIdentifier")]

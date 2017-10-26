@@ -7,8 +7,8 @@
     <ProjectGuid>{E52C5D53-4485-4350-9F4E-AFF85CC18FD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Azure.Mobile.Test.Windows</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Test.Windows</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Test.Windows</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Test.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -118,10 +118,10 @@
     <Compile Include="Ingestion\Models\LogWithPropertiesTest.cs" />
     <Compile Include="Ingestion\Models\LogTest.cs" />
     <Compile Include="Ingestion\Models\DeviceTest.cs" />
-    <Compile Include="MobileCenterServiceTest.cs" />
-    <Compile Include="MobileCenterTest.cs" />
+    <Compile Include="AppCenterServiceTest.cs" />
+    <Compile Include="AppCenterTest.cs" />
     <Compile Include="MockIngestion.cs" />
-    <Compile Include="MockMobileCenterService.cs" />
+    <Compile Include="MockAppCenterService.cs" />
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\MockStorage.cs" />
     <Compile Include="Storage\StorageTest.cs" />
@@ -130,7 +130,7 @@
     <Compile Include="TestLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ingestion\Models\StartServiceLogTest.cs" />
-    <Compile Include="TestMobileCenterService.cs" />
+    <Compile Include="TestAppCenterService.cs" />
     <Compile Include="Utils\MockApplicationSettingsFactory.cs" />
     <Compile Include="Utils\UnhandledExceptionEventArgsTest.cs" />
   </ItemGroup>
@@ -141,13 +141,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.Analytics.NET\Microsoft.Azure.Mobile.Analytics.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.Analytics.NET\Microsoft.AppCenter.Analytics.NET.csproj">
       <Project>{C5DAC35E-B902-4E24-A8F7-963AD0F85F7A}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.NET</Name>
+      <Name>Microsoft.AppCenter.Analytics.NET</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Azure.Mobile.NET\Microsoft.Azure.Mobile.NET.csproj">
+    <ProjectReference Include="..\Microsoft.AppCenter.NET\Microsoft.AppCenter.NET.csproj">
       <Project>{e76dc547-2b63-4911-971c-767587ebfab6}</Project>
-      <Name>Microsoft.Azure.Mobile.NET</Name>
+      <Name>Microsoft.AppCenter.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

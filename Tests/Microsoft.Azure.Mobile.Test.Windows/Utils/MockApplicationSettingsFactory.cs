@@ -1,7 +1,7 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterUtils;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Test.Utils
+namespace Microsoft.AppCenter.Test.Utils
 {
     public class MockApplicationSettingsFactory : IApplicationSettingsFactory
     {

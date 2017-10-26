@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Channel
+namespace Microsoft.AppCenter.Channel
 {
     /// <summary>
     /// IChannels are responsible for processing logs. In most cases, that means storing them and sending them to Ingestion.

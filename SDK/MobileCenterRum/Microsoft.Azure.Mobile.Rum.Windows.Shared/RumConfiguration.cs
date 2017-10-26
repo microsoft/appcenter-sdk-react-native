@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Rum
+namespace Microsoft.AppCenter.Rum
 {
     internal class RumConfiguration
     {

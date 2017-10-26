@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.Mobile.Utils;
+﻿using Microsoft.AAppCenterUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Microsoft.Azure.Mobile.Test.Windows.Utils
+namespace Microsoft.AppCenter.Test.Windows.Utils
 {
     [TestClass]
     public class UnhandledExceptionEventArgsTest

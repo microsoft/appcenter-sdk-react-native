@@ -1,8 +1,8 @@
 ﻿using System;
 using Android.App;
-using Com.Microsoft.Azure.Mobile.Push;
+using Com.Microsoft.AppCenter.Push;
 
-namespace Microsoft.Azure.Mobile.Push.Android
+namespace Microsoft.AppCenter.Push.Android
 {
     public class PushListener : Java.Lang.Object, IPushListener
     {

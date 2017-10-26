@@ -6,7 +6,7 @@
     <SharedGUID>ba25a66a-fcea-49c2-a85a-0f6f54463675</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Push.Windows.Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.AppCenter.Push.Windows.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\PushInstallationLog.cs" />

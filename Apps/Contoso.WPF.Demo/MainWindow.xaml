@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Contoso.WPF.Demo"
         mc:Ignorable="d"
-        Title="Mobile Center WPF Demo App" Height="257.794" Width="335">
+        Title="App Center WPF Demo App" Height="257.794" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Mobile Center">
+            <TabItem Header="App Center">
                 <StackPanel>
-                    <CheckBox Name="mobileCenterEnabled" Content="Mobile Center Enabled" Margin="0,10,0,10" Checked="mobileCenterEnabled_Checked" Unchecked="mobileCenterEnabled_Checked"/>
+                    <CheckBox Name="mobileCenterEnabled" Content="App Center Enabled" Margin="0,10,0,10" Checked="mobileCenterEnabled_Checked" Unchecked="mobileCenterEnabled_Checked"/>
                     <StackPanel Orientation ="Horizontal" HorizontalAlignment="Right" >
                         <Label Content="Log Level"/>
                         <ComboBox Name="mobileCenterLogLevel" Width="200" SelectionChanged="mobileCenterLogLevel_SelectionChanged">

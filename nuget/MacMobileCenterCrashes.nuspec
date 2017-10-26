@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.AppCenter.Crashes</id>
+    <id>Microsoft.AppCenter.Crashes</id>
     <title>App Center Crashes</title>
     <authors>Microsoft</authors>
     <owners>microsoft,app-center</owners>
@@ -15,24 +15,24 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
+      <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
   </metadata>
   <files>
 
     <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
-    <file src="$netstandard_dir$/Microsoft.Azure.Mobile.Crashes.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Crashes.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.Azure.AppCenter.Crashes.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Crashes.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.Crashes.dll" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.Azure.AppCenter.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
   </files>
 </package>

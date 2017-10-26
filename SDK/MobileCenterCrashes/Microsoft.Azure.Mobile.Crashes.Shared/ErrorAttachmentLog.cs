@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.AAppCenterCrashes
 {
     /// <summary>
     /// Error attachment for error report.

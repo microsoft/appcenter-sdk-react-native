@@ -6,7 +6,7 @@
     <SharedGUID>{5AEF073D-7370-41C1-86CD-A61B4DEB9883}</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Microsoft.Azure.Mobile.Distribute</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.AppCenter.Distribute</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Distribute.cs" />

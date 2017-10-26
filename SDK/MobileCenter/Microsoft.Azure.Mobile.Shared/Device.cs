@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
     /// <summary>
     /// Device class to help retrieve device information.

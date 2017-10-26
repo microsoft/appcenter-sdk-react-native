@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="@string/MobileCenterEnabled"
+                    android:text="@string/AppCenterEnabled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="@string/MobileCenterLogLevel"
+                    android:text="@string/AppCenterLogLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="@string/MobileCenterLogMessage"
+                    android:text="@string/AppCenterLogMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="@string/MobileCenterLogTag"
+                    android:text="@string/AppCenterLogTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
@@ -77,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="@string/MobileCenterLogLevel"
+                    android:text="@string/AppCenterLogLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp" />
@@ -90,7 +90,7 @@
             </LinearLayout>
             <Button
                 android:id="@+id/write_log"
-                android:text="@string/MobileCenterWriteLog"
+                android:text="@string/AppCenterWriteLog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

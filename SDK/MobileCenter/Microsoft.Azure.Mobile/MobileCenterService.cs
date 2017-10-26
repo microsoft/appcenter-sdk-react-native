@@ -1,9 +1,9 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
     /// <summary>
-    /// Contains base functionality for classes that implement IMobileCenterService
+    /// Contains base functionality for classes that implement IAppCenterService
     /// </summary>
-    public abstract class MobileCenterService : IMobileCenterService
+    public abstract class AppCenterService : IAppCenterService
     {
     }
 }

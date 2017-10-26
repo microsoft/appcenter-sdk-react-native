@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Analytics
+namespace Microsoft.AppCenter.Analytics
 {
     /// <summary>
     ///     Analytics feature.
     /// </summary>
-    public class Analytics : IMobileCenterService
+    public class Analytics : IAppCenterService
     {
         internal Analytics()
         {

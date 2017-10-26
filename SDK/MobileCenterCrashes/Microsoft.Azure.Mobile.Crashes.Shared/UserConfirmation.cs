@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.AAppCenterCrashes
 {
     /// <summary>
     /// User confirmation options for whether to send crash reports.

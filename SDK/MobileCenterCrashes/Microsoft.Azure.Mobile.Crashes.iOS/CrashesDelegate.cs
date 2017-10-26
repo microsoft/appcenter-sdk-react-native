@@ -1,7 +1,7 @@
 ﻿using Foundation;
-using Microsoft.Azure.Mobile.Crashes.iOS.Bindings;
+using Microsoft.AppCenter.Crashes.iOS.Bindings;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     public class CrashesDelegate : MSCrashesDelegate
     {
@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Mobile.Crashes
                     }
                     else
                     {
-                        MobileCenterLog.Warn(Crashes.LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
+                        AppCenterLog.Warn(Crashes.LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
                     }
                 }
                 return nsArray;

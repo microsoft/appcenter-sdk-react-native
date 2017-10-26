@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Mobile.iOS.Bindings;
+﻿using Microsoft.AAppCenteriOS.Bindings;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     public partial class Device
     {

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using Foundation;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 using UIKit;
 
 namespace Contoso.iOS.Puppet
 {
-    public partial class MobileCenterController : UITableViewController
+    public partial class AppCenterController : UITableViewController
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, MobileCenterLog.Verbose },
-            { LogLevel.Debug, MobileCenterLog.Debug },
-            { LogLevel.Info, MobileCenterLog.Info },
-            { LogLevel.Warn, MobileCenterLog.Warn },
-            { LogLevel.Error, MobileCenterLog.Error }
+            { LogLevel.Verbose, AppCenterLog.Verbose },
+            { LogLevel.Debug, AppCenterLog.Debug },
+            { LogLevel.Info, AppCenterLog.Info },
+            { LogLevel.Warn, AppCenterLog.Warn },
+            { LogLevel.Error, AppCenterLog.Error }
         };
         private static readonly IDictionary<LogLevel, string> LogLevelNames = new Dictionary<LogLevel, string> {
             { LogLevel.Verbose, Constants.Verbose },
@@ -24,15 +24,15 @@ namespace Contoso.iOS.Puppet
         };
         private LogLevel mLogWriteLevel = LogLevel.Verbose;
 
-        public MobileCenterController(IntPtr handle) : base(handle)
+        public AppCenterController(IntPtr handle) : base(handle)
         {
         }
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            MobileCenterEnabledSwitch.On = MobileCenter.IsEnabledAsync().Result;
-            LogLevelLabel.Text = LogLevelNames[MobileCenter.LogLevel];
+            AppCenterEnabledSwitch.On = AppCenter.IsEnabledAsync().Result;
+            LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
 
@@ -48,7 +48,7 @@ namespace Contoso.iOS.Puppet
                     case "LogLevel":
                         logLevelContoller.LevelSelected += level =>
                         {
-                            MobileCenter.LogLevel = level;
+                            AppCenter.LogLevel = level;
                         };
                         break;
                     case "LogWriteLevel":
@@ -64,8 +64,8 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateEnabled()
         {
-            MobileCenter.SetEnabledAsync(MobileCenterEnabledSwitch.On).Wait();
-            MobileCenterEnabledSwitch.On = MobileCenter.IsEnabledAsync().Result;
+            AppCenter.SetEnabledAsync(AppCenterEnabledSwitch.On).Wait();
+            AppCenterEnabledSwitch.On = AppCenter.IsEnabledAsync().Result;
         }
 
         partial void WriteLog()

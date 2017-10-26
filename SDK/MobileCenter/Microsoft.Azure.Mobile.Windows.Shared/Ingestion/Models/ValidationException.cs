@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Ingestion.Models
+﻿namespace Microsoft.AAppCenterIngestion.Models
 {
     /// <summary>
     /// Exception thrown when ingestion models fail to validate

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Channel;
+using Microsoft.AppCenter.Channel;
 #if REFERENCE
 #else
 using WatsonRegistrationUtility;
 #endif
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
-    public partial class Crashes : IMobileCenterService
+    public partial class Crashes : IAppCenterService
     {
         public string ServiceName => "Crashes";
 
@@ -28,14 +28,14 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on this platform.");
+            AppCenterLog.Warn(AppCenterLog.LogTag, "Crashes service is not yet supported on this platform.");
             try
             {
 #if REFERENCE
 #else
                 WatsonRegistrationManager.Start(appSecret);
 #pragma warning disable CS0612 // Type or member is obsolete
-                MobileCenter.CorrelationIdChanged += (s, id) =>
+                AppCenter.CorrelationIdChanged += (s, id) =>
                 {
                     WatsonRegistrationManager.SetCorrelationId(id.ToString());
                 };
@@ -43,14 +43,14 @@ namespace Microsoft.Azure.Mobile.Crashes
                 // Checking for null and setting id needs to be atomic to avoid
                 // overwriting
                 Guid newId = Guid.NewGuid();
-                MobileCenter.TestAndSetCorrelationId(Guid.Empty, ref newId);
+                AppCenter.TestAndSetCorrelationId(Guid.Empty, ref newId);
 #pragma warning restore CS0612 // Type or member is obsolete
 #endif
             }
             catch (Exception e)
             {
 #if DEBUG
-                throw new MobileCenterException("Failed to register crashes with Watson", e);
+                throw new AppCenterException("Failed to register crashes with Watson", e);
 #endif
             }
         }

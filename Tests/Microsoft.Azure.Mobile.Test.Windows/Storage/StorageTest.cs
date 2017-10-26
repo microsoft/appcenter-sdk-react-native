@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLite;
 
-namespace Microsoft.Azure.Mobile.Test
+namespace Microsoft.AppCenter.Test
 {
     [TestClass]
     public class StorageTest
@@ -208,7 +208,7 @@ namespace Microsoft.Azure.Mobile.Test
         public void FailToGetALog()
         {
             var invalidLogEntry = new Mobile.Storage.Storage.LogEntry { Channel = StorageTestChannelName, Log = "good luck deserializing me!" };
-            var connection = new SQLiteConnection("Microsoft.Azure.Mobile.Storage");
+            var connection = new SQLiteConnection("Microsoft.AppCenter.Storage");
 
             // Perform an arbitrary operation and wait on it to complete so that database is free when invalid log
             // is inserted.

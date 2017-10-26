@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Utils
+﻿namespace Microsoft.AAppCenterUtils
 {
     public class DefaultScreenSizeProviderFactory : IScreenSizeProviderFactory
     {

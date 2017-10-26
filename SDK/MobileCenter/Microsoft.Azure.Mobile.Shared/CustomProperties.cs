@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     /// <summary>
     /// Custom properties builder.

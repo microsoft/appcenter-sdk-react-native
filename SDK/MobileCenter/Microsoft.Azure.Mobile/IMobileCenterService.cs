@@ -1,9 +1,9 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
     /// <summary>
-    /// Represents a module that provides a service through Mobile Center.
+    /// Represents a module that provides a service through App Center.
     /// </summary>
-    public interface IMobileCenterService
+    public interface IAppCenterService
     {
     }
 }

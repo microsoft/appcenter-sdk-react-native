@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     public class DefaultApplicationSettings : IApplicationSettings
     {
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Mobile.Utils
         private static Configuration OpenConfiguration()
         {
             var location = Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine(Path.GetDirectoryName(location), "MobileCenter.config");
+            var path = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
             var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = path };
             return ConfigurationManager.OpenMappedExeConfiguration(executionFileMap, ConfigurationUserLevel.None);
         }

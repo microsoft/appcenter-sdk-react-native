@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Storage
+namespace Microsoft.AppCenter.Storage
 {
     public interface IStorageAdapter
     {

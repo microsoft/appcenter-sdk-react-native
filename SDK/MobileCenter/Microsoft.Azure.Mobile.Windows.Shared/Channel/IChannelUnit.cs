@@ -1,7 +1,7 @@
-﻿using Microsoft.Azure.Mobile.Ingestion.Models;
+﻿using Microsoft.AAppCenterIngestion.Models;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Channel
+namespace Microsoft.AppCenter.Channel
 {
     public interface IChannelUnit : IChannel
     {

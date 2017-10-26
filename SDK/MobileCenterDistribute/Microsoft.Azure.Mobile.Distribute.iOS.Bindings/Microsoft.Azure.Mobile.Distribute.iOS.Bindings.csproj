@@ -6,8 +6,8 @@
     <ProjectGuid>{278DFD3C-A0DD-4DD2-97C5-44EC4BEE8462}</ProjectGuid>
     <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.Azure.Mobile.Distribute.iOS.Bindings</RootNamespace>
-    <AssemblyName>Microsoft.Azure.Mobile.Distribute.iOS.Bindings</AssemblyName>
+    <RootNamespace>Microsoft.AppCenter.Distribute.iOS.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Distribute.iOS.Bindings</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,13 +42,13 @@
     <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MobileCenter\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">
       <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\MobileCenterDistribute.a">
+    <NativeReference Include="..\..\..\externals\ios\AppCenterDistribute.a">
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
       <SmartLink>False</SmartLink>
@@ -58,17 +58,17 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\Info.plist">
-      <Link>Resources\MobileCenterDistributeResources.bundle\Info.plist</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\Info.plist">
+      <Link>Resources\AppCenterDistributeResources.bundle\Info.plist</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\de.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\de.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\de.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\de.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\en.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\en.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\en.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\en.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\fr.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\fr.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\fr.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\fr.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />

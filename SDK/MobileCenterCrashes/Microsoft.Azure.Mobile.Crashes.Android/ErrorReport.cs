@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
-    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
-    using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorReport;
+    using AndroidExceptionDataManager = Com.Microsoft.AppCenter.Crashes.WrapperSdkExceptionManager;
+    using AndroidErrorReport = Com.Microsoft.AppCenter.Crashes.Model.AndroidErrorReport;
 
     public partial class ErrorReport
     {
@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
             catch (Exception e)
             {
-                MobileCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
+                AppCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
                 androidThrowable = null;
             }
             AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);

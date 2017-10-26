@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile.Analytics.Channel;
-using Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Microsoft.Azure.Mobile.Channel;
-using Microsoft.Azure.Mobile.Utils;
+using Microsoft.AppCenter.Analytics.Channel;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
+namespace Microsoft.AppCenter.Analytics.Test.Windows
 {
     [TestClass]
     public class SessionTrackerTest
@@ -273,7 +273,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
         }
 
         /// <summary>
-        /// Verify Mobile Center Correlation ID is set when a session starts and current Correlation ID is null
+        /// Verify App Center Correlation ID is set when a session starts and current Correlation ID is null
         /// </summary>
         [TestMethod]
         public void EmptyCorrelationIdIsSetWhenSessionStarts()
@@ -281,11 +281,11 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 #pragma warning disable CS0612 // Type or member is obsolete
 
             // Correlation ID is Empty.
-            MobileCenter.Instance.InstanceCorrelationId = Guid.Empty;
+            AppCenter.Instance.InstanceCorrelationId = Guid.Empty;
             _sessionTracker.Resume();
 
             // Guid.Empty should not be equal to correlation id.
-            Assert.IsFalse(MobileCenter.TestAndSetCorrelationId(Guid.Empty, ref MobileCenter.Instance.InstanceCorrelationId));
+            Assert.IsFalse(AppCenter.TestAndSetCorrelationId(Guid.Empty, ref AppCenter.Instance.InstanceCorrelationId));
 #pragma warning restore CS0612 // Type or member is obsolete
         }
 
@@ -298,14 +298,14 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
 #pragma warning disable CS0612 // Type or member is obsolete
 
             var initialCorrelationId = Guid.NewGuid();
-            MobileCenter.Instance.InstanceCorrelationId = initialCorrelationId;
+            AppCenter.Instance.InstanceCorrelationId = initialCorrelationId;
             _sessionTracker.Resume();
             Assert.AreEqual(_sessionTracker._sid, initialCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
         }
 
         /// <summary>
-        /// Verify Mobile Center Correlation ID is set when the session id changes
+        /// Verify App Center Correlation ID is set when the session id changes
         /// </summary>
         [TestMethod]
         public void VerifyCorrelationIdIsUpdatedWhenSessionChanges()
@@ -317,7 +317,7 @@ namespace Microsoft.Azure.Mobile.Analytics.Test.Windows
             _sessionTracker.Pause();
             Task.Delay((int)SessionTracker.SessionTimeout).Wait();
             _sessionTracker.Resume();
-            Assert.IsTrue(MobileCenter.TestAndSetCorrelationId(_sessionTracker._sid, ref MobileCenter.Instance.InstanceCorrelationId));
+            Assert.IsTrue(AppCenter.TestAndSetCorrelationId(_sessionTracker._sid, ref AppCenter.Instance.InstanceCorrelationId));
 #pragma warning restore CS0612 // Type or member is obsolete
         }
     }

@@ -1,8 +1,8 @@
-﻿using Microsoft.Azure.Mobile.Channel;
+﻿using Microsoft.AAppCenterChannel;
 
-namespace Microsoft.Azure.Mobile.Test.Windows
+namespace Microsoft.AppCenter.Test.Windows
 {
-    public class TestMobileCenterService : MobileCenterService
+    public class TestAppCenterService : AppCenterService
     {
         protected override string ChannelName => "test_service";
         public override string ServiceName => "TestService";

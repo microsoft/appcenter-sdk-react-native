@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 
 
 namespace Contoso.WPF.Demo
@@ -15,11 +15,11 @@ namespace Contoso.WPF.Demo
     public partial class MainWindow : Window
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, MobileCenterLog.Verbose },
-            { LogLevel.Debug, MobileCenterLog.Debug },
-            { LogLevel.Info, MobileCenterLog.Info },
-            { LogLevel.Warn, MobileCenterLog.Warn },
-            { LogLevel.Error, MobileCenterLog.Error }
+            { LogLevel.Verbose, AppCenterLog.Verbose },
+            { LogLevel.Debug, AppCenterLog.Debug },
+            { LogLevel.Info, AppCenterLog.Info },
+            { LogLevel.Warn, AppCenterLog.Warn },
+            { LogLevel.Error, AppCenterLog.Error }
         };
 
         public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
@@ -28,13 +28,13 @@ namespace Contoso.WPF.Demo
         {
             InitializeComponent();
             UpdateState();
-            mobileCenterLogLevel.SelectedIndex = (int) MobileCenter.LogLevel;
+            mobileCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
             eventProperties.ItemsSource = Properties;
         }
 
         private void UpdateState()
         {
-            mobileCenterEnabled.IsChecked = MobileCenter.IsEnabledAsync().Result;
+            mobileCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
             analyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
@@ -42,7 +42,7 @@ namespace Contoso.WPF.Demo
         {
             if (mobileCenterEnabled.IsChecked.HasValue)
             {
-                MobileCenter.SetEnabledAsync(mobileCenterEnabled.IsChecked.Value).Wait();
+                AppCenter.SetEnabledAsync(mobileCenterEnabled.IsChecked.Value).Wait();
             }
         }
 
@@ -56,7 +56,7 @@ namespace Contoso.WPF.Demo
 
         private void mobileCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            MobileCenter.LogLevel = (LogLevel) mobileCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel) mobileCenterLogLevel.SelectedIndex;
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

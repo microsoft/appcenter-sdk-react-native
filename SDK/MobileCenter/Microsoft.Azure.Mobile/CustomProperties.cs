@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
     public partial class CustomProperties
     {

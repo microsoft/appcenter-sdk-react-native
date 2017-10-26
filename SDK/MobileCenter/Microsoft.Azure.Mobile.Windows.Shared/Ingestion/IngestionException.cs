@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Ingestion
+namespace Microsoft.AppCenter.Ingestion
 {
-    public class IngestionException : MobileCenterException
+    public class IngestionException : AppCenterException
     {
         private const string DefaultMessage = "The ingestion operation failed";
 

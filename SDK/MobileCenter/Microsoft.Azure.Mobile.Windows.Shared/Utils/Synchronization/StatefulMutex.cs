@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Azure.Mobile.Utils.Synchronization
+namespace Microsoft.AppCenter.Utils.Synchronization
 {
     /// <summary>
     /// Allows synchronization across tasks, regardless of the thread executing it.

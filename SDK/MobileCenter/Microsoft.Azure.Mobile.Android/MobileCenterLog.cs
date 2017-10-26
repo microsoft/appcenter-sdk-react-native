@@ -1,47 +1,47 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
-    using AndroidMobileCenterLog = Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog;
+    using AndroidAppCenterLog = Com.Microsoft.AppCenter.Utils.AppCenterLog;
 
-    public static partial class MobileCenterLog
+    public static partial class AppCenterLog
     {
         /// <summary>
         /// The log tag for this SDK. All logs emitted at the SDK level will contain this tag.
         /// </summary>
         public static string LogTag { get; private set; }
 
-        static MobileCenterLog()
+        static AppCenterLog()
         {
-            LogTag = "MobileCenterXamarin";
+            LogTag = "AppCenterXamarin";
         }
 
         public static void Verbose(string tag, string message)
         {
-            AndroidMobileCenterLog.Verbose(tag, message);
+            AndroidAppCenterLog.Verbose(tag, message);
         }
 
         public static void Debug(string tag, string message)
         {
-            AndroidMobileCenterLog.Debug(tag, message);
+            AndroidAppCenterLog.Debug(tag, message);
         }
 
         public static void Info(string tag, string message)
         {
-            AndroidMobileCenterLog.Info(tag, message);
+            AndroidAppCenterLog.Info(tag, message);
         }
 
         public static void Warn(string tag, string message)
         {
-            AndroidMobileCenterLog.Warn(tag, message);
+            AndroidAppCenterLog.Warn(tag, message);
         }
 
         public static void Error(string tag, string message)
         {
-            AndroidMobileCenterLog.Error(tag, message);
+            AndroidAppCenterLog.Error(tag, message);
         }
 
         public static void Assert(string tag, string message)
         {
-            AndroidMobileCenterLog.LogAssert(tag, message);
+            AndroidAppCenterLog.LogAssert(tag, message);
         }
     }
 }

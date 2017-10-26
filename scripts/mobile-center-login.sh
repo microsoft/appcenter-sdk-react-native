@@ -10,23 +10,23 @@ if [ $? -ne 0 ]; then
 	fi 
 fi
 
-# Is Mobile Center CLI installed?
+# Is App Center CLI installed?
 npm list -g mobile-center-cli >/dev/null
 if [ $? -ne 0 ]; then
-	# Install Mobile Center CLI
-	echo "Installing Mobile Center CLI..."
+	# Install App Center CLI
+	echo "Installing App Center CLI..."
 	npm install -g mobile-center-cli
 	if [ $? -ne 0 ]; then
-    	echo "An error occured while installing Mobile Center CLI."
+    	echo "An error occured while installing App Center CLI."
     	exit 1
 	fi
 fi
 
-# Log in to Mobile Center
+# Log in to App Center
 echo "Logging in to mobile center..."
 mobile-center login --token "$MOBILE_CENTER_API_TOKEN"
 if [ $? -ne 0 ]; then
-    echo "An error occured while logging into Mobile Center."
+    echo "An error occured while logging into App Center."
     exit 1
 fi
 

@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Azure.Mobile
+﻿namespace Microsoft.AAppCenter
 {
-    public partial class MobileCenter
+    public partial class AppCenter
     {
         private const string PlatformIdentifier = "windowsdesktop";
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Microsoft.Azure.Mobile.Ingestion.Models.Serialization
+namespace Microsoft.AppCenter.Ingestion.Models.Serialization
 {
     public static class LogSerializer
     {

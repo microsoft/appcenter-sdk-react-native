@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Push.iOS.Bindings
+namespace Microsoft.AppCenter.Push.iOS.Bindings
 {
 }

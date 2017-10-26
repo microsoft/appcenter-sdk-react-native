@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Azure.Mobile.Crashes
+﻿namespace Microsoft.AAppCenterCrashes
 {
     public partial class ErrorAttachmentLog
     {

@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Distribute;
-using Microsoft.Azure.Mobile.Push;
+﻿using Microsoft.AAppCenter
+using Microsoft.AppCenter.Distribute;
+using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -22,7 +22,7 @@ namespace Contoso.Forms.Demo
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var mcEnabled = await MobileCenter.IsEnabledAsync();
+            var mcEnabled = await AppCenter.IsEnabledAsync();
             DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
             DistributeEnabledSwitchCell.IsEnabled = mcEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();

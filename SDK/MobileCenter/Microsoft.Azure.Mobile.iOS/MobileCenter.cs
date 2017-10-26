@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ObjCRuntime;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
-    using iOSLogLevel = Microsoft.Azure.Mobile.iOS.Bindings.MSLogLevel;
-    using iOSMobileCenter = Microsoft.Azure.Mobile.iOS.Bindings.MSMobileCenter;
-    using iOSWrapperSdk = Microsoft.Azure.Mobile.iOS.Bindings.MSWrapperSdk;
+    using iOSLogLevel = Microsoft.AppCenter.iOS.Bindings.MSLogLevel;
+    using iOSAppCenter = Microsoft.AppCenter.iOS.Bindings.MSAppCenter;
+    using iOSWrapperSdk = Microsoft.AppCenter.iOS.Bindings.MSWrapperSdk;
 
-    public partial class MobileCenter
+    public partial class AppCenter
     {
         /* The key identifier for parsing app secrets */
         const string PlatformIdentifier = "ios";
 
-        internal MobileCenter()
+        internal AppCenter()
         {
         }
 
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                var val = iOSMobileCenter.LogLevel();
+                var val = iOSAppCenter.LogLevel();
                 switch (val)
                 {
                     case iOSLogLevel.Verbose:
@@ -72,27 +72,27 @@ namespace Microsoft.Azure.Mobile
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
                 }
-                iOSMobileCenter.SetLogLevel(loglevel);
+                iOSAppCenter.SetLogLevel(loglevel);
             }
         }
 
         static void PlatformSetLogUrl(string logUrl)
         {
-            iOSMobileCenter.SetLogUrl(logUrl);
+            iOSAppCenter.SetLogUrl(logUrl);
         }
 
         static bool PlatformConfigured
         {
             get
             {
-                return iOSMobileCenter.IsConfigured();
+                return iOSAppCenter.IsConfigured();
             }
         }
 
         static void PlatformConfigure(string appSecret)
         {
             SetWrapperSdk();
-            iOSMobileCenter.ConfigureWithAppSecret(appSecret);
+            iOSAppCenter.ConfigureWithAppSecret(appSecret);
         }
 
         static void PlatformStart(params Type[] services)
@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Mobile
             SetWrapperSdk();
             foreach (var service in GetServices(services))
             {
-                iOSMobileCenter.StartService(service);
+                iOSAppCenter.StartService(service);
             }
         }
 
@@ -112,28 +112,28 @@ namespace Microsoft.Azure.Mobile
             {
                 parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
             }
-            catch (MobileCenterException ex)
+            catch (AppCenterException ex)
             {
-                MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
+                AppCenterLog.Assert(AppCenterLog.LogTag, ex.Message);
                 return;
             }
-            iOSMobileCenter.Start(parsedSecret, GetServices(services));
+            iOSAppCenter.Start(parsedSecret, GetServices(services));
         }
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.FromResult(iOSMobileCenter.IsEnabled());
+            return Task.FromResult(iOSAppCenter.IsEnabled());
         }
 
         static Task PlatformSetEnabledAsync(bool enabled)
         {
-            iOSMobileCenter.SetEnabled(enabled);
+            iOSAppCenter.SetEnabled(enabled);
             return Task.FromResult(default(object));
         }
 
         static Task<Guid?> PlatformGetInstallIdAsync()
         {
-            Guid? installId = Guid.Parse(iOSMobileCenter.InstallId().AsString());
+            Guid? installId = Guid.Parse(iOSAppCenter.InstallId().AsString());
             return Task.FromResult(installId);
         }
 
@@ -173,12 +173,12 @@ namespace Microsoft.Azure.Mobile
         static void SetWrapperSdk()
         {
             iOSWrapperSdk wrapperSdk = new iOSWrapperSdk(WrapperSdk.Version, WrapperSdk.Name, Constants.Version, null, null, null);
-            iOSMobileCenter.SetWrapperSdk(wrapperSdk);
+            iOSAppCenter.SetWrapperSdk(wrapperSdk);
         }
 
         static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
-            iOSMobileCenter.SetCustomProperties(customProperties?.IOSCustomProperties);
+            iOSAppCenter.SetCustomProperties(customProperties?.IOSCustomProperties);
         }
     }
 }

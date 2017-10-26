@@ -1,7 +1,7 @@
 ﻿using System;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 
-namespace Microsoft.Azure.Mobile.Crashes
+namespace Microsoft.AppCenter.Crashes
 {
     /// <summary>
     /// Event arguments base class for all events that involve an error report.

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Azure.Mobile.Utils
+namespace Microsoft.AppCenter.Utils
 {
     public static class WpfHelper
     {
@@ -17,7 +17,7 @@ namespace Microsoft.Azure.Mobile.Utils
             }
             catch (AppDomainUnloadedException)
             {
-                MobileCenterLog.Warn(MobileCenterLog.LogTag, "Unabled to determine whether this application is WPF or Windows Forms; proceeding as though it is Windows Forms.");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "Unabled to determine whether this application is WPF or Windows Forms; proceeding as though it is Windows Forms.");
             }
         }
 

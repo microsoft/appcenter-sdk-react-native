@@ -1,7 +1,7 @@
 ﻿using System;
 using ObjCRuntime;
 
-namespace Microsoft.Azure.Mobile.Distribute.iOS.Bindings
+namespace Microsoft.AppCenter.Distribute.iOS.Bindings
 {
     [Native]
     public enum MSUpdateAction : ulong

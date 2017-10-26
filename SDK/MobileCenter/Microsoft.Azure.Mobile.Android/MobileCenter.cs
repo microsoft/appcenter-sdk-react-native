@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.App;
-using Com.Microsoft.Azure.Mobile;
+using Com.Microsoft.AppCenter;
 using Java.Lang;
 
-namespace Microsoft.Azure.Mobile
+namespace Microsoft.AppCenter
 {
     using System.Reflection;
     using System.Threading.Tasks;
-    using Com.Microsoft.Azure.Mobile.Utils.Async;
+    using Com.Microsoft.AppCenter.Utils.Async;
     using Java.Util;
-    using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
+    using AndroidWrapperSdk = Com.Microsoft.AppCenter.Ingestion.Models.WrapperSdk;
 
-    public partial class MobileCenter
+    public partial class AppCenter
     {
         /* The key identifier for parsing app secrets */
         const string PlatformIdentifier = "android";
 
-        internal MobileCenter()
+        internal AppCenter()
         {
         }
 
@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Mobile
         {
             get
             {
-                var value = AndroidMobileCenter.LogLevel;
+                var value = AndroidAppCenter.LogLevel;
                 switch (value)
                 {
                     case 2:
@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Mobile
                         return LogLevel.Error;
                     case 7:
                         return LogLevel.Assert;
-                    case Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog.None:
+                    case Com.Microsoft.AppCenter.Utils.AppCenterLog.None:
                         return LogLevel.None;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -71,36 +71,36 @@ namespace Microsoft.Azure.Mobile
                         androidValue = 7;
                         break;
                     case LogLevel.None:
-                        androidValue = Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog.None;
+                        androidValue = Com.Microsoft.AppCenter.Utils.AppCenterLog.None;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
                 }
-                AndroidMobileCenter.LogLevel = androidValue;
+                AndroidAppCenter.LogLevel = androidValue;
             }
         }
 
         static void PlatformSetLogUrl(string logUrl)
         {
-            AndroidMobileCenter.SetLogUrl(logUrl);
+            AndroidAppCenter.SetLogUrl(logUrl);
         }
 
         static bool PlatformConfigured
         {
             get
             {
-                return AndroidMobileCenter.IsConfigured;
+                return AndroidAppCenter.IsConfigured;
             }
         }
 
         static void PlatformConfigure(string appSecret)
         {
-            AndroidMobileCenter.Configure(SetWrapperSdkAndGetApplication(), appSecret);
+            AndroidAppCenter.Configure(SetWrapperSdkAndGetApplication(), appSecret);
         }
 
         static void PlatformStart(params Type[] services)
         {
-            AndroidMobileCenter.Start(GetServices(services));
+            AndroidAppCenter.Start(GetServices(services));
         }
 
         static void PlatformStart(string appSecret, params Type[] services)
@@ -110,29 +110,29 @@ namespace Microsoft.Azure.Mobile
             {
                 parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
             }
-            catch (MobileCenterException ex)
+            catch (AppCenterException ex)
             {
-                MobileCenterLog.Assert(MobileCenterLog.LogTag, ex.Message);
+                AppCenterLog.Assert(AppCenterLog.LogTag, ex.Message);
                 return;
             }
-            AndroidMobileCenter.Start(SetWrapperSdkAndGetApplication(), parsedSecret, GetServices(services));
+            AndroidAppCenter.Start(SetWrapperSdkAndGetApplication(), parsedSecret, GetServices(services));
         }
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            var future = AndroidMobileCenter.IsEnabled();
+            var future = AndroidAppCenter.IsEnabled();
             return Task.Run(() => (bool)future.Get());
         }
 
         static Task PlatformSetEnabledAsync(bool enabled)
         {
-            var future = AndroidMobileCenter.SetEnabled(enabled);
+            var future = AndroidAppCenter.SetEnabled(enabled);
             return Task.Run(() => future.Get());
         }
 
         static Task<Guid?> PlatformGetInstallIdAsync()
         {
-            var future = AndroidMobileCenter.InstallId;
+            var future = AndroidAppCenter.InstallId;
             return Task.Run(() =>
             {
                 var installId = future.Get() as UUID;
@@ -161,7 +161,7 @@ namespace Microsoft.Azure.Mobile
                 WrapperSdkVersion = WrapperSdk.Version,
                 WrapperRuntimeVersion = xamarinAndroidVersion
             };
-            AndroidMobileCenter.SetWrapperSdk(wrapperSdk);
+            AndroidAppCenter.SetWrapperSdk(wrapperSdk);
             return (Application)Application.Context;
         }
 
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.Mobile
 
         static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
-            AndroidMobileCenter.SetCustomProperties(customProperties.AndroidCustomProperties);
+            AndroidAppCenter.SetCustomProperties(customProperties.AndroidCustomProperties);
         }
     }
 }

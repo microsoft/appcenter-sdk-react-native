@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Azure.Mobile.Channel
+namespace Microsoft.AppCenter.Channel
 {
     /// <summary>
     /// Represents a collection of channels that can perform aggregate operations
@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Channel
         IChannelUnit AddChannel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches);
 
         /// <summary>
-        /// Sets the ingestion endpoint to send Mobile Center logs to.
+        /// Sets the ingestion endpoint to send App Center logs to.
         /// </summary>
         /// <param name="logUrl">The log URL</param>
         void SetLogUrl(string logUrl);
