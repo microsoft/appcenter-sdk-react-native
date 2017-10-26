@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
+#addin nuget:?package=Cake.Incubator
 #tool "nuget:?package=gitreleasemanager"
 
 // Task TARGET for build
@@ -10,8 +11,8 @@ Task("Default").IsDependentOn("GitRelease");
 Task("GitRelease")
 	.Does(() =>
 {
-    var assemblyInfo = ParseAssemblyInfo("SDK/MobileCenter/Microsoft.Azure.Mobile/Properties/AssemblyInfo.cs");
-	var publishVersion = assemblyInfo.AssemblyInformationalVersion;
+    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
+    var publishVersion = project.NetCore.Version;
     var username = "user";
     var password = Argument<string>("GithubToken");
     var owner = "Microsoft";
