@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<metadata>
-	<remove-node path="/api/package[@name='com.microsoft.appcenter.http']" />
-	<remove-node path="/api/package[@name='com.microsoft.appcenter.utils.storage']" />
-	<attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='AppCenter']" name="managedName">AndroidAppCenter</attr>
-	<attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='CustomProperties']" name="managedName">AndroidCustomProperties</attr>
-</metadata>
