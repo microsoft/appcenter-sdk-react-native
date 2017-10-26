@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenter
+﻿namespace Microsoft.AppCenter
 {
 	using iOSMessageProvider = Microsoft.AppCenter.iOS.Bindings.MSLogMessageProvider;
 	using iOSLogger = Microsoft.AppCenter.iOS.Bindings.MSWrapperLogger;

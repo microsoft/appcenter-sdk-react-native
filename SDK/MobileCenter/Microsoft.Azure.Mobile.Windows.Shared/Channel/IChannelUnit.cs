@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterIngestion.Models;
+﻿using Microsoft.AppCenterIngestion.Models;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Channel

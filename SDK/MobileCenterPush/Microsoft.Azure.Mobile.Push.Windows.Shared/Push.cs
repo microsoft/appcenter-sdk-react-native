@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterChannel;
+﻿using Microsoft.AppCenterChannel;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils.Synchronization;

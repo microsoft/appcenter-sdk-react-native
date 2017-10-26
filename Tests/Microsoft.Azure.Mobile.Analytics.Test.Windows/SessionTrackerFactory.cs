@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterAnalytics.Channel;
+﻿using Microsoft.AppCenterAnalytics.Channel;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Utils;
 using Moq;

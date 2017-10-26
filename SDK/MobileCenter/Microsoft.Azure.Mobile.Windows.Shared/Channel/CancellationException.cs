@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenter
+﻿namespace Microsoft.AppCenter
 {
     public class CancellationException : AppCenterException
     {

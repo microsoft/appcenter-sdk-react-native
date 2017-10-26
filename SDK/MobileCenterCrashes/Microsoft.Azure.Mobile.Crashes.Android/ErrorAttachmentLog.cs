@@ -1,4 +1,4 @@
-﻿using Com.Microsoft.AAppCenterCrashes.Ingestion.Models;
+﻿using Com.Microsoft.AppCenterCrashes.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Crashes
 {

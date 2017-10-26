@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenter
+﻿namespace Microsoft.AppCenter
 {
     /// <summary>
     /// Log level threshold for logs emitted by the SDK.

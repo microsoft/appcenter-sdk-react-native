@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenter
+﻿namespace Microsoft.AppCenter
 {
     using AndroidAppCenterLog = Com.Microsoft.AppCenter.Utils.AppCenterLog;
 

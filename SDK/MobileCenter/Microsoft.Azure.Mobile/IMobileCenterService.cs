@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenter
+﻿namespace Microsoft.AppCenter
 {
     /// <summary>
     /// Represents a module that provides a service through App Center.

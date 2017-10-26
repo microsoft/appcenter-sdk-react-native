@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterChannel;
+﻿using Microsoft.AppCenterChannel;
 using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter.Analytics.Channel

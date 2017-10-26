@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterCrashes
+﻿namespace Microsoft.AppCenterCrashes
 {
     /// <summary>
     /// Error attachment for error report.

@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenter
+﻿using Microsoft.AppCenter
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;

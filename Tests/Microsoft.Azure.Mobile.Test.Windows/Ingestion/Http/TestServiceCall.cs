@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterIngestion.Http
+﻿namespace Microsoft.AppCenterIngestion.Http
 {
     public class TestServiceCall : ServiceCallDecorator
     {

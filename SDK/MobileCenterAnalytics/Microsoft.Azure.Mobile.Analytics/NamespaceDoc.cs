@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterAnalytics
+﻿namespace Microsoft.AppCenterAnalytics
 {
     /// <summary>
     /// Analytics SDK module.

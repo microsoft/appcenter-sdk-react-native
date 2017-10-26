@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterUtils;
+﻿using Microsoft.AppCenterUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

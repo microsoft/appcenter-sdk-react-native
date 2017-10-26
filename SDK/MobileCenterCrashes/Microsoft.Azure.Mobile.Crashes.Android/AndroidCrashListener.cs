@@ -1,4 +1,4 @@
-﻿using Com.Microsoft.AAppCenterCrashes;
+﻿using Com.Microsoft.AppCenterCrashes;
 using Com.Microsoft.AppCenter.Crashes.Model;
 using Java.Lang;
 using Java.Util;

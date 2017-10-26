@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterChannel
+﻿namespace Microsoft.AppCenterChannel
 {
     /* Capability interface for having an app secret */
     public interface IAppSecretHolder

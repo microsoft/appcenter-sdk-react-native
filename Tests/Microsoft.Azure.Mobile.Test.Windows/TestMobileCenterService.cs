@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterChannel;
+﻿using Microsoft.AppCenterChannel;
 
 namespace Microsoft.AppCenter.Test.Windows
 {

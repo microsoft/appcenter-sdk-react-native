@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterCrashes
+﻿namespace Microsoft.AppCenterCrashes
 {
     /// <summary>
     /// User confirmation options for whether to send crash reports.

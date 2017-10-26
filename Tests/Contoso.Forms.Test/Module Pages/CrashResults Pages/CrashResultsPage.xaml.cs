@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenterCrashes;
+﻿using Microsoft.AppCenterCrashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Test

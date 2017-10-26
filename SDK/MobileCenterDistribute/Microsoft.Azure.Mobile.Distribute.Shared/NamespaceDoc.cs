@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterDistribute
+﻿namespace Microsoft.AppCenterDistribute
 {
     /// <summary>
     /// Distribute SDK module.

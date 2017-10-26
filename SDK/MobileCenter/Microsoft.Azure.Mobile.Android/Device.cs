@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenter
+﻿namespace Microsoft.AppCenter
 {
     using AndroidDevice = Com.Microsoft.AppCenter.Ingestion.Models.Device;
 

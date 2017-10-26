@@ -1,4 +1,4 @@
-﻿using Microsoft.AAppCenter
+﻿using Microsoft.AppCenter
 
 using Xamarin.Forms;
 

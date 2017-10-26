@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AAppCenterUtils
+﻿namespace Microsoft.AppCenterUtils
 {
     /// <summary>
     /// Represents a store of persistent application settings that is behaves like a dictionary.
