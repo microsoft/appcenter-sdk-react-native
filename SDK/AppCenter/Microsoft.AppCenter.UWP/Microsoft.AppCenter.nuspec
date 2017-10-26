@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AppCenter</id>
+    <version>0.8.584-SNAPSHOT</version>
+    <title>Microsoft.AppCenter</title>
+    <authors>alchocro</authors>
+    <owners>alchocro</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Description</description>
+    <copyright>Copyright ©  2017</copyright>
+    <dependencies>
+      <group targetFramework="UAP10.0">
+        <dependency id="Microsoft.Data.SQLite" version="1.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.5" exclude="Build,Analyzers" />
+        <dependency id="sqlite" version="3.12.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <references>
+	<reference file="WatsonRegistrationUtility.winmd" />
+        <reference file="Microsoft.AppCenter.dll"/>
+    </references>
+  </metadata>
+<files>
+      <file src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\Release\WatsonRegistrationUtility\WatsonRegistrationUtility.pri" target="lib\uap10.0\WatsonRegistrationUtility.pri" />
+
+      <file src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\Release\WatsonRegistrationUtility\WatsonRegistrationUtility.dll" target="lib\uap10.0\WatsonRegistrationUtility.dll" />
+
+      <file src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\SDK\AppCenter\Microsoft.AppCenter.UWP\bin\x86\Release\Microsoft.AppCenter.dll" target="lib\uap10.0\Microsoft.AppCenter.dll" />
+
+      <file target="lib\uap10.0\WatsonRegistrationUtility.winmd" src="C:\Users\alchocro\Documents\AppCenter\mobile-center-sdk-dotnet\SDK\AppCenter\Microsoft.AppCenter.UWP\bin\x86\Release\WatsonRegistrationUtility.winmd" />
+</files>
+</package>
