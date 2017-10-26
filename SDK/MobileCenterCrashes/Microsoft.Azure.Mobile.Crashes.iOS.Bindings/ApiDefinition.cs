@@ -102,6 +102,11 @@ namespace Microsoft.Azure.Mobile.Crashes.iOS.Bindings
         [Static]
         [Export("disableMachExceptionHandler")]
         void DisableMachExceptionHandler();
+
+        //+(void)trackModelException:(MSException *)exception;
+        [Static]
+        [Export("trackModelException:")]
+        void TrackModelException(MSException exception);
     }
 
     // @protocol MSCrashesDelegate <NSObject>

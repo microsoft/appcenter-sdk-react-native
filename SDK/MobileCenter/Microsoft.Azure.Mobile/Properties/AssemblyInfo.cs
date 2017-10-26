@@ -12,7 +12,6 @@ using System.Resources;
 [assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -25,5 +24,5 @@ using System.Resources;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.16.1.0")]
-[assembly: AssemblyInformationalVersion("0.16.1-SNAPSHOT")]
+[assembly: AssemblyFileVersion("0.17.0.0")]
+[assembly: AssemblyInformationalVersion("0.17.0-SNAPSHOT")]

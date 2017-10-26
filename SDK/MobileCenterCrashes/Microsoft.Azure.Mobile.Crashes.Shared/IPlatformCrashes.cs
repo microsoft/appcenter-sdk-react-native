@@ -29,6 +29,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
         GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
-        //void TrackException(Exception exception);
+        void TrackException(Exception exception);
     }
 }

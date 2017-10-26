@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Distribute;
 using Microsoft.Azure.Mobile.Push;
+using Microsoft.Azure.Mobile.Rum;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -30,10 +31,11 @@ namespace Contoso.Forms.Puppet
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            var mcEnabled = await MobileCenter.IsEnabledAsync();
             DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
-            DistributeEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            DistributeEnabledSwitchCell.IsEnabled = mcEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
-            PushEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            PushEnabledSwitchCell.IsEnabled = mcEnabled;
             if (XamarinDevice.RuntimePlatform == XamarinDevice.Android)
             {
                 if (!Application.Current.Properties.ContainsKey(FirebaseEnabledKey))
@@ -42,6 +44,8 @@ namespace Contoso.Forms.Puppet
                 }
                 FirebaseAnalyticsEnabledSwitchCell.On = (bool)Application.Current.Properties[FirebaseEnabledKey];
             }
+            RumEnabledSwitchCell.On = await RealUserMeasurements.IsEnabledAsync();
+            RumEnabledSwitchCell.IsEnabled = mcEnabled;
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -51,12 +55,17 @@ namespace Contoso.Forms.Puppet
 
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
-	        await Push.SetEnabledAsync(e.Value);
+            await Push.SetEnabledAsync(e.Value);
         }
 
         void UpdateFirebaseAnalyticsEnabled(object sender, ToggledEventArgs e)
         {
             Application.Current.Properties[FirebaseEnabledKey] = e.Value;
+        }
+
+        async void UpdateRumEnabled(object sender, ToggledEventArgs e)
+        {
+            await RealUserMeasurements.SetEnabledAsync(e.Value);
         }
     }
 }

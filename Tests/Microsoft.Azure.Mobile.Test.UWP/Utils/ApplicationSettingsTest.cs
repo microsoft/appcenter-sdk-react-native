@@ -55,7 +55,6 @@ namespace Microsoft.Azure.Mobile.Test.UWP.Utils
             Assert.AreEqual(42, settings.GetValue<int>(key));
             settings.Remove(key);
             Assert.IsFalse(settings.ContainsKey(key));
-
         }
     }
 }
