@@ -32,7 +32,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             ApplicationLifecycleHelper.Instance = _applicationLifecycleHelper;
             Analytics.Instance = new Analytics(factory);
         }
-        
+
         /// <summary>
         /// Verify that a null instance is not retrieved
         /// </summary>

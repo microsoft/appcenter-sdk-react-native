@@ -149,6 +149,6 @@ namespace Contoso.Forms.Test
             {
                 ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidNotShouldAwaitUserConfirmationText;
             }
-        }                                         
+        }
     }
 }

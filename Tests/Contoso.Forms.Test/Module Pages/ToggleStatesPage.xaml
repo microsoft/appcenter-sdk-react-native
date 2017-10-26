@@ -29,9 +29,9 @@
             <ViewCell>
                 <Label AutomationId="{x:Static local:TestStrings.AnalyticsEnabledLabel}" x:Name="AnalyticsEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.DismissButton}" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
             </ViewCell>
-	    </TableSection>
+        </TableSection>
     </TableView>
 </ContentPage>

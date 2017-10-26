@@ -8,16 +8,16 @@
             <ViewCell>
                 <Label x:Name="EventPropertiesLabel" AutomationId="{x:Static local:TestStrings.EventPropertiesLabel}" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Label x:Name="DidSentEventLabel" AutomationId="{x:Static local:TestStrings.DidSentEventLabel}" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Label x:Name="DidSendingEventLabel" AutomationId="{x:Static local:TestStrings.DidSendingEventLabel}" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Label x:Name="DidFailedToSendEventLabel" AutomationId="{x:Static local:TestStrings.DidFailedToSendEventLabel}" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.ResetPageButton}" Text="Reset Page" Clicked="ResetPage" />
             </ViewCell>
         </TableSection>
