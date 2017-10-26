@@ -22,9 +22,9 @@ if ! [ -z ${IN_BITRISE+x} ]; then # We are in bitrise environment
 	BUILD_TARGET=$3
 fi
 
-# The MOBILE_CENTER_USERNAME environment variable must be set
-if [ -z ${MOBILE_CENTER_USERNAME+x} ]; then
-	echo "Error - the environment variable MOBILE_CENTER_USERNAME must be set."
+# The APP_CENTER_USERNAME environment variable must be set
+if [ -z ${APP_CENTER_USERNAME+x} ]; then
+	echo "Error - the environment variable APP_CENTER_USERNAME must be set."
 	exit 1
 fi
 
@@ -33,28 +33,28 @@ LOCALE="en-US"
 # For a larger suite, go to portal, pretend to start a test suite, select devices, click next until you see CLI instructions and copy the hash code
 IOS_DEVICES=8551ba4e # just one device.
 ANDROID_DEVICES=f0b8289c # just one device.
-ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
-IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
-ANDROID_APP="$MOBILE_CENTER_USERNAME/$ANDROID_APP_NAME"
-IOS_APP="$MOBILE_CENTER_USERNAME/$IOS_APP_NAME"
+ANDROID_APP_NAME="appcenter-xamarin-testing-app-android"
+IOS_APP_NAME="appcenter-xamarin-testing-app-ios"
+ANDROID_APP="$APP_CENTER_USERNAME/$ANDROID_APP_NAME"
+IOS_APP="$APP_CENTER_USERNAME/$IOS_APP_NAME"
 TEST_SERIES="master"
 
 # Define results constants
-ANDROID_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://mobile.azure.com/users/$MOBILE_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 ANDROID_INFORMATION_FILE="android_info.txt"
 IOS_INFORMATION_FILE="ios_info.txt"
 ANDROID_PLATFORM_NAME="Android"
 IOS_PLATFORM_NAME="iOS"
 
-# If the MOBILE_CENTER_ANDROID_DEVICES environment variable is set, use it as the ANDROID_DEVICES
-if ! [ -z ${MOBILE_CENTER_ANDROID_DEVICES+x} ]; then
-	ANDROID_DEVICES="$MOBILE_CENTER_ANDROID_DEVICES"
+# If the APP_CENTER_ANDROID_DEVICES environment variable is set, use it as the ANDROID_DEVICES
+if ! [ -z ${APP_CENTER_ANDROID_DEVICES+x} ]; then
+	ANDROID_DEVICES="$APP_CENTER_ANDROID_DEVICES"
 fi
 
-# If the MOBILE_CENTER_IOS_DEVICES environment variable is set, use it as the IOS_DEVICES
-if ! [ -z ${MOBILE_CENTER_IOS_DEVICES+x} ]; then
-	IOS_DEVICES="$MOBILE_CENTER_IOS_DEVICES"
+# If the APP_CENTER_IOS_DEVICES environment variable is set, use it as the IOS_DEVICES
+if ! [ -z ${APP_CENTER_IOS_DEVICES+x} ]; then
+	IOS_DEVICES="$APP_CENTER_IOS_DEVICES"
 fi
 
 # Define functions
@@ -95,15 +95,15 @@ initialize_tests() {
 	DEVICES_CODE="$2"
 	APP_PACKAGE="$3"
 	INFORMATION_FILE="$4"
-	mobile-center test run uitest --app $APP_NAME\
+	app-center test run uitest --app $APP_NAME\
  	--devices $DEVICES_CODE --app-path $APP_PACKAGE\
   	--test-series $TEST_SERIES --locale $LOCALE\
   	--build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
 	echo $?
 }
 
-# Log in to mobile center
-./mobile-center-login.sh
+# Log in to app center
+./app-center-login.sh
 if [ $? -ne 0 ]; then
 	exit 1
 fi
