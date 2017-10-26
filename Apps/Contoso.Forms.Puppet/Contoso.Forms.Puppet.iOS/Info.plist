@@ -39,7 +39,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleName</key>
-	<string>MCFPuppet</string>
+	<string>ACFPuppet</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
