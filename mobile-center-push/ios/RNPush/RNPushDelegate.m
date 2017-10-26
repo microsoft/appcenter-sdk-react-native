@@ -32,17 +32,22 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"MobileCenterPushNotific
         }
     }
     else {
-        [self.bridge.eventDispatcher sendAppEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
+        [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
     }
 }   
 
 - (void) sendAndClearInitialNotification
 {
     if (self.initialNotification) {
-        [self.bridge.eventDispatcher sendAppEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
+        [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
         self.initialNotification = nil;
     }
     self.saveInitialNotification = false;
 }   
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[ON_PUSH_NOTIFICATION_RECEIVED_EVENT];
+}
 
 @end

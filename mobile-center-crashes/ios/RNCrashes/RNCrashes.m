@@ -29,13 +29,7 @@
 @import MobileCenterCrashes;
 @import RNMobileCenterShared;
 
-@interface RNCrashes () <RCTBridgeModule>
-
-@end
-
 @implementation RNCrashes
-
-@synthesize bridge = _bridge;
 
 static const int kMSUserConfirmationDontSendJS = 0;
 static const int kMSUserConfirmationSendJS = 1;
@@ -69,28 +63,21 @@ RCT_EXPORT_MODULE();
 {
     self = [super init];
 
-    // Normally the bridge is nil at this point, but I left this code here anyway.
-    // When the RNCrashes setBridge setter is called, below, is when the bridge is actually provided.
     if (self) {
-        [crashesDelegate setBridge:self.bridge];
+        [crashesDelegate setEventEmitter:self];
     }
 
     return self;
 }
 
--(void)setBridge:(RCTBridge*) bridgeValue
-{
-    _bridge = bridgeValue;
-    [[RNCrashes sharedCrashesDelegate] setBridge:bridgeValue];
-}
-
-- (RCTBridge*) bridge {
-    return _bridge;
-}
-
 - (NSDictionary *)constantsToExport
 {
     return @{};
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return [crashesDelegate supportedEvents];
 }
 
 RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve

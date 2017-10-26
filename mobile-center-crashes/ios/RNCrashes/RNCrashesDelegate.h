@@ -4,16 +4,18 @@
 
 // Support React Native headers both in the React namespace, where they are in RN version 0.40+,
 // and no namespace, for older versions of React Native
-#if __has_include(<React/RCTBridge.h>)
-#import <React/RCTBridge.h>
+#if __has_include(<React/RCTEventEmitter.h>)
+#import <React/RCTEventEmitter.h>
 #else
-#import "RCTBridge.h"
+#import "RCTEventEmitter.h"
 #endif
 
 
 @interface RNCrashesDelegate : NSObject<MSCrashesDelegate>
 
-@property RCTBridge* bridge;
+@property RCTEventEmitter* eventEmitter;
+
+- (NSArray<NSString *> *)supportedEvents;
 
 @end
 
