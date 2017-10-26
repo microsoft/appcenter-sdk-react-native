@@ -95,7 +95,7 @@ initialize_tests() {
 	DEVICES_CODE="$2"
 	APP_PACKAGE="$3"
 	INFORMATION_FILE="$4"
-	app-center test run uitest --app $APP_NAME\
+	appcenter test run uitest --app $APP_NAME\
  	--devices $DEVICES_CODE --app-path $APP_PACKAGE\
   	--test-series $TEST_SERIES --locale $LOCALE\
   	--build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
@@ -103,7 +103,7 @@ initialize_tests() {
 }
 
 # Log in to app center
-./app-center-login.sh
+./appcenter-login.sh
 if [ $? -ne 0 ]; then
 	exit 1
 fi

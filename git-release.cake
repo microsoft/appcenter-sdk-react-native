@@ -16,7 +16,7 @@ Task("GitRelease")
     var username = "user";
     var password = Argument<string>("GithubToken");
     var owner = "Microsoft";
-    var repo = "mobile-center-sdk-dotnet";
+    var repo = "appcenter-sdk-dotnet";
 
     System.IO.File.Create("tempRelease.md").Dispose();
     var releaseFile = File("tempRelease.md");

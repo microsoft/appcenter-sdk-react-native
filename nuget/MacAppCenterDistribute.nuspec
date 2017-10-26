@@ -4,7 +4,7 @@
     <id>Microsoft.AppCenter.Distribute</id>
     <title>App Center Distribute</title>
     <authors>Microsoft</authors>
-    <owners>microsoft,app-center</owners>
+    <owners>microsoft,appcenter</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>Microsoft App Center Distribute package provides in-app update capabilities for your mobile applications.</summary>
     <description>This package provides capability to display in-app updates to your app users when a new version of the application is released.</description>
