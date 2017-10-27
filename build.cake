@@ -24,7 +24,7 @@ class AppCenterModule {
             return PackageId + "." + NuGetVersion + ".nupkg";
         }
     }
-    public string MacNuspecFilename 
+    public string MacNuspecFilename
     {
         get { return  "Mac" + MainNuspecFilename; }
     }
@@ -57,7 +57,7 @@ var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.13.0";
-var IOS_SDK_VERSION = "0.13.0";
+var IOS_SDK_VERSION = "0.14.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -67,7 +67,7 @@ var PLATFORM_PATHS = new PlatformPaths();
  * On Windows,
  *     you have to do additional steps for SSL connection to download files.
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
- *     By running mozroots and install part of Mozilla's root certificates can make it work. 
+ *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
@@ -99,7 +99,7 @@ class AssemblyGroup
 }
 
 // This class contains the assembly folder paths and other platform dependent paths involved in preparing assemblies for VSTS and Azure storage.
-// When a new platform is supported, an AssemblyGroup must be created and added to the proper {OS}UploadAssemblyGroups array. Also, its 
+// When a new platform is supported, an AssemblyGroup must be created and added to the proper {OS}UploadAssemblyGroups array. Also, its
 // AssemblyFolder must be added to the correct platform's "DownloadAssemblyFolders" array.
 class PlatformPaths
 {
@@ -274,7 +274,7 @@ Task("Build").IsDependentOn("MacBuild").IsDependentOn("WindowsBuild");
 
 Task("MacBuild")
     .WithCriteria(() => IsRunningOnUnix())
-    .Does(() => 
+    .Does(() =>
 {
     // Run externals here instead of using dependency so that this doesn't get called on windows
     RunTarget("Externals");
@@ -286,7 +286,7 @@ Task("MacBuild")
 // Building Windows code task
 Task("WindowsBuild")
     .WithCriteria(() => !IsRunningOnUnix())
-    .Does(() => 
+    .Does(() =>
 {
     // Build solution
     NuGetRestore("./AppCenter-SDK-Build-Windows.sln");
@@ -311,7 +311,7 @@ Task("Bindings-Ios").IsDependentOn("Externals-Ios");
 
 // Downloading Android binaries.
 Task("Externals-Android")
-    .Does(() => 
+    .Does(() =>
 {
     CleanDirectory("./externals/android");
 
@@ -543,7 +543,7 @@ Task("CleanAzureStorage").Does(()=>
             Key = apiKey,
             UseHttps = true
         });
-    
+
         AzureStorage.DeleteBlob(new AzureStorageSettings
         {
             AccountName = accountName,
@@ -586,23 +586,23 @@ Task("clean")
 
 Task("PrepareAssemblyPathsVSTS").Does(()=>
 {
-        var iosAssemblies = EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC");
-        var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
-        var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
-        var netStandardAssemblies = EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC");
-        var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
-        var windowsDesktopAssemblies = EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC");
-        var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
-        
-        foreach (var module in MOBILECENTER_MODULES)
-        {
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$pcl_dir$", pclAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$netstandard_dir$", netStandardAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_dir$", uwpAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_desktop_dir$", windowsDesktopAssemblies);
-        }
+    var iosAssemblies = EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC");
+    var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
+    var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
+    var netStandardAssemblies = EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC");
+    var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
+    var windowsDesktopAssemblies = EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC");
+    var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
+
+    foreach (var module in MOBILECENTER_MODULES)
+    {
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$pcl_dir$", pclAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$netstandard_dir$", netStandardAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_dir$", uwpAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_desktop_dir$", windowsDesktopAssemblies);
+    }
 }).OnError(HandleError);
 
 Task("NugetPackVSTS").Does(()=>
@@ -637,7 +637,7 @@ void DeleteDirectoryIfExists(string directoryName)
 {
     if (DirectoryExists(directoryName))
     {
-        DeleteDirectory(directoryName, new DeleteDirectorySettings { Force = true, Recursive = true });	
+        DeleteDirectory(directoryName, new DeleteDirectorySettings { Force = true, Recursive = true });
     }
 }
 
