@@ -77,7 +77,7 @@ var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
 // Available AppCenter modules.
-var MOBILECENTER_MODULES = new [] {
+var APP_CENTER_MODULES = new [] {
     new AppCenterModule("appcenter-release.aar", "AppCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
     new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
     new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
@@ -246,7 +246,7 @@ Task("Version")
     var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
     var version = project.NetCore.Version;
     // Extract versions for modules.
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         module.NuGetVersion = version;
     }
@@ -257,7 +257,7 @@ Task("PackageId")
     .Does(() =>
 {
     // Extract package ids for modules.
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         var nuspecText = FileReadText("./nuget/" + module.MainNuspecFilename);
         var startTag = "<id>";
@@ -320,7 +320,7 @@ Task("Externals-Android")
     Unzip("./externals/android/android.zip", "./externals/android/");
 
     // Copy files to {DotNetModule}.Android.Bindings/Jars
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         var files = GetFiles("./externals/android/*/" + module.AndroidModule);
         CopyFiles(files, module.DotNetModule + ".Android.Bindings/Jars/");
@@ -376,7 +376,7 @@ Task("NuGet")
     var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 
     // Packaging NuGets.
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         var nuspecFilename = IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename;
 
@@ -412,7 +412,7 @@ Task("NuGet")
 // Add version to nuspecs for vsts (the release definition does not have the solutions and thus cannot extract a version from them)
 Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 {
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         ReplaceTextInFiles("./nuget/" + module.MainNuspecFilename, "$version$", module.NuGetVersion);
     }
@@ -476,7 +476,7 @@ Task("MergeAssemblies")
     }
 
     // Create NuGet packages
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
         var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
@@ -594,7 +594,7 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
     var windowsDesktopAssemblies = EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC");
     var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
 
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$pcl_dir$", pclAssemblies);
         ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$netstandard_dir$", netStandardAssemblies);
@@ -608,7 +608,7 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
 Task("NugetPackVSTS").Does(()=>
 {
     var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
-    foreach (var module in MOBILECENTER_MODULES)
+    foreach (var module in APP_CENTER_MODULES)
     {
         var spec = GetFiles(nuspecPathPrefix + module.MainNuspecFilename);
 
