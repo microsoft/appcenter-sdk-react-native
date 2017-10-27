@@ -197,10 +197,7 @@ namespace Microsoft.Azure.Mobile.Test
 
             _settingsMock.Verify(settings => settings.SetValue(MobileCenter.EnabledKey, false), Times.Once());
         }
-
-        /// <summary>
-        /// Verify that the "configured" property is accurate
-        /// </summary>
+        
         [TestMethod]
         public void GetConfigured()
         {

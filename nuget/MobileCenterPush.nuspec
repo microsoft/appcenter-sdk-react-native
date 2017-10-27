@@ -41,7 +41,7 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.Push.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.Push.dll" target="lib/uap10.0" />
 
   </files>
 </package>

@@ -18,6 +18,10 @@
         <dependency id="Newtonsoft.Json" version="6.0.1"/>
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
       </group>
+      <group targetFramework="net452">
+        <dependency id="Newtonsoft.Json" version="6.0.1"/>
+        <dependency id="sqlite-net-pcl" version="1.3.1"/>
+      </group>
       <!-- Use empty dependency groups for iOS and Android so that additional dependencies aren't added to them -->
       <group targetFramework="MonoAndroid403">
       </group>
@@ -44,6 +48,11 @@
     <file src="$ios_dir$/Microsoft.Azure.Mobile.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
-    <file src="$windows_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.Azure.Mobile.dll" target="lib/uap10.0" />
+
+    <!-- Windows Classic Desktop (WPF and WinForms) -->
+    <!-- TODO: Uncomment when it's time to release these. -->
+    <!--file src="$windows_desktop_dir$/Microsoft.Azure.Mobile.dll" target="lib/net452" /-->
+
   </files>
 </package>

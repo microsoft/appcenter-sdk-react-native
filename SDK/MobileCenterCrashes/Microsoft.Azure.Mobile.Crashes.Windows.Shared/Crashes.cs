@@ -11,6 +11,9 @@ namespace Microsoft.Azure.Mobile.Crashes
     {
         public string ServiceName => "Crashes";
 
+        /// <summary>
+        /// This property does not return a meaningful value on Windows.
+        /// </summary>
         public bool InstanceEnabled { get; set; }
 
         private static Crashes _instanceField;
@@ -21,15 +24,11 @@ namespace Microsoft.Azure.Mobile.Crashes
             {
                 return _instanceField ?? (_instanceField = new Crashes());
             }
-            set
-            {
-                _instanceField = value; //for testing
-            }
         }
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on UWP.");
+            MobileCenterLog.Warn(MobileCenterLog.LogTag, "Crashes service is not yet supported on this platform.");
             try
             {
 #if REFERENCE

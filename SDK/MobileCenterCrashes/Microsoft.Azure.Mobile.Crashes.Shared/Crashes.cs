@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Mobile.Crashes
         // The APIs will still be visible if this is added as a project reference, but otherwise,
         // (so if it's added via nuget), they will be hidden. Unless the VS instance has resharper,
         // which is why we also use the Obsolete attribute.
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 #endif
         public static event SendingErrorReportEventHandler SendingErrorReport;
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 #endif
         public static event SentErrorReportEventHandler SentErrorReport;
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 #endif
         public static event FailedToSendErrorReportEventHandler FailedToSendErrorReport;
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             }
         }
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -127,7 +127,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         private static readonly IPlatformCrashes PlatformCrashes = new PlatformCrashes();
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             PlatformCrashes.NotifyUserConfirmation(confirmation);
         }
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 #endif
         public static Task<bool> HasCrashedInLastSessionAsync() => PlatformCrashes.HasCrashedInLastSessionAsync();
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Mobile.Crashes
             return PlatformCrashes.GetLastSessionCrashReportAsync();
         }
 
-#if WINDOWS_UWP
+#if USES_WATSON
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else

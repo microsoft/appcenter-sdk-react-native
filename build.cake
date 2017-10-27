@@ -24,7 +24,7 @@ class MobileCenterModule {
             return PackageId + "." + NuGetVersion + ".nupkg";
         }
     }
-    public string MacNuspecFilename 
+    public string MacNuspecFilename
     {
         get { return  "Mac" + MainNuspecFilename; }
     }
@@ -48,6 +48,7 @@ var MAC_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "MacAssemblies.zip";
 var WINDOWS_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "WindowsAssemblies.zip";
 
 // Assembly folders
+var WINDOWS_DESKTOP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "WindowsDesktopAssemblies";
 var UWP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "UWPAssemblies";
 var IOS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "iOSAssemblies";
 var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
@@ -56,7 +57,7 @@ var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "0.13.0";
-var IOS_SDK_VERSION = "0.13.0";
+var IOS_SDK_VERSION = "0.14.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -66,7 +67,7 @@ var PLATFORM_PATHS = new PlatformPaths();
  * On Windows,
  *     you have to do additional steps for SSL connection to download files.
  *     http://stackoverflow.com/questions/4926676/mono-webrequest-fails-with-https
- *     By running mozroots and install part of Mozilla's root certificates can make it work. 
+ *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
@@ -98,7 +99,7 @@ class AssemblyGroup
 }
 
 // This class contains the assembly folder paths and other platform dependent paths involved in preparing assemblies for VSTS and Azure storage.
-// When a new platform is supported, an AssemblyGroup must be created and added to the proper {OS}UploadAssemblyGroups array. Also, its 
+// When a new platform is supported, an AssemblyGroup must be created and added to the proper {OS}UploadAssemblyGroups array. Also, its
 // AssemblyFolder must be added to the correct platform's "DownloadAssemblyFolders" array.
 class PlatformPaths
 {
@@ -130,7 +131,7 @@ Setup(context =>
     {
         var iosAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = IOS_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll",
+            AssemblyPaths = new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.dll",
                             "SDK/MobileCenter/Microsoft.Azure.Mobile.iOS/bin/Release/Microsoft.Azure.Mobile.iOS.Bindings.dll",
                             "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
                             "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.iOS/bin/Release/Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll",
@@ -143,7 +144,7 @@ Setup(context =>
         };
         var androidAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = ANDROID_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {	"SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.dll",
+            AssemblyPaths = new string[] {  "SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.dll",
                             "SDK/MobileCenter/Microsoft.Azure.Mobile.Android/bin/Release/Microsoft.Azure.Mobile.Android.Bindings.dll",
                             "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
                             "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.Android/bin/Release/Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll",
@@ -178,6 +179,7 @@ Setup(context =>
         PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(pclAssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(netStandardAssemblyGroup);
+        PLATFORM_PATHS.DownloadAssemblyFolders.Add(WINDOWS_DESKTOP_ASSEMBLIES_FOLDER);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x86");
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x64");
@@ -188,6 +190,13 @@ Setup(context =>
     }
     else
     {
+        var windowsDesktopAssemblyGroup = new AssemblyGroup {
+            AssemblyFolder = WINDOWS_DESKTOP_ASSEMBLIES_FOLDER,
+            AssemblyPaths = new string[] {
+                "SDK/MobileCenter/Microsoft.Azure.Mobile.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.dll",
+                "SDK/MobileCenterAnalytics/Microsoft.Azure.Mobile.Analytics.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.Analytics.dll",
+                "SDK/MobileCenterCrashes/Microsoft.Azure.Mobile.Crashes.WindowsDesktop/bin/Release/Microsoft.Azure.Mobile.Crashes.dll" }
+            };
         var uwpAnyCpuAssemblyGroup = new AssemblyGroup {
             AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
             AssemblyPaths = new string[] { "nuget/Microsoft.Azure.Mobile.Crashes.targets",
@@ -219,6 +228,7 @@ Setup(context =>
         PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX86AssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX64AssemblyGroup);
         PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpArmAssemblyGroup);
+        PLATFORM_PATHS.UploadAssemblyGroups.Add(windowsDesktopAssemblyGroup);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(IOS_ASSEMBLIES_FOLDER);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(ANDROID_ASSEMBLIES_FOLDER);
         PLATFORM_PATHS.DownloadAssemblyFolders.Add(PCL_ASSEMBLIES_FOLDER);
@@ -264,7 +274,7 @@ Task("Build").IsDependentOn("MacBuild").IsDependentOn("WindowsBuild");
 
 Task("MacBuild")
     .WithCriteria(() => IsRunningOnUnix())
-    .Does(() => 
+    .Does(() =>
 {
     // Run externals here instead of using dependency so that this doesn't get called on windows
     RunTarget("Externals");
@@ -276,7 +286,7 @@ Task("MacBuild")
 // Building Windows code task
 Task("WindowsBuild")
     .WithCriteria(() => !IsRunningOnUnix())
-    .Does(() => 
+    .Does(() =>
 {
     // Build solution
     NuGetRestore("./MobileCenter-SDK-Build-Windows.sln");
@@ -301,7 +311,7 @@ Task("Bindings-Ios").IsDependentOn("Externals-Ios");
 
 // Downloading Android binaries.
 Task("Externals-Android")
-    .Does(() => 
+    .Does(() =>
 {
     CleanDirectory("./externals/android");
 
@@ -381,7 +391,8 @@ Task("NuGet")
         ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$netstandard_dir$", NETSTANDARD_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$windows_dir$", UWP_ASSEMBLIES_FOLDER);
+        ReplaceTextInFiles(specCopyName, "$windows_desktop_dir$", WINDOWS_DESKTOP_ASSEMBLIES_FOLDER);
+        ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
 
         var spec = GetFiles(specCopyName);
@@ -473,8 +484,9 @@ Task("MergeAssemblies")
         ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$netstandard_dir$", NETSTANDARD_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$windows_dir$", UWP_ASSEMBLIES_FOLDER);
         ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
+        ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
+        ReplaceTextInFiles(specCopyName, "$windows_desktop_dir$", WINDOWS_DESKTOP_ASSEMBLIES_FOLDER);
 
         var spec = GetFiles(specCopyName);
 
@@ -531,7 +543,7 @@ Task("CleanAzureStorage").Does(()=>
             Key = apiKey,
             UseHttps = true
         });
-    
+
         AzureStorage.DeleteBlob(new AzureStorageSettings
         {
             AccountName = accountName,
@@ -574,21 +586,22 @@ Task("clean")
 
 Task("PrepareAssemblyPathsVSTS").Does(()=>
 {
-        var iosAssemblies = EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC");
-        var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
-        var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
-        var netStandardAssemblies = EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC");
-        var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
-        var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
-        
-        foreach (var module in MOBILECENTER_MODULES)
-        {
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$pcl_dir$", pclAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$netstandard_dir$", netStandardAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_dir$", uwpAssemblies);
-            ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
-        }
+    var iosAssemblies = EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC");
+    var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
+    var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
+    var netStandardAssemblies = EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC");
+    var windowsDesktopAssemblies = EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC");
+    var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
+    var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
+    foreach (var module in MOBILECENTER_MODULES)
+    {
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$pcl_dir$", pclAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$netstandard_dir$", netStandardAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$uwp_dir$", uwpAssemblies);
+        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_desktop_dir$", windowsDesktopAssemblies);
+    }
 }).OnError(HandleError);
 
 Task("NugetPackVSTS").Does(()=>
@@ -597,7 +610,8 @@ Task("NugetPackVSTS").Does(()=>
     foreach (var module in MOBILECENTER_MODULES)
     {
         var spec = GetFiles(nuspecPathPrefix + module.MainNuspecFilename);
-        // Create the NuGet packages
+
+        // Create the NuGet packages.
         Information("Building a NuGet package for " + module.MainNuspecFilename);
         NuGetPack(spec, new NuGetPackSettings {
             Verbosity = NuGetVerbosity.Detailed,
@@ -622,7 +636,7 @@ void DeleteDirectoryIfExists(string directoryName)
 {
     if (DirectoryExists(directoryName))
     {
-        DeleteDirectory(directoryName, new DeleteDirectorySettings { Force = true, Recursive = true });	
+        DeleteDirectory(directoryName, new DeleteDirectorySettings { Force = true, Recursive = true });
     }
 }
 
