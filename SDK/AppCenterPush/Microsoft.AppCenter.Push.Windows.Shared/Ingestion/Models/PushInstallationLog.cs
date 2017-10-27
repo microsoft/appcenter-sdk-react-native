@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Push.Ingestion.Models
 {
-    using Device = Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     [JsonObject(JsonIdentifier)]
     public class PushInstallationLog : Log

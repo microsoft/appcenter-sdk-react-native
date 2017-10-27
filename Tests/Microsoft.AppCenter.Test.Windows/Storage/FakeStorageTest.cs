@@ -9,7 +9,7 @@ using Moq;
 
 namespace Microsoft.AppCenter.Test
 {
-    using PredType = Expression<Func<Mobile.Storage.Storage.LogEntry, bool>>;
+    using PredType = Expression<Func<Microsoft.AppCenter.Storage.Storage.LogEntry, bool>>;
 
     [TestClass]
     public class FakeStorageTest
@@ -24,10 +24,10 @@ namespace Microsoft.AppCenter.Test
         {
             var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
-                    c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
+                    c => c.InsertAsync(It.IsAny<Microsoft.AppCenter.Storage.Storage.LogEntry>()))
                 .Callback(() => Task.Delay(TimeSpan.FromDays(1)).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
-            var storage = new Mobile.Storage.Storage(mockConnection.Object);
+            var storage = new Microsoft.AppCenter.Storage.Storage(mockConnection.Object);
 
             // Ignore warnings because we just want to "fire and forget"
 #pragma warning disable 4014
@@ -47,10 +47,10 @@ namespace Microsoft.AppCenter.Test
         {
             var mockConnection = new Mock<IStorageAdapter>();
             mockConnection.Setup(
-                    c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
+                    c => c.InsertAsync(It.IsAny<Microsoft.AppCenter.Storage.Storage.LogEntry>()))
                 .Callback(() => Task.Delay(TimeSpan.FromSeconds(2)).Wait())
                 .Returns(TaskExtension.GetCompletedTask(1));
-            var storage = new Mobile.Storage.Storage(mockConnection.Object);
+            var storage = new Microsoft.AppCenter.Storage.Storage(mockConnection.Object);
             
             // Ignore warnings because we just want to "fire and forget"
 #pragma warning disable 4014
@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Test
         public void ShutdownPreventsNewTasks()
         {
             var mockConnection = new Mock<IStorageAdapter>();
-            var storage = new Mobile.Storage.Storage(mockConnection.Object);
+            var storage = new Microsoft.AppCenter.Storage.Storage(mockConnection.Object);
             var result = storage.ShutdownAsync(TimeSpan.FromSeconds(10)).RunNotAsync();
             Assert.IsTrue(result);
             Assert.ThrowsException<StorageException>(
@@ -86,7 +86,7 @@ namespace Microsoft.AppCenter.Test
             mockAdapter.Setup(
                     a => a.GetAsync(It.IsAny<PredType>(), It.IsAny<int>()))
                 .Throws(new StorageException());
-            var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
+            var fakeStorage = new Microsoft.AppCenter.Storage.Storage(mockAdapter.Object);
             var logs = new List<Log>();
             Assert.ThrowsException<StorageException>(() =>
                 fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
@@ -102,13 +102,13 @@ namespace Microsoft.AppCenter.Test
             mockAdapter.Setup(
                     a => a.GetAsync(It.IsAny<PredType>(), It.IsAny<int>()))
                 .Throws(new StorageException());
-            mockAdapter.Setup(c => c.InsertAsync(It.IsAny<Mobile.Storage.Storage.LogEntry>()))
+            mockAdapter.Setup(c => c.InsertAsync(It.IsAny<Microsoft.AppCenter.Storage.Storage.LogEntry>()))
                 .Throws(new StorageException());
-            mockAdapter.Setup(c => c.DeleteAsync(It.IsAny<Expression<Func<Mobile.Storage.Storage.LogEntry, bool>>>()))
+            mockAdapter.Setup(c => c.DeleteAsync(It.IsAny<Expression<Func<Microsoft.AppCenter.Storage.Storage.LogEntry, bool>>>()))
                 .Throws(new StorageException());
-            mockAdapter.Setup(c => c.CountAsync(It.IsAny<Expression<Func<Mobile.Storage.Storage.LogEntry, bool>>>()))
+            mockAdapter.Setup(c => c.CountAsync(It.IsAny<Expression<Func<Microsoft.AppCenter.Storage.Storage.LogEntry, bool>>>()))
                 .Throws(new StorageException());
-            var fakeStorage = new Mobile.Storage.Storage(mockAdapter.Object);
+            var fakeStorage = new Microsoft.AppCenter.Storage.Storage(mockAdapter.Object);
 
             Assert.ThrowsException<StorageException>(() => fakeStorage.PutLog("channel_name", new TestLog()).RunNotAsync());
             Assert.ThrowsException<StorageException>(() => fakeStorage.DeleteLogs("channel_name", string.Empty).RunNotAsync());

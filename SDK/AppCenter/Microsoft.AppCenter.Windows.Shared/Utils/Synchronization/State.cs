@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterUtils.Synchronization
+﻿namespace Microsoft.AppCenter.Utils.Synchronization
 {
     /// <summary>
     /// Represents a particular state

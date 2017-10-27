@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterUtils;
+﻿using Microsoft.AppCenter.Utils;
 using Moq;
 
 namespace Microsoft.AppCenter.Test.Utils

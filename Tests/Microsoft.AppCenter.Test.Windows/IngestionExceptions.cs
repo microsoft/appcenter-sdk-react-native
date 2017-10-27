@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterIngestion;
+﻿using Microsoft.AppCenter.Ingestion;
 using System;
 using System.Collections.Generic;
 using System.Linq;

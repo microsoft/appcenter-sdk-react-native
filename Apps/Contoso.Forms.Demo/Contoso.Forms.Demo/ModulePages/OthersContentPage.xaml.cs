@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenter
+﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Xamarin.Forms;

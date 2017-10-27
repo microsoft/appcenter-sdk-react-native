@@ -14,9 +14,9 @@ namespace Microsoft.AppCenter.Test.Channel
     [TestClass]
     public class ChannelTest
     {
-        private Mobile.Channel.Channel _channel;
+        private Microsoft.AppCenter.Channel.Channel _channel;
         private readonly MockIngestion _mockIngestion = new MockIngestion();
-        private IStorage _storage = new Mobile.Storage.Storage();
+        private IStorage _storage = new Microsoft.AppCenter.Storage.Storage();
 
         private const string ChannelName = "channelName";
         private const int MaxLogsPerBatch = 3;
@@ -238,7 +238,7 @@ namespace Microsoft.AppCenter.Test.Channel
             storage.Setup(s => s.DeleteLogs(It.IsAny<string>(), It.IsAny<string>())).Throws<StorageException>();
             storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>())).Returns(Task.FromResult(""));
 
-            Mobile.Channel.Channel channel = new Mobile.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
+            Microsoft.AppCenter.Channel.Channel channel = new Microsoft.AppCenter.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
 
             // Shutdown channel and store some log
             channel.ShutdownAsync().RunNotAsync();
@@ -289,9 +289,9 @@ namespace Microsoft.AppCenter.Test.Channel
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
-            _storage = new Mobile.Storage.Storage();
+            _storage = new Microsoft.AppCenter.Storage.Storage();
             _storage.DeleteLogs(ChannelName);
-            _channel = new Mobile.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
+            _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
                 _appSecret, _mockIngestion, _storage);
             MakeIngestionCallsSucceed();
             SetupEventCallbacks();

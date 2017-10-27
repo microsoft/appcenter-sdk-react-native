@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
-    using Device = Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     /// <summary>
     /// Event log.

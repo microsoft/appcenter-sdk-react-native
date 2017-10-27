@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterUtils;
+﻿using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

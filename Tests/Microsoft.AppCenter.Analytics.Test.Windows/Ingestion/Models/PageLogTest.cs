@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
 {
-    using Device = Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     [TestClass]
     public class PageLogTest

@@ -6,7 +6,7 @@ using Microsoft.AppCenter.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
-    using Device = Mobile.Ingestion.Models.Device;
+    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     /// <summary>
     /// Required explicit begin session log (a marker event for analytics

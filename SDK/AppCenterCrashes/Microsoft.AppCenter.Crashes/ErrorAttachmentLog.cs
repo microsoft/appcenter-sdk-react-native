@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterCrashes
+﻿namespace Microsoft.AppCenter.Crashes
 {
     public partial class ErrorAttachmentLog
     {

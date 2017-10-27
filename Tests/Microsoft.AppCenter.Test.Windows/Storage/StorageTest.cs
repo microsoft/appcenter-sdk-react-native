@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Test
     public class StorageTest
     {
         private const string StorageTestChannelName = "storageTestChannelName";
-        private readonly Mobile.Storage.Storage _storage = new Mobile.Storage.Storage();
+        private readonly Microsoft.AppCenter.Storage.Storage _storage = new Microsoft.AppCenter.Storage.Storage();
 
         [TestInitialize]
         public void InitializeStorageTest()
@@ -207,7 +207,7 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void FailToGetALog()
         {
-            var invalidLogEntry = new Mobile.Storage.Storage.LogEntry { Channel = StorageTestChannelName, Log = "good luck deserializing me!" };
+            var invalidLogEntry = new Microsoft.AppCenter.Storage.Storage.LogEntry { Channel = StorageTestChannelName, Log = "good luck deserializing me!" };
             var connection = new SQLiteConnection("Microsoft.AppCenter.Storage");
 
             // Perform an arbitrary operation and wait on it to complete so that database is free when invalid log

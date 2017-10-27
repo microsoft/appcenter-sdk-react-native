@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterIngestion.Models
+﻿namespace Microsoft.AppCenter.Ingestion.Models
 {
     /// <summary>
     /// Exception thrown when ingestion models fail to validate

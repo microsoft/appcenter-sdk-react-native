@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterCrashes
+﻿namespace Microsoft.AppCenter.Crashes
 {
     /// <summary>
     /// Error report details pertinent only to devices running Android.

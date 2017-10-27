@@ -134,17 +134,9 @@
       <Project>{200073bf-fa7e-42af-8ed5-aa50be7c0295}</Project>
       <Name>Microsoft.AppCenter.Analytics.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics\Microsoft.AppCenter.Analytics.csproj">
-      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
-      <Name>Microsoft.AppCenter.Analytics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.UWP\Microsoft.AppCenter.Crashes.UWP.csproj">
       <Project>{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}</Project>
       <Name>Microsoft.AppCenter.Crashes.UWP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes\Microsoft.AppCenter.Crashes.csproj">
-      <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
-      <Name>Microsoft.AppCenter.Crashes</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SDK\AppCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
       <Project>{b977bf28-3a1c-4a89-a673-a22eddc9d23d}</Project>

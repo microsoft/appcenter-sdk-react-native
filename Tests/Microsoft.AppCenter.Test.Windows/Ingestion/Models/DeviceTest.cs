@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterIngestion.Models;
+﻿using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.AppCenter.Test.Ingestion.Models

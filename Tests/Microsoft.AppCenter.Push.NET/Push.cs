@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AppCenterPush
+﻿namespace Microsoft.AppCenter.Push
 {
     public partial class Push : AppCenterService
     {
