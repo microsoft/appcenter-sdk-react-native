@@ -1,18 +1,18 @@
 PODS:
-  - MobileCenter/Analytics (0.13.0):
+  - MobileCenter/Analytics (0.14.0):
     - MobileCenter/Core
-  - MobileCenter/Core (0.13.0)
-  - MobileCenter/Crashes (0.13.0):
+  - MobileCenter/Core (0.14.0)
+  - MobileCenter/Crashes (0.14.0):
     - MobileCenter/Core
-  - MobileCenter/Push (0.13.0):
+  - MobileCenter/Push (0.14.0):
     - MobileCenter/Core
   - RNMobileCenterShared (0.10.0):
-    - MobileCenter/Core (~> 0.13.0)
+    - MobileCenter/Core (~> 0.14.0)
 
 DEPENDENCIES:
-  - MobileCenter/Analytics (~> 0.13.0)
-  - MobileCenter/Crashes (~> 0.13.0)
-  - MobileCenter/Push (~> 0.13.0)
+  - MobileCenter/Analytics (~> 0.14.0)
+  - MobileCenter/Crashes (~> 0.14.0)
+  - MobileCenter/Push (~> 0.14.0)
   - RNMobileCenterShared (from `../../RNMobileCenterShared/Products/`)
 
 EXTERNAL SOURCES:
@@ -20,9 +20,9 @@ EXTERNAL SOURCES:
     :path: ../../RNMobileCenterShared/Products/
 
 SPEC CHECKSUMS:
-  MobileCenter: f531f5d7bc3245cf1abb178022b24d968b467280
-  RNMobileCenterShared: d36d0245f9eb9627e60cd20623502906f61a783f
+  MobileCenter: 7d0fd10e2c5cee70d02e280211fe5ff919da6ab8
+  RNMobileCenterShared: b62693ad0e4d29bf8c6a19c68c15d431b3eb4def
 
-PODFILE CHECKSUM: 23c9201fe0d4ca5d522b02fca1ed1e5c48f82a39
+PODFILE CHECKSUM: 3f092daead3cc0874ea800e48c716632be0286c0
 
 COCOAPODS: 1.3.1
