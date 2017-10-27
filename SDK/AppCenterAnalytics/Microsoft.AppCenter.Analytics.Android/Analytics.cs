@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.AppCenter.Analytics;
+using Com.Microsoft.Azure.Mobile.Analytics;
 
 namespace Microsoft.AppCenter.Analytics
 {

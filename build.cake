@@ -71,19 +71,19 @@ var PLATFORM_PATHS = new PlatformPaths();
  */
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var ANDROID_URL = SDK_STORAGE_URL + "AppCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "AppCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
+var ANDROID_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
 var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
 // Available AppCenter modules.
 var APP_CENTER_MODULES = new [] {
-    new AppCenterModule("appcenter-release.aar", "AppCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
-    new AppCenterModule("appcenter-analytics-release.aar", "AppCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
-    new AppCenterModule("appcenter-crashes-release.aar", "AppCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
-    new AppCenterModule("appcenter-distribute-release.aar", "AppCenterDistribute.framework.zip", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
-    new AppCenterModule("appcenter-push-release.aar", "AppCenterPush.framework.zip", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
-    new AppCenterModule("appcenter-rum-release.aar", null, "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
+    new AppCenterModule("mobile-center-release.aar", "MobileCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
+    new AppCenterModule("mobile-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
+    new AppCenterModule("mobile-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
+    new AppCenterModule("mobile-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
+    new AppCenterModule("mobile-center-push-release.aar", "MobileCenterPush.framework.zip", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
+    new AppCenterModule("mobile-center-rum-release.aar", null, "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
 };
 
 // Task TARGET for build
@@ -338,16 +338,16 @@ Task("Externals-Ios")
     Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
     // Copy the AppCenter binaries directly from the frameworks and add the ".a" extension
-    var files = GetFiles("./externals/ios/*/iOS/*.framework/AppCenter*");
+    var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
     foreach (var file in files)
     {
         MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
     }
 
     // Copy Distribute resource bundle and copy it to the externals directory. There is no method in cake to get all subdirectories.
-    if(DirectoryExists("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle"))
+    if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
     {
-        MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle", "./externals/ios/AppCenterDistributeResources.bundle");
+        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
     }
 }).OnError(HandleError);
 

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using Com.Microsoft.AppCenter.Push;
+using Com.Microsoft.Azure.Mobile.Push;
 
 namespace Microsoft.AppCenter.Push
 {

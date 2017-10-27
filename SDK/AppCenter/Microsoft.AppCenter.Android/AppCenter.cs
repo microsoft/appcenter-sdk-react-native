@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.App;
-using Com.Microsoft.AppCenter;
+using Com.Microsoft.Azure.Mobile;
 using Java.Lang;
 
 namespace Microsoft.AppCenter
 {
     using System.Reflection;
     using System.Threading.Tasks;
-    using Com.Microsoft.AppCenter.Utils.Async;
+    using Com.Microsoft.Azure.Mobile.Utils.Async;
     using Java.Util;
-    using AndroidWrapperSdk = Com.Microsoft.AppCenter.Ingestion.Models.WrapperSdk;
+    using AndroidWrapperSdk = Com.Microsoft.Azure.Mobile.Ingestion.Models.WrapperSdk;
 
     public partial class AppCenter
     {
@@ -40,7 +40,7 @@ namespace Microsoft.AppCenter
                         return LogLevel.Error;
                     case 7:
                         return LogLevel.Assert;
-                    case Com.Microsoft.AppCenter.Utils.AppCenterLog.None:
+                    case Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog.None:
                         return LogLevel.None;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -71,7 +71,7 @@ namespace Microsoft.AppCenter
                         androidValue = 7;
                         break;
                     case LogLevel.None:
-                        androidValue = Com.Microsoft.AppCenter.Utils.AppCenterLog.None;
+                        androidValue = Com.Microsoft.Azure.Mobile.Utils.MobileCenterLog.None;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);

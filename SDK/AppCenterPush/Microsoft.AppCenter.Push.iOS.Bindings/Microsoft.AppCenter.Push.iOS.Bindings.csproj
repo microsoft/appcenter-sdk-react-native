@@ -42,7 +42,7 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\AppCenterPush.a">
+    <NativeReference Include="..\..\..\externals\ios\MobileCenterPush.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
     </NativeReference>

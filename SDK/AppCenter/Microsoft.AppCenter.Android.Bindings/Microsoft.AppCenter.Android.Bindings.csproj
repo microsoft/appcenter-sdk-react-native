@@ -13,7 +13,7 @@
     <AssemblyName>Microsoft.AppCenter.Android.Bindings</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidTlsProvider>
     </AndroidTlsProvider>
   </PropertyGroup>
@@ -29,7 +29,7 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>sh ./build.sh -t externals-android</command>
+          <command>sh ./build.sh -t=externals-android</command>
           <workingdir>${ProjectDir}/../../..</workingdir>
         </Command>
         <Command>
@@ -60,7 +60,6 @@
   <ItemGroup>
     <None Include="Jars\AboutJars.txt" />
     <None Include="Additions\AboutAdditions.txt" />
-    <LibraryProjectZip Include="Jars\mobile-center-release.aar" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\Metadata.xml">
@@ -68,6 +67,11 @@
     </TransformFile>
     <TransformFile Include="Transforms\EnumFields.xml" />
     <TransformFile Include="Transforms\EnumMethods.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryProjectZip Include="..\..\..\externals\android\MobileCenter-SDK-Android-0.13.0\mobile-center-release.aar">
+      <Link>Jars\mobile-center-release.aar</Link>
+    </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

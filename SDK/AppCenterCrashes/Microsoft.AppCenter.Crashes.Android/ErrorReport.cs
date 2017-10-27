@@ -2,8 +2,8 @@
 
 namespace Microsoft.AppCenter.Crashes
 {
-    using AndroidExceptionDataManager = Com.Microsoft.AppCenter.Crashes.WrapperSdkExceptionManager;
-    using AndroidErrorReport = Com.Microsoft.AppCenter.Crashes.Model.AndroidErrorReport;
+    using AndroidExceptionDataManager = Com.Microsoft.Azure.Mobile.Crashes.WrapperSdkExceptionManager;
+    using AndroidErrorReport = Com.Microsoft.Azure.Mobile.Crashes.Model.AndroidErrorReport;
 
     public partial class ErrorReport
     {

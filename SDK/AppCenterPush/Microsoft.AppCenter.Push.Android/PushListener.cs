@@ -1,6 +1,6 @@
 ﻿using System;
 using Android.App;
-using Com.Microsoft.AppCenter.Push;
+using Com.Microsoft.Azure.Mobile.Push;
 
 namespace Microsoft.AppCenter.Push.Android
 {

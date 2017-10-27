@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenteriOS.Bindings;
+﻿using Microsoft.AppCenter.iOS.Bindings;
 
 namespace Microsoft.AppCenter
 {

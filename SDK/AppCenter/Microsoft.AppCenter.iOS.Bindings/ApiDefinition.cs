@@ -150,8 +150,8 @@ namespace Microsoft.AppCenter.iOS.Bindings
         void Clear([NullAllowed] string key);
     }
 
-    // @interface MSAppCenter : NSObject
-    [BaseType(typeof(NSObject))]
+    // @interface MSMobileCenter : NSObject
+    [BaseType(typeof(NSObject), Name = "MSMobileCenter")]
     interface MSAppCenter
     {
         // +(instancetype)sharedInstance;

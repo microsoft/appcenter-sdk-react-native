@@ -1,4 +1,4 @@
-﻿using Com.Microsoft.AppCenterCrashes.Ingestion.Models;
+﻿using Com.Microsoft.Azure.Mobile.Crashes.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Crashes
 {

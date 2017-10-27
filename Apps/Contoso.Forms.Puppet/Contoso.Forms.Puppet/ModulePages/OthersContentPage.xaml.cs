@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenter
+﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;
@@ -31,11 +31,11 @@ namespace Contoso.Forms.Puppet
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var mcEnabled = await AppCenter.IsEnabledAsync();
+            var acEnabled = await AppCenter.IsEnabledAsync();
             DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
-            DistributeEnabledSwitchCell.IsEnabled = mcEnabled;
+            DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
-            PushEnabledSwitchCell.IsEnabled = mcEnabled;
+            PushEnabledSwitchCell.IsEnabled = acEnabled;
             if (XamarinDevice.RuntimePlatform == XamarinDevice.Android)
             {
                 if (!Application.Current.Properties.ContainsKey(FirebaseEnabledKey))
@@ -45,7 +45,7 @@ namespace Contoso.Forms.Puppet
                 FirebaseAnalyticsEnabledSwitchCell.On = (bool)Application.Current.Properties[FirebaseEnabledKey];
             }
             RumEnabledSwitchCell.On = await RealUserMeasurements.IsEnabledAsync();
-            RumEnabledSwitchCell.IsEnabled = mcEnabled;
+            RumEnabledSwitchCell.IsEnabled = acEnabled;
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)

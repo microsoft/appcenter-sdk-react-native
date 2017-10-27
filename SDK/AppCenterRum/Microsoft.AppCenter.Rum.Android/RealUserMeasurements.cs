@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.AppCenter.Rum;
+using Com.Microsoft.Azure.Mobile.Rum;
 
 namespace Microsoft.AppCenter.Rum
 {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Android.App;
 using Android.Runtime;
-using Com.Microsoft.AppCenter.Distribute;
+using Com.Microsoft.Azure.Mobile.Distribute;
 
 namespace Microsoft.AppCenter.Distribute
 {

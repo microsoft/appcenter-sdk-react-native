@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<attr path="/api/package[@name='com.microsoft.appcenter.distribute']/class[@name='Distribute']" name="managedName">AndroidDistribute</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.distribute']/class[@name='ReleaseDetails']" name="managedName">AndroidReleaseDetails</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.distribute']/interface[@name='UpdateAction']" name="managedName">AndroidUpdateAction</attr>	
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.distribute']/class[@name='Distribute']" name="managedName">AndroidDistribute</attr>
+    <attr path="/api/package[@name='com.microsoft.azure.mobile.distribute']/class[@name='ReleaseDetails']" name="managedName">AndroidReleaseDetails</attr>
+    <attr path="/api/package[@name='com.microsoft.azure.mobile.distribute']/interface[@name='UpdateAction']" name="managedName">AndroidUpdateAction</attr>	
 </metadata>

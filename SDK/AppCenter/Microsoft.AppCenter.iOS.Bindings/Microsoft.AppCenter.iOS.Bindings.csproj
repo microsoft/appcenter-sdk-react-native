@@ -32,7 +32,7 @@
 		  <CustomCommands>
 		    <Command>
 		      <type>BeforeBuild</type>
-		      <command>sh ./build.sh -t externals-ios</command>
+		      <command>sh ./build.sh -t=externals-ios</command>
 		      <workingdir>${ProjectDir}/../../..</workingdir>
 		    </Command>
 		    <Command>
@@ -57,12 +57,11 @@
 		<ObjcBindingCoreSource Include="StructsAndEnums.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<NativeReference Include="..\..\..\externals\ios\AppCenter.a">
-			<Kind>Static</Kind>
-			<ForceLoad>True</ForceLoad>
-			<Frameworks></Frameworks>
-			<LinkerFlags>-lsqlite3</LinkerFlags>
-		</NativeReference>
+	  <NativeReference Include="..\..\..\externals\ios\MobileCenter.a">
+	    <Kind>Static</Kind>
+	    <ForceLoad>True</ForceLoad>
+	    <LinkerFlags>-lsqlite3</LinkerFlags>
+	  </NativeReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
 </Project>

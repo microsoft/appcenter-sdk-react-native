@@ -1,5 +1,5 @@
 ﻿using System;
-using Com.Microsoft.AppCenter;
+using Com.Microsoft.Azure.Mobile;
 using Java.Lang;
 using Java.Util;
 

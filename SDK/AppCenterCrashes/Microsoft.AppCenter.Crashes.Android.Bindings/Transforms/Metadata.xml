@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<remove-node path="/api/package[@name='com.microsoft.appcenter.crashes.ingestion.models.json']" />
-	<attr path="/api/package[@name='com.microsoft.appcenter.crashes']/class[@name='Crashes']" name="managedName">AndroidCrashes</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.crashes.model']/class[@name='ErrorReport']" name="managedName">AndroidErrorReport</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.crashes.model']/class[@name='TestCrashException']" name="managedName">AndroidTestCrashException</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.crashes.ingestion.models']/class[@name='ErrorAttachmentLog']" name="managedName">AndroidErrorAttachmentLog</attr>
+	<remove-node path="/api/package[@name='com.microsoft.azure.mobile.crashes.ingestion.models.json']" />
+	<attr path="/api/package[@name='com.microsoft.azure.mobile.crashes']/class[@name='Crashes']" name="managedName">AndroidCrashes</attr>
+    <attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.model']/class[@name='ErrorReport']" name="managedName">AndroidErrorReport</attr>
+    <attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.model']/class[@name='TestCrashException']" name="managedName">AndroidTestCrashException</attr>
+    <attr path="/api/package[@name='com.microsoft.azure.mobile.crashes.ingestion.models']/class[@name='ErrorAttachmentLog']" name="managedName">AndroidErrorAttachmentLog</attr>
 </metadata>
