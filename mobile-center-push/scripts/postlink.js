@@ -16,7 +16,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     .then((file) => {
         console.log(`Added code to initialize iOS Push SDK in ${file}`);
         return rnpmlink.ios.addPodDeps([
-            { pod: 'MobileCenter/Push', version: '0.13.0' },
+            { pod: 'MobileCenter/Push', version: '0.14.0' },
             { pod: 'RNMobileCenterShared', version: '0.10.0' } // in case people don't link mobile-center (core)
         ]).catch((e) => {
             console.log(`
