@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import {
-  Alert,
   StyleSheet,
   Text,
   View,
@@ -29,7 +28,6 @@ export default class CrashesScreen extends Component {
     this.toggleEnabled = this.toggleEnabled.bind(this);
     this.jsCrash = this.jsCrash.bind(this);
     this.nativeCrash = this.nativeCrash.bind(this);
-    this.sendCrashes = this.sendCrashes.bind(this);
   }
 
   async componentDidMount() {
@@ -68,53 +66,6 @@ export default class CrashesScreen extends Component {
     Crashes.generateTestCrash();
   }
 
-  sendCrashes() {
-    const component = this;
-    Crashes.process((reports, send) => {
-      let status = '';
-
-      if (reports.length === 0) {
-        status += 'Nothing to send\n';
-        component.setState({ sendStatus: status });
-        return;
-      }
-
-      Crashes.setEventListener({
-        willSendCrash() {
-          status += 'Will send crash\n';
-          component.setState({ sendStatus: status });
-        },
-        didSendCrash() {
-          status += 'Did send crash\n';
-          component.setState({ sendStatus: status });
-        },
-        failedSendingCrash() {
-          status += 'Failed sending crash\n';
-          component.setState({ sendStatus: status });
-        }
-      });
-
-      let crashes = '';
-      reports.forEach((report) => {
-        if (crashes.length > 0) {
-          crashes += '\n\n';
-        }
-        crashes += report.exceptionReason;
-        report.addTextAttachment('Hello attachment!', 'hello.txt');
-        report.addBinaryAttachment(testIcon, 'logo.png', 'image/png');
-      });
-
-      Alert.alert(
-        `Send ${reports.length} crash(es)?`,
-        crashes,
-        [
-          { text: 'Send', onPress: () => send(true) },
-          { text: 'Ignore', onPress: () => send(false), style: 'cancel' },
-        ]
-      );
-    }).then(() => console.log('Crashes were processed'));
-  }
-
   render() {
     return (
       <View style={SharedStyles.container}>
@@ -142,16 +93,6 @@ export default class CrashesScreen extends Component {
               Crash native code
             </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.sendCrashes}>
-            <Text style={styles.button}>
-              Send crashes
-            </Text>
-          </TouchableOpacity>
-          <Text style={styles.lastSessionInfo}>
-            {this.state.sendStatus}
-          </Text>
-
           <Text style={styles.lastSessionHeader}>Last session:</Text>
           <Text style={styles.lastSessionInfo}>
             {this.state.lastSessionStatus}
@@ -180,18 +121,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-const testIcon = `iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGP
-C/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3Cc
-ulE8AAAA1VBMVEXLLmPLLWPLLWLMMWXLLGLMMmbcdJftt8nYY4vKLGHSSXfp
-qL799fj////oobnVVYDUUX3LL2TccpX12OL88fXrsMT56O7NNWjhhaT56O3S
-SHfTT3z56e777vPcc5bQQXH22+Tuvc7sssX++vv66/DuvM3sssbYZIv22uT7
-7vLvvs79+PrUUH3OOmzjjqr66u/99vj23OXZZo3YYIn89Pf++fv22uPYYorX
-YIjZaI767PHuusz99/nbb5TPQHDqqsD55+3ggqL55ez11+HRSHfUUn7TT3vg
-lpRpAAAAAWJLR0QN9rRh9QAAAJpJREFUGNNjYMAKGJmYmZD5LKxs7BxMDJws
-UD4nFzcPLx8LA7+AIJjPKiQsIirGJy4hKSwFUsMpLSMrJ6+gqKTMqyLACRRg
-klflUVPX4NXU0lbRAQkwMOnqiegbGBoZmyAJaJqamVtABYBaDNgtDXmtrG0g
-AkBDNW3tFFRFTaGGgqyVtXfgE3d0cnZhQXYYk6ubIA6nY3oOGQAAubQPeKPu
-sH8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTctMDctMjhUMDM6NDE6MTUrMDI6
-MDAk+3aMAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE3LTA3LTI4VDAzOjQxOjE1
-KzAyOjAwVabOMAAAAABJRU5ErkJggg==`;

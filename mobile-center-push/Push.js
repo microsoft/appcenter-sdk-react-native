@@ -1,5 +1,7 @@
 const ReactNative = require('react-native');
-const RNPush = require('react-native').NativeModules.RNPush;
+const RNPush = ReactNative.NativeModules.RNPush;
+
+const pushEventEmitter = new ReactNative.NativeEventEmitter(RNPush);
 
 const pushNotificationReceivedEvent = 'MobileCenterPushNotificationReceived';
 
@@ -16,10 +18,10 @@ const Push = {
     },
 
     // async - returns a Promise
-    setEventListener(listenerMap) {
-        ReactNative.DeviceEventEmitter.removeAllListeners(pushNotificationReceivedEvent);
-        if (listenerMap && listenerMap.pushNotificationReceived) {
-            ReactNative.DeviceEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.pushNotificationReceived);
+    setListener(listenerMap) {
+        pushEventEmitter.removeAllListeners(pushNotificationReceivedEvent);
+        if (listenerMap && listenerMap.onPushNotificationReceived) {
+            pushEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.onPushNotificationReceived);
 
             return RNPush.sendAndClearInitialNotification();
         }

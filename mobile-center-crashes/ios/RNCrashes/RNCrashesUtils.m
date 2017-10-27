@@ -1,6 +1,9 @@
 #import "RNCrashesUtils.h"
 
 @import MobileCenterCrashes.MSErrorReport;
+@import MobileCenterCrashes.MSErrorAttachmentLog;
+@import MobileCenterCrashes.MSErrorAttachmentLog_Utility;
+
 @import MobileCenter.MSDevice;
 
 NSArray* convertReportsToJS(NSArray* reports) {
@@ -10,7 +13,6 @@ NSArray* convertReportsToJS(NSArray* reports) {
     }];
     return jsReadyReports;
 }
-
 
 static NSString *const kMSSdkName = @"sdk_name";
 static NSString *const kMSSdkVersion = @"sdk_version";
@@ -92,7 +94,7 @@ NSDictionary* convertReportToJS(MSErrorReport* report) {
     if (identifier) {
         dict[@"id"] = identifier;
     }
-    
+
     NSUInteger processIdentifier = [report appProcessIdentifier];
     dict[@"appProcessIdentifier"] = @(processIdentifier);
     
@@ -122,4 +124,38 @@ NSDictionary* convertReportToJS(MSErrorReport* report) {
     dict[@"device"] = serializeDeviceToDictionary([report device]);
 
     return dict;
+}
+
+NSArray* convertJSAttachmentsToNativeAttachments(NSArray* jsAttachments) {
+    id attachmentLogs = [NSMutableArray new];
+    for (NSDictionary *jsAttachment in jsAttachments) {
+        id fileName = [jsAttachment objectForKey:@"fileName"];
+        NSString *fileNameString = nil;
+        if (fileName && [fileName isKindOfClass:[NSString class]]) {
+            fileNameString = (NSString *) fileName;
+        }
+
+        // Check for text versus binary attachment.
+        id text = [jsAttachment objectForKey:@"text"];
+        if (text && [text isKindOfClass:[NSString class]]) {
+            id attachmentLog = [MSErrorAttachmentLog attachmentWithText:text filename:fileNameString];
+            [attachmentLogs addObject:attachmentLog];
+        }
+        else {
+            id data = [jsAttachment objectForKey:@"data"];
+            if (data && [data isKindOfClass:[NSString class]]) {
+
+                // Binary data is passed as a base64 string from Javascript, decode it.
+                NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:data options:NSDataBase64DecodingIgnoreUnknownCharacters];
+                id contentType = [jsAttachment objectForKey:@"contentType"];
+                NSString *contentTypeString = nil;
+                if (contentType && [contentType isKindOfClass:[NSString class]]) {
+                    contentTypeString = (NSString *) contentType;
+                }
+                id attachmentLog = [MSErrorAttachmentLog attachmentWithBinary:decodedData filename:fileNameString contentType:contentTypeString];
+                [attachmentLogs addObject:attachmentLog];
+            }
+        }
+    }
+    return attachmentLogs;
 }
