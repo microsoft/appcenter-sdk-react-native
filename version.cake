@@ -256,7 +256,7 @@ void UpdateNewProjSdkVersion(string newVersion, string newFileVersion)
         var version = csproj.XPathSelectElement("/Project/PropertyGroup/Version");
         version.SetValue(newVersion);
         var fileVersion = csproj.XPathSelectElement("/Project/PropertyGroup/FileVersion");
-        fileVersion.SetValue(newVersion);
+        fileVersion.SetValue(newFileVersion);
         csproj.Save(file.FullPath);
     }
 }
