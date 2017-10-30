@@ -104,17 +104,14 @@ Crashes.setListener({
   },
 
   onBeforeSending() {
-    alert('Will send crash');
     console.log('Will send crash. onBeforeSending is invoked.');
   },
 
   onSendingSucceeded() {
-    alert('Did send crash');
     console.log('Did send crash. onSendingSucceeded is invoked.');
   },
 
   onSendingFailed() {
-    alert('Failed sending crash');
     console.log('Failed sending crash. onSendingFailed is invoked.');
   }
 });
