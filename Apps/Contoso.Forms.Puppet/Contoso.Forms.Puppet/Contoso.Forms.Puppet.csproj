@@ -5,7 +5,6 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{92313C69-3BC4-4276-A1C8-100C86183F12}</ProjectGuid>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UseMSBuildEngine>true</UseMSBuildEngine>
     <OutputType>Library</OutputType>
     <RootNamespace>Contoso.Forms.Puppet</RootNamespace>
     <AssemblyName>Contoso.Forms.Puppet</AssemblyName>
@@ -107,32 +106,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics\Microsoft.AppCenter.Analytics.csproj">
-      <Project>{0f13e444-717e-460a-bde7-8ad537f0a418}</Project>
-      <Name>Microsoft.AppCenter.Analytics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes\Microsoft.AppCenter.Crashes.csproj">
-      <Project>{302f0881-77ae-4cce-acf4-930ad5d4fb08}</Project>
-      <Name>Microsoft.AppCenter.Crashes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute\Microsoft.AppCenter.Distribute.csproj">
-      <Project>{41febc72-c12b-47e1-b6f6-51d50158c825}</Project>
-      <Name>Microsoft.AppCenter.Distribute</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter\Microsoft.AppCenter.csproj">
-      <Project>{3fe04b97-48de-4895-8612-ecbdfebd917c}</Project>
-      <Name>Microsoft.AppCenter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push\Microsoft.AppCenter.Push.csproj">
-      <Project>{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}</Project>
-      <Name>Microsoft.AppCenter.Push</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum\Microsoft.AppCenter.Rum.csproj">
-      <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
-      <Name>Microsoft.AppCenter.Rum</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="ModulePages\CustomPropertiesContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -143,6 +116,32 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter\Microsoft.AppCenter.csproj">
+      <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
+      <Name>Microsoft.AppCenter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics\Microsoft.AppCenter.Analytics.csproj">
+      <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
+      <Name>Microsoft.AppCenter.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes\Microsoft.AppCenter.Crashes.csproj">
+      <Project>{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}</Project>
+      <Name>Microsoft.AppCenter.Crashes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute\Microsoft.AppCenter.Distribute.csproj">
+      <Project>{41FEBC72-C12B-47E1-B6F6-51D50158C825}</Project>
+      <Name>Microsoft.AppCenter.Distribute</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push\Microsoft.AppCenter.Push.csproj">
+      <Project>{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}</Project>
+      <Name>Microsoft.AppCenter.Push</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum\Microsoft.AppCenter.Rum.csproj">
+      <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
+      <Name>Microsoft.AppCenter.Rum</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

@@ -1,9 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Com.Microsoft.AppCenter.Analytics;
-using Com.Microsoft.AppCenter.Analytics.Channel;
-using Com.Microsoft.AppCenter.Ingestion.Models;
+using Com.Microsoft.Azure.Mobile.Analytics;
+using Com.Microsoft.Azure.Mobile.Analytics.Channel;
+using Com.Microsoft.Azure.Mobile.Ingestion.Models;
 using HockeyApp.Android;
 using HockeyApp.Android.Utils;
 using Microsoft.AppCenter;

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Contoso.Forms.Puppet.Droid</RootNamespace>
     <AssemblyName>Contoso.Forms.Puppet.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -169,9 +169,21 @@
       <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
       <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Android\Microsoft.AppCenter.Analytics.Android.csproj">
+      <Project>{93E4ADA5-8D7A-44BF-9549-0AD76AB86E8F}</Project>
+      <Name>Microsoft.AppCenter.Analytics.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Android.Bindings\Microsoft.AppCenter.Analytics.Android.Bindings.csproj">
+      <Project>{34771DC0-9684-45BE-9C9C-5A686468722C}</Project>
+      <Name>Microsoft.AppCenter.Analytics.Android.Bindings</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.Android\Microsoft.AppCenter.Android.csproj">
       <Project>{119C1730-E109-4BC9-AA89-9DCA2C50BFD5}</Project>
       <Name>Microsoft.AppCenter.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
+      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Android\Microsoft.AppCenter.Crashes.Android.csproj">
       <Project>{D6DB87CA-B8EC-4A38-805F-AFDC7FEC38EB}</Project>
@@ -180,18 +192,6 @@
     <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Android.Bindings\Microsoft.AppCenter.Crashes.Android.Bindings.csproj">
       <Project>{42D541D7-B7C9-45A7-8D4D-8FB5A00668B3}</Project>
       <Name>Microsoft.AppCenter.Crashes.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
-      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.AppCenter.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Android\Microsoft.AppCenter.Analytics.Android.csproj">
-      <Project>{93E4ADA5-8D7A-44BF-9549-0AD76AB86E8F}</Project>
-      <Name>Microsoft.AppCenter.Analytics.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Android.Bindings\Microsoft.AppCenter.Analytics.Android.Bindings.csproj">
-      <Project>{34771DC0-9684-45BE-9C9C-5A686468722C}</Project>
-      <Name>Microsoft.AppCenter.Analytics.Android.Bindings</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.Android\Microsoft.AppCenter.Distribute.Android.csproj">
       <Project>{AD38DEE9-8A74-4B04-93C3-0831B55E7254}</Project>
@@ -209,13 +209,13 @@
       <Project>{80B9A47A-7A97-4E5A-9706-43ACB25A7240}</Project>
       <Name>Microsoft.AppCenter.Push.Android.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android.Bindings\Microsoft.AppCenter.Rum.Android.Bindings.csproj">
-      <Project>{7E130457-B427-4043-A5A2-9484CB5809BF}</Project>
-      <Name>Microsoft.AppCenter.Rum.Android.Bindings</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android\Microsoft.AppCenter.Rum.Android.csproj">
       <Project>{7F7FA7ED-1386-41B5-A11E-656B7F85A8F9}</Project>
       <Name>Microsoft.AppCenter.Rum.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android.Bindings\Microsoft.AppCenter.Rum.Android.Bindings.csproj">
+      <Project>{7E130457-B427-4043-A5A2-9484CB5809BF}</Project>
+      <Name>Microsoft.AppCenter.Rum.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
