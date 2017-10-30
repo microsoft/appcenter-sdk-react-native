@@ -1,0 +1,1 @@
+../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenterCrashes.framework/Headers/MSAbstractLog.h
