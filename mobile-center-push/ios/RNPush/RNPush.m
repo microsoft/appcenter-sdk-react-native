@@ -24,20 +24,13 @@
 #import "RNPushUtils.h"
 #import "RNPushDelegate.h"
 
-
-@interface RNPush () <RCTBridgeModule>
-@end
-
 @implementation RNPush
-
-@synthesize bridge = _bridge;
 
 static id<RNPushDelegate> pushDelegate;
 
 RCT_EXPORT_MODULE();
 
 - (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification {
-    NSString *message = pushNotification.message;
 }
 
 - (instancetype)init
@@ -45,25 +38,20 @@ RCT_EXPORT_MODULE();
     self = [super init];
     
     if (self) {
-        [pushDelegate setBridge:self.bridge];
+        [pushDelegate setEventEmitter:self];
     }
     
     return self;
 }
 
--(void)setBridge:(RCTBridge*) bridgeValue
-{
-    _bridge = bridgeValue;
-    [pushDelegate setBridge:bridgeValue];
-}
-
-- (RCTBridge*) bridge {
-    return _bridge;
-}
-
 - (NSDictionary *)constantsToExport
 {
     return @{};
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return [pushDelegate supportedEvents];
 }
 
 + (void)register

@@ -4,39 +4,18 @@
 
 // Support React Native headers both in the React namespace, where they are in RN version 0.40+,
 // and no namespace, for older versions of React Native
-#if __has_include(<React/RCTBridge.h>)
-#import <React/RCTBridge.h>
+#if __has_include(<React/RCTEventEmitter.h>)
+#import <React/RCTEventEmitter.h>
 #else
-#import "RCTBridge.h"
+#import "RCTEventEmitter.h"
 #endif
 
-@class RNCrashes;
-@class MSErrorReport;
 
-@protocol RNCrashesDelegate <MSCrashesDelegate>
-// Call to expose a report to JS
-- (void)storeReportForJS:(MSErrorReport *) report;
+@interface RNCrashesDelegate : NSObject<MSCrashesDelegate>
 
-- (MSUserConfirmationHandler)shouldAwaitUserConfirmationHandler;
+@property RCTEventEmitter* eventEmitter;
 
-
-@optional
-// Called when the JS code provides a send / don't-send response
-- reportUserResponse: (MSUserConfirmation)confirmation;
-
-@required
-// Internal use only, to configure native <-> JS communication
-- (NSArray<MSErrorReport *> *) getAndClearReports;
-- (void) provideAttachments: (NSDictionary*) attachments;
-- (void) setBridge: (RCTBridge*) bridge;
-@end
-
-@interface RNCrashesDelegateBase : NSObject<RNCrashesDelegate>
-@property NSDictionary* attachments;
-@property NSMutableArray* reports;
-@property RCTBridge* bridge;
-@end
-
-@interface RNCrashesDelegateAlwaysSend: RNCrashesDelegateBase
+- (NSArray<NSString *> *)supportedEvents;
 
 @end
+
