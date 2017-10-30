@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterChannel;
+﻿using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Http;
 using Newtonsoft.Json;
 using System;
