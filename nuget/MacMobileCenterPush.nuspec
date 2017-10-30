@@ -20,6 +20,7 @@
             <dependency id="Microsoft.Azure.Mobile" version="$version$" />
             <dependency id="Xamarin.Firebase.Messaging" version="60.1142.0-beta1"/>
             <dependency id="Xamarin.Firebase.Core" version="60.1142.0-beta1"/>
+            <dependency id="Xamarin.Android.Support.v4" version="26.0.2"/>
         </group>
     </dependencies>
     <version>$version$</version>
