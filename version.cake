@@ -31,7 +31,7 @@ Task("SetReleaseVersion").Does(()=>
     ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
 
     // Replace version in new csproj files
-    UpdateNewProjSdkVersion(baseSemanticVersion);
+    UpdateNewProjSdkVersion(baseSemanticVersion, baseSemanticVersion);
 
     // Replace version in wrapper sdk
     UpdateWrapperSdkVersion(baseSemanticVersion);
@@ -98,7 +98,7 @@ Task("StartNewVersion").Does(()=>
     ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")", "Demo");
 
     // Replace version in new csproj files
-    UpdateNewProjSdkVersion(snapshotVersion);
+    UpdateNewProjSdkVersion(snapshotVersion, newVersion);
 
     // Update wrapper sdk version
     UpdateWrapperSdkVersion(snapshotVersion);
@@ -168,7 +168,7 @@ void IncrementRevisionNumber(bool useHash)
     }
 
     // Replace version in new csproj files
-    UpdateNewProjSdkVersion(newVersion);
+    UpdateNewProjSdkVersion(newVersion, newFileVersion);
 
     // Update wrapper sdk version
     UpdateWrapperSdkVersion(newVersion);
@@ -241,7 +241,7 @@ void UpdateWrapperSdkVersion(string newVersion)
     ReplaceRegexInFiles("SDK/MobileCenter/Microsoft.Azure.Mobile.Shared/WrapperSdk.cs", patternString, newString);
 }
 
-void UpdateNewProjSdkVersion(string newVersion)
+void UpdateNewProjSdkVersion(string newVersion, string newFileVersion)
 {
     var csprojFiles = GetFiles("SDK/**/*.csproj");
     foreach (var file in csprojFiles)
@@ -250,10 +250,13 @@ void UpdateNewProjSdkVersion(string newVersion)
 
         // Check if csproj with new format
         if (csproj.Root.Attribute("Sdk")?.Value != "Microsoft.NET.Sdk")
+        {
             continue;
-
+        }
         var version = csproj.XPathSelectElement("/Project/PropertyGroup/Version");
         version.SetValue(newVersion);
+        var fileVersion = csproj.XPathSelectElement("/Project/PropertyGroup/FileVersion");
+        fileVersion.SetValue(newVersion);
         csproj.Save(file.FullPath);
     }
 }
