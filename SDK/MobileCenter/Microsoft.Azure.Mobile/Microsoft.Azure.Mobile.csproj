@@ -8,9 +8,14 @@
     <Product>Microsoft.Azure.Mobile.Core</Product>
     <Company>Microsoft Corporation</Company>
     <Version>0.17.0-SNAPSHOT</Version>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>0.17.0.0</FileVersion>
+    <AssemblyTitle>Microsoft.Azure.Mobile</AssemblyTitle>
+    <Description />
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />
   </ItemGroup>
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+  <Target Name="GetPackagingOutputs" />
 </Project>
