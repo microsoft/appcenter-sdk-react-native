@@ -155,7 +155,7 @@ RCT_EXPORT_METHOD(notifyWithUserConfirmation:(int)userConfirmation
 RCT_EXPORT_METHOD(getUnprocessedCrashReports:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  void (^fetchUnprocessedCrashReports)() = ^void() {
+  void (^fetchUnprocessedCrashReports)(void) = ^void() {
     NSArray *unprocessedCrashReports = [MSWrapperCrashesHelper unprocessedCrashReports];
     resolve(convertReportsToJS(unprocessedCrashReports));
   };
