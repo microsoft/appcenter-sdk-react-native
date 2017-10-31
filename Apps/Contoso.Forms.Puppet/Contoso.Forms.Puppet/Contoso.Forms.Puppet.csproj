@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <!-- Workaround for https://github.com/dotnet/sdk/issues/879 -->
+    <ReferringTargetFrameworkForProjectReferences>.NETStandard,Version=v1.0</ReferringTargetFrameworkForProjectReferences>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -115,13 +117,17 @@
       <Project>{41febc72-c12b-47e1-b6f6-51d50158c825}</Project>
       <Name>Microsoft.Azure.Mobile.Distribute</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push\Microsoft.Azure.Mobile.Push.csproj">
+      <Project>{8ee6b5da-6547-43c8-aeb6-8e0eae3f81c9}</Project>
+      <Name>Microsoft.Azure.Mobile.Push</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum\Microsoft.Azure.Mobile.Rum.csproj">
+      <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
+      <Name>Microsoft.Azure.Mobile.Rum</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile\Microsoft.Azure.Mobile.csproj">
       <Project>{3fe04b97-48de-4895-8612-ecbdfebd917c}</Project>
       <Name>Microsoft.Azure.Mobile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push\Microsoft.Azure.Mobile.Push.csproj">
-      <Project>{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}</Project>
-      <Name>Microsoft.Azure.Mobile.Push</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

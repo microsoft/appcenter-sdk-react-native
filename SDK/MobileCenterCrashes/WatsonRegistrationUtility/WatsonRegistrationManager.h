@@ -7,5 +7,6 @@ namespace WatsonRegistrationUtility
 	public:
 		WatsonRegistrationManager();
 		static void Start(Platform::String^ appSecret);
+		static void SetCorrelationId(Platform::String^ correlationId);
 	};
 }

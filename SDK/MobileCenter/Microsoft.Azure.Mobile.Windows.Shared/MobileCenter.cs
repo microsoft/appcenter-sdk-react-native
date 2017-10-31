@@ -194,6 +194,34 @@ namespace Microsoft.Azure.Mobile
                 Instance.StartInstanceAndConfigure(appSecret, services);
             }
         }
+ 
+        // Atomically checks if the CorrelationId equals "testValue" and updates the value if true.
+        // Returns "true" if value was changed. If not, the current value is assigned to setValue.
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        public static bool TestAndSetCorrelationId(Guid testValue, ref Guid setValue)
+        {
+            lock (MobileCenterLock)
+            {
+                if (testValue == Instance.InstanceCorrelationId)
+                {
+                    // Can't use the property setter here because that would cause the
+                    // event to trigger within the lock, which is not allowed.
+                    // (And calling the setter outside the lock would not be atomic).
+                    Instance.InstanceCorrelationId = setValue;
+                    CorrelationIdChanged?.Invoke(null, setValue);
+                    return true;
+                }
+                setValue = Instance.InstanceCorrelationId;
+            }
+            return false;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete]
+        // Note: Do not access the CorrelationId property in this event handler!
+        // Doing so on a different thread can cause deadlocks.
+        public static event EventHandler<Guid> CorrelationIdChanged;
 
         #endregion
 
@@ -326,9 +354,9 @@ namespace Microsoft.Azure.Mobile
                         startServiceLog.Services.Add(serviceInstance.ServiceName);
                     }
                 }
-                catch (MobileCenterException)
+                catch (MobileCenterException e)
                 {
-                    MobileCenterLog.Warn(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.");
+                    MobileCenterLog.Error(MobileCenterLog.LogTag, $"Failed to start service '{serviceType.Name}'; skipping it.", e);
                 }
             }
 
@@ -367,6 +395,7 @@ namespace Microsoft.Azure.Mobile
                 MobileCenterLog.Warn(MobileCenterLog.LogTag, ex.Message);
             }
         }
+        internal Guid InstanceCorrelationId = Guid.Empty;
 
         // We don't support Distribute in UWP.
         private static bool IsDistributeService(Type serviceType)

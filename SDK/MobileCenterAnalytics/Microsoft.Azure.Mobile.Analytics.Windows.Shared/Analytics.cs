@@ -171,7 +171,7 @@ namespace Microsoft.Azure.Mobile.Analytics
                 }
                 else if (!enabled)
                 {
-                    UnsbscribeFromApplicationLifecycleEvents();
+                    UnsubscribeFromApplicationLifecycleEvents();
                     SessionTracker?.ClearSessions();
                     SessionTracker = null;
                 }
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.Mobile.Analytics
             ApplicationLifecycleHelper.Instance.ApplicationResuming += ApplicationResumingEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationSuspended += ApplicationSuspendedEventHandler;
         }
-        private void UnsbscribeFromApplicationLifecycleEvents()
+        private void UnsubscribeFromApplicationLifecycleEvents()
         {
             ApplicationLifecycleHelper.Instance.ApplicationResuming -= ApplicationResumingEventHandler;
             ApplicationLifecycleHelper.Instance.ApplicationSuspended -= ApplicationSuspendedEventHandler;

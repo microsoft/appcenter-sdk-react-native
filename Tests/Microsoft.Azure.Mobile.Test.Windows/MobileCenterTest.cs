@@ -87,6 +87,15 @@ namespace Microsoft.Azure.Mobile.Test
         }
 
         /// <summary>
+        /// Verify sdk version.
+        /// </summary>
+        [TestMethod]
+        public void VerifySdkVersion()
+        {
+            Assert.AreEqual(WrapperSdk.Version, MobileCenter.SdkVersion);
+        }
+
+        /// <summary>
         /// Verify that starting the same service twice (separately) only calls its OnChannelGroupReady
         /// </summary>
         [TestMethod]
@@ -188,10 +197,7 @@ namespace Microsoft.Azure.Mobile.Test
 
             _settingsMock.Verify(settings => settings.SetValue(MobileCenter.EnabledKey, false), Times.Once());
         }
-
-        /// <summary>
-        /// Verify that the "configured" property is accurate
-        /// </summary>
+        
         [TestMethod]
         public void GetConfigured()
         {
