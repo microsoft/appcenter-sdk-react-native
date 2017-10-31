@@ -37,9 +37,11 @@ Task("GitRelease")
       assets += file.FullPath + ",";
     }
     assets = assets.Substring(0,assets.Length-1);
-
-    GitReleaseManagerCreate("user", Argument<string>("GithubToken"),
-                            "Microsoft", "mobile-center-sdk-dotnet",
+    var username = "user";
+    var password = Argument<string>("GithubToken");
+    var owner = "Microsoft";
+    var repo = "mobile-center-sdk-dotnet";
+    GitReleaseManagerCreate(username, password,owner, repo,
                             new GitReleaseManagerCreateSettings {
                                 Prerelease        = true,
                                 Assets            = assets,
