@@ -3,41 +3,53 @@
 #addin nuget:?package=Cake.Incubator
 #tool "nuget:?package=gitreleasemanager"
 
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using System.Xml.XPath;
+
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", "Default"));
 Task("Default").IsDependentOn("GitRelease");
 
 // Create a tag and release on GitHub
 Task("GitRelease")
-	.Does(() =>
+    .Does(() =>
 {
-    var project = ParseProject("./SDK/MobileCenter/Microsoft.Azure.Mobile/Microsoft.Azure.Mobile.csproj", configuration: "Release");
-    var publishVersion = project.NetCore.Version;
-    var username = "user";
-    var password = Argument<string>("GithubToken");
-    var owner = "Microsoft";
-    var repo = "mobile-center-sdk-dotnet";
+    // Use the package version for MobileCenter package as the release version.
+    var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH", "nuget");
+    var nuspecPath = System.IO.Path.Combine(nuspecPathPrefix, "MobileCenter.nuspec");
+    var nuspecXml = XDocument.Load(nuspecPath);
+    var publishVersion = nuspecXml.XPathSelectElement("/package/metadata/version").Value;
 
-    System.IO.File.Create("tempRelease.md").Dispose();
-    var releaseFile = File("tempRelease.md");
+    // Create temporary release notes.
+    var releaseNotesFileName = "tempRelease.md";
+    System.IO.File.Create(releaseNotesFileName).Dispose();
+    var releaseFile = File(releaseNotesFileName);
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
 
     // Build a string containing paths to NuGet packages.
-    var files = GetFiles("../../**/*Microsoft.Azure.Mobile*.nupkg");
+    var files = GetFiles("../../**/Microsoft.Azure.Mobile*.nupkg");
     var assets = string.Empty;
     foreach (var file in files)
     {
       assets += file.FullPath + ",";
     }
     assets = assets.Substring(0,assets.Length-1);
-    GitReleaseManagerCreate(username, password, owner, repo, new GitReleaseManagerCreateSettings {
-        Prerelease        = true,
-        Assets            = assets,
-        TargetCommitish   = "master",
-        InputFilePath = releaseFile.Path.FullPath,
-        Name = publishVersion
-    });
-    GitReleaseManagerPublish(username, password, owner, repo,  publishVersion);
+    var username = "user";
+    var password = Argument<string>("GithubToken");
+    var owner = "Microsoft";
+    var repo = "mobile-center-sdk-dotnet";
+    GitReleaseManagerCreate(username, password,owner, repo,
+                            new GitReleaseManagerCreateSettings {
+                                Prerelease        = true,
+                                Assets            = assets,
+                                TargetCommitish   = "master",
+                                InputFilePath = releaseFile.Path.FullPath,
+                                Name = publishVersion
+                            });
+    GitReleaseManagerPublish(username, password, owner, repo, publishVersion);
     DeleteFile(releaseFile);
 });
 RunTarget(TARGET);
