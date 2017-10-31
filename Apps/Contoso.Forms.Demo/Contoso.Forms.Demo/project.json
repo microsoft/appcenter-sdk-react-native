@@ -1,15 +1,13 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Azure.Mobile.Analytics": "0.16.0",
-    "Microsoft.Azure.Mobile.Crashes": "0.16.0",
-    "Microsoft.Azure.Mobile.Distribute": "0.16.0",
-    "Microsoft.Azure.Mobile.Push": "0.16.0",
-    "Xamarin.Forms": "2.3.4.231",
-    "NETStandard.Library": "1.6.1"
+    "Microsoft.Azure.Mobile.Analytics": "0.17.0",
+    "Microsoft.Azure.Mobile.Crashes": "0.17.0",
+    "Microsoft.Azure.Mobile.Distribute": "0.17.0",
+    "Microsoft.Azure.Mobile.Push": "0.17.0",
+    "NETStandard.Library": "1.6.1",
+    "Xamarin.Forms": "2.4.0.38779"
   },
   "frameworks": {
-    "netstandard1.0": {
-      "imports": "portable-net45+win8+wpa81"
-    }
+    "netstandard1.0": {}
   }
 }
