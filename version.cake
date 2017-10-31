@@ -89,16 +89,17 @@ Task("StartNewVersion").Does(()=>
 {
     var newVersion = Argument<string>("NewVersion");
     var snapshotVersion = newVersion + "-SNAPSHOT";
+    var newFileVersion = newVersion + ".0";
 
     // Replace version in all but the demo application assemblies
     var assemblyInfoGlob = "**/AssemblyInfo.cs";
     var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
     ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + snapshotVersion + "\")", "Demo");
     var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
-    ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newVersion + ".0\")", "Demo");
+    ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newFileVersion + "\")", "Demo");
 
     // Replace version in new csproj files
-    UpdateNewProjSdkVersion(snapshotVersion, newVersion);
+    UpdateNewProjSdkVersion(snapshotVersion, newFileVersion);
 
     // Update wrapper sdk version
     UpdateWrapperSdkVersion(snapshotVersion);
@@ -146,6 +147,7 @@ void IncrementRevisionNumber(bool useHash)
     var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1;
     var newRevString = GetPaddedString(newRevNum, 4);
     var newVersion = baseSemanticVersion + "-r" + newRevString;
+    var newFileVersion = baseSemanticVersion + "." + newRevNum;
     if (useHash)
     {
         newVersion += "-" + GetShortCommitHash();
@@ -163,8 +165,8 @@ void IncrementRevisionNumber(bool useHash)
         var fileVersionTrimmedPattern = @"AssemblyFileVersion\("+ "\"" + @"([0-9]+.){3}";
         var fullVersion = FindRegexMatchInFile(file, fileVersionPattern, RegexOptions.None);
         var trimmedVersion = FindRegexMatchInFile(file, fileVersionTrimmedPattern, RegexOptions.None);
-        var newFileVersion = trimmedVersion + newRevNum + "\")";
-        ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersion);
+        var newFileVersionTmp = trimmedVersion + newRevNum + "\")";
+        ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersionTmp);
     }
 
     // Replace version in new csproj files
