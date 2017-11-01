@@ -1,9 +1,9 @@
 ﻿{
   "dependencies": {
-    "Microsoft.AppCenter.Analytics": "0.17.0-SNAPSHOT",
-    "Microsoft.AppCenter.Crashes": "0.17.0-SNAPSHOT",
-    "Microsoft.AppCenter.Distribute": "0.17.0-SNAPSHOT",
-    "Microsoft.AppCenter.Push": "0.17.0-SNAPSHOT",
+    "Microsoft.AppCenter.Analytics": "1.0.0-r0001-d3d915a",
+    "Microsoft.AppCenter.Crashes": "1.0.0-r0001-d3d915a",
+    "Microsoft.AppCenter.Distribute": "1.0.0-r0001-d3d915a",
+    "Microsoft.AppCenter.Push": "1.0.0-r0001-d3d915a",
     "Xamarin.Android.Support.Animated.Vector.Drawable": "25.1.1",
     "Xamarin.Android.Support.Compat": "25.1.1",
     "Xamarin.Android.Support.Core.UI": "25.1.1",
