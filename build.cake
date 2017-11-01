@@ -369,36 +369,25 @@ Task("NuGet")
     .IsDependentOn("Version")
     .Does(()=>
 {
-    // NuGet on mac trims out the first ./ so adding it twice works around
-    var basePath = IsRunningOnUnix() ? (System.IO.Directory.GetCurrentDirectory().ToString() + @"/.") : "./";
     CleanDirectory("output");
-
     var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
 
-    // Packaging NuGets.
+    // Package NuGets.
     foreach (var module in APP_CENTER_MODULES)
     {
-        var nuspecFilename = IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename;
+        var nuspecFilename = "nuget/" + (IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename);
 
-        // Skipping not exists modules.
-        if (!FileExists("nuget/" + nuspecFilename))
+        // Skip modules that don't have nuspecs.
+        if (!FileExists(nuspecFilename))
         {
             continue;
         }
 
         // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
-        CopyFile("nuget/" + nuspecFilename, specCopyName);
-        ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$netstandard_dir$", NETSTANDARD_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$windows_desktop_dir$", WINDOWS_DESKTOP_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
-
-        var spec = GetFiles(specCopyName);
+        CopyFile(nuspecFilename, specCopyName);
+        ReplaceAssemblyPathsInNuspecs(specCopyName);
         Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
-        NuGetPack(spec, new NuGetPackSettings {
-            BasePath = basePath,
+        NuGetPack(File(specCopyName), new NuGetPackSettings {
             Verbosity = NuGetVerbosity.Detailed,
             Version = module.NuGetVersion
         });
@@ -478,21 +467,15 @@ Task("MergeAssemblies")
     // Create NuGet packages
     foreach (var module in APP_CENTER_MODULES)
     {
-        // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
         var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
-        CopyFile("nuget/" + module.MainNuspecFilename, specCopyName);
-        ReplaceTextInFiles(specCopyName, "$pcl_dir$", PCL_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$netstandard_dir$", NETSTANDARD_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$ios_dir$", IOS_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$android_dir$", ANDROID_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$uwp_dir$", UWP_ASSEMBLIES_FOLDER);
-        ReplaceTextInFiles(specCopyName, "$windows_desktop_dir$", WINDOWS_DESKTOP_ASSEMBLIES_FOLDER);
 
-        var spec = GetFiles(specCopyName);
+        // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
+        CopyFile("nuget/" + module.MainNuspecFilename, specCopyName);
+        ReplaceAssemblyPathsInNuspecs(specCopyName);
 
         // Create the NuGet package
         Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
-        NuGetPack(spec, new NuGetPackSettings {
+        NuGetPack(File(specCopyName), new NuGetPackSettings {
             Verbosity = NuGetVerbosity.Detailed,
             Version = module.NuGetVersion
         });
@@ -543,7 +526,6 @@ Task("CleanAzureStorage").Does(()=>
             Key = apiKey,
             UseHttps = true
         });
-
         AzureStorage.DeleteBlob(new AzureStorageSettings
         {
             AccountName = accountName,
@@ -557,7 +539,6 @@ Task("CleanAzureStorage").Does(()=>
     {
         // not an error if the blob is not found
     }
-
 }).OnError(HandleError);
 
 // Remove all temporary files and folders
@@ -586,22 +567,11 @@ Task("clean")
 
 Task("PrepareAssemblyPathsVSTS").Does(()=>
 {
-    var iosAssemblies = EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC");
-    var androidAssemblies = EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC");
-    var pclAssemblies = EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC");
-    var netStandardAssemblies = EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC");
-    var uwpAssemblies = EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC");
-    var windowsDesktopAssemblies = EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC");
     var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
-
     foreach (var module in APP_CENTER_MODULES)
     {
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$pcl_dir$", pclAssemblies);
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$netstandard_dir$", netStandardAssemblies);
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$ios_dir$", iosAssemblies);
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_dir$", uwpAssemblies);
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$android_dir$", androidAssemblies);
-        ReplaceTextInFiles(nuspecPathPrefix + module.MainNuspecFilename, "$windows_desktop_dir$", windowsDesktopAssemblies);
+        var nuspecPath = System.IO.Path.Combine(nuspecPathPrefix, module.MainNuspecFilename);
+        ReplaceAssemblyPathsInNuspecs(nuspecPath);
     }
 }).OnError(HandleError);
 
@@ -619,6 +589,29 @@ Task("NugetPackVSTS").Does(()=>
         });
     }
 }).OnError(HandleError);
+
+void ReplaceAssemblyPathsInNuspecs(string nuspecPath)
+{
+    // For the Tuples, Item1 is variable name, Item2 is variable value.
+    var assemblyPathVars = new List<Tuple<string, string>> {
+        Tuple.Create("$pcl_dir$", 
+                    EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC", PCL_ASSEMBLIES_FOLDER)),
+        Tuple.Create("$netstandard_dir$",
+                    EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC", NETSTANDARD_ASSEMBLIES_FOLDER)),
+        Tuple.Create("$uwp_dir$",
+                    EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC", UWP_ASSEMBLIES_FOLDER)),
+        Tuple.Create("$ios_dir$",
+                    EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC", IOS_ASSEMBLIES_FOLDER)),
+        Tuple.Create("$android_dir$",
+                    EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC", ANDROID_ASSEMBLIES_FOLDER)),
+        Tuple.Create("$windows_desktop_dir$",
+                    EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC", WINDOWS_DESKTOP_ASSEMBLIES_FOLDER))
+    };
+    foreach (var assemblyPathVar in assemblyPathVars)
+    {
+        ReplaceTextInFiles(nuspecPath, assemblyPathVar.Item1, assemblyPathVar.Item2);
+    }
+}
 
 // Copy files to a clean directory using string names instead of FilePath[] and DirectoryPath
 void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = true)
