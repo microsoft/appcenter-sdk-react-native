@@ -141,7 +141,6 @@ void IncrementRevisionNumber(bool useHash)
 {
     // Get base version of PCL core
     var baseSemanticVersion = GetPCLBaseSemanticVersion();
-
     var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
     var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1;
@@ -195,7 +194,7 @@ string GetLatestNuGetVersion()
     var nugetUser = EnvironmentVariable("NUGET_USER");
     var nugetPassword = Argument("NuGetPassword", EnvironmentVariable("NUGET_PASSWORD"));
     var nugetFeedId = Argument("NuGetFeedId", EnvironmentVariable("NUGET_FEED_ID"));
-    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?\\$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
+    var url = "https://msmobilecenter.pkgs.visualstudio.com/_packaging/" + nugetFeedId + "/nuget/v2/Search()?$filter=IsAbsoluteLatestVersion+and+Id+eq+'Microsoft.Azure.Mobile'&includePrerelease=true";
     HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
     request.Headers["X-NuGet-ApiKey"] = nugetPassword;
     request.Credentials = new NetworkCredential(nugetUser, nugetPassword);
