@@ -2,21 +2,21 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/mobile-center.svg)](https://www.npmjs.com/package/mobile-center)
 [![license](https://img.shields.io/badge/license-MIT%20License-00AAAA.svg)](https://github.com/Microsoft/mobile-center-sdk-react-native/blob/master/LICENSE)
 
-# Mobile Center SDK for React Native
+# AppCenter SDK for React Native
 
-Mobile Center is mission control for mobile apps.
+AppCenter is mission control for mobile apps.
 Get faster release cycles, higher-quality apps, and the insights to build what users want.
 
-The Mobile Center SDK uses a modular architecture so you can use any or all of the following services: 
+The AppCenter SDK uses a modular architecture so you can use any or all of the following services: 
 
-1. **Mobile Center Analytics**: Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically captures session count, device properties like model, OS version, etc. You can define your own custom events to measure things that matter to you. All the information captured is available in the Mobile Center portal for you to analyze the data.
+1. **AppCenter Analytics**: AppCenter Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically captures session count, device properties like model, OS version, etc. You can define your own custom events to measure things that matter to you. All the information captured is available in the AppCenter portal for you to analyze the data.
 
-2. **Mobile Center Crashes**: Mobile Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to Mobile Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
+2. **AppCenter Crashes**: AppCenter Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to AppCenter. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
 
-3. **Mobile Center Push**: Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal. We use APNs for iOS apps and FCM for Android. You can also segment your user base based on a set of properties and send them targeted notifications.
+3. **AppCenter Push**: AppCenter Push enables you to send push notifications to users of your app from the AppCenter portal. We use APNs for iOS apps and FCM for Android. You can also segment your user base based on a set of properties and send them targeted notifications.
 
 ## 1. Get started
-It is super easy to use Mobile Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/) is available as well.
+It is super easy to use AppCenter. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/) is available as well.
 
 ## 2. Contributing
 
@@ -34,7 +34,7 @@ You must sign a [Contributor License Agreement](https://cla.microsoft.com/) befo
 
 ### 3.1 Intercom
 
-If you have further questions, want to provide feedback or you are running into issues, log in to the [Mobile Center portal](https://mobile.azure.com) and use the blue Intercom button on the bottom right to start a conversation with us.
+If you have further questions, want to provide feedback or you are running into issues, log in to the [AppCenter portal](https://appcenter.ms) and use the blue Intercom button on the bottom right to start a conversation with us.
 
 ### 3.2 Twitter
 We're on Twitter as [@mobilecenter](https://www.twitter.com/mobilecenter).
