@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.analytics;
+package com.microsoft.appcenter.reactnative.analytics;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RNUtils {
+public class ReactNativeUtils {
     public static JSONObject convertReadableMapToJsonObject(ReadableMap map) throws JSONException {
         JSONObject jsonObj = new JSONObject();
         ReadableMapKeySetIterator it = map.keySetIterator();

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface RNAnalytics : NSObject
+@interface AppCenterReactNativeAnalytics : NSObject
 
 + (void)registerWithInitiallyEnabled:(BOOL)enabled;
 

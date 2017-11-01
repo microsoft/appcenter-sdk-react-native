@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.analytics;
+package com.microsoft.appcenter.reactnative.analytics;
 
 import android.app.Application;
 
@@ -12,22 +12,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNAnalyticsPackage implements ReactPackage {
+public class AppCenterReactNativeAnalyticsPackage implements ReactPackage {
     private static final String ENABLE_IN_JS = "ENABLE_IN_JS";
-    private RNAnalyticsModule module;
+    private AppCenterReactNativeAnalyticsModule module;
 
-    public RNAnalyticsPackage(Application application, boolean startEnabled) {
+    public AppCenterReactNativeAnalyticsPackage(Application application, boolean startEnabled) {
         // We create the module early because the Analytics package depends on the
         // onResume event to determine whether the app is foregrounded, and so
         // automatic session management doesn't work if we start it too late
-        this.module = new RNAnalyticsModule(application, startEnabled);
+        this.module = new AppCenterReactNativeAnalyticsModule(application, startEnabled);
     }
 
-    public RNAnalyticsPackage(Application application, String startEnabled) {
+    public AppCenterReactNativeAnalyticsPackage(Application application, String startEnabled) {
         if (startEnabled.equals(ENABLE_IN_JS)){
-            this.module = new RNAnalyticsModule(application, false);
+            this.module = new AppCenterReactNativeAnalyticsModule(application, false);
         } else {
-            this.module = new RNAnalyticsModule(application, true);
+            this.module = new AppCenterReactNativeAnalyticsModule(application, true);
         }
 
     }

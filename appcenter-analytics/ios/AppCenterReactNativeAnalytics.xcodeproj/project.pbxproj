@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		548694041D8384E600E6685A /* RNAnalytics.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 548694031D8384E600E6685A /* RNAnalytics.h */; };
-		548694061D8384E600E6685A /* RNAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 548694051D8384E600E6685A /* RNAnalytics.m */; };
+		548694041D8384E600E6685A /* AppCenterReactNativeAnalytics.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 548694031D8384E600E6685A /* AppCenterReactNativeAnalytics.h */; };
+		548694061D8384E600E6685A /* AppCenterReactNativeAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 548694051D8384E600E6685A /* AppCenterReactNativeAnalytics.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +18,16 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				548694041D8384E600E6685A /* RNAnalytics.h in CopyFiles */,
+				548694041D8384E600E6685A /* AppCenterReactNativeAnalytics.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		548694001D8384E600E6685A /* libRNAnalytics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNAnalytics.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		548694031D8384E600E6685A /* RNAnalytics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNAnalytics.h; sourceTree = "<group>"; };
-		548694051D8384E600E6685A /* RNAnalytics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNAnalytics.m; sourceTree = "<group>"; };
+		548694001D8384E600E6685A /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativeAnalytics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		548694031D8384E600E6685A /* AppCenterReactNativeAnalytics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeAnalytics.h; sourceTree = "<group>"; };
+		548694051D8384E600E6685A /* AppCenterReactNativeAnalytics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeAnalytics.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +44,7 @@
 		548693F71D8384E600E6685A = {
 			isa = PBXGroup;
 			children = (
-				548694021D8384E600E6685A /* RNAnalytics */,
+				548694021D8384E600E6685A /* AppCenterReactNativeAnalytics */,
 				548694011D8384E600E6685A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,26 +52,26 @@
 		548694011D8384E600E6685A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				548694001D8384E600E6685A /* libRNAnalytics.a */,
+				548694001D8384E600E6685A /* libAppCenterReactNativeAnalytics.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		548694021D8384E600E6685A /* RNAnalytics */ = {
+		548694021D8384E600E6685A /* AppCenterReactNativeAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				548694031D8384E600E6685A /* RNAnalytics.h */,
-				548694051D8384E600E6685A /* RNAnalytics.m */,
+				548694031D8384E600E6685A /* AppCenterReactNativeAnalytics.h */,
+				548694051D8384E600E6685A /* AppCenterReactNativeAnalytics.m */,
 			);
-			path = RNAnalytics;
+			path = AppCenterReactNativeAnalytics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		548693FF1D8384E600E6685A /* RNAnalytics */ = {
+		548693FF1D8384E600E6685A /* AppCenterReactNativeAnalytics */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 548694091D8384E600E6685A /* Build configuration list for PBXNativeTarget "RNAnalytics" */;
+			buildConfigurationList = 548694091D8384E600E6685A /* Build configuration list for PBXNativeTarget "AppCenterReactNativeAnalytics" */;
 			buildPhases = (
 				548693FC1D8384E600E6685A /* Sources */,
 				548693FD1D8384E600E6685A /* Frameworks */,
@@ -81,9 +81,9 @@
 			);
 			dependencies = (
 			);
-			name = RNAnalytics;
-			productName = RNAnalytics;
-			productReference = 548694001D8384E600E6685A /* libRNAnalytics.a */;
+			name = AppCenterReactNativeAnalytics;
+			productName = AppCenterReactNativeAnalytics;
+			productReference = 548694001D8384E600E6685A /* libAppCenterReactNativeAnalytics.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -100,7 +100,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 548693FB1D8384E600E6685A /* Build configuration list for PBXProject "RNAnalytics" */;
+			buildConfigurationList = 548693FB1D8384E600E6685A /* Build configuration list for PBXProject "AppCenterReactNativeAnalytics" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -112,7 +112,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				548693FF1D8384E600E6685A /* RNAnalytics */,
+				548693FF1D8384E600E6685A /* AppCenterReactNativeAnalytics */,
 			);
 		};
 /* End PBXProject section */
@@ -122,7 +122,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				548694061D8384E600E6685A /* RNAnalytics.m in Sources */,
+				548694061D8384E600E6685A /* AppCenterReactNativeAnalytics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +239,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNMobileCenterShared/ios/RNMobileCenterShared";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../AppCenterReactNativeShared/ios/AppCenterReactNativeShared";
 			};
 			name = Debug;
 		};
@@ -255,14 +255,14 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../RNMobileCenterShared/ios/RNMobileCenterShared";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../AppCenterReactNativeShared/ios/AppCenterReactNativeShared";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		548693FB1D8384E600E6685A /* Build configuration list for PBXProject "RNAnalytics" */ = {
+		548693FB1D8384E600E6685A /* Build configuration list for PBXProject "AppCenterReactNativeAnalytics" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				548694071D8384E600E6685A /* Debug */,
@@ -271,7 +271,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		548694091D8384E600E6685A /* Build configuration list for PBXNativeTarget "RNAnalytics" */ = {
+		548694091D8384E600E6685A /* Build configuration list for PBXNativeTarget "AppCenterReactNativeAnalytics" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5486940A1D8384E600E6685A /* Debug */,

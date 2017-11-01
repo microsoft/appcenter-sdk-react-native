@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.analytics;
+package com.microsoft.appcenter.reactnative.analytics;
 
 import android.app.Application;
 
@@ -8,16 +8,16 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.azure.mobile.MobileCenter;
 import com.microsoft.azure.mobile.analytics.Analytics;
-import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
+import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
 
 import org.json.JSONException;
 
 @SuppressWarnings("WeakerAccess")
-public class RNAnalyticsModule extends BaseJavaModule {
+public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
-    public RNAnalyticsModule(Application application, boolean startEnabled) {
-        RNMobileCenterShared.configureMobileCenter(application);
+    public AppCenterReactNativeAnalyticsModule(Application application, boolean startEnabled) {
+        AppCenterReactNativeShared.configureMobileCenter(application);
         MobileCenter.start(Analytics.class);
         if (!startEnabled) {
             Analytics.setEnabled(false);
@@ -27,7 +27,7 @@ public class RNAnalyticsModule extends BaseJavaModule {
 
     @Override
     public String getName() {
-        return "RNAnalytics";
+        return "AppCenterReactNativeAnalytics";
     }
 
     @ReactMethod
@@ -55,7 +55,7 @@ public class RNAnalyticsModule extends BaseJavaModule {
     @ReactMethod
     public void trackEvent(String eventName, ReadableMap properties, Promise promise) {
         try {
-            Analytics.trackEvent(eventName, RNUtils.convertReadableMapToStringMap(properties));
+            Analytics.trackEvent(eventName, ReactNativeUtils.convertReadableMapToStringMap(properties));
             promise.resolve("");
         } catch (JSONException e) {
             promise.reject(e);

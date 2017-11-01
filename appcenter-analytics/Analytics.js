@@ -1,19 +1,19 @@
-const RNAnalytics = require('react-native').NativeModules.RNAnalytics;
+const AppCenterReactNativeAnalytics = require('react-native').NativeModules.AppCenterReactNativeAnalytics;
 
 module.exports = {
     // async - returns a Promise
     trackEvent(eventName, properties) {
-        return RNAnalytics.trackEvent(eventName, sanitizeProperties(properties));
+        return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties));
     },
 
     // async - returns a Promise
     isEnabled() {
-        return RNAnalytics.isEnabled();
+        return AppCenterReactNativeAnalytics.isEnabled();
     },
 
     // async - returns a Promise
     setEnabled(enabled) {
-        return RNAnalytics.setEnabled(enabled);
+        return AppCenterReactNativeAnalytics.setEnabled(enabled);
     }
 
     /*
