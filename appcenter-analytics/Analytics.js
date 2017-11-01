@@ -15,13 +15,6 @@ module.exports = {
     setEnabled(enabled) {
         return AppCenterReactNativeAnalytics.setEnabled(enabled);
     }
-
-    /*
-    // TODO: Uncomment this once the underlying SDK supports the functionality
-    async trackPage(pageName, properties) {
-        await RNAnalytics.trackPage(pageName, sanitizeProperties(properties));
-    }
-    */
 };
 
 function sanitizeProperties(props) {

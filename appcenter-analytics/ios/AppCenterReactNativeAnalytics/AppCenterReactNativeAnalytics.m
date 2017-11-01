@@ -35,7 +35,6 @@ RCT_EXPORT_MODULE();
     if (!enabled) {
         [MSAnalytics setEnabled:enabled];
     }
-    //[MSAnalytics setAutoPageTrackingEnabled:false]; // TODO: once the underlying SDK supports this, make sure to call this
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
@@ -69,18 +68,5 @@ RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
     [MSAnalytics trackEvent:eventName withProperties:filteredProperties];
     resolve(nil);
 }
-
-/*
-// TODO: once the underlying SDK supports this
-RCT_EXPORT_METHOD(trackPage:(NSString *)pageName
-             withProperties:(NSDictionary *)properties
-                   resolver:(RCTPromiseResolveBlock)resolve
-                   rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [MSAnalytics trackPage:pageName withProperties:properties];
-    resolve(nil);
-}
-*/
-
 
 @end

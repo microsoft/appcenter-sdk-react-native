@@ -45,7 +45,6 @@ RCT_EXPORT_MODULE();
     [RNMobileCenterShared configureMobileCenter];
     [MSWrapperCrashesHelper setAutomaticProcessing:NO];
     [MSCrashes setDelegate:[RNCrashes sharedCrashesDelegate]];
-    //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
     [MSMobileCenter startService:[MSCrashes class]];
 }
@@ -54,7 +53,6 @@ RCT_EXPORT_MODULE();
 {
     [RNMobileCenterShared configureMobileCenter];
     [MSCrashes setDelegate:[RNCrashes sharedCrashesDelegate]];
-    //[MSMobileCenter setLogLevel:MSLogLevelVerbose];     // Uncomment if needed for debugging
 
     [MSMobileCenter startService:[MSCrashes class]];
 }

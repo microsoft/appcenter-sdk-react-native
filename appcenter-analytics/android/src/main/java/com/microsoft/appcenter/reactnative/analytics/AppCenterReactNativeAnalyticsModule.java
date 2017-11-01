@@ -22,7 +22,6 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
         if (!startEnabled) {
             Analytics.setEnabled(false);
         }
-        //Analytics.setAutoPageTrackingEnabled(false); // TODO: once the underlying SDK supports this, make sure to call this
     }
 
     @Override
@@ -61,17 +60,4 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
             promise.reject(e);
         }
     }
-
-    /*
-    // TODO: once the underlying SDK supports this
-    @ReactMethod
-    public void trackPage(String pageName, ReadableMap properties, Promise promise) {
-        try {
-            Analytics.trackPage(pageName, RNUtils.convertReadableMapToStringMap(properties));
-            promise.resolve("");
-        } catch (JSONException e) {
-            promise.reject(e);
-        }
-    }
-    */
 }
