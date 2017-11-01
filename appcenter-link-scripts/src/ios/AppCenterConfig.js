@@ -4,29 +4,29 @@ const path = require('path');
 const plist = require('plist');
 const xcode = require('xcode');
 const glob = require('glob');
-const debug = require('debug')('mobile-center-link:ios:MobileCenterConfigPlist');
+const debug = require('debug')('appcenter-link:ios:AppCenterConfigPlist');
 
-const MobileCenterConfigPlist = function (plistPath) {
+const AppCenterConfigPlist = function (plistPath) {
     this.plistPath = plistPath;
     try {
         const plistContents = fs.readFileSync(plistPath, 'utf8');
         this.parsedInfoPlist = plist.parse(plistContents);
         debug('Read contents of', plistPath);
     } catch (e) {
-        debug(`Could not read contents of MobileCenter-Config.plist - ${e.message}`);
+        debug(`Could not read contents of AppCenter-Config.plist - ${e.message}`);
         this.parsedInfoPlist = plist.parse(plist.build({}));
     }
 };
 
-MobileCenterConfigPlist.prototype.get = function (key) {
+AppCenterConfigPlist.prototype.get = function (key) {
     return this.parsedInfoPlist[key];
 };
 
-MobileCenterConfigPlist.prototype.set = function (key, value) {
+AppCenterConfigPlist.prototype.set = function (key, value) {
     this.parsedInfoPlist[key] = value;
 };
 
-MobileCenterConfigPlist.prototype.save = function () {
+AppCenterConfigPlist.prototype.save = function () {
     const plistContents = plist.build(this.parsedInfoPlist);
     fs.writeFileSync(this.plistPath, plistContents);
     debug(`Saved App Secret in ${this.plistPath}`);
@@ -43,7 +43,7 @@ function addConfigToProject(file) {
 
         if (projectPaths.length !== 1) {
             reject(new Error(`
-                Could not locate the xcode project to add MobileCenter-Config.plist file to. 
+                Could not locate the xcode project to add AppCenter-Config.plist file to. 
                 Looked in paths - 
                 ${JSON.stringify(projectPaths)}`
             ));
@@ -83,21 +83,21 @@ function addConfigToProject(file) {
     }));
 }
 
-MobileCenterConfigPlist.searchForFile = function (cwd) {
-    const configPaths = glob.sync(path.join(cwd, 'MobileCenter-Config.plist').replace(/\\/g, '/'), {
+AppCenterConfigPlist.searchForFile = function (cwd) {
+    const configPaths = glob.sync(path.join(cwd, 'AppCenter-Config.plist').replace(/\\/g, '/'), {
         ignore: 'node_modules/**'
     });
     if (configPaths.length > 1) {
         debug(configPaths);
-        throw new Error(`Found more than one MobileCenter-Config.plist in this project and hence, could not write App Secret.
-            Please add "AppSecret" to the correct MobileCenter-Config.plist file
-            MobileCenter-config.plist found at ${configPaths}
+        throw new Error(`Found more than one AppCenter-Config.plist in this project and hence, could not write App Secret.
+            Please add "AppSecret" to the correct AppCenter-Config.plist file
+            AppCenter-config.plist found at ${configPaths}
         `);
     } else if (configPaths.length === 1) {
         return configPaths[0];
     } else {
-        return path.join(cwd, 'MobileCenter-Config.plist');
+        return path.join(cwd, 'AppCenter-Config.plist');
     }
 };
 
-module.exports = MobileCenterConfigPlist;
+module.exports = AppCenterConfigPlist;

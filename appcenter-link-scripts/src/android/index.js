@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 const inquirer = require('inquirer');
-const debug = require('debug')('mobile-center-link:android:index');
+const debug = require('debug')('appcenter-link:android:index');
 
-const MobileCenterConfig = require('./MobileCenterConfig');
+const AppCenterConfig = require('./AppCenterConfig');
 
 module.exports = {
     checkIfAndroidDirectoryExists() {
@@ -17,14 +17,14 @@ module.exports = {
         return Promise.reject();
     },
 
-    initMobileCenterConfig() {
-        const config = new MobileCenterConfig(MobileCenterConfig.searchForFile());
+    initAppCenterConfig() {
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile());
         const currentAppSecret = config.get('app_secret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
         if (currentAppSecret) {
-            console.log(`Android App Secret is '${currentAppSecret}' set in ${config.MobileCenterConfigPath}`);
+            console.log(`Android App Secret is '${currentAppSecret}' set in ${config.AppCenterConfigPath}`);
             return Promise.resolve(null);
         }
 

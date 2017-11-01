@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const debug = require('debug')('mobile-center-link:ios:index');
+const debug = require('debug')('appcenter-link:ios:index');
 const glob = require('glob');
 const inquirer = require('inquirer');
 
@@ -9,7 +9,7 @@ const inquirer = require('inquirer');
 // As indicated in https://github.com/facebook/react-native/blob/4082a546495c5d9f4c6fd1b0c2f64e9bc7a88bc7/local-cli/link/getProjectDependencies.js#L7
 const pjson = require(path.join(process.cwd(), './package.json'));
 
-const MobileCenterConfig = require('./MobileCenterConfig');
+const AppCenterConfig = require('./AppCenterConfig');
 const AppDelegate = require('./AppDelegate');
 const PodFile = require('./PodFile');
 
@@ -28,8 +28,8 @@ module.exports = {
         return Promise.resolve();
     },
 
-    initMobileCenterConfig() {
-        const config = new MobileCenterConfig(MobileCenterConfig.searchForFile(path.dirname(appDelegatePath)));
+    initAppCenterConfig() {
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         const currentAppSecret = config.get('AppSecret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves

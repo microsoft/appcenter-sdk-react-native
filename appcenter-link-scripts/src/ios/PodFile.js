@@ -4,7 +4,7 @@ const childProcess = require('child_process');
 
 const glob = require('glob');
 const which = require('which').sync;
-const debug = require('debug')('mobile-center-link:ios:Podfile');
+const debug = require('debug')('appcenter-link:ios:Podfile');
 
 const Podfile = function (file) {
     debug(`Podfile located at ${file}`);
@@ -13,7 +13,7 @@ const Podfile = function (file) {
 };
 
 Podfile.prototype.eraseOldLines = function () {
-    this.fileContents = this.fileContents.replace(new RegExp("pod 'MobileCenter'.*"), '');
+    this.fileContents = this.fileContents.replace(new RegExp("pod 'AppCenter'.*"), '');
 };
 
 Podfile.prototype.addPodLine = function (pod, podspec, version) {
@@ -41,9 +41,9 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
     if (patterns === null) {
         throw new Error(
     `
-    Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for Mobile Center" line
+    Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
     in ${this.file}, inside
-    the "target" section, then rerun the react-native link. Mobile Center pods will be added below the comment.
+    the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
     `);
     }
     const pattern = patterns[0];

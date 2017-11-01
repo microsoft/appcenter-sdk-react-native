@@ -1,22 +1,22 @@
 {
-  "name": "mobile-center-link-scripts",
+  "name": "appcenter-link-scripts",
   "version": "0.11.1",
-  "description": "Node module that contains common functionality needed to link mobile-center-* modules",
+  "description": "Node module that contains common functionality needed to link appcenter-* modules",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/mobile-center-sdk-react-native.git"
+    "url": "git+https://github.com/microsoft/appcenter-sdk-react-native.git"
   },
   "keywords": [
     "react-native",
-    "mobile-center"
+    "appcenter"
   ],
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/microsoft/mobile-center-sdk-react-native/issues"
+    "url": "https://github.com/microsoft/appcenter-sdk-react-native/issues"
   },
-  "homepage": "https://github.com/microsoft/mobile-center-sdk-react-native#readme",
+  "homepage": "https://github.com/microsoft/appcenter-sdk-react-native#readme",
   "dependencies": {
     "debug": "^2.2.0",
     "glob": "^5.0.15",
