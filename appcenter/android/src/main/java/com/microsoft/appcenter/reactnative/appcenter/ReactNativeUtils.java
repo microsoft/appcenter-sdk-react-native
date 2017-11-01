@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.mobilecenter;
+package com.microsoft.appcenter.reactnative.appcenter;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableMap;
@@ -29,9 +29,9 @@ import com.microsoft.azure.mobile.CustomProperties;
 
 import static com.facebook.react.bridge.ReadableType.String;
 
-public class RNUtils {
+public class ReactNativeUtils {
 
-    private static final String LOG_TAG = "RNMobileCenter";
+    private static final String LOG_TAG = "AppCenterReactNative";
     private static final String DATE_KEY = "RNDate";
 
     private static final ThreadLocal<DateFormat> DATETIME_FORMAT = new ThreadLocal<DateFormat>() {

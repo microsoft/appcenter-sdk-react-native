@@ -1,32 +1,32 @@
 {
-  "name": "mobile-center",
+  "name": "appcenter",
   "version": "0.11.1",
-  "description": "Node module that contains common functionality needed to mobile-center-* modules",
-  "main": "MobileCenter.js",
+  "description": "Node module that contains common functionality needed to appcenter-* modules",
+  "main": "AppCenter.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/mobile-center-sdk-react-native.git"
+    "url": "git+https://github.com/microsoft/appcenter-sdk-react-native.git"
   },
   "keywords": [
     "react-native",
-    "mobile-center"
+    "appcenter"
   ],
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/microsoft/mobile-center-sdk-react-native/issues"
+    "url": "https://github.com/microsoft/appcenter-sdk-react-native/issues"
   },
-  "homepage": "https://github.com/Microsoft/mobile-center-sdk-react-native/blob/master/mobile-center/README.md",
+  "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "mobile-center-link-scripts": "0.11.1"
+    "appcenter-link-scripts": "0.11.1"
   },
   "rnpm": {
     "android": {
-      "packageInstance": "new RNMobileCenterPackage(MainApplication.this)"
+      "packageInstance": "new AppCenterReactNativePackage(MainApplication.this)"
     },
     "commands": {
-      "prelink": "node node_modules/mobile-center/scripts/prelink",
-      "postlink": "node node_modules/mobile-center/scripts/postlink"
+      "prelink": "node node_modules/appcenter/scripts/prelink",
+      "postlink": "node node_modules/appcenter/scripts/postlink"
     }
   },
   "devDependencies": {

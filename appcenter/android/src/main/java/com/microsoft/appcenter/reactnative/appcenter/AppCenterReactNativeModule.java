@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.mobilecenter;
+package com.microsoft.appcenter.reactnative.appcenter;
 
 import android.app.Application;
 
@@ -7,21 +7,21 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.azure.mobile.MobileCenter;
-import com.microsoft.azure.mobile.react.mobilecentershared.RNMobileCenterShared;
+import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
 
 import java.util.UUID;
 
 @SuppressWarnings("WeakerAccess")
-public class RNMobileCenterModule extends BaseJavaModule {
+public class AppCenterReactNativeModule extends BaseJavaModule {
 
-    public RNMobileCenterModule(Application application) {
-        RNMobileCenterShared.configureMobileCenter(application);
+    public AppCenterReactNativeModule(Application application) {
+        AppCenterReactNativeShared.configureMobileCenter(application);
     }
 
     @Override
     public String getName() {
-        return "RNMobileCenter";
+        return "AppCenterReactNative";
     }
 
     @ReactMethod
@@ -70,6 +70,6 @@ public class RNMobileCenterModule extends BaseJavaModule {
 
     @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
-        MobileCenter.setCustomProperties(RNUtils.toCustomProperties(properties));
+        MobileCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
     }
 }

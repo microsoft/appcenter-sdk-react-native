@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C35AEC261EF91F9300931F0C /* RNMobileCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AEC251EF91F9300931F0C /* RNMobileCenter.m */; };
-		C35AEC271EF91F9300931F0C /* RNMobileCenter.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C35AEC241EF91F9300931F0C /* RNMobileCenter.h */; };
+		C35AEC261EF91F9300931F0C /* AppCenterReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AEC251EF91F9300931F0C /* AppCenterReactNative.m */; };
+		C35AEC271EF91F9300931F0C /* AppCenterReactNative.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C35AEC241EF91F9300931F0C /* AppCenterReactNative.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +18,16 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				C35AEC271EF91F9300931F0C /* RNMobileCenter.h in CopyFiles */,
+				C35AEC271EF91F9300931F0C /* AppCenterReactNative.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C35AEC211EF91F9300931F0C /* libRNMobileCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMobileCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C35AEC241EF91F9300931F0C /* RNMobileCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMobileCenter.h; sourceTree = "<group>"; };
-		C35AEC251EF91F9300931F0C /* RNMobileCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMobileCenter.m; sourceTree = "<group>"; };
+		C35AEC211EF91F9300931F0C /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNative.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C35AEC241EF91F9300931F0C /* AppCenterReactNative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNative.h; sourceTree = "<group>"; };
+		C35AEC251EF91F9300931F0C /* AppCenterReactNative.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNative.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +44,7 @@
 		C35AEC181EF91F9300931F0C = {
 			isa = PBXGroup;
 			children = (
-				C35AEC231EF91F9300931F0C /* RNMobileCenter */,
+				C35AEC231EF91F9300931F0C /* AppCenterReactNative */,
 				C35AEC221EF91F9300931F0C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,26 +52,26 @@
 		C35AEC221EF91F9300931F0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C35AEC211EF91F9300931F0C /* libRNMobileCenter.a */,
+				C35AEC211EF91F9300931F0C /* libAppCenterReactNative.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C35AEC231EF91F9300931F0C /* RNMobileCenter */ = {
+		C35AEC231EF91F9300931F0C /* AppCenterReactNative */ = {
 			isa = PBXGroup;
 			children = (
-				C35AEC241EF91F9300931F0C /* RNMobileCenter.h */,
-				C35AEC251EF91F9300931F0C /* RNMobileCenter.m */,
+				C35AEC241EF91F9300931F0C /* AppCenterReactNative.h */,
+				C35AEC251EF91F9300931F0C /* AppCenterReactNative.m */,
 			);
-			path = RNMobileCenter;
+			path = AppCenterReactNative;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C35AEC201EF91F9300931F0C /* RNMobileCenter */ = {
+		C35AEC201EF91F9300931F0C /* AppCenterReactNative */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C35AEC2A1EF91F9300931F0C /* Build configuration list for PBXNativeTarget "RNMobileCenter" */;
+			buildConfigurationList = C35AEC2A1EF91F9300931F0C /* Build configuration list for PBXNativeTarget "AppCenterReactNative" */;
 			buildPhases = (
 				C35AEC1D1EF91F9300931F0C /* Sources */,
 				C35AEC1E1EF91F9300931F0C /* Frameworks */,
@@ -81,9 +81,9 @@
 			);
 			dependencies = (
 			);
-			name = RNMobileCenter;
-			productName = RNMobileCenter;
-			productReference = C35AEC211EF91F9300931F0C /* libRNMobileCenter.a */;
+			name = AppCenterReactNative;
+			productName = AppCenterReactNative;
+			productReference = C35AEC211EF91F9300931F0C /* libAppCenterReactNative.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -101,7 +101,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C35AEC1C1EF91F9300931F0C /* Build configuration list for PBXProject "RNMobileCenter" */;
+			buildConfigurationList = C35AEC1C1EF91F9300931F0C /* Build configuration list for PBXProject "AppCenterReactNative" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -113,7 +113,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C35AEC201EF91F9300931F0C /* RNMobileCenter */,
+				C35AEC201EF91F9300931F0C /* AppCenterReactNative */,
 			);
 		};
 /* End PBXProject section */
@@ -123,7 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C35AEC261EF91F9300931F0C /* RNMobileCenter.m in Sources */,
+				C35AEC261EF91F9300931F0C /* AppCenterReactNative.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +261,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C35AEC1C1EF91F9300931F0C /* Build configuration list for PBXProject "RNMobileCenter" */ = {
+		C35AEC1C1EF91F9300931F0C /* Build configuration list for PBXProject "AppCenterReactNative" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C35AEC281EF91F9300931F0C /* Debug */,
@@ -270,7 +270,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C35AEC2A1EF91F9300931F0C /* Build configuration list for PBXNativeTarget "RNMobileCenter" */ = {
+		C35AEC2A1EF91F9300931F0C /* Build configuration list for PBXNativeTarget "AppCenterReactNative" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C35AEC2B1EF91F9300931F0C /* Debug */,

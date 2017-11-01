@@ -1,4 +1,4 @@
-package com.microsoft.azure.mobile.react.mobilecenter;
+package com.microsoft.appcenter.reactnative.appcenter;
 
 import android.app.Application;
 
@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RNMobileCenterPackage implements ReactPackage {
-    private RNMobileCenterModule module;
+public class AppCenterReactNativePackage implements ReactPackage {
+    private AppCenterReactNativeModule module;
 
-    public RNMobileCenterPackage(Application application) {
-        this.module = new RNMobileCenterModule(application);
+    public AppCenterReactNativePackage(Application application) {
+        this.module = new AppCenterReactNativeModule(application);
     }
 
     @Override

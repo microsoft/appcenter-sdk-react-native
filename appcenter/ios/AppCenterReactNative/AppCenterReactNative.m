@@ -1,4 +1,4 @@
-#import "RNMobileCenter.h"
+#import "AppCenterReactNative.h"
 
 #if __has_include(<React/RCTAssert.h>)
 #import <React/RCTAssert.h>
@@ -17,18 +17,18 @@
 #endif
 
 @import MobileCenter;
-@import RNMobileCenterShared;
+@import AppCenterReactNativeShared;
 
-@interface RNMobileCenter () <RCTBridgeModule>
+@interface AppCenterReactNative () <RCTBridgeModule>
 @end
 
-@implementation RNMobileCenter
+@implementation AppCenterReactNative
 
 RCT_EXPORT_MODULE();
 
 + (void)register
 {
-    [RNMobileCenterShared configureMobileCenter];
+    [AppCenterReactNativeShared configureMobileCenter];
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)enabled

@@ -21,6 +21,6 @@ dependencies {
     compile 'com.facebook.react:react-native:+'
     compile 'com.microsoft.azure.mobile:mobile-center:0.13.0'
 
-    //compile project(':RNMobileCenterShared')   // For testing with TestApp
-    compile 'com.microsoft.azure.mobile.react:mobile-center-react-native:0.11.1'
+    //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:0.11.1'
 }

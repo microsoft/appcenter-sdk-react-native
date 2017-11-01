@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface RNMobileCenter : NSObject
+@interface AppCenterReactNative : NSObject
 
 + (void) register;
 

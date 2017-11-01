@@ -1,4 +1,4 @@
-const CustomProperties = require('../MobileCenter.js').CustomProperties;
+const CustomProperties = require('../AppCenter.js').CustomProperties;
 
 it('CustomProperties set numbers correctly', () => {
     const properties = new CustomProperties()
@@ -33,9 +33,9 @@ it('CustomProperties set dates correctly', () => {
 });
 
 it('CustomProperties does not throw on invalid property key type. Only string type is allowed.', () => {
-    jest.unmock('../mobile-center-log');
-    const MobileCenterLog = require('../mobile-center-log');
-    MobileCenterLog.error = jest.fn(() => Promise.resolve());
+    jest.unmock('../appcenter-log');
+    const AppCenterLog = require('../appcenter-log');
+    AppCenterLog.error = jest.fn(() => Promise.resolve());
     const properties = new CustomProperties()
         .set(undefined, 'foo')
         .set({}, 'foo2');
@@ -43,9 +43,9 @@ it('CustomProperties does not throw on invalid property key type. Only string ty
 });
 
 it('CustomProperties does not throw on invalid property value type. Only string|number|boolean|Date type is allowed.', () => {
-    jest.unmock('../mobile-center-log');
-    const MobileCenterLog = require('../mobile-center-log');
-    MobileCenterLog.error = jest.fn(() => Promise.resolve());
+    jest.unmock('../appcenter-log');
+    const AppCenterLog = require('../appcenter-log');
+    AppCenterLog.error = jest.fn(() => Promise.resolve());
     const properties = new CustomProperties()
         .set('foo', { foo: 'bar' });
     expect(properties).toEqual({});
