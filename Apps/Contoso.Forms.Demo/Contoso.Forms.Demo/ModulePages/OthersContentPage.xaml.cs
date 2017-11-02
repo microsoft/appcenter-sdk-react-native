@@ -22,9 +22,11 @@ namespace Contoso.Forms.Demo
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            var mcEnabled = await MobileCenter.IsEnabledAsync();
             DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
-            DistributeEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            DistributeEnabledSwitchCell.IsEnabled = mcEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
+            PushEnabledSwitchCell.IsEnabled = mcEnabled;
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)

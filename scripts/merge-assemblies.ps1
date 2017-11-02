@@ -5,4 +5,4 @@ Param(
     [string]$StorageId
 )
 
-.\build.ps1 -Target "MergeAssemblies" -ExtraArgs '-StorageId="$StorageId"'
+.\build.ps1 -Target "MergeAssemblies" -StorageId="$StorageId"

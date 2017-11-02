@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.AppCenter.Push</id>
+    <id>Microsoft.AppCenter.Push</id>
     <title>Mobile Center Push</title>
     <authors>Microsoft</authors>
     <owners>microsoft,app-center</owners>
@@ -15,10 +15,10 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
+      <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$windows_dir$/Microsoft.Azure.AppCenter.Push.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Push.dll" target="lib/uap10.0" />
   </files>
 </package>

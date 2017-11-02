@@ -5,4 +5,4 @@ Param(
     [string]$Version
 )
 
-.\build.ps1 -Script "version.cake" -Target "StartNewVersion" -ExtraArgs '-NewVersion="$Version"'
+.\build.ps1 -Script "version.cake" -Target "StartNewVersion" -NewVersion="$Version"

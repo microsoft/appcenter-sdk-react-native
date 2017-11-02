@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Microsoft.Azure.AppCenter.Analytics</id>
+    <id>Microsoft.AppCenter.Analytics</id>
     <title>App Center Analytics</title>
     <authors>Microsoft</authors>
     <owners>microsoft,app-center</owners>
@@ -15,10 +15,13 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.Azure.AppCenter" version="$version$" />
+      <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <file src="$windows_dir$/Microsoft.Azure.AppCenter.Analytics.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/uap10.0" />
+
+    <!-- TODO: Uncomment when it's time to release these. -->
+    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/net452" /-->
   </files>
 </package>

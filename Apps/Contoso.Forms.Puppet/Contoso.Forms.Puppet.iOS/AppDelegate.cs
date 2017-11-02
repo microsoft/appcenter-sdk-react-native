@@ -15,7 +15,14 @@ namespace Contoso.Forms.Puppet.iOS
             Distribute.DontCheckForUpdatesInDebug();
             MSAnalytics.SetDelegate(new AnalyticsDelegate());
             LoadApplication(new App());
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
             return base.FinishedLaunching(uiApplication, launchOptions);
+        }
+
+        public override void WillEnterForeground(UIApplication uiApplication)
+        {
+            base.WillEnterForeground(uiApplication);
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
         }
     }
 
