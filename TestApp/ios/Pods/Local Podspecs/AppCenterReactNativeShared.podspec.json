@@ -1,10 +1,10 @@
 {
-  "name": "RNMobileCenterShared",
+  "name": "AppCenterReactNativeShared",
   "version": "0.11.1",
-  "summary": "React Native plugin for Mobile Center",
+  "summary": "React Native plugin for AppCenter",
   "license": {
     "type": "MIT",
-    "file": "RNMobileCenterShared/LICENSE"
+    "file": "AppCenterReactNativeShared/LICENSE"
   },
   "homepage": "https://mobile.azure.com",
   "documentation_url": "https://docs.mobile.azure.com",
@@ -12,13 +12,13 @@
     "Microsoft": "mobilecentersdk@microsoft.com"
   },
   "source": {
-    "http": "https://github.com/Microsoft/MobileCenter-SDK-React-Native/releases/download/0.11.1/MobileCenter-SDK-ReactNative-iOS-Pod-0.11.1.zip"
+    "http": "https://github.com/Microsoft/AppCenter-SDK-React-Native/releases/download/0.11.1/AppCenter-SDK-ReactNative-iOS-Pod-0.11.1.zip"
   },
   "platforms": {
     "ios": "8.0"
   },
   "requires_arc": true,
-  "vendored_frameworks": "RNMobileCenterShared/RNMobileCenterShared.framework",
+  "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
   "dependencies": {
     "MobileCenter/Core": [
       "~> 0.14.0"

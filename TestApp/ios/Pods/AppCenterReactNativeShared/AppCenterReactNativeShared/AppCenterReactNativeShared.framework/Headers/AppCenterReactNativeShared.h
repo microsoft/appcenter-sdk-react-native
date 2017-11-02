@@ -2,7 +2,7 @@
 
 @import MobileCenter;
 
-@interface RNMobileCenterShared : NSObject
+@interface AppCenterReactNativeShared : NSObject
 
 + (void) setAppSecret: (NSString *)secret;
 
@@ -11,6 +11,7 @@
 + (void) configureMobileCenter;
 
 + (MSWrapperSdk *) getWrapperSdk;
+
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk;
 
 @end

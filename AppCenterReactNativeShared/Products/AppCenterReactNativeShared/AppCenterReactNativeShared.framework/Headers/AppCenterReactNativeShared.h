@@ -11,6 +11,7 @@
 + (void) configureMobileCenter;
 
 + (MSWrapperSdk *) getWrapperSdk;
+
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk;
 
 @end
