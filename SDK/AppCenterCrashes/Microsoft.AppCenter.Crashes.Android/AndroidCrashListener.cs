@@ -1,5 +1,5 @@
-﻿using Com.Microsoft.Azure.Mobile.Crashes;
-using Com.Microsoft.Azure.Mobile.Crashes.Model;
+﻿using CCom.Microsoft.AppCenterCrashes;
+using Com.Microsoft.AppCenter.Crashes.Model;
 using Java.Lang;
 using Java.Util;
 

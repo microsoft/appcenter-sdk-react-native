@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Com.Microsoft.Azure.Mobile.Crashes.Model;
+using Com.Microsoft.AppCenter.Crashes.Model;
 
 namespace Microsoft.AppCenter.Crashes
 {

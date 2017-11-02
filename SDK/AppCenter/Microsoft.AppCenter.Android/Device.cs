@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.AppCenter
 {
-    using AndroidDevice = Com.Microsoft.Azure.Mobile.Ingestion.Models.Device;
+    using AndroidDevice = Com.Microsoft.AppCenter.Ingestion.Models.Device;
 
     public partial class Device
     {
