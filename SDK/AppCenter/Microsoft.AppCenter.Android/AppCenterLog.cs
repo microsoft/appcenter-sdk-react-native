@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.AppCenter
 {
-    using AndroidAppCenterLog = Com.Microsoft.AppCenter.Utils.MobileCenterLog;
+    using AndroidAppCenterLog = Com.Microsoft.Appcenter.Utils.AppCenterLog;
 
     public static partial class AppCenterLog
     {

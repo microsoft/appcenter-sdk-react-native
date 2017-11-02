@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.AppCenter.Crashes;
-using Com.Microsoft.AppCenter.Crashes.Model;
+using Com.Microsoft.Appcenter.Crashes;
+using Com.Microsoft.Appcenter.Crashes.Model;
 using Java.Lang;
 
 namespace Microsoft.AppCenter.Crashes
 {
-    using ModelException = Com.Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
-    using ModelStackFrame = Com.Microsoft.AppCenter.Crashes.Ingestion.Models.StackFrame;
+    using ModelException = Com.Microsoft.Appcenter.Crashes.Ingestion.Models.Exception;
+    using ModelStackFrame = Com.Microsoft.Appcenter.Crashes.Ingestion.Models.StackFrame;
     using Exception = System.Exception;
 
     class PlatformCrashes : PlatformCrashesBase

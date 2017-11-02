@@ -1,5 +1,5 @@
-﻿using CCom.Microsoft.AppCenterCrashes;
-using Com.Microsoft.AppCenter.Crashes.Model;
+﻿using Com.Microsoft.Appcenter.Crashes;
+using Com.Microsoft.Appcenter.Crashes.Model;
 using Java.Lang;
 using Java.Util;
 

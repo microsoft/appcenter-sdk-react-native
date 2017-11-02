@@ -2,10 +2,10 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Com.Microsoft.AppCenter.Analytics;
-using Com.Microsoft.AppCenter.Analytics.Channel;
-using Com.Microsoft.AppCenter.Analytics.Ingestion.Models;
-using Com.Microsoft.AppCenter.Ingestion.Models;
+using Com.Microsoft.Appcenter.Analytics;
+using Com.Microsoft.Appcenter.Analytics.Channel;
+using Com.Microsoft.Appcenter.Analytics.Ingestion.Models;
+using Com.Microsoft.Appcenter.Ingestion.Models;
 using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test.Droid

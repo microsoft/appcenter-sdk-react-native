@@ -3,7 +3,7 @@
 namespace Microsoft.AppCenter.Distribute
 {
     [Preserve]
-    class DownloadManagerReceiver : Com.Microsoft.AppCenter.Distribute.DownloadManagerReceiver
+    class DownloadManagerReceiver : Com.Microsoft.Appcenter.Distribute.DownloadManagerReceiver
     {
         /* We don't use that subclass, it's only for preserving the parent Java class when linker is used. */
     }
