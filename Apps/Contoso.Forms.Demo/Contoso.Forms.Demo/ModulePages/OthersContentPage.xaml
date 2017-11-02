@@ -10,5 +10,5 @@
 		    <TableSection Title="Push">
                 <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled"/>
             </TableSection>
-        </TableView>
+    </TableView>
 </ContentPage>

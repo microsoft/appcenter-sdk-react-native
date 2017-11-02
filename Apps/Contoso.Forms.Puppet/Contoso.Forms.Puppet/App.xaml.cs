@@ -1,14 +1,15 @@
-﻿using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Distribute;
-using Microsoft.Azure.Mobile.Push;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.Azure.Mobile.Push;
+using Microsoft.Azure.Mobile.Rum;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -42,8 +43,9 @@ namespace Contoso.Forms.Puppet
             MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+            RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
             MobileCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
-                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
 
             // Need to use reflection because moving this to the Android specific
             // code causes crash. (Unable to access properties before init is called).
@@ -92,8 +94,12 @@ namespace Contoso.Forms.Puppet
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
-                var customData = "{" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
-                Current.MainPage.DisplayAlert(e.Title, e.Message + "\nCustom data=" + customData, "OK");
+                var message = e.Message;
+                if (e.CustomData != null && e.CustomData.Count > 0)
+                {
+                    message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+                }
+                Current.MainPage.DisplayAlert(e.Title, message, "OK");
             });
         }
 
@@ -222,7 +228,7 @@ namespace Contoso.Forms.Puppet
                 }
                 answer.ContinueWith((task) =>
                 {
-                    if (releaseDetails.MandatoryUpdate || ((Task<bool>) task).Result)
+                    if (releaseDetails.MandatoryUpdate || ((Task<bool>)task).Result)
                     {
                         Distribute.NotifyUpdateAction(UpdateAction.Update);
                     }

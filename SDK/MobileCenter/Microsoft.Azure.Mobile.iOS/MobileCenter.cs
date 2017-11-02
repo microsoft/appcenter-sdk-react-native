@@ -167,7 +167,7 @@ namespace Microsoft.Azure.Mobile
 
         static Type GetBindingType(Type type)
         {
-            return (Type)type.GetProperty("BindingType").GetValue(null, null);
+            return (Type)type.GetProperty("BindingType")?.GetValue(null, null);
         }
 
         static void SetWrapperSdk()

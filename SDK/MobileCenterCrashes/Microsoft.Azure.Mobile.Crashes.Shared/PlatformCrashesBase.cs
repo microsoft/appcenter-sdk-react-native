@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Mobile.Crashes
 
         public void GenerateTestCrash()
         {
-#if WINDOWS_UWP
+#if USES_WATSON
 #else
             throw new TestCrashException();
 #endif
@@ -35,6 +35,6 @@ namespace Microsoft.Azure.Mobile.Crashes
         public abstract ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
         public abstract ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
         public abstract GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
-        //public abstract void TrackException(Exception exception);
+        public abstract void TrackException(Exception exception);
     }
 }

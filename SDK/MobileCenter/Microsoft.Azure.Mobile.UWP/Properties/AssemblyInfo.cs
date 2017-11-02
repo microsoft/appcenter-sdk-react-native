@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.Azure.Mobile")]
+[assembly: AssemblyTitle("Microsoft.Azure.Mobile.UWP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Microsoft.Azure.Mobile")]
+[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Core")]
 [assembly: AssemblyCopyright("Microsoft Corp. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.16.1.0")]
-[assembly: AssemblyInformationalVersion("0.16.1-SNAPSHOT")]
+[assembly: AssemblyFileVersion("0.17.1.0")]
+[assembly: AssemblyInformationalVersion("0.17.1-SNAPSHOT")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("Microsoft.Azure.Mobile.Test.UWP")]

@@ -44,6 +44,8 @@ namespace Microsoft.Azure.Mobile.Crashes
         {
         }
 
-        //public override void TrackException(Exception exception) { }
+        public override void TrackException(Exception exception)
+        { 
+        }
     }
 }
