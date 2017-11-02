@@ -12,7 +12,7 @@ target 'TestApp' do
   pod 'MobileCenter/Analytics', '~> 0.14.0'
   pod 'MobileCenter/Push', '~> 0.14.0'
   
-  pod 'RNMobileCenterShared', :path => '../../RNMobileCenterShared/Products/'
+  pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
 
   platform :ios, '8.0'
 end

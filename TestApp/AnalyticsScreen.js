@@ -12,7 +12,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Analytics from 'mobile-center-analytics';
+import Analytics from 'appcenter-analytics';
 import SharedStyles from './SharedStyles';
 
 export default class AnalyticsScreen extends React.Component {
