@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.AppCenter.Rum.Android.Bindings</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Rum.Android.Bindings</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
@@ -55,13 +55,15 @@
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\mobile-center-rum-release.aar" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
       <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
       <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-rum-release.aar">
+      <Link>Jars\appcenter-rum-release.aar</Link>
+    </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>

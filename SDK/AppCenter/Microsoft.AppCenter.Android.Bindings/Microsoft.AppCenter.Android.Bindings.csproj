@@ -34,7 +34,7 @@
         </Command>
         <Command>
           <type>AfterClean</type>
-          <command>rm -rf ../../../externals/android Jars/mobile-center-release.aar</command>
+          <command>rm -rf ../../../externals/android</command>
           <workingdir>${ProjectDir}</workingdir>
         </Command>
       </CustomCommands>
@@ -69,8 +69,8 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="..\..\..\externals\android\MobileCenter-SDK-Android-0.13.0\mobile-center-release.aar">
-      <Link>Jars\mobile-center-release.aar</Link>
+    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-release.aar">
+      <Link>Jars\appcenter-release.aar</Link>
     </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />

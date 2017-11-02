@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.AppCenter.Analytics.Android.Bindings</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Analytics.Android.Bindings</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
@@ -26,15 +26,6 @@
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <CustomCommands>
-      <CustomCommands>
-        <Command>
-          <type>AfterClean</type>
-          <command>rm -f Jars/mobile-center-analytics-release.aar</command>
-          <workingdir>${ProjectDir}</workingdir>
-        </Command>
-      </CustomCommands>
-    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -57,7 +48,6 @@
   <ItemGroup>
     <None Include="Additions\AboutAdditions.txt" />
     <None Include="Jars\AboutJars.txt" />
-    <LibraryProjectZip Include="Jars\mobile-center-analytics-release.aar" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
@@ -69,6 +59,11 @@
     <TransformFile Include="Transforms\EnumFields.xml" />
     <TransformFile Include="Transforms\EnumMethods.xml" />
     <TransformFile Include="Transforms\Metadata.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-analytics-release.aar">
+      <Link>Jars\appcenter-analytics-release.aar</Link>
+    </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>
