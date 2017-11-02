@@ -9,7 +9,7 @@
   "homepage": "https://mobile.azure.com",
   "documentation_url": "https://docs.mobile.azure.com",
   "authors": {
-    "Microsoft": "mobilecentersdk@microsoft.com"
+    "Microsoft": "appcentersdk@microsoft.com"
   },
   "source": {
     "http": "https://github.com/Microsoft/AppCenter-SDK-React-Native/releases/download/0.11.1/AppCenter-SDK-ReactNative-iOS-Pod-0.11.1.zip"
