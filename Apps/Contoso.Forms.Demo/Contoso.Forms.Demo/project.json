@@ -5,11 +5,9 @@
     "Microsoft.AppCenter.Distribute": "1.0.0-r0001-d3d915a",
     "Microsoft.AppCenter.Push": "1.0.0-r0001-d3d915a",
     "NETStandard.Library": "1.6.1",
-    "Xamarin.Forms": "2.3.4.231"
+    "Xamarin.Forms": "2.4.0.38779"
   },
   "frameworks": {
-    "netstandard1.0": {
-      "imports": "portable-net45+win8+wpa81"
-    }
+    "netstandard1.0": {}
   }
 }

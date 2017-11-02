@@ -7,10 +7,14 @@
     <Product>Microsoft.AppCenter.Analytics</Product>
     <Company>Microsoft Corporation</Company>
     <Version>1.0.0-SNAPSHOT</Version>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyTitle>Microsoft.AppCenter.Rum</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />
     <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter\Microsoft.AppCenter.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+  <Target Name="GetPackagingOutputs" />
 </Project>

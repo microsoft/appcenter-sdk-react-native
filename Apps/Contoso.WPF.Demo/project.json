@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "Microsoft.AppCenter.Analytics": "0.16.0",
-    "Microsoft.AppCenter.Crashes": "0.16.0"
+    "Microsoft.Azure.Mobile.Analytics": "0.17.0",
+    "Microsoft.Azure.Mobile.Crashes": "0.17.0"
   },
   "frameworks": {
     "net452": {}

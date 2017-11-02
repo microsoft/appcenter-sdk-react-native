@@ -47,24 +47,28 @@ namespace Microsoft.AppCenter.Analytics.Channel
 
         public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
         {
-            _channel = channel;
-            _applicationSettings = applicationSettings;
-            channelGroup.EnqueuingLog += HandleEnqueuingLog;
-            var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
-            if (sessionsString == null)
+            // Need to lock in constructor because of the event handler being set for channelGroup.
+            lock (_lockObject)
             {
-                return;
-            }
-            _sessions = SessionsFromString(sessionsString);
+                _channel = channel;
+                _applicationSettings = applicationSettings;
+                channelGroup.EnqueuingLog += HandleEnqueuingLog;
+                var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
+                if (sessionsString == null)
+                {
+                    return;
+                }
+                _sessions = SessionsFromString(sessionsString);
 
-            // Re-write sessions in storage in case of any invalid strings
-            _applicationSettings.SetValue(StorageKey, SessionsAsString());
-            if (_sessions.Count == 0)
-            {
-                return;
+                // Re-write sessions in storage in case of any invalid strings
+                _applicationSettings.SetValue(StorageKey, SessionsAsString());
+                if (_sessions.Count == 0)
+                {
+                    return;
+                }
+                var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
+                AppCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
             }
-            var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
-            AppCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
         }
 
         public void Pause()

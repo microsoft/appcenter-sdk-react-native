@@ -1,7 +1,6 @@
 #tool nuget:?package=XamarinComponent
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers
-#addin nuget:?package=Cake.SemVer
 #addin nuget:?package=Newtonsoft.Json
 
 using System;
@@ -185,7 +184,7 @@ Task("IncreaseIosVersion").Does(()=>
     var openTag = "<string>";
     var closeTag = "</string>";
     var currentVersion = match.Substring(match.IndexOf(openTag) + openTag.Length, match.IndexOf(closeTag) - match.IndexOf(openTag) - openTag.Length);
-    var newVersion = IncrementSemVer(currentVersion);
+    var newVersion = IncrementPatch(currentVersion);
     var newBundleVersionString = "<key>CFBundleVersion</key>\n\t<string>" + newVersion + "</string>";
     ReplaceRegexInFiles(infoPlistLocation, bundleVersionPattern, newBundleVersionString);
     Information("iOS Version increased to " + newVersion);
@@ -213,7 +212,7 @@ Task("IncreaseAndroidVersion").Does(()=>
     {
         versionName = versionName.Substring(0, versionName.IndexOf(suffix));
     }
-    var newVersionName = IncrementSemVer(versionName);
+    var newVersionName = IncrementPatch(versionName);
     XmlPoke(manifestLocation, "manifest/@android:versionName", newVersionName, pokeSettings);
     Information("Android version name changed to " + newVersionName + ", version code increased to " + newVersionCode);
 });
@@ -335,10 +334,19 @@ void AttachJsonPayload(HttpWebRequest request, JObject json)
     }
 }
 
-string IncrementSemVer(string semVer)
+string IncrementPatch(string semVer)
 {
-    var parsedVersion = ParseSemVer(semVer);
-    return CreateSemVer(parsedVersion.Major, parsedVersion.Minor, parsedVersion.Patch + 1).ToString();
+    int patchIdx = 0;
+    for (int i = semVer.Length - 1; i >= 0; --i)
+    {
+        if (semVer[i] == '.')
+        {
+            patchIdx = i + 1;
+            break;
+        }
+    }
+    var newPatch = Convert.ToInt32(semVer.Substring(patchIdx, semVer.Length - patchIdx)) + 1;
+    return semVer.Substring(0, patchIdx) + newPatch;
 }
 
 // Adapted from https://stackoverflow.com/questions/566462/upload-files-with-httpwebrequest-multipart-form-data/2996904#2996904

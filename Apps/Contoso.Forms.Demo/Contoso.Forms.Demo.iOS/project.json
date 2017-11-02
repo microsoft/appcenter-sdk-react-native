@@ -4,7 +4,7 @@
     "Microsoft.AppCenter.Crashes": "1.0.0-r0001-d3d915a",
     "Microsoft.AppCenter.Distribute": "1.0.0-r0001-d3d915a",
     "Microsoft.AppCenter.Push": "1.0.0-r0001-d3d915a",
-    "Xamarin.Forms": "2.3.4.231"
+    "Xamarin.Forms": "2.4.0.38779"
   },
   "frameworks": {
     "Xamarin.iOS,Version=v1.0": {}

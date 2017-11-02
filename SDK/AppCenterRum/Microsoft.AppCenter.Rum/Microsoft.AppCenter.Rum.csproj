@@ -8,9 +8,13 @@
     <Product>Microsoft.AppCenter.Rum</Product>
     <Company>Microsoft Corporation</Company>
     <Version>1.0.0-SNAPSHOT</Version>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyTitle>Microsoft.AppCenter.Rum</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />
   </ItemGroup>
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+  <Target Name="GetPackagingOutputs" />
 </Project>

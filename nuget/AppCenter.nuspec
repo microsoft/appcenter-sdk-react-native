@@ -55,6 +55,5 @@
     <!-- Windows Classic Desktop (WPF and WinForms) -->
     <!-- TODO: Uncomment when it's time to release these. -->
     <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net452" /-->
-
   </files>
 </package>
