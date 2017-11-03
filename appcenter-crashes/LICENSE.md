@@ -1,4 +1,4 @@
-Microsoft Mobile Center Error Reporting Plugin for React Native
+Microsoft App Center Error Reporting Plugin for React Native
 
 Copyright (c) Microsoft Corporation
 
