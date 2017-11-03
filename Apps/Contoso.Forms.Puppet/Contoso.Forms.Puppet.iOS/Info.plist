@@ -5,9 +5,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.microsoft.azure.mobile.xamarin.forms.puppet</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.17.1</string>
+	<string>0.17.2</string>
 	<key>CFBundleVersion</key>
-	<string>0.17.1</string>
+	<string>0.17.2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -70,6 +70,10 @@
 		<string>tr-TR</string>
 		<string>zh-CN</string>
 		<string>zh-TW</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>
