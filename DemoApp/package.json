@@ -8,10 +8,10 @@
     "lint": "eslint ."    
   },
   "dependencies": {
-    "mobile-center": "0.11.1",
-    "mobile-center-analytics": "0.11.1",
-    "mobile-center-crashes": "0.11.1",
-    "mobile-center-push": "0.11.1",
+    "mobile-center": "0.11.2",
+    "mobile-center-analytics": "0.11.2",
+    "mobile-center-crashes": "0.11.2",
+    "mobile-center-push": "0.11.2",
     "react": "16.0.0-alpha.12",
     "react-native": "0.48.3",
     "react-navigation": "^1.0.0-beta.11"
