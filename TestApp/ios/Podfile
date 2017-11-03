@@ -8,9 +8,9 @@ target 'TestApp' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'MobileCenter/Crashes', '~> 0.14.0'
-  pod 'MobileCenter/Analytics', '~> 0.14.0'
-  pod 'MobileCenter/Push', '~> 0.14.0'
+  pod 'MobileCenter/Crashes', '~> 0.14.1'
+  pod 'MobileCenter/Analytics', '~> 0.14.1'
+  pod 'MobileCenter/Push', '~> 0.14.1'
   
   pod 'RNMobileCenterShared', :path => '../../RNMobileCenterShared/Products/'
 
