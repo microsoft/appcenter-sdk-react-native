@@ -5,4 +5,4 @@ Param(
     [string]$StorageId
 )
 
-.\build.ps1 -Target "UploadAssemblies" -ExtraArgs '-StorageId="$StorageId"'
+.\build.ps1 -Target "UploadAssemblies" -StorageId="$StorageId"

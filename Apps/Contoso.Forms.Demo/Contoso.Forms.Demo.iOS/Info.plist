@@ -70,6 +70,10 @@
 		<string>tr-TR</string>
 		<string>zh-CN</string>
 		<string>zh-TW</string>
-	</array>	
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
