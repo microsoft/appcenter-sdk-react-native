@@ -177,14 +177,14 @@ namespace Contoso.Android.Puppet
                 var builder = new AlertDialog.Builder(this);
                 builder.SetTitle(string.Format(GetString(Resource.String.version_x_available), releaseDetails.ShortVersion));
                 builder.SetMessage(releaseDetails.ReleaseNotes);
-                builder.SetPositiveButton(Microsoft.AppCenter.Distribute.Resource.String.mobile_center_distribute_update_dialog_download, delegate
+                builder.SetPositiveButton(Microsoft.AppCenter.Distribute.Resource.String.appcenter_distribute_update_dialog_download, delegate
                 {
                     Distribute.NotifyUpdateAction(UpdateAction.Update);
                 });
                 builder.SetCancelable(false);
                 if (!releaseDetails.MandatoryUpdate)
                 {
-                    builder.SetNegativeButton(Microsoft.AppCenter.Distribute.Resource.String.mobile_center_distribute_update_dialog_postpone, delegate
+                    builder.SetNegativeButton(Microsoft.AppCenter.Distribute.Resource.String.appcenter_distribute_update_dialog_postpone, delegate
                     {
                         Distribute.NotifyUpdateAction(UpdateAction.Postpone);
                     });

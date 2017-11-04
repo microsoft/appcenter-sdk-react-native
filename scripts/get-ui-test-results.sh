@@ -86,7 +86,7 @@ test_status() {
     fi
 }
 
-# Log in to mobile center
+# Log in to App Center
 ./mobile-center-login.sh
 if [ $? -ne 0 ]; then
     exit 1

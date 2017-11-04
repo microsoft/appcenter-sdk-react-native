@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetSdkName()
         {
-            return "mobilecenter.uwp";
+            return "appcenter.uwp";
         }
 
         protected override string GetDeviceModel()

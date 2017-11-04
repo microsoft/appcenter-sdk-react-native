@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetSdkName()
         {
-            return WpfHelper.IsRunningOnWpf ? "mobilecenter.wpf" : "mobilecenter.winforms";
+            return WpfHelper.IsRunningOnWpf ? "appcenter.wpf" : "appcenter.winforms";
         }
 
         protected override string GetDeviceModel()

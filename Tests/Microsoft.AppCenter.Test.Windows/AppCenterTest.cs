@@ -49,7 +49,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that changing the log level of mobile center has an effect.
+        /// Verify that changing the log level of app center has an effect.
         /// </summary>
         [TestMethod]
         public void SetLogLevels()
@@ -279,7 +279,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that trying to start mobile center with a null app secret causes the service passed not to be started
+        /// Verify that trying to start app center with a null app secret causes the service passed not to be started
         /// </summary>
         [TestMethod]
         public void StartInstanceNullSecretAndCorrectService()
