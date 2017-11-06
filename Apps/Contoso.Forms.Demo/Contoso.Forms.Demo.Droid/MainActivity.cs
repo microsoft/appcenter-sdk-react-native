@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Microsoft.Azure.Mobile.Push;
+using Microsoft.AppCenter.Push;
 
 namespace Contoso.Forms.Demo.Droid
 {
