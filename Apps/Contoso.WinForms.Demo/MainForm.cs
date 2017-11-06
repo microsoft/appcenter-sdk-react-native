@@ -21,18 +21,18 @@ namespace Contoso.WinForms.Demo
         {
             InitializeComponent();
             UpdateState();
-            mobileCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
+            appCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
         }
 
         private void UpdateState()
         {
-            mobileCenterEnabled.Checked = AppCenter.IsEnabledAsync().Result;
+            appCenterEnabled.Checked = AppCenter.IsEnabledAsync().Result;
             analyticsEnabled.Checked = Analytics.IsEnabledAsync().Result;
         }
 
-        private void mobileCenterEnabled_CheckedChanged(object sender, EventArgs e)
+        private void appCenterEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            AppCenter.SetEnabledAsync(mobileCenterEnabled.Checked).Wait();
+            AppCenter.SetEnabledAsync(appCenterEnabled.Checked).Wait();
         }
 
         private void analyticsEnabled_CheckedChanged(object sender, EventArgs e)
@@ -40,9 +40,9 @@ namespace Contoso.WinForms.Demo
             Analytics.SetEnabledAsync(analyticsEnabled.Checked).Wait();
         }
 
-        private void mobileCenterLogLevel_SelectedIndexChanged(object sender, EventArgs e)
+        private void appCenterLogLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppCenter.LogLevel = (LogLevel)mobileCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel)appCenterLogLevel.SelectedIndex;
         }
 
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)

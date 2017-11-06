@@ -6,7 +6,6 @@ using System.Windows;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 
-
 namespace Contoso.WPF.Puppet
 {
     /// <summary>
@@ -28,22 +27,22 @@ namespace Contoso.WPF.Puppet
         {
             InitializeComponent();
             UpdateState();
-            mobileCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
+            appCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
             eventProperties.ItemsSource = Properties;
         }
 
 
         private void UpdateState()
         {
-            mobileCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
+            appCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
             analyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
-        private void mobileCenterEnabled_Checked(object sender, RoutedEventArgs e)
+        private void appCenterEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (mobileCenterEnabled.IsChecked.HasValue)
+            if (appCenterEnabled.IsChecked.HasValue)
             {
-                AppCenter.SetEnabledAsync(mobileCenterEnabled.IsChecked.Value).Wait();
+                AppCenter.SetEnabledAsync(appCenterEnabled.IsChecked.Value).Wait();
             }
         }
 
@@ -56,9 +55,9 @@ namespace Contoso.WPF.Puppet
         }
 
 
-        private void mobileCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
+        private void appCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            AppCenter.LogLevel = (LogLevel) mobileCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel) appCenterLogLevel.SelectedIndex;
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
