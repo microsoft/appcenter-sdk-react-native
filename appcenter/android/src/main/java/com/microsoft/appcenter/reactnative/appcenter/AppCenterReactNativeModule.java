@@ -6,9 +6,9 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.microsoft.azure.mobile.MobileCenter;
+import com.microsoft.appcenter;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
+import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class AppCenterReactNativeModule extends BaseJavaModule {
 
     public AppCenterReactNativeModule(Application application) {
-        AppCenterReactNativeShared.configureMobileCenter(application);
+        AppCenterReactNativeShared.configureAppCenter(application);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
-        MobileCenter.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
+        AppCenter.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
 
             @Override
             public void accept(Void result) {
@@ -37,7 +37,7 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     @ReactMethod
     public void isEnabled(final Promise promise) {
-        MobileCenter.isEnabled().thenAccept(new MobileCenterConsumer<Boolean>() {
+        AppCenter.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
 
             @Override
             public void accept(Boolean enabled) {
@@ -48,18 +48,18 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     @ReactMethod
     public void setLogLevel(int logLevel) {
-        MobileCenter.setLogLevel(logLevel);
+        AppCenter.setLogLevel(logLevel);
     }
 
     @ReactMethod
     public void getLogLevel(final Promise promise) {
-        int logLevel = MobileCenter.getLogLevel();
+        int logLevel = AppCenter.getLogLevel();
         promise.resolve(logLevel);
     }
 
     @ReactMethod
     public void getInstallId(final Promise promise) {
-        MobileCenter.getInstallId().thenAccept(new MobileCenterConsumer<UUID>() {
+        AppCenter.getInstallId().thenAccept(new AppCenterConsumer<UUID>() {
 
             @Override
             public void accept(UUID installId) {
@@ -70,6 +70,6 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
-        MobileCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
+        AppCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
     }
 }

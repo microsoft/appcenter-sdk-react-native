@@ -16,7 +16,7 @@
 #import "RCTUtils.h"
 #endif
 
-@import MobileCenter;
+@import AppCenter;
 @import AppCenterReactNativeShared;
 
 @interface AppCenterReactNative () <RCTBridgeModule>
@@ -28,41 +28,41 @@ RCT_EXPORT_MODULE();
 
 + (void)register
 {
-    [AppCenterReactNativeShared configureMobileCenter];
+    [AppCenterReactNativeShared configureAppCenter];
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)enabled
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [MSMobileCenter setEnabled:enabled];
+    [MSAppCenter setEnabled:enabled];
     resolve(nil);
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[MSMobileCenter isEnabled]]);
+    resolve([NSNumber numberWithBool:[MSAppCenter isEnabled]]);
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSInteger)logLevel
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [MSMobileCenter setLogLevel:logLevel];
+    [MSAppCenter setLogLevel:logLevel];
     resolve(nil);
 }
 
 RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithInt:[MSMobileCenter logLevel]]);
+    resolve([NSNumber numberWithInt:[MSAppCenter logLevel]]);
 }
 
 RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([[MSMobileCenter installId] UUIDString]);
+    resolve([[MSAppCenter installId] UUIDString]);
 }
 
 RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
@@ -98,7 +98,7 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
             }
         }
     }
-    [MSMobileCenter setCustomProperties:customProperties];
+    [MSAppCenter setCustomProperties:customProperties];
     resolve(nil);
 }
 
