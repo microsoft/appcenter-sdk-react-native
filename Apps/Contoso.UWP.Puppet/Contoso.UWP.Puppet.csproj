@@ -17,7 +17,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Contoso.UWP.Puppet_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>6022AD2491554D3206413950629EB4B84A68171C</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>0CCED2432489A8B2A1E6CDBD5CE45E8E56B25CFB</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
