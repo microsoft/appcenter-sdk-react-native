@@ -17,15 +17,15 @@ static MSWrapperSdk * wrapperSdk;
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 
     appSecret = [config objectForKey:@"AppSecret"];
-    // If the AppSecret is not set, we will pass nil to MSMobileCenter which will error out, as expected
+    // If the AppSecret is not set, we will pass nil to MSAppCenter which will error out, as expected
   }
 
   return appSecret;
 }
 
-+ (void) configureMobileCenter
++ (void) configureAppCenter
 {
-  if (![MSMobileCenter isConfigured]) {
+  if (![MSAppCenter isConfigured]) {
       MSWrapperSdk * wrapperSdk =
         [[MSWrapperSdk alloc]
             initWithWrapperSdkVersion:@"0.11.1"
@@ -35,7 +35,7 @@ static MSWrapperSdk * wrapperSdk;
             liveUpdateDeploymentKey:nil
             liveUpdatePackageHash:nil];
       [self setWrapperSdk:wrapperSdk];
-      [MSMobileCenter configureWithAppSecret:[AppCenterReactNativeShared getAppSecret]];
+      [MSAppCenter configureWithAppSecret:[AppCenterReactNativeShared getAppSecret]];
   }
 }
 
@@ -44,7 +44,7 @@ static MSWrapperSdk * wrapperSdk;
 }
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk {
     wrapperSdk = sdk;
-    [MSMobileCenter setWrapperSdk:sdk];
+    [MSAppCenter setWrapperSdk:sdk];
 }
 
 @end

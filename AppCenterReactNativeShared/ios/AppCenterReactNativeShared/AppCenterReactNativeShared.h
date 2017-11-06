@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import MobileCenter;
+@import AppCenter;
 
 @interface AppCenterReactNativeShared : NSObject
 
@@ -8,7 +8,7 @@
 
 + (NSString *) getAppSecret;
 
-+ (void) configureMobileCenter;
++ (void) configureAppCenter;
 
 + (MSWrapperSdk *) getWrapperSdk;
 

@@ -8,7 +8,7 @@ import com.microsoft.appcenter.reactnative.push.AppCenterReactNativePushPackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
-import com.microsoft.azure.mobile.MobileCenter;
+import com.microsoft.appcenter;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -49,7 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
 
-    MobileCenter.setLogLevel(Log.VERBOSE);
+    AppCenter.setLogLevel(Log.VERBOSE);
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

@@ -10,9 +10,9 @@ import org.json.JSONException;
 
 import java.io.InputStream;
 
-import com.microsoft.azure.mobile.CustomProperties;
-import com.microsoft.azure.mobile.MobileCenter;
-import com.microsoft.azure.mobile.ingestion.models.WrapperSdk;
+import com.microsoft.appcenter.CustomProperties;
+import com.microsoft.appcenter;
+import com.microsoft.appcenter.ingestion.models.WrapperSdk;
 
 
 public class AppCenterReactNativeShared {
@@ -20,8 +20,8 @@ public class AppCenterReactNativeShared {
     private static Application application;
     private static WrapperSdk wrapperSdk = new WrapperSdk();
 
-    public static void configureMobileCenter(Application application) {
-        if (MobileCenter.isConfigured()) {
+    public static void configureAppCenter(Application application) {
+        if (AppCenter.isConfigured()) {
             return;
         }
         AppCenterReactNativeShared.application = application;
@@ -29,8 +29,8 @@ public class AppCenterReactNativeShared {
         AppCenterReactNativeShared.wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         AppCenterReactNativeShared.wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
 
-        MobileCenter.setWrapperSdk(wrapperSdk);
-        MobileCenter.configure(application, AppCenterReactNativeShared.getAppSecret());
+        AppCenter.setWrapperSdk(wrapperSdk);
+        AppCenter.configure(application, AppCenterReactNativeShared.getAppSecret());
     }
 
     /**
@@ -41,7 +41,7 @@ public class AppCenterReactNativeShared {
     */
     public static void setWrapperSdk(WrapperSdk wrapperSdk) {
         AppCenterReactNativeShared.wrapperSdk = wrapperSdk;
-        MobileCenter.setWrapperSdk(wrapperSdk);
+        AppCenter.setWrapperSdk(wrapperSdk);
     }
 
     public static WrapperSdk getWrapperSdk() {

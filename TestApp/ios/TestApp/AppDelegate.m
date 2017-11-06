@@ -15,14 +15,14 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-@import MobileCenter;
+@import AppCenter;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
-  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  [MSAppCenter setLogLevel: MSLogLevelVerbose];
+  //[MSAppCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
   
   NSURL *jsCodeLocation;
 

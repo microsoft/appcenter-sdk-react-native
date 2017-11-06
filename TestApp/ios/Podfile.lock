@@ -1,19 +1,19 @@
 PODS:
   - AppCenterReactNativeShared (0.11.1):
-    - MobileCenter/Core (~> 0.14.0)
-  - MobileCenter/Analytics (0.14.0):
-    - MobileCenter/Core
-  - MobileCenter/Core (0.14.0)
-  - MobileCenter/Crashes (0.14.0):
-    - MobileCenter/Core
-  - MobileCenter/Push (0.14.0):
-    - MobileCenter/Core
+    - AppCenter/Core (~> 0.14.0)
+  - AppCenter/Analytics (0.14.0):
+    - AppCenter/Core
+  - AppCenter/Core (0.14.0)
+  - AppCenter/Crashes (0.14.0):
+    - AppCenter/Core
+  - AppCenter/Push (0.14.0):
+    - AppCenter/Core
 
 DEPENDENCIES:
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
-  - MobileCenter/Analytics (~> 0.14.0)
-  - MobileCenter/Crashes (~> 0.14.0)
-  - MobileCenter/Push (~> 0.14.0)
+  - AppCenter/Analytics (~> 0.14.0)
+  - AppCenter/Crashes (~> 0.14.0)
+  - AppCenter/Push (~> 0.14.0)
 
 EXTERNAL SOURCES:
   AppCenterReactNativeShared:
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppCenterReactNativeShared: 1f2a3aedfa87ed544c4ca4c19eff53fd1227a63f
-  MobileCenter: 7d0fd10e2c5cee70d02e280211fe5ff919da6ab8
+  AppCenter: 7d0fd10e2c5cee70d02e280211fe5ff919da6ab8
 
 PODFILE CHECKSUM: fde116737920736fc53adfa931119fa98b331496
 

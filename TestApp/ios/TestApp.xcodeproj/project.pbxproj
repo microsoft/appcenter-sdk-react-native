@@ -1166,7 +1166,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.testapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.testapp;
 				PRODUCT_NAME = TestApp;
 				PROVISIONING_PROFILE = "19123b1d-f0d0-4552-8bd5-a65a59f483df";
 				PROVISIONING_PROFILE_SPECIFIER = "React Native Test App";
@@ -1196,7 +1196,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.testapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.testapp;
 				PRODUCT_NAME = TestApp;
 				PROVISIONING_PROFILE = "19123b1d-f0d0-4552-8bd5-a65a59f483df";
 				PROVISIONING_PROFILE_SPECIFIER = "React Native Test App";
