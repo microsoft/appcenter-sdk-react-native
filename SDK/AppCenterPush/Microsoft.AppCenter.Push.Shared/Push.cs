@@ -17,11 +17,11 @@ namespace Microsoft.AppCenter.Push
             return PlatformIsEnabledAsync();
         }
 
-		/// <summary>
-		/// Enable or disable the Push service.
-		/// </summary>
-		/// <returns>A task to monitor the operation.</returns>
-		public static Task SetEnabledAsync(bool enabled)
+        /// <summary>
+        /// Enable or disable the Push service.
+        /// </summary>
+        /// <returns>A task to monitor the operation.</returns>
+        public static Task SetEnabledAsync(bool enabled)
         {
             return PlatformSetEnabledAsync(enabled);
         }

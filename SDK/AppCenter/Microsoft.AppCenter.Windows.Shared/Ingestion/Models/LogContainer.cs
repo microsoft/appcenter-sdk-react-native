@@ -1,10 +1,15 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-using Newtonsoft.Json;
-using System.Collections.Generic;
-
 namespace Microsoft.AppCenter.Ingestion.Models
 {
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
+    using Microsoft.Rest;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class LogContainer
     {
         /// <summary>
@@ -30,22 +35,28 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="ValidationException">
+        /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (Logs == null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Logs));
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Logs");
             }
-            if (Logs.Count == 0)
+            if (Logs != null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeEmpty, nameof(Logs));
-            }
-            foreach (var element in Logs)
-            {
-                element?.Validate();
+                if (Logs.Count < 1)
+                {
+                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MinItems, "Logs", 1);
+                }
+                foreach (var element in Logs)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
             }
         }
     }
