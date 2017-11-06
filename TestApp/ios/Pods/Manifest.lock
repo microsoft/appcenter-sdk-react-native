@@ -1,19 +1,19 @@
 PODS:
   - AppCenterReactNativeShared (0.11.1):
-    - MobileCenter/Core (~> 0.14.0)
-  - MobileCenter/Analytics (0.14.0):
-    - MobileCenter/Core
-  - MobileCenter/Core (0.14.0)
-  - MobileCenter/Crashes (0.14.0):
-    - MobileCenter/Core
-  - MobileCenter/Push (0.14.0):
-    - MobileCenter/Core
+    - AppCenter/Core (~> 0.14.0)
+  - AppCenter/Analytics (0.14.0):
+    - AppCenter/Core
+  - AppCenter/Core (0.14.0)
+  - AppCenter/Crashes (0.14.0):
+    - AppCenter/Core
+  - AppCenter/Push (0.14.0):
+    - AppCenter/Core
 
 DEPENDENCIES:
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
-  - MobileCenter/Analytics (~> 0.14.0)
-  - MobileCenter/Crashes (~> 0.14.0)
-  - MobileCenter/Push (~> 0.14.0)
+  - AppCenter/Analytics (~> 0.14.0)
+  - AppCenter/Crashes (~> 0.14.0)
+  - AppCenter/Push (~> 0.14.0)
 
 EXTERNAL SOURCES:
   AppCenterReactNativeShared:
