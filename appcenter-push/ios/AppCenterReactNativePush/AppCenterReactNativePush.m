@@ -18,7 +18,7 @@
 #import "RCTUtils.h"
 #endif
 
-@import MobileCenterPush;
+@import AppCenterPush;
 @import AppCenterReactNativeShared;
 
 #import "AppCenterReactNativePushUtils.h"
@@ -58,9 +58,9 @@ RCT_EXPORT_MODULE();
 {
     pushDelegate = [[AppCenterReactNativePushDelegateBase alloc] init];
 
-    [AppCenterReactNativeShared configureMobileCenter];
+    [AppCenterReactNativeShared configureAppCenter];
     [MSPush setDelegate:pushDelegate];
-    [MSMobileCenter startService:[MSPush class]];
+    [MSAppCenter startService:[MSPush class]];
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve

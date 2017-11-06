@@ -8,7 +8,7 @@ package com.microsoft.appcenter.reactnative.push;
 import android.util.Log;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
-import com.microsoft.azure.mobile.push.PushNotification;
+import com.microsoft.appcenter.push.PushNotification;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;

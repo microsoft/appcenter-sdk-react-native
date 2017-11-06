@@ -6,10 +6,10 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
-import com.microsoft.azure.mobile.MobileCenter;
-import com.microsoft.azure.mobile.push.Push;
-import com.microsoft.azure.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
+import com.microsoft.appcenter;
+import com.microsoft.appcenter.push.Push;
+import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativePushModule extends BaseJavaModule {
@@ -17,11 +17,11 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
     private AppCenterReactNativePushEventListener mPushListener;
 
     public AppCenterReactNativePushModule(Application application) {
-        AppCenterReactNativeShared.configureMobileCenter(application);
+        AppCenterReactNativeShared.configureAppCenter(application);
         this.mPushListener = new AppCenterReactNativePushEventListener();
 
         Push.setListener(mPushListener);
-        MobileCenter.start(Push.class);
+        AppCenter.start(Push.class);
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {
@@ -37,7 +37,7 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
 
     @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
-        Push.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
+        Push.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
 
             @Override
             public void accept(Void result) {
@@ -48,7 +48,7 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
 
     @ReactMethod
     public void isEnabled(final Promise promise) {
-        Push.isEnabled().thenAccept(new MobileCenterConsumer<Boolean>() {
+        Push.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
 
             @Override
             public void accept(Boolean enabled) {

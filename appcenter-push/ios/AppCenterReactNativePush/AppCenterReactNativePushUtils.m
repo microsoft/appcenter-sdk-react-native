@@ -1,6 +1,6 @@
 #import "AppCenterReactNativePushUtils.h"
 
-@import MobileCenterPush.MSPushNotification;
+@import AppCenterPush.MSPushNotification;
 
 NSDictionary* convertNotificationToJS(MSPushNotification* pushNotification) {
     if (pushNotification == nil) {

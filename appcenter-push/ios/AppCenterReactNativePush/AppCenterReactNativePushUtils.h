@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
 
-@import MobileCenterPush.MSPushNotification;
+@import AppCenterPush.MSPushNotification;
 
 NSDictionary* convertNotificationToJS(MSPushNotification* notification);

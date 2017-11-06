@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
-import com.microsoft.azure.mobile.push.PushListener;
-import com.microsoft.azure.mobile.push.PushNotification;
+import com.microsoft.appcenter.push.PushListener;
+import com.microsoft.appcenter.push.PushNotification;
 
 import org.json.JSONException;
 
