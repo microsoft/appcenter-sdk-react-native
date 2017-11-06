@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
         public void VerifySdkName()
         {
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.AreEqual(device.SdkName, "mobilecenter.uwp");
+            Assert.AreEqual(device.SdkName, "appcenter.uwp");
         }
 
         /// <summary>

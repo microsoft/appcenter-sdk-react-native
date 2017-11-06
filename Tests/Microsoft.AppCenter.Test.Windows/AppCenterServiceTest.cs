@@ -63,7 +63,7 @@ namespace Microsoft.AppCenter.Test.Windows
         }
 
         /// <summary>
-        /// Verify that setting the enabling a service when mobile center is disabled has no effect
+        /// Verify that setting the enabling a service when app center is disabled has no effect
         /// </summary>
         [TestMethod]
         public void EnableServiceWhenAppCenterIsDisabled()

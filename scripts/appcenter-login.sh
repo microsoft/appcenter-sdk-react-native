@@ -23,7 +23,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Log in to App Center
-echo "Logging in to mobile center..."
+echo "Logging in to App Center..."
 mobile-center login --token "$APP_CENTER_API_TOKEN"
 if [ $? -ne 0 ]; then
     echo "An error occured while logging into App Center."
