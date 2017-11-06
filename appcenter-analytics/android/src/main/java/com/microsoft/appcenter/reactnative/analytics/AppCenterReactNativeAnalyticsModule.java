@@ -6,10 +6,10 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.microsoft.azure.mobile.MobileCenter;
-import com.microsoft.azure.mobile.analytics.Analytics;
+import com.microsoft.appcenter;
+import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
+import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 import org.json.JSONException;
 
@@ -17,8 +17,8 @@ import org.json.JSONException;
 public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
     public AppCenterReactNativeAnalyticsModule(Application application, boolean startEnabled) {
-        AppCenterReactNativeShared.configureMobileCenter(application);
-        MobileCenter.start(Analytics.class);
+        AppCenterReactNativeShared.configureAppCenter(application);
+        AppCenter.start(Analytics.class);
         if (!startEnabled) {
             Analytics.setEnabled(false);
         }
@@ -31,7 +31,7 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
     @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
-        Analytics.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
+        Analytics.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
 
             @Override
             public void accept(Void result) {
@@ -42,7 +42,7 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
     @ReactMethod
     public void isEnabled(final Promise promise) {
-        Analytics.isEnabled().thenAccept(new MobileCenterConsumer<Boolean>() {
+        Analytics.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
 
             @Override
             public void accept(Boolean enabled) {

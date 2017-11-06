@@ -18,7 +18,7 @@
 #import "RCTUtils.h"
 #endif
 
-@import MobileCenterAnalytics;
+@import AppCenterAnalytics;
 @import AppCenterReactNativeShared;
 
 @interface AppCenterReactNativeAnalytics () <RCTBridgeModule>
@@ -30,8 +30,8 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithInitiallyEnabled:(BOOL) enabled
 {
-    [AppCenterReactNativeShared configureMobileCenter];
-    [MSMobileCenter startService:[MSAnalytics class]];
+    [AppCenterReactNativeShared configureAppCenter];
+    [MSAppCenter startService:[MSAnalytics class]];
     if (!enabled) {
         [MSAnalytics setEnabled:enabled];
     }
