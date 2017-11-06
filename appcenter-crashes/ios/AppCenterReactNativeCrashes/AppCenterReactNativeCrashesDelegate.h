@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import MobileCenterCrashes;
+@import AppCenterCrashes;
 
 // Support React Native headers both in the React namespace, where they are in RN version 0.40+,
 // and no namespace, for older versions of React Native

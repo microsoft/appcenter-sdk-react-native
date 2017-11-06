@@ -23,10 +23,10 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wincomplete-umbrella"
-#import <MobileCenterCrashes/MSWrapperCrashesHelper.h>
+#import <AppCenterCrashes/MSWrapperCrashesHelper.h>
 #pragma GCC diagnostic pop
 
-@import MobileCenterCrashes;
+@import AppCenterCrashes;
 @import AppCenterReactNativeShared;
 
 @implementation AppCenterReactNativeCrashes
@@ -42,19 +42,19 @@ RCT_EXPORT_MODULE();
 
 + (void)register
 {
-    [AppCenterReactNativeShared configureMobileCenter];
+    [AppCenterReactNativeShared configureAppCenter];
     [MSWrapperCrashesHelper setAutomaticProcessing:NO];
     [MSCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
 
-    [MSMobileCenter startService:[MSCrashes class]];
+    [MSAppCenter startService:[MSCrashes class]];
 }
 
 + (void)registerWithAutomaticProcessing
 {
-    [AppCenterReactNativeShared configureMobileCenter];
+    [AppCenterReactNativeShared configureAppCenter];
     [MSCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
 
-    [MSMobileCenter startService:[MSCrashes class]];
+    [MSAppCenter startService:[MSCrashes class]];
 }
 
 - (instancetype)init
@@ -101,7 +101,7 @@ RCT_EXPORT_METHOD(lastSessionCrashReport:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
                             rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[MSMobileCenter isDebuggerAttached]]);
+    resolve([NSNumber numberWithBool:[MSAppCenter isDebuggerAttached]]);
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve

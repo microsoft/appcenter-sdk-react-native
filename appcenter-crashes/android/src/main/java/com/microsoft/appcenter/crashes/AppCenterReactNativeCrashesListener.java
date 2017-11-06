@@ -6,8 +6,8 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.microsoft.azure.mobile.crashes.AbstractCrashesListener;
-import com.microsoft.azure.mobile.crashes.model.ErrorReport;
+import com.microsoft.appcenter.crashes.AbstractCrashesListener;
+import com.microsoft.appcenter.crashes.model.ErrorReport;
 
 import org.json.JSONException;
 

@@ -10,13 +10,13 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.microsoft.azure.mobile.MobileCenter;
-import com.microsoft.azure.mobile.crashes.Crashes;
-import com.microsoft.azure.mobile.crashes.WrapperSdkExceptionManager;
-import com.microsoft.azure.mobile.crashes.ingestion.models.ErrorAttachmentLog;
-import com.microsoft.azure.mobile.crashes.model.ErrorReport;
+import com.microsoft.appcenter;
+import com.microsoft.appcenter.crashes.Crashes;
+import com.microsoft.appcenter.crashes.WrapperSdkExceptionManager;
+import com.microsoft.appcenter.crashes.ingestion.models.ErrorAttachmentLog;
+import com.microsoft.appcenter.crashes.model.ErrorReport;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.microsoft.azure.mobile.utils.async.MobileCenterConsumer;
+import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,8 +48,8 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
         mCrashListener = new AppCenterReactNativeCrashesListener();
         WrapperSdkExceptionManager.setAutomaticProcessing(automaticProcessing);
         Crashes.setListener(mCrashListener);
-        AppCenterReactNativeShared.configureMobileCenter(application);
-        MobileCenter.start(Crashes.class);
+        AppCenterReactNativeShared.configureAppCenter(application);
+        AppCenter.start(Crashes.class);
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {
@@ -69,7 +69,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void lastSessionCrashReport(final Promise promise) {
-        Crashes.getLastSessionCrashReport().thenAccept(new MobileCenterConsumer<ErrorReport>() {
+        Crashes.getLastSessionCrashReport().thenAccept(new AppCenterConsumer<ErrorReport>() {
 
             @Override
             public void accept(ErrorReport errorReport) {
@@ -82,7 +82,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void hasCrashedInLastSession(final Promise promise) {
-        Crashes.hasCrashedInLastSession().thenAccept(new MobileCenterConsumer<Boolean>() {
+        Crashes.hasCrashedInLastSession().thenAccept(new AppCenterConsumer<Boolean>() {
 
             @Override
             public void accept(Boolean hasCrashed) {
@@ -93,7 +93,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
-        Crashes.setEnabled(enabled).thenAccept(new MobileCenterConsumer<Void>() {
+        Crashes.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
 
             @Override
             public void accept(Void result) {
@@ -104,7 +104,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void isEnabled(final Promise promise) {
-        Crashes.isEnabled().thenAccept(new MobileCenterConsumer<Boolean>() {
+        Crashes.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
 
             @Override
             public void accept(Boolean enabled) {
@@ -150,7 +150,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void getUnprocessedCrashReports(final Promise promise) {
-        WrapperSdkExceptionManager.getUnprocessedErrorReports().thenAccept(new MobileCenterConsumer<Collection<ErrorReport>>() {
+        WrapperSdkExceptionManager.getUnprocessedErrorReports().thenAccept(new AppCenterConsumer<Collection<ErrorReport>>() {
 
             @Override
             public void accept(Collection<ErrorReport> errorReports) {
@@ -166,7 +166,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
         for (int i = 0; i < size; i++) {
             filteredReportIdsAsList.add(filteredReportIds.getString(i));
         }
-        WrapperSdkExceptionManager.sendCrashReportsOrAwaitUserConfirmation(filteredReportIdsAsList).thenAccept(new MobileCenterConsumer<Boolean>() {
+        WrapperSdkExceptionManager.sendCrashReportsOrAwaitUserConfirmation(filteredReportIdsAsList).thenAccept(new AppCenterConsumer<Boolean>() {
 
             @Override
             public void accept(Boolean alwaysSend) {

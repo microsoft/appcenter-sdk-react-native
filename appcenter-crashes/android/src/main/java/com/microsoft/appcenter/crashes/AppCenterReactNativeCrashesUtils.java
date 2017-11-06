@@ -5,8 +5,8 @@ import android.util.Log;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.microsoft.azure.mobile.crashes.model.ErrorReport;
-import com.microsoft.azure.mobile.ingestion.models.Device;
+import com.microsoft.appcenter.crashes.model.ErrorReport;
+import com.microsoft.appcenter.ingestion.models.Device;
 
 import org.json.JSONException;
 import org.json.JSONObject;
