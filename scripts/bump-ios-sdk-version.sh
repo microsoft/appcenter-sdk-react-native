@@ -1,5 +1,5 @@
 #!/bin/bash
-# Update Mobile Center React Native SDK to reference a new version of Mobile Center iOS SDK
+# Update App Center React Native SDK to reference a new version of App Center iOS SDK
 
 set -e
 
@@ -21,7 +21,7 @@ if [ -z $newiOSSdkVersion ]; then
 fi
 
 # Find out the old iOS sdk version
-oldiOSSdkVersionString=$(grep MobileCenter/Core ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)
+oldiOSSdkVersionString=$(grep AppCenter/Core ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)
 [[ ${oldiOSSdkVersionString} =~ ([0-9]+.[0-9]+.[0-9]+) ]]
 oldiOSSdkVersion="${BASH_REMATCH[1]}"
 
@@ -33,19 +33,19 @@ fi
 
 echo "React-Native iOS version $oldiOSSdkVersion will be updated to $newiOSSdkVersion"
 
-# Update iOS sdk version in postlink.js for mobile-center-crashes, mobile-center-analytics,
-# mobile-center-push projects
-fileContent="$(cat ./mobile-center-crashes/scripts/postlink.js)"
-echo "${fileContent/\'MobileCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Crashes', version: '$newiOSSdkVersion'}" > ./mobile-center-crashes/scripts/postlink.js
+# Update iOS sdk version in postlink.js for appcenter-crashes, appcenter-analytics,
+# appcenter-push projects
+fileContent="$(cat ./appcenter-crashes/scripts/postlink.js)"
+echo "${fileContent/\'AppCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Crashes', version: '$newiOSSdkVersion'}" > ./appcenter-crashes/scripts/postlink.js
 
-fileContent="$(cat ./mobile-center-analytics/scripts/postlink.js)"
-echo "${fileContent/\'MobileCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Analytics', version: '$newiOSSdkVersion'}" > ./mobile-center-analytics/scripts/postlink.js
+fileContent="$(cat ./appcenter-analytics/scripts/postlink.js)"
+echo "${fileContent/\'AppCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Analytics', version: '$newiOSSdkVersion'}" > ./appcenter-analytics/scripts/postlink.js
 
-fileContent="$(cat ./mobile-center-push/scripts/postlink.js)"
-echo "${fileContent/\'MobileCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'MobileCenter/Push', version: '$newiOSSdkVersion'}" > ./mobile-center-push/scripts/postlink.js
+fileContent="$(cat ./appcenter-push/scripts/postlink.js)"
+echo "${fileContent/\'AppCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Push', version: '$newiOSSdkVersion'}" > ./appcenter-push/scripts/postlink.js
 
-# Update iOS sdk version in RNMobileCenterShared podspec
-fileContent="$(cat ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec)"
-echo "${fileContent/s.dependency \'MobileCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'MobileCenter/Core', '~> $newiOSSdkVersion'}" > ./RNMobileCenterShared/Products/RNMobileCenterShared.podspec
+# Update iOS sdk version in AppCenterReactNativeShared podspec
+fileContent="$(cat ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)"
+echo "${fileContent/s.dependency \'AppCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'AppCenter/Core', '~> $newiOSSdkVersion'}" > ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec
 
 echo "done."
