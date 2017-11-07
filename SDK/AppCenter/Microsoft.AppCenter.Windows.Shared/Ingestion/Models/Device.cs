@@ -4,7 +4,6 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -297,46 +296,46 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (SdkName == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "SdkName");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(SdkName));
             }
             if (SdkVersion == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "SdkVersion");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(SdkVersion));
             }
             if (OsName == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "OsName");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(OsName));
             }
             if (OsVersion == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "OsVersion");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(OsVersion));
             }
             if (Locale == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Locale");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Locale));
             }
             if (AppVersion == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "AppVersion");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(AppVersion));
             }
             if (AppBuild == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "AppBuild");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(AppBuild));
             }
             if (TimeZoneOffset > 840)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.InclusiveMaximum, "TimeZoneOffset", 840);
+                throw new ValidationException(ValidationException.Rule.InclusiveMaximum, nameof(TimeZoneOffset));
             }
             if (TimeZoneOffset < -840)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.InclusiveMinimum, "TimeZoneOffset", -840);
+                throw new ValidationException(ValidationException.Rule.InclusiveMinimum, nameof(TimeZoneOffset));
             }
         }
     }

@@ -4,7 +4,6 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -35,20 +34,20 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (Logs == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Logs");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Logs));
             }
             if (Logs != null)
             {
                 if (Logs.Count < 1)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MinItems, "Logs", 1);
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Logs));
                 }
                 foreach (var element in Logs)
                 {

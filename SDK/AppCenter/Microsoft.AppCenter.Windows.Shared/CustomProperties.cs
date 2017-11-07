@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AppCenter.Ingestion.Models;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -11,19 +12,19 @@ namespace Microsoft.AppCenter
         private const int MaxCustomPropertiesKeyLength = 128;
         private const int MaxCustomPropertiesStringValueLength = 128;
 
-        internal Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        internal IList<CustomProperty> Properties { get; } = new List<CustomProperty>();
 
-        public CustomProperties PlatformSet(string key, string value)
+        public CustomProperties PlatformSet(CustomProperty property)
         {
             if (ValidateKey(key))
             {
                 if (value == null)
                 {
-                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" value cannot be null, did you mean to call clear?");
+                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + property.Name + "\" value cannot be null, did you mean to call clear?");
                 }
                 else if (value.Length > MaxCustomPropertiesStringValueLength)
                 {
-                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + key + "\" value length cannot be longer than " + MaxCustomPropertiesStringValueLength + " characters.");
+                    AppCenterLog.Error(AppCenterLog.LogTag, "Custom property \"" + property.Name + "\" value length cannot be longer than " + MaxCustomPropertiesStringValueLength + " characters.");
                 }
                 else
                 {

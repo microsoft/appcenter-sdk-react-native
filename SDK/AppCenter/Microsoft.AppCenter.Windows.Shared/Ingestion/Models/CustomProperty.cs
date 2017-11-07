@@ -4,12 +4,14 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
     public partial class CustomProperty
     {
+        private const int MaxNameLength = 128;
+        private const string KeyPattern = "^[a-zA-Z][a-zA-Z0-9\\-_]*$";
+
         /// <summary>
         /// Initializes a new instance of the CustomProperty class.
         /// </summary>
@@ -31,24 +33,24 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public virtual void Validate()
         {
             if (Name == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Name");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Name));
             }
             if (Name != null)
             {
-                if (Name.Length > 128)
+                if (Name.Length > MaxNameLength)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MaxLength, "Name", 128);
+                    throw new ValidationException(ValidationException.Rule.MaxLength, nameof(Name), MaxNameLength);
                 }
-                if (!System.Text.RegularExpressions.Regex.IsMatch(Name, "^[a-zA-Z][a-zA-Z0-9\\-_]*$"))
+                if (!System.Text.RegularExpressions.Regex.IsMatch(Name, KeyPattern))
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.Pattern, "Name", "^[a-zA-Z][a-zA-Z0-9\\-_]*$");
+                    throw new ValidationException(ValidationException.Rule.Pattern, nameof(Name), KeyPattern);
                 }
             }
         }

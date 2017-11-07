@@ -49,7 +49,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -59,7 +59,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 if (Services.Count < 1)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MinItems, "Services", 1);
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Services));
                 }
             }
         }

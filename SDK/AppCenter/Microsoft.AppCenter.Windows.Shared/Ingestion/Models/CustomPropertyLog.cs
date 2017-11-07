@@ -4,7 +4,6 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -33,10 +32,9 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// session and always include this identifier.
         /// </param>
         /// <param name="properties">Custom property changes.</param>
-        public CustomPropertyLog(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), IList<CustomProperty> properties = default(IList<CustomProperty>))
-            : base(device, timestamp, sid)
+        public CustomPropertyLog()
         {
-            Properties = properties;
+            Properties = new List<CustomProperty>();
         }
 
         /// <summary>
@@ -48,7 +46,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -58,11 +56,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 if (Properties.Count > 60)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MaxItems, "Properties", 60);
+                    throw new ValidationException(ValidationException.Rule.MaxItems, nameof(Properties));
                 }
                 if (Properties.Count < 1)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MinItems, "Properties", 1);
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Properties));
                 }
                 foreach (var element in Properties)
                 {

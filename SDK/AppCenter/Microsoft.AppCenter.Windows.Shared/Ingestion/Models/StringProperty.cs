@@ -4,7 +4,6 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -38,7 +37,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -46,13 +45,13 @@ namespace Microsoft.AppCenter.Ingestion.Models
             base.Validate();
             if (Value == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Value");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Value));
             }
             if (Value != null)
             {
                 if (Value.Length > 128)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MaxLength, "Value", 128);
+                    throw new ValidationException(ValidationException.Rule.MaxLength, nameof(Value));
                 }
             }
         }
