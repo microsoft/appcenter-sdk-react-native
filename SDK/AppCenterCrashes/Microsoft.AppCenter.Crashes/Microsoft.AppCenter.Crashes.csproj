@@ -10,7 +10,7 @@
     <Version>1.0.0-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
-    <AssemblyTitle>Microsoft.AppCenter.Distribute</AssemblyTitle>
+    <AssemblyTitle>Microsoft.AppCenter.Crashes</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />
