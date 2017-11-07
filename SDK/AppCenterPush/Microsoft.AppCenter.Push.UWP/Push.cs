@@ -112,8 +112,8 @@ namespace Microsoft.AppCenter.Push
 
         private void OnPushNotificationReceivedHandler(PushNotificationChannel sender, WindowsPushNotificationReceivedEventArgs e)
         {
-            var content = e.ToastNotification?.Content;
-            if (content != null)
+            XmlDocument content;
+            if (e.NotificationType == PushNotificationType.Toast && (content = e.ToastNotification?.Content) != null)
             {
                 AppCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
                 if (ApplicationLifecycleHelper.Instance.IsSuspended)
