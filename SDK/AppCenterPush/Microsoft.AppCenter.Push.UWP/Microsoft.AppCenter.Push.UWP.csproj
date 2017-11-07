@@ -7,7 +7,7 @@
     <ProjectGuid>{8072449C-C6A8-4B36-87DC-173F295D161C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.AppCenter.Push.UWP</RootNamespace>
+    <RootNamespace>Microsoft.AppCenter.Push</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Push</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
