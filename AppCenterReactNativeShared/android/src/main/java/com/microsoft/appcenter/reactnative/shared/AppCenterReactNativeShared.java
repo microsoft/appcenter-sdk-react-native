@@ -55,7 +55,7 @@ public class AppCenterReactNativeShared {
     public static String getAppSecret() {
         if (AppCenterReactNativeShared.appSecret == null) {
             try {
-                InputStream configStream = AppCenterReactNativeShared.application.getAssets().open("app-center-config.json");
+                InputStream configStream = AppCenterReactNativeShared.application.getAssets().open("appcenter-config.json");
                 int size = configStream.available();
                 byte[] buffer = new byte[size];
                 configStream.read(buffer);
