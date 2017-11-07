@@ -105,12 +105,18 @@ allprojects {
 }
 
 repositories {
-    jcenter()
+    maven {
+        url "https://dl.bintray.com/app-center/appcenter/"
+        credentials {
+            username System.getenv("BINTRAY_USER")
+            password System.getenv("BINTRAY_PASSWORD")
+        }
+    }
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.appcenter:appcenter:0.12.0'
+    compile 'com.microsoft.appcenter:appcenter:1.0.0-1+8e03fa4'
 }
 
 artifacts {

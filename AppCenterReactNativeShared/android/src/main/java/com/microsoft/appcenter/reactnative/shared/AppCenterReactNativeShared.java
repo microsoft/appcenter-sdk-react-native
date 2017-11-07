@@ -11,7 +11,7 @@ import org.json.JSONException;
 import java.io.InputStream;
 
 import com.microsoft.appcenter.CustomProperties;
-import com.microsoft.appcenter;
+import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.ingestion.models.WrapperSdk;
 
 

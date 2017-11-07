@@ -6,7 +6,7 @@ import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
-import com.microsoft.appcenter;
+import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;

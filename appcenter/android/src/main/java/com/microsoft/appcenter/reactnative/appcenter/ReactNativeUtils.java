@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import android.util.Log;
 import javax.annotation.Nullable;
 
-import com.microsoft.appcenter;
+import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.CustomProperties;
 
 import static com.facebook.react.bridge.ReadableType.String;

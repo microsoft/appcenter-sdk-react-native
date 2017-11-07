@@ -10,7 +10,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.microsoft.appcenter;
+import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.crashes.WrapperSdkExceptionManager;
 import com.microsoft.appcenter.crashes.ingestion.models.ErrorAttachmentLog;
