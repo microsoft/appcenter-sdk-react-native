@@ -2,37 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 
 namespace Contoso.WinForms.Demo
 {
     public partial class MainForm : Form
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, MobileCenterLog.Verbose },
-            { LogLevel.Debug, MobileCenterLog.Debug },
-            { LogLevel.Info, MobileCenterLog.Info },
-            { LogLevel.Warn, MobileCenterLog.Warn },
-            { LogLevel.Error, MobileCenterLog.Error }
+            { LogLevel.Verbose, AppCenterLog.Verbose },
+            { LogLevel.Debug, AppCenterLog.Debug },
+            { LogLevel.Info, AppCenterLog.Info },
+            { LogLevel.Warn, AppCenterLog.Warn },
+            { LogLevel.Error, AppCenterLog.Error }
         };
 
         public MainForm()
         {
             InitializeComponent();
             UpdateState();
-            mobileCenterLogLevel.SelectedIndex = (int) MobileCenter.LogLevel;
+            appCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
         }
 
         private void UpdateState()
         {
-            mobileCenterEnabled.Checked = MobileCenter.IsEnabledAsync().Result;
+            appCenterEnabled.Checked = AppCenter.IsEnabledAsync().Result;
             analyticsEnabled.Checked = Analytics.IsEnabledAsync().Result;
         }
 
-        private void mobileCenterEnabled_CheckedChanged(object sender, EventArgs e)
+        private void appCenterEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            MobileCenter.SetEnabledAsync(mobileCenterEnabled.Checked).Wait();
+            AppCenter.SetEnabledAsync(appCenterEnabled.Checked).Wait();
         }
 
         private void analyticsEnabled_CheckedChanged(object sender, EventArgs e)
@@ -40,9 +40,9 @@ namespace Contoso.WinForms.Demo
             Analytics.SetEnabledAsync(analyticsEnabled.Checked).Wait();
         }
 
-        private void mobileCenterLogLevel_SelectedIndexChanged(object sender, EventArgs e)
+        private void appCenterLogLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MobileCenter.LogLevel = (LogLevel)mobileCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel)appCenterLogLevel.SelectedIndex;
         }
 
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)

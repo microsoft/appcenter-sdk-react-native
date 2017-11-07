@@ -2,10 +2,10 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Com.Microsoft.Azure.Mobile.Analytics;
-using Com.Microsoft.Azure.Mobile.Analytics.Channel;
-using Com.Microsoft.Azure.Mobile.Analytics.Ingestion.Models;
-using Com.Microsoft.Azure.Mobile.Ingestion.Models;
+using Com.Microsoft.Appcenter.Analytics;
+using Com.Microsoft.Appcenter.Analytics.Channel;
+using Com.Microsoft.Appcenter.Analytics.Ingestion.Models;
+using Com.Microsoft.Appcenter.Ingestion.Models;
 using Microsoft.Azure.Mobile;
 
 namespace Contoso.Forms.Test.Droid
@@ -21,10 +21,10 @@ namespace Contoso.Forms.Test.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            MobileCenter.LogLevel = LogLevel.Verbose;
+            AppCenter.LogLevel = LogLevel.Verbose;
             AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
 
-            MobileCenter.Configure("cc684d08-3240-4eb7-a748-e7ddd846a8b1");
+            AppCenter.Configure("cc684d08-3240-4eb7-a748-e7ddd846a8b1");
 
             LoadApplication(new App());
         }

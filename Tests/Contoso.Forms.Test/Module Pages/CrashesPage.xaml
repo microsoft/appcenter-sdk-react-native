@@ -11,16 +11,16 @@
             <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.CatchNullReferenceButton}" Text="Catch Null Reference Exception" Clicked="CatchNullReferenceException" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.CrashWithAggregateExceptionButton}" Text="Crash with Aggregate Exception" Clicked="CrashWithAggregateException" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.CrashInsideAsyncTaskButton}" Text="Crash Inside Async Task" Clicked="CrashAsync" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.CrashWithInvalidOperationButton}" Text="Crash With Invalid Operation" Clicked="CrashWithInvalidOperation" />
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.DismissButton}" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
             </ViewCell>
         </TableSection>

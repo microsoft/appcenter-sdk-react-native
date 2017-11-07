@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 using UIKit;
 
 namespace Contoso.iOS.Puppet
@@ -50,7 +50,7 @@ namespace Contoso.iOS.Puppet
         {
             base.ViewDidAppear(animated);
             AnalyticsEnabledSwitch.On = Analytics.IsEnabledAsync().Result;
-            AnalyticsEnabledSwitch.Enabled = MobileCenter.IsEnabledAsync().Result;
+            AnalyticsEnabledSwitch.Enabled = AppCenter.IsEnabledAsync().Result;
             NumPropertiesLabel.Text = mEventProperties.Count.ToString();
         }
 

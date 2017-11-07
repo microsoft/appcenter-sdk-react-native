@@ -8,15 +8,15 @@ namespace Contoso.Forms.Test.UITests
     {
         public static IApp app;
 
-        public static bool MobileCenterEnabled
+        public static bool AppCenterEnabled
         {
             get
             {
-                return IsPropertyEnabled(TestStrings.MobileCenterEnabledLabel, TestStrings.MobileCenterEnabledText);
+                return IsPropertyEnabled(TestStrings.AppCenterEnabledLabel, TestStrings.AppCenterEnabledText);
             }
             set
             {
-                ToggleProperty(TestStrings.EnableMobileCenterButton, TestStrings.DisableMobileCenterButton, value);
+                ToggleProperty(TestStrings.EnableAppCenterButton, TestStrings.DisableAppCenterButton, value);
             }
         }
 

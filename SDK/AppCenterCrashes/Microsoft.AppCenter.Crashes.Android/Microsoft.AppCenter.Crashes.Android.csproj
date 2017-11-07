@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D6DB87CA-B8EC-4A38-805F-AFDC7FEC38EB}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.AppCenter.Crashes</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Crashes</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <AndroidTlsProvider>
+    </AndroidTlsProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Microsoft.AppCenter.Crashes.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>
+    </DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Java.Interop" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlatformCrashes.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AndroidCrashListener.cs" />
+    <Compile Include="ErrorReport.cs" />
+    <Compile Include="ErrorAttachmentLog.cs" />
+    <Compile Include="ErrorReportCache.cs" />
+    <Compile Include="CrashesPart.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android\Microsoft.AppCenter.Android.csproj">
+      <Project>{119c1730-e109-4bc9-aa89-9dca2c50bfd5}</Project>
+      <Name>Microsoft.AppCenter.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.AppCenter.Crashes.Android.Bindings\Microsoft.AppCenter.Crashes.Android.Bindings.csproj">
+      <Project>{42D541D7-B7C9-45A7-8D4D-8FB5A00668B3}</Project>
+      <Name>Microsoft.AppCenter.Crashes.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
+      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\Microsoft.AppCenter.Crashes.Shared.Targets\Microsoft.AppCenter.Crashes.Shared.Targets.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Crashes.Shared.Targets\Microsoft.AppCenter.Crashes.Shared.Targets.projitems')" />
+  <Import Project="..\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems')" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

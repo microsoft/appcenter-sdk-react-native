@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="926a1baa-f5ab-4fb3-b6a6-3d7f84f7aed3" visible="True" isDefault="true" isSelected="true" title="Microsoft Mobile Center SDK for Xamarin">
+  <Topic id="926a1baa-f5ab-4fb3-b6a6-3d7f84f7aed3" visible="True" isDefault="true" isSelected="true" title="Microsoft App Center SDK for Xamarin">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
     </HelpKeywords>

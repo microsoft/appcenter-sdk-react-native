@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Push;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
@@ -8,8 +8,8 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Contoso.UWP.Puppet
 {
@@ -27,9 +27,9 @@ namespace Contoso.UWP.Puppet
             CoreApplication.EnablePrelaunch(true);
             InitializeComponent();
             Suspending += OnSuspending;
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            MobileCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+            AppCenter.LogLevel = LogLevel.Verbose;
+            AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
             Push.SetEnabledAsync(true);
             Push.PushNotificationReceived += PushNotificationReceivedHandler;
         }
@@ -97,11 +97,11 @@ namespace Contoso.UWP.Puppet
 
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(message))
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
             }
             else
             {
-                MobileCenterLog.Debug(MobileCenterLog.LogTag, $"PushNotificationReceivedHandler received customData:{customDataString}");
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"PushNotificationReceivedHandler received customData:{customDataString}");
             }
         }
 

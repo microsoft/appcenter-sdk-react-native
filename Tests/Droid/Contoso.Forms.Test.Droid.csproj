@@ -108,23 +108,23 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.17.0-r0008-6425185\lib\MonoAndroid403\Microsoft.Azure.Mobile.Android.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Android.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.1.0.0-r0001-d3d915a\lib\MonoAndroid403\Microsoft.AppCenter.Android.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.17.0-r0008-6425185\lib\MonoAndroid403\Microsoft.Azure.Mobile.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter">
+      <HintPath>..\..\packages\Microsoft.AppCenter.1.0.0-r0001-d3d915a\lib\MonoAndroid403\Microsoft.AppCenter.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.17.0-r0008-6425185\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.Android.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Analytics.Android.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.1.0.0-r0001-d3d915a\lib\MonoAndroid403\Microsoft.AppCenter.Analytics.Android.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.17.0-r0008-6425185\lib\MonoAndroid403\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Analytics">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.1.0.0-r0001-d3d915a\lib\MonoAndroid403\Microsoft.AppCenter.Analytics.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.Android.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.17.0-r0008-6425185\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.Android.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Crashes.Android.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.1.0.0-r0001-d3d915a\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.Android.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.17.0-r0008-6425185\lib\MonoAndroid403\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Crashes">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.1.0.0-r0001-d3d915a\lib\MonoAndroid403\Microsoft.AppCenter.Crashes.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

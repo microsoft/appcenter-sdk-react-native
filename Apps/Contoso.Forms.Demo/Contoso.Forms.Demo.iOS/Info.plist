@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.microsoft.azure.mobile.xamarin.forms.demo</string>
+	<string>com.microsoft.appcenter.xamarin.forms.demo</string>
 	<key>CFBundleVersion</key>
 	<string>0.17.0</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -37,7 +37,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleName</key>
-	<string>MCFDemo</string>
+	<string>ACFDemo</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.17.0</string>
 	<key>CFBundleURLTypes</key>
@@ -46,7 +46,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
 			<key>CFBundleURLName</key>
-			<string>com.microsoft.azure.mobile.xamarin.forms.demo</string>
+			<string>com.microsoft.appcenter.xamarin.forms.demo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>mobilecenter-fe2bf05d-f4f9-48a6-83d9-ea8033fbb644</string>

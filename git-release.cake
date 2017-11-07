@@ -17,9 +17,9 @@ Task("Default").IsDependentOn("GitRelease");
 Task("GitRelease")
     .Does(() =>
 {
-    // Use the package version for MobileCenter package as the release version.
+    // Use the package version for AppCenter package as the release version.
     var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH", "nuget");
-    var nuspecPath = System.IO.Path.Combine(nuspecPathPrefix, "MobileCenter.nuspec");
+    var nuspecPath = System.IO.Path.Combine(nuspecPathPrefix, "AppCenter.nuspec");
     var nuspecXml = XDocument.Load(nuspecPath);
     var publishVersion = nuspecXml.XPathSelectElement("/package/metadata/version").Value;
 
@@ -30,7 +30,7 @@ Task("GitRelease")
     FileWriteText(releaseFile,"Please update description. It will be pulled out automatically from release.md next time.");
 
     // Build a string containing paths to NuGet packages.
-    var files = GetFiles("../../**/Microsoft.Azure.Mobile*.nupkg");
+    var files = GetFiles("../../**/Microsoft.AppCenter*.nupkg");
     var assets = string.Empty;
     foreach (var file in files)
     {

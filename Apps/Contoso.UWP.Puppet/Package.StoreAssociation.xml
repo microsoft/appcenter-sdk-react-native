@@ -358,12 +358,96 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>10805zumoTestUser.MobileCenter-UWP-Puppet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.AppCenter-Contoso.UWP.Puppet</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>MobileCenter-UWP-Puppet</ReservedName>
+      <ReservedName>AppCenter-Contoso.UWP.Puppet</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
+    <MainPackageIdentityName>10805zumoTestUser.ClientSdkDotNetApp</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ClientSdkNodeApp</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.DanceFever</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.DanceFever1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.Dec02zumotest</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.dihei-0421</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.dihei-e2e</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.dihei-e2e-2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.dihei-e2e-3</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.dihei-empty-node</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2eappautomation3</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2eauth-21</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2eauth-23</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2efabio</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2esherry</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2etestccd</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2etestccdnet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2etest-dotnet2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2etest-dotnet-v2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.e2etest-node2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ExistingAppBluCurrent</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ExistingAppBluNext</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ExistingAppBluPreview</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ExistingAppDB3Current</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ExistingAppDB3Next</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ExistingAppDB3Preview</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.existingappnhtest1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.FastForwardDanceFever</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.FieldEngineer</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.FieldEngineerManager</MainPackageIdentityName>
+    <MainPackageIdentityName>CNB2D1C358-6AF8-4416-BF73.MobileCenterPuppetUnity</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.MobileCenter-Forms-UWP-Demo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.MobileCenter-Forms-UWP-Puppet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.MobileCenter-Unity-Demo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.MobileCenter-UWP-Puppet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.MobileSherryJS</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.MobileSherryNet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.mysalesassociateapp</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.Nov164vteste2e</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.nov18test4v</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.OfflineTestDotNet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.OfflineTestNode</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.OGFApp-Net</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.OGFExistingAppBluTC</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopaDotNetV2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopae2eauthdotnet</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopaEasyAuth1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopaLiveSDKAuth</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopaLiveSDKAuth1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopapushtest</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopaPushV2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.pgopav1e2e</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ProdBayZumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ProdBluZumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ProdDB3Zumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ProdHK1Zumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.SalesAssistant</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.SalesAssociate</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.SalesAssociateApp514</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.StageBayZumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.StageBluZumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.StageDB3Zumo</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.StoreManager</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.TestE2EAppCurrentRedeploy1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.TestE2EAppNextRedeploy1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.teste2eapppreview1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.teste2eapppreviewredeploy1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.teste2eapppreviewredeploy3</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.VicsE2e</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ws---fullscaletest</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ZumoClientSDKReleaseE2ETestApp</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ZumoClientSDKReleseE2ETestApp</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ZumoNHTest1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.ZumoPhoneBlu</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestblu1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestblu2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestblu3</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestblu4</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestblu5</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestdb1</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestdb2</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestdb3</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestdb4</MainPackageIdentityName>
+    <MainPackageIdentityName>10805zumoTestUser.zumotestdb5</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NJP72NZT8Z9" />
+  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9PGJ43DRVWLT" />
 </StoreAssociation>

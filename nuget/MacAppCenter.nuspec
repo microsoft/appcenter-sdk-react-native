@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.AppCenter</id>
+    <title>App Center</title>
+    <authors>Microsoft</authors>
+    <owners>microsoft,appcenter</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center. Common package for every App Center service.</summary> 
+    <description>This package contains the basic functionalities that all App Center services use to communicate with the backend.</description> 
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter mobilecenter</tags>
+    <language>en-US</language>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <dependencies>
+        <!-- Use dependency groups for iOS and Android so that additional dependencies aren't added to them -->
+        <group targetFramework="MonoAndroid403">
+        </group>
+        <group targetFramework="Xamarin.iOS10">
+        </group>
+    </dependencies>
+  </metadata>
+  <files>
+
+    <!-- Portable -->
+    <file src="$pcl_dir$/Microsoft.AppCenter.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+
+    <!-- .NET Standard -->
+    <file src="$netstandard_dir$/Microsoft.AppCenter.dll" target="lib/netstandard1.0" />
+
+    <!-- Android -->
+    <file src="$android_dir$/Microsoft.AppCenter.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Android.Bindings.dll" target="lib/MonoAndroid403" />
+
+    <!-- iOS -->
+    <file src="$ios_dir$/Microsoft.AppCenter.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+  </files>
+</package>

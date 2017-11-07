@@ -278,3 +278,6 @@ archives/
 
 #google-services
 google-services.json
+
+# Automatically generated nuspecs
+SDK/**/*.nuspec

@@ -22,7 +22,7 @@ namespace Contoso.Android.Puppet
         {
             switch (position)
             {
-                case 0: return new MobileCenterFragment();
+                case 0: return new AppCenterFragment();
                 case 1: return new AnalyticsFragment();
                 case 2: return new CrashesFragment();
                 case 3: return new DistributeFragment();
@@ -34,7 +34,7 @@ namespace Contoso.Android.Puppet
         {
             switch (position)
             {
-                case 0: return new String(mContext.GetString(Resource.String.MobileCenterTitle));
+                case 0: return new String(mContext.GetString(Resource.String.AppCenterTitle));
                 case 1: return new String(mContext.GetString(Resource.String.AnalyticsTitle));
                 case 2: return new String(mContext.GetString(Resource.String.CrashesTitle));
                 case 3: return new String(mContext.GetString(Resource.String.DistributeTitle));
