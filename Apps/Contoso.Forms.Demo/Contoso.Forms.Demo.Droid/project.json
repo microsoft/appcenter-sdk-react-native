@@ -1,9 +1,9 @@
 ﻿{
   "dependencies": {
-    "Microsoft.AppCenter.Analytics": "1.0.0-r0001-d3d915a",
-    "Microsoft.AppCenter.Crashes": "1.0.0-r0001-d3d915a",
-    "Microsoft.AppCenter.Distribute": "1.0.0-r0001-d3d915a",
-    "Microsoft.AppCenter.Push": "1.0.0-r0001-d3d915a",
+    "Microsoft.AppCenter.Analytics": "1.0.0-r0001-eda95fe",
+    "Microsoft.AppCenter.Crashes": "1.0.0-r0001-eda95fe",
+    "Microsoft.AppCenter.Distribute": "1.0.0-r0001-eda95fe",
+    "Microsoft.AppCenter.Push": "1.0.0-r0001-eda95fe",
     "Xamarin.Build.Download": "0.4.7",
     "Xamarin.Forms": "2.4.0.38779"
   },
