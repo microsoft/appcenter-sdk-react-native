@@ -28,8 +28,8 @@ allprojects {
         defaultConfig {
             minSdkVersion 16
             targetSdkVersion 22
-            versionCode 16
-            versionName "0.11.2"
+            versionCode 17
+            versionName "0.99.0"
             group groupId
             version versionName
             buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""

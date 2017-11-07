@@ -1,5 +1,5 @@
 PODS:
-  - AppCenterReactNativeShared (0.11.1):
+  - AppCenterReactNativeShared (0.99.0):
     - AppCenter/Core (~> 0.14.0)
   - AppCenter/Analytics (0.14.0):
     - AppCenter/Core

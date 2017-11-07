@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 16
-        versionName "0.11.2"
+        versionCode 17
+        versionName "0.99.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -32,5 +32,5 @@ dependencies {
     compile 'com.microsoft.appcenter:appcenter-crashes:1.0.0-1+8e03fa4'
 
     compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-//    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:0.11.1'
+//    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:0.99.0'
 }
