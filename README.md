@@ -37,4 +37,4 @@ You must sign a [Contributor License Agreement](https://cla.microsoft.com/) befo
 If you have further questions, want to provide feedback or you are running into issues, log in to the [AppCenter portal](https://appcenter.ms) and use the blue Intercom button on the bottom right to start a conversation with us.
 
 ### 3.2 Twitter
-We're on Twitter as [@mobilecenter](https://www.twitter.com/mobilecenter).
+We're on Twitter as [@VSAppCenter](https://www.twitter.com/VSAppCenter).
