@@ -1,5 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using Microsoft.AppCenter.Ingestion.Models;
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Test.Windows
 {
@@ -144,7 +147,7 @@ namespace Microsoft.AppCenter.Test.Windows
             var normalValue = "test";
             properties.Set(key, normalValue);
             Assert.AreEqual(1, properties.Properties.Count);
-            Assert.AreEqual(normalValue, properties.Properties[key]);
+            FindProperty(properties.Properties, key, normalValue);
         }
 
         /// <summary>
@@ -161,7 +164,7 @@ namespace Microsoft.AppCenter.Test.Windows
             var normalValue = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             properties.Set(key, normalValue);
             Assert.AreEqual(1, properties.Properties.Count);
-            Assert.AreEqual(normalValue, properties.Properties[key]);
+            FindProperty(properties.Properties, key, normalValue);
         }
 
         /// <summary>
@@ -185,15 +188,15 @@ namespace Microsoft.AppCenter.Test.Windows
             properties.Set("t4", value4);
             properties.Set("t5", value5);
             Assert.AreEqual(5, properties.Properties.Count);
-            Assert.AreEqual(value1, properties.Properties["t1"]);
-            Assert.AreEqual(value2, properties.Properties["t2"]);
-            Assert.AreEqual(value3, properties.Properties["t3"]);
-            Assert.AreEqual(value4, properties.Properties["t4"]);
-            Assert.AreEqual(value5, properties.Properties["t5"]);
+            FindProperty(properties.Properties, "t1", value1);
+            FindProperty(properties.Properties, "t2", value2);
+            FindProperty(properties.Properties, "t3", value3);
+            FindProperty(properties.Properties, "t4", value4);
+            FindProperty(properties.Properties, "t5", value5);
         }
 
         /// <summary>
-        /// Verify that bool setting correct.
+        /// Verify that bool setting correc
         /// </summary>
         [TestMethod]
         public void TestSetBool()
@@ -206,7 +209,7 @@ namespace Microsoft.AppCenter.Test.Windows
             var normalValue = false;
             properties.Set(key, normalValue);
             Assert.AreEqual(1, properties.Properties.Count);
-            Assert.AreEqual(normalValue, properties.Properties[key]);
+            FindProperty(properties.Properties, key, normalValue);
         }
 
         /// <summary>
@@ -220,7 +223,22 @@ namespace Microsoft.AppCenter.Test.Windows
             Assert.AreEqual(0, properties.Properties.Count);
             properties.Clear(key);
             Assert.AreEqual(1, properties.Properties.Count);
-            Assert.IsNull(properties.Properties[key]);
+            FindProperty(properties.Properties, key, null);
+        }
+
+        private static void FindProperty(IList<CustomProperty> properties, string key, object value)
+        {
+            CustomProperty compareProperty = null;
+            foreach (var elt in properties)
+            {
+                if (elt.Name == key)
+                {
+                    compareProperty = elt;
+                    break;
+                }
+            }
+            Assert.IsNotNull(compareProperty);
+            Assert.AreEqual(value, compareProperty.GetValue());
         }
     }
 }

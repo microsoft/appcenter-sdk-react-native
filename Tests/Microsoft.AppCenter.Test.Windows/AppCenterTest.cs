@@ -515,7 +515,7 @@ namespace Microsoft.AppCenter.Test
             var properties = new CustomProperties();
             properties.Set("test", "test");
             AppCenter.SetCustomProperties(properties);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertiesLog>(log =>
+            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertyLog>(log =>
                 log.Properties == properties.Properties)), Times.Once());
         }
     }

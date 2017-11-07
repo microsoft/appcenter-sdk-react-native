@@ -45,8 +45,8 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
                 {
                     new StringProperty("t1", "test"),
                     new DateTimeProperty("t2",  new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)),
-                    new NumberProperty("t3", 1),
-                    new NumberProperty("t4", 0.1f),
+                    new NumberProperty("t3", (long)1),
+                    new NumberProperty("t4", 0.1),
                     new BooleanProperty("t5", false),
                     new ClearProperty("t6")
                 },
@@ -64,24 +64,8 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             {
                 var retrievedProperty = GetPropertyWithName(retrievedLog.Properties, addedProperty.Name);
                 Assert.IsNotNull(retrievedProperty);
-                Assert.IsTrue(EqualityComparer<object>.Default.Equals(addedProperty.GetValue(), retrievedProperty.GetValue()));
+                Assert.AreEqual(addedProperty.GetValue(), retrievedProperty.GetValue());
             }
-        }
-
-        /// <summary>
-        /// Validate that log is not valid with nullable 'Properties'
-        /// </summary>
-        [TestMethod]
-        public void ValidateStartServiceLog()
-        {
-            var log = new CustomPropertyLog
-            {
-                Properties = null,
-                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Timestamp = DateTime.Now
-            };
-
-            Assert.ThrowsException<ValidationException>((Action)log.Validate);
         }
 
         private static CustomProperty GetPropertyWithName(IList<CustomProperty> properties, string name)

@@ -28,8 +28,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         {
             const string deafultString = default(string);
             var emptyDevice = new Device();
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
-
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = SdkVersion,
+                OsName = OsName,
+                OsVersion = OsVersion,
+                Locale = Locale,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = AppVersion,
+                AppBuild = AppBuild,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             Assert.IsNotNull(emptyDevice);
             Assert.IsNotNull(device);
        
@@ -63,8 +75,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateSuccessfullWhenAllFieldsArePresent()
         {
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
-
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = SdkVersion,
+                OsName = OsName,
+                OsVersion = OsVersion,
+                Locale = Locale,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = AppVersion,
+                AppBuild = AppBuild,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             device.Validate();
         }
 
@@ -74,8 +98,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenSdkNameIsNull()
         {
-            const string nullSdkName = null;
-            var device = new Device(nullSdkName, SdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
+            var device = new Device(null, SdkVersion, OsName, OsVersion, Locale, TimeZoneOffset, AppVersion, AppBuild, null, null, Model);
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
 
@@ -85,30 +108,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenSdkVersionIsNull()
         {
-            const string nullSdkVersion = null;
-            var device = new Device(SdkName, nullSdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
-            Assert.ThrowsException<ValidationException>(() => device.Validate());
-        }
-
-        /// <summary>
-        /// Verify that Validate method throws ValidationException when model == null.
-        /// </summary>
-        [TestMethod]
-        public void TestValidateThrowsExceptionWhenModelIsNull()
-        {
-            const string nullModel = null;
-            var device = new Device(SdkName, SdkVersion, nullModel, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
-            Assert.ThrowsException<ValidationException>(() => device.Validate());
-        }
-
-        /// <summary>
-        /// Verify that Validate method throws ValidationException when oemName == null.
-        /// </summary>
-        [TestMethod]
-        public void TestValidateThrowsExceptionWhenOemNameIsNull()
-        {
-            const string nullOemName = null;
-            var device = new Device(SdkName, SdkVersion, Model, nullOemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = null,
+                OsName = OsName,
+                OsVersion = OsVersion,
+                Locale = Locale,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = AppVersion,
+                AppBuild = AppBuild,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
 
@@ -118,8 +131,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenOsNameIsNull()
         {
-            const string nullOsName = null;
-            var device = new Device(SdkName, SdkVersion, Model, OemName, nullOsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
+            var device = new Device(SdkName, SdkVersion, null, OsVersion, Locale, TimeZoneOffset, AppVersion, AppBuild, null, null, Model, OemName);
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
 
@@ -129,8 +141,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenOsVersionIsNull()
         {
-            const string nullOsVersion = null;
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, nullOsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = SdkVersion,
+                OsName = OsName,
+                OsVersion = null,
+                Locale = Locale,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = AppVersion,
+                AppBuild = AppBuild,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
 
@@ -140,19 +164,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenLocaleIsNull()
         {
-            const string nullLocale = null;
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, OsVersion, nullLocale, TimeZoneOffset, ScreenSize, AppVersion, AppBuild);
-            Assert.ThrowsException<ValidationException>(() => device.Validate());
-        }
-
-        /// <summary>
-        /// Verify that Validate method throws ValidationException when screenSize == null.
-        /// </summary>
-        [TestMethod]
-        public void TestValidateThrowsExceptionWhenScreenSizeIsNull()
-        {
-            const string nullScreenSize = null;
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, nullScreenSize, AppVersion, AppBuild);
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = SdkVersion,
+                OsName = OsName,
+                OsVersion = OsVersion,
+                Locale = null,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = AppVersion,
+                AppBuild = AppBuild,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
 
@@ -162,8 +187,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenAppVersionIsNull()
         {
-            const string nullAppVersion = null;
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, nullAppVersion, AppBuild);
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = SdkVersion,
+                OsName = OsName,
+                OsVersion = OsVersion,
+                Locale = Locale,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = null,
+                AppBuild = AppBuild,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
 
@@ -173,8 +210,20 @@ namespace Microsoft.AppCenter.Test.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenAppBuildnIsNull()
         {
-            const string nullAppBuild = null;
-            var device = new Device(SdkName, SdkVersion, Model, OemName, OsName, OsVersion, Locale, TimeZoneOffset, ScreenSize, AppVersion, nullAppBuild);
+            var device = new Device
+            {
+                SdkName = SdkName,
+                SdkVersion = SdkVersion,
+                OsName = OsName,
+                OsVersion = OsVersion,
+                Locale = Locale,
+                TimeZoneOffset = TimeZoneOffset,
+                AppVersion = AppVersion,
+                AppBuild = null,
+                Model = Model,
+                ScreenSize = ScreenSize,
+                OemName = OemName
+            };
             Assert.ThrowsException<ValidationException>(() => device.Validate());
         }
     }

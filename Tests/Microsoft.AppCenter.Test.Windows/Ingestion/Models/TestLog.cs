@@ -9,6 +9,6 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
     {
         public TestLog() {}
         public TestLog(DateTime? timestamp, Device device, System.Guid? sid = default(System.Guid?))
-            : base(timestamp, device, sid){ }
+            : base(device, timestamp, sid) { }
     }
 }

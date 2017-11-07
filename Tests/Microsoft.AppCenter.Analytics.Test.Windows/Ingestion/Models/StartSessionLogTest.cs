@@ -21,7 +21,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
 
             StartSessionLog emptyLog = new StartSessionLog();
-            StartSessionLog log = new StartSessionLog(Timestamp, mockDevice.Object);
+            StartSessionLog log = new StartSessionLog(mockDevice.Object, Timestamp);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
