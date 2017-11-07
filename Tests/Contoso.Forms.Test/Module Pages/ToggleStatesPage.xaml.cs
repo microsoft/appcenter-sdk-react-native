@@ -1,4 +1,4 @@
-﻿using Microsoft.AppCenterAnalytics;
+﻿using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter;
 
