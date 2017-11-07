@@ -112,9 +112,9 @@ namespace Microsoft.AppCenter.Push
 
         private void OnPushNotificationReceivedHandler(PushNotificationChannel sender, WindowsPushNotificationReceivedEventArgs e)
         {
-            if (e.NotificationType == PushNotificationType.Toast)
+            var content = e.ToastNotification?.Content;
+            if (content != null)
             {
-                var content = e.ToastNotification.Content;
                 AppCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
                 if (ApplicationLifecycleHelper.Instance.IsSuspended)
                 {
@@ -167,14 +167,13 @@ namespace Microsoft.AppCenter.Push
                 if (!string.IsNullOrEmpty(launchString))
                 {
                     var launchJObject = JObject.Parse(launchString);
+                    if (launchJObject?["appCenter"] is JObject appCenterData)
+                    {
+                        return ParseCustomData(appCenterData);
+                    }
                     if (launchJObject?["mobile_center"] is JObject mobileCenterData)
                     {
-                        var customData = new Dictionary<string, string>();
-                        foreach (var pair in mobileCenterData)
-                        {
-                            customData.Add(pair.Key, pair.Value.ToString());
-                        }
-                        return customData;
+                        return ParseCustomData(mobileCenterData);
                     }
                 }
                 return null;
@@ -183,6 +182,16 @@ namespace Microsoft.AppCenter.Push
             {
                 return null;
             }
+        }
+
+        private static Dictionary<string, string> ParseCustomData(JObject appCenterData)
+        {
+            var customData = new Dictionary<string, string>();
+            foreach (var pair in appCenterData)
+            {
+                customData.Add(pair.Key, pair.Value.ToString());
+            }
+            return customData;
         }
     }
 }
