@@ -13,7 +13,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Crashes from 'mobile-center-crashes';
+import Crashes from 'appcenter-crashes';
 import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
 

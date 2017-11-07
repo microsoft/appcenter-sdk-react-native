@@ -13,14 +13,14 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import MobileCenter, { CustomProperties } from 'mobile-center';
+import AppCenter, { CustomProperties } from 'appcenter';
 import SharedStyles from './SharedStyles';
 
-export default class MobileCenterScreen extends React.Component {
+export default class AppCenterScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      mobileCenterEnabled: false,
+      appCenterEnabled: false,
       installId: 'uninitialized',
       logLevel: -1   // default to something invalid; shouldn't show in UI
     };
@@ -32,38 +32,38 @@ export default class MobileCenterScreen extends React.Component {
   async componentDidMount() {
     const component = this;
 
-    const mobileCenterEnabled = await MobileCenter.isEnabled();
-    component.setState({ mobileCenterEnabled });
+    const appCenterEnabled = await AppCenter.isEnabled();
+    component.setState({ appCenterEnabled });
 
-    const installId = await MobileCenter.getInstallId();
+    const installId = await AppCenter.getInstallId();
     component.setState({ installId });
 
-    const logLevel = await MobileCenter.getLogLevel();
+    const logLevel = await AppCenter.getLogLevel();
     component.setState({ logLevel });
   }
 
   async toggleEnabled() {
-    await MobileCenter.setEnabled(!this.state.mobileCenterEnabled);
+    await AppCenter.setEnabled(!this.state.appCenterEnabled);
 
-    const mobileCenterEnabled = await MobileCenter.isEnabled();
-    this.setState({ mobileCenterEnabled });
+    const appCenterEnabled = await AppCenter.isEnabled();
+    this.setState({ appCenterEnabled });
   }
 
   async toggleLogging() {
-    let logLevel = await MobileCenter.getLogLevel();
+    let logLevel = await AppCenter.getLogLevel();
     switch (logLevel) {
-      case MobileCenter.LogLevelAssert:
-        logLevel = MobileCenter.LogLevelNone;
+      case AppCenter.LogLevelAssert:
+        logLevel = AppCenter.LogLevelNone;
         break;
 
-      case MobileCenter.LogLevelNone:
-        logLevel = MobileCenter.LogLevelVerbose;
+      case AppCenter.LogLevelNone:
+        logLevel = AppCenter.LogLevelVerbose;
         break;
 
       default:
         logLevel++;
     }
-    await MobileCenter.setLogLevel(logLevel);
+    await AppCenter.setLogLevel(logLevel);
     this.setState({ logLevel });
   }
 
@@ -75,7 +75,7 @@ export default class MobileCenterScreen extends React.Component {
       .set('optin', true)
       .set('score', 7)
       .set('now', new Date());
-    await MobileCenter.setCustomProperties(properties);
+    await AppCenter.setCustomProperties(properties);
   }
 
   render() {
@@ -83,11 +83,11 @@ export default class MobileCenterScreen extends React.Component {
       <View style={SharedStyles.container}>
         <ScrollView >
           <Text style={SharedStyles.heading}>
-            Test MobileCenter
+            Test AppCenter
           </Text>
 
           <Text style={SharedStyles.enabledText}>
-            Mobile Center enabled: {this.state.mobileCenterEnabled ? 'yes' : 'no'}
+            App Center enabled: {this.state.appCenterEnabled ? 'yes' : 'no'}
           </Text>
           <TouchableOpacity onPress={this.toggleEnabled}>
             <Text style={SharedStyles.toggleEnabled}>

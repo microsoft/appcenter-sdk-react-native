@@ -12,7 +12,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Push from 'mobile-center-push';
+import Push from 'appcenter-push';
 import SharedStyles from './SharedStyles';
 
 export default class PushScreen extends React.Component {
