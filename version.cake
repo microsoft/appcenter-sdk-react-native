@@ -208,6 +208,9 @@ string GetLatestNuGetVersion()
     var endTag = "</d:Version>";
     int start = responseString.IndexOf(startTag);
     int end = responseString.IndexOf(endTag);
+    if (start == -1 || end == -1) {
+        return "0.0.0";
+    }
     var tag = responseString.Substring(start + startTag.Length, end - start - startTag.Length);
     return tag;
 }
