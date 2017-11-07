@@ -4,15 +4,18 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
+    using Microsoft.AppCenter.Ingestion.Models.Serialization;
     using Newtonsoft.Json;
     using System.Linq;
 
     /// <summary>
     /// Clear an existing property.
     /// </summary>
-    [JsonObject("clear")]
+    [JsonObject(JsonIdentifier)]
     public partial class ClearProperty : CustomProperty
     {
+        internal const string JsonIdentifier = "clear";
+
         /// <summary>
         /// Initializes a new instance of the ClearProperty class.
         /// </summary>
@@ -24,6 +27,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
         public ClearProperty(string name)
             : base(name)
         {
+        }
+
+        public override object GetValue()
+        {
+            return null;
         }
 
         /// <summary>

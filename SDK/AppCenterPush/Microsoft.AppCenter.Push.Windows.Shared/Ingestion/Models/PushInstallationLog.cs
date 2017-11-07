@@ -4,7 +4,7 @@ namespace Microsoft.AppCenter.Push.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
+    using Microsoft.AppCenter.Ingestion.Models;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Push.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        public PushInstallationLog(Device device, string pushToken, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?))
+        public PushInstallationLog(System.DateTime? timestamp, Device device, string pushToken, System.Guid? sid = default(System.Guid?))
             : base(device, timestamp, sid)
         {
             PushToken = pushToken;
@@ -52,7 +52,7 @@ namespace Microsoft.AppCenter.Push.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -60,7 +60,7 @@ namespace Microsoft.AppCenter.Push.Ingestion.Models
             base.Validate();
             if (PushToken == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "PushToken");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(PushToken));
             }
         }
     }

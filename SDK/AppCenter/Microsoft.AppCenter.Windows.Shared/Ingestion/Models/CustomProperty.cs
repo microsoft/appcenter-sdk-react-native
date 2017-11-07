@@ -4,10 +4,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
+    using Microsoft.AppCenter.Ingestion.Models.Serialization;
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class CustomProperty
+    public abstract class CustomProperty
     {
         private const int MaxNameLength = 128;
         private const string KeyPattern = "^[a-zA-Z][a-zA-Z0-9\\-_]*$";
@@ -29,6 +30,8 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        public abstract object GetValue();
 
         /// <summary>
         /// Validate the object.

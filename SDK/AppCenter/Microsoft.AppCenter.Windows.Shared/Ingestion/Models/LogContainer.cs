@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 if (Logs.Count < 1)
                 {
-                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Logs));
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Logs), 1);
                 }
                 foreach (var element in Logs)
                 {

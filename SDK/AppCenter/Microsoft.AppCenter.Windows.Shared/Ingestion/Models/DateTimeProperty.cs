@@ -10,9 +10,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
     /// <summary>
     /// Date and time property.
     /// </summary>
-    [JsonObject("dateTime")]
+    [JsonObject(JsonIdentifier)]
     public partial class DateTimeProperty : CustomProperty
     {
+        internal const string JsonIdentifier = "dateTime";
+
         /// <summary>
         /// Initializes a new instance of the DateTimeProperty class.
         /// </summary>
@@ -33,6 +35,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// </summary>
         [JsonProperty(PropertyName = "value")]
         public System.DateTime Value { get; set; }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         /// <summary>
         /// Validate the object.

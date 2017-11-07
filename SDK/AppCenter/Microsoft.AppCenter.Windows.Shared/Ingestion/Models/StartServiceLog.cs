@@ -15,7 +15,10 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the StartServiceLog class.
         /// </summary>
-        public StartServiceLog() { }
+        public StartServiceLog()
+        {
+            Services = new List<string>();
+        }
 
         /// <summary>
         /// Initializes a new instance of the StartServiceLog class.
@@ -59,7 +62,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 if (Services.Count < 1)
                 {
-                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Services));
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Services), 1);
                 }
             }
         }

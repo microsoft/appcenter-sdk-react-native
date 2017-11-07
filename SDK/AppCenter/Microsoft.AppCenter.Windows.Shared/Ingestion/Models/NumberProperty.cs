@@ -10,13 +10,45 @@ namespace Microsoft.AppCenter.Ingestion.Models
     /// <summary>
     /// Number property.
     /// </summary>
-    [JsonObject("number")]
+    [JsonObject(JsonIdentifier)]
     public partial class NumberProperty : CustomProperty
     {
+        internal const string JsonIdentifier = "number";
+
         /// <summary>
         /// Initializes a new instance of the NumberProperty class.
         /// </summary>
         public NumberProperty() { }
+
+        /// <summary>
+        /// Initializes a new instance of the NumberProperty class.
+        /// </summary>
+        /// <param name="value">Number property value.</param>
+        public NumberProperty(string name, int value)
+            : base(name)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the NumberProperty class.
+        /// </summary>
+        /// <param name="value">Number property value.</param>
+        public NumberProperty(string name, long value)
+            : base(name)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the NumberProperty class.
+        /// </summary>
+        /// <param name="value">Number property value.</param>
+        public NumberProperty(string name, float value)
+            : base(name)
+        {
+            Value = value;
+        }
 
         /// <summary>
         /// Initializes a new instance of the NumberProperty class.
@@ -29,10 +61,29 @@ namespace Microsoft.AppCenter.Ingestion.Models
         }
 
         /// <summary>
+        /// Initializes a new instance of the NumberProperty class.
+        /// </summary>
+        /// <param name="value">Number property value.</param>
+        public NumberProperty(string name, decimal value)
+            : base(name)
+        {
+            Value = value;
+        }
+
+        // Use object because number can be either decimal or double (or other numeric types).
+        // Decimal has narrower range than double but double has lower precision. Thus, they
+        // can't be casted between.
+
+        /// <summary>
         /// Gets or sets number property value.
         /// </summary>
         [JsonProperty(PropertyName = "value")]
-        public double Value { get; set; }
+        public object Value { get; set; }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         /// <summary>
         /// Validate the object.

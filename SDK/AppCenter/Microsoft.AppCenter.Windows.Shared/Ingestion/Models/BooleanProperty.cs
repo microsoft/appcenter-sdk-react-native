@@ -10,9 +10,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
     /// <summary>
     /// Boolean property.
     /// </summary>
-    [JsonObject("boolean")]
+    [JsonObject(JsonIdentifier)]
     public partial class BooleanProperty : CustomProperty
     {
+        internal const string JsonIdentifier = "boolean";
+
         /// <summary>
         /// Initializes a new instance of the BooleanProperty class.
         /// </summary>
@@ -33,6 +35,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// </summary>
         [JsonProperty(PropertyName = "value")]
         public bool Value { get; set; }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
 
         /// <summary>
         /// Validate the object.

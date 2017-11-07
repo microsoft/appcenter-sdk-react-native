@@ -4,7 +4,7 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
-    using Microsoft.Rest;
+    using Microsoft.AppCenter.Ingestion.Models;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
-        public EventLog(Device device, System.Guid id, string name, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
+        public EventLog(System.DateTime? timestamp, Device device, System.Guid id, string name, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
             : base(device, timestamp, sid, properties)
         {
             Id = id;
@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
@@ -77,13 +77,13 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
             base.Validate();
             if (Name == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "Name");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Name));
             }
             if (Name != null)
             {
                 if (Name.Length > 256)
                 {
-                    throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.MaxLength, "Name", 256);
+                    throw new ValidationException(ValidationException.Rule.MaxLength, nameof(Name), 256);
                 }
             }
         }

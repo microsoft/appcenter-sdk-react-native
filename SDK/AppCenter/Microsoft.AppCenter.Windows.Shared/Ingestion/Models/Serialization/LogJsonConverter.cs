@@ -11,6 +11,7 @@ namespace Microsoft.AppCenter.Ingestion.Models.Serialization
         private readonly Dictionary<string, Type> _logTypes = new Dictionary<string, Type>();
         private readonly object _jsonConverterLock = new object();
         private static readonly JsonSerializerSettings SerializationSettings;
+
         internal const string TypeIdKey = "type";
 
         static LogJsonConverter()
@@ -21,7 +22,8 @@ namespace Microsoft.AppCenter.Ingestion.Models.Serialization
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 NullValueHandling = NullValueHandling.Ignore,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                Converters = { new CustomPropertyJsonConverter() }
             };
         }
 
@@ -50,8 +52,12 @@ namespace Microsoft.AppCenter.Ingestion.Models.Serialization
                     throw new JsonReaderException("Could not identify type of log");
                 }
                 logType = _logTypes[typeName];
+                jsonObject.Remove(TypeIdKey);
+                if (logType == typeof(CustomPropertyLog))
+                {
+                    return ReadCustomPropertyLog(jsonObject);
+                }
             }
-            jsonObject.Remove(TypeIdKey);
             return jsonObject.ToObject(logType);
         }
 
@@ -63,11 +69,25 @@ namespace Microsoft.AppCenter.Ingestion.Models.Serialization
             {
                 throw new JsonWriterException("Cannot serialize log; Log type is missing JsonObjectAttribute");
             }
-            
             var jsonText = JsonConvert.SerializeObject(value, SerializationSettings);
             var jsonObject = JObject.Parse(jsonText);
             jsonObject.Add(TypeIdKey, JToken.FromObject(attribute.Id));
             writer.WriteRawValue(jsonObject.ToString());
+        }
+
+        public Log ReadCustomPropertyLog(JObject logObject)
+        {
+            var propertiesIdentifier = "properties";
+            var propertiesJson = logObject.GetValue(propertiesIdentifier);
+            logObject.Remove(propertiesIdentifier);
+            var customPropertiesLog = logObject.ToObject(typeof(CustomPropertyLog)) as CustomPropertyLog;
+            foreach (var child in propertiesJson.Children())
+            {
+                var propertyJson = child.ToString();
+                var property = JsonConvert.DeserializeObject<CustomProperty>(propertyJson, SerializationSettings);
+                customPropertiesLog.Properties.Add(property);
+            }
+            return customPropertiesLog;
         }
     }
 }

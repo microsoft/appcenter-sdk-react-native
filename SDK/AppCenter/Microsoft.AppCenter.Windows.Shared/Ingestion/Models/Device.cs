@@ -331,11 +331,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
             }
             if (TimeZoneOffset > 840)
             {
-                throw new ValidationException(ValidationException.Rule.InclusiveMaximum, nameof(TimeZoneOffset));
+                throw new ValidationException(ValidationException.Rule.InclusiveMaximum, nameof(TimeZoneOffset), 840);
             }
             if (TimeZoneOffset < -840)
             {
-                throw new ValidationException(ValidationException.Rule.InclusiveMinimum, nameof(TimeZoneOffset));
+                throw new ValidationException(ValidationException.Rule.InclusiveMinimum, nameof(TimeZoneOffset), -840);
             }
         }
     }

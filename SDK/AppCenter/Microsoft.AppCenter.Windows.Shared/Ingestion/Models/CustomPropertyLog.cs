@@ -4,6 +4,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Microsoft.AppCenter;
     using Microsoft.AppCenter.Ingestion;
+    using Microsoft.AppCenter.Ingestion.Models.Serialization;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -56,11 +57,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 if (Properties.Count > 60)
                 {
-                    throw new ValidationException(ValidationException.Rule.MaxItems, nameof(Properties));
+                    throw new ValidationException(ValidationException.Rule.MaxItems, nameof(Properties), 60);
                 }
                 if (Properties.Count < 1)
                 {
-                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Properties));
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Properties), 1);
                 }
                 foreach (var element in Properties)
                 {

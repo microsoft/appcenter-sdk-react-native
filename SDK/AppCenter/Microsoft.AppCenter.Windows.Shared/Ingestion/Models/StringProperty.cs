@@ -10,9 +10,10 @@ namespace Microsoft.AppCenter.Ingestion.Models
     /// <summary>
     /// String property.
     /// </summary>
-    [JsonObject("string")]
+    [JsonObject(JsonIdentifier)]
     public partial class StringProperty : CustomProperty
     {
+        internal const string JsonIdentifier = "string";
         /// <summary>
         /// Initializes a new instance of the StringProperty class.
         /// </summary>
@@ -34,6 +35,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
 
+        public override object GetValue()
+        {
+            return Value;
+        }
+
         /// <summary>
         /// Validate the object.
         /// </summary>
@@ -51,7 +57,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 if (Value.Length > 128)
                 {
-                    throw new ValidationException(ValidationException.Rule.MaxLength, nameof(Value));
+                    throw new ValidationException(ValidationException.Rule.MaxLength, nameof(Value), 128);
                 }
             }
         }

@@ -10,12 +10,12 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
     [TestClass]
     public class CustomPropertiesLogTest
     {
-        private const string StorageTestChannelName = "customPropertiesStorageTestChannelName";
+        private const string StorageTestChannelName = "customPropertyStorageTestChannelName";
 
         [TestInitialize]
         public void InitializeStartServiceTest()
         {
-            LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
+            LogSerializer.AddLogType(CustomPropertyLog.JsonIdentifier, typeof(CustomPropertyLog));
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         [TestMethod]
         public void CheckInitialValues()
         {
-            var log = new CustomPropertiesLog();
+            var log = new CustomPropertyLog();
             Assert.IsNull(log.Device);
             Assert.AreEqual(0, log.Properties.Count);
             Assert.IsNull(log.Sid);
@@ -37,18 +37,18 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         [TestMethod]
         public void SaveCustomPropertiesLog()
         {
-            var addedLog = new CustomPropertiesLog
+            var addedLog = new CustomPropertyLog
             {
                 Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
                 Timestamp = DateTime.Now,
-                Properties = new Dictionary<string, object>
+                Properties = new List<CustomProperty>
                 {
-                    { "t1", "test" },
-                    { "t2", new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
-                    { "t3", 1 },
-                    { "t4", 0.1f },
-                    { "t5", false },
-                    { "t6", null }
+                    new StringProperty("t1", "test"),
+                    new DateTimeProperty("t2",  new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)),
+                    new NumberProperty("t3", 1),
+                    new NumberProperty("t4", 0.1f),
+                    new BooleanProperty("t5", false),
+                    new ClearProperty("t6")
                 },
                 Sid = Guid.NewGuid()
             };
@@ -58,13 +58,13 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
             storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
-            var retrievedLog = retrievedLogs[0] as CustomPropertiesLog;
+            var retrievedLog = retrievedLogs[0] as CustomPropertyLog;
 
             foreach (var addedProperty in addedLog.Properties)
             {
-                object retrievedProperty;
-                Assert.IsTrue(retrievedLog.Properties.TryGetValue(addedProperty.Key, out retrievedProperty));
-                Assert.IsTrue(EqualityComparer<object>.Default.Equals(addedProperty.Value, retrievedProperty));
+                var retrievedProperty = GetPropertyWithName(retrievedLog.Properties, addedProperty.Name);
+                Assert.IsNotNull(retrievedProperty);
+                Assert.IsTrue(EqualityComparer<object>.Default.Equals(addedProperty.GetValue(), retrievedProperty.GetValue()));
             }
         }
 
@@ -74,7 +74,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         [TestMethod]
         public void ValidateStartServiceLog()
         {
-            var log = new CustomPropertiesLog
+            var log = new CustomPropertyLog
             {
                 Properties = null,
                 Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
@@ -82,6 +82,18 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             };
 
             Assert.ThrowsException<ValidationException>((Action)log.Validate);
+        }
+
+        private static CustomProperty GetPropertyWithName(IList<CustomProperty> properties, string name)
+        {
+            foreach (var property in properties)
+            {
+                if (property.Name == name)
+                {
+                    return property;
+                }
+            }
+            return null;
         }
     }
 }

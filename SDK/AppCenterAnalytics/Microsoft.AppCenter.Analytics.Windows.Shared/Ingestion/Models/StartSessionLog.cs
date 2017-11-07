@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
     public partial class StartSessionLog : Log
     {
         internal static StartSessionLog Empty = new StartSessionLog();
-        internal const string JsonIdentifier = "start_session";
+        internal const string JsonIdentifier = "startSession";
 
         /// <summary>
         /// Initializes a new instance of the StartSessionLog class.
@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// <exception cref="ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
