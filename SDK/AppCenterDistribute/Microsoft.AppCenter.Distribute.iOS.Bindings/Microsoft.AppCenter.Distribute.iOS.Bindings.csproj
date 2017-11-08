@@ -51,54 +51,54 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\MobileCenterDistribute.a">
+    <NativeReference Include="..\..\..\externals\ios\AppCenterDistribute.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
       <ForceLoad>True</ForceLoad>
     </NativeReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\Info.plist">
-      <Link>Resources\MobileCenterDistributeResources.bundle\Info.plist</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\Info.plist">
+      <Link>Resources\AppCenterDistributeResources.bundle\Info.plist</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\cs.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\cs.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\cs.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\cs.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\de.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\de.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\de.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\de.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\en.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\en.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\en.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\en.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\es.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\es.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\es.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\es.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\fr.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\fr.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\fr.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\fr.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\it.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\it.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\it.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\it.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\ja.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\ja.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\ja.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\ja.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\ko.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\ko.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\ko.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\ko.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\pl.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\pl.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\pl.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\pl.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\ru.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\ru.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\ru.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\ru.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\tr.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\tr.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\tr.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\tr.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\zh-Hans.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\zh-Hans.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\zh-Hans.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\zh-Hans.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\externals\ios\MobileCenterDistributeResources.bundle\zh-Hant.lproj\MobileCenterDistribute.strings">
-      <Link>Resources\MobileCenterDistributeResources.bundle\zh-Hant.lproj\MobileCenterDistribute.strings</Link>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\zh-Hant.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\zh-Hant.lproj\AppCenterDistribute.strings</Link>
     </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
