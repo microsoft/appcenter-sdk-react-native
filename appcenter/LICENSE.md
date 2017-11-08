@@ -1,4 +1,4 @@
-Microsoft Mobile Center Plugin for React Native
+Microsoft App Center Plugin for React Native
 
 Copyright (c) Microsoft Corporation
 

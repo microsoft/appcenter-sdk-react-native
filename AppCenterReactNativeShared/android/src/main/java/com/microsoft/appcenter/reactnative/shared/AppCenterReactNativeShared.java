@@ -34,7 +34,7 @@ public class AppCenterReactNativeShared {
     }
 
     /**
-        This functionality is intended to allow individual react-native Mobile Center beacons to
+        This functionality is intended to allow individual react-native App Center beacons to
         set specific components of the wrapperSDK cooperatively
         E.g. code push can fetch the wrapperSdk, set the code push version, then set the
         wrapperSdk again so it can take effect.
@@ -65,7 +65,7 @@ public class AppCenterReactNativeShared {
                 AppCenterReactNativeShared.appSecret = json.getString("app_secret");
             } catch (Exception e) {
                 // Unable to read secret from file
-                // Leave the secret null so that Mobile Center errors out appropriately.
+                // Leave the secret null so that App Center errors out appropriately.
             }
         }
 
