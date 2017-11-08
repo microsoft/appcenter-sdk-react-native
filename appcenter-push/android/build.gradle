@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 17
+        versionName "0.99.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+}
+
+repositories {
+    maven {
+        url "https://dl.bintray.com/app-center/appcenter/"
+        credentials {
+            username System.getenv("BINTRAY_USER")
+            password System.getenv("BINTRAY_PASSWORD")
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.facebook.react:react-native:+'
+    compile 'com.microsoft.appcenter:appcenter-push:1.0.0-1+8e03fa4'
+
+    compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+//    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:0.99.0'
+}

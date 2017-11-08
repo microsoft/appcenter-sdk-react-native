@@ -1,0 +1,61 @@
+{
+  "name": "appcenter-analytics",
+  "version": "0.99.0",
+  "description": "React Native plugin for AppCenter Analytics",
+  "main": "Analytics.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/appcenter-sdk-react-native.git"
+  },
+  "keywords": [
+    "react-native",
+    "appcenter",
+    "analytics"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Microsoft/appcenter-sdk-react-native/issues"
+  },
+  "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-analytics/README.md",
+  "dependencies": {
+    "appcenter": "0.99.0"
+  },
+  "rnpm": {
+    "params": [
+      {
+        "type": "list",
+        "name": "whenToEnableAnalytics",
+        "message": "For the Android app, should user tracking be enabled automatically?",
+        "choices": [
+          {
+            "name": "Enable Automatically",
+            "value": "ALWAYS_SEND"
+          },
+          {
+            "name": "Enable in JavaScript",
+            "value": "ENABLE_IN_JS"
+          }
+        ]
+      }
+    ],
+    "android": {
+      "packageInstance": "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, ${whenToEnableAnalytics})"
+    },
+    "commands": {
+      "prelink": "node node_modules/appcenter-analytics/scripts/prelink",
+      "postlink": "node node_modules/appcenter-analytics/scripts/postlink"
+    }
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.2.1"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }
+}

@@ -14,14 +14,14 @@ import MainScreen from './MainScreen';
 import CrashesScreen from './CrashesScreen';
 import AnalyticsScreen from './AnalyticsScreen';
 import PushScreen from './PushScreen';
-import MobileCenterScreen from './MobileCenterScreen';
+import Screen from './Screen';
 
 const TestApp34 = StackNavigator({
   Main: { screen: MainScreen },
   Crashes: { screen: CrashesScreen },
   Analytics: { screen: AnalyticsScreen },
   Push: { screen: PushScreen },
-  MobileCenter: { screen: MobileCenterScreen }
+  : { screen: Screen }
 });
 
 AppRegistry.registerComponent('TestApp34', () => TestApp34);

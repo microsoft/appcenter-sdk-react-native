@@ -1,5 +1,5 @@
 <resources>
-    <string moduleConfig="true" name="mobileCenterCrashes_whenToSendCrashes">ASK_JAVASCRIPT</string>
-    <string moduleConfig="true" name="mobileCenterAnalytics_whenToEnableAnalytics">ALWAYS_SEND</string>
+    <string moduleConfig="true" name="appCenterCrashes_whenToSendCrashes">ASK_JAVASCRIPT</string>
+    <string moduleConfig="true" name="appCenterAnalytics_whenToEnableAnalytics">ALWAYS_SEND</string>
     <string name="app_name">DemoApp</string>
 </resources>

@@ -22,7 +22,7 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
         maven {
-            url  "https://dl.bintray.com/mobile-center/mobile-center-snapshot"
+            url  "https://dl.bintray.com/appcenter/appcenter-snapshot"
         }
     }
 }

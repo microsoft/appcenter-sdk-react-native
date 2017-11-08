@@ -6,11 +6,11 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "mobile-center": "../mobile-center",
-    "mobile-center-analytics": "../mobile-center-analytics",
-    "mobile-center-crashes": "../mobile-center-crashes",
-    "mobile-center-link-scripts": "../mobile-center-link-scripts",
-    "mobile-center-push": "../mobile-center-push",
+    "appcenter": "../appcenter",
+    "appcenter-analytics": "../appcenter-analytics",
+    "appcenter-crashes": "../appcenter-crashes",
+    "appcenter-link-scripts": "../appcenter-link-scripts",
+    "appcenter-push": "../appcenter-push",
     "react": "15.3.2",
     "react-native": "0.34.0",
     "react-navigation": "1.0.0-beta.11"

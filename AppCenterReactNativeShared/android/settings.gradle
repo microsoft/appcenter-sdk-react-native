@@ -1,0 +1,3 @@
+include ':AppCenterReactNativeShared'
+
+rootProject.name = 'appcenter-react-native'

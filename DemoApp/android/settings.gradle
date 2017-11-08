@@ -1,11 +1,11 @@
 rootProject.name = 'DemoApp'
-include ':mobile-center-push'
-project(':mobile-center-push').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-push/android')
-include ':mobile-center-crashes'
-project(':mobile-center-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-crashes/android')
-include ':mobile-center-analytics'
-project(':mobile-center-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-analytics/android')
-include ':mobile-center'
-project(':mobile-center').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center/android')
+include ':appcenter-push'
+project(':appcenter-push').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-push/android')
+include ':appcenter-crashes'
+project(':appcenter-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-crashes/android')
+include ':appcenter-analytics'
+project(':appcenter-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-analytics/android')
+include ':appcenter'
+project(':appcenter').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter/android')
 
 include ':app'

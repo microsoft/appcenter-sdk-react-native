@@ -5,7 +5,7 @@ for i in '' '-analytics' '-crashes' '-push'
 do
     for j in '*.js' 'android' 'ios' 'scripts'
     do
-        rsync -r --delete node_modules/mobile-center$i/$j ../mobile-center$i
+        rsync -r --delete node_modules/appcenter$i/$j ../appcenter$i
     done
 done
-rsync -r node_modules/mobile-center-link-scripts/src ../mobile-center-link-scripts
+rsync -r node_modules/appcenter-link-scripts/src ../appcenter-link-scripts
