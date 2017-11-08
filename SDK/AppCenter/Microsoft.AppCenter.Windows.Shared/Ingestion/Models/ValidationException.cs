@@ -13,15 +13,22 @@
         public enum Rule
         {
             CannotBeNull,
-            CannotBeEmpty
+            CannotBeEmpty,
+            MaxItems,
+            MinItems,
+            MaxLength,
+            Pattern,
+            InclusiveMinimum,
+            InclusiveMaximum
         }
 
         /// <summary>
         /// Gets a string message that describes a given validation rule
         /// </summary>
         /// <param name="rule">The rule to create a string for</param>
+        /// <param name="extraValue">An extra detail to include with the rule.</param>
         /// <returns>A string describing the rule</returns>
-        private static string GetRuleString(Rule rule)
+        private static string GetRuleString(Rule rule, string extraValue)
         {
             switch (rule)
             {
@@ -29,6 +36,18 @@
                     return "Cannot be null";
                 case Rule.CannotBeEmpty:
                     return "Cannot be empty";
+                case Rule.MaxItems:
+                    return $"Number of items exceeded maximum of {extraValue}";
+                case Rule.MinItems:
+                    return $"Number of items less than minimum of {extraValue}";
+                case Rule.MaxLength:
+                    return $"Maximum length of {extraValue} exceeded";
+                case Rule.Pattern:
+                    return $"Does not match expected pattern: {extraValue}";
+                case Rule.InclusiveMaximum:
+                    return $"Item exceeds maximum value of {extraValue}";
+                case Rule.InclusiveMinimum:
+                    return $"Item is less than minimum value of {extraValue}";
                 default:
                     return "Unknown rule";
             }
@@ -40,9 +59,9 @@
         /// <param name="validationRule">The rule that was broken</param>
         /// <param name="propertyName">The name of the property that broke the rule</param>
         /// <returns></returns>
-        private static string GetErrorString(Rule validationRule, string propertyName)
+        private static string GetErrorString(Rule validationRule, string propertyName, object detail)
         {
-            return $"Validation failed due to property '{propertyName}': {GetRuleString(validationRule)}";
+            return $"Validation failed due to property '{propertyName}': {GetRuleString(validationRule, detail?.ToString())}";
         }
 
         public ValidationException() : base(DefaultMessage)
@@ -58,7 +77,7 @@
         /// </summary>
         /// <param name="validationRule">The rule that was broken</param>
         /// <param name="propertyName">The name of the property that broke the rule</param>
-        public ValidationException(Rule validationRule, string propertyName) : base(GetErrorString(validationRule, propertyName))
+        public ValidationException(Rule validationRule, string propertyName, object detail = null) : base(GetErrorString(validationRule, propertyName, detail))
         {
         }
     }

@@ -1,22 +1,33 @@
-﻿using System;
-using Microsoft.AppCenter.Ingestion.Models;
-using Newtonsoft.Json;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 
 namespace Microsoft.AppCenter.Push.Ingestion.Models
 {
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
+    using Microsoft.AppCenter.Ingestion.Models;
+    using Newtonsoft.Json;
+    using System.Linq;
+
     using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     [JsonObject(JsonIdentifier)]
     public class PushInstallationLog : Log
     {
-        internal const string JsonIdentifier = "push_installation";
+        internal const string JsonIdentifier = "pushInstallation";
 
         /// <summary>
         /// Initializes a new instance of the PushInstallationLog class.
         /// </summary>
-        /// <param name="timestamp">Log timestamp.</param>
-        /// <param name="device">Description of the device emitting the log.</param>
-        /// <param name="pushToken">The Windows Push Notification handle for this installation.</param>
+        public PushInstallationLog() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PushInstallationLog class.
+        /// </summary>
+        /// <param name="pushToken">The PNS handle for this installation.
+        /// </param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -25,31 +36,31 @@ namespace Microsoft.AppCenter.Push.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        public PushInstallationLog(DateTime? timestamp, Device device, string pushToken, Guid? sid = default(Guid?))
-            : base(timestamp, device, sid)
+        public PushInstallationLog(System.DateTime? timestamp, Device device, string pushToken, System.Guid? sid = default(System.Guid?))
+            : base(device, timestamp, sid)
         {
             PushToken = pushToken;
         }
 
         /// <summary>
-        /// The Windows Push Notification handle for this installation.
+        /// Gets or sets the PNS handle for this installation.
+        ///
         /// </summary>
-        [JsonProperty(PropertyName = "push_token")]
+        [JsonProperty(PropertyName = "pushToken")]
         public string PushToken { get; set; }
 
         /// <summary>
-        /// Validate the PushInstallationLog
+        /// Validate the object.
         /// </summary>
         /// <exception cref="ValidationException">
-        /// Thrown if PushToken is null or empty
+        /// Thrown if validation fails
         /// </exception>
         public override void Validate()
         {
             base.Validate();
-
-            if (string.IsNullOrEmpty(this.PushToken))
+            if (PushToken == null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeNull, "PushToken");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(PushToken));
             }
         }
     }

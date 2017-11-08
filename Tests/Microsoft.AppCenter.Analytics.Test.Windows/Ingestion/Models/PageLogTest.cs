@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
 
             PageLog emptyLog = new PageLog();
-            PageLog log = new PageLog(Timestamp, mockDevice.Object, Name);
+            PageLog log = new PageLog(mockDevice.Object, Name, Timestamp);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
@@ -40,7 +40,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             const string NullName = null;
             var mockDevice = new Mock<Device>();
 
-            PageLog log = new PageLog(Timestamp, mockDevice.Object, NullName);
+            PageLog log = new PageLog(mockDevice.Object, NullName, Timestamp);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
     }

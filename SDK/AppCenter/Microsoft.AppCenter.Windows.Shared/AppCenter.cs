@@ -234,7 +234,7 @@ namespace Microsoft.AppCenter
             {
                 _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
                 LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
-                LogSerializer.AddLogType(CustomPropertiesLog.JsonIdentifier, typeof(CustomPropertiesLog));
+                LogSerializer.AddLogType(CustomPropertyLog.JsonIdentifier, typeof(CustomPropertyLog));
             }
         }
 
@@ -287,7 +287,7 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty");
                 return;
             }
-            var customPropertiesLog = new CustomPropertiesLog();
+            var customPropertiesLog = new CustomPropertyLog();
             customPropertiesLog.Properties = customProperties.Properties;
             _channel.EnqueueAsync(customPropertiesLog);
         }

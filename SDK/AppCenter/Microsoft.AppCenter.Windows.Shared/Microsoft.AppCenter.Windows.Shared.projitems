@@ -22,7 +22,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkIngestionException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertiesLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\BooleanProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ClearProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\CustomPropertyLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\DateTimeProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\NumberProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\CustomPropertyJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StringProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
@@ -65,8 +72,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutexException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Ingestion\Models\Serialization\" />
   </ItemGroup>
 </Project>

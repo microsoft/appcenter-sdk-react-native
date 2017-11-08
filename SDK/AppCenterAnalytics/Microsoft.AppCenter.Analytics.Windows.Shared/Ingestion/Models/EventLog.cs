@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.AppCenter.Ingestion.Models;
-using Newtonsoft.Json;
-
 namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
+    using Microsoft.AppCenter.Ingestion.Models;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    
     using Device = Microsoft.AppCenter.Ingestion.Models.Device;
 
     /// <summary>
@@ -15,20 +18,23 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
     [JsonObject(JsonIdentifier)]
     public partial class EventLog : LogWithProperties
     {
-        /// <summary>
-        /// Initializes a new instance of the EventLog class.
-        /// </summary>
-        public EventLog() { }
-
         internal const string JsonIdentifier = "event";
 
         /// <summary>
         /// Initializes a new instance of the EventLog class.
         /// </summary>
-        /// <param name="timestamp">Log timestamp.</param>
-        /// <param name="device">Description of the device emitting the log.</param>
-        /// <param name="id">Unique identifier for this event.</param>
-        /// <param name="name">Name of the event.</param>
+        public EventLog() { }
+
+        /// <summary>
+        /// Initializes a new instance of the EventLog class.
+        /// </summary>
+        /// <param name="id">Unique identifier for this event.
+        /// </param>
+        /// <param name="name">Name of the event.
+        /// </param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -39,8 +45,8 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
-        public EventLog(DateTime? timestamp, Device device, Guid id, string name, Guid? sid = default(Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(timestamp, device, sid, properties)
+        public EventLog(System.DateTime? timestamp, Device device, System.Guid id, string name, System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
+            : base(device, timestamp, sid, properties)
         {
             Id = id;
             Name = name;
@@ -51,7 +57,7 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         ///
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
+        public System.Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets name of the event.
@@ -71,7 +77,14 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
             base.Validate();
             if (Name == null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeNull, "Name");
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Name));
+            }
+            if (Name != null)
+            {
+                if (Name.Length > 256)
+                {
+                    throw new ValidationException(ValidationException.Rule.MaxLength, nameof(Name), 256);
+                }
             }
         }
     }

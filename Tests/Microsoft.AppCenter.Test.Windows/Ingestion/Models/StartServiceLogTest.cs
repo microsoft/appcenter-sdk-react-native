@@ -38,8 +38,8 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         public void CheckInitialValuesWithServices()
         {
             var servicesNames = new List<string> { "Service0", "Service1", "Service2" };
-            var log = new StartServiceLog(null, null, servicesNames);
-
+            var log = new StartServiceLog();
+            log.Services = servicesNames;
             Assert.IsNotNull(log.Services);
             foreach (var serviceName in log.Services)
             {
@@ -72,22 +72,6 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             {
                 Assert.IsTrue(retrievedLog.Services.Contains(serviceName));
             }
-        }
-
-        /// <summary>
-        /// Validate that log is not valid with nullable 'Services'
-        /// </summary>
-        [TestMethod]
-        public void ValidateStartServiceLog()
-        {
-            var log = new StartServiceLog
-            {
-                Services = null,
-                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
-                Timestamp = DateTime.Now
-            };
-
-            Assert.ThrowsException<ValidationException>((Action)log.Validate);
         }
     }
 }

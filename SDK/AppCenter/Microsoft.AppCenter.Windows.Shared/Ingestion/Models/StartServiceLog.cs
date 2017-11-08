@@ -10,10 +10,10 @@ namespace Microsoft.AppCenter.Ingestion.Models
     [JsonObject(JsonIdentifier)]
     public class StartServiceLog : Log
     {
-        internal const string JsonIdentifier = "start_service";
+        internal const string JsonIdentifier = "startService";
 
         /// <summary>
-        /// Initializes a new instance of the Log class.
+        /// Initializes a new instance of the StartServiceLog class.
         /// </summary>
         public StartServiceLog()
         {
@@ -21,29 +21,33 @@ namespace Microsoft.AppCenter.Ingestion.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the Log class
+        /// Initializes a new instance of the StartServiceLog class.
         /// </summary>
-        /// <param name="timestamp">Log timestamp.</param>
-        /// <param name="device">Description of the device emitting the log.</param>
-        /// <param name="services">Names of services which started with SDK</param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
         /// tracking is disabled (like when using only error reporting
         /// feature).
         /// Concrete types like StartSessionLog or PageLog are always part of a
-        /// session and always include this identifier.</param>
-        public StartServiceLog(DateTime? timestamp, Device device, IEnumerable<string> services, Guid? sid = default(Guid?))
-            : base(timestamp, device, sid)
+        /// session and always include this identifier.
+        /// </param>
+        /// <param name="services">The list of services of the MobileCenter
+        /// Start API call.</param>
+        public StartServiceLog(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), IList<string> services = default(IList<string>))
+            : base(device, timestamp, sid)
         {
-            Services = new List<string>(services);
+            Services = services;
         }
 
         /// <summary>
-        /// Services names which have been started
+        /// Gets or sets the list of services of the MobileCenter Start API
+        /// call.
         /// </summary>
         [JsonProperty(PropertyName = "services")]
-        public List<string> Services { get; set; }
+        public IList<string> Services { get; set; }
 
         /// <summary>
         /// Validate the object.
@@ -54,10 +58,12 @@ namespace Microsoft.AppCenter.Ingestion.Models
         public override void Validate()
         {
             base.Validate();
-
-            if (Services == null)
+            if (Services != null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Services));
+                if (Services.Count < 1)
+                {
+                    throw new ValidationException(ValidationException.Rule.MinItems, nameof(Services), 1);
+                }
             }
         }
     }

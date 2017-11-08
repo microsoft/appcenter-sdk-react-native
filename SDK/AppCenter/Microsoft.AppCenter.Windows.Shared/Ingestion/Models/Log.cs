@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-using System;
-using Newtonsoft.Json;
-
 namespace Microsoft.AppCenter.Ingestion.Models
 {
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    
     public abstract class Log
     {
         /// <summary>
@@ -15,8 +19,9 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary>
-        /// <param name="timestamp">Log timestamp.</param>
-        /// <param name="device">Description of the device emitting the log.</param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -25,7 +30,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        protected Log(DateTime? timestamp, Device device, Guid? sid = default(Guid?))
+        public Log(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?))
         {
             Timestamp = timestamp;
             Sid = sid;
@@ -33,10 +38,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
         }
 
         /// <summary>
-        /// Log timestamp.
+        /// Gets or sets log timestamp, example: '2017-03-13T18:05:42Z'.
+        ///
         /// </summary>
         [JsonProperty(PropertyName = "timestamp")]
-        public DateTime? Timestamp { get; set; }
+        public System.DateTime? Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets when tracking an analytics session, logs can be part
@@ -49,7 +55,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         ///
         /// </summary>
         [JsonProperty(PropertyName = "sid")]
-        public Guid? Sid { get; set; }
+        public System.Guid? Sid { get; set; }
 
         /// <summary>
         /// </summary>
@@ -68,8 +74,10 @@ namespace Microsoft.AppCenter.Ingestion.Models
             {
                 throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Device));
             }
-            Device.Validate();          
+            if (Device != null)
+            {
+                Device.Validate();
+            }
         }
     }
 }
-
