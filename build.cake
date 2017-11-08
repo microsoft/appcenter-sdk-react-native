@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 // AppCenter module class definition.
 class AppCenterModule {
     public string AndroidModule { get; set; }
-    public string IosModule { get; set; }
     public string DotNetModule { get; set; }
     public string NuGetVersion { get; set; }
     public string PackageId { get; set; }
@@ -32,9 +31,8 @@ class AppCenterModule {
     {
         get { return  "Windows" + MainNuspecFilename; }
     }
-    public AppCenterModule(string android, string ios, string dotnet, string mainNuspecFilename) {
+    public AppCenterModule(string android, string dotnet, string mainNuspecFilename) {
         AndroidModule = android;
-        IosModule = ios;
         DotNetModule = dotnet;
         MainNuspecFilename = mainNuspecFilename;
     }
@@ -56,8 +54,8 @@ var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "1.0.0-1+8e03fa4";
-var IOS_SDK_VERSION = "0.14.1";
+var ANDROID_SDK_VERSION = "1.0.0-5+a1bc236";
+var IOS_SDK_VERSION = "0.14.1-23+cf6817c50c4c2c64248882aada6e44040f059f52";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
@@ -72,18 +70,18 @@ var PLATFORM_PATHS = new PlatformPaths();
 
 var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var ANDROID_URL = SDK_STORAGE_URL + "AppCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "MobileCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
+var IOS_URL = SDK_STORAGE_URL + "AppCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
 var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
 var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
 
 // Available AppCenter modules.
 var APP_CENTER_MODULES = new [] {
-    new AppCenterModule("app-center-release.aar", "MobileCenter.framework.zip", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
-    new AppCenterModule("app-center-analytics-release.aar", "MobileCenterAnalytics.framework.zip", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
-    new AppCenterModule("app-center-crashes-release.aar", "MobileCenterCrashes.framework.zip", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
-    new AppCenterModule("app-center-distribute-release.aar", "MobileCenterDistribute.framework.zip", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
-    new AppCenterModule("app-center-push-release.aar", "MobileCenterPush.framework.zip", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
-    new AppCenterModule("app-center-rum-release.aar", null, "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
+    new AppCenterModule("app-center-release.aar", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
+    new AppCenterModule("app-center-analytics-release.aar", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
+    new AppCenterModule("app-center-crashes-release.aar", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
+    new AppCenterModule("app-center-distribute-release.aar", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
+    new AppCenterModule("app-center-push-release.aar", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
+    new AppCenterModule("app-center-rum-release.aar", "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
 };
 
 // Task TARGET for build
@@ -336,16 +334,16 @@ Task("Externals-Ios")
     Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
     // Copy the AppCenter binaries directly from the frameworks and add the ".a" extension
-    var files = GetFiles("./externals/ios/*/iOS/*.framework/MobileCenter*");
+    var files = GetFiles("./externals/ios/*/iOS/*.framework/AppCenter*");
     foreach (var file in files)
     {
         MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
     }
 
     // Copy Distribute resource bundle and copy it to the externals directory.
-    if(DirectoryExists("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle"))
+    if(DirectoryExists("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle"))
     {
-        MoveDirectory("./externals/ios/MobileCenter-SDK-Apple/iOS/MobileCenterDistributeResources.bundle", "./externals/ios/MobileCenterDistributeResources.bundle");
+        MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle", "./externals/ios/AppCenterDistributeResources.bundle");
     }
 }).OnError(HandleError);
 

@@ -57,7 +57,7 @@
 		<ObjcBindingCoreSource Include="StructsAndEnums.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <NativeReference Include="..\..\..\externals\ios\MobileCenter.a">
+	  <NativeReference Include="..\..\..\externals\ios\AppCenter.a">
 	    <Kind>Static</Kind>
 	    <ForceLoad>True</ForceLoad>
 	    <LinkerFlags>-lsqlite3</LinkerFlags>
