@@ -70,6 +70,7 @@
 		<string>tr-TR</string>
 		<string>zh-CN</string>
 		<string>zh-TW</string>
+		<string>en-US</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
