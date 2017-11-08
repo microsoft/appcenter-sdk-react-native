@@ -8,31 +8,28 @@
  */
 
 #import "AppDelegate.h"
-#import <RNPush/RNPush.h>
-#import <RNCrashes/RNCrashes.h>
-#import <RNAnalytics/RNAnalytics.h>
-#import <RNMobileCenter/RNMobileCenter.h>
+#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
+#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
+#import <AppCenterReactNative/AppCenterReactNative.h>
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 
-@import MobileCenter;
+@import AppCenter;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
+  [MSAppCenter setLogLevel: MSLogLevelVerbose];
 
   NSURL *jsCodeLocation;
 
-  [RNPush register];  // Initialize Mobile Center push
+  [AppCenterReactNativePush register];  // Initialize AppCenter push
 
-  [RNCrashes registerWithAutomaticProcessing];  // Initialize Mobile Center crashes
+  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
 
-  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
-
-  [RNMobileCenter register];  // Initialize Mobile Center 
+  [AppCenterReactNative register];  // Initialize AppCenter
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 

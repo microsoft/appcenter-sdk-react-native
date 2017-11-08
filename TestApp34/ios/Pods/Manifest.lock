@@ -1,28 +1,24 @@
 PODS:
-  - MobileCenter/Analytics (0.14.0):
-    - MobileCenter/Core
-  - MobileCenter/Core (0.14.0)
-  - MobileCenter/Crashes (0.14.0):
-    - MobileCenter/Core
-  - MobileCenter/Push (0.14.0):
-    - MobileCenter/Core
-  - RNMobileCenterShared (0.10.0):
-    - MobileCenter/Core (~> 0.14.0)
+  - AppCenter/Analytics (0.14.1-23):
+    - AppCenter/Core
+  - AppCenter/Core (0.14.1-23)
+  - AppCenter/Crashes (0.14.1-23):
+    - AppCenter/Core
+  - AppCenter/Push (0.14.1-23):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (0.99.0):
+    - AppCenter/Core (= 0.14.1-23)
 
 DEPENDENCIES:
-  - MobileCenter/Analytics (~> 0.14.0)
-  - MobileCenter/Crashes (~> 0.14.0)
-  - MobileCenter/Push (~> 0.14.0)
-  - RNMobileCenterShared (from `../../RNMobileCenterShared/Products/`)
-
-EXTERNAL SOURCES:
-  RNMobileCenterShared:
-    :path: ../../RNMobileCenterShared/Products/
+  - AppCenter/Analytics (~> 0.14.1-23)
+  - AppCenter/Crashes (~> 0.14.1-23)
+  - AppCenter/Push (~> 0.14.1-23)
+  - AppCenterReactNativeShared (~> 0.99.0)
 
 SPEC CHECKSUMS:
-  MobileCenter: 7d0fd10e2c5cee70d02e280211fe5ff919da6ab8
-  RNMobileCenterShared: b62693ad0e4d29bf8c6a19c68c15d431b3eb4def
+  AppCenter: 62b2e1b625adb4426519e4edb1d71509bb0e5f14
+  AppCenterReactNativeShared: 745ed4aa02a1391d0cd0f5aee2c023ebfbc699e7
 
-PODFILE CHECKSUM: 3b14d92770ac0de547b1557983851a07c362ec03
+PODFILE CHECKSUM: f6254476b5e24e841650056d594f18dd5aa78f96
 
 COCOAPODS: 1.3.1
