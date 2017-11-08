@@ -4,7 +4,7 @@
 
 # AppCenter SDK for React Native
 
-AppCenter is mission control for mobile apps.
+AppCenter is your continuous integration, delivery and learning solution for iOS, Android, Windows, and macOS apps.
 Get faster release cycles, higher-quality apps, and the insights to build what users want.
 
 The AppCenter SDK uses a modular architecture so you can use any or all of the following services: 
