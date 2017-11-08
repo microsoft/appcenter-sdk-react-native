@@ -487,13 +487,14 @@ Task("MergeAssemblies")
 
 Task("TestApps").IsDependentOn("UITest").Does(() =>
 {
-    // Build tests and package the applications
-    // It is important that the entire solution is built before rebuilding the iOS and Android versions
-    // due to an apparent bug that causes improper linking of the forms application to iOS
-    MSBuild("./AppCenter-SDK-Test.sln", c => c.Configuration = "Release");
-    MDToolBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", c => c.Configuration = "Release|iPhone");
+    // Build and package the test applications
+    MSBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", settings => settings.SetConfiguration("Release")
+      .WithTarget("Build")
+      .WithProperty("Platform", "iPhone")
+      .WithProperty("BuildIpa", "true")
+      .WithProperty("OutputPath", "bin/iPhone/Release/")
+      .WithProperty("AllowUnsafeBlocks", "true"));
     AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
-    MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 }).OnError(HandleError);
 
 Task("RestoreTestPackages").Does(() =>
