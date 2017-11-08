@@ -14,22 +14,22 @@ NSArray* convertReportsToJS(NSArray* reports) {
     return jsReadyReports;
 }
 
-static NSString *const kMSSdkName = @"sdk_name";
-static NSString *const kMSSdkVersion = @"sdk_version";
+static NSString *const kMSSdkName = @"sdkName";
+static NSString *const kMSSdkVersion = @"sdkVersion";
 static NSString *const kMSModel = @"model";
-static NSString *const kMSOemName = @"oem_name";
-static NSString *const kMSOsName = @"os_name";
-static NSString *const kMSOsVersion = @"os_version";
-static NSString *const kMSOsBuild = @"os_build";
-static NSString *const kMSOsApiLevel = @"os_api_level";
+static NSString *const kMSOemName = @"oemName";
+static NSString *const kMSOsName = @"osName";
+static NSString *const kMSOsVersion = @"osVersion";
+static NSString *const kMSOsBuild = @"osBuild";
+static NSString *const kMSOsApiLevel = @"osApiLevel";
 static NSString *const kMSLocale = @"locale";
-static NSString *const kMSTimeZoneOffset = @"time_zone_offset";
-static NSString *const kMSScreenSize = @"screen_size";
-static NSString *const kMSAppVersion = @"app_version";
-static NSString *const kMSCarrierName = @"carrier_name";
-static NSString *const kMSCarrierCountry = @"carrier_country";
-static NSString *const kMSAppBuild = @"app_build";
-static NSString *const kMSAppNamespace = @"app_namespace";
+static NSString *const kMSTimeZoneOffset = @"timeZoneOffset";
+static NSString *const kMSScreenSize = @"screenSize";
+static NSString *const kMSAppVersion = @"appVersion";
+static NSString *const kMSCarrierName = @"carrierName";
+static NSString *const kMSCarrierCountry = @"carrierCountry";
+static NSString *const kMSAppBuild = @"appBuild";
+static NSString *const kMSAppNamespace = @"appNamespace";
 
 static NSDictionary *serializeDeviceToDictionary(MSDevice* device) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
