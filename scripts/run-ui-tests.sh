@@ -33,15 +33,15 @@ LOCALE="en-US"
 # For a larger suite, go to portal, pretend to start a test suite, select devices, click next until you see CLI instructions and copy the hash code
 IOS_DEVICES=8551ba4e # just one device.
 ANDROID_DEVICES=f0b8289c # just one device.
-ANDROID_APP_NAME="appcenter-xamarin-testing-app-android"
-IOS_APP_NAME="appcenter-xamarin-testing-app-ios"
+ANDROID_APP_NAME="mobilecenter-xamarin-testing-app-android"
+IOS_APP_NAME="mobilecenter-xamarin-testing-app-ios"
 ANDROID_APP="$APP_CENTER_USERNAME/$ANDROID_APP_NAME"
 IOS_APP="$APP_CENTER_USERNAME/$IOS_APP_NAME"
 TEST_SERIES="master"
 
 # Define results constants
-ANDROID_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_PORTAL_URL="https://mobile.azure.com/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://mobile.azure.com/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 ANDROID_INFORMATION_FILE="android_info.txt"
 IOS_INFORMATION_FILE="ios_info.txt"
 ANDROID_PLATFORM_NAME="Android"
@@ -95,7 +95,7 @@ initialize_tests() {
     DEVICES_CODE="$2"
     APP_PACKAGE="$3"
     INFORMATION_FILE="$4"
-    appcenter test run uitest --app $APP_NAME\
+    mobile-center test run uitest --app $APP_NAME\
      --devices $DEVICES_CODE --app-path $APP_PACKAGE\
       --test-series $TEST_SERIES --locale $LOCALE\
       --build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
@@ -130,6 +130,7 @@ popd
 echo "Initializing Android tests..."
 ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK $ANDROID_INFORMATION_FILE)
 ANDROID_TEST_RUN_ID=$(get_test_run_id $ANDROID_INFORMATION_FILE)
+echo $ANDROID_TEST_RUN_ID
 print_initialization_results $ANDROID_RETURN_CODE "$ANDROID_PLATFORM_NAME" "$ANDROID_PORTAL_URL" "$ANDROID_TEST_RUN_ID"
 rm $ANDROID_INFORMATION_FILE
 

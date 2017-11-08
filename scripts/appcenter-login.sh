@@ -11,11 +11,11 @@ if [ $? -ne 0 ]; then
 fi
 
 # Is App Center CLI installed?
-npm list -g appcenter-cli >/dev/null
+npm list -g mobile-center-cli >/dev/null
 if [ $? -ne 0 ]; then
     # Install App Center CLI
     echo "Installing App Center CLI..."
-    npm install -g appcenter-cli
+    npm install -g mobile-center-cli
     if [ $? -ne 0 ]; then
         echo "An error occured while installing App Center CLI."
         exit 1

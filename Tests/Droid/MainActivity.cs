@@ -6,7 +6,7 @@ using Com.Microsoft.Appcenter.Analytics;
 using Com.Microsoft.Appcenter.Analytics.Channel;
 using Com.Microsoft.Appcenter.Analytics.Ingestion.Models;
 using Com.Microsoft.Appcenter.Ingestion.Models;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 
 namespace Contoso.Forms.Test.Droid
 {
