@@ -22,7 +22,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [MSAppCenter setLogLevel: MSLogLevelVerbose];
-  //[MSAppCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
   
   NSURL *jsCodeLocation;
 
