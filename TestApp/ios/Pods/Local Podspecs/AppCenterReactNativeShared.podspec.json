@@ -6,13 +6,13 @@
     "type": "MIT",
     "file": "AppCenterReactNativeShared/LICENSE"
   },
-  "homepage": "https://mobile.azure.com",
-  "documentation_url": "https://docs.mobile.azure.com",
+  "homepage": "https://appcenter.ms",
+  "documentation_url": "https://docs.microsoft.com/en-us/appcenter/",
   "authors": {
     "Microsoft": "appcentersdk@microsoft.com"
   },
   "source": {
-    "http": "https://github.com/Microsoft/AppCenter-SDK-React-Native/releases/download/0.99.0/AppCenter-SDK-ReactNative-iOS-Pod-0.99.0.zip"
+    "http": "https://mobilecentersdkdev.blob.core.windows.net/sdk/AppCenter-SDK-ReactNative-iOS-Pod-0.x.x.zip"
   },
   "platforms": {
     "ios": "8.0"
@@ -20,8 +20,8 @@
   "requires_arc": true,
   "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
   "dependencies": {
-    "MobileCenter/Core": [
-      "~> 0.14.0"
+    "AppCenter/Core": [
+      "0.14.1-23"
     ]
   }
 }
