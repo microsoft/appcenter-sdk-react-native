@@ -8,9 +8,10 @@
  */
 
 #import "AppDelegate.h"
-#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
-#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
+#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
@@ -22,12 +23,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [MSAppCenter setLogLevel: MSLogLevelVerbose];
+  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
   NSURL *jsCodeLocation;
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
+
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
 
   [AppCenterReactNative register];  // Initialize AppCenter
 

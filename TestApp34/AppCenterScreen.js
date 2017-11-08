@@ -13,7 +13,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import , { CustomProperties } from 'appcenter';
+import AppCenter, { CustomProperties } from 'appcenter';
 import SharedStyles from './SharedStyles';
 
 export default class Screen extends React.Component {
@@ -32,38 +32,38 @@ export default class Screen extends React.Component {
   async componentDidMount() {
     const component = this;
 
-    const appCenterEnabled = await .isEnabled();
+    const appCenterEnabled = await AppCenter.isEnabled();
     component.setState({ appCenterEnabled });
 
-    const installId = await .getInstallId();
+    const installId = await AppCenter.getInstallId();
     component.setState({ installId });
 
-    const logLevel = await .getLogLevel();
+    const logLevel = await AppCenter.getLogLevel();
     component.setState({ logLevel });
   }
 
   async toggleEnabled() {
-    await .setEnabled(!this.state.appCenterEnabled);
+    await AppCenter.setEnabled(!this.state.appCenterEnabled);
 
-    const appCenterEnabled = await .isEnabled();
+    const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
   }
 
   async toggleLogging() {
-    let logLevel = await .getLogLevel();
+    let logLevel = await AppCenter.getLogLevel();
     switch (logLevel) {
-      case .LogLevelAssert:
-        logLevel = .LogLevelNone;
+      case AppCenter.LogLevelAssert:
+        logLevel = AppCenter.LogLevelNone;
         break;
 
-      case .LogLevelNone:
-        logLevel = .LogLevelVerbose;
+      case AppCenter.LogLevelNone:
+        logLevel = AppCenter.LogLevelVerbose;
         break;
 
       default:
         logLevel++;
     }
-    await .setLogLevel(logLevel);
+    await AppCenter.setLogLevel(logLevel);
     this.setState({ logLevel });
   }
 
@@ -76,7 +76,7 @@ export default class Screen extends React.Component {
       .set('optout', false)
       .set('score', 7)
       .set('now', new Date());
-    await .setCustomProperties(properties);
+    await AppCenter.setCustomProperties(properties);
   }
 
   render() {
@@ -84,7 +84,7 @@ export default class Screen extends React.Component {
       <View style={SharedStyles.container}>
         <ScrollView >
           <Text style={SharedStyles.heading}>
-            Test 
+            Test AppCenter
           </Text>
 
           <Text style={SharedStyles.enabledText}>
