@@ -1,4 +1,4 @@
-Microsoft App Center Push Plugin for React Native
+Visual Studio App Center Push Plugin for React Native
 
 Copyright (c) Microsoft Corporation
 
