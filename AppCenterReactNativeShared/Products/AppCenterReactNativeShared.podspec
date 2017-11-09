@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'
 
-  s.dependency 'AppCenter/Core', '0.14.1-23' # TODO: uncomment before release
+  s.dependency 'AppCenter/Core', '1.0.0-4'
 end
