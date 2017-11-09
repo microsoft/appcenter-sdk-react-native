@@ -24,5 +24,12 @@ allprojects {
         maven {
             url  "https://dl.bintray.com/appcenter/appcenter-snapshot"
         }
+        maven {
+            url "https://app-center.bintray.com/appcenter"
+            credentials {
+                username System.getenv("BINTRAY_USER")
+                password System.getenv("BINTRAY_PASSWORD")
+            }
+        }
     }
 }

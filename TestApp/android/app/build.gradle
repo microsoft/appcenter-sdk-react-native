@@ -126,16 +126,6 @@ android {
     }
 }
 
-repositories {
-    maven {
-        url "https://dl.bintray.com/app-center/appcenter/"
-        credentials {
-            username System.getenv("BINTRAY_USER")
-            password System.getenv("BINTRAY_PASSWORD")
-        }
-    }
-}
-
 dependencies {
     compile project(':appcenter-push')
     compile project(':appcenter-crashes')

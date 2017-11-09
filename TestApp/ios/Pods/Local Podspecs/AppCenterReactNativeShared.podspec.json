@@ -1,6 +1,6 @@
 {
   "name": "AppCenterReactNativeShared",
-  "version": "0.99.0",
+  "version": "0.99.1",
   "summary": "React Native plugin for AppCenter",
   "license": {
     "type": "MIT",
@@ -12,7 +12,7 @@
     "Microsoft": "appcentersdk@microsoft.com"
   },
   "source": {
-    "http": "https://mobilecentersdkdev.blob.core.windows.net/sdk/AppCenter-SDK-ReactNative-iOS-Pod-0.x.x.zip"
+    "http": "https://mobilecentersdkdev.blob.core.windows.net/sdk/AppCenter-SDK-ReactNative-iOS-Pod-0.99.1.zip"
   },
   "platforms": {
     "ios": "8.0"

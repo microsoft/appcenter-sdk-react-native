@@ -28,8 +28,8 @@ allprojects {
         defaultConfig {
             minSdkVersion 16
             targetSdkVersion 22
-            versionCode 17
-            versionName "0.99.0"
+            versionCode 18
+            versionName "0.99.1"
             group groupId
             version versionName
             buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
@@ -104,19 +104,9 @@ allprojects {
     }
 }
 
-repositories {
-    maven {
-        url "https://dl.bintray.com/app-center/appcenter/"
-        credentials {
-            username System.getenv("BINTRAY_USER")
-            password System.getenv("BINTRAY_PASSWORD")
-        }
-    }
-}
-
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.appcenter:appcenter:1.0.0-1+8e03fa4'
+    compile 'com.microsoft.appcenter:appcenter:1.0.0-9+f9123c3'
 }
 
 artifacts {
