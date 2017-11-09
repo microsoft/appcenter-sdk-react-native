@@ -17,7 +17,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         console.log(`Added code to initialize iOS Push SDK in ${file}`);
         return rnpmlink.ios.addPodDeps([
             { pod: 'AppCenter/Push', version: '1.0.0-4' },
-            { pod: 'AppCenterReactNativeShared', version: '0.99.1' } // in case people don't link appcenter (core)
+            { pod: 'AppCenterReactNativeShared', version: '1.0.0-1' } // in case people don't link appcenter (core)
         ]).catch((e) => {
             console.log(`
             Could not install dependencies using CocoaPods.
