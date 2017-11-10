@@ -1,5 +1,5 @@
 # source 'git@github.com:Microsoft/mobile-center-sdk-specs.git'
-
+source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git' # TODO: comment out before release
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -8,10 +8,10 @@ target 'DemoApp' do
   # use_frameworks!
 
   # Pods for DemoApp
-  pod 'MobileCenter/Push', '~> 0.14.1'
-  pod 'MobileCenter/Crashes', '~> 0.14.1'
-  pod 'MobileCenter/Analytics', '~> 0.14.1'
-  pod 'RNMobileCenterShared', '~> 0.11.2'
+  pod 'AppCenter/Push', '~> 1.0.0-4'
+  pod 'AppCenter/Crashes', '~> 1.0.0-4'
+  pod 'AppCenter/Analytics', '~> 1.0.0-4'
+  pod 'AppCenterReactNativeShared', '~> 1.0.0-1'
 
   platform :ios, '8.0'
 end
