@@ -4,7 +4,7 @@ ext {
     siteUrl = 'https://github.com/Microsoft/appcenter-sdk-react-native'
     gitUrl = 'https://github.com/Microsoft/appcenter-sdk-react-native.git'
     groupId = 'com.microsoft.appcenter.reactnative'
-    sdkDescription = 'AppCenter SDK for Android react-native'
+    sdkDescription = 'AppCenter SDK for React Native Android'
 
     Properties properties = new Properties()
     File file = rootProject.file('local.properties')
