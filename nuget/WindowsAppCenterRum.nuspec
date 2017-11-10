@@ -4,7 +4,7 @@
     <id>Microsoft.AppCenter.Rum</id>
     <title>App Center Real User Measurements</title>
     <authors>Microsoft Corporation</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>TODO</summary>
     <description>TODO</description>
     <copyright>Copyright (c) Microsoft Corporation. All Rights Reserved.</copyright>

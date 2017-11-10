@@ -385,7 +385,8 @@ Task("NuGet")
         Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
         NuGetPack(File(specCopyName), new NuGetPackSettings {
             Verbosity = NuGetVerbosity.Detailed,
-            Version = module.NuGetVersion
+            Version = module.NuGetVersion,
+            RequireLicenseAcceptance = true
         });
 
         // Clean up
@@ -473,7 +474,8 @@ Task("MergeAssemblies")
         Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
         NuGetPack(File(specCopyName), new NuGetPackSettings {
             Verbosity = NuGetVerbosity.Detailed,
-            Version = module.NuGetVersion
+            Version = module.NuGetVersion,
+            RequireLicenseAcceptance = true
         });
 
         // Clean up
@@ -583,6 +585,7 @@ Task("NugetPackVSTS").Does(()=>
         Information("Building a NuGet package for " + module.MainNuspecFilename);
         NuGetPack(spec, new NuGetPackSettings {
             Verbosity = NuGetVerbosity.Detailed,
+            RequireLicenseAcceptance = true
         });
     }
 }).OnError(HandleError);
