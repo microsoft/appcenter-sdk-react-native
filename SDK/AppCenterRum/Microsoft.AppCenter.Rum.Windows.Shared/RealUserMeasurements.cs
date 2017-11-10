@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -240,7 +239,7 @@ namespace Microsoft.AppCenter.Rum
                 try
                 {
                     AppCenterLog.Verbose(LogTag, "Calling " + url);
-                    return await httpNetworkAdapter.SendAsync(url, HttpMethod.Get, Headers, "", cancellationToken);
+                    return await httpNetworkAdapter.SendAsync(url, "GET", Headers, "", cancellationToken);
                 }
                 catch (Exception e) when (!(e is OperationCanceledException))
                 {
@@ -349,7 +348,7 @@ namespace Microsoft.AppCenter.Rum
                 try
                 {
                     stopWatch.Restart();
-                    await httpNetworkAdapter.SendAsync(testUrl.Url, HttpMethod.Get, Headers, "", cancellationToken);
+                    await httpNetworkAdapter.SendAsync(testUrl.Url, "GET", Headers, "", cancellationToken);
                     testUrl.Result = stopWatch.ElapsedMilliseconds;
                 }
                 catch (Exception e) when (!(e is OperationCanceledException))
@@ -377,7 +376,7 @@ namespace Microsoft.AppCenter.Rum
                     AppCenterLog.Verbose(LogTag, "Calling " + reportUrl);
                     try
                     {
-                        await httpNetworkAdapter.SendAsync(reportUrl, HttpMethod.Get, Headers, "", cancellationToken);
+                        await httpNetworkAdapter.SendAsync(reportUrl, "GET", Headers, "", cancellationToken);
                         AppCenterLog.Info(LogTag, "Measurements reported successfully.");
 
                         // Stop when we encounter the first working report endpoint.

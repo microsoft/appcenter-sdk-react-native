@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Http;
 using Moq;
-using System.Net.Http;
 
 namespace Microsoft.AppCenter.Test.Ingestion.Http
 {
@@ -18,7 +17,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         protected void SetupAdapterSendResponse(HttpStatusCode statusCode)
         {
             var setup = _adapter
-                .Setup(a => a.SendAsync(It.IsAny<string>(), HttpMethod.Post, It.IsAny<IDictionary<string, string>>(), It.IsAny<string>(),
+                .Setup(a => a.SendAsync(It.IsAny<string>(), "POST", It.IsAny<IDictionary<string, string>>(), It.IsAny<string>(),
                     It.IsAny<CancellationToken>()));
             if (statusCode == HttpStatusCode.OK)
             {
@@ -39,7 +38,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         protected void VerifyAdapterSend(Times times)
         {
             _adapter
-                .Verify(a => a.SendAsync(It.IsAny<string>(), HttpMethod.Post, It.IsAny<IDictionary<string, string>>(), It.IsAny<string>(),
+                .Verify(a => a.SendAsync(It.IsAny<string>(), "POST", It.IsAny<IDictionary<string, string>>(), It.IsAny<string>(),
                     It.IsAny<CancellationToken>()), times);
         }
     }
