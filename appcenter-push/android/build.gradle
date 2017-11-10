@@ -7,20 +7,10 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 17
-        versionName "0.99.0"
+        versionCode 19
+        versionName "1.0.0-1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
-        }
-    }
-}
-
-repositories {
-    maven {
-        url "https://dl.bintray.com/app-center/appcenter/"
-        credentials {
-            username System.getenv("BINTRAY_USER")
-            password System.getenv("BINTRAY_PASSWORD")
         }
     }
 }
@@ -29,8 +19,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
-    compile 'com.microsoft.appcenter:appcenter-push:1.0.0-1+8e03fa4'
+    compile 'com.microsoft.appcenter:appcenter-push:1.0.0-9+f9123c3'
 
-    compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-//    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:0.99.0'
+    // compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+   compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.0.0-1'
 }

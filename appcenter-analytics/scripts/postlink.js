@@ -2,8 +2,8 @@ const rnpmlink = require('appcenter-link-scripts');
 const npmPackages = require('./../package.json');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
-    .then(() => rnpmlink.ios.initConfig().catch((e) => {
-        console.log(`Could not create or update AppCenter config file (-Config.plist). Error Reason - ${e.message}`);
+    .then(() => rnpmlink.ios.initAppCenterConfig().catch((e) => {
+        console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
         return Promise.reject();
     }))
     .then(() => {
@@ -28,8 +28,8 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     .then((file) => {
         console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
         return rnpmlink.ios.addPodDeps([
-            { pod: 'AppCenter/Analytics', version: '0.14.0' },
-            { pod: 'AppCenterReactNativeShared', version: '0.99.0' } // in case people don't link appcenter (core)
+            { pod: 'AppCenter/Analytics', version: '1.0.0-4' },
+            { pod: 'AppCenterReactNativeShared', version: '1.0.0-1' } // in case people don't link appcenter (core)
         ]).catch((e) => {
             console.log(`
             Could not install dependencies using CocoaPods.

@@ -1,4 +1,4 @@
-Microsoft App Center Error Reporting Plugin for React Native
+Visual Studio App Center Error Reporting Plugin for React Native
 
 Copyright (c) Microsoft Corporation
 

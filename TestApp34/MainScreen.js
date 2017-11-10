@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
-import  from 'appcenter';
+import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
 import SharedStyles from './SharedStyles';
@@ -15,7 +15,7 @@ export default class MainScreen extends Component {
   constructor() {
     super();
     this.state = {
-      wrapperSdkVersion: .getSdkVersion()
+      wrapperSdkVersion: AppCenter.getSdkVersion()
     };
   }
 

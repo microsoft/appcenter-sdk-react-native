@@ -1,4 +1,4 @@
-Microsoft App Center Plugin for React Native
+Visual Studio App Center Plugin for React Native
 
 Copyright (c) Microsoft Corporation
 

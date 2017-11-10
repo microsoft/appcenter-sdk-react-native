@@ -24,7 +24,7 @@
   NSURL *jsCodeLocation;
 
   [MSMobileCenter setLogLevel: MSLogLevelVerbose];
-  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
   [RNMobileCenter register];  // Initialize Mobile Center 
 
