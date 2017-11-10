@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
+import { AppState, Alert, View, Platform, ToastAndroid, Text } from 'react-native';
 import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
