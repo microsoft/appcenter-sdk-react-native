@@ -26,7 +26,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
                 { IngestionHttp.InstallId, installId }
             };
             var jsonContent = "{}";
-            var request = _adapter.CreateRequest(uri, HttpMethod.Post, headers, jsonContent);
+            var request = _adapter.CreateRequest(uri, "POST", headers, jsonContent);
 
             Assert.AreEqual(request.Method, HttpMethod.Post);
             Assert.IsTrue(request.Headers.Contains(IngestionHttp.AppSecret));

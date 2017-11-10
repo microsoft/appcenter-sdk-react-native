@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
-using System.Net.Http;
 
 namespace Microsoft.AppCenter.Ingestion.Http
 {
@@ -14,7 +13,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
         internal const string ApiVersion = "/logs?api-version=1.0.0";
         internal const string AppSecret = "App-Secret";
         internal const string InstallId = "Install-ID";
-        
+
         private const int MaximumCharactersDisplayedForAppSecret = 8;
         private string _baseLogUrl;
         private readonly IHttpNetworkAdapter _httpNetwork;
@@ -43,9 +42,9 @@ namespace Microsoft.AppCenter.Ingestion.Http
             // Create request content.
             var requestContent = CreateLogsContent(call.Logs);
             AppCenterLog.Verbose(AppCenterLog.LogTag, requestContent);
-            
+
             // Send request.
-            await _httpNetwork.SendAsync(baseUrl + ApiVersion, HttpMethod.Post, requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);
+            await _httpNetwork.SendAsync(baseUrl + ApiVersion, "POST", requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);
         }
 
         public void Close()

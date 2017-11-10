@@ -39,7 +39,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
         }
 
         /// <exception cref="IngestionException"/>
-        public async Task<string> SendAsync(string uri, HttpMethod method, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken)
+        public async Task<string> SendAsync(string uri, string method, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken)
         {
             using (var request = CreateRequest(uri, method, headers, jsonContent))
             using (var response = await SendRequestAsync(request, cancellationToken).ConfigureAwait(false))
@@ -83,12 +83,12 @@ namespace Microsoft.AppCenter.Ingestion.Http
             }
         }
 
-        internal HttpRequestMessage CreateRequest(string uri, HttpMethod method, IDictionary<string, string> headers, string jsonContent)
+        internal HttpRequestMessage CreateRequest(string uri, string method, IDictionary<string, string> headers, string jsonContent)
         {
             // Create HTTP transport objects.
             var request = new HttpRequestMessage
             {
-                Method = method,
+                Method = new HttpMethod(method),
                 RequestUri = new Uri(uri),
             };
 
