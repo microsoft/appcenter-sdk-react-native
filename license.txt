@@ -1,4 +1,4 @@
-Microsoft App Center SDK for Xamarin
+Visual Studio App Center SDK for .NET
 
 Copyright (c) Microsoft Corporation
 

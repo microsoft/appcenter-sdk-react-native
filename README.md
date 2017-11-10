@@ -1,8 +1,8 @@
-[![GitHub Release](https://img.shields.io/github/release/Microsoft/appcenter-sdk-xamarin.svg)](https://github.com/Microsoft/appcenter-sdk-xamarin/releases/latest)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/AppCenter-SDK-DotNet.svg)](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/latest)
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.AppCenter.svg)](https://www.nuget.org/packages/Microsoft.AppCenter/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/appcenter-sdk-xamarin/blob/master/license.txt)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/AppCenter-SDK-DotNet/blob/master/license.txt)
 
-# App Center SDK for Xamarin / UWP
+# Visual Studio App Center SDK for .NET
 
 App Center is your continuous integration, delivery and learning solution for iOS, Android, and Windows apps.
 Get faster release cycles, higher-quality apps, and the insights to build what users want.
@@ -39,4 +39,4 @@ You must sign a [Contributor License Agreement](https://cla.microsoft.com/) befo
 If you have further questions, want to provide feedback or you are running into issues, log in to the [App Center portal](https://appcenter.ms) and use the blue Intercom button on the bottom right to start a conversation with us.
 
 ### 3.2 Twitter
-We're on Twitter as [@appcenter](https://www.twitter.com/appcenter).
+We're on Twitter as [@vsappcenter](https://www.twitter.com/vsappcenter).
