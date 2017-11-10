@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
 {
     public sealed class IngestionHttp : IIngestion
     {
-        internal const string DefaultBaseUrl = "https://in.mobile.azure.com";
+        internal const string DefaultBaseUrl = "https://in.appcenter.ms";
         internal const string ApiVersion = "/logs?api-version=1.0.0";
         internal const string AppSecret = "App-Secret";
         internal const string InstallId = "Install-ID";
