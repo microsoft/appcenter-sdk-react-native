@@ -14,7 +14,7 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Microsoft Mobile Center SDK for iOS
+			<string>Visual Studio App Center SDK for Apple platforms
 
 Copyright (c) Microsoft Corporation
 
@@ -42,13 +42,13 @@ THE SOFTWARE.</string>
 			<key>License</key>
 			<string>MIT</string>
 			<key>Title</key>
-			<string>MobileCenter</string>
+			<string>AppCenter</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Mobile Center SDK for React Native
+			<string>Visual Studio App Center SDK for React Native
 Copyright (c) Microsoft Corporation
 All rights reserved. 
 MIT License
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			<key>License</key>
 			<string>MIT</string>
 			<key>Title</key>
-			<string>RNMobileCenterShared</string>
+			<string>AppCenterReactNativeShared</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

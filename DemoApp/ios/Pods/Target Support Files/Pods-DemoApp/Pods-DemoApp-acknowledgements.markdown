@@ -1,9 +1,9 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
-## MobileCenter
+## AppCenter
 
-Microsoft Mobile Center SDK for iOS
+Visual Studio App Center SDK for Apple platforms
 
 Copyright (c) Microsoft Corporation
 
@@ -29,9 +29,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-## RNMobileCenterShared
+## AppCenterReactNativeShared
 
-Mobile Center SDK for React Native
+Visual Studio App Center SDK for React Native
 Copyright (c) Microsoft Corporation
 All rights reserved. 
 MIT License
