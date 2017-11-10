@@ -1,6 +1,6 @@
-[![NPM Version](https://img.shields.io/npm/v/mobile-center.svg)](https://www.npmjs.com/package/mobile-center)
-[![NPM Downloads](https://img.shields.io/npm/dm/mobile-center.svg)](https://www.npmjs.com/package/mobile-center)
-[![license](https://img.shields.io/badge/license-MIT%20License-00AAAA.svg)](https://github.com/Microsoft/mobile-center-sdk-react-native/blob/master/LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/appcenter.svg)](https://www.npmjs.com/package/appcenter)
+[![NPM Downloads](https://img.shields.io/npm/dm/appcenter.svg)](https://www.npmjs.com/package/appcenter)
+[![license](https://img.shields.io/badge/license-MIT%20License-00AAAA.svg)](https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/LICENSE)
 
 # AppCenter SDK for React Native
 
@@ -16,7 +16,7 @@ The AppCenter SDK uses a modular architecture so you can use any or all of the f
 3. **AppCenter Push**: AppCenter Push enables you to send push notifications to users of your app from the AppCenter portal. We use APNs for iOS apps and FCM for Android. You can also segment your user base based on a set of properties and send them targeted notifications.
 
 ## 1. Get started
-It is super easy to use AppCenter. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/) is available as well.
+It is super easy to use AppCenter. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/appcenter/sdk/) is available as well.
 
 ## 2. Contributing
 
