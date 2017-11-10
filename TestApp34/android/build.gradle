@@ -24,8 +24,8 @@ allprojects {
         maven {
             url "https://app-center.bintray.com/appcenter"
             credentials {
-                username ""
-                password ""
+                username System.getenv("BINTRAY_USER")
+                password System.getenv("BINTRAY_PASSWORD")
             }
         }
     }
