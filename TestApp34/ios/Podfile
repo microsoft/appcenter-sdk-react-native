@@ -8,10 +8,10 @@ target 'TestApp34' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'AppCenter/Push', '~> 0.14.1-23'
-  pod 'AppCenter/Crashes', '~> 0.14.1-23'
-  pod 'AppCenter/Analytics', '~> 0.14.1-23'
-  pod 'AppCenterReactNativeShared', '~> 0.99.0'
+  pod 'AppCenter/Push', '~> 1.0.0-4'
+  pod 'AppCenter/Crashes', '~> 1.0.0-4'
+  pod 'AppCenter/Analytics', '~> 1.0.0-4'
+  pod 'AppCenterReactNativeShared', '~> 1.0.0-1'
 
   platform :ios, '8.0'
 end

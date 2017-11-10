@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## AppCenter
 
-Microsoft Mobile Center SDK for iOS
+Visual Studio App Center SDK for Apple platforms
 
 Copyright (c) Microsoft Corporation
 
@@ -31,7 +31,7 @@ THE SOFTWARE.
 
 ## AppCenterReactNativeShared
 
-App Center SDK for React Native
+Visual Studio App Center SDK for React Native
 Copyright (c) Microsoft Corporation
 All rights reserved. 
 MIT License

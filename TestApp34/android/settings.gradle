@@ -9,3 +9,6 @@ include ':appcenter-analytics'
 project(':appcenter-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-analytics/android')
 include ':appcenter'
 project(':appcenter').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter/android')
+
+include 'AppCenterReactNativeShared'
+project(':AppCenterReactNativeShared').projectDir = new File(rootProject.projectDir, '../../AppCenterReactNativeShared/android')
