@@ -106,7 +106,7 @@ allprojects {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.appcenter:appcenter:1.0.0-9+f9123c3'
+    compile 'com.microsoft.appcenter:appcenter:1.0.0'
 }
 
 artifacts {
