@@ -1,6 +1,6 @@
 #!/bin/bash
 cd Products
-zipfilename=AppCenter-SDK-ReactNative-iOS-Pod-0.x.x.zip
+zipfilename=AppCenter-SDK-ReactNative-iOS-Pod-1.x.x.zip
 if [ -f $zipfilename ] ; then
     rm $zipfilename
     echo "  removed old zip"
