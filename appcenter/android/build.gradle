@@ -22,5 +22,5 @@ dependencies {
     compile 'com.microsoft.appcenter:appcenter:1.0.0'
 
     // compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-   compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.0.0'
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.0.0'
 }
