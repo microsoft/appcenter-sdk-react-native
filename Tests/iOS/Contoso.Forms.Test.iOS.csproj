@@ -90,30 +90,6 @@
       <HintPath>../../packages/Xamarin.TestCloud.Agent.0.21.2/lib/Xamarin.iOS/Calabash.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AppCenter, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.AppCenter.1.0.0-r0003-6ce5d1f/lib/Xamarin.iOS10/Microsoft.AppCenter.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AppCenter.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.AppCenter.Analytics.1.0.0-r0003-6ce5d1f/lib/Xamarin.iOS10/Microsoft.AppCenter.Analytics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AppCenter.Analytics.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.AppCenter.Analytics.1.0.0-r0003-6ce5d1f/lib/Xamarin.iOS10/Microsoft.AppCenter.Analytics.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AppCenter.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.AppCenter.Crashes.1.0.0-r0003-6ce5d1f/lib/Xamarin.iOS10/Microsoft.AppCenter.Crashes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AppCenter.Crashes.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.AppCenter.Crashes.1.0.0-r0003-6ce5d1f/lib/Xamarin.iOS10/Microsoft.AppCenter.Crashes.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AppCenter.iOS.Bindings, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>../../packages/Microsoft.AppCenter.1.0.0-r0003-6ce5d1f/lib/Xamarin.iOS10/Microsoft.AppCenter.iOS.Bindings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -129,6 +105,24 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.4.0.38779\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AppCenter">
+      <HintPath>..\..\packages\Microsoft.AppCenter.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AppCenter.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AppCenter.Analytics">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AppCenter.Analytics.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AppCenter.Crashes">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AppCenter.Crashes.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
