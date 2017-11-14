@@ -2,7 +2,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/appcenter.svg)](https://www.npmjs.com/package/appcenter)
 [![license](https://img.shields.io/badge/license-MIT%20License-00AAAA.svg)](https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/LICENSE)
 
-# App Center SDK for React Native
+# Visual Studio App Center SDK for React Native
 
 App Center is your continuous integration, delivery and learning solution for iOS and Android apps.
 Get faster release cycles, higher-quality apps, and the insights to build what users want.
