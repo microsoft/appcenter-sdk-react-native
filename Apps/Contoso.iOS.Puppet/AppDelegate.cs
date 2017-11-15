@@ -1,9 +1,9 @@
 ﻿using Foundation;
 using UIKit;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Distribute;
 using System;
 
 namespace Contoso.iOS.Puppet
@@ -26,19 +26,19 @@ namespace Contoso.iOS.Puppet
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
 
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            AppCenter.LogLevel = LogLevel.Verbose;
+            AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
             Distribute.DontCheckForUpdatesInDebug();
-            MobileCenter.Start("b889c4f2-9ac2-4e2e-ae16-dae54f2c5899", typeof(Analytics), typeof(Crashes), typeof(Distribute));
+            AppCenter.Start("b889c4f2-9ac2-4e2e-ae16-dae54f2c5899", typeof(Analytics), typeof(Crashes), typeof(Distribute));
             try
             {
                 ThrowAnException();
             }
             catch (Exception e)
             {
-                MobileCenterLog.Verbose("THETAG", "THEMESSAGE", e);
+                AppCenterLog.Verbose("THETAG", "THEMESSAGE", e);
             }
 
             Analytics.SetEnabledAsync(true);

@@ -9,12 +9,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Mobile Center Puppet-->
+        <!--App Center Puppet-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
                 <tabBarController id="49e-Tb-3d3" customClass="TabBarController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Mobile Center Puppet" id="569"/>
+                    <navigationItem key="navigationItem" title="App Center Puppet" id="569"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="551" width="600" height="49"/>

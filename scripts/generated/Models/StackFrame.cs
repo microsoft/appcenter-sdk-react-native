@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -60,28 +58,28 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// Gets or sets the fully qualified name of the Class containing the
         /// execution point represented by this stack trace element.
         /// </summary>
-        [JsonProperty(PropertyName = "class_name")]
+        [JsonProperty(PropertyName = "className")]
         public string ClassName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the method containing the execution point
         /// represented by this stack trace element.
         /// </summary>
-        [JsonProperty(PropertyName = "method_name")]
+        [JsonProperty(PropertyName = "methodName")]
         public string MethodName { get; set; }
 
         /// <summary>
         /// Gets or sets the line number of the source line containing the
         /// execution point represented by this stack trace element.
         /// </summary>
-        [JsonProperty(PropertyName = "line_number")]
+        [JsonProperty(PropertyName = "lineNumber")]
         public int? LineNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the file containing the execution point
         /// represented by this stack trace element.
         /// </summary>
-        [JsonProperty(PropertyName = "file_name")]
+        [JsonProperty(PropertyName = "fileName")]
         public string FileName { get; set; }
 
     }

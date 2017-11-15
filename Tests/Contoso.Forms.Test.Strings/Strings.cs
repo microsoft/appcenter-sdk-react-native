@@ -20,19 +20,19 @@
 
         /* ToggleStatesPage */
         /* Automation Ids */
-        public static readonly string EnableMobileCenterButton = "EnableMobileCenterButton";
+        public static readonly string EnableAppCenterButton = "EnableAppCenterButton";
         public static readonly string EnableAnalyticsButton = "EnableAnalyticsButton";
         public static readonly string EnableCrashesButton = "EnableCrashesButton";
-        public static readonly string DisableMobileCenterButton = "DisableMobileCenterButton";
+        public static readonly string DisableAppCenterButton = "DisableAppCenterButton";
         public static readonly string DisableCrashesButton = "DisableCrashesButton";
         public static readonly string DisableAnalyticsButton = "DisableAnalyticsButton";
-        public static readonly string MobileCenterEnabledLabel = "MobileCenterEnabledLabel";
+        public static readonly string AppCenterEnabledLabel = "AppCenterEnabledLabel";
         public static readonly string AnalyticsEnabledLabel = "AnalyticsEnabledLabel";
         public static readonly string CrashesEnabledLabel = "CrashesEnabledLabel";
 
         /* Text values */
-        public static readonly string MobileCenterEnabledText = "Mobile Center enabled";
-        public static readonly string MobileCenterDisabledText = "Mobile Center disabled";
+        public static readonly string AppCenterEnabledText = "App Center enabled";
+        public static readonly string AppCenterDisabledText = "App Center disabled";
         public static readonly string AnalyticsEnabledText = "Analytics enabled";
         public static readonly string AnalyticsDisabledText = "Analytics disabled";
         public static readonly string CrashesEnabledText = "Crashes enabled";

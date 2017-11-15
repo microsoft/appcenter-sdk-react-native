@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using UIKit;
 
 namespace Contoso.iOS.Puppet
@@ -16,7 +16,7 @@ namespace Contoso.iOS.Puppet
         {
             base.ViewDidAppear(animated);
             CrashesEnabledSwitch.On = Crashes.IsEnabledAsync().Result;
-            CrashesEnabledSwitch.Enabled = MobileCenter.IsEnabledAsync().Result;
+            CrashesEnabledSwitch.Enabled = AppCenter.IsEnabledAsync().Result;
         }
 
         partial void UpdateEnabled()

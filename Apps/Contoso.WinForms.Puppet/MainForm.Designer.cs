@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.tabs = new System.Windows.Forms.TabControl();
-            this.mobileCenter = new System.Windows.Forms.TabPage();
+            this.appCenter = new System.Windows.Forms.TabPage();
             this.logBox = new System.Windows.Forms.GroupBox();
             this.writeLog = new System.Windows.Forms.Button();
             this.logTag = new System.Windows.Forms.TextBox();
@@ -38,9 +38,9 @@
             this.logTagLabel = new System.Windows.Forms.Label();
             this.logLevelLabel = new System.Windows.Forms.Label();
             this.logLevel = new System.Windows.Forms.ComboBox();
-            this.mobileCenterLogLevelLabel = new System.Windows.Forms.Label();
-            this.mobileCenterLogLevel = new System.Windows.Forms.ComboBox();
-            this.mobileCenterEnabled = new System.Windows.Forms.CheckBox();
+            this.appCenterLogLevelLabel = new System.Windows.Forms.Label();
+            this.appCenterLogLevel = new System.Windows.Forms.ComboBox();
+            this.appCenterEnabled = new System.Windows.Forms.CheckBox();
             this.analytics = new System.Windows.Forms.TabPage();
             this.eventBox = new System.Windows.Forms.GroupBox();
             this.trackEvent = new System.Windows.Forms.Button();
@@ -54,7 +54,7 @@
             this.others = new System.Windows.Forms.TabPage();
             this.CrashWithNullReferenceException = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
-            this.mobileCenter.SuspendLayout();
+            this.appCenter.SuspendLayout();
             this.logBox.SuspendLayout();
             this.analytics.SuspendLayout();
             this.eventBox.SuspendLayout();
@@ -64,7 +64,7 @@
             // 
             // tabs
             // 
-            this.tabs.Controls.Add(this.mobileCenter);
+            this.tabs.Controls.Add(this.appCenter);
             this.tabs.Controls.Add(this.analytics);
             this.tabs.Controls.Add(this.crashes);
             this.tabs.Controls.Add(this.others);
@@ -77,20 +77,20 @@
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_SelectedIndexChanged);
             // 
-            // mobileCenter
+            // appCenter
             // 
-            this.mobileCenter.Controls.Add(this.logBox);
-            this.mobileCenter.Controls.Add(this.mobileCenterLogLevelLabel);
-            this.mobileCenter.Controls.Add(this.mobileCenterLogLevel);
-            this.mobileCenter.Controls.Add(this.mobileCenterEnabled);
-            this.mobileCenter.Location = new System.Drawing.Point(4, 29);
-            this.mobileCenter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.mobileCenter.Name = "mobileCenter";
-            this.mobileCenter.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.mobileCenter.Size = new System.Drawing.Size(568, 369);
-            this.mobileCenter.TabIndex = 0;
-            this.mobileCenter.Text = "Mobile Center";
-            this.mobileCenter.UseVisualStyleBackColor = true;
+            this.appCenter.Controls.Add(this.logBox);
+            this.appCenter.Controls.Add(this.appCenterLogLevelLabel);
+            this.appCenter.Controls.Add(this.appCenterLogLevel);
+            this.appCenter.Controls.Add(this.appCenterEnabled);
+            this.appCenter.Location = new System.Drawing.Point(4, 29);
+            this.appCenter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.appCenter.Name = "appCenter";
+            this.appCenter.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.appCenter.Size = new System.Drawing.Size(568, 369);
+            this.appCenter.TabIndex = 0;
+            this.appCenter.Text = "App Center";
+            this.appCenter.UseVisualStyleBackColor = true;
             // 
             // logBox
             // 
@@ -190,46 +190,46 @@
             this.logLevel.Size = new System.Drawing.Size(366, 28);
             this.logLevel.TabIndex = 5;
             // 
-            // mobileCenterLogLevelLabel
+            // appCenterLogLevelLabel
             // 
-            this.mobileCenterLogLevelLabel.Location = new System.Drawing.Point(30, 55);
-            this.mobileCenterLogLevelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.mobileCenterLogLevelLabel.Name = "mobileCenterLogLevelLabel";
-            this.mobileCenterLogLevelLabel.Size = new System.Drawing.Size(132, 35);
-            this.mobileCenterLogLevelLabel.TabIndex = 4;
-            this.mobileCenterLogLevelLabel.Text = "Log Level";
-            this.mobileCenterLogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.appCenterLogLevelLabel.Location = new System.Drawing.Point(30, 55);
+            this.appCenterLogLevelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.appCenterLogLevelLabel.Name = "appCenterLogLevelLabel";
+            this.appCenterLogLevelLabel.Size = new System.Drawing.Size(132, 35);
+            this.appCenterLogLevelLabel.TabIndex = 4;
+            this.appCenterLogLevelLabel.Text = "Log Level";
+            this.appCenterLogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // mobileCenterLogLevel
+            // appCenterLogLevel
             // 
-            this.mobileCenterLogLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.appCenterLogLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.mobileCenterLogLevel.FormattingEnabled = true;
-            this.mobileCenterLogLevel.Items.AddRange(new object[] {
+            this.appCenterLogLevel.FormattingEnabled = true;
+            this.appCenterLogLevel.Items.AddRange(new object[] {
             "Verbose",
             "Debug",
             "Info",
             "Warning",
             "Error"});
-            this.mobileCenterLogLevel.Location = new System.Drawing.Point(171, 58);
-            this.mobileCenterLogLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.mobileCenterLogLevel.Name = "mobileCenterLogLevel";
-            this.mobileCenterLogLevel.Size = new System.Drawing.Size(366, 28);
-            this.mobileCenterLogLevel.TabIndex = 3;
-            this.mobileCenterLogLevel.SelectedIndexChanged += new System.EventHandler(this.mobileCenterLogLevel_SelectedIndexChanged);
+            this.appCenterLogLevel.Location = new System.Drawing.Point(171, 58);
+            this.appCenterLogLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.appCenterLogLevel.Name = "appCenterLogLevel";
+            this.appCenterLogLevel.Size = new System.Drawing.Size(366, 28);
+            this.appCenterLogLevel.TabIndex = 3;
+            this.appCenterLogLevel.SelectedIndexChanged += new System.EventHandler(this.appCenterLogLevel_SelectedIndexChanged);
             // 
-            // mobileCenterEnabled
+            // appCenterEnabled
             // 
-            this.mobileCenterEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.appCenterEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.mobileCenterEnabled.Location = new System.Drawing.Point(12, 9);
-            this.mobileCenterEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.mobileCenterEnabled.Name = "mobileCenterEnabled";
-            this.mobileCenterEnabled.Size = new System.Drawing.Size(540, 37);
-            this.mobileCenterEnabled.TabIndex = 1;
-            this.mobileCenterEnabled.Text = "Mobile Center Enabled";
-            this.mobileCenterEnabled.UseVisualStyleBackColor = true;
-            this.mobileCenterEnabled.CheckedChanged += new System.EventHandler(this.mobileCenterEnabled_CheckedChanged);
+            this.appCenterEnabled.Location = new System.Drawing.Point(12, 9);
+            this.appCenterEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.appCenterEnabled.Name = "appCenterEnabled";
+            this.appCenterEnabled.Size = new System.Drawing.Size(540, 37);
+            this.appCenterEnabled.TabIndex = 1;
+            this.appCenterEnabled.Text = "App Center Enabled";
+            this.appCenterEnabled.UseVisualStyleBackColor = true;
+            this.appCenterEnabled.CheckedChanged += new System.EventHandler(this.appCenterEnabled_CheckedChanged);
             // 
             // analytics
             // 
@@ -379,9 +379,9 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Mobile Center Puppet App";
+            this.Text = "App Center Puppet App";
             this.tabs.ResumeLayout(false);
-            this.mobileCenter.ResumeLayout(false);
+            this.appCenter.ResumeLayout(false);
             this.logBox.ResumeLayout(false);
             this.logBox.PerformLayout();
             this.analytics.ResumeLayout(false);
@@ -396,13 +396,13 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabs;
-        private System.Windows.Forms.TabPage mobileCenter;
+        private System.Windows.Forms.TabPage appCenter;
         private System.Windows.Forms.TabPage analytics;
         private System.Windows.Forms.TabPage crashes;
         private System.Windows.Forms.TabPage others;
-        private System.Windows.Forms.CheckBox mobileCenterEnabled;
-        private System.Windows.Forms.Label mobileCenterLogLevelLabel;
-        private System.Windows.Forms.ComboBox mobileCenterLogLevel;
+        private System.Windows.Forms.CheckBox appCenterEnabled;
+        private System.Windows.Forms.Label appCenterLogLevelLabel;
+        private System.Windows.Forms.ComboBox appCenterLogLevel;
         private System.Windows.Forms.GroupBox logBox;
         private System.Windows.Forms.Button writeLog;
         private System.Windows.Forms.TextBox logTag;

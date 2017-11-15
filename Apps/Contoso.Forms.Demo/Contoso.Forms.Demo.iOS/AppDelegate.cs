@@ -1,5 +1,5 @@
 ﻿using Foundation;
-using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.AppCenter.Distribute;
 using UIKit;
 
 namespace Contoso.Forms.Demo.iOS

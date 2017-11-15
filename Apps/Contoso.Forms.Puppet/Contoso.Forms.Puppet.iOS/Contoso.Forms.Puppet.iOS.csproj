@@ -27,7 +27,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
-    <CodesignProvision></CodesignProvision>
+    <CodesignProvision>AppCenter Xamarin Forms Puppet Dev</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -67,7 +67,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: Piyush Joshi (YG3U94CNDA)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>false</MtouchFastDev>
@@ -77,7 +77,7 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <CodesignProvision>Xamarin Puppet</CodesignProvision>
+    <CodesignProvision></CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -126,49 +126,49 @@
     <BundleResource Include="Resources\handbag%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.iOS\Microsoft.Azure.Mobile.Analytics.iOS.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.iOS\Microsoft.AppCenter.Analytics.iOS.csproj">
       <Project>{EF5D0090-9E12-45B5-961C-45D787BD80A5}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.iOS</Name>
+      <Name>Microsoft.AppCenter.Analytics.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.iOS.Bindings\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.iOS.Bindings\Microsoft.AppCenter.Analytics.iOS.Bindings.csproj">
       <Project>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.Analytics.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.iOS\Microsoft.Azure.Mobile.iOS.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.iOS\Microsoft.AppCenter.iOS.csproj">
       <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
-      <Name>Microsoft.Azure.Mobile.iOS</Name>
+      <Name>Microsoft.AppCenter.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS.Bindings\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.iOS.Bindings\Microsoft.AppCenter.Crashes.iOS.Bindings.csproj">
       <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.Crashes.iOS.Bindings</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
       <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
       <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.iOS.Bindings\Microsoft.Azure.Mobile.iOS.Bindings.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">
       <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.Azure.Mobile.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.iOS\Microsoft.Azure.Mobile.Crashes.iOS.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.iOS\Microsoft.AppCenter.Crashes.iOS.csproj">
       <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes.iOS</Name>
+      <Name>Microsoft.AppCenter.Crashes.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.iOS.Bindings\Microsoft.Azure.Mobile.Distribute.iOS.Bindings.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.iOS.Bindings\Microsoft.AppCenter.Distribute.iOS.Bindings.csproj">
       <Project>{278DFD3C-A0DD-4DD2-97C5-44EC4BEE8462}</Project>
-      <Name>Microsoft.Azure.Mobile.Distribute.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.Distribute.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterDistribute\Microsoft.Azure.Mobile.Distribute.iOS\Microsoft.Azure.Mobile.Distribute.iOS.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.iOS\Microsoft.AppCenter.Distribute.iOS.csproj">
       <Project>{60241627-33BB-45F9-A1B6-6F1CB2BF2C4A}</Project>
-      <Name>Microsoft.Azure.Mobile.Distribute.iOS</Name>
+      <Name>Microsoft.AppCenter.Distribute.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.iOS\Microsoft.Azure.Mobile.Push.iOS.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS\Microsoft.AppCenter.Push.iOS.csproj">
       <Project>{D8F25BA5-249D-4BB0-A4B1-A3245F2437FF}</Project>
-      <Name>Microsoft.Azure.Mobile.Push.iOS</Name>
+      <Name>Microsoft.AppCenter.Push.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.iOS.Bindings\Microsoft.Azure.Mobile.Push.iOS.Bindings.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS.Bindings\Microsoft.AppCenter.Push.iOS.Bindings.csproj">
       <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
-      <Name>Microsoft.Azure.Mobile.Push.iOS.Bindings</Name>
+      <Name>Microsoft.AppCenter.Push.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

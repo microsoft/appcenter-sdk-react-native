@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet

@@ -1,24 +1,24 @@
-[![GitHub Release](https://img.shields.io/github/release/Microsoft/mobile-center-sdk-xamarin.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/releases/latest)
-[![NuGet](https://img.shields.io/nuget/v/Microsoft.Azure.Mobile.svg)](https://www.nuget.org/packages/Microsoft.Azure.Mobile/)
-[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/mobile-center-sdk-xamarin/blob/master/license.txt)
+[![GitHub Release](https://img.shields.io/github/release/Microsoft/AppCenter-SDK-DotNet.svg)](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/latest)
+[![NuGet](https://img.shields.io/nuget/v/Microsoft.AppCenter.svg)](https://www.nuget.org/packages/Microsoft.AppCenter/)
+[![license](https://img.shields.io/badge/license-MIT%20License-yellow.svg)](https://github.com/Microsoft/AppCenter-SDK-DotNet/blob/master/license.txt)
 
-# Mobile Center SDK for Xamarin / UWP
+# Visual Studio App Center SDK for .NET
 
-Mobile Center is mission control for mobile apps.
+App Center is your continuous integration, delivery and learning solution for iOS, Android, and Windows apps.
 Get faster release cycles, higher-quality apps, and the insights to build what users want.
 
-The Mobile Center SDK uses a modular architecture so you can use any or all of the following services: 
+The App Center SDK uses a modular architecture so you can use any or all of the following services: 
 
-1. **Mobile Center Analytics**: Mobile Center Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically captures session count, device properties like model, OS version, etc. You can define your own custom events to measure things that matter to you. All the information captured is available in the Mobile Center portal for you to analyze the data.
+1. **App Center Analytics**: App Center Analytics helps you understand user behavior and customer engagement to improve your app. The SDK automatically captures session count, device properties like model, OS version, etc. You can define your own custom events to measure things that matter to you. All the information captured is available in the App Center portal for you to analyze the data.
 
-2. **Mobile Center Crashes**: Mobile Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to Mobile Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
+2. **App Center Crashes**: App Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to App Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
 
-3. **Mobile Center Distribute**: Mobile Center Distribute will let your users install a new version of the app when you distribute it via the Mobile Center. With a new version of the app available, the SDK will present an update dialog to the users to either download or postpone the new version. Once they choose to update, the SDK will start to update your application. This feature will NOT work if your app is deployed to the app store.
+3. **App Center Distribute**: App Center Distribute will let your users install a new version of the app when you distribute it via the App Center. With a new version of the app available, the SDK will present an update dialog to the users to either download or postpone the new version. Once they choose to update, the SDK will start to update your application. This feature will NOT work if your app is deployed to the app store.
 
-4. **Mobile Center Push**: Mobile Center Push enables you to send push notifications to users of your app from the Mobile Center portal. We use APNS for iOS apps, FCM for Android and WNS for UWP apps. You can also segment your user base based on a set of properties and send them targeted notifications.
+4. **App Center Push**: App Center Push enables you to send push notifications to users of your app from the App Center portal. We use APNS for iOS apps, FCM for Android and WNS for UWP apps. You can also segment your user base based on a set of properties and send them targeted notifications.
 
 ## 1. Get started
-It is super easy to use Mobile Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/getting-started/xamarin) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/mobile-center/sdk/) is available as well.
+It is super easy to use App Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/xamarin) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/appcenter/sdk/) is available as well.
 
 ## 2. Contributing
 
@@ -36,7 +36,7 @@ You must sign a [Contributor License Agreement](https://cla.microsoft.com/) befo
 
 ### 3.1 Intercom
 
-If you have further questions, want to provide feedback or you are running into issues, log in to the [Mobile Center portal](https://mobile.azure.com) and use the blue Intercom button on the bottom right to start a conversation with us.
+If you have further questions, want to provide feedback or you are running into issues, log in to the [App Center portal](https://appcenter.ms) and use the blue Intercom button on the bottom right to start a conversation with us.
 
 ### 3.2 Twitter
-We're on Twitter as [@mobilecenter](https://www.twitter.com/mobilecenter).
+We're on Twitter as [@vsappcenter](https://www.twitter.com/vsappcenter).

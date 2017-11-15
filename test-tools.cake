@@ -14,8 +14,8 @@ var Target = Argument("target", Argument("t", "Default"));
 string ArchiveDirectory = "archives";
 bool IsMandatory = false;
 string DistributionGroup = "Private Release Script Group";
-string Token = EnvironmentVariable("MOBILE_CENTER_API_TOKEN");
-string BaseUrl = "https://api.mobile.azure.com";
+string Token = EnvironmentVariable("APP_CENTER_API_TOKEN");
+string BaseUrl = "https://api.appcenter.ms";
 ApplicationInfo CurrentApp = null;
 
 public enum Environment
@@ -84,12 +84,12 @@ ApplicationInfo.Context = Context;
 ApplicationInfo.OutputDirectory = ArchiveDirectory;
 IList<ApplicationInfo> Applications = new List<ApplicationInfo>
 {
-    new ApplicationInfo(Environment.Prod, Platform.iOS, "mobile-center", "xamarin-demo-ios", "Contoso.Forms.Demo.iOS.csproj", "ipa"),
-    new ApplicationInfo(Environment.Prod, Platform.Android, "mobile-center", "xamarin-demo-android", "Contoso.Forms.Demo.Droid.csproj", "apk"),
-    new ApplicationInfo(Environment.Prod, Platform.UWP, "mobile-center", "UWP-Forms-Puppet", "Contoso.Forms.Demo.UWP.csproj", ""),
-    new ApplicationInfo(Environment.Int, Platform.iOS, "mobile-center-sdk", "xamarin-puppet-ios", "Contoso.Forms.Puppet.iOS.csproj", "ipa"),
-    new ApplicationInfo(Environment.Int, Platform.Android, "mobile-center-sdk", "xamarin-puppet-android-03", "Contoso.Forms.Puppet.Droid.csproj", "apk"),
-    new ApplicationInfo(Environment.Int, Platform.UWP, "mobile-center-sdk", "xamarin-forms-puppet-uwp-2", "Contoso.Forms.Puppet.UWP.csproj", "")
+    new ApplicationInfo(Environment.Prod, Platform.iOS, "app-center", "xamarin-demo-ios", "Contoso.Forms.Demo.iOS.csproj", "ipa"),
+    new ApplicationInfo(Environment.Prod, Platform.Android, "app-center", "xamarin-demo-android", "Contoso.Forms.Demo.Droid.csproj", "apk"),
+    new ApplicationInfo(Environment.Prod, Platform.UWP, "app-center", "UWP-Forms-Puppet", "Contoso.Forms.Demo.UWP.csproj", ""),
+    new ApplicationInfo(Environment.Int, Platform.iOS, "app-center-sdk", "xamarin-puppet-ios", "Contoso.Forms.Puppet.iOS.csproj", "ipa"),
+    new ApplicationInfo(Environment.Int, Platform.Android, "app-center-sdk", "xamarin-puppet-android-03", "Contoso.Forms.Puppet.Droid.csproj", "apk"),
+    new ApplicationInfo(Environment.Int, Platform.UWP, "app-center-sdk", "xamarin-forms-puppet-uwp-2", "Contoso.Forms.Puppet.UWP.csproj", "")
 };
 
 Setup(context =>
@@ -105,7 +105,7 @@ Setup(context =>
     if (Argument("Environment", "int") == "int")
     {
         environment = Environment.Int;
-        Token = EnvironmentVariable("MOBILE_CENTER_INT_API_TOKEN");
+        Token = EnvironmentVariable("APP_CENTER_INT_API_TOKEN");
         BaseUrl = "https://asgard-int.trafficmanager.net/api";
     }
     var platformString = Argument<string>("Platform", "ios");

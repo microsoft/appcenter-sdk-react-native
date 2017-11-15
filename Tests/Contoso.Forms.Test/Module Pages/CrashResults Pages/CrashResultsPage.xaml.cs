@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile.Crashes;
+﻿using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Test
@@ -149,6 +149,6 @@ namespace Contoso.Forms.Test
             {
                 ShouldAwaitUserConfirmationLabel.Text = TestStrings.DidNotShouldAwaitUserConfirmationText;
             }
-        }                                         
+        }
     }
 }

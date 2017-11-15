@@ -16,7 +16,7 @@ namespace Contoso.iOS.Puppet
 
             // Storyboard References are only available since iOS 9.0, so do it manually.
             ViewControllers = new UIViewController[] {
-                UIStoryboard.FromName("MobileCenter", null).InstantiateViewController("MobileCenter"),
+                UIStoryboard.FromName("AppCenter", null).InstantiateViewController("AppCenter"),
                 UIStoryboard.FromName("Analytics", null).InstantiateViewController("Analytics"),
                 UIStoryboard.FromName("Crashes", null).InstantiateViewController("Crashes"),
                 UIStoryboard.FromName("Distribute", null).InstantiateViewController("Distribute")

@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
     using Newtonsoft.Json;
     using System.Linq;
 
@@ -13,7 +11,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
     /// Required explicit begin session log (a marker event for analytics
     /// service).
     /// </summary>
-    [JsonObject("start_session")]
+    [JsonObject("startSession")]
     public partial class StartSessionLog : Log
     {
         /// <summary>
@@ -24,9 +22,9 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the StartSessionLog class.
         /// </summary>
-        /// <param name="toffset">Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -35,8 +33,8 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        public StartSessionLog(long toffset, Device device, System.Guid? sid = default(System.Guid?))
-            : base(toffset, device, sid)
+        public StartSessionLog(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?))
+            : base(device, timestamp, sid)
         {
         }
 

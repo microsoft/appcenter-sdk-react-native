@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>  
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{278DFD3C-A0DD-4DD2-97C5-44EC4BEE8462}</ProjectGuid>
+    <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.AppCenter.Distribute.iOS.Bindings</RootNamespace>
+    <AssemblyName>Microsoft.AppCenter.Distribute.iOS.Bindings</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">
+      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
+      <Name>Microsoft.AppCenter.iOS.Bindings</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="..\..\..\externals\ios\AppCenterDistribute.a">
+      <Kind>Static</Kind>
+      <SmartLink>False</SmartLink>
+      <ForceLoad>True</ForceLoad>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\Info.plist">
+      <Link>Resources\AppCenterDistributeResources.bundle\Info.plist</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\cs.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\cs.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\de.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\de.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\en.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\en.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\es.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\es.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\fr.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\fr.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\it.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\it.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\ja.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\ja.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\ko.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\ko.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\pl.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\pl.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\ru.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\ru.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\tr.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\tr.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\zh-Hans.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\zh-Hans.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\externals\ios\AppCenterDistributeResources.bundle\zh-Hant.lproj\AppCenterDistribute.strings">
+      <Link>Resources\AppCenterDistributeResources.bundle\zh-Hant.lproj\AppCenterDistribute.strings</Link>
+    </BundleResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
+</Project>

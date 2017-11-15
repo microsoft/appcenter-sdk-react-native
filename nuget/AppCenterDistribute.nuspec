@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.AppCenter.Distribute</id>
+    <title>App Center Distribute</title>
+    <authors>Microsoft</authors>
+    <owners>microsoft,appcenter</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center Distribute package provides in-app update capabilities for your mobile applications.</summary>
+    <description>This package provides capability to display in-app updates to your app users when a new version of the application is released.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter distribute mobilecenter</tags>
+    <language>en-US</language>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.AppCenter" version="$version$" />
+    </dependencies>
+    <version>$version$</version>
+  </metadata>
+  <files>
+
+    <!-- Portable -->
+    <file src="$pcl_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+
+    <!-- .NET Standard -->
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/netstandard1.0" />
+
+    <!-- Android -->
+    <file src="$android_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Distribute.Android.Bindings.dll" target="lib/MonoAndroid403" />
+
+    <!-- iOS -->
+    <file src="$ios_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Distribute.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
+
+  </files>
+</package>

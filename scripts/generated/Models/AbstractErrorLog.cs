@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
     using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
@@ -23,17 +21,16 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the AbstractErrorLog class.
         /// </summary>
-        /// <param name="toffset">Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
         /// <param name="id">Error identifier.</param>
         /// <param name="processId">Process identifier.</param>
         /// <param name="processName">Process name.</param>
         /// <param name="fatal">If true, this error report is an application
-        /// crash.</param>
-        /// <param name="appLaunchToffset">Corresponds to the number of
-        /// milliseconds elapsed between the time the error occurred and the
-        /// app was launched.</param>
+        /// crash.
+        /// Corresponds to the number of milliseconds elapsed between the time
+        /// the error occurred and the app was launched.</param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -46,10 +43,12 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <param name="parentProcessName">Parent's process name.</param>
         /// <param name="errorThreadId">Error thread identifier.</param>
         /// <param name="errorThreadName">Error thread name.</param>
-        /// <param name="errorAttachment">Error attachment.</param>
+        /// <param name="appLaunchTimestamp">Timestamp when the app was
+        /// launched, example: '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="architecture">CPU architecture.</param>
-        public AbstractErrorLog(long toffset, Device device, System.Guid id, int processId, string processName, bool fatal, long appLaunchToffset, System.Guid? sid = default(System.Guid?), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), ErrorAttachment errorAttachment = default(ErrorAttachment), string architecture = default(string))
-            : base(toffset, device, sid)
+        public AbstractErrorLog(Device device, System.Guid id, int processId, string processName, bool fatal, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string))
+            : base(device, timestamp, sid)
         {
             Id = id;
             ProcessId = processId;
@@ -59,8 +58,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
             ErrorThreadId = errorThreadId;
             ErrorThreadName = errorThreadName;
             Fatal = fatal;
-            AppLaunchToffset = appLaunchToffset;
-            ErrorAttachment = errorAttachment;
+            AppLaunchTimestamp = appLaunchTimestamp;
             Architecture = architecture;
         }
 
@@ -73,57 +71,54 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Gets or sets process identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "process_id")]
+        [JsonProperty(PropertyName = "processId")]
         public int ProcessId { get; set; }
 
         /// <summary>
         /// Gets or sets process name.
         /// </summary>
-        [JsonProperty(PropertyName = "process_name")]
+        [JsonProperty(PropertyName = "processName")]
         public string ProcessName { get; set; }
 
         /// <summary>
         /// Gets or sets parent's process identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "parent_process_id")]
+        [JsonProperty(PropertyName = "parentProcessId")]
         public int? ParentProcessId { get; set; }
 
         /// <summary>
         /// Gets or sets parent's process name.
         /// </summary>
-        [JsonProperty(PropertyName = "parent_process_name")]
+        [JsonProperty(PropertyName = "parentProcessName")]
         public string ParentProcessName { get; set; }
 
         /// <summary>
         /// Gets or sets error thread identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "error_thread_id")]
+        [JsonProperty(PropertyName = "errorThreadId")]
         public long? ErrorThreadId { get; set; }
 
         /// <summary>
         /// Gets or sets error thread name.
         /// </summary>
-        [JsonProperty(PropertyName = "error_thread_name")]
+        [JsonProperty(PropertyName = "errorThreadName")]
         public string ErrorThreadName { get; set; }
 
         /// <summary>
         /// Gets or sets if true, this error report is an application crash.
+        /// Corresponds to the number of milliseconds elapsed between the time
+        /// the error occurred and the app was launched.
         /// </summary>
         [JsonProperty(PropertyName = "fatal")]
         public bool Fatal { get; set; }
 
         /// <summary>
-        /// Gets or sets corresponds to the number of milliseconds elapsed
-        /// between the time the error occurred and the app was launched.
+        /// Gets or sets timestamp when the app was launched, example:
+        /// '2017-03-13T18:05:42Z'.
+        ///
         /// </summary>
-        [JsonProperty(PropertyName = "app_launch_toffset")]
-        public long AppLaunchToffset { get; set; }
-
-        /// <summary>
-        /// Gets or sets error attachment.
-        /// </summary>
-        [JsonProperty(PropertyName = "error_attachment")]
-        public ErrorAttachment ErrorAttachment { get; set; }
+        [JsonProperty(PropertyName = "appLaunchTimestamp")]
+        public System.DateTime? AppLaunchTimestamp { get; set; }
 
         /// <summary>
         /// Gets or sets CPU architecture.
@@ -143,10 +138,6 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
             if (ProcessName == null)
             {
                 throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "ProcessName");
-            }
-            if (ErrorAttachment != null)
-            {
-                ErrorAttachment.Validate();
             }
         }
     }

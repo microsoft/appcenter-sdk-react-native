@@ -1,17 +1,17 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Com.Microsoft.Azure.Mobile.Analytics;
-using Com.Microsoft.Azure.Mobile.Analytics.Channel;
-using Com.Microsoft.Azure.Mobile.Ingestion.Models;
+using Com.Microsoft.Appcenter.Analytics;
+using Com.Microsoft.Appcenter.Analytics.Channel;
+using Com.Microsoft.Appcenter.Ingestion.Models;
 using HockeyApp.Android;
 using HockeyApp.Android.Utils;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Push;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Push;
 
 namespace Contoso.Forms.Puppet.Droid
 {
-    [Activity(Label = "MCFPuppet", Icon = "@drawable/icon", Theme = "@style/PuppetTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop)]
+    [Activity(Label = "ACFPuppet", Icon = "@drawable/icon", Theme = "@style/PuppetTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -46,17 +46,17 @@ namespace Contoso.Forms.Puppet.Droid
     {
         public void OnSendingFailed(ILog log, Java.Lang.Exception e)
         {
-            MobileCenterLog.Debug(App.LogTag, "Analytics listener OnSendingFailed with exception: " + e);
+            AppCenterLog.Debug(App.LogTag, "Analytics listener OnSendingFailed with exception: " + e);
         }
 
         public void OnSendingSucceeded(ILog log)
         {
-            MobileCenterLog.Debug(App.LogTag, "Analytics listener OnSendingSucceeded");
+            AppCenterLog.Debug(App.LogTag, "Analytics listener OnSendingSucceeded");
         }
 
         public void OnBeforeSending(ILog log)
         {
-            MobileCenterLog.Debug(App.LogTag, "Analytics listener OnBeforeSendingEventLog");
+            AppCenterLog.Debug(App.LogTag, "Analytics listener OnBeforeSendingEventLog");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Distribute;
 using UIKit;
 
 namespace Contoso.iOS.Puppet
@@ -15,7 +15,7 @@ namespace Contoso.iOS.Puppet
         {
             base.ViewDidAppear(animated);
             DistributeEnabledSwitch.On = Distribute.IsEnabledAsync().Result;
-            DistributeEnabledSwitch.Enabled = MobileCenter.IsEnabledAsync().Result;
+            DistributeEnabledSwitch.Enabled = AppCenter.IsEnabledAsync().Result;
         }
 
         partial void UpdateEnabled()

@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Mobile;
+﻿using Microsoft.AppCenter;
 
 using Xamarin.Forms;
 
@@ -16,7 +16,7 @@ namespace Contoso.Forms.Test
             base.OnAppearing();
             if (InstallIdLabel != null)
             {
-                InstallIdLabel.Text = MobileCenter.GetInstallIdAsync().Result?.ToString();
+                InstallIdLabel.Text = AppCenter.GetInstallIdAsync().Result?.ToString();
             }
         }
 

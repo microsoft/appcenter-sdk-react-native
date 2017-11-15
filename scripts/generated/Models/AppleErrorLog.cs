@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
     using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
@@ -15,7 +13,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
     /// <summary>
     /// Error log for Apple platforms.
     /// </summary>
-    [JsonObject("apple_error")]
+    [JsonObject("appleError")]
     public partial class AppleErrorLog : AbstractErrorLog
     {
         /// <summary>
@@ -26,23 +24,22 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the AppleErrorLog class.
         /// </summary>
-        /// <param name="toffset">Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
         /// <param name="id">Error identifier.</param>
         /// <param name="processId">Process identifier.</param>
         /// <param name="processName">Process name.</param>
         /// <param name="fatal">If true, this error report is an application
-        /// crash.</param>
-        /// <param name="appLaunchToffset">Corresponds to the number of
-        /// milliseconds elapsed between the time the error occurred and the
-        /// app was launched.</param>
+        /// crash.
+        /// Corresponds to the number of milliseconds elapsed between the time
+        /// the error occurred and the app was launched.</param>
         /// <param name="primaryArchitectureId">CPU primary
         /// architecture.</param>
         /// <param name="applicationPath">Path to the application.</param>
         /// <param name="osExceptionType">OS exception type.</param>
         /// <param name="osExceptionCode">OS exception code.</param>
         /// <param name="osExceptionAddress">OS exception address.</param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -55,12 +52,16 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <param name="parentProcessName">Parent's process name.</param>
         /// <param name="errorThreadId">Error thread identifier.</param>
         /// <param name="errorThreadName">Error thread name.</param>
-        /// <param name="errorAttachment">Error attachment.</param>
+        /// <param name="appLaunchTimestamp">Timestamp when the app was
+        /// launched, example: '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="architecture">CPU architecture.</param>
         /// <param name="architectureVariantId">CPU architecture
         /// variant.</param>
         /// <param name="exceptionType">Exception type.</param>
         /// <param name="exceptionReason">Exception reason.</param>
+        /// <param name="selectorRegisterValue">Content of register that might
+        /// contain last method call.</param>
         /// <param name="threads">Thread stack frames associated to the
         /// error.</param>
         /// <param name="binaries">Binaries associated to the error.</param>
@@ -69,8 +70,8 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// This is used for example to send a .NET exception from the Xamarin
         /// SDK.
         /// </param>
-        public AppleErrorLog(long toffset, Device device, System.Guid id, int processId, string processName, bool fatal, long appLaunchToffset, int primaryArchitectureId, string applicationPath, string osExceptionType, string osExceptionCode, string osExceptionAddress, System.Guid? sid = default(System.Guid?), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), ErrorAttachment errorAttachment = default(ErrorAttachment), string architecture = default(string), int? architectureVariantId = default(int?), string exceptionType = default(string), string exceptionReason = default(string), IList<Thread> threads = default(IList<Thread>), IList<Binary> binaries = default(IList<Binary>), IDictionary<string, string> registers = default(IDictionary<string, string>), Exception exception = default(Exception))
-            : base(toffset, device, id, processId, processName, fatal, appLaunchToffset, sid, parentProcessId, parentProcessName, errorThreadId, errorThreadName, errorAttachment, architecture)
+        public AppleErrorLog(Device device, System.Guid id, int processId, string processName, bool fatal, long primaryArchitectureId, string applicationPath, string osExceptionType, string osExceptionCode, string osExceptionAddress, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string), long? architectureVariantId = default(long?), string exceptionType = default(string), string exceptionReason = default(string), string selectorRegisterValue = default(string), IList<Thread> threads = default(IList<Thread>), IList<Binary> binaries = default(IList<Binary>), IDictionary<string, string> registers = default(IDictionary<string, string>), Exception exception = default(Exception))
+            : base(device, id, processId, processName, fatal, timestamp, sid, parentProcessId, parentProcessName, errorThreadId, errorThreadName, appLaunchTimestamp, architecture)
         {
             PrimaryArchitectureId = primaryArchitectureId;
             ArchitectureVariantId = architectureVariantId;
@@ -80,6 +81,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
             OsExceptionAddress = osExceptionAddress;
             ExceptionType = exceptionType;
             ExceptionReason = exceptionReason;
+            SelectorRegisterValue = selectorRegisterValue;
             Threads = threads;
             Binaries = binaries;
             Registers = registers;
@@ -89,50 +91,57 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Gets or sets CPU primary architecture.
         /// </summary>
-        [JsonProperty(PropertyName = "primary_architecture_id")]
-        public int PrimaryArchitectureId { get; set; }
+        [JsonProperty(PropertyName = "primaryArchitectureId")]
+        public long PrimaryArchitectureId { get; set; }
 
         /// <summary>
         /// Gets or sets CPU architecture variant.
         /// </summary>
-        [JsonProperty(PropertyName = "architecture_variant_id")]
-        public int? ArchitectureVariantId { get; set; }
+        [JsonProperty(PropertyName = "architectureVariantId")]
+        public long? ArchitectureVariantId { get; set; }
 
         /// <summary>
         /// Gets or sets path to the application.
         /// </summary>
-        [JsonProperty(PropertyName = "application_path")]
+        [JsonProperty(PropertyName = "applicationPath")]
         public string ApplicationPath { get; set; }
 
         /// <summary>
         /// Gets or sets OS exception type.
         /// </summary>
-        [JsonProperty(PropertyName = "os_exception_type")]
+        [JsonProperty(PropertyName = "osExceptionType")]
         public string OsExceptionType { get; set; }
 
         /// <summary>
         /// Gets or sets OS exception code.
         /// </summary>
-        [JsonProperty(PropertyName = "os_exception_code")]
+        [JsonProperty(PropertyName = "osExceptionCode")]
         public string OsExceptionCode { get; set; }
 
         /// <summary>
         /// Gets or sets OS exception address.
         /// </summary>
-        [JsonProperty(PropertyName = "os_exception_address")]
+        [JsonProperty(PropertyName = "osExceptionAddress")]
         public string OsExceptionAddress { get; set; }
 
         /// <summary>
         /// Gets or sets exception type.
         /// </summary>
-        [JsonProperty(PropertyName = "exception_type")]
+        [JsonProperty(PropertyName = "exceptionType")]
         public string ExceptionType { get; set; }
 
         /// <summary>
         /// Gets or sets exception reason.
         /// </summary>
-        [JsonProperty(PropertyName = "exception_reason")]
+        [JsonProperty(PropertyName = "exceptionReason")]
         public string ExceptionReason { get; set; }
+
+        /// <summary>
+        /// Gets or sets content of register that might contain last method
+        /// call.
+        /// </summary>
+        [JsonProperty(PropertyName = "selectorRegisterValue")]
+        public string SelectorRegisterValue { get; set; }
 
         /// <summary>
         /// Gets or sets thread stack frames associated to the error.

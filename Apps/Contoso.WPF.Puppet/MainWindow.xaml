@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Contoso.WPF.Puppet"
         mc:Ignorable="d"
-        Title="Mobile Center WPF Puppet App" Height="257.794" Width="335">
+        Title="App Center WPF Puppet App" Height="257.794" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="Mobile Center">
+            <TabItem Header="App Center">
                 <StackPanel>
-                    <CheckBox Name="mobileCenterEnabled" Content="Mobile Center Enabled" Margin="0,10,0,10" Checked="mobileCenterEnabled_Checked" Unchecked="mobileCenterEnabled_Checked"/>
+                    <CheckBox Name="appCenterEnabled" Content="App Center Enabled" Margin="0,10,0,10" Checked="appCenterEnabled_Checked" Unchecked="appCenterEnabled_Checked"/>
                     <StackPanel Orientation ="Horizontal" HorizontalAlignment="Right" >
                         <Label Content="Log Level"/>
-                        <ComboBox Name="mobileCenterLogLevel" Width="200" SelectionChanged="mobileCenterLogLevel_SelectionChanged">
+                        <ComboBox Name="appCenterLogLevel" Width="200" SelectionChanged="appCenterLogLevel_SelectionChanged">
                             <ComboBoxItem Content="Verbose"/>
                             <ComboBoxItem Content="Debug"/>
                             <ComboBoxItem Content="Info"/>
