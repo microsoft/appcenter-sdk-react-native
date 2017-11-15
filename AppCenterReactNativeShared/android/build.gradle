@@ -19,6 +19,10 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 allprojects {
+    repositories {
+        jcenter()
+    }
+
     def ext = rootProject.ext
 
     android {
