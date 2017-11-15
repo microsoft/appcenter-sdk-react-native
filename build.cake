@@ -46,7 +46,7 @@ var WindowsAssembliesZip = Statics.TemporaryPrefix + "WindowsAssemblies.zip";
 
 // Native SDK versions
 var AndroidSdkVersion = "1.0.0";
-var IosSdkVersion = "1.0.0-8+565a6d428ff4cf54659f343c8ba7285e626867b5";
+var IosSdkVersion = "1.0.0";
 
 PlatformPaths AssemblyPlatformPaths;
 
