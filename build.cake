@@ -4,6 +4,8 @@
 #addin nuget:?package=Cake.Incubator
 #addin nuget:?package=Cake.Xamarin
 #addin "Cake.AzureStorage"
+#load "utility.cake"
+#load "assembly-group.cake"
 
 using System.Net;
 using System.Text;
@@ -38,26 +40,15 @@ class AppCenterModule {
     }
 }
 
-// Prefix for temporary intermediates that are created by this script
-var TEMPORARY_PREFIX = "CAKE_SCRIPT_TEMP";
-
-var DOWNLOADED_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "DownloadedAssemblies";
-var MAC_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "MacAssemblies.zip";
-var WINDOWS_ASSEMBLIES_ZIP = TEMPORARY_PREFIX + "WindowsAssemblies.zip";
-
-// Assembly folders
-var WINDOWS_DESKTOP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "WindowsDesktopAssemblies";
-var UWP_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "UWPAssemblies";
-var IOS_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "iOSAssemblies";
-var ANDROID_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "AndroidAssemblies";
-var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
-var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
+var DownloadedAssembliesFolder = Statics.TemporaryPrefix + "DownloadedAssemblies";
+var MacAssembliesZip = Statics.TemporaryPrefix + "MacAssemblies.zip";
+var WindowsAssembliesZip = Statics.TemporaryPrefix + "WindowsAssemblies.zip";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "1.0.0";
-var IOS_SDK_VERSION = "1.0.0-8+565a6d428ff4cf54659f343c8ba7285e626867b5";
+var AndroidSdkVersion = "1.0.0";
+var IosSdkVersion = "1.0.0-8+565a6d428ff4cf54659f343c8ba7285e626867b5";
 
-var PLATFORM_PATHS = new PlatformPaths();
+PlatformPaths AssemblyPlatformPaths;
 
 // URLs for downloading binaries.
 /*
@@ -68,14 +59,14 @@ var PLATFORM_PATHS = new PlatformPaths();
  *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
-var SDK_STORAGE_URL = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var ANDROID_URL = SDK_STORAGE_URL + "AppCenter-SDK-Android-" + ANDROID_SDK_VERSION + ".zip";
-var IOS_URL = SDK_STORAGE_URL + "AppCenter-SDK-Apple-" + IOS_SDK_VERSION + ".zip";
-var MAC_ASSEMBLIES_URL = SDK_STORAGE_URL + MAC_ASSEMBLIES_ZIP;
-var WINDOWS_ASSEMBLIES_URL = SDK_STORAGE_URL + WINDOWS_ASSEMBLIES_ZIP;
+var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
+var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
+var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+var MacAssembliesUrl = SdkStorageUrl + MacAssembliesZip;
+var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
 
 // Available AppCenter modules.
-var APP_CENTER_MODULES = new [] {
+var AppCenterModules = new [] {
     new AppCenterModule("app-center-release.aar", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
     new AppCenterModule("app-center-analytics-release.aar", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
     new AppCenterModule("app-center-crashes-release.aar", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
@@ -84,157 +75,21 @@ var APP_CENTER_MODULES = new [] {
     new AppCenterModule("app-center-rum-release.aar", "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
 };
 
-// Task TARGET for build
-var TARGET = Argument("target", Argument("t", "Default"));
+// Task Target for build
+var Target = Argument("Target", Argument("t", "Default"));
 
 // Storage id to append to upload and download file names in storage
-var STORAGE_ID = Argument("StorageId", Argument("storage-id", ""));
+var StorageId = Argument("StorageId", Argument("storage-id", ""));
 
-class AssemblyGroup
-{
-    public string[] AssemblyPaths {get; set;}
-    public string AssemblyFolder {get; set;}
-}
-
-// This class contains the assembly folder paths and other platform dependent paths involved in preparing assemblies for VSTS and Azure storage.
-// When a new platform is supported, an AssemblyGroup must be created and added to the proper {OS}UploadAssemblyGroups array. Also, its
-// AssemblyFolder must be added to the correct platform's "DownloadAssemblyFolders" array.
-class PlatformPaths
-{
-    public PlatformPaths()
-    {
-        UploadAssemblyGroups = new List<AssemblyGroup>();
-        DownloadAssemblyFolders = new List<string>();
-    }
-
-    // Folders for the assemblies that the current platform must create and upload
-    public List<AssemblyGroup> UploadAssemblyGroups {get; set;}
-
-    // The name of the zip file to upload
-    public string UploadAssembliesZip {get; set;}
-
-    // The name of the zip file to download
-    public string DownloadAssembliesZip {get; set;}
-    // The paths of downloaded assembly folders
-    public List<string> DownloadAssemblyFolders {get; set;}
-
-    // The URL to download files from
-    public string DownloadUrl {get; set;}
-}
+var ConfigFile = "ac_build_config.xml";
 
 // Prepare the platform paths for downloading, uploading, and preparing assemblies
 Setup(context =>
 {
-    if (IsRunningOnUnix())
-    {
-        var iosAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = IOS_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {  "SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll",
-                            "SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.iOS.Bindings.dll",
-                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.iOS/bin/Release/Microsoft.AppCenter.Analytics.dll",
-                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.iOS/bin/Release/Microsoft.AppCenter.Analytics.iOS.Bindings.dll",
-                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.iOS/bin/Release/Microsoft.AppCenter.Crashes.dll",
-                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.iOS/bin/Release/Microsoft.AppCenter.Crashes.iOS.Bindings.dll",
-                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.iOS/bin/Release/Microsoft.AppCenter.Distribute.dll",
-                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.iOS/bin/Release/Microsoft.AppCenter.Distribute.iOS.Bindings.dll",
-                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS/bin/Release/Microsoft.AppCenter.Push.dll",
-                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS.Bindings/bin/Release/Microsoft.AppCenter.Push.iOS.Bindings.dll" }
-        };
-        var androidAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = ANDROID_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {  "SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.dll",
-                            "SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.Android.Bindings.dll",
-                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.Android/bin/Release/Microsoft.AppCenter.Analytics.dll",
-                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.Android/bin/Release/Microsoft.AppCenter.Analytics.Android.Bindings.dll",
-                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.Android/bin/Release/Microsoft.AppCenter.Crashes.dll",
-                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.Android/bin/Release/Microsoft.AppCenter.Crashes.Android.Bindings.dll",
-                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.Android/bin/Release/Microsoft.AppCenter.Distribute.dll",
-                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.Android/bin/Release/Microsoft.AppCenter.Distribute.Android.Bindings.dll",
-                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android/bin/Release/Microsoft.AppCenter.Push.dll",
-                            "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/bin/Release/Microsoft.AppCenter.Push.Android.Bindings.dll",
-                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android/bin/Release/Microsoft.AppCenter.Rum.dll",
-                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android.Bindings/bin/Release/Microsoft.AppCenter.Rum.Android.Bindings.dll" }
-        };
-        var pclAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = PCL_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {	"SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll",
-                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll",
-                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll",
-                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Distribute.dll",
-                            "SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Push.dll",
-                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Rum.dll" }
-        };
-        var netStandardAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = NETSTANDARD_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {	"SDK/AppCenter/Microsoft.AppCenter/bin/Release/netstandard1.0/Microsoft.AppCenter.dll",
-                            "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/netstandard1.0/Microsoft.AppCenter.Analytics.dll",
-                            "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/netstandard1.0/Microsoft.AppCenter.Crashes.dll",
-                            "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/netstandard1.0/Microsoft.AppCenter.Distribute.dll",
-                            "SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/netstandard1.0/Microsoft.AppCenter.Push.dll",
-                            "SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/netstandard1.0/Microsoft.AppCenter.Rum.dll" }
-        };
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(iosAssemblyGroup);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(androidAssemblyGroup);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(pclAssemblyGroup);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(WINDOWS_DESKTOP_ASSEMBLIES_FOLDER);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(netStandardAssemblyGroup);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x86");
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/x64");
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(UWP_ASSEMBLIES_FOLDER + "/ARM");
-        PLATFORM_PATHS.UploadAssembliesZip = MAC_ASSEMBLIES_ZIP + STORAGE_ID;
-        PLATFORM_PATHS.DownloadUrl = WINDOWS_ASSEMBLIES_URL + STORAGE_ID;
-        PLATFORM_PATHS.DownloadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + STORAGE_ID;
-    }
-    else
-    {
-        var windowsDesktopAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = WINDOWS_DESKTOP_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] {
-                "SDK/AppCenter/Microsoft.AppCenter.WindowsDesktop/bin/Release/Microsoft.AppCenter.dll",
-                "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.WindowsDesktop/bin/Release/Microsoft.AppCenter.Analytics.dll",
-                "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.WindowsDesktop/bin/Release/Microsoft.AppCenter.Crashes.dll" }
-            };
-        var uwpAnyCpuAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = UWP_ASSEMBLIES_FOLDER,
-            AssemblyPaths = new string[] { "nuget/Microsoft.AppCenter.Crashes.targets",
-                                "SDK/AppCenter/Microsoft.AppCenter.UWP/bin/Release/Microsoft.AppCenter.dll",
-                                "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.UWP/bin/Release/Microsoft.AppCenter.Analytics.dll",
-                                "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/Reference/Microsoft.AppCenter.Crashes.dll",
-                                "SDK/AppCenterPush/Microsoft.AppCenter.Push.UWP/bin/Release/Microsoft.AppCenter.Push.dll",
-                                "SDK/AppCenterRum/Microsoft.AppCenter.Rum.UWP/bin/Release/Microsoft.AppCenter.Rum.dll" }
-        };
-        var uwpX86AssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x86",
-            AssemblyPaths = new string[] { 	"SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/x86/Release/Microsoft.AppCenter.Crashes.dll",
-                                "Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-                                   "Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
-        };
-        var uwpX64AssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/x64",
-            AssemblyPaths =  new string[] {	"SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/x64/Release/Microsoft.AppCenter.Crashes.dll",
-                                       "x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-                                       "x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
-        };
-        var uwpArmAssemblyGroup = new AssemblyGroup {
-            AssemblyFolder = UWP_ASSEMBLIES_FOLDER + "/ARM",
-            AssemblyPaths =  new string[] {  "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/ARM/Release/Microsoft.AppCenter.Crashes.dll",
-                                    "ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll",
-                                    "ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd" }
-        };
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpAnyCpuAssemblyGroup);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX86AssemblyGroup);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpX64AssemblyGroup);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(uwpArmAssemblyGroup);
-        PLATFORM_PATHS.UploadAssemblyGroups.Add(windowsDesktopAssemblyGroup);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(IOS_ASSEMBLIES_FOLDER);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(ANDROID_ASSEMBLIES_FOLDER);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(PCL_ASSEMBLIES_FOLDER);
-        PLATFORM_PATHS.DownloadAssemblyFolders.Add(NETSTANDARD_ASSEMBLIES_FOLDER);
-        PLATFORM_PATHS.UploadAssembliesZip = WINDOWS_ASSEMBLIES_ZIP + STORAGE_ID;
-        PLATFORM_PATHS.DownloadUrl = MAC_ASSEMBLIES_URL + STORAGE_ID;
-        PLATFORM_PATHS.DownloadAssembliesZip = MAC_ASSEMBLIES_ZIP + STORAGE_ID;
-    }
+    var uploadAssembliesZip = (IsRunningOnUnix() ? MacAssembliesZip : WindowsAssembliesZip) + StorageId;
+    var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl) + StorageId;
+    var downloadAssembliesZip = (IsRunningOnUnix() ? WindowsAssembliesZip : MacAssembliesZip) + StorageId;
+    AssemblyPlatformPaths = new PlatformPaths(uploadAssembliesZip, downloadAssembliesZip, downloadUrl, ConfigFile);
 });
 
 // Versioning task.
@@ -244,7 +99,7 @@ Task("Version")
     var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
     var version = project.NetCore.Version;
     // Extract versions for modules.
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
         module.NuGetVersion = version;
     }
@@ -255,7 +110,7 @@ Task("PackageId")
     .Does(() =>
 {
     // Extract package ids for modules.
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
         var nuspecText = FileReadText("./nuget/" + module.MainNuspecFilename);
         var startTag = "<id>";
@@ -297,9 +152,9 @@ Task("WindowsBuild")
 
 Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
 {
-    foreach (var assemblyGroup in PLATFORM_PATHS.UploadAssemblyGroups)
+    foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
     {
-        CopyFiles(assemblyGroup.AssemblyPaths, assemblyGroup.AssemblyFolder);
+        CopyFiles(assemblyGroup.AssemblyPaths, assemblyGroup.Folder);
     }
 }).OnError(HandleError);
 
@@ -314,7 +169,7 @@ Task("Externals-Android")
     CleanDirectory("./externals/android");
 
     // Download zip file.
-    DownloadFile(ANDROID_URL, "./externals/android/android.zip");
+    DownloadFile(AndroidUrl, "./externals/android/android.zip");
     Unzip("./externals/android/android.zip", "./externals/android/");
 
     // Move binaries to externals/android so that linked files don't have versions
@@ -330,7 +185,7 @@ Task("Externals-Ios")
     CleanDirectory("./externals/ios");
 
     // Download zip file containing AppCenter frameworks
-    DownloadFile(IOS_URL, "./externals/ios/ios.zip");
+    DownloadFile(IosUrl, "./externals/ios/ios.zip");
     Unzip("./externals/ios/ios.zip", "./externals/ios/");
 
     // Copy the AppCenter binaries directly from the frameworks and add the ".a" extension
@@ -366,10 +221,10 @@ Task("NuGet")
     .Does(()=>
 {
     CleanDirectory("output");
-    var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
+    var specCopyName = Statics.TemporaryPrefix + "spec_copy.nuspec";
 
     // Package NuGets.
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
         var nuspecFilename = "nuget/" + (IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename);
 
@@ -398,7 +253,7 @@ Task("NuGet")
 // Add version to nuspecs for vsts (the release definition does not have the solutions and thus cannot extract a version from them)
 Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
 {
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
         ReplaceTextInFiles("./nuget/" + module.MainNuspecFilename, "$version$", module.NuGetVersion);
     }
@@ -413,34 +268,34 @@ Task("UploadAssemblies")
     var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
     var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
 
-    foreach (var assemblyGroup in PLATFORM_PATHS.UploadAssemblyGroups)
+    foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
     {
-        var destinationFolder =  DOWNLOADED_ASSEMBLIES_FOLDER + "/" + assemblyGroup.AssemblyFolder;
+        var destinationFolder =  DownloadedAssembliesFolder + "/" + assemblyGroup.Folder;
         CleanDirectory(destinationFolder);
         CopyFiles(assemblyGroup.AssemblyPaths, destinationFolder);
     }
 
-    Information("Uploading to blob " + PLATFORM_PATHS.UploadAssembliesZip);
-    Zip(DOWNLOADED_ASSEMBLIES_FOLDER, PLATFORM_PATHS.UploadAssembliesZip);
+    Information("Uploading to blob " + AssemblyPlatformPaths.UploadAssembliesZip);
+    Zip(DownloadedAssembliesFolder, AssemblyPlatformPaths.UploadAssembliesZip);
     AzureStorage.UploadFileToBlob(new AzureStorageSettings
     {
         AccountName = accountName,
         ContainerName = "sdk",
-        BlobName = PLATFORM_PATHS.UploadAssembliesZip,
+        BlobName = AssemblyPlatformPaths.UploadAssembliesZip,
         Key = apiKey,
         UseHttps = true
-    }, PLATFORM_PATHS.UploadAssembliesZip);
+    }, AssemblyPlatformPaths.UploadAssembliesZip);
 
 }).OnError(HandleError).Finally(()=>RunTarget("RemoveTemporaries"));
 
 // Download assemblies from azure storage
 Task("DownloadAssemblies").Does(()=>
 {
-    Information("Fetching assemblies from url: " + PLATFORM_PATHS.DownloadUrl);
-    CleanDirectory(DOWNLOADED_ASSEMBLIES_FOLDER);
-    DownloadFile(PLATFORM_PATHS.DownloadUrl, PLATFORM_PATHS.DownloadAssembliesZip);
-    Unzip(PLATFORM_PATHS.DownloadAssembliesZip, DOWNLOADED_ASSEMBLIES_FOLDER);
-    DeleteFiles(PLATFORM_PATHS.DownloadAssembliesZip);
+    Information("Fetching assemblies from url: " + AssemblyPlatformPaths.DownloadUrl);
+    CleanDirectory(DownloadedAssembliesFolder);
+    DownloadFile(AssemblyPlatformPaths.DownloadUrl, AssemblyPlatformPaths.DownloadAssembliesZip);
+    Unzip(AssemblyPlatformPaths.DownloadAssembliesZip, DownloadedAssembliesFolder);
+    DeleteFiles(AssemblyPlatformPaths.DownloadAssembliesZip);
     Information("Successfully downloaded assemblies.");
 }).OnError(HandleError);
 
@@ -454,17 +309,18 @@ Task("MergeAssemblies")
 
     // Copy the downloaded files to their proper locations so the structure is as if
     // the downloaded assemblies were built locally (for the nuspecs to work)
-    foreach (var assemblyFolder in PLATFORM_PATHS.DownloadAssemblyFolders)
+    foreach (var downloadGroup in AssemblyPlatformPaths.DownloadAssemblyGroups)
     {
+        var assemblyFolder = downloadGroup.Folder;
         CleanDirectory(assemblyFolder);
-        var files = GetFiles(DOWNLOADED_ASSEMBLIES_FOLDER + "/" + assemblyFolder + "/*");
+        var files = GetFiles(DownloadedAssembliesFolder + "/" + assemblyFolder + "/*");
         CopyFiles(files, assemblyFolder);
     }
 
     // Create NuGet packages
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
-        var specCopyName = TEMPORARY_PREFIX + "spec_copy.nuspec";
+        var specCopyName = Statics.TemporaryPrefix + "spec_copy.nuspec";
 
         // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
         CopyFile("nuget/" + module.MainNuspecFilename, specCopyName);
@@ -504,7 +360,7 @@ Task("RestoreTestPackages").Does(() =>
     NuGetUpdate("./Tests/iOS/packages.config");
     NuGetUpdate("./Tests/Droid/packages.config", new NuGetUpdateSettings {
 
-        // workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-target
+        // workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-Target
         Source = new string[] { EnvironmentVariable("NUGET_URL") }
     });
 }).OnError(HandleError);
@@ -521,7 +377,7 @@ Task("CleanAzureStorage").Does(()=>
         {
             AccountName = accountName,
             ContainerName = "sdk",
-            BlobName = MAC_ASSEMBLIES_ZIP + STORAGE_ID,
+            BlobName = MacAssembliesZip + StorageId,
             Key = apiKey,
             UseHttps = true
         });
@@ -529,7 +385,7 @@ Task("CleanAzureStorage").Does(()=>
         {
             AccountName = accountName,
             ContainerName = "sdk",
-            BlobName = WINDOWS_ASSEMBLIES_ZIP + STORAGE_ID,
+            BlobName = WindowsAssembliesZip + StorageId,
             Key = apiKey,
             UseHttps = true
         });
@@ -540,34 +396,10 @@ Task("CleanAzureStorage").Does(()=>
     }
 }).OnError(HandleError);
 
-// Remove all temporary files and folders
-Task("RemoveTemporaries").Does(()=>
-{
-    DeleteFiles(TEMPORARY_PREFIX + "*");
-    var dirs = GetDirectories(TEMPORARY_PREFIX + "*");
-    foreach (var directory in dirs)
-    {
-        DeleteDirectoryIfExists(directory.ToString());
-    }
-    DeleteFiles("./nuget/*.temp.nuspec");
-});
-
-// Clean up files/directories.
-Task("clean")
-    .IsDependentOn("RemoveTemporaries")
-    .Does(() =>
-{
-    DeleteDirectoryIfExists("externals");
-    DeleteDirectoryIfExists("output");
-    DeleteFiles("./*.nupkg");
-    CleanDirectories("./**/bin");
-    CleanDirectories("./**/obj");
-});
-
 Task("PrepareAssemblyPathsVSTS").Does(()=>
 {
     var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
         var nuspecPath = System.IO.Path.Combine(nuspecPathPrefix, module.MainNuspecFilename);
         ReplaceAssemblyPathsInNuspecs(nuspecPath);
@@ -577,7 +409,7 @@ Task("PrepareAssemblyPathsVSTS").Does(()=>
 Task("NugetPackVSTS").Does(()=>
 {
     var nuspecPathPrefix = EnvironmentVariable("NUSPEC_PATH");
-    foreach (var module in APP_CENTER_MODULES)
+    foreach (var module in AppCenterModules)
     {
         var spec = GetFiles(nuspecPathPrefix + module.MainNuspecFilename);
 
@@ -593,57 +425,22 @@ Task("NugetPackVSTS").Does(()=>
 void ReplaceAssemblyPathsInNuspecs(string nuspecPath)
 {
     // For the Tuples, Item1 is variable name, Item2 is variable value.
-    var assemblyPathVars = new List<Tuple<string, string>> {
-        Tuple.Create("$pcl_dir$", 
-                    EnvironmentVariable("PCL_ASSEMBLY_PATH_NUSPEC", PCL_ASSEMBLIES_FOLDER)),
-        Tuple.Create("$netstandard_dir$",
-                    EnvironmentVariable("NETSTANDARD_ASSEMBLY_PATH_NUSPEC", NETSTANDARD_ASSEMBLIES_FOLDER)),
-        Tuple.Create("$uwp_dir$",
-                    EnvironmentVariable("UWP_ASSEMBLY_PATH_NUSPEC", UWP_ASSEMBLIES_FOLDER)),
-        Tuple.Create("$ios_dir$",
-                    EnvironmentVariable("IOS_ASSEMBLY_PATH_NUSPEC", IOS_ASSEMBLIES_FOLDER)),
-        Tuple.Create("$android_dir$",
-                    EnvironmentVariable("ANDROID_ASSEMBLY_PATH_NUSPEC", ANDROID_ASSEMBLIES_FOLDER)),
-        Tuple.Create("$windows_desktop_dir$",
-                    EnvironmentVariable("WINDOWS_DESKTOP_ASSEMBLY_PATH_NUSPEC", WINDOWS_DESKTOP_ASSEMBLIES_FOLDER))
-    };
+    var assemblyPathVars = new List<Tuple<string, string>>();
+    foreach (var group in AssemblyPlatformPaths.UploadAssemblyGroups)
+    {
+        if (group.NuspecKey == null)
+        {
+            continue;
+        }
+        var environmentVariableName = group.Id.ToUpper() + "_ASSEMBLY_PATH_NUSPEC";
+        var tuple = Tuple.Create(group.NuspecKey,
+                    EnvironmentVariable(environmentVariableName, group.AssemblyFolder));
+        assemblyPathVars.Add(tuple);
+    }
     foreach (var assemblyPathVar in assemblyPathVars)
     {
         ReplaceTextInFiles(nuspecPath, assemblyPathVar.Item1, assemblyPathVar.Item2);
     }
 }
 
-// Copy files to a clean directory using string names instead of FilePath[] and DirectoryPath
-void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = true)
-{
-    if (clean)
-    {
-        CleanDirectory(targetDirectory);
-    }
-    foreach (var file in files)
-    {
-        CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
-    }
-}
-
-void DeleteDirectoryIfExists(string directoryName)
-{
-    if (DirectoryExists(directoryName))
-    {
-        DeleteDirectory(directoryName, new DeleteDirectorySettings { Force = true, Recursive = true });
-    }
-}
-
-void CleanDirectory(string directoryName)
-{
-    DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
-}
-
-void HandleError(Exception exception)
-{
-    RunTarget("clean");
-    throw exception;
-}
-
-RunTarget(TARGET);
+RunTarget(Target);
