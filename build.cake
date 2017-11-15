@@ -4,8 +4,8 @@
 #addin nuget:?package=Cake.Incubator
 #addin nuget:?package=Cake.Xamarin
 #addin "Cake.AzureStorage"
-#load "utility.cake"
-#load "assembly-group.cake"
+#load "scripts/utility.cake"
+#load "scripts/assembly-group.cake"
 
 using System.Net;
 using System.Text;
@@ -81,7 +81,7 @@ var Target = Argument("Target", Argument("t", "Default"));
 // Storage id to append to upload and download file names in storage
 var StorageId = Argument("StorageId", Argument("storage-id", ""));
 
-var ConfigFile = "ac_build_config.xml";
+var ConfigFile = "scripts/ac_build_config.xml";
 
 // Prepare the platform paths for downloading, uploading, and preparing assemblies
 Setup(context =>
@@ -434,7 +434,7 @@ void ReplaceAssemblyPathsInNuspecs(string nuspecPath)
         }
         var environmentVariableName = group.Id.ToUpper() + "_ASSEMBLY_PATH_NUSPEC";
         var tuple = Tuple.Create(group.NuspecKey,
-                    EnvironmentVariable(environmentVariableName, group.AssemblyFolder));
+                    EnvironmentVariable(environmentVariableName, group.Folder));
         assemblyPathVars.Add(tuple);
     }
     foreach (var assemblyPathVar in assemblyPathVars)

@@ -1,4 +1,5 @@
 #addin "nuget:?package=System.Xml.ReaderWriter"
+
 using System.Xml;
 using System.Collections.Generic;
 
@@ -79,7 +80,7 @@ public class AssemblyGroup
     public bool Download { get; set; }
     private AssemblyGroup(XmlNode groupNode, AssemblyGroup parent = null)
     {
-        string downloadString = Statics.Context.IsRunningOnUnix() ? "downloadWindows" : "downloadMac";
+        string downloadString = Statics.Context.IsRunningOnUnix() ? "downloadMac" : "downloadWindows";
         AssemblyPaths = new List<string>();
         Subgroups = new List<AssemblyGroup>();
         Id = groupNode.Attributes.GetNamedItem("id").Value;
@@ -87,7 +88,7 @@ public class AssemblyGroup
         var downloadValue = groupNode.Attributes.GetNamedItem(downloadString)?.Value;
         if (downloadValue != null)
         {
-            Download = downloadValue == "true";
+            Download = (downloadValue == "true");
         }
         else if (parent != null)
         {
@@ -95,8 +96,7 @@ public class AssemblyGroup
         }
         string parentFolder = parent?.Folder ?? string.Empty;
         Folder = groupNode.Attributes.GetNamedItem("folder")?.Value ?? string.Empty;
-        Folder = System.IO.Path.Combine(parentFolder, Folder);
-        
+        Folder = Statics.TemporaryPrefix + System.IO.Path.Combine(parentFolder, Folder);
         for (int i = 0; i < groupNode.ChildNodes.Count; ++i)
         {
             var childNode = groupNode.ChildNodes.Item(i);
