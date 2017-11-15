@@ -55,7 +55,7 @@ var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
 
 // Native SDK versions
 var ANDROID_SDK_VERSION = "1.0.0";
-var IOS_SDK_VERSION = "1.0.0-8+565a6d428ff4cf54659f343c8ba7285e626867b5";
+var IOS_SDK_VERSION = "1.0.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
 
