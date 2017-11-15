@@ -3,7 +3,7 @@
     <TableView Intent="Form">
         <TableSection>
             <ViewCell>
-                <Button AutomationId="{x:Static local:TestStrings.EnableMobileCenterButton}" Text="Enable Mobile Center" Clicked="EnableMobileCenter" />
+                <Button AutomationId="{x:Static local:TestStrings.EnableAppCenterButton}" Text="Enable App Center" Clicked="EnableAppCenter" />
             </ViewCell>
             <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.EnableCrashesButton}" Text="Enable Crashes" Clicked="EnableCrashes" />
@@ -12,7 +12,7 @@
                 <Button AutomationId="{x:Static local:TestStrings.EnableAnalyticsButton}" Text="Enable Analytics" Clicked="EnableAnalytics" />
             </ViewCell>
             <ViewCell>
-                <Button AutomationId="{x:Static local:TestStrings.DisableMobileCenterButton}" Text="Disable Mobile Center" Clicked="DisableMobileCenter" />
+                <Button AutomationId="{x:Static local:TestStrings.DisableAppCenterButton}" Text="Disable App Center" Clicked="DisableAppCenter" />
             </ViewCell>
             <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.DisableCrashesButton}" Text="Disable Crashes" Clicked="DisableCrashes" />
@@ -21,7 +21,7 @@
                 <Button AutomationId="{x:Static local:TestStrings.DisableAnalyticsButton}" Text="Disable Analytics" Clicked="DisableAnalytics" />
             </ViewCell>
             <ViewCell>
-                <Label AutomationId="{x:Static local:TestStrings.MobileCenterEnabledLabel}" x:Name="MobileCenterEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Label AutomationId="{x:Static local:TestStrings.AppCenterEnabledLabel}" x:Name="AppCenterEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
             </ViewCell>
             <ViewCell>
                 <Label AutomationId="{x:Static local:TestStrings.CrashesEnabledLabel}" x:Name="CrashesEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
@@ -29,9 +29,9 @@
             <ViewCell>
                 <Label AutomationId="{x:Static local:TestStrings.AnalyticsEnabledLabel}" x:Name="AnalyticsEnabledLabel" VerticalOptions="Center" HorizontalOptions="Center"/>
             </ViewCell>
-			<ViewCell>
+            <ViewCell>
                 <Button AutomationId="{x:Static local:TestStrings.DismissButton}" Text="Dismiss Page" TextColor="Red" Clicked="DismissPage" />
             </ViewCell>
-	    </TableSection>
+        </TableSection>
     </TableView>
 </ContentPage>

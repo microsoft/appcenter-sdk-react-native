@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.AppCenter.Crashes</id>
+    <title>App Center Crashes</title>
+    <authors>Microsoft</authors>
+    <owners>microsoft,appcenter</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center Crashes package provides crash reporting capabilities for your mobile applications.</summary>
+    <description>This package contains functionalities to collect crash reports for your application.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter crashes mobilecenter</tags>
+    <language>en-US</language>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.AppCenter" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+
+    <!-- WinForms -->
+    <!-- TODO: Uncomment when it's time to release these. -->
+    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net452" /-->
+
+    <!-- UWP -->
+    <!-- targets files add correct references to proper platforms -->
+    <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.targets" target="build/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="ref/uap10.0" />
+    
+    <!--x86 -->
+    <file src="$uwp_dir$/x86/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
+    <file src="$uwp_dir$/x86/WatsonRegistrationUtility.dll" target="runtimes/win10-x86/native"/>
+    <file src="$uwp_dir$/x86/WatsonRegistrationUtility.winmd" target="runtimes/win10-x86/lib/uap10.0" />
+
+    <!-- x64 -->
+    <file src="$uwp_dir$/x64/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-x64/lib/uap10.0" />
+    <file src="$uwp_dir$/x64/WatsonRegistrationUtility.dll" target="runtimes/win10-x64/native"/>
+    <file src="$uwp_dir$/x64/WatsonRegistrationUtility.winmd" target="runtimes/win10-x64/lib/uap10.0" />
+
+    <!-- ARM -->
+    <file src="$uwp_dir$/ARM/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-arm/lib/uap10.0" />
+    <file src="$uwp_dir$/ARM/WatsonRegistrationUtility.dll" target="runtimes/win10-arm/native"/>
+    <file src="$uwp_dir$/ARM/WatsonRegistrationUtility.winmd" target="runtimes/win10-arm/lib/uap10.0" />
+
+  </files>
+</package>

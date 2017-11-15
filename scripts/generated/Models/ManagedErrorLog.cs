@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
     using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
@@ -15,7 +13,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
     /// <summary>
     /// Error log for managed platforms (such as Android Dalvik/ART).
     /// </summary>
-    [JsonObject("managed_error")]
+    [JsonObject("managedError")]
     public partial class ManagedErrorLog : AbstractErrorLog
     {
         /// <summary>
@@ -26,18 +24,17 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the ManagedErrorLog class.
         /// </summary>
-        /// <param name="toffset">Corresponds to the number of milliseconds
-        /// elapsed between the time the request is sent and the time the log
-        /// is emitted.</param>
         /// <param name="id">Error identifier.</param>
         /// <param name="processId">Process identifier.</param>
         /// <param name="processName">Process name.</param>
         /// <param name="fatal">If true, this error report is an application
-        /// crash.</param>
-        /// <param name="appLaunchToffset">Corresponds to the number of
-        /// milliseconds elapsed between the time the error occurred and the
-        /// app was launched.</param>
+        /// crash.
+        /// Corresponds to the number of milliseconds elapsed between the time
+        /// the error occurred and the app was launched.</param>
         /// <param name="exception">Exception associated to the error.</param>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="sid">When tracking an analytics session, logs can be
         /// part of the session by specifying this identifier.
         /// This attribute is optional, a missing value means the session
@@ -50,14 +47,16 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <param name="parentProcessName">Parent's process name.</param>
         /// <param name="errorThreadId">Error thread identifier.</param>
         /// <param name="errorThreadName">Error thread name.</param>
-        /// <param name="errorAttachment">Error attachment.</param>
+        /// <param name="appLaunchTimestamp">Timestamp when the app was
+        /// launched, example: '2017-03-13T18:05:42Z'.
+        /// </param>
         /// <param name="architecture">CPU architecture.</param>
         /// <param name="buildId">Unique ID for a Xamarin build or another
         /// similar technology.</param>
         /// <param name="threads">Thread stack frames associated to the
         /// error.</param>
-        public ManagedErrorLog(long toffset, Device device, System.Guid id, int processId, string processName, bool fatal, long appLaunchToffset, Exception exception, System.Guid? sid = default(System.Guid?), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), ErrorAttachment errorAttachment = default(ErrorAttachment), string architecture = default(string), string buildId = default(string), IList<Thread> threads = default(IList<Thread>))
-            : base(toffset, device, id, processId, processName, fatal, appLaunchToffset, sid, parentProcessId, parentProcessName, errorThreadId, errorThreadName, errorAttachment, architecture)
+        public ManagedErrorLog(Device device, System.Guid id, int processId, string processName, bool fatal, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string), string buildId = default(string), IList<Thread> threads = default(IList<Thread>))
+            : base(device, id, processId, processName, fatal, timestamp, sid, parentProcessId, parentProcessName, errorThreadId, errorThreadName, appLaunchTimestamp, architecture)
         {
             BuildId = buildId;
             Exception = exception;
@@ -68,7 +67,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// Gets or sets unique ID for a Xamarin build or another similar
         /// technology.
         /// </summary>
-        [JsonProperty(PropertyName = "build_id")]
+        [JsonProperty(PropertyName = "buildId")]
         public string BuildId { get; set; }
 
         /// <summary>

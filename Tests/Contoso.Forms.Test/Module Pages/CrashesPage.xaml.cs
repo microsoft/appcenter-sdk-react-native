@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter.Crashes;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.IO;

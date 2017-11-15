@@ -1,7 +1,7 @@
 ﻿using Xamarin.Forms;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Contoso.Forms.Test
 {
@@ -19,9 +19,9 @@ namespace Contoso.Forms.Test
             Crashes.SentErrorReport += testPage.ResultsPage.SentErrorReport;
             Crashes.FailedToSendErrorReport += testPage.ResultsPage.FailedToSendErrorReport;
 
-            /* Start Mobile Center */
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenter.Start(typeof(Analytics), typeof(Crashes));
+            /* Start App Center */
+            AppCenter.LogLevel = LogLevel.Verbose;
+            AppCenter.Start(typeof(Analytics), typeof(Crashes));
             MainPage = testPage;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -37,7 +37,7 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             EnabledSwitchCell.On = await Analytics.IsEnabledAsync();
-            EnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            EnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
         }
 
         void AddProperty(object sender, EventArgs e)

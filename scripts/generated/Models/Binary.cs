@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 
-namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
+namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Azure;
-    using Microsoft.Azure.Mobile;
-    using Microsoft.Azure.Mobile.UWP;
-    using Microsoft.Azure.Mobile.UWP.Ingestion;
+    using Microsoft.AppCenter;
+    using Microsoft.AppCenter.Ingestion;
     using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Linq;
@@ -27,7 +25,7 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// architecture.</param>
         /// <param name="architectureVariantId">CPU architecture
         /// variant.</param>
-        public Binary(System.Guid id, string startAddress, string endAddress, string name, string path, string architecture = default(string), int? primaryArchitectureId = default(int?), int? architectureVariantId = default(int?))
+        public Binary(System.Guid id, string startAddress, string endAddress, string name, string path, string architecture = default(string), long? primaryArchitectureId = default(long?), long? architectureVariantId = default(long?))
         {
             Id = id;
             StartAddress = startAddress;
@@ -46,12 +44,12 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "start_address")]
+        [JsonProperty(PropertyName = "startAddress")]
         public string StartAddress { get; set; }
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "end_address")]
+        [JsonProperty(PropertyName = "endAddress")]
         public string EndAddress { get; set; }
 
         /// <summary>
@@ -72,14 +70,14 @@ namespace Microsoft.Azure.Mobile.UWP.Ingestion.Models
         /// <summary>
         /// Gets or sets CPU primary architecture.
         /// </summary>
-        [JsonProperty(PropertyName = "primary_architecture_id")]
-        public int? PrimaryArchitectureId { get; set; }
+        [JsonProperty(PropertyName = "primaryArchitectureId")]
+        public long? PrimaryArchitectureId { get; set; }
 
         /// <summary>
         /// Gets or sets CPU architecture variant.
         /// </summary>
-        [JsonProperty(PropertyName = "architecture_variant_id")]
-        public int? ArchitectureVariantId { get; set; }
+        [JsonProperty(PropertyName = "architectureVariantId")]
+        public long? ArchitectureVariantId { get; set; }
 
         /// <summary>
         /// Validate the object.

@@ -4,10 +4,10 @@ using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Support.V7.App;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Distribute;
 
 namespace Contoso.Android.Puppet
 {
@@ -16,7 +16,7 @@ namespace Contoso.Android.Puppet
     [Activity(Label = "SXPuppet", Icon = "@drawable/icon", Theme = "@style/PuppetTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : AppCompatActivity
     {
-        const string LogTag = "MobileCenterXamarinPuppet";
+        const string LogTag = "AppCenterXamarinPuppet";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -33,11 +33,11 @@ namespace Contoso.Android.Puppet
             var tabLayout = FindViewById(Resource.Id.tablayout) as TabLayout;
             tabLayout.SetupWithViewPager(viewPager);
 
-            // Mobile Center integration
-            MobileCenterLog.Assert(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
-            MobileCenter.LogLevel = LogLevel.Verbose;
-            MobileCenterLog.Info(LogTag, "MobileCenter.LogLevel=" + MobileCenter.LogLevel);
-            MobileCenterLog.Info(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
+            // App Center integration
+            AppCenterLog.Assert(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
+            AppCenter.LogLevel = LogLevel.Verbose;
+            AppCenterLog.Info(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
+            AppCenterLog.Info(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
             // Set event handlers
             Crashes.SendingErrorReport += SendingErrorReportHandler;
@@ -50,34 +50,34 @@ namespace Contoso.Android.Puppet
 
             Distribute.ReleaseAvailable = OnReleaseAvailable;
 
-            MobileCenterLog.Assert(LogTag, "MobileCenter.Configured=" + MobileCenter.Configured);
-            MobileCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
+            AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            MobileCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes), typeof(Distribute));
+            AppCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes), typeof(Distribute));
 
-            MobileCenter.IsEnabledAsync().ContinueWith(enabled =>
+            AppCenter.IsEnabledAsync().ContinueWith(enabled =>
             {
-                MobileCenterLog.Info(LogTag, "MobileCenter.Enabled=" + enabled.Result);
+                AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
             });
-            MobileCenter.GetInstallIdAsync().ContinueWith(installId =>
+            AppCenter.GetInstallIdAsync().ContinueWith(installId =>
             {
-                MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + installId.Result);
+                AppCenterLog.Info(LogTag, "AppCenter.InstallId=" + installId.Result);
             });
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
-                MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
+                AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
-                MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable);
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable);
             });
         }
 
         void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
-            MobileCenterLog.Info(LogTag, "Sending error report");
+            AppCenterLog.Info(LogTag, "Sending error report");
 
             var args = e as SendingErrorReportEventArgs;
             ErrorReport report = args.Report;
@@ -85,17 +85,17 @@ namespace Contoso.Android.Puppet
             //test some values
             if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.Exception.ToString());
+                AppCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
-                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
             }
         }
 
         void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
-            MobileCenterLog.Info(LogTag, "Sent error report");
+            AppCenterLog.Info(LogTag, "Sent error report");
 
             var args = e as SentErrorReportEventArgs;
             ErrorReport report = args.Report;
@@ -103,22 +103,22 @@ namespace Contoso.Android.Puppet
             //test some values
             if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.Exception.ToString());
+                AppCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else
             {
-                MobileCenterLog.Info(LogTag, "No system exception was found");
+                AppCenterLog.Info(LogTag, "No system exception was found");
             }
 
             if (report.AndroidDetails != null)
             {
-                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
             }
         }
 
         void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
-            MobileCenterLog.Info(LogTag, "Failed to send error report");
+            AppCenterLog.Info(LogTag, "Failed to send error report");
 
             var args = e as FailedToSendErrorReportEventArgs;
             ErrorReport report = args.Report;
@@ -126,22 +126,22 @@ namespace Contoso.Android.Puppet
             //test some values
             if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.Exception.ToString());
+                AppCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
-                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
             }
 
             if (e.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, "There is an exception associated with the failure");
+                AppCenterLog.Info(LogTag, "There is an exception associated with the failure");
             }
         }
 
         bool ShouldProcess(ErrorReport report)
         {
-            MobileCenterLog.Info(LogTag, "Determining whether to process error report");
+            AppCenterLog.Info(LogTag, "Determining whether to process error report");
             return true;
         }
 
@@ -168,7 +168,7 @@ namespace Contoso.Android.Puppet
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)
         {
-            MobileCenterLog.Info(LogTag, "OnReleaseAvailable id=" + releaseDetails.Id
+            AppCenterLog.Info(LogTag, "OnReleaseAvailable id=" + releaseDetails.Id
                                             + " version=" + releaseDetails.Version
                                             + " releaseNotesUrl=" + releaseDetails.ReleaseNotesUrl);
             var custom = releaseDetails.ReleaseNotes?.ToLowerInvariant().Contains("custom") ?? false;
@@ -177,14 +177,14 @@ namespace Contoso.Android.Puppet
                 var builder = new AlertDialog.Builder(this);
                 builder.SetTitle(string.Format(GetString(Resource.String.version_x_available), releaseDetails.ShortVersion));
                 builder.SetMessage(releaseDetails.ReleaseNotes);
-                builder.SetPositiveButton(Microsoft.Azure.Mobile.Distribute.Resource.String.mobile_center_distribute_update_dialog_download, delegate
+                builder.SetPositiveButton(Microsoft.AppCenter.Distribute.Resource.String.appcenter_distribute_update_dialog_download, delegate
                 {
                     Distribute.NotifyUpdateAction(UpdateAction.Update);
                 });
                 builder.SetCancelable(false);
                 if (!releaseDetails.MandatoryUpdate)
                 {
-                    builder.SetNegativeButton(Microsoft.Azure.Mobile.Distribute.Resource.String.mobile_center_distribute_update_dialog_postpone, delegate
+                    builder.SetNegativeButton(Microsoft.AppCenter.Distribute.Resource.String.appcenter_distribute_update_dialog_postpone, delegate
                     {
                         Distribute.NotifyUpdateAction(UpdateAction.Postpone);
                     });

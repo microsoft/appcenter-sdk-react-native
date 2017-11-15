@@ -5,8 +5,8 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 
 namespace Contoso.Android.Puppet
 {
@@ -52,7 +52,7 @@ namespace Contoso.Android.Puppet
             AnalyticsEnabledSwitch.CheckedChange -= UpdateEnabled;
             AnalyticsEnabledSwitch.Enabled = true;
             AnalyticsEnabledSwitch.Checked = await Analytics.IsEnabledAsync();
-            AnalyticsEnabledSwitch.Enabled = await MobileCenter.IsEnabledAsync();
+            AnalyticsEnabledSwitch.Enabled = await AppCenter.IsEnabledAsync();
             AnalyticsEnabledSwitch.CheckedChange += UpdateEnabled;
             PropertiesCountLabel.Text = mEventProperties.Count.ToString();
         }

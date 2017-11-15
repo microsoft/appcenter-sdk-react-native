@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -30,7 +30,7 @@ namespace Contoso.Forms.Demo
             {
                 (customProperty as CustomPropertyView).AddCustomProperty(customProperties);
             }
-            MobileCenter.SetCustomProperties(customProperties);
+            AppCenter.SetCustomProperties(customProperties);
         }
     }
 }

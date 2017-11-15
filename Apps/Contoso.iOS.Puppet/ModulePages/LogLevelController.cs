@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Foundation;
-using Microsoft.Azure.Mobile;
+using Microsoft.AppCenter;
 using UIKit;
 
 namespace Contoso.iOS.Puppet

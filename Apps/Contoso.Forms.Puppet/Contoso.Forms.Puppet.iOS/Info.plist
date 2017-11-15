@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.microsoft.azure.mobile.xamarin.forms.puppet</string>
+	<string>com.microsoft.appcenter.xamarin.forms.puppet</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.17.2</string>
+	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>0.17.2</string>
+	<string>1.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -39,17 +39,17 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleName</key>
-	<string>MCFPuppet</string>
+	<string>ACFPuppet</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
 			<key>CFBundleURLName</key>
-			<string>com.microsoft.azure.mobile.xamarin.forms.puppet</string>
+			<string>com.microsoft.appcenter.xamarin.forms.puppet</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>mobilecenter-b889c4f2-9ac2-4e2e-ae16-dae54f2c5899</string>
+				<string>appcenter-b889c4f2-9ac2-4e2e-ae16-dae54f2c5899</string>
 			</array>
 		</dict>
 	</array>
@@ -70,6 +70,7 @@
 		<string>tr-TR</string>
 		<string>zh-CN</string>
 		<string>zh-TW</string>
+		<string>en-US</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

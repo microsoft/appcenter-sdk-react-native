@@ -2,18 +2,18 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Distribute;
-using Microsoft.Azure.Mobile.Push;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Distribute;
+using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
     public partial class App : Application
     {
-        const string LogTag = "MobileCenterXamarinDemo";
+        const string LogTag = "AppCenterXamarinDemo";
 
         const string uwpKey = "5bce20c8-f00b-49ca-8580-7a49d5705d4c";
         const string androidKey = "987b5941-4fac-4968-933e-98a7ff29237c";
@@ -35,25 +35,25 @@ namespace Contoso.Forms.Demo
 
         protected override void OnStart()
         {
-            MobileCenter.LogLevel = LogLevel.Verbose;
+            AppCenter.LogLevel = LogLevel.Verbose;
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             Crashes.GetErrorAttachments = GetErrorAttachments;
             Distribute.ReleaseAvailable = OnReleaseAvailable;
-            MobileCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
+            AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 
-            MobileCenter.GetInstallIdAsync().ContinueWith(installId =>
+            AppCenter.GetInstallIdAsync().ContinueWith(installId =>
             {
-                MobileCenterLog.Info(LogTag, "MobileCenter.InstallId=" + installId.Result);
+                AppCenterLog.Info(LogTag, "AppCenter.InstallId=" + installId.Result);
             });
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
-                MobileCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
+                AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                MobileCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
             });
         }
 
@@ -82,7 +82,7 @@ namespace Contoso.Forms.Demo
 
         static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
-            MobileCenterLog.Info(LogTag, "Sending error report");
+            AppCenterLog.Info(LogTag, "Sending error report");
 
             var args = e as SendingErrorReportEventArgs;
             ErrorReport report = args.Report;
@@ -90,17 +90,17 @@ namespace Contoso.Forms.Demo
             //test some values
             if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.Exception.ToString());
+                AppCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
-                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
             }
         }
 
         static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
-            MobileCenterLog.Info(LogTag, "Sent error report");
+            AppCenterLog.Info(LogTag, "Sent error report");
 
             var args = e as SentErrorReportEventArgs;
             ErrorReport report = args.Report;
@@ -108,22 +108,22 @@ namespace Contoso.Forms.Demo
             //test some values
             if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.Exception.ToString());
+                AppCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else
             {
-                MobileCenterLog.Info(LogTag, "No system exception was found");
+                AppCenterLog.Info(LogTag, "No system exception was found");
             }
 
             if (report.AndroidDetails != null)
             {
-                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
             }
         }
 
         static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
-            MobileCenterLog.Info(LogTag, "Failed to send error report");
+            AppCenterLog.Info(LogTag, "Failed to send error report");
 
             var args = e as FailedToSendErrorReportEventArgs;
             ErrorReport report = args.Report;
@@ -131,22 +131,22 @@ namespace Contoso.Forms.Demo
             //test some values
             if (report.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, report.Exception.ToString());
+                AppCenterLog.Info(LogTag, report.Exception.ToString());
             }
             else if (report.AndroidDetails != null)
             {
-                MobileCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
+                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
             }
 
             if (e.Exception != null)
             {
-                MobileCenterLog.Info(LogTag, "There is an exception associated with the failure");
+                AppCenterLog.Info(LogTag, "There is an exception associated with the failure");
             }
         }
 
         bool ShouldProcess(ErrorReport report)
         {
-            MobileCenterLog.Info(LogTag, "Determining whether to process error report");
+            AppCenterLog.Info(LogTag, "Determining whether to process error report");
             return true;
         }
 
@@ -170,7 +170,7 @@ namespace Contoso.Forms.Demo
                     {
                         userConfirmationSelection = UserConfirmation.DontSend;
                     }
-                    MobileCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
+                    AppCenterLog.Debug(LogTag, "User selected confirmation option: \"" + answer + "\"");
                     Crashes.NotifyUserConfirmation(userConfirmationSelection);
                 });
             });
@@ -189,7 +189,7 @@ namespace Contoso.Forms.Demo
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)
         {
-            MobileCenterLog.Info("MobileCenterDemo", "OnReleaseAvailable id=" + releaseDetails.Id
+            AppCenterLog.Info("AppCenterDemo", "OnReleaseAvailable id=" + releaseDetails.Id
                                             + " version=" + releaseDetails.Version
                                             + " releaseNotesUrl=" + releaseDetails.ReleaseNotesUrl);
             var custom = releaseDetails.ReleaseNotes?.ToLowerInvariant().Contains("custom") ?? false;

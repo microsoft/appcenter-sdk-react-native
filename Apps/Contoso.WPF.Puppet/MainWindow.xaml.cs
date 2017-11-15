@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Analytics;
-
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 
 namespace Contoso.WPF.Puppet
 {
@@ -15,11 +14,11 @@ namespace Contoso.WPF.Puppet
     public partial class MainWindow : Window
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, MobileCenterLog.Verbose },
-            { LogLevel.Debug, MobileCenterLog.Debug },
-            { LogLevel.Info, MobileCenterLog.Info },
-            { LogLevel.Warn, MobileCenterLog.Warn },
-            { LogLevel.Error, MobileCenterLog.Error }
+            { LogLevel.Verbose, AppCenterLog.Verbose },
+            { LogLevel.Debug, AppCenterLog.Debug },
+            { LogLevel.Info, AppCenterLog.Info },
+            { LogLevel.Warn, AppCenterLog.Warn },
+            { LogLevel.Error, AppCenterLog.Error }
         };
 
         public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
@@ -28,22 +27,22 @@ namespace Contoso.WPF.Puppet
         {
             InitializeComponent();
             UpdateState();
-            mobileCenterLogLevel.SelectedIndex = (int) MobileCenter.LogLevel;
+            appCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
             eventProperties.ItemsSource = Properties;
         }
 
 
         private void UpdateState()
         {
-            mobileCenterEnabled.IsChecked = MobileCenter.IsEnabledAsync().Result;
+            appCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
             analyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
-        private void mobileCenterEnabled_Checked(object sender, RoutedEventArgs e)
+        private void appCenterEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (mobileCenterEnabled.IsChecked.HasValue)
+            if (appCenterEnabled.IsChecked.HasValue)
             {
-                MobileCenter.SetEnabledAsync(mobileCenterEnabled.IsChecked.Value).Wait();
+                AppCenter.SetEnabledAsync(appCenterEnabled.IsChecked.Value).Wait();
             }
         }
 
@@ -56,9 +55,9 @@ namespace Contoso.WPF.Puppet
         }
 
 
-        private void mobileCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
+        private void appCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            MobileCenter.LogLevel = (LogLevel) mobileCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel) appCenterLogLevel.SelectedIndex;
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

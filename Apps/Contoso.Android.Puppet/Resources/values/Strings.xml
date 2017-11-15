@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="ApplicationName">Mobile Center Puppet</string>
-	<string name="MobileCenterTitle">Mobile Center</string>
+	<string name="ApplicationName">App Center Puppet</string>
+	<string name="AppCenterTitle">App Center</string>
 	<string name="AnalyticsTitle">Analytics</string>
 	<string name="CrashesTitle">Crashes</string>
 	<string name="DistributeTitle">Distribute</string>
-	<string name="MobileCenterEnabled">Mobile Center Enabled</string>
-	<string name="MobileCenterLogLevel">Log Level</string>
-	<string name="MobileCenterLogMessage">Log Message</string>
-	<string name="MobileCenterLogTag">Log Tag</string>
-	<string name="MobileCenterWriteLog">Write Log</string>
+	<string name="AppCenterEnabled">App Center Enabled</string>
+	<string name="AppCenterLogLevel">Log Level</string>
+	<string name="AppCenterLogMessage">Log Message</string>
+	<string name="AppCenterLogTag">Log Tag</string>
+	<string name="AppCenterWriteLog">Write Log</string>
 	<string name="AnalyticsEnabled">Analytics Enabled</string>
 	<string name="AnalyticsEventName">Event Name</string>
 	<string name="AnalyticsProperties">Properties</string>

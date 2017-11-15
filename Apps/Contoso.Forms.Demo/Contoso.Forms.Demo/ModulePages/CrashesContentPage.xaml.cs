@@ -2,8 +2,8 @@
 
 using System;
 using System.IO;
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -24,7 +24,7 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
-            CrashesEnabledSwitchCell.IsEnabled = await MobileCenter.IsEnabledAsync();
+            CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
         }
 
         void TestCrash(object sender, EventArgs e)

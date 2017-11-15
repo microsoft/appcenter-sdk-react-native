@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Xamarin.Forms.2.4.0.38779\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\..\packages\Xamarin.Forms.2.4.0.38779\build\netstandard1.0\Xamarin.Forms.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -85,42 +86,43 @@
     </MtouchSdkVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Calabash, Version=21.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>../../packages/Xamarin.TestCloud.Agent.0.21.2/lib/Xamarin.iOS/Calabash.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Calabash">
-      <HintPath>..\..\packages\Xamarin.TestCloud.Agent.0.20.3\lib\Xamarin.iOS10\Calabash.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.38779\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.38779\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform.iOS">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.38779\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.38779\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.17.0-r0008-6425185\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter">
+      <HintPath>..\..\packages\Microsoft.AppCenter.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.0.17.0-r0008-6425185\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.iOS.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.iOS.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.17.0-r0008-6425185\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Analytics">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Analytics.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Analytics.0.17.0-r0008-6425185\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Analytics.iOS.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Analytics.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.iOS.Bindings.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.17.0-r0008-6425185\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Crashes">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Crashes.iOS.Bindings">
-      <HintPath>..\..\packages\Microsoft.Azure.Mobile.Crashes.0.17.0-r0008-6425185\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Crashes.iOS.Bindings.dll</HintPath>
+    <Reference Include="Microsoft.AppCenter.Crashes.iOS.Bindings">
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.1.0.0-r0009-e3e7467\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.iOS.Bindings.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -161,5 +163,5 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
   </Target>
-  <Import Project="..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+  <Import Project="..\..\packages\Xamarin.Forms.2.4.0.38779\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.4.0.38779\build\netstandard1.0\Xamarin.Forms.targets')" />
 </Project>

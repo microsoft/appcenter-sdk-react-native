@@ -18,7 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Contoso.Forms.Puppet.UWP_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>8CF9E8BCB32DFE1C33B66818DEEB7AC03A0153B9</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>B4E648DE586B36BD605D06F42FA0BBAEA7DFD498</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -134,25 +134,25 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterAnalytics\Microsoft.Azure.Mobile.Analytics.UWP\Microsoft.Azure.Mobile.Analytics.UWP.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.UWP\Microsoft.AppCenter.Analytics.UWP.csproj">
       <Project>{200073bf-fa7e-42af-8ed5-aa50be7c0295}</Project>
-      <Name>Microsoft.Azure.Mobile.Analytics.UWP</Name>
+      <Name>Microsoft.AppCenter.Analytics.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterCrashes\Microsoft.Azure.Mobile.Crashes.UWP\Microsoft.Azure.Mobile.Crashes.UWP.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.UWP\Microsoft.AppCenter.Crashes.UWP.csproj">
       <Project>{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}</Project>
-      <Name>Microsoft.Azure.Mobile.Crashes.UWP</Name>
+      <Name>Microsoft.AppCenter.Crashes.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterPush\Microsoft.Azure.Mobile.Push.UWP\Microsoft.Azure.Mobile.Push.UWP.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.UWP\Microsoft.AppCenter.Push.UWP.csproj">
       <Project>{8072449c-c6a8-4b36-87dc-173f295d161c}</Project>
-      <Name>Microsoft.Azure.Mobile.Push.UWP</Name>
+      <Name>Microsoft.AppCenter.Push.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenterRum\Microsoft.Azure.Mobile.Rum.UWP\Microsoft.Azure.Mobile.Rum.UWP.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.UWP\Microsoft.AppCenter.Rum.UWP.csproj">
       <Project>{bcd888d1-a62f-458c-a72b-9df731ee1a55}</Project>
-      <Name>Microsoft.Azure.Mobile.Rum.UWP</Name>
+      <Name>Microsoft.AppCenter.Rum.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\MobileCenter\Microsoft.Azure.Mobile.UWP\Microsoft.Azure.Mobile.UWP.csproj">
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
-      <Name>Microsoft.Azure.Mobile.UWP</Name>
+      <Name>Microsoft.AppCenter.UWP</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
       <Project>{92313c69-3bc4-4276-a1c8-100c86183f12}</Project>
