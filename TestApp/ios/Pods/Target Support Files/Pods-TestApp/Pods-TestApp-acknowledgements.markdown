@@ -1,9 +1,9 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
-## MobileCenter
+## AppCenter
 
-Microsoft Mobile Center SDK for iOS
+Visual Studio App Center SDK for Apple platforms
 
 Copyright (c) Microsoft Corporation
 

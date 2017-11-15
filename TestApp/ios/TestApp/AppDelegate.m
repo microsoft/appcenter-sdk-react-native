@@ -8,31 +8,31 @@
  */
 
 #import "AppDelegate.h"
-#import <RNMobileCenter/RNMobileCenter.h>
-#import <RNPush/RNPush.h>
-#import <RNAnalytics/RNAnalytics.h>
-#import <RNCrashes/RNCrashes.h>
+#import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
+#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-@import MobileCenter;
+@import AppCenter;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
-  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  [MSAppCenter setLogLevel: MSLogLevelVerbose];
+  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
   
   NSURL *jsCodeLocation;
 
-  [RNPush register];  // Initialize Mobile Center push
+  [AppCenterReactNativePush register];  // Initialize AppCenter push
 
-  [RNCrashes register];  // Initialize Mobile Center crashes
+  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
 
-  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
 
-  [RNMobileCenter register];  // Initialize Mobile Center 
+  [AppCenterReactNative register];  // Initialize AppCenter 
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
