@@ -1,6 +1,4 @@
-# source 'git@github.com:Microsoft/mobile-center-sdk-specs.git'
-# source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git' # TODO: comment out before release
-source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private'
+# source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git'
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -9,9 +7,9 @@ target 'TestApp' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'AppCenter/Crashes', '~> 1.0.0-4'
-  pod 'AppCenter/Analytics', '~> 1.0.0-4'
-  pod 'AppCenter/Push', '~> 1.0.0-4'
+  pod 'AppCenter/Crashes', '~> 1.0.0'
+  pod 'AppCenter/Analytics', '~> 1.0.0'
+  pod 'AppCenter/Push', '~> 1.0.0'
   
   pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
 
