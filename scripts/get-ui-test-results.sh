@@ -17,8 +17,8 @@ ANDROID_APP_NAME="appcenter-xamarin-testing-app-android"
 IOS_APP_NAME="appcenter-xamarin-testing-app-ios"
 ANDROID_APP="$APP_CENTER_USERNAME/$ANDROID_APP_NAME"
 IOS_APP="$APP_CENTER_USERNAME/$IOS_APP_NAME"
-ANDROID_PORTAL_URL="https://mobile.azure.com/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://mobile.azure.com/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 
 # Text attribute constants
 RED=$(tput setaf 1)
@@ -68,7 +68,7 @@ test_status() {
     TEST_STATUS_DONE_TEXT="Current test status: Done"
     RESULTS_FILE="results_file.txt"
     TEST_DONE=0
-    mobile-center test status --test-run-id $TEST_RUN_ID --app "$APP_NAME" > $RESULTS_FILE
+    appcenter test status --test-run-id $TEST_RUN_ID --app "$APP_NAME" > $RESULTS_FILE
     RETURN_CODE=$?
     if grep -q "$TEST_STATUS_DONE_TEXT" "$RESULTS_FILE"; then
         TEST_DONE=1
@@ -87,7 +87,7 @@ test_status() {
 }
 
 # Log in to App Center
-./mobile-center-login.sh
+./appcenter-login.sh
 if [ $? -ne 0 ]; then
     exit 1
 fi

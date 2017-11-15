@@ -40,8 +40,8 @@ IOS_APP="$APP_CENTER_USERNAME/$IOS_APP_NAME"
 TEST_SERIES="master"
 
 # Define results constants
-ANDROID_PORTAL_URL="https://mobile.azure.com/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
-IOS_PORTAL_URL="https://mobile.azure.com/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
+ANDROID_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$ANDROID_APP_NAME/test/runs/"
+IOS_PORTAL_URL="https://appcenter.ms/users/$APP_CENTER_USERNAME/apps/$IOS_APP_NAME/test/runs/"
 ANDROID_INFORMATION_FILE="android_info.txt"
 IOS_INFORMATION_FILE="ios_info.txt"
 ANDROID_PLATFORM_NAME="Android"
@@ -95,7 +95,7 @@ initialize_tests() {
     DEVICES_CODE="$2"
     APP_PACKAGE="$3"
     INFORMATION_FILE="$4"
-    mobile-center test run uitest --app $APP_NAME\
+    appcenter test run uitest --app $APP_NAME\
      --devices $DEVICES_CODE --app-path $APP_PACKAGE\
       --test-series $TEST_SERIES --locale $LOCALE\
       --build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
