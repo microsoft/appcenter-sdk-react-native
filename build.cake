@@ -11,35 +11,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
-// AppCenter module class definition.
-class AppCenterModule {
-    public string AndroidModule { get; set; }
-    public string DotNetModule { get; set; }
-    public string NuGetVersion { get; set; }
-    public string PackageId { get; set; }
-    public string MainNuspecFilename { get; set; }
-    public string NuGetPackageName
-    {
-        get
-        {
-            return PackageId + "." + NuGetVersion + ".nupkg";
-        }
-    }
-    public string MacNuspecFilename
-    {
-        get { return  "Mac" + MainNuspecFilename; }
-    }
-    public string WindowsNuspecFilename
-    {
-        get { return  "Windows" + MainNuspecFilename; }
-    }
-    public AppCenterModule(string android, string dotnet, string mainNuspecFilename) {
-        AndroidModule = android;
-        DotNetModule = dotnet;
-        MainNuspecFilename = mainNuspecFilename;
-    }
-}
-
 var DownloadedAssembliesFolder = Statics.TemporaryPrefix + "DownloadedAssemblies";
 var MacAssembliesZip = Statics.TemporaryPrefix + "MacAssemblies.zip";
 var WindowsAssembliesZip = Statics.TemporaryPrefix + "WindowsAssemblies.zip";
@@ -48,6 +19,7 @@ var WindowsAssembliesZip = Statics.TemporaryPrefix + "WindowsAssemblies.zip";
 var AndroidSdkVersion = "1.0.0";
 var IosSdkVersion = "1.0.0";
 
+// Contains all assembly paths and how to use them
 PlatformPaths AssemblyPlatformPaths;
 
 // URLs for downloading binaries.
@@ -59,9 +31,13 @@ PlatformPaths AssemblyPlatformPaths;
  *     By running mozroots and install part of Mozilla's root certificates can make it work.
  */
 
+var ExternalsDirectory = "externals";
+var AndroidExternals = $"{ExternalsDirectory}/android";
+var IosExternals = $"{ExternalsDirectory}/ios";
+
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var AndroidUrl = SdkStorageUrl + "AppCenter-SDK-Android-" + AndroidSdkVersion + ".zip";
-var IosUrl = SdkStorageUrl + "AppCenter-SDK-Apple-" + IosSdkVersion + ".zip";
+var AndroidUrl = $"{SdkStorageUrl}AppCenter-SDK-Android-{AndroidSdkVersion}.zip";
+var IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{IosSdkVersion}.zip";
 var MacAssembliesUrl = SdkStorageUrl + MacAssembliesZip;
 var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
 
@@ -141,13 +117,14 @@ Task("WindowsBuild")
     .WithCriteria(() => !IsRunningOnUnix())
     .Does(() =>
 {
+    var solutionName = "./AppCenter-SDK-Build-Windows.sln";
     // Build solution
-    NuGetRestore("./AppCenter-SDK-Build-Windows.sln");
-    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
-    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
-    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
-    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Release")); // any cpu
-    MSBuild("./AppCenter-SDK-Build-Windows.sln", settings => settings.SetConfiguration("Reference")); // any cpu
+    NuGetRestore(solutionName);
+    MSBuild(solutionName, settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
+    MSBuild(solutionName, settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
+    MSBuild(solutionName, settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
+    MSBuild(solutionName, settings => settings.SetConfiguration("Release")); // any cpu
+    MSBuild(solutionName, settings => settings.SetConfiguration("Reference")); // any cpu
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
@@ -166,39 +143,44 @@ Task("Bindings-Ios").IsDependentOn("Externals-Ios");
 Task("Externals-Android")
     .Does(() =>
 {
-    CleanDirectory("./externals/android");
+    var zipFile = System.IO.Path.Combine(AndroidExternals, "android.zip");
+    CleanDirectory(AndroidExternals);
 
     // Download zip file.
-    DownloadFile(AndroidUrl, "./externals/android/android.zip");
-    Unzip("./externals/android/android.zip", "./externals/android/");
+    DownloadFile(AndroidUrl, zipFile);
+    Unzip(zipFile, AndroidExternals);
 
     // Move binaries to externals/android so that linked files don't have versions
     // in their paths
-    var files = GetFiles("./externals/android/*/*");
-    CopyFiles(files, "./externals/android/");
+    var files = GetFiles($"{AndroidExternals}/*/*");
+    CopyFiles(files, AndroidExternals);
 }).OnError(HandleError);
 
 // Downloading iOS binaries.
 Task("Externals-Ios")
     .Does(() =>
 {
-    CleanDirectory("./externals/ios");
+    CleanDirectory(IosExternals);
+    var zipFile = System.IO.Path.Combine(IosExternals, "ios.zip");
 
     // Download zip file containing AppCenter frameworks
-    DownloadFile(IosUrl, "./externals/ios/ios.zip");
-    Unzip("./externals/ios/ios.zip", "./externals/ios/");
+    DownloadFile(IosUrl, zipFile);
+    Unzip(zipFile, IosExternals);
+
+    var frameworksLocation = System.IO.Path.Combine(IosExternals, "AppCenter-SDK-Apple/iOS");
 
     // Copy the AppCenter binaries directly from the frameworks and add the ".a" extension
-    var files = GetFiles("./externals/ios/*/iOS/*.framework/AppCenter*");
+    var files = GetFiles($"{frameworksLocation}/*.framework/AppCenter*");
     foreach (var file in files)
     {
-        MoveFile(file, "./externals/ios/" + file.GetFilename() + ".a");
+        var filename = file.GetFilename();
+        MoveFile(file, $"{IosExternals}/{filename}.a");
     }
-
+    var distributeBundle = "AppCenterDistributeResources.bundle";
     // Copy Distribute resource bundle and copy it to the externals directory.
-    if(DirectoryExists("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle"))
+    if(DirectoryExists($"{frameworksLocation}/{distributeBundle}"))
     {
-        MoveDirectory("./externals/ios/AppCenter-SDK-Apple/iOS/AppCenterDistributeResources.bundle", "./externals/ios/AppCenterDistributeResources.bundle");
+        MoveDirectory($"{frameworksLocation}/{distributeBundle}", $"{IosExternals}/{distributeBundle}");
     }
 }).OnError(HandleError);
 

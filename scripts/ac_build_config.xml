@@ -77,5 +77,22 @@
             <assembly path="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"/>
         </group>
     </group>
+    <module androidBinary="app-center-release.aar"
+            projectPath="SDK/AppCenter/Microsoft.AppCenter"
+            nuspec="AppCenter.nuspec"/>
+    <module androidBinary="app-center-analytics-release.aar"
+            projectPath="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes"
+            nuspec="AppCenterAnalytics.nuspec"/>
+    <module androidBinary="app-center-crashes-release.aar"
+            projectPath="SDK/AppCenter/Microsoft.AppCenter"
+            nuspec="AppCenterCrashes.nuspec"/>
+    <module androidBinary="app-center-distribute-release.aar"
+            projectPath="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute"
+            nuspec="AppCenterDistribute.nuspec"/>
+    <module androidBinary="app-center-push-release.aar"
+            projectPath="SDK/AppCenterPush/Microsoft.AppCenter.Push"
+            nuspec="AppCenterPush.nuspec"/>
+    <module androidBinary="app-center-rum-release.aar"
+            projectPath="SDK/AppCenterRum/Microsoft.AppCenter.Rum"
+            nuspec="AppCenterRum.nuspec"/>
 </config>
-
