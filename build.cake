@@ -5,11 +5,12 @@
 #addin nuget:?package=Cake.Xamarin
 #addin "Cake.AzureStorage"
 #load "scripts/utility.cake"
-#load "scripts/assembly-group.cake"
+#load "scripts/config-parser.cake"
 
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 var DownloadedAssembliesFolder = Statics.TemporaryPrefix + "DownloadedAssemblies";
 var MacAssembliesZip = Statics.TemporaryPrefix + "MacAssemblies.zip";
@@ -21,6 +22,9 @@ var IosSdkVersion = "1.0.0";
 
 // Contains all assembly paths and how to use them
 PlatformPaths AssemblyPlatformPaths;
+
+// Available AppCenter modules.
+IList<AppCenterModule> AppCenterModules = null;
 
 // URLs for downloading binaries.
 /*
@@ -41,16 +45,6 @@ var IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{IosSdkVersion}.zip";
 var MacAssembliesUrl = SdkStorageUrl + MacAssembliesZip;
 var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
 
-// Available AppCenter modules.
-var AppCenterModules = new [] {
-    new AppCenterModule("app-center-release.aar", "SDK/AppCenter/Microsoft.AppCenter", "AppCenter.nuspec"),
-    new AppCenterModule("app-center-analytics-release.aar", "SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics", "AppCenterAnalytics.nuspec"),
-    new AppCenterModule("app-center-crashes-release.aar", "SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes", "AppCenterCrashes.nuspec"),
-    new AppCenterModule("app-center-distribute-release.aar", "SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute", "AppCenterDistribute.nuspec"),
-    new AppCenterModule("app-center-push-release.aar", "SDK/AppCenterPush/Microsoft.AppCenter.Push", "AppCenterPush.nuspec"),
-    new AppCenterModule("app-center-rum-release.aar", "SDK/AppCenterRum/Microsoft.AppCenter.Rum", "AppCenterRum.nuspec")
-};
-
 // Task Target for build
 var Target = Argument("Target", Argument("t", "Default"));
 
@@ -58,45 +52,26 @@ var Target = Argument("Target", Argument("t", "Default"));
 var StorageId = Argument("StorageId", Argument("storage-id", ""));
 
 var ConfigFile = "scripts/ac_build_config.xml";
+var NuspecFolder = "nuget";
 
 // Prepare the platform paths for downloading, uploading, and preparing assemblies
 Setup(context =>
 {
+    // Get assembly paths.
     var uploadAssembliesZip = (IsRunningOnUnix() ? MacAssembliesZip : WindowsAssembliesZip) + StorageId;
     var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl) + StorageId;
     var downloadAssembliesZip = (IsRunningOnUnix() ? WindowsAssembliesZip : MacAssembliesZip) + StorageId;
     AssemblyPlatformPaths = new PlatformPaths(uploadAssembliesZip, downloadAssembliesZip, downloadUrl, ConfigFile);
-});
 
-// Versioning task.
-Task("Version")
-    .Does(() =>
-{
-    var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
-    var version = project.NetCore.Version;
-    // Extract versions for modules.
-    foreach (var module in AppCenterModules)
+    // Get current version and get modules.
+    var projectPath = "SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj";
+    string version = null;
+    if (System.IO.File.Exists(projectPath))
     {
-        module.NuGetVersion = version;
+        var project = ParseProject(projectPath, configuration: "Release");
+        version = project.NetCore.Version;
     }
-});
-
-// Package id task
-Task("PackageId")
-    .Does(() =>
-{
-    // Extract package ids for modules.
-    foreach (var module in AppCenterModules)
-    {
-        var nuspecText = FileReadText("./nuget/" + module.MainNuspecFilename);
-        var startTag = "<id>";
-        var endTag = "</id>";
-        int startIndex = nuspecText.IndexOf(startTag) + startTag.Length;
-        int length = nuspecText.IndexOf(endTag) - startIndex;
-        var id = nuspecText.Substring(startIndex, length);
-        Information("id = " + id);
-        module.PackageId = id;
-    }
+    AppCenterModules = AppCenterModule.ReadAppCenterModules(ConfigFile, NuspecFolder, version);
 });
 
 Task("Build").IsDependentOn("MacBuild").IsDependentOn("WindowsBuild");
@@ -109,7 +84,7 @@ Task("MacBuild")
     RunTarget("Externals");
     // Build solution
     NuGetRestore("./AppCenter-SDK-Build-Mac.sln");
-    MSBuild("./AppCenter-SDK-Build-Mac.sln", c => c.Configuration = "Release");
+    MSBuild("./AppCenter-SDK-Build-Mac.sln", settings => settings.SetConfiguration("Release"));
 }).OnError(HandleError);
 
 // Building Windows code task
@@ -166,7 +141,6 @@ Task("Externals-Ios")
     // Download zip file containing AppCenter frameworks
     DownloadFile(IosUrl, zipFile);
     Unzip(zipFile, IosExternals);
-
     var frameworksLocation = System.IO.Path.Combine(IosExternals, "AppCenter-SDK-Apple/iOS");
 
     // Copy the AppCenter binaries directly from the frameworks and add the ".a" extension
@@ -176,8 +150,9 @@ Task("Externals-Ios")
         var filename = file.GetFilename();
         MoveFile(file, $"{IosExternals}/{filename}.a");
     }
-    var distributeBundle = "AppCenterDistributeResources.bundle";
+    
     // Copy Distribute resource bundle and copy it to the externals directory.
+    var distributeBundle = "AppCenterDistributeResources.bundle";
     if(DirectoryExists($"{frameworksLocation}/{distributeBundle}"))
     {
         MoveDirectory($"{frameworksLocation}/{distributeBundle}", $"{IosExternals}/{distributeBundle}");
@@ -199,7 +174,6 @@ Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
 // Pack NuGets for appropriate platform
 Task("NuGet")
     .IsDependentOn("PrepareAssemblies")
-    .IsDependentOn("Version")
     .Does(()=>
 {
     CleanDirectory("output");
@@ -208,7 +182,7 @@ Task("NuGet")
     // Package NuGets.
     foreach (var module in AppCenterModules)
     {
-        var nuspecFilename = "nuget/" + (IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename);
+        var nuspecFilename = NuspecFolder + (IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename);
 
         // Skip modules that don't have nuspecs.
         if (!FileExists(nuspecFilename))
@@ -233,11 +207,11 @@ Task("NuGet")
 }).OnError(HandleError);
 
 // Add version to nuspecs for vsts (the release definition does not have the solutions and thus cannot extract a version from them)
-Task("PrepareNuspecsForVSTS").IsDependentOn("Version").Does(()=>
+Task("PrepareNuspecsForVSTS").Does(()=>
 {
     foreach (var module in AppCenterModules)
     {
-        ReplaceTextInFiles("./nuget/" + module.MainNuspecFilename, "$version$", module.NuGetVersion);
+        ReplaceTextInFiles(NuspecFolder + module.MainNuspecFilename, "$version$", module.NuGetVersion);
     }
 });
 
@@ -284,7 +258,6 @@ Task("DownloadAssemblies").Does(()=>
 Task("MergeAssemblies")
     .IsDependentOn("PrepareAssemblies")
     .IsDependentOn("DownloadAssemblies")
-    .IsDependentOn("Version")
     .Does(()=>
 {
     Information("Beginning complete package creation...");
@@ -345,37 +318,6 @@ Task("RestoreTestPackages").Does(() =>
         // workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-Target
         Source = new string[] { EnvironmentVariable("NUGET_URL") }
     });
-}).OnError(HandleError);
-
-// Remove any uploaded nugets from azure storage
-Task("CleanAzureStorage").Does(()=>
-{
-    var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
-    var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
-
-    try
-    {
-        AzureStorage.DeleteBlob(new AzureStorageSettings
-        {
-            AccountName = accountName,
-            ContainerName = "sdk",
-            BlobName = MacAssembliesZip + StorageId,
-            Key = apiKey,
-            UseHttps = true
-        });
-        AzureStorage.DeleteBlob(new AzureStorageSettings
-        {
-            AccountName = accountName,
-            ContainerName = "sdk",
-            BlobName = WindowsAssembliesZip + StorageId,
-            Key = apiKey,
-            UseHttps = true
-        });
-    }
-    catch
-    {
-        // not an error if the blob is not found
-    }
 }).OnError(HandleError);
 
 Task("PrepareAssemblyPathsVSTS").Does(()=>

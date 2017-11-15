@@ -77,22 +77,22 @@
             <assembly path="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"/>
         </group>
     </group>
-    <module androidBinary="app-center-release.aar"
-            projectPath="SDK/AppCenter/Microsoft.AppCenter"
+    <module androidModule="app-center-release.aar"
+            dotnetModule="SDK/AppCenter/Microsoft.AppCenter"
             nuspec="AppCenter.nuspec"/>
-    <module androidBinary="app-center-analytics-release.aar"
-            projectPath="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes"
+    <module androidModule="app-center-analytics-release.aar"
+            dotnetModule="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes"
             nuspec="AppCenterAnalytics.nuspec"/>
-    <module androidBinary="app-center-crashes-release.aar"
-            projectPath="SDK/AppCenter/Microsoft.AppCenter"
+    <module androidModule="app-center-crashes-release.aar"
+            dotnetModule="SDK/AppCenter/Microsoft.AppCenter"
             nuspec="AppCenterCrashes.nuspec"/>
-    <module androidBinary="app-center-distribute-release.aar"
-            projectPath="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute"
+    <module androidModule="app-center-distribute-release.aar"
+            dotnetModule="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute"
             nuspec="AppCenterDistribute.nuspec"/>
-    <module androidBinary="app-center-push-release.aar"
-            projectPath="SDK/AppCenterPush/Microsoft.AppCenter.Push"
+    <module androidModule="app-center-push-release.aar"
+            dotnetModule="SDK/AppCenterPush/Microsoft.AppCenter.Push"
             nuspec="AppCenterPush.nuspec"/>
-    <module androidBinary="app-center-rum-release.aar"
-            projectPath="SDK/AppCenterRum/Microsoft.AppCenter.Rum"
+    <module androidModule="app-center-rum-release.aar"
+            dotnetModule="SDK/AppCenterRum/Microsoft.AppCenter.Rum"
             nuspec="AppCenterRum.nuspec"/>
 </config>
