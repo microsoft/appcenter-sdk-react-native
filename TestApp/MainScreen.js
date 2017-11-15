@@ -6,16 +6,16 @@
 
 import React, { Component } from 'react';
 import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
-import MobileCenter from 'mobile-center';
-import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'mobile-center-crashes';
-import Push from 'mobile-center-push';
+import AppCenter from 'appcenter';
+import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
+import Push from 'appcenter-push';
 import SharedStyles from './SharedStyles';
 
 export default class MainScreen extends Component {
   constructor() {
     super();
     this.state = {
-      wrapperSdkVersion: MobileCenter.getSdkVersion()
+      wrapperSdkVersion: AppCenter.getSdkVersion()
     };
   }
 
@@ -34,7 +34,7 @@ export default class MainScreen extends Component {
         <Button title="Test Crashes" onPress={() => navigate('Crashes')} />
         <Button title="Test Analytics" onPress={() => navigate('Analytics')} />
         <Button title="Test Push" onPress={() => navigate('Push')} />
-        <Button title="Test Other Mobile Center APIs" onPress={() => navigate('MobileCenter')} />
+        <Button title="Test Other AppCenter APIs" onPress={() => navigate('AppCenter')} />
       </View>
     );
   }

@@ -8,14 +8,14 @@
  */
 
 #import "AppDelegate.h"
-#import <RNMobileCenter/RNMobileCenter.h>
-#import <RNPush/RNPush.h>
-#import <RNAnalytics/RNAnalytics.h>
-#import <RNCrashes/RNCrashes.h>
+#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
+#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
+#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNative/AppCenterReactNative.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-@import MobileCenter;
+@import AppCenter;
 
 @implementation AppDelegate
 
@@ -23,18 +23,16 @@
 {
   NSURL *jsCodeLocation;
 
-  [MSMobileCenter setLogLevel: MSLogLevelVerbose];
-  //[MSMobileCenter setServerUrl:@"https://in-integration.dev.avalanch.es"];
+  [AppCenterReactNativePush register];  // Initialize AppCenter push
 
-  [RNMobileCenter register];  // Initialize Mobile Center 
+  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
 
-  [RNCrashes register];  // Initialize Mobile Center crashes
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
 
-  [RNPush register];  // Initialize Mobile Center push
+  [AppCenterReactNative register];  // Initialize AppCenter 
 
-  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
-
-
+  [MSAppCenter setLogLevel: MSLogLevelVerbose];
+  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 

@@ -1,1 +1,0 @@
-../../../../MobileCenter/MobileCenter-SDK-Apple/iOS/MobileCenterAnalytics.framework/Headers/MobileCenterAnalytics.h

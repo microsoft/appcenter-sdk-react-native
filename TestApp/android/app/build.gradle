@@ -127,10 +127,10 @@ android {
 }
 
 dependencies {
-    compile project(':mobile-center-push')
-    compile project(':mobile-center-crashes')
-    compile project(':mobile-center-analytics')
-    compile project(':mobile-center')
+    compile project(':appcenter-push')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
     compile fileTree(dir: "libs", include: ["*.jar"])
     // From node_modules
     //  compile 'com.google.firebase:firebase-messaging:+'

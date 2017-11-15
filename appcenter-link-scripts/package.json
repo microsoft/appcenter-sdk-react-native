@@ -1,0 +1,40 @@
+{
+  "name": "appcenter-link-scripts",
+  "version": "1.0.0",
+  "description": "Node module that contains common functionality needed to link appcenter-* modules",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/appcenter-sdk-react-native.git"
+  },
+  "keywords": [
+    "react-native",
+    "appcenter"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/appcenter-sdk-react-native/issues"
+  },
+  "homepage": "https://github.com/microsoft/appcenter-sdk-react-native#readme",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "glob": "^5.0.15",
+    "inquirer": "1.1.2",
+    "mkdirp": "^0.5.1",
+    "plist": "1.2.0",
+    "which": "^1.2.11",
+    "xcode": "^0.8.9"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.2.1"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }
+}
