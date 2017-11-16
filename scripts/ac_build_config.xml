@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-    <group id="ios" folder="iOSAssemblies" downloadWindows="true" downloadMac="false" nuspecKey="$ios_dir$">
+    <group id="ios" folder="iOSAssemblies" buildGroup="mac" nuspecKey="$ios_dir$">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.iOS.Bindings.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.iOS/bin/Release/Microsoft.AppCenter.Analytics.dll"/>
@@ -12,7 +12,7 @@
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS/bin/Release/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS.Bindings/bin/Release/Microsoft.AppCenter.Push.iOS.Bindings.dll"/>
     </group>
-    <group id="android" folder="AndroidAssmeblies" downloadWindows="true" downloadMac="false"  nuspecKey="$android_dir$">
+    <group id="android" folder="AndroidAssmeblies" buildGroup="mac" nuspecKey="$android_dir$">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.Android.Bindings.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.Android/bin/Release/Microsoft.AppCenter.Analytics.dll"/>
@@ -26,7 +26,7 @@
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android/bin/Release/Microsoft.AppCenter.Rum.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android.Bindings/bin/Release/Microsoft.AppCenter.Rum.Android.Bindings.dll"/>
     </group>
-    <group id="pcl" folder="PCLAssemblies" downloadWindows="true" downloadMac="false" nuspecKey="$pcl_dir$">
+    <group id="pcl" folder="PCLAssemblies" buildGroup="mac" nuspecKey="$pcl_dir$">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll"/>
         <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll"/>
@@ -34,7 +34,7 @@
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Rum.dll"/>
     </group>
-    <group id="netstandard" folder="NETStandardAssemblies" downloadWindows="true" downloadMac="false" nuspecKey="$netstandard_dir$">
+    <group id="netstandard" folder="NETStandardAssemblies" buildGroup="mac" nuspecKey="$netstandard_dir$">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/netstandard1.0/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/netstandard1.0/Microsoft.AppCenter.Analytics.dll"/>
         <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/netstandard1.0/Microsoft.AppCenter.Crashes.dll"/>
@@ -42,12 +42,12 @@
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/netstandard1.0/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/netstandard1.0/Microsoft.AppCenter.Rum.dll"/>
     </group>
-    <group id="windows_desktop" folder="WindowsDesktopAssemblies" downloadWindows="false" downloadMac="true" nuspecKey="$windows_desktop_dir$">
+    <group id="windows_desktop" folder="WindowsDesktopAssemblies" buildGroup="windows" nuspecKey="$windows_desktop_dir$">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.WindowsDesktop/bin/Release/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.WindowsDesktop/bin/Release/Microsoft.AppCenter.Analytics.dll"/>
         <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.WindowsDesktop/bin/Release/Microsoft.AppCenter.Crashes.dll"/>
     </group>
-    <group id="uwp" folder="UWPAssemblies" downloadWindows="false" downloadMac="true" nuspecKey="$uwp_dir$">
+    <group id="uwp" folder="UWPAssemblies" buildGroup="windows" nuspecKey="$uwp_dir$">
         <!-- Non architecture-specific -->
         <assembly path="nuget/Microsoft.AppCenter.Crashes.targets"/>
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.UWP/bin/Release/Microsoft.AppCenter.dll"/>
@@ -95,4 +95,14 @@
     <module androidModule="app-center-rum-release.aar"
             dotnetModule="SDK/AppCenterRum/Microsoft.AppCenter.Rum"
             nuspec="AppCenterRum.nuspec"/>
+    <buildGroup platformId="mac" solutionPath="AppCenter-SDK-Build-Mac.sln">
+        <build configuration="Release"/>
+    </buildGroup>
+    <buildGroup platformId="windows" solutionPath="AppCenter-SDK-Build-Windows.sln">
+        <build configuration="Release" platform="x86"/>
+        <build configuration="Release" platform="x64"/>
+        <build configuration="Release" platform="ARM"/>
+        <build configuration="Release"/>
+        <build configuration="Reference"/>
+    </buildGroup>
 </config>

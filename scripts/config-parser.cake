@@ -129,15 +129,15 @@ public class AssemblyGroup
     public bool Download { get; set; }
     private AssemblyGroup(XmlNode groupNode, AssemblyGroup parent = null)
     {
-        string downloadString = Statics.Context.IsRunningOnUnix() ? "downloadMac" : "downloadWindows";
         AssemblyPaths = new List<string>();
         Subgroups = new List<AssemblyGroup>();
         Id = groupNode.Attributes.GetNamedItem("id").Value;
         NuspecKey = groupNode.Attributes.GetNamedItem("nuspecKey")?.Value;
-        var downloadValue = groupNode.Attributes.GetNamedItem(downloadString)?.Value;
-        if (downloadValue != null)
+        var buildGroup = groupNode.Attributes.GetNamedItem("buildGroup")?.Value;
+        var platformString = Statics.Context.IsRunningOnUnix() ? "mac" : "windows";
+        if (buildGroup != null)
         {
-            Download = (downloadValue == "true");
+            Download = (buildGroup != platformString);
         }
         else if (parent != null)
         {
@@ -156,6 +156,84 @@ public class AssemblyGroup
             else if (childNode.Name == "group")
             {
                 Subgroups.Add(new AssemblyGroup(childNode, this));
+            }
+        }
+    }
+}
+
+public class BuildGroup
+{
+    private string _platformId;
+    private string _solutionPath;
+    private IList<BuildConfig> _builds;
+
+    private class BuildConfig
+    {
+        private string _platform { get; set; }
+        private string _configuration { get; set; }
+        public BuildConfig(string platform, string configuration)
+        {
+            _platform = platform;
+            _configuration = configuration;
+        }
+
+        public void Build(string solutionPath)
+        {
+            Statics.Context.MSBuild(solutionPath, settings => {
+                settings.SetConfiguration(_configuration);
+                if (_platform != null)
+                {
+                    // Use this instead of set target platform
+                    settings.WithProperty("Platform", "x86");
+                }
+            });
+        }
+    }
+
+    public BuildGroup(string platformId, string configFilePath)
+    {
+        _platformId = platformId;
+        XmlReader reader = XmlReader.Create(configFilePath);
+        _builds = new List<BuildConfig>();
+        while (reader.Read())
+        {
+            if (reader.Name == "buildGroup")
+            {
+                XmlDocument buildGroup = new XmlDocument();
+                var node = buildGroup.ReadNode(reader);
+                if (buildGroup.Attributes.GetNamedItem("platformId").Value == _platformId)
+                {
+                    ApplyBuildGroupNode(buildGroup);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void ExecuteBuilds()
+    {
+        Statics.Context.NuGetRestore(_solutionPath);
+        foreach (var buildConfig in _builds)
+        {
+            buildConfig.Build(_solutionPath);
+        }
+    }
+
+    private void ApplyBuildGroupNode(XmlNode buildGroup)
+    {
+        if (buildGroup.Attributes.GetNamedItem("platformId").Value != _platformId)
+        {
+            return;
+        }
+        _solutionPath = buildGroup.Attributes.GetNamedItem("solutionPath").Value;
+        for (int i = 0; i < buildGroup.ChildNodes.Count; ++i)
+        {
+            var childNode = buildGroup.ChildNodes.Item(i);
+            if (childNode.Name == "build")
+            {
+                var platform = buildGroup.Attributes.GetNamedItem("platform")?.Value;
+                var configuration = buildGroup.Attributes.GetNamedItem("configuration")?.Value;
+                _builds.Add(new BuildConfig(platform, configuration));
             }
         }
     }

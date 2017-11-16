@@ -74,32 +74,13 @@ Setup(context =>
     AppCenterModules = AppCenterModule.ReadAppCenterModules(ConfigFile, NuspecFolder, version);
 });
 
-Task("Build").IsDependentOn("MacBuild").IsDependentOn("WindowsBuild");
-
-Task("MacBuild")
-    .WithCriteria(() => IsRunningOnUnix())
+Task("Build")
+    .IsDependentOn("Externals")
     .Does(() =>
 {
-    // Run externals here instead of using dependency so that this doesn't get called on windows
-    RunTarget("Externals");
-    // Build solution
-    NuGetRestore("./AppCenter-SDK-Build-Mac.sln");
-    MSBuild("./AppCenter-SDK-Build-Mac.sln", settings => settings.SetConfiguration("Release"));
-}).OnError(HandleError);
-
-// Building Windows code task
-Task("WindowsBuild")
-    .WithCriteria(() => !IsRunningOnUnix())
-    .Does(() =>
-{
-    var solutionName = "./AppCenter-SDK-Build-Windows.sln";
-    // Build solution
-    NuGetRestore(solutionName);
-    MSBuild(solutionName, settings => settings.SetConfiguration("Release").WithProperty("Platform", "x86"));
-    MSBuild(solutionName, settings => settings.SetConfiguration("Release").WithProperty("Platform", "x64"));
-    MSBuild(solutionName, settings => settings.SetConfiguration("Release").WithProperty("Platform", "ARM"));
-    MSBuild(solutionName, settings => settings.SetConfiguration("Release")); // any cpu
-    MSBuild(solutionName, settings => settings.SetConfiguration("Reference")); // any cpu
+    var platformId = IsRunningOnUnix() ? "mac" : "windows";
+    var buildGroup = new BuildGroup(platformId, ConfigFile);
+    buildGroup.ExecuteBuilds();
 }).OnError(HandleError);
 
 Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
