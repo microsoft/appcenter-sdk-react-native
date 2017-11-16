@@ -39,6 +39,17 @@ namespace Microsoft.AppCenter.Push
         }
 
         /// <summary>
+        /// Sets the Sender ID necessary to receive push notifications.
+        /// </summary>
+        /// <value>
+        /// The Sender ID to set.
+        /// </value>
+        public static void SetSenderId(string senderId)
+        {
+            AndroidPush.SetSenderId(senderId);
+        }
+
+        /// <summary>
         /// Internal SDK property not intended for public use.
         /// </summary>
         /// <value>
@@ -46,15 +57,6 @@ namespace Microsoft.AppCenter.Push
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(AndroidPush);
-
-        /// <summary>
-        /// Enables firebase analytics collection.
-        /// It's disabled by default unless you call this method.
-        /// </summary>
-        public static void EnableFirebaseAnalytics()
-        {
-            AndroidPush.EnableFirebaseAnalytics(Application.Context);
-        }
 
         /// <summary>
         /// If you are using the event for background push notifications
