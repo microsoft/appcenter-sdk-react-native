@@ -46,6 +46,6 @@ echo "${fileContent/\'AppCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'AppCen
 
 # Update iOS sdk version in AppCenterReactNativeShared podspec
 fileContent="$(cat ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)"
-echo "${fileContent/s.dependency \'AppCenter\/Core\', \'~> $oldiOSSdkVersion\'/s.dependency 'AppCenter/Core', '~> $newiOSSdkVersion'}" > ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec
+echo "${fileContent/s.dependency \'AppCenter\/Core\', \'$oldiOSSdkVersion\'/s.dependency 'AppCenter/Core', '$newiOSSdkVersion'}" > ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec
 
 echo "done."
