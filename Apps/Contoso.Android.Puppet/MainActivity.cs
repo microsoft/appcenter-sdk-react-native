@@ -52,8 +52,8 @@ namespace Contoso.Android.Puppet
 
             AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
-            Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+            Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
+            Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");
             AppCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes), typeof(Distribute));
 
             AppCenter.IsEnabledAsync().ContinueWith(enabled =>
