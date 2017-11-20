@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -89,18 +90,18 @@ namespace Contoso.Android.Puppet
             });
         }
 
-        static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
+        void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
             Application.SynchronizationContext.Post(d =>
             {
-                var alertDialog = new AlertDialog.Builder(Application.Context);
+                var alertDialog = new AlertDialog.Builder(this, Resource.Style.AppCompatDialogStyle);
                 alertDialog.SetTitle(e.Title);
                 var message = e.Message;
                 if (e.CustomData != null && e.CustomData.Count > 0)
                 {
                     message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
                 }
-                alertDialog.SetMessage(e.Message);
+                alertDialog.SetMessage(message);
                 alertDialog.Show();
             }, null);
         }
