@@ -41,8 +41,8 @@ namespace Contoso.Forms.Puppet
 
             AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
-            Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+            Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
+            Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");
             RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
             AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
