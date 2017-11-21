@@ -43,4 +43,6 @@ android/keystores/debug.keystore
 *.keystore
 *~
 
+# credentials
+.npmrc
 google-services.json
