@@ -28,7 +28,6 @@ namespace Microsoft.AppCenter.Crashes
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            AppCenterLog.Warn(AppCenterLog.LogTag, "Crashes service is not yet supported on this platform.");
             try
             {
 #if REFERENCE
