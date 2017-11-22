@@ -48,9 +48,7 @@ namespace Microsoft.AppCenter.Crashes
             }
             catch (Exception e)
             {
-#if DEBUG
-                throw new AppCenterException("Failed to register crashes with Watson", e);
-#endif
+                AppCenterLog.Error(AppCenterLog.LogTag, "Failed to register crashes with Watson", e);
             }
         }
     }
