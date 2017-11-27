@@ -1,8 +1,8 @@
-﻿using Microsoft.AppCenter.Channel;
+﻿using System.Threading.Tasks;
+using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils.Synchronization;
-using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Push
 {
