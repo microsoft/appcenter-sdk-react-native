@@ -12,11 +12,6 @@ namespace Microsoft.AppCenter.Ingestion.Http
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
         private readonly INetworkStateAdapter _networkStateAdapter;
 
-        public NetworkStateIngestion(IIngestion decoratedApi) :
-            this(decoratedApi, new NetworkStateAdapter())
-        {
-        }
-
         public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkStateAdapter)
             : base(decoratedApi)
         {
