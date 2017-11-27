@@ -33,7 +33,7 @@ namespace Contoso.Forms.Puppet
             AppCenterLog.Info(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
             AppCenterLog.Info(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
-            // set callbacks
+            // Set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             Crashes.GetErrorAttachments = GetErrorAttachments;
@@ -83,7 +83,7 @@ namespace Contoso.Forms.Puppet
 
         static App()
         {
-            // set event handlers in static constructor to avoid duplication
+            // Set event handlers in static constructor to avoid duplication
             Crashes.SendingErrorReport += SendingErrorReportHandler;
             Crashes.SentErrorReport += SentErrorReportHandler;
             Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
@@ -109,7 +109,7 @@ namespace Contoso.Forms.Puppet
 
             var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -126,7 +126,7 @@ namespace Contoso.Forms.Puppet
 
             var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -148,7 +148,7 @@ namespace Contoso.Forms.Puppet
 
             var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -200,12 +200,30 @@ namespace Contoso.Forms.Puppet
 
         static IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
         {
-            return new[]
+            var attachments = new List<ErrorAttachmentLog>();
+            if (Current.Properties.TryGetValue(CrashesContentPage.TextAttachmentKey, out var textAttachment) &&
+                textAttachment is string text)
             {
-                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
-                null,
-                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
-            };
+                var attachment = ErrorAttachmentLog.AttachmentWithText(text, "hello.txt");
+                attachments.Add(attachment);
+            }
+            if (Current.Properties.TryGetValue(CrashesContentPage.FileAttachmentKey, out var fileAttachment) &&
+                fileAttachment is string file)
+            {
+                var filePicker = DependencyService.Get<IFilePicker>();
+                if (filePicker != null)
+                {
+                    var content = filePicker.GetFileContent(file);
+                    if (content != null)
+                    {
+                        var attachment = ErrorAttachmentLog.AttachmentWithBinary(content,
+                            filePicker.GetFileName(file),
+                            filePicker.GetFileType(file));
+                        attachments.Add(attachment);
+                    }
+                }
+            }
+            return attachments;
         }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)

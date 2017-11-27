@@ -65,6 +65,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IFilePicker.cs" />
     <Compile Include="MainPuppetPage.cs">
       <DependentUpon>MainPuppetPage.xaml</DependentUpon>
     </Compile>

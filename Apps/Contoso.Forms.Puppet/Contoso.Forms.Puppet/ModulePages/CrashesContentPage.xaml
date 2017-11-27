@@ -8,6 +8,10 @@
             <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
             <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell"/>
         </TableSection>
+        <TableSection Title="Attachments">
+            <EntryCell Label="Text Attachment" x:Name="TextAttachmentCell" Completed="TextAttachment"/>
+            <TextCell Text="File Attachment" Detail="Empty" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
+        </TableSection>
         <TableSection Title="Test Crashes">
             <ViewCell Tapped="TestException">
                 <Button Text="Generate Test Exception" InputTransparent="true" Clicked="TestException"/>

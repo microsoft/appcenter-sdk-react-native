@@ -11,7 +11,6 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
     {
-
         public const string FirebaseEnabledKey = "FIREBASE_ENABLED";
 
         public OthersContentPage()
@@ -24,6 +23,8 @@ namespace Contoso.Forms.Puppet
             if (XamarinDevice.RuntimePlatform != XamarinDevice.Android)
             {
                 FirebaseAnalyticsEnabledSwitchCell.On = false;
+
+                // Note: Doesn't work on UWP, see https://bugzilla.xamarin.com/show_bug.cgi?id=42189
                 FirebaseAnalyticsEnabledSwitchCell.IsEnabled = false;
             }
         }
@@ -58,9 +59,10 @@ namespace Contoso.Forms.Puppet
             await Push.SetEnabledAsync(e.Value);
         }
 
-        void UpdateFirebaseAnalyticsEnabled(object sender, ToggledEventArgs e)
+        async void UpdateFirebaseAnalyticsEnabled(object sender, ToggledEventArgs e)
         {
             Application.Current.Properties[FirebaseEnabledKey] = e.Value;
+            await Application.Current.SavePropertiesAsync();
         }
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)
