@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabbedPage Title="App Center Puppet App" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Puppet;assembly=Contoso.Forms.Puppet" x:Class="Contoso.Forms.Puppet.MainPuppetPage">
+<TabbedPage Title="AppCenter Puppet Application"
+            xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:Contoso.Forms.Puppet;assembly=Contoso.Forms.Puppet"
+            x:Class="Contoso.Forms.Puppet.MainPuppetPage">
     <local:AppCenterContentPage/>
-	<local:AnalyticsContentPage/>
-	<local:CrashesContentPage/>
+    <local:AnalyticsContentPage/>
+    <local:CrashesContentPage/>
     <local:CustomPropertiesContentPage/>
-	<local:OthersContentPage/>
+    <local:OthersContentPage/>
 </TabbedPage>
