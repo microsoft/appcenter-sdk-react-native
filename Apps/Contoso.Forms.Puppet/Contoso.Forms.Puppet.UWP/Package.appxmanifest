@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
   <Identity Name="10805zumoTestUser.AppCenter-Contoso.Forms.Puppet.U" Publisher="CN=B2D1C358-6AF8-4416-BF73-129CC1F3C152" Version="1.0.2.0" />
   <mp:PhoneIdentity PhoneProductId="55497ed8-b2ac-4485-ba79-e2b65bb720ed" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
@@ -18,7 +18,7 @@
       <uap:VisualElements DisplayName="AppCenter-Contoso.Forms.Puppet.UWP" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Contoso.Forms.Puppet.UWP" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="white" />
       </uap:VisualElements>
     </Application>
   </Applications>
