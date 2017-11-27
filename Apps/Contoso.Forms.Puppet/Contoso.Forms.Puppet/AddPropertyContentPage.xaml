@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AddPropertyContentPage">
-  <StackLayout Padding="20">
-    <StackLayout Orientation="Horizontal">
-      <Label Text="Property Name" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-      <Entry HorizontalOptions="FillAndExpand" x:Name="NameEntry" />
+    <StackLayout Padding="20">
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Property Name" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Entry HorizontalOptions="FillAndExpand" x:Name="NameEntry" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Property Value" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Entry HorizontalOptions="FillAndExpand" x:Name="ValueEntry" />
+        </StackLayout>
+        <Button Text="Add Property" Clicked="AddProperty" />
+        <Button Text="Cancel" TextColor="Red" Clicked="Cancel" />
     </StackLayout>
-    <StackLayout Orientation="Horizontal">
-      <Label Text="Property Value" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-      <Entry HorizontalOptions="FillAndExpand" x:Name="ValueEntry" />
-    </StackLayout>
-    <Button Text="Add Property" Clicked="AddProperty" />
-    <Button Text="Cancel" TextColor="Red" Clicked="Cancel" />
-  </StackLayout>
 </ContentPage>
