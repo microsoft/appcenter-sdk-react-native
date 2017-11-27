@@ -1,11 +1,11 @@
-﻿using Microsoft.AppCenter;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.AppCenter;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class LogLevelPage : ContentPage
+    public partial class LogLevelPage
     {
         private Dictionary<string, LogLevel> LogLevels;
         public event Action<LogLevel> LevelSelected;
@@ -23,11 +23,11 @@ namespace Contoso.Forms.Puppet
             LogLevels.Add(Constants.Error, LogLevel.Error);
         }
 
-        void UpdateLogLevel(object sender, System.EventArgs e)
+        void UpdateLogLevel(object sender, EventArgs e)
         {
-            string level = ((TextCell)sender).Text;
-            LevelSelected.Invoke(LogLevels[level]);
-            ((NavigationPage)App.Current.MainPage).PopAsync();
+            string level = ((Button)sender).Text;
+            LevelSelected?.Invoke(LogLevels[level]);
+            ((NavigationPage)Application.Current.MainPage).PopAsync();
         }
     }
 }
