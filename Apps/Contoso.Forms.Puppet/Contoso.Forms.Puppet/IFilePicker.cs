@@ -1,12 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
 {
     public interface IFilePicker
     {
         Task<string> PickFile();
-        byte[] GetFileContent(string file);
-        string GetFileType(string file);
-        string GetFileName(string file);
+        Tuple<byte[], string, string> ReadFile(string file);
     }
 }

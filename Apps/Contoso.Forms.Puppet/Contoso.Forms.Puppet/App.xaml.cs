@@ -213,12 +213,10 @@ namespace Contoso.Forms.Puppet
                 var filePicker = DependencyService.Get<IFilePicker>();
                 if (filePicker != null)
                 {
-                    var content = filePicker.GetFileContent(file);
-                    if (content != null)
+                    var result = filePicker.ReadFile(file);
+                    if (result != null)
                     {
-                        var attachment = ErrorAttachmentLog.AttachmentWithBinary(content,
-                            filePicker.GetFileName(file),
-                            filePicker.GetFileType(file));
+                        var attachment = ErrorAttachmentLog.AttachmentWithBinary(result.Item1, result.Item2, result.Item3);
                         attachments.Add(attachment);
                     }
                 }

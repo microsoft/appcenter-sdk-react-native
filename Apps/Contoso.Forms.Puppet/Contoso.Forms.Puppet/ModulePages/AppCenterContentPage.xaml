@@ -8,7 +8,7 @@
             <SwitchCell Text="App Center Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
             <ViewCell Tapped="LogLevelCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
-                    <Label Text="Log level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    <Label Text="Log Level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
                     <Label Text="Verbose" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="LogLevelLabel" />
                 </StackLayout>
             </ViewCell>
