@@ -10,7 +10,7 @@
         </TableSection>
         <TableSection Title="Attachments">
             <EntryCell Label="Text Attachment" x:Name="TextAttachmentCell" Completed="TextAttachment"/>
-            <TextCell Text="Binary Attachment" Detail="Empty" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
+            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
         </TableSection>
         <TableSection Title="Test Crashes">
             <ViewCell Tapped="TestException">

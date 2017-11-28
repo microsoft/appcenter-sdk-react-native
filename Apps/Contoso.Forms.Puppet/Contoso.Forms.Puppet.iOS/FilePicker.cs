@@ -15,8 +15,13 @@ namespace Contoso.Forms.Puppet.iOS
 {
     public class FilePicker : IFilePicker
     {
-        public Task<string> PickFile()
+        public async Task<string> PickFile()
         {
+            var status = await PHPhotoLibrary.RequestAuthorizationAsync();
+            if (status != PHAuthorizationStatus.Authorized)
+            {
+                return null;
+            }
             var taskCompletionSource = new TaskCompletionSource<string>();
             var imagePicker = new UIImagePickerController();
             imagePicker.FinishedPickingMedia += (sender, args) => {
@@ -30,7 +35,7 @@ namespace Contoso.Forms.Puppet.iOS
             UIWindow window = UIApplication.SharedApplication.KeyWindow;
             var viewController = window.RootViewController;
             viewController.PresentModalViewController(imagePicker, true);
-            return taskCompletionSource.Task;
+            return await taskCompletionSource.Task;
         }
 
         public Tuple<byte[], string, string> ReadFile(string file)
