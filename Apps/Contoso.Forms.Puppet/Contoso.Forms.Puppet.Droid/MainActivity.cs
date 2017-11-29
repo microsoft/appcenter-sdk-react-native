@@ -8,7 +8,6 @@ using HockeyApp.Android;
 using HockeyApp.Android.Utils;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
-using System.Xml;
 
 namespace Contoso.Forms.Puppet.Droid
 {
