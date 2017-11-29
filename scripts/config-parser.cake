@@ -123,7 +123,7 @@ public class AssemblyGroup
         return groups;
     }
 
-    public string NuspecKey { get; set; }
+    public string NuspecKey => $"${Id}_dir$";
     public string Id { get; set; }
     public string Folder { get; set; }
     public IList<string> AssemblyPaths { get; set; }
@@ -134,7 +134,6 @@ public class AssemblyGroup
         AssemblyPaths = new List<string>();
         Subgroups = new List<AssemblyGroup>();
         Id = groupNode.Attributes.GetNamedItem("id").Value;
-        NuspecKey = groupNode.Attributes.GetNamedItem("nuspecKey")?.Value;
         var buildGroup = groupNode.Attributes.GetNamedItem("buildGroup")?.Value;
         var platformString = Statics.Context.IsRunningOnUnix() ? "mac" : "windows";
         if (buildGroup != null)
