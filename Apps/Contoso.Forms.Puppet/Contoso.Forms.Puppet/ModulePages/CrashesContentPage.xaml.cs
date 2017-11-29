@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Contoso.Forms.Puppet.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
@@ -35,7 +36,7 @@ namespace Contoso.Forms.Puppet
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
                 textAttachment is string text)
             {
-                TextAttachmentCell.Text = text;
+                TextAttachmentCell.Detail = text;
             }
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
@@ -56,7 +57,8 @@ namespace Contoso.Forms.Puppet
 
         async void TextAttachment(object sender, EventArgs e)
         {
-            var text = ((EntryCell) sender).Text;
+            var text = await TextAttachmentView.Show(Navigation);
+            ((TextCell)sender).Detail = text;
             Application.Current.Properties[TextAttachmentKey] = text;
             await Application.Current.SavePropertiesAsync();
         }

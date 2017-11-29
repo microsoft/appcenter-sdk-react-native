@@ -9,7 +9,7 @@
             <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell"/>
         </TableSection>
         <TableSection Title="Attachments">
-            <EntryCell Label="Text Attachment" x:Name="TextAttachmentCell" Completed="TextAttachment"/>
+            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment"/>
             <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
         </TableSection>
         <TableSection Title="Test Crashes">
