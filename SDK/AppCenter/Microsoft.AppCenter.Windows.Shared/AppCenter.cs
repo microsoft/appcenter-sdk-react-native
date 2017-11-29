@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Ingestion.Models;
-using Microsoft.AppCenter.Utils;
-using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter
 {
@@ -30,6 +31,7 @@ namespace Microsoft.AppCenter
         private static IChannelGroupFactory _channelGroupFactory;
 
         private readonly IApplicationSettings _applicationSettings;
+        private INetworkStateAdapter _networkStateAdapter;
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
@@ -238,10 +240,8 @@ namespace Microsoft.AppCenter
             }
         }
 
-        internal IApplicationSettings ApplicationSettings
-        {
-            get { return _applicationSettings; }
-        }
+        internal IApplicationSettings ApplicationSettings => _applicationSettings;
+        internal INetworkStateAdapter NetworkStateAdapter => _networkStateAdapter;
 
         private bool InstanceEnabled
         {
@@ -303,8 +303,8 @@ namespace Microsoft.AppCenter
             _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
             // If a factory has been supplied, use it to construct the channel group - this is designed for testing.
-            // Normal scenarios will use new ChannelGroup(string).
-            _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret);
+            _networkStateAdapter = new NetworkStateAdapter();
+            _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret, null, _networkStateAdapter);
             ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
@@ -403,10 +403,6 @@ namespace Microsoft.AppCenter
             return serviceType?.FullName == DistributeServiceFullType;
         }
 
-        private void ThrowStartedServiceException(string serviceName)
-        {
-            throw new AppCenterException($"App Center has already started a service of type '{serviceName}'.");
-        }
         #endregion
     }
 }

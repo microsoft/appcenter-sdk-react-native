@@ -11,11 +11,11 @@ if [ $? -ne 0 ]; then
 fi
 
 # Is App Center CLI installed?
-npm list -g mobile-center-cli >/dev/null
+npm list -g appcenter-cli >/dev/null
 if [ $? -ne 0 ]; then
     # Install App Center CLI
     echo "Installing App Center CLI..."
-    npm install -g mobile-center-cli
+    npm install -g appcenter-cli
     if [ $? -ne 0 ]; then
         echo "An error occured while installing App Center CLI."
         exit 1
@@ -24,7 +24,7 @@ fi
 
 # Log in to App Center
 echo "Logging in to App Center..."
-mobile-center login --token "$APP_CENTER_API_TOKEN"
+appcenter login --token "$APP_CENTER_API_TOKEN"
 if [ $? -ne 0 ]; then
     echo "An error occured while logging into App Center."
     exit 1

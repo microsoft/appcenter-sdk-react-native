@@ -28,7 +28,6 @@ namespace Microsoft.AppCenter.Crashes
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            AppCenterLog.Warn(AppCenterLog.LogTag, "Crashes service is not yet supported on this platform.");
             try
             {
 #if REFERENCE
@@ -49,9 +48,7 @@ namespace Microsoft.AppCenter.Crashes
             }
             catch (Exception e)
             {
-#if DEBUG
-                throw new AppCenterException("Failed to register crashes with Watson", e);
-#endif
+                AppCenterLog.Error(AppCenterLog.LogTag, "Failed to register crashes with Watson", e);
             }
         }
     }
