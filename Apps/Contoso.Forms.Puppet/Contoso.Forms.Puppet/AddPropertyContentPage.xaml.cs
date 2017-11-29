@@ -1,15 +1,18 @@
 ﻿using System;
-using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace Contoso.Forms.Puppet
 {
     [Android.Runtime.Preserve(AllMembers = true)]
-    public partial class AddPropertyContentPage : ContentPage
+    public partial class AddPropertyContentPage
     {
         public event Action<Property> PropertyAdded;
+
         public AddPropertyContentPage()
         {
             InitializeComponent();
+            On<iOS>().SetUseSafeArea(true);
         }
 
         async void AddProperty(object sender, EventArgs e)

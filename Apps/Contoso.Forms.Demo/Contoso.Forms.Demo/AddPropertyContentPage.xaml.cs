@@ -1,4 +1,6 @@
 ﻿using System;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace Contoso.Forms.Demo
 {
@@ -10,18 +12,19 @@ namespace Contoso.Forms.Demo
         public AddPropertyContentPage()
         {
             InitializeComponent();
+            On<iOS>().SetUseSafeArea(true);
         }
 
-        void AddProperty(object sender, EventArgs e)
+        async void AddProperty(object sender, EventArgs e)
         {
             Property addedProperty = new Property(NameEntry.Text, ValueEntry.Text);
             PropertyAdded.Invoke(addedProperty);
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
 
-        void Cancel(object sender, EventArgs e)
+        async void Cancel(object sender, EventArgs e)
         {
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }
