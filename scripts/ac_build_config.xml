@@ -48,7 +48,7 @@
         <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.WindowsDesktop/bin/Release/Microsoft.AppCenter.Crashes.dll"/>
     </group>
     <group id="uwp" folder="UWPAssemblies" buildGroup="windows" nuspecKey="$uwp_dir$">
-        <!-- Non architecture-specific -->
+        <!-- Not architecture-specific -->
         <assembly path="nuget/Microsoft.AppCenter.Crashes.targets"/>
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.UWP/bin/Release/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.UWP/bin/Release/Microsoft.AppCenter.Analytics.dll"/>

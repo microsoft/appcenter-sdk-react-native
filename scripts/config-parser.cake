@@ -103,6 +103,8 @@ class AppCenterModule
     }
 }
 
+// An assembly group contains information about which assemblies to be packaged together
+// for each supported platform
 public class AssemblyGroup
 {
     public static IList<AssemblyGroup> ReadAssemblyGroups(string configFilePath)
@@ -161,6 +163,8 @@ public class AssemblyGroup
     }
 }
 
+// A Build Group contains information on what solutions to build for which platform,
+// and how to do so.
 public class BuildGroup
 {
     private string _platformId;
@@ -180,11 +184,13 @@ public class BuildGroup
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
-                settings.SetConfiguration(_configuration);
                 if (_platform != null)
                 {
-                    // Use this instead of set target platform
-                    settings.WithProperty("Platform", "x86");
+                    settings.SetConfiguration(_configuration).WithProperty("Platform", _platform);
+                }
+                else
+                {
+                    settings.Configuration = _configuration;
                 }
             });
         }
@@ -193,19 +199,15 @@ public class BuildGroup
     public BuildGroup(string platformId, string configFilePath)
     {
         _platformId = platformId;
-        XmlReader reader = XmlReader.Create(configFilePath);
+        var reader = XmlReader.Create(configFilePath);
         _builds = new List<BuildConfig>();
         while (reader.Read())
         {
             if (reader.Name == "buildGroup")
             {
-                XmlDocument buildGroup = new XmlDocument();
+                var buildGroup = new XmlDocument();
                 var node = buildGroup.ReadNode(reader);
-                if (buildGroup.Attributes.GetNamedItem("platformId").Value == _platformId)
-                {
-                    ApplyBuildGroupNode(buildGroup);
-                    return;
-                }
+                ApplyBuildGroupNode(node);
             }
         }
     }
@@ -231,12 +233,10 @@ public class BuildGroup
             var childNode = buildGroup.ChildNodes.Item(i);
             if (childNode.Name == "build")
             {
-                var platform = buildGroup.Attributes.GetNamedItem("platform")?.Value;
-                var configuration = buildGroup.Attributes.GetNamedItem("configuration")?.Value;
+                var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
+                var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
                 _builds.Add(new BuildConfig(platform, configuration));
             }
         }
     }
 }
-
-

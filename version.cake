@@ -1,6 +1,7 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=Cake.Incubator
+#load "scripts/utility.cake"
 
 using System.Net;
 using System.Text;
@@ -215,7 +216,6 @@ string GetLatestNuGetVersion()
     return tag;
 }
 
-
 void IncrementManifestVersionCode(FilePath manifest)
 {
     var versionCodePattern = "android:versionCode=\"[^\"]+\"";
@@ -299,20 +299,6 @@ string GetPaddedString(int num, int numDigits)
         numString = "0" + numString;
     }
     return numString;
-}
-
-void DeleteDirectoryIfExists(string directoryName)
-{
-    if (DirectoryExists(directoryName))
-    {
-        DeleteDirectory(directoryName, true);
-    }
-}
-
-void CleanDirectory(string directoryName)
-{
-    DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
 }
 
 // Run "ReplaceRegexInFiles" methods but exclude all file paths containing the strings in "excludeFilePathsContaining"

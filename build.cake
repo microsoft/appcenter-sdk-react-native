@@ -3,7 +3,6 @@
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=Cake.Incubator
 #addin nuget:?package=Cake.Xamarin
-#addin "Cake.AzureStorage"
 #load "scripts/utility.cake"
 #load "scripts/config-parser.cake"
 
@@ -146,12 +145,6 @@ Task("Externals").IsDependentOn("Externals-Ios").IsDependentOn("Externals-Androi
 // Main Task.
 Task("Default").IsDependentOn("NuGet").IsDependentOn("RemoveTemporaries");
 
-// Build tests
-Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
-{
-    MSBuild("./Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
-});
-
 // Pack NuGets for appropriate platform
 Task("NuGet")
     .IsDependentOn("PrepareAssemblies")
@@ -195,111 +188,6 @@ Task("PrepareNuspecsForVSTS").Does(()=>
         ReplaceTextInFiles(NuspecFolder + module.MainNuspecFilename, "$version$", module.NuGetVersion);
     }
 });
-
-// Upload assemblies to Azure storage
-Task("UploadAssemblies")
-    .IsDependentOn("PrepareAssemblies")
-    .Does(()=>
-{
-    // The environment variables below must be set for this task to succeed
-    var apiKey = EnvironmentVariable("AZURE_STORAGE_ACCESS_KEY");
-    var accountName = EnvironmentVariable("AZURE_STORAGE_ACCOUNT");
-
-    foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
-    {
-        var destinationFolder =  DownloadedAssembliesFolder + "/" + assemblyGroup.Folder;
-        CleanDirectory(destinationFolder);
-        CopyFiles(assemblyGroup.AssemblyPaths, destinationFolder);
-    }
-
-    Information("Uploading to blob " + AssemblyPlatformPaths.UploadAssembliesZip);
-    Zip(DownloadedAssembliesFolder, AssemblyPlatformPaths.UploadAssembliesZip);
-    AzureStorage.UploadFileToBlob(new AzureStorageSettings
-    {
-        AccountName = accountName,
-        ContainerName = "sdk",
-        BlobName = AssemblyPlatformPaths.UploadAssembliesZip,
-        Key = apiKey,
-        UseHttps = true
-    }, AssemblyPlatformPaths.UploadAssembliesZip);
-
-}).OnError(HandleError).Finally(()=>RunTarget("RemoveTemporaries"));
-
-// Download assemblies from azure storage
-Task("DownloadAssemblies").Does(()=>
-{
-    Information("Fetching assemblies from url: " + AssemblyPlatformPaths.DownloadUrl);
-    CleanDirectory(DownloadedAssembliesFolder);
-    DownloadFile(AssemblyPlatformPaths.DownloadUrl, AssemblyPlatformPaths.DownloadAssembliesZip);
-    Unzip(AssemblyPlatformPaths.DownloadAssembliesZip, DownloadedAssembliesFolder);
-    DeleteFiles(AssemblyPlatformPaths.DownloadAssembliesZip);
-    Information("Successfully downloaded assemblies.");
-}).OnError(HandleError);
-
-Task("MergeAssemblies")
-    .IsDependentOn("PrepareAssemblies")
-    .IsDependentOn("DownloadAssemblies")
-    .Does(()=>
-{
-    Information("Beginning complete package creation...");
-
-    // Copy the downloaded files to their proper locations so the structure is as if
-    // the downloaded assemblies were built locally (for the nuspecs to work)
-    foreach (var downloadGroup in AssemblyPlatformPaths.DownloadAssemblyGroups)
-    {
-        var assemblyFolder = downloadGroup.Folder;
-        CleanDirectory(assemblyFolder);
-        var files = GetFiles(DownloadedAssembliesFolder + "/" + assemblyFolder + "/*");
-        CopyFiles(files, assemblyFolder);
-    }
-
-    // Create NuGet packages
-    foreach (var module in AppCenterModules)
-    {
-        var specCopyName = Statics.TemporaryPrefix + "spec_copy.nuspec";
-
-        // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
-        CopyFile("nuget/" + module.MainNuspecFilename, specCopyName);
-        ReplaceAssemblyPathsInNuspecs(specCopyName);
-
-        // Create the NuGet package
-        Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
-        NuGetPack(File(specCopyName), new NuGetPackSettings {
-            Verbosity = NuGetVerbosity.Detailed,
-            Version = module.NuGetVersion,
-            RequireLicenseAcceptance = true
-        });
-
-        // Clean up
-        DeleteFiles(specCopyName);
-    }
-    CleanDirectory("output");
-    MoveFiles("*.nupkg", "output");
-}).OnError(HandleError).Finally(()=>RunTarget("RemoveTemporaries"));
-
-Task("TestApps").IsDependentOn("UITest").Does(() =>
-{
-    // Build and package the test applications
-    MSBuild("./Tests/iOS/Contoso.Forms.Test.iOS.csproj", settings => settings.SetConfiguration("Release")
-      .WithTarget("Build")
-      .WithProperty("Platform", "iPhone")
-      .WithProperty("BuildIpa", "true")
-      .WithProperty("OutputPath", "bin/iPhone/Release/")
-      .WithProperty("AllowUnsafeBlocks", "true"));
-    AndroidPackage("./Tests/Droid/Contoso.Forms.Test.Droid.csproj", false, c => c.Configuration = "Release");
-}).OnError(HandleError);
-
-Task("RestoreTestPackages").Does(() =>
-{
-    NuGetRestore("./AppCenter-SDK-Test.sln");
-    NuGetUpdate("./Tests/Contoso.Forms.Test/packages.config");
-    NuGetUpdate("./Tests/iOS/packages.config");
-    NuGetUpdate("./Tests/Droid/packages.config", new NuGetUpdateSettings {
-
-        // workaround for https://stackoverflow.com/questions/44861995/xamarin-build-error-building-Target
-        Source = new string[] { EnvironmentVariable("NUGET_URL") }
-    });
-}).OnError(HandleError);
 
 Task("PrepareAssemblyPathsVSTS").Does(()=>
 {
