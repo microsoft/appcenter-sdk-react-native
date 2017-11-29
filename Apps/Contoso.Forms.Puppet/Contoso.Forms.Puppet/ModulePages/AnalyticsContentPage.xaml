@@ -5,21 +5,21 @@
              x:Class="Contoso.Forms.Puppet.AnalyticsContentPage">
     <TableView Intent="Form">
         <TableSection Title="Analytics Settings">
-            <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" OnChanged="UpdateEnabled"/>
+            <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" OnChanged="UpdateEnabled" />
         </TableSection>
         <TableSection Title="Tracking Events">
-            <EntryCell Label="Event Name" HorizontalTextAlignment="Start" x:Name="EventNameCell"/>
+            <EntryCell Label="Event Name" HorizontalTextAlignment="Start" x:Name="EventNameCell" />
             <ViewCell Tapped="PropertiesCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="Properties" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                    <Label Text="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" x:Name="NumPropertiesLabel" />
+                    <Label Text="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="NumPropertiesLabel" />
                 </StackLayout>
             </ViewCell>
             <ViewCell Tapped="AddProperty">
-                <Button Text="Add Property" Clicked="AddProperty" InputTransparent="true"/>
+                <Button Text="Add Property" Clicked="AddProperty" InputTransparent="true" />
             </ViewCell>
             <ViewCell Tapped="TrackEvent">
-                <Button Text="Track Event" InputTransparent="true" Clicked="TrackEvent"/>
+                <Button Text="Track Event" InputTransparent="true" Clicked="TrackEvent" FontAttributes="Bold" />
             </ViewCell>
         </TableSection>
     </TableView>
