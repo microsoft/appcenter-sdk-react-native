@@ -117,6 +117,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Rum.And
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Rum.Shared", "SDK\AppCenterRum\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.shproj", "{8E7B80C4-D22A-4F80-A7AE-E3882E72FFB3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Crashes.Shared.Targets", "SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared.Targets\Microsoft.AppCenter.Crashes.Shared.Targets.shproj", "{CAE55C79-1601-400D-86BF-03AB8CC5B8B9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
@@ -2163,6 +2165,7 @@ Global
 		{7E130457-B427-4043-A5A2-9484CB5809BF} = {96552695-58F3-472E-8654-52ECE3EE5CF2}
 		{7F7FA7ED-1386-41B5-A11E-656B7F85A8F9} = {96552695-58F3-472E-8654-52ECE3EE5CF2}
 		{8E7B80C4-D22A-4F80-A7AE-E3882E72FFB3} = {96552695-58F3-472E-8654-52ECE3EE5CF2}
+		{CAE55C79-1601-400D-86BF-03AB8CC5B8B9} = {7FAAA086-4453-4B62-AD9A-2E2ED216E3C4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
