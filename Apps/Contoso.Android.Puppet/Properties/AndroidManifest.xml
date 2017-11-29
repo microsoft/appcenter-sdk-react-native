@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.puppet" android:versionCode="42" android:versionName="1.0.2-SNAPSHOT" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
-	<application android:label="SXPuppet" android:icon="@drawable/Icon" android:theme="@style/PuppetTheme" />
+	<application android:label="SXPuppet" android:icon="@drawable/Icon" android:theme="@style/PuppetTheme">
+		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
+		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="${applicationId}" />
+			</intent-filter>
+		</receiver>
+	</application>
 </manifest>

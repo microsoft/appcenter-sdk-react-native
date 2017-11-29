@@ -18,7 +18,7 @@
 	<string name="CrashesEnabled">Crashes Enabled</string>
 	<string name="TestCrash">Generate Test Crash</string>
 	<string name="PushEnabled">Push Enabled</string>
-    <string name="FirebaseAnalyticsEnabled">Firebase Analytics Enabled</string>
+	<string name="FirebaseAnalyticsEnabled">Firebase Analytics Enabled</string>
 	<string name="DivideByZero">Divide 42 by 0</string>
 	<string name="CrashWithAggregateException">Crash With Aggregate Exception</string>
 	<string name="CrashWithNullReferenceException">Crash With NullReferenceException</string>
