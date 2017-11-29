@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -23,11 +22,23 @@ namespace Contoso.Forms.Puppet
         private const string AndroidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
         private const string IosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
 
+        static App()
+        {
+            // Set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
+        }
+
         public App()
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
+        }
 
+        protected override void OnStart()
+        {
             AppCenterLog.Assert(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenterLog.Info(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
@@ -79,15 +90,6 @@ namespace Contoso.Forms.Puppet
             {
                 AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
             });
-        }
-
-        static App()
-        {
-            // Set event handlers in static constructor to avoid duplication
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
-            Push.PushNotificationReceived += PrintNotification;
         }
 
         static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)

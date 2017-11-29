@@ -67,7 +67,6 @@ namespace Contoso.Forms.Puppet.Droid
                 cursor?.Close();
             }
 
-
             // Mime
             string mime = null;
             if (uri.Scheme == ContentResolver.SchemeContent)

@@ -1,6 +1,6 @@
-﻿using Microsoft.AppCenter;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.AppCenter;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -70,7 +70,7 @@ namespace Contoso.Forms.Puppet
             ((NavigationPage)Application.Current.MainPage).PushAsync(page);
         }
 
-        void WriteLog(object sender, System.EventArgs e)
+        void WriteLog(object sender, EventArgs e)
         {
             string message = LogMessageEntryCell.Text;
             string tag = LogTagEntryCell.Text;
