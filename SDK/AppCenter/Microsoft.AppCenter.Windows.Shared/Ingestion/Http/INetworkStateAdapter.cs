@@ -9,5 +9,4 @@ namespace Microsoft.AppCenter.Ingestion.Http
         event EventHandler NetworkStatusChanged;
     }
 }
-
  
