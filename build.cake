@@ -54,7 +54,7 @@ var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "1.0.1-2+5f63cdf";
+var ANDROID_SDK_VERSION = "1.0.1-19+08f54bc";
 var IOS_SDK_VERSION = "1.0.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
