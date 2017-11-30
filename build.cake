@@ -47,9 +47,6 @@ var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
 // Task Target for build
 var Target = Argument("Target", Argument("t", "Default"));
 
-// Storage id to append to upload and download file names in storage
-var StorageId = Argument("StorageId", Argument("storage-id", ""));
-
 var ConfigFile = "scripts/ac_build_config.xml";
 var NuspecFolder = "nuget";
 
@@ -57,9 +54,9 @@ var NuspecFolder = "nuget";
 Setup(context =>
 {
     // Get assembly paths.
-    var uploadAssembliesZip = (IsRunningOnUnix() ? MacAssembliesZip : WindowsAssembliesZip) + StorageId;
-    var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl) + StorageId;
-    var downloadAssembliesZip = (IsRunningOnUnix() ? WindowsAssembliesZip : MacAssembliesZip) + StorageId;
+    var uploadAssembliesZip = (IsRunningOnUnix() ? MacAssembliesZip : WindowsAssembliesZip);
+    var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl);
+    var downloadAssembliesZip = (IsRunningOnUnix() ? WindowsAssembliesZip : MacAssembliesZip);
     AssemblyPlatformPaths = new PlatformPaths(uploadAssembliesZip, downloadAssembliesZip, downloadUrl, ConfigFile);
 
     // Get current version and get modules.
@@ -192,7 +189,7 @@ Task("PrepareNuspecsForVSTS").Does(()=>
 {
     foreach (var module in AppCenterModules)
     {
-        ReplaceTextInFiles(NuspecFolder + module.MainNuspecFilename, "$version$", module.NuGetVersion);
+        ReplaceTextInFiles(System.IO.Path.Combine(NuspecFolder, module.MainNuspecFilename), "$version$", module.NuGetVersion);
     }
 });
 
