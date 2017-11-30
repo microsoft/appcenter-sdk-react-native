@@ -144,9 +144,13 @@ public class AssemblyGroup
         {
             Download = parent.Download;
         }
-        string parentFolder = parent?.Folder ?? string.Empty;
+        var parentFolder = parent?.Folder ?? string.Empty;
         Folder = groupNode.Attributes.GetNamedItem("folder")?.Value ?? string.Empty;
-        Folder = Statics.TemporaryPrefix + System.IO.Path.Combine(parentFolder, Folder);
+        Folder = System.IO.Path.Combine(parentFolder, Folder);
+        if (!Folder.StartsWith(Statics.TemporaryPrefix))
+        {
+            Folder = Statics.TemporaryPrefix + Folder;
+        }
         for (int i = 0; i < groupNode.ChildNodes.Count; ++i)
         {
             var childNode = groupNode.ChildNodes.Item(i);

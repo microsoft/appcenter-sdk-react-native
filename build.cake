@@ -82,11 +82,18 @@ Task("Build")
     buildGroup.ExecuteBuilds();
 }).OnError(HandleError);
 
-Task("PrepareAssemblies").IsDependentOn("Build").Does(()=>
+Task("PrepareAssemblies").IsDependentOn("Build")
+.Does(()=>
 {
+    // Clean all directories before copying. Doing so before each operation
+    // could cause subdirectories that are created first to be deleted.
     foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
     {
-        CopyFiles(assemblyGroup.AssemblyPaths, assemblyGroup.Folder);
+        CleanDirectory(assemblyGroup.Folder);
+    }
+    foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
+    {
+        CopyFiles(assemblyGroup.AssemblyPaths, assemblyGroup.Folder, false);
     }
 }).OnError(HandleError);
 

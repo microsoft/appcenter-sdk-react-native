@@ -20,6 +20,10 @@ void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = t
     {
         CleanDirectory(targetDirectory);
     }
+    else if (!DirectoryExists(targetDirectory))
+    {
+        CreateDirectory(targetDirectory);
+    }
     foreach (var file in files)
     {
         CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
