@@ -8,6 +8,7 @@
 
 using System.Net;
 using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
@@ -223,7 +224,8 @@ void ReplaceAssemblyPathsInNuspecs(string nuspecPath)
 {
     // For the Tuples, Item1 is variable name, Item2 is variable value.
     var assemblyPathVars = new List<Tuple<string, string>>();
-    foreach (var group in AssemblyPlatformPaths.UploadAssemblyGroups)
+    var allAssemblyGroups = AssemblyPlatformPaths.UploadAssemblyGroups.Union(AssemblyPlatformPaths.DownloadAssemblyGroups);
+    foreach (var group in allAssemblyGroups)
     {
         if (group.NuspecKey == null)
         {
