@@ -126,6 +126,12 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url  "https://dl.bintray.com/vsappcenter/appcenter-snapshot"
+    }
+}
+
 dependencies {
     compile project(':appcenter-push')
     compile project(':appcenter-crashes')
