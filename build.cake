@@ -188,9 +188,7 @@ Task("NuGet")
 }).OnError(HandleError);
 
 // Replace version placeholder in nuspecs
-Task("PrepareNuspecsForVSTS")
-    .IsDependentOn("Version")
-    .Does(()=>
+Task("PrepareNuspecsForVSTS").Does(()=>
 {
     foreach (var module in AppCenterModules)
     {
