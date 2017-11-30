@@ -187,8 +187,10 @@ Task("NuGet")
     MoveFiles("Microsoft.AppCenter*.nupkg", "output");
 }).OnError(HandleError);
 
-// Add version to nuspecs for vsts (the release definition does not have the solutions and thus cannot extract a version from them)
-Task("PrepareNuspecsForVSTS").Does(()=>
+// Replace version placeholder in nuspecs
+Task("PrepareNuspecsForVSTS")
+    .IsDependentOn("Version")
+    .Does(()=>
 {
     foreach (var module in AppCenterModules)
     {
