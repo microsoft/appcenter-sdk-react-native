@@ -57,7 +57,6 @@ Setup(context =>
     var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl);
     var downloadAssembliesZip = (IsRunningOnUnix() ? WindowsAssembliesZip : MacAssembliesZip);
     AssemblyPlatformPaths = new PlatformPaths(uploadAssembliesZip, downloadAssembliesZip, downloadUrl);
-
     AppCenterModules = AppCenterModule.ReadAppCenterModules(NuspecFolder, VersionReader.SdkVersion);
 });
 
@@ -84,10 +83,6 @@ Task("PrepareAssemblies").IsDependentOn("Build")
         CopyFiles(assemblyGroup.AssemblyPaths, assemblyGroup.Folder, false);
     }
 }).OnError(HandleError);
-
-// Task dependencies for binding each platform.
-Task("Bindings-Android").IsDependentOn("Externals-Android");
-Task("Bindings-Ios").IsDependentOn("Externals-Ios");
 
 // Downloading Android binaries.
 Task("Externals-Android")
