@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -21,6 +19,12 @@ namespace Contoso.Android.Puppet
     public class MainActivity : AppCompatActivity
     {
         const string LogTag = "AppCenterXamarinPuppet";
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            Push.PushNotificationReceived -= PrintNotification;
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -65,10 +69,9 @@ namespace Contoso.Android.Puppet
                 Push.EnableFirebaseAnalytics();
             }
 
-            Push.PushNotificationReceived -= PrintNotification;
             Push.PushNotificationReceived += PrintNotification;
 
-            AppCenter.Start("01bf4b21-8881-428d-bbe2-0ebf5b168270", typeof(Analytics), typeof(Crashes),
+            AppCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes),
                             typeof(Push), typeof(Distribute));
 
             AppCenter.IsEnabledAsync().ContinueWith(enabled =>
@@ -92,18 +95,15 @@ namespace Contoso.Android.Puppet
 
         void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
-            Application.SynchronizationContext.Post(d =>
+            var alertDialog = new AlertDialog.Builder(this, Resource.Style.AppCompatDialogStyle);
+            alertDialog.SetTitle(e.Title);
+            var message = e.Message;
+            if (e.CustomData != null && e.CustomData.Count > 0)
             {
-                var alertDialog = new AlertDialog.Builder(this, Resource.Style.AppCompatDialogStyle);
-                alertDialog.SetTitle(e.Title);
-                var message = e.Message;
-                if (e.CustomData != null && e.CustomData.Count > 0)
-                {
-                    message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
-                }
-                alertDialog.SetMessage(message);
-                alertDialog.Show();
-            }, null);
+                message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+            }
+            alertDialog.SetMessage(message);
+            alertDialog.Show();
         }
 
         void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
