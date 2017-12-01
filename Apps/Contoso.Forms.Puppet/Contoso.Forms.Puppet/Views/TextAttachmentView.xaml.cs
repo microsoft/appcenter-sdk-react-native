@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace Contoso.Forms.Puppet.Views
 {
@@ -14,7 +12,6 @@ namespace Contoso.Forms.Puppet.Views
         public TextAttachmentView()
         {
             InitializeComponent();
-            On<iOS>().SetUseSafeArea(true);
         }
 
         protected override void OnAppearing()
