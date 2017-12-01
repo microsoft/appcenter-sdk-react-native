@@ -4,10 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Contoso.Forms.Demo.CrashesContentPage">
     <TableView Intent="Form">
-        <TableSection>
+        <TableSection Title="Crashes Settings">
             <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
+            <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell"/>
         </TableSection>
-        <TableSection>
+        <TableSection Title="Attachments">
+            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment"/>
+            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
+        </TableSection>
+        <TableSection Title="Test Crashes">
             <ViewCell Tapped="TestCrash">
                 <Button Text="Generate Test Crash" InputTransparent="true" Clicked="TestCrash"/>
             </ViewCell>

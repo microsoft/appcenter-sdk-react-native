@@ -1,6 +1,4 @@
 ﻿using System;
-using Xamarin.Forms.PlatformConfiguration;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace Contoso.Forms.Demo
 {
@@ -12,7 +10,6 @@ namespace Contoso.Forms.Demo
         public AddPropertyContentPage()
         {
             InitializeComponent();
-            On<iOS>().SetUseSafeArea(true);
         }
 
         async void AddProperty(object sender, EventArgs e)

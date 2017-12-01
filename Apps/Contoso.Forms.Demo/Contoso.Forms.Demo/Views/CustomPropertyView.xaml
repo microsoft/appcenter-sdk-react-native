@@ -4,9 +4,18 @@
              x:Class="Contoso.Forms.Demo.CustomPropertyView">
     <Frame OutlineColor="DarkGray">
         <StackLayout Orientation="Vertical">
-            <Entry x:Name="PropertyKey"/>
-            <Picker x:Name="PropertyType" SelectedIndexChanged="PropertyType_SelectedIndexChanged"/>
-            <StackLayout x:Name="PropertyValueHolder"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Key" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
+                <Entry HorizontalOptions="FillAndExpand" x:Name="PropertyKey" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Type" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
+                <Picker HorizontalOptions="FillAndExpand" x:Name="PropertyType" SelectedIndexChanged="PropertyType_SelectedIndexChanged" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" IsVisible="false" x:Name="PropertyValue">
+                <Label Text="Value" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
+                <StackLayout HorizontalOptions="FillAndExpand" x:Name="PropertyValueHolder" />
+            </StackLayout>
         </StackLayout>
     </Frame>
 </ContentView>

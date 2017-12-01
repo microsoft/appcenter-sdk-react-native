@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.Forms.Demo.AppCenterContentPage">
     <TableView Intent="Form">
-        <TableSection>
+        <TableSection Title="AppCenter Settings">
             <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
         </TableSection>
     </TableView>
