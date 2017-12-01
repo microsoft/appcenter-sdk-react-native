@@ -2,6 +2,13 @@
 // for each supported platform
 public class AssemblyGroup
 {
+    public string NuspecKey => $"${Id}_dir$";
+    public string Id { get; set; }
+    public string Folder { get; set; }
+    public IList<string> AssemblyPaths { get; set; }
+    public IList<AssemblyGroup> Subgroups { get; set; }
+    public bool Download { get; set; }
+
     public static IList<AssemblyGroup> ReadAssemblyGroups()
     {
         XmlReader reader = ConfigFile.CreateReader();
@@ -18,12 +25,6 @@ public class AssemblyGroup
         return groups;
     }
 
-    public string NuspecKey => $"${Id}_dir$";
-    public string Id { get; set; }
-    public string Folder { get; set; }
-    public IList<string> AssemblyPaths { get; set; }
-    public IList<AssemblyGroup> Subgroups { get; set; }
-    public bool Download { get; set; }
     private AssemblyGroup(XmlNode groupNode, AssemblyGroup parent = null)
     {
         AssemblyPaths = new List<string>();
