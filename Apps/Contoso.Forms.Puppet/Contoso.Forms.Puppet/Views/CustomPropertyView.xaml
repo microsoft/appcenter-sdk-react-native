@@ -1,14 +1,21 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.Forms.Puppet.CustomPropertyView">
-  <ContentView.Content>
-        <Frame OutlineColor="DarkGray">
-            <StackLayout Orientation="Vertical">
-                <Entry x:Name="PropertyKey"></Entry>
-                <Picker x:Name="PropertyType" SelectedIndexChanged="PropertyType_SelectedIndexChanged"></Picker>
-                <StackLayout x:Name="PropertyValueHolder"/>
+    <Frame OutlineColor="DarkGray">
+        <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Key" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
+                <Entry HorizontalOptions="FillAndExpand" x:Name="PropertyKey" />
             </StackLayout>
-        </Frame>
-    </ContentView.Content>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Type" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
+                <Picker HorizontalOptions="FillAndExpand" x:Name="PropertyType" SelectedIndexChanged="PropertyType_SelectedIndexChanged" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" IsVisible="false" x:Name="PropertyValue">
+                <Label Text="Value" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
+                <StackLayout HorizontalOptions="FillAndExpand" x:Name="PropertyValueHolder" />
+            </StackLayout>
+        </StackLayout>
+    </Frame>
 </ContentView>

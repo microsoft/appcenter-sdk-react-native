@@ -24,7 +24,8 @@ namespace Contoso.Forms.Puppet
             {
                 properties.Clear(PropertyKey.Text);
             }
-            else {
+            else
+            {
                 View view = PropertyValueHolder.Children[0];
                 switch ((PropertyTypes)PropertyType.SelectedIndex)
                 {
@@ -38,7 +39,8 @@ namespace Contoso.Forms.Puppet
                         }
                         break;
                     case PropertyTypes.DateTime:
-                        DateTime date = new DateTime(DatePicker.Date.Year, DatePicker.Date.Month, DatePicker.Date.Day, TimePicker.Time.Hours, TimePicker.Time.Minutes, TimePicker.Time.Seconds);
+                        DateTime date = new DateTime(DatePicker.Date.Year, DatePicker.Date.Month, DatePicker.Date.Day,
+                                                     TimePicker.Time.Hours, TimePicker.Time.Minutes, TimePicker.Time.Seconds);
                         properties.Set(PropertyKey.Text, date);
                         break;
                     case PropertyTypes.String:
@@ -60,15 +62,18 @@ namespace Contoso.Forms.Puppet
         private void PropertyType_SelectedIndexChanged(object sender, EventArgs e)
         {
             PropertyValueHolder.Children.Clear();
+            PropertyValue.IsVisible = false;
             switch ((PropertyTypes) PropertyType.SelectedIndex)
             {
                 case PropertyTypes.Boolean:
                     PropertyValueHolder.Children.Add(new Switch());
+                    PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.Number:
                     Editor NumberEditor = new Editor() { Keyboard = Keyboard.Numeric};
                     NumberEditor.TextChanged += NumberEditor_TextChanged;
                     PropertyValueHolder.Children.Add(NumberEditor);
+                    PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.DateTime:
                     StackLayout DateTimeLayout = new StackLayout() { Orientation = StackOrientation.Vertical};
@@ -77,9 +82,11 @@ namespace Contoso.Forms.Puppet
                     TimePicker = new TimePicker() { Time = DateTime.Now.TimeOfDay };
                     DateTimeLayout.Children.Add(TimePicker);
                     PropertyValueHolder.Children.Add(DateTimeLayout);
+                    PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.String:
                     PropertyValueHolder.Children.Add(new Editor());
+                    PropertyValue.IsVisible = true;
                     break;
             }
         }

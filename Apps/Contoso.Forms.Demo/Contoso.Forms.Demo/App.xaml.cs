@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -180,11 +180,36 @@ namespace Contoso.Forms.Demo
 
         IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
         {
-            return new ErrorAttachmentLog[]
+            var attachments = new List<ErrorAttachmentLog>();
+            if (Current.Properties.TryGetValue(CrashesContentPage.TextAttachmentKey, out var textAttachment) &&
+                textAttachment is string text)
             {
-                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
-                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
-            };
+                var attachment = ErrorAttachmentLog.AttachmentWithText(text, "hello.txt");
+                attachments.Add(attachment);
+            }
+            if (Current.Properties.TryGetValue(CrashesContentPage.FileAttachmentKey, out var fileAttachment) &&
+                fileAttachment is string file)
+            {
+                var filePicker = DependencyService.Get<IFilePicker>();
+                if (filePicker != null)
+                {
+                    try
+                    {
+                        var result = filePicker.ReadFile(file);
+                        if (result != null)
+                        {
+                            var attachment = ErrorAttachmentLog.AttachmentWithBinary(result.Item1, result.Item2, result.Item3);
+                            attachments.Add(attachment);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        AppCenterLog.Warn(LogTag, "Couldn't read file attachment", e);
+                        Current.Properties.Remove(CrashesContentPage.FileAttachmentKey);
+                    }
+                }
+            }
+            return attachments;
         }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)

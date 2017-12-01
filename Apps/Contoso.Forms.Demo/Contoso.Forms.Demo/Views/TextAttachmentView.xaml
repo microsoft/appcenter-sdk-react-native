@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Contoso.Forms.Demo.Views.TextAttachmentView">
+    <StackLayout Orientation="Vertical" VerticalOptions="StartAndExpand" Padding="20">
+        <Label Text="Text Attachment" HorizontalOptions="Center" FontAttributes="Bold" Margin="10" />
+        <Frame Padding="5">
+            <Editor x:Name="Text" HeightRequest="100" />
+        </Frame>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" >
+            <Button WidthRequest="100" Text="OK" Clicked="OK" FontAttributes="Bold" />
+            <Button WidthRequest="100" Text="Cancel" Clicked="Cancel" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

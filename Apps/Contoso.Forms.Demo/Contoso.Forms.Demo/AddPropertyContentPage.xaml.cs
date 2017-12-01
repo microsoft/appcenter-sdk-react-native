@@ -12,16 +12,16 @@ namespace Contoso.Forms.Demo
             InitializeComponent();
         }
 
-        void AddProperty(object sender, EventArgs e)
+        async void AddProperty(object sender, EventArgs e)
         {
             Property addedProperty = new Property(NameEntry.Text, ValueEntry.Text);
             PropertyAdded.Invoke(addedProperty);
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
 
-        void Cancel(object sender, EventArgs e)
+        async void Cancel(object sender, EventArgs e)
         {
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }

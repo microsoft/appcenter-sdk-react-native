@@ -76,5 +76,7 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Select photo for attachment</string>
 </dict>
 </plist>
