@@ -54,7 +54,7 @@ var PCL_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "PCLAssemblies";
 var NETSTANDARD_ASSEMBLIES_FOLDER = TEMPORARY_PREFIX + "NETStandardAssemblies";
 
 // Native SDK versions
-var ANDROID_SDK_VERSION = "1.0.1-19+08f54bc";
+var ANDROID_SDK_VERSION = "1.0.1-20+46e86e4";
 var IOS_SDK_VERSION = "1.0.0";
 
 var PLATFORM_PATHS = new PlatformPaths();
@@ -115,6 +115,7 @@ class PlatformPaths
 
     // The name of the zip file to download
     public string DownloadAssembliesZip {get; set;}
+
     // The paths of downloaded assembly folders
     public List<string> DownloadAssemblyFolders {get; set;}
 
@@ -311,16 +312,20 @@ Task("Bindings-Ios").IsDependentOn("Externals-Ios");
 Task("Externals-Android")
     .Does(() =>
 {
-    CleanDirectory("./externals/android");
+    CleanDirectory("externals/android");
 
     // Download zip file.
-    DownloadFile(ANDROID_URL, "./externals/android/android.zip");
-    Unzip("./externals/android/android.zip", "./externals/android/");
+    DownloadFile(ANDROID_URL, "externals/android/android.zip");
+    Unzip("externals/android/android.zip", "externals/android");
 
     // Move binaries to externals/android so that linked files don't have versions
     // in their paths
     var files = GetFiles("./externals/android/*/*");
-    CopyFiles(files, "./externals/android/");
+    CopyFiles(files, "externals/android");
+    Unzip("externals/android/appcenter-push-release.aar", "externals/android/appcenter-push-release");
+    DeleteFile("externals/android/appcenter-push-release.aar");
+    CopyFiles("SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/Properties/AndroidManifest.xml", "externals/android/appcenter-push-release");
+    Zip("externals/android/appcenter-push-release", "externals/android/appcenter-push-release.aar");
 }).OnError(HandleError);
 
 // Downloading iOS binaries.

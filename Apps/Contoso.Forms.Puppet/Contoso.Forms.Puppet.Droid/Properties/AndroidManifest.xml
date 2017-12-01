@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="43" android:versionName="1.0.2-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="26" />
-	<application android:label="ACFPuppet">
-	</application>
+	<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+	<permission android:name="${applicationId}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<application android:label="ACFPuppet" />
 </manifest>
