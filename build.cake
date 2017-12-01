@@ -4,7 +4,7 @@
 #addin nuget:?package=Cake.Incubator
 #addin nuget:?package=Cake.Xamarin
 #load "scripts/utility.cake"
-#load "scripts/config-parser.cake"
+#load "scripts/configuration/config-parser.cake"
 
 using System.Net;
 using System.Text;
@@ -15,10 +15,6 @@ using System.Collections.Generic;
 var DownloadedAssembliesFolder = Statics.TemporaryPrefix + "DownloadedAssemblies";
 var MacAssembliesZip = Statics.TemporaryPrefix + "MacAssemblies.zip";
 var WindowsAssembliesZip = Statics.TemporaryPrefix + "WindowsAssemblies.zip";
-
-// Native SDK versions
-var AndroidSdkVersion = "1.0.0";
-var IosSdkVersion = "1.0.0";
 
 // Contains all assembly paths and how to use them
 PlatformPaths AssemblyPlatformPaths;
@@ -40,35 +36,33 @@ var AndroidExternals = $"{ExternalsDirectory}/android";
 var IosExternals = $"{ExternalsDirectory}/ios";
 
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
-var AndroidUrl = $"{SdkStorageUrl}AppCenter-SDK-Android-{AndroidSdkVersion}.zip";
-var IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{IosSdkVersion}.zip";
 var MacAssembliesUrl = SdkStorageUrl + MacAssembliesZip;
 var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
+string AndroidUrl = null;
+string IosUrl = null;
 
 // Task Target for build
 var Target = Argument("Target", Argument("t", "Default"));
 
-var ConfigFile = "scripts/ac_build_config.xml";
 var NuspecFolder = "nuget";
 
 // Prepare the platform paths for downloading, uploading, and preparing assemblies
 Setup(context =>
 {
+    // Need to read versions before setting url values
+VersionReader.ReadVersions();
+
+    AndroidUrl = $"{SdkStorageUrl}AppCenter-SDK-Android-{VersionReader.AndroidVersion}.zip";
+    IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{VersionReader.IosVersion}.zip";
+
+
     // Get assembly paths.
     var uploadAssembliesZip = (IsRunningOnUnix() ? MacAssembliesZip : WindowsAssembliesZip);
     var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl);
     var downloadAssembliesZip = (IsRunningOnUnix() ? WindowsAssembliesZip : MacAssembliesZip);
-    AssemblyPlatformPaths = new PlatformPaths(uploadAssembliesZip, downloadAssembliesZip, downloadUrl, ConfigFile);
+    AssemblyPlatformPaths = new PlatformPaths(uploadAssembliesZip, downloadAssembliesZip, downloadUrl);
 
-    // Get current version and get modules.
-    var projectPath = "SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj";
-    string version = null;
-    if (System.IO.File.Exists(projectPath))
-    {
-        var project = ParseProject(projectPath, configuration: "Release");
-        version = project.NetCore.Version;
-    }
-    AppCenterModules = AppCenterModule.ReadAppCenterModules(ConfigFile, NuspecFolder, version);
+    AppCenterModules = AppCenterModule.ReadAppCenterModules(NuspecFolder, VersionReader.SdkVersion);
 });
 
 Task("Build")
@@ -76,7 +70,7 @@ Task("Build")
     .Does(() =>
 {
     var platformId = IsRunningOnUnix() ? "mac" : "windows";
-    var buildGroup = new BuildGroup(platformId, ConfigFile);
+    var buildGroup = new BuildGroup(platformId);
     buildGroup.ExecuteBuilds();
 }).OnError(HandleError);
 
@@ -220,6 +214,8 @@ Task("NugetPackVSTS").Does(()=>
     }
 }).OnError(HandleError);
 
+// In VSTS, the assembly path environment variable names should be in the format
+// "{uppercase group id}_ASSEMBLY_PATH_NUSPEC"
 void ReplaceAssemblyPathsInNuspecs(string nuspecPath)
 {
     // For the Tuples, Item1 is variable name, Item2 is variable value.
@@ -232,8 +228,8 @@ void ReplaceAssemblyPathsInNuspecs(string nuspecPath)
             continue;
         }
         var environmentVariableName = group.Id.ToUpper() + "_ASSEMBLY_PATH_NUSPEC";
-        var tuple = Tuple.Create(group.NuspecKey,
-                    EnvironmentVariable(environmentVariableName, group.Folder));
+        var assemblyPath = EnvironmentVariable(environmentVariableName, group.Folder);
+        var tuple = Tuple.Create(group.NuspecKey, assemblyPath);
         assemblyPathVars.Add(tuple);
     }
     foreach (var assemblyPathVar in assemblyPathVars)
