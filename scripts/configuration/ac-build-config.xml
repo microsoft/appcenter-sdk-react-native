@@ -82,24 +82,12 @@
             <assembly path="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"/>
         </group>
     </group>
-    <module androidModule="app-center-release.aar"
-            dotnetModule="SDK/AppCenter/Microsoft.AppCenter"
-            nuspec="AppCenter.nuspec"/>
-    <module androidModule="app-center-analytics-release.aar"
-            dotnetModule="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes"
-            nuspec="AppCenterAnalytics.nuspec"/>
-    <module androidModule="app-center-crashes-release.aar"
-            dotnetModule="SDK/AppCenter/Microsoft.AppCenter"
-            nuspec="AppCenterCrashes.nuspec"/>
-    <module androidModule="app-center-distribute-release.aar"
-            dotnetModule="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute"
-            nuspec="AppCenterDistribute.nuspec"/>
-    <module androidModule="app-center-push-release.aar"
-            dotnetModule="SDK/AppCenterPush/Microsoft.AppCenter.Push"
-            nuspec="AppCenterPush.nuspec"/>
-    <module androidModule="app-center-rum-release.aar"
-            dotnetModule="SDK/AppCenterRum/Microsoft.AppCenter.Rum"
-            nuspec="AppCenterRum.nuspec"/>
+    <module dotnetModule="SDK/AppCenter/Microsoft.AppCenter" nuspec="AppCenter.nuspec"/>
+    <module dotnetModule="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes" nuspec="AppCenterAnalytics.nuspec"/>
+    <module dotnetModule="SDK/AppCenter/Microsoft.AppCenter" nuspec="AppCenterCrashes.nuspec"/>
+    <module dotnetModule="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute" nuspec="AppCenterDistribute.nuspec"/>
+    <module dotnetModule="SDK/AppCenterPush/Microsoft.AppCenter.Push" nuspec="AppCenterPush.nuspec"/>
+    <module dotnetModule="SDK/AppCenterRum/Microsoft.AppCenter.Rum" nuspec="AppCenterRum.nuspec"/>
     <buildGroup platformId="mac" solutionPath="AppCenter-SDK-Build-Mac.sln">
         <build configuration="Release"/>
     </buildGroup>

@@ -1,7 +1,6 @@
 // AppCenter module class definition.
 class AppCenterModule
 {
-    public string AndroidModule { get; }
     public string DotNetModule { get; }
     public string NuGetVersion { get; }
     public string MainNuspecFilename { get; }
@@ -10,15 +9,13 @@ class AppCenterModule
     public string WindowsNuspecFilename => "Windows" + MainNuspecFilename;
     private string _packageId;
 
-    private AppCenterModule(string android, string dotnet, string mainNuspecFilename) {
-        AndroidModule = android;
+    private AppCenterModule(string dotnet, string mainNuspecFilename) {
         DotNetModule = dotnet;
         MainNuspecFilename = mainNuspecFilename;
     }
 
     private AppCenterModule(XmlNode moduleNode, string nuspecFolder, string nugetVersion)
     {
-        AndroidModule = moduleNode.Attributes.GetNamedItem("androidModule").Value;
         DotNetModule = moduleNode.Attributes.GetNamedItem("dotnetModule").Value;
         MainNuspecFilename = moduleNode.Attributes.GetNamedItem("nuspec").Value;
         NuGetVersion = nugetVersion;
