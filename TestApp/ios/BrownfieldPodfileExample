@@ -21,12 +21,14 @@ target 'TestApp' do
   ]
   pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
 
-  # Add new pods below this line
+  # Pods for TestApp
 
   pod 'appcenter', path: '../node_modules/appcenter/ios'
   pod 'appcenter-analytics', path: '../node_modules/appcenter-analytics/ios'
   pod 'appcenter-crashes', path: '../node_modules/appcenter-crashes/ios'
   pod 'appcenter-push', path: '../node_modules/appcenter-push/ios'
+
+  # Add new pods below this line
 
   platform :ios, '8.0'
 end
