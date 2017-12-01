@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -21,25 +20,15 @@ namespace Contoso.Android.Puppet
     {
         const string LogTag = "AppCenterXamarinPuppet";
 
-        Handler _handler = new Handler();
-
-        static MainActivity _activity;
-
-        static MainActivity()
-        {
-            Push.PushNotificationReceived += PrintNotification;
-        }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            _activity = null;
+            Push.PushNotificationReceived -= PrintNotification;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            _activity = this;
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -80,6 +69,8 @@ namespace Contoso.Android.Puppet
                 Push.EnableFirebaseAnalytics();
             }
 
+            Push.PushNotificationReceived += PrintNotification;
+
             AppCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes),
                             typeof(Push), typeof(Distribute));
 
@@ -102,9 +93,9 @@ namespace Contoso.Android.Puppet
             });
         }
 
-        static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
+        void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
-            var alertDialog = new AlertDialog.Builder(_activity, Resource.Style.AppCompatDialogStyle);
+            var alertDialog = new AlertDialog.Builder(this, Resource.Style.AppCompatDialogStyle);
             alertDialog.SetTitle(e.Title);
             var message = e.Message;
             if (e.CustomData != null && e.CustomData.Count > 0)
