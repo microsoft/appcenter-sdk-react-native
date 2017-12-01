@@ -215,11 +215,19 @@ namespace Contoso.Forms.Puppet
                 var filePicker = DependencyService.Get<IFilePicker>();
                 if (filePicker != null)
                 {
-                    var result = filePicker.ReadFile(file);
-                    if (result != null)
+                    try
                     {
-                        var attachment = ErrorAttachmentLog.AttachmentWithBinary(result.Item1, result.Item2, result.Item3);
-                        attachments.Add(attachment);
+                        var result = filePicker.ReadFile(file);
+                        if (result != null)
+                        {
+                            var attachment = ErrorAttachmentLog.AttachmentWithBinary(result.Item1, result.Item2, result.Item3);
+                            attachments.Add(attachment);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        AppCenterLog.Warn(LogTag, "Couldn't read file attachment", e);
+                        Current.Properties.Remove(CrashesContentPage.FileAttachmentKey);
                     }
                 }
             }

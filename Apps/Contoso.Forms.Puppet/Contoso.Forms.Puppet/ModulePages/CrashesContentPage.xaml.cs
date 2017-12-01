@@ -41,7 +41,16 @@ namespace Contoso.Forms.Puppet
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
             {
-                FileAttachmentCell.Detail = file;
+                var filePicker = DependencyService.Get<IFilePicker>();
+                try
+                {
+                    FileAttachmentCell.Detail = filePicker?.GetFileDescription(file);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Couldn't read file attachment: {0}", e.Message);
+                    Application.Current.Properties.Remove(FileAttachmentKey);
+                }
             }
             if (XamarinDevice.RuntimePlatform == XamarinDevice.UWP)
             {

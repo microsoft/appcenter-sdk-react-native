@@ -7,5 +7,6 @@ namespace Contoso.Forms.Puppet
     {
         Task<string> PickFile();
         Tuple<byte[], string, string> ReadFile(string file);
+        string GetFileDescription(string file);
     }
 }

@@ -56,5 +56,19 @@ namespace Contoso.Forms.Puppet.iOS
             }
             return result;
         }
+
+        public string GetFileDescription(string file)
+        {
+            long fileSize = 0;
+            var asset = PHAsset.FetchAssets(new[] { new NSUrl(file) }, null).LastObject as PHAsset;
+            if (asset != null)
+            {
+                var options = new PHImageRequestOptions { Synchronous = true };
+                PHImageManager.DefaultManager.RequestImageData(asset, options, (data, dataUti, orientation, info) => {
+                    fileSize = Convert.ToInt64(data.Length);
+                });
+            }
+            return NSByteCountFormatter.Format(fileSize, NSByteCountFormatterCountStyle.Binary);
+        }
     }
 }

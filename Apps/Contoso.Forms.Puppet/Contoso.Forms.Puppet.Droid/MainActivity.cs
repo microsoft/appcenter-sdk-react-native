@@ -53,6 +53,10 @@ namespace Contoso.Forms.Puppet.Droid
             if (requestCode == FileAttachmentId)
             {
                 var uri = resultCode == Result.Ok && data != null ? data.Data : null;
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat && uri != null)
+                {
+                    ContentResolver.TakePersistableUriPermission(uri, data.Flags & ActivityFlags.GrantReadUriPermission);
+                }
                 FileAttachmentTaskCompletionSource.SetResult(uri?.ToString());
             }
         }
