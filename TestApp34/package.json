@@ -6,11 +6,11 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "appcenter": "../appcenter",
-    "appcenter-analytics": "../appcenter-analytics",
-    "appcenter-crashes": "../appcenter-crashes",
-    "appcenter-link-scripts": "../appcenter-link-scripts",
-    "appcenter-push": "../appcenter-push",
+    "appcenter": "file:appcenter-1.0.1.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.0.1.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.0.1.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.0.1.tgz",
+    "appcenter-push": "file:appcenter-push-1.0.1.tgz",
     "react": "15.3.2",
     "react-native": "0.34.0",
     "react-navigation": "1.0.0-beta.11"
