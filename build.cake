@@ -38,8 +38,11 @@ var IosExternals = $"{ExternalsDirectory}/ios";
 var SdkStorageUrl = "https://mobilecentersdkdev.blob.core.windows.net/sdk/";
 var MacAssembliesUrl = SdkStorageUrl + MacAssembliesZip;
 var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
-string AndroidUrl = null;
-string IosUrl = null;
+
+// Need to read versions before setting url values
+VersionReader.ReadVersions();
+var AndroidUrl = $"{SdkStorageUrl}AppCenter-SDK-Android-{VersionReader.AndroidVersion}.zip";
+var IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{VersionReader.IosVersion}.zip";
 
 // Task Target for build
 var Target = Argument("Target", Argument("t", "Default"));
@@ -49,13 +52,6 @@ var NuspecFolder = "nuget";
 // Prepare the platform paths for downloading, uploading, and preparing assemblies
 Setup(context =>
 {
-    // Need to read versions before setting url values
-VersionReader.ReadVersions();
-
-    AndroidUrl = $"{SdkStorageUrl}AppCenter-SDK-Android-{VersionReader.AndroidVersion}.zip";
-    IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{VersionReader.IosVersion}.zip";
-
-
     // Get assembly paths.
     var uploadAssembliesZip = (IsRunningOnUnix() ? MacAssembliesZip : WindowsAssembliesZip);
     var downloadUrl = (IsRunningOnUnix() ? WindowsAssembliesUrl : MacAssembliesUrl);
