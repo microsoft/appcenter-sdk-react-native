@@ -59,6 +59,10 @@ namespace Contoso.Forms.Puppet.iOS
 
         public string GetFileDescription(string file)
         {
+            if (string.IsNullOrEmpty(file))
+            {
+                return null;
+            }
             long fileSize = 0;
             var asset = PHAsset.FetchAssets(new[] { new NSUrl(file) }, null).LastObject as PHAsset;
             if (asset != null)

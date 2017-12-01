@@ -82,7 +82,7 @@ namespace Contoso.Forms.Demo
                 return;
             }
             var file = await filePicker.PickFile();
-            ((TextCell)sender).Detail = file;
+            ((TextCell)sender).Detail = filePicker.GetFileDescription(file);
             Application.Current.Properties[FileAttachmentKey] = file;
             await Application.Current.SavePropertiesAsync();
         }

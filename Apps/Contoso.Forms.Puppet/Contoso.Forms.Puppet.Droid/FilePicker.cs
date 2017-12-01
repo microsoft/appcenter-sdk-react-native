@@ -84,6 +84,10 @@ namespace Contoso.Forms.Puppet.Droid
 
         public string GetFileDescription(string file)
         {
+            if (string.IsNullOrEmpty(file))
+            {
+                return null;
+            }
             var uri = Android.Net.Uri.Parse(file);
             var activity = Xamarin.Forms.Forms.Context as MainActivity;
 
