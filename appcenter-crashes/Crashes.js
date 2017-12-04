@@ -121,8 +121,8 @@ const Helper = {
         if (!getErrorAttachmentsMethod) {
             return;
         }
-        filteredReports.forEach((report) => {
-            const attachments = getErrorAttachmentsMethod(report);
+        filteredReports.forEach(async (report) => {
+            const attachments = await getErrorAttachmentsMethod(report);
             AppCenterReactNativeCrashes.sendErrorAttachments(attachments, report.id);
         });
 

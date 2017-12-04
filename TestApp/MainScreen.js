@@ -5,11 +5,14 @@
  */
 
 import React, { Component } from 'react';
-import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
+import { AppState, Alert, Button, View, Platform, ToastAndroid, Text, AsyncStorage } from 'react-native';
 import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
 import SharedStyles from './SharedStyles';
+
+const TEXT_ATTACHMENT_KEY = 'TEXT_ATTACHMENT_KEY';
+const BINARY_ATTACHMENT_KEY = 'BINARY_ATTACHMENT_KEY';
 
 export default class MainScreen extends Component {
   constructor() {
@@ -95,10 +98,16 @@ Crashes.setListener({
     return true;
   },
 
-  getErrorAttachments(report) {
+  async getErrorAttachments(report) {
     console.log(`Get error attachments for report with id: ${report.id}'`);
+    let textAttachment = "hello";
+    try {
+      textAttachment = await AsyncStorage.getItem(TEXT_ATTACHMENT_KEY);
+    } catch (error) {
+      console.log("Error retrieving text attachment: " + error.message);
+    }
     return [
-      ErrorAttachmentLog.attachmentWithText('hello', 'hello.txt'),
+      ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
       ErrorAttachmentLog.attachmentWithBinary(testIcon, 'icon.png', 'image/png')
     ];
   },
