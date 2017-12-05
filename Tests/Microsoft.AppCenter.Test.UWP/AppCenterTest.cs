@@ -91,5 +91,23 @@ namespace Microsoft.AppCenter.Test.UWP
 
             // No exception throws.
         }
+
+        /// <summary>
+        /// Start service after unhandled exception
+        /// </summary>
+        [TestMethod]
+        public void StartServiceAfterUnhandledException()
+        {
+            AppCenter.Configure("uwp=appsecret");
+            Assert.IsTrue(AppCenter.Configured);
+
+            // Some exception occurred.
+            ApplicationLifecycleHelper.Instance.InvokeUnhandledExceptionOccurred(null, new Exception());
+
+            // Start any service.
+            AppCenter.Start(typeof(TestAppCenterService));
+
+            // No exception throws, just log message.
+        }
     }
 }

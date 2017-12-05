@@ -1,8 +1,5 @@
 ﻿using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Threading.Tasks;
-using Windows.Graphics.Display;
 
 namespace Microsoft.AppCenter.Test.UWP.Utils
 {
