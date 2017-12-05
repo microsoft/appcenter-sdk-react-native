@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.reactnative.push.AppCenterReactNativePushPackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
@@ -48,6 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
 
     AppCenter.setLogLevel(Log.VERBOSE);
+    Push.setSenderId("177539951155");
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

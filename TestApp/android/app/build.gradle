@@ -132,11 +132,9 @@ dependencies {
     compile project(':appcenter-analytics')
     compile project(':appcenter')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    // From node_modules
-    //  compile 'com.google.firebase:firebase-messaging:+'
+
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
 }
 
 // Run this once to be able to run the application with BUCK
@@ -145,5 +143,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-
-apply plugin: 'com.google.gms.google-services'
