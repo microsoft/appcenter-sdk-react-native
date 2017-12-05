@@ -5,14 +5,12 @@
  */
 
 import React, { Component } from 'react';
-import { AppState, Alert, Button, View, Platform, ToastAndroid, Text, AsyncStorage } from 'react-native';
+import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
 import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
 import SharedStyles from './SharedStyles';
-
-const TEXT_ATTACHMENT_KEY = 'TEXT_ATTACHMENT_KEY';
-const BINARY_ATTACHMENT_KEY = 'BINARY_ATTACHMENT_KEY';
+import AttachmentsProvider from './AttachmentsProvider';
 
 export default class MainScreen extends Component {
   constructor() {
@@ -28,7 +26,6 @@ export default class MainScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-
     return (
       <View style={SharedStyles.container}>
         <Text style={SharedStyles.heading}>
@@ -100,15 +97,13 @@ Crashes.setListener({
 
   async getErrorAttachments(report) {
     console.log(`Get error attachments for report with id: ${report.id}'`);
-    let textAttachment = "hello";
-    try {
-      textAttachment = await AsyncStorage.getItem(TEXT_ATTACHMENT_KEY);
-    } catch (error) {
-      console.log("Error retrieving text attachment: " + error.message);
-    }
+    let textAttachment = await AttachmentsProvider.getTextAttachment();
+    let binaryAttachment = await AttachmentsProvider.getBinaryAttachment();
+    let binaryName = await AttachmentsProvider.getBinaryName(); 
+    let binaryType = await AttachmentsProvider.getBinaryType(); 
     return [
       ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
-      ErrorAttachmentLog.attachmentWithBinary(testIcon, 'icon.png', 'image/png')
+      ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)
     ];
   },
 
@@ -124,18 +119,3 @@ Crashes.setListener({
     console.log('Failed sending crash. onSendingFailed is invoked.');
   }
 });
-
-const testIcon = `iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGP
-C/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3Cc
-ulE8AAAA1VBMVEXLLmPLLWPLLWLMMWXLLGLMMmbcdJftt8nYY4vKLGHSSXfp
-qL799fj////oobnVVYDUUX3LL2TccpX12OL88fXrsMT56O7NNWjhhaT56O3S
-SHfTT3z56e777vPcc5bQQXH22+Tuvc7sssX++vv66/DuvM3sssbYZIv22uT7
-7vLvvs79+PrUUH3OOmzjjqr66u/99vj23OXZZo3YYIn89Pf++fv22uPYYorX
-YIjZaI767PHuusz99/nbb5TPQHDqqsD55+3ggqL55ez11+HRSHfUUn7TT3vg
-lpRpAAAAAWJLR0QN9rRh9QAAAJpJREFUGNNjYMAKGJmYmZD5LKxs7BxMDJws
-UD4nFzcPLx8LA7+AIJjPKiQsIirGJy4hKSwFUsMpLSMrJ6+gqKTMqyLACRRg
-klflUVPX4NXU0lbRAQkwMOnqiegbGBoZmyAJaJqamVtABYBaDNgtDXmtrG0g
-AkBDNW3tFFRFTaGGgqyVtXfgE3d0cnZhQXYYk6ubIA6nY3oOGQAAubQPeKPu
-sH8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTctMDctMjhUMDM6NDE6MTUrMDI6
-MDAk+3aMAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE3LTA3LTI4VDAzOjQxOjE1
-KzAyOjAwVabOMAAAAABJRU5ErkJggg==`;
