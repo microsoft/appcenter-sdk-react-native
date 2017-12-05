@@ -300,6 +300,7 @@ namespace Microsoft.AppCenter
             {
                 if (_channelGroup != null)
                 {
+                    AppCenterLog.Debug(AppCenterLog.LogTag, "Shutting down channel group due to unhandled exception.");
                     _channelGroup.ShutdownAsync();
                     _channelGroup = null;
                 }
@@ -387,7 +388,7 @@ namespace Microsoft.AppCenter
             }
             if (_channelGroup == null)
             {
-                throw new AppCenterException("Cannot start a service after unhandled exception.");
+                throw new AppCenterException("Attempted to start a service after App Center has been shut down.");
             }
             if (_services.Contains(service))
             {

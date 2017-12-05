@@ -100,6 +100,7 @@ namespace Microsoft.AppCenter.Channel
 
         public async Task ShutdownAsync()
         {
+            ThrowIfDisposed();
             lock (_channelGroupLock)
             {
                 if (_isShutdown)
@@ -109,7 +110,6 @@ namespace Microsoft.AppCenter.Channel
                 }
                 _isShutdown = true;
             }
-            ThrowIfDisposed();
             var tasks = new List<Task>();
             lock (_channelGroupLock)
             {
