@@ -237,6 +237,7 @@ namespace Microsoft.AppCenter
                 _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
                 LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
                 LogSerializer.AddLogType(CustomPropertyLog.JsonIdentifier, typeof(CustomPropertyLog));
+                ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
             }
         }
 
@@ -279,7 +280,8 @@ namespace Microsoft.AppCenter
         {
             if (!Configured)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. " +
+                                                        "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
@@ -290,6 +292,18 @@ namespace Microsoft.AppCenter
             var customPropertiesLog = new CustomPropertyLog();
             customPropertiesLog.Properties = customProperties.Properties;
             _channel.EnqueueAsync(customPropertiesLog);
+        }
+
+        private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
+        {
+            lock (AppCenterLock)
+            {
+                if (_channelGroup != null)
+                {
+                    _channelGroup.ShutdownAsync();
+                    _channelGroup = null;
+                }
+            }
         }
 
         // Internal for testing
@@ -305,7 +319,6 @@ namespace Microsoft.AppCenter
             // If a factory has been supplied, use it to construct the channel group - this is designed for testing.
             _networkStateAdapter = new NetworkStateAdapter();
             _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret, null, _networkStateAdapter);
-            ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
             if (_logUrl != null)
@@ -328,7 +341,6 @@ namespace Microsoft.AppCenter
             }
 
             var startServiceLog = new StartServiceLog();
-
             foreach (var serviceType in services)
             {
                 if (serviceType == null)
@@ -372,6 +384,10 @@ namespace Microsoft.AppCenter
             if (service == null)
             {
                 throw new AppCenterException("Attempted to start an invalid App Center service.");
+            }
+            if (_channelGroup == null)
+            {
+                throw new AppCenterException("Cannot start a service after unhandled exception.");
             }
             if (_services.Contains(service))
             {

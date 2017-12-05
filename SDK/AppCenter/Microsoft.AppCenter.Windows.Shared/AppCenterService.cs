@@ -106,9 +106,12 @@ namespace Microsoft.AppCenter
         /// </summary>
         /// <param name="channelGroup">The channel group to which the channel should be added</param>
         /// <param name="appSecret">The app secret of the current application</param>
-
         public virtual void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
+            if (channelGroup == null)
+            {
+                throw new ArgumentNullException(nameof(channelGroup));
+            }
             lock (_serviceLock)
             {
                 ChannelGroup = channelGroup;
