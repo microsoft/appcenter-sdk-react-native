@@ -127,6 +127,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fs')
     compile project(':react-native-image-picker')
     compile project(':appcenter-push')
     compile project(':appcenter-crashes')
