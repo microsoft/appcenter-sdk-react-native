@@ -15,6 +15,7 @@ namespace Microsoft.AppCenter.Channel
         private readonly IStorage _storage;
         private readonly object _channelGroupLock = new object();
         private bool _isDisposed;
+        private bool _isShutdown;
         public string AppSecret { get; internal set; }
 
         public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
@@ -99,6 +100,15 @@ namespace Microsoft.AppCenter.Channel
 
         public async Task ShutdownAsync()
         {
+            lock (_channelGroupLock)
+            {
+                if (_isShutdown)
+                {
+                    AppCenterLog.Warn(AppCenterLog.LogTag, "Attempted to shutdown channel multiple times.");
+                    return;
+                }
+                _isShutdown = true;
+            }
             ThrowIfDisposed();
             var tasks = new List<Task>();
             lock (_channelGroupLock)
