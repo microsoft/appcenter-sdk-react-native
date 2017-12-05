@@ -5,7 +5,7 @@
     "Microsoft.AppCenter.Distribute": "1.0.1",
     "Microsoft.AppCenter.Push": "1.0.1",
     "Xamarin.Build.Download": "0.4.7",
-    "Xamarin.Forms": "2.4.0.38779"
+    "Xamarin.Forms": "2.5.0.91635"
   },
   "frameworks": {
     "MonoAndroid,Version=v8.0": {}

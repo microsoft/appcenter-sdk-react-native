@@ -118,7 +118,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "Building target \"$BUILD_TARGET\"..."
-sh $BUILD_SCRIPT -t=$BUILD_TARGET
+sh $BUILD_SCRIPT -s "scripts/uitest.cake" -t=$BUILD_TARGET
 if [ $? -ne 0 ]; then
     echo "An error occured while building tests."
     popd

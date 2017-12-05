@@ -23,12 +23,12 @@ namespace Microsoft.AppCenter.Channel
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
 
         public ChannelGroup(string appSecret)
-            : this(appSecret, null)
+            : this(appSecret, null, null)
         {
         }
 
-        public ChannelGroup(string appSecret, IHttpNetworkAdapter httpNetwork)
-            : this(DefaultIngestion(httpNetwork), DefaultStorage(), appSecret)
+        public ChannelGroup(string appSecret, IHttpNetworkAdapter httpNetwork, INetworkStateAdapter networkState)
+            : this(DefaultIngestion(httpNetwork, networkState), DefaultStorage(), appSecret)
         {
         }
 
@@ -116,9 +116,17 @@ namespace Microsoft.AppCenter.Channel
             }
         }
 
-        private static IIngestion DefaultIngestion(IHttpNetworkAdapter httpNetwork = null)
+        private static IIngestion DefaultIngestion(IHttpNetworkAdapter httpNetwork = null, INetworkStateAdapter networkState = null)
         {
-            return new NetworkStateIngestion(new RetryableIngestion(new IngestionHttp(httpNetwork ?? new HttpNetworkAdapter())));
+            if (httpNetwork == null)
+            {
+                httpNetwork = new HttpNetworkAdapter();
+            }
+            if (networkState == null)
+            {
+                networkState = new NetworkStateAdapter();
+            }
+            return new NetworkStateIngestion(new RetryableIngestion(new IngestionHttp(httpNetwork)), networkState);
         }
 
         private static IStorage DefaultStorage()
@@ -158,7 +166,7 @@ namespace Microsoft.AppCenter.Channel
         {
             if (_isDisposed)
             {
-                throw new ObjectDisposedException("ChannelGroup");
+                throw new ObjectDisposedException(nameof(ChannelGroup));
             }
         }
     }

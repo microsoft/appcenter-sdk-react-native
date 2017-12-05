@@ -1,19 +1,26 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Contoso.Forms.Puppet.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
+    using XamarinDevice = Xamarin.Forms.Device;
+
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class CrashesContentPage
     {
+        public const string TextAttachmentKey = "TEXT_ATTACHMENT";
+        public const string FileAttachmentKey = "FILE_ATTACHMENT";
+
         public CrashesContentPage()
         {
             InitializeComponent();
-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
+            if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
             {
                 Icon = "socket.png";
             }
@@ -24,11 +31,59 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
             CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
+
+            // Attachments
+            if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
+                textAttachment is string text)
+            {
+                TextAttachmentCell.Detail = text;
+            }
+            if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
+                fileAttachment is string file)
+            {
+                var filePicker = DependencyService.Get<IFilePicker>();
+                try
+                {
+                    FileAttachmentCell.Detail = filePicker?.GetFileDescription(file);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Couldn't read file attachment: {0}", e.Message);
+                    Application.Current.Properties.Remove(FileAttachmentKey);
+                }
+            }
+            if (XamarinDevice.RuntimePlatform == XamarinDevice.UWP)
+            {
+                TextAttachmentCell.IsEnabled = false;
+                FileAttachmentCell.IsEnabled = false;
+            }
         }
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
             await Crashes.SetEnabledAsync(e.Value);
+        }
+
+        async void TextAttachment(object sender, EventArgs e)
+        {
+            var text = await TextAttachmentView.Show(Navigation);
+            ((TextCell)sender).Detail = text;
+            Application.Current.Properties[TextAttachmentKey] = text;
+            await Application.Current.SavePropertiesAsync();
+        }
+
+        async void FileAttachment(object sender, EventArgs e)
+        {
+            var filePicker = DependencyService.Get<IFilePicker>();
+            if (filePicker == null)
+            {
+                Debug.WriteLine("File attachment isn't implemented");
+                return;
+            }
+            var file = await filePicker.PickFile();
+            ((TextCell)sender).Detail = filePicker.GetFileDescription(file);
+            Application.Current.Properties[FileAttachmentKey] = file;
+            await Application.Current.SavePropertiesAsync();
         }
 
         void HandleOrThrow(Action action)
@@ -64,7 +119,7 @@ namespace Contoso.Forms.Puppet
             }
             catch (NullReferenceException)
             {
-                System.Diagnostics.Debug.WriteLine("null reference exception");
+                Debug.WriteLine("null reference exception");
             }
         }
 
@@ -80,9 +135,9 @@ namespace Contoso.Forms.Puppet
             {
                 var val = values[ctr].Trim();
                 var separator = ctr == values.GetUpperBound(0) ? "" : ", ";
-                System.Diagnostics.Debug.WriteLine("{0}{1}", val, separator);
+                Debug.WriteLine("{0}{1}", val, separator);
             }
-            System.Diagnostics.Debug.WriteLine("");
+            Debug.WriteLine("");
         }
 
         void AggregateException(object sender, EventArgs e)
