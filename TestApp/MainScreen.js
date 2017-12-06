@@ -95,16 +95,18 @@ Crashes.setListener({
     return true;
   },
 
-  async getErrorAttachments(report) {
+  getErrorAttachments(report) {
     console.log(`Get error attachments for report with id: ${report.id}'`);
-    let textAttachment = await AttachmentsProvider.getTextAttachment();
-    let binaryAttachment = await AttachmentsProvider.getBinaryAttachment();
-    let binaryName = await AttachmentsProvider.getBinaryName(); 
-    let binaryType = await AttachmentsProvider.getBinaryType(); 
-    return [
-      ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
-      ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)
-    ];
+    return new Promise(async (resolve, reject) => {
+      let textAttachment = await AttachmentsProvider.getTextAttachment();
+      let binaryAttachment = await AttachmentsProvider.getBinaryAttachment();
+      let binaryName = await AttachmentsProvider.getBinaryName(); 
+      let binaryType = await AttachmentsProvider.getBinaryType(); 
+      resolve([
+        ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
+        ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)
+      ]);
+    });
   },
 
   onBeforeSending() {
