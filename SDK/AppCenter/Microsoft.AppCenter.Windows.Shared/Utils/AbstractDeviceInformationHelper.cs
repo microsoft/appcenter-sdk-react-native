@@ -2,6 +2,8 @@
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Microsoft.AppCenter.Windows.Shared.Utils;
+
 namespace Microsoft.AppCenter.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
@@ -79,7 +81,7 @@ namespace Microsoft.AppCenter.Utils
 
         private string GetLocale()
         {
-            return System.Globalization.CultureInfo.CurrentCulture.Name;
+            return CultureInfoHelper.GetCurrentCulture().Name;
         }
 
         private int GetTimeZoneOffset()
