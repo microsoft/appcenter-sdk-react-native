@@ -53,9 +53,6 @@ namespace Microsoft.AppCenter.Push
         /// Call this before starting Push if you are using Firebase and want to use Firebase Analytics as well. If
         /// App Center detects Firebase, the default behavior is to disable it.
         /// </summary>
-        [Obsolete("Future releases will not alter the state of Firebase Analytics data collection by default, and " +
-                  "this method will be removed.To remove your project's dependency on Firebase, follow the " +
-                  "documentation at https://aka.ms/brc1au.")]
         public static void EnableFirebaseAnalytics()
         {
             AndroidPush.EnableFirebaseAnalytics(Application.Context);
