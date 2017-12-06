@@ -5,9 +5,9 @@ namespace Contoso.Forms.Demo
 {
     static class FakeService
     {
-        internal async static Task DoStuffInBackground()
+        internal static async Task DoStuffInBackground()
         {
-            await Task.Run(() => { throw new IOException("Server did not respond"); });
+            await Task.Run(() => throw new IOException("Server did not respond"));
         }
     }
 }

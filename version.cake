@@ -1,6 +1,8 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=Cake.Incubator
+#load "scripts/utility.cake"
+#load "scripts/configuration/config-parser.cake"
 
 using System.Net;
 using System.Text;
@@ -10,6 +12,9 @@ using System.Xml.XPath;
 
 // Task TARGET for build
 var TARGET = Argument("target", Argument("t", ""));
+
+// Need to read versions before setting url values
+VersionReader.ReadVersions();
 
 Task("IncrementRevisionNumberWithHash").Does(()=>
 {
@@ -29,32 +34,31 @@ Task("SetReleaseVersion").Does(()=>
     // Replace versions in all non-demo app files
     var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
     ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
-
-    // Replace version in new csproj files
     UpdateNewProjSdkVersion(baseSemanticVersion, baseSemanticVersion);
-
-    // Replace version in wrapper sdk
     UpdateWrapperSdkVersion(baseSemanticVersion);
+    UpdateConfigFileSdkVersion(baseSemanticVersion);
 });
 
 Task("UpdateDemoVersion").Does(()=>
 {
     var newVersion = Argument<string>("DemoVersion");
+
     // Replace version in all the demo application assemblies
     var demoAssemblyInfoGlob = "Apps/**/*Demo*/**/AssemblyInfo.cs";
     var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
     ReplaceRegexInFiles(demoAssemblyInfoGlob, informationalVersionPattern, "AssemblyInformationalVersion(\"" + newVersion + "\")");
-
     var newFileVersion = GetBaseVersion(newVersion) + "." + GetRevisionNumber(newVersion);
     var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
     ReplaceRegexInFiles(demoAssemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newFileVersion + "\")");
 
     // Replace android versions
     var manifestGlob = "Apps/**/*Demo*/**/AndroidManifest.xml";
+
     // Manifest version name tag
     var versionNamePattern = "android:versionName=\"[^\"]+\"";
     var newVersionName = "android:versionName=\"" + newVersion + "\"";
     ReplaceRegexInFilesWithExclusion(manifestGlob, versionNamePattern, newVersionName, "/bin/", "/obj/");
+
     // Manifest version code
     var manifests = GetFiles("Apps/**/*Demo*/**/AndroidManifest.xml");
     foreach (var manifest in manifests)
@@ -98,10 +102,8 @@ Task("StartNewVersion").Does(()=>
     var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
     ReplaceRegexInFilesWithExclusion(assemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newFileVersion + "\")", "Demo");
 
-    // Replace version in new csproj files
+    UpdateConfigFileSdkVersion(snapshotVersion);
     UpdateNewProjSdkVersion(snapshotVersion, newFileVersion);
-
-    // Update wrapper sdk version
     UpdateWrapperSdkVersion(snapshotVersion);
 
     // Replace android manifest version name tag
@@ -168,17 +170,14 @@ void IncrementRevisionNumber(bool useHash)
         ReplaceTextInFiles(file.FullPath, fullVersion, newFileVersionTmp);
     }
 
-    // Replace version in new csproj files
+    UpdateConfigFileSdkVersion(newVersion);
     UpdateNewProjSdkVersion(newVersion, newFileVersion);
-
-    // Update wrapper sdk version
     UpdateWrapperSdkVersion(newVersion);
 }
 
 string GetPCLBaseSemanticVersion()
 {
-    var project = ParseProject("./SDK/AppCenter/Microsoft.AppCenter/Microsoft.AppCenter.csproj", configuration: "Release");
-    return GetBaseVersion(project.NetCore.Version);
+    return GetBaseVersion(VersionReader.SdkVersion);
 }
 
 string GetShortCommitHash()
@@ -214,7 +213,6 @@ string GetLatestNuGetVersion()
     var tag = responseString.Substring(start + startTag.Length, end - start - startTag.Length);
     return tag;
 }
-
 
 void IncrementManifestVersionCode(FilePath manifest)
 {
@@ -301,25 +299,11 @@ string GetPaddedString(int num, int numDigits)
     return numString;
 }
 
-void DeleteDirectoryIfExists(string directoryName)
-{
-    if (DirectoryExists(directoryName))
-    {
-        DeleteDirectory(directoryName, true);
-    }
-}
-
-void CleanDirectory(string directoryName)
-{
-    DeleteDirectoryIfExists(directoryName);
-    CreateDirectory(directoryName);
-}
-
 // Run "ReplaceRegexInFiles" methods but exclude all file paths containing the strings in "excludeFilePathsContaining"
 void ReplaceRegexInFilesWithExclusion(string globberPattern, string regEx, string replacement, params string[] excludeFilePathsContaining)
 {
-    var assemblyInfoFiles = GetFiles(globberPattern);
-    foreach (var file in assemblyInfoFiles)
+    var files = GetFiles(globberPattern);
+    foreach (var file in files)
     {
         bool shouldReplace = true;
         foreach (var excludeString in excludeFilePathsContaining)
@@ -335,6 +319,11 @@ void ReplaceRegexInFilesWithExclusion(string globberPattern, string regEx, strin
             ReplaceRegexInFiles(file.FullPath, regEx, replacement);
         }
     }
+}
+
+public void UpdateConfigFileSdkVersion(string newVersion)
+{
+    ReplaceRegexInFiles(ConfigFile.Path, @"<sdkVersion>[\.|A-z|0-9|-]*<\/sdkVersion>", $"<sdkVersion>{newVersion}</sdkVersion>");
 }
 
 RunTarget(TARGET);

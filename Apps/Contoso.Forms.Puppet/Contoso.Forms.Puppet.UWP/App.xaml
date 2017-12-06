@@ -5,4 +5,11 @@
     xmlns:local="using:Contoso.Forms.Puppet.UWP"
     RequestedTheme="Light">
 
+    <!-- Remove force converting to lowercase titles of table section. -->
+    <Application.Resources>
+        <DataTemplate x:Key="TableSection">
+            <TextBlock Margin="0,20,0,0" Text="{Binding Title}" Style="{ThemeResource SubtitleTextBlockStyle}" Visibility="{Binding Text,RelativeSource={RelativeSource Mode=Self},Converter={StaticResource CollapseWhenEmpty}}" />
+        </DataTemplate>
+    </Application.Resources>
+
 </Application>

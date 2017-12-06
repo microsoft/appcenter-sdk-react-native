@@ -1,12 +1,12 @@
 ﻿using System;
-using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
     [Android.Runtime.Preserve(AllMembers = true)]
-    public partial class AddPropertyContentPage : ContentPage
+    public partial class AddPropertyContentPage
     {
         public event Action<Property> PropertyAdded;
+
         public AddPropertyContentPage()
         {
             InitializeComponent();
