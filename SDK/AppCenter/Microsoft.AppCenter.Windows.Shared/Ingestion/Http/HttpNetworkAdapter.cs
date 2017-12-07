@@ -67,7 +67,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
                 {
                     logPayload = "<binary>";
                 }
-                String logMessage = $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}";
+                var logMessage = $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}";
                 AppCenterLog.Verbose(AppCenterLog.LogTag, logMessage);
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
