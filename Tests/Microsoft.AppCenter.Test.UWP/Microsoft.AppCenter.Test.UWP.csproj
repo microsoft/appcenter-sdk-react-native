@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="CorrelationIdTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAppCenterService.cs" />
     <Compile Include="Utils\DefaultScreenSizeProviderTest.cs" />
     <Compile Include="UWPPushTest.cs" />
     <Compile Include="UnitTestApp.xaml.cs">
