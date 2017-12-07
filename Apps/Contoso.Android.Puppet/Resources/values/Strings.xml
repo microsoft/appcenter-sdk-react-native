@@ -23,9 +23,8 @@
 	<string name="CatchNullReferenceException">Test Catching NullReferenceException</string>
 	<string name="CrashAsync">Crash Inside Async Task</string>
 	<string name="CrashSuperNotCalled">Crash Pure Java: SuperNotCalledException</string>
-    <string name="CrashJavaFromDotNet">Crash Java from .NET</string>
-    <string name="DistributeEnabled">Distribute Enabled</string>
-    <string name="DistributeEnabled">Distribute Enabled</string>
+	<string name="CrashJavaFromDotNet">Crash Java from .NET</string>
+	<string name="DistributeEnabled">Distribute Enabled</string>
 	<string name="crash_confirmation_dialog_title">Unexpected crash found</string>
 	<string name="crash_confirmation_dialog_message">Would you like to send an anonymous report so we can fix the problem?</string>
 	<string name="crash_confirmation_dialog_not_send_button">Don\'t Send</string>
