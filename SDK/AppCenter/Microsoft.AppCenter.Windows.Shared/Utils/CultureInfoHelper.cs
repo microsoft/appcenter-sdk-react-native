@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Microsoft.AppCenter.Windows.Shared.Utils
 {
-    //https://www.pedrolamas.com/2017/05/03/cultureinfo-changes-in-uwp-part-2/
+    // https://www.pedrolamas.com/2017/05/03/cultureinfo-changes-in-uwp-part-2/
     class CultureInfoHelper
     {
-        // relative location of system locale name
+        // Relative location of system locale name.
         private const uint LOCALE_SNAME = 0x0000005c;
 
-        // Constants used by the National Language Support reference
+        // Constants used by the National Language Support reference.
         private const string LOCALE_NAME_USER_DEFAULT = null;
         private const string LOCALE_NAME_SYSTEM_DEFAULT = "!x-sys-default-locale";
 
@@ -22,18 +22,15 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         public static CultureInfo GetCurrentCulture()
         {
             var name = InvokeGetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SNAME);
-
             if (name == null)
             {
                 name = InvokeGetLocaleInfoEx(LOCALE_NAME_SYSTEM_DEFAULT, LOCALE_SNAME);
-
                 if (name == null)
                 {
-                    // If system default doesn't work, use invariant
+                    // If system default doesn't work, use invariant.
                     return CultureInfo.InvariantCulture;
                 }
             }
-
             return new CultureInfo(name);
         }
 
@@ -41,12 +38,10 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         {
             var buffer = new StringBuilder(BUFFER_SIZE);
             var resultCode = GetLocaleInfoEx(lpLocaleName, LCType, buffer, BUFFER_SIZE);
-
             if (resultCode > 0)
             {
                 return buffer.ToString();
             }
-
             return null;
         }
     }
