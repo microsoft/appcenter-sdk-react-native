@@ -42,8 +42,7 @@ export default class MainScreen extends Component {
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
-    let message = pushNotification.message;
-    let title = pushNotification.title;
+    let [message, title] = pushNotification;
 
     if (message === null || message === undefined) {
       // Android messages received in the background don't include a message. On Android, that fact can be used to
@@ -97,16 +96,16 @@ Crashes.setListener({
 
   getErrorAttachments(report) {
     console.log(`Get error attachments for report with id: ${report.id}'`);
-    return new Promise(async (resolve, reject) => {
-      let textAttachment = await AttachmentsProvider.getTextAttachment();
-      let binaryAttachment = await AttachmentsProvider.getBinaryAttachment();
-      let binaryName = await AttachmentsProvider.getBinaryName(); 
-      let binaryType = await AttachmentsProvider.getBinaryType(); 
-      resolve([
-        ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
-        ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)
+    return (async () => {
+      const [textAttachment, binaryAttachment, binaryName, binaryType] = await Promise.all([
+        AttachmentsProvider.getTextAttachment(),
+        AttachmentsProvider.getBinaryAttachment(),
+        AttachmentsProvider.getBinaryName(),
+        AttachmentsProvider.getBinaryType(),
       ]);
-    });
+      return [ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
+        ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)];
+    })();
   },
 
   onBeforeSending() {
