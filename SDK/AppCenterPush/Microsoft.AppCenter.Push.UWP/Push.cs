@@ -12,10 +12,10 @@ using Windows.ApplicationModel.Activation;
 using Windows.Data.Xml.Dom;
 using Windows.Networking.PushNotifications;
 
+using WindowsPushNotificationReceivedEventArgs = Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs;
+
 namespace Microsoft.AppCenter.Push
 {
-    using WindowsPushNotificationReceivedEventArgs = Windows.Networking.PushNotifications.PushNotificationReceivedEventArgs;
-
     public partial class Push
     {
         private PushNotificationChannel _channel;
@@ -112,7 +112,7 @@ namespace Microsoft.AppCenter.Push
 
         private void OnPushNotificationReceivedHandler(PushNotificationChannel sender, WindowsPushNotificationReceivedEventArgs e)
         {
-            XmlDocument content;
+            XmlDocument content = null;
             if (e.NotificationType == PushNotificationType.Toast && (content = e.ToastNotification?.Content) != null)
             {
                 AppCenterLog.Debug(LogTag, $"Received push notification payload: {content.GetXml()}");
