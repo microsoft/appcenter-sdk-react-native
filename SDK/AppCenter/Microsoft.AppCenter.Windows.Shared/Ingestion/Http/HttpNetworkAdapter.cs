@@ -67,10 +67,11 @@ namespace Microsoft.AppCenter.Ingestion.Http
                 {
                     logPayload = "<binary>";
                 }
-                AppCenterLog.Verbose(AppCenterLog.LogTag, $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}");
+                String logMessage = $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}";
+                AppCenterLog.Verbose(AppCenterLog.LogTag, logMessage);
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
-                    throw new HttpIngestionException($"Operation returned an invalid status code '{response.StatusCode}'")
+                    throw new HttpIngestionException(logMessage)
                     {
                         Method = request.Method.ToString(),
                         RequestUri = request.RequestUri,
