@@ -6,16 +6,23 @@ UITEST_BUILD_DIR="$SCRIPT_DIR/../Tests/UITests/bin/Release"
 BUILD_SCRIPT="build.sh"
 CLEAN_TARGET="clean"
 
-# Set default values for running locally
+# Built application files
 TEST_APK="$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk"
 TEST_IPA="$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa"
+if ! [ -f $TEST_APK ]; then
+    echo "Error - the Android application is not built (in Release)."
+    exit 1
+fi
+if ! [ -f $TEST_IPA ]; then
+    echo "Error - the iOS application is not built (in Release)."
+    exit 1
+fi
 
 # Set defaults but accept also positional parameters for the following:
 BUILD_TARGET=${1:-"TestApps"}
-
-# Credentials default to environment variables if not passed as arguments.
 APP_CENTER_USERNAME=${2:-$APP_CENTER_USERNAME}
 APP_CENTER_API_TOKEN=${3:-$APP_CENTER_API_TOKEN}
+UPLOAD_RUN_IDS_TO_STORAGE=${4:$UPLOAD_RUN_IDS_TO_STORAGE}
 
 # Check credentials are set
 if [ -z ${APP_CENTER_USERNAME} ]; then
@@ -132,6 +139,7 @@ ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK $
 ANDROID_TEST_RUN_ID=$(get_test_run_id $ANDROID_INFORMATION_FILE)
 echo $ANDROID_TEST_RUN_ID
 print_initialization_results $ANDROID_RETURN_CODE "$ANDROID_PLATFORM_NAME" "$ANDROID_PORTAL_URL" "$ANDROID_TEST_RUN_ID"
+cat $ANDROID_INFORMATION_FILE
 rm $ANDROID_INFORMATION_FILE
 
 # Run iOS tests
@@ -139,6 +147,7 @@ echo "Initializing iOS tests..."
 IOS_RETURN_CODE=$(initialize_tests $IOS_APP $IOS_DEVICES $TEST_IPA $IOS_INFORMATION_FILE)
 IOS_TEST_RUN_ID=$(get_test_run_id $IOS_INFORMATION_FILE)
 print_initialization_results $IOS_RETURN_CODE "$IOS_PLATFORM_NAME" "$IOS_PORTAL_URL" "$IOS_TEST_RUN_ID"
+cat $IOS_INFORMATION_FILE
 rm $IOS_INFORMATION_FILE
 
 # If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
@@ -146,8 +155,8 @@ if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then
     exit 1
 fi
 
-# If script is running in bitrise environment, upload test run IDs to Azure Storage
-if ! [ -z ${IN_BITRISE+x} ]; then # Then we are in bitrise environment
+# If enabled, upload test run IDs to Azure Storage
+if [ "$UPLOAD_RUN_IDS_TO_STORAGE" == "true" ]; then # Then we are in bitrise environment
     echo "Writing test run IDs to files..."
     echo "$IOS_TEST_RUN_ID" > $IOS_TEST_RUN_ID_FILE
     echo "$ANDROID_TEST_RUN_ID" > $ANDROID_TEST_RUN_ID_FILE
