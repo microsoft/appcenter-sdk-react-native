@@ -17,9 +17,13 @@ BUILD_TARGET=${1:-"TestApps"}
 APP_CENTER_USERNAME=${2:-$APP_CENTER_USERNAME}
 APP_CENTER_API_TOKEN=${3:-$APP_CENTER_API_TOKEN}
 
-# The APP_CENTER_USERNAME environment variable must be set
-if [ -z ${APP_CENTER_USERNAME+x} ]; then
+# Check credentials are set
+if [ -z ${APP_CENTER_USERNAME} ]; then
     echo "Error - the environment variable APP_CENTER_USERNAME must be set."
+    exit 1
+fi
+if [ -z ${APP_CENTER_API_TOKEN} ]; then
+    echo "Error - the environment variable APP_CENTER_API_TOKEN must be set."
     exit 1
 fi
 
