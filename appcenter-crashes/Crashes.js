@@ -93,26 +93,35 @@ const Crashes = {
             crashesEventEmitter.addListener(EVENT_SENDING_FAILED, listenerMap.onSendingFailed);
         }
         getErrorAttachmentsMethod = listenerMap.getErrorAttachments;
-        AppCenterReactNativeCrashes.getUnprocessedCrashReports()
-            .then((reports) => {
-                if (reports.length > 0) {
-                    const filteredReportIds = [];
-                    reports.forEach((report) => {
-                        if (!listenerMap.shouldProcess ||
-                            listenerMap.shouldProcess(report)) {
-                            filteredReports.push(report);
-                            filteredReportIds.push(report.id);
-                        }
-                    });
-                    AppCenterReactNativeCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds).then((alwaysSend) => {
-                        if (alwaysSend) {
-                            Helper.sendErrorAttachments();
-                        } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
-                            Crashes.notifyUserConfirmation(UserConfirmation.SEND);
-                        }
-                    });
-                }
-            });
+        Crashes.isEnabled()
+        .then((isEnabled) => {
+            if (isEnabled) {
+                return AppCenterReactNativeCrashes.getUnprocessedCrashReports();
+            }
+            throw new Error('Crashes service is not enabled.');
+        })
+        .then((reports) => {
+            if (reports.length > 0) {
+                const filteredReportIds = [];
+                reports.forEach((report) => {
+                    if (!listenerMap.shouldProcess ||
+                        listenerMap.shouldProcess(report)) {
+                        filteredReports.push(report);
+                        filteredReportIds.push(report.id);
+                    }
+                });
+                return AppCenterReactNativeCrashes.sendCrashReportsOrAwaitUserConfirmationForFilteredIds(filteredReportIds);
+            }
+            throw new Error('No unprocessed crash reports found.');
+        })
+        .then((alwaysSend) => {
+            if (alwaysSend) {
+                Helper.sendErrorAttachments();
+            } else if (!listenerMap.shouldAwaitUserConfirmation || !listenerMap.shouldAwaitUserConfirmation()) {
+                Crashes.notifyUserConfirmation(UserConfirmation.SEND);
+            }
+        })
+        .catch(error => console.log(error.message));
     }
 };
 
