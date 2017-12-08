@@ -146,16 +146,17 @@ Task("NuGet")
     // Package NuGets.
     foreach (var module in AppCenterModules)
     {
-        var nuspecFilename = NuspecFolder + (IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename);
+        var nuspecFilename = (IsRunningOnUnix() ? module.MacNuspecFilename : module.WindowsNuspecFilename);
+        var nuspecPath = System.IO.Path.Combine(NuspecFolder, nuspecFilename);
 
         // Skip modules that don't have nuspecs.
-        if (!FileExists(nuspecFilename))
+        if (!FileExists(nuspecPath))
         {
             continue;
         }
 
         // Prepare nuspec by making substitutions in a copied nuspec (to avoid altering the original)
-        CopyFile(nuspecFilename, specCopyName);
+        CopyFile(nuspecPath, specCopyName);
         ReplaceAssemblyPathsInNuspecs(specCopyName);
         Information("Building a NuGet package for " + module.DotNetModule + " version " + module.NuGetVersion);
         NuGetPack(File(specCopyName), new NuGetPackSettings {
