@@ -187,10 +187,18 @@ export default class CrashesScreen extends Component {
     }
 
     function getFileSize(response) {
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-      if (response.fileSize === 0) return '0 Byte';
-      const i = parseInt(Math.floor(Math.log(response.fileSize) / Math.log(1024)));
-      return `${Math.round(response.fileSize / (1024 ** i), 2)} ${sizes[i]}`;
+      const thresh = 1024;
+      const units = ['KiB', 'MiB', 'GiB'];
+      let fileSize = response.fileSize;
+      if (Math.abs(fileSize) < thresh) {
+          return `${fileSize} B`;
+      }
+      let u = -1;
+      do {
+        fileSize /= thresh;
+          ++u;
+      } while (Math.abs(fileSize) >= thresh && u < units.length - 1);
+      return `${fileSize.toFixed(1)} ${units[u]}`;
     }
   }
 }
