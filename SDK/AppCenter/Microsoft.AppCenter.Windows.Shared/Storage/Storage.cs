@@ -325,7 +325,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 await _storageAdapter.CreateTableAsync<LogEntry>().ConfigureAwait(false);
             }
-            catch (StorageException e)
+            catch (Exception e)
             {
                 AppCenterLog.Error(AppCenterLog.LogTag, "An error occurred while initializing storage", e);
             }
