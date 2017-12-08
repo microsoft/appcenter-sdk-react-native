@@ -9,18 +9,13 @@ CLEAN_TARGET="clean"
 # Set default values for running locally
 TEST_APK="$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk"
 TEST_IPA="$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa"
-BUILD_TARGET="TestApps"
 
-# If script is running in bitrise environment, use arguments
-if ! [ -z ${IN_BITRISE+x} ]; then # We are in bitrise environment
-    if [ -z ${3+x} ]; then # If there are not three arguments, exit failure
-        echo "Error - usage: ./run-ui-tests.sh {PATH_TO_APK} {PATH_TO_IPA} {BUILD_TARGET}"
-        exit 1
-    fi
-    TEST_APK=$1
-    TEST_IPA=$2
-    BUILD_TARGET=$3
-fi
+# Set defaults but accept also positional parameters for the following:
+BUILD_TARGET=${1:-"TestApps"}
+
+# Credentials default to environment variables if not passed as arguments.
+APP_CENTER_USERNAME=${2:-$APP_CENTER_USERNAME}
+APP_CENTER_API_TOKEN=${3:-$APP_CENTER_API_TOKEN}
 
 # The APP_CENTER_USERNAME environment variable must be set
 if [ -z ${APP_CENTER_USERNAME+x} ]; then
@@ -30,6 +25,7 @@ fi
 
 # Define test parameters
 LOCALE="en-US"
+
 # For a larger suite, go to portal, pretend to start a test suite, select devices, click next until you see CLI instructions and copy the hash code
 IOS_DEVICES=8551ba4e # just one device.
 ANDROID_DEVICES=f0b8289c # just one device.
@@ -103,7 +99,7 @@ initialize_tests() {
 }
 
 # Log in to app center
-./appcenter-login.sh
+APP_CENTER_API_TOKEN=$APP_CENTER_API_TOKEN ./appcenter-login.sh
 if [ $? -ne 0 ]; then
     exit 1
 fi
