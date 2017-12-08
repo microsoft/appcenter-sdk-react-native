@@ -147,7 +147,7 @@ if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then
 fi
 
 # If enabled, upload test run IDs to Azure Storage
-if [ "$UPLOAD_RUN_IDS_TO_STORAGE" == "true" ]; then # Then we are in bitrise environment
+if [ "$UPLOAD_RUN_IDS_TO_STORAGE" == "true" ]; then
     echo "Writing test run IDs to files..."
     echo "$IOS_TEST_RUN_ID" > $IOS_TEST_RUN_ID_FILE
     echo "$ANDROID_TEST_RUN_ID" > $ANDROID_TEST_RUN_ID_FILE
