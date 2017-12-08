@@ -9,14 +9,6 @@ CLEAN_TARGET="clean"
 # Built application files
 TEST_APK="$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk"
 TEST_IPA="$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa"
-if ! [ -f $TEST_APK ]; then
-    echo "Error - the Android application is not built (in Release)."
-    exit 1
-fi
-if ! [ -f $TEST_IPA ]; then
-    echo "Error - the iOS application is not built (in Release)."
-    exit 1
-fi
 
 # Set defaults but accept also positional parameters for the following:
 BUILD_TARGET=${1:-"TestApps"}
