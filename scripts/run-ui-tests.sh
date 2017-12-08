@@ -57,46 +57,16 @@ fi
 
 # Define functions
 
-# This function extracts the test run ID from an information file, and then echoes it
-# Usage: get_test_run_id {INFORMATION_FILE}
-get_test_run_id() {
-    INFORMATION_FILE="$1"
-    while read -r line
-        do
-    if [ $(expr "$line" : "Test run id: ") -ne 0 ]; then
-        echo $(echo $line | cut -d'"' -f 2)
-        break
-    fi
-    done < $INFORMATION_FILE
-}
-
-# This function prints the results of test initialization
-# Usage: print_initialization_results {RETURN_CODE} {PLATFORM_NAME} {PORTAL_URL} {TEST_RUN_ID}
-print_initialization_results() {
-    RETURN_CODE=$1
-    PLATFORM_NAME="$2"
-    PORTAL_URL="$3"
-    TEST_RUN_ID="$4"
-    if [ $RETURN_CODE -ne 0 ]; then
-        echo "$PLATFORM_NAME test failed to initiate."
-    fi
-    if [ $RETURN_CODE -eq 0 ]; then
-        echo "$PLATFORM_NAME test run ID: $TEST_RUN_ID"
-        echo "$PLATFORM_NAME test results: $PORTAL_URL$TEST_RUN_ID"
-    fi
-}
-
 # This function initializes tests for the given parameters
-# Usage: initialize_tests {APP_NAME} {DEVICES_CODE} {APP_PACKAGE} {INFORMATION_FILE}
+# Usage: initialize_tests {APP_NAME} {DEVICES_CODE} {APP_PACKAGE}
 initialize_tests() {
     APP_NAME="$1"
     DEVICES_CODE="$2"
     APP_PACKAGE="$3"
-    INFORMATION_FILE="$4"
     appcenter test run uitest --app $APP_NAME\
      --devices $DEVICES_CODE --app-path $APP_PACKAGE\
       --test-series $TEST_SERIES --locale $LOCALE\
-      --build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
+      --build-dir $UITEST_BUILD_DIR --async true
     echo $?
 }
 
@@ -126,33 +96,13 @@ popd
 
 # Run Android tests
 echo "Initializing Android tests..."
-ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK $ANDROID_INFORMATION_FILE)
-ANDROID_TEST_RUN_ID=$(get_test_run_id $ANDROID_INFORMATION_FILE)
-echo $ANDROID_TEST_RUN_ID
-print_initialization_results $ANDROID_RETURN_CODE "$ANDROID_PLATFORM_NAME" "$ANDROID_PORTAL_URL" "$ANDROID_TEST_RUN_ID"
-cat $ANDROID_INFORMATION_FILE
-rm $ANDROID_INFORMATION_FILE
+ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK)
 
 # Run iOS tests
 echo "Initializing iOS tests..."
-IOS_RETURN_CODE=$(initialize_tests $IOS_APP $IOS_DEVICES $TEST_IPA $IOS_INFORMATION_FILE)
-IOS_TEST_RUN_ID=$(get_test_run_id $IOS_INFORMATION_FILE)
-print_initialization_results $IOS_RETURN_CODE "$IOS_PLATFORM_NAME" "$IOS_PORTAL_URL" "$IOS_TEST_RUN_ID"
-cat $IOS_INFORMATION_FILE
-rm $IOS_INFORMATION_FILE
+IOS_RETURN_CODE=$(initialize_tests $IOS_APP $IOS_DEVICES $TEST_IPA)
 
 # If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
 if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
     exit 1
 fi
-
-# If enabled, upload test run IDs to Azure Storage
-if [ "$UPLOAD_RUN_IDS_TO_STORAGE" == "true" ]; then
-    echo "Writing test run IDs to files..."
-    echo "$IOS_TEST_RUN_ID" > $IOS_TEST_RUN_ID_FILE
-    echo "$ANDROID_TEST_RUN_ID" > $ANDROID_TEST_RUN_ID_FILE
-    azure storage blob upload -q $IOS_TEST_RUN_ID_FILE $AZURE_STORAGE_CONTAINER
-    azure storage blob upload -q $ANDROID_TEST_RUN_ID_FILE $AZURE_STORAGE_CONTAINER
-fi
-
-exit 0
