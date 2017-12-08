@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using SQLite;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Newtonsoft.Json;
+using SQLite;
 
 namespace Microsoft.AppCenter.Storage
 {
@@ -41,7 +42,7 @@ namespace Microsoft.AppCenter.Storage
         /// <summary>
         /// Creates an instance of Storage
         /// </summary>
-        public Storage() : this(new StorageAdapter(Database))
+        public Storage() : this(DefaultAdapter())
         {
         }
 
@@ -53,6 +54,25 @@ namespace Microsoft.AppCenter.Storage
             _storageAdapter = adapter;
             _queue.Add(new Task(() => InitializeDatabaseAsync().Wait()));
             _queueFlushTask = Task.Run(FlushQueueAsync);
+        }
+
+        private static IStorageAdapter DefaultAdapter()
+        {
+            try
+            {
+                return new StorageAdapter(Database);
+            }
+            catch (FileLoadException e)
+            {
+                if (e.Message.Contains("SQLite-net"))
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag,
+                        "If you are using sqlite-net-pcl version 1.4.118, please use a different version. " +
+                        "There is a known bug in this version that will prevent App Center from working properly.");
+                    throw new StorageException("Cannot initialize SQLite library.", e);
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -325,7 +345,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 await _storageAdapter.CreateTableAsync<LogEntry>().ConfigureAwait(false);
             }
-            catch (StorageException e)
+            catch (Exception e)
             {
                 AppCenterLog.Error(AppCenterLog.LogTag, "An error occurred while initializing storage", e);
             }

@@ -193,7 +193,22 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                Instance.StartInstanceAndConfigure(appSecret, services);
+                try
+                {
+                    Instance.InstanceConfigure(appSecret);
+                }
+                catch (AppCenterException ex)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, ConfigurationErrorMessage, ex);
+                }
+                try
+                {
+                    Instance.StartInstance(services);
+                }
+                catch (AppCenterException ex)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, StartErrorMessage, ex);
+                }
             }
         }
  
@@ -400,18 +415,6 @@ namespace Microsoft.AppCenter
             AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
 
-        public void StartInstanceAndConfigure(string appSecret, params Type[] services)
-        {
-            try
-            {
-                InstanceConfigure(appSecret);
-                StartInstance(services);
-            }
-            catch (AppCenterException ex)
-            {
-                AppCenterLog.Warn(AppCenterLog.LogTag, ex.Message);
-            }
-        }
         internal Guid InstanceCorrelationId = Guid.Empty;
 
         // We don't support Distribute in UWP.
