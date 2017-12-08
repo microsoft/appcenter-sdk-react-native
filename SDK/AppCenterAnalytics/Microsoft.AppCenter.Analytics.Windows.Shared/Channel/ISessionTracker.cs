@@ -4,6 +4,5 @@
     {
         void Resume();
         void Pause();
-        void ClearSessions();
     }
 }
