@@ -106,12 +106,10 @@ namespace Microsoft.AppCenter.Crashes
         {
             var exception = e.Exception;
             AppCenterLog.Error(Crashes.LogTag, "Unhandled Exception:", exception);
-            if (!(exception is Java.Lang.Exception))
-            {
-                var modelException = GenerateModelException(exception, true);
-                byte[] rawException = CrashesUtils.SerializeException(exception);
-                WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), modelException, rawException);
-            }
+            var javaThrowable = exception as Throwable;
+            var modelException = GenerateModelException(exception, true);
+            byte[] rawException = javaThrowable == null ? CrashesUtils.SerializeException(exception) : null;
+            WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), javaThrowable, modelException, rawException);
         }
 
 #pragma warning disable XS0001 // Find usages of mono todo items

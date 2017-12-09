@@ -65,6 +65,11 @@
                 android:text="@string/CrashSuperNotCalled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/crash_java_from_dotnet"
+                android:text="@string/CrashJavaFromDotNet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
