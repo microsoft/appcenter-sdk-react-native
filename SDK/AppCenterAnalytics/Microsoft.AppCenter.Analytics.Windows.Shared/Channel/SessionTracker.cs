@@ -29,21 +29,13 @@ namespace Microsoft.AppCenter.Analytics.Channel
 
         // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
-        internal const int StorageMaxSessions = 5;
-        internal const string StorageKey = Constants.KeyPrefix + "Sessions";
-        private const char StorageKeyValueSeparator = '.';
-        private const char StorageEntrySeparator = '/';
         private readonly IChannelUnit _channel;
-        private readonly Dictionary<long, Guid> _sessions = new Dictionary<long, Guid>();
         internal Guid _sid = Guid.Empty;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
         private readonly IApplicationSettings _applicationSettings;
         private readonly object _lockObject = new object();
-
-        // This field is purely for testing
-        internal int NumSessions => _sessions.Count;
 
         public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
         {
@@ -53,21 +45,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 _channel = channel;
                 _applicationSettings = applicationSettings;
                 channelGroup.EnqueuingLog += HandleEnqueuingLog;
-                var sessionsString = _applicationSettings.GetValue<string>(StorageKey, null);
-                if (sessionsString == null)
-                {
-                    return;
-                }
-                _sessions = SessionsFromString(sessionsString);
-
-                // Re-write sessions in storage in case of any invalid strings
-                _applicationSettings.SetValue(StorageKey, SessionsAsString());
-                if (_sessions.Count == 0)
-                {
-                    return;
-                }
-                var loadedSessionsString = _sessions.Values.Aggregate("Loaded stored sessions:\n", (current, session) => current + ("\t" + session + "\n"));
-                AppCenterLog.Debug(Analytics.Instance.LogTag, loadedSessionsString);
             }
         }
 
@@ -102,14 +79,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
             }
         }
 
-        public void ClearSessions()
-        {
-            lock (_lockObject)
-            {
-                _applicationSettings.Remove(StorageKey);
-            }
-        }
-
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
         {
             lock (_lockObject)
@@ -117,10 +86,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 // Skip StartSessionLogs to avoid an infinite loop
                 // Skip StartServiceLog because enqueuing a startservicelog should not trigger the start of a session
                 if (e.Log is StartSessionLog || e.Log is StartServiceLog)
-                {
-                    return;
-                }
-                if (SetExistingSessionId(e.Log, _sessions))
                 {
                     return;
                 }
@@ -137,58 +102,13 @@ namespace Microsoft.AppCenter.Analytics.Channel
             {
                 return;
             }
-            if (_sessions.Count == StorageMaxSessions)
-            {
-                _sessions.Remove(_sessions.Keys.Min());
-            }
             _sid = Guid.NewGuid();
 #pragma warning disable CS0612 // Type or member is obsolete
             AppCenter.TestAndSetCorrelationId(Guid.Empty, ref _sid);
 #pragma warning restore CS0612 // Type or member is obsolete
-            _sessions.Add(now, _sid);
-            _applicationSettings.SetValue(StorageKey, SessionsAsString());
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             var startSessionLog = new StartSessionLog { Sid = _sid };
             _channel.EnqueueAsync(startSessionLog);
-        }
-
-        private string SessionsAsString()
-        {
-            var sessionsString = "";
-            foreach (var pair in _sessions)
-            {
-                if (sessionsString != "")
-                {
-                    sessionsString += StorageEntrySeparator;
-                }
-                sessionsString += pair.Key.ToString() + StorageKeyValueSeparator + pair.Value;
-            }
-            return sessionsString;
-        }
-
-        internal static Dictionary<long, Guid> SessionsFromString(string sessionsString)
-        {
-            var sessionsDict = new Dictionary<long, Guid>();
-            if (sessionsString == null)
-            {
-                return sessionsDict;
-            }
-            var sessions = sessionsString.Split(StorageEntrySeparator);
-            foreach (var sessionString in sessions)
-            {
-                var splitSession = sessionString.Split(StorageKeyValueSeparator);
-                try
-                {
-                    var time = long.Parse(splitSession[0]);
-                    var sid = Guid.Parse(splitSession[1]);
-                    sessionsDict.Add(time, sid);
-                }
-                catch (FormatException e) //TODO other exceptions?
-                {
-                    AppCenterLog.Warn(Analytics.Instance.LogTag, $"Ignore invalid session in store: {sessionString}", e);
-                }
-            }
-            return sessionsDict;
         }
 
         private bool HasSessionTimedOut(long now)
