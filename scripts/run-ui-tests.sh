@@ -58,15 +58,16 @@ fi
 # Define functions
 
 # This function initializes tests for the given parameters
-# Usage: initialize_tests {APP_NAME} {DEVICES_CODE} {APP_PACKAGE}
+# Usage: initialize_tests {APP_NAME} {DEVICES_CODE} {APP_PACKAGE} {INFORMATION_FILE}
 initialize_tests() {
     APP_NAME="$1"
     DEVICES_CODE="$2"
     APP_PACKAGE="$3"
+    INFORMATION_FILE="$4"
     appcenter test run uitest --app $APP_NAME\
      --devices $DEVICES_CODE --app-path $APP_PACKAGE\
       --test-series $TEST_SERIES --locale $LOCALE\
-      --build-dir $UITEST_BUILD_DIR --async true
+      --build-dir $UITEST_BUILD_DIR --async true > $INFORMATION_FILE
     echo $?
 }
 
@@ -96,11 +97,15 @@ popd
 
 # Run Android tests
 echo "Initializing Android tests..."
-ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK)
+ANDROID_RETURN_CODE=$(initialize_tests $ANDROID_APP $ANDROID_DEVICES $TEST_APK $ANDROID_INFORMATION_FILE)
+cat $ANDROID_INFORMATION_FILE
+rm $ANDROID_INFORMATION_FILE
 
 # Run iOS tests
 echo "Initializing iOS tests..."
-IOS_RETURN_CODE=$(initialize_tests $IOS_APP $IOS_DEVICES $TEST_IPA)
+IOS_RETURN_CODE=$(initialize_tests $IOS_APP $IOS_DEVICES $TEST_IPA $IOS_INFORMATION_FILE)
+cat $IOS_INFORMATION_FILE
+rm $IOS_INFORMATION_FILE
 
 # If iOS or Android tests failed to be initiated, exit failure. Otherwise exit success
 if [ $IOS_RETURN_CODE -ne 0 ] || [ $ANDROID_RETURN_CODE -ne 0 ]; then	
