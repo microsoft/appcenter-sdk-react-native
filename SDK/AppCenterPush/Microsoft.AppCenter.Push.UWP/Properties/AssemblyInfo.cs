@@ -28,6 +28,6 @@ using System.Runtime.InteropServices;
 [assembly: ReferenceAssembly]
 #endif
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Test.UWP")]
