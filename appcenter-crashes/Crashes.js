@@ -131,8 +131,9 @@ const Helper = {
             return;
         }
         filteredReports.forEach((report) => {
-            const attachments = getErrorAttachmentsMethod(report);
-            AppCenterReactNativeCrashes.sendErrorAttachments(attachments, report.id);
+            Promise.resolve(getErrorAttachmentsMethod(report))
+            .then(attachments => AppCenterReactNativeCrashes.sendErrorAttachments(attachments, report.id))
+            .catch(error => AppCenterLog.error(LOG_TAG, `Could not send error attachments. Error: ${error}`));
         });
 
         // Prevent multipe calls if shouldAwaitUserConfirmation is false and user calling notifyUserConfirmation for some reason

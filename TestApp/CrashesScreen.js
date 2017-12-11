@@ -9,13 +9,18 @@ import {
   StyleSheet,
   Text,
   View,
+  TextInput,
   ScrollView,
   TouchableOpacity
 } from 'react-native';
 
+import { DialogComponent } from 'react-native-dialog-component';
+import ImagePicker from 'react-native-image-picker';
+
 import Crashes from 'appcenter-crashes';
 import { FooClass } from './js/FooClass';
 import SharedStyles from './SharedStyles';
+import AttachmentsProvider from './AttachmentsProvider';
 
 export default class CrashesScreen extends Component {
   constructor() {
@@ -23,11 +28,13 @@ export default class CrashesScreen extends Component {
     this.state = {
       crashesEnabled: false,
       lastSessionStatus: '',
-      sendStatus: ''
+      textAttachment: '',
+      binaryAttachment: ''
     };
     this.toggleEnabled = this.toggleEnabled.bind(this);
     this.jsCrash = this.jsCrash.bind(this);
     this.nativeCrash = this.nativeCrash.bind(this);
+    this.showFilePicker = this.showFilePicker.bind(this);
   }
 
   async componentDidMount() {
@@ -48,6 +55,12 @@ export default class CrashesScreen extends Component {
       status += JSON.stringify(crashReport, null, 4);
       component.setState({ lastSessionStatus: status });
     }
+
+     const textAttachmentValue = await AttachmentsProvider.getTextAttachment();
+     component.setState({ textAttachment: textAttachmentValue });
+
+     const binaryAttachmentValue = await AttachmentsProvider.getBinaryAttachmentInfo();
+     component.setState({ binaryAttachment: binaryAttachmentValue });
   }
 
   async toggleEnabled() {
@@ -73,7 +86,6 @@ export default class CrashesScreen extends Component {
           <Text style={SharedStyles.heading}>
             Test Crashes
           </Text>
-
           <Text style={SharedStyles.enabledText}>
             Crashes enabled: {this.state.crashesEnabled ? 'yes' : 'no'}
           </Text>
@@ -82,7 +94,6 @@ export default class CrashesScreen extends Component {
               toggle
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={this.jsCrash}>
             <Text style={styles.button}>
               Crash JavaScript
@@ -93,13 +104,91 @@ export default class CrashesScreen extends Component {
               Crash native code
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => { this.dialogComponent.show(); }}>
+            <Text style={styles.button}>
+              Set text error attachment
+            </Text>
+          </TouchableOpacity>
+          <Text style={SharedStyles.enabledText}>{'Current value:'}{this.state.textAttachment}</Text>
+          <TouchableOpacity onPress={this.showFilePicker}>
+            <Text style={styles.button}>
+              Select image as binary error attachment
+            </Text>
+          </TouchableOpacity>
+          <Text style={SharedStyles.enabledText}>{'Current value:'}{this.state.binaryAttachment}</Text>
           <Text style={styles.lastSessionHeader}>Last session:</Text>
           <Text style={styles.lastSessionInfo}>
             {this.state.lastSessionStatus}
           </Text>
         </ScrollView>
+        {this.getTextAttachmentDialog()}
       </View>
     );
+  }
+
+  getTextAttachmentDialog() {
+    return (
+      <DialogComponent ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }} width={0.9}>
+        <View>
+          <TextInput style={SharedStyles.dialogInput} onChangeText={text => this.setState({ textAttachment: text })} />
+          <View style={SharedStyles.dialogButtonContainer}>
+            <TouchableOpacity
+              style={SharedStyles.dialogButton}
+              onPress={() => {
+                    AttachmentsProvider.saveTextAttachment(this.state.textAttachment);
+                    this.dialogComponent.dismiss();
+              }}
+            >
+              <Text style={styles.button}>
+                Save
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={SharedStyles.dialogButton} onPress={() => { this.dialogComponent.dismiss(); }}>
+              <Text style={styles.button}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </DialogComponent>
+    );
+  }
+
+  showFilePicker() {
+    ImagePicker.showImagePicker(null, async (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        AttachmentsProvider.saveBinaryAttachment(getFileName(response), response.data, getFileType(response), getFileSize(response));
+        const binaryAttachmentValue = await AttachmentsProvider.getBinaryAttachmentInfo();
+        this.setState({ binaryAttachment: binaryAttachmentValue });
+      }
+    });
+
+    function getFileName(response) {
+      return response.fileName !== null ? response.fileName : 'binary.jpeg';
+    }
+
+    function getFileType(response) {
+      return response.type !== null ? response.type : 'image/jpeg';
+    }
+
+    function getFileSize(response) {
+      const thresh = 1024;
+      const units = ['KiB', 'MiB', 'GiB'];
+      let fileSize = response.fileSize;
+      if (Math.abs(fileSize) < thresh) {
+          return `${fileSize} B`;
+      }
+      let u = -1;
+      do {
+        fileSize /= thresh;
+        ++u;
+      } while (Math.abs(fileSize) >= thresh && u < units.length - 1);
+      return `${fileSize.toFixed(1)} ${units[u]}`;
+    }
   }
 }
 

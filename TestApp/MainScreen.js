@@ -10,6 +10,7 @@ import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
 import SharedStyles from './SharedStyles';
+import AttachmentsProvider from './AttachmentsProvider';
 
 export default class MainScreen extends Component {
   constructor() {
@@ -25,7 +26,6 @@ export default class MainScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-
     return (
       <View style={SharedStyles.container}>
         <Text style={SharedStyles.heading}>
@@ -42,8 +42,7 @@ export default class MainScreen extends Component {
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
-    let message = pushNotification.message;
-    let title = pushNotification.title;
+    let [message, title] = pushNotification;
 
     if (message === null || message === undefined) {
       // Android messages received in the background don't include a message. On Android, that fact can be used to
@@ -97,10 +96,16 @@ Crashes.setListener({
 
   getErrorAttachments(report) {
     console.log(`Get error attachments for report with id: ${report.id}'`);
-    return [
-      ErrorAttachmentLog.attachmentWithText('hello', 'hello.txt'),
-      ErrorAttachmentLog.attachmentWithBinary(testIcon, 'icon.png', 'image/png')
-    ];
+    return (async () => {
+      const [textAttachment, binaryAttachment, binaryName, binaryType] = await Promise.all([
+        AttachmentsProvider.getTextAttachment(),
+        AttachmentsProvider.getBinaryAttachment(),
+        AttachmentsProvider.getBinaryName(),
+        AttachmentsProvider.getBinaryType(),
+      ]);
+      return [ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
+        ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)];
+    })();
   },
 
   onBeforeSending() {
@@ -115,18 +120,3 @@ Crashes.setListener({
     console.log('Failed sending crash. onSendingFailed is invoked.');
   }
 });
-
-const testIcon = `iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGP
-C/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3Cc
-ulE8AAAA1VBMVEXLLmPLLWPLLWLMMWXLLGLMMmbcdJftt8nYY4vKLGHSSXfp
-qL799fj////oobnVVYDUUX3LL2TccpX12OL88fXrsMT56O7NNWjhhaT56O3S
-SHfTT3z56e777vPcc5bQQXH22+Tuvc7sssX++vv66/DuvM3sssbYZIv22uT7
-7vLvvs79+PrUUH3OOmzjjqr66u/99vj23OXZZo3YYIn89Pf++fv22uPYYorX
-YIjZaI767PHuusz99/nbb5TPQHDqqsD55+3ggqL55ez11+HRSHfUUn7TT3vg
-lpRpAAAAAWJLR0QN9rRh9QAAAJpJREFUGNNjYMAKGJmYmZD5LKxs7BxMDJws
-UD4nFzcPLx8LA7+AIJjPKiQsIirGJy4hKSwFUsMpLSMrJ6+gqKTMqyLACRRg
-klflUVPX4NXU0lbRAQkwMOnqiegbGBoZmyAJaJqamVtABYBaDNgtDXmtrG0g
-AkBDNW3tFFRFTaGGgqyVtXfgE3d0cnZhQXYYk6ubIA6nY3oOGQAAubQPeKPu
-sH8AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTctMDctMjhUMDM6NDE6MTUrMDI6
-MDAk+3aMAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE3LTA3LTI4VDAzOjQxOjE1
-KzAyOjAwVabOMAAAAABJRU5ErkJggg==`;
