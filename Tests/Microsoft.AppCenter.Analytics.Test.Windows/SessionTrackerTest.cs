@@ -87,18 +87,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         }
 
         /// <summary>
-        /// Verify that ClearSessions actually removes sessions from storage
-        /// </summary>
-        [TestMethod]
-        public void ClearSessions()
-        {
-            _sessionTracker.Resume();
-            _sessionTracker.ClearSessions();
-
-            _mockSettings.Verify(channel => channel.Remove(SessionTracker.StorageKey), Times.Once);
-        }
-
-        /// <summary>
         /// Verify that an enqueuing log is handled properly while the tracker is in a session
         /// </summary>
         [TestMethod]
@@ -154,45 +142,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Never());
-        }
-
-        /// <summary>
-        /// Verify that there are never more than max sessions
-        /// </summary>
-        [TestMethod]
-        public void StartMaxSessions()
-        {
-            for (var i = 0; i <= SessionTracker.StorageMaxSessions; ++i)
-            {
-                _sessionTracker.Pause();
-                Task.Delay((int)SessionTracker.SessionTimeout).Wait();
-                _sessionTracker.Resume();
-            }
-
-            Assert.IsTrue(_sessionTracker.NumSessions == SessionTracker.StorageMaxSessions);
-        }
-
-        /// <summary>
-        /// Verify that creating a session dictionary from an invalid string returns a dictionary without the invalid sessions
-        /// </summary>
-        [TestMethod]
-        public void SessionFromInvalidString()
-        {
-            var sessionString = "invalid session";
-            var dict = SessionTracker.SessionsFromString(sessionString);
-
-            Assert.IsTrue(dict.Count == 0);
-        }
-
-        /// <summary>
-        /// Verify that creating a session dictionary from a null string returns an empty dictionary
-        /// </summary>
-        [TestMethod]
-        public void SessionFromNullString()
-        {
-            var dict = SessionTracker.SessionsFromString(null);
-
-            Assert.IsTrue(dict.Count == 0);
         }
 
         /// <summary>

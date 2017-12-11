@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
-using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Ingestion.Models;
-using Microsoft.AppCenter.Utils;
-using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Http;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter
 {
@@ -30,6 +31,7 @@ namespace Microsoft.AppCenter
         private static IChannelGroupFactory _channelGroupFactory;
 
         private readonly IApplicationSettings _applicationSettings;
+        private INetworkStateAdapter _networkStateAdapter;
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
@@ -191,7 +193,22 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                Instance.StartInstanceAndConfigure(appSecret, services);
+                try
+                {
+                    Instance.InstanceConfigure(appSecret);
+                }
+                catch (AppCenterException ex)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, ConfigurationErrorMessage, ex);
+                }
+                try
+                {
+                    Instance.StartInstance(services);
+                }
+                catch (AppCenterException ex)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, StartErrorMessage, ex);
+                }
             }
         }
  
@@ -235,13 +252,12 @@ namespace Microsoft.AppCenter
                 _applicationSettings = _applicationSettingsFactory?.CreateApplicationSettings() ?? new DefaultApplicationSettings();
                 LogSerializer.AddLogType(StartServiceLog.JsonIdentifier, typeof(StartServiceLog));
                 LogSerializer.AddLogType(CustomPropertyLog.JsonIdentifier, typeof(CustomPropertyLog));
+                ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
             }
         }
 
-        internal IApplicationSettings ApplicationSettings
-        {
-            get { return _applicationSettings; }
-        }
+        internal IApplicationSettings ApplicationSettings => _applicationSettings;
+        internal INetworkStateAdapter NetworkStateAdapter => _networkStateAdapter;
 
         private bool InstanceEnabled
         {
@@ -279,7 +295,8 @@ namespace Microsoft.AppCenter
         {
             if (!Configured)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. " +
+                                                        "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
@@ -290,6 +307,19 @@ namespace Microsoft.AppCenter
             var customPropertiesLog = new CustomPropertyLog();
             customPropertiesLog.Properties = customProperties.Properties;
             _channel.EnqueueAsync(customPropertiesLog);
+        }
+
+        private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
+        {
+            lock (AppCenterLock)
+            {
+                if (_channelGroup != null)
+                {
+                    AppCenterLog.Debug(AppCenterLog.LogTag, "Shutting down channel group due to unhandled exception.");
+                    _channelGroup.ShutdownAsync();
+                    _channelGroup = null;
+                }
+            }
         }
 
         // Internal for testing
@@ -303,9 +333,8 @@ namespace Microsoft.AppCenter
             _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
             // If a factory has been supplied, use it to construct the channel group - this is designed for testing.
-            // Normal scenarios will use new ChannelGroup(string).
-            _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret);
-            ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += (sender, e) => _channelGroup.ShutdownAsync();
+            _networkStateAdapter = new NetworkStateAdapter();
+            _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret, null, _networkStateAdapter);
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
             if (_logUrl != null)
@@ -328,7 +357,6 @@ namespace Microsoft.AppCenter
             }
 
             var startServiceLog = new StartServiceLog();
-
             foreach (var serviceType in services)
             {
                 if (serviceType == null)
@@ -373,6 +401,10 @@ namespace Microsoft.AppCenter
             {
                 throw new AppCenterException("Attempted to start an invalid App Center service.");
             }
+            if (_channelGroup == null)
+            {
+                throw new AppCenterException("Attempted to start a service after App Center has been shut down.");
+            }
             if (_services.Contains(service))
             {
                 AppCenterLog.Warn(AppCenterLog.LogTag, $"App Center has already started the service with class name '{service.GetType().Name}'");
@@ -383,18 +415,6 @@ namespace Microsoft.AppCenter
             AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
 
-        public void StartInstanceAndConfigure(string appSecret, params Type[] services)
-        {
-            try
-            {
-                InstanceConfigure(appSecret);
-                StartInstance(services);
-            }
-            catch (AppCenterException ex)
-            {
-                AppCenterLog.Warn(AppCenterLog.LogTag, ex.Message);
-            }
-        }
         internal Guid InstanceCorrelationId = Guid.Empty;
 
         // We don't support Distribute in UWP.
@@ -403,10 +423,6 @@ namespace Microsoft.AppCenter
             return serviceType?.FullName == DistributeServiceFullType;
         }
 
-        private void ThrowStartedServiceException(string serviceName)
-        {
-            throw new AppCenterException($"App Center has already started a service of type '{serviceName}'.");
-        }
         #endregion
     }
 }

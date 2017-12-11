@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using SQLite;
 
@@ -19,7 +20,13 @@ namespace Microsoft.AppCenter.Storage
         {
             try
             {
-                await _dbConnection.CreateTableAsync<T>().ConfigureAwait(false);
+                // In SQLite-net 1.5 return type was changed.
+                // Using reflection to accept newer library version.
+                var task = (Task)_dbConnection.GetType()
+                    .GetMethod("CreateTableAsync", new [] { typeof(CreateFlags) })
+                    .MakeGenericMethod(typeof(T))
+                    .Invoke(_dbConnection, new object[] { CreateFlags.None });
+                await task.ConfigureAwait(false);
             }
             catch (SQLiteException e)
             {

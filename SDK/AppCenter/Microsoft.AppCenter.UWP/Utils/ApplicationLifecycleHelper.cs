@@ -77,7 +77,7 @@ namespace Microsoft.AppCenter.Utils
                 }
                 catch (Exception exception)
                 {
-                    UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(exception));
+                    InvokeUnhandledExceptionOccurred(sender, exception);
 
                     // Since UnhandledError.Propagate marks the error as Handled, rethrow in order to only Log and not Handle.
                     throw;
@@ -120,6 +120,11 @@ namespace Microsoft.AppCenter.Utils
                     "Not invoking resume immediately because UI is not ready.");
             }
             return needsResume;
+        }
+
+        internal void InvokeUnhandledExceptionOccurred(object sender, Exception exception)
+        {
+            UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(exception));
         }
 
         private void InvokeResuming(object sender, object e)

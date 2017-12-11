@@ -11,20 +11,12 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
     {
-
-        public const string FirebaseEnabledKey = "FIREBASE_ENABLED";
-
         public OthersContentPage()
         {
             InitializeComponent();
             if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
             {
                 Icon = "handbag.png";
-            }
-            if (XamarinDevice.RuntimePlatform != XamarinDevice.Android)
-            {
-                FirebaseAnalyticsEnabledSwitchCell.On = false;
-                FirebaseAnalyticsEnabledSwitchCell.IsEnabled = false;
             }
         }
 
@@ -36,14 +28,6 @@ namespace Contoso.Forms.Puppet
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            if (XamarinDevice.RuntimePlatform == XamarinDevice.Android)
-            {
-                if (!Application.Current.Properties.ContainsKey(FirebaseEnabledKey))
-                {
-                    Application.Current.Properties[FirebaseEnabledKey] = false;
-                }
-                FirebaseAnalyticsEnabledSwitchCell.On = (bool)Application.Current.Properties[FirebaseEnabledKey];
-            }
             RumEnabledSwitchCell.On = await RealUserMeasurements.IsEnabledAsync();
             RumEnabledSwitchCell.IsEnabled = acEnabled;
         }
@@ -56,11 +40,6 @@ namespace Contoso.Forms.Puppet
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
             await Push.SetEnabledAsync(e.Value);
-        }
-
-        void UpdateFirebaseAnalyticsEnabled(object sender, ToggledEventArgs e)
-        {
-            Application.Current.Properties[FirebaseEnabledKey] = e.Value;
         }
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)

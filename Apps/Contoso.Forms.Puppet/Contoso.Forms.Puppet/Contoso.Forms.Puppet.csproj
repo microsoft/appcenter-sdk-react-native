@@ -60,11 +60,16 @@
     <EmbeddedResource Include="ModulePages\OthersContentPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\TextAttachmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IFilePicker.cs" />
     <Compile Include="MainPuppetPage.cs">
       <DependentUpon>MainPuppetPage.xaml</DependentUpon>
     </Compile>
@@ -99,6 +104,9 @@
     </Compile>
     <Compile Include="FakeService.cs" />
     <Compile Include="PreserveAttribute.cs" />
+    <Compile Include="Views\TextAttachmentView.xaml.cs">
+      <DependentUpon>TextAttachmentView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System.Linq;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -8,6 +9,7 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
+using Microsoft.AppCenter.Push;
 
 namespace Contoso.Android.Puppet
 {
@@ -17,6 +19,12 @@ namespace Contoso.Android.Puppet
     public class MainActivity : AppCompatActivity
     {
         const string LogTag = "AppCenterXamarinPuppet";
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            Push.PushNotificationReceived -= PrintNotification;
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -49,12 +57,22 @@ namespace Contoso.Android.Puppet
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
 
             Distribute.ReleaseAvailable = OnReleaseAvailable;
-
             AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            AppCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes), typeof(Distribute));
+
+            // Enable Firebase Analytics if set
+            var enableAnalytics = Preferences.SharedPreferences.GetBoolean(Constants.FirebaseAnalyticsEnabledKey, false);
+            if (enableAnalytics)
+            {
+                Push.EnableFirebaseAnalytics();
+            }
+
+            Push.PushNotificationReceived += PrintNotification;
+
+            AppCenter.Start("bff0949b-7970-439d-9745-92cdc59b10fe", typeof(Analytics), typeof(Crashes),
+                            typeof(Push), typeof(Distribute));
 
             AppCenter.IsEnabledAsync().ContinueWith(enabled =>
             {
@@ -73,6 +91,19 @@ namespace Contoso.Android.Puppet
                 AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
                 AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable);
             });
+        }
+
+        void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
+        {
+            var alertDialog = new AlertDialog.Builder(this, Resource.Style.AppCompatDialogStyle);
+            alertDialog.SetTitle(e.Title);
+            var message = e.Message;
+            if (e.CustomData != null && e.CustomData.Count > 0)
+            {
+                message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+            }
+            alertDialog.SetMessage(message);
+            alertDialog.Show();
         }
 
         void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)

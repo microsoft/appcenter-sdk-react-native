@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="FilePicker.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\bolt%402x.png" />

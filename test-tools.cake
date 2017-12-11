@@ -106,7 +106,7 @@ Setup(context =>
     {
         environment = Environment.Int;
         Token = EnvironmentVariable("APP_CENTER_INT_API_TOKEN");
-        BaseUrl = "https://asgard-int.trafficmanager.net/api";
+        BaseUrl = "https://appcenter-int.trafficmanager.net/api";
     }
     var platformString = Argument<string>("Platform", "ios");
     var platform = Platform.iOS;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -23,17 +22,29 @@ namespace Contoso.Forms.Puppet
         private const string AndroidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
         private const string IosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
 
+        static App()
+        {
+            // Set event handlers in static constructor to avoid duplication
+            Crashes.SendingErrorReport += SendingErrorReportHandler;
+            Crashes.SentErrorReport += SentErrorReportHandler;
+            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Push.PushNotificationReceived += PrintNotification;
+        }
+
         public App()
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPuppetPage());
+        }
 
+        protected override void OnStart()
+        {
             AppCenterLog.Assert(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenterLog.Info(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
             AppCenterLog.Info(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
-            // set callbacks
+            // Set callbacks
             Crashes.ShouldProcessErrorReport = ShouldProcess;
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             Crashes.GetErrorAttachments = GetErrorAttachments;
@@ -41,27 +52,11 @@ namespace Contoso.Forms.Puppet
 
             AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
-            Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
+            Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
+            Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");
             RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
             AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
-
-            // Need to use reflection because moving this to the Android specific
-            // code causes crash. (Unable to access properties before init is called).
-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
-            {
-                if (!Properties.ContainsKey(OthersContentPage.FirebaseEnabledKey))
-                {
-                    Properties[OthersContentPage.FirebaseEnabledKey] = false;
-                }
-
-                if ((bool)Properties[OthersContentPage.FirebaseEnabledKey])
-                {
-                    typeof(Push).GetRuntimeMethod("EnableFirebaseAnalytics", new Type[0]).Invoke(null, null);
-                }
-            }
-
             AppCenter.IsEnabledAsync().ContinueWith(enabled =>
             {
                 AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
@@ -79,15 +74,6 @@ namespace Contoso.Forms.Puppet
             {
                 AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
             });
-        }
-
-        static App()
-        {
-            // set event handlers in static constructor to avoid duplication
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
-            Push.PushNotificationReceived += PrintNotification;
         }
 
         static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
@@ -109,7 +95,7 @@ namespace Contoso.Forms.Puppet
 
             var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -126,7 +112,7 @@ namespace Contoso.Forms.Puppet
 
             var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -148,7 +134,7 @@ namespace Contoso.Forms.Puppet
 
             var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -200,12 +186,36 @@ namespace Contoso.Forms.Puppet
 
         static IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
         {
-            return new[]
+            var attachments = new List<ErrorAttachmentLog>();
+            if (Current.Properties.TryGetValue(CrashesContentPage.TextAttachmentKey, out var textAttachment) &&
+                textAttachment is string text)
             {
-                ErrorAttachmentLog.AttachmentWithText("Hello world!", "hello.txt"),
-                null,
-                ErrorAttachmentLog.AttachmentWithBinary(Encoding.UTF8.GetBytes("Fake image"), "fake_image.jpeg", "image/jpeg")
-            };
+                var attachment = ErrorAttachmentLog.AttachmentWithText(text, "hello.txt");
+                attachments.Add(attachment);
+            }
+            if (Current.Properties.TryGetValue(CrashesContentPage.FileAttachmentKey, out var fileAttachment) &&
+                fileAttachment is string file)
+            {
+                var filePicker = DependencyService.Get<IFilePicker>();
+                if (filePicker != null)
+                {
+                    try
+                    {
+                        var result = filePicker.ReadFile(file);
+                        if (result != null)
+                        {
+                            var attachment = ErrorAttachmentLog.AttachmentWithBinary(result.Item1, result.Item2, result.Item3);
+                            attachments.Add(attachment);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        AppCenterLog.Warn(LogTag, "Couldn't read file attachment", e);
+                        Current.Properties.Remove(CrashesContentPage.FileAttachmentKey);
+                    }
+                }
+            }
+            return attachments;
         }
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)

@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage Title="Crashes"
-        xmlns="http://xamarin.com/schemas/2014/forms" 
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-        x:Class="Contoso.Forms.Demo.CrashesContentPage">
-        <TableView Intent="Form">
-            <TableSection>
-                <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
-            </TableSection>
-            <TableSection>
-                <ViewCell Tapped="TestCrash">
-                    <Button Text="Generate Test Crash" InputTransparent="true" Clicked="TestCrash"/>
-                </ViewCell>
-                <ViewCell Tapped="DivideByZero">
-                    <Button Text="Divide 42 by 0" InputTransparent="true" Clicked="DivideByZero"/>
-                </ViewCell>
-                <ViewCell Tapped="CrashWithAggregateException">
-                    <Button Text="Crash With Aggregate Exception" InputTransparent="true" Clicked="CrashWithAggregateException"/>
-               </ViewCell>
-                <ViewCell Tapped="CrashWithNullReferenceException">
-                    <Button Text="Crash With NullReferenceException" InputTransparent="true" Clicked="CrashWithNullReferenceException"/>
-                </ViewCell>
-				<ViewCell Tapped="CrashAsync">
-                    <Button Text="Crash Inside Async Task" InputTransparent="true" Clicked="CrashAsync"/>
-                </ViewCell>
-            </TableSection>
-        </TableView>
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Contoso.Forms.Demo.CrashesContentPage">
+    <TableView Intent="Form">
+        <TableSection Title="Crashes Settings">
+            <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
+            <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell"/>
+        </TableSection>
+        <TableSection Title="Attachments">
+            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment"/>
+            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
+        </TableSection>
+        <TableSection Title="Test Crashes">
+            <ViewCell Tapped="TestCrash">
+                <Button Text="Generate Test Crash" InputTransparent="true" Clicked="TestCrash"/>
+            </ViewCell>
+            <ViewCell Tapped="DivideByZero">
+                <Button Text="Divide 42 by 0" InputTransparent="true" Clicked="DivideByZero"/>
+            </ViewCell>
+            <ViewCell Tapped="CrashWithAggregateException">
+                <Button Text="Crash With Aggregate Exception" InputTransparent="true" Clicked="CrashWithAggregateException"/>
+            </ViewCell>
+            <ViewCell Tapped="CrashWithNullReferenceException">
+                <Button Text="Crash With NullReferenceException" InputTransparent="true" Clicked="CrashWithNullReferenceException"/>
+            </ViewCell>
+            <ViewCell Tapped="CrashAsync">
+                <Button Text="Crash Inside Async Task" InputTransparent="true" Clicked="CrashAsync"/>
+            </ViewCell>
+        </TableSection>
+    </TableView>
 </ContentPage>

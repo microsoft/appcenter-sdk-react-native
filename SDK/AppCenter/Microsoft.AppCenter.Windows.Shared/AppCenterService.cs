@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter
@@ -17,6 +18,8 @@ namespace Microsoft.AppCenter
         /// Application settings.
         /// </summary>
         protected virtual IApplicationSettings ApplicationSettings => AppCenter.Instance.ApplicationSettings;
+
+        protected virtual INetworkStateAdapter NetworkStateAdapter => AppCenter.Instance.NetworkStateAdapter;
 
         /// <summary>
         /// Channel associated with this service. Should be disposed only by ChannelGroup.
@@ -103,9 +106,12 @@ namespace Microsoft.AppCenter
         /// </summary>
         /// <param name="channelGroup">The channel group to which the channel should be added</param>
         /// <param name="appSecret">The app secret of the current application</param>
-
         public virtual void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
+            if (channelGroup == null)
+            {
+                throw new ArgumentNullException(nameof(channelGroup));
+            }
             lock (_serviceLock)
             {
                 ChannelGroup = channelGroup;
