@@ -168,11 +168,19 @@ export default class CrashesScreen extends Component {
     });
 
     function getFileName(response) {
-      return response.fileName !== null ? response.fileName : 'binary.jpeg';
+      let fileName = 'binary.jpeg';
+      if (response.fileName) {
+        fileName = response.fileName;
+      }
+      return fileName;
     }
 
     function getFileType(response) {
-      return response.type !== null ? response.type : 'image/jpeg';
+      let fileType = 'image/jpeg';
+      if (response.type) {
+        fileType = response.type;
+      }
+      return fileType;
     }
 
     function getFileSize(response) {
