@@ -128,20 +128,12 @@ export default class CrashesScreen extends Component {
 
   getTextAttachmentDialog() {
     return (
-      <DialogComponent
-        ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
-        width={0.9}
-      >
+      <DialogComponent ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }} width={0.9}>
         <View>
-          <TextInput
-            style={{
-               height: 40, borderColor: 'gray', borderWidth: 1, margin: 8
-              }}
-            onChangeText={text => this.setState({ textAttachment: text })}
-          />
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TextInput style={SharedStyles.dialogInput} onChangeText={text => this.setState({ textAttachment: text })} />
+          <View style={SharedStyles.dialogButtonContainer}>
             <TouchableOpacity
-              style={{ height: 50 }}
+              style={SharedStyles.dialogButton}
               onPress={() => {
                     AttachmentsProvider.saveTextAttachment(this.state.textAttachment);
                     this.dialogComponent.dismiss();
@@ -151,10 +143,7 @@ export default class CrashesScreen extends Component {
                 Save
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{ height: 50 }}
-              onPress={() => { this.dialogComponent.dismiss(); }}
-            >
+            <TouchableOpacity style={SharedStyles.dialogButton} onPress={() => { this.dialogComponent.dismiss(); }}>
               <Text style={styles.button}>
                 Cancel
               </Text>
@@ -179,11 +168,11 @@ export default class CrashesScreen extends Component {
     });
 
     function getFileName(response) {
-      return response.fileName != null ? response.fileName : 'binary.jpeg';
+      return response.fileName !== null ? response.fileName : 'binary.jpeg';
     }
 
     function getFileType(response) {
-      return response.type != null ? response.type : 'image/jpeg';
+      return response.type !== null ? response.type : 'image/jpeg';
     }
 
     function getFileSize(response) {
