@@ -196,7 +196,7 @@ export default class CrashesScreen extends Component {
       let u = -1;
       do {
         fileSize /= thresh;
-          ++u;
+        ++u;
       } while (Math.abs(fileSize) >= thresh && u < units.length - 1);
       return `${fileSize.toFixed(1)} ${units[u]}`;
     }
