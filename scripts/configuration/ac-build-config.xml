@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <sdkInfo>
-        <sdkVersion>1.0.2-SNAPSHOT</sdkVersion>
+        <sdkVersion>1.1.0-SNAPSHOT</sdkVersion>
         <iosVersion>1.0.0</iosVersion>
-        <androidVersion>1.0.0</androidVersion>
+        <androidVersion>1.1.0</androidVersion>
     </sdkInfo>
     <group id="ios" folder="iOSAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll"/>

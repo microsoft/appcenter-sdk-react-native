@@ -117,6 +117,7 @@ Task("StartNewVersion").Does(()=>
     foreach (var manifest in manifests)
     {
         if (!manifest.FullPath.Contains("Demo") &&
+            !manifest.FullPath.Contains("SDK") &&
             !manifest.FullPath.Contains("/bin/") &&
             !manifest.FullPath.Contains("/obj/"))
         {

@@ -15,16 +15,7 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/xhh7sr</iconUrl>
     <dependencies>
-        <group>
-            <dependency id="Microsoft.AppCenter" version="$version$" />
-        </group>
-        <group targetFramework="MonoAndroid403">
-            <dependency id="Microsoft.AppCenter" version="$version$" />
-            <dependency id="Xamarin.Firebase.Messaging" version="60.1142.0-beta2"/>
-            <dependency id="Xamarin.Firebase.Core" version="60.1142.0-beta2"/>
-            <dependency id="Xamarin.GooglePlayServices.Basement" version="60.1142.0-beta2"/>
-            <dependency id="Xamarin.Android.Support.v4" version="26.1.0.1"/>
-        </group>
+      <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
     <version>$version$</version>
   </metadata>

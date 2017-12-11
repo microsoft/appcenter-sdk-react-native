@@ -57,22 +57,6 @@ namespace Contoso.Forms.Puppet
             RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
             AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
                                typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
-
-            // Need to use reflection because moving this to the Android specific
-            // code causes crash. (Unable to access properties before init is called).
-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
-            {
-                if (!Properties.ContainsKey(OthersContentPage.FirebaseEnabledKey))
-                {
-                    Properties[OthersContentPage.FirebaseEnabledKey] = false;
-                }
-
-                if ((bool)Properties[OthersContentPage.FirebaseEnabledKey])
-                {
-                    typeof(Push).GetRuntimeMethod("EnableFirebaseAnalytics", new Type[0]).Invoke(null, null);
-                }
-            }
-
             AppCenter.IsEnabledAsync().ContinueWith(enabled =>
             {
                 AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);

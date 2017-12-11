@@ -30,7 +30,7 @@ namespace Contoso.Forms.Puppet.Droid
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
-
+            Push.SetSenderId("177539951155");
             LoadApplication(new App());
         }
 

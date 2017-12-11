@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
+using Uri = Android.Net.Uri;
 
 namespace Contoso.Android.Puppet
 {
@@ -19,6 +20,7 @@ namespace Contoso.Android.Puppet
         private Button CatchNullReferenceExceptionButton;
         private Button CrashAsyncButton;
         private Button CrashSuperNotCalledButton;
+        private Button CrashJavaFromDotNetButton;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -38,6 +40,7 @@ namespace Contoso.Android.Puppet
             CatchNullReferenceExceptionButton = view.FindViewById(Resource.Id.catch_null_reference_exception) as Button;
             CrashAsyncButton = view.FindViewById(Resource.Id.crash_async) as Button;
             CrashSuperNotCalledButton = view.FindViewById(Resource.Id.crash_super_not_called) as Button;
+            CrashJavaFromDotNetButton = view.FindViewById(Resource.Id.crash_java_from_dotnet) as Button;
 
             // Subscribe to events.
             CrashesEnabledSwitch.CheckedChange += UpdateEnabled;
@@ -48,6 +51,7 @@ namespace Contoso.Android.Puppet
             CatchNullReferenceExceptionButton.Click += CatchNullReferenceException;
             CrashAsyncButton.Click += CrashAsync;
             CrashSuperNotCalledButton.Click += CrashSuperNotCalled;
+            CrashJavaFromDotNetButton.Click += CrashJavaFromDotNet;
 
             UpdateState();
         }
@@ -122,6 +126,11 @@ namespace Contoso.Android.Puppet
         private void CrashSuperNotCalled(object sender, EventArgs e)
         {
             StartActivity(new Intent(Activity, typeof(CrashActivity)));
+        }
+
+        private void CrashJavaFromDotNet(object sender, EventArgs e)
+        {
+            Uri.Parse(null);
         }
 
         static Exception PrepareException()
