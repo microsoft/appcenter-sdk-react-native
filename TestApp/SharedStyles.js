@@ -34,6 +34,20 @@ const SharedStyles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
+  dialogInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    margin: 8
+  },
+  dialogButton: {
+    height: 50
+  },
+  dialogButtonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
 });
 
 export default SharedStyles;

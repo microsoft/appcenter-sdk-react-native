@@ -79,13 +79,18 @@ module.exports = {
         if (!PodFile.isCocoaPodsInstalled()) {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
-        const podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
-        pods.forEach((pod) => {
-            podFile.addPodLine(pod.pod, pod.podspec, pod.version);
-        });
-        podFile.eraseOldLines();
-        podFile.save();
-        return podFile.install();
+        try {
+            const podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
+            pods.forEach((pod) => {
+                podFile.addPodLine(pod.pod, pod.podspec, pod.version);
+            });
+            podFile.eraseOldLines();
+            podFile.save();
+            return Promise.resolve(podFile.install());
+        } catch (e) {
+            debug('Could not add pod dependencies', e);
+            return Promise.reject(e);
+        }
     }
 };
 

@@ -4,7 +4,7 @@
   "summary": "React Native plugin for Visual Studio App Center",
   "license": {
     "type": "MIT",
-    "file": "AppCenterReactNativeShared/LICENSE"
+    "file": "AppCenterReactNativeShared/LICENSE.md"
   },
   "homepage": "https://github.com/Microsoft/AppCenter-SDK-React-Native",
   "documentation_url": "https://docs.microsoft.com/en-us/appcenter/",
