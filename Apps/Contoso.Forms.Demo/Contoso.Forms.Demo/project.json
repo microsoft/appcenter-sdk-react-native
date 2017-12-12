@@ -1,11 +1,11 @@
-{
+﻿{
   "dependencies": {
-    "Microsoft.AppCenter.Analytics": "1.0.1",
-    "Microsoft.AppCenter.Crashes": "1.0.1",
-    "Microsoft.AppCenter.Distribute": "1.0.1",
-    "Microsoft.AppCenter.Push": "1.0.1",
+    "Microsoft.AppCenter.Analytics": "1.1.0",
+    "Microsoft.AppCenter.Crashes": "1.1.0",
+    "Microsoft.AppCenter.Distribute": "1.1.0",
+    "Microsoft.AppCenter.Push": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Xamarin.Forms": "2.5.0.91635"
+    "Xamarin.Forms": "2.5.0.121934"
   },
   "frameworks": {
     "netstandard1.0": {}

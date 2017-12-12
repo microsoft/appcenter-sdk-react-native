@@ -23,6 +23,7 @@ namespace Contoso.Forms.Demo.Droid
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            Push.SetSenderId("177539951155");
             LoadApplication(new App());
         }
 
