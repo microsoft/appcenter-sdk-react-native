@@ -1,4 +1,6 @@
-# source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git'
+source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -7,10 +9,10 @@ target 'DemoApp' do
   # use_frameworks!
 
   # Pods for DemoApp
-  pod 'AppCenter/Push', '~> 1.0.1'
-  pod 'AppCenter/Crashes', '~> 1.0.1'
-  pod 'AppCenter/Analytics', '~> 1.0.1'
-  pod 'AppCenterReactNativeShared', '~> 1.0.1'
+  pod 'AppCenter/Push', '~> 1.1.0'
+  pod 'AppCenter/Crashes', '~> 1.1.0'
+  pod 'AppCenter/Analytics', '~> 1.1.0'
+  pod 'AppCenterReactNativeShared', '~> 1.1.0'
 
   platform :ios, '8.0'
 end
