@@ -13,9 +13,6 @@
 static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificationReceived";
 
 @implementation AppCenterReactNativePushDelegateBase
-{
-    bool hasListeners;
-}
 
 - (instancetype) init
 {
@@ -29,20 +26,20 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
     // This handles the scenario that when the user taps on a background notification to launch the app, the launch notification
     // gets sent to this native callback before the JS callback has a chance to register. So we need to save that notification off,
     // then send it when the JS callback regsters & stop saving notifications after
-    if (self.saveInitialNotification && self.initialNotification == nil) {
-        self.initialNotification = convertNotificationToJS(pushNotification);
+    if (self.saveInitialNotification) {
+        if (self.initialNotification == nil) {
+            self.initialNotification = convertNotificationToJS(pushNotification);
+        }
     }
-    else if (hasListeners) {
+    else {
         [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
     }
 }   
 
-- (void)sendAndClearInitialNotification
+- (void) sendAndClearInitialNotification
 {
     if (self.initialNotification) {
-        if (hasListeners) {
-            [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
-        }
+        [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
         self.initialNotification = nil;
     }
     self.saveInitialNotification = false;
@@ -51,16 +48,6 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[ON_PUSH_NOTIFICATION_RECEIVED_EVENT];
-}
-
-- (void)startObserving {
-    // Will be called when this module's first listener is added.
-    hasListeners = YES;
-}
-
-- (void)stopObserving {
-    // Will be called when this module's last listener is removed, or on dealloc.
-    hasListeners = NO;
 }
 
 @end
