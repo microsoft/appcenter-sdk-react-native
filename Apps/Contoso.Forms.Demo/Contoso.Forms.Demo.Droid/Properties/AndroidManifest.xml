@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.forms.demo" android:versionName="1.1.0" android:versionCode="46">
-	<uses-sdk android:minSdkVersion="15" />
-	<application android:label="ACFDemo">
-		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
-		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
-			<intent-filter>
-				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-				<category android:name="${applicationId}" />
-			</intent-filter>
-		</receiver>
-	</application>
+	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="26" />
+	<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+	<permission android:name="${applicationId}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<application android:label="ACFDemo" />
 </manifest>
