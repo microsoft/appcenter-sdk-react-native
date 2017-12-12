@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo.Views
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public partial class TextAttachmentView : ContentPage
     {
         private readonly TaskCompletionSource<string> _taskCompletionSource = new TaskCompletionSource<string>();
