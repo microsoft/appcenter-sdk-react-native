@@ -42,7 +42,8 @@ export default class MainScreen extends Component {
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
-    let [message, title] = pushNotification;
+    let message = pushNotification.message;
+    let title = pushNotification.title;
 
     if (message === null || message === undefined) {
       // Android messages received in the background don't include a message. On Android, that fact can be used to
