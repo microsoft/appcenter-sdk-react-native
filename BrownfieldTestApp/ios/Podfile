@@ -1,0 +1,34 @@
+# Example Podfile for brownfield react native application
+# For more information about using `react-native link` install pods for brownfield application, 
+# please refer to https://github.com/facebook/react-native/commit/74146cb3158273921b768c97f229695e680ea82d
+# Note that this scenario is only supported in react-native v0.50.0 or later (https://github.com/facebook/react-native/releases/tag/v0.50.0)
+
+target 'BrownfieldTestApp' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  pod 'React', path: '../node_modules/react-native', subspecs: [
+    'Core',
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket',
+    'BatchedBridge',
+    'RCTImage',
+    'DevSupport',
+    'RCTAnimation',
+    'RCTActionSheet',
+    'RCTLinkingIOS',
+  ]
+  pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
+
+  # Pods for BrownfieldTestApp
+
+  pod 'appcenter', path: '../node_modules/appcenter/ios'
+  pod 'appcenter-analytics', path: '../node_modules/appcenter-analytics/ios'
+  pod 'appcenter-crashes', path: '../node_modules/appcenter-crashes/ios'
+  pod 'appcenter-push', path: '../node_modules/appcenter-push/ios'
+
+  # Add new pods below this line
+
+  platform :ios, '8.0'
+end

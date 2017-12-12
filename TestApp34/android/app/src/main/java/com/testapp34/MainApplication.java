@@ -9,6 +9,7 @@ import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPa
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
 import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.push.Push;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -48,6 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
 
     AppCenter.setLogLevel(Log.VERBOSE);
+    Push.setSenderId("177539951155");
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

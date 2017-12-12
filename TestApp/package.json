@@ -8,13 +8,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "appcenter": "../appcenter",
-    "appcenter-analytics": "../appcenter-analytics",
-    "appcenter-crashes": "../appcenter-crashes",
-    "appcenter-link-scripts": "../appcenter-link-scripts",
-    "appcenter-push": "../appcenter-push",
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.48.3",
+    "appcenter": "file:appcenter-1.1.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.1.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.1.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.1.0.tgz",
+    "appcenter-push": "file:appcenter-push-1.1.0.tgz",
+    "react": "^16.0.0",
+    "react-native": "^0.50.3",
+    "react-native-dialog-component": "^0.2.17",
+    "react-native-fs": "^2.8.5",
+    "react-native-image-picker": "^0.26.7",
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
@@ -27,7 +30,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
     "jest": "18.1.0",
-    "react-test-renderer": "15.4.2"
+    "react-test-renderer": "^16.1.1"
   },
   "jest": {
     "preset": "react-native"
