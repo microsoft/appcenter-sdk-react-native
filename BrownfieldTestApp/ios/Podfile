@@ -3,6 +3,9 @@
 # please refer to https://github.com/facebook/react-native/commit/74146cb3158273921b768c97f229695e680ea82d
 # Note that this scenario is only supported in react-native v0.50.0 or later (https://github.com/facebook/react-native/releases/tag/v0.50.0)
 
+source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 target 'BrownfieldTestApp' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
