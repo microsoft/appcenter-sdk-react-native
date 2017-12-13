@@ -31,7 +31,7 @@ export default class AttachmentsProvider {
     try {
       contents = await RNFS.readFile(path, DEFAULT_ENCODING);
     } catch (error) {
-      console.error('Error while reading binary attachment file');
+      console.log('Error while reading binary attachment file');
     }
     return contents;
   }
