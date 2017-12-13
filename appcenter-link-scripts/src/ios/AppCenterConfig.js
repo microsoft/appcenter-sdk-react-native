@@ -45,8 +45,7 @@ function addConfigToProject(file) {
             reject(new Error(`
                 Could not locate the xcode project to add AppCenter-Config.plist file to. 
                 Looked in paths - 
-                ${JSON.stringify(projectPaths)}`
-            ));
+                ${JSON.stringify(projectPaths)}`));
             return;
         }
 
