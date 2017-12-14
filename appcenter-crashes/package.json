@@ -58,6 +58,6 @@
     "eslint-plugin-react": "^7.2.1"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "./node_modules/.bin/eslint ."
   }
 }

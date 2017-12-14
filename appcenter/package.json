@@ -43,7 +43,7 @@
     "react-native": "^0.48.3"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "./node_modules/.bin/eslint .",
     "test": "jest"
   },
   "jest": {
