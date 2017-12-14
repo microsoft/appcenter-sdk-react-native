@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
     "appcenter": "file:appcenter-1.1.0.tgz",
