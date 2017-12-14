@@ -1,4 +1,5 @@
 ﻿using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Http;
 using Moq;
 
 namespace Microsoft.AppCenter.Test.Channel
@@ -12,7 +13,7 @@ namespace Microsoft.AppCenter.Test.Channel
             _channelGroupMock = channelGroupMock;
         }
 
-        public IChannelGroup CreateChannelGroup(string appSecret)
+        public IChannelGroup CreateChannelGroup(string appSecret, INetworkStateAdapter networkState)
         {
             return _channelGroupMock.Object;
         }
