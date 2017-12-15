@@ -119,3 +119,6 @@ proguard/
 
 # Android Studio captures folder
 captures/
+
+# npm5
+package-lock.json
