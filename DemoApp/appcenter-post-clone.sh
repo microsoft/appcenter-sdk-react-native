@@ -7,5 +7,5 @@ echo $GOOGLE_SERVICES_JSON | base64 --decode > $APPCENTER_SOURCE_DIRECTORY/DemoA
 # if there's any broken symlinks inside the repo. So installing
 # npm packages for BrownfieldTestApp is necessary to allow build pass.
 echo "Install npm dependencies for BrownfieldTestApp"
-cd $APPCENTER_SOURCE_DIRECTORY/BrownfieldTestApp
+cd ../BrownfieldTestApp
 npm install
