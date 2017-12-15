@@ -15,10 +15,16 @@
 @protocol AppCenterReactNativePushDelegate <MSPushDelegate>
 
 @required
-- (void) setEventEmitter: (RCTEventEmitter*) eventEmitter;
+- (void)setEventEmitter:(RCTEventEmitter*)eventEmitter;
 
 @required
-- (void) sendAndClearInitialNotification;
+- (void)sendAndClearInitialNotification;
+
+@required
+- (void)startObserving;
+
+@required
+- (void)stopObserving;
 
 @required
 - (NSArray<NSString *> *)supportedEvents;
