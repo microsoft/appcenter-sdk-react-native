@@ -34,7 +34,7 @@ export default class MainScreen extends Component {
         <Text style={SharedStyles.button} onPress={() => navigate('Crashes')}>Test Crashes</Text>
         <Text style={SharedStyles.button} onPress={() => navigate('Analytics')}>Test Analytics</Text>
         <Text style={SharedStyles.button} onPress={() => navigate('Push')}>Test Push</Text>
-        <Text style={SharedStyles.button} onPress={() => navigate('')}>Test Other App Center APIs</Text>
+        <Text style={SharedStyles.button} onPress={() => navigate('AppCenter')}>Test Other App Center APIs</Text>
       </View>
     );
   }
