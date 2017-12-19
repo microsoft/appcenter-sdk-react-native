@@ -13,7 +13,7 @@ const AppCenterConfig = require('./AppCenterConfig');
 const AppDelegate = require('./AppDelegate');
 const PodFile = require('./PodFile');
 
-const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**' });
+const appDelegatePaths = glob.sync('**/AppDelegate.@(m|swift)', { ignore: 'node_modules/**' });
 const appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
 debug(`AppDelegate.m path - ${appDelegatePath}`);
 
