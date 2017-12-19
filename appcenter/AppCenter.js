@@ -1,6 +1,6 @@
 const ReactNative = require('react-native');
 
-const { AppCenterReactNative } = ReactNative.NativeModules.AppCenterReactNative;
+const { AppCenterReactNative } = ReactNative.NativeModules;
 const AppCenterLog = require('appcenter/appcenter-log');
 const PackageJson = require('./package.json');
 

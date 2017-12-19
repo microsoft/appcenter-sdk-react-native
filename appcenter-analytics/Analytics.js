@@ -1,6 +1,6 @@
 const ReactNative = require('react-native');
 
-const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules.AppCenterReactNativeAnalytics;
+const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
 module.exports = {
     // async - returns a Promise
