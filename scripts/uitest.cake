@@ -6,12 +6,12 @@
 // Task Target for build
 var Target = Argument("Target", Argument("t", "TestApps"));
 
-Task("UITest").IsDependentOn("RestoreTestPackages").Does(() =>
+Task("UITest").Does(() =>
 {
     MSBuild("../Tests/UITests/Contoso.Forms.Test.UITests.csproj", c => c.Configuration = "Release");
 });
 
-Task("TestApps").IsDependentOn("UITest").Does(() =>
+Task("TestApps").IsDependentOn("RestoreTestPackages").IsDependentOn("UITest").Does(() =>
 {
     // Build and package the test applications
     MSBuild("../Tests/iOS/Contoso.Forms.Test.iOS.csproj", settings => settings.SetConfiguration("Release")
