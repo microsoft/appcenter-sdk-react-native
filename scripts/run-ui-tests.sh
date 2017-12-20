@@ -4,7 +4,7 @@
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 UITEST_BUILD_DIR="$SCRIPT_DIR/../Tests/UITests/bin/Release"
 BUILD_SCRIPT="build.sh"
-BUILD_TARGET="TestApps"
+BUILD_TARGET="UITest"
 CLEAN_TARGET="clean"
 
 # Built application files
@@ -79,12 +79,14 @@ fi
 
 # Build tests
 pushd ..
-echo "Cleaning..."
-sh $BUILD_SCRIPT -t=$CLEAN_TARGET # clean so that we don't accidentally update to snapshot
-if [ $? -ne 0 ]; then
-    echo "An error occured while cleaning."
-    popd
-    exit 1
+if [ "${BUILD_TARGET}" == "TestApps" ]; then
+    echo "Cleaning..."
+    sh $BUILD_SCRIPT -t=$CLEAN_TARGET # clean so that we don't accidentally update to snapshot
+    if [ $? -ne 0 ]; then
+        echo "An error occured while cleaning."
+        popd
+        exit 1
+    fi
 fi
 echo "Building target \"$BUILD_TARGET\"..."
 sh $BUILD_SCRIPT -s "scripts/uitest.cake" -t=$BUILD_TARGET
