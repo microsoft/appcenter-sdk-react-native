@@ -4,7 +4,6 @@
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 UITEST_BUILD_DIR="$SCRIPT_DIR/../Tests/UITests/bin/Release"
 BUILD_SCRIPT="build.sh"
-BUILD_TARGET="UITest"
 CLEAN_TARGET="clean"
 
 # Built application files
@@ -12,8 +11,10 @@ TEST_APK="$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.
 TEST_IPA="$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa"
 
 # Set defaults but accept also positional parameters for the following:
-APP_CENTER_USERNAME=${1:-$APP_CENTER_USERNAME}
-APP_CENTER_API_TOKEN=${2:-$APP_CENTER_API_TOKEN}
+BUILD_TARGET=${1:-$BUILD_TARGET}
+BUILD_TARGET=${BUILD_TARGET:-"TestApps"}
+APP_CENTER_USERNAME=${2:-$APP_CENTER_USERNAME}
+APP_CENTER_API_TOKEN=${3:-$APP_CENTER_API_TOKEN}
 
 # Check credentials are set
 if [ -z ${APP_CENTER_USERNAME} ]; then
