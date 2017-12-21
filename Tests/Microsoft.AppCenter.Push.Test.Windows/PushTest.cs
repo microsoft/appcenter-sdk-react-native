@@ -9,6 +9,9 @@ namespace Microsoft.AppCenter.Push.Test.Windows
         public void InitializePushTest()
         {
             Push.Instance = new Push();
+            
+            AppCenter.Instance = null;
+            AppCenter.Configure("appsecret");
         }
 
         [TestMethod]

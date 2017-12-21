@@ -31,6 +31,9 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
                 .Returns(_mockChannel.Object);
             ApplicationLifecycleHelper.Instance = _applicationLifecycleHelper;
             Analytics.Instance = new Analytics(factory);
+
+            AppCenter.Instance = null;
+            AppCenter.Configure("appsecret");
         }
 
         /// <summary>

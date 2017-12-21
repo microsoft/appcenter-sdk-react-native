@@ -38,3 +38,4 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Test.Windows")]
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Analytics.Test.Windows")]
+[assembly: InternalsVisibleTo("Microsoft.AppCenter.Push.Test.Windows")]
