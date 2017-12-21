@@ -17,9 +17,15 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     })
     .then((answer) => {
         const code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
-            '  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes' :
-            '  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes';
-        return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>', code, /.*\[AppCenterReactNativeCrashes register.*/g)
+            ['  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes',
+             '    AppCenterReactNativeCrashes.registerWithAutomaticProcessing()  // Initialize AppCenter crashes'] :
+            ['  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes',
+             '    AppCenterReactNativeCrashes.register()  // Initialize AppCenter crashes'];
+        const oldCodeRegExp = [
+            /.*\[AppCenterReactNativeCrashes register.*/g,
+            /.*\[AppCenterReactNativeCrashes.register.*/g
+        ];
+        return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>', code, oldCodeRegExp)
             .catch((e) => {
                 console.log(`Could not initialize AppCenter crashes in AppDelegate. Error Reason - ${e.message}`);
                 return Promise.reject();
