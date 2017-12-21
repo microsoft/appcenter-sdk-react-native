@@ -120,7 +120,8 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.SetEnabled(false);
             var log = new TestLog();
             _channel.EnqueueAsync(log).RunNotAsync();
-            Assert.IsFalse(SentLogOccurred(1));
+            Assert.IsTrue(FailedToSendLogOccurred(1));
+            Assert.IsFalse(EnqueuingLogOccurred(1));
         }
 
         [TestMethod]
@@ -250,8 +251,7 @@ namespace Microsoft.AppCenter.Test.Channel
         }
 
         /// <summary>
-        /// Verify that when a recoverable http error occurs, ingestion
-        /// stays open
+        /// Verify that when a recoverable http error occurs, ingestion stays open
         /// </summary>
         [TestMethod]
         public void IngestionNotClosedOnRecoverableHttpError()
@@ -269,8 +269,7 @@ namespace Microsoft.AppCenter.Test.Channel
         }
 
         /// <summary>
-        /// Verify that if a non-recoverable http error occurs, ingestion
-        /// is closed
+        /// Verify that if a non-recoverable http error occurs, ingestion is closed
         /// </summary>
         [TestMethod]
         public void IngestionClosedOnNonRecoverableHttpError()

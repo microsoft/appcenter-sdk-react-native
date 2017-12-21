@@ -31,6 +31,7 @@ namespace Microsoft.AppCenter.Test.Windows
 #pragma warning disable 612
             AppCenter.SetApplicationSettingsFactory(new MockApplicationSettingsFactory(_mockSettings));
 #pragma warning restore 612
+            AppCenter.Configure("appcenter");
         }
 
         /// <summary>

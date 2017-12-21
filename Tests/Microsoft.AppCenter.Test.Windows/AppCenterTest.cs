@@ -140,6 +140,9 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void GetEnabled()
         {
+            AppCenter.Configure("appsecret");
+
+            _settingsMock.ResetCalls();
             _settingsMock.SetupSequence(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true).Returns(false);
 
@@ -156,7 +159,7 @@ namespace Microsoft.AppCenter.Test
         public void SetEnabledSameValue()
         {
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
-            AppCenter.SetEnabledAsync(AppCenter.IsEnabledAsync().Result).Wait();
+            AppCenter.SetEnabledAsync(AppCenter.IsEnabledAsync().Result).RunNotAsync();
 
             MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, It.IsAny<bool>()), Times.Never());
@@ -171,7 +174,7 @@ namespace Microsoft.AppCenter.Test
         {
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
             var setVal = !AppCenter.IsEnabledAsync().Result;
-            AppCenter.SetEnabledAsync(setVal).Wait();
+            AppCenter.SetEnabledAsync(setVal).RunNotAsync();
 
             MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = setVal, Times.Once());
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, setVal), Times.Once());
@@ -179,17 +182,17 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that setting Enabled to a different value (before configure is called) propagates the change when configure is called
+        /// Verify that setting Enabled to a different value (before configure is called) NOT propagates the change
         /// </summary>
         [TestMethod]
         public void SetEnabledDifferentValueBeforeConfigure()
         {
             _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
-            AppCenter.SetEnabledAsync(false).Wait();
+            Assert.ThrowsException<AppCenterException>(() => AppCenter.SetEnabledAsync(false).RunNotAsync());
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
 
-            _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, false), Times.Once());
+            _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, false), Times.Never());
         }
 
         /// <summary>
@@ -198,12 +201,18 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void GetInstallId()
         {
+            AppCenter.Configure("appsecret");
+
             var fakeInstallId = Guid.NewGuid();
+            _settingsMock.ResetCalls();
             _settingsMock.Setup(settings => settings.GetValue(AppCenter.InstallIdKey, It.IsAny<Guid>())).Returns(fakeInstallId);
+
             var installId = AppCenter.GetInstallIdAsync().Result;
 
             Assert.IsTrue(installId.HasValue);
             Assert.AreEqual(installId.Value, fakeInstallId);
+            _settingsMock.Verify(settings => settings.GetValue(AppCenter.InstallIdKey, It.IsAny<Guid>()),
+                Times.Once());
         }
 
         /// <summary>
