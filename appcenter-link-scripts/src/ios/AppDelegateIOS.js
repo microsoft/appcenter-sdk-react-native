@@ -15,9 +15,9 @@ AppDelegate.prototype.addHeader = function (header) {
         const match = this.appDelegateContents.match(/#import "AppDelegate.h"[ \t]*\r*\n/);
         if (match === null) {
             throw Error(`
-        Could not find line '#import "AppDelegate.h"' in file AppDelegate.m.
-        Update AppDelegate.m so that text is present, as we match on it and insert '${header}' after for AppCenter SDK integration.
-`);
+                Could not find line '#import "AppDelegate.h"' in file AppDelegate.m.
+                Update AppDelegate.m so that text is present, as we match on it and insert '${header}' after for AppCenter SDK integration.
+            `);
         }
 
         const existingLine = match[0];
