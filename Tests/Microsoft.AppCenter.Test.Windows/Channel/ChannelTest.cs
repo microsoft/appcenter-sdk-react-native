@@ -6,6 +6,7 @@ using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Storage;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Test.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -14,9 +15,10 @@ namespace Microsoft.AppCenter.Test.Channel
     [TestClass]
     public class ChannelTest
     {
-        private Microsoft.AppCenter.Channel.Channel _channel;
+        private AggregateException _unobservedTaskException;
         private readonly MockIngestion _mockIngestion = new MockIngestion();
-        private IStorage _storage = new Microsoft.AppCenter.Storage.Storage();
+        private Microsoft.AppCenter.Channel.Channel _channel;
+        private IStorage _storage;
 
         private const string ChannelName = "channelName";
         private const int MaxLogsPerBatch = 3;
@@ -42,9 +44,32 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestInitialize]
         public void InitializeChannelTest()
         {
+            _unobservedTaskException = null;
             _mockIngestion.CallShouldSucceed = true;
             _mockIngestion.Open();
             SetChannelWithTimeSpan(_batchTimeSpan);
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+
+            AppCenterLog.Level = LogLevel.Verbose;
+        }
+
+        [TestCleanup]
+        public void CleanupAppCenterTest()
+        {
+            // The UnobservedTaskException will only happen if a Task gets collected by the GC with an exception unobserved
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            TaskScheduler.UnobservedTaskException -= OnUnobservedTaskException;
+
+            if (_unobservedTaskException != null)
+            {
+                throw _unobservedTaskException;
+            }
+        }
+
+        private void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            _unobservedTaskException = e.Exception;
         }
 
         /// <summary>
@@ -235,17 +260,23 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void ThrowStorageExceptionInDeleteLogsTime()
         {
+            var log = new TestLog();
             var storage = new Mock<IStorage>();
             storage.Setup(s => s.DeleteLogs(It.IsAny<string>(), It.IsAny<string>())).Throws<StorageException>();
-            storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>())).Returns(Task.FromResult(""));
+            storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()))
+                .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
+                .Returns(() => Task.FromResult("test-batch-id"));
 
-            Microsoft.AppCenter.Channel.Channel channel = new Microsoft.AppCenter.Channel.Channel("name", 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
+            _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
+            SetupEventCallbacks();
 
             // Shutdown channel and store some log
-            channel.ShutdownAsync().RunNotAsync();
-            channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            _channel.ShutdownAsync().RunNotAsync();
+            _channel.EnqueueAsync(log).RunNotAsync();
 
-            channel.SetEnabled(true);
+            _channel.SetEnabled(true);
+
+            Assert.IsTrue(SentLogOccurred(1));
 
             // Not throw any exception
         }
@@ -288,8 +319,7 @@ namespace Microsoft.AppCenter.Test.Channel
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
-            _storage = new Microsoft.AppCenter.Storage.Storage();
-            _storage.DeleteLogs(ChannelName);
+            _storage = new MockStorage();
             _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
                 _appSecret, _mockIngestion, _storage);
             MakeIngestionCallsSucceed();
