@@ -21,6 +21,8 @@ namespace Microsoft.AppCenter
         internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
         private const string ConfigurationErrorMessage = "Failed to configure App Center.";
         private const string StartErrorMessage = "Failed to start services.";
+        private const string NotConfiguredMessage = "App Center hasn't been configured. " +
+                                                    "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.";
         private const string ChannelName = "core";
         private const string DistributeServiceFullType = "Microsoft.AppCenter.Distribute.Distribute";
 
@@ -114,7 +116,17 @@ namespace Microsoft.AppCenter
             // It's fine for callers of the current implementation to use Wait().
             lock (AppCenterLock)
             {
-                return Task.FromResult(Instance.InstanceEnabled);
+                var taskSource = new TaskCompletionSource<bool>();
+                if (!Configured)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, NotConfiguredMessage);
+                    taskSource.SetException(new AppCenterException(NotConfiguredMessage));
+                }
+                else
+                {
+                    taskSource.SetResult(Instance.InstanceEnabled);
+                }
+                return taskSource.Task;
             }
         }
 
@@ -122,14 +134,38 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                Instance.InstanceEnabled = enabled;
-                return Task.FromResult(default(object));
+                var taskSource = new TaskCompletionSource<object>();
+                if (!Configured)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, NotConfiguredMessage);
+                    taskSource.SetException(new AppCenterException(NotConfiguredMessage));
+                }
+                else
+                {
+                    Instance.InstanceEnabled = enabled;
+                    taskSource.SetResult(null);
+                }
+                return taskSource.Task;
             }
         }
 
         static Task<Guid?> PlatformGetInstallIdAsync()
         {
-            return Task.FromResult((Guid?)Instance._applicationSettings.GetValue(InstallIdKey, Guid.NewGuid()));
+            lock (AppCenterLock)
+            {
+                var taskSource = new TaskCompletionSource<Guid?>();
+                if (!Configured)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, NotConfiguredMessage);
+                    taskSource.SetException(new AppCenterException(NotConfiguredMessage));
+                }
+                else
+                {
+                    var installId = (Guid?) Instance._applicationSettings.GetValue(InstallIdKey, Guid.NewGuid());
+                    taskSource.SetResult(installId);
+                }
+                return taskSource.Task;
+            }
         }
 
         static void PlatformSetLogUrl(string logUrl)
@@ -299,8 +335,7 @@ namespace Microsoft.AppCenter
         {
             if (!Configured)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. " +
-                                                        "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
+                AppCenterLog.Error(AppCenterLog.LogTag, NotConfiguredMessage);
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
