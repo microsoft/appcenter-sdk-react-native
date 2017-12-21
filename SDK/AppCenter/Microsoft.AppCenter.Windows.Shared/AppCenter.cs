@@ -274,9 +274,13 @@ namespace Microsoft.AppCenter
                     return;
                 }
 
+                // Update channels state.
                 _channelGroup?.SetEnabled(value);
+
+                // Store state in the application settings.
                 _applicationSettings.SetValue(EnabledKey, value);
 
+                // Apply change to services.
                 foreach (var service in _services)
                 {
                     service.InstanceEnabled = value;
@@ -337,6 +341,7 @@ namespace Microsoft.AppCenter
             _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret, _networkStateAdapter) ?? new ChannelGroup(_appSecret, null, _networkStateAdapter);
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
+            _channel.SetEnabled(InstanceEnabled);
             if (_logUrl != null)
             {
                 _channelGroup.SetLogUrl(_logUrl);
