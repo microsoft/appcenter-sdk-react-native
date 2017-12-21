@@ -60,14 +60,14 @@ module.exports = {
         });
     },
 
-    initInAppDelegate(header, initCode, oldInitCodeRegExp) {
+    initInAppDelegate(header, initCode, oldInitCodeRegExp = null) {
         debug('Starting to write AppDelegate', appDelegatePath);
         try {
             const isSwiftDelegate = appDelegatePath.indexOf('swift') >= 0;
             const codeIndex = isSwiftDelegate ? 1 : 0;
             const appDelegate = isSwiftDelegate ? new AppDelegateSwift(appDelegatePath) : new AppDelegateIOS(appDelegatePath);
             appDelegate.addHeader(header);
-            appDelegate.addInitCode(initCode[codeIndex], oldInitCodeRegExp[codeIndex]);
+            appDelegate.addInitCode(initCode[codeIndex], oldInitCodeRegExp !== null ? oldInitCodeRegExp[codeIndex] : null);
             return Promise.resolve(appDelegate.save());
         } catch (e) {
             debug('Could not change AppDelegate', e);
