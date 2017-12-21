@@ -182,17 +182,17 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that setting Enabled to a different value (before configure is called) NOT propagates the change
+        /// Verify that setting Enabled to a different value (before configure is called) propagates the change
         /// </summary>
         [TestMethod]
         public void SetEnabledDifferentValueBeforeConfigure()
         {
             _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
-            Assert.ThrowsException<AppCenterException>(() => AppCenter.SetEnabledAsync(false).RunNotAsync());
+            AppCenter.SetEnabledAsync(false).RunNotAsync();
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
 
-            _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, false), Times.Never());
+            _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, false), Times.Once());
         }
 
         /// <summary>
