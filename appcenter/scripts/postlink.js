@@ -6,7 +6,10 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         return Promise.reject();
     }))
     .then(() => {
-        const code = '  [AppCenterReactNative register];  // Initialize AppCenter ';
+        const code = [
+            '  [AppCenterReactNative register];  // Initialize AppCenter ',
+            '    AppCenterReactNative.register()  // Initialize AppCenter '
+        ];
         return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNative/AppCenterReactNative.h>', code)
             .catch((e) => {
                 console.log(`Could not initialize AppCenter in AppDelegate. Error Reason - ${e.message}`);
