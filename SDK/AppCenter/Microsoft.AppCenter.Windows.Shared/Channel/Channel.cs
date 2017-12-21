@@ -115,6 +115,7 @@ namespace Microsoft.AppCenter.Channel
                     AppCenterLog.Warn(AppCenterLog.LogTag, "Channel is disabled; logs are discarded");
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
+                    return;
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 await PrepareLogAsync(log, state).ConfigureAwait(false);
