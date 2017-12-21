@@ -415,6 +415,10 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Warn(AppCenterLog.LogTag, $"App Center has already started the service with class name '{service.GetType().Name}'");
                 return;
             }
+            if (!InstanceEnabled && service.InstanceEnabled)
+            {
+                service.InstanceEnabled = false;
+            }
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
             AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");

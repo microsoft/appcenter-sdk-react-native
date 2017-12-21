@@ -116,9 +116,7 @@ namespace Microsoft.AppCenter
             {
                 ChannelGroup = channelGroup;
                 Channel = channelGroup.AddChannel(ChannelName, TriggerCount, TriggerInterval, TriggerMaxParallelRequests);
-                var enabled = AppCenter.IsEnabledAsync().Result && InstanceEnabled;
-                ApplicationSettings.SetValue(EnabledPreferenceKey, enabled);
-                Channel.SetEnabled(enabled);
+                Channel.SetEnabled(InstanceEnabled);
             }
         }
 
