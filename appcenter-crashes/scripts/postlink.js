@@ -17,10 +17,14 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     })
     .then((answer) => {
         const code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
-            ['  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes',
-             '    AppCenterReactNativeCrashes.registerWithAutomaticProcessing()  // Initialize AppCenter crashes'] :
-            ['  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes',
-             '    AppCenterReactNativeCrashes.register()  // Initialize AppCenter crashes'];
+            [
+                '  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes',
+                '    AppCenterReactNativeCrashes.registerWithAutomaticProcessing()  // Initialize AppCenter crashes'
+            ] :
+            [
+                '  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes',
+                '    AppCenterReactNativeCrashes.register()  // Initialize AppCenter crashes'
+            ];
         const oldCodeRegExp = [
             /.*\[AppCenterReactNativeCrashes register.*/g,
             /.*\[AppCenterReactNativeCrashes.register.*/g

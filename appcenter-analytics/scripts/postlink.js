@@ -17,10 +17,14 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     })
     .then((answer) => {
         const code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
-        ['  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics',
-         '    AppCenterReactNativeAnalytics.register(withInitiallyEnabled: true)  // Initialize AppCenter analytics'] :
-        ['  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics',
-         '    AppCenterReactNativeAnalytics.register(withInitiallyEnabled: false)  // Initialize AppCenter analytics'];
+            [
+                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics',
+                '    AppCenterReactNativeAnalytics.register(withInitiallyEnabled: true)  // Initialize AppCenter analytics'
+            ] :
+            [
+                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics',
+                '    AppCenterReactNativeAnalytics.register(withInitiallyEnabled: false)  // Initialize AppCenter analytics'
+            ];
         const oldCodeRegExp = [
             /.*\[AppCenterReactNativeAnalytics register.*/g,
             /.*AppCenterReactNativeAnalytics.register.*/g
