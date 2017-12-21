@@ -51,14 +51,27 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetOsBuild()
         {
-            using (var hklmKey = Microsoft.Win32.Registry.LocalMachine)
+            using (var hklmKey = Win32.Registry.LocalMachine)
             using (var subKey = hklmKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion"))
             {
-                object majorVersion = subKey.GetValue("CurrentMajorVersionNumber");
-                object minorVersion = subKey.GetValue("CurrentMinorVersionNumber");
-                object buildNumber = subKey.GetValue("CurrentBuildNumber");
-                object revisionNumber = subKey.GetValue("UBR");
-                return $"{majorVersion}.{minorVersion}.{buildNumber}.{revisionNumber}";
+                // CurrentMajorVersionNumber present in registry starting with Windows 10
+                var majorVersion = subKey.GetValue("CurrentMajorVersionNumber");
+                if (majorVersion != null)
+                {
+                    var minorVersion = subKey.GetValue("CurrentMinorVersionNumber", "0");
+                    var buildNumber = subKey.GetValue("CurrentBuildNumber", "0");
+                    var revisionNumber = subKey.GetValue("UBR", "0");
+                    return $"{majorVersion}.{minorVersion}.{buildNumber}.{revisionNumber}";
+                }
+                else
+                {
+                    // If CurrentMajorVersionNumber not present in registry then use CurrentVersion
+                    var version = subKey.GetValue("CurrentVersion", "0.0");
+                    var buildNumber = subKey.GetValue("CurrentBuild", "0");
+                    var buildLabEx = subKey.GetValue("BuildLabEx")?.ToString().Split('.');
+                    var revisionNumber = buildLabEx?.Length >= 2 ? buildLabEx[1] : "0";
+                    return $"{version}.{buildNumber}.{revisionNumber}";
+                }
             }
         }
 
