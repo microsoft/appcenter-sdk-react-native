@@ -10,10 +10,11 @@ const inquirer = require('inquirer');
 const pjson = require(path.join(process.cwd(), './package.json'));
 
 const AppCenterConfig = require('./AppCenterConfig');
-const AppDelegate = require('./AppDelegate');
+const AppDelegateIOS = require('./AppDelegateIOS');
+const AppDelegateSwift = require('./AppDelegateSwift');
 const PodFile = require('./PodFile');
 
-const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**' });
+const appDelegatePaths = glob.sync('**/AppDelegate.@(m|swift)', { ignore: 'node_modules/**' });
 const appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
 debug(`AppDelegate.m path - ${appDelegatePath}`);
 
@@ -62,9 +63,11 @@ module.exports = {
     initInAppDelegate(header, initCode, oldInitCodeRegExp) {
         debug('Starting to write AppDelegate', appDelegatePath);
         try {
-            const appDelegate = new AppDelegate(appDelegatePath);
+            const isSwiftDelegate = appDelegatePath.indexOf('swift') >= 0;
+            const codeIndex = isSwiftDelegate ? 1 : 0;
+            const appDelegate = isSwiftDelegate ? new AppDelegateSwift(appDelegatePath) : new AppDelegateIOS(appDelegatePath);
             appDelegate.addHeader(header);
-            appDelegate.addInitCode(initCode, oldInitCodeRegExp);
+            appDelegate.addInitCode(initCode[codeIndex], oldInitCodeRegExp[codeIndex]);
             return Promise.resolve(appDelegate.save());
         } catch (e) {
             debug('Could not change AppDelegate', e);
