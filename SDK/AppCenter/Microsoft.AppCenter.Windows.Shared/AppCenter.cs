@@ -21,6 +21,8 @@ namespace Microsoft.AppCenter
         internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
         private const string ConfigurationErrorMessage = "Failed to configure App Center.";
         private const string StartErrorMessage = "Failed to start services.";
+        private const string NotConfiguredMessage = "App Center hasn't been configured. " +
+                                                    "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.";
         private const string ChannelName = "core";
         private const string DistributeServiceFullType = "Microsoft.AppCenter.Distribute.Distribute";
 
@@ -299,8 +301,7 @@ namespace Microsoft.AppCenter
         {
             if (!Configured)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. " +
-                                                        "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
+                AppCenterLog.Error(AppCenterLog.LogTag, NotConfiguredMessage);
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)

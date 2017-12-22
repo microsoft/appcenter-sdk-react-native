@@ -64,7 +64,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that AppCenter is able to get a log level even though it hasn't set one
+        /// Verify that App Center is able to get a log level even though it hasn't set one
         /// </summary>
         [TestMethod]
         public void GetLogLevelBeforeConfigure()
@@ -231,7 +231,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that starting a service without configuring AppCenter does not call its OnChannelGroupReady method
+        /// Verify that starting a service without configuring App Center does not call its OnChannelGroupReady method
         /// </summary>
         [TestMethod]
         public void StartServiceWithoutConfigure()
@@ -313,7 +313,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that configuring a AppCenter instance
+        /// Verify that configuring a App Center instance
         /// </summary>
         [TestMethod]
         public void Configure()
@@ -327,7 +327,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that starting a AppCenter instance with a null app secret does not cause AppCenter to be configured
+        /// Verify that starting a App Center instance with a null app secret does not cause App Center to be configured
         /// </summary>
         [TestMethod]
         public void ConfigureWithNullAppSecret()
@@ -337,7 +337,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that starting a AppCenter instance with an empty app secret does not cause AppCenter to be configured
+        /// Verify that starting a App Center instance with an empty app secret does not cause App Center to be configured
         /// </summary>
         [TestMethod]
         public void ConfigureWithEmptyAppSecret()
@@ -347,7 +347,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that configuring a AppCenter instance multiple times does not throw an error
+        /// Verify that configuring a App Center instance multiple times does not throw an error
         /// </summary>
         [TestMethod]
         public void ConfigureAppCenterMultipleTimes()
@@ -363,7 +363,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that a service will be disabled if AppCenter is disabled
+        /// Verify that a service will be disabled if App Center is disabled
         /// </summary>
         [TestMethod]
         public void DisableServiceIfAppCenterIsDisabled()
@@ -379,7 +379,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that the channel group's log url is not set by AppCenter by default
+        /// Verify that the channel group's log url is not set by App Center by default
         /// </summary>
         [TestMethod]
         public void LogUrlIsNotSetByDefault()
@@ -389,7 +389,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that the channel group's log url is set by AppCenter once configured if its log url had been set beforehand
+        /// Verify that the channel group's log url is set by App Center once configured if its log url had been set beforehand
         /// </summary>
         [TestMethod]
         public void SetLogUrlBeforeConfigure()
@@ -402,7 +402,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that the channel group's log url is updated by AppCenter if its log url is set after configuration
+        /// Verify that the channel group's log url is updated by App Center if its log url is set after configuration
         /// </summary>
         [TestMethod]
         public void SetLogUrlAfterConfigure()
@@ -534,7 +534,7 @@ namespace Microsoft.AppCenter.Test
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(channelUnitMock.Object);
 
-            // Set before AppCenter is configured. 
+            // Set before App Center is configured.
             AppCenter.SetCustomProperties(new CustomProperties());
             channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
