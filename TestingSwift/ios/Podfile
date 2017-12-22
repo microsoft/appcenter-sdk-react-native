@@ -10,10 +10,5 @@ target 'TestingSwift' do
   pod 'AppCenter/Crashes', '~> 1.1.0'
   pod 'AppCenter/Analytics', '~> 1.1.0'
   pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
-
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
-
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
-
 end
 
