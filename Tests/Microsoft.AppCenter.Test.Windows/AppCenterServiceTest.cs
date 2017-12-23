@@ -108,8 +108,8 @@ namespace Microsoft.AppCenter.Test.Windows
             _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             _testService.InstanceEnabled = false;
 
-            _mockSettings.Verify(settings => settings.SetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()), Times.Exactly(2));
-            _mockChannel.Verify(channel => channel.SetEnabled(It.IsAny<bool>()), Times.Exactly(2));
+            _mockSettings.Verify(settings => settings.SetValue(_testService.PublicEnabledPreferenceKey, false), Times.Once());
+            _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
         }
 
         /// <summary>
@@ -129,30 +129,8 @@ namespace Microsoft.AppCenter.Test.Windows
                 channelGroup =>
                     channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
                         It.IsAny<int>()), Times.Once());
-            _mockSettings.Verify(settings => settings.SetValue(_testService.PublicEnabledPreferenceKey, true), Times.Once());
             _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
             Assert.AreSame(_mockChannelGroup.Object, _testService.PublicChannelGroup);
-        }
-
-        /// <summary>
-        /// Verify that even if a service is enabled, OnChannelGroupReady disables everything if App Center is disabled
-        /// </summary>
-        [TestMethod]
-        public void OnChannelGroupReadyAppCenterIsDisabled()
-        {
-            _mockSettings.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
-                .Returns(false);
-            _mockSettings.Setup(settings => settings.GetValue(_testService.PublicEnabledPreferenceKey, It.IsAny<bool>()))
-                .Returns(true);
-
-            _testService.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-
-            _mockChannelGroup.Verify(
-                channelGroup =>
-                    channelGroup.AddChannel(_testService.PublicChannelName, It.IsAny<int>(), It.IsAny<TimeSpan>(),
-                        It.IsAny<int>()), Times.Once());
-            _mockSettings.Verify(settings => settings.SetValue(_testService.PublicEnabledPreferenceKey, false), Times.Once());
-            _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
         }
 
         /// <summary>

@@ -2,12 +2,7 @@
 
 namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.AppCenter;
-    using Microsoft.AppCenter.Ingestion;
     using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
     
     public abstract class Log
     {

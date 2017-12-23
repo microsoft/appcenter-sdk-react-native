@@ -115,6 +115,7 @@ namespace Microsoft.AppCenter.Channel
                     AppCenterLog.Warn(AppCenterLog.LogTag, "Channel is disabled; logs are discarded");
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
+                    return;
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 await PrepareLogAsync(log, state).ConfigureAwait(false);
@@ -219,7 +220,7 @@ namespace Microsoft.AppCenter.Channel
         {
             try
             {
-                IEnumerable<Log> unsentLogs = null;
+                List<Log> unsentLogs = null;
                 using (_mutex.GetLock(state))
                 {
                     _enabled = false;
@@ -227,12 +228,12 @@ namespace Microsoft.AppCenter.Channel
                     _discardLogs = deleteLogs;
                     if (deleteLogs)
                     {
-                        unsentLogs = _sendingBatches.Values.SelectMany(batch => batch);
+                        unsentLogs = _sendingBatches.Values.SelectMany(batch => batch).ToList();
                         _sendingBatches.Clear();
                     }
                     state = _mutex.InvalidateState();
                 }
-                if (unsentLogs  != null)
+                if (unsentLogs != null && FailedToSendLog != null)
                 {
                     foreach (var log in unsentLogs)
                     {
@@ -383,7 +384,6 @@ namespace Microsoft.AppCenter.Channel
             catch (StorageException e)
             {
                 AppCenterLog.Warn(AppCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
-                throw;
             }
             finally
             {
@@ -405,26 +405,33 @@ namespace Microsoft.AppCenter.Channel
 
         private void HandleSendingFailure(State state, string batchId, IngestionException e)
         {
-            var isRecoverable = e?.IsRecoverable ?? false;
             AppCenterLog.Error(AppCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed: {e?.Message}");
-            List<Log> removedLogs;
-            using (_mutex.GetLock(state))
+            try
             {
-                removedLogs = _sendingBatches[batchId];
-                _sendingBatches.Remove(batchId);
-                if (isRecoverable)
+                var isRecoverable = e?.IsRecoverable ?? false;
+                List<Log> removedLogs;
+                using (_mutex.GetLock(state))
                 {
-                    _pendingLogCount += removedLogs.Count;
+                    removedLogs = _sendingBatches[batchId];
+                    _sendingBatches.Remove(batchId);
+                    if (isRecoverable)
+                    {
+                        _pendingLogCount += removedLogs.Count;
+                    }
                 }
+                if (!isRecoverable && FailedToSendLog != null)
+                {
+                    foreach (var log in removedLogs)
+                    {
+                        FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, e));
+                    }
+                }
+                Suspend(state, !isRecoverable, e);
             }
-            if (!isRecoverable && FailedToSendLog != null)
+            catch (StatefulMutexException)
             {
-                foreach (var log in removedLogs)
-                {
-                    FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, e));
-                }
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Handle sending failure operation has been canceled. Callbacks were invoked when channel suspended.");
             }
-            Suspend(state, !isRecoverable, e);
         }
 
         private void CheckPendingLogs(State state)

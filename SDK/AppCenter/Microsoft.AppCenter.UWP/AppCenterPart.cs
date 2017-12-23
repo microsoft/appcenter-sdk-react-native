@@ -1,5 +1,4 @@
-﻿using Windows.ApplicationModel.Activation;
-using Microsoft.AppCenter.Utils;
+﻿using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter
 {
