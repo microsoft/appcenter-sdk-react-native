@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// </param>
         /// <param name="services">The list of services of the MobileCenter
         /// Start API call.</param>
-        public StartServiceLog(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), IList<string> services = default(IList<string>))
+        public StartServiceLog(Device device, DateTime? timestamp = default(DateTime?), Guid? sid = default(Guid?), IList<string> services = default(IList<string>))
             : base(device, timestamp, sid)
         {
             Services = services;

@@ -125,8 +125,7 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                Instance.InstanceEnabled = enabled;
-                return Task.FromResult(default(object));
+                return Instance.SetInstanceEnabledAsync(enabled);
             }
         }
 
@@ -268,35 +267,36 @@ namespace Microsoft.AppCenter
             {
                 return _applicationSettings.GetValue(EnabledKey, true);
             }
-            set
+        }
+
+        private async Task SetInstanceEnabledAsync(bool value)
+        {
+            var enabledTerm = value ? "enabled" : "disabled";
+            if (InstanceEnabled == value)
             {
-                var enabledTerm = value ? "enabled" : "disabled";
-                if (InstanceEnabled == value)
-                {
-                    AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
-                    return;
-                }
-
-                // Update channels state.
-                _channelGroup?.SetEnabled(value);
-
-                // Store state in the application settings.
-                _applicationSettings.SetValue(EnabledKey, value);
-
-                // Send started services.
-                if (_startedServicesNamesToLog != null && value)
-                {
-                    SendStartServiceLog(_startedServicesNamesToLog);
-                    _startedServicesNamesToLog = null;
-                }
-
-                // Apply change to services.
-                foreach (var service in _services)
-                {
-                    service.InstanceEnabled = value;
-                }
-                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
+                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
+                return;
             }
+
+            // Update channels state.
+            _channelGroup?.SetEnabled(value);
+
+            // Store state in the application settings.
+            _applicationSettings.SetValue(EnabledKey, value);
+
+            // Send started services.
+            if (_startedServicesNamesToLog != null && value)
+            {
+                await SendStartServiceLog(_startedServicesNamesToLog).ConfigureAwait(false);
+                _startedServicesNamesToLog = null;
+            }
+
+            // Apply change to services.
+            foreach (var service in _services)
+            {
+                service.InstanceEnabled = value;
+            }
+            AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
         }
 
         private void SetInstanceLogUrl(string logUrl)
@@ -405,7 +405,7 @@ namespace Microsoft.AppCenter
             // Enqueue a log indicating which services have been initialized
             if (serviceNames.Count > 0)
             {
-                SendStartServiceLog(serviceNames);
+                Task.Run(async () => await SendStartServiceLog(serviceNames));
             }
         }
 
@@ -433,7 +433,7 @@ namespace Microsoft.AppCenter
             AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
 
-        private async void SendStartServiceLog(IEnumerable<string> serviceNames)
+        private async Task SendStartServiceLog(IEnumerable<string> serviceNames)
         {
             if (InstanceEnabled)
             {
