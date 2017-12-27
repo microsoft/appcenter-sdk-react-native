@@ -17,9 +17,13 @@ namespace Microsoft.AppCenter.Ingestion.Http
         private readonly object _lockObject = new object();
 
         // Exception codes (HResults) involving poor network connectivity:
-        //      0x80072EE7: WININET_E_NAME_NOT_RESOLVED
-        //      0x80072EFD: WININET_E_CANNOT_CONNECT
-        private static readonly uint[] NetworkUnavailableCodes = { 0x80072EE7, 0x80072EFD };
+        private static readonly uint[] NetworkUnavailableCodes =
+        {
+            0x80072EE7, // WININET_E_NAME_NOT_RESOLVED
+            0x80072EFD, // WININET_E_CANNOT_CONNECT
+            0x80072EFE, // WININET_E_CONNECTION_ABORTED
+            0x80072EFF  // WININET_E_CONNECTION_RESET
+        };
 
         private HttpClient HttpClient
         {
