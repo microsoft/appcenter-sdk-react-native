@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
             get
             {
                 var statusCode = (int)StatusCode;
-                return statusCode >= 500 || statusCode == 408 || statusCode == 429;
+                return statusCode >= 500 || statusCode == 408;
             }
         }
 
