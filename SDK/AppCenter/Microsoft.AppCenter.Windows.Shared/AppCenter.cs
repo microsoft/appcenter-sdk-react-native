@@ -37,7 +37,7 @@ namespace Microsoft.AppCenter
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
-        private List<string> _startedServicesNamesToLog;
+        private List<string> _startedServiceNames;
         private string _logUrl;
         private bool _instanceConfigured;
         private string _appSecret;
@@ -261,21 +261,15 @@ namespace Microsoft.AppCenter
         internal IApplicationSettings ApplicationSettings => _applicationSettings;
         internal INetworkStateAdapter NetworkStateAdapter => _networkStateAdapter;
 
-        private bool InstanceEnabled
-        {
-            get
-            {
-                return _applicationSettings.GetValue(EnabledKey, true);
-            }
-        }
+        private bool InstanceEnabled => _applicationSettings.GetValue(EnabledKey, true);
 
-        private async Task SetInstanceEnabledAsync(bool value)
+        private Task SetInstanceEnabledAsync(bool value)
         {
             var enabledTerm = value ? "enabled" : "disabled";
             if (InstanceEnabled == value)
             {
                 AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
-                return;
+                return Task.FromResult(default(object));
             }
 
             // Update channels state.
@@ -284,19 +278,21 @@ namespace Microsoft.AppCenter
             // Store state in the application settings.
             _applicationSettings.SetValue(EnabledKey, value);
 
-            // Send started services.
-            if (_startedServicesNamesToLog != null && value)
-            {
-                await SendStartServiceLog(_startedServicesNamesToLog).ConfigureAwait(false);
-                _startedServicesNamesToLog = null;
-            }
-
             // Apply change to services.
             foreach (var service in _services)
             {
                 service.InstanceEnabled = value;
             }
             AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
+
+            // Send started services.
+            if (_startedServiceNames != null && value)
+            {
+                var startServiceLog = new StartServiceLog { Services = _startedServiceNames };
+                _startedServiceNames = null;
+                return _channel.EnqueueAsync(startServiceLog);
+            }
+            return Task.FromResult(default(object));
         }
 
         private void SetInstanceLogUrl(string logUrl)
@@ -405,7 +401,18 @@ namespace Microsoft.AppCenter
             // Enqueue a log indicating which services have been initialized
             if (serviceNames.Count > 0)
             {
-                Task.Run(async () => await SendStartServiceLog(serviceNames));
+                if (InstanceEnabled)
+                {
+                    Task.Run(async () => await _channel.EnqueueAsync(new StartServiceLog { Services = serviceNames }).ConfigureAwait(false));
+                }
+                else
+                {
+                    if (_startedServiceNames == null)
+                    {
+                        _startedServiceNames = new List<string>();
+                    }
+                    _startedServiceNames.AddRange(serviceNames);
+                }
             }
         }
 
@@ -431,26 +438,6 @@ namespace Microsoft.AppCenter
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
             AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
-        }
-
-        private async Task SendStartServiceLog(IEnumerable<string> serviceNames)
-        {
-            if (InstanceEnabled)
-            {
-                var startServiceLog = new StartServiceLog
-                {
-                    Services = new List<string>(serviceNames)
-                };
-                await _channel.EnqueueAsync(startServiceLog).ConfigureAwait(false);
-            }
-            else
-            {
-                if (_startedServicesNamesToLog == null)
-                {
-                    _startedServicesNamesToLog = new List<string>();
-                }
-                _startedServicesNamesToLog.AddRange(serviceNames);
-            }
         }
 
         internal Guid InstanceCorrelationId = Guid.Empty;
