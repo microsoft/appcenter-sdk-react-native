@@ -263,6 +263,7 @@ namespace Microsoft.AppCenter
 
         private bool InstanceEnabled => _applicationSettings.GetValue(EnabledKey, true);
 
+        // That method isn't async itself but can return async task from the channel for awaiting log enqueue.
         private Task SetInstanceEnabled(bool value)
         {
             var enabledTerm = value ? "enabled" : "disabled";
