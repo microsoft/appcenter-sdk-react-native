@@ -60,24 +60,14 @@ namespace Microsoft.AppCenter
         /// </summary>
         public static LogLevel LogLevel
         {
-            get
-            {
-                return PlatformLogLevel;
-            }
-
-            set
-            {
-                PlatformLogLevel = value;
-            }
+            get => PlatformLogLevel;
+            set => PlatformLogLevel = value;
         }
 
         /// <summary>
         /// Get the current version of AppCenter SDK.
         /// </summary>
-        public static string SdkVersion
-        {
-            get { return WrapperSdk.Version; }
-        }
+        public static string SdkVersion => WrapperSdk.Version;
 
         /// <summary>
         /// Check whether the SDK is enabled or not as a whole.

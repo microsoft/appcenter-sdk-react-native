@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Test.Channel;
@@ -529,32 +530,67 @@ namespace Microsoft.AppCenter.Test
         {
             _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
-            var channelUnitMock = new Mock<IChannelUnit>();
-            _channelGroupMock.Setup(
-                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(channelUnitMock.Object);
 
             // Set before App Center is configured.
             AppCenter.SetCustomProperties(new CustomProperties());
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             AppCenter.Configure("appsecret");
 
             // Set null.
             AppCenter.SetCustomProperties(null);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             // Set empty.
             var empty = new CustomProperties();
             AppCenter.SetCustomProperties(empty);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             // Set normal.
             var properties = new CustomProperties();
             properties.Set("test", "test");
             AppCenter.SetCustomProperties(properties);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertyLog>(log =>
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertyLog>(log =>
                 log.Properties == properties.Properties)), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify sending start service log
+        /// </summary>
+        [TestMethod]
+        public void SendStartServices()
+        {
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(true);
+
+            AppCenter.Start("appsecret", typeof(MockAppCenterService));
+
+            Task.Delay(100).Wait();
+
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
+                log.Services.Count == 1 &&
+                log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify sending start services log after enable
+        /// </summary>
+        [TestMethod]
+        public void SendStartServicesAfterEnable()
+        {
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(false);
+
+            AppCenter.Start("appsecret", typeof(MockAppCenterService));
+            Task.Delay(100).Wait();
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<StartServiceLog>()), Times.Never());
+
+            _settingsMock.SetupSequence(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(false).Returns(true);
+            AppCenter.SetEnabledAsync(true).RunNotAsync();
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
+                log.Services.Count == 1 &&
+                log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
         }
     }
 

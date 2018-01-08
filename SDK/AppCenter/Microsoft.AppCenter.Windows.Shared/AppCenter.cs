@@ -37,6 +37,7 @@ namespace Microsoft.AppCenter
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
+        private List<string> _startedServiceNames;
         private string _logUrl;
         private bool _instanceConfigured;
         private string _appSecret;
@@ -124,8 +125,7 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                Instance.InstanceEnabled = enabled;
-                return Task.FromResult(default(object));
+                return Instance.SetInstanceEnabled(enabled);
             }
         }
 
@@ -261,34 +261,39 @@ namespace Microsoft.AppCenter
         internal IApplicationSettings ApplicationSettings => _applicationSettings;
         internal INetworkStateAdapter NetworkStateAdapter => _networkStateAdapter;
 
-        private bool InstanceEnabled
+        private bool InstanceEnabled => _applicationSettings.GetValue(EnabledKey, true);
+
+        // That method isn't async itself but can return async task from the channel for awaiting log enqueue.
+        private Task SetInstanceEnabled(bool value)
         {
-            get
+            var enabledTerm = value ? "enabled" : "disabled";
+            if (InstanceEnabled == value)
             {
-                return _applicationSettings.GetValue(EnabledKey, true);
+                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
+                return Task.FromResult(default(object));
             }
-            set
+
+            // Update channels state.
+            _channelGroup?.SetEnabled(value);
+
+            // Store state in the application settings.
+            _applicationSettings.SetValue(EnabledKey, value);
+
+            // Apply change to services.
+            foreach (var service in _services)
             {
-                var enabledTerm = value ? "enabled" : "disabled";
-                if (InstanceEnabled == value)
-                {
-                    AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
-                    return;
-                }
-
-                // Update channels state.
-                _channelGroup?.SetEnabled(value);
-
-                // Store state in the application settings.
-                _applicationSettings.SetValue(EnabledKey, value);
-
-                // Apply change to services.
-                foreach (var service in _services)
-                {
-                    service.InstanceEnabled = value;
-                }
-                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
+                service.InstanceEnabled = value;
             }
+            AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
+
+            // Send started services.
+            if (_startedServiceNames != null && value)
+            {
+                var startServiceLog = new StartServiceLog { Services = _startedServiceNames };
+                _startedServiceNames = null;
+                return _channel.EnqueueAsync(startServiceLog);
+            }
+            return Task.FromResult(default(object));
         }
 
         private void SetInstanceLogUrl(string logUrl)
@@ -309,9 +314,7 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty");
                 return;
             }
-            var customPropertiesLog = new CustomPropertyLog();
-            customPropertiesLog.Properties = customProperties.Properties;
-            _channel.EnqueueAsync(customPropertiesLog);
+            _channel.EnqueueAsync(new CustomPropertyLog { Properties = customProperties.Properties });
         }
 
         private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
@@ -362,7 +365,7 @@ namespace Microsoft.AppCenter
                 throw new AppCenterException("App Center has not been configured.");
             }
 
-            var startServiceLog = new StartServiceLog();
+            var serviceNames = new List<string>();
             foreach (var serviceType in services)
             {
                 if (serviceType == null)
@@ -385,7 +388,7 @@ namespace Microsoft.AppCenter
                             throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService");
                         }
                         StartService(serviceInstance);
-                        startServiceLog.Services.Add(serviceInstance.ServiceName);
+                        serviceNames.Add(serviceInstance.ServiceName);
                     }
                 }
                 catch (AppCenterException e)
@@ -395,9 +398,20 @@ namespace Microsoft.AppCenter
             }
 
             // Enqueue a log indicating which services have been initialized
-            if (startServiceLog.Services.Count > 0)
+            if (serviceNames.Count > 0)
             {
-                _channel.EnqueueAsync(startServiceLog);
+                if (InstanceEnabled)
+                {
+                    _channel.EnqueueAsync(new StartServiceLog { Services = serviceNames });
+                }
+                else
+                {
+                    if (_startedServiceNames == null)
+                    {
+                        _startedServiceNames = new List<string>();
+                    }
+                    _startedServiceNames.AddRange(serviceNames);
+                }
             }
         }
 
