@@ -125,7 +125,7 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                return Instance.SetInstanceEnabledAsync(enabled);
+                return Instance.SetInstanceEnabled(enabled);
             }
         }
 
@@ -263,7 +263,7 @@ namespace Microsoft.AppCenter
 
         private bool InstanceEnabled => _applicationSettings.GetValue(EnabledKey, true);
 
-        private Task SetInstanceEnabledAsync(bool value)
+        private Task SetInstanceEnabled(bool value)
         {
             var enabledTerm = value ? "enabled" : "disabled";
             if (InstanceEnabled == value)
