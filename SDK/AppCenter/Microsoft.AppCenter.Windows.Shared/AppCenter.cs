@@ -313,9 +313,7 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty");
                 return;
             }
-            var customPropertiesLog = new CustomPropertyLog();
-            customPropertiesLog.Properties = customProperties.Properties;
-            _channel.EnqueueAsync(customPropertiesLog);
+            _channel.EnqueueAsync(new CustomPropertyLog { Properties = customProperties.Properties });
         }
 
         private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
@@ -403,7 +401,7 @@ namespace Microsoft.AppCenter
             {
                 if (InstanceEnabled)
                 {
-                    Task.Run(async () => await _channel.EnqueueAsync(new StartServiceLog { Services = serviceNames }).ConfigureAwait(false));
+                    _channel.EnqueueAsync(new StartServiceLog { Services = serviceNames });
                 }
                 else
                 {
