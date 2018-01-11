@@ -261,8 +261,20 @@ namespace Microsoft.AppCenter.Test.Channel
         public void ThrowStorageExceptionInDeleteLogsTime()
         {
             var log = new TestLog();
+            var storageException = new StorageException();
+
+            // Make sure that the storage exception is "observed" to
+            // avoid the exception propagating to the point where the
+            // test fails.
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                if (e.Exception.InnerException == storageException)
+                {
+                    e.SetObserved();
+                }
+            };
             var storage = new Mock<IStorage>();
-            storage.Setup(s => s.DeleteLogs(It.IsAny<string>(), It.IsAny<string>())).Throws<StorageException>();
+            storage.Setup(s => s.DeleteLogs(It.IsAny<string>(), It.IsAny<string>())).Throws(storageException);
             storage.Setup(s => s.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()))
                 .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
                 .Returns(() => Task.FromResult("test-batch-id"));
