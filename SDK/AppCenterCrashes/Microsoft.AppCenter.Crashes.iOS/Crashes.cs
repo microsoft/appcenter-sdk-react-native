@@ -9,36 +9,34 @@ using Microsoft.AppCenter.Crashes.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Crashes
 {
-    class PlatformCrashes : PlatformCrashesBase
+    public partial class Crashes
     {
-        public override SendingErrorReportEventHandler SendingErrorReport { get; set; }
-        public override SentErrorReportEventHandler SentErrorReport { get; set; }
-        public override FailedToSendErrorReportEventHandler FailedToSendErrorReport { get; set; }
-        public override ShouldProcessErrorReportCallback ShouldProcessErrorReport { get; set; }
-        public override GetErrorAttachmentsCallback GetErrorAttachments { get; set; }
-        public override ShouldAwaitUserConfirmationCallback ShouldAwaitUserConfirmation { get; set; }
+        /// <summary>
+        /// Internal SDK property not intended for public use.
+        /// </summary>
+        /// <value>
+        /// The iOS SDK Crashes bindings type.
+        /// </value>
+        [Preserve]
+        public static Type BindingType => typeof(MSCrashes);
 
-        CrashesDelegate crashesDelegate { get; set; }
-
-        public override Type BindingType => typeof(MSCrashes);
-
-        public override Task<bool> IsEnabledAsync()
+        static Task<bool> PlatformIsEnabledAsync()
         {
             return Task.FromResult(MSCrashes.IsEnabled());
         }
 
-        public override Task SetEnabledAsync(bool enabled)
+        static Task PlatformSetEnabledAsync(bool enabled)
         {
             MSCrashes.SetEnabled(enabled);
             return Task.FromResult(default(object));
         }
 
-        public override Task<bool> HasCrashedInLastSessionAsync()
+        static Task<bool> PlatformHasCrashedInLastSessionAsync()
         {
             return Task.FromResult(MSCrashes.HasCrashedInLastSession);
         }
 
-        public override Task<ErrorReport> GetLastSessionCrashReportAsync()
+        static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
             return Task.Run(() =>
             {
@@ -47,10 +45,9 @@ namespace Microsoft.AppCenter.Crashes
             });
         }
 
-        public override void NotifyUserConfirmation(UserConfirmation confirmation)
+        static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
         {
             MSUserConfirmation iosUserConfirmation;
-
             switch (confirmation)
             {
                 case UserConfirmation.Send:
@@ -65,26 +62,27 @@ namespace Microsoft.AppCenter.Crashes
                 default:
                     throw new ArgumentOutOfRangeException(nameof(confirmation), confirmation, null);
             }
-
             MSCrashes.NotifyWithUserConfirmation(iosUserConfirmation);
         }
 
-        public override void TrackException(Exception exception)
+        static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
         {
+            // TODO implement properties in Apple SDK
             MSCrashes.TrackModelException(GenerateiOSException(exception, false));
         }
 
-        static PlatformCrashes()
+        /// <summary>
+        /// We keep the reference to avoid it being freed, inlining this object will cause listeners not to be called.
+        /// </summary>
+        static readonly CrashesDelegate _crashesDelegate = new CrashesDelegate();
+
+        static Crashes()
         {
-            /* Peform custom setup around the native SDK's for setting signal handlers */
+            /* Perform custom setup around the native SDK's for setting signal handlers */
             MSCrashes.DisableMachExceptionHandler();
             MSWrapperCrashesHelper.SetCrashHandlerSetupDelegate(new CrashesInitializationDelegate());
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-        }
-
-        public PlatformCrashes()
-        {
-            MSCrashes.SetUserConfirmationHandler((arg0) =>
+            MSCrashes.SetUserConfirmationHandler((reports) =>
                     {
                         if (ShouldAwaitUserConfirmation != null)
                         {
@@ -92,11 +90,10 @@ namespace Microsoft.AppCenter.Crashes
                         }
                         return false;
                     });
-            crashesDelegate = new CrashesDelegate(this);
-            MSCrashes.SetDelegate(crashesDelegate);
+            MSCrashes.SetDelegate(_crashesDelegate);
         }
 
-        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception systemException = e.ExceptionObject as Exception;
             MSException exception = GenerateiOSException(systemException, true);
@@ -112,7 +109,7 @@ namespace Microsoft.AppCenter.Crashes
             MSWrapperExceptionManager.SaveWrapperException(wrapperException);
         }
 
-        private static MSException GenerateiOSException(Exception exception, bool structuredFrames)
+        static MSException GenerateiOSException(Exception exception, bool structuredFrames)
         {
             var msException = new MSException();
             msException.Type = exception.GetType().FullName;
@@ -143,7 +140,7 @@ namespace Microsoft.AppCenter.Crashes
 
 #pragma warning disable XS0001 // Find usages of mono todo items
 
-        private static MSStackFrame[] GenerateStackFrames(Exception e)
+        static MSStackFrame[] GenerateStackFrames(Exception e)
         {
             var trace = new StackTrace(e, true);
             var frameList = new List<MSStackFrame>();
@@ -166,7 +163,7 @@ namespace Microsoft.AppCenter.Crashes
 
 #pragma warning restore XS0001 // Find usages of mono todo items
 
-        private static string AnonymizePath(string path)
+        static string AnonymizePath(string path)
         {
             if ((path == null) || (path.Count() == 0) || !path.Contains("/Users/"))
             {
@@ -175,6 +172,88 @@ namespace Microsoft.AppCenter.Crashes
 
             string pattern = "(/Users/[^/]+/)";
             return Regex.Replace(path, pattern, "/Users/USER/");
+        }
+
+        // Bridge between .NET events/callbacks and Apple native SDK
+        class CrashesDelegate : MSCrashesDelegate
+        {
+            public override bool CrashesShouldProcessErrorReport(MSCrashes crashes, MSErrorReport msReport)
+            {
+                if (ShouldProcessErrorReport == null)
+                {
+                    return true;
+                }
+                var report = new ErrorReport(msReport);
+                return ShouldProcessErrorReport(report);
+            }
+
+            public override NSArray AttachmentsWithCrashes(MSCrashes crashes, MSErrorReport msReport)
+            {
+                if (GetErrorAttachments == null)
+                {
+                    return null;
+                }
+                var report = new ErrorReport(msReport);
+                var attachments = GetErrorAttachments(report);
+                if (attachments != null)
+                {
+                    var nsArray = new NSMutableArray();
+                    foreach (var attachment in attachments)
+                    {
+                        if (attachment != null)
+                        {
+                            nsArray.Add(attachment.internalAttachment);
+                        }
+                        else
+                        {
+                            AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
+                        }
+                    }
+                    return nsArray;
+                }
+                return null;
+            }
+
+            public override void CrashesWillSendErrorReport(MSCrashes crashes, MSErrorReport msReport)
+            {
+                if (SendingErrorReport != null)
+                {
+                    var report = new ErrorReport(msReport);
+                    var e = new SendingErrorReportEventArgs
+                    {
+                        Report = report
+                    };
+                    SendingErrorReport(null, e);
+                }
+            }
+
+            public override void CrashesDidSucceedSendingErrorReport(MSCrashes crashes, MSErrorReport msReport)
+            {
+                if (SentErrorReport != null)
+                {
+                    var report = new ErrorReport(msReport);
+                    var e = new SentErrorReportEventArgs
+                    {
+                        Report = report
+                    };
+                    SentErrorReport(null, e);
+                }
+
+            }
+
+            public override void CrashesDidFailSendingErrorReport(MSCrashes crashes, MSErrorReport msReport, NSError error)
+            {
+                if (FailedToSendErrorReport != null)
+                {
+                    var report = new ErrorReport(msReport);
+                    var e = new FailedToSendErrorReportEventArgs
+                    {
+                        Report = report,
+                        Exception = error
+                    };
+                    FailedToSendErrorReport(null, e);
+                }
+            }
         }
     }
 }

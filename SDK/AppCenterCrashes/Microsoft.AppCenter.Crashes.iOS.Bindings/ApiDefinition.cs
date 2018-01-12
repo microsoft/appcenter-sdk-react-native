@@ -52,7 +52,7 @@ namespace Microsoft.AppCenter.Crashes.iOS.Bindings
     }
 
     // typedef bool (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
-    delegate bool MSUserConfirmationHandler(MSErrorReport[] arg0);
+    delegate bool MSUserConfirmationHandler(MSErrorReport[] reports);
 
     // @interface MSCrashes
     [BaseType(typeof(NSObject))]

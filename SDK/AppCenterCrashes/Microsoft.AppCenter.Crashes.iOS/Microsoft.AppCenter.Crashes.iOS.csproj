@@ -49,12 +49,10 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlatformCrashes.cs" />
+    <Compile Include="Crashes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ErrorAttachmentLog.cs" />
     <Compile Include="ErrorReport.cs" />
-    <Compile Include="CrashesDelegate.cs" />
-    <Compile Include="CrashesPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.AppCenter.Crashes.iOS.Bindings\Microsoft.AppCenter.Crashes.iOS.Bindings.csproj">

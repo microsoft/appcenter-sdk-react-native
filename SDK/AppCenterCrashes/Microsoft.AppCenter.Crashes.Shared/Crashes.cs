@@ -167,10 +167,5 @@ namespace Microsoft.AppCenter.Crashes
         {
             PlatformTrackException(exception, properties);
         }
-
-        // Hide constructor, class cannot be static as it's used in UWP as instances.
-        internal Crashes()
-        {
-        }
     }
 }
