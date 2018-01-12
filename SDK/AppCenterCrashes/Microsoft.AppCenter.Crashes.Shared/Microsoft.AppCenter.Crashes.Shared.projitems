@@ -10,9 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IPlatformCrashes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PlatformCrashesBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorReportEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CrashesDelegates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorReport.cs" />

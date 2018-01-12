@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -195,7 +196,12 @@ namespace Contoso.Forms.Puppet
 
         private void TrackException(Exception e)
         {
-            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackException").Invoke(null, new object[] { e });
+            var properties = new Dictionary<string, string>
+            {
+                { "key1", "val1" },
+                { "key2", "val2" }
+            };
+            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackException").Invoke(null, new object[] { e, properties });
         }
     }
 }

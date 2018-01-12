@@ -9,6 +9,15 @@ namespace Microsoft.AppCenter.Push
 {
     public partial class Push
     {
+        /// <summary>
+        /// Internal SDK property not intended for public use.
+        /// </summary>
+        /// <value>
+        /// The Android SDK Push bindings type.
+        /// </value>
+        [Preserve]
+        public static Type BindingType => typeof(AndroidPush);
+
         static Android.PushListener _pushListener = new Android.PushListener();
 
         static Push()
@@ -57,15 +66,6 @@ namespace Microsoft.AppCenter.Push
         {
             AndroidPush.EnableFirebaseAnalytics(Application.Context);
         }
-
-        /// <summary>
-        /// Internal SDK property not intended for public use.
-        /// </summary>
-        /// <value>
-        /// The iOS SDK Analytics bindings type.
-        /// </value>
-        [Preserve]
-        public static Type BindingType => typeof(AndroidPush);
 
         /// <summary>
         /// If you are using the event for background push notifications
