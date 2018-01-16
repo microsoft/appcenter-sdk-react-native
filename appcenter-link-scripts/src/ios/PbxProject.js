@@ -23,29 +23,30 @@ PbxProject.prototype.updateFrameworkSearchPaths = function (pathToAdd) {
         pathToAdd = pathToAdd + "\"";
     }
 
-    const frameworkSearchPathsPattern = /(\s*)(FRAMEWORK_SEARCH_PATHS = )(\(|")([\s\S]+?)(";|\);)/g;
+    const frameworkSearchPathsPattern = /(\t*)(FRAMEWORK_SEARCH_PATHS = )(\(|")([\s\S]+?)(";|\);)/g;
 
-    const replacer = (match, leadingWhitespace, startString, parenthesisOrQuote, contents, endString, offset) => {
+    const replacer = function (match, leadingWhitespace, startString, parenthesisOrQuote, contents, endString) {
         let isArray = parenthesisOrQuote === '(';
 
         let existingSearchPaths;
         if(isArray) {
-            existingSearchPaths = contents.split('\n').map(searchPath => searchPath.trim());
+            existingSearchPaths = contents.trim().split(',').map(searchPath => searchPath.trim()).filter(searchPath => searchPath != '');
         } else {
-            existingSearchPaths = [`"${contents}"`];
+            existingSearchPaths = [`"${contents.trim()}"`];
         }
 
-        if(existingSearchPaths.indexOf(pathToAdd) > -1) {
+        if(existingSearchPaths.indexOf(searchPathToAdd) > -1) {
             // path already in search paths, nothing to replace...
             return match;
         }
 
-        existingSearchPaths.push(pathToAdd);
 
-        let searchPathLineStart = '\n' + leadingWhitespace + '\t';
-        let searchPaths = existingSearchPaths.join(searchPathLineStart);
+        existingSearchPaths.push(searchPathToAdd.trim());
 
-        return `${leadingWhitespace}FRAMEWORK_SEARCH_PATHS = (${searchPathLineStart}${searchPaths}\n${leadingWhitespace});`;
+        let searchPathSeparator = ',\n' + leadingWhitespace + '\t';
+        let searchPaths = existingSearchPaths.join(searchPathSeparator);
+
+        return `${leadingWhitespace}FRAMEWORK_SEARCH_PATHS = (\n${leadingWhitespace}\t${searchPaths}\n${leadingWhitespace});`;
     };
 
     this.pbxProjectContents = this.pbxProjectContents.replace(frameworkSearchPathsPattern, replacer);
