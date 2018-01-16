@@ -1,12 +1,14 @@
 const rnpmlink = require('appcenter-link-scripts');
-const path = require('path');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
     .then(() => {
-        return Promise.resolve().then(() => rnpmlink.ios.initAppCenterConfig().catch((e) => {
-            console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
-            return Promise.reject();
-        }))
+        return Promise.resolve().then(() => {
+            return rnpmlink.ios.initAppCenterConfig()
+                .catch((e) => {
+                    console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
+                    return Promise.reject();
+                });
+        })
         .then(() => {
             const code = '  [AppCenterReactNative register];  // Initialize AppCenter ';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNative/AppCenterReactNative.h>', code)

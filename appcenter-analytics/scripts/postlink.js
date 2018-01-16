@@ -3,10 +3,13 @@ const npmPackages = require('./../package.json');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
     .then(() => {
-        return Promise.resolve().then(() => rnpmlink.ios.initAppCenterConfig().catch((e) => {
-            console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
-            return Promise.reject();
-        }))
+        return Promise.resolve().then(() => {
+            return rnpmlink.ios.initAppCenterConfig()
+                .catch((e) => {
+                    console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
+                    return Promise.reject();
+                });
+        })
         .then(() => {
             const prompt = npmPackages.rnpm.params[0];
             prompt.message = prompt.message.replace(/Android/, 'iOS');
