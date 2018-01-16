@@ -6,7 +6,6 @@ const xcode = require('xcode');
 const glob = require('glob');
 const debug = require('debug')('appcenter-link:ios:AppCenterConfigPlist');
 
-const DEFAULT_PODS_FRAMEWORK_SEARCH_PATH = '../../../ios/pods/**';
 
 
 const PbxProject = function (pbxProjectPath) {
@@ -15,22 +14,41 @@ const PbxProject = function (pbxProjectPath) {
     debug('Read contents of', pbxProjectPath);
 };
 
-PbxProject.prototype.updateFrameworkSearchPaths = function (podsInstallPath) {
-    const sourceRoot = path.resolve(path.dirname(this.pbxProjectPath), '..');
-    const absolutePodsInstallPath = path.resolve(podsInstallPath);
-    const relativePodsInstallPath = path.relative(sourceRoot, absolutePodsInstallPath, '**').replace(/\\/g, '/');
-
-    if(relativePodsInstallPath.toLowerCase() === DEFAULT_PODS_FRAMEWORK_SEARCH_PATH) {
-        // pods install path matches the default, nothing to update...
-        return;
+PbxProject.prototype.updateFrameworkSearchPaths = function (pathToAdd) {
+    if(!pathToAdd.startsWith("\"")) {
+        pathToAdd = "\"" + pathToAdd;
     }
 
-    const frameworkSearchPath = path.join('$(SRCROOT)', relativePodsInstallPath);
+    if(!pathToAdd.endsWith("\"")) {
+        pathToAdd = pathToAdd + "\"";
+    }
 
-    const FRAMEWORK_SEARCH_PATHS_REPLACEMENT_REGEX = /(FRAMEWORK_SEARCH_PATHS = \()(\r?\n\s*)("\$\(SRCROOT\)\/\.\.\/\.\.\/\.\.\/ios\/Pods\/\*\*",)(\r?\n\s*)("\$\(inherited\)",)(\r?\n\s*)\);/g;
-    const replacementString = `$1$2"${frameworkSearchPath}",$4$5$6);`;
+    const frameworkSearchPathsPattern = /(\s*)(FRAMEWORK_SEARCH_PATHS = )(\(|")([\s\S]+)(";|);)/g;
 
-    this.pbxProjectContents = this.pbxProjectContents.replace(FRAMEWORK_SEARCH_PATHS_REPLACEMENT_REGEX, replacementString)
+    const replacer = (match, leadingWhitespace, startString, parenthesisOrQuote, contents, endString, offset) => {
+        let isArray = parenthesisOrQuote === '(';
+
+        let existingSearchPaths;
+        if(isArray) {
+            existingSearchPaths = contents.split('\n').trim();
+        } else {
+            existingSearchPaths = [`"${contents}"`];
+        }
+
+        if(existingSearchPaths.indexOf(pathToAdd) > -1) {
+            // path already in search paths, nothing to replace...
+            return match;
+        }
+
+        existingSearchPaths.push(pathToAdd);
+
+        let searchPathLineStart = '\n' + leadingWhitespace + '\t';
+        let searchPaths = existingSearchPaths.join(searchPathLineStart);
+
+        return `${leadingWhitespace}FRAMEWORK_SEARCH_PATHS = (${searchPathLineStart}${searchPaths}\n${leadingWhitespace});`;
+    };
+
+    this.pbxProjectContents = this.pbxProjectContents.replace(frameworkSearchPathsPattern, replacer);
 };
 
 PbxProject.prototype.save = function () {

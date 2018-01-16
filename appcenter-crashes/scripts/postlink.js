@@ -42,10 +42,9 @@ return rnpmlink.ios.checkIfAppDelegateExists()
             });
         })
         .then(() => {
-            const appcenterCrashesPbxProjectPath = path.resolve(__dirname, '..', 'ios', 'AppCenterReactNativeCrashes.xcodeproj', 'project.pbxproj');
-            return rnpmlink.ios.updateFrameworkSearchPaths(appcenterCrashesPbxProjectPath)
+            return rnpmlink.ios.updateFrameworkSearchPaths()
                 .catch((e) => {
-                    console.log(`Could not update framework search paths in AppCenterReactNativeCrashes ios project.pbxproj file. Error Reason - ${e.message}`);
+                    console.log(`Could not update framework search paths in ios project.pbxproj file. Error Reason - ${e.message}`);
                     return Promise.reject();
                 });
         })

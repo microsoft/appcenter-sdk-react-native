@@ -16,12 +16,10 @@ const PodFile = require('./PodFile');
 
 const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig');
 const iosProjectConfig = GetReactNativeProjectConfig().ios;
-const iosProjectDirectory = iosProjectConfig.folder;
-const iosProjectSourceDirectory = iosProjectConfig.sourceDir;
 
 
-const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectDirectory || process.cwd() });
-const appDelegatePath = findFileInProjectSource(appDelegatePaths, iosProjectSourceDirectory) 
+const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectConfig.folder || process.cwd() });
+const appDelegatePath = findFileInProjectSource(appDelegatePaths, iosProjectConfig.sourceDir) 
     || findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) 
     || appDelegatePaths[0];
 
@@ -39,7 +37,7 @@ module.exports = {
     },
 
     initAppCenterConfig() {
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile(iosProjectSourceDirectory));
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(iosProjectConfig.sourceDir));
         const currentAppSecret = config.get('AppSecret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
@@ -87,7 +85,10 @@ module.exports = {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
         try {
-            const podFile = new PodFile(PodFile.searchForFile(iosProjectDirectory));
+            const podfilePath = iosProjectConfig.podfile || path.join(iosProjectConfig.projectPath, '..', 'Podfile');
+            PodFile.initializePodfileIfNecessary(podfilePath);
+
+            const podFile = new PodFile(podfilePath);
             pods.forEach((pod) => {
                 podFile.addPodLine(pod.pod, pod.podspec, pod.version);
             });
@@ -100,16 +101,18 @@ module.exports = {
         }
     },
 
-    updateFrameworkSearchPaths(pbxProjectPath) {
+    updateFrameworkSearchPaths() {
         if(!pbxProjectPath) {
             return;
         }
 
         try {
-            const pbxProject = new PbxProject(pbxProjectPath);
+            const pbxProject = new PbxProject(iosProjectConfig.pbxprojPath);
 
-            const podsInstallPath = path.join(iosProjectDirectory, 'Pods');
-            pbxProject.updateFrameworkSearchPaths(podsInstallPath);
+            const relativePodsSearchPath = path.relative(iosProjectConfig.folder, path.join('Pods', '**')).replace(/\\/g, '/');
+            const podsSearchPath = `$(PROJECT_DIR)/${relativePodsInstallSearchPath}`;
+            
+            pbxProject.updateFrameworkSearchPaths(podsSearchPath);
             return Promise.resolve(pbxProject.save());
         } catch(e) {
             debug(`Could not update framework search paths in pbxproject ${pbxProjectPath}`, e);

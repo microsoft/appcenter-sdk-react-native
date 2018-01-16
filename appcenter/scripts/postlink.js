@@ -30,10 +30,9 @@ return rnpmlink.ios.checkIfAppDelegateExists()
             });
         })
         .then(() => {
-            const appcenterPbxProjectPath = path.resolve(__dirname, '..', 'ios', 'AppCenterReactNative.xcodeproj', 'project.pbxproj');
-            return rnpmlink.ios.updateFrameworkSearchPaths(appcenterPbxProjectPath)
+            return rnpmlink.ios.updateFrameworkSearchPaths()
                 .catch((e) => {
-                    console.log(`Could not update framework search paths in AppCenterReactNative ios project.pbxproj file. Error Reason - ${e.message}`);
+                    console.log(`Could not update framework search paths in ios project.pbxproj file. Error Reason - ${e.message}`);
                     return Promise.reject();
                 });
         })

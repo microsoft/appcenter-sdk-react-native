@@ -70,19 +70,12 @@ Podfile.prototype.install = function () {
     });
 };
 
-Podfile.searchForFile = function (iosProjectDirectory) {
-    const podFilePaths = glob.sync(path.join(iosProjectDirectory, 'Podfile'), { ignore: 'node_modules/**' });
-
-    if (podFilePaths.length > 1) {
-        debug(podFilePaths);
-        throw new Error('Found more than one Podfile in this project');
-    } else if (podFilePaths.length === 1) {
-        return podFilePaths[0];
-    } else {
-        debug(`No podfile found in ${iosProjectDirectory}`);
-        childProcess.execSync('pod init', { iosProjectDirectory });
+Podfile.initializePodfileIfNecessary = function (podfilePath) {
+    if(!fs.statSync(podfilePath).isFile())
+        debug(`No podfile found at ${podfilePath}, initializing...`);
+        childProcess.execSync('pod init', { iosRootDirectory });
         // Remove tests sub-specification or it breaks the project
-        const podfile = path.join(iosProjectDirectory, 'Podfile');
+        const podfile = path.join(iosRootDirectory, 'Podfile');
         const contents = fs.readFileSync(podfile, { encoding: 'utf-8' });
         const subspecRegex = /target '[^']*Tests' do[\s\S]*?end/m;
         fs.writeFileSync(podfile, contents.replace(subspecRegex, ''));
