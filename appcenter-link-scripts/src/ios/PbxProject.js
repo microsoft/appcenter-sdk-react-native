@@ -23,7 +23,7 @@ PbxProject.prototype.updateFrameworkSearchPaths = function (pathToAdd) {
         pathToAdd = pathToAdd + "\"";
     }
 
-    const frameworkSearchPathsPattern = /(\s*)(FRAMEWORK_SEARCH_PATHS = )(\(|")([\s\S]+)(";|);)/g;
+    const frameworkSearchPathsPattern = /(\s*)(FRAMEWORK_SEARCH_PATHS = )(\(|")([\s\S]+?)(";|\);)/g;
 
     const replacer = (match, leadingWhitespace, startString, parenthesisOrQuote, contents, endString, offset) => {
         let isArray = parenthesisOrQuote === '(';
