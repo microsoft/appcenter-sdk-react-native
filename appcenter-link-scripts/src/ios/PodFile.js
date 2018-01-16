@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const childProcess = require('child_process');
 
-const glob = require('glob');
 const which = require('which').sync;
 const debug = require('debug')('appcenter-link:ios:Podfile');
 
@@ -71,16 +70,16 @@ Podfile.prototype.install = function () {
 };
 
 Podfile.initializePodfileIfNecessary = function (podfilePath) {
-    if(!fs.statSync(podfilePath).isFile())
+    if (!fs.statSync(podfilePath).isFile()) {
         debug(`No podfile found at ${podfilePath}, initializing...`);
-        childProcess.execSync('pod init', { iosRootDirectory });
+        childProcess.execSync('pod init', { cwd: path.dirname(podfilePath) });
         // Remove tests sub-specification or it breaks the project
-        const podfile = path.join(iosRootDirectory, 'Podfile');
-        const contents = fs.readFileSync(podfile, { encoding: 'utf-8' });
+        const contents = fs.readFileSync(podfilePath, { encoding: 'utf-8' });
         const subspecRegex = /target '[^']*Tests' do[\s\S]*?end/m;
-        fs.writeFileSync(podfile, contents.replace(subspecRegex, ''));
-        return podfile;
+        fs.writeFileSync(podfilePath, contents.replace(subspecRegex, ''));
     }
+
+    return podfilePath;
 };
 
 Podfile.isCocoaPodsInstalled = function () {

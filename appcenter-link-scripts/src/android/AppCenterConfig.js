@@ -43,7 +43,7 @@ AppCenterConfig.searchForFile = function (androidProjectDirectory) {
         ignore: ['node_modules/**', '**/build/**'],
         cwd: androidProjectDirectory || process.cwd()
     });
-    
+
     if (AppCenterConfigPaths.length > 1) {
         debug(AppCenterConfigPaths);
         throw new Error(`Found more than one appcenter-config.json in this project and hence could not write App Secret.
@@ -52,7 +52,7 @@ AppCenterConfig.searchForFile = function (androidProjectDirectory) {
         `);
     } else if (AppCenterConfigPaths.length === 1) {
         return AppCenterConfigPaths[0];
-    } else if(androidProjectDirectory) {
+    } else if (androidProjectDirectory) {
         return path.resolve(androidProjectDirectory, 'app', 'src', 'main', 'assets', 'appcenter-config.json');
     } else {
         return path.join('android', 'app', 'src', 'main', 'assets', 'appcenter-config.json');

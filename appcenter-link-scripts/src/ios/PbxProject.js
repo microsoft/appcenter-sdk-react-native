@@ -1,11 +1,5 @@
 const fs = require('fs');
-const path = require('path');
-
-const plist = require('plist');
-const xcode = require('xcode');
-const glob = require('glob');
 const debug = require('debug')('appcenter-link:ios:AppCenterConfigPlist');
-
 
 
 const PbxProject = function (pbxProjectPath) {
@@ -14,37 +8,36 @@ const PbxProject = function (pbxProjectPath) {
     debug('Read contents of', pbxProjectPath);
 };
 
-PbxProject.prototype.updateFrameworkSearchPaths = function (pathToAdd) {
-    if(!pathToAdd.startsWith("\"")) {
-        pathToAdd = "\"" + pathToAdd;
+PbxProject.prototype.updateFrameworkSearchPaths = function (searchPathToAdd) {
+    if (!searchPathToAdd.startsWith('"')) {
+        searchPathToAdd = `"${searchPathToAdd}`;
     }
 
-    if(!pathToAdd.endsWith("\"")) {
-        pathToAdd = pathToAdd + "\"";
+    if (!searchPathToAdd.endsWith('"')) {
+        searchPathToAdd += '"';
     }
 
     const frameworkSearchPathsPattern = /(\t*)(FRAMEWORK_SEARCH_PATHS = )(\(|")([\s\S]+?)(";|\);)/g;
 
-    const replacer = function (match, leadingWhitespace, startString, parenthesisOrQuote, contents, endString) {
-        let isArray = parenthesisOrQuote === '(';
+    const replacer = function (match, leadingWhitespace, startString, parenthesisOrQuote, contents) {
+        const isArray = parenthesisOrQuote === '(';
 
         let existingSearchPaths;
-        if(isArray) {
-            existingSearchPaths = contents.trim().split(',').map(searchPath => searchPath.trim()).filter(searchPath => searchPath != '');
+        if (isArray) {
+            existingSearchPaths = contents.trim().split(',').map(searchPath => searchPath.trim()).filter(searchPath => searchPath !== '');
         } else {
             existingSearchPaths = [`"${contents.trim()}"`];
         }
 
-        if(existingSearchPaths.indexOf(searchPathToAdd) > -1) {
+        if (existingSearchPaths.indexOf(searchPathToAdd) > -1) {
             // path already in search paths, nothing to replace...
             return match;
         }
 
-
         existingSearchPaths.push(searchPathToAdd.trim());
 
-        let searchPathSeparator = ',\n' + leadingWhitespace + '\t';
-        let searchPaths = existingSearchPaths.join(searchPathSeparator);
+        const searchPathSeparator = `,\n${leadingWhitespace}\t`;
+        const searchPaths = existingSearchPaths.join(searchPathSeparator);
 
         return `${leadingWhitespace}FRAMEWORK_SEARCH_PATHS = (\n${leadingWhitespace}\t${searchPaths}\n${leadingWhitespace});`;
     };

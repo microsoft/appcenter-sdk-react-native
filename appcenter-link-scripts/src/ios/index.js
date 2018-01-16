@@ -15,12 +15,13 @@ const PbxProject = require('./PbxProject');
 const PodFile = require('./PodFile');
 
 const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig');
+
 const iosProjectConfig = GetReactNativeProjectConfig().ios;
 
 
 const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectConfig.folder || process.cwd() });
-const appDelegatePath = findFileInProjectSource(appDelegatePaths, iosProjectConfig.sourceDir) 
-    || findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) 
+const appDelegatePath = findFileInProjectSource(appDelegatePaths, iosProjectConfig.sourceDir)
+    || findFileByAppName(appDelegatePaths, pjson ? pjson.name : null)
     || appDelegatePaths[0];
 
 debug(`AppDelegate.m path - ${appDelegatePath}`);
@@ -102,20 +103,13 @@ module.exports = {
     },
 
     updateFrameworkSearchPaths() {
-        if(!pbxProjectPath) {
-            return;
-        }
-
         try {
             const pbxProject = new PbxProject(iosProjectConfig.pbxprojPath);
-
-            const relativePodsSearchPath = path.relative(iosProjectConfig.folder, path.join('Pods', '**')).replace(/\\/g, '/');
-            const podsSearchPath = `$(PROJECT_DIR)/${relativePodsInstallSearchPath}`;
-            
+            const podsSearchPath = '$(PROJECT_DIR)/Pods/**';
             pbxProject.updateFrameworkSearchPaths(podsSearchPath);
             return Promise.resolve(pbxProject.save());
-        } catch(e) {
-            debug(`Could not update framework search paths in pbxproject ${pbxProjectPath}`, e);
+        } catch (e) {
+            debug(`Could not update framework search paths in pbxproject ${iosProjectConfig.pbxprojPath}`, e);
             return Promise.reject(e);
         }
     }
@@ -124,12 +118,12 @@ module.exports = {
 
 // Helper that filters an array with AppDelegate.m paths for a path within the ios project's source directory
 function findFileInProjectSource(fileArray, iosProjectSourceDirectory) {
-    if (array.length === 0 || !appName) return null;
+    if (fileArray.length === 0 || !iosProjectSourceDirectory) return null;
 
-    let iosProjectSourceDirectoryLower = iosProjectSourceDirectory.toLowerCase();
-    for (let i = 0; i < array.length; i++) {
-        if (array[i] && array[i].toLowerCase().indexOf(iosProjectSourceDirectory) !== -1) {
-            return array[i];
+    const iosProjectSourceDirectoryLower = iosProjectSourceDirectory.toLowerCase();
+    for (let i = 0; i < fileArray.length; i++) {
+        if (fileArray[i] && fileArray[i].toLowerCase().indexOf(iosProjectSourceDirectoryLower) !== -1) {
+            return fileArray[i];
         }
     }
 

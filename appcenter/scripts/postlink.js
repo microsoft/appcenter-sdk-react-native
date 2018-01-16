@@ -1,14 +1,14 @@
 const rnpmlink = require('appcenter-link-scripts');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
-    .then(() => {
-        return Promise.resolve().then(() => {
-            return rnpmlink.ios.initAppCenterConfig()
+    .then(() =>
+        Promise.resolve().then(() =>
+            rnpmlink.ios.initAppCenterConfig()
                 .catch((e) => {
                     console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
                     return Promise.reject();
-                });
-        })
+                })
+        )
         .then(() => {
             const code = '  [AppCenterReactNative register];  // Initialize AppCenter ';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNative/AppCenterReactNative.h>', code)
@@ -31,15 +31,15 @@ return rnpmlink.ios.checkIfAppDelegateExists()
                 return Promise.reject();
             });
         })
-        .then(() => {
-            return rnpmlink.ios.updateFrameworkSearchPaths()
+        .then(() =>
+            rnpmlink.ios.updateFrameworkSearchPaths()
                 .catch((e) => {
                     console.log(`Could not update framework search paths in ios project.pbxproj file. Error Reason - ${e.message}`);
                     return Promise.reject();
-                });
-        })
-        .catch(() => Promise.resolve());
-    })
+                })
+        )
+        .catch(() => Promise.resolve())
+    )
     .catch(() => {
         console.log('Could not locate the ios project directory; skipping AppCenterReactNative postlink steps for ios.');
         return Promise.resolve();

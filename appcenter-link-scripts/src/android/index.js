@@ -15,7 +15,7 @@ const getAndroidDirectory = function () {
 module.exports = {
     checkIfAndroidDirectoryExists() {
         try {
-            androidProjectDirectory = getAndroidDirectory() || './android';
+            const androidProjectDirectory = getAndroidDirectory() || './android';
 
             if (fs.statSync(androidProjectDirectory).isDirectory()) {
                 return Promise.resolve();
