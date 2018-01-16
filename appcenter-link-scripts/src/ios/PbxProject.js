@@ -30,7 +30,7 @@ PbxProject.prototype.updateFrameworkSearchPaths = function (pathToAdd) {
 
         let existingSearchPaths;
         if(isArray) {
-            existingSearchPaths = contents.split('\n').trim();
+            existingSearchPaths = contents.split('\n').map(searchPath => searchPath.trim());
         } else {
             existingSearchPaths = [`"${contents}"`];
         }
