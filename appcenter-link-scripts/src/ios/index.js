@@ -11,9 +11,10 @@ const pjson = require(path.join(process.cwd(), './package.json'));
 
 const AppCenterConfig = require('./AppCenterConfig');
 const AppDelegate = require('./AppDelegate');
+const PbxProject = require('./PbxProject');
 const PodFile = require('./PodFile');
 
-const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig')''
+const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig');
 const iosProjectConfig = GetReactNativeProjectConfig().ios;
 const iosProjectDirectory = iosProjectConfig.folder;
 const iosProjectSourceDirectory = iosProjectConfig.sourceDir;
@@ -95,6 +96,23 @@ module.exports = {
             return Promise.resolve(podFile.install());
         } catch (e) {
             debug('Could not add pod dependencies', e);
+            return Promise.reject(e);
+        }
+    },
+
+    updateFrameworkSearchPaths(pbxProjectPath) {
+        if(!pbxProjectPath) {
+            return;
+        }
+
+        try {
+            const pbxProject = new PbxProject(pbxProjectPath);
+
+            const podsInstallPath = path.join(iosProjectDirectory, 'Pods');
+            pbxProject.updateFrameworkSearchPaths(podsInstallPath);
+            return Promise.resolve(pbxProject.save());
+        } catch(e) {
+            debug(`Could not update framework search paths in pbxproject ${pbxProjectPath}`, e);
             return Promise.reject(e);
         }
     }
