@@ -13,8 +13,17 @@ const AppCenterConfig = require('./AppCenterConfig');
 const AppDelegate = require('./AppDelegate');
 const PodFile = require('./PodFile');
 
-const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**' });
-const appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
+const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig')''
+const iosProjectConfig = GetReactNativeProjectConfig().ios;
+const iosProjectDirectory = iosProjectConfig.folder;
+const iosProjectSourceDirectory = iosProjectConfig.sourceDir;
+
+
+const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectDirectory || process.cwd() });
+const appDelegatePath = findFileInProjectSource(appDelegatePaths, iosProjectSourceDirectory) 
+    || findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) 
+    || appDelegatePaths[0];
+
 debug(`AppDelegate.m path - ${appDelegatePath}`);
 
 module.exports = {
@@ -29,7 +38,7 @@ module.exports = {
     },
 
     initAppCenterConfig() {
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile(path.dirname(appDelegatePath)));
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(iosProjectSourceDirectory));
         const currentAppSecret = config.get('AppSecret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
@@ -77,7 +86,7 @@ module.exports = {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
         try {
-            const podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
+            const podFile = new PodFile(PodFile.searchForFile(iosProjectDirectory));
             pods.forEach((pod) => {
                 podFile.addPodLine(pod.pod, pod.podspec, pod.version);
             });
@@ -91,8 +100,23 @@ module.exports = {
     }
 };
 
+
+// Helper that filters an array with AppDelegate.m paths for a path within the ios project's source directory
+function findFileInProjectSource(fileArray, iosProjectSourceDirectory) {
+    if (array.length === 0 || !appName) return null;
+
+    let iosProjectSourceDirectoryLower = iosProjectSourceDirectory.toLowerCase();
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] && array[i].toLowerCase().indexOf(iosProjectSourceDirectory) !== -1) {
+            return array[i];
+        }
+    }
+
+    return null;
+}
+
 // Helper that filters an array with AppDelegate.m paths for a path with the app name inside it
-// Should cover nearly all cases
+// Fallback if findFileInProjectSource(..) does not return a match
 function findFileByAppName(array, appName) {
     if (array.length === 0 || !appName) return null;
 

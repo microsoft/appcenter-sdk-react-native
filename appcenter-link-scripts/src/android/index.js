@@ -15,21 +15,21 @@ const getAndroidDirectory = function () {
 module.exports = {
     checkIfAndroidDirectoryExists() {
         try {
-            androidFolder = getAndroidDirectory() || './android';
+            androidProjectDirectory = getAndroidDirectory() || './android';
 
-            if (fs.statSync(androidFolder).isDirectory()) {
+            if (fs.statSync(androidProjectDirectory).isDirectory()) {
                 return Promise.resolve();
             }
         } catch (e) {
-            debug('Could not find /android directory in your application.');
+            debug('Could not find android project directory in your application.');
         }
         return Promise.reject();
     },
 
     initAppCenterConfig() {
-        const androidFolder = getAndroidDirectory();
+        const androidProjectDirectory = getAndroidDirectory();
 
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile(androidFolder));
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(androidProjectDirectory));
         const currentAppSecret = config.get('app_secret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
