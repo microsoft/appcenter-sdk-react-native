@@ -10,4 +10,7 @@ return rnpmlink.android.checkIfAndroidDirectoryExists()
                 return Promise.reject();
             });
     })
-    .catch(() => Promise.resolve());
+    .catch(() => {
+        console.log('Could not locate an android project directory; skipping creation of the AppCenter config file for android.');
+        return Promise.resolve();
+    });
