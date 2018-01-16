@@ -4,11 +4,20 @@ const inquirer = require('inquirer');
 const debug = require('debug')('appcenter-link:android:index');
 
 const AppCenterConfig = require('./AppCenterConfig');
+const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig');
+
+
+const getAndroidDirectory = function () {
+    return GetReactNativeProjectConfig().android.folder;
+};
+
 
 module.exports = {
     checkIfAndroidDirectoryExists() {
         try {
-            if (fs.statSync('./android').isDirectory()) {
+            androidFolder = getAndroidDirectory() || './android';
+
+            if (fs.statSync(androidFolder).isDirectory()) {
                 return Promise.resolve();
             }
         } catch (e) {
@@ -18,7 +27,9 @@ module.exports = {
     },
 
     initAppCenterConfig() {
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile());
+        const androidFolder = getAndroidDirectory();
+
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(androidFolder));
         const currentAppSecret = config.get('app_secret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
