@@ -22,6 +22,8 @@ It is super easy to use App Center. Have a look at our [get started documentatio
 
 We are looking forward to your contributions via pull requests.
 
+Please run `eslint` locally and fix any errors your change creates.
+
 ### 2.1 Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
