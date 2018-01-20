@@ -5,29 +5,32 @@ namespace Microsoft.AppCenter.Test
 {
     public class MockAppCenterService : IAppCenterService
     {
-        public string ServiceName => nameof(MockAppCenterService);
         private static MockAppCenterService _instanceField;
+        private readonly Mock<IAppCenterService> _mock;
+
+        public string ServiceName => nameof(MockAppCenterService);
 
         public static void Reset()
         {
             _instanceField = new MockAppCenterService();
         }
+
         public static MockAppCenterService Instance => _instanceField ?? (_instanceField = new MockAppCenterService());
-        public Mock<IAppCenterService> MockInstance { get; }
+        public static Mock<IAppCenterService> Mock => Instance._mock;
 
         public MockAppCenterService()
         {
-            MockInstance = new Mock<IAppCenterService>();
+            _mock = new Mock<IAppCenterService>();
         }
 
         public bool InstanceEnabled {
-            get { return MockInstance.Object.InstanceEnabled; }
-            set { MockInstance.Object.InstanceEnabled = value; }
+            get { return _mock.Object.InstanceEnabled; }
+            set { _mock.Object.InstanceEnabled = value; }
         }
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            MockInstance.Object.OnChannelGroupReady(channelGroup, appSecret);
+            _mock.Object.OnChannelGroupReady(channelGroup, appSecret);
         }
     }
 }

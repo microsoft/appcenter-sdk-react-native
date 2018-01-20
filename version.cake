@@ -118,6 +118,7 @@ Task("StartNewVersion").Does(()=>
     {
         if (!manifest.FullPath.Contains("Demo") &&
             !manifest.FullPath.Contains("SDK") &&
+            !manifest.FullPath.Contains("externals") &&
             !manifest.FullPath.Contains("/bin/") &&
             !manifest.FullPath.Contains("/obj/"))
         {

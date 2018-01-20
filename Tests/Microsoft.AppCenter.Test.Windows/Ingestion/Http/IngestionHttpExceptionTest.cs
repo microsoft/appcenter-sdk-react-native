@@ -18,7 +18,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
             Assert.IsTrue(exception.IsRecoverable);
 
             exception.StatusCode = 429;
-            Assert.IsTrue(exception.IsRecoverable);
+            Assert.IsFalse(exception.IsRecoverable);
 
             exception.StatusCode = (int) System.Net.HttpStatusCode.InternalServerError;
             Assert.IsTrue(exception.IsRecoverable);

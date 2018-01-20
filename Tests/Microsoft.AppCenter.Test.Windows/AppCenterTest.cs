@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Test.Channel;
@@ -14,6 +15,7 @@ namespace Microsoft.AppCenter.Test
     {
         private readonly Mock<IApplicationSettings> _settingsMock = new Mock<IApplicationSettings>();
         private readonly Mock<IChannelGroup> _channelGroupMock = new Mock<IChannelGroup>();
+        private readonly Mock<IChannelUnit> _channelMock = new Mock<IChannelUnit>();
 
         [TestInitialize]
         public void InitializeAppCenterTest()
@@ -24,7 +26,7 @@ namespace Microsoft.AppCenter.Test
             // Return non-null channels.
             _channelGroupMock.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(new Mock<IChannelUnit>().Object);
+                .Returns(_channelMock.Object);
 
             // Set factories.
 #pragma warning disable 612
@@ -104,7 +106,7 @@ namespace Microsoft.AppCenter.Test
             AppCenter.Configure("appsecret");
             AppCenter.Start(typeof(MockAppCenterService));
             AppCenter.Start(typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
@@ -116,7 +118,7 @@ namespace Microsoft.AppCenter.Test
         {
             AppCenter.Configure("appsecret");
             AppCenter.Start(typeof(MockAppCenterService), typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
@@ -139,6 +141,9 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void GetEnabled()
         {
+            AppCenter.Configure("appsecret");
+
+            _settingsMock.ResetCalls();
             _settingsMock.SetupSequence(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true).Returns(false);
 
@@ -154,14 +159,10 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void SetEnabledSameValue()
         {
-            _channelGroupMock.Setup(
-                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(new Mock<IChannelUnit>().Object);
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
-            AppCenter.SetEnabledAsync(AppCenter.IsEnabledAsync().Result).Wait();
+            AppCenter.SetEnabledAsync(AppCenter.IsEnabledAsync().Result).RunNotAsync();
 
-            MockAppCenterService.Instance.MockInstance.VerifySet(
-                service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
+            MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, It.IsAny<bool>()), Times.Never());
             _channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(It.IsAny<bool>()), Times.Never());
         }
@@ -172,40 +173,27 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void SetEnabledDifferentValueAfterConfigure()
         {
-            _channelGroupMock.Setup(
-                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(new Mock<IChannelUnit>().Object);
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
             var setVal = !AppCenter.IsEnabledAsync().Result;
-            AppCenter.SetEnabledAsync(setVal).Wait();
+            AppCenter.SetEnabledAsync(setVal).RunNotAsync();
 
-            MockAppCenterService.Instance.MockInstance.VerifySet(service => service.InstanceEnabled = setVal,
-                Times.Once());
+            MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = setVal, Times.Once());
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, setVal), Times.Once());
             _channelGroupMock.Verify(channelGroup => channelGroup.SetEnabled(setVal), Times.Once());
         }
 
         /// <summary>
-        /// Verify that setting Enabled to a different value (before configure is called) propagates the change when configure is called
+        /// Verify that setting Enabled to a different value (before configure is called) propagates the change
         /// </summary>
         [TestMethod]
         public void SetEnabledDifferentValueBeforeConfigure()
         {
-            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, true)).Returns(true);
-            AppCenter.SetEnabledAsync(false).Wait();
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(true);
+            AppCenter.SetEnabledAsync(false).RunNotAsync();
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
 
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, false), Times.Once());
-        }
-        
-        [TestMethod]
-        public void GetConfigured()
-        {
-            var isConfiguredFirst = AppCenter.Configured;
-            AppCenter.Configure("some string");
-
-            Assert.IsFalse(isConfiguredFirst);
-            Assert.IsTrue(AppCenter.Configured);
         }
 
         /// <summary>
@@ -214,22 +202,43 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void GetInstallId()
         {
+            AppCenter.Configure("appsecret");
+
             var fakeInstallId = Guid.NewGuid();
+            _settingsMock.ResetCalls();
             _settingsMock.Setup(settings => settings.GetValue(AppCenter.InstallIdKey, It.IsAny<Guid>())).Returns(fakeInstallId);
+
             var installId = AppCenter.GetInstallIdAsync().Result;
 
             Assert.IsTrue(installId.HasValue);
             Assert.AreEqual(installId.Value, fakeInstallId);
+            _settingsMock.Verify(settings => settings.GetValue(AppCenter.InstallIdKey, It.IsAny<Guid>()),
+                Times.Once());
         }
 
         /// <summary>
-        /// Verify that starting a service without configuring AppCenter does not call its OnChannelGroupReady method
+        /// Verify starting disabled AppCenter
+        /// </summary>
+        [TestMethod]
+        public void StartDisabled()
+        {
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(false);
+
+            AppCenter.Start("appsecret", typeof(MockAppCenterService));
+
+            Assert.IsTrue(AppCenter.Configured);
+            _channelMock.Verify(channel => channel.SetEnabled(false), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that starting a service without configuring App Center does not call its OnChannelGroupReady method
         /// </summary>
         [TestMethod]
         public void StartServiceWithoutConfigure()
         {
             AppCenter.Start(typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Never());
         }
 
@@ -241,7 +250,7 @@ namespace Microsoft.AppCenter.Test
         {
             AppCenter.Configure("appsecret");
             AppCenter.Start(typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
@@ -252,7 +261,7 @@ namespace Microsoft.AppCenter.Test
         public void StartNullServiceAndCorrectService()
         {
             AppCenter.Start("app secret", null, typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
@@ -263,7 +272,7 @@ namespace Microsoft.AppCenter.Test
         public void StartNoInstanceServiceAndCorrectService()
         {
             AppCenter.Start("app secret", typeof(string), typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
@@ -274,7 +283,7 @@ namespace Microsoft.AppCenter.Test
         public void StartNullInstanceServiceAndCorrectService()
         {
             AppCenter.Start("app secret", typeof(NullInstanceAppCenterService), typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
@@ -287,7 +296,7 @@ namespace Microsoft.AppCenter.Test
             string appSecret = null;
             // ReSharper disable once ExpressionIsAlwaysNull
             AppCenter.Start(appSecret, typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Never());
         }
 
@@ -300,13 +309,26 @@ namespace Microsoft.AppCenter.Test
         {
             AppCenter.Start("app secret", typeof(WrongInstanceTypeAppCenterService),
                 typeof(MockAppCenterService));
-            MockAppCenterService.Instance.MockInstance.Verify(
+            MockAppCenterService.Mock.Verify(
                 service => service.OnChannelGroupReady(It.IsAny<IChannelGroup>(), It.IsAny<string>()), Times.Once());
         }
 
+        /// <summary>
+        /// Verify that configuring a App Center instance
+        /// </summary>
+        [TestMethod]
+        public void Configure()
+        {
+            Assert.IsFalse(AppCenter.Configured);
+
+            AppCenter.Configure("some string");
+
+            Assert.IsTrue(AppCenter.Configured);
+            _channelMock.Verify(channel => channel.SetEnabled(It.IsAny<bool>()));
+        }
 
         /// <summary>
-        /// Verify that starting a App Center instance with a null app secret does not cause App Centerto be configured
+        /// Verify that starting a App Center instance with a null app secret does not cause App Center to be configured
         /// </summary>
         [TestMethod]
         public void ConfigureWithNullAppSecret()
@@ -339,6 +361,22 @@ namespace Microsoft.AppCenter.Test
             {
                 Assert.Fail();
             }
+        }
+
+        /// <summary>
+        /// Verify that a service will be disabled if App Center is disabled
+        /// </summary>
+        [TestMethod]
+        public void DisableServiceIfAppCenterIsDisabled()
+        {
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(false);
+            MockAppCenterService.Mock.SetupGet(settings => settings.InstanceEnabled)
+                .Returns(true);
+
+            AppCenter.Start("appsecret", typeof(MockAppCenterService));
+
+            MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = false, Times.Once);
         }
 
         /// <summary>
@@ -490,33 +528,69 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void SetCustomProperties()
         {
-            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, true)).Returns(true);
-            var channelUnitMock = new Mock<IChannelUnit>();
-            _channelGroupMock.Setup(
-                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
-                .Returns(channelUnitMock.Object);
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(true);
 
-            // Set before App Center is configured. 
+            // Set before App Center is configured.
             AppCenter.SetCustomProperties(new CustomProperties());
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             AppCenter.Configure("appsecret");
 
             // Set null.
             AppCenter.SetCustomProperties(null);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             // Set empty.
             var empty = new CustomProperties();
             AppCenter.SetCustomProperties(empty);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<Log>()), Times.Never());
 
             // Set normal.
             var properties = new CustomProperties();
             properties.Set("test", "test");
             AppCenter.SetCustomProperties(properties);
-            channelUnitMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertyLog>(log =>
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<CustomPropertyLog>(log =>
                 log.Properties == properties.Properties)), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify sending start service log
+        /// </summary>
+        [TestMethod]
+        public void SendStartServices()
+        {
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(true);
+
+            AppCenter.Start("appsecret", typeof(MockAppCenterService));
+
+            Task.Delay(100).Wait();
+
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
+                log.Services.Count == 1 &&
+                log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify sending start services log after enable
+        /// </summary>
+        [TestMethod]
+        public void SendStartServicesAfterEnable()
+        {
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(false);
+
+            AppCenter.Start("appsecret", typeof(MockAppCenterService));
+            Task.Delay(100).Wait();
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.IsAny<StartServiceLog>()), Times.Never());
+
+            _settingsMock.SetupSequence(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
+                .Returns(false).Returns(true);
+            AppCenter.SetEnabledAsync(true).RunNotAsync();
+            _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
+                log.Services.Count == 1 &&
+                log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
         }
     }
 

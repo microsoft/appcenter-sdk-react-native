@@ -21,6 +21,8 @@ namespace Microsoft.AppCenter
         internal const string InstallIdKey = Constants.KeyPrefix + "InstallId";
         private const string ConfigurationErrorMessage = "Failed to configure App Center.";
         private const string StartErrorMessage = "Failed to start services.";
+        private const string NotConfiguredMessage = "App Center hasn't been configured. " +
+                                                    "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.";
         private const string ChannelName = "core";
         private const string DistributeServiceFullType = "Microsoft.AppCenter.Distribute.Distribute";
 
@@ -35,6 +37,7 @@ namespace Microsoft.AppCenter
         private IChannelGroup _channelGroup;
         private IChannelUnit _channel;
         private readonly HashSet<IAppCenterService> _services = new HashSet<IAppCenterService>();
+        private List<string> _startedServiceNames;
         private string _logUrl;
         private bool _instanceConfigured;
         private string _appSecret;
@@ -122,8 +125,7 @@ namespace Microsoft.AppCenter
         {
             lock (AppCenterLock)
             {
-                Instance.InstanceEnabled = enabled;
-                return Task.FromResult(default(object));
+                return Instance.SetInstanceEnabled(enabled);
             }
         }
 
@@ -259,30 +261,39 @@ namespace Microsoft.AppCenter
         internal IApplicationSettings ApplicationSettings => _applicationSettings;
         internal INetworkStateAdapter NetworkStateAdapter => _networkStateAdapter;
 
-        private bool InstanceEnabled
+        private bool InstanceEnabled => _applicationSettings.GetValue(EnabledKey, true);
+
+        // That method isn't async itself but can return async task from the channel for awaiting log enqueue.
+        private Task SetInstanceEnabled(bool value)
         {
-            get
+            var enabledTerm = value ? "enabled" : "disabled";
+            if (InstanceEnabled == value)
             {
-                return _applicationSettings.GetValue(EnabledKey, true);
+                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
+                return Task.FromResult(default(object));
             }
-            set
+
+            // Update channels state.
+            _channelGroup?.SetEnabled(value);
+
+            // Store state in the application settings.
+            _applicationSettings.SetValue(EnabledKey, value);
+
+            // Apply change to services.
+            foreach (var service in _services)
             {
-                var enabledTerm = value ? "enabled" : "disabled";
-                if (InstanceEnabled == value)
-                {
-                    AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has already been {enabledTerm}.");
-                    return;
-                }
-
-                _channelGroup?.SetEnabled(value);
-                _applicationSettings.SetValue(EnabledKey, value);
-
-                foreach (var service in _services)
-                {
-                    service.InstanceEnabled = value;
-                }
-                AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
+                service.InstanceEnabled = value;
             }
+            AppCenterLog.Info(AppCenterLog.LogTag, $"App Center has been {enabledTerm}.");
+
+            // Send started services.
+            if (_startedServiceNames != null && value)
+            {
+                var startServiceLog = new StartServiceLog { Services = _startedServiceNames };
+                _startedServiceNames = null;
+                return _channel.EnqueueAsync(startServiceLog);
+            }
+            return Task.FromResult(default(object));
         }
 
         private void SetInstanceLogUrl(string logUrl)
@@ -295,8 +306,7 @@ namespace Microsoft.AppCenter
         {
             if (!Configured)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "App Center hasn't been configured. " +
-                                                        "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.");
+                AppCenterLog.Error(AppCenterLog.LogTag, NotConfiguredMessage);
                 return;
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
@@ -304,9 +314,7 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty");
                 return;
             }
-            var customPropertiesLog = new CustomPropertyLog();
-            customPropertiesLog.Properties = customProperties.Properties;
-            _channel.EnqueueAsync(customPropertiesLog);
+            _channel.EnqueueAsync(new CustomPropertyLog { Properties = customProperties.Properties });
         }
 
         private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
@@ -332,11 +340,12 @@ namespace Microsoft.AppCenter
             }
             _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
-            // If a factory has been supplied, use it to construct the channel group - this is designed for testing.
+            // If a factory has been supplied, use it to construct the channel group - this is useful for wrapper SDKs and testing.
             _networkStateAdapter = new NetworkStateAdapter();
-            _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret) ?? new ChannelGroup(_appSecret, null, _networkStateAdapter);
+            _channelGroup = _channelGroupFactory?.CreateChannelGroup(_appSecret, _networkStateAdapter) ?? new ChannelGroup(_appSecret, null, _networkStateAdapter);
             _channel = _channelGroup.AddChannel(ChannelName, Constants.DefaultTriggerCount, Constants.DefaultTriggerInterval,
                                                 Constants.DefaultTriggerMaxParallelRequests);
+            _channel.SetEnabled(InstanceEnabled);
             if (_logUrl != null)
             {
                 _channelGroup.SetLogUrl(_logUrl);
@@ -356,7 +365,7 @@ namespace Microsoft.AppCenter
                 throw new AppCenterException("App Center has not been configured.");
             }
 
-            var startServiceLog = new StartServiceLog();
+            var serviceNames = new List<string>();
             foreach (var serviceType in services)
             {
                 if (serviceType == null)
@@ -379,7 +388,7 @@ namespace Microsoft.AppCenter
                             throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService");
                         }
                         StartService(serviceInstance);
-                        startServiceLog.Services.Add(serviceInstance.ServiceName);
+                        serviceNames.Add(serviceInstance.ServiceName);
                     }
                 }
                 catch (AppCenterException e)
@@ -389,9 +398,20 @@ namespace Microsoft.AppCenter
             }
 
             // Enqueue a log indicating which services have been initialized
-            if (startServiceLog.Services.Count > 0)
+            if (serviceNames.Count > 0)
             {
-                _channel.EnqueueAsync(startServiceLog);
+                if (InstanceEnabled)
+                {
+                    _channel.EnqueueAsync(new StartServiceLog { Services = serviceNames });
+                }
+                else
+                {
+                    if (_startedServiceNames == null)
+                    {
+                        _startedServiceNames = new List<string>();
+                    }
+                    _startedServiceNames.AddRange(serviceNames);
+                }
             }
         }
 
@@ -409,6 +429,10 @@ namespace Microsoft.AppCenter
             {
                 AppCenterLog.Warn(AppCenterLog.LogTag, $"App Center has already started the service with class name '{service.GetType().Name}'");
                 return;
+            }
+            if (!InstanceEnabled && service.InstanceEnabled)
+            {
+                service.InstanceEnabled = false;
             }
             service.OnChannelGroupReady(_channelGroup, _appSecret);
             _services.Add(service);
