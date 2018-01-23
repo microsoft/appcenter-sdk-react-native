@@ -67,7 +67,12 @@ namespace Microsoft.AppCenter.Crashes
 
         static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
         {
-            MSCrashes.TrackModelException(GenerateiOSException(exception, false), StringDictToNSDict(properties));
+            if (properties != null)
+            {
+                MSCrashes.TrackModelException(GenerateiOSException(exception, false), StringDictToNSDict(properties));
+                return;
+            }
+            MSCrashes.TrackModelException(GenerateiOSException(exception, false));
         }
 
         /// <summary>
@@ -173,11 +178,6 @@ namespace Microsoft.AppCenter.Crashes
             return Regex.Replace(path, pattern, "/Users/USER/");
         }
 
-        static NSDictionary StringDictToNSDict(IDictionary<string, string> dict)
-        {
-            return NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
-        }
-
         // Bridge between .NET events/callbacks and Apple native SDK
         class CrashesDelegate : MSCrashesDelegate
         {
@@ -258,6 +258,11 @@ namespace Microsoft.AppCenter.Crashes
                     FailedToSendErrorReport(null, e);
                 }
             }
+        }
+
+        private static NSDictionary StringDictToNSDict(IDictionary<string, string> dict)
+        {
+            return NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
         }
     }
 }
