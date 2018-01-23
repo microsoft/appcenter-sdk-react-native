@@ -36,6 +36,8 @@ namespace Microsoft.AppCenter.Test.Channel
         private const int EnqueuingLogSemaphoreIdx = 3;
         private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0) };
 
+        public TestContext TestContext { get;set;}
+
         public ChannelTest()
         {
             LogSerializer.AddLogType(TestLog.JsonIdentifier, typeof(TestLog));
@@ -331,11 +333,14 @@ namespace Microsoft.AppCenter.Test.Channel
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
-            _storage = new MockStorage();
-            _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
-                _appSecret, _mockIngestion, _storage);
+            if (TestContext.TestName != "ThrowStorageExceptionInDeleteLogsTime")
+            {
+                _storage = new MockStorage();
+                _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
+                    _appSecret, _mockIngestion, _storage);
+                SetupEventCallbacks();
+            }
             MakeIngestionCallsSucceed();
-            SetupEventCallbacks();
         }
 
         private void MakeIngestionCallsFail()
