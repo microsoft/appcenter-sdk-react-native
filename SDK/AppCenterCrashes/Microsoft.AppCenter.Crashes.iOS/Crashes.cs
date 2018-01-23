@@ -67,7 +67,11 @@ namespace Microsoft.AppCenter.Crashes
 
         static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
         {
-            // TODO implement properties in Apple SDK
+            if (properties != null)
+            {
+                MSCrashes.TrackModelException(GenerateiOSException(exception, false), StringDictToNSDict(properties));
+                return;
+            }
             MSCrashes.TrackModelException(GenerateiOSException(exception, false));
         }
 
@@ -254,6 +258,11 @@ namespace Microsoft.AppCenter.Crashes
                     FailedToSendErrorReport(null, e);
                 }
             }
+        }
+
+        private static NSDictionary StringDictToNSDict(IDictionary<string, string> dict)
+        {
+            return NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
         }
     }
 }
