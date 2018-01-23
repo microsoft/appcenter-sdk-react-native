@@ -78,7 +78,7 @@ namespace Microsoft.AppCenter.Crashes
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
+        private static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
         {
         }
     }
