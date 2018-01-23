@@ -65,7 +65,7 @@ namespace Microsoft.AppCenter.Crashes
             MSCrashes.NotifyWithUserConfirmation(iosUserConfirmation);
         }
 
-        static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
+        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
         {
             if (properties != null)
             {

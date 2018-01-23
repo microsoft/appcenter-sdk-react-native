@@ -32,7 +32,7 @@ namespace Microsoft.AppCenter.Crashes
         {
         }
 
-        private static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
+        private static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
         {
         }
     }

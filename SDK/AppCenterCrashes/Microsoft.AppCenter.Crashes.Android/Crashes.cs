@@ -77,7 +77,7 @@ namespace Microsoft.AppCenter.Crashes
             });
         }
 
-        static void PlatformTrackException(Exception exception, IDictionary<string, string> properties)
+        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
         {
             WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties);
         }
