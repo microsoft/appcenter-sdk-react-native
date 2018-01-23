@@ -159,7 +159,7 @@ namespace Microsoft.AppCenter.Crashes
         }
 
         ///// <summary>
-        ///// Track an handled error. TODO make it public once backend supports it.
+        ///// Track a handled error. TODO make it public once backend supports it.
         ///// </summary>
         ///// <param name="exception">The .NET exception describing the handled error.</param>
         ///// <param name="properties">Optional properties.</param>
