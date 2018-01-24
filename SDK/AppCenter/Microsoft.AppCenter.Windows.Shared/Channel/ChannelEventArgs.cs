@@ -3,6 +3,7 @@ using Microsoft.AppCenter.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Channel
 {
+    /// <inheritdoc />
     /// <summary>
     /// Base type for all channel events.
     /// </summary>
@@ -11,8 +12,9 @@ namespace Microsoft.AppCenter.Channel
         /// <summary>
         /// Log associated to the event.
         /// </summary>
-        public Log Log { get; protected set; }
+        public Log Log { get; }
 
+        /// <inheritdoc />
         /// <summary>
         /// Init event with a log.
         /// </summary>
@@ -23,11 +25,13 @@ namespace Microsoft.AppCenter.Channel
         }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Event called when a log is enqueued to a channel but before properties are final.
     /// </summary>
     public class EnqueuingLogEventArgs : ChannelEventArgs
     {
+        /// <inheritdoc />
         /// <summary>
         /// Init event with a log.
         /// </summary>
@@ -35,6 +39,7 @@ namespace Microsoft.AppCenter.Channel
         public EnqueuingLogEventArgs(Log log) : base(log) { }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Event called to possibly filter out a log before it is persisted and scheduled for sending.
     /// </summary>
@@ -45,19 +50,21 @@ namespace Microsoft.AppCenter.Channel
         /// </summary>
         public bool FilterRequested { get; set; }
 
+        /// <inheritdoc />
         /// <summary>
         /// Init event with a log.
         /// </summary>
         /// <param name="log">log associated to this event.</param>
         public FilteringLogEventArgs(Log log) : base(log) { }
-
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Event called when a log is about to be sent.
     /// </summary>
     public class SendingLogEventArgs : ChannelEventArgs
     {
+        /// <inheritdoc />
         /// <summary>
         /// Init event with a log.
         /// </summary>
@@ -65,11 +72,13 @@ namespace Microsoft.AppCenter.Channel
         public SendingLogEventArgs(Log log) : base(log) { }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Event called when a log has been successfully sent.
     /// </summary>
     public class SentLogEventArgs : ChannelEventArgs
     {
+        /// <inheritdoc />
         /// <summary>
         /// Init event with a log.
         /// </summary>
@@ -77,6 +86,7 @@ namespace Microsoft.AppCenter.Channel
         public SentLogEventArgs(Log log) : base(log) { }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Event called when a log has failed to send, even after retries and is now discarded.
     /// </summary>
@@ -85,8 +95,9 @@ namespace Microsoft.AppCenter.Channel
         /// <summary>
         /// Cause of the last sending failure.
         /// </summary>
-        public Exception Exception { get; protected set; }
+        public Exception Exception { get; }
 
+        /// <inheritdoc />
         /// <summary>
         /// Init event with a log.
         /// </summary>

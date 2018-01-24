@@ -157,7 +157,7 @@ namespace Microsoft.AppCenter.Channel
                 FilteringLog?.Invoke(this, filteringLogEventArgs);
                 if (filteringLogEventArgs.FilterRequested)
                 {
-                    AppCenterLog.Warn(AppCenterLog.LogTag, $"Log of type '{log.GetType()}' filtering has been requested by event handlers.");
+                    AppCenterLog.Warn(AppCenterLog.LogTag, $"Filtering out a log of type '{log.GetType()}' at the request of an event handler.");
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace Microsoft.AppCenter.Channel
         }
 
         /// <summary>
-        /// Invalid device property cached information to refresh them next time we need it.
+        /// Invalidate device property cache, meaning next log needing device properties will trigger a re-evaluation of all device properties.
         /// </summary>
         public void InvalidateDeviceCache()
         {
@@ -533,7 +533,7 @@ namespace Microsoft.AppCenter.Channel
         }
 
         /// <summary>
-        /// Free resources hold by this instance.
+        /// Free resources held by this instance.
         /// </summary>
         public void Dispose()
         {
