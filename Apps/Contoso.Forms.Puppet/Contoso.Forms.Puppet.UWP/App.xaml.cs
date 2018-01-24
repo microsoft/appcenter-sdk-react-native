@@ -27,6 +27,7 @@ namespace Contoso.Forms.Puppet.UWP
             // country that corresponds to the culture it uses. You may wish to retrieve the country code using
             // a different means, such as device location.
             AppCenter.SetCountryCode(RegionInfo.CurrentRegion.TwoLetterISORegionName);
+            EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
         }

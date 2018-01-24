@@ -11,6 +11,10 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
     {
+        static bool _rumStarted;
+
+        static bool _eventFilterStarted;
+
         public OthersContentPage()
         {
             InitializeComponent();
@@ -28,8 +32,10 @@ namespace Contoso.Forms.Puppet
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            RumEnabledSwitchCell.On = await RealUserMeasurements.IsEnabledAsync();
+            RumEnabledSwitchCell.On = _rumStarted && await RealUserMeasurements.IsEnabledAsync();
             RumEnabledSwitchCell.IsEnabled = acEnabled;
+            EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
+            EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -44,7 +50,26 @@ namespace Contoso.Forms.Puppet
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)
         {
+            if (!_rumStarted)
+            {
+                RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
+                AppCenter.Start(typeof(RealUserMeasurements));
+                _rumStarted = true;
+            }
             await RealUserMeasurements.SetEnabledAsync(e.Value);
+        }
+
+        async void UpdateEventFilterEnabled(object sender, ToggledEventArgs e)
+        {
+            if (EventFilterHolder.Implementation != null)
+            {
+                if (!_eventFilterStarted)
+                {
+                    AppCenter.Start(EventFilterHolder.Implementation.BindingType);
+                    _eventFilterStarted = true;
+                }
+                await EventFilterHolder.Implementation.SetEnabledAsync(e.Value);
+            }
         }
     }
 }

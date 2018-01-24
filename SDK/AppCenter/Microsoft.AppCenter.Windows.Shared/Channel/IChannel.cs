@@ -9,22 +9,27 @@ namespace Microsoft.AppCenter.Channel
     public interface IChannel : IDisposable
     {
         /// <summary>
-        /// Invoked when a log will be enqueued
+        /// Invoked when a log will be enqueued.
         /// </summary>
         event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
 
         /// <summary>
-        /// Invoke when a log will be sent
+        /// Invoked when a log is about to filtered out or not.
+        /// </summary>
+        event EventHandler<FilteringLogEventArgs> FilteringLog;
+
+        /// <summary>
+        /// Invoke when a log is about to be sent.
         /// </summary>
         event EventHandler<SendingLogEventArgs> SendingLog;
 
         /// <summary>
-        /// Invoked when a log successfully sent
+        /// Invoked when a log successfully sent.
         /// </summary>
         event EventHandler<SentLogEventArgs> SentLog;
 
         /// <summary>
-        /// Invoked when a log failed to send properly
+        /// Invoked when a log failed to send properly.
         /// </summary>
         event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
 
