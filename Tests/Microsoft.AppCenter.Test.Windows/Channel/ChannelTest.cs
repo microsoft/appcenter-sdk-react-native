@@ -34,7 +34,8 @@ namespace Microsoft.AppCenter.Test.Channel
         private const int SentLogSemaphoreIdx = 1;
         private const int FailedToSendLogSemaphoreIdx = 2;
         private const int EnqueuingLogSemaphoreIdx = 3;
-        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0) };
+        private const int FilteringLogSemaphoreIdx = 4;
+        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0) };
 
         public TestContext TestContext { get;set;}
 
@@ -151,6 +152,50 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.EnqueueAsync(log).RunNotAsync();
             Assert.IsTrue(FailedToSendLogOccurred(1));
             Assert.IsFalse(EnqueuingLogOccurred(1));
+        }
+
+        [TestMethod]
+        public void ChannelInvokesFilteringLogEvent()
+        {
+            for (var i = 0; i < MaxLogsPerBatch; ++i)
+            {
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            }
+
+            Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
+        }
+
+        /// <summary>
+        /// Validate filtering out a log
+        /// </summary>
+        [TestMethod]
+        public void FilterLogShouldNotSend()
+        {
+            _channel.FilteringLog += (sender, args) => args.FilterRequested = true;
+            for (int i = 0; i < MaxLogsPerBatch; ++i)
+            {
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            }
+            Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
+            Assert.IsFalse(SendingLogOccurred(MaxLogsPerBatch));
+            Assert.IsFalse(SentLogOccurred(MaxLogsPerBatch));
+        }
+
+        /// <summary>
+        /// Validate filters can cancel each other
+        /// </summary>
+        [TestMethod]
+        public void FilterLogThenCancelFilterLogInAnotherHandlerShouldSend()
+        {
+            _channel.FilteringLog += (sender, args) => args.FilterRequested = true;
+            _channel.FilteringLog += (sender, args) => args.FilterRequested = false;
+            for (int i = 0; i < MaxLogsPerBatch; ++i)
+            {
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            }
+            Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
+            Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
+            Assert.IsTrue(SentLogOccurred(MaxLogsPerBatch));
         }
 
         [TestMethod]
@@ -380,6 +425,7 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.SentLog += (sender, args) => { _eventSemaphores[SentLogSemaphoreIdx].Release(); };
             _channel.FailedToSendLog += (sender, args) => { _eventSemaphores[FailedToSendLogSemaphoreIdx].Release(); };
             _channel.EnqueuingLog += (sender, args) => { _eventSemaphores[EnqueuingLogSemaphoreIdx].Release(); };
+            _channel.FilteringLog += (sender, args) => { _eventSemaphores[FilteringLogSemaphoreIdx].Release(); };
         }
 
         private bool FailedToSendLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
@@ -390,6 +436,11 @@ namespace Microsoft.AppCenter.Test.Channel
         private bool EnqueuingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
         {
             return EventWithSemaphoreOccurred(_eventSemaphores[EnqueuingLogSemaphoreIdx], numTimes, waitTime);
+        }
+
+        private bool FilteringLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
+        {
+            return EventWithSemaphoreOccurred(_eventSemaphores[FilteringLogSemaphoreIdx], numTimes, waitTime);
         }
 
         private bool SentLogOccurred(int numTimes, int waitTime = DefaultWaitTime)

@@ -67,6 +67,21 @@ namespace Microsoft.AppCenter.Test.Channel
         }
 
         /// <summary>
+        /// Verify that channel group's filtering log event fires when appropriate
+        /// </summary>
+        [TestMethod]
+        public void TestFilteringLogEvent()
+        {
+            var fired = false;
+            _channelGroup.FilteringLog += (sender, args) => { fired = true; };
+            var mockChannel = new Mock<IChannelUnit>();
+            _channelGroup.AddChannel(mockChannel.Object);
+            mockChannel.Raise(channel => channel.FilteringLog += null, null, default(FilteringLogEventArgs));
+
+            Assert.IsTrue(fired);
+        }
+
+        /// <summary>
         /// Verify that channel group's sending log event fires when appropriate
         /// </summary>
         [TestMethod]

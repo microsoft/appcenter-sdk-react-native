@@ -19,6 +19,7 @@ namespace Microsoft.AppCenter.Channel
         public string AppSecret { get; internal set; }
 
         public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
+        public event EventHandler<FilteringLogEventArgs> FilteringLog;
         public event EventHandler<SendingLogEventArgs> SendingLog;
         public event EventHandler<SentLogEventArgs> SentLog;
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
@@ -80,6 +81,7 @@ namespace Microsoft.AppCenter.Channel
                     throw new AppCenterException("Attempted to add duplicate channel to group");
                 }
                 channel.EnqueuingLog += AnyChannelEnqueuingLog;
+                channel.FilteringLog += AnyChannelFilteringLog;
                 channel.SendingLog += AnyChannelSendingLog;
                 channel.SentLog += AnyChannelSentLog;
                 channel.FailedToSendLog += AnyChannelFailedToSendLog;
@@ -148,14 +150,22 @@ namespace Microsoft.AppCenter.Channel
         {
             EnqueuingLog?.Invoke(sender, e);
         }
+
+        private void AnyChannelFilteringLog(object sender, FilteringLogEventArgs e)
+        {
+            FilteringLog?.Invoke(sender, e);
+        }
+
         private void AnyChannelSendingLog(object sender, SendingLogEventArgs e)
         {
             SendingLog?.Invoke(sender, e);
         }
+
         private void AnyChannelSentLog(object sender, SentLogEventArgs e)
         {
             SentLog?.Invoke(sender, e);
         }
+
         private void AnyChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
         {
             FailedToSendLog?.Invoke(sender, e);

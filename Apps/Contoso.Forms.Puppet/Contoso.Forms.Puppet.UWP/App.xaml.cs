@@ -28,6 +28,7 @@ namespace Contoso.Forms.Puppet.UWP
             // a different means, such as device location.
             var geographicRegion = new GeographicRegion();
             AppCenter.SetCountryCode(geographicRegion.CodeTwoLetter);
+            EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
         }
