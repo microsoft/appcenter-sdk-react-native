@@ -58,6 +58,8 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestCleanup]
         public void CleanupAppCenterTest()
         {
+            EnsureAllTasksAreFinishedInChannel();
+
             // The UnobservedTaskException will only happen if a Task gets collected by the GC with an exception unobserved
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -252,6 +254,7 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void DisposeChannelTest()
         {
+            EnsureAllTasksAreFinishedInChannel();
             _channel.Dispose();
             Assert.ThrowsException<ObjectDisposedException>(() => _channel.SetEnabled(true));
         }
@@ -341,6 +344,17 @@ namespace Microsoft.AppCenter.Test.Channel
                 SetupEventCallbacks();
             }
             MakeIngestionCallsSucceed();
+        }
+
+        private void EnsureAllTasksAreFinishedInChannel()
+        {
+            try
+            {
+                // We need to wait for a continuation task in Channel constructor 
+                // to be executed so we wait until we acquire a lock to let this happen
+                bool dummy = _channel.IsEnabled;
+            }
+            catch (ObjectDisposedException) { }
         }
 
         private void MakeIngestionCallsFail()
