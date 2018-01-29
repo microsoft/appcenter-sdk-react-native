@@ -1,5 +1,7 @@
 
 
+require('../../react-native/setupBabel')();
+
 const getReactNativeCliConfig = require('../../react-native/local-cli/core/index');
 
 const GetReactNativeProjectConfig = function () {
