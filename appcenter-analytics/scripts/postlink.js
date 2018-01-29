@@ -44,13 +44,6 @@ return rnpmlink.ios.checkIfAppDelegateExists()
                 return Promise.reject();
             });
         })
-        .then(() =>
-            rnpmlink.ios.updateFrameworkSearchPaths()
-                .catch((e) => {
-                    console.log(`Could not update framework search paths in ios project.pbxproj file. Error Reason - ${e.message}`);
-                    return Promise.reject();
-                })
-        )
         .catch(() => Promise.resolve())
     )
     .catch(() => {
