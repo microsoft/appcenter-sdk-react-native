@@ -11,6 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorAttachmentLog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PlatformCrashes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
   </ItemGroup>
 </Project>

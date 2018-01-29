@@ -52,7 +52,7 @@ namespace Microsoft.AppCenter.Crashes.iOS.Bindings
     }
 
     // typedef bool (^MSUserConfirmationHandler)(NSArray<MSErrorReport *> * _Nonnull);
-    delegate bool MSUserConfirmationHandler(MSErrorReport[] arg0);
+    delegate bool MSUserConfirmationHandler(MSErrorReport[] reports);
 
     // @interface MSCrashes
     [BaseType(typeof(NSObject))]
@@ -107,6 +107,11 @@ namespace Microsoft.AppCenter.Crashes.iOS.Bindings
         [Static]
         [Export("trackModelException:")]
         void TrackModelException(MSException exception);
+
+        //+(void)trackModelException:(MSException *)exception withProperties:(NSDictionary *)properties;
+        [Static]
+        [Export("trackModelException:withProperties:")]
+        void TrackModelException(MSException exception, NSDictionary properties);
     }
 
     // @protocol MSCrashesDelegate <NSObject>

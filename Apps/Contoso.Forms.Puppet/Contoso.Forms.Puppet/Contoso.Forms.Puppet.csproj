@@ -108,6 +108,7 @@
     <Compile Include="Views\TextAttachmentView.xaml.cs">
       <DependentUpon>TextAttachmentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Property.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

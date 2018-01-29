@@ -48,14 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlatformCrashes.cs" />
+    <Compile Include="Crashes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AndroidCrashListener.cs" />
     <Compile Include="ErrorReport.cs" />
     <Compile Include="ErrorAttachmentLog.cs" />
     <Compile Include="ErrorReportCache.cs" />
-    <Compile Include="CrashesPart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
