@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.AppCenter;
+﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
-using Microsoft.AppCenter.Rum;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -53,10 +51,8 @@ namespace Contoso.Forms.Puppet
             AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
-            Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");
-            RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
-            AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}",
-                               typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(RealUserMeasurements));
+            Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");            
+            AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
             AppCenter.IsEnabledAsync().ContinueWith(enabled =>
             {
                 AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);

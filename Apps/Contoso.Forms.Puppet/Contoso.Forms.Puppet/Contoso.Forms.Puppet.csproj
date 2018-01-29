@@ -69,6 +69,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventFilterHolder.cs" />
     <Compile Include="IFilePicker.cs" />
     <Compile Include="MainPuppetPage.cs">
       <DependentUpon>MainPuppetPage.xaml</DependentUpon>
@@ -107,6 +108,7 @@
     <Compile Include="Views\TextAttachmentView.xaml.cs">
       <DependentUpon>TextAttachmentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Property.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

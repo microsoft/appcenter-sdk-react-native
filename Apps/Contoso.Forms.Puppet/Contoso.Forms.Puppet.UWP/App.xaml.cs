@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Microsoft.AppCenter;
+using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.AppCenter.Push;
 
 namespace Contoso.Forms.Puppet.UWP
 {
@@ -26,7 +26,9 @@ namespace Contoso.Forms.Puppet.UWP
             // Note that the country code provided does not reflect the physical device location, but rather the
             // country that corresponds to the culture it uses. You may wish to retrieve the country code using
             // a different means, such as device location.
-            AppCenter.SetCountryCode(RegionInfo.CurrentRegion.TwoLetterISORegionName);
+            var geographicRegion = new GeographicRegion();
+            AppCenter.SetCountryCode(geographicRegion.CodeTwoLetter);
+            EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
         }

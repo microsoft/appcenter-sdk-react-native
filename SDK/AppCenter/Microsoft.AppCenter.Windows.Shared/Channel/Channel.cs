@@ -10,6 +10,9 @@ using Microsoft.AppCenter.Utils.Synchronization;
 
 namespace Microsoft.AppCenter.Channel
 {
+    /// <summary>
+    /// Default implementation for a channel unit.
+    /// </summary>
     public sealed class Channel : IChannelUnit
     {
         private const int ClearBatchSize = 100;
@@ -72,12 +75,38 @@ namespace Microsoft.AppCenter.Channel
         public string Name { get; }
 
         #region Events
+
+        /// <summary>
+        /// Invoked when a log will be enqueued.
+        /// </summary>
         public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
+
+        /// <summary>
+        /// Invoked when a log is about to filtered out or not.
+        /// </summary>
+        public event EventHandler<FilteringLogEventArgs> FilteringLog;
+
+        /// <summary>
+        /// Invoke when a log is about to be sent.
+        /// </summary>
         public event EventHandler<SendingLogEventArgs> SendingLog;
+
+        /// <summary>
+        /// Invoked when a log successfully sent.
+        /// </summary>
         public event EventHandler<SentLogEventArgs> SentLog;
+
+        /// <summary>
+        /// Invoked when a log failed to send properly.
+        /// </summary>
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
         #endregion
 
+
+        /// <summary>
+        /// Enable or disable this channel unit.
+        /// </summary>
+        /// <param name="enabled">true to enable, false to disable.</param>
         public void SetEnabled(bool enabled)
         {
             State state;
@@ -99,6 +128,11 @@ namespace Microsoft.AppCenter.Channel
             }
         }
 
+        /// <summary>
+        /// Enqueue a log asynchronously.
+        /// </summary>
+        /// <param name="log">log to enqueue.</param>
+        /// <returns>The async Task for this operation.</returns>
         public async Task EnqueueAsync(Log log)
         {
             try
@@ -119,7 +153,16 @@ namespace Microsoft.AppCenter.Channel
                 }
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 await PrepareLogAsync(log, state).ConfigureAwait(false);
-                await PersistLogAsync(log, state).ConfigureAwait(false);
+                var filteringLogEventArgs = new FilteringLogEventArgs(log);
+                FilteringLog?.Invoke(this, filteringLogEventArgs);
+                if (filteringLogEventArgs.FilterRequested)
+                {
+                    AppCenterLog.Warn(AppCenterLog.LogTag, $"Filtering out a log of type '{log.GetType()}' at the request of an event handler.");
+                }
+                else
+                {
+                    await PersistLogAsync(log, state).ConfigureAwait(false);
+                }
             }
             catch (StatefulMutexException)
             {
@@ -173,6 +216,9 @@ namespace Microsoft.AppCenter.Channel
             }
         }
 
+        /// <summary>
+        /// Invalidate device property cache, meaning next log needing device properties will trigger a re-evaluation of all device properties.
+        /// </summary>
         public void InvalidateDeviceCache()
         {
             using (_mutex.GetLock())
@@ -180,7 +226,11 @@ namespace Microsoft.AppCenter.Channel
                 _device = null;
             }
         }
-        
+
+        /// <summary>
+        /// Clear all logs that are pending on this unit.
+        /// </summary>
+        /// <returns>The task to represent this async operation.</returns>
         public async Task ClearAsync()
         {
             var state = _mutex.State;
@@ -456,11 +506,11 @@ namespace Microsoft.AppCenter.Channel
                 else if (_pendingLogCount > 0 && !_batchScheduled)
                 {
                     _batchScheduled = true;
-                    
+
                     // No need wait _batchTimeInterval here.
                     Task.Run(async () =>
                     {
-                        await Task.Delay((int) _batchTimeInterval.TotalMilliseconds).ConfigureAwait(false);
+                        await Task.Delay((int)_batchTimeInterval.TotalMilliseconds).ConfigureAwait(false);
                         if (_batchScheduled)
                         {
                             await TriggerIngestionAsync(_mutex.State).ConfigureAwait(false);
@@ -470,6 +520,10 @@ namespace Microsoft.AppCenter.Channel
             }
         }
 
+        /// <summary>
+        /// Stop sending logs.
+        /// </summary>
+        /// <returns>The Task to represent this async operation.</returns>
         public Task ShutdownAsync()
         {
             Suspend(_mutex.State, false, new CancellationException());
@@ -478,6 +532,9 @@ namespace Microsoft.AppCenter.Channel
             return Task.FromResult(default(object));
         }
 
+        /// <summary>
+        /// Free resources held by this instance.
+        /// </summary>
         public void Dispose()
         {
             _mutex.Dispose();
