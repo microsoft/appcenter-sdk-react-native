@@ -44,7 +44,7 @@ namespace Microsoft.AppCenter.Test.UWP
         [TestMethod]
         public void VerifyPlatformId()
         {
-            CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            CoreApplication.MainView.Dispatcher.RunAsync(global::Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 AppCenter.Configure("uwp=appsecret");
             }).AsTask().GetAwaiter().GetResult();
