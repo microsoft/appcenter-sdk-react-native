@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -15,11 +16,16 @@ namespace Contoso.Forms.Puppet
     public partial class CrashesContentPage
     {
         public const string TextAttachmentKey = "TEXT_ATTACHMENT";
+
         public const string FileAttachmentKey = "FILE_ATTACHMENT";
+
+        List<Property> Properties;
 
         public CrashesContentPage()
         {
             InitializeComponent();
+            Properties = new List<Property>();
+            NumPropertiesLabel.Text = Properties.Count.ToString();
             if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
             {
                 Icon = "socket.png";
@@ -84,6 +90,27 @@ namespace Contoso.Forms.Puppet
             ((TextCell)sender).Detail = filePicker.GetFileDescription(file);
             Application.Current.Properties[FileAttachmentKey] = file;
             await Application.Current.SavePropertiesAsync();
+        }
+
+        async void AddProperty(object sender, EventArgs e)
+        {
+            var addPage = new AddPropertyContentPage();
+            addPage.PropertyAdded += (Property property) =>
+            {
+                Properties.Add(property);
+                RefreshPropCount();
+            };
+            await Navigation.PushModalAsync(addPage);
+        }
+
+        async void PropertiesCellTapped(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PropertiesContentPage(Properties));
+        }
+
+        void RefreshPropCount()
+        {
+            NumPropertiesLabel.Text = Properties.Count.ToString();
         }
 
         void HandleOrThrow(Action action)
@@ -195,7 +222,18 @@ namespace Contoso.Forms.Puppet
 
         private void TrackException(Exception e)
         {
-            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackException").Invoke(null, new object[] { e });
+            var properties = new Dictionary<string, string>();
+            foreach (Property property in Properties)
+            {
+                properties.Add(property.Name, property.Value);
+            }
+            if (properties.Count == 0)
+            {
+                properties = null;
+            }
+            Properties.Clear();
+            RefreshPropCount();
+            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackError").Invoke(null, new object[] { e, properties });
         }
     }
 }

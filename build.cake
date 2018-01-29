@@ -104,7 +104,7 @@ Task("Externals-Android")
     var pushLib = "appcenter-push-release";
     var pushLibFile = $"{AndroidExternals}/{pushLib}.aar";
     var pushLibUnzippedPath = $"{AndroidExternals}/{pushLib}";
-    var manifestUpdateFile = "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/Properties/AndroidManifest.xml";
+    var manifestUpdateFile = "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/AndroidManifest.xml";
     Unzip(pushLibFile, pushLibUnzippedPath);
     DeleteFile(pushLibFile);
     CopyFiles(manifestUpdateFile, pushLibUnzippedPath);
