@@ -6,7 +6,6 @@
     <TableView Intent="Form">
         <TableSection Title="Crashes Settings">
             <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
-            <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell"/>
         </TableSection>
         <TableSection Title="Attachments">
             <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment"/>
