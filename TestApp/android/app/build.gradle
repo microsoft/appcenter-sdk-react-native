@@ -127,12 +127,12 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-fs')
-    compile project(':react-native-image-picker')
     compile project(':appcenter-push')
     compile project(':appcenter-crashes')
     compile project(':appcenter-analytics')
     compile project(':appcenter')
+    compile project(':react-native-fs')
+    compile project(':react-native-image-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
 
     compile 'com.android.support:appcompat-v7:23.0.1'
