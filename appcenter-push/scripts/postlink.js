@@ -1,7 +1,7 @@
 const rnpmlink = require('appcenter-link-scripts');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
-    .then(() => 
+    .then(() =>
         Promise.resolve().then(() =>
             rnpmlink.ios.initAppCenterConfig().catch((e) => {
                 console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
@@ -35,7 +35,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     )
     .catch((err) => {
         console.log('Could not locate the ios project directory; skipping AppCenter Push postlink steps for ios.');
-        if(err) {
+        if (err) {
             console.log(err);
         }
         return Promise.resolve();

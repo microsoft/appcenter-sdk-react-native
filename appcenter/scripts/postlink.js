@@ -35,7 +35,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     )
     .catch((err) => {
         console.log('Could not locate the ios project directory; skipping AppCenter postlink steps for ios.');
-        if(err) {
+        if (err) {
             console.log(err);
         }
         return Promise.resolve();

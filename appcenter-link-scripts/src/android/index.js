@@ -24,7 +24,6 @@ module.exports = {
     },
 
     initAppCenterConfig() {
-        
         const config = new AppCenterConfig(AppCenterConfig.searchForFile(androidConfig.assetsPath));
         const currentAppSecret = config.get('app_secret');
 

@@ -92,7 +92,7 @@ AppCenterConfigPlist.searchForFile = function (iosProjectConfig) {
         debug(AppCenterConfigPaths);
         throw new Error(`Found more than one AppCenter-Config.plist in this project and hence, could not write App Secret.
             Please add "AppSecret" to the correct AppCenter-Config.plist file
-            AppCenter-config.plist found at ${configPaths}
+            AppCenter-config.plist found at ${AppCenterConfigPaths}
         `);
     } else if (AppCenterConfigPaths.length === 1) {
         return path.resolve(iosProjectSourceDirectory || process.cwd(), AppCenterConfigPaths[0]);

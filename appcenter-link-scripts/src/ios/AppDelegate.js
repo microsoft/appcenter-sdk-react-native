@@ -2,6 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const debug = require('debug')('appcenter-link:ios:AppDelegate');
 
+const glob = require('glob');
+// Assumption - react-native link is always called from the top of the project
+// As indicated in https://github.com/facebook/react-native/blob/4082a546495c5d9f4c6fd1b0c2f64e9bc7a88bc7/local-cli/link/getProjectDependencies.js#L7
+const pjson = require(path.join(process.cwd(), './package.json'));
+
 const AppDelegate = function (file) {
     this.appDelegatePath = file;
     this.appDelegateContents = fs.readFileSync(this.appDelegatePath, 'utf-8');
@@ -64,8 +69,6 @@ AppDelegate.prototype.save = function () {
 };
 
 
-
-
 // Helper that filters an array with AppDelegate.m paths for a path with the app name inside it
 // Fallback if findFileInProjectSource(..) does not return a match
 function findFileByAppName(array, appName) {
@@ -83,11 +86,11 @@ function findFileByAppName(array, appName) {
 
 AppDelegate.searchForFile = function (iosProjectConfig) {
     const iosProjectFolderName = iosProjectConfig.projectName.replace('.xcodeproj', '');
-    
+
     let appDelegatePath = path.resolve(iosProjectConfig.sourceDir, iosProjectFolderName, 'AppDelegate.m');
-    if(!fs.existsSync(appDelegatePath)) {
+    if (!fs.existsSync(appDelegatePath)) {
         const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectConfig.sourceDir || process.cwd() });
-        if(appDelegatePaths.length === 1) {
+        if (appDelegatePaths.length === 1) {
             appDelegatePath = path.resolve(iosProjectConfig.sourceDir || process.cwd(), appDelegatePaths[0]);
         } else {
             appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
@@ -95,6 +98,6 @@ AppDelegate.searchForFile = function (iosProjectConfig) {
     }
 
     return appDelegatePath;
-}
+};
 
 module.exports = AppDelegate;
