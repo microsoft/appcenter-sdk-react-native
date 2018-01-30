@@ -29,7 +29,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         console.log(`Added code to initialize iOS Crashes SDK in ${file}`);
         return rnpmlink.ios.addPodDeps([
             { pod: 'AppCenter/Crashes', version: '1.3.0' },
-            { pod: 'AppCenterReactNativeShared', version: '1.1.0' } // in case people don't link appcenter (core)
+            { pod: 'AppCenterReactNativeShared', version: '1.2.0' } // in case people don't link appcenter (core)
         ]).catch((e) => {
             console.log(`
             Could not install dependencies using CocoaPods.
