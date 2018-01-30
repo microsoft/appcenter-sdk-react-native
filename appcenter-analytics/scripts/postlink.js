@@ -46,7 +46,10 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         })
         .catch(() => Promise.resolve())
     )
-    .catch(() => {
-        console.log('Could not locate the ios project directory; skipping AppCenterReactNativeAnalytics postlink steps for ios.');
+    .catch((err) => {
+        console.log('Could not locate the ios project directory; skipping AppCenter Analytics postlink steps for ios.');
+        if(err) {
+            console.log(err);
+        }
         return Promise.resolve();
     });

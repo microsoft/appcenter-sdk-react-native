@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const debug = require('debug')('appcenter-link:ios:AppDelegate');
 
 const AppDelegate = function (file) {
@@ -61,5 +62,39 @@ AppDelegate.prototype.save = function () {
     debug('Saved appDelegate', this.appDelegatePath);
     return this.appDelegatePath;
 };
+
+
+
+
+// Helper that filters an array with AppDelegate.m paths for a path with the app name inside it
+// Fallback if findFileInProjectSource(..) does not return a match
+function findFileByAppName(array, appName) {
+    if (array.length === 0 || !appName) return null;
+
+    const appNameLower = appName.toLowerCase();
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] && array[i].toLowerCase().indexOf(appNameLower) !== -1) {
+            return array[i];
+        }
+    }
+
+    return null;
+}
+
+AppDelegate.searchForFile = function (iosProjectConfig) {
+    const iosProjectFolderName = iosProjectConfig.projectName.replace('.xcodeproj', '');
+    
+    let appDelegatePath = path.resolve(iosProjectConfig.sourceDir, iosProjectFolderName, 'AppDelegate.m');
+    if(!fs.existsSync(appDelegatePath)) {
+        const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectConfig.sourceDir || process.cwd() });
+        if(appDelegatePaths.length === 1) {
+            appDelegatePath = path.resolve(iosProjectConfig.sourceDir || process.cwd(), appDelegatePaths[0]);
+        } else {
+            appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
+        }
+    }
+
+    return appDelegatePath;
+}
 
 module.exports = AppDelegate;

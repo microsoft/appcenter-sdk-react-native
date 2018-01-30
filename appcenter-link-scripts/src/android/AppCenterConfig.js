@@ -38,10 +38,10 @@ AppCenterConfig.prototype.save = function () {
     return this.AppCenterConfigPath;
 };
 
-AppCenterConfig.searchForFile = function (androidProjectDirectory) {
+AppCenterConfig.searchForFile = function (androidAssetsDirectory) {
     const AppCenterConfigPaths = glob.sync('**/appcenter-config.json', {
         ignore: ['node_modules/**', '**/build/**'],
-        cwd: androidProjectDirectory || process.cwd()
+        cwd: androidAssetsDirectory || process.cwd()
     });
 
     if (AppCenterConfigPaths.length > 1) {
@@ -51,9 +51,9 @@ AppCenterConfig.searchForFile = function (androidProjectDirectory) {
             appcenter-config.json found at ${AppCenterConfigPaths}
         `);
     } else if (AppCenterConfigPaths.length === 1) {
-        return AppCenterConfigPaths[0];
-    } else if (androidProjectDirectory) {
-        return path.resolve(androidProjectDirectory, 'app', 'src', 'main', 'assets', 'appcenter-config.json');
+        return path.resolve(androidAssetsDirectory || process.cwd(), AppCenterConfigPaths[0]);
+    } else if (androidAssetsDirectory) {
+        return path.resolve(androidAssetsDirectory, 'appcenter-config.json');
     } else {
         return path.join('android', 'app', 'src', 'main', 'assets', 'appcenter-config.json');
     }

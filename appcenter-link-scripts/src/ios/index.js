@@ -17,12 +17,7 @@ const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig');
 
 const iosProjectConfig = GetReactNativeProjectConfig().ios;
 
-
-const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**', cwd: iosProjectConfig.folder || process.cwd() });
-const appDelegatePath = findFileInProjectSource(appDelegatePaths, iosProjectConfig.sourceDir)
-    || findFileByAppName(appDelegatePaths, pjson ? pjson.name : null)
-    || appDelegatePaths[0];
-
+const appDelegatePath = AppDelegate.searchForFile(iosProjectConfig);
 debug(`AppDelegate.m path - ${appDelegatePath}`);
 
 module.exports = {
@@ -37,7 +32,7 @@ module.exports = {
     },
 
     initAppCenterConfig() {
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile(iosProjectConfig.sourceDir));
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(iosProjectConfig), iosProjectConfig.pbxprojPath);
         const currentAppSecret = config.get('AppSecret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
@@ -101,33 +96,3 @@ module.exports = {
         }
     }
 };
-
-
-// Helper that filters an array with AppDelegate.m paths for a path within the ios project's source directory
-function findFileInProjectSource(fileArray, iosProjectSourceDirectory) {
-    if (fileArray.length === 0 || !iosProjectSourceDirectory) return null;
-
-    const iosProjectSourceDirectoryLower = iosProjectSourceDirectory.toLowerCase();
-    for (let i = 0; i < fileArray.length; i++) {
-        if (fileArray[i] && fileArray[i].toLowerCase().indexOf(iosProjectSourceDirectoryLower) !== -1) {
-            return fileArray[i];
-        }
-    }
-
-    return null;
-}
-
-// Helper that filters an array with AppDelegate.m paths for a path with the app name inside it
-// Fallback if findFileInProjectSource(..) does not return a match
-function findFileByAppName(array, appName) {
-    if (array.length === 0 || !appName) return null;
-
-    const appNameLower = appName.toLowerCase();
-    for (let i = 0; i < array.length; i++) {
-        if (array[i] && array[i].toLowerCase().indexOf(appNameLower) !== -1) {
-            return array[i];
-        }
-    }
-
-    return null;
-}
