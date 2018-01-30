@@ -38,11 +38,12 @@ AppCenterConfig.prototype.save = function () {
     return this.AppCenterConfigPath;
 };
 
-AppCenterConfig.searchForFile = function (cwd) {
+AppCenterConfig.searchForFile = function (androidAssetsDirectory) {
     const AppCenterConfigPaths = glob.sync('**/appcenter-config.json', {
         ignore: ['node_modules/**', '**/build/**'],
-        cwd: cwd || process.cwd()
+        cwd: androidAssetsDirectory || process.cwd()
     });
+
     if (AppCenterConfigPaths.length > 1) {
         debug(AppCenterConfigPaths);
         throw new Error(`Found more than one appcenter-config.json in this project and hence could not write App Secret.
@@ -50,7 +51,9 @@ AppCenterConfig.searchForFile = function (cwd) {
             appcenter-config.json found at ${AppCenterConfigPaths}
         `);
     } else if (AppCenterConfigPaths.length === 1) {
-        return AppCenterConfigPaths[0];
+        return path.resolve(androidAssetsDirectory || process.cwd(), AppCenterConfigPaths[0]);
+    } else if (androidAssetsDirectory) {
+        return path.resolve(androidAssetsDirectory, 'appcenter-config.json');
     } else {
         return path.join('android', 'app', 'src', 'main', 'assets', 'appcenter-config.json');
     }

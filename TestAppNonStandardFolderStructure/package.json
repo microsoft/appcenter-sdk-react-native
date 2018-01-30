@@ -1,0 +1,26 @@
+{
+  "name": "TestAppNonStandardFolderStructure",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "react-test-renderer": "16.2.0"
+  },
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "test": "node node_modules/jest/bin/jest.js"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "dependencies": {
+    "appcenter": "file:appcenter-1.1.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.1.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.1.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.1.0.tgz",
+    "appcenter-push": "file:appcenter-push-1.1.0.tgz",
+    "react": "16.2.0",
+    "react-native": "0.52.0"
+  }
+}

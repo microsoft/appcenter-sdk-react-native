@@ -6,8 +6,10 @@ const xcode = require('xcode');
 const glob = require('glob');
 const debug = require('debug')('appcenter-link:ios:AppCenterConfigPlist');
 
-const AppCenterConfigPlist = function (plistPath) {
+const AppCenterConfigPlist = function (plistPath, pbxprojPath) {
     this.plistPath = plistPath;
+    this.pbxprojPath = pbxprojPath;
+
     try {
         const plistContents = fs.readFileSync(plistPath, 'utf8');
         this.parsedInfoPlist = plist.parse(plistContents);
@@ -31,28 +33,23 @@ AppCenterConfigPlist.prototype.save = function () {
     fs.writeFileSync(this.plistPath, plistContents);
     debug(`Saved App Secret in ${this.plistPath}`);
 
-    return addConfigToProject(this.plistPath);
+    return addConfigToProject(this.plistPath, this.pbxprojPath);
 };
 
-function addConfigToProject(file) {
+function addConfigToProject(appcenterConfigPlistPath, pbxprojPath) {
     return new Promise(((resolve, reject) => {
-        debug(`Trying to add ${file} to XCode project`);
+        debug(`Trying to add ${appcenterConfigPlistPath} to XCode project`);
 
-        const globString = 'ios/*.xcodeproj/project.pbxproj';
-        const projectPaths = glob.sync(globString, { ignore: 'node_modules/**' });
-
-        if (projectPaths.length !== 1) {
+        if (!fs.existsSync(pbxprojPath)) {
             reject(new Error(`
                 Could not locate the xcode project to add AppCenter-Config.plist file to. 
-                Looked in paths - 
-                ${JSON.stringify(projectPaths)}`));
+                Expected project.pbxproj path: ${pbxprojPath}`));
             return;
         }
 
-        const projectPath = projectPaths[0];
-        debug(`Adding ${file} to  ${projectPath}`);
+        debug(`Adding ${appcenterConfigPlistPath} to  ${pbxprojPath}`);
 
-        const project = xcode.project(projectPath);
+        const project = xcode.project(pbxprojPath);
 
         project.parse((err) => {
             if (err) {
@@ -60,11 +57,11 @@ function addConfigToProject(file) {
                 return;
             }
             try {
-                const relativeFilePath = path.relative(path.resolve(projectPath, '../..'), file);
+                const relativeFilePath = path.relative(path.resolve(pbxprojPath, '../..'), appcenterConfigPlistPath);
                 const plistPbxFile = project.addFile(relativeFilePath, project.getFirstProject().firstProject.mainGroup);
                 if (plistPbxFile === null) {
-                    debug(`Looks like ${file} was already added to ${projectPath}`);
-                    resolve(file);
+                    debug(`Looks like ${appcenterConfigPlistPath} was already added to ${pbxprojPath}`);
+                    resolve(appcenterConfigPlistPath);
                     return;
                 }
                 plistPbxFile.uuid = project.generateUuid();
@@ -72,30 +69,35 @@ function addConfigToProject(file) {
                 project.addToPbxBuildFileSection(plistPbxFile);
                 project.addToPbxResourcesBuildPhase(plistPbxFile);
 
-                fs.writeFileSync(projectPath, project.writeSync());
-                debug(`Added ${file} to ${projectPath}`);
+                fs.writeFileSync(pbxprojPath, project.writeSync());
+                debug(`Added ${appcenterConfigPlistPath} to ${pbxprojPath}`);
             } catch (e) {
                 reject(e);
             }
-            resolve(file);
+            resolve(appcenterConfigPlistPath);
         });
     }));
 }
 
-AppCenterConfigPlist.searchForFile = function (cwd) {
-    const configPaths = glob.sync(path.join(cwd, 'AppCenter-Config.plist').replace(/\\/g, '/'), {
-        ignore: 'node_modules/**'
+AppCenterConfigPlist.searchForFile = function (iosProjectConfig) {
+    const iosProjectFolderName = iosProjectConfig.projectName.replace('.xcodeproj', '');
+    const iosProjectSourceDirectory = iosProjectConfig.sourceDir;
+
+    const AppCenterConfigPaths = glob.sync('**/AppCenter-Config.plist', {
+        ignore: ['node_modules/**', '**/build/**'],
+        cwd: iosProjectSourceDirectory || process.cwd()
     });
-    if (configPaths.length > 1) {
-        debug(configPaths);
+
+    if (AppCenterConfigPaths.length > 1) {
+        debug(AppCenterConfigPaths);
         throw new Error(`Found more than one AppCenter-Config.plist in this project and hence, could not write App Secret.
             Please add "AppSecret" to the correct AppCenter-Config.plist file
-            AppCenter-config.plist found at ${configPaths}
+            AppCenter-config.plist found at ${AppCenterConfigPaths}
         `);
-    } else if (configPaths.length === 1) {
-        return configPaths[0];
+    } else if (AppCenterConfigPaths.length === 1) {
+        return path.resolve(iosProjectSourceDirectory || process.cwd(), AppCenterConfigPaths[0]);
     } else {
-        return path.join(cwd, 'AppCenter-Config.plist');
+        return path.resolve(iosProjectSourceDirectory, iosProjectFolderName, 'AppCenter-Config.plist');
     }
 };
 

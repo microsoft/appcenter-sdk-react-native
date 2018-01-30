@@ -1,6 +1,6 @@
 const ReactNative = require('react-native');
 
-const { AppCenterReactNative } = ReactNative.NativeModules.AppCenterReactNative;
+const { AppCenterReactNative } = ReactNative.NativeModules;
 
 function format(tag, msg) {
     return `[${tag}] ${msg}`;

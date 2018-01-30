@@ -1,6 +1,6 @@
 const rnpmlink = require('appcenter-link-scripts');
 
-console.log('Configuring AppCenter');
+console.log('\nConfiguring AppCenter');
 
 return rnpmlink.android.checkIfAndroidDirectoryExists()
     .then(() => {
@@ -10,4 +10,7 @@ return rnpmlink.android.checkIfAndroidDirectoryExists()
                 return Promise.reject();
             });
     })
-    .catch(() => Promise.resolve());
+    .catch((err) => {
+        console.log('An error occurred while checking for the android project directory', err);
+        return Promise.resolve();
+    });

@@ -2,19 +2,17 @@ const fs = require('fs');
 const path = require('path');
 
 const debug = require('debug')('appcenter-link:ios:index');
-const glob = require('glob');
 const inquirer = require('inquirer');
-
-// Assumption - react-native link is always called from the top of the project
-// As indicated in https://github.com/facebook/react-native/blob/4082a546495c5d9f4c6fd1b0c2f64e9bc7a88bc7/local-cli/link/getProjectDependencies.js#L7
-const pjson = require(path.join(process.cwd(), './package.json'));
 
 const AppCenterConfig = require('./AppCenterConfig');
 const AppDelegate = require('./AppDelegate');
 const PodFile = require('./PodFile');
 
-const appDelegatePaths = glob.sync('**/AppDelegate.m', { ignore: 'node_modules/**' });
-const appDelegatePath = findFileByAppName(appDelegatePaths, pjson ? pjson.name : null) || appDelegatePaths[0];
+const GetReactNativeProjectConfig = require('../GetReactNativeProjectConfig');
+
+const iosProjectConfig = GetReactNativeProjectConfig().ios;
+
+const appDelegatePath = AppDelegate.searchForFile(iosProjectConfig);
 debug(`AppDelegate.m path - ${appDelegatePath}`);
 
 module.exports = {
@@ -29,7 +27,7 @@ module.exports = {
     },
 
     initAppCenterConfig() {
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile(path.dirname(appDelegatePath)));
+        const config = new AppCenterConfig(AppCenterConfig.searchForFile(iosProjectConfig), iosProjectConfig.pbxprojPath);
         const currentAppSecret = config.get('AppSecret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
@@ -77,7 +75,10 @@ module.exports = {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
         try {
-            const podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
+            const podfilePath = iosProjectConfig.podfile || path.join(iosProjectConfig.projectPath, '..', 'Podfile');
+            PodFile.initializePodfileIfNecessary(podfilePath);
+
+            const podFile = new PodFile(podfilePath);
             pods.forEach((pod) => {
                 podFile.addPodLine(pod.pod, pod.podspec, pod.version);
             });
@@ -90,18 +91,3 @@ module.exports = {
         }
     }
 };
-
-// Helper that filters an array with AppDelegate.m paths for a path with the app name inside it
-// Should cover nearly all cases
-function findFileByAppName(array, appName) {
-    if (array.length === 0 || !appName) return null;
-
-    const appNameLower = appName.toLowerCase();
-    for (let i = 0; i < array.length; i++) {
-        if (array[i] && array[i].toLowerCase().indexOf(appNameLower) !== -1) {
-            return array[i];
-        }
-    }
-
-    return null;
-}
