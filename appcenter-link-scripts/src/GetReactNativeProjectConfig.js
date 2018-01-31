@@ -5,12 +5,13 @@ const minimist = require('minimist');
 let reactNativeCliConfig;
 
 const setupBabelPath = path.join(__dirname, '..', '..', 'react-native', 'setupBabel.js');
-if(fs.existsSync(setupBabelPath)) {
-    require('../../react-native/setupBabel')();
+if (fs.existsSync(setupBabelPath)) {
+    require('../../react-native/setupBabel')(); // eslint-disable-line global-require
 
-    reactNativeCliConfig = require('../../react-native/local-cli/core/index');
+    reactNativeCliConfig = require('../../react-native/local-cli/core/index'); // eslint-disable-line global-require
 } else {
     // for older versions of react-native, e.g v 0.34
+    // eslint-disable-next-line
     require('../../react-native/packager/babelRegisterOnly')([
         /private-cli\/src/,
         /local-cli/,
@@ -18,12 +19,12 @@ if(fs.existsSync(setupBabelPath)) {
     ]);
 
 
-    const RNConfig = require('../../react-native/local-cli/util/Config');
-    const defaultConfig = require('../../react-native/local-cli/default.config');
+    const RNConfig = require('../../react-native/local-cli/util/Config'); // eslint-disable-line global-require
+    const defaultConfig = require('../../react-native/local-cli/default.config'); // eslint-disable-line global-require
 
     // Use a lightweight option parser to look up the CLI configuration file,
     // which we need to set up the parser for the other args and options
-    let cliArgs = minimist(process.argv.slice(2));
+    const cliArgs = minimist(process.argv.slice(2));
 
     let cwd;
     let configPath;
