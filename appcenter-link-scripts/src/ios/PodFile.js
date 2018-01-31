@@ -70,7 +70,7 @@ Podfile.prototype.install = function () {
 };
 
 Podfile.initializePodfileIfNecessary = function (podfilePath) {
-    if (!fs.statSync(podfilePath).isFile()) {
+    if (!fs.existsSync(podfilePath)) {
         debug(`No podfile found at ${podfilePath}, initializing...`);
         childProcess.execSync('pod init', { cwd: path.dirname(podfilePath) });
         // Remove tests sub-specification or it breaks the project
