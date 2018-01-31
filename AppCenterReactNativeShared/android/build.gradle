@@ -64,7 +64,7 @@ allprojects {
             repo = ext.bintrayRepo
             name = "appcenter-react-native"
             userOrg = ext.bintrayUserOrg
-            vcsUrl = ext.itUrl
+            vcsUrl = ext.gitUrl
             websiteUrl = ext.siteUrl
             licenses = [licenseCode]
         }
