@@ -53,19 +53,19 @@ allprojects {
     }
 
     bintray {
-        user = bintrayUser
-        key = bintrayKey
+        user = ext.bintrayUser
+        key = ext.bintrayKey
 
         configurations = ['archives']
 
         publish = true
 
         pkg {
-            repo = bintrayRepo
+            repo = ext.bintrayRepo
             name = "appcenter-react-native"
-            userOrg = bintrayUserOrg
-            vcsUrl = gitUrl
-            websiteUrl = siteUrl
+            userOrg = ext.bintrayUserOrg
+            vcsUrl = ext.itUrl
+            websiteUrl = ext.siteUrl
             licenses = [licenseCode]
         }
     }
