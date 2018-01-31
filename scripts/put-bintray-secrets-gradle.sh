@@ -1,5 +1,5 @@
 #!/bin/bash
-cat >> local.properties << EOL
+cat >> AppCenterReactNativeShared/android/local.properties << EOL
 bintray.user=${1:-$BINTRAY_USER}
 bintray.key=${2:-$BINTRAY_KEY}
 bintray.repo=${3:-$BINTRAY_REPO}
