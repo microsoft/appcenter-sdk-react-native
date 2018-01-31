@@ -1,6 +1,6 @@
 const ReactNative = require('react-native');
 
-const AppCenterReactNativePush = ReactNative.NativeModules.AppCenterReactNativePush;
+const { AppCenterReactNativePush } = ReactNative.NativeModules;
 
 const pushEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativePush);
 

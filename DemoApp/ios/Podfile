@@ -14,5 +14,5 @@ target 'DemoApp' do
   pod 'AppCenter/Analytics', '~> 1.1.0'
   pod 'AppCenterReactNativeShared', '~> 1.1.0'
 
-  platform :ios, '8.0'
+  platform :ios, '9.0'
 end

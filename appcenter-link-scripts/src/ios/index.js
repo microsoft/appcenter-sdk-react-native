@@ -73,9 +73,6 @@ module.exports = {
     },
 
     addPodDeps(pods) {
-        if (process.platform !== 'darwin') {
-            return Promise.reject(new Error('Since you are not running on a Mac, CocoaPods installation steps will be skipped.'));
-        }
         if (!PodFile.isCocoaPodsInstalled()) {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
@@ -99,8 +96,9 @@ module.exports = {
 function findFileByAppName(array, appName) {
     if (array.length === 0 || !appName) return null;
 
+    const appNameLower = appName.toLowerCase();
     for (let i = 0; i < array.length; i++) {
-        if (array[i] && array[i].indexOf(appName) !== -1) {
+        if (array[i] && array[i].toLowerCase().indexOf(appNameLower) !== -1) {
             return array[i];
         }
     }

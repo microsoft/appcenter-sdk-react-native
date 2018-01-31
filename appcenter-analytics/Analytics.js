@@ -1,4 +1,6 @@
-const AppCenterReactNativeAnalytics = require('react-native').NativeModules.AppCenterReactNativeAnalytics;
+const ReactNative = require('react-native');
+
+const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
 module.exports = {
     // async - returns a Promise
@@ -17,10 +19,13 @@ module.exports = {
     }
 };
 
-function sanitizeProperties(props) {
+function sanitizeProperties(props = null) {
     // Only string:string mappings are supported currently.
 
     const result = {};
+    if (props === null) {
+        return result;
+    }
     Object.keys(props).forEach((key) => {
         switch (typeof props[key]) {
             case 'string':
