@@ -233,7 +233,7 @@ namespace Contoso.Forms.Puppet
             }
             Properties.Clear();
             RefreshPropCount();
-            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackError").Invoke(null, new object[] { e, properties });
+            Crashes.TrackError(e, properties);
         }
     }
 }
