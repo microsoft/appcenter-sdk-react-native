@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using Contoso.Forms.Puppet.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;

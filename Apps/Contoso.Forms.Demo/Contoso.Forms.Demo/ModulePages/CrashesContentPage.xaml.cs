@@ -1,6 +1,7 @@
 ﻿#define DEBUG
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Contoso.Forms.Demo.Views;
@@ -16,11 +17,16 @@ namespace Contoso.Forms.Demo
     public partial class CrashesContentPage
     {
         public const string TextAttachmentKey = "TEXT_ATTACHMENT";
+
         public const string FileAttachmentKey = "FILE_ATTACHMENT";
+
+        List<Property> Properties;
 
         public CrashesContentPage()
         {
             InitializeComponent();
+            Properties = new List<Property>();
+            NumPropertiesLabel.Text = Properties.Count.ToString();
             if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
             {
                 Icon = "socket.png";
@@ -87,39 +93,75 @@ namespace Contoso.Forms.Demo
             await Application.Current.SavePropertiesAsync();
         }
 
-        void TestCrash(object sender, EventArgs e)
+        async void AddProperty(object sender, EventArgs e)
         {
-            Crashes.GenerateTestCrash();
+            var addPage = new AddPropertyContentPage();
+            addPage.PropertyAdded += (Property property) =>
+            {
+                Properties.Add(property);
+                RefreshPropCount();
+            };
+            await Navigation.PushModalAsync(addPage);
+        }
+
+        async void PropertiesCellTapped(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PropertiesContentPage(Properties));
+        }
+
+        void RefreshPropCount()
+        {
+            NumPropertiesLabel.Text = Properties.Count.ToString();
+        }
+
+        void HandleOrThrow(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e) when (HandleExceptionsSwitchCell.On)
+            {
+                TrackException(e);
+            }
+        }
+
+        void TestException(object sender, EventArgs e)
+        {
+            HandleOrThrow(() => Crashes.GenerateTestCrash());
         }
 
         void DivideByZero(object sender, EventArgs e)
         {
             /* This is supposed to cause a crash, so we don't care that the variable 'x' is never used */
 #pragma warning disable CS0219
-            int x = (42 / int.Parse("0"));
+            HandleOrThrow(() => (42 / int.Parse("0")).ToString());
 #pragma warning restore CS0219
         }
 
-        private void CrashWithNullReferenceException(object sender, EventArgs e)
+        void NullReferenceException(object sender, EventArgs e)
         {
-            TriggerNullReferenceException();
+            HandleOrThrow(() => TriggerNullReferenceException());
         }
 
-        private void TriggerNullReferenceException()
+        void TriggerNullReferenceException()
         {
             string[] values = { "one", null, "two" };
             for (int ctr = 0; ctr <= values.GetUpperBound(0); ctr++)
-                Debug.WriteLine("{0}{1}", values[ctr].Trim(),
-                              ctr == values.GetUpperBound(0) ? "" : ", ");
+            {
+                var val = values[ctr].Trim();
+                var separator = ctr == values.GetUpperBound(0) ? "" : ", ";
+                Debug.WriteLine("{0}{1}", val, separator);
+            }
             Debug.WriteLine("");
         }
 
-        private void CrashWithAggregateException(object sender, EventArgs e)
+        void AggregateException(object sender, EventArgs e)
         {
-            throw PrepareException();
+            HandleOrThrow(() => throw PrepareException());
         }
 
-        private static Exception PrepareException()
+        static Exception PrepareException()
         {
             try
             {
@@ -131,7 +173,7 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        private static Exception SendHttp()
+        static Exception SendHttp()
         {
             try
             {
@@ -143,7 +185,7 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        private static Exception ValidateLength()
+        static Exception ValidateLength()
         {
             try
             {
@@ -155,9 +197,32 @@ namespace Contoso.Forms.Demo
             }
         }
 
-        public async void CrashAsync(object sender, EventArgs e)
+        public async void AsyncException(object sender, EventArgs e)
         {
-            await FakeService.DoStuffInBackground();
+            try
+            {
+                await FakeService.DoStuffInBackground();
+            }
+            catch (Exception ex) when (HandleExceptionsSwitchCell.On)
+            {
+                TrackException(ex);
+            }
+        }
+
+        private void TrackException(Exception e)
+        {
+            var properties = new Dictionary<string, string>();
+            foreach (Property property in Properties)
+            {
+                properties.Add(property.Name, property.Value);
+            }
+            if (properties.Count == 0)
+            {
+                properties = null;
+            }
+            Properties.Clear();
+            RefreshPropCount();
+            Crashes.TrackError(e, properties);
         }
     }
 }
