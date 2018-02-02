@@ -126,12 +126,6 @@ android {
     }
 }
 
-repositories {
-    maven {
-        url  "https://dl.bintray.com/vsappcenter/appcenter-snapshot"
-    }
-}
-
 dependencies {
     compile project(':react-native-image-picker')
     compile project(':react-native-fs')
