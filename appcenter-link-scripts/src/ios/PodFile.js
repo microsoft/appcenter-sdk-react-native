@@ -37,18 +37,137 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
         debug(`Replace ${existingLine} by ${line}`);
         return;
     }
-    const patterns = this.fileContents.match(/# Pods for .*/);
-    if (patterns === null) {
-        throw new Error(`
-    Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
-    in ${this.file}, inside
-    the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
-    `);
-    }
-    const pattern = patterns[0];
+    const pattern = this.getTargetSectionPattern()[0];
     this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
     debug(`${line} ===> ${this.file}`);
 };
+
+Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
+    const isGlobalPlatformDefined = this.isGlobalPlatformDefined(platform);
+    console.log(`Platform defined globally = ${isGlobalPlatformDefined}`);
+    if (!isGlobalPlatformDefined) {
+        const isTargetPlatformDefined = this.isTargetPlatformDefined(platform);
+        console.log(`Platform defined in target = ${isTargetPlatformDefined}`);
+        if (!isTargetPlatformDefined) {
+            this.addPlatformToTarget(platform, version);
+            console.log(`Minimum platform ${platform}, '${version}' defined`);
+        }
+    }
+};
+
+Podfile.prototype.addPlatformToTarget = function (platform, version) {
+    let line = `platform :${platform}, '${version}'`;
+    const pattern = this.getTargetSectionPattern()[0];
+    this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
+};
+
+Podfile.prototype.isGlobalPlatformDefined = function (platform) {
+    const platformPattern = new RegExp(`platform\\s+:${platform}`, 'g');
+    const platformMatches = this.fileContents.match(platformPattern);
+    const globalRanges = this.globalScopeRanges();
+    var platformIndex = 0;
+    for (match = 0; match < platformMatches.length; match++) {
+        platformIndex = this.fileContents.indexOf(platformMatches[match], platformIndex + 1);
+        if (this.isInGlobalScope(platformIndex, globalRanges) && this.isLineActive(this.fileContents, platformIndex)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Podfile.prototype.isTargetPlatformDefined = function (platform) {
+    const platformPattern = new RegExp(`platform\\s+:${platform}`);
+    const sectionStartIndex = this.getTargetSectionPattern().index;
+    var keywordMatch = this.nextKeyword(sectionStartIndex);
+    var section = this.fileContents.substring(sectionStartIndex, keywordMatch.index);
+    const platformMatches = section.match(platformPattern);
+    if (platformMatches === null) {
+        return false;
+    }
+    return this.isLineActive(section, platformMatches.index);
+};
+
+Podfile.prototype.getTargetSectionPattern = function () {
+    const patterns = this.fileContents.match(/# Pods for .*/);
+    if (patterns === null) {
+            throw new Error(`
+        Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
+        in ${this.file}, inside
+        the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
+        `);
+    }
+    return patterns;
+};
+
+Podfile.prototype.isInGlobalScope = function (index, globalScopeRanges) {
+    for (scope = 0; scope < globalScopeRanges.length; scope++) { 
+        if (index > globalScopeRanges[scope].start && index < globalScopeRanges[scope].end) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Podfile.prototype.isLineActive = function (content, index) {
+    if (index < 0) {
+        return false;
+    }
+    const commentSymbol = '#';
+    const newlineSymbol = '\n';
+    var diff = 1;
+    var previousCharacter = content.charAt(index - (diff++));
+    while(previousCharacter !== commentSymbol && previousCharacter !== newlineSymbol){
+        previousCharacter = content.charAt(index - (diff++));
+    }
+    return previousCharacter !== commentSymbol;
+};
+
+Podfile.prototype.globalScopeRanges = function () {
+    const targetKeyword = 'target';
+    const endKeyword = 'end';
+
+    var result = [];
+    var targetsStack = [];
+    var currentRange = { start: 0, end: 0 };
+    var currentOffset = 0;
+
+    var keywordMatch = this.nextKeyword(currentOffset);
+    while(keywordMatch.index >= 0) {
+        if (keywordMatch.keyword === 'target') {
+            currentRange.end = keywordMatch.index - 1;
+            if (targetsStack.length == 0) {
+                result.push(Object.assign({}, currentRange));
+            }
+            targetsStack.push(keywordMatch.index);
+        } else {
+            targetsStack.pop();
+            if (targetsStack.length == 0) {
+                currentRange.start = keywordMatch.index + keywordMatch.keyword.length;
+            }
+        }
+        currentOffset = keywordMatch.index + keywordMatch.keyword.length;
+        keywordMatch = this.nextKeyword(currentOffset);
+    }
+    currentRange.end = this.fileContents.length;
+    result.push(Object.assign({}, currentRange));
+    return result;
+};
+
+Podfile.prototype.nextKeyword = function (offset) {
+    const targetKeyword = 'target';
+    const endKeyword = 'end';
+
+    const targetIndex = this.fileContents.indexOf(targetKeyword, offset);
+    const endIndex = this.fileContents.indexOf(endKeyword, offset);
+
+    if (targetIndex < 0) {
+        return { keyword: endKeyword, index: endIndex };
+    }
+
+    return targetIndex < endIndex ? 
+        { keyword: targetKeyword, index: targetIndex } : 
+        { keyword: endKeyword, index: endIndex };
+}
 
 Podfile.prototype.save = function () {
     fs.writeFileSync(this.file, this.fileContents);
