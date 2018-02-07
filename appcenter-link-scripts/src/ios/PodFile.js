@@ -56,9 +56,14 @@ Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
 };
 
 Podfile.prototype.addPlatformToTarget = function (platform, version) {
-    let line = `platform :${platform}, '${version}'`;
-    const pattern = this.getTargetSectionPattern()[0];
-    this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
+    const line = `platform :${platform}, '${version}'`;
+    const sectionStart = this.getTargetSectionPattern();
+    var keywordMatch = this.nextKeyword(sectionStart.index);
+    const newLineIndex = this.fileContents.lastIndexOf("\n", keywordMatch.index);
+    const part1 = this.fileContents.slice(0, newLineIndex);
+    const part2 = this.fileContents.slice(newLineIndex);
+    const indent = "  ";
+    this.fileContents = `${part1}${indent}${line}${part2}`;
 };
 
 Podfile.prototype.isGlobalPlatformDefined = function (platform) {
