@@ -43,37 +43,45 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
 };
 
 Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
-    const isGlobalPlatformDefined = this.isGlobalPlatformDefined(platform);
-    console.log(`Platform defined globally = ${isGlobalPlatformDefined}`);
-    if (!isGlobalPlatformDefined) {
-        const isTargetPlatformDefined = this.isTargetPlatformDefined(platform);
-        console.log(`Platform defined in target = ${isTargetPlatformDefined}`);
-        if (!isTargetPlatformDefined) {
-            this.addPlatformToTarget(platform, version);
-            console.log(`Minimum platform ${platform}, '${version}' defined`);
+    try {
+        const isGlobalPlatformDefined = this.isGlobalPlatformDefined(platform);
+        console.log(`Platform defined globally = ${isGlobalPlatformDefined}`);
+        if (!isGlobalPlatformDefined) {
+            const isTargetPlatformDefined = this.isTargetPlatformDefined(platform);
+            console.log(`Platform defined in target = ${isTargetPlatformDefined}`);
+            if (!isTargetPlatformDefined) {
+                this.addPlatformToTarget(platform, version);
+                console.log(`Minimum platform ${platform}, '${version}' defined`);
+            }
         }
+    } catch (e) {
+        const line = `platform :${platform}, '${version}'`;
+        console.log(`Could not automatically add line: ${line} to your Podfile. Please make sure that this line is present.`, e);
     }
 };
 
 Podfile.prototype.addPlatformToTarget = function (platform, version) {
     const line = `platform :${platform}, '${version}'`;
     const sectionStart = this.getTargetSectionPattern();
-    var keywordMatch = this.nextKeyword(sectionStart.index);
+    let keywordMatch = this.nextKeyword(this.fileContents, sectionStart.index);
     const newLineIndex = this.fileContents.lastIndexOf("\n", keywordMatch.index);
     const part1 = this.fileContents.slice(0, newLineIndex);
     const part2 = this.fileContents.slice(newLineIndex);
-    const indent = "  ";
-    this.fileContents = `${part1}${indent}${line}${part2}`;
+    const indent = '  ';
+    this.fileContents = `${part1}\n${indent}${line}${part2}`;
 };
 
 Podfile.prototype.isGlobalPlatformDefined = function (platform) {
     const platformPattern = new RegExp(`platform\\s+:${platform}`, 'g');
     const platformMatches = this.fileContents.match(platformPattern);
-    const globalRanges = this.globalScopeRanges();
-    var platformIndex = 0;
-    for (match = 0; match < platformMatches.length; match++) {
+    if (!platformMatches) {
+        return false;
+    }
+    const globalRanges = this.scopeRanges(this.fileContents);
+    let platformIndex = 0;
+    for (let match = 0; match < platformMatches.length; match++) {
         platformIndex = this.fileContents.indexOf(platformMatches[match], platformIndex + 1);
-        if (this.isInGlobalScope(platformIndex, globalRanges) && this.isLineActive(this.fileContents, platformIndex)) {
+        if (this.isInScope(platformIndex, globalRanges) && this.isLineActive(this.fileContents, platformIndex)) {
             return true;
         }
     }
@@ -81,32 +89,41 @@ Podfile.prototype.isGlobalPlatformDefined = function (platform) {
 };
 
 Podfile.prototype.isTargetPlatformDefined = function (platform) {
-    const platformPattern = new RegExp(`platform\\s+:${platform}`);
-    const sectionStartIndex = this.getTargetSectionPattern().index;
-    var keywordMatch = this.nextKeyword(sectionStartIndex);
-    var section = this.fileContents.substring(sectionStartIndex, keywordMatch.index);
-    const platformMatches = section.match(platformPattern);
-    if (platformMatches === null) {
+    const platformPattern = new RegExp(`platform\\s+:${platform}`, 'g');
+    const patternIndex = this.getTargetSectionPattern().index;
+    const startSection = this.startOfSection(patternIndex) + 'target'.length;
+    const endSection = this.endOfSection(patternIndex);
+    const sectionContent = this.fileContents.substring(startSection, endSection);
+    const scopeRanges = this.scopeRanges(sectionContent);
+    const platformMatches = sectionContent.match(platformPattern);
+    if (!platformMatches) {
         return false;
     }
-    return this.isLineActive(section, platformMatches.index);
+    let platformIndex = 0;
+    for (let match = 0; match < platformMatches.length; match++) {
+        platformIndex = sectionContent.indexOf(platformMatches[match], platformIndex + 1);
+        if (this.isInScope(platformIndex, scopeRanges) && this.isLineActive(sectionContent, platformIndex)) {
+            return true;
+        }
+    }
+    return false;
 };
 
 Podfile.prototype.getTargetSectionPattern = function () {
     const patterns = this.fileContents.match(/# Pods for .*/);
     if (patterns === null) {
-            throw new Error(`
-        Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
-        in ${this.file}, inside
-        the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
+        throw new Error(`
+            Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
+            in ${this.file}, inside
+            the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
         `);
     }
     return patterns;
 };
 
-Podfile.prototype.isInGlobalScope = function (index, globalScopeRanges) {
-    for (scope = 0; scope < globalScopeRanges.length; scope++) { 
-        if (index > globalScopeRanges[scope].start && index < globalScopeRanges[scope].end) {
+Podfile.prototype.isInScope = function (index, scopeRanges) {
+    for (let scope = 0; scope < scopeRanges.length; scope++) { 
+        if (index > scopeRanges[scope].start && index < scopeRanges[scope].end) {
             return true;
         }
     }
@@ -119,24 +136,24 @@ Podfile.prototype.isLineActive = function (content, index) {
     }
     const commentSymbol = '#';
     const newlineSymbol = '\n';
-    var diff = 1;
-    var previousCharacter = content.charAt(index - (diff++));
+    let diff = 1;
+    let previousCharacter = content.charAt(index - (diff++));
     while(previousCharacter !== commentSymbol && previousCharacter !== newlineSymbol){
         previousCharacter = content.charAt(index - (diff++));
     }
     return previousCharacter !== commentSymbol;
 };
 
-Podfile.prototype.globalScopeRanges = function () {
+Podfile.prototype.scopeRanges = function (content) {
     const targetKeyword = 'target';
     const endKeyword = 'end';
 
-    var result = [];
-    var targetsStack = [];
-    var currentRange = { start: 0, end: 0 };
-    var currentOffset = 0;
+    let result = [];
+    let targetsStack = [];
+    let currentRange = { start: 0, end: 0 };
+    let currentOffset = 0;
 
-    var keywordMatch = this.nextKeyword(currentOffset);
+    let keywordMatch = this.nextKeyword(content, currentOffset);
     while(keywordMatch.index >= 0) {
         if (keywordMatch.keyword === 'target') {
             currentRange.end = keywordMatch.index - 1;
@@ -151,27 +168,70 @@ Podfile.prototype.globalScopeRanges = function () {
             }
         }
         currentOffset = keywordMatch.index + keywordMatch.keyword.length;
-        keywordMatch = this.nextKeyword(currentOffset);
+        keywordMatch = this.nextKeyword(content, currentOffset);
     }
-    currentRange.end = this.fileContents.length;
+    currentRange.end = content.length;
     result.push(Object.assign({}, currentRange));
     return result;
 };
 
-Podfile.prototype.nextKeyword = function (offset) {
+Podfile.prototype.sectionBoundary = function (content, position, keyword) {
+    const targetKeyword = 'target';
+    const endKeyword = 'end';
+    let reverse = false;
+    let direction = 1;
+    if (keyword === targetKeyword) {
+        reverse = true;
+        direction = -1;
+    }
+    const keywordStack = [];
+    let keywordMatch = this.nextKeyword(content, position, reverse);
+    while (keywordMatch.index >= 0) {
+        if (keywordMatch.keyword !== keyword) {
+            keywordStack.push(keywordMatch.keyword);
+        } else {
+            if (keywordStack.length === 0) {
+                break;
+            } else {
+                keywordStack.pop();
+            }
+        }
+        keywordMatch = this.nextKeyword(content, keywordMatch.index + (keywordMatch.keyword.length * direction), reverse);
+    }
+    return keywordMatch.index;
+ }
+
+Podfile.prototype.endOfSection = function (position) {
+    return this.sectionBoundary(this.fileContents, position, 'end');
+}
+
+Podfile.prototype.startOfSection = function (position) {
+    return this.sectionBoundary(this.fileContents, position, 'target');
+}
+
+Podfile.prototype.nextKeyword = function (content, offset, reverse = false) {
     const targetKeyword = 'target';
     const endKeyword = 'end';
 
-    const targetIndex = this.fileContents.indexOf(targetKeyword, offset);
-    const endIndex = this.fileContents.indexOf(endKeyword, offset);
+    const targetIndex = reverse ? 
+        content.lastIndexOf(targetKeyword, offset) : 
+        content.indexOf(targetKeyword, offset);
+    const endIndex = reverse ? 
+        content.lastIndexOf(endKeyword, offset) : 
+        content.indexOf(endKeyword, offset);
 
-    if (targetIndex < 0) {
-        return { keyword: endKeyword, index: endIndex };
+    if (reverse) {
+        return targetIndex < endIndex ? 
+            { keyword: endKeyword, index: endIndex } : 
+            { keyword: targetKeyword, index: targetIndex };
+    } else {
+        if (targetIndex < 0) {
+            return { keyword: endKeyword, index: endIndex };
+        }
+        return targetIndex < endIndex ? 
+            { keyword: targetKeyword, index: targetIndex } : 
+            { keyword: endKeyword, index: endIndex };
     }
-
-    return targetIndex < endIndex ? 
-        { keyword: targetKeyword, index: targetIndex } : 
-        { keyword: endKeyword, index: endIndex };
 }
 
 Podfile.prototype.save = function () {
