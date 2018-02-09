@@ -113,10 +113,10 @@ Podfile.prototype.getTargetSectionPattern = function () {
     const patterns = this.fileContents.match(/# Pods for .*/);
     if (patterns === null) {
         throw new Error(`
-            Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
-            in ${this.file}, inside
-            the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
-        `);
+    Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
+    in ${this.file}, inside
+    the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
+    `);
     }
     return patterns;
 };
