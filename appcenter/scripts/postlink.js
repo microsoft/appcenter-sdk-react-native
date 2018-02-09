@@ -15,9 +15,10 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     })
     .then((file) => {
         console.log(`Added code to initialize iOS AppCenter SDK in ${file}`);
-        return rnpmlink.ios.addPodDeps([
-            { pod: 'AppCenterReactNativeShared', version: '1.2.0' }
-        ]).catch((e) => {
+        return rnpmlink.ios.addPodDeps(
+            [{ pod: 'AppCenterReactNativeShared', version: '1.2.0' }],
+            { platform: 'ios', version: '9.0' }
+        ).catch((e) => {
             console.log(`
             Could not install dependencies using CocoaPods.
             Please refer to the documentation to install dependencies manually.

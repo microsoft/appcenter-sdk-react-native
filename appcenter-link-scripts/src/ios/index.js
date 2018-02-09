@@ -72,7 +72,7 @@ module.exports = {
         }
     },
 
-    addPodDeps(pods) {
+    addPodDeps(pods, minimumTarget = null) {
         if (!PodFile.isCocoaPodsInstalled()) {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
@@ -82,6 +82,9 @@ module.exports = {
                 podFile.addPodLine(pod.pod, pod.podspec, pod.version);
             });
             podFile.eraseOldLines();
+            if (minimumTarget) {
+                podFile.addMinimumDeploymentTarget(minimumTarget.platform, minimumTarget.version);
+            }
             podFile.save();
             return Promise.resolve(podFile.install());
         } catch (e) {
