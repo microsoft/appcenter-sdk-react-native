@@ -60,8 +60,8 @@ Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
 Podfile.prototype.addPlatformToTarget = function (platform, version) {
     const line = `platform :${platform}, '${version}'`;
     const sectionStart = this.getTargetSectionPattern();
-    let keywordMatch = this.nextKeyword(this.fileContents, sectionStart.index);
-    const newLineIndex = this.fileContents.lastIndexOf("\n", keywordMatch.index);
+    const keywordMatch = this.nextKeyword(this.fileContents, sectionStart.index);
+    const newLineIndex = this.fileContents.lastIndexOf('\n', keywordMatch.index);
     const part1 = this.fileContents.slice(0, newLineIndex);
     const part2 = this.fileContents.slice(newLineIndex);
     const indent = '  ';
@@ -119,7 +119,7 @@ Podfile.prototype.getTargetSectionPattern = function () {
 };
 
 Podfile.prototype.isInScope = function (index, scopeRanges) {
-    for (let scope = 0; scope < scopeRanges.length; scope++) { 
+    for (let scope = 0; scope < scopeRanges.length; scope++) {
         if (index > scopeRanges[scope].start && index < scopeRanges[scope].end) {
             return true;
         }
@@ -135,7 +135,7 @@ Podfile.prototype.isLineActive = function (content, index) {
     const newlineSymbol = '\n';
     let diff = 1;
     let previousCharacter = content.charAt(index - (diff++));
-    while(previousCharacter !== commentSymbol && previousCharacter !== newlineSymbol){
+    while (previousCharacter !== commentSymbol && previousCharacter !== newlineSymbol) {
         previousCharacter = content.charAt(index - (diff++));
     }
     return previousCharacter !== commentSymbol;
@@ -143,24 +143,23 @@ Podfile.prototype.isLineActive = function (content, index) {
 
 Podfile.prototype.scopeRanges = function (content) {
     const targetKeyword = 'target';
-    const endKeyword = 'end';
 
-    let result = [];
-    let targetsStack = [];
-    let currentRange = { start: 0, end: 0 };
+    const result = [];
+    const targetsStack = [];
+    const currentRange = { start: 0, end: 0 };
     let currentOffset = 0;
 
     let keywordMatch = this.nextKeyword(content, currentOffset);
-    while(keywordMatch.index >= 0) {
-        if (keywordMatch.keyword === 'target') {
+    while (keywordMatch.index >= 0) {
+        if (keywordMatch.keyword === targetKeyword) {
             currentRange.end = keywordMatch.index - 1;
-            if (targetsStack.length == 0) {
+            if (targetsStack.length === 0) {
                 result.push(Object.assign({}, currentRange));
             }
             targetsStack.push(keywordMatch.index);
         } else {
             targetsStack.pop();
-            if (targetsStack.length == 0) {
+            if (targetsStack.length === 0) {
                 currentRange.start = keywordMatch.index + keywordMatch.keyword.length;
             }
         }
@@ -174,7 +173,6 @@ Podfile.prototype.scopeRanges = function (content) {
 
 Podfile.prototype.sectionBoundary = function (content, position, keyword) {
     const targetKeyword = 'target';
-    const endKeyword = 'end';
     let reverse = false;
     let direction = 1;
     if (keyword === targetKeyword) {
@@ -186,50 +184,47 @@ Podfile.prototype.sectionBoundary = function (content, position, keyword) {
     while (keywordMatch.index >= 0) {
         if (keywordMatch.keyword !== keyword) {
             keywordStack.push(keywordMatch.keyword);
+        } else if (keywordStack.length === 0) {
+            break;
         } else {
-            if (keywordStack.length === 0) {
-                break;
-            } else {
-                keywordStack.pop();
-            }
+            keywordStack.pop();
         }
         keywordMatch = this.nextKeyword(content, keywordMatch.index + (keywordMatch.keyword.length * direction), reverse);
     }
     return keywordMatch.index;
- }
+ };
 
 Podfile.prototype.endOfSection = function (position) {
     return this.sectionBoundary(this.fileContents, position, 'end');
-}
+};
 
 Podfile.prototype.startOfSection = function (position) {
     return this.sectionBoundary(this.fileContents, position, 'target');
-}
+};
 
 Podfile.prototype.nextKeyword = function (content, offset, reverse = false) {
     const targetKeyword = 'target';
     const endKeyword = 'end';
 
-    const targetIndex = reverse ? 
-        content.lastIndexOf(targetKeyword, offset) : 
+    const targetIndex = reverse ?
+        content.lastIndexOf(targetKeyword, offset) :
         content.indexOf(targetKeyword, offset);
-    const endIndex = reverse ? 
-        content.lastIndexOf(endKeyword, offset) : 
+    const endIndex = reverse ?
+        content.lastIndexOf(endKeyword, offset) :
         content.indexOf(endKeyword, offset);
 
     if (reverse) {
-        return targetIndex < endIndex ? 
-            { keyword: endKeyword, index: endIndex } : 
+        return targetIndex < endIndex ?
+            { keyword: endKeyword, index: endIndex } :
             { keyword: targetKeyword, index: targetIndex };
-    } else {
-        if (targetIndex < 0) {
-            return { keyword: endKeyword, index: endIndex };
-        }
-        return targetIndex < endIndex ? 
-            { keyword: targetKeyword, index: targetIndex } : 
-            { keyword: endKeyword, index: endIndex };
     }
-}
+    if (targetIndex < 0) {
+        return { keyword: endKeyword, index: endIndex };
+    }
+    return targetIndex < endIndex ?
+        { keyword: targetKeyword, index: targetIndex } :
+        { keyword: endKeyword, index: endIndex };
+};
 
 Podfile.prototype.save = function () {
     fs.writeFileSync(this.file, this.fileContents);
