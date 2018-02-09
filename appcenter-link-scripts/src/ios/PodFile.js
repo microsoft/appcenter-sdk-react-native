@@ -45,13 +45,10 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
 Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
     try {
         const isGlobalPlatformDefined = this.isGlobalPlatformDefined(platform);
-        console.log(`Platform defined globally = ${isGlobalPlatformDefined}`);
         if (!isGlobalPlatformDefined) {
             const isTargetPlatformDefined = this.isTargetPlatformDefined(platform);
-            console.log(`Platform defined in target = ${isTargetPlatformDefined}`);
             if (!isTargetPlatformDefined) {
                 this.addPlatformToTarget(platform, version);
-                console.log(`Minimum platform ${platform}, '${version}' defined`);
             }
         }
     } catch (e) {
