@@ -18,8 +18,9 @@
 #import "RCTUtils.h"
 #endif
 
-@import AppCenterAnalytics;
-@import AppCenterReactNativeShared;
+#import <AppCenter/MSAppCenter.h>
+#import <AppCenterAnalytics/MSAnalytics.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeAnalytics () <RCTBridgeModule>
 @end
