@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		353594A020360A3B00066F33 /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3535949F20360A3B00066F33 /* AppCenter.framework */; };
 		5419C25A1D81FDA300DDF3A1 /* AppCenterReactNativeShared.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */; };
 		5419C25C1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m */; };
 		9CF027AA1FA2AD85008BDD9A /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF027A91FA2AD85008BDD9A /* AppCenter.framework */; };
@@ -41,6 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3535949F20360A3B00066F33 /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenter.framework; path = "../../../../Downloads/AppCenter-SDK-Apple/iOS/AppCenter.framework"; sourceTree = "<group>"; };
 		5419C2561D81FDA300DDF3A1 /* libAppCenterReactNativeShared.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativeShared.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeShared.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeShared.m; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CF027AA1FA2AD85008BDD9A /* AppCenter.framework in Frameworks */,
+				353594A020360A3B00066F33 /* AppCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +66,7 @@
 		5419C24D1D81FDA300DDF3A1 = {
 			isa = PBXGroup;
 			children = (
+				3535949F20360A3B00066F33 /* AppCenter.framework */,
 				5419C2581D81FDA300DDF3A1 /* AppCenterReactNativeShared */,
 				5419C2571D81FDA300DDF3A1 /* Products */,
 				9CF027A91FA2AD85008BDD9A /* AppCenter.framework */,

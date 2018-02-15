@@ -37,6 +37,76 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
         debug(`Replace ${existingLine} by ${line}`);
         return;
     }
+    const pattern = this.getTargetSectionPattern()[0];
+    this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
+    debug(`${line} ===> ${this.file}`);
+};
+
+Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
+    try {
+        const isGlobalPlatformDefined = this.isGlobalPlatformDefined(platform);
+        if (!isGlobalPlatformDefined) {
+            const isTargetPlatformDefined = this.isTargetPlatformDefined(platform);
+            if (!isTargetPlatformDefined) {
+                this.addPlatformToTarget(platform, version);
+            }
+        }
+    } catch (e) {
+        const line = `platform :${platform}, '${version}'`;
+        console.log(`Could not automatically add line: ${line} to your Podfile. Please make sure that this line is present.`, e);
+    }
+};
+
+Podfile.prototype.addPlatformToTarget = function (platform, version) {
+    const line = `platform :${platform}, '${version}'`;
+    const sectionStart = this.getTargetSectionPattern();
+    const keywordMatch = this.nextKeyword(this.fileContents, sectionStart.index);
+    const newLineIndex = this.fileContents.lastIndexOf('\n', keywordMatch.index);
+    const part1 = this.fileContents.slice(0, newLineIndex);
+    const part2 = this.fileContents.slice(newLineIndex);
+    const indent = '  ';
+    this.fileContents = `${part1}\n${indent}${line}${part2}`;
+};
+
+Podfile.prototype.isGlobalPlatformDefined = function (platform) {
+    const platformPattern = new RegExp(`platform\\s+:${platform}`, 'g');
+    const platformMatches = this.fileContents.match(platformPattern);
+    if (!platformMatches) {
+        return false;
+    }
+    const globalRanges = this.scopeRanges(this.fileContents);
+    let platformIndex = 0;
+    for (let match = 0; match < platformMatches.length; match++) {
+        platformIndex = this.fileContents.indexOf(platformMatches[match], platformIndex + 1);
+        if (this.isInScope(platformIndex, globalRanges) && this.isLineActive(this.fileContents, platformIndex)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Podfile.prototype.isTargetPlatformDefined = function (platform) {
+    const platformPattern = new RegExp(`platform\\s+:${platform}`, 'g');
+    const patternIndex = this.getTargetSectionPattern().index;
+    const startSection = this.startOfSection(patternIndex) + 'target'.length;
+    const endSection = this.endOfSection(patternIndex);
+    const sectionContent = this.fileContents.substring(startSection, endSection);
+    const scopeRanges = this.scopeRanges(sectionContent);
+    const platformMatches = sectionContent.match(platformPattern);
+    if (!platformMatches) {
+        return false;
+    }
+    let platformIndex = 0;
+    for (let match = 0; match < platformMatches.length; match++) {
+        platformIndex = sectionContent.indexOf(platformMatches[match], platformIndex + 1);
+        if (this.isInScope(platformIndex, scopeRanges) && this.isLineActive(sectionContent, platformIndex)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Podfile.prototype.getTargetSectionPattern = function () {
     const patterns = this.fileContents.match(/# Pods for .*/);
     if (patterns === null) {
         throw new Error(`
@@ -45,9 +115,115 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
     the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
     `);
     }
-    const pattern = patterns[0];
-    this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
-    debug(`${line} ===> ${this.file}`);
+    return patterns;
+};
+
+Podfile.prototype.isInScope = function (index, scopeRanges) {
+    for (let scope = 0; scope < scopeRanges.length; scope++) {
+        if (index > scopeRanges[scope].start && index < scopeRanges[scope].end) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Podfile.prototype.isLineActive = function (content, index) {
+    if (index < 0) {
+        return false;
+    }
+    const commentSymbol = '#';
+    const newlineSymbol = '\n';
+    let diff = 1;
+    let previousCharacter = content.charAt(index - (diff++));
+    while (previousCharacter !== commentSymbol && previousCharacter !== newlineSymbol) {
+        previousCharacter = content.charAt(index - (diff++));
+    }
+    return previousCharacter !== commentSymbol;
+};
+
+Podfile.prototype.scopeRanges = function (content) {
+    const targetKeyword = 'target';
+
+    const result = [];
+    const targetsStack = [];
+    const currentRange = { start: 0, end: 0 };
+    let currentOffset = 0;
+
+    let keywordMatch = this.nextKeyword(content, currentOffset);
+    while (keywordMatch.index >= 0) {
+        if (keywordMatch.keyword === targetKeyword) {
+            currentRange.end = keywordMatch.index - 1;
+            if (targetsStack.length === 0) {
+                result.push(Object.assign({}, currentRange));
+            }
+            targetsStack.push(keywordMatch.index);
+        } else {
+            targetsStack.pop();
+            if (targetsStack.length === 0) {
+                currentRange.start = keywordMatch.index + keywordMatch.keyword.length;
+            }
+        }
+        currentOffset = keywordMatch.index + keywordMatch.keyword.length;
+        keywordMatch = this.nextKeyword(content, currentOffset);
+    }
+    currentRange.end = content.length;
+    result.push(Object.assign({}, currentRange));
+    return result;
+};
+
+Podfile.prototype.sectionBoundary = function (content, position, keyword) {
+    const targetKeyword = 'target';
+    let reverse = false;
+    let direction = 1;
+    if (keyword === targetKeyword) {
+        reverse = true;
+        direction = -1;
+    }
+    const keywordStack = [];
+    let keywordMatch = this.nextKeyword(content, position, reverse);
+    while (keywordMatch.index >= 0) {
+        if (keywordMatch.keyword !== keyword) {
+            keywordStack.push(keywordMatch.keyword);
+        } else if (keywordStack.length === 0) {
+            break;
+        } else {
+            keywordStack.pop();
+        }
+        keywordMatch = this.nextKeyword(content, keywordMatch.index + (keywordMatch.keyword.length * direction), reverse);
+    }
+    return keywordMatch.index;
+ };
+
+Podfile.prototype.endOfSection = function (position) {
+    return this.sectionBoundary(this.fileContents, position, 'end');
+};
+
+Podfile.prototype.startOfSection = function (position) {
+    return this.sectionBoundary(this.fileContents, position, 'target');
+};
+
+Podfile.prototype.nextKeyword = function (content, offset, reverse = false) {
+    const targetKeyword = 'target';
+    const endKeyword = 'end';
+
+    const targetIndex = reverse ?
+        content.lastIndexOf(targetKeyword, offset) :
+        content.indexOf(targetKeyword, offset);
+    const endIndex = reverse ?
+        content.lastIndexOf(endKeyword, offset) :
+        content.indexOf(endKeyword, offset);
+
+    if (reverse) {
+        return targetIndex < endIndex ?
+            { keyword: endKeyword, index: endIndex } :
+            { keyword: targetKeyword, index: targetIndex };
+    }
+    if (targetIndex < 0) {
+        return { keyword: endKeyword, index: endIndex };
+    }
+    return targetIndex < endIndex ?
+        { keyword: targetKeyword, index: targetIndex } :
+        { keyword: endKeyword, index: endIndex };
 };
 
 Podfile.prototype.save = function () {
