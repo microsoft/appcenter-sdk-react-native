@@ -351,7 +351,7 @@ namespace Microsoft.AppCenter
                 _channelGroup.SetLogUrl(_logUrl);
             }
             _instanceConfigured = true;
-            AppCenterLog.Assert(AppCenterLog.LogTag, "App Center SDK configured successfully.");
+            AppCenterLog.Info(AppCenterLog.LogTag, "App Center SDK configured successfully.");
         }
 
         internal void StartInstance(params Type[] services)
