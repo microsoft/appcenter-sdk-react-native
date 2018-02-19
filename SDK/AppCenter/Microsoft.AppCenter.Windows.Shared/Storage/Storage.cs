@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 using Newtonsoft.Json;
 using SQLite;
 
@@ -52,7 +53,7 @@ namespace Microsoft.AppCenter.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            _queue.Add(new Task(() => InitializeDatabaseAsync().Wait()));
+            _queue.Add(new Task(() => InitializeDatabaseAsync().RunNotAsync()));
             _queueFlushTask = Task.Run(FlushQueueAsync);
         }
 
@@ -87,7 +88,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 var logJsonString = LogSerializer.Serialize(log);
                 var logEntry = new LogEntry {Channel = channelName, Log = logJsonString};
-                _storageAdapter.InsertAsync(logEntry).Wait();
+                _storageAdapter.InsertAsync(logEntry).RunNotAsync();
             });
             try
             {
@@ -128,7 +129,7 @@ namespace Microsoft.AppCenter.Storage
                     {
                         _storageAdapter
                             .DeleteAsync<LogEntry>(entry => entry.Channel == channelName && entry.Id == id)
-                            .Wait();
+                            .RunNotAsync();
                     }
                 }
                 catch (KeyNotFoundException e)
@@ -163,7 +164,7 @@ namespace Microsoft.AppCenter.Storage
                         $"Deleting all logs from storage for channel '{channelName}'");
                     ClearPendingLogStateWithoutEnqueue(channelName);
                     _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
-                        .Wait();
+                        .RunNotAsync();
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -290,7 +291,7 @@ namespace Microsoft.AppCenter.Storage
                         AppCenterLog.Error(AppCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                         failedToDeserializeALog = true;
                         _storageAdapter.DeleteAsync<LogEntry>(row => row.Id == entry.Id)
-                            .Wait();
+                            .RunNotAsync();
                     }
                 }
                 if (failedToDeserializeALog)
