@@ -53,7 +53,7 @@ namespace Microsoft.AppCenter.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            _queue.Add(new Task(() => InitializeDatabaseAsync().RunNotAsync()));
+            _queue.Add(new Task(() => InitializeDatabaseAsync().GetAwaiter().GetResult()));
             _queueFlushTask = Task.Run(FlushQueueAsync);
         }
 
@@ -88,7 +88,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 var logJsonString = LogSerializer.Serialize(log);
                 var logEntry = new LogEntry {Channel = channelName, Log = logJsonString};
-                _storageAdapter.InsertAsync(logEntry).RunNotAsync();
+                _storageAdapter.InsertAsync(logEntry).GetAwaiter().GetResult();
             });
             try
             {
@@ -129,7 +129,7 @@ namespace Microsoft.AppCenter.Storage
                     {
                         _storageAdapter
                             .DeleteAsync<LogEntry>(entry => entry.Channel == channelName && entry.Id == id)
-                            .RunNotAsync();
+                            .GetAwaiter().GetResult();
                     }
                 }
                 catch (KeyNotFoundException e)
@@ -164,7 +164,7 @@ namespace Microsoft.AppCenter.Storage
                         $"Deleting all logs from storage for channel '{channelName}'");
                     ClearPendingLogStateWithoutEnqueue(channelName);
                     _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
-                        .RunNotAsync();
+                        .GetAwaiter().GetResult();
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -291,7 +291,7 @@ namespace Microsoft.AppCenter.Storage
                         AppCenterLog.Error(AppCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                         failedToDeserializeALog = true;
                         _storageAdapter.DeleteAsync<LogEntry>(row => row.Id == entry.Id)
-                            .RunNotAsync();
+                            .GetAwaiter().GetResult();
                     }
                 }
                 if (failedToDeserializeALog)
