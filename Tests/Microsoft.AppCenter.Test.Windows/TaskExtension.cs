@@ -8,26 +8,11 @@ namespace Microsoft.AppCenter.Test
     {
         public static T RunNotAsync<T>(this Task<T> @this)
         {
-            try
-            {
-                @this.Wait();
-            }
-            catch (AggregateException e)
-            {
-                throw e.InnerException;
-            }
-            return @this.Result;
+            return @this.GetAwaiter().GetResult();
         }
         public static void RunNotAsync(this Task @this)
         {
-            try
-            {
-                @this.Wait();
-            }
-            catch (AggregateException e)
-            {
-                throw e.InnerException;
-            }
+            @this.GetAwaiter().GetResult();
         }
 
         public static Task GetCompletedTask()
