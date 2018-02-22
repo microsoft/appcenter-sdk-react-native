@@ -194,7 +194,7 @@ namespace Microsoft.AppCenter.Storage
             var task = new Task<int>(() =>
             {
                 return _storageAdapter.CountAsync<LogEntry>(entry => entry.Channel == channelName)
-                    .Result;
+                    .GetAwaiter().GetResult();
             });
             try
             {
@@ -273,7 +273,7 @@ namespace Microsoft.AppCenter.Storage
                 var failedToDeserializeALog = false;
                 var retrievedEntries =
                     _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName, limit)
-                        .Result;
+                        .GetAwaiter().GetResult();
                 foreach (var entry in retrievedEntries)
                 {
                     if (_pendingDbIdentifiers.Contains(entry.Id))
