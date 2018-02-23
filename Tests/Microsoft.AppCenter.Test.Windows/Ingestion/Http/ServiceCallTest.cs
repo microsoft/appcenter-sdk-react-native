@@ -23,14 +23,17 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
         {
             _ingestion.CallShouldSucceed = true;
 
-            _serviceCall.ExecuteAsync().RunNotAsync();
+            _serviceCall.ExecuteAsync().GetAwaiter().GetResult();
         }
 
         [TestMethod]
         public void CheckUnsuccessCallback()
         {
             _ingestion.CallShouldSucceed = false;
-            Assert.ThrowsException<IngestionException>(() => _serviceCall.ExecuteAsync().RunNotAsync());
+            Assert.ThrowsException<IngestionException>(() =>
+            {
+                _serviceCall.ExecuteAsync().GetAwaiter().GetResult();
+            });
         }
     }
 }

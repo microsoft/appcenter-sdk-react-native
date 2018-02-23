@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.OK);
-            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            _retryableIngestion.ExecuteCallAsync(call).GetAwaiter().GetResult();
             VerifyAdapterSend(Times.Once());
 
             // No throw any exception
@@ -82,7 +82,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
             _intervals[1].OnRequest += () => Assert.Fail();
 
             // Run all chain not async
-            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            _retryableIngestion.ExecuteCallAsync(call).GetAwaiter().GetResult();
 
             // Must be sent 2 times: 1 - main, 1 - repeat
             VerifyAdapterSend(Times.Exactly(2));
@@ -109,7 +109,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
             _intervals[2].OnRequest += () => VerifyAdapterSend(Times.Exactly(3));
 
             // Run all chain not async
-            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            _retryableIngestion.ExecuteCallAsync(call).GetAwaiter().GetResult();
 
             // Must be sent 4 times: 1 - main, 3 - repeat
             VerifyAdapterSend(Times.Exactly(4));
@@ -134,7 +134,10 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
             _intervals[2].OnRequest += () => Assert.Fail();
 
             // Run all chain not async
-            Assert.ThrowsException<IngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<IngestionException>(() =>
+            {
+                _retryableIngestion.ExecuteCallAsync(call).GetAwaiter().GetResult();
+            });
 
             // Must be sent 2 times: 1 - main, 1 - repeat
             VerifyAdapterSend(Times.Exactly(2));
@@ -148,7 +151,10 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.BadRequest);
-            Assert.ThrowsException<HttpIngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<HttpIngestionException>(() =>
+            {
+                _retryableIngestion.ExecuteCallAsync(call).GetAwaiter().GetResult();
+            });
             VerifyAdapterSend(Times.Once());
         }
 
@@ -157,7 +163,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         {
             SetupAdapterSendResponse(HttpStatusCode.OK);
             var call = PrepareServiceCall();
-            call.ExecuteAsync().RunNotAsync();
+            call.ExecuteAsync().GetAwaiter().GetResult();
 
             // No throw any exception
         }
@@ -167,7 +173,10 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         {
             SetupAdapterSendResponse(HttpStatusCode.NotFound);
             var call = PrepareServiceCall();
-            Assert.ThrowsException<HttpIngestionException>(() => { call.ExecuteAsync().RunNotAsync(); });
+            Assert.ThrowsException<HttpIngestionException>(() =>
+            {
+                call.ExecuteAsync().GetAwaiter().GetResult();
+            });
         }
 
         /// <summary>

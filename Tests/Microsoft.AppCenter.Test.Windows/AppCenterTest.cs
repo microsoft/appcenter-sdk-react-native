@@ -160,7 +160,7 @@ namespace Microsoft.AppCenter.Test
         public void SetEnabledSameValue()
         {
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
-            AppCenter.SetEnabledAsync(AppCenter.IsEnabledAsync().Result).RunNotAsync();
+            AppCenter.SetEnabledAsync(AppCenter.IsEnabledAsync().Result).GetAwaiter().GetResult();
 
             MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = It.IsAny<bool>(), Times.Never());
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, It.IsAny<bool>()), Times.Never());
@@ -175,7 +175,7 @@ namespace Microsoft.AppCenter.Test
         {
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
             var setVal = !AppCenter.IsEnabledAsync().Result;
-            AppCenter.SetEnabledAsync(setVal).RunNotAsync();
+            AppCenter.SetEnabledAsync(setVal).GetAwaiter().GetResult();
 
             MockAppCenterService.Mock.VerifySet(service => service.InstanceEnabled = setVal, Times.Once());
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, setVal), Times.Once());
@@ -190,7 +190,7 @@ namespace Microsoft.AppCenter.Test
         {
             _settingsMock.Setup(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(true);
-            AppCenter.SetEnabledAsync(false).RunNotAsync();
+            AppCenter.SetEnabledAsync(false).GetAwaiter().GetResult();
             AppCenter.Start("appsecret", typeof(MockAppCenterService));
 
             _settingsMock.Verify(settings => settings.SetValue(AppCenter.EnabledKey, false), Times.Once());
@@ -587,7 +587,7 @@ namespace Microsoft.AppCenter.Test
 
             _settingsMock.SetupSequence(settings => settings.GetValue(AppCenter.EnabledKey, It.IsAny<bool>()))
                 .Returns(false).Returns(true);
-            AppCenter.SetEnabledAsync(true).RunNotAsync();
+            AppCenter.SetEnabledAsync(true).GetAwaiter().GetResult();
             _channelMock.Verify(channel => channel.EnqueueAsync(It.Is<StartServiceLog>(log =>
                 log.Services.Count == 1 &&
                 log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());

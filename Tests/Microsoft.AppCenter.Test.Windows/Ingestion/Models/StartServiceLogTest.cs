@@ -55,7 +55,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         {
             var addedLog = new StartServiceLog
             {
-                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
+                Device = new DeviceInformationHelper().GetDeviceInformationAsync().GetAwaiter().GetResult(),
                 Timestamp = DateTime.Now,
                 Services = new List<string> {"Service0", "Service1", "Service2"},
                 Sid = Guid.NewGuid()
@@ -65,7 +65,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             storage.DeleteLogs(StorageTestChannelName);
             storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
-            storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
+            storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).GetAwaiter().GetResult();
             var retrievedLog = retrievedLogs[0] as StartServiceLog;
 
             foreach (var serviceName in addedLog.Services)

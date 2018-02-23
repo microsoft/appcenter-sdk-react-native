@@ -35,7 +35,7 @@ namespace Microsoft.AppCenter.Test
             storage.PutLog(StorageTestChannelName, new TestLog());
 #pragma warning restore 4014
 
-            var result = storage.ShutdownAsync(TimeSpan.FromTicks(1)).RunNotAsync();
+            var result = storage.ShutdownAsync(TimeSpan.FromTicks(1)).GetAwaiter().GetResult();
             Assert.IsFalse(result);
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Test
             storage.PutLog(StorageTestChannelName, new TestLog());
 #pragma warning restore 4014
 
-            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(100)).RunNotAsync();
+            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(100)).GetAwaiter().GetResult();
             Assert.IsTrue(result);
         }
 
@@ -70,10 +70,10 @@ namespace Microsoft.AppCenter.Test
         {
             var mockConnection = new Mock<IStorageAdapter>();
             var storage = new Microsoft.AppCenter.Storage.Storage(mockConnection.Object);
-            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(10)).RunNotAsync();
+            var result = storage.ShutdownAsync(TimeSpan.FromSeconds(10)).GetAwaiter().GetResult();
             Assert.IsTrue(result);
             Assert.ThrowsException<StorageException>(
-                () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()).RunNotAsync());
+                () => storage.GetLogsAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<List<Log>>()).GetAwaiter().GetResult());
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Microsoft.AppCenter.Test
             var fakeStorage = new Microsoft.AppCenter.Storage.Storage(mockAdapter.Object);
             var logs = new List<Log>();
             Assert.ThrowsException<StorageException>(() =>
-                fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).RunNotAsync());
+                fakeStorage.GetLogsAsync(StorageTestChannelName, 1, logs).GetAwaiter().GetResult());
         }
 
         /// <summary>
@@ -110,10 +110,10 @@ namespace Microsoft.AppCenter.Test
                 .ThrowsAsync(new StorageException());
             var fakeStorage = new Microsoft.AppCenter.Storage.Storage(mockAdapter.Object);
 
-            Assert.ThrowsException<StorageException>(() => fakeStorage.PutLog("channel_name", new TestLog()).RunNotAsync());
-            Assert.ThrowsException<StorageException>(() => fakeStorage.DeleteLogs("channel_name", string.Empty).RunNotAsync());
-            Assert.ThrowsException<StorageException>(() => fakeStorage.CountLogsAsync("channel_name").RunNotAsync());
-            Assert.ThrowsException<StorageException>(() => fakeStorage.GetLogsAsync("channel_name", 1, new List<Log>()).RunNotAsync());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.PutLog("channel_name", new TestLog()).GetAwaiter().GetResult());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.DeleteLogs("channel_name", string.Empty).GetAwaiter().GetResult());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.CountLogsAsync("channel_name").GetAwaiter().GetResult());
+            Assert.ThrowsException<StorageException>(() => fakeStorage.GetLogsAsync("channel_name", 1, new List<Log>()).GetAwaiter().GetResult());
         }
     }
 }

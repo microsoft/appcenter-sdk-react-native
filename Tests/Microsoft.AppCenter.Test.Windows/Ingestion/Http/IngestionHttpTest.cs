@@ -29,7 +29,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.OK);
-            _ingestionHttp.ExecuteCallAsync(call).RunNotAsync();
+            _ingestionHttp.ExecuteCallAsync(call).GetAwaiter().GetResult();
             VerifyAdapterSend(Times.Once());
 
             // No throw any exception
@@ -43,7 +43,10 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         {
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.NotFound);
-            Assert.ThrowsException<HttpIngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
+            Assert.ThrowsException<HttpIngestionException>(() =>
+            {
+                _ingestionHttp.ExecuteCallAsync(call).GetAwaiter().GetResult();
+            });
             VerifyAdapterSend(Times.Once());
         }
 
@@ -56,7 +59,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
             var call = PrepareServiceCall();
             call.Cancel();
             SetupAdapterSendResponse(HttpStatusCode.OK);
-            _ingestionHttp.ExecuteCallAsync(call).RunNotAsync();
+            _ingestionHttp.ExecuteCallAsync(call).GetAwaiter().GetResult();
             VerifyAdapterSend(Times.Never());
         }
 

@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Test
         [TestMethod]
         public void CountEmptyStorage()
         {
-            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).GetAwaiter().GetResult();
             Assert.AreEqual(0, count);
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Test
         {
             var numLogsToAdd = 5;
             PutNLogs(numLogsToAdd);
-            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).GetAwaiter().GetResult();
             Assert.AreEqual(numLogsToAdd, count);
         }
 
@@ -49,7 +49,7 @@ namespace Microsoft.AppCenter.Test
             var addedLog = TestLog.CreateTestLog();
             _storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).GetAwaiter().GetResult();
             var retrievedLog = retrievedLogs[0];
             Assert.AreEqual(addedLog, retrievedLog);
         }
@@ -62,7 +62,7 @@ namespace Microsoft.AppCenter.Test
         {
             PutNLogs(5);
             _storage.DeleteLogs(StorageTestChannelName);
-            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).GetAwaiter().GetResult();
             Assert.AreEqual(0, count);
         }
 
@@ -76,9 +76,9 @@ namespace Microsoft.AppCenter.Test
             var limit = 3;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
-            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).GetAwaiter().GetResult();
             _storage.DeleteLogs(StorageTestChannelName, batchId);
-            var numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var numLogsRemaining = _storage.CountLogsAsync(StorageTestChannelName).GetAwaiter().GetResult();
             Assert.AreEqual(numLogsToAdd - retrievedLogs.Count, numLogsRemaining);
         }
 
@@ -92,7 +92,7 @@ namespace Microsoft.AppCenter.Test
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).GetAwaiter().GetResult();
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogs);
         }
 
@@ -106,7 +106,7 @@ namespace Microsoft.AppCenter.Test
             var limit = 3;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).GetAwaiter().GetResult();
             Assert.AreEqual(limit, retrievedLogs.Count);
             CollectionAssert.IsSubsetOf(retrievedLogs, addedLogs);
         }
@@ -121,7 +121,7 @@ namespace Microsoft.AppCenter.Test
             var limit = 7;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).GetAwaiter().GetResult();
             CollectionAssert.AreEquivalent(retrievedLogs, addedLogs);
         }
 
@@ -135,7 +135,7 @@ namespace Microsoft.AppCenter.Test
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
-            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).GetAwaiter().GetResult();
             Assert.IsNotNull(batchId);
         }
 
@@ -149,7 +149,7 @@ namespace Microsoft.AppCenter.Test
             var limit = numLogsToAdd;
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogs = new List<Log>();
-            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).GetAwaiter().GetResult();
             Assert.IsNull(batchId);
         }
 
@@ -164,8 +164,8 @@ namespace Microsoft.AppCenter.Test
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogsFirstTry = new List<Log>();
             var retrievedLogsSecondTry = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).GetAwaiter().GetResult();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).GetAwaiter().GetResult();
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogsFirstTry);
             Assert.AreEqual(0, retrievedLogsSecondTry.Count);
         }
@@ -179,7 +179,7 @@ namespace Microsoft.AppCenter.Test
             var fakeChannelName = StorageTestChannelName.Substring(0, StorageTestChannelName.Length - 1);
             _storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog());
             var retrievedLogs = new List<Log>();
-            var batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).RunNotAsync();
+            var batchId = _storage.GetLogsAsync(fakeChannelName, 1, retrievedLogs).GetAwaiter().GetResult();
             Assert.IsNull(batchId);
         }
 
@@ -194,9 +194,9 @@ namespace Microsoft.AppCenter.Test
             var addedLogs = PutNLogs(numLogsToAdd);
             var retrievedLogsFirstTry = new List<Log>();
             var retrievedLogsSecondTry = new List<Log>();
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsFirstTry).GetAwaiter().GetResult();
             _storage.ClearPendingLogState(StorageTestChannelName);
-            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).RunNotAsync();
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogsSecondTry).GetAwaiter().GetResult();
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogsFirstTry);
             CollectionAssert.AreEquivalent(addedLogs, retrievedLogsSecondTry);
         }
@@ -212,11 +212,11 @@ namespace Microsoft.AppCenter.Test
 
             // Perform an arbitrary operation and wait on it to complete so that database is free when invalid log
             // is inserted.
-            _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            _storage.CountLogsAsync(StorageTestChannelName).GetAwaiter().GetResult();
             connection.Insert(invalidLogEntry);
             var logs = new List<Log>();
-            var batchId = _storage.GetLogsAsync(StorageTestChannelName, 4, logs).RunNotAsync();
-            var count = _storage.CountLogsAsync(StorageTestChannelName).RunNotAsync();
+            var batchId = _storage.GetLogsAsync(StorageTestChannelName, 4, logs).GetAwaiter().GetResult();
+            var count = _storage.CountLogsAsync(StorageTestChannelName).GetAwaiter().GetResult();
             Assert.IsNull(batchId);
             Assert.AreEqual(0, logs.Count);
             Assert.AreEqual(0, count);
