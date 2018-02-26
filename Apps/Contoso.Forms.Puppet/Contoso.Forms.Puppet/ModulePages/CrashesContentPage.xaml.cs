@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using Contoso.Forms.Puppet.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
@@ -233,7 +232,7 @@ namespace Contoso.Forms.Puppet
             }
             Properties.Clear();
             RefreshPropCount();
-            typeof(Crashes).GetTypeInfo().GetDeclaredMethod("TrackError").Invoke(null, new object[] { e, properties });
+            Crashes.TrackError(e, properties);
         }
     }
 }

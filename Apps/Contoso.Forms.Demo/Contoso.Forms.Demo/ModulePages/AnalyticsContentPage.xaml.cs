@@ -6,18 +6,6 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
-    public class Property
-    {
-        public string Name { get; private set; }
-        public string Value { get; private set; }
-
-        public Property(string propertyName, string propertyValue)
-        {
-            Name = propertyName;
-            Value = propertyValue;
-        }
-    }
-
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AnalyticsContentPage : ContentPage
     {
@@ -28,6 +16,7 @@ namespace Contoso.Forms.Demo
             InitializeComponent();
             EventProperties = new List<Property>();
             NumPropertiesLabel.Text = EventProperties.Count.ToString();
+
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
             {
                 Icon = "lightning.png";
@@ -41,19 +30,20 @@ namespace Contoso.Forms.Demo
             EnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
         }
 
-        void AddProperty(object sender, EventArgs e)
+        async void AddProperty(object sender, EventArgs e)
         {
             var addPage = new AddPropertyContentPage();
-            addPage.PropertyAdded += (Property property) => { 
-                EventProperties.Add(property); 
+            addPage.PropertyAdded += (Property property) =>
+            {
+                EventProperties.Add(property);
                 RefreshPropCount();
             };
-            Navigation.PushModalAsync(addPage);
+            await Navigation.PushModalAsync(addPage);
         }
 
-        void PropertiesCellTapped(object sender, EventArgs e)
+        async void PropertiesCellTapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PropertiesContentPage(EventProperties));
+            await Navigation.PushAsync(new PropertiesContentPage(EventProperties));
         }
 
         void TrackEvent(object sender, EventArgs e)
