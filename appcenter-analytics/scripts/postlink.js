@@ -17,9 +17,19 @@ return rnpmlink.ios.checkIfAppDelegateExists()
     })
     .then((answer) => {
         const code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
-            '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
-            '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
-        return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g)
+            [
+                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics',
+                '    AppCenterReactNativeAnalytics.register(withInitiallyEnabled: true)  // Initialize AppCenter analytics'
+            ] :
+            [
+                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics',
+                '    AppCenterReactNativeAnalytics.register(withInitiallyEnabled: false)  // Initialize AppCenter analytics'
+            ];
+        const oldCodeRegExp = [
+            /.*\[AppCenterReactNativeAnalytics register.*/g,
+            /.*AppCenterReactNativeAnalytics.register.*/g
+        ];
+        return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, oldCodeRegExp)
             .catch((e) => {
                 console.log(`Could not initialize AppCenter analytics in AppDelegate. Error Reason - ${e.message}`);
                 return Promise.reject();

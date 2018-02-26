@@ -6,7 +6,10 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         return Promise.reject();
     }))
     .then(() => {
-        const code = '  [AppCenterReactNativePush register];  // Initialize AppCenter push';
+        const code = [
+            '  [AppCenterReactNativePush register];  // Initialize AppCenter push',
+            '    AppCenterReactNativePush.register()  // Initialize AppCenter push'
+        ];
         return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativePush/AppCenterReactNativePush.h>', code)
             .catch((e) => {
                 console.log(`Could not initialize AppCenter push in AppDelegate. Error Reason - ${e.message}`);
