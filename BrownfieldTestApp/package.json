@@ -13,7 +13,7 @@
 		"appcenter-link-scripts": "^1.1.0",
 		"appcenter-push": "^1.1.0",
 		"react": "16.0.0",
-		"react-native": "0.50.4",
+		"react-native": "^0.53.3",
 		"react-navigation": "^1.0.0-beta.21"
 	},
 	"devDependencies": {
