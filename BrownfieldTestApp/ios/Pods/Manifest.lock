@@ -1,24 +1,24 @@
 PODS:
-  - appcenter (1.0.1):
+  - appcenter (1.3.0):
     - AppCenterReactNativeShared
-  - appcenter-analytics (1.0.1):
+  - appcenter-analytics (1.3.0):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
-  - appcenter-crashes (1.0.1):
+  - appcenter-crashes (1.3.0):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
-  - appcenter-push (1.0.1):
+  - appcenter-push (1.3.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
-  - AppCenter/Analytics (1.0.1):
+  - AppCenter/Analytics (1.4.0):
     - AppCenter/Core
-  - AppCenter/Core (1.0.1)
-  - AppCenter/Crashes (1.0.1):
+  - AppCenter/Core (1.4.0)
+  - AppCenter/Crashes (1.4.0):
     - AppCenter/Core
-  - AppCenter/Push (1.0.1):
+  - AppCenter/Push (1.4.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (1.0.1):
-    - AppCenter/Core (= 1.0.1)
+  - AppCenterReactNativeShared (1.3.0):
+    - AppCenter/Core (= 1.4.0)
   - React/BatchedBridge (0.53.3):
     - React/Core
     - React/cxxreact_legacy
@@ -59,10 +59,10 @@ DEPENDENCIES:
   - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
   - appcenter-push (from `../node_modules/appcenter-push/ios`)
-  - AppCenter/Analytics (~> 1.0.1)
-  - AppCenter/Crashes (~> 1.0.1)
-  - AppCenter/Push (~> 1.0.1)
-  - AppCenterReactNativeShared (~> 1.0.1)
+  - AppCenter/Analytics (~> 1.4.0)
+  - AppCenter/Crashes (~> 1.4.0)
+  - AppCenter/Push (~> 1.4.0)
+  - AppCenterReactNativeShared (~> 1.4.0)
   - React/BatchedBridge (from `../node_modules/react-native`)
   - React/Core (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -90,15 +90,15 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
-  appcenter: 1fde7ed68a35cea66a2ad5201feb2431e42a4c07
-  AppCenter: 1d9e08e4ffe7a8eab6e9741a12d27e44074e73a7
-  appcenter-analytics: bf9fcc3c7e043bb54f6f8f5fee8dd0bfdae64b0c
-  appcenter-crashes: ff0dca672ae87c8acefea68073d8ac825c69591d
-  appcenter-push: e304c0b11b7d3ae1823c2d46b93c79cfd0ec1a3f
-  AppCenterReactNativeShared: d7238832c02bd37019083045ed9fa24ba3193779
+  appcenter: 603509de389b5209be3b4960fe061cec114293bb
+  AppCenter: 2f5890b60944971b8c3767269a9d693205a91fef
+  appcenter-analytics: 1e56c378df91a1ad655a39af5a74c8bad6927c6d
+  appcenter-crashes: 6491542ea8aafb6b9a6d7d7f851e20bf1b542dbd
+  appcenter-push: b8464d02226df76308cbe7b271209a927e3e8397
+  AppCenterReactNativeShared: 784f42fbb8f12c9bc587527a650c48d8f001295f
   React: af66244a7d630be2aef03b4ddfe3570e4eff39fc
   yoga: 55da126afc384965b96bff46652464373b330add
 
 PODFILE CHECKSUM: 7aa15cf92b9a30a84eef390668c26978b21ea2ed
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

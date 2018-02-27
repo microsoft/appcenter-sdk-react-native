@@ -1,6 +1,6 @@
 {
   "name": "React",
-  "version": "0.50.4",
+  "version": "0.53.3",
   "summary": "A framework for building native apps using React",
   "description": "React Native apps are built using the React JS\nframework, and render directly to native UIKit\nelements using a fully asynchronous architecture.\nThere is no browser and no HTML. We have picked what\nwe think is the best set of features from these and\nother technologies to build what we hope to become\nthe best product development framework available,\nwith an emphasis on iteration speed, developer\ndelight, continuity of technology, and absolutely\nbeautiful and fast products with no compromises in\nquality or capability.",
   "homepage": "http://facebook.github.io/react-native/",
@@ -8,7 +8,7 @@
   "authors": "Facebook",
   "source": {
     "git": "https://github.com/facebook/react-native.git",
-    "tag": "v0.50.4"
+    "tag": "v0.53.3"
   },
   "default_subspecs": "Core",
   "requires_arc": true,
@@ -31,10 +31,10 @@
       "name": "Core",
       "dependencies": {
         "yoga": [
-          "0.50.4.React"
+          "0.53.3.React"
         ]
       },
-      "source_files": "React/**/*.{c,h,m,mm,S}",
+      "source_files": "React/**/*.{c,h,m,mm,S,cpp}",
       "exclude_files": [
         "**/__tests__/*",
         "IntegrationTests/*",
@@ -46,7 +46,7 @@
         "React/Executors/*"
       ],
       "ios": {
-        "exclude_files": "React/**/RCTTVView.*"
+        "exclude_files": "React/**/RCTTV*.*"
       },
       "tvos": {
         "exclude_files": [
@@ -120,24 +120,35 @@
 
         ]
       },
-      "source_files": "React/**/RCTTVView.{h, m}"
+      "source_files": "React/**/RCTTV*.{h, m}"
     },
     {
       "name": "jschelpers_legacy",
       "source_files": [
-        "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper,InspectorInterfaces}.{cpp,h}",
+        "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper}.{cpp,h}",
         "ReactCommon/jschelpers/systemJSCWrapper.cpp"
       ],
-      "private_header_files": "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper,InspectorInterfaces}.h",
+      "private_header_files": "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper}.h",
       "pod_target_xcconfig": {
         "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\""
       },
       "frameworks": "JavaScriptCore"
     },
     {
+      "name": "jsinspector_legacy",
+      "source_files": "ReactCommon/jsinspector/{InspectorInterfaces}.{cpp,h}",
+      "private_header_files": "ReactCommon/jsinspector/{InspectorInterfaces}.h",
+      "pod_target_xcconfig": {
+        "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\""
+      }
+    },
+    {
       "name": "cxxreact_legacy",
       "dependencies": {
         "React/jschelpers_legacy": [
+
+        ],
+        "React/jsinspector_legacy": [
 
         ]
       },
@@ -166,6 +177,14 @@
       "frameworks": "JavaScriptCore"
     },
     {
+      "name": "jsinspector",
+      "source_files": "ReactCommon/jsinspector/*.{cpp,h}",
+      "private_header_files": "ReactCommon/jsinspector/*.h",
+      "pod_target_xcconfig": {
+        "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\""
+      }
+    },
+    {
       "name": "PrivateDatabase",
       "source_files": "ReactCommon/privatedata/*.{cpp,h}",
       "private_header_files": "ReactCommon/privatedata/*.h",
@@ -179,8 +198,11 @@
         "React/jschelpers": [
 
         ],
-        "boost": [
+        "React/jsinspector": [
 
+        ],
+        "boost-for-react-native": [
+          "1.63.0"
         ],
         "Folly": [
           "2016.09.26.00"
@@ -191,7 +213,7 @@
       "exclude_files": "ReactCommon/cxxreact/SampleCxxModule.*",
       "private_header_files": "ReactCommon/cxxreact/*.h",
       "pod_target_xcconfig": {
-        "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\" \"$(PODS_ROOT)/boost\" \"$(PODS_ROOT)/DoubleConversion\" \"$(PODS_ROOT)/Folly\""
+        "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\" \"$(PODS_ROOT)/boost-for-react-native\" \"$(PODS_ROOT)/DoubleConversion\" \"$(PODS_ROOT)/Folly\""
       }
     },
     {
@@ -299,7 +321,7 @@
 
         ]
       },
-      "source_files": "Libraries/Text/*.{h,m}"
+      "source_files": "Libraries/Text/**/*.{h,m}"
     },
     {
       "name": "RCTVibration",
