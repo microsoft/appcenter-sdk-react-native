@@ -1,6 +1,6 @@
--------------------------------------------
+------------------------------
 App Center SDK for .NET Readme
--------------------------------------------
+------------------------------
 
 Follow the “Getting Started” link to set up your application with App Center SDK. Then click on the service link for each App Center service that you want to enable in your app.
 
@@ -8,7 +8,7 @@ Follow the “Getting Started” link to set up your application with App Center
 Xamarin: https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/xamarin
 UWP: https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/uwp
 
------Analytics----- 
+-----Analytics-----
 Xamarin: https://docs.microsoft.com/en-us/appcenter/sdk/analytics/xamarin
 UWP: https://docs.microsoft.com/en-us/appcenter/sdk/analytics/uwp
 
