@@ -5,27 +5,35 @@
              x:Class="Contoso.Forms.Demo.CrashesContentPage">
     <TableView Intent="Form">
         <TableSection Title="Crashes Settings">
-            <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled"/>
-        </TableSection>
-        <TableSection Title="Attachments">
-            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment"/>
-            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment"/>
+            <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled" />
+            <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell" />
+            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment" />
+            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment" />
+            <ViewCell Tapped="PropertiesCellTapped">
+                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                    <Label Text="Properties" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    <Label Text="0" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="NumPropertiesLabel" />
+                </StackLayout>
+            </ViewCell>
+            <ViewCell Tapped="AddProperty">
+                <Button Text="Add Property" Clicked="AddProperty" InputTransparent="true" />
+            </ViewCell>
         </TableSection>
         <TableSection Title="Test Crashes">
-            <ViewCell Tapped="TestCrash">
-                <Button Text="Generate Test Crash" InputTransparent="true" Clicked="TestCrash"/>
+            <ViewCell Tapped="TestException">
+                <Button Text="Generate Test Exception" InputTransparent="true" Clicked="TestException" />
             </ViewCell>
             <ViewCell Tapped="DivideByZero">
-                <Button Text="Divide 42 by 0" InputTransparent="true" Clicked="DivideByZero"/>
+                <Button Text="Divide 42 by 0" InputTransparent="true" Clicked="DivideByZero" />
             </ViewCell>
-            <ViewCell Tapped="CrashWithAggregateException">
-                <Button Text="Crash With Aggregate Exception" InputTransparent="true" Clicked="CrashWithAggregateException"/>
+            <ViewCell Tapped="AggregateException">
+                <Button Text="Aggregate Exception" InputTransparent="true" Clicked="AggregateException" />
             </ViewCell>
-            <ViewCell Tapped="CrashWithNullReferenceException">
-                <Button Text="Crash With NullReferenceException" InputTransparent="true" Clicked="CrashWithNullReferenceException"/>
+            <ViewCell Tapped="NullReferenceException">
+                <Button Text="NullReferenceException" InputTransparent="true" Clicked="NullReferenceException" />
             </ViewCell>
-            <ViewCell Tapped="CrashAsync">
-                <Button Text="Crash Inside Async Task" InputTransparent="true" Clicked="CrashAsync"/>
+            <ViewCell Tapped="AsyncException">
+                <Button Text="Exception Inside Async Task" InputTransparent="true" Clicked="AsyncException" />
             </ViewCell>
         </TableSection>
     </TableView>
