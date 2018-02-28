@@ -49,9 +49,8 @@ module.exports = {
         const newValue = `<string name="${key}" moduleConfig="true">${value}</string>`;
         if (stringsXml.match(pattern)) {
             stringsXml = stringsXml.replace(pattern, newValue);
-        }
-        else {
-            stringsXml = stringsXml.replace(`\n</resources>`, `\n    ${newValue}\n</resources>`);
+        } else {
+            stringsXml = stringsXml.replace('\n</resources>', `\n    ${newValue}\n</resources>`);
         }
         fs.writeFileSync(stringsFile, stringsXml);
     }

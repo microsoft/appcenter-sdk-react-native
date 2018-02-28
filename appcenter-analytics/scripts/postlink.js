@@ -6,8 +6,8 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
         return Promise.reject();
     }))
-    .then(() => {
-        return inquirer.prompt([{
+    .then(() =>
+        inquirer.prompt([{
             type: 'list',
             name: 'whenToEnableAnalytics',
             message: 'For the Android app, should user tracking be enabled automatically?',
@@ -23,8 +23,8 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         }]).catch((e) => {
             console.log(`Could not determine when to enable AppCenter analytics. Error Reason - ${e.message}`);
             return Promise.reject();
-        });
-    })
+        })
+    )
     .then((androidAnswer) => {
         rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics',
             androidAnswer.whenToEnableAnalytics);
