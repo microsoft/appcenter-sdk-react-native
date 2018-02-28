@@ -1,22 +1,53 @@
 const rnpmlink = require('appcenter-link-scripts');
-const npmPackages = require('./../package.json');
+const inquirer = require('inquirer');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
     .then(() => rnpmlink.ios.initAppCenterConfig().catch((e) => {
         console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
         return Promise.reject();
     }))
-    .then(() => {
-        const prompt = npmPackages.rnpm.params[0];
-        prompt.message = prompt.message.replace(/Android/, 'iOS');
-        return rnpmlink.inquirer.prompt(prompt)
-            .catch((e) => {
-                console.log(`Could not determine when to send AppCenter crashes. Error Reason - ${e.message}`);
-                return Promise.reject();
-            });
+    .then(() =>
+        inquirer.prompt([{
+            type: 'list',
+            name: 'whenToSendCrashes',
+            message: 'For the Android app, should crashes be sent automatically or processed in JavaScript before being sent?',
+            choices: [
+                {
+                    name: 'Automatically',
+                    value: 'ALWAYS_SEND'
+                },
+                {
+                    name: 'Processed in JavaScript by user',
+                    value: 'ASK_JAVASCRIPT'
+                }]
+        }]).catch((e) => {
+            console.log(`Could not determine when to send AppCenter crashes. Error Reason - ${e.message}`);
+            return Promise.reject();
+        })
+    )
+    .then((androidAnswer) => {
+        rnpmlink.android.patchStrings('appCenterCrashes_whenToSendCrashes',
+            androidAnswer.whenToSendCrashes);
+        return inquirer.prompt([{
+            type: 'list',
+            name: 'whenToSendCrashes',
+            message: 'For the iOS app, should crashes be sent automatically or processed in JavaScript before being sent?',
+            choices: [
+                {
+                    name: 'Automatically',
+                    value: 'ALWAYS_SEND'
+                },
+                {
+                    name: 'Processed in JavaScript by user',
+                    value: 'ASK_JAVASCRIPT'
+                }]
+        }]).catch((e) => {
+            console.log(`Could not determine when to send AppCenter crashes. Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
     })
-    .then((answer) => {
-        const code = answer.whenToSendCrashes === 'ALWAYS_SEND' ?
+    .then((iosAnswer) => {
+        const code = iosAnswer.whenToSendCrashes === 'ALWAYS_SEND' ?
             '  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes' :
             '  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes';
         return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>', code, /.*\[AppCenterReactNativeCrashes register.*/g)
