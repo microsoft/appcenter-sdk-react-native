@@ -21,7 +21,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
                     value: 'ASK_JAVASCRIPT'
                 }]
         }]).catch((e) => {
-            console.log(`Could not determine when to enable AppCenter crashes. Error Reason - ${e.message}`);
+            console.log(`Could not determine when to send AppCenter crashes. Error Reason - ${e.message}`);
             return Promise.reject();
         })
     )
@@ -42,7 +42,7 @@ return rnpmlink.ios.checkIfAppDelegateExists()
                     value: 'ASK_JAVASCRIPT'
                 }]
         }]).catch((e) => {
-            console.log(`Could not determine when to enable AppCenter crashes. Error Reason - ${e.message}`);
+            console.log(`Could not determine when to send AppCenter crashes. Error Reason - ${e.message}`);
             return Promise.reject();
         });
     })
