@@ -1,5 +1,5 @@
 const rnpmlink = require('appcenter-link-scripts');
-const npmPackages = require('./../package.json');
+const inquirer = require('inquirer');
 
 return rnpmlink.ios.checkIfAppDelegateExists()
     .then(() => rnpmlink.ios.initAppCenterConfig().catch((e) => {
@@ -7,16 +7,47 @@ return rnpmlink.ios.checkIfAppDelegateExists()
         return Promise.reject();
     }))
     .then(() => {
-        const prompt = npmPackages.rnpm.params[0];
-        prompt.message = prompt.message.replace(/Android/, 'iOS');
-        return rnpmlink.inquirer.prompt(prompt)
-            .catch((e) => {
-                console.log(`Could not determine when to enable AppCenter analytics. Error Reason - ${e.message}`);
-                return Promise.reject();
-            });
+        return inquirer.prompt([{
+            type: 'list',
+            name: 'whenToEnableAnalytics',
+            message: 'For the Android app, should user tracking be enabled automatically?',
+            choices: [
+                {
+                    name: 'Enable Automatically',
+                    value: 'ALWAYS_SEND'
+                },
+                {
+                    name: 'Enable in JavaScript',
+                    value: 'ENABLE_IN_JS'
+                }]
+        }]).catch((e) => {
+            console.log(`Could not determine when to enable AppCenter analytics. Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
     })
-    .then((answer) => {
-        const code = answer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
+    .then((androidAnswer) => {
+        rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics',
+            androidAnswer.whenToEnableAnalytics);
+        return inquirer.prompt([{
+            type: 'list',
+            name: 'whenToEnableAnalytics',
+            message: 'For the iOS app, should user tracking be enabled automatically?',
+            choices: [
+                {
+                    name: 'Enable Automatically',
+                    value: 'ALWAYS_SEND'
+                },
+                {
+                    name: 'Enable in JavaScript',
+                    value: 'ENABLE_IN_JS'
+                }]
+        }]).catch((e) => {
+            console.log(`Could not determine when to enable AppCenter analytics. Error Reason - ${e.message}`);
+            return Promise.reject();
+        });
+    })
+    .then((iosAnswer) => {
+        const code = iosAnswer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
             '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
             '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
         return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g)

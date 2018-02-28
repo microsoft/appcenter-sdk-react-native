@@ -22,25 +22,8 @@
     "appcenter": "1.3.0"
   },
   "rnpm": {
-    "params": [
-      {
-        "type": "list",
-        "name": "whenToEnableAnalytics",
-        "message": "For the Android app, should user tracking be enabled automatically?",
-        "choices": [
-          {
-            "name": "Enable Automatically",
-            "value": "ALWAYS_SEND"
-          },
-          {
-            "name": "Enable in JavaScript",
-            "value": "ENABLE_IN_JS"
-          }
-        ]
-      }
-    ],
     "android": {
-      "packageInstance": "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, ${whenToEnableAnalytics})"
+      "packageInstance": "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics))"
     },
     "commands": {
       "prelink": "node node_modules/appcenter-analytics/scripts/prelink",
