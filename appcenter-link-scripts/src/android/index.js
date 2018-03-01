@@ -97,7 +97,7 @@ module.exports = {
             const appFile = appFiles[0];
             let appContent = fs.readFileSync(appFile, 'utf-8');
             appContent.split('\n').forEach((line) => {
-                const line2 = line + ',';
+                const line2 = `${line},`;
                 if (lines[line]) {
                     appContent = appContent.replace(line, '');
                 }
