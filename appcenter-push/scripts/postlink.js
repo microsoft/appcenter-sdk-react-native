@@ -31,4 +31,6 @@ return rnpmlink.ios.checkIfAppDelegateExists()
             return Promise.reject();
         });
     })
-    .catch(() => Promise.resolve());
+    .then(() =>
+        rnpmlink.android.removeAndroidDuplicateLinks()
+    );
