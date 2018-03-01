@@ -1,6 +1,6 @@
 {
   "name": "appcenter-push",
-  "version": "1.0.1",
+  "version": "1.3.0",
   "summary": "React Native plugin for AppCenter Push",
   "license": "MIT",
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-push/README.md",
@@ -13,7 +13,7 @@
   },
   "source_files": "appcenter-push/ios/AppCenterReactNativePush/*.{h,m}",
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
   "requires_arc": true,
   "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
