@@ -28,7 +28,6 @@
       "packageInstance": "new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes))"
     },
     "commands": {
-      "prelink": "node node_modules/appcenter-crashes/scripts/prelink",
       "postlink": "node node_modules/appcenter-crashes/scripts/postlink"
     }
   },

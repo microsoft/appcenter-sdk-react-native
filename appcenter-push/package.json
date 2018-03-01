@@ -26,7 +26,6 @@
       "packageInstance": "new AppCenterReactNativePushPackage(MainApplication.this)"
     },
     "commands": {
-      "prelink": "node node_modules/appcenter-push/scripts/prelink",
       "postlink": "node node_modules/appcenter-push/scripts/postlink"
     }
   },
