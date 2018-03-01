@@ -97,16 +97,19 @@ module.exports = {
             const appFile = appFiles[0];
             let appContent = fs.readFileSync(appFile, 'utf-8');
             appContent.split('\n').forEach((line) => {
-                const lineKey = line.replace(/(,\s*)$/, '');
-                if (lines[lineKey]) {
+                const line2 = line + ',';
+                if (lines[line]) {
                     appContent = appContent.replace(line, '');
                 }
+                if (lines[line2]) {
+                    appContent = appContent.replace(line2, '');
+                }
                 if (line.match(/^\s*(import.*appcenter|new AppCenterReactNative.*Package).*$/)) {
-                    lines[lineKey] = true;
+                    lines[line] = true;
                 }
             });
             appContent = appContent.replace(/(import.*\n\n)\n/g, '$1');
-            appContent = appContent.replace(/(new AppCenterReactNative.*Package.*\n\n)\n/g, '$1');
+            appContent = appContent.replace(/(new.*AppCenterReactNative.*Package.*\n)\n/g, '$1');
             fs.writeFileSync(appFile, appContent);
         }
     }
