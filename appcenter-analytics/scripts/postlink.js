@@ -26,7 +26,7 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
                 androidAnswer.whenToEnableAnalytics);
             rnpmlink.android.removeAndroidDuplicateLinks();
         }).catch((e) => {
-            console.log(`Could not configure AppCenter analytics for Android. Error Reason - ${e.message}`);
+            console.error(`Could not configure AppCenter Analytics for Android. Error Reason - ${e.message}`);
             return Promise.resolve();
         });
 } else {
@@ -36,11 +36,10 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
 // Then iOS even if Android failed.
 if (rnpmlink.ios.checkIfAppDelegateExists()) {
     promise
-        .then(() => rnpmlink.ios.initAppCenterConfig()
-            .catch((e) => {
-                console.log(`Could not create or update AppCenter config file (AppCenter-Config.plist). Error Reason - ${e.message}`);
-                return Promise.reject();
-            }))
+        .then(() => {
+            console.log('Configuring AppCenter Analytics for iOS');
+            return rnpmlink.ios.initAppCenterConfig();
+        })
         .then(() =>
             inquirer.prompt([{
                 type: 'list',
@@ -55,20 +54,13 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
                         name: 'Enable in JavaScript',
                         value: 'ENABLE_IN_JS'
                     }]
-            }]).catch((e) => {
-                console.log(`Could not determine when to enable AppCenter analytics. Error Reason - ${e.message}`);
-                return Promise.reject();
-            })
+            }])
         )
         .then((iosAnswer) => {
             const code = iosAnswer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
                 '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
                 '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
-            return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g)
-                .catch((e) => {
-                    console.log(`Could not initialize AppCenter analytics in AppDelegate. Error Reason - ${e.message}`);
-                    return Promise.reject();
-                });
+            return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g);
         })
         .then((file) => {
             console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
@@ -78,15 +70,11 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
                     { pod: 'AppCenterReactNativeShared', version: '1.3.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
-            ).catch((e) => {
-                console.log(`
-                    Could not install dependencies using CocoaPods.
-                    Please refer to the documentation to install dependencies manually.
-
-                    Error Reason - ${e.message}
-                `);
-                return Promise.reject();
-            });
+            );
+        })
+        .catch((e) => {
+            console.error(`Could not configure AppCenter Analytics for iOS. Error Reason - ${e.message}`);
+            return Promise.resolve();
         });
 }
 return promise;

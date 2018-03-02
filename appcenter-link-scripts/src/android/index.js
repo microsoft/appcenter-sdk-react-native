@@ -25,13 +25,11 @@ module.exports = {
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
         if (currentAppSecret) {
-            console.log(`Android App Secret is '${currentAppSecret}' set in ${config.AppCenterConfigPath}`);
+            console.log(`Android App Secret is already set in ${config.AppCenterConfigPath}`);
             return Promise.resolve(null);
         }
-
         return inquirer.prompt([{
             type: 'input',
-            default: currentAppSecret,
             message: 'What is the Android App Secret?',
             name: 'app_secret',
         }]).then((answers) => {
