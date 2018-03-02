@@ -8,7 +8,7 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
         .then(() => {
             rnpmlink.android.removeAndroidDuplicateLinks();
         }).catch((e) => {
-            console.error(`Could not configure AppCenter for Android. Error Reason - ${e.message}`);
+            console.error(`Could not configure AppCenter Push for Android. Error Reason - ${e.message}`);
             return Promise.resolve();
         });
 } else {
