@@ -10,12 +10,12 @@ module.exports = {
     checkIfAndroidDirectoryExists() {
         try {
             if (fs.statSync('./android').isDirectory()) {
-                return Promise.resolve();
+                return true;
             }
         } catch (e) {
             debug('Could not find /android directory in your application.');
         }
-        return Promise.reject();
+        return false;
     },
 
     initAppCenterConfig() {

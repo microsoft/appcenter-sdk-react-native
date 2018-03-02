@@ -25,7 +25,6 @@
       "packageInstance": "new AppCenterReactNativePackage(MainApplication.this)"
     },
     "commands": {
-      "prelink": "node node_modules/appcenter/scripts/prelink",
       "postlink": "node node_modules/appcenter/scripts/postlink"
     }
   },

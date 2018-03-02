@@ -26,7 +26,6 @@
       "packageInstance": "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics))"
     },
     "commands": {
-      "prelink": "node node_modules/appcenter-analytics/scripts/prelink",
       "postlink": "node node_modules/appcenter-analytics/scripts/postlink"
     }
   },

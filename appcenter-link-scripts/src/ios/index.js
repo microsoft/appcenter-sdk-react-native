@@ -23,9 +23,9 @@ module.exports = {
             fs.accessSync(appDelegatePath, fs.F_OK);
         } catch (e) {
             debug(`Could not find AppDelegate.m file at ${appDelegatePath}, so could not add the framework for iOS.`);
-            return Promise.reject();
+            return false;
         }
-        return Promise.resolve();
+        return true;
     },
 
     initAppCenterConfig() {
