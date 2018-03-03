@@ -20,8 +20,6 @@ namespace Contoso.Forms.Puppet
         const string AndroidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
         const string IosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
 
-        static bool _configured;
-
         public App()
         {
             InitializeComponent();
@@ -30,7 +28,7 @@ namespace Contoso.Forms.Puppet
 
         protected override void OnStart()
         {
-            if (!_configured)
+            if (!AppCenter.Configured)
             {
                 AppCenterLog.Assert(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
                 AppCenter.LogLevel = LogLevel.Verbose;
@@ -71,7 +69,6 @@ namespace Contoso.Forms.Puppet
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
                 });
-                _configured = true;
             }
         }
 

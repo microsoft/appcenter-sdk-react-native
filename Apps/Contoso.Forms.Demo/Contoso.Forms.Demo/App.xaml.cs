@@ -19,8 +19,6 @@ namespace Contoso.Forms.Demo
         const string androidKey = "987b5941-4fac-4968-933e-98a7ff29237c";
         const string iosKey = "fe2bf05d-f4f9-48a6-83d9-ea8033fbb644";
 
-        static bool _configured;
-
         public App()
         {
             InitializeComponent();
@@ -29,7 +27,7 @@ namespace Contoso.Forms.Demo
 
         protected override void OnStart()
         {
-            if (!_configured)
+            if (!AppCenter.Configured)
             {
                 AppCenter.LogLevel = LogLevel.Verbose;
                 Crashes.SendingErrorReport += SendingErrorReportHandler;
@@ -55,7 +53,6 @@ namespace Contoso.Forms.Demo
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
                 });
-                _configured = true;
             }
         }
 
