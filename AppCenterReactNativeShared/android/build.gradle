@@ -32,8 +32,8 @@ allprojects {
         defaultConfig {
             minSdkVersion 16
             targetSdkVersion 22
-            versionCode 25
-            versionName "1.3.0"
+            versionCode 26
+            versionName "1.4.0"
             group groupId
             version versionName
             buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
@@ -110,7 +110,7 @@ allprojects {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.microsoft.appcenter:appcenter:1.3.0'
+    compile 'com.microsoft.appcenter:appcenter:1.4.0'
 }
 
 artifacts {
