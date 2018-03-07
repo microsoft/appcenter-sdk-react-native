@@ -6,9 +6,9 @@
   on the blue icon on the lower right of App Center portal (https://appcenter.ms).
   Our support team will get in touch to assist you.
 
-  Any issues related to SDK will require you to attach some technical information
-  about your environment. 
-  So please run the following two commands and attach the output to your ticket:
+  Any issues related to SDK, please provide App Center SDK version and technical information
+  about your environment. So please run the following two commands and attach 
+  the output to your ticket:
 
   `react-native info`
   `pod --version`
