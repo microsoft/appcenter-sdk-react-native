@@ -38,5 +38,5 @@ export default interface Crashes {
   isEnabled(): Promise<boolean>;
   setEnabled(shouldEnable: boolean): Promise<void>;
   notifyUserConfirmation(userConfirmation: UserConfirmation): void;
-  setListener(listenerMap: ListenerMap): void;
+  setListener(listenerMap: ListenerMap): Promise<void>;
 };
