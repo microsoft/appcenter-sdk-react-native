@@ -1,5 +1,8 @@
 const rnpmlink = require('appcenter-link-scripts');
 
+console.log('Please enter your Android and iOS app secrets below.');
+console.log('For more information: https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/react-native');
+
 // Configure Android first.
 let promise = null;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
