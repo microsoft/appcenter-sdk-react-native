@@ -5,38 +5,56 @@ export const enum UserConfirmation {
 }
 
 export interface ListenerMap {
-  onBeforeSending?: () => void;
-  onSendingSucceeded?: () => void;
-  onSendingFailed?: () => void;
-  getErrorAttachments?: (report) => Promise<[TextAttachment, FileAttachment]>;
+  onBeforeSending?: (report: ErrorReport) => void;
+  onSendingSucceeded?: (report: ErrorReport) => void;
+  onSendingFailed?: (report: ErrorReport) => void;
+  getErrorAttachments?: (report: ErrorReport) => Promise<ErrorAttachmentLog[]>;
 }
 
-interface TextAttachment {
-  text: string;
-  fileName: string;
-}
-
-interface FileAttachment {
-  data: string;
-  fileName: string;
-  contentType: string;
-}
-
-export interface ErrorAttachmentLog {
-  attachmentWithText(text: string, fileName: string): TextAttachment;
-  attachmentWithBinary(
+export class ErrorAttachmentLog {
+  public static attachmentWithText(text: string, fileName: string): ErrorAttachmentLog;
+  public static attachmentWithBinary(
     data: object,
     fileName: string,
     contentType: string
-  ): FileAttachment;
+  ): ErrorAttachmentLog;
+}
+
+export interface Device {
+  sdkName: string;
+  sdkVersion: string;
+  model: string;
+  oemName: string;
+  osName: string;
+  osVersion: string;
+  osBuild: string;
+  osApiLevel: number;
+  locale: string;
+  timeZoneOffset: number;
+  screenSize: string;
+  appVersion: string;
+  carrierName: string;
+  carrierCountry: string;
+  appBuild: string;
+  appNamespace: string;
+}
+
+export interface ErrorReport {
+  id: string;
+  threadName: string;
+  appErrorTime: string;
+  appStartTime: string;
+  exception: string;
+  exceptionReason: string;
+  device: Device;
 }
 
 export default interface Crashes {
   generateTestCrash(): Promise<void>;
   hasCrashedInLastSession(): Promise<boolean>;
-  lastSessionCrashReport(): Promise<X>;
+  lastSessionCrashReport(): Promise<ErrorReport>;
   isEnabled(): Promise<boolean>;
   setEnabled(shouldEnable: boolean): Promise<void>;
-  notifyUserConfirmation(userConfirmation: UserConfirmation): void;
+  notifyWithUserConfirmation(userConfirmation: UserConfirmation): void;
   setListener(listenerMap: ListenerMap): Promise<void>;
 };

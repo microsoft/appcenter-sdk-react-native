@@ -8,14 +8,10 @@ export const enum AppCenterLogLevel {
     LogLevelNone = 99
 }
 
-export interface CustomProperties {
-    set(key: string, value: string);
-}
-
 export function setLogLevel(logLevel: AppCenterLogLevel): Promise<void>;
 export function getLogLevel(): Promise<AppCenterLog>;
 export function getSdkVersion(): string;
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
 export function getInstallId(): Promise<string>;
-export function setCustomProperties(properties: CustomProperties);
+export function setCustomProperties(properties: { [key: string]: string });
