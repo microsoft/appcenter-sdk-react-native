@@ -24,6 +24,5 @@ _Please list the steps used to reproduce your issue._
     - _e.g. iPhone X physical device, Google Pixel 2 emulator_
 5. What third party libraries are you using? <!-- For .NET, you can find these in your .csproj, package.json, or package.config files -->
     - _example_
-6. Please enable verbose logging for your app using the line below before your call to `AppCenter.Start(...)` and include the logs here.
+6. Please enable verbose logging for your app using `AppCenter.LogLevel = LogLevel.Verbose` before your call to `AppCenter.Start(...)` and include the logs here:
 
-```AppCenter.LogLevel = LogLevel.Verbose;```
