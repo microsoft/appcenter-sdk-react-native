@@ -4,7 +4,7 @@ export const enum UserConfirmation {
   ALWAYS_SEND = 2
 }
 
-export interface ListenerMap {
+export interface CrashesListener {
   onBeforeSending?: (report: ErrorReport) => void;
   onSendingSucceeded?: (report: ErrorReport) => void;
   onSendingFailed?: (report: ErrorReport) => void;
@@ -56,5 +56,5 @@ export default interface Crashes {
   isEnabled(): Promise<boolean>;
   setEnabled(shouldEnable: boolean): Promise<void>;
   notifyWithUserConfirmation(userConfirmation: UserConfirmation): void;
-  setListener(listenerMap: ListenerMap): Promise<void>;
-};
+  setListener(crashesListener: CrashesListener): Promise<void>;
+}
