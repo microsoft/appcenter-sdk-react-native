@@ -11,13 +11,13 @@ _Please list the steps used to reproduce your issue._
 
 ### **Details**
 
-1. Which .NET SDKs are you using?
+1. What is your app platform/SDK?
     - [ ] UWP
     - [ ] Xamarin.Android
     - [ ] Xamarin.iOS
     - [ ] Xamarin.Forms
-2. Which app platform you are developing for?
-    - _Android/Apple/iOS_
+2. Which SDK version are you using?
+    - _e.g. 1.5.0_
 3. Which OS version did you experience the issue on?
     - _e.g. iOS 11, Android 8.1.0_
 4. What device version did you see this error on?  Were you using an emulator or a physical device?
