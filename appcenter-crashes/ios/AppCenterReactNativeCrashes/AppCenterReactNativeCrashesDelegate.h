@@ -16,6 +16,8 @@
 @property RCTEventEmitter* eventEmitter;
 
 - (NSArray<NSString *> *)supportedEvents;
+- (void)startObserving;
+- (void)stopObserving;
 
 @end
 

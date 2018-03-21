@@ -68,6 +68,11 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
+
 - (NSDictionary *)constantsToExport
 {
     return @{};
@@ -76,6 +81,16 @@ RCT_EXPORT_MODULE();
 - (NSArray<NSString *> *)supportedEvents
 {
     return [crashesDelegate supportedEvents];
+}
+
+- (void)startObserving {
+    // Will be called when this module's first listener is added.
+    [crashesDelegate startObserving];
+}
+
+- (void)stopObserving {
+    // Will be called when this module's last listener is removed, or on dealloc.
+    [crashesDelegate stopObserving];
 }
 
 RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve

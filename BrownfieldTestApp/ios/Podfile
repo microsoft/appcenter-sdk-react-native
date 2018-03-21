@@ -33,5 +33,5 @@ target 'BrownfieldTestApp' do
 
   # Add new pods below this line
 
-  platform :ios, '8.0'
+  platform :ios, '9.0'
 end

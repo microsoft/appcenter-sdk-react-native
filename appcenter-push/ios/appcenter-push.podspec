@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.source = { :git => "https://github.com/Microsoft/AppCenter-SDK-React-Native.git" }
   s.source_files = "appcenter-push/ios/AppCenterReactNativePush/*.{h,m}"
-  s.platform          = :ios, '8.0'
+  s.platform          = :ios, '9.0'
   s.requires_arc      = true
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'

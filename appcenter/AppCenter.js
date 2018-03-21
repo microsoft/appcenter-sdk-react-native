@@ -1,4 +1,6 @@
-const AppCenterReactNative = require('react-native').NativeModules.AppCenterReactNative;
+const ReactNative = require('react-native');
+
+const { AppCenterReactNative } = ReactNative.NativeModules;
 const AppCenterLog = require('appcenter/appcenter-log');
 const PackageJson = require('./package.json');
 
@@ -47,7 +49,7 @@ const AppCenter = {
         }
         const type = Object.prototype.toString.apply(properties);
         AppCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
-        return Promise.reject('Could not set custom properties because of invalid type.');
+        return Promise.reject(new Error('Could not set custom properties because of invalid type.'));
     },
 
     getSdkVersion() {

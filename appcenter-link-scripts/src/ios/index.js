@@ -23,26 +23,25 @@ module.exports = {
             fs.accessSync(appDelegatePath, fs.F_OK);
         } catch (e) {
             debug(`Could not find AppDelegate.m file at ${appDelegatePath}, so could not add the framework for iOS.`);
-            return Promise.reject();
+            return false;
         }
-        return Promise.resolve();
+        return true;
     },
 
     initAppCenterConfig() {
+        console.log('Adding AppCenter configuration file...');
         const config = new AppCenterConfig(AppCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         const currentAppSecret = config.get('AppSecret');
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
         if (currentAppSecret) {
-            console.log(`iOS App Secret is '${currentAppSecret}' set in ${config.plistPath}`);
+            console.log(`iOS App Secret is already set in ${config.plistPath}`);
             return Promise.resolve(null);
         }
-
         return inquirer.prompt([{
             type: 'input',
-            default: currentAppSecret,
-            message: 'What is the iOS App Secret?',
+            message: 'What secret does your iOS app use? [None]',
             name: 'AppSecret',
         }]).then((answers) => {
             try {
@@ -60,7 +59,7 @@ module.exports = {
     },
 
     initInAppDelegate(header, initCode, oldInitCodeRegExp) {
-        debug('Starting to write AppDelegate', appDelegatePath);
+        console.log(`Patching file ${appDelegatePath}`);
         try {
             const appDelegate = new AppDelegate(appDelegatePath);
             appDelegate.addHeader(header);
@@ -72,10 +71,8 @@ module.exports = {
         }
     },
 
-    addPodDeps(pods) {
-        if (process.platform !== 'darwin') {
-            return Promise.reject(new Error('Since you are not running on a Mac, CocoaPods installation steps will be skipped.'));
-        }
+    addPodDeps(pods, minimumTarget = null) {
+        console.log('Installing Cocoapods dependencies...');
         if (!PodFile.isCocoaPodsInstalled()) {
             return Promise.reject(new Error('Could not find "pod" command. Is CocoaPods installed?'));
         }
@@ -85,6 +82,9 @@ module.exports = {
                 podFile.addPodLine(pod.pod, pod.podspec, pod.version);
             });
             podFile.eraseOldLines();
+            if (minimumTarget) {
+                podFile.addMinimumDeploymentTarget(minimumTarget.platform, minimumTarget.version);
+            }
             podFile.save();
             return Promise.resolve(podFile.install());
         } catch (e) {
@@ -99,8 +99,9 @@ module.exports = {
 function findFileByAppName(array, appName) {
     if (array.length === 0 || !appName) return null;
 
+    const appNameLower = appName.toLowerCase();
     for (let i = 0; i < array.length; i++) {
-        if (array[i] && array[i].indexOf(appName) !== -1) {
+        if (array[i] && array[i].toLowerCase().indexOf(appNameLower) !== -1) {
             return array[i];
         }
     }

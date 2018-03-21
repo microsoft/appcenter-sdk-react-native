@@ -1,6 +1,6 @@
 {
   "name": "appcenter-analytics",
-  "version": "1.1.0",
+  "version": "1.4.0",
   "description": "React Native plugin for AppCenter Analytics",
   "main": "Analytics.js",
   "repository": {
@@ -19,31 +19,13 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-analytics/README.md",
   "dependencies": {
-    "appcenter": "1.1.0"
+    "appcenter": "1.4.0"
   },
   "rnpm": {
-    "params": [
-      {
-        "type": "list",
-        "name": "whenToEnableAnalytics",
-        "message": "For the Android app, should user tracking be enabled automatically?",
-        "choices": [
-          {
-            "name": "Enable Automatically",
-            "value": "ALWAYS_SEND"
-          },
-          {
-            "name": "Enable in JavaScript",
-            "value": "ENABLE_IN_JS"
-          }
-        ]
-      }
-    ],
     "android": {
-      "packageInstance": "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, ${whenToEnableAnalytics})"
+      "packageInstance": "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics))"
     },
     "commands": {
-      "prelink": "node node_modules/appcenter-analytics/scripts/prelink",
       "postlink": "node node_modules/appcenter-analytics/scripts/postlink"
     }
   },
@@ -56,6 +38,6 @@
     "eslint-plugin-react": "^7.2.1"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "./node_modules/.bin/eslint ."
   }
 }

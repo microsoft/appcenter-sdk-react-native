@@ -44,6 +44,11 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
+
 - (NSDictionary *)constantsToExport
 {
     return @{};
@@ -61,6 +66,16 @@ RCT_EXPORT_MODULE();
     [AppCenterReactNativeShared configureAppCenter];
     [MSPush setDelegate:pushDelegate];
     [MSAppCenter startService:[MSPush class]];
+}
+
+- (void)startObserving {
+    // Will be called when this module's first listener is added.
+    [pushDelegate startObserving];
+}
+
+- (void)stopObserving {
+    // Will be called when this module's last listener is removed, or on dealloc.
+    [pushDelegate stopObserving];
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve

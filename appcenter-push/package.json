@@ -1,6 +1,6 @@
 {
   "name": "appcenter-push",
-  "version": "1.1.0",
+  "version": "1.4.0",
   "description": "React Native plugin for AppCenter Push",
   "main": "Push.js",
   "repository": {
@@ -19,14 +19,13 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-push/README.md",
   "dependencies": {
-    "appcenter": "1.1.0"
+    "appcenter": "1.4.0"
   },
   "rnpm": {
     "android": {
       "packageInstance": "new AppCenterReactNativePushPackage(MainApplication.this)"
     },
     "commands": {
-      "prelink": "node node_modules/appcenter-push/scripts/prelink",
       "postlink": "node node_modules/appcenter-push/scripts/postlink"
     }
   },
@@ -39,6 +38,6 @@
     "eslint-plugin-react": "^7.2.1"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "./node_modules/.bin/eslint ."
   }
 }
