@@ -13,7 +13,7 @@
     <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <iconUrl>https://aka.ms/k76877</iconUrl>
     <dependencies>
       <group targetFramework="uap10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2"/>
