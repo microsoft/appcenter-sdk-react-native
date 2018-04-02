@@ -1,12 +1,15 @@
-<!-- If you have an issue in React Native platform but have not integrated the
-     App Center SDK in your application, please contact support by clicking
-     on the blue icon on the lower right of App Center portal (https://appcenter.ms). -->
+<!--
+    Thanks for your interest in using the App Center SDK for React Native.
+    If your issue is not related to using our React Native SDK but rather about the product experience like the portal or CI,
+    please create a ticket using the blue chat button on any page of the https://appcenter.ms portal instead.
+-->
 
 ### **Description**
 
 Please describe the issue you are facing or a feature you would like to be added to the SDK.
 
 <!-- If making a feature request, remove the below information -->
+
 ### **Repro Steps**
 
 Please list the steps used to reproduce your issue.
