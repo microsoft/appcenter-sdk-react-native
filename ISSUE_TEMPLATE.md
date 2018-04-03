@@ -19,14 +19,14 @@ Please list the steps used to reproduce your issue.
 
 1. What is your app platform (Xamarin.Android or Xamarin.iOS or UWP)?
     - e.g. Xamarin.Forms on all 3 platforms (Android, iOS and UWP).
-2. If Xamarin Forms, are you using shared code, PCL code or .NET standard code for the application? Which .NET standard version or which PCL profile?
+2. If using Xamarin.Forms or if using portable/shared code to call our SDK APIs, are you using shared project, PCL code or .NET standard code for the application? Which .NET standard version or which PCL profile?
     - e.g. .NET standard 2.0.
 2. Which SDK version are you using?
     - e.g. 1.5.0
-3. Which OS version did you experience the issue on?
+4. Which OS version did you experience the issue on?
     - e.g. iOS 11, Android 8.1.0
-4. What device version did you see this error on?  Were you using an emulator or a physical device?
+5. What device version did you see this error on?  Were you using an emulator or a physical device?
     - e.g. iPhone X physical device, Google Pixel 2 emulator
-5. What third party libraries are you using? <!-- For .NET, you can find these in your .csproj, package.json, or package.config files -->
+6. What third party libraries are you using? <!-- For .NET, you can find these in your .csproj, package.json, or package.config files -->
     - example
-6. Please enable verbose logging for your app using `AppCenter.LogLevel = LogLevel.Verbose` before your call to `AppCenter.Start(...)` and include the logs here:
+7. Please enable verbose logging for your app using `AppCenter.LogLevel = LogLevel.Verbose` before your call to `AppCenter.Start(...)` and include the logs here:
