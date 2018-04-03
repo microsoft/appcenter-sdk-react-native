@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "jsx": "react-native",
+        "outDir": "artifacts",
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "declaration": false,
+        "preserveConstEnums": true,
+        "allowJs": false,
+        "sourceMap": true,
+        "noImplicitReturns": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true,
+        "noImplicitThis": true,
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "strictNullChecks": true,
+        "skipLibCheck": true
+    },
+    "exclude": [
+        "index.android.js",
+        "index.ios.js",
+        "artifacts",
+        "node_modules"
+    ]
+}
