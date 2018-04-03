@@ -232,6 +232,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../ios/Vendor/**",
 					"$(SRCROOT)/../../../ios/Pods/**",
 					"$(inherited)",
 				);
@@ -247,6 +248,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../ios/Vendor/**",
 					"$(SRCROOT)/../../../ios/Pods/**",
 					"$(inherited)",
 				);
