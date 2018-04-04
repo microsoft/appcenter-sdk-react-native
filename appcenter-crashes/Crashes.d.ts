@@ -14,7 +14,7 @@ export interface CrashesListener {
 export class ErrorAttachmentLog {
   public static attachmentWithText(text: string, fileName: string): ErrorAttachmentLog;
   public static attachmentWithBinary(
-    data: object,
+    data: string,
     fileName: string,
     contentType: string
   ): ErrorAttachmentLog;
@@ -49,12 +49,11 @@ export interface ErrorReport {
   device: Device;
 }
 
-export default interface Crashes {
-  generateTestCrash(): Promise<void>;
-  hasCrashedInLastSession(): Promise<boolean>;
-  lastSessionCrashReport(): Promise<ErrorReport>;
-  isEnabled(): Promise<boolean>;
-  setEnabled(shouldEnable: boolean): Promise<void>;
-  notifyWithUserConfirmation(userConfirmation: UserConfirmation): void;
-  setListener(crashesListener: CrashesListener): Promise<void>;
-}
+
+export function generateTestCrash(): Promise<void>;
+export function hasCrashedInLastSession(): Promise<boolean>;
+export function lastSessionCrashReport(): Promise<ErrorReport>;
+export function isEnabled(): Promise<boolean>;
+export function setEnabled(shouldEnable: boolean): Promise<void>;
+export function notifyUserConfirmation(userConfirmation: UserConfirmation): void;
+export function setListener(crashesListener: CrashesListener): Promise<void>;

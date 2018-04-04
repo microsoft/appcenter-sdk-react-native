@@ -13,7 +13,7 @@
         "noImplicitAny": true,
         "declaration": false,
         "preserveConstEnums": true,
-        "allowJs": false,
+        "allowJs": true,
         "sourceMap": true,
         "noImplicitReturns": true,
         "noUnusedParameters": true,
@@ -26,10 +26,7 @@
         "strictNullChecks": true,
         "skipLibCheck": true
     },
-    "exclude": [
-        "index.android.js",
-        "index.ios.js",
-        "artifacts",
-        "node_modules"
-    ]
+    "include": [
+        "src/**/*",
+    ],
 }
