@@ -13,10 +13,10 @@ namespace Microsoft.AppCenter.Analytics
     {
         #region static
 
-        private const int MaxEventProperties = 5;
+        private const int MaxEventProperties = 20;
         private const int MaxEventNameLength = 256;
-        private const int MaxEventPropertyKeyLength = 64;
-        private const int MaxEventPropertyValueLength = 64;
+        private const int MaxEventPropertyKeyLength = 125;
+        private const int MaxEventPropertyValueLength = 125;
 
         private static readonly object AnalyticsLock = new object();
 
