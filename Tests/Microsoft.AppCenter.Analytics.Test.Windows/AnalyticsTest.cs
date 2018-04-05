@@ -201,9 +201,9 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             // Property key length exceeds maximum
             _mockChannel.ResetCalls();
-            Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 65), "test" } });
+            Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 126), "test" } });
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-                log.Properties.First().Key.Length == 64)), Times.Once());
+                log.Properties.First().Key.Length == 125)), Times.Once());
             
             // Property value is null
             _mockChannel.ResetCalls();
@@ -213,20 +213,20 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             // Property value length exceeds maximum
             _mockChannel.ResetCalls();
-            Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", new string('?', 65) } });
+            Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", new string('?', 126) } });
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-                log.Properties.First().Value.Length == 64)), Times.Once());
+                log.Properties.First().Value.Length == 125)), Times.Once());
 
             // Properties size exceeds maximum
             _mockChannel.ResetCalls();
             var manyProperties = new Dictionary<string, string>();
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 21; i++)
             {
                 manyProperties["test" + i] = "test" + i;
             }
             Analytics.TrackEvent("test", manyProperties);
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
-                log.Properties.Count == 5)), Times.Once());
+                log.Properties.Count == 20)), Times.Once());
         }
 
         /// <summary>
