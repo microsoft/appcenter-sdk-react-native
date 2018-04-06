@@ -47,12 +47,14 @@ Push.setListener({
 
     // Message can be null on iOS silent push or Android background notifications.
     if (message === null) {
-      message = '<no message>';
+      message = '';
+    } else {
+      message += '\n';
     }
 
     // Any custom name/value pairs added in the portal are in customProperties
     if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-      message += `\nCustom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
+      message += `Custom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
     }
 
     if (AppState.currentState === 'active') {
