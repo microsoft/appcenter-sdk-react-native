@@ -6,8 +6,8 @@ const pushEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNative
 
 const pushNotificationReceivedEvent = 'AppCenterPushNotificationReceived';
 
-
 const Push = {
+
     // async - returns a Promise
     setEnabled(enabled) {
         return AppCenterReactNativePush.setEnabled(enabled);
@@ -22,8 +22,16 @@ const Push = {
     setListener(listenerMap) {
         pushEventEmitter.removeAllListeners(pushNotificationReceivedEvent);
         if (listenerMap && listenerMap.onPushNotificationReceived) {
-            pushEventEmitter.addListener(pushNotificationReceivedEvent, listenerMap.onPushNotificationReceived);
-
+            pushEventEmitter.addListener(pushNotificationReceivedEvent, (pushNotification) => {
+                // On Android it's null but on iOS nil maps to undefined, make it consistent.
+                if (pushNotification.title === undefined) {
+                    pushNotification.title = null;
+                }
+                if (pushNotification.message === undefined) {
+                    pushNotification.message = null;
+                }
+                listenerMap.onPushNotificationReceived(pushNotification);
+            });
             return AppCenterReactNativePush.sendAndClearInitialNotification();
         }
         return Promise.resolve();
