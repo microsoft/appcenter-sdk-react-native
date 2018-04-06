@@ -16,8 +16,8 @@
 #import "RCTUtils.h"
 #endif
 
-@import AppCenter;
-@import AppCenterReactNativeShared;
+#import <AppCenter/AppCenter.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNative () <RCTBridgeModule>
 @end
