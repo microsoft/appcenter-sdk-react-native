@@ -100,6 +100,7 @@ namespace Microsoft.AppCenter.Crashes
         static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception systemException = e.ExceptionObject as Exception;
+            AppCenterLog.Error(LogTag, "Unhandled Exception:", systemException);
             MSException exception = GenerateiOSException(systemException, true);
             byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
             NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
@@ -110,7 +111,9 @@ namespace Microsoft.AppCenter.Crashes
                 ExceptionData = wrapperExceptionData,
                 ProcessId = new NSNumber(Process.GetCurrentProcess().Id)
             };
+            AppCenterLog.Info(LogTag, "Saving wrapper exception...");
             MSWrapperExceptionManager.SaveWrapperException(wrapperException);
+            AppCenterLog.Info(LogTag, "Saved wrapper exception.");
         }
 
         static MSException GenerateiOSException(Exception exception, bool structuredFrames)
