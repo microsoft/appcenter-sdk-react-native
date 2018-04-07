@@ -6,6 +6,7 @@ using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.AppCenter.Analytics.Channel
 {
     internal class SessionTracker : ISessionTracker
@@ -30,20 +31,18 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
         private readonly IChannelUnit _channel;
-        internal Guid _sid = Guid.Empty;
+        internal Guid Sid = Guid.Empty;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
-        private readonly IApplicationSettings _applicationSettings;
         private readonly object _lockObject = new object();
 
-        public SessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
+        public SessionTracker(IChannel channelGroup, IChannelUnit channel)
         {
             // Need to lock in constructor because of the event handler being set for channelGroup.
             lock (_lockObject)
             {
                 _channel = channel;
-                _applicationSettings = applicationSettings;
                 channelGroup.EnqueuingLog += HandleEnqueuingLog;
             }
         }
@@ -90,7 +89,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
                     return;
                 }
                 SendStartSessionIfNeeded();
-                e.Log.Sid = _sid == Guid.Empty ? null : new Guid?(_sid);
+                e.Log.Sid = Sid == Guid.Empty ? null : new Guid?(Sid);
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -98,16 +97,17 @@ namespace Microsoft.AppCenter.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (_sid != Guid.Empty && !HasSessionTimedOut(now))
+            if (Sid != Guid.Empty && !HasSessionTimedOut(now))
             {
                 return;
             }
-            _sid = Guid.NewGuid();
+            var previousSid = Sid;
+            Sid = Guid.NewGuid();
 #pragma warning disable CS0612 // Type or member is obsolete
-            AppCenter.TestAndSetCorrelationId(Guid.Empty, ref _sid);
+            AppCenter.TestAndSetCorrelationId(previousSid, ref Sid);
 #pragma warning restore CS0612 // Type or member is obsolete
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
-            var startSessionLog = new StartSessionLog { Sid = _sid };
+            var startSessionLog = new StartSessionLog { Sid = Sid };
             _channel.EnqueueAsync(startSessionLog);
         }
 
