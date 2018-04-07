@@ -22,13 +22,13 @@
 
     <!-- WinForms -->
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net452" /-->
+    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net45" /-->
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.targets" target="build/uap10.0" />
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="ref/uap10.0" />
-    
+
     <!--x86 -->
     <file src="$uwp_dir$/x86/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
     <file src="$uwp_dir$/x86/WatsonRegistrationUtility.dll" target="runtimes/win10-x86/native"/>
