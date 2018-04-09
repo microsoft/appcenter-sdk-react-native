@@ -1,9 +1,9 @@
-﻿namespace Microsoft.AppCenterAnalytics
+﻿namespace Microsoft.AppCenter.Analytics
 {
     /// <summary>
     /// Analytics SDK module.
     /// </summary>
-    class NamespaceDoc
+    internal class NamespaceDoc
     {
     }
 }

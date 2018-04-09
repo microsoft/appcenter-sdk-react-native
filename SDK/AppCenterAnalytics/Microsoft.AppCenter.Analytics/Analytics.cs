@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Analytics
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Analytics feature.
     /// </summary>
     public class Analytics : IAppCenterService
     {
-        internal Analytics()
+        private Analytics()
         {
         }
 
