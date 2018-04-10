@@ -20,7 +20,7 @@
         <dependency id="Newtonsoft.Json" version="6.0.1"/>
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
       </group>
-      <group targetFramework="net452">
+      <group targetFramework="net45">
         <dependency id="Newtonsoft.Json" version="6.0.1"/>
         <dependency id="sqlite-net-pcl" version="1.3.1"/>
       </group>
@@ -28,8 +28,8 @@
   </metadata>
   <files>
     <file src="$uwp_dir$/Microsoft.AppCenter.dll" target="lib/uap10.0" />
-      
+
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net452" /-->
+    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" /-->
   </files>
 </package>

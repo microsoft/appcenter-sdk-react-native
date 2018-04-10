@@ -22,6 +22,6 @@
     <file src="$uwp_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/uap10.0" />
 
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/net452" /-->
+    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/net45" /-->
   </files>
 </package>
