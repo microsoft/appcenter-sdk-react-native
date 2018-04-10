@@ -61,6 +61,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
+                android:id="@+id/crash_from_dotnet_thread"
+                android:text="@string/CrashDotNetThread"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
                 android:id="@+id/crash_super_not_called"
                 android:text="@string/CrashSuperNotCalled"
                 android:layout_width="match_parent"

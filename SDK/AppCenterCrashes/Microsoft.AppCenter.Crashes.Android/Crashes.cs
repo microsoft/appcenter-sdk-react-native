@@ -11,7 +11,7 @@ using Java.Util;
 
 namespace Microsoft.AppCenter.Crashes
 {
-    #pragma warning disable XA0001 // Find issues with Android API usage, the API level check does not work in libs.
+#pragma warning disable XA0001 // Find issues with Android API usage, the API level check does not work in libs.
     using ModelException = Com.Microsoft.Appcenter.Crashes.Ingestion.Models.Exception;
     using ModelStackFrame = Com.Microsoft.Appcenter.Crashes.Ingestion.Models.StackFrame;
     using Exception = System.Exception;
@@ -85,21 +85,48 @@ namespace Microsoft.AppCenter.Crashes
         // Empty model stack frame used for comparison to optimize JSON payload.
         static readonly ModelStackFrame EmptyModelFrame = new ModelStackFrame();
 
+        // Exception that was caught, to avoid logging it 2 times if both handlers called.
+        static Exception _exception;
+
         static Crashes()
         {
-            AppCenterLog.Info(LogTag, "Set up Xamarin crash handler.");
+            // Set up 2 different handlers, some exceptions are caught by one or the other or both (all scenarios are possible).
+            // When caught on both, only the first invocation will actually be saved by the native SDK.
+            // Android environment is called before app domain in case of both called, and that's what we want as
+            // Android environment has a better stack trace object (no JavaProxyThrowable wrapper that cannot be serialized).
+            // Client side exception object after restart not possible most of the time with AppDomain when it's JavaProxyThrowable.
+            // AndroidEnvironment is also called before Java SDK exception handler (which itself not always called...).
+            // App domain fallback is thus used only when both android environment and Java SDK handler cannot catch.
+            // From our tests if only app domain is called, then it's not a JavaProxyThrowable, so stack trace looks fine.
+            AppCenterLog.Info(LogTag, "Set up Xamarin crash handlers.");
             AndroidEnvironment.UnhandledExceptionRaiser += OnUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
+            // Set up bridge between Java listener and .NET events/callbacks.
             AndroidCrashes.SetListener(new AndroidCrashListener());
         }
 
         static void OnUnhandledException(object sender, RaiseThrowableEventArgs e)
         {
-            var exception = e.Exception;
-            AppCenterLog.Error(LogTag, "Unhandled Exception:", exception);
-            var javaThrowable = exception as Throwable;
-            var modelException = GenerateModelException(exception, true);
-            byte[] rawException = javaThrowable == null ? CrashesUtils.SerializeException(exception) : null;
-            WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), javaThrowable, modelException, rawException);
+            OnUnhandledException(e.Exception, "AndroidEnvironment");
+        }
+
+        static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            OnUnhandledException(e.ExceptionObject as Exception, "AppDomain");
+        }
+
+        static void OnUnhandledException(Exception exception, string source)
+        {
+            if (_exception == null)
+            {
+                AppCenterLog.Error(LogTag, $"Unhandled Exception from source={source}", exception);
+                var javaThrowable = exception as Throwable;
+                var modelException = GenerateModelException(exception, true);
+                byte[] rawException = javaThrowable == null ? CrashesUtils.SerializeException(exception) : null;
+                WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), javaThrowable, modelException, rawException);
+                _exception = exception;
+            }
         }
 
 #pragma warning disable XS0001 // Find usages of mono todo items
