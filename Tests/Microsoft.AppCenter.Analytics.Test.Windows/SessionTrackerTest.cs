@@ -233,6 +233,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             // Correlation ID is Empty.
             AppCenter.Instance.InstanceCorrelationId = Guid.Empty;
+            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
             _sessionTracker.Resume();
 
             // Guid.Empty should not be equal to correlation id.
@@ -308,6 +309,23 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             Assert.AreNotEqual(Guid.Empty, sid2);
             Assert.AreNotEqual(sid1, sid2);
             Assert.AreEqual(externalCorrelationid, sid2);
+        }
+
+        [TestMethod]
+        public void VerifySessionChangesOnReenabling()
+        {
+            _sessionTracker.Resume();
+            var sid1 = _sessionTracker.Sid;
+            Assert.AreNotEqual(Guid.Empty, sid1);
+
+            // Disable and enable again.
+            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
+            _sessionTracker.Resume();
+
+            // Verify second session has a different identifier, not the new one analytics wanted but the updated correlation identifier instead.
+            var sid2 = _sessionTracker.Sid;
+            Assert.AreNotEqual(Guid.Empty, sid2);
+            Assert.AreNotEqual(sid1, sid2);
         }
     }
 }
