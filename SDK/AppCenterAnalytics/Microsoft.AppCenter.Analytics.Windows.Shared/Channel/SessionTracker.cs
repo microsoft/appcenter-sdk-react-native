@@ -94,10 +94,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
                     return;
                 }
                 SendStartSessionIfNeeded();
-                if (Sid != _initialSid)
-                {
-                    e.Log.Sid = Sid;
-                }
+                e.Log.Sid = Sid;
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
