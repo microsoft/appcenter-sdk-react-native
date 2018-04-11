@@ -19,20 +19,30 @@ namespace Microsoft.AppCenter.Test.Channel
     public class ChannelTest
     {
         private AggregateException _unobservedTaskException;
+
         private Mock<IIngestion> _mockIngestion;
+
         private Channel _channel;
+
         private IStorage _storage;
 
         private const string ChannelName = "test";
+
         private const int MaxLogsPerBatch = 3;
+
         private const int MaxParallelBatches = 3;
 
         // Event semaphores for invokation verification
         private const int SendingLogSemaphoreIdx = 0;
+
         private const int SentLogSemaphoreIdx = 1;
+
         private const int FailedToSendLogSemaphoreIdx = 2;
+
         private const int EnqueuingLogSemaphoreIdx = 3;
+
         private const int FilteringLogSemaphoreIdx = 4;
+
         private List<SemaphoreSlim> _eventSemaphores;
 
         public ChannelTest()

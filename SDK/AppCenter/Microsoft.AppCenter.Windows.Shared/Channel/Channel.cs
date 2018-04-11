@@ -16,20 +16,35 @@ namespace Microsoft.AppCenter.Channel
     public sealed class Channel : IChannelUnit
     {
         private const int ClearBatchSize = 100;
+
         private Ingestion.Models.Device _device;
+
         private readonly string _appSecret;
+
         private readonly IStorage _storage;
+
         private readonly IIngestion _ingestion;
+
         private readonly IDeviceInformationHelper _deviceInfoHelper = new DeviceInformationHelper();
+
         private readonly IDictionary<string, List<Log>> _sendingBatches = new Dictionary<string, List<Log>>();
+
         private readonly ISet<IServiceCall> _calls = new HashSet<IServiceCall>();
+
         private readonly int _maxParallelBatches;
+
         private readonly int _maxLogsPerBatch;
+
         private long _pendingLogCount;
+
         private bool _enabled;
+
         private bool _discardLogs;
+
         private bool _batchScheduled;
+
         private TimeSpan _batchTimeInterval;
+
         private readonly StatefulMutex _mutex = new StatefulMutex();
 
         internal Channel(string name, int maxLogsPerBatch, TimeSpan batchTimeInterval, int maxParallelBatches,
@@ -148,16 +163,16 @@ namespace Microsoft.AppCenter.Channel
                 if (discardLogs)
                 {
                     AppCenterLog.Warn(AppCenterLog.LogTag, "Channel is disabled; logs are discarded");
-                    AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke SendingLog event for channel '{Name}'");
+                    AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke SendingLog event for channel '{Name}'");
                     SendingLog?.Invoke(this, new SendingLogEventArgs(log));
-                    AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
+                    AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
                     return;
                 }
-                AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke EnqueuingLog event for channel '{Name}'");
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke EnqueuingLog event for channel '{Name}'");
                 EnqueuingLog?.Invoke(this, new EnqueuingLogEventArgs(log));
                 await PrepareLogAsync(log, state).ConfigureAwait(false);
-                AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke FilteringLog event for channel '{Name}'");
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke FilteringLog event for channel '{Name}'");
                 var filteringLogEventArgs = new FilteringLogEventArgs(log);
                 FilteringLog?.Invoke(this, filteringLogEventArgs);
                 if (filteringLogEventArgs.FilterRequested)
@@ -255,7 +270,7 @@ namespace Microsoft.AppCenter.Channel
 
         private void Resume(State state)
         {
-            AppCenterLog.Verbose(AppCenterLog.LogTag, $"Resume channel: '{Name}'");
+            AppCenterLog.Debug(AppCenterLog.LogTag, $"Resume channel: '{Name}'");
             try
             {
                 using (_mutex.GetLock(state))
@@ -274,11 +289,11 @@ namespace Microsoft.AppCenter.Channel
 
         private void Suspend(State state, bool deleteLogs, Exception exception)
         {
-            AppCenterLog.Verbose(AppCenterLog.LogTag, $"Suspend channel: '{Name}'");
+            AppCenterLog.Debug(AppCenterLog.LogTag, $"Suspend channel: '{Name}'");
             try
             {
-                List<string> sendingBatches = null;
-                List<Log> unsentLogs = null;
+                IList<string> sendingBatches = null;
+                IList<Log> unsentLogs = null;
                 using (_mutex.GetLock(state))
                 {
                     _enabled = false;
@@ -296,13 +311,13 @@ namespace Microsoft.AppCenter.Channel
                 {
                     foreach (var log in unsentLogs)
                     {
-                        AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
+                        AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
                         FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
                     }
                 }
                 if (deleteLogs)
                 {
-                    List<IServiceCall> calls;
+                    IList<IServiceCall> calls;
                     using (_mutex.GetLock(state))
                     {
                         calls = _calls.ToList();
@@ -347,9 +362,9 @@ namespace Microsoft.AppCenter.Channel
                     }
                     foreach (var log in logs)
                     {
-                        AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke SendingLog for channel '{Name}'");
+                        AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke SendingLog for channel '{Name}'");
                         SendingLog?.Invoke(this, new SendingLogEventArgs(log));
-                        AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
+                        AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
                         FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, new CancellationException()));
                     }
                 }
@@ -397,7 +412,7 @@ namespace Microsoft.AppCenter.Channel
                     {
                         foreach (var log in logs)
                         {
-                            AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke SendingLog event for channel '{Name}'");
+                            AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke SendingLog event for channel '{Name}'");
                             SendingLog?.Invoke(this, new SendingLogEventArgs(log));
                         }
                     }
@@ -465,7 +480,7 @@ namespace Microsoft.AppCenter.Channel
 
         private void HandleSendingSuccess(State state, string batchId)
         {
-            List<Log> removedLogs;
+            IList<Log> removedLogs;
             using (_mutex.GetLock(state))
             {
                 removedLogs = _sendingBatches[batchId];
@@ -475,7 +490,7 @@ namespace Microsoft.AppCenter.Channel
             {
                 foreach (var log in removedLogs)
                 {
-                    AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke SentLog event for channel '{Name}'");
+                    AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke SentLog event for channel '{Name}'");
                     SentLog?.Invoke(this, new SentLogEventArgs(log));
                 }
             }
@@ -491,7 +506,7 @@ namespace Microsoft.AppCenter.Channel
 
         private void HandleSendingFailure(State state, string batchId, Exception exception)
         {
-            List<Log> removedLogs;
+            IList<Log> removedLogs;
             using (_mutex.GetLock(state))
             {
                 removedLogs = _sendingBatches[batchId];
@@ -501,7 +516,7 @@ namespace Microsoft.AppCenter.Channel
             {
                 foreach (var log in removedLogs)
                 {
-                    AppCenterLog.Verbose(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
+                    AppCenterLog.Debug(AppCenterLog.LogTag, $"Invoke FailedToSendLog event for channel '{Name}'");
                     FailedToSendLog?.Invoke(this, new FailedToSendLogEventArgs(log, exception));
                 }
             }
