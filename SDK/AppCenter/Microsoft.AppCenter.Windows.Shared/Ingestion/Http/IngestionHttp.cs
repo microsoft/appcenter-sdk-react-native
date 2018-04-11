@@ -17,7 +17,9 @@ namespace Microsoft.AppCenter.Ingestion.Http
         internal const string InstallId = "Install-ID";
 
         private const int MaximumCharactersDisplayedForAppSecret = 8;
+
         private string _baseLogUrl;
+
         private readonly IHttpNetworkAdapter _httpNetwork;
 
         public IngestionHttp(IHttpNetworkAdapter httpNetwork)

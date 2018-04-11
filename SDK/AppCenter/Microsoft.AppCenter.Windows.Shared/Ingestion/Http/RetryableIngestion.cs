@@ -16,6 +16,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
         };
         
         private readonly IDictionary<ServiceCall, Timer> _calls = new Dictionary<ServiceCall, Timer>();
+
         private readonly TimeSpan[] _retryIntervals;
 
         public RetryableIngestion(IIngestion decoratedApi)
@@ -129,7 +130,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
 
         private void CancelAllCalls()
         {
-            List<ServiceCall> calls;
+            IList<ServiceCall> calls;
             lock (_calls)
             {
                 if (_calls.Count == 0)

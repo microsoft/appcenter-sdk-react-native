@@ -6,7 +6,8 @@ namespace Microsoft.AppCenter.Ingestion.Http
 {
     internal sealed class NetworkStateIngestion : IngestionDecorator
     {
-        private readonly HashSet<ServiceCall> _calls = new HashSet<ServiceCall>();
+        private readonly ISet<ServiceCall> _calls = new HashSet<ServiceCall>();
+
         private readonly INetworkStateAdapter _networkStateAdapter;
 
         public NetworkStateIngestion(IIngestion decoratedApi, INetworkStateAdapter networkStateAdapter)
@@ -84,7 +85,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
 
         private void CancelAllCalls()
         {
-            List<ServiceCall> calls;
+            IList<ServiceCall> calls;
             lock (_calls)
             {
                 if (_calls.Count == 0)
