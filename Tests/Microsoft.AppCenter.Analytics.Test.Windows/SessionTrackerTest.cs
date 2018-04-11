@@ -262,22 +262,27 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void VerifyCorrelationIdIsUpdatedWhenSessionChanges()
         {
+            var initialSid = Guid.Empty;
 #pragma warning disable CS0612 // Type or member is obsolete
+            AppCenter.TestAndSetCorrelationId(Guid.Empty, ref initialSid);
+#pragma warning restore CS0612 // Type or member is obsolete
             _sessionTracker.Resume();
             var sid1 = _sessionTracker.Sid;
-            Assert.AreNotEqual(Guid.Empty, sid1);
+            Assert.AreNotEqual(initialSid, sid1);
 
             // Cause session expiration and start new session.
             _sessionTracker.Pause();
             Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
             _sessionTracker.Resume();
+
+#pragma warning disable CS0612 // Type or member is obsolete
             Assert.IsTrue(AppCenter.TestAndSetCorrelationId(_sessionTracker.Sid,
                 ref AppCenter.Instance.InstanceCorrelationId));
 #pragma warning restore CS0612 // Type or member is obsolete
 
             // Verify second session has a different identifier.
             var sid2 = _sessionTracker.Sid;
-            Assert.AreNotEqual(Guid.Empty, sid2);
+            Assert.AreNotEqual(initialSid, sid2);
             Assert.AreNotEqual(sid1, sid2);
         }
 

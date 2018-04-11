@@ -31,7 +31,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
         private readonly IChannelUnit _channel;
-        private readonly Guid _initialGuid;
+        private readonly Guid _initialSid;
         internal Guid Sid;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
@@ -46,9 +46,9 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 _channel = channel;
                 channelGroup.EnqueuingLog += HandleEnqueuingLog;
 #pragma warning disable 612
-                AppCenter.TestAndSetCorrelationId(Guid.Empty, ref _initialGuid);
-                Sid = _initialGuid;
+                AppCenter.TestAndSetCorrelationId(Guid.Empty, ref _initialSid);
 #pragma warning restore 612
+                Sid = _initialSid;
             }
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (Sid != _initialGuid && !HasSessionTimedOut(now))
+            if (Sid != _initialSid && !HasSessionTimedOut(now))
             {
                 return;
             }
