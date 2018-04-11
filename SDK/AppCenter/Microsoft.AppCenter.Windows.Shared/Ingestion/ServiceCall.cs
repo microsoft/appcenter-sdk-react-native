@@ -9,21 +9,29 @@ namespace Microsoft.AppCenter.Ingestion
     internal class ServiceCall : IServiceCall
     {
         private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
+
         private Action<IServiceCall> _continuationAction;
+
         private readonly object _lock = new object();
+
         private bool _disposed;
 
         public bool IsCanceled => CancellationToken.IsCancellationRequested;
+
         public bool IsCompleted { get; private set; }
+
         public bool IsFaulted => Exception != null;
 
         public string Result { get; private set; }
+
         public Exception Exception { get; private set; }
 
         public CancellationToken CancellationToken => _tokenSource.Token;
 
         public string AppSecret { get; }
+
         public Guid InstallId { get; }
+
         public IList<Log> Logs { get; }
         
         public ServiceCall()

@@ -373,7 +373,7 @@ namespace Microsoft.AppCenter.Test.Channel
             // wait up to 20 seconds for suspend to finish
             bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
             Assert.IsTrue(disabled);
-            
+
             _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Once);
             Assert.IsFalse(_channel.IsEnabled);
         }
