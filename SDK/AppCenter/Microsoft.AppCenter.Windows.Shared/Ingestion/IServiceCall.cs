@@ -1,21 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AppCenter.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Ingestion
 {
     public interface IServiceCall : IDisposable
     {
-        IIngestion Ingestion { get; }
-        IList<Log> Logs { get; }
-        string AppSecret { get; }
-        Guid InstallId { get; }
-        CancellationToken CancellationToken { get; }
+        /// <summary>
+        /// Check if the call is completed due to cancellation.
+        /// </summary>
+        bool IsCanceled { get; }
 
-        ///<exception cref="IngestionException"/>
-        Task ExecuteAsync();
+        /// <summary>
+        /// Check if the call is completed.
+        /// </summary>
+        bool IsCompleted { get; }
+
+        /// <summary>
+        /// Check if the call is completed due to an unhandled exception.
+        /// </summary>
+        bool IsFaulted { get; }
+
+        /// <summary>
+        /// HTTP payload.
+        /// </summary>
+        string Result { get; }
+
+        /// <summary>
+        /// The exception thrown from the pipeline.
+        /// </summary>
+        Exception Exception { get; }
+
+        /// <summary>
+        /// Handle call results.
+        /// </summary>
+        /// <param name="continuationAction">The action to perform when the call is completed.</param>
+        void ContinueWith(Action<IServiceCall> continuationAction);
+
+        /// <summary>
+        /// Cancel the call if possible.
+        /// </summary>
         void Cancel();
     }
 }

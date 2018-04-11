@@ -104,12 +104,11 @@
     <Compile Include="IngestionExceptions.cs" />
     <Compile Include="Ingestion\Http\HttpIngestionTest.cs" />
     <Compile Include="Ingestion\Http\HttpNetworkAdapterTest.cs" />
-    <Compile Include="Ingestion\Http\IngestionHttpExceptionTest.cs" />
+    <Compile Include="Ingestion\Http\HttpIngestionExceptionTest.cs" />
     <Compile Include="Ingestion\Http\IngestionHttpTest.cs" />
     <Compile Include="Ingestion\Http\NetworkStateTest.cs" />
     <Compile Include="Ingestion\Http\RetryableTest.cs" />
-    <Compile Include="Ingestion\Http\ServiceCallTest.cs" />
-    <Compile Include="Ingestion\Http\TestServiceCall.cs" />
+    <Compile Include="Ingestion\ServiceCallTest.cs" />
     <Compile Include="Ingestion\IngestionExceptionTest.cs" />
     <Compile Include="Ingestion\Models\CustomPropertiesLogTest.cs" />
     <Compile Include="Ingestion\Models\JsonLogConverterTest.cs" />
@@ -120,7 +119,6 @@
     <Compile Include="Ingestion\Models\DeviceTest.cs" />
     <Compile Include="AppCenterServiceTest.cs" />
     <Compile Include="AppCenterTest.cs" />
-    <Compile Include="MockIngestion.cs" />
     <Compile Include="MockAppCenterService.cs" />
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\MockStorage.cs" />

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Synchronization;
@@ -66,12 +64,11 @@ namespace Microsoft.AppCenter.Push
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
                 AppCenterLog.Debug(LogTag, "Getting push token...");
                 var state = _mutex.State;
-                Task.Run(async () =>
+                CreatePushNotificationChannel(channel =>
                 {
-                    var channel = await CreatePushNotificationChannelAsync().ConfigureAwait(false);
                     try
                     {
-                        using (await _mutex.GetLockAsync(state).ConfigureAwait(false))
+                        using (_mutex.GetLock(state))
                         {
                             var pushToken = channel?.Uri;
                             if (!string.IsNullOrEmpty(pushToken))
@@ -141,51 +138,49 @@ namespace Microsoft.AppCenter.Push
             }
         }
 
-        private async Task<PushNotificationChannel> CreatePushNotificationChannelAsync()
+        private void CreatePushNotificationChannel(Action<PushNotificationChannel> created)
         {
-            PushNotificationChannel channel = null;
-            try
-            {
-                // If this isn't the first time after installation, the notification channel is created successfully even without network.
-                channel = await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync()
-                    .AsTask().ConfigureAwait(false);
-            }
-            catch (Exception exception)
+            void OnNetworkStateChange(object sender, EventArgs e)
             {
                 if (NetworkStateAdapter.IsConnected)
                 {
-                    AppCenterLog.Error(LogTag, "Unable to create notification channel.", exception);
-                    return null;
+                    NetworkStateAdapter.NetworkStatusChanged -= OnNetworkStateChange;
+                    AppCenterLog.Debug(LogTag, "Second attempt to create notification channel...");
+
+                    // Second attempt is the last one anyway.
+                    new WindowsPushNotificationChannelManager()
+                        .CreatePushNotificationChannelForApplicationAsync()
+                        .AsTask().ContinueWith(task =>
+                    {
+                        if (task.IsFaulted)
+                        {
+                            AppCenterLog.Error(LogTag, "Unable to create notification channel.", task.Exception);
+                            return;
+                        }
+                        created?.Invoke(task.Result);
+                    });
                 }
             }
-            if (channel != null)
+
+            // If this isn't the first time after installation, the notification channel is created successfully even without network.
+            new WindowsPushNotificationChannelManager()
+                .CreatePushNotificationChannelForApplicationAsync()
+                .AsTask().ContinueWith(task =>
             {
-                return channel;
-            }
-            AppCenterLog.Debug(LogTag, "The network isn't connected, another attempt will be made after the network is available.");
-            var networkSemaphore = new SemaphoreSlim(0);
-            void NetworkStateChangeHandler(object sender, EventArgs e)
-            {
-                if (NetworkStateAdapter.IsConnected)
+                if (task.IsFaulted && NetworkStateAdapter.IsConnected)
                 {
-                    networkSemaphore.Release();
+                    AppCenterLog.Error(LogTag, "Unable to create notification channel.", task.Exception);
+                    return;
                 }
-            }
-            NetworkStateAdapter.NetworkStatusChanged += NetworkStateChangeHandler;
-            await networkSemaphore.WaitAsync().ConfigureAwait(false);
-            NetworkStateAdapter.NetworkStatusChanged -= NetworkStateChangeHandler;
-            AppCenterLog.Debug(LogTag, "Second attempt to create notification channel...");
-            try
-            {
-                // Second attempt is the last one anyway.
-                return await new WindowsPushNotificationChannelManager().CreatePushNotificationChannelForApplicationAsync()
-                    .AsTask().ConfigureAwait(false);
-            }
-            catch (Exception exception)
-            {
-                AppCenterLog.Error(LogTag, "Unable to create notification channel.", exception);
-                return null;
-            }
+                if (!task.IsFaulted && task.Result != null)
+                {
+                    created?.Invoke(task.Result);
+                    return;
+                }
+                AppCenterLog.Debug(LogTag, "The network isn't connected, another attempt to crate push notification channel " +
+                                           "will be made after the network is available.");
+                NetworkStateAdapter.NetworkStatusChanged += OnNetworkStateChange;
+            });
         }
 
         internal static PushNotificationReceivedEventArgs ParseAppCenterPush(XmlDocument content)

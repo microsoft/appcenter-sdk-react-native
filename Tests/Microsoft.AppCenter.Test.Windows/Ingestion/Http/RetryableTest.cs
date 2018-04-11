@@ -1,64 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion;
 using Microsoft.AppCenter.Ingestion.Http;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.AppCenter.Test.Ingestion.Http
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
 {
     [TestClass]
     public class RetryableTest : HttpIngestionTest
     {
-        private TestInterval[] _intervals;
+        private static readonly TimeSpan[] Intervals =
+        {
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(1) 
+        };
         private IIngestion _retryableIngestion;
 
         [TestInitialize]
         public void InitializeRetryableTest()
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
-            _intervals = new[]
-            {
-                new TestInterval(),
-                new TestInterval(),
-                new TestInterval()
-            };
-            var retryIntervals = new Func<Task>[_intervals.Length];
-            for (int i = 0; i < _intervals.Length; i++)
-            {
-                retryIntervals[i] = _intervals[i].Wait;
-            }
-            _retryableIngestion = new RetryableIngestion(new IngestionHttp(_adapter.Object), retryIntervals);
-        }
-
-        /// <summary>
-        /// Verify that ingestion create ServiceCall correctly.
-        /// </summary>
-        [TestMethod]
-        public void RetryableIngestionPrepareServiceCall()
-        {
-            var appSecret = Guid.NewGuid().ToString();
-            var installId = Guid.NewGuid();
-            var logs = new List<Log>();
-            var call = _retryableIngestion.PrepareServiceCall(appSecret, installId, logs);
-            Assert.IsInstanceOfType(call, typeof(RetryableServiceCall));
-            Assert.AreEqual(call.AppSecret, appSecret);
-            Assert.AreEqual(call.InstallId, installId);
-            Assert.AreEqual(call.Logs, logs);
+            _retryableIngestion = new RetryableIngestion(new IngestionHttp(_adapter.Object), Intervals);
         }
 
         /// <summary>
         /// Verify behaviour without exceptions.
         /// </summary>
         [TestMethod]
-        public void RetryableIngestionSuccess()
+        public async Task RetryableIngestionSuccess()
         {
-            var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.OK);
-            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            var call = _retryableIngestion.Call(AppSecret, InstallId, Logs);
+            await call.ToTask();
             VerifyAdapterSend(Times.Once());
 
             // No throw any exception
@@ -68,23 +44,18 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         /// Verify that retrying on recoverable exceptions.
         /// </summary>
         [TestMethod]
-        public void RetryableIngestionRepeat1()
+        public async Task RetryableIngestionRepeat1()
         {
-            var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
-            // Run code after this interval immideatly
-            _intervals[0].Set();
-            // On first delay: replace response (next will be succeed)
-            _intervals[0].OnRequest += () => SetupAdapterSendResponse(HttpStatusCode.OK);
-            // Checks send times on N delay moment
-            _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
-            _intervals[1].OnRequest += () => Assert.Fail();
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout, HttpStatusCode.OK);
+            var start = DateTime.Now;
+            var call = _retryableIngestion.Call(AppSecret, InstallId, Logs);
+            await Task.Delay(start.AddSeconds(0.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
+            VerifyAdapterSend(Times.Exactly(1));
 
-            // Run all chain not async
-            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
-
-            // Must be sent 2 times: 1 - main, 1 - repeat
+            await Task.Delay(start.AddSeconds(1.5) - DateTime.Now);
+            Assert.IsTrue(call.IsCompleted);
             VerifyAdapterSend(Times.Exactly(2));
         }
 
@@ -92,26 +63,26 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         /// Verify that retrying on recoverable exceptions.
         /// </summary>
         [TestMethod]
-        public void RetryableIngestionRepeat3()
+        public async Task RetryableIngestionRepeat3()
         {
-            var call = PrepareServiceCall();
             // RequestTimeout - retryable
-            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
-            // Run code after this intervals immideatly
-            _intervals[0].Set();
-            _intervals[1].Set();
-            _intervals[2].Set();
-            // On third delay: replace response (next will be succeed)
-            _intervals[2].OnRequest += () => SetupAdapterSendResponse(HttpStatusCode.OK);
-            // Checks send times on N delay moment
-            _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
-            _intervals[1].OnRequest += () => VerifyAdapterSend(Times.Exactly(2));
-            _intervals[2].OnRequest += () => VerifyAdapterSend(Times.Exactly(3));
+            SetupAdapterSendResponse(HttpStatusCode.RequestTimeout, HttpStatusCode.RequestTimeout, HttpStatusCode.RequestTimeout, HttpStatusCode.OK);
+            var start = DateTime.Now;
+            var call = _retryableIngestion.Call(AppSecret, InstallId, Logs);
+            await Task.Delay(start.AddSeconds(0.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
+            VerifyAdapterSend(Times.Exactly(1));
 
-            // Run all chain not async
-            _retryableIngestion.ExecuteCallAsync(call).RunNotAsync();
+            await Task.Delay(start.AddSeconds(1.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
+            VerifyAdapterSend(Times.Exactly(2));
 
-            // Must be sent 4 times: 1 - main, 3 - repeat
+            await Task.Delay(start.AddSeconds(2.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
+            VerifyAdapterSend(Times.Exactly(3));
+
+            await Task.Delay(start.AddSeconds(3.5) - DateTime.Now);
+            Assert.IsTrue(call.IsCompleted);
             VerifyAdapterSend(Times.Exactly(4));
         }
 
@@ -119,55 +90,38 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         /// Verify service call canceling.
         /// </summary>
         [TestMethod]
-        public void RetryableIngestionCancel()
+        public async Task RetryableIngestionCancel()
         {
-            var call = PrepareServiceCall();
             // RequestTimeout - retryable
             SetupAdapterSendResponse(HttpStatusCode.RequestTimeout);
-            // Run code after this intervals immideatly
-            _intervals[0].Set();
-            _intervals[1].Set();
-            // On second delay: cancel call
-            _intervals[1].OnRequest += () => call.Cancel();
-            // Checks send times on N delay moment
-            _intervals[0].OnRequest += () => VerifyAdapterSend(Times.Once());
-            _intervals[2].OnRequest += () => Assert.Fail();
+            var start = DateTime.Now;
+            var call = _retryableIngestion.Call(AppSecret, InstallId, Logs);
+            await Task.Delay(start.AddSeconds(0.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
+            VerifyAdapterSend(Times.Exactly(1));
 
-            // Run all chain not async
-            Assert.ThrowsException<IngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
-
-            // Must be sent 2 times: 1 - main, 1 - repeat
+            await Task.Delay(start.AddSeconds(1.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
             VerifyAdapterSend(Times.Exactly(2));
+
+            call.Cancel();
+
+            await Task.Delay(start.AddSeconds(2.5) - DateTime.Now);
+            Assert.IsFalse(call.IsCompleted);
+            VerifyAdapterSend(Times.Exactly(2));
+            await Assert.ThrowsExceptionAsync<TaskCanceledException>(() => call.ToTask());
         }
 
         /// <summary>
         /// Verify that not retrying not recoverable exceptions.
         /// </summary>
         [TestMethod]
-        public void RetryableIngestionException()
+        public async Task RetryableIngestionException()
         {
-            var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.BadRequest);
-            Assert.ThrowsException<HttpIngestionException>(() => _retryableIngestion.ExecuteCallAsync(call).RunNotAsync());
+            var call = _retryableIngestion.Call(AppSecret, InstallId, Logs);
+            await Assert.ThrowsExceptionAsync<HttpIngestionException>(() => call.ToTask());
             VerifyAdapterSend(Times.Once());
-        }
-
-        [TestMethod]
-        public void ServiceCallSuccessCallbackTest()
-        {
-            SetupAdapterSendResponse(HttpStatusCode.OK);
-            var call = PrepareServiceCall();
-            call.ExecuteAsync().RunNotAsync();
-
-            // No throw any exception
-        }
-
-        [TestMethod]
-        public void ServiceCallFailedCallbackTest()
-        {
-            SetupAdapterSendResponse(HttpStatusCode.NotFound);
-            var call = PrepareServiceCall();
-            Assert.ThrowsException<HttpIngestionException>(() => { call.ExecuteAsync().RunNotAsync(); });
         }
 
         /// <summary>
@@ -176,51 +130,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         [TestMethod]
         public void RetryableIngestionWithNullIntervals()
         {
-            TimeSpan[] timeSpans = null;
-            Assert.ThrowsException<ArgumentNullException>(() => { new RetryableIngestion(new IngestionHttp(_adapter.Object), timeSpans); });
-        }
-
-        /// <summary>
-        /// Validate that constructor throws correct exception type with nullable timespan array
-        /// </summary>
-        [TestMethod]
-        public void RetryableIngestionWithNullFunc()
-        {
-            Func<Task>[] funcs = null;
-            Assert.ThrowsException<ArgumentNullException>(() => { new RetryableIngestion(new IngestionHttp(_adapter.Object), funcs); });
-        }
-
-        /// <summary>
-        /// Validate that function doesn't throw any exception
-        /// </summary>
-        [TestMethod]
-        public void CallExecuteAsyncWhenCallIsNotOfTypeRetryableServiceCall()
-        {
-            var mockServiceCall = new Mock<IServiceCall>();
-            _retryableIngestion.ExecuteCallAsync(new TestServiceCall(mockServiceCall.Object));
-
-            // No throw any exception
-        }
-
-        /// <summary>
-        /// Helper for prepare ServiceCall.
-        /// </summary>
-        private IServiceCall PrepareServiceCall()
-        {
-            var appSecret = Guid.NewGuid().ToString();
-            var installId = Guid.NewGuid();
-            var logs = new List<Log>();
-            return _retryableIngestion.PrepareServiceCall(appSecret, installId, logs);
-        }
-
-        public class TestInterval
-        {
-            private volatile TaskCompletionSource<bool> _task = new TaskCompletionSource<bool>();
-
-            public event Action OnRequest;
-
-            public Task Wait() { OnRequest?.Invoke(); return _task.Task; }
-            public void Set() => _task.TrySetResult(true);
+            Assert.ThrowsException<ArgumentNullException>(() => new RetryableIngestion(new IngestionHttp(_adapter.Object), null));
         }
     }
 }
