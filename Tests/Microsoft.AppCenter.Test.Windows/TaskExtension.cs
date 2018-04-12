@@ -59,9 +59,9 @@ namespace Microsoft.AppCenter.Test
             return completedTask;
         }
 
-        public static Task<T> GetFaultedTask<T>(T retVal)
+        public static Task<T> GetFaultedTask<T>(Exception exception)
         {
-            var task = Task.Factory.StartNew<T>(() => { throw new IngestionException(); });
+            var task = Task.Factory.StartNew<T>(() => throw exception);
             try
             {
                 task.Wait();
@@ -71,6 +71,27 @@ namespace Microsoft.AppCenter.Test
 
             }
             return task;
+        }
+        
+        public static Task<string> ToTask(this IServiceCall @this)
+        {
+            var source = new TaskCompletionSource<string>();
+            @this.ContinueWith(serviceCall =>
+            {
+                if (serviceCall.IsCanceled)
+                {
+                    source.SetCanceled();
+                }
+                else if (serviceCall.IsFaulted)
+                {
+                    source.SetException(serviceCall.Exception);
+                }
+                else
+                {
+                    source.SetResult(serviceCall.Result);
+                }
+            });
+            return source.Task;
         }
     }
 }

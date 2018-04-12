@@ -1,35 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using Microsoft.AppCenter.Ingestion;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Http;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Microsoft.AppCenter.Test.Ingestion.Http
+namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
 {
     [TestClass]
     public class IngestionHttpTest : HttpIngestionTest
     {
-        private IngestionHttp _ingestionHttp;
+        private IngestionHttp _httpIngestion;
 
         [TestInitialize]
-        public void InitializeIngestionHttpTest()
+        public void InitializeHttpIngestionTest()
         {
             _adapter = new Mock<IHttpNetworkAdapter>();
-            _ingestionHttp = new IngestionHttp(_adapter.Object);
+            _httpIngestion = new IngestionHttp(_adapter.Object);
         }
 
         /// <summary>
         /// Verify that ingestion call http adapter and not fails on success.
         /// </summary>
         [TestMethod]
-        public void IngestionHttpStatusCodeOk()
+        public async Task HttpIngestionStatusCodeOk()
         {
-            var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.OK);
-            _ingestionHttp.ExecuteCallAsync(call).RunNotAsync();
+            var call = _httpIngestion.Call(AppSecret, InstallId, Logs);
+            await call.ToTask();
             VerifyAdapterSend(Times.Once());
 
             // No throw any exception
@@ -39,11 +38,11 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         /// Verify that ingestion throw exception on error response.
         /// </summary>
         [TestMethod]
-        public void IngestionHttpStatusCodeError()
+        public async Task HttpIngestionStatusCodeError()
         {
-            var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.NotFound);
-            Assert.ThrowsException<HttpIngestionException>(() => _ingestionHttp.ExecuteCallAsync(call).RunNotAsync());
+            var call = _httpIngestion.Call(AppSecret, InstallId, Logs);
+            await Assert.ThrowsExceptionAsync<HttpIngestionException>(() => call.ToTask());
             VerifyAdapterSend(Times.Once());
         }
 
@@ -51,55 +50,35 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
         /// Verify that ingestion don't call http adapter when call is closed.
         /// </summary>
         [TestMethod]
-        public void IngestionHttpCancel()
+        public async Task HttpIngestionCancel()
         {
-            var call = PrepareServiceCall();
+            _adapter
+                .Setup(a => a.SendAsync(
+                    It.IsAny<string>(),
+                    "POST",
+                    It.IsAny<IDictionary<string, string>>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .Returns(async () =>
+                {
+                    await Task.Delay(500);
+                    return "";
+                });
+            var call = _httpIngestion.Call(AppSecret, InstallId, Logs);
             call.Cancel();
-            SetupAdapterSendResponse(HttpStatusCode.OK);
-            _ingestionHttp.ExecuteCallAsync(call).RunNotAsync();
-            VerifyAdapterSend(Times.Never());
-        }
-
-        /// <summary>
-        /// Verify that ingestion prepare ServiceCall correctly.
-        /// </summary>
-        [TestMethod]
-        public void IngestionHttpPrepareServiceCall()
-        {
-            var appSecret = Guid.NewGuid().ToString();
-            var installId = Guid.NewGuid();
-            var logs = new List<Log>();
-            var call = _ingestionHttp.PrepareServiceCall(appSecret, installId, logs);
-            Assert.IsInstanceOfType(call, typeof(HttpServiceCall));
-            Assert.AreEqual(call.Ingestion, _ingestionHttp);
-            Assert.AreEqual(call.AppSecret, appSecret);
-            Assert.AreEqual(call.InstallId, installId);
-            Assert.AreEqual(call.Logs, logs);
+            await Assert.ThrowsExceptionAsync<TaskCanceledException>(() => call.ToTask());
         }
 
         /// <summary>
         /// Verify that ingestion create headers correctly.
         /// </summary>
         [TestMethod]
-        public void IngestionHttpCreateHeaders()
+        public void HttpIngestionCreateHeaders()
         {
-            var appSecret = Guid.NewGuid().ToString();
-            var installId = Guid.NewGuid();
-            var headers = _ingestionHttp.CreateHeaders(appSecret, installId);
+            var headers = _httpIngestion.CreateHeaders(AppSecret, InstallId);
             
             Assert.IsTrue(headers.ContainsKey(IngestionHttp.AppSecret));
             Assert.IsTrue(headers.ContainsKey(IngestionHttp.InstallId));
-        }
-
-        /// <summary>
-        /// Helper for prepare ServiceCall.
-        /// </summary>
-        private IServiceCall PrepareServiceCall()
-        {
-            var appSecret = Guid.NewGuid().ToString();
-            var installId = Guid.NewGuid();
-            var logs = new List<Log>();
-            return _ingestionHttp.PrepareServiceCall(appSecret, installId, logs);
         }
     }
 }

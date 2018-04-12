@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
+
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 
 namespace Microsoft.AppCenter.Ingestion.Http
 {
-    public sealed class IngestionHttp : IIngestion
+    internal sealed class IngestionHttp : IIngestion
     {
         internal const string DefaultBaseUrl = "https://in.appcenter.ms";
         internal const string ApiVersion = "/logs?api-version=1.0.0";
@@ -15,7 +17,9 @@ namespace Microsoft.AppCenter.Ingestion.Http
         internal const string InstallId = "Install-ID";
 
         private const int MaximumCharactersDisplayedForAppSecret = 8;
+
         private string _baseLogUrl;
+
         private readonly IHttpNetworkAdapter _httpNetwork;
 
         public IngestionHttp(IHttpNetworkAdapter httpNetwork)
@@ -23,33 +27,54 @@ namespace Microsoft.AppCenter.Ingestion.Http
             _httpNetwork = httpNetwork;
         }
 
-        /// <exception cref="IngestionException"/>
-        public async Task ExecuteCallAsync(IServiceCall call)
+        public IServiceCall Call(string appSecret, Guid installId, IList<Log> logs)
         {
-            if (call.CancellationToken.IsCancellationRequested)
+            var call = new ServiceCall(appSecret, installId, logs);
+            CallAsync(appSecret, installId, logs, call.CancellationToken).ContinueWith(task =>
             {
-                return;
-            }
+                // Cancellation token is already shared.
+                if (task.IsCanceled)
+                {
+                    return;
+                }
+
+                // If task is faulted.
+                if (task.IsFaulted)
+                {
+                    call.SetException(task.Exception?.InnerException);
+                    return;
+                }
+
+                // If task is succeeded.
+                call.SetResult(task.Result);
+            });
+            return call;
+        }
+
+        /// <exception cref="IngestionException"/>
+        private async Task<string> CallAsync(string appSecret, Guid installId, IList<Log> logs, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
             var baseUrl = string.IsNullOrEmpty(_baseLogUrl) ? DefaultBaseUrl : _baseLogUrl;
             AppCenterLog.Verbose(AppCenterLog.LogTag, $"Calling {baseUrl + ApiVersion}...");
 
             // Create request headers.
-            var requestHeaders = CreateHeaders(call.AppSecret, call.InstallId);
+            var requestHeaders = CreateHeaders(appSecret, installId);
             AppCenterLog.Verbose(AppCenterLog.LogTag, "Headers: " +
-                    $"{AppSecret}={GetRedactedAppSecret(call.AppSecret)}, " +
-                    $"{InstallId}={call.InstallId}");
+                    $"{AppSecret}={GetRedactedAppSecret(appSecret)}, " +
+                    $"{InstallId}={installId}");
 
             // Create request content.
-            var requestContent = CreateLogsContent(call.Logs);
+            var requestContent = CreateLogsContent(logs);
             AppCenterLog.Verbose(AppCenterLog.LogTag, requestContent);
 
             // Send request.
-            await _httpNetwork.SendAsync(baseUrl + ApiVersion, "POST", requestHeaders, requestContent, call.CancellationToken).ConfigureAwait(false);
+            return await _httpNetwork.SendAsync(baseUrl + ApiVersion, "POST", requestHeaders, requestContent, token).ConfigureAwait(false);
         }
 
         public void Close()
         {
-            //No-op
+            // No-op
         }
 
         public void SetLogUrl(string logUrl)
@@ -67,11 +92,6 @@ namespace Microsoft.AppCenter.Ingestion.Http
             }
             redactedAppSecret += appSecret.Substring(endHidingIndex);
             return redactedAppSecret;
-        }
-
-        public IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
-        {
-            return new HttpServiceCall(this, logs, appSecret, installId);
         }
 
         internal IDictionary<string, string> CreateHeaders(string appSecret, Guid installId)

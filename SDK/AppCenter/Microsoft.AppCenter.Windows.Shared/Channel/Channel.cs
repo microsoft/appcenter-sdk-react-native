@@ -404,21 +404,18 @@ namespace Microsoft.AppCenter.Channel
             // TODO When InstallId will really be async, we should not use Result anymore
             var rawInstallId = AppCenter.GetInstallIdAsync().Result;
             var installId = rawInstallId.HasValue ? rawInstallId.Value : Guid.Empty;
-            using (var serviceCall = _ingestion.PrepareServiceCall(_appSecret, installId, logs))
+            _ingestion.Call(_appSecret, installId, logs).ContinueWith(call =>
             {
-                serviceCall.ExecuteAsync().ContinueWith(completedTask =>
+                var ingestionException = call.Exception;
+                if (ingestionException == null)
                 {
-                    var ingestionException = completedTask.Exception?.InnerException as IngestionException;
-                    if (ingestionException == null)
-                    {
-                        HandleSendingSuccess(state, batchId);
-                    }
-                    else
-                    {
-                        HandleSendingFailure(state, batchId, ingestionException);
-                    }
-                });
-            }
+                    HandleSendingSuccess(state, batchId);
+                }
+                else
+                {
+                    HandleSendingFailure(state, batchId, ingestionException);
+                }
+            });
         }
 
         private void HandleSendingSuccess(State state, string batchId)
@@ -453,12 +450,12 @@ namespace Microsoft.AppCenter.Channel
             }
         }
 
-        private void HandleSendingFailure(State state, string batchId, IngestionException e)
+        private void HandleSendingFailure(State state, string batchId, Exception e)
         {
             AppCenterLog.Error(AppCenterLog.LogTag, $"Sending logs for channel '{Name}', batch '{batchId}' failed: {e?.Message}");
             try
             {
-                var isRecoverable = e?.IsRecoverable ?? false;
+                var isRecoverable = e is IngestionException ingestionException && ingestionException.IsRecoverable;
                 List<Log> removedLogs;
                 using (_mutex.GetLock(state))
                 {

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Storage;
+using Microsoft.AppCenter.Ingestion;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Storage;
 using Microsoft.AppCenter.Test.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,7 +17,7 @@ namespace Microsoft.AppCenter.Test.Channel
     public class ChannelTest
     {
         private AggregateException _unobservedTaskException;
-        private readonly MockIngestion _mockIngestion = new MockIngestion();
+        private Mock<IIngestion> _mockIngestion;
         private Microsoft.AppCenter.Channel.Channel _channel;
         private IStorage _storage;
 
@@ -48,8 +49,8 @@ namespace Microsoft.AppCenter.Test.Channel
         public void InitializeChannelTest()
         {
             _unobservedTaskException = null;
-            _mockIngestion.CallShouldSucceed = true;
-            _mockIngestion.Open();
+            _mockIngestion = new Mock<IIngestion>();
+            MakeIngestionCallsSucceed();
             SetChannelWithTimeSpan(_batchTimeSpan);
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
 
@@ -223,7 +224,7 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void ChannelInvokesFailedToSendLogEvent()
         {
-            MakeIngestionCallsFail();
+            MakeIngestionCallsFail(new Exception());
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
                 _channel.EnqueueAsync(new TestLog()).RunNotAsync();
@@ -329,7 +330,7 @@ namespace Microsoft.AppCenter.Test.Channel
                 .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
                 .Returns(() => Task.FromResult("test-batch-id"));
 
-            _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, 1, _batchTimeSpan, 1, _appSecret, _mockIngestion, storage.Object);
+            _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, 1, _batchTimeSpan, 1, _appSecret, _mockIngestion.Object, storage.Object);
             SetupEventCallbacks();
 
             // Shutdown channel and store some log
@@ -349,8 +350,7 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void IngestionNotClosedOnRecoverableHttpError()
         {
-            _mockIngestion.CallShouldSucceed = false;
-            _mockIngestion.TaskError = new RecoverableIngestionException();
+            MakeIngestionCallsFail(new RecoverableIngestionException());
             _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
             // wait for SendingLog event
@@ -358,7 +358,7 @@ namespace Microsoft.AppCenter.Test.Channel
             // wait up to 20 seconds for suspend to finish
             bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
             Assert.IsTrue(disabled);
-            Assert.IsFalse(_mockIngestion.IsClosed);
+            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Never);
         }
 
         /// <summary>
@@ -367,15 +367,14 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void IngestionClosedOnNonRecoverableHttpError()
         {
-            _mockIngestion.CallShouldSucceed = false;
-            _mockIngestion.TaskError = new NonRecoverableIngestionException();
+            MakeIngestionCallsFail(new NonRecoverableIngestionException());
             _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
             // wait up to 20 seconds for suspend to finish
             bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
             Assert.IsTrue(disabled);
 
-            Assert.IsTrue(_mockIngestion.IsClosed);
+            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Once);
             Assert.IsFalse(_channel.IsEnabled);
         }
 
@@ -385,7 +384,7 @@ namespace Microsoft.AppCenter.Test.Channel
             {
                 _storage = new MockStorage();
                 _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
-                    _appSecret, _mockIngestion, _storage);
+                    _appSecret, _mockIngestion.Object, _storage);
                 SetupEventCallbacks();
             }
             MakeIngestionCallsSucceed();
@@ -402,14 +401,34 @@ namespace Microsoft.AppCenter.Test.Channel
             catch (ObjectDisposedException) { }
         }
 
-        private void MakeIngestionCallsFail()
+        private void MakeIngestionCallsFail(Exception exception)
         {
-            _mockIngestion.CallShouldSucceed = false;
+            _mockIngestion
+                .Setup(ingestion => ingestion.Call(
+                    It.IsAny<string>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<IList<Log>>()))
+                .Returns((string appSecret, Guid installId, IList<Log> logs) =>
+                {
+                    var call = new ServiceCall(appSecret, installId, logs);
+                    call.SetException(exception);
+                    return call;
+                });
         }
 
         private void MakeIngestionCallsSucceed()
         {
-            _mockIngestion.CallShouldSucceed = true;
+            _mockIngestion
+                .Setup(ingestion => ingestion.Call(
+                    It.IsAny<string>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<IList<Log>>()))
+                .Returns((string appSecret, Guid installId, IList<Log> logs) =>
+                {
+                    var call = new ServiceCall(appSecret, installId, logs);
+                    call.SetResult("");
+                    return call;
+                });
         }
 
         private void SetupEventCallbacks()
