@@ -26,7 +26,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
                         It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
             _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
-            SessionTracker.SessionTimeout = 500;
+            SessionTracker.SessionTimeout = 10;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         {
             _sessionTracker.Resume();
             _sessionTracker.Pause();
-            Task.Delay((int) SessionTracker.SessionTimeout).Wait();
+            Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
             _sessionTracker.Resume();
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
@@ -62,7 +62,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         {
             _sessionTracker.Resume();
             _sessionTracker.Pause();
-            Task.Delay((int) SessionTracker.SessionTimeout).Wait();
+            Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
 
             _sessionTracker.Resume();
@@ -93,7 +93,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void HandleEnqueuingLogDuringSession()
         {
             _sessionTracker.Resume();
-            var eventLog = new EventLog {Timestamp = DateTime.Now};
+            var eventLog = new EventLog { Timestamp = DateTime.Now };
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(eventLog));
             Assert.IsNotNull(eventLog.Sid);
         }
@@ -106,8 +106,8 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         {
             _sessionTracker.Resume();
             var time = DateTime.Now;
-            var firstLog = new EventLog {Timestamp = time};
-            var secondLog = new EventLog {Timestamp = time.AddMilliseconds(1)};
+            var firstLog = new EventLog { Timestamp = time };
+            var secondLog = new EventLog { Timestamp = time.AddMilliseconds(1) };
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(firstLog));
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(secondLog));
 
@@ -122,7 +122,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void HandleEnqueuingLogOutsideSession()
         {
             _sessionTracker.Pause();
-            var eventLog = new EventLog {Name = "thisisaneventlog"};
+            var eventLog = new EventLog { Name = "thisisaneventlog" };
             var eventArgs = new EnqueuingLogEventArgs(eventLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
@@ -153,9 +153,9 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void TestSetSessionIdLessThan()
         {
             var time = new DateTime(430 * TimeSpan.TicksPerMillisecond);
-            var log = new EventLog {Timestamp = time};
+            var log = new EventLog { Timestamp = time };
             var intendedSid = Guid.NewGuid();
-            var sessions = new Dictionary<long, Guid> {{4, Guid.Empty}, {429, intendedSid}, {431, Guid.Empty}};
+            var sessions = new Dictionary<long, Guid> { { 4, Guid.Empty }, { 429, intendedSid }, { 431, Guid.Empty } };
             var success = SessionTracker.SetExistingSessionId(log, sessions);
 
             Assert.IsTrue(success);
@@ -171,9 +171,9 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void TestSetSessionIdEqualTo()
         {
             var time = new DateTime(430 * TimeSpan.TicksPerMillisecond);
-            var log = new EventLog {Timestamp = time};
+            var log = new EventLog { Timestamp = time };
             var intendedSid = Guid.NewGuid();
-            var sessions = new Dictionary<long, Guid> {{4, Guid.Empty}, {430, intendedSid}, {431, Guid.Empty}};
+            var sessions = new Dictionary<long, Guid> { { 4, Guid.Empty }, { 430, intendedSid }, { 431, Guid.Empty } };
             var success = SessionTracker.SetExistingSessionId(log, sessions);
 
             Assert.IsTrue(success);
@@ -187,8 +187,8 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void TestSetSessionIdNone()
         {
             var time = new DateTime(430 * TimeSpan.TicksPerMillisecond);
-            var log = new EventLog {Timestamp = time};
-            var sessions = new Dictionary<long, Guid> {{431, Guid.Empty}, {632, Guid.Empty}, {461, Guid.Empty}};
+            var log = new EventLog { Timestamp = time };
+            var sessions = new Dictionary<long, Guid> { { 431, Guid.Empty }, { 632, Guid.Empty }, { 461, Guid.Empty } };
             var success = SessionTracker.SetExistingSessionId(log, sessions);
 
             Assert.IsFalse(success);
@@ -268,7 +268,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             // Cause session expiration and start new session.
             _sessionTracker.Pause();
-            Task.Delay((int) SessionTracker.SessionTimeout).Wait();
+            Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
             _sessionTracker.Resume();
             Assert.IsTrue(AppCenter.TestAndSetCorrelationId(_sessionTracker.Sid,
                 ref AppCenter.Instance.InstanceCorrelationId));
@@ -293,7 +293,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             // Cause session expiration and start new session.
             _sessionTracker.Pause();
-            Task.Delay((int)SessionTracker.SessionTimeout).Wait();
+            Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
 
             // Change correlation identifier.
             var externalCorrelationid = Guid.NewGuid();
