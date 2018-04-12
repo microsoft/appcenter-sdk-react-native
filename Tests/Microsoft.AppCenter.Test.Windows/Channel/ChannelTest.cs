@@ -13,32 +13,37 @@ using Moq;
 
 namespace Microsoft.AppCenter.Test.Channel
 {
+    using Channel = Microsoft.AppCenter.Channel.Channel;
+
     [TestClass]
     public class ChannelTest
     {
         private AggregateException _unobservedTaskException;
+
         private Mock<IIngestion> _mockIngestion;
-        private Microsoft.AppCenter.Channel.Channel _channel;
+
+        private Channel _channel;
+
         private IStorage _storage;
 
-        private const string ChannelName = "channelName";
-        private const int MaxLogsPerBatch = 3;
-        private readonly TimeSpan _batchTimeSpan = TimeSpan.FromSeconds(1);
-        private const int MaxParallelBatches = 3;
-        private readonly string _appSecret = Guid.NewGuid().ToString();
+        private const string ChannelName = "test";
 
-        // We wait tasks now and don't need wait more
-        private const int DefaultWaitTime = 500;
+        private const int MaxLogsPerBatch = 3;
+
+        private const int MaxParallelBatches = 3;
 
         // Event semaphores for invokation verification
         private const int SendingLogSemaphoreIdx = 0;
-        private const int SentLogSemaphoreIdx = 1;
-        private const int FailedToSendLogSemaphoreIdx = 2;
-        private const int EnqueuingLogSemaphoreIdx = 3;
-        private const int FilteringLogSemaphoreIdx = 4;
-        private readonly List<SemaphoreSlim> _eventSemaphores = new List<SemaphoreSlim> { new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0) };
 
-        public TestContext TestContext { get;set;}
+        private const int SentLogSemaphoreIdx = 1;
+
+        private const int FailedToSendLogSemaphoreIdx = 2;
+
+        private const int EnqueuingLogSemaphoreIdx = 3;
+
+        private const int FilteringLogSemaphoreIdx = 4;
+
+        private List<SemaphoreSlim> _eventSemaphores;
 
         public ChannelTest()
         {
@@ -50,8 +55,8 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             _unobservedTaskException = null;
             _mockIngestion = new Mock<IIngestion>();
-            MakeIngestionCallsSucceed();
-            SetChannelWithTimeSpan(_batchTimeSpan);
+            SetupIngestionCallSucceed();
+            SetChannelWithTimeSpan(TimeSpan.FromSeconds(1));
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
 
             AppCenterLog.Level = LogLevel.Verbose;
@@ -114,7 +119,7 @@ namespace Microsoft.AppCenter.Test.Channel
         /// Verify that enqueuing a log passes the same log reference to enqueue event argument
         /// </summary>
         [TestMethod]
-        public void EnqueuedLogsAreSame()
+        public async Task EnqueuedLogsAreSame()
         {
             var log = new TestLog();
             var sem = new SemaphoreSlim(0);
@@ -124,113 +129,109 @@ namespace Microsoft.AppCenter.Test.Channel
                 sem.Release();
             };
 
-            _channel.EnqueueAsync(log).RunNotAsync();
-            Assert.IsTrue(sem.Wait(DefaultWaitTime));
+            await _channel.EnqueueAsync(log);
+            Assert.IsTrue(sem.Wait(0));
         }
 
         /// <summary>
         /// Verify that when a batch reaches its capacity, it is sent immediately
         /// </summary>
         [TestMethod]
-        public void EnqueueMaxLogs()
+        public async Task EnqueueMaxLogs()
         {
             SetChannelWithTimeSpan(TimeSpan.FromHours(1));
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-            Assert.IsTrue(SendingLogOccurred(1));
+            VerifySendingLog(MaxLogsPerBatch);
         }
 
         /// <summary>
         /// Verify that when channel is disabled, sent event is not triggered
         /// </summary>
         [TestMethod]
-        public void EnqueueWhileDisabled()
+        public async Task EnqueueWhileDisabled()
         {
             _channel.SetEnabled(false);
             var log = new TestLog();
-            _channel.EnqueueAsync(log).RunNotAsync();
-            Assert.IsTrue(FailedToSendLogOccurred(1));
-            Assert.IsFalse(EnqueuingLogOccurred(1));
+            await _channel.EnqueueAsync(log);
+            VerifyFailedToSendLog(1);
+            VerifyEnqueuingLog(0);
         }
 
         [TestMethod]
-        public void ChannelInvokesFilteringLogEvent()
+        public async Task ChannelInvokesFilteringLogEvent()
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-
-            Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
+            VerifyFilteringLog(MaxLogsPerBatch);
         }
 
         /// <summary>
         /// Validate filtering out a log
         /// </summary>
         [TestMethod]
-        public void FilterLogShouldNotSend()
+        public async Task FilterLogShouldNotSend()
         {
             _channel.FilteringLog += (sender, args) => args.FilterRequested = true;
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-            Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
-            Assert.IsFalse(SendingLogOccurred(MaxLogsPerBatch));
-            Assert.IsFalse(SentLogOccurred(MaxLogsPerBatch));
+            VerifyFilteringLog(MaxLogsPerBatch);
+            VerifySendingLog(0);
+            VerifySentLog(0);
         }
 
         /// <summary>
         /// Validate filters can cancel each other
         /// </summary>
         [TestMethod]
-        public void FilterLogThenCancelFilterLogInAnotherHandlerShouldSend()
+        public async Task FilterLogThenCancelFilterLogInAnotherHandlerShouldSend()
         {
             _channel.FilteringLog += (sender, args) => args.FilterRequested = true;
             _channel.FilteringLog += (sender, args) => args.FilterRequested = false;
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-            Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
-            Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
-            Assert.IsTrue(SentLogOccurred(MaxLogsPerBatch));
+            VerifyFilteringLog(MaxLogsPerBatch);
+            VerifySendingLog(MaxLogsPerBatch);
+            VerifySentLog(MaxLogsPerBatch);
         }
 
         [TestMethod]
-        public void ChannelInvokesSendingLogEvent()
+        public async Task ChannelInvokesSendingLogEvent()
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-
-            Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
+            VerifySendingLog(MaxLogsPerBatch);
         }
 
         [TestMethod]
-        public void ChannelInvokesSentLogEvent()
+        public async Task ChannelInvokesSentLogEvent()
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-
-            Assert.IsTrue(SentLogOccurred(MaxLogsPerBatch));
+            VerifySentLog(MaxLogsPerBatch);
         }
 
         [TestMethod]
-        public void ChannelInvokesFailedToSendLogEvent()
+        public async Task ChannelInvokesFailedToSendLogEvent()
         {
-            MakeIngestionCallsFail(new Exception());
+            SetupIngestionCallFail(new Exception());
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-
-            Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
+            VerifyFailedToSendLog(MaxLogsPerBatch);
         }
 
         /// <summary>
@@ -250,48 +251,46 @@ namespace Microsoft.AppCenter.Test.Channel
         /// Validate that channel will send log after enabling
         /// </summary>
         [TestMethod]
-        public void ChannelInvokesSendingLogEventAfterEnabling()
+        public async Task ChannelInvokesSendingLogEventAfterEnabling()
         {
-            _channel.ShutdownAsync().RunNotAsync();
+            await _channel.ShutdownAsync();
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
-
             _channel.SetEnabled(true);
-
-            Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
+            VerifySendingLog(MaxLogsPerBatch);
         }
 
         /// <summary>
         /// Validate that FailedToSendLog calls when channel is disabled
         /// </summary>
         [TestMethod]
-        public void ChannelInvokesFailedToSendLogEventAfterDisabling()
+        public async Task ChannelInvokesFailedToSendLogEventAfterDisabling()
         {
             _channel.SetEnabled(false);
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+                await _channel.EnqueueAsync(new TestLog());
             }
 
-            Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
-            Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
+            VerifySendingLog(MaxLogsPerBatch);
+            VerifyFailedToSendLog(MaxLogsPerBatch);
         }
 
         /// <summary>
         /// Validate that all logs removed
         /// </summary>
         [TestMethod]
-        public void ClearLogs()
+        public async Task TaskClearLogs()
         {
-            _channel.ShutdownAsync().RunNotAsync();
-            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            await _channel.ShutdownAsync();
+            await _channel.EnqueueAsync(new TestLog());
 
-            _channel.ClearAsync().RunNotAsync();
+            await _channel.ClearAsync();
             _channel.SetEnabled(true);
 
-            Assert.IsFalse(SendingLogOccurred(1));
+            VerifySendingLog(0);
         }
 
         /// <summary>
@@ -309,7 +308,7 @@ namespace Microsoft.AppCenter.Test.Channel
         /// Validate that StorageException is processing without exception
         /// </summary>
         [TestMethod]
-        public void ThrowStorageExceptionInDeleteLogsTime()
+        public async Task ThrowStorageExceptionInDeleteLogsTime()
         {
             var log = new TestLog();
             var storageException = new StorageException();
@@ -330,64 +329,125 @@ namespace Microsoft.AppCenter.Test.Channel
                 .Callback((string channelName, int limit, List<Log> logs) => logs.Add(log))
                 .Returns(() => Task.FromResult("test-batch-id"));
 
-            _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, 1, _batchTimeSpan, 1, _appSecret, _mockIngestion.Object, storage.Object);
+            var appSecret = Guid.NewGuid().ToString();
+            _channel = new Channel(ChannelName, 1, TimeSpan.FromSeconds(1), 1, appSecret, _mockIngestion.Object, storage.Object);
             SetupEventCallbacks();
 
             // Shutdown channel and store some log
-            _channel.ShutdownAsync().RunNotAsync();
-            _channel.EnqueueAsync(log).RunNotAsync();
+            await _channel.ShutdownAsync();
+            await _channel.EnqueueAsync(log);
 
             _channel.SetEnabled(true);
 
-            Assert.IsTrue(SentLogOccurred(1));
+           VerifySentLog(1);
 
             // Not throw any exception
         }
 
-        /// <summary>
-        /// Verify that when a recoverable http error occurs, ingestion stays open
-        /// </summary>
         [TestMethod]
-        public void IngestionNotClosedOnRecoverableHttpError()
+        public async Task MultiBatchTest()
         {
-            MakeIngestionCallsFail(new RecoverableIngestionException());
-            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            SetChannelWithTimeSpan(TimeSpan.Zero);
+            
+            var calls = new[] { new ServiceCall(), new ServiceCall(), new ServiceCall() };
+            var setup = _mockIngestion
+                .SetupSequence(ingestion => ingestion.Call(
+                    It.IsAny<string>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<IList<Log>>()));
+            foreach (var call in calls)
+            {
+                setup.Returns(call);
+            }
+            
+            // Send in separate batches
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
 
-            // wait for SendingLog event
-            _eventSemaphores[SendingLogSemaphoreIdx].Wait();
-            // wait up to 20 seconds for suspend to finish
-            bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
-            Assert.IsTrue(disabled);
-            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Never);
+            // Complete all
+            foreach (var call in calls)
+            {
+                call.SetResult("test");
+            }
+            VerifySentLog(3);
         }
 
         /// <summary>
-        /// Verify that if a non-recoverable http error occurs, ingestion is closed
+        /// Verify recoverable http error
         /// </summary>
         [TestMethod]
-        public void IngestionClosedOnNonRecoverableHttpError()
+        public async Task RecoverableHttpError()
         {
-            MakeIngestionCallsFail(new NonRecoverableIngestionException());
-            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
+            SetChannelWithTimeSpan(TimeSpan.Zero);
 
-            // wait up to 20 seconds for suspend to finish
-            bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));
-            Assert.IsTrue(disabled);
+            // Enqueue some log and and do not complete it
+            var call = new ServiceCall();
+            _mockIngestion
+                .Setup(ingestion => ingestion.Call(
+                    It.IsAny<string>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<IList<Log>>()))
+                .Returns((string appSecret, Guid installId, IList<Log> logs) => call);
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
+            
+            // Next one will fail
+            SetupIngestionCallFail(new RecoverableIngestionException());
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
 
-            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Once);
-            Assert.IsFalse(_channel.IsEnabled);
+            // Wait up to 20 seconds for suspend to finish
+            VerifyChannelDisable(TimeSpan.FromSeconds(10));
+            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Never);
+            VerifyFailedToSendLog(0);
+            Assert.IsFalse(call.IsCompleted);
+            Assert.IsFalse(call.IsCanceled);
+        }
+
+        /// <summary>
+        /// Verify non-recoverable http error
+        /// </summary>
+        [TestMethod]
+        public async Task NonRecoverableHttpError()
+        {
+            SetChannelWithTimeSpan(TimeSpan.Zero);
+
+            // Enqueue some log and and do not complete it
+            var call = new ServiceCall();
+            _mockIngestion
+                .Setup(ingestion => ingestion.Call(
+                    It.IsAny<string>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<IList<Log>>()))
+                .Returns((string appSecret, Guid installId, IList<Log> logs) => call);
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
+            
+            // Next one will fail
+            SetupIngestionCallFail(new NonRecoverableIngestionException());
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(1);
+
+            // Wait up to 20 seconds for suspend to finish
+            VerifyChannelDisable(TimeSpan.FromSeconds(10));
+            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Never);
+            VerifyFailedToSendLog(2);
+
+            // The first call is canceled
+            await Assert.ThrowsExceptionAsync<TaskCanceledException>(() => call.ToTask());
         }
 
         private void SetChannelWithTimeSpan(TimeSpan timeSpan)
         {
-            if (TestContext.TestName != "ThrowStorageExceptionInDeleteLogsTime")
-            {
-                _storage = new MockStorage();
-                _channel = new Microsoft.AppCenter.Channel.Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
-                    _appSecret, _mockIngestion.Object, _storage);
-                SetupEventCallbacks();
-            }
-            MakeIngestionCallsSucceed();
+            _storage = new MockStorage();
+            var appSecret = Guid.NewGuid().ToString();
+            _channel = new Channel(ChannelName, MaxLogsPerBatch, timeSpan, MaxParallelBatches,
+                appSecret, _mockIngestion.Object, _storage);
+            SetupEventCallbacks();
         }
 
         private void EnsureAllTasksAreFinishedInChannel()
@@ -401,7 +461,7 @@ namespace Microsoft.AppCenter.Test.Channel
             catch (ObjectDisposedException) { }
         }
 
-        private void MakeIngestionCallsFail(Exception exception)
+        private void SetupIngestionCallFail(Exception exception)
         {
             _mockIngestion
                 .Setup(ingestion => ingestion.Call(
@@ -416,7 +476,7 @@ namespace Microsoft.AppCenter.Test.Channel
                 });
         }
 
-        private void MakeIngestionCallsSucceed()
+        private void SetupIngestionCallSucceed(string result = "")
         {
             _mockIngestion
                 .Setup(ingestion => ingestion.Call(
@@ -426,20 +486,17 @@ namespace Microsoft.AppCenter.Test.Channel
                 .Returns((string appSecret, Guid installId, IList<Log> logs) =>
                 {
                     var call = new ServiceCall(appSecret, installId, logs);
-                    call.SetResult("");
+                    call.SetResult(result);
                     return call;
                 });
         }
 
         private void SetupEventCallbacks()
         {
-            foreach (var sem in _eventSemaphores)
+            _eventSemaphores = new List<SemaphoreSlim>
             {
-                if (sem.CurrentCount != 0)
-                {
-                    sem.Release(sem.CurrentCount);
-                }
-            }
+                new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0), new SemaphoreSlim(0)
+            };
             _channel.SendingLog += (sender, args) => { _eventSemaphores[SendingLogSemaphoreIdx].Release(); };
             _channel.SentLog += (sender, args) => { _eventSemaphores[SentLogSemaphoreIdx].Release(); };
             _channel.FailedToSendLog += (sender, args) => { _eventSemaphores[FailedToSendLogSemaphoreIdx].Release(); };
@@ -447,54 +504,47 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.FilteringLog += (sender, args) => { _eventSemaphores[FilteringLogSemaphoreIdx].Release(); };
         }
 
-        private bool FailedToSendLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[FailedToSendLogSemaphoreIdx], numTimes, waitTime);
-        }
+        private void VerifySendingLog(int expectedTimes) =>
+            Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[SendingLogSemaphoreIdx]),
+                $"Failed on verify {nameof(Channel.SendingLog)} event call times");
 
-        private bool EnqueuingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[EnqueuingLogSemaphoreIdx], numTimes, waitTime);
-        }
+        private void VerifySentLog(int expectedTimes) =>
+            Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[SentLogSemaphoreIdx]),
+                $"Failed on verify {nameof(Channel.SentLog)} event call times");
 
-        private bool FilteringLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[FilteringLogSemaphoreIdx], numTimes, waitTime);
-        }
+        private void VerifyFailedToSendLog(int expectedTimes) =>
+            Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[FailedToSendLogSemaphoreIdx]),
+                $"Failed on verify {nameof(Channel.FailedToSendLog)} event call times");
 
-        private bool SentLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[SentLogSemaphoreIdx], numTimes, waitTime);
-        }
+        private void VerifyEnqueuingLog(int expectedTimes) =>
+            Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[EnqueuingLogSemaphoreIdx]),
+                $"Failed on verify {nameof(Channel.EnqueuingLog)} event call times");
 
-        private bool SendingLogOccurred(int numTimes, int waitTime = DefaultWaitTime)
-        {
-            return EventWithSemaphoreOccurred(_eventSemaphores[SendingLogSemaphoreIdx], numTimes, waitTime);
-        }
+        private void VerifyFilteringLog(int expectedTimes) =>
+            Assert.AreEqual(expectedTimes, EventWithSemaphoreOccurred(_eventSemaphores[FilteringLogSemaphoreIdx]),
+                $"Failed on verify {nameof(Channel.FilteringLog)} event call times");
 
-        private bool WaitForChannelDisable(TimeSpan timeout)
+        private void VerifyChannelDisable(TimeSpan timeout)
         {
             var task = Task.Run(async () =>
             {
                 while (_channel.IsEnabled)
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(10);
                 }
             });
-
-            return task.Wait(timeout);
+            Assert.IsTrue(task.Wait(timeout));
         }
 
-        private static bool EventWithSemaphoreOccurred(SemaphoreSlim semaphore, int numTimes, int waitTime)
+        private static int EventWithSemaphoreOccurred(SemaphoreSlim semaphore)
         {
-            for (var i = 0; i < numTimes; ++i)
+            for (var i = 0;; ++i)
             {
-                if (!semaphore.Wait(waitTime))
+                if (!semaphore.Wait(i == 0 ? 1000 : 100))
                 {
-                    return false;
+                    return i;
                 }
             }
-            return true;
         }
     }
 }

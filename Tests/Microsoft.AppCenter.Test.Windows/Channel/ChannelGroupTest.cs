@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion;
 using Microsoft.AppCenter.Storage;
@@ -9,6 +10,8 @@ using Moq;
 
 namespace Microsoft.AppCenter.Test.Channel
 {
+    using Channel = Microsoft.AppCenter.Channel.Channel;
+
     [TestClass]
     public class ChannelGroupTest
     {
@@ -45,7 +48,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             const string channelName = "some_channel";
             var addedChannel =
-                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Microsoft.AppCenter.Channel.Channel;
+                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Channel;
 
             Assert.IsNotNull(addedChannel);
             Assert.AreEqual(channelName, addedChannel.Name);
@@ -168,8 +171,8 @@ namespace Microsoft.AppCenter.Test.Channel
 
             foreach (var channelMock in channelMocks.Select(mock => mock as Mock<IChannelUnit>))
             {
-                channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => p)), Times.Once());
-                channelMock.Verify(channel => channel.SetEnabled(It.Is<bool>(p => !p)), Times.Once());
+                channelMock.Verify(channel => channel.SetEnabled(true), Times.Once);
+                channelMock.Verify(channel => channel.SetEnabled(false), Times.Once);
             }
         }
 
@@ -184,15 +187,16 @@ namespace Microsoft.AppCenter.Test.Channel
         /// Veriy that all channels are disabled after channel group disabling
         /// </summary>
         [TestMethod]
-        public void TestShutdownChannelGroup()
+        public async Task TestShutdownChannelGroup()
         {
             const string channelName = "some_channel";
             var addedChannel =
-                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Microsoft.AppCenter.Channel.Channel;
+                _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Channel;
 
-            _channelGroup.ShutdownAsync().RunNotAsync();
+            await _channelGroup.ShutdownAsync();
 
             Assert.IsFalse(addedChannel.IsEnabled);
+            _mockIngestion.Verify(ingestion => ingestion.Close(), Times.Once);
         }
     }
 }
