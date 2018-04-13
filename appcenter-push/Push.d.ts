@@ -1,7 +1,7 @@
 export interface PushNotification {
     message: string | null;
     title: string | null;
-    customProperties?: { [name: string]: string };
+    customProperties: { [name: string]: string };
 }
 
 export interface PushListener {
