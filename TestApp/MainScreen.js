@@ -43,18 +43,18 @@ export default class MainScreen extends Component {
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
     let message = pushNotification.message;
-    let title = pushNotification.title;
+    const title = pushNotification.title;
 
-    if (message === null || message === undefined) {
-      // Android messages received in the background don't include a message. On Android, that fact can be used to
-      // check if the message was received in the background or foreground. For iOS the message is always present.
-      title = 'Android background';
-      message = '<empty>';
+    // Message can be null on iOS silent push or Android background notifications.
+    if (message === null) {
+      message = '';
+    } else {
+      message += '\n';
     }
 
     // Any custom name/value pairs added in the portal are in customProperties
     if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-      message += `\nCustom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
+      message += `Custom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
     }
 
     if (AppState.currentState === 'active') {
@@ -105,7 +105,7 @@ Crashes.setListener({
         AttachmentsProvider.getBinaryType(),
       ]);
       return [ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
-        ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)];
+      ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)];
     })();
   },
 

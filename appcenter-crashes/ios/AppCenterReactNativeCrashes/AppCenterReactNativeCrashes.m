@@ -26,8 +26,9 @@
 #import <AppCenterCrashes/MSWrapperCrashesHelper.h>
 #pragma GCC diagnostic pop
 
-@import AppCenterCrashes;
-@import AppCenterReactNativeShared;
+#import <AppCenter/MSAppCenter.h>
+#import <AppCenterCrashes/AppCenterCrashes.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @implementation AppCenterReactNativeCrashes
 
@@ -66,6 +67,11 @@ RCT_EXPORT_MODULE();
     }
 
     return self;
+}
+
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
 }
 
 - (NSDictionary *)constantsToExport

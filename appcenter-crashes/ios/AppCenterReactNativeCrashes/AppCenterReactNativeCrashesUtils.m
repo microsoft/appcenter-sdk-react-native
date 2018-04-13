@@ -1,10 +1,10 @@
 #import "AppCenterReactNativeCrashesUtils.h"
 
-@import AppCenterCrashes.MSErrorReport;
-@import AppCenterCrashes.MSErrorAttachmentLog;
-@import AppCenterCrashes.MSErrorAttachmentLog_Utility;
+#import <AppCenterCrashes/MSErrorReport.h>
+#import <AppCenterCrashes/MSErrorAttachmentLog.h>
+#import <AppCenterCrashes/MSErrorAttachmentLog+Utility.h>
 
-@import AppCenter.MSDevice;
+#import <AppCenter/MSDevice.h>
 
 NSArray* convertReportsToJS(NSArray* reports) {
     NSMutableArray* jsReadyReports = [[NSMutableArray alloc] init];

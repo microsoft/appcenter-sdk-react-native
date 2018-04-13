@@ -18,8 +18,9 @@
 #import "RCTUtils.h"
 #endif
 
-@import AppCenterPush;
-@import AppCenterReactNativeShared;
+#import <AppCenter/MSAppCenter.h>
+#import <AppCenterPush/AppCenterPush.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import "AppCenterReactNativePushUtils.h"
 #import "AppCenterReactNativePushDelegate.h"
@@ -42,6 +43,11 @@ RCT_EXPORT_MODULE();
     }
     
     return self;
+}
+
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
 }
 
 - (NSDictionary *)constantsToExport
