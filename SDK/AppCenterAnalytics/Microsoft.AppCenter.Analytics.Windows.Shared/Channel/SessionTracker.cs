@@ -31,7 +31,11 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
         private readonly IChannelUnit _channel;
-        internal Guid Sid = Guid.Empty;
+
+        // Since we don't have session history anymore, when disabling /enabling analytics a new instance is created.
+        // But the correlation identifier in AppCenter is static and thus updating session will fail test and set if we don't know previous value.
+        // The field is thus static to remember previous sessions across instances... Internal because read and reset in tests.
+        internal static Guid Sid;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
@@ -89,7 +93,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
                     return;
                 }
                 SendStartSessionIfNeeded();
-                e.Log.Sid = Sid == Guid.Empty ? null : new Guid?(Sid);
+                e.Log.Sid = Sid;
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -97,7 +101,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (Sid != Guid.Empty && !HasSessionTimedOut(now))
+            if (_lastQueuedLogTime > 0 && !HasSessionTimedOut(now))
             {
                 return;
             }
@@ -119,7 +123,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Internal and static so that it can be tested more easily
         internal static bool HasSessionTimedOut(long now, long lastQueuedLogTime, long lastResumedTime, long lastPausedTime)
         {
-            var noLogSentForLong = lastQueuedLogTime == 0 || (now - lastQueuedLogTime) >= SessionTimeout;
+            var noLogSentForLong = lastQueuedLogTime == 0 || now - lastQueuedLogTime >= SessionTimeout;
             if (lastPausedTime == 0)
             {
                 return lastResumedTime == 0 && noLogSentForLong;
@@ -128,8 +132,8 @@ namespace Microsoft.AppCenter.Analytics.Channel
             {
                 return noLogSentForLong;
             }
-            var isBackgroundForLong = (lastPausedTime >= lastResumedTime) && ((now - lastPausedTime) >= SessionTimeout);
-            var wasBackgroundForLong = (lastResumedTime - Math.Max(lastPausedTime, lastQueuedLogTime)) >= SessionTimeout;
+            var isBackgroundForLong = lastPausedTime >= lastResumedTime && now - lastPausedTime >= SessionTimeout;
+            var wasBackgroundForLong = lastResumedTime - Math.Max(lastPausedTime, lastQueuedLogTime) >= SessionTimeout;
             AppCenterLog.Debug(Analytics.Instance.LogTag, $"noLogSentForLong={noLogSentForLong} " +
                                                     $"isBackgroundForLong={isBackgroundForLong} " +
                                                     $"wasBackgroundForLong={wasBackgroundForLong}");
