@@ -1,6 +1,7 @@
 package com.testapptypescript;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.rnfs.RNFSPackage;
@@ -12,7 +13,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.push.Push;
 import java.util.Arrays;
 import java.util.List;
 

@@ -9,6 +9,8 @@ export interface CrashesListener {
   onSendingSucceeded?: (report: ErrorReport) => void;
   onSendingFailed?: (report: ErrorReport) => void;
   getErrorAttachments?: (report: ErrorReport) => Promise<ErrorAttachmentLog[]>;
+  shouldProcess?: (report: ErrorReport) => boolean;
+  shouldAwaitUserConfirmation?: (report: ErrorReport) => boolean;
 }
 
 export class ErrorAttachmentLog {
