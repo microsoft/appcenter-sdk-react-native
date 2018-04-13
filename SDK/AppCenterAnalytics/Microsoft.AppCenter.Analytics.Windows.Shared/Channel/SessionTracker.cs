@@ -31,8 +31,11 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Some fields are internal for testing
         internal static long SessionTimeout = 20000;
         private readonly IChannelUnit _channel;
-        private readonly Guid _initialSid;
-        internal Guid Sid;
+
+        // Since we don't have session history anymore, when disabling /enabling analytics a new instance is created.
+        // But the correlation identifier in AppCenter is static and thus updating session will fail test and set if we don't know previous value.
+        // The field is thus static to remember previous sessions across instances... Internal because read and reset in tests.
+        internal static Guid Sid;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
@@ -45,10 +48,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
             {
                 _channel = channel;
                 channelGroup.EnqueuingLog += HandleEnqueuingLog;
-#pragma warning disable 612
-                AppCenter.TestAndSetCorrelationId(Guid.Empty, ref _initialSid);
-#pragma warning restore 612
-                Sid = _initialSid;
             }
         }
 
@@ -102,7 +101,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (Sid != _initialSid && !HasSessionTimedOut(now))
+            if (_lastQueuedLogTime > 0 && !HasSessionTimedOut(now))
             {
                 return;
             }
