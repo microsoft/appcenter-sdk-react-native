@@ -234,7 +234,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             // Correlation ID is Empty.
             AppCenter.Instance.InstanceCorrelationId = Guid.Empty;
-            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
             _sessionTracker.Resume();
 
             // Guid.Empty should not be equal to correlation id.
@@ -252,7 +251,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             var initialCorrelationId = Guid.NewGuid();
             AppCenter.Instance.InstanceCorrelationId = initialCorrelationId;
-            _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
             _sessionTracker.Resume();
             Assert.AreEqual(SessionTracker.Sid, initialCorrelationId);
 #pragma warning restore CS0612 // Type or member is obsolete
@@ -273,7 +271,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             _sessionTracker.Pause();
             Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
             _sessionTracker.Resume();
-
             Assert.IsTrue(AppCenter.TestAndSetCorrelationId(SessionTracker.Sid,
                 ref AppCenter.Instance.InstanceCorrelationId));
 #pragma warning restore CS0612 // Type or member is obsolete
