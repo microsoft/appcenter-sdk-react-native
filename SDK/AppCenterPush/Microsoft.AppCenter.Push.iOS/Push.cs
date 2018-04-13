@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Foundation;
 using Microsoft.AppCenter.Push.iOS;
@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Push
                 {
                     Title = notification.Title,
                     Message = notification.Message,
-                    CustomData = NSDictionaryToDotNet(notification.CustomData)
+                    CustomData = notification.CustomData?.ToDictionary(i => i.Key.ToString(), i => i.Value.ToString())
                 };
                 PushNotificationReceived?.Invoke(null, pushEventArgs);
             };
@@ -47,8 +47,6 @@ namespace Microsoft.AppCenter.Push
             }
         }
 
-        private static event EventHandler<PushNotificationReceivedEventArgs> PlatformPushNotificationReceived;
-
         /// <summary>
         /// Call this from the corresponding method override in your AppDelegate.
         /// </summary>
@@ -70,16 +68,6 @@ namespace Microsoft.AppCenter.Push
         public static bool DidReceiveRemoteNotification(NSDictionary userInfo)
         {
             return MSPush.DidReceiveRemoteNotification(userInfo);
-        }
-
-        private static IDictionary<string, string> NSDictionaryToDotNet(NSDictionary<NSString, NSString> nsdict)
-        {
-            var dict = new Dictionary<string, string>();
-            foreach (var key in nsdict.Keys)
-            {
-                dict[key.ToString()] = nsdict.ObjectForKey(key);
-            }
-            return dict;
         }
     }
 }

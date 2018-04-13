@@ -63,6 +63,6 @@ namespace Microsoft.AppCenter.Push.iOS.Bindings
 
         //@property(nonatomic, copy, readonly) NSDictionary<NSString*, NSString*> *customData;
         [Export("customData")]
-        NSDictionary<NSString, NSString> CustomData { get; }
+        NSDictionary CustomData { get; }
     }
 }
