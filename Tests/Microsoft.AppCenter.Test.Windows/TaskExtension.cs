@@ -6,6 +6,15 @@ namespace Microsoft.AppCenter.Test
 {
     public static class TaskExtension
     {
+        public static T RunNotAsync<T>(this Task<T> @this)
+        {
+            return @this.GetAwaiter().GetResult();
+        }
+        public static void RunNotAsync(this Task @this)
+        {
+            @this.GetAwaiter().GetResult();
+        }
+
         public static Task GetCompletedTask()
         {
             var completedTask = Task.Delay(0);

@@ -39,7 +39,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         {
             var addedLog = new CustomPropertyLog
             {
-                Device = new DeviceInformationHelper().GetDeviceInformationAsync().GetAwaiter().GetResult(),
+                Device = new DeviceInformationHelper().GetDeviceInformationAsync().RunNotAsync(),
                 Timestamp = DateTime.Now,
                 Properties = new List<CustomProperty>
                 {
@@ -57,7 +57,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             storage.DeleteLogs(StorageTestChannelName);
             storage.PutLog(StorageTestChannelName, addedLog);
             var retrievedLogs = new List<Log>();
-            storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).GetAwaiter().GetResult();
+            storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0] as CustomPropertyLog;
 
             foreach (var addedProperty in addedLog.Properties)

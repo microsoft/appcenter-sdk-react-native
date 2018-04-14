@@ -190,7 +190,7 @@ namespace Microsoft.AppCenter.Test.Channel
             var addedChannel =
                 _channelGroup.AddChannel(channelName, 2, TimeSpan.FromSeconds(3), 3) as Microsoft.AppCenter.Channel.Channel;
 
-            _channelGroup.ShutdownAsync().GetAwaiter().GetResult();
+            _channelGroup.ShutdownAsync().RunNotAsync();
 
             Assert.IsFalse(addedChannel.IsEnabled);
         }

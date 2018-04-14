@@ -123,7 +123,7 @@ namespace Microsoft.AppCenter.Test.Channel
                 sem.Release();
             };
 
-            _channel.EnqueueAsync(log).GetAwaiter().GetResult();
+            _channel.EnqueueAsync(log).RunNotAsync();
             Assert.IsTrue(sem.Wait(DefaultWaitTime));
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.AppCenter.Test.Channel
             SetChannelWithTimeSpan(TimeSpan.FromHours(1));
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
             Assert.IsTrue(SendingLogOccurred(1));
         }
@@ -149,7 +149,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             _channel.SetEnabled(false);
             var log = new TestLog();
-            _channel.EnqueueAsync(log).GetAwaiter().GetResult();
+            _channel.EnqueueAsync(log).RunNotAsync();
             Assert.IsTrue(FailedToSendLogOccurred(1));
             Assert.IsFalse(EnqueuingLogOccurred(1));
         }
@@ -159,7 +159,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
@@ -174,7 +174,7 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.FilteringLog += (sender, args) => args.FilterRequested = true;
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
             Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
             Assert.IsFalse(SendingLogOccurred(MaxLogsPerBatch));
@@ -191,7 +191,7 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.FilteringLog += (sender, args) => args.FilterRequested = false;
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
             Assert.IsTrue(FilteringLogOccurred(MaxLogsPerBatch));
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
@@ -203,7 +203,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
@@ -214,7 +214,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(SentLogOccurred(MaxLogsPerBatch));
@@ -226,7 +226,7 @@ namespace Microsoft.AppCenter.Test.Channel
             MakeIngestionCallsFail();
             for (var i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(FailedToSendLogOccurred(MaxLogsPerBatch));
@@ -251,10 +251,10 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void ChannelInvokesSendingLogEventAfterEnabling()
         {
-            _channel.ShutdownAsync().GetAwaiter().GetResult();
+            _channel.ShutdownAsync().RunNotAsync();
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             _channel.SetEnabled(true);
@@ -271,7 +271,7 @@ namespace Microsoft.AppCenter.Test.Channel
             _channel.SetEnabled(false);
             for (int i = 0; i < MaxLogsPerBatch; ++i)
             {
-                _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+                _channel.EnqueueAsync(new TestLog()).RunNotAsync();
             }
 
             Assert.IsTrue(SendingLogOccurred(MaxLogsPerBatch));
@@ -284,10 +284,10 @@ namespace Microsoft.AppCenter.Test.Channel
         [TestMethod]
         public void ClearLogs()
         {
-            _channel.ShutdownAsync().GetAwaiter().GetResult();
-            _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+            _channel.ShutdownAsync().RunNotAsync();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
-            _channel.ClearAsync().GetAwaiter().GetResult();
+            _channel.ClearAsync().RunNotAsync();
             _channel.SetEnabled(true);
 
             Assert.IsFalse(SendingLogOccurred(1));
@@ -333,8 +333,8 @@ namespace Microsoft.AppCenter.Test.Channel
             SetupEventCallbacks();
 
             // Shutdown channel and store some log
-            _channel.ShutdownAsync().GetAwaiter().GetResult();
-            _channel.EnqueueAsync(log).GetAwaiter().GetResult();
+            _channel.ShutdownAsync().RunNotAsync();
+            _channel.EnqueueAsync(log).RunNotAsync();
 
             _channel.SetEnabled(true);
 
@@ -351,7 +351,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             _mockIngestion.CallShouldSucceed = false;
             _mockIngestion.TaskError = new RecoverableIngestionException();
-            _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
             // wait for SendingLog event
             _eventSemaphores[SendingLogSemaphoreIdx].Wait();
@@ -369,7 +369,7 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             _mockIngestion.CallShouldSucceed = false;
             _mockIngestion.TaskError = new NonRecoverableIngestionException();
-            _channel.EnqueueAsync(new TestLog()).GetAwaiter().GetResult();
+            _channel.EnqueueAsync(new TestLog()).RunNotAsync();
 
             // wait up to 20 seconds for suspend to finish
             bool disabled = WaitForChannelDisable(TimeSpan.FromSeconds(20));

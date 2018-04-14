@@ -51,7 +51,7 @@ namespace Microsoft.AppCenter.Test.Ingestion.Http
             var call = PrepareServiceCall();
             SetupAdapterSendResponse(HttpStatusCode.OK);
             _networkState.IsConnected = true;
-            _networkStateIngestion.ExecuteCallAsync(call).GetAwaiter().GetResult();
+            _networkStateIngestion.ExecuteCallAsync(call).RunNotAsync();
             VerifyAdapterSend(Times.Once());
 
             // No throw any exception
