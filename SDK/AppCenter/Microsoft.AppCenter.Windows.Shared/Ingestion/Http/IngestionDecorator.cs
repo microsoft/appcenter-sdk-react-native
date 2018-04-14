@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Ingestion.Http
@@ -14,35 +13,24 @@ namespace Microsoft.AppCenter.Ingestion.Http
             DecoratedApi = decoratedApi;
         }
 
-        public virtual void Close()
-        {
-            DecoratedApi.Close();
-        }
-
-        public virtual IServiceCall PrepareServiceCall(string appSecret, Guid installId, IList<Log> logs)
-        {
-            return DecoratedApi.PrepareServiceCall(appSecret, installId, logs);
-        }
-
-        public virtual Task ExecuteCallAsync(IServiceCall call)
-        {
-            return DecoratedApi.ExecuteCallAsync(call);
-        }
-
         public virtual void SetLogUrl(string logUrl)
         {
             DecoratedApi.SetLogUrl(logUrl);
         }
 
-        public void Dispose()
+        public virtual IServiceCall Call(string appSecret, Guid installId, IList<Log> logs)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return DecoratedApi.Call(appSecret, installId, logs);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Close()
         {
-            /* No-op */
+            DecoratedApi.Close();
+        }
+
+        public virtual void Dispose()
+        {
+            DecoratedApi.Dispose();
         }
     }
 }

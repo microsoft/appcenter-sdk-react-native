@@ -13,10 +13,10 @@ namespace Microsoft.AppCenter.Analytics
     {
         #region static
 
-        private const int MaxEventProperties = 5;
+        private const int MaxEventProperties = 20;
         private const int MaxEventNameLength = 256;
-        private const int MaxEventPropertyKeyLength = 64;
-        private const int MaxEventPropertyValueLength = 64;
+        private const int MaxEventPropertyKeyLength = 125;
+        private const int MaxEventPropertyValueLength = 125;
 
         private static readonly object AnalyticsLock = new object();
 
@@ -89,10 +89,11 @@ namespace Microsoft.AppCenter.Analytics
         #region instance
 
         // Internal for testing purposes
-        internal ISessionTracker SessionTracker;
+        private ISessionTracker _sessionTracker;
+
         private readonly ISessionTrackerFactory _sessionTrackerFactory;
 
-        internal Analytics()
+        private Analytics()
         {
             LogSerializer.AddLogType(PageLog.JsonIdentifier, typeof(PageLog));
             LogSerializer.AddLogType(EventLog.JsonIdentifier, typeof(EventLog));
@@ -106,10 +107,7 @@ namespace Microsoft.AppCenter.Analytics
 
         public override bool InstanceEnabled
         {
-            get
-            {
-                return base.InstanceEnabled;
-            }
+            get => base.InstanceEnabled;
 
             set
             {
@@ -160,26 +158,26 @@ namespace Microsoft.AppCenter.Analytics
         {
             lock (_serviceLock)
             {
-                if (enabled && ChannelGroup != null && SessionTracker == null)
+                if (enabled && ChannelGroup != null && _sessionTracker == null)
                 {
-                    SessionTracker = CreateSessionTracker(ChannelGroup, Channel, ApplicationSettings);
+                    _sessionTracker = CreateSessionTracker(ChannelGroup, Channel, ApplicationSettings);
                     if (!ApplicationLifecycleHelper.Instance.IsSuspended)
                     {
-                        SessionTracker.Resume();
+                        _sessionTracker.Resume();
                     }
                     SubscribeToApplicationLifecycleEvents();
                 }
                 else if (!enabled)
                 {
                     UnsubscribeFromApplicationLifecycleEvents();
-                    SessionTracker = null;
+                    _sessionTracker = null;
                 }
             }
         }
 
         private ISessionTracker CreateSessionTracker(IChannelGroup channelGroup, IChannelUnit channel, IApplicationSettings applicationSettings)
         {
-            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel, applicationSettings) ?? new SessionTracker(channelGroup, channel, applicationSettings);
+            return _sessionTrackerFactory?.CreateSessionTracker(channelGroup, channel, applicationSettings) ?? new SessionTracker(channelGroup, channel);
         }
 
         /// <summary>
@@ -218,12 +216,12 @@ namespace Microsoft.AppCenter.Analytics
 
         private void ApplicationResumingEventHandler(object sender, EventArgs e)
         {
-            SessionTracker?.Resume();
+            _sessionTracker?.Resume();
         }
 
         private void ApplicationSuspendedEventHandler(object sender, EventArgs e)
         {
-            SessionTracker?.Pause();
+            _sessionTracker?.Pause();
         }
 
         /// <summary>

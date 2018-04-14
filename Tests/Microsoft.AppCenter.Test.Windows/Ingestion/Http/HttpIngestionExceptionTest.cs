@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
 {
     [TestClass]
-    public class IngestionHttpExceptionTest
+    public class HttpIngestionExceptionTest
     {
         [TestMethod]
         public void IsRecoverablePropertyTest()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Android.Content;
 using Android.OS;
 using Android.Views;
@@ -19,6 +20,7 @@ namespace Contoso.Android.Puppet
         private Button CrashWithNullReferenceExceptionButton;
         private Button CatchNullReferenceExceptionButton;
         private Button CrashAsyncButton;
+        private Button CrashDotNetThreadButton;
         private Button CrashSuperNotCalledButton;
         private Button CrashJavaFromDotNetButton;
 
@@ -39,6 +41,7 @@ namespace Contoso.Android.Puppet
             CrashWithNullReferenceExceptionButton = view.FindViewById(Resource.Id.crash_with_null_reference_exception) as Button;
             CatchNullReferenceExceptionButton = view.FindViewById(Resource.Id.catch_null_reference_exception) as Button;
             CrashAsyncButton = view.FindViewById(Resource.Id.crash_async) as Button;
+            CrashDotNetThreadButton = view.FindViewById(Resource.Id.crash_from_dotnet_thread) as Button;
             CrashSuperNotCalledButton = view.FindViewById(Resource.Id.crash_super_not_called) as Button;
             CrashJavaFromDotNetButton = view.FindViewById(Resource.Id.crash_java_from_dotnet) as Button;
 
@@ -50,6 +53,7 @@ namespace Contoso.Android.Puppet
             CrashWithNullReferenceExceptionButton.Click += CrashWithNullReferenceException;
             CatchNullReferenceExceptionButton.Click += CatchNullReferenceException;
             CrashAsyncButton.Click += CrashAsync;
+            CrashDotNetThreadButton.Click += CrashDotNetThread;
             CrashSuperNotCalledButton.Click += CrashSuperNotCalled;
             CrashJavaFromDotNetButton.Click += CrashJavaFromDotNet;
 
@@ -121,6 +125,11 @@ namespace Contoso.Android.Puppet
         async private void CrashAsync(object sender, EventArgs e)
         {
             await FakeService.DoStuffInBackground();
+        }
+
+        private void CrashDotNetThread(object sender, EventArgs e)
+        {
+            new Thread(() => throw new Exception("oops")).Start();
         }
 
         private void CrashSuperNotCalled(object sender, EventArgs e)
