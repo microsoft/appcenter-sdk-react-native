@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
-using Microsoft.AppCenter.Utils;
 using Newtonsoft.Json;
 using SQLite;
 
