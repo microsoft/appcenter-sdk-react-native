@@ -85,7 +85,7 @@ namespace Microsoft.AppCenter.Test
             var mockAdapter = new Mock<IStorageAdapter>();
             mockAdapter.Setup(
                     a => a.GetAsync(It.IsAny<PredType>(), It.IsAny<int>()))
-                .ThrowsAsync(new StorageException());
+                .Returns(TaskExtension.GetFaultedTask<List<Microsoft.AppCenter.Storage.Storage.LogEntry>>(new StorageException()));
             var fakeStorage = new Microsoft.AppCenter.Storage.Storage(mockAdapter.Object);
             var logs = new List<Log>();
             Assert.ThrowsException<StorageException>(() =>
@@ -101,13 +101,13 @@ namespace Microsoft.AppCenter.Test
             var mockAdapter = new Mock<IStorageAdapter>();
             mockAdapter.Setup(
                     a => a.GetAsync(It.IsAny<PredType>(), It.IsAny<int>()))
-                .ThrowsAsync(new StorageException());
+                .Returns(TaskExtension.GetFaultedTask<List<Microsoft.AppCenter.Storage.Storage.LogEntry>>(new StorageException()));
             mockAdapter.Setup(c => c.InsertAsync(It.IsAny<Microsoft.AppCenter.Storage.Storage.LogEntry>()))
-                .ThrowsAsync(new StorageException());
+                .Returns(TaskExtension.GetFaultedTask<int>(new StorageException()));
             mockAdapter.Setup(c => c.DeleteAsync(It.IsAny<Expression<Func<Microsoft.AppCenter.Storage.Storage.LogEntry, bool>>>()))
-                .ThrowsAsync(new StorageException());
+                .Returns(TaskExtension.GetFaultedTask<int>(new StorageException()));
             mockAdapter.Setup(c => c.CountAsync(It.IsAny<Expression<Func<Microsoft.AppCenter.Storage.Storage.LogEntry, bool>>>()))
-                .ThrowsAsync(new StorageException());
+                .Returns(TaskExtension.GetFaultedTask<int>(new StorageException()));
             var fakeStorage = new Microsoft.AppCenter.Storage.Storage(mockAdapter.Object);
 
             Assert.ThrowsException<StorageException>(() => fakeStorage.PutLog("channel_name", new TestLog()).RunNotAsync());
