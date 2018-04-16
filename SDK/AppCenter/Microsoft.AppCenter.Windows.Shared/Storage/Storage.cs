@@ -52,7 +52,7 @@ namespace Microsoft.AppCenter.Storage
         internal Storage(IStorageAdapter adapter)
         {
             _storageAdapter = adapter;
-            _queue.Add(new Task(() => InitializeDatabaseAsync().Wait()));
+            _queue.Add(new Task(() => InitializeDatabaseAsync().GetAwaiter().GetResult()));
             _queueFlushTask = Task.Run(FlushQueueAsync);
         }
 
@@ -87,7 +87,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 var logJsonString = LogSerializer.Serialize(log);
                 var logEntry = new LogEntry {Channel = channelName, Log = logJsonString};
-                _storageAdapter.InsertAsync(logEntry).Wait();
+                _storageAdapter.InsertAsync(logEntry).GetAwaiter().GetResult();
             });
             try
             {
@@ -128,7 +128,7 @@ namespace Microsoft.AppCenter.Storage
                     {
                         _storageAdapter
                             .DeleteAsync<LogEntry>(entry => entry.Channel == channelName && entry.Id == id)
-                            .Wait();
+                            .GetAwaiter().GetResult();
                     }
                 }
                 catch (KeyNotFoundException e)
@@ -163,7 +163,7 @@ namespace Microsoft.AppCenter.Storage
                         $"Deleting all logs from storage for channel '{channelName}'");
                     ClearPendingLogStateWithoutEnqueue(channelName);
                     _storageAdapter.DeleteAsync<LogEntry>(entry => entry.Channel == channelName)
-                        .Wait();
+                        .GetAwaiter().GetResult();
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -193,7 +193,7 @@ namespace Microsoft.AppCenter.Storage
             var task = new Task<int>(() =>
             {
                 return _storageAdapter.CountAsync<LogEntry>(entry => entry.Channel == channelName)
-                    .Result;
+                    .GetAwaiter().GetResult();
             });
             try
             {
@@ -272,7 +272,7 @@ namespace Microsoft.AppCenter.Storage
                 var failedToDeserializeALog = false;
                 var retrievedEntries =
                     _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName, limit)
-                        .Result;
+                        .GetAwaiter().GetResult();
                 foreach (var entry in retrievedEntries)
                 {
                     if (_pendingDbIdentifiers.Contains(entry.Id))
@@ -290,7 +290,7 @@ namespace Microsoft.AppCenter.Storage
                         AppCenterLog.Error(AppCenterLog.LogTag, "Cannot deserialize a log in storage", e);
                         failedToDeserializeALog = true;
                         _storageAdapter.DeleteAsync<LogEntry>(row => row.Id == entry.Id)
-                            .Wait();
+                            .GetAwaiter().GetResult();
                     }
                 }
                 if (failedToDeserializeALog)
