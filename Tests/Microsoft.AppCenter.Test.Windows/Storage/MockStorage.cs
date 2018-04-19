@@ -63,8 +63,11 @@ namespace Microsoft.AppCenter.Test.Storage
         {
             lock (this)
             {
+                var pending = _pending.SelectMany(i => i.Value).ToList();
                 var batchId = Guid.NewGuid().ToString();
-                var batch = this[channelName].Take(limit).ToList();
+                var batch = this[channelName]
+                    .Where(log => !pending.Contains(log))
+                    .Take(limit).ToList();
                 _pending.Add(batchId, batch);
                 logs?.Clear();
                 logs?.AddRange(batch);

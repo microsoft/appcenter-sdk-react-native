@@ -13,7 +13,7 @@
     <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <iconUrl>https://aka.ms/k76877</iconUrl>
     <dependencies>
       <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>
@@ -37,13 +37,13 @@
 
     <!-- WindowsDesktop (WPF and WinForms) -->
     <!-- TODO: Uncomment when it's time to release these. -->
-    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net452" /-->
+    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net45" /-->
 
     <!-- UWP -->
     <!-- targets files add correct references to proper platforms -->
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.targets" target="build/uap10.0"/>
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="ref/uap10.0" />
-    
+
     <!--x86 -->
     <file src="$uwp_dir$/x86/Microsoft.AppCenter.Crashes.dll" target="runtimes/win10-x86/lib/uap10.0" />
     <file src="$uwp_dir$/x86/WatsonRegistrationUtility.dll"  target="runtimes/win10-x86/native"/>

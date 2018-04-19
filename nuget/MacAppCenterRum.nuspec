@@ -11,7 +11,7 @@
     <tags>mobilecenter</tags>
     <projectUrl>https://aka.ms/telgml</projectUrl>
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
-    <iconUrl>https://aka.ms/xhh7sr</iconUrl>
+    <iconUrl>https://aka.ms/k76877</iconUrl>
     <dependencies>
       <dependency id="Microsoft.AppCenter" version="$version$" />
     </dependencies>

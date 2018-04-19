@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\BooleanProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ClearProperty.cs" />
@@ -36,17 +37,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAppCenterService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpNetworkAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\INetworkStateAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateIngestion.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\NetworkStateServiceCall.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\ServiceCallDecorator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StartServiceLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\ServiceCall.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionHttp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\RetryableIngestion.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\RetryableServiceCall.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IIngestion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\IServiceCall.cs" />
