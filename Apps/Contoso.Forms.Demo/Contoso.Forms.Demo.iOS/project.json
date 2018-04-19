@@ -1,9 +1,9 @@
-{
+﻿{
   "dependencies": {
-    "Microsoft.AppCenter.Analytics": "1.5.0",
-    "Microsoft.AppCenter.Crashes": "1.5.0",
-    "Microsoft.AppCenter.Distribute": "1.5.0",
-    "Microsoft.AppCenter.Push": "1.5.0",
+    "Microsoft.AppCenter.Analytics": "1.6.0",
+    "Microsoft.AppCenter.Crashes": "1.6.0",
+    "Microsoft.AppCenter.Distribute": "1.6.0",
+    "Microsoft.AppCenter.Push": "1.6.0",
     "Xamarin.Forms": "2.5.0.121934"
   },
   "frameworks": {
