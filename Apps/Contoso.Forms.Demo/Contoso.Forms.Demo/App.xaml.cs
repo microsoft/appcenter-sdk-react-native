@@ -71,7 +71,7 @@ namespace Contoso.Forms.Demo
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
                 var message = e.Message;
-                if (e.CustomData != null && e.CustomData.Count > 0)
+                if (e.CustomData != null)
                 {
                     message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
                 }
