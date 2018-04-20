@@ -70,12 +70,12 @@ namespace Contoso.Forms.Demo
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
-                var customData = e.CustomData != null
-                    ? "{" + string.Join(",", e.CustomData.Select(i => i.Key + "=" + i.Value)) + "}"
-                    : "<null>";
-                var message = $"Message = {e.Message ?? "<null>"}\n" +
-                              $"CustomData = {customData}";
-                Current.MainPage.DisplayAlert(e.Title ?? "<null>", message, "OK");
+                var message = e.Message;
+                if (e.CustomData != null)
+                {
+                    message += "\nCustom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+                }
+                Current.MainPage.DisplayAlert(e.Title, message, "OK");
             });
         }
 
