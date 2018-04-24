@@ -41,7 +41,7 @@ module.exports = {
         }
         return inquirer.prompt([{
             type: 'input',
-            message: 'What is the iOS App Secret?',
+            message: 'What secret does your iOS app use? [None]',
             name: 'AppSecret',
         }]).then((answers) => {
             try {

@@ -30,7 +30,7 @@ module.exports = {
         }
         return inquirer.prompt([{
             type: 'input',
-            message: 'What is the Android App Secret?',
+            message: 'What secret does your Android app use? [None]',
             name: 'app_secret',
         }]).then((answers) => {
             config.set('app_secret', answers.app_secret);
