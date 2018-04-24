@@ -4,9 +4,7 @@
  * @flow
  */
 
-import {
-  AppRegistry
-} from 'react-native';
+import { AppRegistry, YellowBox } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
 
@@ -26,3 +24,5 @@ const TestApp = StackNavigator({
 
 AppRegistry.registerComponent('TestApp', () => TestApp);
 
+// Ignore react-navigation 'isMounted' deprecation message (https://github.com/react-navigation/react-navigation/issues/3956)
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
