@@ -80,6 +80,7 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <CodesignProvision>AppCenter SDK Xamarin iOS Puppet Debug</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
