@@ -266,6 +266,48 @@
 			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
 			remoteInfo = "double-conversion-tvOS";
 		};
+		9CBF5F47209A38D6005188E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3DBE0D001F3B181A0099AA32;
+			remoteInfo = fishhook;
+		};
+		9CBF5F49209A38D6005188E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3DBE0D0D1F3B181C0099AA32;
+			remoteInfo = "fishhook-tvOS";
+		};
+		9CBF5F5B209A38D6005188E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBF21BDC1FC498900052F4D5;
+			remoteInfo = jsinspector;
+		};
+		9CBF5F5D209A38D6005188E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBF21BFA1FC4989A0052F4D5;
+			remoteInfo = "jsinspector-tvOS";
+		};
+		9CBF5F5F209A38D6005188E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9936F3131F5F2E4B0010BF04;
+			remoteInfo = privatedata;
+		};
+		9CBF5F61209A38D6005188E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
+			remoteInfo = "privatedata-tvOS";
+		};
 		9CF9D3DE1FB573BA00F8C247 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A74770D89B674F5AAB7B567F /* AppCenterReactNativeCrashes.xcodeproj */;
@@ -457,6 +499,8 @@
 			children = (
 				139FDEF41B06529B00C62182 /* libRCTWebSocket.a */,
 				3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */,
+				9CBF5F48209A38D6005188E0 /* libfishhook.a */,
+				9CBF5F4A209A38D6005188E0 /* libfishhook-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -487,10 +531,14 @@
 				3DAD3EAB1DF850E9000B6D8A /* libcxxreact.a */,
 				3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */,
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
+				9CBF5F5C209A38D6005188E0 /* libjsinspector.a */,
+				9CBF5F5E209A38D6005188E0 /* libjsinspector-tvOS.a */,
 				9C7B32461F43DC040093E124 /* libthird-party.a */,
 				9C7B32481F43DC040093E124 /* libthird-party.a */,
 				9C7B324A1F43DC040093E124 /* libdouble-conversion.a */,
 				9C7B324C1F43DC040093E124 /* libdouble-conversion.a */,
+				9CBF5F60209A38D6005188E0 /* libprivatedata.a */,
+				9CBF5F62209A38D6005188E0 /* libprivatedata-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -694,10 +742,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 5Z97G9NZQ6;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = L4RARDNZ2Y;
+						DevelopmentTeam = 5Z97G9NZQ6;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1021,6 +1070,48 @@
 			remoteRef = 9C7B324B1F43DC040093E124 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		9CBF5F48209A38D6005188E0 /* libfishhook.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libfishhook.a;
+			remoteRef = 9CBF5F47209A38D6005188E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9CBF5F4A209A38D6005188E0 /* libfishhook-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libfishhook-tvOS.a";
+			remoteRef = 9CBF5F49209A38D6005188E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9CBF5F5C209A38D6005188E0 /* libjsinspector.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjsinspector.a;
+			remoteRef = 9CBF5F5B209A38D6005188E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9CBF5F5E209A38D6005188E0 /* libjsinspector-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libjsinspector-tvOS.a";
+			remoteRef = 9CBF5F5D209A38D6005188E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9CBF5F60209A38D6005188E0 /* libprivatedata.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libprivatedata.a;
+			remoteRef = 9CBF5F5F209A38D6005188E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9CBF5F62209A38D6005188E0 /* libprivatedata-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libprivatedata-tvOS.a";
+			remoteRef = 9CBF5F61209A38D6005188E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9CF9D3DF1FB573BA00F8C247 /* libAppCenterReactNativeCrashes.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1181,6 +1272,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = "${inherited}";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1212,6 +1304,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "${inherited}";
 				INFOPLIST_FILE = DemoAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1242,7 +1335,7 @@
 				CODE_SIGN_ENTITLEMENTS = DemoApp/DemoApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = L4RARDNZ2Y;
+				DEVELOPMENT_TEAM = 5Z97G9NZQ6;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
@@ -1259,10 +1352,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.demoapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.demoapp;
 				PRODUCT_NAME = DemoApp;
-				PROVISIONING_PROFILE = "7a12f129-e0ce-4ba5-95fb-b64b88211489";
-				PROVISIONING_PROFILE_SPECIFIER = "React Native Demo App";
+				PROVISIONING_PROFILE = "98420b5f-72f9-42f1-b250-1b94e3ee8aa6";
+				PROVISIONING_PROFILE_SPECIFIER = "AppCenter SDK React Native DemoApp Debug";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1273,8 +1366,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DemoApp/DemoApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L4RARDNZ2Y;
+				DEVELOPMENT_TEAM = 5Z97G9NZQ6;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
@@ -1291,10 +1385,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.azure.mobile.reactnative.demoapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.demoapp;
 				PRODUCT_NAME = DemoApp;
-				PROVISIONING_PROFILE = "7a12f129-e0ce-4ba5-95fb-b64b88211489";
-				PROVISIONING_PROFILE_SPECIFIER = "React Native Demo App";
+				PROVISIONING_PROFILE = "e7cf4f08-8dba-4e3a-a905-01c6c1d6d2f1";
+				PROVISIONING_PROFILE_SPECIFIER = "AppCenter SDK React Native DemoApp Release";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1326,6 +1420,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 5Z97G9NZQ6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1377,6 +1472,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 5Z97G9NZQ6;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
