@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable CS0067 // Event never invoked
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -162,11 +164,11 @@ namespace Microsoft.AppCenter.Crashes
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("This does not exist in UWP and should not be used.")]
 #else
-        ///// <summary>
-        ///// Track a handled error.
-        ///// </summary>
-        ///// <param name="exception">The .NET exception describing the handled error.</param>
-        ///// <param name="properties">Optional properties.</param>
+        /// <summary>
+        /// Track a handled error.
+        /// </summary>
+        /// <param name="exception">The .NET exception describing the handled error.</param>
+        /// <param name="properties">Optional properties.</param>
 #endif
         public static void TrackError(Exception exception, IDictionary<string, string> properties = null)
         {
