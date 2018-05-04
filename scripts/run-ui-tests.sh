@@ -4,17 +4,14 @@
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 UITEST_BUILD_DIR="$SCRIPT_DIR/../Tests/UITests/bin/Release"
 BUILD_SCRIPT="build.sh"
-CLEAN_TARGET="clean"
 
 # Built application files
 TEST_APK="$SCRIPT_DIR/../Tests/Droid/bin/Release/com.contoso.contoso_forms_test.apk"
 TEST_IPA="$SCRIPT_DIR/../Tests/iOS/bin/iPhone/Release/Contoso.Forms.Test.iOS.ipa"
 
 # Set defaults but accept also positional parameters for the following:
-BUILD_TARGET=${1:-$BUILD_TARGET}
-BUILD_TARGET=${BUILD_TARGET:-"TestApps"}
-APP_CENTER_USERNAME=${2:-$APP_CENTER_USERNAME}
-APP_CENTER_API_TOKEN=${3:-$APP_CENTER_API_TOKEN}
+APP_CENTER_USERNAME=${1:-$APP_CENTER_USERNAME}
+APP_CENTER_API_TOKEN=${2:-$APP_CENTER_API_TOKEN}
 
 # Check credentials are set
 if [ -z ${APP_CENTER_USERNAME} ]; then
@@ -80,17 +77,8 @@ fi
 
 # Build tests
 pushd ..
-if [ "${BUILD_TARGET}" == "TestApps" ]; then
-    echo "Cleaning..."
-    sh $BUILD_SCRIPT -t=$CLEAN_TARGET # clean so that we don't accidentally update to snapshot
-    if [ $? -ne 0 ]; then
-        echo "An error occured while cleaning."
-        popd
-        exit 1
-    fi
-fi
-echo "Building target \"$BUILD_TARGET\"..."
-sh $BUILD_SCRIPT -s "scripts/uitest.cake" -t=$BUILD_TARGET
+echo "Building target 'UITest'..."
+sh $BUILD_SCRIPT -s "scripts/uitest.cake"
 if [ $? -ne 0 ]; then
     echo "An error occured while building tests."
     popd
