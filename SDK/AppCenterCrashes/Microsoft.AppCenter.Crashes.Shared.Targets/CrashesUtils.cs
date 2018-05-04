@@ -8,10 +8,6 @@ namespace Microsoft.AppCenter.Crashes
     {
         internal static byte[] SerializeException(Exception exception)
         {
-            if (exception == null)
-            {
-                return null;
-            }
             if (!exception.GetType().IsSerializable)
             {
                 AppCenterLog.Warn(Crashes.LogTag, $"Cannot serialize {exception.GetType().FullName} exception for client side inspection. " +
