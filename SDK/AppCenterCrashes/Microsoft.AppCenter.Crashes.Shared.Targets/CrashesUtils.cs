@@ -8,6 +8,17 @@ namespace Microsoft.AppCenter.Crashes
     {
         internal static byte[] SerializeException(Exception exception)
         {
+            if (exception == null)
+            {
+                return null;
+            }
+            if (!exception.GetType().IsSerializable)
+            {
+                AppCenterLog.Warn(Crashes.LogTag, $"Cannot serialize {exception.GetType().FullName} exception for client side inspection. " +
+                                  "If you want to have access to the exception in the callbacks, please add a Serializable attribute " +
+                                  "and a deserialization constructor to the exception class.");
+                return null;
+            }
             try
             {
                 using (var memoryStream = new MemoryStream())
@@ -19,7 +30,7 @@ namespace Microsoft.AppCenter.Crashes
             }
             catch (Exception e)
             {
-                AppCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection", e);
+                AppCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection.", e);
             }
             return null;
         }
@@ -36,7 +47,7 @@ namespace Microsoft.AppCenter.Crashes
             }
             catch (Exception e)
             {
-                AppCenterLog.Warn(Crashes.LogTag, "Failed to deserialize exception for client side inspection", e);
+                AppCenterLog.Warn(Crashes.LogTag, "Failed to deserialize exception for client side inspection.", e);
             }
             return null;
         }
