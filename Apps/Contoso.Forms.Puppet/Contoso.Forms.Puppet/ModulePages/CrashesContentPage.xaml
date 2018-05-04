@@ -20,6 +20,9 @@
             <ViewCell Tapped="TestException">
                 <Button Text="Generate Test Exception" InputTransparent="true" Clicked="TestException" />
             </ViewCell>
+            <ViewCell Tapped="NonSerializableException">
+                <Button Text="Generate non serializable Exception" InputTransparent="true" Clicked="NonSerializableException" />
+            </ViewCell>
             <ViewCell Tapped="DivideByZero">
                 <Button Text="Divide 42 by 0" InputTransparent="true" Clicked="DivideByZero" />
             </ViewCell>

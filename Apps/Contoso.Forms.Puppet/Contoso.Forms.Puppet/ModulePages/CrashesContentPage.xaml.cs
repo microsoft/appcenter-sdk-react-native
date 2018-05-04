@@ -11,6 +11,10 @@ namespace Contoso.Forms.Puppet
 {
     using XamarinDevice = Xamarin.Forms.Device;
 
+    public class NonSerializableException : Exception
+    {
+    }
+
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class CrashesContentPage
     {
@@ -127,6 +131,11 @@ namespace Contoso.Forms.Puppet
         void TestException(object sender, EventArgs e)
         {
             HandleOrThrow(() => Crashes.GenerateTestCrash());
+        }
+
+        void NonSerializableException(object sender, EventArgs e)
+        {
+            HandleOrThrow(() => throw new NonSerializableException());
         }
 
         void DivideByZero(object sender, EventArgs e)

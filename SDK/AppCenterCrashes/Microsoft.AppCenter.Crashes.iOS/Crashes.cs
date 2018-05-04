@@ -102,9 +102,8 @@ namespace Microsoft.AppCenter.Crashes
             Exception systemException = e.ExceptionObject as Exception;
             AppCenterLog.Error(LogTag, "Unhandled Exception:", systemException);
             MSException exception = GenerateiOSException(systemException, true);
-            byte[] exceptionBytes = CrashesUtils.SerializeException(systemException);
+            byte[] exceptionBytes = CrashesUtils.SerializeException(systemException) ?? new byte[0];
             NSData wrapperExceptionData = NSData.FromArray(exceptionBytes);
-
             MSWrapperException wrapperException = new MSWrapperException
             {
                 Exception = exception,
