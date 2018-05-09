@@ -15,7 +15,7 @@ import org.json.JSONStringer;
 import java.util.Collection;
 
 class AppCenterReactNativeCrashesUtils {
-    private static final String LOG_TAG = "AppCenterReactNativeCrashes";
+    private static final String LOG_TAG = "AppCenterCrashes";
 
     static void logError(String message) {
         Log.e(LOG_TAG, message);
