@@ -7,9 +7,16 @@ const setupFileName = 'setupAppCenter.js';
 const packageJsonFile = path.join(`${projectDirectory}`, 'package.json');
 
 // Update project.json
-var projectJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'))
+var packageJsonContent;
+try {
+    packageJsonContent = fs.readFileSync(packageJsonFile, 'utf8');
+} catch (e) {
+    console.log("Could not read package.json file");
+    return;
+}
+var projectJson = JSON.parse(packageJsonContent);
 if (projectJson.hasOwnProperty('jest')) {
-    const setupFileNameValue = `.${path.sep}test${path.sep}${setupFileName}`
+    const setupFileNameValue = `.${path.sep}test${path.sep}${setupFileName}`;
     if (projectJson.jest.setupFiles === undefined) {
         projectJson.jest.setupFiles = [setupFileNameValue];
     } else {
