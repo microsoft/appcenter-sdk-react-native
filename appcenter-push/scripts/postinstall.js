@@ -7,28 +7,26 @@ const setupFileName = 'setupAppCenter.js';
 const packageJsonFile = path.join(`${projectDirectory}`, 'package.json');
 
 // Update project.json
-var packageJsonContent;
+let packageJsonContent;
 try {
     packageJsonContent = fs.readFileSync(packageJsonFile, 'utf8');
 } catch (e) {
-    console.log("Could not read package.json file");
+    console.log('Could not read package.json file');
     return;
 }
-var projectJson = JSON.parse(packageJsonContent);
-if (projectJson.hasOwnProperty('jest')) {
+const projectJson = JSON.parse(packageJsonContent);
+if (Object.prototype.hasOwnProperty.call(projectJson, 'jest')) {
     const setupFileNameValue = `.${path.sep}test${path.sep}${setupFileName}`;
     if (projectJson.jest.setupFiles === undefined) {
         projectJson.jest.setupFiles = [setupFileNameValue];
-    } else {
-        if (projectJson.jest.setupFiles.indexOf(setupFileNameValue) == -1) {
-            projectJson.jest.setupFiles.push(setupFileNameValue);
-        }
+    } else if (projectJson.jest.setupFiles.indexOf(setupFileNameValue) === -1) {
+        projectJson.jest.setupFiles.push(setupFileNameValue);
     }
     fs.writeFileSync(packageJsonFile, JSON.stringify(projectJson));
 }
 
 // Create setup mock file for Jest
-if(!fs.existsSync(testDirectory)) {
+if (!fs.existsSync(testDirectory)) {
     fs.mkdirSync(testDirectory);
 }
 
@@ -50,5 +48,4 @@ jest.mock('NativeModules', () => {
             setListener: jest.fn()
         }
     };
-});`
-);
+});`);
