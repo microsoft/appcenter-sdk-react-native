@@ -31,21 +31,20 @@ if (!fs.existsSync(testDirectory)) {
 }
 
 fs.writeFileSync(`${testDirectory}/${setupFileName}`, `
-jest.mock('NativeModules', () => {
-    return {
-        AppCenterReactNativeCrashes:{
-            generateTestCrash: jest.fn(),
-            hasCrashedInLastSession: jest.fn(),
-            lastSessionCrashReport: jest.fn(),
-            isEnabled: jest.fn(),
-            setEnabled: jest.fn(),
-            notifyUserConfirmation: jest.fn(),
-            setListener: jest.fn()
-        },
-        AppCenterReactNativePush: {
-            setEnabled: jest.fn(),
-            isEnabled: jest.fn(),
-            setListener: jest.fn()
-        }
-    };
-});`);
+jest.mock('NativeModules', () => ({
+    AppCenterReactNativeCrashes: {
+        generateTestCrash: jest.fn(),
+        hasCrashedInLastSession: jest.fn(),
+        lastSessionCrashReport: jest.fn(),
+        isEnabled: jest.fn(),
+        setEnabled: jest.fn(),
+        notifyUserConfirmation: jest.fn(),
+        setListener: jest.fn()
+    },
+    AppCenterReactNativePush: {
+        setEnabled: jest.fn(),
+        isEnabled: jest.fn(),
+        setListener: jest.fn()
+    }
+}));
+`);
