@@ -1,11 +1,47 @@
 const fs = require('fs');
+const path = require('path');
 
-// Create mock file for Jest
-const mocksDirectory = `${process.env.INIT_CWD}/__mocks__`;
-const mockFileName = 'appcenter-push.js';
-if(!fs.existsSync(`${mocksDirectory}/${mockFileName}`)) {
-    if (!fs.existsSync(mocksDirectory)){
-        fs.mkdirSync(mocksDirectory);
+const projectDirectory = path.resolve(`${__dirname}${path.sep}..${path.sep}..${path.sep}..`);
+const testDirectory = path.join(projectDirectory, 'test');
+const setupFileName = 'setupAppCenter.js';
+const packageJsonFile = path.join(`${projectDirectory}`, 'package.json');
+
+// Update project.json
+var projectJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'))
+if (projectJson.hasOwnProperty('jest')) {
+    const setupFileNameValue = `.${path.sep}test${path.sep}${setupFileName}`
+    if (projectJson.jest.setupFiles === undefined) {
+        projectJson.jest.setupFiles = [setupFileNameValue];
+    } else {
+        if (projectJson.jest.setupFiles.indexOf(setupFileNameValue) == -1) {
+            projectJson.jest.setupFiles.push(setupFileNameValue);
+        }
     }
-    fs.writeFileSync(`${mocksDirectory}/${mockFileName}`, '');
+    fs.writeFileSync(packageJsonFile, JSON.stringify(projectJson));
 }
+
+// Create setup mock file for Jest
+if(!fs.existsSync(testDirectory)) {
+    fs.mkdirSync(testDirectory);
+}
+
+fs.writeFileSync(`${testDirectory}/${setupFileName}`, `
+jest.mock('NativeModules', () => {
+    return {
+        AppCenterReactNativeCrashes:{
+            generateTestCrash: jest.fn(),
+            hasCrashedInLastSession: jest.fn(),
+            lastSessionCrashReport: jest.fn(),
+            isEnabled: jest.fn(),
+            setEnabled: jest.fn(),
+            notifyUserConfirmation: jest.fn(),
+            setListener: jest.fn()
+        },
+        AppCenterReactNativePush: {
+            setEnabled: jest.fn(),
+            isEnabled: jest.fn(),
+            setListener: jest.fn()
+        }
+    };
+});`
+);
