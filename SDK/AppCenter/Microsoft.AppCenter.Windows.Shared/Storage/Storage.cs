@@ -294,14 +294,14 @@ namespace Microsoft.AppCenter.Storage
         /// </summary>
         /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
         /// <returns>True if remaining tasks completed in time; false otherwise</returns>
-        public async Task<bool> WaitAsync(TimeSpan timeout)
+        public async Task WaitOperationsAsync(TimeSpan timeout)
         {
             var tokenSource = new CancellationTokenSource();
             try
             {
                 var emptyQueueTask = AddTaskToQueue(() => { });
                 var timeoutTask = Task.Delay(timeout, tokenSource.Token);
-                return await Task.WhenAny(emptyQueueTask, timeoutTask).ConfigureAwait(false) != timeoutTask;
+                await Task.WhenAny(emptyQueueTask, timeoutTask).ConfigureAwait(false);
             }
             finally
             {

@@ -108,7 +108,7 @@ namespace Microsoft.AppCenter.Test.UWP
             AppCenter.Start(typeof(TestAppCenterService));
 
             // No exceptions are thrown.
-            // TODO: Verify that there are no errors in logs (System.Diagnostics.Debug.Listeners is not available here).
+            // System.Diagnostics.Debug.Listeners is not available here, so not able to verify that there are no errors in logs.
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Microsoft.AppCenter.Test.UWP
             Task.Delay(100).Wait();
 
             // No exceptions are thrown.
-            // TODO: Verify that there are no errors in logs (System.Diagnostics.Debug.Listeners is not available here).
+            // System.Diagnostics.Debug.Listeners is not available here, so not able to verify that there are no errors in logs.
         }
     }
 }

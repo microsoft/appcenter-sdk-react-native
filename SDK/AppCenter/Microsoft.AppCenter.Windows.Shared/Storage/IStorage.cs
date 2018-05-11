@@ -63,7 +63,7 @@ namespace Microsoft.AppCenter.Storage
         /// </summary>
         /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
         /// <returns>True if remaining tasks completed in time; false otherwise</returns>
-        Task<bool> WaitAsync(TimeSpan timeout);
+        Task WaitOperationsAsync(TimeSpan timeout);
 
         /// <summary>
         /// Waits for any running storage operations to complete and prevents subsequent storage operations from running

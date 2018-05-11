@@ -115,7 +115,7 @@ namespace Microsoft.AppCenter.Channel
         {
             ThrowIfDisposed();
             AppCenterLog.Debug(AppCenterLog.LogTag, "Waiting for storage to finish operations.");
-            return _storage.WaitAsync(WaitStorageTimeout);
+            return _storage.WaitOperationsAsync(WaitStorageTimeout);
         }
 
         public async Task ShutdownAsync()
