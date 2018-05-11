@@ -83,22 +83,12 @@ namespace Microsoft.AppCenter.Storage
         /// <exception cref="StorageException"/>
         public Task PutLog(string channelName, Log log)
         {
-            var task = new Task(() =>
+            return AddTaskToQueue(() =>
             {
                 var logJsonString = LogSerializer.Serialize(log);
-                var logEntry = new LogEntry {Channel = channelName, Log = logJsonString};
+                var logEntry = new LogEntry { Channel = channelName, Log = logJsonString };
                 _storageAdapter.InsertAsync(logEntry).GetAwaiter().GetResult();
             });
-            try
-            {
-                _queue.Add(task);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StorageException("The operation has been cancelled");
-            }
-            _flushSemaphore.Release();
-            return task;
         }
 
         /// <summary>
@@ -109,7 +99,7 @@ namespace Microsoft.AppCenter.Storage
         /// <exception cref="StorageException"/>
         public Task DeleteLogs(string channelName, string batchId)
         {
-            var task = new Task(() =>
+            return AddTaskToQueue(() =>
             {
                 try
                 {
@@ -136,16 +126,6 @@ namespace Microsoft.AppCenter.Storage
                     throw new StorageException(e);
                 }
             });
-            try
-            {
-                _queue.Add(task);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StorageException("The operation has been cancelled");
-            }
-            _flushSemaphore.Release();
-            return task;
         }
 
         /// <summary>
@@ -155,7 +135,7 @@ namespace Microsoft.AppCenter.Storage
         /// <exception cref="StorageException"/>
         public Task DeleteLogs(string channelName)
         {
-            var task = new Task(() =>
+            return AddTaskToQueue(() =>
             {
                 try
                 {
@@ -170,16 +150,6 @@ namespace Microsoft.AppCenter.Storage
                     throw new StorageException(e);
                 }
             });
-            try
-            {
-                _queue.Add(task);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StorageException("The operation has been cancelled");
-            }
-            _flushSemaphore.Release();
-            return task;
         }
 
         /// <summary>
@@ -188,23 +158,13 @@ namespace Microsoft.AppCenter.Storage
         /// <param name="channelName">The name of the channel to count logs for</param>
         /// <returns>The number of logs found in storage</returns>
         /// <exception cref="StorageException"/>
-        public async Task<int> CountLogsAsync(string channelName)
+        public Task<int> CountLogsAsync(string channelName)
         {
-            var task = new Task<int>(() =>
+            return AddTaskToQueue(() =>
             {
                 return _storageAdapter.CountAsync<LogEntry>(entry => entry.Channel == channelName)
                     .GetAwaiter().GetResult();
             });
-            try
-            {
-                _queue.Add(task);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StorageException("The operation has been cancelled");
-            }
-            _flushSemaphore.Release();
-            return await task.ConfigureAwait(false);
         }
 
         /// <summary>
@@ -213,21 +173,11 @@ namespace Microsoft.AppCenter.Storage
         /// <param name="channelName"></param>
         public Task ClearPendingLogState(string channelName)
         {
-            var task = new Task(() =>
+            return AddTaskToQueue(() =>
             {
                 ClearPendingLogStateWithoutEnqueue(channelName);
                 AppCenterLog.Debug(AppCenterLog.LogTag, $"Clear pending log states for channel {channelName}");
             });
-            try
-            {
-                _queue.Add(task);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StorageException("The operation has been cancelled");
-            }
-            _flushSemaphore.Release();
-            return task;
         }
 
         private void ClearPendingLogStateWithoutEnqueue(string channelName)
@@ -260,9 +210,9 @@ namespace Microsoft.AppCenter.Storage
         /// <param name="logs">A list to which the retrieved logs will be added</param>
         /// <returns>A batch ID for the set of returned logs; null if no logs are found</returns>
         /// <exception cref="StorageException"/>
-        public async Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
+        public Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs)
         {
-            var task = new Task<string>(() =>
+            return AddTaskToQueue(() =>
             {
                 logs?.Clear();
                 var retrievedLogs = new List<Log>();
@@ -310,18 +260,6 @@ namespace Microsoft.AppCenter.Storage
                 logs?.AddRange(retrievedLogs);
                 return batchId;
             });
-
-            try
-            {
-                _queue.Add(task);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StorageException("The operation has been cancelled");
-            }
-
-            _flushSemaphore.Release();
-            return await task.ConfigureAwait(false);
         }
 
         private void ProcessLogIds(string channelName, string batchId, IEnumerable<Tuple<Guid?, long>> idPairs)
@@ -348,6 +286,26 @@ namespace Microsoft.AppCenter.Storage
             catch (Exception e)
             {
                 AppCenterLog.Error(AppCenterLog.LogTag, "An error occurred while initializing storage", e);
+            }
+        }
+
+        /// <summary>
+        /// Waits for any running storage operations to complete
+        /// </summary>
+        /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
+        /// <returns>True if remaining tasks completed in time; false otherwise</returns>
+        public async Task<bool> WaitAsync(TimeSpan timeout)
+        {
+            var tokenSource = new CancellationTokenSource();
+            try
+            {
+                var emptyQueueTask = AddTaskToQueue(() => { });
+                var timeoutTask = Task.Delay(timeout, tokenSource.Token);
+                return await Task.WhenAny(emptyQueueTask, timeoutTask).ConfigureAwait(false) != timeoutTask;
+            }
+            finally
+            {
+                tokenSource.Cancel();
             }
         }
 
@@ -381,6 +339,33 @@ namespace Microsoft.AppCenter.Storage
         {
             var lastDelimiterIndex = identifier.LastIndexOf(DbIdentifierDelimiter, StringComparison.Ordinal);
             return identifier.Substring(0, lastDelimiterIndex) == channelName;
+        }
+
+        private Task AddTaskToQueue(Action action)
+        {
+            var task = new Task(action);
+            AddTaskToQueue(task);
+            return task;
+        }
+
+        private Task<T> AddTaskToQueue<T>(Func<T> action)
+        {
+            var task = new Task<T>(action);
+            AddTaskToQueue(task);
+            return task;
+        }
+
+        private void AddTaskToQueue(Task task)
+        {
+            try
+            {
+                _queue.Add(task);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new StorageException("The operation has been canceled");
+            }
+            _flushSemaphore.Release();
         }
 
         // Flushes the queue

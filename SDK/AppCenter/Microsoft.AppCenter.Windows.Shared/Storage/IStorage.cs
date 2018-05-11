@@ -59,6 +59,13 @@ namespace Microsoft.AppCenter.Storage
         Task<string> GetLogsAsync(string channelName, int limit, List<Log> logs);
 
         /// <summary>
+        /// Waits for any running storage operations to complete.
+        /// </summary>
+        /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
+        /// <returns>True if remaining tasks completed in time; false otherwise</returns>
+        Task<bool> WaitAsync(TimeSpan timeout);
+
+        /// <summary>
         /// Waits for any running storage operations to complete and prevents subsequent storage operations from running
         /// </summary>
         /// <param name="timeout">The maximum amount of time to wait for remaining tasks</param>
