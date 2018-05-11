@@ -311,7 +311,7 @@ namespace Microsoft.AppCenter
             }
             if (customProperties == null || customProperties.Properties.Count == 0)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty");
+                AppCenterLog.Error(AppCenterLog.LogTag, "Custom properties may not be null or empty.");
                 return;
             }
             _channel.EnqueueAsync(new CustomPropertyLog { Properties = customProperties.Properties });
@@ -319,15 +319,8 @@ namespace Microsoft.AppCenter
 
         private void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
-            lock (AppCenterLock)
-            {
-                if (_channelGroup != null)
-                {
-                    AppCenterLog.Debug(AppCenterLog.LogTag, "Shutting down channel group due to unhandled exception.");
-                    _channelGroup.ShutdownAsync();
-                    _channelGroup = null;
-                }
-            }
+            // Make sure that all storage operations are complete.
+            _channelGroup?.WaitStorageOperationsAsync().GetAwaiter().GetResult();
         }
 
         // Internal for testing
