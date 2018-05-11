@@ -84,11 +84,11 @@ namespace Microsoft.AppCenter.Test.Storage
             }
         }
 
-        public Task<bool> WaitAsync(TimeSpan timeout)
+        public Task WaitOperationsAsync(TimeSpan timeout)
         {
             lock (this)
             {
-                return TaskExtension.GetCompletedTask(true);
+                return TaskExtension.GetCompletedTask();
             }
         }
 
