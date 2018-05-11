@@ -80,16 +80,15 @@ namespace Microsoft.AppCenter.Test.UWP
             AppCenter.Start("uwp=appsecret");
             Assert.IsTrue(AppCenter.Configured);
 
+            // Call unhandled exception handler and wait a bit to make sure handle "fire and forget" calls (if they exist).
             ApplicationLifecycleHelper.Instance.InvokeUnhandledExceptionOccurred(null, new Exception());
-
-            // _channelGroup.ShutdownAsync() called as "fire and forget", so no way to wait for it correctly.
             Task.Delay(100).Wait();
-            
+
             // Call again.
             ApplicationLifecycleHelper.Instance.InvokeUnhandledExceptionOccurred(null, new Exception());
             Task.Delay(100).Wait();
 
-            // No exception throws.
+            // No exceptions are thrown.
         }
 
         /// <summary>
@@ -103,11 +102,34 @@ namespace Microsoft.AppCenter.Test.UWP
 
             // Some exception occurred.
             ApplicationLifecycleHelper.Instance.InvokeUnhandledExceptionOccurred(null, new Exception());
+            Task.Delay(100).Wait();
 
             // Start any service.
             AppCenter.Start(typeof(TestAppCenterService));
 
-            // No exception throws, just log message.
+            // No exceptions are thrown.
+            // TODO: Verify that there are no errors in logs (System.Diagnostics.Debug.Listeners is not available here).
+        }
+
+        /// <summary>
+        /// Set custom properties after unhandled exception
+        /// </summary>
+        [TestMethod]
+        public void SetPropertiesAfterUnhandledException()
+        {
+            AppCenter.Start("uwp=appsecret");
+            Assert.IsTrue(AppCenter.Configured);
+
+            // Some exception occurred.
+            ApplicationLifecycleHelper.Instance.InvokeUnhandledExceptionOccurred(null, new Exception());
+            Task.Delay(100).Wait();
+
+            // Set custom properties.
+            AppCenter.SetCustomProperties(new CustomProperties().Set("test", 42));
+            Task.Delay(100).Wait();
+
+            // No exceptions are thrown.
+            // TODO: Verify that there are no errors in logs (System.Diagnostics.Debug.Listeners is not available here).
         }
     }
 }
