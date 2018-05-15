@@ -1,5 +1,7 @@
 const fs = require('fs');
+const path = require('path');
 
+const projectDirectory = path.resolve(__dirname, '..', '..', '..');
 const mockFileContent = `
 const Push = jest.mock('appcenter-push');
 Push.isEnabled = jest.fn();
@@ -8,9 +10,20 @@ Push.setListener = jest.fn();
 export default Push;
 `;
 
+// Check if package.json has jest as dependency
+const packageJsonFile = path.join(`${projectDirectory}`, 'package.json');
+try {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'));
+    if (!Object.prototype.hasOwnProperty.call(packageJson.devDependencies, 'jest')) {
+        return;
+    }
+} catch (e) {
+    console.log('Could not read package.json file');
+    return;
+}
+
 // Create mock file for Jest
-if (process.env.INIT_CWD !== undefined) {
-    const mocksDirectory = `${process.env.INIT_CWD}/__mocks__`;
+const mocksDirectory = `${projectDirectory}/__mocks__`;
     const mockFileName = 'appcenter-push.js';
     if (!fs.existsSync(`${mocksDirectory}/${mockFileName}`)) {
         if (!fs.existsSync(mocksDirectory)) {
@@ -18,4 +31,3 @@ if (process.env.INIT_CWD !== undefined) {
         }
         fs.writeFileSync(`${mocksDirectory}/${mockFileName}`, mockFileContent);
     }
-}
