@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -57,7 +58,7 @@ namespace Microsoft.AppCenter.Utils
             }
             else
             {
-                // In versions of Windows 10 where the LeavingBackground event is unavailable, we condider this point to be
+                // In versions of Windows 10 where the LeavingBackground event is unavailable, we consider this point to be
                 // the start so invoke resuming (and subscribe to future resume events). If InvokeResuming were not called here,
                 // the resuming event wouldn't be invoked until the *next* time the application is resumed, which is a problem
                 // if the application is not currently suspended. The side effect is that regardless of whether UI is available
@@ -80,7 +81,8 @@ namespace Microsoft.AppCenter.Utils
                     InvokeUnhandledExceptionOccurred(sender, exception);
 
                     // Since UnhandledError.Propagate marks the error as Handled, rethrow in order to only Log and not Handle.
-                    throw;
+                    // Use ExceptionDispatchInfo to avoid changing the stack-trace.
+                    ExceptionDispatchInfo.Capture(exception).Throw();
                 }
             };
         }
