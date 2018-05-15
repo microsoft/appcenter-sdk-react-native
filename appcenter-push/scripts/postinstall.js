@@ -24,10 +24,10 @@ try {
 
 // Create mock file for Jest
 const mocksDirectory = `${projectDirectory}/__mocks__`;
-    const mockFileName = 'appcenter-push.js';
-    if (!fs.existsSync(`${mocksDirectory}/${mockFileName}`)) {
-        if (!fs.existsSync(mocksDirectory)) {
-            fs.mkdirSync(mocksDirectory);
-        }
-        fs.writeFileSync(`${mocksDirectory}/${mockFileName}`, mockFileContent);
+const mockFileName = 'appcenter-push.js';
+if (!fs.existsSync(`${mocksDirectory}/${mockFileName}`)) {
+    if (!fs.existsSync(mocksDirectory)) {
+        fs.mkdirSync(mocksDirectory);
     }
+    fs.writeFileSync(`${mocksDirectory}/${mockFileName}`, mockFileContent);
+}
