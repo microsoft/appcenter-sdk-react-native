@@ -15,9 +15,13 @@ DEPENDENCIES:
   - AppCenter/Push (~> 1.6.0)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AppCenter
+
 EXTERNAL SOURCES:
   AppCenterReactNativeShared:
-    :path: ../../AppCenterReactNativeShared/Products/
+    :path: "../../AppCenterReactNativeShared/Products/"
 
 SPEC CHECKSUMS:
   AppCenter: 05e11ff99d3224131363abb61830172f5f28e53e
@@ -25,4 +29,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4df06dff9e9c002cd330566b26a32ff424468cbe
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.2
