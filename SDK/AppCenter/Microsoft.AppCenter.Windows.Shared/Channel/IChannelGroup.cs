@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Channel
 {
@@ -28,5 +29,10 @@ namespace Microsoft.AppCenter.Channel
         /// </summary>
         /// <param name="logUrl">The log URL</param>
         void SetLogUrl(string logUrl);
+
+        /// <summary>
+        /// Waits for any running storage operations to complete.
+        /// </summary>
+        Task WaitStorageOperationsAsync();
     }
 }

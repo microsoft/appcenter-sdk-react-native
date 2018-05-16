@@ -7,7 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </Grid>
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="50">
+        <Button Content="Track event" Click="TrackEvent" />
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Throw exception" Click="ThrowException" />
+            <ToggleSwitch Header="Handle all exceptions" x:Name="HandleExceptions" Margin="20,0,0,0" />
+        </StackPanel>
+    </StackPanel>
 </Page>

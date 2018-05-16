@@ -186,7 +186,7 @@ namespace Microsoft.AppCenter.Channel
             }
             catch (StatefulMutexException)
             {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "The Enqueue operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The Enqueue operation has been canceled");
             }
         }
 
@@ -232,7 +232,7 @@ namespace Microsoft.AppCenter.Channel
             }
             catch (StatefulMutexException)
             {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "The PersistLog operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The PersistLog operation has been canceled");
             }
         }
 
@@ -264,7 +264,7 @@ namespace Microsoft.AppCenter.Channel
             }
             catch (StatefulMutexException)
             {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "The Clear operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The Clear operation has been canceled");
             }
         }
 
@@ -282,7 +282,7 @@ namespace Microsoft.AppCenter.Channel
             }
             catch (StatefulMutexException)
             {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "The resume operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The resume operation has been canceled");
             }
             CheckPendingLogs(state);
         }
@@ -334,7 +334,7 @@ namespace Microsoft.AppCenter.Channel
             }
             catch (StatefulMutexException)
             {
-                AppCenterLog.Warn(AppCenterLog.LogTag, "The suspend operation has been cancelled");
+                AppCenterLog.Warn(AppCenterLog.LogTag, "The suspend operation has been canceled");
             }
         }
 

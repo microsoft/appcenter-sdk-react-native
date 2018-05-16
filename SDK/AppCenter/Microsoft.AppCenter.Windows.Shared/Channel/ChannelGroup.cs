@@ -9,19 +9,30 @@ namespace Microsoft.AppCenter.Channel
 {
     public sealed class ChannelGroup : IChannelGroup, IAppSecretHolder
     {
+        private static readonly TimeSpan WaitStorageTimeout = TimeSpan.FromSeconds(5);
+
         private readonly HashSet<IChannelUnit> _channels = new HashSet<IChannelUnit>();
-        private readonly TimeSpan _shutdownTimeout = TimeSpan.FromSeconds(5);
+
         private readonly IIngestion _ingestion;
+
         private readonly IStorage _storage;
+
         private readonly object _channelGroupLock = new object();
+
         private bool _isDisposed;
+
         private bool _isShutdown;
+
         public string AppSecret { get; internal set; }
 
         public event EventHandler<EnqueuingLogEventArgs> EnqueuingLog;
+
         public event EventHandler<FilteringLogEventArgs> FilteringLog;
+
         public event EventHandler<SendingLogEventArgs> SendingLog;
+
         public event EventHandler<SentLogEventArgs> SentLog;
+
         public event EventHandler<FailedToSendLogEventArgs> FailedToSendLog;
 
         public ChannelGroup(string appSecret)
@@ -100,6 +111,13 @@ namespace Microsoft.AppCenter.Channel
             }
         }
 
+        public Task WaitStorageOperationsAsync()
+        {
+            ThrowIfDisposed();
+            AppCenterLog.Debug(AppCenterLog.LogTag, "Waiting for storage to finish operations.");
+            return _storage.WaitOperationsAsync(WaitStorageTimeout);
+        }
+
         public async Task ShutdownAsync()
         {
             ThrowIfDisposed();
@@ -119,8 +137,8 @@ namespace Microsoft.AppCenter.Channel
                 }
             }
             await Task.WhenAll(tasks).ConfigureAwait(false);
-            AppCenterLog.Debug(AppCenterLog.LogTag, "Waiting for storage to finish operations");
-            if (!await _storage.ShutdownAsync(_shutdownTimeout).ConfigureAwait(false))
+            AppCenterLog.Debug(AppCenterLog.LogTag, "Waiting for storage to finish operations.");
+            if (!await _storage.ShutdownAsync(WaitStorageTimeout).ConfigureAwait(false))
             {
                 AppCenterLog.Warn(AppCenterLog.LogTag, "Storage taking too long to finish operations; shutting down channel without waiting any longer.");
             }
