@@ -17,4 +17,3 @@ project(':AppCenterReactNativeShared').projectDir = new File(rootProject.project
 
 include ':app'
 
-

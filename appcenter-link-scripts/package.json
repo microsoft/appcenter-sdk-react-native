@@ -1,6 +1,6 @@
 {
   "name": "appcenter-link-scripts",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Node module that contains common functionality needed to link appcenter-* modules",
   "main": "src/index.js",
   "repository": {
@@ -22,9 +22,9 @@
     "glob": "^5.0.15",
     "inquirer": "1.1.2",
     "mkdirp": "^0.5.1",
-    "plist": "1.2.0",
+    "plist": "^3.0.1",
     "which": "^1.2.11",
-    "xcode": "^0.8.9"
+    "xcode": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

@@ -1,28 +1,32 @@
 PODS:
-  - AppCenter/Analytics (1.6.0):
+  - AppCenter/Analytics (1.6.1):
     - AppCenter/Core
-  - AppCenter/Core (1.6.0)
-  - AppCenter/Crashes (1.6.0):
+  - AppCenter/Core (1.6.1)
+  - AppCenter/Crashes (1.6.1):
     - AppCenter/Core
-  - AppCenter/Push (1.6.0):
+  - AppCenter/Push (1.6.1):
     - AppCenter/Core
-  - AppCenterReactNativeShared (1.5.0):
-    - AppCenter/Core (= 1.6.0)
+  - AppCenterReactNativeShared (1.5.1):
+    - AppCenter/Core (= 1.6.1)
 
 DEPENDENCIES:
-  - AppCenter/Analytics (~> 1.6.0)
-  - AppCenter/Crashes (~> 1.6.0)
-  - AppCenter/Push (~> 1.6.0)
+  - AppCenter/Analytics (~> 1.6.1)
+  - AppCenter/Crashes (~> 1.6.1)
+  - AppCenter/Push (~> 1.6.1)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AppCenter
 
 EXTERNAL SOURCES:
   AppCenterReactNativeShared:
-    :path: ../../AppCenterReactNativeShared/Products/
+    :path: "../../AppCenterReactNativeShared/Products/"
 
 SPEC CHECKSUMS:
-  AppCenter: 05e11ff99d3224131363abb61830172f5f28e53e
-  AppCenterReactNativeShared: 7265a8ffc7a3084befcc8cabdffa621f6ebbb877
+  AppCenter: f9eb653a45cece34549232f295aec05260dfc24f
+  AppCenterReactNativeShared: 999c1e521b122ca06ebc946af4ed07f14126c0cb
 
-PODFILE CHECKSUM: 4df06dff9e9c002cd330566b26a32ff424468cbe
+PODFILE CHECKSUM: 58ff4041a23c922f7479f30fd659ebda25239f3b
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.2

@@ -31,7 +31,7 @@ import static com.facebook.react.bridge.ReadableType.String;
 
 public class ReactNativeUtils {
 
-    private static final String LOG_TAG = "AppCenterReactNative";
+    private static final String LOG_TAG = "AppCenter";
     private static final String DATE_KEY = "RNDate";
 
     private static final ThreadLocal<DateFormat> DATETIME_FORMAT = new ThreadLocal<DateFormat>() {

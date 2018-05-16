@@ -246,10 +246,16 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../../ios/Pods/**",
+					"$(SRCROOT)/../../../ios/Pods/AppCenter/**",
+					"$(SRCROOT)/../../../ios/Pods/AppCenterReactNativeShared/**",
 					"$(SRCROOT)/../../../ios/Vendor/**",
 				);
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/Base",
+					"$(SRCROOT)/../../react-native/React/Modules",
+					"$(SRCROOT)/../../react-native/React/CSSLayout",
+					"$(SRCROOT)/../../react-native/React/Views",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = AppCenterReactNativeCrashes;
@@ -262,10 +268,16 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../../../ios/Pods/**",
+					"$(SRCROOT)/../../../ios/Pods/AppCenter/**",
+					"$(SRCROOT)/../../../ios/Pods/AppCenterReactNativeShared/**",
 					"$(SRCROOT)/../../../ios/Vendor/**",
 				);
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/Base",
+					"$(SRCROOT)/../../react-native/React/Modules",
+					"$(SRCROOT)/../../react-native/React/CSSLayout",
+					"$(SRCROOT)/../../react-native/React/Views",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = AppCenterReactNativeCrashes;

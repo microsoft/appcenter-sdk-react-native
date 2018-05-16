@@ -1,6 +1,6 @@
 {
   "name": "appcenter",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Node module that contains common functionality needed to appcenter-* modules",
   "main": "AppCenter.js",
   "repository": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "appcenter-link-scripts": "1.5.0"
+    "appcenter-link-scripts": "1.5.1"
   },
   "rnpm": {
     "android": {
@@ -38,8 +38,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
     "jest": "^21.1.0",
-    "react": "^15.6.1",
-    "react-native": "^0.48.3"
+    "react": "^16.3.1",
+    "react-native": "^0.55.4"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
