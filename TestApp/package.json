@@ -36,6 +36,8 @@
     "preset": "react-native",
     "verbose": true,
     "setupTestFrameworkScriptFile": "./jest/setup.js",
-    "transformIgnorePatterns": ["!node_modules/react-native"]
+    "transformIgnorePatterns": [
+      "!node_modules/react-native"
+    ]
   }
 }
