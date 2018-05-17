@@ -33,6 +33,12 @@
     "react-test-renderer": "^16.1.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "./node_modules/appcenter/test/appCenterMock.js",
+      "./node_modules/appcenter-analytics/test/appCenterAnalyticsMock.js",
+      "./node_modules/appcenter-crashes/test/appCenterCrashesMock.js",
+      "./node_modules/appcenter-push/test/appCenterPushMock.js"
+    ]
   }
 }
