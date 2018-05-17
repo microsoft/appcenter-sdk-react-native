@@ -2,19 +2,15 @@ const fs = require('fs');
 const path = require('path');
 
 const projectDirectory = path.resolve(__dirname, '..', '..', '..');
-const mockFileContent = `
-const Push = jest.mock('appcenter-push');
-Push.isEnabled = jest.fn();
-Push.setEnabled = jest.fn();
-Push.setListener = jest.fn();
-export default Push;
-`;
+const setupFileName = `.${path.sep}node_modules${path.sep}appcenter-push${path.sep}test${path.sep}appCenterPushMock.js`;
 
 // Check if package.json has jest as dependency
+let packageJson = '';
 const packageJsonFile = path.join(`${projectDirectory}`, 'package.json');
 try {
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'));
-    if (!Object.prototype.hasOwnProperty.call(packageJson.devDependencies, 'jest')) {
+    packageJson = JSON.parse(fs.readFileSync(packageJsonFile, 'utf8'));
+    if (!Object.prototype.hasOwnProperty.call(packageJson.devDependencies, 'jest') &&
+        !Object.prototype.hasOwnProperty.call(packageJson.dependencies, 'jest')) {
         return;
     }
 } catch (e) {
@@ -22,12 +18,12 @@ try {
     return;
 }
 
-// Create mock file for Jest
-const mocksDirectory = `${projectDirectory}/__mocks__`;
-const mockFileName = 'appcenter-push.js';
-if (!fs.existsSync(`${mocksDirectory}/${mockFileName}`)) {
-    if (!fs.existsSync(mocksDirectory)) {
-        fs.mkdirSync(mocksDirectory);
+// Add setup file for module
+if (Object.prototype.hasOwnProperty.call(packageJson, 'jest')) {
+    if (packageJson.jest.setupFiles === undefined) {
+        packageJson.jest.setupFiles = [setupFileName];
+    } else if (packageJson.jest.setupFiles.indexOf(setupFileName) === -1) {
+        packageJson.jest.setupFiles.push(setupFileName);
     }
-    fs.writeFileSync(`${mocksDirectory}/${mockFileName}`, mockFileContent);
+    fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson));
 }

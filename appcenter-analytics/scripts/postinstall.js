@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const projectDirectory = path.resolve(__dirname, '..', '..', '..');
-const setupFileName = `.${path.sep}node_modules${path.sep}appcenter-crashes${path.sep}test${path.sep}appCenterCrashesMock.js`;
+const setupFileName = `.${path.sep}node_modules${path.sep}appcenter-analytics${path.sep}test${path.sep}appCenterAnalyticsMock.js`;
 
 // Check if package.json has jest as dependency
 let packageJson = '';
