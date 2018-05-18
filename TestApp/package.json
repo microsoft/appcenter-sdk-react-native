@@ -35,10 +35,10 @@
   "jest": {
     "preset": "react-native",
     "setupFiles": [
-      "./node_modules/appcenter/test/appCenterMock.js",
-      "./node_modules/appcenter-analytics/test/appCenterAnalyticsMock.js",
-      "./node_modules/appcenter-crashes/test/appCenterCrashesMock.js",
-      "./node_modules/appcenter-push/test/appCenterPushMock.js"
+      "./node_modules/appcenter/test/AppCenterMock.js",
+      "./node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
+      "./node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
+      "./node_modules/appcenter-push/test/AppCenterPushMock.js"
     ]
   }
 }
