@@ -1,3 +1,3 @@
-const rnpmlink = require('../../appcenter-link-scripts');
+const mock = require('../../appcenter/test/SetupAppCenterMock');
 
-rnpmlink.mock.setupMock('appcenter-crashes', 'AppCenterCrashesMock.js');
+mock.setupMock('appcenter-crashes', 'AppCenterCrashesMock.js');
