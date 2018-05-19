@@ -40,6 +40,7 @@
     "eslint-plugin-react": "^7.2.1"
   },
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ."
+    "lint": "./node_modules/.bin/eslint .",
+    "postinstall": "node scripts/postinstall"
   }
 }
