@@ -27,7 +27,7 @@ module.exports = {
             } else if (packageJson.jest.setupFiles.indexOf(setupFileNamePath) === -1) {
                 packageJson.jest.setupFiles.push(setupFileNamePath);
             }
-            fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson));
+            fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2));
         }
     }
 };
