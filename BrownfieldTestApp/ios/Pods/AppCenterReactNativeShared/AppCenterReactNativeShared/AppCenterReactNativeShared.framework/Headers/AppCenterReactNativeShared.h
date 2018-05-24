@@ -1,7 +1,5 @@
 #import <Foundation/Foundation.h>
 
-@import AppCenter;
-
 @interface AppCenterReactNativeShared : NSObject
 
 + (void) setAppSecret: (NSString *)secret;
