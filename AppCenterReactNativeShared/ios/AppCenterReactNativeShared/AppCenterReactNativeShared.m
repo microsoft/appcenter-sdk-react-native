@@ -1,4 +1,6 @@
 #import "AppCenterReactNativeShared.h"
+#import <AppCenter/MSAppCenter.h>
+#import <AppCenter/MSWrapperSdk.h>
 
 @implementation AppCenterReactNativeShared
 

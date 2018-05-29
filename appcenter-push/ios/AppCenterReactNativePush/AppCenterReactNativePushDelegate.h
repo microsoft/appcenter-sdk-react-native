@@ -9,6 +9,7 @@
 #endif
 
 @class AppCenterReactNativePush;
+
 @protocol MSPushDelegate;
 
 @protocol AppCenterReactNativePushDelegate <MSPushDelegate>
