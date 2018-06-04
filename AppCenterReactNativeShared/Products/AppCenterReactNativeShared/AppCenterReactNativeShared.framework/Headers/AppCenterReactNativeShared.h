@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import AppCenter;
+@class MSWrapperSdk;
 
 @interface AppCenterReactNativeShared : NSObject
 
