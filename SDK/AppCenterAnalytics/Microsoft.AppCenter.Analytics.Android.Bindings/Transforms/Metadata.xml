@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.json']" />
-	<attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']" name="managedName">AndroidAnalytics</attr>
-	<attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']/method[@name='setListener']" name="visibility">public</attr>
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.json']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.one.json']" />
+    <attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']" name="managedName">AndroidAnalytics</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']/method[@name='setListener']" name="visibility">public</attr>
 </metadata>
