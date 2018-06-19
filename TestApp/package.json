@@ -8,11 +8,11 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "file:appcenter-1.5.1.tgz",
-    "appcenter-analytics": "file:appcenter-analytics-1.5.1.tgz",
-    "appcenter-crashes": "file:appcenter-crashes-1.5.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-1.5.1.tgz",
-    "appcenter-push": "file:appcenter-push-1.5.1.tgz",
+    "appcenter": "file:appcenter-1.6.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.6.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.6.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.6.0.tgz",
+    "appcenter-push": "file:appcenter-push-1.6.0.tgz",
     "react": "16.3.1",
     "react-native": "^0.55.4",
     "react-native-dialog-component": "^0.2.17",
