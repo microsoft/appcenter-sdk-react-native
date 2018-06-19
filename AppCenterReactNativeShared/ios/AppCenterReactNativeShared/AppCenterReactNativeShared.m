@@ -1,4 +1,6 @@
 #import "AppCenterReactNativeShared.h"
+#import <AppCenter/MSAppCenter.h>
+#import <AppCenter/MSWrapperSdk.h>
 
 @implementation AppCenterReactNativeShared
 
@@ -28,7 +30,7 @@ static MSWrapperSdk * wrapperSdk;
   if (![MSAppCenter isConfigured]) {
       MSWrapperSdk * wrapperSdk =
         [[MSWrapperSdk alloc]
-            initWithWrapperSdkVersion:@"1.5.1"
+            initWithWrapperSdkVersion:@"1.6.0"
             wrapperSdkName:@"appcenter.react-native"
             wrapperRuntimeVersion:nil
             liveUpdateReleaseLabel:nil

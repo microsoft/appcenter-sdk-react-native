@@ -1,3 +1,4 @@
+#import <AppCenterCrashes/AppCenterCrashes.h>
 #import "AppCenterReactNativeCrashesDelegate.h"
 #import "AppCenterReactNativeCrashesUtils.h"
 
@@ -5,7 +6,7 @@ static NSString *ON_BEFORE_SENDING_EVENT = @"AppCenterErrorReportOnBeforeSending
 static NSString *ON_SENDING_FAILED_EVENT = @"AppCenterErrorReportOnSendingFailed";
 static NSString *ON_SENDING_SUCCEEDED_EVENT = @"AppCenterErrorReportOnSendingSucceeded";
 
-@implementation AppCenterReactNativeCrashesDelegate 
+@implementation AppCenterReactNativeCrashesDelegate
 {
     bool hasListeners;
 }

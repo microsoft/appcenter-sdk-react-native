@@ -2,25 +2,24 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 28
-        versionName "1.5.1"
+        versionCode 29
+        versionName '1.5.1'
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters 'armeabi-v7a', 'x86'
         }
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
-    compile 'com.microsoft.appcenter:appcenter:1.5.1'
+    compile 'com.microsoft.appcenter:appcenter:1.6.1'
 
     // compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.5.1'
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.6.0'
 }

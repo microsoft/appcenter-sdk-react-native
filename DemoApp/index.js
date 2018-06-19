@@ -4,9 +4,7 @@
  * @flow
  */
 
-import {
-  AppRegistry
-} from 'react-native';
+import { AppRegistry } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
 
@@ -25,4 +23,3 @@ const DemoApp = StackNavigator({
 });
 
 AppRegistry.registerComponent('DemoApp', () => DemoApp);
-

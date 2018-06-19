@@ -8,11 +8,11 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "file:appcenter-1.5.1.tgz",
-    "appcenter-analytics": "file:appcenter-analytics-1.5.1.tgz",
-    "appcenter-crashes": "file:appcenter-crashes-1.5.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-1.5.1.tgz",
-    "appcenter-push": "file:appcenter-push-1.5.1.tgz",
+    "appcenter": "file:appcenter-1.6.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.6.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.6.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.6.0.tgz",
+    "appcenter-push": "file:appcenter-push-1.6.0.tgz",
     "react": "16.3.1",
     "react-native": "^0.55.4",
     "react-native-dialog-component": "^0.2.17",
@@ -21,18 +21,29 @@
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "18.0.0",
-    "babel-preset-react-native": "1.9.1",
+    "babel-eslint": "8.2.3",
+    "babel-jest": "22.4.3",
+    "babel-preset-react-native": "4.0.0",
     "eslint": "^4.5.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
-    "jest": "18.1.0",
-    "react-test-renderer": "^16.1.1"
+    "jest": "22.4.3",
+    "react-test-renderer": "16.3.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "verbose": true,
+    "setupTestFrameworkScriptFile": "./jest/setup.js",
+    "setupFiles": [
+      "./node_modules/appcenter/test/AppCenterMock.js",
+      "./node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
+      "./node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
+      "./node_modules/appcenter-push/test/AppCenterPushMock.js"
+    ],
+    "transformIgnorePatterns": [
+      "!node_modules/react-native"
+    ]
   }
 }
