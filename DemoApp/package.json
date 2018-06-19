@@ -12,24 +12,24 @@
     "appcenter-analytics": "^1.5.1",
     "appcenter-crashes": "^1.5.1",
     "appcenter-push": "^1.5.1",
-    "react": "16.3.1",
-    "react-native": "^0.55.4",
+    "react": "^16.3.2",
+    "react-native": "^0.56.0-rc.2",
     "react-native-dialog-component": "^0.2.17",
     "react-native-fs": "^2.9.2",
     "react-native-image-picker": "^0.26.7",
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "18.0.0",
-    "babel-preset-react-native": "1.9.1",
+    "babel-eslint": "8.2.3",
+    "babel-jest": "22.4.3",
+    "babel-preset-react-native": "5.0.1",
     "eslint": "^4.5.0",
-    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
-    "jest": "18.1.0",
-    "react-test-renderer": "15.4.2"
+    "jest": "22.4.3",
+    "react-test-renderer": "16.3.1"
   },
   "jest": {
     "preset": "react-native"
