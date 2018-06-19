@@ -1,7 +1,8 @@
 {
     "parser": "babel-eslint",
     "env": {
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "plugins": [
         "react"
@@ -30,6 +31,7 @@
         "no-useless-escape": 0,
         "import/no-dynamic-require": 0,
         "react/sort-comp": 0,
-        "import/extensions": 0
+        "import/extensions": 0,
+        "prefer-destructuring": [2, { "VariableDeclarator": { "array": false, "object": false }, "AssignmentExpression": { "array": true, "object": false }}]
     }
 }
