@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Synchronization;
@@ -140,6 +141,20 @@ namespace Microsoft.AppCenter.Push
 
         private void CreatePushNotificationChannel(Action<PushNotificationChannel> created)
         {
+            Task<PushNotificationChannel> CreatePushNotificationChannelForApplicationAsync()
+            {
+                try
+                {
+                    return new WindowsPushNotificationChannelManager()
+                        .CreatePushNotificationChannelForApplicationAsync()
+                        .AsTask();
+                }
+                catch (Exception e)
+                {
+                    return Task.FromException<PushNotificationChannel>(e);
+                }
+            }
+
             void OnNetworkStateChange(object sender, EventArgs e)
             {
                 if (NetworkStateAdapter.IsConnected)
@@ -148,9 +163,7 @@ namespace Microsoft.AppCenter.Push
                     AppCenterLog.Debug(LogTag, "Second attempt to create notification channel...");
 
                     // Second attempt is the last one anyway.
-                    new WindowsPushNotificationChannelManager()
-                        .CreatePushNotificationChannelForApplicationAsync()
-                        .AsTask().ContinueWith(task =>
+                    CreatePushNotificationChannelForApplicationAsync().ContinueWith(task =>
                     {
                         if (task.IsFaulted)
                         {
@@ -163,9 +176,7 @@ namespace Microsoft.AppCenter.Push
             }
 
             // If this isn't the first time after installation, the notification channel is created successfully even without network.
-            new WindowsPushNotificationChannelManager()
-                .CreatePushNotificationChannelForApplicationAsync()
-                .AsTask().ContinueWith(task =>
+            CreatePushNotificationChannelForApplicationAsync().ContinueWith(task =>
             {
                 if (task.IsFaulted && NetworkStateAdapter.IsConnected)
                 {
