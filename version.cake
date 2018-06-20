@@ -50,6 +50,11 @@ Task("UpdateDemoVersion").Does(()=>
     var newFileVersion = GetBaseVersion(newVersion) + "." + GetRevisionNumber(newVersion);
     var fileVersionPattern = @"AssemblyFileVersion\(" + "\".*\"" + @"\)";
     ReplaceRegexInFiles(demoAssemblyInfoGlob, fileVersionPattern, "AssemblyFileVersion(\"" + newFileVersion + "\")");
+    var csprojFiles = GetFiles("Apps/**/*Demo*/**/*.csproj");
+    foreach (var file in csprojFiles)
+    {
+        UpdateNewProjVersion(file, newVersion, newFileVersion);
+    }
 
     // Replace android versions
     var manifestGlob = "Apps/**/*Demo*/**/AndroidManifest.xml";
@@ -87,6 +92,9 @@ Task("UpdateDemoVersion").Does(()=>
     // Note: nuget update does not work with projects using project.json
     // Replace version in all the demo application
     ReplaceRegexInFiles("Apps/**/*Demo*/**/project.json", "(Microsoft.AppCenter[^\"]*\":[ ]+\")[^\"]+", "$1" + newVersion, RegexOptions.ECMAScript);
+    ReplaceRegexInFiles("Apps/**/*Demo*/**/*.csproj",
+            "<PackageReference Include=\"(Microsoft.AppCenter[^\"]*)\" Version=\"[^\"]+\" />",
+            "<PackageReference Include=\"$1\" Version=\"" + newVersion + "\" />", RegexOptions.ECMAScript);
 });
 
 Task("StartNewVersion").Does(()=>
@@ -250,19 +258,24 @@ void UpdateNewProjSdkVersion(string newVersion, string newFileVersion)
     var csprojFiles = GetFiles("SDK/**/*.csproj");
     foreach (var file in csprojFiles)
     {
-        var csproj = XDocument.Load(file.FullPath);
-
-        // Check if csproj with new format
-        if (csproj.Root.Attribute("Sdk")?.Value != "Microsoft.NET.Sdk")
-        {
-            continue;
-        }
-        var version = csproj.XPathSelectElement("/Project/PropertyGroup/Version");
-        version.SetValue(newVersion);
-        var fileVersion = csproj.XPathSelectElement("/Project/PropertyGroup/FileVersion");
-        fileVersion.SetValue(newFileVersion);
-        csproj.Save(file.FullPath);
+        UpdateNewProjVersion(file, newVersion, newFileVersion);
     }
+}
+
+void UpdateNewProjVersion(FilePath file, string newVersion, string newFileVersion)
+{
+    var csproj = XDocument.Load(file.FullPath);
+
+    // Check if csproj with new format
+    if (csproj.Root.Attribute("Sdk")?.Value != "Microsoft.NET.Sdk")
+    {
+        return;
+    }
+    var version = csproj.XPathSelectElement("/Project/PropertyGroup/Version");
+    version.SetValue(newVersion);
+    var fileVersion = csproj.XPathSelectElement("/Project/PropertyGroup/FileVersion");
+    fileVersion.SetValue(newFileVersion);
+    csproj.Save(file.FullPath);
 }
 
 // Gets the revision number from a version string containing revision -r****
