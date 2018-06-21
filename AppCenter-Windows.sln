@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.UWP.Puppet", "Apps\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.Forms.Demo", "Contoso.Forms.Demo", "{98E19A5F-F553-4414-96FD-FBE4B6221CD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo", "Apps\Contoso.Forms.Demo\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj", "{8E7B51FC-8A9B-49F7-A40D-4D12BBF893B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Forms.Demo", "Apps\Contoso.Forms.Demo\Contoso.Forms.Demo\Contoso.Forms.Demo.csproj", "{8E7B51FC-8A9B-49F7-A40D-4D12BBF893B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Demo.UWP", "Apps\Contoso.Forms.Demo\Contoso.Forms.Demo.UWP\Contoso.Forms.Demo.UWP.csproj", "{665362D9-5EE2-45DE-A907-25DC86999A68}"
 EndProject
