@@ -9,6 +9,8 @@ buildscript {
     }
 }
 
+apply from: '../../AppCenterReactNativeShared/android/publish.gradle'
+
 allprojects {
     repositories {
         mavenLocal()
