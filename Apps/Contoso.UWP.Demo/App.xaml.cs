@@ -25,8 +25,7 @@ namespace Contoso.UWP.Demo
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             AppCenter.LogLevel = LogLevel.Verbose;
-            AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes), typeof(Push));
+            AppCenter.Start("e8354a9a-001a-4728-be65-a6477e57f2e7", typeof(Analytics), typeof(Crashes), typeof(Push));
         }
 
         /// <summary>
