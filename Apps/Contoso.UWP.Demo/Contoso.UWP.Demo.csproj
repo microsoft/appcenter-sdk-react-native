@@ -107,7 +107,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Contoso.UWP.Demo_StoreKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
