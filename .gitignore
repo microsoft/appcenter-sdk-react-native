@@ -46,3 +46,4 @@ android/keystores/debug.keystore
 # credentials
 .npmrc
 google-services.json
+package-lock.json
