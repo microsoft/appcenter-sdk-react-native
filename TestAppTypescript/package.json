@@ -6,8 +6,10 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "tsc": "tsc",
     "watch": "tsc -w",
-    "ios": "npm run build && concurrently -r \"npm run watch\" \"react-native run-ios\"",
-    "android": "npm run build && concurrently -r \"start npm run watch\" \"start react-native run-android\"",
+    "ios":
+      "npm run build && concurrently -r \"npm run watch\" \"react-native run-ios\"",
+    "android":
+      "npm run build && concurrently -r \"start npm run watch\" \"start react-native run-android\"",
     "build": "npm run clean && npm run tsc",
     "clean": "rimraf artifacts"
   },
