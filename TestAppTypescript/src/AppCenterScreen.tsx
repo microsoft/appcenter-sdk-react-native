@@ -4,138 +4,130 @@
  * @flow
  */
 
-import React from 'react';
+import React from "react";
 import {
-    StyleSheet,
-    Text,
-    View,
-    ScrollView,
-    TouchableOpacity
-} from 'react-native';
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 
-import AppCenter, { CustomProperties } from 'appcenter';
-import SharedStyles from './SharedStyles';
+import AppCenter, { CustomProperties } from "appcenter";
+import SharedStyles from "./SharedStyles";
 
-export default class AppCenterScreen extends React.Component<{}, {
+export default class AppCenterScreen extends React.Component<
+  {},
+  {
     appCenterEnabled: boolean;
     installId: string;
     logLevel: number;
-}> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            appCenterEnabled: false,
-            installId: 'uninitialized',
-            logLevel: -1   // default to something invalid; shouldn't show in UI
-        };
-        this.toggleEnabled = this.toggleEnabled.bind(this);
-        this.toggleLogging = this.toggleLogging.bind(this);
-        this.setCustomProperties = this.setCustomProperties.bind(this);
+  }
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      appCenterEnabled: false,
+      installId: "uninitialized",
+      logLevel: -1 // default to something invalid; shouldn't show in UI
+    };
+    this.toggleEnabled = this.toggleEnabled.bind(this);
+    this.toggleLogging = this.toggleLogging.bind(this);
+    this.setCustomProperties = this.setCustomProperties.bind(this);
+  }
+
+  async componentDidMount() {
+    const component = this;
+
+    const appCenterEnabled = await AppCenter.isEnabled();
+    component.setState({ appCenterEnabled });
+
+    const installId = await AppCenter.getInstallId();
+    component.setState({ installId });
+
+    const logLevel = await AppCenter.getLogLevel();
+    component.setState({ logLevel });
+  }
+
+  async toggleEnabled() {
+    await AppCenter.setEnabled(!this.state.appCenterEnabled);
+
+    const appCenterEnabled = await AppCenter.isEnabled();
+    this.setState({ appCenterEnabled });
+  }
+
+  async toggleLogging() {
+    let logLevel = await AppCenter.getLogLevel();
+    switch (logLevel) {
+      case AppCenter.LogLevelAssert:
+        logLevel = AppCenter.LogLevelNone;
+        break;
+
+      case AppCenter.LogLevelNone:
+        logLevel = AppCenter.LogLevelVerbose;
+        break;
+
+      default:
+        logLevel++;
     }
+    await AppCenter.setLogLevel(logLevel);
+    this.setState({ logLevel });
+  }
 
-    async componentDidMount() {
-        const component = this;
+  async setCustomProperties() {
+    const properties = new CustomProperties()
+      .set("pi", 3.14)
+      .clear("old")
+      .set("color", "blue")
+      .set("optin", true)
+      .set("optout", false)
+      .set("score", 7)
+      .set("now", new Date());
+    await AppCenter.setCustomProperties(properties);
+  }
 
-        const appCenterEnabled = await AppCenter.isEnabled();
-        component.setState({ appCenterEnabled });
+  render() {
+    return (
+      <View style={SharedStyles.container}>
+        <ScrollView>
+          <Text style={SharedStyles.heading}>Test AppCenter</Text>
 
-        const installId = await AppCenter.getInstallId();
-        component.setState({ installId });
-
-        const logLevel = await AppCenter.getLogLevel();
-        component.setState({ logLevel });
-    }
-
-    async toggleEnabled() {
-        await AppCenter.setEnabled(!this.state.appCenterEnabled);
-
-        const appCenterEnabled = await AppCenter.isEnabled();
-        this.setState({ appCenterEnabled });
-    }
-
-    async toggleLogging() {
-        let logLevel = await AppCenter.getLogLevel();
-        switch (logLevel) {
-            case AppCenter.LogLevelAssert:
-                logLevel = AppCenter.LogLevelNone;
-                break;
-
-            case AppCenter.LogLevelNone:
-                logLevel = AppCenter.LogLevelVerbose;
-                break;
-
-            default:
-                logLevel++;
-        }
-        await AppCenter.setLogLevel(logLevel);
-        this.setState({ logLevel });
-    }
-
-    async setCustomProperties() {
-        const properties = new CustomProperties()
-            .set('pi', 3.14)
-            .clear('old')
-            .set('color', 'blue')
-            .set('optin', true)
-            .set('optout', false)
-            .set('score', 7)
-            .set('now', new Date());
-        await AppCenter.setCustomProperties(properties);
-    }
-
-    render() {
-        return (
-            <View style={SharedStyles.container}>
-                <ScrollView >
-                    <Text style={SharedStyles.heading}>
-                        Test AppCenter
+          <Text style={SharedStyles.enabledText}>
+            AppCenter enabled: {this.state.appCenterEnabled ? "yes" : "no"}
           </Text>
+          <TouchableOpacity onPress={this.toggleEnabled}>
+            <Text style={SharedStyles.toggleEnabled}>toggle</Text>
+          </TouchableOpacity>
 
-                    <Text style={SharedStyles.enabledText}>
-                        AppCenter enabled: {this.state.appCenterEnabled ? 'yes' : 'no'}
-                    </Text>
-                    <TouchableOpacity onPress={this.toggleEnabled}>
-                        <Text style={SharedStyles.toggleEnabled}>
-                            toggle
-            </Text>
-                    </TouchableOpacity>
+          <Text style={styles.installIdHeader}>Install ID</Text>
+          <Text style={styles.installId}>{this.state.installId}</Text>
 
-                    <Text style={styles.installIdHeader}>
-                        Install ID
+          <Text style={SharedStyles.enabledText}>
+            Log level: {this.state.logLevel}
           </Text>
-                    <Text style={styles.installId}>
-                        {this.state.installId}
-                    </Text>
+          <TouchableOpacity onPress={this.toggleLogging}>
+            <Text style={SharedStyles.toggleEnabled}>Change log level</Text>
+          </TouchableOpacity>
 
-                    <Text style={SharedStyles.enabledText}>
-                        Log level: {this.state.logLevel}
-                    </Text>
-                    <TouchableOpacity onPress={this.toggleLogging}>
-                        <Text style={SharedStyles.toggleEnabled}>
-                            Change log level
+          <TouchableOpacity onPress={this.setCustomProperties}>
+            <Text style={SharedStyles.toggleEnabled}>
+              Set Custom Properties
             </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={this.setCustomProperties}>
-                        <Text style={SharedStyles.toggleEnabled}>
-                            Set Custom Properties
-            </Text>
-                    </TouchableOpacity>
-
-                </ScrollView>
-            </View>
-        );
-    }
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    installIdHeader: {
-        fontSize: 14,
-        textAlign: 'center',
-    },
-    installId: {
-        fontSize: 10,
-        textAlign: 'center',
-        marginBottom: 10
-    }
+  installIdHeader: {
+    fontSize: 14,
+    textAlign: "center"
+  },
+  installId: {
+    fontSize: 10,
+    textAlign: "center",
+    marginBottom: 10
+  }
 });
