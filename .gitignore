@@ -33,6 +33,7 @@ local.properties
 #
 node_modules/
 npm-debug.log
+package-lock.json
 
 # BUCK
 buck-out/
@@ -46,4 +47,3 @@ android/keystores/debug.keystore
 # credentials
 .npmrc
 google-services.json
-package-lock.json
