@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     setupMock(moduleName, setupFileName) {
         const projectDirectory = path.resolve(__dirname, '..', '..', '..');
-        const setupFileNamePath = `.${path.sep}node_modules${path.sep}${moduleName}${path.sep}test${path.sep}${setupFileName}`;
+        const setupFileNamePath = `<rootDir>${path.sep}node_modules${path.sep}${moduleName}${path.sep}test${path.sep}${setupFileName}`;
 
         // Check if package.json has jest as dependency
         let packageJson = '';
