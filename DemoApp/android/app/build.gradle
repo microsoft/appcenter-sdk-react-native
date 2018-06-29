@@ -84,7 +84,6 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.demoapp"
@@ -127,16 +126,17 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-image-picker')
-    compile project(':react-native-fs')
-    compile project(':appcenter-push')
-    compile project(':appcenter-crashes')
-    compile project(':appcenter-analytics')
-    compile project(':appcenter')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.facebook.react:react-native:+'  // From node_modules
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    implementation project(':react-native-image-picker')
+    implementation project(':react-native-fs')
+    implementation project(':appcenter-push')
+    implementation project(':appcenter-crashes')
+    implementation project(':appcenter-analytics')
+    implementation project(':appcenter')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.android.support:appcompat-v7:23.0.1'
+    implementation 'com.facebook.react:react-native:+'  // From node_modules
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
 }
 
 // Run this once to be able to run the application with BUCK
