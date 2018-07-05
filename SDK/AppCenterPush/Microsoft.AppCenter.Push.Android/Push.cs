@@ -53,7 +53,7 @@ namespace Microsoft.AppCenter.Push
         /// <value>
         /// The Sender ID to set.
         /// </value>
-        [Obsolete("Starting Android P at release date and all versions of Android after April 2019, Firebase SDK is required to use push. Please follow the migration guide at https://aka.ms/acfbxa.")]
+        [Obsolete("For all the Android developers using App Center, there is a change coming where Firebase SDK is required to use Push Notifications. For Android P, its scheduled at the release date for the latest OS version. For all other versions of Android, it will be required after April 2019. Please follow the migration guide at https://aka.ms/acfbxa.")]
         public static void SetSenderId(string senderId)
         {
             AndroidPush.SetSenderId(senderId);
