@@ -9,7 +9,21 @@ namespace Microsoft.AppCenter.Ingestion.Http
         {
             NetworkChange.NetworkAddressChanged += (sender, args) => NetworkStatusChanged?.Invoke(sender, args);
         }
-        public bool IsConnected => NetworkInterface.GetIsNetworkAvailable();
+
+        public bool IsConnected { get
+            {
+                try
+                {
+                    return NetworkInterface.GetIsNetworkAvailable();
+                }
+                catch (Exception e)
+                {
+                    AppCenterLog.Error(AppCenterLog.LogTag, "An error occurred while updating network state.", e);
+                    return false;
+                }
+            }
+        }
+
         public event EventHandler NetworkStatusChanged;
     }
 }
