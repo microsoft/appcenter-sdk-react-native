@@ -10,7 +10,9 @@ namespace Microsoft.AppCenter.Ingestion.Http
             NetworkChange.NetworkAddressChanged += (sender, args) => NetworkStatusChanged?.Invoke(sender, args);
         }
 
-        public bool IsConnected { get
+        public bool IsConnected
+        {
+            get
             {
                 try
                 {
