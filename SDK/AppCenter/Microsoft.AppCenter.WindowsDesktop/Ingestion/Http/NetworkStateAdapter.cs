@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
                 }
                 catch (Exception e)
                 {
-                    AppCenterLog.Error(AppCenterLog.LogTag, "An error occurred while updating network state.", e);
+                    AppCenterLog.Error(AppCenterLog.LogTag, "An error occurred while checking network state.", e);
                     return false;
                 }
             }
