@@ -7,7 +7,9 @@ namespace Microsoft.AppCenter.Ingestion.Http
     {
         internal delegate bool IsNetworkAvailableDelegate();
 
-        internal IsNetworkAvailableDelegate IsNetworkAvailable { get; set; } = () => NetworkInformation.GetInternetConnectionProfile()?.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
+        internal IsNetworkAvailableDelegate IsNetworkAvailable { get; set; } = () =>
+            NetworkInformation.GetInternetConnectionProfile()?.
+            GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
 
         public NetworkStateAdapter()
         {
