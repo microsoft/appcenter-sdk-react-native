@@ -5,10 +5,13 @@ namespace Microsoft.AppCenter.Ingestion.Http
 {
     public class NetworkStateAdapter : INetworkStateAdapter
     {
+        internal delegate bool IsNetworkAvailableDelegate();
+
+        internal IsNetworkAvailableDelegate IsNetworkAvailable { get; set; } = () => NetworkInformation.GetInternetConnectionProfile()?.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
+
         public NetworkStateAdapter()
         {
             NetworkInformation.NetworkStatusChanged += sender => NetworkStatusChanged?.Invoke(sender, EventArgs.Empty);
-            NetworkAbstraction = new NetworkInterfaceAbstraction();
         }
 
         public bool IsConnected
@@ -17,7 +20,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
             {
                 try
                 {
-                    return NetworkAbstraction.IsNetworkAvailable();
+                    return IsNetworkAvailable();
                 }
                 catch (Exception e)
                 {
@@ -28,6 +31,5 @@ namespace Microsoft.AppCenter.Ingestion.Http
         }
 
         public event EventHandler NetworkStatusChanged;
-        public NetworkInterfaceAbstraction NetworkAbstraction { get; set; }
     }
 }

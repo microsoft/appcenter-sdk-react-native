@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Microsoft.AppCenter.Test.UWP.Utils
 {
+    [TestClass]
     public class NetworkStateTests
     {
         private NetworkStateAdapter _networkState;
 
+        [TestInitialize]
+        public void InitializeNetworkStateTest()
+        {
+            _networkState = new NetworkStateAdapter();
+        }
+
         [TestMethod]
         public void NetWorkInterfaceThrowsExceptionCanBeHandled()
         {
-            var networkInterfaceAbstractionMock = new Mock<NetworkInterfaceAbstraction>();
-            networkInterfaceAbstractionMock.Setup(m => m.IsNetworkAvailable()).Callback(() =>
-            {
-                throw new Exception();
-            });
-            _networkState.NetworkAbstraction = networkInterfaceAbstractionMock.Object;
-
+            _networkState.IsNetworkAvailable = () => throw new Exception();
             Assert.IsFalse(_networkState.IsConnected);
         }
     }

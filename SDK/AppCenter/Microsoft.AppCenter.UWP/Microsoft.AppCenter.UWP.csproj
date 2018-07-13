@@ -158,7 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Ingestion\Http\NetworkInterfaceAbstraction.cs" />
     <Compile Include="Ingestion\Http\NetworkStateAdapter.cs" />
     <Compile Include="AppCenterPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

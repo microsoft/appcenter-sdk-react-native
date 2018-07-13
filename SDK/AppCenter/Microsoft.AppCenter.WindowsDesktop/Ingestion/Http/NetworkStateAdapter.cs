@@ -8,7 +8,6 @@ namespace Microsoft.AppCenter.Ingestion.Http
         public NetworkStateAdapter()
         {
             NetworkChange.NetworkAddressChanged += (sender, args) => NetworkStatusChanged?.Invoke(sender, args);
-            NetworkAbstraction = new NetworkInterfaceAbstraction();
         }
 
         public bool IsConnected
@@ -17,7 +16,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
             {
                 try
                 {
-                    return NetworkAbstraction.IsNetworkAvailable();
+                    return NetworkInterface.GetIsNetworkAvailable();
                 }
                 catch (Exception e)
                 {
@@ -27,9 +26,6 @@ namespace Microsoft.AppCenter.Ingestion.Http
             }
         }
 
-        public NetworkInterfaceAbstraction NetworkAbstraction { get; set; }
-
         public event EventHandler NetworkStatusChanged;
-
     }
 }
