@@ -93,5 +93,18 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
             VerifyAdapterSend(Times.Exactly(CallsCount));
             calls.ForEach(call => call.Dispose());
         }
+
+        [TestMethod]
+        public void NetWorkInterfaceThrowsExceptionCanBeHandled()
+        {
+            var networkInterfaceAbstractionMock = new Mock<NetworkInterfaceAbstraction>();
+            networkInterfaceAbstractionMock.Setup(m => m.IsNetworkAvailable()).Callback(() =>
+            {
+                throw new Exception();
+            });
+            _networkState.NetworkAbstraction = networkInterfaceAbstractionMock.Object;
+
+            Assert.IsFalse(_networkState.IsConnected);
+        }
     }
 }
