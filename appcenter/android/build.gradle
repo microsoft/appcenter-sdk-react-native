@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion '27.0.3'
 
     defaultConfig {
@@ -16,10 +16,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.facebook.react:react-native:+'
-    api 'com.microsoft.appcenter:appcenter:1.6.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.facebook.react:react-native:+'
+    compile 'com.microsoft.appcenter:appcenter:1.6.1'
 
-    // implementation project(':AppCenterReactNativeShared')   // For testing with TestApp
-    implementation 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.6.0'
+    // compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.6.0'
 }
