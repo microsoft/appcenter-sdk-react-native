@@ -16,10 +16,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.facebook.react:react-native:+'
-    compile 'com.microsoft.appcenter:appcenter-analytics:1.6.1'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.facebook.react:react-native:+'
+    api 'com.microsoft.appcenter:appcenter-analytics:1.6.1'
 
-    // compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.6.0'
+    // implementation project(':AppCenterReactNativeShared')   // For testing with TestApp
+    implementation 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.6.0'
 }
