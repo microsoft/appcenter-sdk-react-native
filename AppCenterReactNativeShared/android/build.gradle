@@ -28,7 +28,7 @@ allprojects {
     def ext = rootProject.ext
 
     android {
-        compileSdkVersion 23
+        compileSdkVersion 26
         buildToolsVersion '27.0.3'
 
         defaultConfig {
@@ -111,8 +111,8 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:23.0.1'
-    implementation 'com.microsoft.appcenter:appcenter:1.6.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.microsoft.appcenter:appcenter:1.6.1'
 }
 
 artifacts {

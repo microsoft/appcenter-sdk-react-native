@@ -32,7 +32,8 @@ subprojects {
     afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
-                // Force all the submodules to use the specified buildToolsVersion.
+                // Force all the submodules to use the specified compileSdkVersion and buildToolsVersion.
+                compileSdkVersion 26
                 buildToolsVersion '27.0.3'
             }
         }
