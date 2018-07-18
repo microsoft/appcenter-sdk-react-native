@@ -52,23 +52,23 @@ allprojects {
         }
     }
 
-   bintray {
-       user = ext.bintrayUser
-       key = ext.bintrayKey
+    bintray {
+        user = ext.bintrayUser
+        key = ext.bintrayKey
 
-       configurations = ['archives']
+        configurations = ['archives']
 
-       publish = true
+        publish = true
 
-       pkg {
-           repo = ext.bintrayRepo
-           name = "appcenter-react-native"
-           userOrg = ext.bintrayUserOrg
-           vcsUrl = ext.gitUrl
-           websiteUrl = ext.siteUrl
-           licenses = [licenseCode]
-       }
-   }
+        pkg {
+            repo = ext.bintrayRepo
+            name = "appcenter-react-native"
+            userOrg = ext.bintrayUserOrg
+            vcsUrl = ext.gitUrl
+            websiteUrl = ext.siteUrl
+            licenses = [licenseCode]
+        }
+    }
 
     install {
         repositories.mavenInstaller {
