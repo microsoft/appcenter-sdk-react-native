@@ -11,14 +11,14 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 public class RNUtils {
+
     public static WritableMap convertJsonObjectToWritableMap(JSONObject jsonObj) throws JSONException {
         WritableMap map = Arguments.createMap();
         Iterator<String> it = jsonObj.keys();
         while(it.hasNext()){
             String key = it.next();
-            Object obj = null;
+            Object obj;
             obj = jsonObj.get(key);
-
             if (obj instanceof JSONObject)
                 map.putMap(key, convertJsonObjectToWritableMap((JSONObject) obj));
             else if (obj instanceof JSONArray)
@@ -36,16 +36,14 @@ public class RNUtils {
             else
                 throw new JSONException("Unrecognized object: " + obj);
         }
-
         return map;
     }
 
-    public static WritableArray convertJsonArrayToWritableArray(JSONArray jsonArr) throws JSONException {
+    private static WritableArray convertJsonArrayToWritableArray(JSONArray jsonArr) throws JSONException {
         WritableArray arr = Arguments.createArray();
         for (int i=0; i<jsonArr.length(); i++) {
-            Object obj = null;
+            Object obj;
             obj = jsonArr.get(i);
-
             if (obj instanceof JSONObject)
                 arr.pushMap(convertJsonObjectToWritableMap((JSONObject) obj));
             else if (obj instanceof JSONArray)
@@ -63,7 +61,6 @@ public class RNUtils {
             else
                 throw new JSONException("Unrecognized object: " + obj);
         }
-
         return arr;
     }
 }
