@@ -15,7 +15,23 @@
     <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
     <iconUrl>https://aka.ms/k76877</iconUrl>
     <dependencies>
-      <dependency id="Microsoft.AppCenter" version="$version$" />
+      <group>
+         <dependency id="Microsoft.AppCenter" version="$version$" />
+      </group>
+      <group targetFramework="MonoAndroid403">
+        <dependency id="Microsoft.AppCenter" version="$version$" />
+        <dependency id="Xamarin.Firebase.Messaging" version="60.1142.1" />
+
+        <!-- 
+          We get conflicts between Forms and Messaging if we don't resolve those packages explicitly.
+          Remove any of these and it will not install in Demo app... This is really the minimal set.
+        -->
+        <dependency id="Xamarin.Android.Support.Compat" version="26.0.2" />
+        <dependency id="Xamarin.Android.Support.Design" version="26.0.2" />
+        <dependency id="Xamarin.Android.Support.v4" version="26.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.CardView" version="26.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.MediaRouter" version="26.0.2" />
+      </group>
     </dependencies>
     <version>$version$</version>
   </metadata>
