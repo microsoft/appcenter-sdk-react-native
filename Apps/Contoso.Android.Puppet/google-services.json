@@ -1,0 +1,22 @@
+{
+  "project_info": {
+    "project_number": "177539951155",
+    "project_id": "mobile-center-sdk-android"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177539951155:android:f10c1e35a526e7ce",
+        "android_client_info": {
+          "package_name": "com.microsoft.appcenter.xamarin.puppet"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}

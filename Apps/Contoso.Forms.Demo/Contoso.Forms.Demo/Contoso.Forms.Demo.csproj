@@ -1,117 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8E7B51FC-8A9B-49F7-A40D-4D12BBF893B6}</ProjectGuid>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UseMSBuildEngine>true</UseMSBuildEngine>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Contoso.Forms.Demo</RootNamespace>
-    <AssemblyName>Contoso.Forms.Demo</AssemblyName>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|AnyCPU'">
-    <OutputPath>bin\Reference\</OutputPath>
-    <Optimize>true</Optimize>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Copyright>Microsoft Corp. All rights reserved.</Copyright>
+    <Company>Microsoft Corporation</Company>
+    <Version>1.7.0</Version>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>1.7.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="MainDemoPage.xaml" />
-    <EmbeddedResource Include="ModulePages\CrashesContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\AppCenterContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\AnalyticsContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddPropertyContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertiesContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\OthersContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\CustomPropertyView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModulePages\CustomPropertiesContentPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\TextAttachmentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.7.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.7.0" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.7.0" />
+    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.561731" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainDemoPage.cs">
-      <DependentUpon>MainDemoPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ModulePages\CrashesContentPage.xaml.cs">
-      <DependentUpon>CrashesContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ModulePages\AppCenterContentPage.xaml.cs">
-      <DependentUpon>AppCenterContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ModulePages\AnalyticsContentPage.xaml.cs">
-      <DependentUpon>AnalyticsContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddPropertyContentPage.xaml.cs">
-      <DependentUpon>AddPropertyContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertiesContentPage.xaml.cs">
-      <DependentUpon>PropertiesContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FakeService.cs" />
-    <Compile Include="PreserveAttribute.cs" />
-    <Compile Include="ModulePages\OthersContentPage.xaml.cs">
-      <DependentUpon>OthersContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomPropertyView.xaml.cs">
-      <DependentUpon>CustomPropertyView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ModulePages\CustomPropertiesContentPage.xaml.cs">
-      <DependentUpon>CustomPropertiesContentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IFilePicker.cs" />
-    <Compile Include="Views\TextAttachmentView.xaml.cs">
-      <DependentUpon>TextAttachmentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Property.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

@@ -267,17 +267,11 @@ ModelManifest.xml
 tools/
 externals/
 
-# Google services json
-**/google-services.json
-
 # Output directory
 output/
 
 # Archives directory
 archives/
-
-#google-services
-google-services.json
 
 # Automatically generated nuspecs
 SDK/**/*.nuspec
