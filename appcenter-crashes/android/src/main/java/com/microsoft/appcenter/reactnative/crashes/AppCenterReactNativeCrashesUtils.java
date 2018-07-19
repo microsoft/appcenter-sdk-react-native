@@ -42,14 +42,21 @@ class AppCenterReactNativeCrashesUtils {
         //noinspection ThrowableResultOfMethodCallIgnored
         errorReportMap.putString("exceptionReason", errorReport.getThrowable().getMessage());
 
+        /* Convert device info. */
         Device deviceInfo = errorReport.getDevice();
-        JSONStringer jsonStringer = new JSONStringer();
-        jsonStringer.object();
-        deviceInfo.write(jsonStringer);
-        jsonStringer.endObject();
-        JSONObject deviceInfoJson = new JSONObject(jsonStringer.toString());
-        WritableMap deviceInfoMap = RNUtils.convertJsonObjectToWritableMap(deviceInfoJson);
+        WritableMap deviceInfoMap;
+        if (deviceInfo != null) {
+            JSONStringer jsonStringer = new JSONStringer();
+            jsonStringer.object();
+            deviceInfo.write(jsonStringer);
+            jsonStringer.endObject();
+            JSONObject deviceInfoJson = new JSONObject(jsonStringer.toString());
+            deviceInfoMap = RNUtils.convertJsonObjectToWritableMap(deviceInfoJson);
+        } else {
 
+            /* TODO investigate why this can be null. */
+            deviceInfoMap = Arguments.createMap();
+        }
         errorReportMap.putMap("device", deviceInfoMap);
         return errorReportMap;
     }
