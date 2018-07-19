@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="55" android:versionName="1.7.1-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
     <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="26" />
-    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
-    <permission android:name="${applicationId}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <application android:label="ACFPuppet">
+        <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
+        <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_appcenter_logo" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/appcenter_logo" />
     </application>
