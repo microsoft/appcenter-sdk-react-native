@@ -83,13 +83,12 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 26
 
     defaultConfig {
         applicationId "com.testapp"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         ndk {
@@ -135,8 +134,9 @@ dependencies {
     compile project(':react-native-image-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
 
-    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
+    compile "com.google.firebase:firebase-core:16.0.1"
+    compile 'com.google.firebase:firebase-messaging:17.0.0'
 }
 
 // Run this once to be able to run the application with BUCK
@@ -145,3 +145,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply plugin: 'com.google.gms.google-services'
