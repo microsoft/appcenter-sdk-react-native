@@ -8,16 +8,16 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "^1.6.0",
-    "appcenter-analytics": "^1.6.0",
-    "appcenter-crashes": "^1.6.0",
-    "appcenter-push": "^1.6.0",
+    "appcenter": "^1.7.0",
+    "appcenter-analytics": "^1.7.0",
+    "appcenter-crashes": "^1.7.0",
+    "appcenter-push": "^1.7.0",
     "react": "16.3.1",
     "react-native": "^0.55.4",
     "react-native-dialog-component": "^0.2.17",
     "react-native-fs": "^2.9.2",
     "react-native-image-picker": "^0.26.7",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-navigation": "^1.5.12"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -37,7 +37,11 @@
       "./node_modules/appcenter/test/AppCenterMock.js",
       "./node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
       "./node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
-      "./node_modules/appcenter-push/test/AppCenterPushMock.js"
+      "./node_modules/appcenter-push/test/AppCenterPushMock.js",
+      "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
+      "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
+      "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
+      "<rootDir>/node_modules/appcenter-push/test/AppCenterPushMock.js"
     ]
   }
 }
