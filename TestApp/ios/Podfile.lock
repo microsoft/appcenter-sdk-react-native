@@ -6,7 +6,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Push (1.8.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (1.7.0):
+  - AppCenterReactNativeShared (1.7.1):
     - AppCenter/Core (= 1.8.0)
 
 DEPENDENCIES:
@@ -25,7 +25,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppCenter: 7e7b42e94b70294d1de3d747f164f0c1668a28e1
-  AppCenterReactNativeShared: 6d3d6fa01ca306c81e1ee500af77f8d08d0963d6
+  AppCenterReactNativeShared: 1d2b34c5233783e20a151d67453e06215c52e99d
 
 PODFILE CHECKSUM: 5506fa308775c071679bade94831139e12129471
 
