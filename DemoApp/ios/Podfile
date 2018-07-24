@@ -12,7 +12,7 @@ target 'DemoApp' do
   pod 'AppCenter/Push', '~> 1.8.0'
   pod 'AppCenter/Crashes', '~> 1.8.0'
   pod 'AppCenter/Analytics', '~> 1.8.0'
-  pod 'AppCenterReactNativeShared', '~> 1.7.0'
+  pod 'AppCenterReactNativeShared', '~> 1.7.1'
 
   platform :ios, '9.0'
 end
