@@ -64,27 +64,32 @@ cat ./appcenter-link-scripts/package.json | jq -r '.version = env.newVersion' > 
 # appcenter-push and AppCenterReactNativeShared projects
 
 gradleFileContent="$(cat ./appcenter/android/build.gradle)"
-gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+[[ ${gradleFileContent} =~ (versionName [\", \']${oldWrapperSdkVersion}[\", \']) ]]
+gradleFileContent=`echo "${gradleFileContent/${BASH_REMATCH[0]}/versionName '$newWrapperSdkVersion'}"`
 gradleFileContent=`echo "${gradleFileContent/com.microsoft.appcenter.reactnative\:appcenter-react-native\:$oldWrapperSdkVersion/com.microsoft.appcenter.reactnative:appcenter-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./appcenter/android/build.gradle
 
 gradleFileContent="$(cat ./appcenter-crashes/android/build.gradle)"
-gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+[[ ${gradleFileContent} =~ (versionName [\", \']${oldWrapperSdkVersion}[\", \']) ]]
+gradleFileContent=`echo "${gradleFileContent/${BASH_REMATCH[0]}/versionName '$newWrapperSdkVersion'}"`
 gradleFileContent=`echo "${gradleFileContent/com.microsoft.appcenter.reactnative\:appcenter-react-native\:$oldWrapperSdkVersion/com.microsoft.appcenter.reactnative:appcenter-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./appcenter-crashes/android/build.gradle
 
 gradleFileContent="$(cat ./appcenter-analytics/android/build.gradle)"
-gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+[[ ${gradleFileContent} =~ (versionName [\", \']${oldWrapperSdkVersion}[\", \']) ]]
+gradleFileContent=`echo "${gradleFileContent/${BASH_REMATCH[0]}/versionName '$newWrapperSdkVersion'}"`
 gradleFileContent=`echo "${gradleFileContent/com.microsoft.appcenter.reactnative\:appcenter-react-native\:$oldWrapperSdkVersion/com.microsoft.appcenter.reactnative:appcenter-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./appcenter-analytics/android/build.gradle
 
 gradleFileContent="$(cat ./appcenter-push/android/build.gradle)"
-gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+[[ ${gradleFileContent} =~ (versionName [\", \']${oldWrapperSdkVersion}[\", \']) ]]
+gradleFileContent=`echo "${gradleFileContent/${BASH_REMATCH[0]}/versionName '$newWrapperSdkVersion'}"`
 gradleFileContent=`echo "${gradleFileContent/com.microsoft.appcenter.reactnative\:appcenter-react-native\:$oldWrapperSdkVersion/com.microsoft.appcenter.reactnative:appcenter-react-native:$newWrapperSdkVersion}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./appcenter-push/android/build.gradle
 
 gradleFileContent="$(cat ./AppCenterReactNativeShared/android/build.gradle)"
-gradleFileContent=`echo "${gradleFileContent/versionName \"$oldWrapperSdkVersion\"/versionName \"$newWrapperSdkVersion\"}"`
+[[ ${gradleFileContent} =~ (versionName [\", \']${oldWrapperSdkVersion}[\", \']) ]]
+gradleFileContent=`echo "${gradleFileContent/${BASH_REMATCH[0]}/versionName '$newWrapperSdkVersion'}"`
 echo "${gradleFileContent/versionCode $oldAndroidVersionCode/versionCode $newAndroidVersionCode}" > ./AppCenterReactNativeShared/android/build.gradle
 
 # Update wrapper sdk version in postlink.js for appcenter, appcenter-crashes, appcenter-analytics,
