@@ -62,7 +62,7 @@ cat ./appcenter-link-scripts/package.json | jq -r '.version = env.newVersion' > 
 
 # Update wrapperk sdk version and android VersionCode in Android build.gradle for appcenter, appcenter-crashes, appcenter-analytics,
 # appcenter-push and AppCenterReactNativeShared projects
-#
+
 gradleFileContent="$(cat ./appcenter/android/build.gradle)"
 [[ ${gradleFileContent} =~ (versionName [\", \']${oldWrapperSdkVersion}[\", \']) ]]
 gradleFileContent=`echo "${gradleFileContent/${BASH_REMATCH[0]}/versionName '$newWrapperSdkVersion'}"`
