@@ -1,0 +1,22 @@
+{
+  "project_info": {
+    "project_number": "177539951155",
+    "project_id": "mobile-center-sdk-android"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177539951155:android:b15f24a07a4e37d2",
+        "android_client_info": {
+          "package_name": "com.microsoft.appcenter.xamarin.forms.demo"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}
