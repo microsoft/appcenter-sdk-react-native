@@ -124,9 +124,9 @@ Podfile.prototype.getTargetSectionPattern = function () {
         }
         const sectionStart = this.startOfSection(patterns.index);
         const targetSection = this.fileContents.substring(sectionStart, this.fileContents.indexOf(os.EOL, sectionStart));
-        return {match: targetSection, index: sectionStart};
+        return { match: targetSection, index: sectionStart };
     }
-    return {match: targetPatterns[0], index: targetPatterns.index};
+    return { match: targetPatterns[0], index: targetPatterns.index };
 };
 
 Podfile.prototype.isInScope = function (index, scopeRanges) {
@@ -211,7 +211,7 @@ Podfile.prototype.endOfSection = function (position) {
 };
 
 Podfile.prototype.startOfSection = function (position) {
-    const targetKeyword = 'target'; 
+    const targetKeyword = 'target';
     return this.sectionBoundary(this.fileContents, position + targetKeyword.length, targetKeyword);
 };
 
