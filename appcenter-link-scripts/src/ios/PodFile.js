@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const childProcess = require('child_process');
 
@@ -37,7 +38,7 @@ Podfile.prototype.addPodLine = function (pod, podspec, version) {
         debug(`Replace ${existingLine} by ${line}`);
         return;
     }
-    const pattern = this.getTargetSectionPattern()[0];
+    const pattern = this.getTargetSectionPattern().match;
     this.fileContents = this.fileContents.replace(pattern, `${pattern}\n  ${line}`);
     debug(`${line} ===> ${this.file}`);
 };
@@ -60,8 +61,8 @@ Podfile.prototype.addMinimumDeploymentTarget = function (platform, version) {
 Podfile.prototype.addPlatformToTarget = function (platform, version) {
     const line = `platform :${platform}, '${version}'`;
     const sectionStart = this.getTargetSectionPattern();
-    const keywordMatch = this.nextKeyword(this.fileContents, sectionStart.index);
-    const newLineIndex = this.fileContents.lastIndexOf('\n', keywordMatch.index);
+    const keywordMatch = this.nextKeyword(this.fileContents, sectionStart.index + 1);
+    const newLineIndex = this.fileContents.lastIndexOf(os.EOL, keywordMatch.index);
     const part1 = this.fileContents.slice(0, newLineIndex);
     const part2 = this.fileContents.slice(newLineIndex);
     const indent = '  ';
@@ -88,8 +89,8 @@ Podfile.prototype.isGlobalPlatformDefined = function (platform) {
 Podfile.prototype.isTargetPlatformDefined = function (platform) {
     const platformPattern = new RegExp(`platform\\s+:${platform}`, 'g');
     const patternIndex = this.getTargetSectionPattern().index;
-    const startSection = this.startOfSection(patternIndex) + 'target'.length;
-    const endSection = this.endOfSection(patternIndex);
+    const startSection = this.startOfSection(patternIndex);
+    const endSection = this.endOfSection(patternIndex + 'target'.length);
     const sectionContent = this.fileContents.substring(startSection, endSection);
     const scopeRanges = this.scopeRanges(sectionContent);
     const platformMatches = sectionContent.match(platformPattern);
@@ -107,15 +108,25 @@ Podfile.prototype.isTargetPlatformDefined = function (platform) {
 };
 
 Podfile.prototype.getTargetSectionPattern = function () {
-    const patterns = this.fileContents.match(/# Pods for .*/);
-    if (patterns === null) {
-        throw new Error(`
-    Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
-    in ${this.file}, inside
-    the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
-    `);
+    const projectDirectory = path.resolve(__dirname, '..', '..', '..', '..');
+    const projectName = projectDirectory.substr(projectDirectory.lastIndexOf(path.sep) + 1);
+    const reg = RegExp(`target\\s+'${projectName}'\\s+do`);
+    const targetPatterns = this.fileContents.match(reg);
+    if (targetPatterns === null) {
+        debug(`Could not find target ${reg}`);
+        const patterns = this.fileContents.match(/# Pods for .*/);
+        if (patterns === null) {
+            throw new Error(`
+        Error: Could not find a "# Pods for" comment in your Podfile. Please add a "# Pods for AppCenter" line
+        in ${this.file}, inside
+        the "target" section, then rerun the react-native link. AppCenter pods will be added below the comment.
+        `);
+        }
+        const sectionStart = this.startOfSection(patterns.index);
+        const targetSection = this.fileContents.substring(sectionStart, this.fileContents.indexOf(os.EOL, sectionStart));
+        return {match: targetSection, index: sectionStart};
     }
-    return patterns;
+    return {match: targetPatterns[0], index: targetPatterns.index};
 };
 
 Podfile.prototype.isInScope = function (index, scopeRanges) {
@@ -195,11 +206,13 @@ Podfile.prototype.sectionBoundary = function (content, position, keyword) {
  };
 
 Podfile.prototype.endOfSection = function (position) {
-    return this.sectionBoundary(this.fileContents, position, 'end');
+    const endKeyword = 'end';
+    return this.sectionBoundary(this.fileContents, position - endKeyword.length, endKeyword);
 };
 
 Podfile.prototype.startOfSection = function (position) {
-    return this.sectionBoundary(this.fileContents, position, 'target');
+    const targetKeyword = 'target'; 
+    return this.sectionBoundary(this.fileContents, position + targetKeyword.length, targetKeyword);
 };
 
 Podfile.prototype.nextKeyword = function (content, offset, reverse = false) {
