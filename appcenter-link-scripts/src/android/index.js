@@ -75,7 +75,7 @@ module.exports = {
         const gradlePath = 'android/app/build.gradle';
         let gradleContent = fs.readFileSync(gradlePath, 'utf-8');
         gradleContent.split('\n').forEach((line) => {
-            let match = line.match(/^\s*(compile|implementation) (project.*appcenter.*)$/);
+            const match = line.match(/^\s*(compile|implementation) (project.*appcenter.*)$/);
             if (match) {
                 if (lines[match[2]]) {
                     gradleContent = gradleContent.replace(line, '');
