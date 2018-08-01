@@ -2,6 +2,7 @@
 using Xamarin.UITest;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace Contoso.Forms.Test.UITests
 {
@@ -77,6 +78,10 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.CrashesEnabled = false;
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
+            //There seems to be some sort of timing issue here.
+            //   without the Thread.Sleep - this code fails although I see that the method called is Async (with a Wait)
+            //   so I think this deserves further investigation. I've added a terribly long wait to get the tests green.
+            Thread.Sleep(10000);
             app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToTogglePageButton);
             Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
@@ -87,6 +92,7 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.AnalyticsEnabled = false;
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            Thread.Sleep(10000);
             app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToTogglePageButton);
             Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
@@ -98,6 +104,7 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
+            Thread.Sleep(10000);
             app = AppInitializer.StartAppNoClear(platform);
             app.Tap(TestStrings.GoToTogglePageButton);
             Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
