@@ -72,6 +72,7 @@ namespace Contoso.Forms.Test.UITests
         public void TestServiceStatePersistence()
         {
             ServiceStateHelper.app = app;
+            app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Make sure Crashes enabled state is persistent */
@@ -120,9 +121,12 @@ namespace Contoso.Forms.Test.UITests
         public void SendEventWithProperties()
         {
             app.Tap(TestStrings.GoToAnalyticsPageButton);
+            app.WaitForElement(TestStrings.GoToAnalyticsResultsPageButton);
+
             int numProperties = 5;
             SendEvent(numProperties);
             app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
+            app.WaitForElement(TestStrings.EventPropertiesLabel);
 
             /* Verify that the event was sent properly */
             AnalyticsResultsHelper.app = app;
@@ -137,9 +141,12 @@ namespace Contoso.Forms.Test.UITests
         public void SendEventWithNoProperties()
         {
             app.Tap(TestStrings.GoToAnalyticsPageButton);
+            app.WaitForElement(TestStrings.GoToAnalyticsResultsPageButton);
+
             int numProperties = 0;
             SendEvent(numProperties);
             app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
+            app.WaitForElement(TestStrings.EventPropertiesLabel);
 
             /* Verify that the event was sent properly */
             AnalyticsResultsHelper.app = app;
@@ -160,9 +167,12 @@ namespace Contoso.Forms.Test.UITests
             app.Tap(TestStrings.DismissButton);
 
             app.Tap(TestStrings.GoToAnalyticsPageButton);
+            app.WaitForElement(TestStrings.GoToAnalyticsResultsPageButton);
+
             int numProperties = 1;
             SendEvent(numProperties);
             app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
+            app.WaitForElement(TestStrings.EventPropertiesLabel);
 
             /* Verify that the event was not sent */
             AnalyticsResultsHelper.app = app;
