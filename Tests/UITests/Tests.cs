@@ -139,7 +139,6 @@ namespace Contoso.Forms.Test.UITests
             app = AppInitializer.StartAppNoClear(platform);
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
-            app.Screenshot("Go To Toggle Page Pressed...");
             Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
