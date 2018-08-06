@@ -70,7 +70,7 @@ namespace Contoso.Forms.Test.UITests
         }
 
         [Test]
-        public void TestServiceStatePersistence()
+        public void TestServiceStatePersistenceCrashes()
         {
             app.Screenshot("App Launched - Ready for tests");
             ServiceStateHelper.app = app;
@@ -91,7 +91,19 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
-            app.Screenshot("Crashes enabled");
+            app.Screenshot("Crashes persistent");
+
+            /* Reset services to enabled */
+            ServiceStateHelper.AppCenterEnabled = true;
+        }
+
+        [Test]
+        public void TestServiceStatePersistenceAnalytics()
+        {
+            app.Screenshot("App Launched - Ready for tests");
+            ServiceStateHelper.app = app;
+            app.WaitForElement(TestStrings.GoToTogglePageButton);
+            app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Make sure Analytics enabled state is persistent */
             ServiceStateHelper.AppCenterEnabled = true;
@@ -104,7 +116,19 @@ namespace Contoso.Forms.Test.UITests
             Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
-            app.Screenshot("Analytics enabled");
+            app.Screenshot("Analytics persistent");
+
+            /* Reset services to enabled */
+            ServiceStateHelper.AppCenterEnabled = true;
+        }
+
+        [Test]
+        public void TestServiceStatePersistenceAppCenter()
+        {
+            app.Screenshot("App Launched - Ready for tests");
+            ServiceStateHelper.app = app;
+            app.WaitForElement(TestStrings.GoToTogglePageButton);
+            app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Make sure AppCenter enabled state is persistent */
             ServiceStateHelper.AppCenterEnabled = false;
@@ -115,15 +139,15 @@ namespace Contoso.Forms.Test.UITests
             app = AppInitializer.StartAppNoClear(platform);
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
+            app.Screenshot("Go To Toggle Page Pressed...");
             Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
-            app.Screenshot("AppCenter enabled");
+            app.Screenshot("AppCenter persistent");
 
             /* Reset services to enabled */
             ServiceStateHelper.AppCenterEnabled = true;
         }
-
 
         [Test]
         public void SendEventWithProperties()
