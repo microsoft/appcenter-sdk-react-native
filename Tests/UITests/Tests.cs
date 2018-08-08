@@ -13,6 +13,9 @@ namespace Contoso.Forms.Test.UITests
         IApp app;
         Platform platform;
 
+        private const int AfterCrashSleepTime = 2000;
+        private const int LongStabilizationSleepTime = 10000;
+
         public Tests(Platform platform)
         {
             this.platform = platform;
@@ -27,6 +30,8 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void InstallIdIsCorrectFormat()
         {
+            app.Screenshot("InstallIdIsCorrectFormat - Ready for tests");
+
             CorePageHelper.app = app;
             app.Tap(TestStrings.GoToCorePageButton);
             var id = CorePageHelper.InstallId;
@@ -36,6 +41,8 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void TestEnablingAndDisablingServices()
         {
+            app.Screenshot("TestEnablingAndDisablingServices - Ready for tests");
+
             ServiceStateHelper.app = app;
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
@@ -72,7 +79,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void TestServiceStatePersistenceCrashes()
         {
-            app.Screenshot("App Launched - Ready for tests");
+            app.Screenshot("TestServiceStatePersistenceCrashes - Ready for tests");
             ServiceStateHelper.app = app;
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
@@ -81,13 +88,16 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.CrashesEnabled = false;
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
-            //There seems to be some sort of timing issue here.
-            //   without the Thread.Sleep - this code fails although I see that the method called is Async (with a Wait)
-            //   so I think this deserves further investigation. I've added a terribly long wait to get the tests green.
-            Thread.Sleep(10000);
+
+            // There seems to be some sort of timing issue here.
+            // without the Thread.Sleep - this code fails although I see that the method called is Async (with a Wait)
+            // so I think this deserves further investigation. I've added a terribly long wait to get the tests green.
+            Thread.Sleep(LongStabilizationSleepTime);
             app = AppInitializer.StartAppNoClear(platform);
+            Thread.Sleep(LongStabilizationSleepTime);
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
+            Thread.Sleep(LongStabilizationSleepTime);
             Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsTrue(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
@@ -100,7 +110,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void TestServiceStatePersistenceAnalytics()
         {
-            app.Screenshot("App Launched - Ready for tests");
+            app.Screenshot("TestServiceStatePersistenceAnalytics - Ready for tests");
             ServiceStateHelper.app = app;
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
@@ -109,10 +119,12 @@ namespace Contoso.Forms.Test.UITests
             ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.AnalyticsEnabled = false;
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
-            Thread.Sleep(10000);
+            Thread.Sleep(LongStabilizationSleepTime);
+
             app = AppInitializer.StartAppNoClear(platform);
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
+            Thread.Sleep(LongStabilizationSleepTime);
             Assert.IsTrue(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsTrue(ServiceStateHelper.CrashesEnabled);
@@ -125,20 +137,27 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void TestServiceStatePersistenceAppCenter()
         {
-            app.Screenshot("App Launched - Ready for tests");
+            app.Screenshot("TestServiceStatePersistenceAppCenter - Ready for tests");
             ServiceStateHelper.app = app;
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
 
             /* Make sure AppCenter enabled state is persistent */
+            ServiceStateHelper.AppCenterEnabled = true;
             ServiceStateHelper.AppCenterEnabled = false;
             Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
-            Thread.Sleep(10000);
+            Thread.Sleep(LongStabilizationSleepTime);
+
+            app.Screenshot("TestServiceStatePersistenceAppCenter - Before restart");
+
             app = AppInitializer.StartAppNoClear(platform);
+            Thread.Sleep(LongStabilizationSleepTime);
+
             app.WaitForElement(TestStrings.GoToTogglePageButton);
             app.Tap(TestStrings.GoToTogglePageButton);
+            Thread.Sleep(LongStabilizationSleepTime);
             Assert.IsFalse(ServiceStateHelper.AppCenterEnabled);
             Assert.IsFalse(ServiceStateHelper.AnalyticsEnabled);
             Assert.IsFalse(ServiceStateHelper.CrashesEnabled);
@@ -151,6 +170,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void SendEventWithProperties()
         {
+            app.Screenshot("SendEventWithProperties - Ready for tests");
             app.WaitForElement(TestStrings.GoToAnalyticsPageButton);
             app.Tap(TestStrings.GoToAnalyticsPageButton);
             app.WaitForElement(TestStrings.GoToAnalyticsResultsPageButton);
@@ -172,6 +192,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void SendEventWithNoProperties()
         {
+            app.Screenshot("SendEventWithNoProperties - Ready for tests");
             app.WaitForElement(TestStrings.GoToAnalyticsPageButton);
             app.Tap(TestStrings.GoToAnalyticsPageButton);
             app.WaitForElement(TestStrings.GoToAnalyticsResultsPageButton);
@@ -193,6 +214,7 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void SendEventWithAnalyticsDisabled()
         {
+            app.Screenshot("SendEventWithAnalyticsDisabled - Ready for tests");
             /* Disable Analytics */
             ServiceStateHelper.app = app;
             app.WaitForElement(TestStrings.GoToTogglePageButton);
@@ -220,13 +242,14 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void InvalidOperation()
         {
+            app.Screenshot("InvalidOperation - Ready for tests");
             /* Crash the application with an invalid operation exception and then restart */
             app.WaitForElement(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.WaitForElement(TestStrings.CrashWithInvalidOperationButton);
             app.Tap(TestStrings.CrashWithInvalidOperationButton);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(AfterCrashSleepTime);
 
             TestSuccessfulCrash();
             LastSessionErrorReportHelper.app = app;
@@ -237,13 +260,14 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void AggregateException()
         {
+            app.Screenshot("AggregateException - Ready for tests");
             /* Crash the application with an aggregate exception and then restart */
             app.WaitForElement(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.WaitForElement(TestStrings.CrashWithAggregateExceptionButton);
             app.Tap(TestStrings.CrashWithAggregateExceptionButton);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(AfterCrashSleepTime);
 
             TestSuccessfulCrash();
             LastSessionErrorReportHelper.app = app;
@@ -254,13 +278,14 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void DivideByZero()
         {
+            app.Screenshot("DivideByZero - Ready for tests");
             /* Crash the application with a divide by zero exception and then restart */
             app.WaitForElement(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.WaitForElement(TestStrings.DivideByZeroCrashButton);
             app.Tap(TestStrings.DivideByZeroCrashButton);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(AfterCrashSleepTime);
 
             TestSuccessfulCrash();
             LastSessionErrorReportHelper.app = app;
@@ -271,13 +296,14 @@ namespace Contoso.Forms.Test.UITests
         [Test]
         public void AsyncTaskException()
         {
+            app.Screenshot("AsyncTaskException - Ready for tests");
             /* Crash the application inside an asynchronous task and then restart */
             app.WaitForElement(TestStrings.GoToCrashesPageButton);
             app.Tap(TestStrings.GoToCrashesPageButton);
             app.WaitForElement(TestStrings.CrashInsideAsyncTaskButton);
             app.Tap(TestStrings.CrashInsideAsyncTaskButton);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(AfterCrashSleepTime);
 
             TestSuccessfulCrash();
             LastSessionErrorReportHelper.app = app;
@@ -290,6 +316,7 @@ namespace Contoso.Forms.Test.UITests
         /* Verify that a crash has been triggered and handled correctly */
         public void TestSuccessfulCrash()
         {
+            app.Screenshot("TestSuccessfulCrash - Ready for tests");
             app = AppInitializer.StartAppNoClear(platform);
             app.WaitForElement(TestStrings.GoToCrashResultsPageButton);
             app.Tap(TestStrings.GoToCrashResultsPageButton);
