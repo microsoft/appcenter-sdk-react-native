@@ -1,7 +1,7 @@
 #tool nuget:?package=XamarinComponent
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=Cake.Git
-#addin nuget:?package=Cake.Incubator
+#addin nuget:?package=Cake.Incubator&version=2.0.2
 #addin nuget:?package=Cake.Xamarin
 #load "scripts/utility.cake"
 #load "scripts/configuration/config-parser.cake"
