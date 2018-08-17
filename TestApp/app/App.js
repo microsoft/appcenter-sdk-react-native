@@ -1,12 +1,14 @@
+import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
+
+import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
+import Push from 'appcenter-push';
 
 import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
-
-import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
-import Push from 'appcenter-push';
+import AttachmentsProvider from './AttachmentsProvider';
 
 export default createBottomTabNavigator(
   {

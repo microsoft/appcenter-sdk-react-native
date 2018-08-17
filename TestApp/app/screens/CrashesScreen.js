@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity } from 'react-native';
 import { DialogComponent } from 'react-native-dialog-component';
 import ImagePicker from 'react-native-image-picker';
 
@@ -11,6 +11,7 @@ import SharedStyles from '../SharedStyles';
 
 export default class CrashesScreen extends Component {
   static navigationOptions = {
+    // eslint-disable-line global-require
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/crashes.png')} />
   }
 
@@ -125,29 +126,27 @@ export default class CrashesScreen extends Component {
   }
 
 
-  getTextAttachmentDialog = () => {
-    return (
-      <DialogComponent ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }} width={0.9}>
-        <View>
-          <TextInput style={SharedStyles.dialogInput} onChangeText={textAttachment => this.setState({ textAttachment })} />
-          <View style={SharedStyles.dialogButtonContainer}>
-            <TouchableOpacity
-              style={SharedStyles.dialogButton}
-              onPress={() => {
-                AttachmentsProvider.saveTextAttachment(this.state.textAttachment);
-                this.dialogComponent.dismiss();
-              }}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={SharedStyles.dialogButton} onPress={() => { this.dialogComponent.dismiss(); }}>
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+  getTextAttachmentDialog = () => (
+    <DialogComponent ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }} width={0.9}>
+      <View>
+        <TextInput style={SharedStyles.dialogInput} onChangeText={textAttachment => this.setState({ textAttachment })} />
+        <View style={SharedStyles.dialogButtonContainer}>
+          <TouchableOpacity
+            style={SharedStyles.dialogButton}
+            onPress={() => {
+              AttachmentsProvider.saveTextAttachment(this.state.textAttachment);
+              this.dialogComponent.dismiss();
+            }}
+          >
+            <Text>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={SharedStyles.dialogButton} onPress={() => { this.dialogComponent.dismiss(); }}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
         </View>
-      </DialogComponent>
-    );
-  }
+      </View>
+    </DialogComponent>
+  )
 
   showFilePicker = () => {
     ImagePicker.showImagePicker(null, async (response) => {
