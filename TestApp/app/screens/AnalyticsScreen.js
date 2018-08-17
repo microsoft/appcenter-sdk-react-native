@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 import Analytics from 'appcenter-analytics';
 
@@ -26,11 +27,14 @@ export default class AnalyticsScreen extends Component {
         <Switch value={this.state[value]} onValueChange={toggle} />
       </View>
     );
+
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
       </TouchableOpacity>
     );
+
+    const showEventToast = () => Toast.show('Scheduled event log. Please check verbose logs.');
 
     return (
       <View style={SharedStyles.container}>
@@ -59,15 +63,24 @@ export default class AnalyticsScreen extends Component {
               data: [
                 {
                   title: 'Track Event',
-                  action: () => Analytics.trackEvent('Event without properties')
+                  action: () => {
+                    Analytics.trackEvent('Event without properties');
+                    showEventToast();
+                  }
                 },
                 {
                   title: 'Track Event with properties',
-                  action: () => Analytics.trackEvent('Button press', { page: 'Home page' })
+                  action: () => {
+                    Analytics.trackEvent('Button press', { page: 'Home page' });
+                    showEventToast();
+                  }
                 },
                 {
                   title: 'Track Event with long property value',
-                  action: () => Analytics.trackEvent('Button press', { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' })
+                  action: () => {
+                    Analytics.trackEvent('Button press', { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
+                    showEventToast();
+                  }
                 },
               ],
               renderItem: actionRenderItem
