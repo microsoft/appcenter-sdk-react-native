@@ -50,12 +50,14 @@ export default class AppCenterScreen extends Component {
         <Switch value={this.state[value]} onValueChange={toggle} />
       </View>
     );
+
     const valueRenderItem = ({ item: { title, value } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.title}>{title}</Text>
         <Text>{this.state[value]}</Text>
       </View>
     );
+
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
@@ -89,19 +91,33 @@ export default class AppCenterScreen extends Component {
                     const pushEnabled = await Push.isEnabled();
                     this.setState({ pushEnabled });
                   }
-                  },
+                },
               ],
               renderItem: switchRenderItem
             },
 
             // TODO: Implement set startup mode
             {
-              title: 'Startup Mode',
+              title: 'Change Startup Mode',
               data: [
-                'App Target Only',
-                'Library Target Only',
-                'Both Targets',
-              ]
+                {
+                  title: 'AppCenter target only',
+                  action: () => Toast.show('Not implemented yet.')
+                },
+                {
+                  title: 'OneCollector target only',
+                  action: () => Toast.show('Not implemented yet.')
+                },
+                {
+                  title: 'Both targets',
+                  action: () => Toast.show('Not implemented yet.')
+                },
+                {
+                  title: 'No default target',
+                  action: () => Toast.show('Not implemented yet.')
+                },
+              ],
+              renderItem: actionRenderItem
             },
             {
               title: 'Actions',
