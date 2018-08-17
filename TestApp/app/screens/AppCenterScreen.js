@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
 import Push from 'appcenter-push';
@@ -39,6 +40,7 @@ export default class AppCenterScreen extends Component {
       .set('score', 7)
       .set('now', new Date());
     await AppCenter.setCustomProperties(properties);
+    Toast.show('Scheduled custom properties log. Please check verbose logs.');
   }
 
   render() {
