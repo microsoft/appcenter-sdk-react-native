@@ -12,7 +12,16 @@ import SharedStyles from '../SharedStyles';
 export default class CrashesScreen extends Component {
   static navigationOptions = {
     // eslint-disable-line global-require
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/crashes.png')} />
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/crashes.png')} />,
+    tabBarOnPress: ({ defaultHandler, navigation }) => {
+      const refreshCrash = navigation.getParam('refreshCrash');
+
+      // Initial press: the function is not defined yet so nothing to refresh.
+      if (typeof (refreshCrash) === 'function') {
+        refreshCrash();
+      }
+      defaultHandler();
+    }
   }
 
   state = {
@@ -23,8 +32,7 @@ export default class CrashesScreen extends Component {
   }
 
   async componentWillMount() {
-    const crashesEnabled = await Crashes.isEnabled();
-    this.setState({ crashesEnabled });
+    await this.refreshToggle();
 
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
     const lastSessionStatus = crashedInLastSession ? 'Crashed' : 'OK';
@@ -35,6 +43,15 @@ export default class CrashesScreen extends Component {
 
     const binaryAttachment = await AttachmentsProvider.getBinaryAttachmentInfo();
     this.setState({ binaryAttachment });
+
+    this.props.navigation.setParams({
+      refreshCrash: this.refreshToggle.bind(this)
+    });
+  }
+
+  async refreshToggle() {
+    const crashesEnabled = await Crashes.isEnabled();
+    this.setState({ crashesEnabled });
   }
 
   jsCrash() {
@@ -53,12 +70,14 @@ export default class CrashesScreen extends Component {
         <Switch value={this.state[value]} onValueChange={toggle} />
       </View>
     );
+
     const valueRenderItem = ({ item: { title, value } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.title}>{title}</Text>
         <Text>{this.state[value]}</Text>
       </View>
     );
+
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
@@ -182,7 +201,7 @@ export default class CrashesScreen extends Component {
       const units = ['KiB', 'MiB', 'GiB'];
       let fileSize = response.fileSize;
       if (Math.abs(fileSize) < thresh) {
-          return `${fileSize} B`;
+        return `${fileSize} B`;
       }
       let u = -1;
       do {

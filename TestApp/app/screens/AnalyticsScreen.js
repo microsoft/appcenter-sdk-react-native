@@ -8,7 +8,16 @@ import SharedStyles from '../SharedStyles';
 
 export default class AnalyticsScreen extends Component {
   static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/analytics.png')} />
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/analytics.png')} />,
+    tabBarOnPress: ({ defaultHandler, navigation }) => {
+      const refreshAnalytics = navigation.getParam('refreshAnalytics');
+
+      // Initial press: the function is not defined yet so nothing to refresh.
+      if (typeof (refreshAnalytics) === 'function') {
+        refreshAnalytics();
+      }
+      defaultHandler();
+    }
   }
 
   state = {
@@ -16,6 +25,14 @@ export default class AnalyticsScreen extends Component {
   }
 
   async componentWillMount() {
+    await this.refreshToggle();
+
+    this.props.navigation.setParams({
+      refreshAnalytics: this.refreshToggle.bind(this)
+    });
+  }
+
+  async refreshToggle() {
     const analyticsEnabled = await Analytics.isEnabled();
     this.setState({ analyticsEnabled });
   }

@@ -80,7 +80,8 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setEnabled(!this.state.appCenterEnabled);
                     const appCenterEnabled = await AppCenter.isEnabled();
-                    this.setState({ appCenterEnabled });
+                    const pushEnabled = await Push.isEnabled();
+                    this.setState({ appCenterEnabled, pushEnabled });
                   }
                 },
                 {
