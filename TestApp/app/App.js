@@ -97,16 +97,16 @@ Crashes.setListener({
 
   onBeforeSending() {
     console.log('Will send crash. onBeforeSending is invoked.');
-    Toast.show("Sending crashes...");
+    Toast.show('Sending crashes...');
   },
 
   onSendingSucceeded() {
     console.log('Did send crash. onSendingSucceeded is invoked.');
-    Toast.show("Sending crashes succeeded.");
+    Toast.show('Sending crashes succeeded.');
   },
 
   onSendingFailed() {
     console.log('Failed sending crash. onSendingFailed is invoked.');
-    Toast.show("Sending crashes failed, please check verbose logs.");
+    Toast.show('Sending crashes failed, please check verbose logs.');
   }
 });
