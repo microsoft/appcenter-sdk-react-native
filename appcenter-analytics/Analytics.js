@@ -2,7 +2,7 @@ const ReactNative = require('react-native');
 
 const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
-module.exports = {
+const Analytics = {
     // async - returns a Promise
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties));
@@ -20,28 +20,26 @@ module.exports = {
 
     // async - returns a Promise
     getTransmissionTarget(targetToken) {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
-            .then(targetToken => {
-                resolve(new TransmissionTarget(targetToken));
-            })
-            .catch(error => {
-                reject(error);
-            })
-        })
+            .then(token => resolve(new Analytics.TransmissionTarget(token)))
+            .catch(error => reject(error));
+        });
     },
+};
 
-    TransmissionTarget: class {
-        constructor(targetToken) {
-            this._targetToken = targetToken;
-        }
+Analytics.TransmissionTarget = class {
+    constructor(targetToken) {
+        this.targetToken = targetToken;
+    }
 
-        // async - returns a Promise
-        trackEvent(eventName, properties) {
-            return AppCenterReactNativeAnalytics.trackEventForTransmissionTarget(this._targetToken, eventName, sanitizeProperties(properties));
-        }
+    // async - returns a Promise
+    trackEvent(eventName, properties) {
+        return AppCenterReactNativeAnalytics.trackEventForTransmissionTarget(this.targetToken, eventName, sanitizeProperties(properties));
     }
 };
+
+module.exports = Analytics;
 
 function sanitizeProperties(props = null) {
     // Only string:string mappings are supported currently.
