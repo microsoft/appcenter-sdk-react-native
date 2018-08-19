@@ -49,4 +49,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
+  modalSelector: {
+    borderColor: 'gray',
+    backgroundColor: 'white'
+  },
 });
