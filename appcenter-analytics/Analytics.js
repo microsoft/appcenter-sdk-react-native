@@ -16,6 +16,30 @@ module.exports = {
     // async - returns a Promise
     setEnabled(enabled) {
         return AppCenterReactNativeAnalytics.setEnabled(enabled);
+    },
+
+    // async - returns a Promise
+    getTransmissionTarget(targetToken) {
+        return new Promise(function(resolve, reject) {
+            AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
+            .then(targetToken => {
+                resolve(new TransmissionTarget(targetToken));
+            })
+            .catch(error => {
+                reject(error);
+            })
+        })
+    },
+
+    TransmissionTarget: class {
+        constructor(targetToken) {
+            this._targetToken = targetToken;
+        }
+
+        // async - returns a Promise
+        trackEvent(eventName, properties) {
+            return AppCenterReactNativeAnalytics.trackEventForTransmissionTarget(this._targetToken, eventName, sanitizeProperties(properties));
+        }
     }
 };
 
