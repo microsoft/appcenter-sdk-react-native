@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, SectionList, Text, TouchableOpacity } from 'react-native';
-import ModalSelector from 'react-native-modal-selector'
+import ModalSelector from 'react-native-modal-selector';
 
 import Analytics from 'appcenter-analytics';
 
@@ -32,7 +32,7 @@ export default class TransmissionScreen extends Component {
 
   render() {
     const pickerRenderItem = ({ item: { title, valueChanged, tokens } }) => (
-      <ModalSelector data={tokens} initValue={title} onChange={valueChanged} style={SharedStyles.modalSelector}/>
+      <ModalSelector data={tokens} initValue={title} onChange={valueChanged} style={SharedStyles.modalSelector} />
     );
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
