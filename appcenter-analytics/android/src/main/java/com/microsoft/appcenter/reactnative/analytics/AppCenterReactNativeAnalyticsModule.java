@@ -2,12 +2,16 @@ package com.microsoft.appcenter.reactnative.analytics;
 
 import android.app.Application;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.analytics.AnalyticsTransmissionTarget;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
@@ -15,6 +19,8 @@ import org.json.JSONException;
 
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
+
+    private Map<String, AnalyticsTransmissionTarget> transmissionTargets = new HashMap<>();
 
     public AppCenterReactNativeAnalyticsModule(Application application, boolean startEnabled) {
         AppCenterReactNativeShared.configureAppCenter(application);
@@ -59,5 +65,31 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
         } catch (JSONException e) {
             promise.reject(e);
         }
+    }
+
+    @ReactMethod
+    public void trackEventForTransmissionTarget(String targetToken, String eventName, ReadableMap properties, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = transmissionTargets.get(targetToken);
+        if (transmissionTarget == null) {
+            promise.reject(new IllegalArgumentException("Invalid transmission target token"));
+            return;
+        }
+        try {
+            transmissionTarget.trackEvent(eventName, ReactNativeUtils.convertReadableMapToStringMap(properties));
+            promise.resolve("");
+        } catch (JSONException e) {
+            promise.reject(e);
+        }
+    }
+
+    @ReactMethod
+    public void getTransmissionTarget(String targetToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = Analytics.getTransmissionTarget(targetToken);
+        if (transmissionTarget == null) {
+            promise.reject(new IllegalArgumentException("Transmission target may not be null or empty."));
+            return;
+        }
+        transmissionTargets.put(targetToken, transmissionTarget);
+        promise.resolve(targetToken);
     }
 }
