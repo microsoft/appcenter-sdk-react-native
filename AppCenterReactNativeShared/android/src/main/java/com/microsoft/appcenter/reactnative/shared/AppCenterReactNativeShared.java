@@ -25,16 +25,12 @@ public class AppCenterReactNativeShared {
             return;
         }
         AppCenterReactNativeShared.application = application;
+
         AppCenterReactNativeShared.wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         AppCenterReactNativeShared.wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
+
         AppCenter.setWrapperSdk(wrapperSdk);
-        String secretString = AppCenterReactNativeShared.getAppSecret();
-        if (secretString == null || secretString.isEmpty()) {
-            AppCenter.configure(AppCenterReactNativeShared.getAppSecret());
-        }
-        else {
-            AppCenter.configure(application, AppCenterReactNativeShared.getAppSecret());
-        }
+        AppCenter.configure(application, AppCenterReactNativeShared.getAppSecret());
     }
 
     /**

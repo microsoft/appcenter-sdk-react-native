@@ -37,7 +37,12 @@ static MSWrapperSdk * wrapperSdk;
             liveUpdateDeploymentKey:nil
             liveUpdatePackageHash:nil];
       [self setWrapperSdk:wrapperSdk];
-      [MSAppCenter configureWithAppSecret:[AppCenterReactNativeShared getAppSecret]];
+      [AppCenterReactNativeShared getAppSecret];
+      if ([appSecret length] == 0) {
+        [MSAppCenter configure];
+      } else {
+        [MSAppCenter configureWithAppSecret:appSecret];
+      }
   }
 }
 
