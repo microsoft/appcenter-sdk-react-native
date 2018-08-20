@@ -5,12 +5,11 @@ import Toast from 'react-native-simple-toast';
 import Analytics from 'appcenter-analytics';
 
 import SharedStyles from '../SharedStyles';
+import analyticsTabBarIcon from '../assets/analytics.png';
 
 export default class AnalyticsScreen extends Component {
   static navigationOptions = {
-
-    // eslint-disable-next-line global-require
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/analytics.png')} />,
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={analyticsTabBarIcon} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       const refreshAnalytics = navigation.getParam('refreshAnalytics');
 

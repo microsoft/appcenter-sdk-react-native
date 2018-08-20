@@ -8,12 +8,12 @@ import Crashes from 'appcenter-crashes';
 import { FooClass } from '../../js/FooClass';
 import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
+import crashesTabBarIcon from '../assets/crashes.png';
+
 
 export default class CrashesScreen extends Component {
   static navigationOptions = {
-
-    // eslint-disable-next-line global-require
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/crashes.png')} />,
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={crashesTabBarIcon} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       const refreshCrash = navigation.getParam('refreshCrash');
 
