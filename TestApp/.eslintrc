@@ -9,7 +9,6 @@
     ],
     "extends": "airbnb",
     "rules": {
-        "global-require": 0,
         "comma-dangle": 0,
         "react/prop-types": 0,
         "no-use-before-define": 0,

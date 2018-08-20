@@ -8,6 +8,8 @@ import SharedStyles from '../SharedStyles';
 
 export default class AnalyticsScreen extends Component {
   static navigationOptions = {
+
+    // eslint-disable-next-line global-require
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/analytics.png')} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       const refreshAnalytics = navigation.getParam('refreshAnalytics');

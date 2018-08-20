@@ -11,7 +11,8 @@ import SharedStyles from '../SharedStyles';
 
 export default class CrashesScreen extends Component {
   static navigationOptions = {
-    // eslint-disable-line global-require
+
+    // eslint-disable-next-line global-require
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/crashes.png')} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       const refreshCrash = navigation.getParam('refreshCrash');

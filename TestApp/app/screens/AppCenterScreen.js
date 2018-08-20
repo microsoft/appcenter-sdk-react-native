@@ -9,6 +9,8 @@ import SharedStyles from '../SharedStyles';
 
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
+
+    // eslint-disable-next-line global-require
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={require('../assets/dials.png')} />
   }
 
