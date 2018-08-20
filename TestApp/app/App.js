@@ -1,44 +1,30 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation';
+import Toast from 'react-native-simple-toast';
 
-import React, { Component } from 'react';
-import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
-import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
-import SharedStyles from './SharedStyles';
+
+import AppCenterScreen from './screens/AppCenterScreen';
+import TransmissionScreen from './screens/TransmissionScreen';
+import AnalyticsScreen from './screens/AnalyticsScreen';
+import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-export default class MainScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      wrapperSdkVersion: AppCenter.getSdkVersion()
-    };
+export default createBottomTabNavigator(
+  {
+    AppCenter: AppCenterScreen,
+    Transmission: TransmissionScreen,
+    Analytics: AnalyticsScreen,
+    Crashes: CrashesScreen
+  },
+  {
+    tabBarOptions: {
+      activeBackgroundColor: 'white',
+      inactiveBackgroundColor: 'white',
+    },
   }
-
-  static navigationOptions = {
-    title: 'TestApp',
-  };
-
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <View style={SharedStyles.container}>
-        <Text style={SharedStyles.heading}>
-          React Native SDK version {this.state.wrapperSdkVersion}
-        </Text>
-        <Button title="Test Crashes" onPress={() => navigate('Crashes')} />
-        <Button title="Test Analytics" onPress={() => navigate('Analytics')} />
-        <Button title="Test Push" onPress={() => navigate('Push')} />
-        <Button title="Test Other AppCenter APIs" onPress={() => navigate('AppCenter')} />
-      </View>
-    );
-  }
-}
+);
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
@@ -111,13 +97,16 @@ Crashes.setListener({
 
   onBeforeSending() {
     console.log('Will send crash. onBeforeSending is invoked.');
+    Toast.show('Sending crashes...');
   },
 
   onSendingSucceeded() {
     console.log('Did send crash. onSendingSucceeded is invoked.');
+    Toast.show('Sending crashes succeeded.');
   },
 
   onSendingFailed() {
     console.log('Failed sending crash. onSendingFailed is invoked.');
+    Toast.show('Sending crashes failed, please check verbose logs.');
   }
 });
