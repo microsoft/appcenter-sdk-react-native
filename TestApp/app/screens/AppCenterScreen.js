@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
 import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
+
+const SecretStringHelper = NativeModules.TestAppSecretStringHelper;
+const TargetToken = 'c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906';
+const AppSecret = 'f5f84a76-6622-437a-9130-07b27d3c72e7';
 
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
@@ -98,26 +102,36 @@ export default class AppCenterScreen extends Component {
               ],
               renderItem: switchRenderItem
             },
-
-            // TODO: Implement set startup mode
             {
               title: 'Change Startup Mode',
               data: [
                 {
                   title: 'AppCenter target only',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => {
+                    SecretStringHelper.configureStartup('appsecret=' + AppSecret);
+                    Toast.show('Changes will be applied after restart.');
+                  }
                 },
                 {
                   title: 'OneCollector target only',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => {
+                    SecretStringHelper.configureStartup('target=' + TargetToken);
+                    Toast.show('Changes will be applied after restart.');
+                  }
                 },
                 {
                   title: 'Both targets',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => {
+                    SecretStringHelper.configureStartup('appsecret=' + AppSecret + ';target=' + TargetToken);
+                    Toast.show('Changes will be applied after restart.');
+                  }
                 },
                 {
                   title: 'No default target',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => {
+                    SecretStringHelper.configureStartup(null);
+                    Toast.show('Changes will be applied after restart.');
+                  }
                 },
               ],
               renderItem: actionRenderItem

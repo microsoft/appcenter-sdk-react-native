@@ -11,9 +11,6 @@ import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-const SecretStringHelpers = NativeModules.TestAppSecretStringHelpers;
-SecretStringHelpers.configureStartup('hi', 'hi');
-
 export default createBottomTabNavigator(
   {
     AppCenter: AppCenterScreen,
