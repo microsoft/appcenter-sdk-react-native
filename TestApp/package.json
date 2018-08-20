@@ -18,7 +18,8 @@
     "react-native-dialog-component": "^0.2.17",
     "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.26.7",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-native-simple-toast": "0.0.8",
+    "react-navigation": "^2.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
