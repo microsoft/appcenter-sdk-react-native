@@ -1,4 +1,4 @@
-import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
+import { AppState, Alert, Platform, ToastAndroid, NativeModules } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
 
@@ -10,6 +10,9 @@ import TransmissionScreen from './screens/TransmissionScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
+
+const SecretStringHelpers = NativeModules.TestAppSecretStringHelpers;
+SecretStringHelpers.configureStartup('hi', 'hi');
 
 export default createBottomTabNavigator(
   {

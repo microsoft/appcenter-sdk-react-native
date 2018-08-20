@@ -53,6 +53,7 @@ const AppCenter = {
     },
 
     getSdkVersion() {
+        
         return PackageJson.version;
     }
 };
