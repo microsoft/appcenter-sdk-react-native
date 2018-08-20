@@ -6,11 +6,11 @@ import AppCenter, { CustomProperties } from 'appcenter';
 import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
-import dialsTabBarIcon from '../assets/dials.png';
+import DialsTabBarIcon from '../assets/dials.png';
 
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={dialsTabBarIcon} />
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />
   }
 
   state = {

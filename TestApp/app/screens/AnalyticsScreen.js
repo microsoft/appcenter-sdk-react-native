@@ -5,11 +5,11 @@ import Toast from 'react-native-simple-toast';
 import Analytics from 'appcenter-analytics';
 
 import SharedStyles from '../SharedStyles';
-import analyticsTabBarIcon from '../assets/analytics.png';
+import AnalyticsTabBarIcon from '../assets/analytics.png';
 
 export default class AnalyticsScreen extends Component {
   static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={analyticsTabBarIcon} />,
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={AnalyticsTabBarIcon} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       const refreshAnalytics = navigation.getParam('refreshAnalytics');
 
