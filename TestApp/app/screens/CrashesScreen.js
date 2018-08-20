@@ -10,7 +10,6 @@ import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
 import CrashesTabBarIcon from '../assets/crashes.png';
 
-
 export default class CrashesScreen extends Component {
   static navigationOptions = {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={CrashesTabBarIcon} />,
