@@ -120,7 +120,8 @@ RCT_EXPORT_METHOD(getTransmissionTarget
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [MSAnalytics transmissionTargetForToken:targetToken];
   if (transmissionTarget == nil) {
-    reject(@"0", @"Invalid target token", nil);
+    resolve(nil);
+    return;
   }
   [[self targetsForTokens] setObject:transmissionTarget forKey:targetToken];
   resolve(targetToken);

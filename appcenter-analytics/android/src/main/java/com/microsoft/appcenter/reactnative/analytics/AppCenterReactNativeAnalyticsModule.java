@@ -20,7 +20,7 @@ import org.json.JSONException;
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
-    private Map<String, AnalyticsTransmissionTarget> transmissionTargets = new HashMap<>();
+    private Map<String, AnalyticsTransmissionTarget> mTransmissionTargets = new HashMap<>();
 
     public AppCenterReactNativeAnalyticsModule(Application application, boolean startEnabled) {
         AppCenterReactNativeShared.configureAppCenter(application);
@@ -69,7 +69,7 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
     @ReactMethod
     public void trackEvent(String eventName, ReadableMap properties, String targetToken, Promise promise) {
-        AnalyticsTransmissionTarget transmissionTarget = transmissionTargets.get(targetToken);
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
         if (transmissionTarget == null) {
             promise.reject(new IllegalArgumentException("Invalid transmission target token"));
             return;
@@ -86,10 +86,10 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     public void getTransmissionTarget(String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = Analytics.getTransmissionTarget(targetToken);
         if (transmissionTarget == null) {
-            promise.reject(new IllegalArgumentException("Transmission target may not be null or empty."));
+            promise.resolve(null);
             return;
         }
-        transmissionTargets.put(targetToken, transmissionTarget);
+        mTransmissionTargets.put(targetToken, transmissionTarget);
         promise.resolve(targetToken);
     }
 }

@@ -22,8 +22,13 @@ const Analytics = {
     getTransmissionTarget(targetToken) {
         return new Promise((resolve, reject) => {
             AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
-            .then(token => resolve(new Analytics.TransmissionTarget(token)))
-            .catch(error => reject(error));
+            .then(token => {
+                if (!token) {
+                    resolve(null);
+                } else {
+                    resolve(new Analytics.TransmissionTarget(token));
+                }
+            })
         });
     },
 };
@@ -35,8 +40,7 @@ Analytics.TransmissionTarget = class {
 
     // async - returns a Promise
     trackEvent(eventName, properties) {
-        return AppCenterReactNativeAnalytics.trackEventForTransmissionTarget(eventName, 
-            sanitizeProperties(properties), this.targetToken);
+        return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties), this.targetToken);
     }
 };
 
