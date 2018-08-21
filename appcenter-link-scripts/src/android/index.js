@@ -24,7 +24,7 @@ module.exports = {
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
-        if (typeof(currentAppSecret) === 'string') {
+        if (typeof (currentAppSecret) === 'string') {
             console.log(`Android App Secret is already set in ${config.AppCenterConfigPath}`);
             return Promise.resolve(null);
         }
