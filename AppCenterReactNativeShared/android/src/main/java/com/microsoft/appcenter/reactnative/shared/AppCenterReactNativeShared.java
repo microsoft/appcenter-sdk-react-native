@@ -92,4 +92,8 @@ public class AppCenterReactNativeShared {
     public static boolean isStartedAutomatically() {
         return sStartedAutomatically;
     }
+
+    public static void setStartedAutomatically(boolean startedAutomatically) {
+        sStartedAutomatically = startedAutomatically;
+    }
 }

@@ -59,8 +59,8 @@ export default class AppCenterScreen extends Component {
     Toast.show('Scheduled custom properties log. Please check verbose logs.');
   }
 
-  async configureStartup(secretString) {
-    await SecretStringHelper.configureStartup(secretString);
+  async configureStartup(secretString, startAutomatically) {
+    await SecretStringHelper.configureStartup(secretString, startAutomatically);
     Toast.show('Relaunch app for changes to be applied.');
   }
 
@@ -122,20 +122,24 @@ export default class AppCenterScreen extends Component {
               data: [
                 {
                   title: 'AppCenter target only',
-                  action: () => this.configureStartup(SecretStrings[Platform.OS].appSecret)
+                  action: () => this.configureStartup(SecretStrings[Platform.OS].appSecret, true)
                 },
                 {
                   title: 'OneCollector target only',
-                  action: () => this.configureStartup(SecretStrings[Platform.OS].target)
+                  action: () => this.configureStartup(SecretStrings[Platform.OS].target, true)
                 },
                 {
                   title: 'Both targets',
-                  action: () => this.configureStartup(SecretStrings[Platform.OS].both)
+                  action: () => this.configureStartup(SecretStrings[Platform.OS].both, true)
                 },
                 {
                   title: 'No default target',
-                  action: () => this.configureStartup(null)
+                  action: () => this.configureStartup(null, true)
                 },
+                {
+                  title: 'Skip start (library only)',
+                  action: () => this.configureStartup(null, false)
+                }
               ],
               renderItem: actionRenderItem
             },
