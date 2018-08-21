@@ -10,6 +10,10 @@ const Constants = {
   {
     label: 'Target Token 3 (Child of 2)',
     key: '518cb8157cb743be9f7a921a46fda15d-5c9111b6-2c0f-417e-95f9-2241235db0b6-6776'
+  },
+  {
+    label: 'Empty Target Token',
+    key: ''
   }]
 }
 
