@@ -24,8 +24,8 @@
 
 @implementation TestAppSecretStringHelper
 
-static const NSString* kAppCenterSecretKey = @"AppSecret";
-static const NSString* kAppCenterConfigResource = @"AppCenter-Config";
+static NSString* const kAppCenterSecretKey = @"AppSecret";
+static NSString* const kAppCenterConfigResource = @"AppCenter-Config";
 
 RCT_EXPORT_MODULE();
 
