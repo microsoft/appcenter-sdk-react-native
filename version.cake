@@ -1,4 +1,4 @@
-#addin nuget:?package=Cake.FileHelpers
+#addin nuget:?package=Cake.FileHelpers&version=3.0.0
 #addin nuget:?package=Cake.Git
 #addin nuget:?package=Cake.Incubator
 #load "scripts/utility.cake"
