@@ -61,7 +61,7 @@ export default class AppCenterScreen extends Component {
 
   async configureStartup(secretString) {
     await SecretStringHelper.configureStartup(secretString);
-    Toast.show('Startup mode updated. Please kill the application and relaunch again.');
+    Toast.show('Relaunch app for changes to be applied.');
   }
 
   render() {
