@@ -2,12 +2,12 @@ const ReactNative = require('react-native');
 
 const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
-module.exports = {
+const Analytics = {
     bindingType: ReactNative.Platform.select({
         ios: '',
         android: 'com.microsoft.appcenter.analytics.Analytics',
     }),
-    
+
     // async - returns a Promise
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties));
@@ -21,8 +21,35 @@ module.exports = {
     // async - returns a Promise
     setEnabled(enabled) {
         return AppCenterReactNativeAnalytics.setEnabled(enabled);
+    },
+
+    // async - returns a Promise
+    getTransmissionTarget(targetToken) {
+        return new Promise((resolve) => {
+            AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
+                .then((token) => {
+                    if (!token) {
+                        resolve(null);
+                    } else {
+                        resolve(new Analytics.TransmissionTarget(token));
+                    }
+                });
+        });
+    },
+};
+
+Analytics.TransmissionTarget = class {
+    constructor(targetToken) {
+        this.targetToken = targetToken;
+    }
+
+    // async - returns a Promise
+    trackEvent(eventName, properties) {
+        return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties), this.targetToken);
     }
 };
+
+module.exports = Analytics;
 
 function sanitizeProperties(props = null) {
     // Only string:string mappings are supported currently.
