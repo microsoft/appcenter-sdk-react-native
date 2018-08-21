@@ -6,13 +6,13 @@
 
 #### UWP
 
-**[Fix]** Fix occasional crash when checking network connectivity
+* **[Fix]** Fix occasional crash when checking network connectivity
 
 ### App Center Distribute
 
 #### iOS
 
-**[Fix]** Fix a bug where browser would open randomly when in-app updates were already enabled.
+* **[Fix]** Fix a bug where browser would open randomly when in-app updates were already enabled.
 
 ### App Center Push
 
@@ -226,20 +226,20 @@ This version has a potentially **breaking change** (in push behavior) with bug f
   * If you want to keep automatic forwarding disabled, you also don't need to do anything.
   * If your application delegate contains implementation of `DidReceiveRemoteNotification`, you need to remove the following code from your implementation of the callback. This is typically the case when you or your 3rd party libraries implement the callback.
 
-  ```csharp
-  public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, System.Action<UIBackgroundFetchResult> completionHandler)
-  {
-      var result = Push.DidReceiveRemoteNotification(userInfo);
-      if (result)
-      {
-          completionHandler?.Invoke(UIBackgroundFetchResult.NewData);
-      }
-      else
-      {
-          completionHandler?.Invoke(UIBackgroundFetchResult.NoData);
-      }
-  }
-  ```
+    ```csharp
+    public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, System.Action<UIBackgroundFetchResult> completionHandler)
+    {
+        var result = Push.DidReceiveRemoteNotification(userInfo);
+        if (result)
+        {
+            completionHandler?.Invoke(UIBackgroundFetchResult.NewData);
+        }
+        else
+        {
+            completionHandler?.Invoke(UIBackgroundFetchResult.NoData);
+        }
+    }
+    ```
 
 ___
 
@@ -426,7 +426,6 @@ ___
   * Maximum number of event properties: 5.
   * Event property key maximum length: 64 characters.
   * Event property value maximum length: 64 characters.
-
 * This release also includes changes from underlying Android and iOS SDKs of the following versions:
   * Android
     * https://github.com/Microsoft/mobile-center-sdk-android/releases/tag/0.11.2
@@ -548,9 +547,7 @@ ___
 ## Version 0.11.1
 
 * Add Push service to Xamarin.Android and Xamarin.iOS to enable sending push notifications to your apps from the Mobile Center portal.
-
 * This release also includes changes from underlying Android and iOS SDKs of the following versions:
-
   * Android
     * https://github.com/Microsoft/mobile-center-sdk-android/releases/tag/0.8.0
     * https://github.com/Microsoft/mobile-center-sdk-android/releases/tag/0.8.1
@@ -590,10 +587,9 @@ Events have some validation and you will see the following in logs:
 
 * An error if the event name is null, empty or longer than 256 characters (event is not sent in that case).
 * A warning for invalid event properties (the event is sent but without invalid properties):
-
-    * More than 5 properties per event (in that case we send only 5 of them and log warnings).
-    * Property key null, empty or longer than 64 characters.
-    * Property value null or longer than 64 characters.
+  * More than 5 properties per event (in that case we send only 5 of them and log warnings).
+  * Property key null, empty or longer than 64 characters.
+  * Property value null or longer than 64 characters.
 
 ### Crashes
 
