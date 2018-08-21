@@ -68,7 +68,7 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void trackEventForTransmissionTarget(String targetToken, String eventName, ReadableMap properties, Promise promise) {
+    public void trackEvent(String eventName, ReadableMap properties, String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = transmissionTargets.get(targetToken);
         if (transmissionTarget == null) {
             promise.reject(new IllegalArgumentException("Invalid transmission target token"));

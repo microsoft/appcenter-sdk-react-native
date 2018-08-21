@@ -35,7 +35,8 @@ Analytics.TransmissionTarget = class {
 
     // async - returns a Promise
     trackEvent(eventName, properties) {
-        return AppCenterReactNativeAnalytics.trackEventForTransmissionTarget(this.targetToken, eventName, sanitizeProperties(properties));
+        return AppCenterReactNativeAnalytics.trackEventForTransmissionTarget(eventName, 
+            sanitizeProperties(properties), this.targetToken);
     }
 };
 
