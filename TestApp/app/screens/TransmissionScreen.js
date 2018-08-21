@@ -54,7 +54,9 @@ export default class TransmissionScreen extends Component {
                   title: 'Track Event with properties',
                   action: async () => {
                     const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-                    transmissionTarget.trackEvent('event_for_transmission_target', { page: 'Transmission screen' });
+                    if (transmissionTarget) {
+                      transmissionTarget.trackEvent('event_for_transmission_target', { page: 'Transmission screen' });
+                    }
                   }
                 }
               ],
