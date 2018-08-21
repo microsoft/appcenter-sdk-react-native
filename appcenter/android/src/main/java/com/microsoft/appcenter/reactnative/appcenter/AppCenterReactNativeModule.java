@@ -8,20 +8,37 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.microsoft.appcenter.utils.AppCenterLog;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 import java.util.UUID;
 
+import static com.microsoft.appcenter.AppCenter.LOG_TAG;
+
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeModule extends BaseJavaModule {
 
+    private final Application mApplication;
+
     public AppCenterReactNativeModule(Application application) {
+        mApplication = application;
         AppCenterReactNativeShared.configureAppCenter(application);
     }
 
     @Override
     public String getName() {
         return "AppCenterReactNative";
+    }
+
+    @SuppressWarnings("unchecked")
+    @ReactMethod
+    public void startFromLibrary(ReadableMap service) {
+        String type = service.getString("bindingType");
+        try {
+            AppCenter.startFromLibrary(mApplication, new Class[]{ Class.forName(type) });
+        } catch (ClassNotFoundException e) {
+            AppCenterLog.error(LOG_TAG, "Unable to  resolve App Center module", e);
+        }
     }
 
     @ReactMethod

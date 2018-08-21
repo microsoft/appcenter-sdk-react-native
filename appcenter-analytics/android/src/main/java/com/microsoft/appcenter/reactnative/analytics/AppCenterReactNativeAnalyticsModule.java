@@ -18,9 +18,11 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
     public AppCenterReactNativeAnalyticsModule(Application application, boolean startEnabled) {
         AppCenterReactNativeShared.configureAppCenter(application);
-        AppCenter.start(Analytics.class);
-        if (!startEnabled) {
-            Analytics.setEnabled(false);
+        if (AppCenter.isConfigured()) {
+            AppCenter.start(Analytics.class);
+            if (!startEnabled) {
+                Analytics.setEnabled(false);
+            }
         }
     }
 

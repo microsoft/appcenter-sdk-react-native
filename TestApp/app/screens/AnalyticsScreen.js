@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
+import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
 
 import SharedStyles from '../SharedStyles';
@@ -26,6 +27,7 @@ export default class AnalyticsScreen extends Component {
   }
 
   async componentWillMount() {
+    await AppCenter.startFromLibrary(Analytics);
     await this.refreshToggle();
 
     this.props.navigation.setParams({

@@ -3,6 +3,11 @@ const ReactNative = require('react-native');
 const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
 module.exports = {
+    bindingType: ReactNative.Platform.select({
+        ios: '',
+        android: 'com.microsoft.appcenter.analytics.Analytics',
+    }),
+    
     // async - returns a Promise
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties));

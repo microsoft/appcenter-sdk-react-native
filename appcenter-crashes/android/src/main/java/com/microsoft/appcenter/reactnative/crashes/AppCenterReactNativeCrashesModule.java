@@ -49,7 +49,9 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
         WrapperSdkExceptionManager.setAutomaticProcessing(automaticProcessing);
         Crashes.setListener(mCrashListener);
         AppCenterReactNativeShared.configureAppCenter(application);
-        AppCenter.start(Crashes.class);
+        if (AppCenter.isConfigured()) {
+            AppCenter.start(Crashes.class);
+        }
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {

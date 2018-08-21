@@ -18,6 +18,11 @@ const AppCenter = {
     LogLevelNone: AppCenterLog.LogLevelNone,        // Logging is disabled
 
     // async - returns a Promise
+    startFromLibrary(service) {
+        return AppCenterReactNative.startFromLibrary(service);
+    },
+
+    // async - returns a Promise
     getLogLevel() {
         return AppCenterReactNative.getLogLevel();
     },
