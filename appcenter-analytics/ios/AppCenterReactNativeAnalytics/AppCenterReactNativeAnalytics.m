@@ -51,25 +51,22 @@ RCT_EXPORT_MODULE();
   return self.transmissionTargets;
 }
 
-RCT_EXPORT_METHOD(isEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
+                   rejecter:(RCTPromiseRejectBlock)reject) {
   resolve([NSNumber numberWithBool:[MSAnalytics isEnabled]]);
 }
 
-RCT_EXPORT_METHOD(setEnabled
-                  : (BOOL)shouldEnable resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable 
+                    resolver:(RCTPromiseResolveBlock)resolve 
+                    rejecter:(RCTPromiseRejectBlock)reject) {
   [MSAnalytics setEnabled:shouldEnable];
   resolve(nil);
 }
 
-RCT_EXPORT_METHOD(trackEvent
-                  : (NSString *)eventName withProperties
-                  : (NSDictionary *)properties resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
+              withProperties:(NSDictionary *)properties
+                    resolver:(RCTPromiseResolveBlock)resolve
+                    rejecter:(RCTPromiseRejectBlock)reject) {
   NSArray *allowedKeys = [[properties
       keysOfEntriesPassingTest:^BOOL(NSString *key, id obj, BOOL *stop) {
         if ([obj isKindOfClass:[NSDictionary class]] ||
@@ -86,12 +83,11 @@ RCT_EXPORT_METHOD(trackEvent
   resolve(nil);
 }
 
-RCT_EXPORT_METHOD(trackEvent
-                  : (NSString *)eventName properties
-                  : (NSDictionary *)properties forTransmissionTarget
-                  : (NSString *)targetToken resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackEvent:(NSString *)eventName
+                  properties:(NSDictionary *)properties
+       forTransmissionTarget:(NSString *)targetToken
+                    resolver:(RCTPromiseResolveBlock)resolve
+                    rejecter:(RCTPromiseRejectBlock)reject) {
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
@@ -113,10 +109,9 @@ RCT_EXPORT_METHOD(trackEvent
   resolve(nil);
 }
 
-RCT_EXPORT_METHOD(getTransmissionTarget
-                  : (NSString *)targetToken resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getTransmissionTarget:(NSString *)targetToken 
+                               resolver:(RCTPromiseResolveBlock)resolve
+                               rejecter:(RCTPromiseRejectBlock)reject) {
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [MSAnalytics transmissionTargetForToken:targetToken];
   if (transmissionTarget == nil) {
