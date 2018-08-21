@@ -6,7 +6,7 @@
 
 #### UWP
 
-* **[Fix]** Fix occasional crash when checking network connectivity
+* **[Fix]** Fix occasional crash when checking network connectivity.
 
 ### App Center Distribute
 
