@@ -1,15 +1,15 @@
 const Constants = {
   targetTokens: [{
     label: 'Target Token 1',
-    key: 'c86c1b0383d149f6969b80462b250e62-e3c516ac-ae36-4776-b3eb-9c21116a756c-7045'
+    key: '73cb994e3ad44e56acf55fd873b7f06e-4a3684af-3d9f-41b2-a492-e7adf6e5ed66-7343'
   },
   {
     label: 'Target Token 2 (Child of 1)',
-    key: '739fadd014d642809473cdde9d1177d1-4477e206-0087-4d70-b810-229652426c89-7219'
+    key: 'f8615f6d3ad242d5abd817b50b43d485-23e91290-319c-43c7-9a40-3a1e663ba695-6909'
   },
   {
     label: 'Target Token 3 (Child of 2)',
-    key: '518cb8157cb743be9f7a921a46fda15d-5c9111b6-2c0f-417e-95f9-2241235db0b6-6776'
+    key: '0db07a59bd744afea64287beee33291f-f4181552-9df9-4a4d-b017-57c457b2ec3c-6976'
   },
   {
     label: 'Empty Target Token',
