@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
@@ -7,6 +7,21 @@ import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
+
+const SecretStringHelper = NativeModules.TestAppSecretStringHelper;
+
+const SecretStrings = {
+  ios: {
+    appSecret: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5',
+    target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
+  },
+  android: {
+    appSecret: '32fcfc69-d576-41dc-8d49-4be159e3d7b2',
+    target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
+  }
+}
+SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
+SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
 
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
@@ -42,6 +57,11 @@ export default class AppCenterScreen extends Component {
       .set('now', new Date());
     await AppCenter.setCustomProperties(properties);
     Toast.show('Scheduled custom properties log. Please check verbose logs.');
+  }
+
+  async configureStartup(secretString) {
+    await SecretStringHelper.configureStartup(secretString);
+    Toast.show('Startup mode updated. Please kill the application and relaunch again.');
   }
 
   render() {
@@ -97,26 +117,24 @@ export default class AppCenterScreen extends Component {
               ],
               renderItem: switchRenderItem
             },
-
-            // TODO: Implement set startup mode
             {
               title: 'Change Startup Mode',
               data: [
                 {
                   title: 'AppCenter target only',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => this.configureStartup(SecretStrings[Platform.OS].appSecret)
                 },
                 {
                   title: 'OneCollector target only',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => this.configureStartup(SecretStrings[Platform.OS].target)
                 },
                 {
                   title: 'Both targets',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => this.configureStartup(SecretStrings[Platform.OS].both)
                 },
                 {
                   title: 'No default target',
-                  action: () => Toast.show('Not implemented yet.')
+                  action: () => this.configureStartup(null)
                 },
               ],
               renderItem: actionRenderItem
