@@ -21,36 +21,38 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.asList(
+                    new MainReactPackage(),
+                    new TestAppSecretStringHelperPackage(MainApplication.this),
+                    new AppCenterReactNativePushPackage(MainApplication.this),
+                    new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
+                    new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
+                    new AppCenterReactNativePackage(MainApplication.this),
+                    new RNFSPackage(),
+                    new ImagePickerPackage()
+            );
+        }
+    };
+
     @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
     }
 
     @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new AppCenterReactNativePushPackage(MainApplication.this),
-            new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
-            new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-            new AppCenterReactNativePackage(MainApplication.this),
-            new RNFSPackage(),
-            new ImagePickerPackage()
-      );
+    public void onCreate() {
+        super.onCreate();
+
+        AppCenter.setLogLevel(Log.VERBOSE);
+        SoLoader.init(this, /* native exopackage */ false);
     }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-
-    AppCenter.setLogLevel(Log.VERBOSE);
-    SoLoader.init(this, /* native exopackage */ false);
-  }
 }
