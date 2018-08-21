@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, View, SectionList, Text, TouchableOpacity } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 
+import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
 
 import SharedStyles from '../SharedStyles';
@@ -18,6 +19,10 @@ export default class TransmissionScreen extends Component {
 
   state = {
     targetToken: targetTokens[0]
+  }
+
+  async componentWillMount() {
+    await AppCenter.startFromLibrary(Analytics);
   }
 
   render() {
