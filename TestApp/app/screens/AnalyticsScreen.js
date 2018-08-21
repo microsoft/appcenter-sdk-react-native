@@ -82,21 +82,21 @@ export default class AnalyticsScreen extends Component {
                 {
                   title: 'Track Event',
                   action: () => {
-                    Analytics.trackEvent('Event without properties');
+                    Analytics.trackEvent('EventWithoutProperties');
                     showEventToast();
                   }
                 },
                 {
                   title: 'Track Event with properties',
                   action: () => {
-                    Analytics.trackEvent('Button press', { page: 'Home page' });
+                    Analytics.trackEvent('ButtonPress', { page: 'Home page' });
                     showEventToast();
                   }
                 },
                 {
                   title: 'Track Event with long property value',
                   action: () => {
-                    Analytics.trackEvent('Button press', { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
+                    Analytics.trackEvent('ButtonPress', { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
                     showEventToast();
                   }
                 },
