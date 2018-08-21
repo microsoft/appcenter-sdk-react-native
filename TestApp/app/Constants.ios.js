@@ -15,6 +15,6 @@ const Constants = {
     label: 'Empty Target Token',
     key: ''
   }]
-}
+};
 
 module.exports = Constants;

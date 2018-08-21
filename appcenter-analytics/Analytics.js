@@ -20,15 +20,15 @@ const Analytics = {
 
     // async - returns a Promise
     getTransmissionTarget(targetToken) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
-            .then(token => {
+            .then((token) => {
                 if (!token) {
                     resolve(null);
                 } else {
                     resolve(new Analytics.TransmissionTarget(token));
                 }
-            })
+            });
         });
     },
 };
