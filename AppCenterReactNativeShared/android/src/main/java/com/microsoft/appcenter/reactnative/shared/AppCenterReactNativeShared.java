@@ -36,10 +36,10 @@ public class AppCenterReactNativeShared {
         if (TextUtils.isEmpty(appSecret)) {
 
             /* No app secret is a special case in SDK where there is no default transmission target. */
-            AppCenterLog.debug(AppCenterLog.LOG_TAG, "Configure without secret");
+            AppCenterLog.debug(LOG_TAG, "Configure without secret");
             AppCenter.configure(application);
         } else {
-            AppCenterLog.debug(AppCenterLog.LOG_TAG, "Configure with secret");
+            AppCenterLog.debug(LOG_TAG, "Configure with secret");
             AppCenter.configure(application, appSecret);
         }
     }
