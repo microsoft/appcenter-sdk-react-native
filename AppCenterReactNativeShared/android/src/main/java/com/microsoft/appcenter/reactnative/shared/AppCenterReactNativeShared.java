@@ -47,8 +47,8 @@ public class AppCenterReactNativeShared {
     /**
      * This functionality is intended to allow individual react-native App Center beacons to
      * set specific components of the wrapperSDK cooperatively
-     * E.g. code push can fetch the sWrapperSdk, set the code push version, then set the
-     * sWrapperSdk again so it can take effect.
+     * E.g. code push can fetch the wrapperSdk, set the code push version, then set the
+     * wrapperSdk again so it can take effect.
      */
     public static void setWrapperSdk(WrapperSdk wrapperSdk) {
         AppCenterReactNativeShared.sWrapperSdk = wrapperSdk;
