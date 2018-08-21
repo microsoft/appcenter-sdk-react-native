@@ -8,8 +8,8 @@ import Push from 'appcenter-push';
 import SharedStyles from '../SharedStyles';
 
 const SecretStringHelper = NativeModules.TestAppSecretStringHelper;
-const TargetToken = 'c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906';
-const AppSecret = 'f5f84a76-6622-437a-9130-07b27d3c72e7';
+
+
 
 export default class AppCenterScreen extends Component {
   static navigationOptions = {

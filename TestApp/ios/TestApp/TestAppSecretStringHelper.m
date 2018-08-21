@@ -31,8 +31,8 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString)
 {
-  NSString * plistPath = [[NSBundle mainBundle] pathForResource:kAppCenterConfigResource ofType:@"plist"];
-  NSDictionary * config = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
+  NSString *plistPath = [[NSBundle mainBundle] pathForResource:kAppCenterConfigResource ofType:@"plist"];
+  NSDictionary *config = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
   [config setValue:secretString forKey:kAppCenterSecretKey];
   [config writeToFile:plistPath atomically:YES];
 }

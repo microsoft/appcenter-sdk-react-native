@@ -1,4 +1,4 @@
-import { AppState, Alert, Platform, ToastAndroid, NativeModules } from 'react-native';
+import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
 
