@@ -54,7 +54,7 @@ const AppCenter = {
         }
         const type = Object.prototype.toString.apply(properties);
         AppCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
-        return Promise.reject(new Error('Could not set custom properties because of invalid type.'));
+        return Promise.resolve(null);
     },
 
     getSdkVersion() {
