@@ -52,7 +52,7 @@ export default class AnalyticsScreen extends Component {
       </TouchableOpacity>
     );
 
-    const showEventToast = () => Toast.show('Scheduled event log. Please check verbose logs.');
+    const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
     return (
       <View style={SharedStyles.container}>
@@ -80,24 +80,27 @@ export default class AnalyticsScreen extends Component {
               title: 'Actions',
               data: [
                 {
-                  title: 'Track Event',
+                  title: 'Track event without properties',
                   action: () => {
-                    Analytics.trackEvent('EventWithoutProperties');
-                    showEventToast();
+                    const eventName = 'EventWithoutProperties';
+                    Analytics.trackEvent(eventName);
+                    showEventToast(eventName);
                   }
                 },
                 {
-                  title: 'Track Event with properties',
+                  title: 'Track event with properties',
                   action: () => {
-                    Analytics.trackEvent('ButtonPress', { page: 'Home page' });
-                    showEventToast();
+                    const eventName = 'EventWithProperties';
+                    Analytics.trackEvent(eventName, { property1: '100', property2: '200' });
+                    showEventToast(eventName);
                   }
                 },
                 {
-                  title: 'Track Event with long property value',
+                  title: 'Track event with long property value',
                   action: () => {
-                    Analytics.trackEvent('ButtonPress', { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
-                    showEventToast();
+                    const eventName = 'EventWithLongProperties';
+                    Analytics.trackEvent(eventName, { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
+                    showEventToast(eventName);
                   }
                 },
               ],
