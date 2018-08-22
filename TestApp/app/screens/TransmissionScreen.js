@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Image, View, SectionList, Text, TouchableOpacity, Toast } from 'react-native';
+import { Image, View, SectionList, Text, TouchableOpacity } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
+import Toast from 'react-native-simple-toast';
 
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
@@ -34,7 +35,8 @@ export default class TransmissionScreen extends Component {
             <Text style={SharedStyles.itemButton}>{title}</Text>
           </TouchableOpacity>
         );
-        const showEventToast = eventName => Toast.show(`Scheduled event ${eventName}. Please check verbose logs.`);
+        const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
+
         return (
           <View style={SharedStyles.container}>
             <SectionList

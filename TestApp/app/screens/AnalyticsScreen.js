@@ -52,7 +52,7 @@ export default class AnalyticsScreen extends Component {
       </TouchableOpacity>
     );
 
-    const showEventToast = eventName => Toast.show(`Scheduled event ${eventName}. Please check verbose logs.`);
+    const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
     return (
       <View style={SharedStyles.container}>
