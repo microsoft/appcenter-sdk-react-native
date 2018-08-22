@@ -4,6 +4,10 @@
 
 @implementation AppCenterReactNativeShared
 
+static NSString* const kAppCenterSecretKey = @"AppSecret";
+static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
+static NSString* const kAppCenterConfigResource = @"AppCenter-Config";
+
 static NSString *appSecret;
 static BOOL startAutomatically;
 static MSWrapperSdk *wrapperSdk;
@@ -16,12 +20,12 @@ static MSWrapperSdk *wrapperSdk;
 + (NSString *) getAppSecret
 {
   if (appSecret == nil) {
-    NSString * plistPath = [[NSBundle mainBundle] pathForResource:@"AppCenter-Config" ofType:@"plist"];
+    NSString * plistPath = [[NSBundle mainBundle] pathForResource:kAppCenterConfigResource ofType:@"plist"];
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    appSecret = [config objectForKey:@"AppSecret"];
+    appSecret = [config objectForKey:kAppCenterSecretKey];
 
     // Read start automatically flag, by default it's true if not set.
-    id rawStartAutomatically = [config objectForKey:@"StartAutomatically"];
+    id rawStartAutomatically = [config objectForKey:kAppCenterStartAutomaticallyKey];
     if ([rawStartAutomatically isKindOfClass:[NSNumber class]]) {
       startAutomatically = [rawStartAutomatically boolValue];
     }
@@ -62,6 +66,10 @@ static MSWrapperSdk *wrapperSdk;
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk {
     wrapperSdk = sdk;
     [MSAppCenter setWrapperSdk:sdk];
+}
+
++ (void) setStartAutomatically:(BOOL)startedAutomatically {
+    startAutomatically = startedAutomatically;
 }
 
 @end
