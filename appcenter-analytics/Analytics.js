@@ -4,7 +4,7 @@ const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
 const Analytics = {
     bindingType: ReactNative.Platform.select({
-        ios: '',
+        ios: 'MSAnalytics',
         android: 'com.microsoft.appcenter.analytics.Analytics',
     }),
 
