@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
@@ -36,6 +36,10 @@ namespace Contoso.Forms.Demo
             var addPage = new AddPropertyContentPage();
             addPage.PropertyAdded += (Property property) =>
             {
+                if (property.Name == null || EventProperties.Any(i => i.Name == property.Name))
+                {
+                    return;
+                }
                 EventProperties.Add(property);
                 RefreshPropCount();
             };
@@ -52,14 +56,7 @@ namespace Contoso.Forms.Demo
             var properties = new Dictionary<string, string>();
             foreach (Property property in EventProperties)
             {
-                try
-                {
-                    properties.Add(property.Name, property.Value);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Couldn't add event property: {0}", ex.Message);
-                }
+                properties.Add(property.Name, property.Value);
             }
 
             if (EventProperties.Count == 0)
