@@ -90,6 +90,9 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent:(NSString *)eventName
                          forTransmissionTarget:(NSString *)targetToken
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+  }
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
@@ -114,6 +117,10 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent:(NSString *)eventName
 RCT_EXPORT_METHOD(getTransmissionTarget:(NSString *)targetToken 
                                resolver:(RCTPromiseResolveBlock)resolve
                                rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [MSAnalytics transmissionTargetForToken:targetToken];
   if (transmissionTarget == nil) {

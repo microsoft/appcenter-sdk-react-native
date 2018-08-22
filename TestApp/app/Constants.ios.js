@@ -14,6 +14,10 @@ const Constants = {
   {
     label: 'Empty Target Token',
     key: ''
+  },
+  {
+    label: 'Null Target Token',
+    key: null
   }]
 };
 
