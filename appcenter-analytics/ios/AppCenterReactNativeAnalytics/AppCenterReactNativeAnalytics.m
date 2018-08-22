@@ -38,9 +38,11 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithInitiallyEnabled:(BOOL)enabled {
   [AppCenterReactNativeShared configureAppCenter];
-  [MSAppCenter startService:[MSAnalytics class]];
-  if (!enabled) {
-    [MSAnalytics setEnabled:enabled];
+  if ([MSAppCenter isConfigured]) {
+    [MSAppCenter startService:[MSAnalytics class]];
+    if (!enabled) {
+      [MSAnalytics setEnabled:enabled];
+    }
   }
 }
 

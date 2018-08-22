@@ -43,11 +43,12 @@ RCT_EXPORT_MODULE();
 
 + (void)register
 {
-    [AppCenterReactNativeShared configureAppCenter];
     [MSWrapperCrashesHelper setAutomaticProcessing:NO];
     [MSCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
-
-    [MSAppCenter startService:[MSCrashes class]];
+    [AppCenterReactNativeShared configureAppCenter];
+    if ([MSAppCenter isConfigured]) {
+      [MSAppCenter startService:[MSCrashes class]];
+    }
 }
 
 + (void)registerWithAutomaticProcessing
