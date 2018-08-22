@@ -17,11 +17,12 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
     private AppCenterReactNativePushEventListener mPushListener;
 
     public AppCenterReactNativePushModule(Application application) {
-        AppCenterReactNativeShared.configureAppCenter(application);
         this.mPushListener = new AppCenterReactNativePushEventListener();
-
         Push.setListener(mPushListener);
-        AppCenter.start(Push.class);
+        AppCenterReactNativeShared.configureAppCenter(application);
+        if (AppCenter.isConfigured()) {
+            AppCenter.start(Push.class);
+        }
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {

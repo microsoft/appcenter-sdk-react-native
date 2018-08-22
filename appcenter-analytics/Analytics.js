@@ -3,6 +3,11 @@ const ReactNative = require('react-native');
 const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
 
 const Analytics = {
+    bindingType: ReactNative.Platform.select({
+        ios: '',
+        android: 'com.microsoft.appcenter.analytics.Analytics',
+    }),
+
     // async - returns a Promise
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties));
@@ -22,13 +27,13 @@ const Analytics = {
     getTransmissionTarget(targetToken) {
         return new Promise((resolve) => {
             AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
-            .then((token) => {
-                if (!token) {
-                    resolve(null);
-                } else {
-                    resolve(new Analytics.TransmissionTarget(token));
-                }
-            });
+                .then((token) => {
+                    if (!token) {
+                        resolve(null);
+                    } else {
+                        resolve(new Analytics.TransmissionTarget(token));
+                    }
+                });
         });
     },
 };
@@ -40,7 +45,7 @@ Analytics.TransmissionTarget = class {
 
     // async - returns a Promise
     trackEvent(eventName, properties) {
-        return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties), this.targetToken);
+        return AppCenterReactNativeAnalytics.trackTransmissionTargetEvent(eventName, sanitizeProperties(properties), this.targetToken);
     }
 };
 

@@ -2,9 +2,6 @@ package com.microsoft.appcenter.reactnative.analytics;
 
 import android.app.Application;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
@@ -17,6 +14,9 @@ import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 import org.json.JSONException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
@@ -24,9 +24,11 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
 
     public AppCenterReactNativeAnalyticsModule(Application application, boolean startEnabled) {
         AppCenterReactNativeShared.configureAppCenter(application);
-        AppCenter.start(Analytics.class);
-        if (!startEnabled) {
-            Analytics.setEnabled(false);
+        if (AppCenter.isConfigured()) {
+            AppCenter.start(Analytics.class);
+            if (!startEnabled) {
+                Analytics.setEnabled(false);
+            }
         }
     }
 
@@ -68,7 +70,7 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void trackEvent(String eventName, ReadableMap properties, String targetToken, Promise promise) {
+    public void trackTransmissionTargetEvent(String eventName, ReadableMap properties, String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
         if (transmissionTarget == null) {
             promise.reject(new IllegalArgumentException("Invalid transmission target token"));
