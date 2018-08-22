@@ -6,7 +6,7 @@ export default StyleSheet.create({
     backgroundColor: 'whitesmoke',
     ...Platform.select({
       ios: {
-        paddingTop: 15
+        paddingTop: 25
       }
     })
   },
