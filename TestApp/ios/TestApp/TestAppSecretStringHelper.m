@@ -25,15 +25,18 @@
 @implementation TestAppSecretStringHelper
 
 static NSString* const kAppCenterSecretKey = @"AppSecret";
+static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
 static NSString* const kAppCenterConfigResource = @"AppCenter-Config";
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString)
+RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
+                                  :(BOOL)startAutomatically)
 {
   NSString *plistPath = [[NSBundle mainBundle] pathForResource:kAppCenterConfigResource ofType:@"plist"];
   NSDictionary *config = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
   [config setValue:secretString forKey:kAppCenterSecretKey];
+  [config setValue:@(startAutomatically) forKey:kAppCenterStartAutomaticallyKey];
   [config writeToFile:plistPath atomically:YES];
 }
 
