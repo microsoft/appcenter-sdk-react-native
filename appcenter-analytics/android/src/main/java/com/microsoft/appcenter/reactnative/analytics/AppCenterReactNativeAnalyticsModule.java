@@ -18,7 +18,7 @@ import org.json.JSONException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.appcenter.utils.AppCenterLog.LOG_TAG;
+import static com.microsoft.appcenter.analytics.Analytics.LOG_TAG;
 
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
