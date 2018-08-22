@@ -5,6 +5,7 @@
 @implementation AppCenterReactNativeShared
 
 static NSString *appSecret;
+static BOOL startAutomatically;
 static MSWrapperSdk * wrapperSdk;
 
 + (void) setAppSecret: (NSString *)secret
@@ -18,16 +19,24 @@ static MSWrapperSdk * wrapperSdk;
     NSString * plistPath = [[NSBundle mainBundle] pathForResource:@"AppCenter-Config" ofType:@"plist"];
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
 
-    appSecret = [config objectForKey:@"AppSecret"];
     // If the AppSecret is not set, we will pass nil to MSAppCenter which will error out, as expected
-  }
+    appSecret = [config objectForKey:@"AppSecret"];
 
+    // Read start automatically flag, by default it's true if not set.
+    id rawStartAutomatically = [config objectForKey:@"StartAutomatically"];
+    if ([rawStartAutomatically isKindOfClass:[NSNumber class]]) {
+      startAutomatically = [rawStartAutomatically boolValue];
+    }
+    else {
+      startAutomatically = YES;
+    }
+  }
   return appSecret;
 }
 
 + (void) configureAppCenter
 {
-  if (![MSAppCenter isConfigured]) {
+  if (!wrapperSdk) {
       MSWrapperSdk * wrapperSdk =
         [[MSWrapperSdk alloc]
             initWithWrapperSdkVersion:@"1.7.1"
@@ -38,10 +47,12 @@ static MSWrapperSdk * wrapperSdk;
             liveUpdatePackageHash:nil];
       [self setWrapperSdk:wrapperSdk];
       [AppCenterReactNativeShared getAppSecret];
-      if ([appSecret length] == 0) {
-        [MSAppCenter configure];
-      } else {
-        [MSAppCenter configureWithAppSecret:appSecret];
+      if (startAutomatically) {
+        if ([appSecret length] == 0) {
+          [MSAppCenter configure];
+        } else {
+          [MSAppCenter configureWithAppSecret:appSecret];
+        }
       }
   }
 }
@@ -49,6 +60,7 @@ static MSWrapperSdk * wrapperSdk;
 + (MSWrapperSdk *) getWrapperSdk {
     return wrapperSdk;
 }
+
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk {
     wrapperSdk = sdk;
     [MSAppCenter setWrapperSdk:sdk];
