@@ -1,6 +1,8 @@
 const ReactNative = require('react-native');
-
+const AppCenterLog = require('appcenter/appcenter-log');
 const { AppCenterReactNativeAnalytics } = ReactNative.NativeModules;
+
+const logTag = 'AppCenterAnalytics';
 
 const Analytics = {
     bindingType: ReactNative.Platform.select({
@@ -25,6 +27,10 @@ const Analytics = {
 
     // async - returns a Promise
     getTransmissionTarget(targetToken) {
+        if (typeof (targetToken) !== 'string') {
+            AppCenterLog.error(logTag, 'Analytics.getTransmissionTarget: target token must be a non null string.');
+            return Promise.resolve(null);
+        }
         return new Promise((resolve) => {
             AppCenterReactNativeAnalytics.getTransmissionTarget(targetToken)
                 .then((token) => {
