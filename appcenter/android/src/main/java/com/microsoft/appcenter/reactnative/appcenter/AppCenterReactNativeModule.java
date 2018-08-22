@@ -37,7 +37,7 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
         try {
             AppCenter.startFromLibrary(mApplication, new Class[]{ Class.forName(type) });
         } catch (ClassNotFoundException e) {
-            AppCenterLog.error(LOG_TAG, "Unable to  resolve App Center module", e);
+            AppCenterLog.error(LOG_TAG, "Unable to resolve App Center module", e);
         }
     }
 

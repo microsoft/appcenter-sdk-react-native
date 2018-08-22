@@ -15,6 +15,10 @@ import static com.microsoft.appcenter.utils.AppCenterLog.LOG_TAG;
 
 public class AppCenterReactNativeShared {
 
+    private static final String APP_SECRET_KEY = "app_secret";
+
+    private static final String START_AUTOMATICALLY_KEY = "start_automatically";
+
     private static String sAppSecret;
 
     private static boolean sStartedAutomatically;
@@ -25,7 +29,7 @@ public class AppCenterReactNativeShared {
 
     @SuppressWarnings("unused")
     public static void configureAppCenter(Application application) {
-        if (AppCenter.isConfigured()) {
+        if (sApplication != null) {
             return;
         }
         sApplication = application;
@@ -80,8 +84,8 @@ public class AppCenterReactNativeShared {
                 configStream.close();
                 String jsonContents = new String(buffer, "UTF-8");
                 JSONObject json = new JSONObject(jsonContents);
-                sAppSecret = json.getString("app_secret");
-                sStartedAutomatically = json.optBoolean("start_automatically", true);
+                sAppSecret = json.getString(APP_SECRET_KEY);
+                sStartedAutomatically = json.optBoolean(START_AUTOMATICALLY_KEY, true);
             } catch (Exception e) {
                 AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
             }
