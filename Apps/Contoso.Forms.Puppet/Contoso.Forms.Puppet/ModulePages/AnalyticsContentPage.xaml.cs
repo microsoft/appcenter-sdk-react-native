@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
@@ -35,6 +36,10 @@ namespace Contoso.Forms.Puppet
             var addPage = new AddPropertyContentPage();
             addPage.PropertyAdded += (Property property) =>
             {
+                if (property.Name == null || EventProperties.Any(i => i.Name == property.Name))
+                {
+                    return;
+                }
                 EventProperties.Add(property);
                 RefreshPropCount();
             };

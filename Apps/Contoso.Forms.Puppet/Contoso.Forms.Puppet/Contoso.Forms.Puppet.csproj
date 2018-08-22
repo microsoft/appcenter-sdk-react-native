@@ -71,7 +71,7 @@
     </Compile>
     <Compile Include="EventFilterHolder.cs" />
     <Compile Include="IFilePicker.cs" />
-    <Compile Include="MainPuppetPage.cs">
+    <Compile Include="MainPuppetPage.xaml.cs">
       <DependentUpon>MainPuppetPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModulePages\CustomPropertiesContentPage.xaml.cs">
