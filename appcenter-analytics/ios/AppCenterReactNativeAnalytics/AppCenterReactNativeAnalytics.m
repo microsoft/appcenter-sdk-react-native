@@ -90,10 +90,13 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent:(NSString *)eventName
                          forTransmissionTarget:(NSString *)targetToken
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+  }
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
-    reject(@"0", @"Invalid target token", nil);
+    resolve(nil);
   }
   NSArray *allowedKeys = [[properties
       keysOfEntriesPassingTest:^BOOL(NSString *key, id obj, BOOL *stop) {
@@ -114,6 +117,10 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent:(NSString *)eventName
 RCT_EXPORT_METHOD(getTransmissionTarget:(NSString *)targetToken 
                                resolver:(RCTPromiseResolveBlock)resolve
                                rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [MSAnalytics transmissionTargetForToken:targetToken];
   if (transmissionTarget == nil) {

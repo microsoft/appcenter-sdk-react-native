@@ -10,12 +10,15 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.analytics.AnalyticsTransmissionTarget;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.microsoft.appcenter.utils.AppCenterLog;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.microsoft.appcenter.analytics.Analytics.LOG_TAG;
 
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
@@ -63,25 +66,23 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     public void trackEvent(String eventName, ReadableMap properties, Promise promise) {
         try {
             Analytics.trackEvent(eventName, ReactNativeUtils.convertReadableMapToStringMap(properties));
-            promise.resolve("");
         } catch (JSONException e) {
-            promise.reject(e);
+            AppCenterLog.error(LOG_TAG, "Could not convert event properties from JavaScript to Java", e);
         }
+        promise.resolve(null);
     }
 
     @ReactMethod
     public void trackTransmissionTargetEvent(String eventName, ReadableMap properties, String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
-        if (transmissionTarget == null) {
-            promise.reject(new IllegalArgumentException("Invalid transmission target token"));
-            return;
+        if (transmissionTarget != null) {
+            try {
+                transmissionTarget.trackEvent(eventName, ReactNativeUtils.convertReadableMapToStringMap(properties));
+            } catch (JSONException e) {
+                AppCenterLog.error(LOG_TAG, "Could not convert event properties from JavaScript to Java", e);
+            }
         }
-        try {
-            transmissionTarget.trackEvent(eventName, ReactNativeUtils.convertReadableMapToStringMap(properties));
-            promise.resolve("");
-        } catch (JSONException e) {
-            promise.reject(e);
-        }
+        promise.resolve(null);
     }
 
     @ReactMethod

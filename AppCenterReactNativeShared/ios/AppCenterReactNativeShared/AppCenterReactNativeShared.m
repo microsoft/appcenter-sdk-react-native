@@ -6,7 +6,7 @@
 
 static NSString *appSecret;
 static BOOL startAutomatically;
-static MSWrapperSdk * wrapperSdk;
+static MSWrapperSdk *wrapperSdk;
 
 + (void) setAppSecret: (NSString *)secret
 {
@@ -18,8 +18,6 @@ static MSWrapperSdk * wrapperSdk;
   if (appSecret == nil) {
     NSString * plistPath = [[NSBundle mainBundle] pathForResource:@"AppCenter-Config" ofType:@"plist"];
     NSDictionary * config = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-
-    // If the AppSecret is not set, we will pass nil to MSAppCenter which will error out, as expected
     appSecret = [config objectForKey:@"AppSecret"];
 
     // Read start automatically flag, by default it's true if not set.

@@ -122,7 +122,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
             @Override
             public void run() {
                 Crashes.generateTestCrash();
-                promise.reject(new Exception("generateTestCrash failed to generate a crash"));
+                promise.resolve(null);
             }
         }).start();
     }
