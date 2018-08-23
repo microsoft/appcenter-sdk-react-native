@@ -14,7 +14,7 @@ export default class AnalyticsScreen extends Component {
       const refreshAnalytics = navigation.getParam('refreshAnalytics');
 
       // Initial press: the function is not defined yet so nothing to refresh.
-      if (typeof (refreshAnalytics) === 'function') {
+      if (refreshAnalytics) {
         refreshAnalytics();
       }
       defaultHandler();

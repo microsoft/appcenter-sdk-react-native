@@ -25,7 +25,16 @@ SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${Sec
 
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />
+    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
+    tabBarOnPress: ({ defaultHandler, navigation }) => {
+      const refreshAppCenterScreen = navigation.getParam('refreshAppCenterScreen');
+
+      // Initial press: the function is not defined yet so nothing to refresh.
+      if (refreshAppCenterScreen) {
+        refreshAppCenterScreen();
+      }
+      defaultHandler();
+    }
   }
 
   state = {
@@ -36,6 +45,14 @@ export default class AppCenterScreen extends Component {
   }
 
   async componentWillMount() {
+    await this.refreshUI();
+
+    this.props.navigation.setParams({
+      refreshAppCenterScreen: this.refreshUI.bind(this)
+    });
+  }
+
+  async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
 

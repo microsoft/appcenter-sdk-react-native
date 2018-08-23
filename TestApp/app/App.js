@@ -14,8 +14,8 @@ import AttachmentsProvider from './AttachmentsProvider';
 export default createBottomTabNavigator(
   {
     AppCenter: AppCenterScreen,
-    Transmission: TransmissionScreen,
     Analytics: AnalyticsScreen,
+    Transmission: TransmissionScreen,
     Crashes: CrashesScreen
   },
   {

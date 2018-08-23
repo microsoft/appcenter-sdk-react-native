@@ -16,7 +16,7 @@ export default class CrashesScreen extends Component {
       const refreshCrash = navigation.getParam('refreshCrash');
 
       // Initial press: the function is not defined yet so nothing to refresh.
-      if (typeof (refreshCrash) === 'function') {
+      if (refreshCrash) {
         refreshCrash();
       }
       defaultHandler();
