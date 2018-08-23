@@ -30,7 +30,7 @@ export default class AppCenterScreen extends Component {
       const refreshAppCenterScreen = navigation.getParam('refreshAppCenterScreen');
 
       // Initial press: the function is not defined yet so nothing to refresh.
-      if (typeof (refreshAppCenterScreen) === 'function') {
+      if (refreshAppCenterScreen) {
         refreshAppCenterScreen();
       }
       defaultHandler();
