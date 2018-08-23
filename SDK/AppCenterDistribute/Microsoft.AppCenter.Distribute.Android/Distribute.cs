@@ -67,8 +67,6 @@ namespace Microsoft.AppCenter.Distribute
 
         class Listener : Java.Lang.Object, IDistributeListener
         {
-            ReleaseAvailableCallback releaseAvailableCallback;
-
             public bool OnReleaseAvailable(Activity activity, AndroidReleaseDetails androidReleaseDetails)
             {
                 if (_releaseAvailableCallback != null)
