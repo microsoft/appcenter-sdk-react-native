@@ -5,7 +5,6 @@ import ImagePicker from 'react-native-image-picker';
 
 import Crashes from 'appcenter-crashes';
 
-import { FooClass } from '../../js/FooClass';
 import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
 import CrashesTabBarIcon from '../assets/crashes.png';
@@ -210,5 +209,32 @@ export default class CrashesScreen extends Component {
       } while (Math.abs(fileSize) >= thresh && u < units.length - 1);
       return `${fileSize.toFixed(1)} ${units[u]}`;
     }
+  }
+}
+
+class BarClass {
+  static barMethod1(value1, value2) {
+    this.crashApp(value1, value2);
+  }
+
+  /* eslint-disable */
+  static crashApp(value1, value2) {
+    let thisVariableIsUndefined;
+    thisVariableIsUndefined.invokingFunctionOnUndefined();
+  }
+  /* eslint-enable */
+}
+
+class FooClass {
+  method1(value) {
+    return this.method2(value);
+  }
+
+  method2(value) {
+    return this.fooInnermostMethod(value);
+  }
+
+  fooInnermostMethod() {
+    return BarClass.barMethod1();
   }
 }
