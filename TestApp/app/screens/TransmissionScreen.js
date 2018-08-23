@@ -48,7 +48,7 @@ export default class TransmissionScreen extends Component {
               title: 'Select transmission target',
               data: [
                 {
-                  title: 'Select target token',
+                  title: this.state.targetToken.label,
                   valueChanged: option => this.setState({ targetToken: option }),
                   tokens: targetTokens
                 },
