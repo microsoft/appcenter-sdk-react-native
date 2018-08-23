@@ -34,21 +34,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     width: '100%'
   },
-  dialogInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    margin: 8
-  },
-  dialogButton: {
-    height: 50,
-    padding: 8
-  },
-  dialogButtonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
   modalSelector: {
     borderColor: 'gray',
     backgroundColor: 'white'

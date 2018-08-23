@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity } from 'react-native';
-import { DialogComponent } from 'react-native-dialog-component';
+import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import DialogInput from 'react-native-dialog-input';
 import ImagePicker from 'react-native-image-picker';
 
 import Crashes from 'appcenter-crashes';
@@ -27,7 +27,8 @@ export default class CrashesScreen extends Component {
     crashesEnabled: false,
     lastSessionStatus: '',
     textAttachment: '',
-    binaryAttachment: ''
+    binaryAttachment: '',
+    isAttachmentDialogVisible: false
   }
 
   async componentWillMount() {
@@ -118,7 +119,10 @@ export default class CrashesScreen extends Component {
                 },
                 {
                   title: 'Set text error attachment',
-                  action: () => { this.dialogComponent.show(); }
+                  action: () => {
+                    const isAttachmentDialogVisible = true;
+                    this.setState({ isAttachmentDialogVisible });
+                  }
                 },
                 {
                   title: 'Select image as binary error attachment',
@@ -138,33 +142,29 @@ export default class CrashesScreen extends Component {
             },
           ]}
         />
-        {this.getTextAttachmentDialog()}
+        <DialogInput ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
+          isDialogVisible={this.state.isAttachmentDialogVisible}
+          title='Set text error attachment'
+          textInputProps={{ clearTextOnFocus: true }}
+          submitInput={(textAttachment) => {
+            const isAttachmentDialogVisible = false;
+            this.setState({ isAttachmentDialogVisible, textAttachment });
+            AttachmentsProvider.saveTextAttachment(textAttachment);
+
+            // The dialog remembers text state for next time.
+            // if you enter empty text next time it reuses the old value.
+            // Reset state to avoid that...
+            const inputModal = '';
+            this.dialogComponent.setState({ inputModal });
+          }}
+          closeDialog={() => {
+            const isAttachmentDialogVisible = false;
+            this.setState({ isAttachmentDialogVisible });
+          }}>
+        </DialogInput>
       </View>
     );
   }
-
-
-  getTextAttachmentDialog = () => (
-    <DialogComponent ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }} width={0.9}>
-      <View>
-        <TextInput style={SharedStyles.dialogInput} onChangeText={textAttachment => this.setState({ textAttachment })} />
-        <View style={SharedStyles.dialogButtonContainer}>
-          <TouchableOpacity
-            style={SharedStyles.dialogButton}
-            onPress={() => {
-              AttachmentsProvider.saveTextAttachment(this.state.textAttachment);
-              this.dialogComponent.dismiss();
-            }}
-          >
-            <Text>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={SharedStyles.dialogButton} onPress={() => { this.dialogComponent.dismiss(); }}>
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </DialogComponent>
-  )
 
   showFilePicker = () => {
     ImagePicker.showImagePicker(null, async (response) => {
