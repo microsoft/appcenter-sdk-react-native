@@ -12,6 +12,7 @@
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -22,10 +23,19 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [MSAppCenter setLogLevel: MSLogLevelVerbose];
-  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
   
   NSURL *jsCodeLocation;
 
+  id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
+  if ([appSecret isKindOfClass:[NSString class]]) {
+    [AppCenterReactNativeShared setAppSecret:appSecret];
+  }
+  
+  id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
+  if ([startAutomatically isKindOfClass:[NSNumber class]]) {
+    [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
+  }
+  
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes

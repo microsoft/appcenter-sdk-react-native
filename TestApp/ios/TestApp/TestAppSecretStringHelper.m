@@ -33,11 +33,12 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
                                   :(BOOL)startAutomatically)
 {
-  NSString *plistPath = [[NSBundle mainBundle] pathForResource:kAppCenterConfigResource ofType:@"plist"];
-  NSDictionary *config = [NSMutableDictionary dictionaryWithContentsOfFile:plistPath];
-  [config setValue:secretString forKey:kAppCenterSecretKey];
-  [config setValue:@(startAutomatically) forKey:kAppCenterStartAutomaticallyKey];
-  [config writeToFile:plistPath atomically:YES];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  if (secretString == nil) {
+    secretString = @"";
+  }
+  [userDefaults setObject:secretString forKey:kAppCenterSecretKey];
+  [userDefaults setBool:startAutomatically forKey:kAppCenterStartAutomaticallyKey];
 }
 
 @end
