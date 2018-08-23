@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Contoso.Forms.Puppet.Droid</RootNamespace>
     <AssemblyName>Contoso.Forms.Puppet.Droid</AssemblyName>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
