@@ -61,7 +61,7 @@ export default class AppCenterScreen extends Component {
 
     const installId = await AppCenter.getInstallId();
     this.setState({ installId });
-  }  
+  }
 
   async setCustomProperties() {
     const properties = new CustomProperties()
