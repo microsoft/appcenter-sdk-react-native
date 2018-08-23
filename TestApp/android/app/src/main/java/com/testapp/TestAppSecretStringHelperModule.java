@@ -20,7 +20,7 @@ public class TestAppSecretStringHelperModule extends BaseJavaModule {
         String secretOverride = mSharedPreferences.getString(APP_SECRET, null);
         AppCenterReactNativeShared.setAppSecret(secretOverride);
         boolean startAutomaticallyOverride = mSharedPreferences.getBoolean(START_AUTOMATICALLY, true);
-        AppCenterReactNativeShared.setStartedAutomatically(startAutomaticallyOverride);
+        AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
     }
 
     @Override

@@ -68,8 +68,8 @@ static MSWrapperSdk *wrapperSdk;
     [MSAppCenter setWrapperSdk:sdk];
 }
 
-+ (void) setStartAutomatically:(BOOL)startedAutomatically {
-    startAutomatically = startedAutomatically;
++ (void) setStartAutomatically:(BOOL)shouldStartAutomatically {
+    startAutomatically = shouldStartAutomatically;
 }
 
 @end

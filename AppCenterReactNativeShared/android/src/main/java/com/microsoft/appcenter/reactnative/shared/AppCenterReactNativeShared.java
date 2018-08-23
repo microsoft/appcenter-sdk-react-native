@@ -21,7 +21,7 @@ public class AppCenterReactNativeShared {
 
     private static String sAppSecret;
 
-    private static boolean sStartedAutomatically;
+    private static boolean sStartAutomatically;
 
     private static Application sApplication;
 
@@ -36,7 +36,7 @@ public class AppCenterReactNativeShared {
         sWrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         sWrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(sWrapperSdk);
-        if (!AppCenterReactNativeShared.isStartedAutomatically()) {
+        if (!AppCenterReactNativeShared.sStartAutomatically) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class AppCenterReactNativeShared {
                 String jsonContents = new String(buffer, "UTF-8");
                 JSONObject json = new JSONObject(jsonContents);
                 sAppSecret = json.getString(APP_SECRET_KEY);
-                sStartedAutomatically = json.optBoolean(START_AUTOMATICALLY_KEY, true);
+                sStartAutomatically = json.optBoolean(START_AUTOMATICALLY_KEY, true);
             } catch (Exception e) {
                 AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
             }
@@ -93,11 +93,7 @@ public class AppCenterReactNativeShared {
         return sAppSecret;
     }
 
-    public static boolean isStartedAutomatically() {
-        return sStartedAutomatically;
-    }
-
-    public static void setStartedAutomatically(boolean startedAutomatically) {
-        sStartedAutomatically = startedAutomatically;
+    public static void setStartAutomatically(boolean startAutomatically) {
+        sStartAutomatically = startAutomatically;
     }
 }

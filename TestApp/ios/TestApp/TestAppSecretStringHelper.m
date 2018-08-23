@@ -34,7 +34,6 @@ RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
                                   :(BOOL)startAutomatically)
 {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  
   if (secretString == nil) {
     secretString = @"";
   }
