@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<attr path="/api/package[@name='com.microsoft.appcenter.distribute']/class[@name='Distribute']" name="managedName">AndroidDistribute</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.distribute']/class[@name='ReleaseDetails']" name="managedName">AndroidReleaseDetails</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter.distribute']/interface[@name='UpdateAction']" name="managedName">AndroidUpdateAction</attr>
     <remove-node path="/api/package[@name='com.microsoft.appcenter.distribute.ingestion.models.json']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.distribute.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.distribute']/interface[@name='UpdateAction']" />
+    <attr path="/api/package[@name='com.microsoft.appcenter.distribute']/class[@name='Distribute']" name="managedName">AndroidDistribute</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter.distribute']/class[@name='ReleaseDetails']" name="managedName">AndroidReleaseDetails</attr>
 </metadata>

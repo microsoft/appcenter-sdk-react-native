@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
 	<remove-node path="/api/package[@name='com.microsoft.appcenter.push.ingestion.models.json']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.push.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
 	<attr path="/api/package[@name='com.microsoft.appcenter.push']/class[@name='Push']" name="managedName">AndroidPush</attr>
 	<attr path="/api/package[@name='com.microsoft.appcenter.push']/class[@name='PushNotification']" name="managedName">AndroidPushNotification</attr>
 </metadata>

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
 	<remove-node path="/api/package[@name='com.microsoft.appcenter.crashes.ingestion.models.json']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.crashes.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
 	<attr path="/api/package[@name='com.microsoft.appcenter.crashes']/class[@name='Crashes']" name="managedName">AndroidCrashes</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.crashes.model']/class[@name='ErrorReport']" name="managedName">AndroidErrorReport</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.crashes.model']/class[@name='TestCrashException']" name="managedName">AndroidTestCrashException</attr>
