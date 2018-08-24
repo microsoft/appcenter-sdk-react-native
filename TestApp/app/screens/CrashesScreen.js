@@ -60,7 +60,6 @@ export default class CrashesScreen extends Component {
   }
 
   async nativeCrash() {
-
     // In Android debug or non app store environment for iOS.
     await Crashes.generateTestCrash();
 
