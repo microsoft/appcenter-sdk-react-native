@@ -132,12 +132,12 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-image-picker')
-    implementation project(':react-native-fs')
-    implementation project(':appcenter-push')
-    implementation project(':appcenter-crashes')
-    implementation project(':appcenter-analytics')
-    implementation project(':appcenter')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-fs')
+    compile project(':appcenter-push')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.android.support:appcompat-v7:23.0.1'
     implementation 'com.facebook.react:react-native:+'  // From node_modules
