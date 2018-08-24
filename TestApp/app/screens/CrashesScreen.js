@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
 import DialogInput from 'react-native-dialog-input';
 import ImagePicker from 'react-native-image-picker';
 
@@ -59,8 +59,13 @@ export default class CrashesScreen extends Component {
     foo.method1();
   }
 
-  nativeCrash() {
-    Crashes.generateTestCrash();
+  async nativeCrash() {
+
+    // In Android debug or non app store environment for iOS.
+    await Crashes.generateTestCrash();
+
+    // If the SDK disabled the test crash, use this one.
+    await NativeModules.TestAppNative.generateTestCrash();
   }
 
   render() {

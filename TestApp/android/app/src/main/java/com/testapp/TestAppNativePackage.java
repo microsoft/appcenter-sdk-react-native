@@ -10,12 +10,12 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.Collections;
 import java.util.List;
 
-public class TestAppSecretStringHelperPackage implements ReactPackage {
+public class TestAppNativePackage implements ReactPackage {
 
     private final NativeModule mModule;
 
-    TestAppSecretStringHelperPackage(Context context) {
-        mModule = new TestAppSecretStringHelperModule(context);
+    TestAppNativePackage(Context context) {
+        mModule = new TestAppNativeModule(context);
     }
 
     @Override
