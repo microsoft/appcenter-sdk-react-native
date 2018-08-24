@@ -11,7 +11,6 @@ ___
 ### Misc
 - Enhanced Pod integration process by adding dependencies to target with the current project name. [#369](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/369)
 - Enhanced android linking process. [#370](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/370)
-- TestApp UI enhancement. [#376](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/376)
 - Changelog file added. [#382](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/382)
 
 ___
