@@ -38,4 +38,11 @@ export default StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: 'white'
   },
+  dialogInput: {
+    ...Platform.select({
+      ios: {
+        backgroundColor: 'lightgrey'
+      }
+    })
+  }
 });

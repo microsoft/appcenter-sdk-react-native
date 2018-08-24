@@ -148,6 +148,7 @@ export default class CrashesScreen extends Component {
         />
         <DialogInput
           ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
+          dialogStyle={SharedStyles.dialogInput}
           isDialogVisible={this.state.isAttachmentDialogVisible}
           title="Set text error attachment"
           submitText="Save"
