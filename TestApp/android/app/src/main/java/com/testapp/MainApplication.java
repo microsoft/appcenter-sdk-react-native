@@ -32,7 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.asList(
                     new MainReactPackage(),
-                    new TestAppSecretStringHelperPackage(MainApplication.this),
+                    new TestAppNativePackage(MainApplication.this),
                     new AppCenterReactNativePushPackage(MainApplication.this),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
                     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),

@@ -15,7 +15,7 @@
     "appcenter-push": "file:appcenter-push-1.7.1.tgz",
     "react": "^16.4.1",
     "react-native": "^0.56.0",
-    "react-native-dialog-component": "^0.2.17",
+    "react-native-dialog-input": "^1.0.4",
     "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.26.7",
     "react-native-modal-selector": "0.0.28",
