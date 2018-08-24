@@ -71,10 +71,13 @@ export default class AppCenterScreen extends Component {
 
   async componentWillMount() {
     await this.refreshUI();
+
     const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
-    for (let startupMode of StartupModes) {
+    for (let index = 0; index < StartupModes.length; index++) {
+      const startupMode = StartupModes[index];
       if (startupMode.key === startupModeKey) {
         this.state.startupMode = startupMode;
+        break;
       }
     }
 
