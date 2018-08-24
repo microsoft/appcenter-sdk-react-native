@@ -12,8 +12,8 @@
     <RootNamespace>Microsoft.AppCenter.Android.Bindings</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Android.Bindings</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidTlsProvider>
     </AndroidTlsProvider>
   </PropertyGroup>
@@ -40,6 +40,8 @@
       </CustomCommands>
     </CustomCommands>
     <NoWarn>CS0109</NoWarn>
+    <Commandlineparameters></Commandlineparameters>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>
