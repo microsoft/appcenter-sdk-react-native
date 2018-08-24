@@ -1,5 +1,20 @@
 ___
 
+## Version 1.8.0
+
+### Features
+- Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
+
+### Fix
+- To prevent crashes, caused by misusing SDK, native modules will no longer reject promises. [#386](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/386)
+
+### Misc
+- Enhanced Pod integration process by adding dependencies to target with the current project name. [#369](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/369)
+- Enhanced android linking process. [#370](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/370)
+- Changelog file added. [#382](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/382)
+
+___
+
 ## Version 1.7.1
 
 ### Bugfixes
