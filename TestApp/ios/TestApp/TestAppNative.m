@@ -1,4 +1,4 @@
-#import "TestAppSecretStringHelper.h"
+#import "TestAppNative.h"
 
 #if __has_include(<React/RCTAssert.h>)
 #import <React/RCTAssert.h>
@@ -19,10 +19,10 @@
 #import <AppCenter/AppCenter.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
-@interface TestAppSecretStringHelper () <RCTBridgeModule>
+@interface TestAppNative () <RCTBridgeModule>
 @end
 
-@implementation TestAppSecretStringHelper
+@implementation TestAppNative
 
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
@@ -39,6 +39,12 @@ RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
   }
   [userDefaults setObject:secretString forKey:kAppCenterSecretKey];
   [userDefaults setBool:startAutomatically forKey:kAppCenterStartAutomaticallyKey];
+}
+
+RCT_EXPORT_METHOD(generateTestCrash)
+{
+  int* p = 0;
+  *p = 0;
 }
 
 @end

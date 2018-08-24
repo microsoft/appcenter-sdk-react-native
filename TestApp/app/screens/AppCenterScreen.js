@@ -8,8 +8,6 @@ import Push from 'appcenter-push';
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
-const SecretStringHelper = NativeModules.TestAppSecretStringHelper;
-
 const SecretStrings = {
   ios: {
     appSecret: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5',
@@ -77,7 +75,7 @@ export default class AppCenterScreen extends Component {
   }
 
   async configureStartup(secretString, startAutomatically) {
-    await SecretStringHelper.configureStartup(secretString, startAutomatically);
+    await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
     Toast.show('Relaunch app for changes to be applied.');
   }
 

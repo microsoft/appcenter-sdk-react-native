@@ -5,9 +5,10 @@ import android.content.SharedPreferences;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 
-public class TestAppSecretStringHelperModule extends BaseJavaModule {
+public class TestAppNativeModule extends BaseJavaModule {
 
     private static final String APP_SECRET = "app_secret";
 
@@ -15,7 +16,7 @@ public class TestAppSecretStringHelperModule extends BaseJavaModule {
 
     private final SharedPreferences mSharedPreferences;
 
-    TestAppSecretStringHelperModule(Context context) {
+    TestAppNativeModule(Context context) {
         mSharedPreferences = context.getSharedPreferences(getName(), Context.MODE_PRIVATE);
         String secretOverride = mSharedPreferences.getString(APP_SECRET, null);
         AppCenterReactNativeShared.setAppSecret(secretOverride);
@@ -25,7 +26,7 @@ public class TestAppSecretStringHelperModule extends BaseJavaModule {
 
     @Override
     public String getName() {
-        return "TestAppSecretStringHelper";
+        return "TestAppNative";
     }
 
     @ReactMethod
@@ -39,5 +40,16 @@ public class TestAppSecretStringHelperModule extends BaseJavaModule {
                 .putString(APP_SECRET, secretString)
                 .putBoolean(START_AUTOMATICALLY, startAutomatically)
                 .apply();
+    }
+
+    @ReactMethod
+    public void generateTestCrash() {
+
+        /*
+         * To crash the test app even in release.
+         * We reach this code if Crashes.generateTestCrash detected release mode.
+         * We can tell with stack trace whether we used SDK method in debug or this one in release.
+         */
+        throw new TestCrashException();
     }
 }
