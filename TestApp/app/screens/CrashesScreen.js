@@ -173,7 +173,8 @@ export default class CrashesScreen extends Component {
   }
 
   showFilePicker = () => {
-    ImagePicker.showImagePicker(null, async (response) => {
+    const options = { cancelButtonTitle: 'Delete saved image' };
+    ImagePicker.showImagePicker(options, async (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
         await AttachmentsProvider.deleteBinaryAttachment();
