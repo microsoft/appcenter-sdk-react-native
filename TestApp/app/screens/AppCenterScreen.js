@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
+import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
@@ -21,6 +22,31 @@ const SecretStrings = {
 SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
 SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
 
+const STARTUP_MODE = 'STARTUP_MODE';
+
+const StartupModes = [
+  {
+    label: 'AppCenter target only',
+    key: 'APPCENTER'
+  },
+  {
+    label: 'OneCollector target only',
+    key: 'TARGET'
+  },
+  {
+    label: 'Both targets',
+    key: 'BOTH'
+  },
+  {
+    label: 'No default target',
+    key: 'NONE'
+  },
+  {
+    label: 'Skip start (library only)',
+    key: 'SKIP'
+  }
+];
+
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
@@ -39,11 +65,18 @@ export default class AppCenterScreen extends Component {
     appCenterEnabled: false,
     pushEnabled: false,
     installId: '',
-    sdkVersion: AppCenter.getSdkVersion()
+    sdkVersion: AppCenter.getSdkVersion(),
+    startupMode: StartupModes[0]
   }
 
   async componentWillMount() {
     await this.refreshUI();
+    const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
+    for (let startupMode of StartupModes) {
+      if (startupMode.key === startupModeKey) {
+        this.state.startupMode = startupMode;
+      }
+    }
 
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
@@ -79,6 +112,29 @@ export default class AppCenterScreen extends Component {
     Toast.show('Relaunch app for changes to be applied.');
   }
 
+  async selectStartup(key) {
+    switch (key) {
+      case 'APPCENTER':
+        await this.configureStartup(SecretStrings[Platform.OS].appSecret, true);
+        break;
+      case 'TARGET':
+        await this.configureStartup(SecretStrings[Platform.OS].target, true);
+        break;
+      case 'BOTH':
+        await this.configureStartup(SecretStrings[Platform.OS].both, true);
+        break;
+      case 'NONE':
+        await this.configureStartup(null, true);
+        break;
+      case 'SKIP':
+        await this.configureStartup(null, false);
+        break;
+      default:
+        throw new Error(`Unexpected startup type=${key}`);
+    }
+    await AsyncStorage.setItem(STARTUP_MODE, key);
+  }
+
   render() {
     const switchRenderItem = ({ item: { title, value, toggle } }) => (
       <View style={SharedStyles.item}>
@@ -98,6 +154,16 @@ export default class AppCenterScreen extends Component {
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
       </TouchableOpacity>
+    );
+
+    const pickerRenderItem = ({ item: { startupModes } }) => (
+      <ModalSelector
+        data={startupModes}
+        initValue={this.state.startupMode.label}
+        style={SharedStyles.modalSelector}
+        selectTextStyle={SharedStyles.itemButton}
+        onChange={({ key }) => this.selectStartup(key)}
+      />
     );
 
     return (
@@ -136,27 +202,10 @@ export default class AppCenterScreen extends Component {
               title: 'Change Startup Mode',
               data: [
                 {
-                  title: 'AppCenter target only',
-                  action: () => this.configureStartup(SecretStrings[Platform.OS].appSecret, true)
-                },
-                {
-                  title: 'OneCollector target only',
-                  action: () => this.configureStartup(SecretStrings[Platform.OS].target, true)
-                },
-                {
-                  title: 'Both targets',
-                  action: () => this.configureStartup(SecretStrings[Platform.OS].both, true)
-                },
-                {
-                  title: 'No default target',
-                  action: () => this.configureStartup(null, true)
-                },
-                {
-                  title: 'Skip start (library only)',
-                  action: () => this.configureStartup(null, false)
+                  startupModes: StartupModes
                 }
               ],
-              renderItem: actionRenderItem
+              renderItem: pickerRenderItem
             },
             {
               title: 'Actions',

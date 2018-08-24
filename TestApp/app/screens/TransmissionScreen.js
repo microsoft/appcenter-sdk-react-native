@@ -28,7 +28,13 @@ export default class TransmissionScreen extends Component {
 
   render() {
     const pickerRenderItem = ({ item: { title, valueChanged, tokens } }) => (
-      <ModalSelector data={tokens} initValue={title} onChange={valueChanged} style={SharedStyles.modalSelector} />
+      <ModalSelector
+        data={tokens}
+        initValue={title}
+        onChange={valueChanged}
+        style={SharedStyles.modalSelector}
+        selectTextStyle={SharedStyles.itemButton}
+      />
     );
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
