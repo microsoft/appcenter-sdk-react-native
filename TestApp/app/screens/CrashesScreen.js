@@ -142,9 +142,10 @@ export default class CrashesScreen extends Component {
             },
           ]}
         />
-        <DialogInput ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
+        <DialogInput
+          ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
           isDialogVisible={this.state.isAttachmentDialogVisible}
-          title='Set text error attachment'
+          title="Set text error attachment"
           textInputProps={{ clearTextOnFocus: true }}
           submitInput={(textAttachment) => {
             const isAttachmentDialogVisible = false;
@@ -160,8 +161,8 @@ export default class CrashesScreen extends Component {
           closeDialog={() => {
             const isAttachmentDialogVisible = false;
             this.setState({ isAttachmentDialogVisible });
-          }}>
-        </DialogInput>
+          }}
+        />
       </View>
     );
   }
