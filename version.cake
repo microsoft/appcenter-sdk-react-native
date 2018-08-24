@@ -1,5 +1,5 @@
 #addin nuget:?package=Cake.FileHelpers&version=3.0.0
-#addin nuget:?package=Cake.Git
+#addin nuget:?package=Cake.Git&version=0.18.0
 #addin nuget:?package=Cake.Incubator&version=2.0.2
 #load "scripts/utility.cake"
 #load "scripts/configuration/config-parser.cake"
