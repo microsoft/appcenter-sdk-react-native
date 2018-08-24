@@ -9,6 +9,8 @@ namespace Contoso.Forms.Test
 {
     public partial class CrashesPage : ContentPage
     {
+        private const int BeforeCrashSleepTime = 500;
+
         public CrashesPage()
         {
             InitializeComponent();
@@ -21,6 +23,8 @@ namespace Contoso.Forms.Test
 
         void DivideByZeroCrash(object sender, System.EventArgs e)
         {
+            Task.Delay(BeforeCrashSleepTime).Wait();
+
 #pragma warning disable CS0219
             int x = (42 / int.Parse("0"));
 #pragma warning restore CS0219
@@ -33,6 +37,8 @@ namespace Contoso.Forms.Test
 
         void CrashWithInvalidOperation(object sender, EventArgs e)
         {
+            Task.Delay(BeforeCrashSleepTime).Wait();
+
             string[] strings = { "A", "B", "C" };
 #pragma warning disable CS0219
             string s = strings.First((arg) => { return arg == "6"; });
@@ -53,6 +59,8 @@ namespace Contoso.Forms.Test
 
         private void CrashWithAggregateException(object sender, EventArgs e)
         {
+            Task.Delay(BeforeCrashSleepTime).Wait();
+
             throw PrepareException();
         }
 
@@ -94,6 +102,8 @@ namespace Contoso.Forms.Test
 
         public async void CrashAsync(object sender, EventArgs e)
         {
+            Task.Delay(BeforeCrashSleepTime).Wait();
+
             await FakeService.DoStuffInBackground().ConfigureAwait(false);
         }
 

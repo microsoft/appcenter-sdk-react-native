@@ -2,6 +2,8 @@
 <metadata>
     <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.json']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.one.json']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.one']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
     <attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']" name="managedName">AndroidAnalytics</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']/method[@name='setListener']" name="visibility">public</attr>
 </metadata>
