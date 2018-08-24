@@ -11,6 +11,11 @@ const BINARY_FILESIZE_KEY = 'BINARY_FILESIZE_KEY';
 const BINARY_ATTACHMENT_STORAGE_FILENAME = 'binary.txt';
 const DEFAULT_ENCODING = 'utf8';
 
+const DISPLAY_FILENAME_LENGTH_LIMIT = 20;
+
+// Couting dot and 3 letters.
+const FILE_EXTENSION_LENGTH = 4;
+
 export default class AttachmentsProvider {
   static async updateItem(key, value) {
     if (value !== null && value !== undefined) {
@@ -58,10 +63,11 @@ export default class AttachmentsProvider {
     let fileName = await getItemFromStorage(BINARY_FILENAME_KEY);
     const fileSize = await getItemFromStorage(BINARY_FILESIZE_KEY);
     if (fileName != null) {
-      if (fileName.length > 16) {
-        const shortName = fileName.substr(0, 12);
-        const fileExtension = fileName.substr(fileName.length - 3, fileName.length);
-        fileName = `${shortName}...${fileExtension}`;
+      if (fileName.length > DISPLAY_FILENAME_LENGTH_LIMIT) {
+        const shortLength = DISPLAY_FILENAME_LENGTH_LIMIT - FILE_EXTENSION_LENGTH;
+        const shortName = fileName.substr(0, shortLength);
+        const fileExtension = fileName.substr(fileName.length - FILE_EXTENSION_LENGTH, fileName.length);
+        fileName = `${shortName}(...)${fileExtension}`;
       }
       return `${fileName} (${fileSize})`;
     }

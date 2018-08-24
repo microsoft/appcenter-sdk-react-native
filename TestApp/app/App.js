@@ -94,7 +94,7 @@ Crashes.setListener({
       if (textAttachment !== null) {
         attachments.push(ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'));
       }
-      if (binaryAttachment != null && binaryName != null && binaryType != null) {
+      if (binaryAttachment !== null && binaryName !== null && binaryType !== null) {
         attachments.push(ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType));
       }
       return attachments;
