@@ -150,7 +150,7 @@ export default class CrashesScreen extends Component {
           ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
           isDialogVisible={this.state.isAttachmentDialogVisible}
           title="Set text error attachment"
-          textInputProps={{ clearTextOnFocus: true }}
+          submitText="Save"
           submitInput={(textAttachment) => {
             const isAttachmentDialogVisible = false;
             this.setState({ isAttachmentDialogVisible, textAttachment });
@@ -175,10 +175,12 @@ export default class CrashesScreen extends Component {
     ImagePicker.showImagePicker(null, async (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
+        await AttachmentsProvider.deleteBinaryAttachment();
+        this.setState({ binaryAttachment: '' });
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        AttachmentsProvider.saveBinaryAttachment(getFileName(response), response.data, getFileType(response), getFileSize(response));
+        await AttachmentsProvider.saveBinaryAttachment(getFileName(response), response.data, getFileType(response), getFileSize(response));
         const binaryAttachmentValue = await AttachmentsProvider.getBinaryAttachmentInfo();
         this.setState({ binaryAttachment: binaryAttachmentValue });
       }
