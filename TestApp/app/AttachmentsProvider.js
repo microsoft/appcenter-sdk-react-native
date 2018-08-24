@@ -12,12 +12,10 @@ const BINARY_ATTACHMENT_STORAGE_FILENAME = 'binary.txt';
 const DEFAULT_ENCODING = 'utf8';
 
 export default class AttachmentsProvider {
-
   static async updateItem(key, value) {
     if (value !== null && value !== undefined) {
       await AsyncStorage.setItem(key, value);
-    }
-    else {
+    } else {
       await AsyncStorage.removeItem(key);
     }
   }
