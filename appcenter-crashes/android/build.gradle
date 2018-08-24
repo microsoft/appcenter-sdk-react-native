@@ -20,6 +20,6 @@ dependencies {
     compile 'com.facebook.react:react-native:+'
     compile 'com.microsoft.appcenter:appcenter-crashes:1.8.0'
 
-    compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    //compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.8.0'
+    //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.8.0'
 }
