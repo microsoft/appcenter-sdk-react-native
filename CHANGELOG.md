@@ -7,6 +7,7 @@ ___
 
 ### Fix
 - To prevent crashes, caused by misusing SDK, native modules will no longer reject promises. [#386](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/386)
+- As a consequence `Crashes.generateTestCrash` does not crash in release Android builds to align with the other Android SDKs (Java and Xamarin), and iOS builds in App Store environment no longer crash when calling that same method to align with Apple and Xamarin SDKs.
 
 ### Misc
 - Enhanced Pod integration process by adding dependencies to target with the current project name. [#369](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/369)
