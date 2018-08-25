@@ -1,61 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation';
+import Toast from 'react-native-simple-toast';
 
-import React, { Component } from 'react';
-import { AppState, Alert, Button, View, Platform, ToastAndroid, Text } from 'react-native';
-import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
-import SharedStyles from './SharedStyles';
+
+import AppCenterScreen from './screens/AppCenterScreen';
+// TODO enable for release when npm published
+//import TransmissionScreen from './screens/TransmissionScreen';
+import AnalyticsScreen from './screens/AnalyticsScreen';
+import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-export default class MainScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      wrapperSdkVersion: AppCenter.getSdkVersion()
-    };
+export default createBottomTabNavigator(
+  {
+    AppCenter: AppCenterScreen,
+    Analytics: AnalyticsScreen,
+    // TODO enable for release when npm published
+    Crashes: CrashesScreen
+  },
+  {
+    tabBarOptions: {
+      activeBackgroundColor: 'white',
+      inactiveBackgroundColor: 'white',
+    },
   }
-
-  static navigationOptions = {
-    title: 'DemoApp',
-  };
-
-  render() {
-    const { navigate } = this.props.navigation;
-
-    return (
-      <View style={SharedStyles.container}>
-        <Text style={SharedStyles.heading}>
-          React Native SDK version {this.state.wrapperSdkVersion}
-        </Text>
-        <Button title="Test Crashes" onPress={() => navigate('Crashes')} />
-        <Button title="Test Analytics" onPress={() => navigate('Analytics')} />
-        <Button title="Test Push" onPress={() => navigate('Push')} />
-        <Button title="Test Other App Center APIs" onPress={() => navigate('AppCenter')} />
-      </View>
-    );
-  }
-}
+);
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
     let message = pushNotification.message;
-    let title = pushNotification.title;
+    const title = pushNotification.title;
 
-    if (message === null || message === undefined) {
-      // Android messages received in the background don't include a message. On Android, that fact can be used to
-      // check if the message was received in the background or foreground. For iOS the message is always present.
-      title = 'Android background';
-      message = '<empty>';
+    // Message can be null on iOS silent push or Android background notifications.
+    if (message === null) {
+      message = '';
+    } else {
+      message += '\n';
     }
 
     // Any custom name/value pairs added in the portal are in customProperties
     if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-      message += `\nCustom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
+      message += `Custom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
     }
 
     if (AppState.currentState === 'active') {
@@ -99,26 +85,35 @@ Crashes.setListener({
   getErrorAttachments(report) {
     console.log(`Get error attachments for report with id: ${report.id}'`);
     return (async () => {
+      const attachments = [];
       const [textAttachment, binaryAttachment, binaryName, binaryType] = await Promise.all([
         AttachmentsProvider.getTextAttachment(),
         AttachmentsProvider.getBinaryAttachment(),
         AttachmentsProvider.getBinaryName(),
         AttachmentsProvider.getBinaryType(),
       ]);
-      return [ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'),
-        ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType)];
+      if (textAttachment !== null) {
+        attachments.push(ErrorAttachmentLog.attachmentWithText(textAttachment, 'hello.txt'));
+      }
+      if (binaryAttachment !== null && binaryName !== null && binaryType !== null) {
+        attachments.push(ErrorAttachmentLog.attachmentWithBinary(binaryAttachment, binaryName, binaryType));
+      }
+      return attachments;
     })();
   },
 
   onBeforeSending() {
     console.log('Will send crash. onBeforeSending is invoked.');
+    Toast.show('Sending crashes...');
   },
 
   onSendingSucceeded() {
     console.log('Did send crash. onSendingSucceeded is invoked.');
+    Toast.show('Sending crashes succeeded.');
   },
 
   onSendingFailed() {
     console.log('Failed sending crash. onSendingFailed is invoked.');
+    Toast.show('Sending crashes failed, please check verbose logs.');
   }
 });

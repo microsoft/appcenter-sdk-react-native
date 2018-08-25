@@ -1,4 +1,4 @@
-#import "TestAppNative.h"
+#import "DemoAppNative.h"
 
 #if __has_include(<React/RCTAssert.h>)
 #import <React/RCTAssert.h>
@@ -16,10 +16,10 @@
 #import "RCTUtils.h"
 #endif
 
-@interface TestAppNative () <RCTBridgeModule>
+@interface DemoAppNative () <RCTBridgeModule>
 @end
 
-@implementation TestAppNative
+@implementation DemoAppNative
 
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";

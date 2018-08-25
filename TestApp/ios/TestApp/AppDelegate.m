@@ -24,8 +24,6 @@
 {
   [MSAppCenter setLogLevel: MSLogLevelVerbose];
   
-  NSURL *jsCodeLocation;
-
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
   if ([appSecret isKindOfClass:[NSString class]]) {
     [AppCenterReactNativeShared setAppSecret:appSecret];
@@ -35,6 +33,8 @@
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
+  
+  NSURL *jsCodeLocation;
   
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
