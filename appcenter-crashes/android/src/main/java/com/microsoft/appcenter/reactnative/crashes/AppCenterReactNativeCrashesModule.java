@@ -49,7 +49,9 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
         WrapperSdkExceptionManager.setAutomaticProcessing(automaticProcessing);
         Crashes.setListener(mCrashListener);
         AppCenterReactNativeShared.configureAppCenter(application);
-        AppCenter.start(Crashes.class);
+        if (AppCenter.isConfigured()) {
+            AppCenter.start(Crashes.class);
+        }
     }
 
     public void setReactApplicationContext(ReactApplicationContext reactContext) {
@@ -120,7 +122,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
             @Override
             public void run() {
                 Crashes.generateTestCrash();
-                promise.reject(new Exception("generateTestCrash failed to generate a crash"));
+                promise.resolve(null);
             }
         }).start();
     }

@@ -8,17 +8,19 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "file:appcenter-1.7.1.tgz",
-    "appcenter-analytics": "file:appcenter-analytics-1.7.1.tgz",
-    "appcenter-crashes": "file:appcenter-crashes-1.7.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-1.7.1.tgz",
-    "appcenter-push": "file:appcenter-push-1.7.1.tgz",
+    "appcenter": "file:appcenter-1.8.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.8.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.8.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.8.0.tgz",
+    "appcenter-push": "file:appcenter-push-1.8.0.tgz",
     "react": "^16.4.1",
     "react-native": "^0.56.0",
-    "react-native-dialog-component": "^0.2.17",
+    "react-native-dialog-input": "^1.0.4",
     "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.26.7",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-native-modal-selector": "0.0.28",
+    "react-native-simple-toast": "0.0.8",
+    "react-navigation": "^2.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",

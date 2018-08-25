@@ -31,6 +31,20 @@ RCT_EXPORT_MODULE();
     [AppCenterReactNativeShared configureAppCenter];
 }
 
+RCT_EXPORT_METHOD(startFromLibrary:(NSDictionary*)service
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    id bindingType = [service objectForKey:@"bindingType"];
+    if ([bindingType isKindOfClass:[NSString class]]) {
+        id serviceClass = NSClassFromString(bindingType);
+        if (serviceClass) {
+            [MSAppCenter startFromLibraryWithServices:@[serviceClass]];
+        }
+    }
+    resolve(nil);
+}
+
 RCT_EXPORT_METHOD(setEnabled:(BOOL)enabled
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

@@ -35,7 +35,7 @@ module.exports = {
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
-        if (currentAppSecret) {
+        if (typeof (currentAppSecret) === 'string') {
             console.log(`iOS App Secret is already set in ${config.plistPath}`);
             return Promise.resolve(null);
         }

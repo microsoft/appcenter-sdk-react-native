@@ -43,11 +43,12 @@ RCT_EXPORT_MODULE();
 
 + (void)register
 {
-    [AppCenterReactNativeShared configureAppCenter];
     [MSWrapperCrashesHelper setAutomaticProcessing:NO];
     [MSCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
-
-    [MSAppCenter startService:[MSCrashes class]];
+    [AppCenterReactNativeShared configureAppCenter];
+    if ([MSAppCenter isConfigured]) {
+      [MSAppCenter startService:[MSCrashes class]];
+    }
 }
 
 + (void)registerWithAutomaticProcessing
@@ -138,7 +139,7 @@ RCT_EXPORT_METHOD(generateTestCrash:(RCTPromiseResolveBlock)resolve
                            rejecter:(RCTPromiseRejectBlock)reject)
 {
     [MSCrashes generateTestCrash];
-    reject(@"crash_failed", @"Failed to crash!", nil);
+    resolve(nil);
 }
 
 RCT_EXPORT_METHOD(notifyWithUserConfirmation:(int)userConfirmation
@@ -156,7 +157,9 @@ RCT_EXPORT_METHOD(notifyWithUserConfirmation:(int)userConfirmation
             [MSCrashes notifyWithUserConfirmation:MSUserConfirmationAlways];
             break;
         default:
-            reject(@"notify_user_confirmation_failed", @"Invalid user confirmation value!", nil);
+            // Let native SDK valitade and log an error for unknown value
+            [MSCrashes notifyWithUserConfirmation:userConfirmation];
+            break;
     }
     resolve(nil);
 }

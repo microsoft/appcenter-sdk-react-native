@@ -1,74 +1,99 @@
 package com.microsoft.appcenter.reactnative.shared;
 
 import android.app.Application;
+import android.text.TextUtils;
 
-import java.util.Map;
-import java.util.Date;
-import org.json.JSONArray;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.ingestion.models.WrapperSdk;
+import com.microsoft.appcenter.utils.AppCenterLog;
+
 import org.json.JSONObject;
-import org.json.JSONException;
 
 import java.io.InputStream;
 
-import com.microsoft.appcenter.CustomProperties;
-import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.ingestion.models.WrapperSdk;
-
+import static com.microsoft.appcenter.utils.AppCenterLog.LOG_TAG;
 
 public class AppCenterReactNativeShared {
-    private static String appSecret;
-    private static Application application;
-    private static WrapperSdk wrapperSdk = new WrapperSdk();
 
+    private static final String APP_SECRET_KEY = "app_secret";
+
+    private static final String START_AUTOMATICALLY_KEY = "start_automatically";
+
+    private static String sAppSecret;
+
+    private static boolean sStartAutomatically;
+
+    private static Application sApplication;
+
+    private static WrapperSdk sWrapperSdk = new WrapperSdk();
+
+    @SuppressWarnings("unused")
     public static void configureAppCenter(Application application) {
-        if (AppCenter.isConfigured()) {
+        if (sApplication != null) {
             return;
         }
-        AppCenterReactNativeShared.application = application;
+        sApplication = application;
+        sWrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
+        sWrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
+        AppCenter.setWrapperSdk(sWrapperSdk);
+        if (!AppCenterReactNativeShared.sStartAutomatically) {
+            return;
+        }
 
-        AppCenterReactNativeShared.wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
-        AppCenterReactNativeShared.wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
+        /* Get app secret from appcenter-config.json file. */
+        String appSecret = getAppSecret();
+        if (TextUtils.isEmpty(appSecret)) {
 
-        AppCenter.setWrapperSdk(wrapperSdk);
-        AppCenter.configure(application, AppCenterReactNativeShared.getAppSecret());
+            /* No app secret is a special case in SDK where there is no default transmission target. */
+            AppCenterLog.debug(LOG_TAG, "Configure without secret");
+            AppCenter.configure(application);
+        } else {
+            AppCenterLog.debug(LOG_TAG, "Configure with secret");
+            AppCenter.configure(application, appSecret);
+        }
     }
 
     /**
-        This functionality is intended to allow individual react-native App Center beacons to
-        set specific components of the wrapperSDK cooperatively
-        E.g. code push can fetch the wrapperSdk, set the code push version, then set the
-        wrapperSdk again so it can take effect.
-    */
+     * This functionality is intended to allow individual react-native App Center beacons to
+     * set specific components of the wrapperSDK cooperatively
+     * E.g. code push can fetch the wrapperSdk, set the code push version, then set the
+     * wrapperSdk again so it can take effect.
+     */
     public static void setWrapperSdk(WrapperSdk wrapperSdk) {
-        AppCenterReactNativeShared.wrapperSdk = wrapperSdk;
+        sWrapperSdk = wrapperSdk;
         AppCenter.setWrapperSdk(wrapperSdk);
     }
 
     public static WrapperSdk getWrapperSdk() {
-        return AppCenterReactNativeShared.wrapperSdk;
+        return sWrapperSdk;
     }
 
     public static void setAppSecret(String secret) {
-        AppCenterReactNativeShared.appSecret = secret;
+        sAppSecret = secret;
     }
 
     public static String getAppSecret() {
-        if (AppCenterReactNativeShared.appSecret == null) {
+        if (sAppSecret == null) {
             try {
-                InputStream configStream = AppCenterReactNativeShared.application.getAssets().open("appcenter-config.json");
+                InputStream configStream = sApplication.getAssets().open("appcenter-config.json");
                 int size = configStream.available();
                 byte[] buffer = new byte[size];
+
+                //noinspection ResultOfMethodCallIgnored
                 configStream.read(buffer);
                 configStream.close();
                 String jsonContents = new String(buffer, "UTF-8");
                 JSONObject json = new JSONObject(jsonContents);
-                AppCenterReactNativeShared.appSecret = json.getString("app_secret");
+                sAppSecret = json.getString(APP_SECRET_KEY);
+                sStartAutomatically = json.optBoolean(START_AUTOMATICALLY_KEY, true);
             } catch (Exception e) {
-                // Unable to read secret from file
-                // Leave the secret null so that App Center errors out appropriately.
+                AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
             }
         }
+        return sAppSecret;
+    }
 
-        return AppCenterReactNativeShared.appSecret;
+    public static void setStartAutomatically(boolean startAutomatically) {
+        sStartAutomatically = startAutomatically;
     }
 }

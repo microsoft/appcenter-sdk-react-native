@@ -45,3 +45,6 @@ android/keystores/debug.keystore
 
 # credentials
 .npmrc
+
+# Android release generated files
+**/app/**/release/**
