@@ -6,8 +6,7 @@ import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes
 import Push from 'appcenter-push';
 
 import AppCenterScreen from './screens/AppCenterScreen';
-// TODO enable for release when npm published
-//import TransmissionScreen from './screens/TransmissionScreen';
+import TransmissionScreen from './screens/TransmissionScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
@@ -16,7 +15,7 @@ export default createBottomTabNavigator(
   {
     AppCenter: AppCenterScreen,
     Analytics: AnalyticsScreen,
-    // TODO enable for release when npm published
+    Transmission: TransmissionScreen,
     Crashes: CrashesScreen
   },
   {
