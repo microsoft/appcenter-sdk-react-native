@@ -201,16 +201,15 @@ export default class AppCenterScreen extends Component {
               ],
               renderItem: switchRenderItem
             },
-            // TODO enable for release when npm published
-            // {
-            //   title: 'Change Startup Mode',
-            //   data: [
-            //     {
-            //       startupModes: StartupModes
-            //     }
-            //   ],
-            //   renderItem: pickerRenderItem
-            // },
+            {
+              title: 'Change Startup Mode',
+              data: [
+                {
+                  startupModes: StartupModes
+                }
+              ],
+              renderItem: pickerRenderItem
+            },
             {
               title: 'Actions',
               data: [

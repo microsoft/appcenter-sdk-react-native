@@ -21,8 +21,7 @@ public class DemoAppNativeModule extends BaseJavaModule {
         String secretOverride = mSharedPreferences.getString(APP_SECRET, null);
         AppCenterReactNativeShared.setAppSecret(secretOverride);
         boolean startAutomaticallyOverride = mSharedPreferences.getBoolean(START_AUTOMATICALLY, true);
-        // TODO enable when npm released
-        // AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
+        AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
     }
 
     @Override

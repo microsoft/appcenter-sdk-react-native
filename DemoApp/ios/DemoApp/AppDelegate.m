@@ -31,8 +31,7 @@
   
   id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
-    // TODO enable after updating to released npm
-    //[AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
+    [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
   
   NSURL *jsCodeLocation;
