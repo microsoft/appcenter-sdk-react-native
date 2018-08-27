@@ -14,4 +14,6 @@
 
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk;
 
++ (void) setStartAutomatically:(BOOL)shouldStartAutomatically;
+
 @end
