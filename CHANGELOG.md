@@ -1,5 +1,34 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.9.0
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix a potential deadlock that can freeze the application launch causing the iOS watchdog to kill the application.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix a bug where some initialize operations were executed twice.
+* **[Fix]** Fix a bug where device information could be null when reading the error report client side.
+
+#### iOS
+
+* **[Fix]** The above deadlock was mostly impacting the Crashes module.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix a crash that could happen when starting the application.
+
+### App Center Push
+
+* **[Fix]** Fix a crash that could happen when using Push on devices behind a firewall or unstable network.
+
 ## Version 1.8.0
 
 ### App Center
