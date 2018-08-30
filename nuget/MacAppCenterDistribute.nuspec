@@ -27,8 +27,8 @@
     <file src="$netstandard_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.AppCenter.Distribute.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/MonoAndroid410" />
+    <file src="$android_dir$/Microsoft.AppCenter.Distribute.Android.Bindings.dll" target="lib/MonoAndroid410" />
 
     <!-- iOS -->
     <file src="$ios_dir$/Microsoft.AppCenter.Distribute.dll" target="lib/Xamarin.iOS10" />

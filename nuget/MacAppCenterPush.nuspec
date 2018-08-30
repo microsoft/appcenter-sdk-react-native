@@ -18,7 +18,7 @@
       <group>
          <dependency id="Microsoft.AppCenter" version="$version$" />
       </group>
-      <group targetFramework="MonoAndroid403">
+      <group targetFramework="MonoAndroid410">
         <dependency id="Microsoft.AppCenter" version="$version$" />
         <dependency id="Xamarin.Firebase.Messaging" version="60.1142.1" />
 
@@ -44,8 +44,8 @@
     <file src="$netstandard_dir$/Microsoft.AppCenter.Push.dll" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <file src="$android_dir$/Microsoft.AppCenter.Push.dll" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.AppCenter.Push.Android.Bindings.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Push.dll" target="lib/MonoAndroid410" />
+    <file src="$android_dir$/Microsoft.AppCenter.Push.Android.Bindings.dll" target="lib/MonoAndroid410" />
 
     <!-- iOS -->
     <file src="$ios_dir$/Microsoft.AppCenter.Push.dll" target="lib/Xamarin.iOS10" />

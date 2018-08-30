@@ -1,5 +1,15 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.9.1 (Under active development)
+
+### AppCenter
+
+#### Android
+
+* **[Security]** To enforce TLS 1.2 on all HTTPS connections the SDK makes, we are dropping support for API level 15 (which supports only TLS 1.0), the minimum SDK version thus becomes 16. Previous versions of the SDK were already using TLS 1.2 on API level 16+.
+
+___
+
 ## Version 1.9.0
 
 ### App Center
@@ -28,6 +38,8 @@
 ### App Center Push
 
 * **[Fix]** Fix a crash that could happen when using Push on devices behind a firewall or unstable network.
+
+___
 
 ## Version 1.8.0
 
