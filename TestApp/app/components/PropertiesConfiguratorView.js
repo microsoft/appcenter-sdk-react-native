@@ -9,7 +9,7 @@ export default class PropertiesConfiguratorView extends Component {
     return (
       <View style={{ backgroundColor: 'white', padding: 10, flexDirection: 'column' }}>
         <TouchableOpacity onPress={() => { if (this.props.allowChanges) this.props.onPropertyAdded(); }}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ height: 24, width: 24 }} source={AddIcon} />
             <Divider />
             <Text>Add property</Text>
