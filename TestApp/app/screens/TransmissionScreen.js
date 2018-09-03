@@ -6,6 +6,8 @@ import Toast from 'react-native-simple-toast';
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
 
+import PropertiesConfiguratorView from '../components/PropertiesConfiguratorView'
+
 import SharedStyles from '../SharedStyles';
 import TransmissionTabBarIcon from '../assets/fuel.png';
 
@@ -18,12 +20,47 @@ export default class TransmissionScreen extends Component {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={TransmissionTabBarIcon} />
   }
 
+  targetTokensProperties = targetTokens.reduce((map, el) => {
+    map[el.key] = [];
+    return map;
+  }, {});
+
   state = {
-    targetToken: targetTokens[0]
+    targetToken: targetTokens[0],
+    showProperties: true,
+    properties: this.targetTokensProperties[targetTokens[0].key]
   }
 
   async componentWillMount() {
     await AppCenter.startFromLibrary(Analytics);
+  }
+
+  async addProperty(property) {
+    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    //TODO: Add property to target
+    this.setState(state => {
+      state.properties.push(property)
+      return state;
+    });
+  }
+
+  async removeProperty(propertyName) {
+    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    //TODO: Remove property from target
+    this.setState(state => {
+      state.properties = state.properties.filter((item) => item.name !== propertyName);
+      return state;
+    });
+  }
+
+  async replaceProperty(oldPropertyName, newProperty) {
+    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    //TODO: Replace property from target
+    this.setState(state => {
+      let index = state.properties.findIndex((el, index, array) => el.name === oldPropertyName);
+      state.properties[index] = newProperty;
+      return state;
+    });
   }
 
   render() {
@@ -41,6 +78,17 @@ export default class TransmissionScreen extends Component {
         <Text style={SharedStyles.itemButton}>{title}</Text>
       </TouchableOpacity>
     );
+    const propertiesRenderItem = () => (
+      <PropertiesConfiguratorView
+      onPropertyAdded={() => {
+        let nextItem = this.state.properties.length + 1;
+        this.addProperty({name: "key" + nextItem, value: "value" + nextItem})}
+      }
+      onPropertyRemoved={(propertyName) => this.removeProperty(propertyName)}
+      onPropertyChanged={(oldPropertyName, newProperty) => this.replaceProperty(oldPropertyName, newProperty)}
+      properties={this.state.properties}
+      allowChanges={this.state.showProperties}/>
+    );
     const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
     return (
@@ -55,7 +103,12 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: this.state.targetToken.label,
-                  valueChanged: option => this.setState({ targetToken: option }),
+                  valueChanged: option => {
+                    this.setState({ 
+                      targetToken: option,
+                      showProperties: !!option.key,
+                      properties: this.targetTokensProperties[option.key]})
+                  },
                   tokens: targetTokens
                 },
               ],
@@ -89,6 +142,11 @@ export default class TransmissionScreen extends Component {
               ],
               renderItem: actionRenderItem
             },
+            {
+              title: 'Properties',
+              data: [{}],
+              renderItem: propertiesRenderItem
+            }
           ]}
         />
       </View>
