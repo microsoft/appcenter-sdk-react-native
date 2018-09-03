@@ -84,10 +84,9 @@ export default class TransmissionScreen extends Component {
     const propertiesRenderItem = () => (
       <PropertiesConfiguratorView
         onPropertyAdded={() => {
-        const nextItem = this.state.properties.length + 1;
-        this.addProperty({ name: `key${nextItem}`, value: `value${nextItem}` });
-}
-      }
+          const nextItem = this.state.properties.length + 1;
+          this.addProperty({ name: `key${nextItem}`, value: `value${nextItem}` });
+        }}
         onPropertyRemoved={propertyName => this.removeProperty(propertyName)}
         onPropertyChanged={(oldPropertyName, newProperty) => this.replaceProperty(oldPropertyName, newProperty)}
         properties={this.state.properties}
@@ -113,7 +112,7 @@ export default class TransmissionScreen extends Component {
                       targetToken: option,
                       showProperties: !!option.key,
                       properties: this.targetTokensProperties[option.key]
-});
+                    });
                   },
                   tokens: targetTokens
                 },
