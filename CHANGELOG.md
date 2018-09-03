@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 1.9.1 (Under active development)
+## Version 1.10.0 (Under active development)
 
 ### AppCenter
 
