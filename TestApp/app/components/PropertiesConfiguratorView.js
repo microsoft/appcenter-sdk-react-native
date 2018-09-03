@@ -7,10 +7,10 @@ import RemoveIcon from '../assets/remove.png';
 export default class PropertiesConfiguratorView extends Component {
   render() {
     return (
-      <View style={{ backgroundColor: 'white', padding: 10, flexDirection: 'column' }}>
+      <View style={styles.container}>
         <TouchableOpacity onPress={() => { if (this.props.allowChanges) this.props.onPropertyAdded(); }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image style={{ height: 24, width: 24 }} source={AddIcon} />
+          <View style={styles.addPropertyContainer}>
+            <Image style={styles.addIcon} source={AddIcon} />
             <Divider />
             <Text>Add property</Text>
           </View>
@@ -19,9 +19,9 @@ export default class PropertiesConfiguratorView extends Component {
           style={{ marginTop: 10 }}
           data={this.props.properties}
           renderItem={({ item }) => (
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.propertyContainer}>
               <TouchableOpacity onPress={() => this.props.onPropertyRemoved(item.name)}>
-                <Image style={{ height: 26, width: 26 }} source={RemoveIcon} />
+                <Image style={styles.removeIcon} source={RemoveIcon} />
               </TouchableOpacity>
               <Divider />
               <TextInput style={styles.propertyInput} onChangeText={text => this.props.onPropertyChanged(item.name, { name: text, value: item.value })}>{item.name}</TextInput>
@@ -39,6 +39,23 @@ export default class PropertiesConfiguratorView extends Component {
 const Divider = () => <View style={{ width: 4 }} />;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 10,
+    flexDirection: 'column'
+  },
+  addPropertyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  propertiesList: {
+    marginTop: 10
+  },
+  propertyContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   propertyInput: {
     flex: 0.5,
     padding: 5,
@@ -46,5 +63,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     borderColor: 'grey',
     borderWidth: 0.3
+  },
+  addIcon: {
+    height: 24,
+    width: 24
+  },
+  removeIcon: {
+    height: 26,
+    width: 26
   }
 });
