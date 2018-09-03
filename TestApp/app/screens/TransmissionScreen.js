@@ -6,7 +6,7 @@ import Toast from 'react-native-simple-toast';
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
 
-import PropertiesConfiguratorView from '../components/PropertiesConfiguratorView'
+import PropertiesConfiguratorView from '../components/PropertiesConfiguratorView';
 
 import SharedStyles from '../SharedStyles';
 import TransmissionTabBarIcon from '../assets/fuel.png';
@@ -36,29 +36,32 @@ export default class TransmissionScreen extends Component {
   }
 
   async addProperty(property) {
-    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-    //TODO: Add property to target
-    this.setState(state => {
-      state.properties.push(property)
+    // const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    // TODO: Add property to target
+    this.setState((state) => {
+      state.properties.push(property);
+      this.targetTokensProperties[this.state.targetToken.key] = state.properties;
       return state;
     });
   }
 
   async removeProperty(propertyName) {
-    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-    //TODO: Remove property from target
-    this.setState(state => {
-      state.properties = state.properties.filter((item) => item.name !== propertyName);
+    // const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    // TODO: Remove property from target
+    this.setState((state) => {
+      state.properties = state.properties.filter(item => item.name !== propertyName);
+      this.targetTokensProperties[this.state.targetToken.key] = state.properties;
       return state;
     });
   }
 
   async replaceProperty(oldPropertyName, newProperty) {
-    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-    //TODO: Replace property from target
-    this.setState(state => {
-      let index = state.properties.findIndex((el, index, array) => el.name === oldPropertyName);
+    // const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    // TODO: Replace property from target
+    this.setState((state) => {
+      const index = state.properties.findIndex(el => el.name === oldPropertyName);
       state.properties[index] = newProperty;
+      this.targetTokensProperties[this.state.targetToken.key] = state.properties;
       return state;
     });
   }
@@ -80,14 +83,16 @@ export default class TransmissionScreen extends Component {
     );
     const propertiesRenderItem = () => (
       <PropertiesConfiguratorView
-      onPropertyAdded={() => {
-        let nextItem = this.state.properties.length + 1;
-        this.addProperty({name: "key" + nextItem, value: "value" + nextItem})}
+        onPropertyAdded={() => {
+        const nextItem = this.state.properties.length + 1;
+        this.addProperty({ name: `key${nextItem}`, value: `value${nextItem}` });
+}
       }
-      onPropertyRemoved={(propertyName) => this.removeProperty(propertyName)}
-      onPropertyChanged={(oldPropertyName, newProperty) => this.replaceProperty(oldPropertyName, newProperty)}
-      properties={this.state.properties}
-      allowChanges={this.state.showProperties}/>
+        onPropertyRemoved={propertyName => this.removeProperty(propertyName)}
+        onPropertyChanged={(oldPropertyName, newProperty) => this.replaceProperty(oldPropertyName, newProperty)}
+        properties={this.state.properties}
+        allowChanges={this.state.showProperties}
+      />
     );
     const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
@@ -103,11 +108,12 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: this.state.targetToken.label,
-                  valueChanged: option => {
-                    this.setState({ 
+                  valueChanged: (option) => {
+                    this.setState({
                       targetToken: option,
                       showProperties: !!option.key,
-                      properties: this.targetTokensProperties[option.key]})
+                      properties: this.targetTokensProperties[option.key]
+});
                   },
                   tokens: targetTokens
                 },
