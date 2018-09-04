@@ -165,4 +165,28 @@ RCT_EXPORT_METHOD(removeTransmissionTargetEventProperty:(NSString *)propertyKey
   resolve(nil);
 }
 
+RCT_EXPORT_METHOD(getChildTransmissionTarget:(NSString *)childToken
+                       forTransmissionTarget:(NSString *)parentToken
+                                    resolver:(RCTPromiseResolveBlock)resolve
+                                    rejecter:(RCTPromiseRejectBlock)reject) {
+  if (parentToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget = 
+  [[self targetsForTokens] objectForKey:parentToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *childTarget = 
+  [transmissionTarget transmissionTargetForToken:childToken];
+  if (childTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [[self targetsForTokens] setObject:childTarget forKey:childToken];
+  resolve(childToken);
+}
+
 @end

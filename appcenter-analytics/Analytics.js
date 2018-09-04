@@ -56,6 +56,20 @@ Analytics.TransmissionTarget = class {
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackTransmissionTargetEvent(eventName, sanitizeProperties(properties), this.targetToken);
     }
+
+    // async - returns a Promise
+    getTransmissionTarget(childToken) {
+        return new Promise((resolve) => {
+            AppCenterReactNativeAnalytics.getChildTransmissionTarget(childToken, this.targetToken)
+                .then((token) => {
+                    if (!token) {
+                        resolve(null);
+                    } else {
+                        resolve(new Analytics.TransmissionTarget(token));
+                    }
+                });
+        });
+    }
 };
 
 module.exports = Analytics;

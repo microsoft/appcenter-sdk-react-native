@@ -116,4 +116,20 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
         }
         promise.resolve(null);
     }
+
+    @ReactMethod
+    public void getChildTransmissionTarget(String childToken, String parentToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(parentToken);
+        if (transmissionTarget == null) {
+            promise.resolve(null);
+            return;
+        }
+        AnalyticsTransmissionTarget childTarget = transmissionTarget.getTransmissionTarget(childToken);
+        if (childTarget == null) {
+            promise.resolve(null);
+            return;
+        }
+        mTransmissionTargets.put(childToken, childTarget);
+        promise.resolve(childToken);
+    }
 }
