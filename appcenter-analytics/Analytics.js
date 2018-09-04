@@ -43,6 +43,15 @@ Analytics.TransmissionTarget = class {
         this.targetToken = targetToken;
     }
 
+    propertyConfigurator = {
+        setEventProperty(key, value) {
+            AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.targetToken);
+        },
+        removeEventProperty(key) {
+            AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.targetToken);
+        }
+    }
+
     // async - returns a Promise
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackTransmissionTargetEvent(eventName, sanitizeProperties(properties), this.targetToken);
