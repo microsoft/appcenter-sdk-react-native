@@ -36,8 +36,8 @@ export default class TransmissionScreen extends Component {
   }
 
   async addProperty(property) {
-    // const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-    // TODO: Add property to target
+    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    await target.propertyConfigurator.setEventProperty(property.name, property.value);
     this.setState((state) => {
       state.properties.push(property);
       this.targetTokensProperties[this.state.targetToken.key] = state.properties;
@@ -46,8 +46,8 @@ export default class TransmissionScreen extends Component {
   }
 
   async removeProperty(propertyName) {
-    // const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-    // TODO: Remove property from target
+    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    await target.propertyConfigurator.removeEventProperty(propertyName);
     this.setState((state) => {
       state.properties = state.properties.filter(item => item.name !== propertyName);
       this.targetTokensProperties[this.state.targetToken.key] = state.properties;
@@ -56,8 +56,9 @@ export default class TransmissionScreen extends Component {
   }
 
   async replaceProperty(oldPropertyName, newProperty) {
-    // const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
-    // TODO: Replace property from target
+    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    await target.propertyConfigurator.removeEventProperty(oldPropertyName);
+    await target.propertyConfigurator.setEventProperty(newProperty.name, newProperty.value);
     this.setState((state) => {
       const index = state.properties.findIndex(el => el.name === oldPropertyName);
       state.properties[index] = newProperty;
