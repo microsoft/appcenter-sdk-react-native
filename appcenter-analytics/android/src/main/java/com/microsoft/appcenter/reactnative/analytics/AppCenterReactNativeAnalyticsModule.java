@@ -106,4 +106,34 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
         }
         promise.resolve(null);
     }
+
+    @ReactMethod
+    public void setTransmissionTargetAppName(String appName, String targetToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget != null) {
+            PropertyConfigurator configurator = transmissionTarget.getPropertyConfigurator();
+            configurator.setAppName(appName);
+        }
+        promise.resolve(null);
+    }
+
+    @ReactMethod
+    public void setTransmissionTargetAppVersion(String appVersion, String targetToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget != null) {
+            PropertyConfigurator configurator = transmissionTarget.getPropertyConfigurator();
+            configurator.setAppVersion(appVersion);
+        }
+        promise.resolve(null);
+    }
+
+    @ReactMethod
+    public void setTransmissionTargetAppLocale(String appLocale, String targetToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget != null) {
+            PropertyConfigurator configurator = transmissionTarget.getPropertyConfigurator();
+            configurator.setAppLocale(appLocale);
+        }
+        promise.resolve(null);
+    }
 }

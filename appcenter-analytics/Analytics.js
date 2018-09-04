@@ -44,12 +44,21 @@ Analytics.TransmissionTarget = class {
     }
 
     propertyConfigurator = {
+        setAppName(appName) {
+            AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.targetToken);
+        },
+        setAppVersion(appVersion) {
+            AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.targetToken);
+        },
+        setAppLocale(appLocale) {
+            AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.targetToken);
+        },
         setEventProperty(key, value) {
             AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.targetToken);
         },
         removeEventProperty(key) {
             AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.targetToken);
-        }
+        },
     }
 
     // async - returns a Promise
