@@ -93,11 +93,13 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent:(NSString *)eventName
                                       rejecter:(RCTPromiseRejectBlock)reject) {
   if (targetToken == nil) {
     resolve(nil);
+    return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
+    return;
   }
   NSArray *allowedKeys = [[properties
       keysOfEntriesPassingTest:^BOOL(NSString *key, id obj, BOOL *stop) {
@@ -139,11 +141,13 @@ RCT_EXPORT_METHOD(setTransmissionTargetEventProperty:(NSString *)propertyKey
                                             rejecter:(RCTPromiseRejectBlock)reject) {
   if (targetToken == nil) {
     resolve(nil);
+    return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget =
   [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
+    return;
   }
   [transmissionTarget.propertyConfigurator setEventPropertyString:propertyValue forKey:propertyKey];
   resolve(nil);
@@ -155,11 +159,13 @@ RCT_EXPORT_METHOD(removeTransmissionTargetEventProperty:(NSString *)propertyKey
                                                rejecter:(RCTPromiseRejectBlock)reject) {
   if (targetToken == nil) {
     resolve(nil);
+    return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget =
   [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
+    return;
   }
   [transmissionTarget.propertyConfigurator removeEventPropertyForKey:propertyKey];
   resolve(nil);
