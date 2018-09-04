@@ -144,7 +144,7 @@ RCT_EXPORT_METHOD(setTransmissionTargetEventProperty:(NSString *)propertyKey
     return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget =
-  [[self targetsForTokens] objectForKey:targetToken];
+      [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -162,7 +162,7 @@ RCT_EXPORT_METHOD(removeTransmissionTargetEventProperty:(NSString *)propertyKey
     return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget =
-  [[self targetsForTokens] objectForKey:targetToken];
+      [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -180,19 +180,73 @@ RCT_EXPORT_METHOD(getChildTransmissionTarget:(NSString *)childToken
     return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget = 
-  [[self targetsForTokens] objectForKey:parentToken];
+      [[self targetsForTokens] objectForKey:parentToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *childTarget = 
-  [transmissionTarget transmissionTargetForToken:childToken];
+  MSAnalyticsTransmissionTarget *childTarget =
+      [transmissionTarget transmissionTargetForToken:childToken];
   if (childTarget == nil) {
     resolve(nil);
     return;
   }
   [[self targetsForTokens] setObject:childTarget forKey:childToken];
   resolve(childToken);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetAppName:(NSString *)appName
+                         forTransmissionTarget:(NSString *)targetToken
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setAppName:appName];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetAppVersion:(NSString *)appVersion
+                            forTransmissionTarget:(NSString *)targetToken
+                                         resolver:(RCTPromiseResolveBlock)resolve
+                                         rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setAppVersion:appVersion];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetAppLocale:(NSString *)appLocale
+                           forTransmissionTarget:(NSString *)targetToken
+                                        resolver:(RCTPromiseResolveBlock)resolve
+                                        rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setAppLocale:appLocale];
+  resolve(nil);
 }
 
 @end

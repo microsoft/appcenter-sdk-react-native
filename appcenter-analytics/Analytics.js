@@ -38,18 +38,36 @@ const Analytics = {
     },
 };
 
+Analytics.PropertyConfigurator = class {
+    constructor(transmissionTarget) {
+        this.transmissionTarget = transmissionTarget;
+    }
+
+    setAppName(appName) {
+        AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.transmissionTarget.targetToken);
+    }
+
+    setAppVersion(appVersion) {
+        AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.transmissionTarget.targetToken);
+    }
+
+    setAppLocale(appLocale) {
+        AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.transmissionTarget.targetToken);
+    }
+
+    setEventProperty(key, value) {
+        AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.transmissionTarget.targetToken);
+    }
+
+    removeEventProperty(key) {
+        AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
+    }
+};
+
 Analytics.TransmissionTarget = class {
     constructor(targetToken) {
         this.targetToken = targetToken;
-    }
-
-    propertyConfigurator = {
-        setEventProperty(key, value) {
-            AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.targetToken);
-        },
-        removeEventProperty(key) {
-            AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.targetToken);
-        }
+        this.propertyConfigurator = new Analytics.PropertyConfigurator(this);
     }
 
     // async - returns a Promise
