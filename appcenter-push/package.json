@@ -1,6 +1,6 @@
 {
   "name": "appcenter-push",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "React Native plugin for AppCenter Push",
   "main": "Push.js",
   "repository": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-push/README.md",
   "dependencies": {
-    "appcenter": "1.8.0"
+    "appcenter": "1.8.1"
   },
   "rnpm": {
     "android": {
