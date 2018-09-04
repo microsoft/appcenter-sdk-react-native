@@ -98,7 +98,7 @@ export default class TransmissionScreen extends Component {
     return (
       <View style={SharedStyles.container}>
         <SectionList
-          renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.title]}>{item}</Text>}
+          renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
           renderSectionHeader={({ section: { title } }) => <Text style={SharedStyles.header}>{title}</Text>}
           keyExtractor={(item, index) => item + index}
           sections={[
