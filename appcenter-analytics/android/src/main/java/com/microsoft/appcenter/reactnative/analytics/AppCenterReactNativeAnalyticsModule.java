@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.analytics.AnalyticsTransmissionTarget;
+import com.microsoft.appcenter.analytics.PropertyConfigurator;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.AppCenterLog;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
@@ -94,5 +95,15 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
         }
         mTransmissionTargets.put(targetToken, transmissionTarget);
         promise.resolve(targetToken);
+    }
+
+    @ReactMethod
+    public void setTransmissionTargetEventProperty(String propertyKey, String propertyValue, String targetToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget != null) {
+            PropertyConfigurator configurator = transmissionTarget.getPropertyConfigurator();
+            configurator.setEventProperty(propertyKey, propertyValue);
+        }
+        promise.resolve(null);
     }
 }

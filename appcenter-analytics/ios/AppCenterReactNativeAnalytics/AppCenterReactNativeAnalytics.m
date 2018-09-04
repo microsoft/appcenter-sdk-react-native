@@ -21,6 +21,7 @@
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterAnalytics/MSAnalytics.h>
 #import <AppCenterAnalytics/MSAnalyticsTransmissionTarget.h>
+#import <AppCenterAnalytics/MSPropertyConfigurator.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 typedef NSMutableDictionary<NSString *, MSAnalyticsTransmissionTarget *>
@@ -129,6 +130,23 @@ RCT_EXPORT_METHOD(getTransmissionTarget:(NSString *)targetToken
   }
   [[self targetsForTokens] setObject:transmissionTarget forKey:targetToken];
   resolve(targetToken);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetEventProperty:(NSString *)propertyKey
+                                       propertyValue:(NSString *)propertyValue
+                               forTransmissionTarget:(NSString *)targetToken
+                                            resolver:(RCTPromiseResolveBlock)resolve
+                                            rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+  [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+  }
+  [transmissionTarget.propertyConfigurator setEventPropertyString:propertyValue forKey:propertyKey];
+  resolve(nil);
 }
 
 @end
