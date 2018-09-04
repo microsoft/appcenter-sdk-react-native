@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, SectionList, Text, TouchableOpacity } from 'react-native';
+import { Image, View, SectionList, Text, TextInput, TouchableOpacity } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -81,6 +81,12 @@ export default class TransmissionScreen extends Component {
         <Text style={SharedStyles.itemButton}>{title}</Text>
       </TouchableOpacity>
     );
+    const standardPropertiesRenderItem = ({ item: { title, value, onChange } }) => (
+      <View style={SharedStyles.item}>
+        <Text style={SharedStyles.itemTitle}>{title}</Text>
+        <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{value}</TextInput>
+      </View>
+    );
     const propertiesRenderItem = () => (
       <PropertiesConfiguratorView
         onPropertyAdded={() => {
@@ -148,10 +154,46 @@ export default class TransmissionScreen extends Component {
               renderItem: actionRenderItem
             },
             {
+              title: 'Standard Properties',
+              data: [
+                {
+                  title: 'App Name',
+                  value: '',
+                  onChange: async (appName) => {
+                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                    if (transmissionTarget) {
+                      transmissionTarget.propertyConfigurator.setAppName(appName);
+                    }
+                  }
+                },
+                {
+                  title: 'App Version',
+                  value: '',
+                  onChange: async (appVersion) => {
+                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                    if (transmissionTarget) {
+                      transmissionTarget.propertyConfigurator.setAppVersion(appVersion);
+                    }
+                  }
+                },
+                {
+                  title: 'App Locale',
+                  value: '',
+                  onChange: async (appLocale) => {
+                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                    if (transmissionTarget) {
+                      transmissionTarget.propertyConfigurator.setAppLocale(appLocale);
+                    }
+                  }
+                },
+              ],
+              renderItem: standardPropertiesRenderItem
+            },
+            {
               title: 'Properties',
               data: [{}],
               renderItem: propertiesRenderItem
-            }
+            },
           ]}
         />
       </View>
