@@ -133,6 +133,7 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
         promise.resolve(childToken);
     }
     
+    @ReactMethod
     public void setTransmissionTargetAppName(String appName, String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
         if (transmissionTarget != null) {
