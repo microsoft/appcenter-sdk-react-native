@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		983B7E602FADAF9845107D9445B3A430 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		F5274A9163ABA73DF40AB59F1F2B2C5D /* Pods-TestApp-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BE5155635AE37EC98CFD01CFE1131E /* Pods-TestApp-dummy.m */; };
+		A0EB11D9CF279AE3C6D6E237EAF1F32A /* Pods-TestApp-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BE5155635AE37EC98CFD01CFE1131E /* Pods-TestApp-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,7 +16,6 @@
 		49B4B787E2F397EC21D592CF637480A6 /* Pods-TestApp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TestApp-resources.sh"; sourceTree = "<group>"; };
 		53A158CE3C0C4CE842F9F8C142DB9821 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = "AppCenter-SDK-Apple/iOS/AppCenterCrashes.framework"; sourceTree = "<group>"; };
 		65DC0916A3C8CB8E71FA7C137DFC112A /* AppCenterReactNativeShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterReactNativeShared.framework; path = AppCenterReactNativeShared/AppCenterReactNativeShared.framework; sourceTree = "<group>"; };
-		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9454C46A42EE2F6A8F78EBBD99E6347B /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenter.framework; path = "AppCenter-SDK-Apple/iOS/AppCenter.framework"; sourceTree = "<group>"; };
 		9CF15DBE97DCD97AF20FF7D330F7AB4E /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE.md; path = AppCenterReactNativeShared/LICENSE.md; sourceTree = "<group>"; };
@@ -32,11 +30,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		39A64CBDADB1A11E3B0A03F2A05873B8 /* Frameworks */ = {
+		CD69068DEF84745F74A91A62EBAF3545 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				983B7E602FADAF9845107D9445B3A430 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +61,13 @@
 			);
 			name = "Pods-TestApp";
 			path = "Target Support Files/Pods-TestApp";
+			sourceTree = "<group>";
+		};
+		0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		4E9569E6C11D65F2A830BC8DEDE55DBE /* Core */ = {
@@ -125,7 +129,7 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				759AB414B0E904551EF02913E1A4CC6B /* Development Pods */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */,
 				88BAA8D6162961ACBFFF1C61E2A82436 /* Pods */,
 				FC2A3BB9400941069146A7634E955C7C /* Products */,
 				61C723BA83C8FCB52353E9AB53ECF0B0 /* Targets Support Files */,
@@ -172,14 +176,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		CAA82D9260DF8BE0DB43567AEE038BE7 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,14 +183,6 @@
 				9CF15DBE97DCD97AF20FF7D330F7AB4E /* LICENSE.md */,
 			);
 			name = Pod;
-			sourceTree = "<group>";
-		};
-		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */,
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		EF9FEC41A271EB8FC7AAD0BEB08B8C36 /* Crashes */ = {
@@ -224,12 +212,12 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		25436A05CFDA0993867533D62DBF0CC5 /* Pods-TestApp */ = {
+		C8DE8A8A055686D41B76C64E54DD80D1 /* Pods-TestApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 09138D1F5E39764DE8460DCA723F962B /* Build configuration list for PBXNativeTarget "Pods-TestApp" */;
+			buildConfigurationList = 85E77C17708065907F8E4DEA58DA5349 /* Build configuration list for PBXNativeTarget "Pods-TestApp" */;
 			buildPhases = (
-				36B6B3444452FFD11B4622D706117C26 /* Sources */,
-				39A64CBDADB1A11E3B0A03F2A05873B8 /* Frameworks */,
+				CB568AB14CC868C45C7AAAA2AA880D6A /* Sources */,
+				CD69068DEF84745F74A91A62EBAF3545 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -261,17 +249,17 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				25436A05CFDA0993867533D62DBF0CC5 /* Pods-TestApp */,
+				C8DE8A8A055686D41B76C64E54DD80D1 /* Pods-TestApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		36B6B3444452FFD11B4622D706117C26 /* Sources */ = {
+		CB568AB14CC868C45C7AAAA2AA880D6A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5274A9163ABA73DF40AB59F1F2B2C5D /* Pods-TestApp-dummy.m in Sources */,
+				A0EB11D9CF279AE3C6D6E237EAF1F32A /* Pods-TestApp-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +329,7 @@
 			};
 			name = Debug;
 		};
-		77C937A6FB81446159EB700A62669AB5 /* Release */ = {
+		9CDE3335941E072D1D93DFB35870BB43 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A21022CC422B922C667A96123754D85F /* Pods-TestApp.release.xcconfig */;
 			buildSettings = {
@@ -363,7 +351,7 @@
 			};
 			name = Release;
 		};
-		850A9B39E1E009E23F8B339A3C5415D5 /* Debug */ = {
+		A6836380C4159BAB98128D48C782F470 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B1E91F310544CF6C2E6D8872011AC47E /* Pods-TestApp.debug.xcconfig */;
 			buildSettings = {
@@ -445,20 +433,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		09138D1F5E39764DE8460DCA723F962B /* Build configuration list for PBXNativeTarget "Pods-TestApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				850A9B39E1E009E23F8B339A3C5415D5 /* Debug */,
-				77C937A6FB81446159EB700A62669AB5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				199D972A13F2B4C56847F7A89CCA83BC /* Debug */,
 				FDB2FC4A1E5891381CD9D922145497F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85E77C17708065907F8E4DEA58DA5349 /* Build configuration list for PBXNativeTarget "Pods-TestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6836380C4159BAB98128D48C782F470 /* Debug */,
+				9CDE3335941E072D1D93DFB35870BB43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
