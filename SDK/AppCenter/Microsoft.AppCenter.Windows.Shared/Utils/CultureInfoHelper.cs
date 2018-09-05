@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -15,7 +16,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         private const string LOCALE_NAME_SYSTEM_DEFAULT = "!x-sys-default-locale";
 
         private const int BUFFER_SIZE = 530;
-        
+
         [DllImport("api-ms-win-core-localization-l1-2-0.dll", CharSet = CharSet.Unicode)]
         private static extern int GetLocaleInfoEx(string lpLocaleName, uint LCType, StringBuilder lpLCData, int cchData);
 
@@ -36,11 +37,18 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
 
         private static string InvokeGetLocaleInfoEx(string lpLocaleName, uint LCType)
         {
-            var buffer = new StringBuilder(BUFFER_SIZE);
-            var resultCode = GetLocaleInfoEx(lpLocaleName, LCType, buffer, BUFFER_SIZE);
-            if (resultCode > 0)
+            try
             {
-                return buffer.ToString();
+                var buffer = new StringBuilder(BUFFER_SIZE);
+                var resultCode = GetLocaleInfoEx(lpLocaleName, LCType, buffer, BUFFER_SIZE);
+                if (resultCode > 0)
+                {
+                    return buffer.ToString();
+                }
+            }
+            catch (Exception exception)
+            {
+                AppCenterLog.Verbose(AppCenterLog.LogTag, $"Failed to call GetLocaleInfoEx: {exception.Message}");
             }
             return null;
         }
