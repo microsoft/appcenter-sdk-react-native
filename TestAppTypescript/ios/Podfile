@@ -6,10 +6,10 @@ target 'TestAppTypescript' do
   # use_frameworks!
 
   # Pods for TestAppTypescript
-  pod 'AppCenter/Push', '~> 1.5.0'
-  pod 'AppCenter/Crashes', '~> 1.5.0'
-  pod 'AppCenter/Analytics', '~> 1.5.0'
-  pod 'AppCenterReactNativeShared', '~> 1.4.0'
+  pod 'AppCenter/Push', '~> 1.9.0'
+  pod 'AppCenter/Crashes', '~> 1.9.0'
+  pod 'AppCenter/Analytics', '~> 1.9.0'
+  pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
 
   
 

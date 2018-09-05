@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 
 @protocol MSLog;
+@protocol MSChannelUnitProtocol;
+@protocol MSChannelGroupProtocol;
 @protocol MSChannelProtocol;
 
 @protocol MSChannelDelegate <NSObject>
@@ -8,8 +10,48 @@
 @optional
 
 /**
- * Callback method that will be called before each log will be send to the server.
+ * A callback that is called when a channel unit is added to the channel group.
  *
+ * @param channelGroup The channel group.
+ * @param channel The newly added channel.
+ */
+- (void)channelGroup:(id<MSChannelGroupProtocol>)channelGroup
+    didAddChannelUnit:(id<MSChannelUnitProtocol>)channel;
+
+/**
+ * A callback that is called when a log is just enqueued. Delegates may want to
+ * prepare the log a little more before further processing.
+ *
+ * @param log The log to prepare.
+ */
+- (void)channel:(id<MSChannelProtocol>)channel prepareLog:(id<MSLog>)log;
+
+/**
+ * A callback that is called after a log is definitely prepared.
+ *
+ * @param log The log.
+ * @param internalId An internal Id to keep track of logs.
+ */
+- (void)channel:(id<MSChannelProtocol>)channel
+     didPrepareLog:(id<MSLog>)log
+    withInternalId:(NSString *)internalId;
+
+/**
+ * A callback that is called after a log completed the enqueueing process
+ * weither it was successfull or not.
+ *
+ * @param log The log.
+ * @param internalId An internal Id to keep track of logs.
+ */
+- (void)channel:(id<MSChannelProtocol>)channel
+    didCompleteEnqueueingLog:(id<MSLog>)log
+              withInternalId:(NSString *)internalId;
+
+/**
+ * Callback method that will be called before each log will be send to the
+ * server.
+ *
+ * @param channel The channel object.
  * @param log The log to be sent.
  */
 - (void)channel:(id<MSChannelProtocol>)channel willSendLog:(id<MSLog>)log;
@@ -17,52 +59,44 @@
 /**
  * Callback method that will be called in case the SDK was able to send a log.
  *
+ * @param channel The channel object.
  * @param log The log to be sent.
  */
-- (void)channel:(id<MSChannelProtocol>)channel didSucceedSendingLog:(id<MSLog>)log;
+- (void)channel:(id<MSChannelProtocol>)channel
+    didSucceedSendingLog:(id<MSLog>)log;
 
 /**
  * Callback method that will be called in case the SDK was unable to send a log.
  *
+ * @param channel The channel object.
  * @param log The log to be sent.
  * @param error The error that occured.
  */
-- (void)channel:(id<MSChannelProtocol>)channel didFailSendingLog:(id<MSLog>)log withError:(NSError *)error;
+- (void)channel:(id<MSChannelProtocol>)channel
+    didFailSendingLog:(id<MSLog>)log
+            withError:(NSError *)error;
+
+/**
+ * A callback that is called when setEnabled has been invoked.
+ *
+ * @param channel The channel.
+ * @param isEnabled The boolean that indicates enabled.
+ * @param deletedData The boolean that indicates deleting data on disabled.
+ */
+- (void)channel:(id<MSChannelProtocol>)channel
+              didSetEnabled:(BOOL)isEnabled
+    andDeleteDataOnDisabled:(BOOL)deletedData;
 
 /**
  * Callback method that will determine if a log should be filtered out from the
  * usual processing pipeline. If any delegate returns true, the log is filtered.
  *
+ * @param channelUnit The channel unit that is going to send the log.
  * @param log The log to be filtered or not.
  *
  * @return `true` if the log should be filtered out.
  */
-- (BOOL)shouldFilterLog:(id<MSLog>)log;
-
-/**
- * A callback that is called when a log has been enqueued, before a log has been forwarded to persistence, etc.
- *
- * @param log The log.
- * @param internalId An internal Id that can be used to keep track of logs.
- */
-- (void)onEnqueuingLog:(id<MSLog>)log withInternalId:(NSString *)internalId;
-
-/**
- * Callback that is called when a log has been persisted successfully. This was introduced to implement the
- * log buffer for Crashes.
- *
- * @param log The log.
- * @param internalId An internal Id that can be used to keep track of logs.
- */
-- (void)onFinishedPersistingLog:(id<MSLog>)log withInternalId:(NSString *)internalId;
-
-/**
- * Callback that is called when persisting a log has failed, meaning it has not been saved to disk because the log was
- * empty. This was introduced to implement the log buffer for Crashes.
- *
- * @param log The log.
- * @param internalId An internal Id that can be used to keep track of logs.
- */
-- (void)onFailedPersistingLog:(id<MSLog>)log withInternalId:(NSString *)internalId;
+- (BOOL)channelUnit:(id<MSChannelUnitProtocol>)channelUnit
+    shouldFilterLog:(id<MSLog>)log;
 
 @end
