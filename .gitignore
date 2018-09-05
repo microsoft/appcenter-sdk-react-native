@@ -49,4 +49,4 @@ android/keystores/debug.keystore
 google-services.json
 
 #typescript
-/artifacts
+artifacts/

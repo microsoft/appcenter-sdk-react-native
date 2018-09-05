@@ -12,6 +12,7 @@
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -26,7 +27,7 @@
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
-  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes
 
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
 
