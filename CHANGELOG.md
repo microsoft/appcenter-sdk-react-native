@@ -4,7 +4,7 @@ ___
 
 ### Fix
 
-- Fix a bug preventing AppCenter to start modules on Android. [#407]
+- Fix a bug preventing AppCenter to start modules on Android. [#407](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/407).
 ___
 
 ## Version 1.8.0
@@ -15,7 +15,7 @@ ___
 
 ### Fix
 
-- To prevent crashes, caused by misusing SDK, native modules will no longer reject promises. [#386](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/386)
+- To prevent crashes, caused by misusing SDK, native modules will no longer reject promises. [#386](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/386).
 - As a consequence `Crashes.generateTestCrash` does not crash in release Android builds to align with the other Android SDKs (Java and Xamarin), and iOS builds in App Store environment no longer crash when calling that same method to align with Apple and Xamarin SDKs.
 
 ### Misc
@@ -30,7 +30,7 @@ ___
 
 ### Bugfixes
 
-- Fix AppCenterReactNativeShared pod version issue for appcenter-crashes module. [#361](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/361)
+- Fix AppCenterReactNativeShared pod version issue for appcenter-crashes module. [#361](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/361).
 
 ___
 
@@ -45,7 +45,7 @@ After updating the app to use Firebase, you will also no longer see duplicate no
 
 ### Bugfixes
 
-- Fix jest tests mock path issue. [#340](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/340)
+- Fix jest tests mock path issue. [#340](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/340).
 
 ### Misc
 
@@ -59,10 +59,10 @@ ___
 
 ### Bugfixes
 
-- Fix jest tests failure when importing App Center packages. [#303](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/303)
-- Fix framework imports that break CocoaPods install. [#319](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/319)
-- Update Android build tools to the latest version 27.0.3. [#320](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/320)
-- Remove Android support library that isn't used anywhere. [#328](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/328)
+- Fix jest tests failure when importing App Center packages. [#303](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/303).
+- Fix framework imports that break CocoaPods install. [#319](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/319).
+- Update Android build tools to the latest version 27.0.3. [#320](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/320).
+- Remove Android support library that isn't used anywhere. [#328](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/328).
 
 ### Misc
 
@@ -75,9 +75,9 @@ ___
 
 ### Bugfixes
 
-- Fix recursive header expansion and argument list too long issue. [#290](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/290)
-- Shorten log tags for Android bridge code to address tag too long issue on Android API <= 23. [#300](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/300)
-- Fix App Center log not working issue. [#301](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/301)
+- Fix recursive header expansion and argument list too long issue. [#290](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/290).
+- Shorten log tags for Android bridge code to address tag too long issue on Android API <= 23. [#300](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/300).
+- Fix App Center log not working issue. [#301](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/301).
 
 ### Misc
 
@@ -90,13 +90,13 @@ ___
 
 ### Bugfixes
 
-- Make "Vendor" folder part of the framework search path. [#275](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/275)
-- Make push notfication title and message null but never undefined. [#277](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/277)
+- Make "Vendor" folder part of the framework search path. [#275](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/275).
+- Make push notfication title and message null but never undefined. [#277](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/277).
 
 ### Misc
 
-- Refined on-boarding prompt message of react-native link. [#271](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/271)
-- Allow using cocoapods without react native link  [#244](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/244)
+- Refined on-boarding prompt message of react-native link. [#271](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/271).
+- Allow using cocoapods without react native link  [#244](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/244).
 - This release includes the changes from the underlying AppCenter Apple SDK in version 1.6.0. Please check out its changelog.
 - This release includes the changes from the underlying AppCenter Android SDK in version 1.5.0. Please check out its changelog.
 
@@ -106,12 +106,12 @@ ___
 
 ### Bugfixes
 
-- Returns NO from requiresMainQueueSetup() in iOS native modules to avoid react native warnings. [#238](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/238)
-- Adds LICENSE.md to Products folder to make cocoapod integration easier during SDK release process. [#250](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/250)
-- Fixes react-native 0.53 prompt glitches when linking. [#252](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/252)
-- Avoid android link duplicates for appcenter in react-native 0.53. [#254](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/254)
-- Improves error handling in react-native android linker script. [#256](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/256)
-- Adds GitHub Issue Template. [#258](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/258)
+- Returns NO from requiresMainQueueSetup() in iOS native modules to avoid react native warnings. [#238](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/238).
+- Adds LICENSE.md to Products folder to make cocoapod integration easier during SDK release process. [#250](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/250).
+- Fixes react-native 0.53 prompt glitches when linking. [#252](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/252).
+- Avoid android link duplicates for appcenter in react-native 0.53. [#254](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/254).
+- Improves error handling in react-native android linker script. [#256](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/256).
+- Adds GitHub Issue Template. [#258](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/258).
 
 ### Misc
 
@@ -126,7 +126,7 @@ This release contains a bug fix.
 
 ### Bugfixes
 
-- Support CocoaPods 1.4 [#237](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/237)
+- Support CocoaPods 1.4 [#237](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/237).
 
 ### Known Issue
 
@@ -140,11 +140,11 @@ This release contains bugfixes and a breaking change. The SDK now requires iOS 9
 
 ### Bugfixes
 
-- Fix warnings when sending crashes without a listener. [#192](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/192)
-- The test app doesn't show an error when a binary attachment is not present. [#193](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/193)
-- Fix a bug where Analytics.trackEvent doesn't allow message with no properties. [#202](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/202)
-- Perform a case-insensitive search for AppDelegate based on package.json. [#213](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/213)
-- Don't check for the platform when checking for the pod command. [#217](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/217)
+- Fix warnings when sending crashes without a listener. [#192](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/192).
+- The test app doesn't show an error when a binary attachment is not present. [#193](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/193).
+- Fix a bug where Analytics.trackEvent doesn't allow message with no properties. [#202](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/202).
+- Perform a case-insensitive search for AppDelegate based on package.json. [#213](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/213).
+- Don't check for the platform when checking for the pod command. [#217](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/217).
 
 ### Misc
 
@@ -163,8 +163,8 @@ ___
 
 ### Bugfixes
 
-- Fix a bug where the license is not included in AppCenterReactNativeShared CocoaPod [#174](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/174)
-- Fix a bug in appcenter-crashes module to make sure crashes won't get processed when crashes is disabled [#181](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/181)
+- Fix a bug where the license is not included in AppCenterReactNativeShared CocoaPod [#174](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/174).
+- Fix a bug in appcenter-crashes module to make sure crashes won't get processed when crashes is disabled [#181](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/181).
 
 ### Misc
 
@@ -209,7 +209,7 @@ ___
 
 ### Bugfixes
 
-- Fix a compiler warning in RNCrashes native module [#153](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/153)
+- Fix a compiler warning in RNCrashes native module [#153](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/153).
 
 ### Misc
 
@@ -242,7 +242,7 @@ For more information, please see Customize your usage of Mobile Center Crashes.
 
 ### Bugfixes
 
-- Fix a bug in Android that JS send events before native Java loads would crash application [#135](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/135)
+- Fix a bug in Android that JS send events before native Java loads would crash application [#135](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/135).
 
 ### Misc
 
@@ -255,13 +255,13 @@ ___
 
 ## Version 0.10.0
 
-- New Feature - getSdkVersion() API for getting mobile center react native SDK version at runtime [#126](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/126)
-- Support Android only project in react-native link [#107](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/107)
-- Support iOS only project in react-native link [#107](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/107)
-- Fix a bug in setCustomProperties() API where boolean property is always set to true [#114](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/114)
-- Fix a bug where mobile center analytics is always enabled even analytics is supposed to "Enable in JavaScript" [#117](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/117)
-- Fix a typo in crashes logging in onSendingFailed [#120](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/120)
-- Fix a bug in iOS react-native link script issue [#123](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/123)
+- New Feature - getSdkVersion() API for getting mobile center react native SDK version at runtime [#126](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/126).
+- Support Android only project in react-native link [#107](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/107).
+- Support iOS only project in react-native link [#107](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/107).
+- Fix a bug in setCustomProperties() API where boolean property is always set to true [#114](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/114).
+- Fix a bug where mobile center analytics is always enabled even analytics is supposed to "Enable in JavaScript" [#117](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/117).
+- Fix a typo in crashes logging in onSendingFailed [#120](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/120).
+- Fix a bug in iOS react-native link script issue [#123](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/123).
 - This release also includes changes from underlying iOS SDK:
 https://github.com/Microsoft/mobile-center-sdk-ios/releases/tag/0.12.2
 https://github.com/Microsoft/mobile-center-sdk-ios/releases/tag/0.12.3
