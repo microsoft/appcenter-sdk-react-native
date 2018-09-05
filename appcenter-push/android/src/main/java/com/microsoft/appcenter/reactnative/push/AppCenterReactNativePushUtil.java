@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 import org.json.JSONException;
 
 public class AppCenterReactNativePushUtil {
-    private static final String LOG_TAG = "AppCenterReactNativePush";
+    private static final String LOG_TAG = "AppCenterPush";
 
     public AppCenterReactNativePushUtil() {
     }

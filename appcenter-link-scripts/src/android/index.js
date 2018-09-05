@@ -24,7 +24,7 @@ module.exports = {
 
         // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
         // if they want
-        if (currentAppSecret) {
+        if (typeof (currentAppSecret) === 'string') {
             console.log(`Android App Secret is already set in ${config.AppCenterConfigPath}`);
             return Promise.resolve(null);
         }
@@ -75,11 +75,13 @@ module.exports = {
         const gradlePath = 'android/app/build.gradle';
         let gradleContent = fs.readFileSync(gradlePath, 'utf-8');
         gradleContent.split('\n').forEach((line) => {
-            if (lines[line]) {
-                gradleContent = gradleContent.replace(line, '');
-            }
-            if (line.match(/^\s*compile project.*appcenter.*$/)) {
-                lines[line] = true;
+            const match = line.match(/^\s*(compile|implementation) (project.*appcenter.*)$/);
+            if (match) {
+                if (lines[match[2]]) {
+                    gradleContent = gradleContent.replace(line, '');
+                } else {
+                    lines[match[2]] = true;
+                }
             }
         });
         gradleContent = gradleContent.replace(/\n\n\n/g, '\n\n');

@@ -63,10 +63,11 @@ RCT_EXPORT_MODULE();
 + (void)register
 {
     pushDelegate = [[AppCenterReactNativePushDelegateBase alloc] init];
-
-    [AppCenterReactNativeShared configureAppCenter];
     [MSPush setDelegate:pushDelegate];
-    [MSAppCenter startService:[MSPush class]];
+    [AppCenterReactNativeShared configureAppCenter];
+    if ([MSAppCenter isConfigured]) {
+        [MSAppCenter startService:[MSPush class]];
+    }
 }
 
 - (void)startObserving {

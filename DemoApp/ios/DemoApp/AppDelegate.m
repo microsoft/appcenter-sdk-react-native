@@ -12,6 +12,7 @@
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -21,18 +22,27 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [MSAppCenter setLogLevel: MSLogLevelVerbose];
+  
+  id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
+  if ([appSecret isKindOfClass:[NSString class]]) {
+    [AppCenterReactNativeShared setAppSecret:appSecret];
+  }
+  
+  id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
+  if ([startAutomatically isKindOfClass:[NSNumber class]]) {
+    [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
+  }
+  
   NSURL *jsCodeLocation;
+
+  [AppCenterReactNative register];  // Initialize AppCenter 
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
 
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
-
-  [AppCenterReactNative register];  // Initialize AppCenter 
-
-  [MSAppCenter setLogLevel: MSLogLevelVerbose];
-  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 

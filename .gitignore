@@ -50,3 +50,6 @@ google-services.json
 
 #typescript
 artifacts/
+
+# Android release generated files
+**/app/**/release/**

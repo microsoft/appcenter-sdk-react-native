@@ -8,30 +8,48 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "^1.4.0",
-    "appcenter-analytics": "^1.4.0",
-    "appcenter-crashes": "^1.4.0",
-    "appcenter-push": "^1.4.0",
-    "react": "16.0.0-alpha.12",
-    "react-native": "^0.53.3",
-    "react-native-dialog-component": "^0.2.17",
-    "react-native-fs": "^2.9.2",
+    "appcenter": "^1.8.0",
+    "appcenter-analytics": "^1.8.0",
+    "appcenter-crashes": "^1.8.0",
+    "appcenter-push": "^1.8.0",
+    "react": "16.3.1",
+    "react-native": "^0.56.0",
+    "react-native-dialog-input": "^1.0.4",
+    "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.26.7",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-native-modal-selector": "0.0.28",
+    "react-native-simple-toast": "0.0.8",
+    "react-navigation": "^2.11.2"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "18.0.0",
-    "babel-preset-react-native": "1.9.1",
+    "@babel/core": "^7.0.0-beta.54",
+    "babel-core": "^7.0.0-beta.47",
+    "babel-eslint": "8.2.3",
+    "babel-jest": "^23.4.0",
+    "babel-preset-react-native": "^5.0.1",
     "eslint": "^4.5.0",
-    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
-    "jest": "18.1.0",
-    "react-test-renderer": "15.4.2"
+    "jest": "22.4.3",
+    "react-test-renderer": "16.3.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "verbose": true,
+    "setupTestFrameworkScriptFile": "./jest/setup.js",
+    "setupFiles": [
+      "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
+      "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
+      "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
+      "<rootDir>/node_modules/appcenter-push/test/AppCenterPushMock.js"
+    ],
+    "transformIgnorePatterns": [
+      "!node_modules/react-native"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    }
   }
 }

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@import AppCenter;
+@class MSWrapperSdk;
 
 @interface AppCenterReactNativeShared : NSObject
 
@@ -13,5 +13,7 @@
 + (MSWrapperSdk *) getWrapperSdk;
 
 + (void) setWrapperSdk:(MSWrapperSdk *)sdk;
+
++ (void) setStartAutomatically:(BOOL)shouldStartAutomatically;
 
 @end

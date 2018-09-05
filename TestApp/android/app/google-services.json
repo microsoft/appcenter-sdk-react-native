@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "177539951155",
+    "project_id": "mobile-center-sdk-android"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177539951155:android:6601b037e8d162d1",
+        "android_client_info": {
+          "package_name": "com.demoapp"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ]
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177539951155:android:21914d25bfa88493",
+        "android_client_info": {
+          "package_name": "com.testapp"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <AppCenterPush/AppCenterPush.h>
 #import "AppCenterReactNativePushDelegate.h"
 
 #if __has_include(<React/RCTEventDispatcher.h>)
@@ -35,7 +35,7 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
     else if (hasListeners) {
         [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
     }
-}   
+}
 
 - (void)sendAndClearInitialNotification
 {
@@ -46,7 +46,7 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
         self.initialNotification = nil;
     }
     self.saveInitialNotification = false;
-}   
+}
 
 - (NSArray<NSString *> *)supportedEvents
 {
