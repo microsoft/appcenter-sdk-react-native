@@ -46,7 +46,6 @@ android/keystores/debug.keystore
 
 # credentials
 .npmrc
-google-services.json
 
 #typescript
 artifacts/
