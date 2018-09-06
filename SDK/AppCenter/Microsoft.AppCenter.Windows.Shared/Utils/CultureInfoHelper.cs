@@ -46,7 +46,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                     return buffer.ToString();
                 }
             }
-            catch (Exception exception)
+            catch (DllNotFoundException exception)
             {
                 AppCenterLog.Verbose(AppCenterLog.LogTag, $"Failed to call GetLocaleInfoEx: {exception.Message}");
             }
