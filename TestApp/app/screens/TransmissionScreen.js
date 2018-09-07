@@ -25,6 +25,8 @@ export default class TransmissionScreen extends Component {
     return map;
   }, {});
 
+  transmissionTargets = {};
+
   state = {
     targetToken: targetTokens[0],
     showProperties: true,
@@ -33,10 +35,29 @@ export default class TransmissionScreen extends Component {
 
   async componentWillMount() {
     await AppCenter.startFromLibrary(Analytics);
+    this.createTargetsFromTokens(targetTokens, 0, null);
+  }
+
+  async createTargetsFromTokens(tokens, index, parentTarget) {
+    if (index > tokens.length) {
+      return;
+    }
+    let transmissionTarget = parentTarget;
+    const token = tokens[index];
+    if (token.key) {
+      if (transmissionTarget) {
+        transmissionTarget = await transmissionTarget.getTransmissionTarget(token.key);
+        this.transmissionTargets[token.key] = transmissionTarget;
+      } else {
+        transmissionTarget = await Analytics.getTransmissionTarget(token.key);
+        this.transmissionTargets[token.key] = transmissionTarget;
+      }
+      await this.createTargetsFromTokens(tokens, ++index, transmissionTarget);
+    }
   }
 
   async addProperty(property) {
-    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    const target = this.transmissionTargets[this.state.targetToken.key];
     await target.propertyConfigurator.setEventProperty(property.name, property.value);
     this.setState((state) => {
       state.properties.push(property);
@@ -46,7 +67,7 @@ export default class TransmissionScreen extends Component {
   }
 
   async removeProperty(propertyName) {
-    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    const target = this.transmissionTargets[this.state.targetToken.key];
     await target.propertyConfigurator.removeEventProperty(propertyName);
     this.setState((state) => {
       state.properties = state.properties.filter(item => item.name !== propertyName);
@@ -56,7 +77,7 @@ export default class TransmissionScreen extends Component {
   }
 
   async replaceProperty(oldPropertyName, newProperty) {
-    const target = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+    const target = this.transmissionTargets[this.state.targetToken.key];
     await target.propertyConfigurator.removeEventProperty(oldPropertyName);
     await target.propertyConfigurator.setEventProperty(newProperty.name, newProperty.value);
     this.setState((state) => {
@@ -131,8 +152,8 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: 'Track event without properties',
-                  action: async () => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  action: () => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       const eventName = 'EventWithoutPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName);
@@ -142,8 +163,8 @@ export default class TransmissionScreen extends Component {
                 },
                 {
                   title: 'Track event with properties',
-                  action: async () => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  action: () => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       const eventName = 'EventWithPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName, { property1: '100', property2: '200' });
@@ -160,8 +181,8 @@ export default class TransmissionScreen extends Component {
                 {
                   title: 'App Name',
                   value: '',
-                  onChange: async (appName) => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  onChange: (appName) => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       transmissionTarget.propertyConfigurator.setAppName(appName);
                     }
@@ -170,8 +191,8 @@ export default class TransmissionScreen extends Component {
                 {
                   title: 'App Version',
                   value: '',
-                  onChange: async (appVersion) => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  onChange: (appVersion) => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       transmissionTarget.propertyConfigurator.setAppVersion(appVersion);
                     }
@@ -180,8 +201,8 @@ export default class TransmissionScreen extends Component {
                 {
                   title: 'App Locale',
                   value: '',
-                  onChange: async (appLocale) => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  onChange: (appLocale) => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       transmissionTarget.propertyConfigurator.setAppLocale(appLocale);
                     }
