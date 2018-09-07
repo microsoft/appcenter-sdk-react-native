@@ -28,8 +28,8 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                 name = InvokeGetLocaleInfoEx(LOCALE_NAME_SYSTEM_DEFAULT, LOCALE_SNAME);
                 if (name == null)
                 {
-                    // If system default doesn't work, use invariant.
-                    return CultureInfo.InvariantCulture;
+                    // If system/user default doesn't work, use current culture which is app locale.
+                    return CultureInfo.CurrentCulture;
                 }
             }
             return new CultureInfo(name);
