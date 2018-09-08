@@ -10,14 +10,6 @@ const Constants = {
   {
     label: 'Grandchild Target Token',
     key: '3745eeab8b9c43979c959e3de41f32a1-8ae5ebe6-9d97-4358-8323-ad2631b98d7d-6558'
-  },
-  {
-    label: 'Empty Target Token',
-    key: ''
-  },
-  {
-    label: 'Null Target Token',
-    key: null
   }]
 };
 
