@@ -44,23 +44,27 @@ Analytics.PropertyConfigurator = class {
     }
 
     setAppName(appName) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.transmissionTarget.targetToken);
     }
 
     setAppVersion(appVersion) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.transmissionTarget.targetToken);
     }
 
     setAppLocale(appLocale) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.transmissionTarget.targetToken);
     }
 
     setEventProperty(key, value) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.transmissionTarget.targetToken);
     }
 
     removeEventProperty(key) {
-        AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
+    }
+
+    collectDeviceId() {
+        return AppCenterReactNativeAnalytics.collectTransmissionTargetDeviceId(this.transmissionTarget.targetToken);
     }
 };
 
