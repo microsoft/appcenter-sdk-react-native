@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
+import DeviceInfo from 'react-native-device-info';
 
 import AppCenter, { CustomProperties } from 'appcenter';
 import Push from 'appcenter-push';
@@ -65,6 +66,7 @@ export default class AppCenterScreen extends Component {
     appCenterEnabled: false,
     pushEnabled: false,
     installId: '',
+    deviceId: DeviceInfo.getUniqueID(),
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0]
   }
@@ -225,6 +227,7 @@ export default class AppCenterScreen extends Component {
               data: [
                 { title: 'Install ID', value: 'installId' },
                 { title: 'SDK Version', value: 'sdkVersion' },
+                { title: 'Device ID', value: 'deviceId' },
               ],
               renderItem: valueRenderItem
             },
