@@ -8,25 +8,36 @@ PODS:
     - AppCenter/Core
   - AppCenterReactNativeShared (1.8.1):
     - AppCenter/Core (= 1.9.0)
+  - React (0.11.0):
+    - React/Core (= 0.11.0)
+  - React/Core (0.11.0)
+  - RNDeviceInfo (0.21.5):
+    - React
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 1.9.0)
   - AppCenter/Crashes (~> 1.9.0)
   - AppCenter/Push (~> 1.9.0)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AppCenter
+    - React
 
 EXTERNAL SOURCES:
   AppCenterReactNativeShared:
     :path: "../../AppCenterReactNativeShared/Products/"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
 
 SPEC CHECKSUMS:
   AppCenter: 3cf7b9387549e9703dab068793e404013e8c0cc1
   AppCenterReactNativeShared: ed17c3c3fe5bd29727f837ffb3bb54ad62519f74
+  React: ab1a2e21deb34965c38328d5ec40cc7d12c6050a
+  RNDeviceInfo: 568c5641057313b4912d08a7742ff0b2f753ed5c
 
-PODFILE CHECKSUM: 03eb6f496b055051ab9597bdf11ccbf1b7c950df
+PODFILE CHECKSUM: 2b43292d18b500807f650e02bb8cb57b226bc711
 
 COCOAPODS: 1.5.3

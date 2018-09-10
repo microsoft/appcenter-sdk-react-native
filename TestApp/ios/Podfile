@@ -12,6 +12,7 @@ target 'TestApp' do
   pod 'AppCenter/Push', '~> 1.9.0'
   
   pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
   platform :ios, '9.0'
 end
