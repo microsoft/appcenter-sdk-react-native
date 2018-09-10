@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, SectionList, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Image, View, SectionList, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -40,7 +40,8 @@ export default class TransmissionScreen extends Component {
     targetToken: targetTokens[0],
     showProperties: true,
     standardProperties: this.standardProperties[targetTokens[0].key],
-    customProperties: this.customProperties[targetTokens[0].key]
+    customProperties: this.customProperties[targetTokens[0].key],
+    deviceIdEnabled: {}
   }
 
   async componentWillMount() {
@@ -127,6 +128,13 @@ export default class TransmissionScreen extends Component {
       />
     );
 
+    const settingsRenderItem = ({ item: { title, disabled, value, onChange } }) => (
+      <View style={SharedStyles.item}>
+        <Text style={SharedStyles.itemTitle}>{title}</Text>
+        <Switch disabled={disabled} value={value} onValueChange={onChange} />
+      </View>
+    );
+
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
@@ -179,6 +187,24 @@ export default class TransmissionScreen extends Component {
                 },
               ],
               renderItem: pickerRenderItem
+            },
+            {
+              title: 'Settings',
+              data: [
+                {
+                  title: 'Device ID Enabled',
+                  disabled: !!this.state.deviceIdEnabled[this.state.targetToken.key],
+                  value: !!this.state.deviceIdEnabled[this.state.targetToken.key],
+                  onChange: () => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
+                    if (transmissionTarget) {
+                      this.setState({ deviceIdEnabled: { ...this.state.deviceIdEnabled, [this.state.targetToken.key]: true } });
+                      transmissionTarget.propertyConfigurator.collectDeviceId();
+                    }
+                  }
+                }
+              ],
+              renderItem: settingsRenderItem
             },
             {
               title: 'Actions',
