@@ -118,6 +118,16 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void collectTransmissionTargetDeviceId(String targetToken, Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget != null) {
+            PropertyConfigurator configurator = transmissionTarget.getPropertyConfigurator();
+            configurator.collectDeviceId();
+        }
+        promise.resolve(null);
+    }
+
+    @ReactMethod
     public void getChildTransmissionTarget(String childToken, String parentToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(parentToken);
         if (transmissionTarget == null) {
