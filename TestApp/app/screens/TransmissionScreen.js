@@ -128,7 +128,11 @@ export default class TransmissionScreen extends Component {
       />
     );
 
-    const settingsRenderItem = ({ item: { title, disabled, value, onChange } }) => (
+    const settingsRenderItem = ({
+      item: {
+        title, disabled, value, onChange
+      }
+    }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
         <Switch disabled={disabled} value={value} onValueChange={onChange} />
