@@ -19,7 +19,7 @@ Please list the steps used to reproduce your issue.
 
 ### **Details**
 
-1. Which SDK version are you using?
+1. Which version of the App Center SDK are you using?
     - e.g. 1.5.0
 2. Which OS version did you experience the issue on?
     - e.g. Android 8.1.0, iOS 11
