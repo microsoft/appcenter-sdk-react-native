@@ -128,6 +128,8 @@ export default class TransmissionScreen extends Component {
       />
     );
 
+    // After trying to fix the next line lint warning, the code was harder to read and format, disable it once.
+    // eslint-disable-next-line object-curly-newline
     const settingsRenderItem = ({ item: { title, disabled, value, onChange } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
