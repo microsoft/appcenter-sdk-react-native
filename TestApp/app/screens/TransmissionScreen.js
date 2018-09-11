@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, SectionList, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Image, View, SectionList, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -40,7 +40,8 @@ export default class TransmissionScreen extends Component {
     targetToken: targetTokens[0],
     showProperties: true,
     standardProperties: this.standardProperties[targetTokens[0].key],
-    customProperties: this.customProperties[targetTokens[0].key]
+    customProperties: this.customProperties[targetTokens[0].key],
+    targetEnabled: true
   }
 
   async componentWillMount() {
@@ -127,6 +128,15 @@ export default class TransmissionScreen extends Component {
       />
     );
 
+    // After trying to fix the next line lint warning, the code was harder to read and format, disable it once.
+    // eslint-disable-next-line object-curly-newline
+    const settingsRenderItem = ({ item: { title, disabled, value, onChange } }) => (
+      <View style={SharedStyles.item}>
+        <Text style={SharedStyles.itemTitle}>{title}</Text>
+        <Switch disabled={disabled} value={value} onValueChange={onChange} />
+      </View>
+    );
+
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
@@ -167,18 +177,39 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: this.state.targetToken.label,
-                  valueChanged: (option) => {
+                  valueChanged: async (option) => {
+                    const transmissionTarget = this.transmissionTargets[option.key];
+                    const targetEnabled = transmissionTarget ? await transmissionTarget.isEnabled() : false;
                     this.setState({
                       targetToken: option,
                       showProperties: !!option.key,
                       standardProperties: this.standardProperties[option.key],
-                      customProperties: this.customProperties[option.key]
+                      customProperties: this.customProperties[option.key],
+                      targetEnabled
                     });
                   },
                   tokens: targetTokens
                 },
               ],
               renderItem: pickerRenderItem
+            },
+            {
+              title: 'Settings',
+              data: [
+                {
+                  title: 'Transmission Target Enabled',
+                  value: this.state.targetEnabled,
+                  onChange: async (value) => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
+                    if (transmissionTarget) {
+                      await transmissionTarget.setEnabled(value);
+                      const targetEnabled = await transmissionTarget.isEnabled();
+                      this.setState({ targetEnabled });
+                    }
+                  }
+                }
+              ],
+              renderItem: settingsRenderItem
             },
             {
               title: 'Actions',
