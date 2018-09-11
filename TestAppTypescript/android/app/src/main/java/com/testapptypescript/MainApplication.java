@@ -1,4 +1,4 @@
-package com.testapptypescript;
+package com.testapp;
 
 import android.app.Application;
 import android.util.Log;
@@ -57,7 +57,6 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     
     AppCenter.setLogLevel(Log.VERBOSE);
-    Push.setSenderId("177539951155");
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

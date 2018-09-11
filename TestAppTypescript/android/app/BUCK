@@ -45,12 +45,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.testapptypescript",
+    package = "com.testapp",
 )
 
 android_resource(
     name = "res",
-    package = "com.testapptypescript",
+    package = "com.testapp",
     res = "src/main/res",
 )
 
