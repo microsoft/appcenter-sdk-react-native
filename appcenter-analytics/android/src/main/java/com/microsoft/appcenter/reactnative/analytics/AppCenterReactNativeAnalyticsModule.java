@@ -98,6 +98,38 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void isTransmissionTargetEnabled(String targetToken, final Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget == null) {
+            promise.resolve(null);
+            return;
+        }
+        transmissionTarget.isEnabledAsync().thenAccept(new AppCenterConsumer<Boolean>() {
+
+            @Override
+            public void accept(Boolean enabled) {
+                promise.resolve(enabled);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setTransmissionTargetEnabled(boolean enabled, String targetToken, final Promise promise) {
+        AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
+        if (transmissionTarget == null) {
+            promise.resolve(null);
+            return;
+        }
+        transmissionTarget.setEnabledAsync(enabled).thenAccept(new AppCenterConsumer<Void>() {
+
+            @Override
+            public void accept(Void result) {
+                promise.resolve(result);
+            }
+        });
+    }
+
+    @ReactMethod
     public void setTransmissionTargetEventProperty(String propertyKey, String propertyValue, String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
         if (transmissionTarget != null) {

@@ -41,7 +41,8 @@ export default class TransmissionScreen extends Component {
     showProperties: true,
     standardProperties: this.standardProperties[targetTokens[0].key],
     customProperties: this.customProperties[targetTokens[0].key],
-    deviceIdEnabled: {}
+    deviceIdEnabled: {},
+    targetEnabled: true
   }
 
   async componentWillMount() {
@@ -177,12 +178,15 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: this.state.targetToken.label,
-                  valueChanged: (option) => {
+                  valueChanged: async (option) => {
+                    const transmissionTarget = this.transmissionTargets[option.key];
+                    const targetEnabled = transmissionTarget ? await transmissionTarget.isEnabled() : false;
                     this.setState({
                       targetToken: option,
                       showProperties: !!option.key,
                       standardProperties: this.standardProperties[option.key],
-                      customProperties: this.customProperties[option.key]
+                      customProperties: this.customProperties[option.key],
+                      targetEnabled
                     });
                   },
                   tokens: targetTokens
@@ -197,11 +201,23 @@ export default class TransmissionScreen extends Component {
                   title: 'Device ID Enabled',
                   disabled: !!this.state.deviceIdEnabled[this.state.targetToken.key],
                   value: !!this.state.deviceIdEnabled[this.state.targetToken.key],
-                  onChange: () => {
+                  onChange: async () => {
                     const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       this.setState({ deviceIdEnabled: { ...this.state.deviceIdEnabled, [this.state.targetToken.key]: true } });
                       transmissionTarget.propertyConfigurator.collectDeviceId();
+                    }
+                  },
+                },
+                {
+                  title: 'Transmission Target Enabled',
+                  value: this.state.targetEnabled,
+                  onChange: async (value) => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
+                    if (transmissionTarget) {
+                      await transmissionTarget.setEnabled(value);
+                      const targetEnabled = await transmissionTarget.isEnabled();
+                      this.setState({ targetEnabled });
                     }
                   }
                 }

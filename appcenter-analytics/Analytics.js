@@ -43,26 +43,32 @@ Analytics.PropertyConfigurator = class {
         this.transmissionTarget = transmissionTarget;
     }
 
+    // async - returns a Promise
     setAppName(appName) {
         return AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     setAppVersion(appVersion) {
         return AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     setAppLocale(appLocale) {
         return AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     setEventProperty(key, value) {
         return AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     removeEventProperty(key) {
         return AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     collectDeviceId() {
         return AppCenterReactNativeAnalytics.collectTransmissionTargetDeviceId(this.transmissionTarget.targetToken);
     }
@@ -72,6 +78,16 @@ Analytics.TransmissionTarget = class {
     constructor(targetToken) {
         this.targetToken = targetToken;
         this.propertyConfigurator = new Analytics.PropertyConfigurator(this);
+    }
+
+    // async - returns a Promise
+    isEnabled() {
+        return AppCenterReactNativeAnalytics.isTransmissionTargetEnabled(this.targetToken);
+    }
+
+    // async - returns a Promise
+    setEnabled(enabled) {
+        return AppCenterReactNativeAnalytics.setTransmissionTargetEnabled(enabled, this.targetToken);
     }
 
     // async - returns a Promise

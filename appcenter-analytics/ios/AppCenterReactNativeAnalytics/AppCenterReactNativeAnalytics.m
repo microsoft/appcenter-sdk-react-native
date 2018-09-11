@@ -134,6 +134,40 @@ RCT_EXPORT_METHOD(getTransmissionTarget:(NSString *)targetToken
   resolve(targetToken);
 }
 
+RCT_EXPORT_METHOD(isTransmissionTargetEnabled:(NSString *)targetToken 
+                                     resolver:(RCTPromiseResolveBlock)resolve
+                                     rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  resolve([NSNumber numberWithBool:[transmissionTarget isEnabled]]);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetEnabled:(BOOL)shouldEnable 
+                                   targetToken:(NSString *)targetToken 
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget setEnabled:shouldEnable];
+  resolve(nil);
+}
+
 RCT_EXPORT_METHOD(setTransmissionTargetEventProperty:(NSString *)propertyKey
                                        propertyValue:(NSString *)propertyValue
                                forTransmissionTarget:(NSString *)targetToken
