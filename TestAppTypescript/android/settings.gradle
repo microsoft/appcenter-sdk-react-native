@@ -1,4 +1,4 @@
-rootProject.name = 'TestAppTypescript'
+rootProject.name = 'TestApp'
 include ':appcenter-push'
 project(':appcenter-push').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-push/android')
 include ':appcenter-crashes'
