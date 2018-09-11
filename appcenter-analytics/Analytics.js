@@ -43,24 +43,29 @@ Analytics.PropertyConfigurator = class {
         this.transmissionTarget = transmissionTarget;
     }
 
+    // async - returns a Promise
     setAppName(appName) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetAppName(appName, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     setAppVersion(appVersion) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetAppVersion(appVersion, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     setAppLocale(appLocale) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetAppLocale(appLocale, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     setEventProperty(key, value) {
-        AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.setTransmissionTargetEventProperty(key, value, this.transmissionTarget.targetToken);
     }
 
+    // async - returns a Promise
     removeEventProperty(key) {
-        AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
+        return AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
     }
 };
 
@@ -68,6 +73,16 @@ Analytics.TransmissionTarget = class {
     constructor(targetToken) {
         this.targetToken = targetToken;
         this.propertyConfigurator = new Analytics.PropertyConfigurator(this);
+    }
+
+    // async - returns a Promise
+    isEnabled() {
+        return AppCenterReactNativeAnalytics.isTransmissionTargetEnabled(this.targetToken);
+    }
+
+    // async - returns a Promise
+    setEnabled(enabled) {
+        return AppCenterReactNativeAnalytics.setTransmissionTargetEnabled(enabled, this.targetToken);
     }
 
     // async - returns a Promise
