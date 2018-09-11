@@ -41,7 +41,7 @@ export default class AnalyticsScreen extends Component {
   render() {
     const switchRenderItem = ({ item: { title, value, toggle } }) => (
       <View style={SharedStyles.item}>
-        <Text style={SharedStyles.title}>{title}</Text>
+        <Text style={SharedStyles.itemTitle}>{title}</Text>
         <Switch value={this.state[value]} onValueChange={toggle} />
       </View>
     );
@@ -57,7 +57,7 @@ export default class AnalyticsScreen extends Component {
     return (
       <View style={SharedStyles.container}>
         <SectionList
-          renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.title]}>{item}</Text>}
+          renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
           renderSectionHeader={({ section: { title } }) => <Text style={SharedStyles.header}>{title}</Text>}
           keyExtractor={(item, index) => item + index}
           sections={[

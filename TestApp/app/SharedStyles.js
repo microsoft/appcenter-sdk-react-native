@@ -27,12 +27,20 @@ export default StyleSheet.create({
     backgroundColor: 'white'
   },
   itemTitle: {
-    color: 'black'
+    color: 'black',
+    marginRight: 5
   },
   itemButton: {
     color: 'cornflowerblue',
     textAlign: 'center',
     width: '100%'
+  },
+  itemInput: {
+    flex: 1,
+    padding: 5,
+    marginTop: -5,
+    marginBottom: -5,
+    textAlign: 'right'
   },
   modalSelector: {
     borderColor: 'gray',

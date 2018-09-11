@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Image, View, SectionList, Text, TouchableOpacity } from 'react-native';
+import { Image, View, SectionList, Text, TextInput, TouchableOpacity } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
+
+import PropertiesConfiguratorView from '../components/PropertiesConfiguratorView';
 
 import SharedStyles from '../SharedStyles';
 import TransmissionTabBarIcon from '../assets/fuel.png';
@@ -18,12 +20,100 @@ export default class TransmissionScreen extends Component {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={TransmissionTabBarIcon} />
   }
 
+  standardProperties = targetTokens.reduce((map, el) => {
+    map[el.key] = {
+      appName: '',
+      appVersion: '',
+      appLocale: ''
+    };
+    return map;
+  }, {});
+
+  customProperties = targetTokens.reduce((map, el) => {
+    map[el.key] = [];
+    return map;
+  }, {});
+
+  transmissionTargets = {};
+
   state = {
-    targetToken: targetTokens[0]
+    targetToken: targetTokens[0],
+    showProperties: true,
+    standardProperties: this.standardProperties[targetTokens[0].key],
+    customProperties: this.customProperties[targetTokens[0].key]
   }
 
   async componentWillMount() {
     await AppCenter.startFromLibrary(Analytics);
+    await this.createTargetsFromTokens(0, Analytics);
+  }
+
+  async createTargetsFromTokens(index, parentTarget) {
+    if (index >= targetTokens.length) {
+      return;
+    }
+    const targetToken = targetTokens[index].key;
+    const transmissionTarget = await parentTarget.getTransmissionTarget(targetToken);
+    this.transmissionTargets[targetToken] = transmissionTarget;
+    await this.createTargetsFromTokens(++index, transmissionTarget);
+  }
+
+  async setStandardProperty(key, value) {
+    if (value === '') {
+      value = null;
+    }
+    const targetToken = this.state.targetToken.key;
+    const transmissionTarget = this.transmissionTargets[targetToken];
+    switch (key) {
+      case 'appName':
+        await transmissionTarget.propertyConfigurator.setAppName(value);
+        break;
+      case 'appVersion':
+        await transmissionTarget.propertyConfigurator.setAppVersion(value);
+        break;
+      case 'appLocale':
+        await transmissionTarget.propertyConfigurator.setAppLocale(value);
+        break;
+      default:
+        throw new Error(`Unexpected key=${key}`);
+    }
+    this.setState((state) => {
+      state.standardProperties[key] = value;
+      this.standardProperties[targetToken] = state.standardProperties;
+      return state;
+    });
+  }
+
+  async addProperty(property) {
+    const target = this.transmissionTargets[this.state.targetToken.key];
+    await target.propertyConfigurator.setEventProperty(property.name, property.value);
+    this.setState((state) => {
+      state.customProperties.push(property);
+      this.customProperties[this.state.targetToken.key] = state.customProperties;
+      return state;
+    });
+  }
+
+  async removeProperty(propertyName) {
+    const target = this.transmissionTargets[this.state.targetToken.key];
+    await target.propertyConfigurator.removeEventProperty(propertyName);
+    this.setState((state) => {
+      state.customProperties = state.customProperties.filter(item => item.name !== propertyName);
+      this.customProperties[this.state.targetToken.key] = state.customProperties;
+      return state;
+    });
+  }
+
+  async replaceProperty(oldPropertyName, newProperty) {
+    const target = this.transmissionTargets[this.state.targetToken.key];
+    await target.propertyConfigurator.removeEventProperty(oldPropertyName);
+    await target.propertyConfigurator.setEventProperty(newProperty.name, newProperty.value);
+    this.setState((state) => {
+      const index = state.customProperties.findIndex(el => el.name === oldPropertyName);
+      state.customProperties[index] = newProperty;
+      this.customProperties[this.state.targetToken.key] = state.customProperties;
+      return state;
+    });
   }
 
   render() {
@@ -36,17 +126,39 @@ export default class TransmissionScreen extends Component {
         selectTextStyle={SharedStyles.itemButton}
       />
     );
+
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
         <Text style={SharedStyles.itemButton}>{title}</Text>
       </TouchableOpacity>
     );
+
+    const standardPropertiesRenderItem = ({ item: { title, key, onChange } }) => (
+      <View style={SharedStyles.item}>
+        <Text style={SharedStyles.itemTitle}>{title}</Text>
+        <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{this.state.standardProperties[key]}</TextInput>
+      </View>
+    );
+
+    const customPropertiesRenderItem = () => (
+      <PropertiesConfiguratorView
+        onPropertyAdded={() => {
+          const nextItem = this.state.customProperties.length + 1;
+          this.addProperty({ name: `key${nextItem}`, value: `value${nextItem}` });
+        }}
+        onPropertyRemoved={propertyName => this.removeProperty(propertyName)}
+        onPropertyChanged={(oldPropertyName, newProperty) => this.replaceProperty(oldPropertyName, newProperty)}
+        properties={this.state.customProperties}
+        allowChanges={this.state.showProperties}
+      />
+    );
+
     const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
     return (
       <View style={SharedStyles.container}>
         <SectionList
-          renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.title]}>{item}</Text>}
+          renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
           renderSectionHeader={({ section: { title } }) => <Text style={SharedStyles.header}>{title}</Text>}
           keyExtractor={(item, index) => item + index}
           sections={[
@@ -55,7 +167,14 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: this.state.targetToken.label,
-                  valueChanged: option => this.setState({ targetToken: option }),
+                  valueChanged: (option) => {
+                    this.setState({
+                      targetToken: option,
+                      showProperties: !!option.key,
+                      standardProperties: this.standardProperties[option.key],
+                      customProperties: this.customProperties[option.key]
+                    });
+                  },
                   tokens: targetTokens
                 },
               ],
@@ -66,8 +185,8 @@ export default class TransmissionScreen extends Component {
               data: [
                 {
                   title: 'Track event without properties',
-                  action: async () => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  action: () => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       const eventName = 'EventWithoutPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName);
@@ -77,8 +196,8 @@ export default class TransmissionScreen extends Component {
                 },
                 {
                   title: 'Track event with properties',
-                  action: async () => {
-                    const transmissionTarget = await Analytics.getTransmissionTarget(this.state.targetToken.key);
+                  action: () => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
                     if (transmissionTarget) {
                       const eventName = 'EventWithPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName, { property1: '100', property2: '200' });
@@ -88,6 +207,32 @@ export default class TransmissionScreen extends Component {
                 }
               ],
               renderItem: actionRenderItem
+            },
+            {
+              title: 'Standard Properties',
+              data: [
+                {
+                  title: 'App Name',
+                  key: 'appName',
+                  onChange: appName => this.setStandardProperty('appName', appName)
+                },
+                {
+                  title: 'App Version',
+                  key: 'appVersion',
+                  onChange: appVersion => this.setStandardProperty('appVersion', appVersion)
+                },
+                {
+                  title: 'App Locale',
+                  key: 'appLocale',
+                  onChange: appLocale => this.setStandardProperty('appLocale', appLocale)
+                },
+              ],
+              renderItem: standardPropertiesRenderItem
+            },
+            {
+              title: 'Properties',
+              data: [{}],
+              renderItem: customPropertiesRenderItem
             },
           ]}
         />
