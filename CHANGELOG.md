@@ -1,3 +1,13 @@
+## Version 1.9.0 (Under active development)
+
+### Features
+
+- Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
+
+### Fixes
+
+- Fix consuming the SDK as pod dependencies for non standard projects not using react-native link [#326](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/326).
+
 ___
 
 ## Version 1.8.1
