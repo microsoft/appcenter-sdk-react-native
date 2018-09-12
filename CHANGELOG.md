@@ -1,3 +1,5 @@
+# App Center SDK for React Native Change Log
+
 ## Version 1.9.0 (Under active development)
 
 ### Features
