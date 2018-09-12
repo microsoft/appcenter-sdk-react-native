@@ -8,6 +8,10 @@
 
 * **[Security]** To enforce TLS 1.2 on all HTTPS connections the SDK makes, we are dropping support for API level 15 (which supports only TLS 1.0), the minimum SDK version thus becomes 16. Previous versions of the SDK were already using TLS 1.2 on API level 16+.
 
+#### UWP
+
+* **[Fix]** Fix a crash when system or user locale cannot be read by falling back to using app locale.
+
 ___
 
 ## Version 1.9.0
