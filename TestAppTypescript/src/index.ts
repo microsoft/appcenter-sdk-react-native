@@ -13,4 +13,4 @@ const TestApp = StackNavigator({
   AppCenter: AppCenterScreen
 });
 
-AppRegistry.registerComponent("TestAppTypescript", () => TestApp);
+AppRegistry.registerComponent("TestApp", () => TestApp);
