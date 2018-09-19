@@ -9,10 +9,6 @@
 ### Fixes
 
 - Fix consuming the SDK as pod dependencies for non standard projects not using react-native link [#326](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/326).
-
-### Misc
-
-- SDK supports react-native v0.57.0.
 ___
 
 ## Version 1.8.1
