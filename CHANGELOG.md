@@ -11,6 +11,7 @@
 #### UWP
 
 * **[Fix]** Fix a crash when system or user locale cannot be read by falling back to using app locale.
+* **[Fix]** Fix compatibility with SQLite 1.5.231.
 
 ___
 
