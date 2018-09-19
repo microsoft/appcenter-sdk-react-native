@@ -30,25 +30,27 @@ export interface Device {
   osName: string;
   osVersion: string;
   osBuild: string;
-  osApiLevel: number;
+  osApiLevel?: number;
   locale: string;
   timeZoneOffset: number;
-  screenSize: string;
+  screenSize?: string;
   appVersion: string;
-  carrierName: string;
-  carrierCountry: string;
+  carrierName?: string;
+  carrierCountry?: string;
   appBuild: string;
   appNamespace: string;
 }
 
 export interface ErrorReport {
   id: string;
-  threadName: string;
-  appErrorTime: string;
-  appStartTime: string;
-  exception: string;
-  exceptionReason: string;
+  threadName?: string;
+  appErrorTime: string | number;
+  appStartTime: string | number;
+  exception?: string;
+  exceptionReason?: string;
   device: Device;
+  signal?: string;
+  appProcessIdentifier?: number;
 }
 
 
