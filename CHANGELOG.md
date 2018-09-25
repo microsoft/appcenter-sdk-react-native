@@ -4,6 +4,7 @@
 
 ### Features
 
+- Add typescript declaration files for the APIs documented at https://docs.microsoft.com/en-us/appcenter/sdk [#247](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/247).
 - Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
 
 ### Fixes
