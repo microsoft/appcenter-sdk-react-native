@@ -1,0 +1,41 @@
+{
+  "name": "TestAppTypescript",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "tsc": "tsc",
+    "watch": "tsc -w",
+    "ios": "npm run build && concurrently -r \"npm run watch\" \"react-native run-ios\"",
+    "android": "npm run build && concurrently -r \"start npm run watch\" \"start react-native run-android\"",
+    "build": "npm run clean && npm run tsc",
+    "clean": "rimraf artifacts"
+  },
+  "dependencies": {
+    "appcenter": "file:appcenter-1.8.1.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.8.1.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.8.1.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.8.1.tgz",
+    "appcenter-push": "file:appcenter-push-1.8.1.tgz",
+    "react": "16.3.0-alpha.1",
+    "react-native": "0.54.4",
+    "react-native-dialog-component": "^0.2.17",
+    "react-native-fs": "^2.9.11",
+    "react-native-image-picker": "^0.26.7",
+    "react-navigation": "^1.5.9",
+    "typescript": "2.7.2"
+  },
+  "devDependencies": {
+    "@types/react-native": "0.52.13",
+    "@types/react-native-fs": "^2.8.1",
+    "@types/react-navigation": "^1.5.4",
+    "babel-jest": "22.4.3",
+    "babel-preset-react-native": "4.0.0",
+    "concurrently": "3.5.1",
+    "prettier": "1.10.2",
+    "rimraf": "2.6.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

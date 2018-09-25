@@ -3,6 +3,7 @@
   "version": "1.8.1",
   "description": "React Native plugin for AppCenter Push",
   "main": "Push.js",
+  "types": "Push.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/appcenter-sdk-react-native.git"
