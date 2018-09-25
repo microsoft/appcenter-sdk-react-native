@@ -14,10 +14,10 @@ export interface CrashesListener {
 }
 
 export class ErrorAttachmentLog {
-  public static attachmentWithText(text: string, fileName: string): ErrorAttachmentLog;
+  public static attachmentWithText(text: string, fileName?: string): ErrorAttachmentLog;
   public static attachmentWithBinary(
     data: string,
-    fileName: string,
+    fileName: string | null,
     contentType: string
   ): ErrorAttachmentLog;
 }
