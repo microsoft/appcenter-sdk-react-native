@@ -187,6 +187,14 @@
       <Project>{278DFD3C-A0DD-4DD2-97C5-44EC4BEE8462}</Project>
       <Name>Microsoft.AppCenter.Distribute.iOS.Bindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS\Microsoft.AppCenter.Push.iOS.csproj">
+      <Project>{D8F25BA5-249D-4BB0-A4B1-A3245F2437FF}</Project>
+      <Name>Microsoft.AppCenter.Push.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS.Bindings\Microsoft.AppCenter.Push.iOS.Bindings.csproj">
+      <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
+      <Name>Microsoft.AppCenter.Push.iOS.Bindings</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\bolt%402x.png" />
@@ -194,9 +202,4 @@
     <BundleResource Include="Resources\socket%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-
-  <!-- https://bugzilla.xamarin.com/show_bug.cgi?id=56246 -->
-  <PropertyGroup>
-    <CscToolExe>mcs.exe</CscToolExe>
-  </PropertyGroup>
 </Project>

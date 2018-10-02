@@ -1,10 +1,11 @@
-﻿using Foundation;
-using UIKit;
+﻿using System;
+using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
-using System;
+using Microsoft.AppCenter.Push;
+using UIKit;
 
 namespace Contoso.iOS.Puppet
 {
@@ -31,7 +32,7 @@ namespace Contoso.iOS.Puppet
             Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
             Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");
             Distribute.DontCheckForUpdatesInDebug();
-            AppCenter.Start("b889c4f2-9ac2-4e2e-ae16-dae54f2c5899", typeof(Analytics), typeof(Crashes), typeof(Distribute));
+            AppCenter.Start("e94aaff4-e80d-4fee-9a5f-a84eb6e688fc", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
             try
             {
                 ThrowAnException();
