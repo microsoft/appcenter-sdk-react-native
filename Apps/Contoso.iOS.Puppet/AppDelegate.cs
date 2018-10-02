@@ -37,22 +37,12 @@ namespace Contoso.iOS.Puppet
                 string message = "";
                 if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
                 {
-                    if (_didTapNotification)
-                    {
-                        message += "Tapped notification";
-                    }
-                    else
-                    {
-                        message += "Received in foreground";
-                    }
+                    message += _didTapNotification ? "Tapped notification\n" : "Received in foreground\n";
                 }
-                if (e.Message != null)
-                {
-                    message += (message.Length > 0 ? "\n" : "") + e.Message;
-                }
+                message += e.Message ?? "";
                 if (e.CustomData?.Count > 0)
                 {
-                    message += (message.Length > 0 ? "\n" : "") + "Custom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
+                    message += (e.Message?.Length > 0 ? "\n" : "") + "Custom data = {" + string.Join(",", e.CustomData.Select(kv => kv.Key + "=" + kv.Value)) + "}";
                 }
                 var alertController = UIAlertController.Create(e.Title, message, UIAlertControllerStyle.Alert);
                 alertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
@@ -73,7 +63,7 @@ namespace Contoso.iOS.Puppet
                 var push = notification.Request.Content.UserInfo;
                 var appCenter = push["mobile_center"] as NSDictionary;
                 var presentation = appCenter?["presentation"] as NSString;
-                if (presentation != null && presentation.Equals((NSString) "alert"))
+                if (presentation != null && presentation.Equals((NSString)"alert"))
                 {
                     completionHandler(UNNotificationPresentationOptions.Alert);
                 }
