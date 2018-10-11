@@ -10,6 +10,7 @@
 ### Fixes
 
 - Fix consuming the SDK as pod dependencies for non standard projects not using react-native link [#326](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/326).
+- Don't automatically add mock Jest files when installing the App Center packages. [#436](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/436).
 
 ___
 
