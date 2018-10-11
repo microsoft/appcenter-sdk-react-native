@@ -44,7 +44,6 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
-    "postinstall": "node scripts/postinstall",
     "test": "jest"
   },
   "jest": {
