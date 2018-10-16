@@ -13,7 +13,21 @@ namespace Microsoft.AppCenter.Storage
 
         public StorageAdapter(string databasePath)
         {
-            _dbConnection = new SQLiteAsyncConnection(databasePath);
+            // In SQLite-net 1.5.231 constructor parameters were changed.
+            // Using reflection to accept newer library version.
+            _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
+                .GetConstructor(new[] { typeof(string), typeof(bool) })
+                ?.Invoke(new object[] { databasePath, true });
+            if (_dbConnection == null)
+            {
+                _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
+                    .GetConstructor(new[] { typeof(string), typeof(bool), typeof(object) })
+                    ?.Invoke(new object[] { databasePath, true, null });
+            }
+            if (_dbConnection == null)
+            {
+                throw new StorageException("Cannot initialize SQLite library.");
+            }
         }
 
         public async Task CreateTableAsync<T>() where T : new()
