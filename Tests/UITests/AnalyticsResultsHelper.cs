@@ -6,6 +6,9 @@ namespace Contoso.Forms.Test.UITests
 {
     public static class AnalyticsResultsHelper
     {
+        // Network requests timeout in AppCenter SDK is 60 sec.
+        private static readonly TimeSpan SentEventTimeout = TimeSpan.FromSeconds(60);
+
         public static IApp app;
 
         public static bool SendingEventWasCalled
@@ -20,7 +23,7 @@ namespace Contoso.Forms.Test.UITests
         {
             get
             {
-                return WaitForLabelToSay(TestStrings.DidSentEventLabel, TestStrings.DidSentEventText);
+                return WaitForLabelToSay(TestStrings.DidSentEventLabel, TestStrings.DidSentEventText, SentEventTimeout);
             }
         }
 
@@ -42,7 +45,7 @@ namespace Contoso.Forms.Test.UITests
             return WaitForLabelToSay(TestStrings.EventNameLabel, "UITest Event");
         }
 
-        static bool WaitForLabelToSay(string labelName, string text)
+        static bool WaitForLabelToSay(string labelName, string text, TimeSpan? timeout = null)
         {
             try
             {
@@ -53,7 +56,7 @@ namespace Contoso.Forms.Test.UITests
                         return false;
                     AppResult label = results[0];
                     return label.Text == text;
-                });
+                }, timeout: timeout);
             }
             catch (Exception)
             {

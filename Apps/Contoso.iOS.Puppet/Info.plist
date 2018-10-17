@@ -7,9 +7,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.microsoft.appcenter.xamarin.puppet</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.9.0</string>
+	<string>1.10.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.9.0</string>
+	<string>1.10.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -53,5 +53,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

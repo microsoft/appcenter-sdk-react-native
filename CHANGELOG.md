@@ -1,5 +1,37 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.10.0
+
+### AppCenter
+
+#### Android
+
+* **[Security]** To enforce TLS 1.2 on all HTTPS connections the SDK makes, we are dropping support for API level 15 (which supports only TLS 1.0), the minimum SDK version thus becomes 16. Previous versions of the SDK were already using TLS 1.2 on API level 16+.
+* **[Bug fix]** Fix validating and discarding `NaN` and infinite double values when calling `setCustomProperties`.
+
+#### iOS
+
+* **[Fix]** Add missing network request error logging.
+
+#### UWP
+
+* **[Fix]** Fix a crash when system or user locale cannot be read by falling back to using app locale.
+* **[Fix]** Fix compatibility with SQLite 1.5.231.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix the list of binary images in crash reports for arm64e-based devices.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix translation of closing a dialog in Portuguese.
+
+___
+
 ## Version 1.9.0
 
 ### App Center
@@ -28,6 +60,8 @@
 ### App Center Push
 
 * **[Fix]** Fix a crash that could happen when using Push on devices behind a firewall or unstable network.
+
+___
 
 ## Version 1.8.0
 
