@@ -18,12 +18,6 @@
 * **[Fix]** Fix a crash when system or user locale cannot be read by falling back to using app locale.
 * **[Fix]** Fix compatibility with SQLite 1.5.231.
 
-### App Center Analytics
-
-#### iOS
-
-* **[Fix]** Fix an bug where nested custom properties for an event would not pass validation.
-
 ### App Center Crashes
 
 #### iOS
