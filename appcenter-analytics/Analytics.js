@@ -67,6 +67,11 @@ Analytics.PropertyConfigurator = class {
     removeEventProperty(key) {
         return AppCenterReactNativeAnalytics.removeTransmissionTargetEventProperty(key, this.transmissionTarget.targetToken);
     }
+
+    // async - returns a Promise
+    collectDeviceId() {
+        return AppCenterReactNativeAnalytics.collectTransmissionTargetDeviceId(this.transmissionTarget.targetToken);
+    }
 };
 
 Analytics.TransmissionTarget = class {

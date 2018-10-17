@@ -41,6 +41,7 @@ export default class TransmissionScreen extends Component {
     showProperties: true,
     standardProperties: this.standardProperties[targetTokens[0].key],
     customProperties: this.customProperties[targetTokens[0].key],
+    deviceIdEnabled: {},
     targetEnabled: true
   }
 
@@ -196,6 +197,18 @@ export default class TransmissionScreen extends Component {
             {
               title: 'Settings',
               data: [
+                {
+                  title: 'Device ID Enabled',
+                  disabled: !!this.state.deviceIdEnabled[this.state.targetToken.key],
+                  value: !!this.state.deviceIdEnabled[this.state.targetToken.key],
+                  onChange: async () => {
+                    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
+                    if (transmissionTarget) {
+                      this.setState({ deviceIdEnabled: { ...this.state.deviceIdEnabled, [this.state.targetToken.key]: true } });
+                      transmissionTarget.propertyConfigurator.collectDeviceId();
+                    }
+                  },
+                },
                 {
                   title: 'Transmission Target Enabled',
                   value: this.state.targetEnabled,
