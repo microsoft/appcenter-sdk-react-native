@@ -1,7 +1,7 @@
 <!--
     Thanks for your interest in using the App Center SDK for React Native.
-    If your issue is not related to using our React Native SDK but rather about the product experience like the portal or CI,
-    please create a ticket using the blue chat button on any page of the https://appcenter.ms portal instead.
+    Please create issues only for problems specific to using the SDK for React Native.
+    If your issue is related to App Center build only (meaning no issue building locally) or CodePush, please create a ticket using the blue chat button on any page of the https://appcenter.ms portal instead.
 -->
 
 ### **Description**

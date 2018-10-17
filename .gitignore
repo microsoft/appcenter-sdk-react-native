@@ -33,6 +33,7 @@ local.properties
 #
 node_modules/
 npm-debug.log
+package-lock.json
 
 # BUCK
 buck-out/
@@ -45,6 +46,9 @@ android/keystores/debug.keystore
 
 # credentials
 .npmrc
+
+#typescript
+artifacts/
 
 # Android release generated files
 **/app/**/release/**

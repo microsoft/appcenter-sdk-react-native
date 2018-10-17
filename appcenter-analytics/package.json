@@ -3,6 +3,7 @@
   "version": "1.8.1",
   "description": "React Native plugin for AppCenter Analytics",
   "main": "Analytics.js",
+  "types": "Analytics.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/appcenter-sdk-react-native.git"
@@ -38,7 +39,6 @@
     "eslint-plugin-react": "^7.2.1"
   },
   "scripts": {
-    "lint": "./node_modules/.bin/eslint .",
-    "postinstall": "node scripts/postinstall"
+    "lint": "./node_modules/.bin/eslint ."
   }
 }
