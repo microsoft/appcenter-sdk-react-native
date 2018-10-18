@@ -6,7 +6,6 @@
 
 - Add typescript declaration files for the APIs documented at https://docs.microsoft.com/en-us/appcenter/sdk [#247](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/247).
 - Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
-- [Android] To enforce TLS 1.2 on all HTTPS connections the SDK makes, we are dropping support for API level 15 (which supports only TLS 1.0), the minimum SDK version thus becomes 16. Previous versions of the SDK were already using TLS 1.2 on API level 16+.
 
 ### Fixes
 
