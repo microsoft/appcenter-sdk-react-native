@@ -107,7 +107,6 @@
 
         /* AnalyticsResultsPage */
         /* Automation Ids */
-        public static readonly string EventPropertiesLabel = "EventPropertiesLabel";
         public static readonly string EventNameLabel = "EventNameLabel";
         public static readonly string DidSentEventLabel = "DidSendEventLabel";
         public static readonly string DidFailedToSendEventLabel = "DidFailToSendEventLabel";

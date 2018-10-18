@@ -178,7 +178,6 @@ namespace Contoso.Forms.Test.UITests
             int numProperties = 5;
             SendEvent(numProperties);
             app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
-            app.WaitForElement(TestStrings.EventPropertiesLabel);
 
             /* Verify that the event was sent properly */
             AnalyticsResultsHelper.app = app;
@@ -201,7 +200,6 @@ namespace Contoso.Forms.Test.UITests
             int numProperties = 0;
             SendEvent(numProperties);
             app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
-            app.WaitForElement(TestStrings.EventPropertiesLabel);
 
             /* Verify that the event was sent properly */
             AnalyticsResultsHelper.app = app;
@@ -228,7 +226,6 @@ namespace Contoso.Forms.Test.UITests
             int numProperties = 1;
             SendEvent(numProperties);
             app.Tap(TestStrings.GoToAnalyticsResultsPageButton);
-            app.WaitForElement(TestStrings.EventPropertiesLabel);
 
             /* Verify that the event was not sent */
             AnalyticsResultsHelper.app = app;
