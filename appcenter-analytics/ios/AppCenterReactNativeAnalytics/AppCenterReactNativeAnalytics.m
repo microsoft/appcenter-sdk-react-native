@@ -21,6 +21,7 @@
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterAnalytics/MSAnalytics.h>
 #import <AppCenterAnalytics/MSAnalyticsTransmissionTarget.h>
+#import <AppCenterAnalytics/MSPropertyConfigurator.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 typedef NSMutableDictionary<NSString *, MSAnalyticsTransmissionTarget *>
@@ -92,11 +93,13 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent:(NSString *)eventName
                                       rejecter:(RCTPromiseRejectBlock)reject) {
   if (targetToken == nil) {
     resolve(nil);
+    return;
   }
   MSAnalyticsTransmissionTarget *transmissionTarget =
       [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
+    return;
   }
   NSArray *allowedKeys = [[properties
       keysOfEntriesPassingTest:^BOOL(NSString *key, id obj, BOOL *stop) {
@@ -129,6 +132,172 @@ RCT_EXPORT_METHOD(getTransmissionTarget:(NSString *)targetToken
   }
   [[self targetsForTokens] setObject:transmissionTarget forKey:targetToken];
   resolve(targetToken);
+}
+
+RCT_EXPORT_METHOD(isTransmissionTargetEnabled:(NSString *)targetToken 
+                                     resolver:(RCTPromiseResolveBlock)resolve
+                                     rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  resolve([NSNumber numberWithBool:[transmissionTarget isEnabled]]);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetEnabled:(BOOL)shouldEnable 
+                                   targetToken:(NSString *)targetToken 
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget setEnabled:shouldEnable];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetEventProperty:(NSString *)propertyKey
+                                       propertyValue:(NSString *)propertyValue
+                               forTransmissionTarget:(NSString *)targetToken
+                                            resolver:(RCTPromiseResolveBlock)resolve
+                                            rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setEventPropertyString:propertyValue forKey:propertyKey];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(removeTransmissionTargetEventProperty:(NSString *)propertyKey
+                                  forTransmissionTarget:(NSString *)targetToken
+                                               resolver:(RCTPromiseResolveBlock)resolve
+                                               rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator removeEventPropertyForKey:propertyKey];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(collectTransmissionTargetDeviceId:(NSString *)targetToken
+                                           resolver:(RCTPromiseResolveBlock)resolve
+                                           rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator collectDeviceId];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(getChildTransmissionTarget:(NSString *)childToken
+                       forTransmissionTarget:(NSString *)parentToken
+                                    resolver:(RCTPromiseResolveBlock)resolve
+                                    rejecter:(RCTPromiseRejectBlock)reject) {
+  if (parentToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget = 
+      [[self targetsForTokens] objectForKey:parentToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *childTarget =
+      [transmissionTarget transmissionTargetForToken:childToken];
+  if (childTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [[self targetsForTokens] setObject:childTarget forKey:childToken];
+  resolve(childToken);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetAppName:(NSString *)appName
+                         forTransmissionTarget:(NSString *)targetToken
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setAppName:appName];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetAppVersion:(NSString *)appVersion
+                            forTransmissionTarget:(NSString *)targetToken
+                                         resolver:(RCTPromiseResolveBlock)resolve
+                                         rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setAppVersion:appVersion];
+  resolve(nil);
+}
+
+RCT_EXPORT_METHOD(setTransmissionTargetAppLocale:(NSString *)appLocale
+                           forTransmissionTarget:(NSString *)targetToken
+                                        resolver:(RCTPromiseResolveBlock)resolve
+                                        rejecter:(RCTPromiseRejectBlock)reject) {
+  if (targetToken == nil) {
+    resolve(nil);
+    return;
+  }
+  MSAnalyticsTransmissionTarget *transmissionTarget =
+      [[self targetsForTokens] objectForKey:targetToken];
+  if (transmissionTarget == nil) {
+    resolve(nil);
+    return;
+  }
+  [transmissionTarget.propertyConfigurator setAppLocale:appLocale];
+  resolve(nil);
 }
 
 @end

@@ -56,5 +56,3 @@ fastlane/screenshots
 /index.ios.map
 /unused.jsbundle*
 /.vscode/.react
-
-package-lock.json

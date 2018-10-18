@@ -1,3 +1,21 @@
+# App Center SDK for React Native Change Log
+
+## Version 1.9.0
+
+### Features
+
+- Add typescript declaration files for the APIs documented at https://docs.microsoft.com/en-us/appcenter/sdk [#247](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/247).
+- Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
+- [Android] To enforce TLS 1.2 on all HTTPS connections the SDK makes, we are dropping support for API level 15 (which supports only TLS 1.0), the minimum SDK version thus becomes 16. Previous versions of the SDK were already using TLS 1.2 on API level 16+.
+
+### Fixes
+
+- Fix consuming the SDK as pod dependencies for non standard projects not using react-native link [#326](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/326).
+- Don't automatically add mock Jest files when installing the App Center packages. [#436](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/436).
+- [Android] Fix validating and discarding NaN and infinite double values when calling setCustomProperties.
+- [iOS] Add missing network request error logging.
+- [iOS] Fix the list of binary images in crash reports for arm64e-based devices.
+
 ___
 
 ## Version 1.8.1

@@ -1,8 +1,9 @@
 {
   "name": "appcenter",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "Node module that contains common functionality needed to appcenter-* modules",
   "main": "AppCenter.js",
+  "types": "AppCenter.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/microsoft/appcenter-sdk-react-native.git"
@@ -18,7 +19,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "appcenter-link-scripts": "1.8.1"
+    "appcenter-link-scripts": "1.9.0"
   },
   "rnpm": {
     "android": {
@@ -43,7 +44,6 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
-    "postinstall": "node scripts/postinstall",
     "test": "jest"
   },
   "jest": {

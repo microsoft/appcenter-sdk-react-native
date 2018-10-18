@@ -1,8 +1,9 @@
 {
   "name": "appcenter-crashes",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "React Native plugin for AppCenter Crashes",
   "main": "Crashes.js",
+  "types": "Crashes.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/appcenter-sdk-react-native.git"
@@ -21,7 +22,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-crashes/README.md",
   "dependencies": {
-    "appcenter": "1.8.1"
+    "appcenter": "1.9.0"
   },
   "rnpm": {
     "android": {
@@ -40,7 +41,6 @@
     "eslint-plugin-react": "^7.2.1"
   },
   "scripts": {
-    "lint": "./node_modules/.bin/eslint .",
-    "postinstall": "node scripts/postinstall"
+    "lint": "./node_modules/.bin/eslint ."
   }
 }
