@@ -231,14 +231,17 @@ Global
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|Any CPU.Build.0 = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|ARM.ActiveCfg = Release|ARM
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|ARM.Build.0 = Release|ARM
+		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|ARM.Deploy.0 = Release|ARM
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|iPhone.ActiveCfg = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|iPhone.Build.0 = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|iPhoneSimulator.ActiveCfg = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|iPhoneSimulator.Build.0 = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x64.ActiveCfg = Release|x64
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x64.Build.0 = Release|x64
+		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x64.Deploy.0 = Release|x64
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x86.ActiveCfg = Release|x86
 		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x86.Build.0 = Release|x86
+		{665362D9-5EE2-45DE-A907-25DC86999A68}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
