@@ -1,12 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Contoso.Forms.Test;assembly=Contoso.Forms.Test" x:Class="Contoso.Forms.Test.AnalyticsResultsPage">
     <TableView Intent="Form">
         <TableSection>
             <ViewCell>
                 <Label x:Name="EventNameLabel" AutomationId="{x:Static local:TestStrings.EventNameLabel}" />
-            </ViewCell>
-            <ViewCell>
-                <Label x:Name="EventPropertiesLabel" AutomationId="{x:Static local:TestStrings.EventPropertiesLabel}" />
             </ViewCell>
             <ViewCell>
                 <Label x:Name="DidSentEventLabel" AutomationId="{x:Static local:TestStrings.DidSentEventLabel}" />

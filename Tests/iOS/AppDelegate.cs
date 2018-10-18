@@ -1,8 +1,7 @@
 ﻿using Foundation;
-using UIKit;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics.iOS.Bindings;
-using System.Collections.Generic;
+using UIKit;
 
 namespace Contoso.Forms.Test.iOS
 {
@@ -43,23 +42,12 @@ namespace Contoso.Forms.Test.iOS
             EventSharer.InvokeFailedToSendEvent(LogToEventData(eventLog));
         }
 
-        private EventData LogToEventData(MSEventLog eventLog)
+        EventData LogToEventData(MSEventLog eventLog)
         {
-            var data = new EventData();
-
-            data.Name = eventLog.Name;
-            data.Properties = new Dictionary<string, string>();
-
-            if (eventLog.Properties != null)
+            var data = new EventData
             {
-                foreach (NSString nsstringKey in eventLog.Properties.Keys)
-                {
-                    string strVal = eventLog.Properties.ValueForKey(nsstringKey).ToString();
-                    string strKey = nsstringKey.ToString();
-
-                    data.Properties.Add(strKey, strVal);
-                }
-            }
+                Name = eventLog.Name
+            };
             return data;
         }
     }

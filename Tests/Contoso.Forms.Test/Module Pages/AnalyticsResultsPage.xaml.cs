@@ -20,11 +20,6 @@ namespace Contoso.Forms.Test
                         EventNameLabel.Text = data.Name;
                     }
 
-                    if (EventPropertiesLabel != null)
-                    {
-                        EventPropertiesLabel.Text = data.Properties == null ? "0" : data.Properties.Values.Count.ToString();
-                    }
-
                     if (DidSendingEventLabel != null)
                     {
                         DidSendingEventLabel.Text = TestStrings.DidSendingEventText;
@@ -67,7 +62,6 @@ namespace Contoso.Forms.Test
         void ResetPage(object sender, EventArgs e)
         {
             EventNameLabel.Text = "";
-            EventPropertiesLabel.Text = "";
             DidSentEventLabel.Text = "";
             DidSendingEventLabel.Text = "";
             DidFailedToSendEventLabel.Text = "";
