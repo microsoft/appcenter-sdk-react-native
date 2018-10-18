@@ -35,11 +35,6 @@ namespace Contoso.Forms.Test.UITests
             }
         }
 
-        public static bool VerifyNumProperties(int count)
-        {
-            return WaitForLabelToSay(TestStrings.EventPropertiesLabel, count.ToString());
-        }
-
         public static bool VerifyEventName()
         {
             return WaitForLabelToSay(TestStrings.EventNameLabel, "UITest Event");

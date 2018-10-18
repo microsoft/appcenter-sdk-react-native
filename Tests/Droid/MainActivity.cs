@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Com.Microsoft.Appcenter.Analytics;
@@ -54,14 +53,6 @@ namespace Contoso.Forms.Test.Droid
             if (eventlog != null)
             {
                 data.Name = eventlog.Name;
-                data.Properties = new Dictionary<string, string>();
-                if (eventlog.Properties != null)
-                {
-                    foreach (string key in eventlog.Properties.Keys)
-                    {
-                        data.Properties.Add(key, eventlog.Properties[key]);
-                    }
-                }
             }
             return data;
         }

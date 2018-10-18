@@ -184,7 +184,6 @@ namespace Contoso.Forms.Test.UITests
             AnalyticsResultsHelper.app = app;
             Assert.IsTrue(AnalyticsResultsHelper.SendingEventWasCalled);
             Assert.IsTrue(AnalyticsResultsHelper.VerifyEventName());
-            Assert.IsTrue(AnalyticsResultsHelper.VerifyNumProperties(numProperties));
 
             /* The SDK already has retry logic. So, give it a second try. */
             Assert.IsTrue(AnalyticsResultsHelper.SentEventWasCalled || AnalyticsResultsHelper.SentEventWasCalled);
@@ -208,7 +207,6 @@ namespace Contoso.Forms.Test.UITests
             AnalyticsResultsHelper.app = app;
             Assert.IsTrue(AnalyticsResultsHelper.SendingEventWasCalled);
             Assert.IsTrue(AnalyticsResultsHelper.VerifyEventName());
-            Assert.IsTrue(AnalyticsResultsHelper.VerifyNumProperties(numProperties));
             Assert.IsTrue(AnalyticsResultsHelper.SentEventWasCalled);
             Assert.IsFalse(AnalyticsResultsHelper.FailedToSendEventWasCalled);
         }
@@ -236,7 +234,6 @@ namespace Contoso.Forms.Test.UITests
             AnalyticsResultsHelper.app = app;
             Assert.IsFalse(AnalyticsResultsHelper.SendingEventWasCalled);
             Assert.IsFalse(AnalyticsResultsHelper.VerifyEventName());
-            Assert.IsFalse(AnalyticsResultsHelper.VerifyNumProperties(numProperties));
             Assert.IsFalse(AnalyticsResultsHelper.SentEventWasCalled);
             Assert.IsFalse(AnalyticsResultsHelper.FailedToSendEventWasCalled);
         }
