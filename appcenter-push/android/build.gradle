@@ -20,13 +20,13 @@ dependencies {
     //noinspection GradleDynamicVersion
     compile 'com.facebook.react:react-native:+'
     compile ('com.microsoft.appcenter:appcenter-push:1.9.0') {
-        exclude group: "com.google.firebase"
+        exclude group: 'com.google.firebase'
     }
-    compile ("com.google.firebase:firebase-core:16.0.4") {
-        exclude group: "com.android.support"
+    compile ('com.google.firebase:firebase-core:16.0.4') {
+        exclude group: 'com.android.support'
     }
-    compile ("com.google.firebase:firebase-messaging:17.3.4") {
-        exclude group: "com.android.support"
+    compile ('com.google.firebase:firebase-messaging:17.3.4') {
+        exclude group: 'com.android.support'
     }
 
     //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
