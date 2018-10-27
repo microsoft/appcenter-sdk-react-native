@@ -20,6 +20,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 
