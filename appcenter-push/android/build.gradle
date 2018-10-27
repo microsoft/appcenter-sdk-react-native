@@ -18,16 +18,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDynamicVersion
-    compile 'com.facebook.react:react-native:+'
+    compile ('com.facebook.react:react-native:+') {
+        exclude group: 'com.android.support'
+    }
     compile ('com.microsoft.appcenter:appcenter-push:1.9.0') {
         exclude group: 'com.google.firebase'
     }
-    compile ('com.google.firebase:firebase-core:16.0.4') {
-        exclude group: 'com.android.support'
-    }
-    compile ('com.google.firebase:firebase-messaging:17.3.4') {
-        exclude group: 'com.android.support'
-    }
+    compile 'com.google.firebase:firebase-core:16.0.4'
+    compile 'com.google.firebase:firebase-messaging:17.3.4'
 
     //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
     compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.9.0'

@@ -111,7 +111,6 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.microsoft.appcenter:appcenter:1.9.0'
 }
 
