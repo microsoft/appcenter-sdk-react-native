@@ -27,12 +27,12 @@ allprojects {
     def ext = rootProject.ext
 
     android {
-        compileSdkVersion rootProject.properties.get('compileSdkVersion', 26)
-        buildToolsVersion rootProject.properties.get('buildToolsVersion', '27.0.3')
+        compileSdkVersion 27
+        buildToolsVersion '27.0.3'
 
         defaultConfig {
             minSdkVersion 16
-            targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
+            targetSdkVersion 26
             versionCode 34
             versionName '1.9.0'
             group groupId
