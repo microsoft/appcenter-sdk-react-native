@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.properties.get('compileSdkVersion', 26)
+    buildToolsVersion rootProject.properties.get('buildToolsVersion', '27.0.3')
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
         versionCode 34
         versionName '1.9.0'
         ndk {
@@ -17,6 +17,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleDynamicVersion
     compile 'com.facebook.react:react-native:+'
     compile 'com.microsoft.appcenter:appcenter:1.9.0'
 

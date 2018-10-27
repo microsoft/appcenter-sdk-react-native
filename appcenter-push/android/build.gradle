@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.properties.get('compileSdkVersion', 26)
+    buildToolsVersion rootProject.properties.get('buildToolsVersion', '27.0.3')
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
         versionCode 34
         versionName '1.9.0'
         ndk {
@@ -17,8 +17,17 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleDynamicVersion
     compile 'com.facebook.react:react-native:+'
-    compile 'com.microsoft.appcenter:appcenter-push:1.9.0'
+    compile ('com.microsoft.appcenter:appcenter-push:1.9.0') {
+        exclude group: "com.google.firebase"
+    }
+    compile ("com.google.firebase:firebase-core:16.0.4") {
+        exclude group: "com.android.support"
+    }
+    compile ("com.google.firebase:firebase-messaging:17.3.4") {
+        exclude group: "com.android.support"
+    }
 
     //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
     compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.9.0'
