@@ -1,9 +1,10 @@
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
@@ -20,18 +21,19 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 
     def ext = rootProject.ext
 
     android {
-        compileSdkVersion 26
+        compileSdkVersion 27
         buildToolsVersion '27.0.3'
 
         defaultConfig {
             minSdkVersion 16
-            targetSdkVersion 22
+            targetSdkVersion 26
             versionCode 34
             versionName '1.9.0'
             group groupId
@@ -109,7 +111,6 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.microsoft.appcenter:appcenter:1.9.0'
 }
 

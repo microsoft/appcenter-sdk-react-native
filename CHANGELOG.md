@@ -1,5 +1,12 @@
 # App Center SDK for React Native Change Log
 
+## Version 1.10.0 (Under development)
+
+### Fixes
+
+* Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
+* Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
+
 ## Version 1.9.0
 
 ### Features

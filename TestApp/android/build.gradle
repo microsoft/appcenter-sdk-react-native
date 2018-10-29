@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
@@ -33,7 +33,7 @@ subprojects {
         if (project.hasProperty("android")) {
             android {
                 // Force all the submodules to use the specified compileSdkVersion and buildToolsVersion.
-                compileSdkVersion 26
+                compileSdkVersion 27
                 buildToolsVersion '27.0.3'
             }
         }
