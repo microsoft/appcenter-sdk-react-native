@@ -183,7 +183,10 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
             Collection<ErrorAttachmentLog> attachmentLogs = new LinkedList<>();
             for (int i = 0; i < attachments.size(); i++) {
                 ReadableMap jsAttachment = attachments.getMap(i);
-                String fileName = jsAttachment.getString("fileName");
+                String fileName = null;
+                if (jsAttachment.hasKey("fileName")) {
+                    fileName = jsAttachment.getString("fileName");
+                }
                 if (jsAttachment.hasKey("text")) {
                     String text = jsAttachment.getString("text");
                     attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, fileName));
