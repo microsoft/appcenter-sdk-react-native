@@ -6,7 +6,7 @@
 
 - Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
 - Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
-- [Android] Fix bug preventing ErrorAttachmentLog from being send if fileName is not specified.
+- [Android] Fix a bug which prevents ErrorAttachmentLog from being send if fileName is not specified.
 
 ## Version 1.9.0
 
