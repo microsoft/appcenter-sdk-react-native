@@ -27,6 +27,11 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
+    private static final String DATA_FIELD = "data";
+    private static final String TEXT_FIELD = "text";
+    private static final String FILE_NAME_FIELD = "fileName";
+    private static final String CONTENT_TYPE_FIELD = "contentType";
+
     /**
      * Constant for DO NOT SEND crash report.
      */
@@ -183,14 +188,17 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
             Collection<ErrorAttachmentLog> attachmentLogs = new LinkedList<>();
             for (int i = 0; i < attachments.size(); i++) {
                 ReadableMap jsAttachment = attachments.getMap(i);
-                String fileName = jsAttachment.getString("fileName");
-                if (jsAttachment.hasKey("text")) {
-                    String text = jsAttachment.getString("text");
+                String fileName = null;
+                if (jsAttachment.hasKey(FILE_NAME_FIELD)) {
+                    fileName = jsAttachment.getString(FILE_NAME_FIELD);
+                }
+                if (jsAttachment.hasKey(TEXT_FIELD)) {
+                    String text = jsAttachment.getString(TEXT_FIELD);
                     attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, fileName));
                 } else {
-                    String encodedData = jsAttachment.getString("data");
+                    String encodedData = jsAttachment.getString(DATA_FIELD);
                     byte[] data = Base64.decode(encodedData, Base64.DEFAULT);
-                    String contentType = jsAttachment.getString("contentType");
+                    String contentType = jsAttachment.getString(CONTENT_TYPE_FIELD);
                     attachmentLogs.add(ErrorAttachmentLog.attachmentWithBinary(data, fileName, contentType));
                 }
             }
