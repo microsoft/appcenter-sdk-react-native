@@ -2,28 +2,17 @@
 
 ## Version 1.10.0
 
-### Features
-
-#### AppCenterAnalytics
-
-- **[Android]** Add API to specify event persistence priority.
-- **[iOS]** Add new trackEvent APIs that take priority (normal or critical) of event logs. Events tracked with critical flag will take precedence over all other logs except crash logs (when AppCenterCrashes is enabled), and only be dropped if storage is full and must make room for newer critical events or crashes logs.
-
-### Fixes
+### AppCenter
 
 - **[Android]** Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
-- **[Android]** Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
-- **[Android]** Fix a bug which prevents ErrorAttachmentLog from being send if fileName is not specified.
-
-#### AppCenter
-
 - **[iOS]** Fix an issue where concurrent modification of custom properties was not thread safe.
 - **[iOS]** Fix validating and discarding Not a Number (NaN) and infinite double values for custom properties.
 - **[iOS]** Fix Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
 - **[iOS]** Fix Get database page size dynamically to support custom values.
 
-#### AppCenterCrashes
+### AppCenterCrashes
 
+- **[Android]** Fix a bug which prevents attachments from being sent if file name is not specified.
 - **[Android]** Fix Preventing stack overflow crash while reading a huge throwable file.
 - **[iOS]** Do not force crash macOS application on uncaught exception. If you need this behavior you can set the special flag yourself:
 
@@ -31,8 +20,9 @@
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"NSApplicationCrashOnExceptions" : @YES }];
     ```
 
-#### AppCenterPush
+### AppCenterPush
 
+- **[Android]** Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
 - **[iOS]** Fix push:didReceivePushNotification: callback not triggered on notification tapped or received in foreground when a      UNUserNotificationCenterDelegate is set. If you have implemented this delegate please remove any call to the MSPush#didReceiveRemoteNotification: method as it's now handled by the new User Notification Center Delegate Forwarder.
 
 ## Version 1.9.0
