@@ -11,16 +11,6 @@
 * **[Fix]** Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
 * **[Fix]** Get database page size dynamically to support custom values.
 
-### AppCenterAnalytics
-
-### Android
-
-* **[Feature]** Add API to specify event persistence priority.
-
-### iOS
-
-* **[Feature]** Add new trackEvent APIs that take priority (normal or critical) of event logs. Events tracked with critical flag will take precedence over all other logs except crash logs (when AppCenterCrashes is enabled), and only be dropped if storage is full and must make room for newer critical events or crashes logs.
-
 ### AppCenterCrashes
 
 ### Android
@@ -39,7 +29,7 @@
 
 ##iOS
 
-* **[Fix]** Fix `push:didReceivePushNotification:` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set.  If you have implemented this delegate please remove any call to the `MSPush#didReceiveRemoteNotification:` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/appcenter/sdk/push/ios).
+* **[Fix]** Fix `PushNotificationReceived` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set. If you have implemented this delegate please remove any call to the `Push.DidReceiveRemoteNotification` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/en-us/appcenter/sdk/push/xamarin-ios).
 
 ___
 
