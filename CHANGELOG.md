@@ -2,13 +2,15 @@
 
 ## Version 1.10.0
 
+### Fixes
+
 ### AppCenter
 
 - **[Android]** Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
 - **[iOS]** Fix an issue where concurrent modification of custom properties was not thread safe.
-- **[iOS]** Fix validating and discarding Not a Number (NaN) and infinite double values for custom properties.
-- **[iOS]** Fix Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
-- **[iOS]** Fix Get database page size dynamically to support custom values.
+- **[iOS]** Validating and discarding Not a Number (NaN) and infinite double values for custom properties.
+- **[iOS]** Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
+- **[iOS]** Get database page size dynamically to support custom values.
 
 ### AppCenterCrashes
 
