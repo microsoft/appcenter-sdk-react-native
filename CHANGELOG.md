@@ -1,5 +1,30 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.11.0
+
+### AppCenter
+
+#### iOS
+
+* **[Fix]** Fix an issue where concurrent modification of custom properties was not thread safe.
+* **[Fix]** Fix validating and discarding Not a Number (NaN) and infinite double values for custom properties.
+* **[Fix]** Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
+* **[Fix]** Get database page size dynamically to support custom values.
+
+### AppCenterCrashes
+
+#### Android
+
+* **[Fix]** Preventing stack overflow crash while reading a huge throwable file.
+
+### AppCenterPush
+
+#### iOS
+
+* **[Fix]** Fix `PushNotificationReceived` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set. If you have implemented this delegate please remove any call to the `Push.DidReceiveRemoteNotification` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/en-us/appcenter/sdk/push/xamarin-ios).
+
+___
+
 ## Version 1.10.0
 
 ### AppCenter
