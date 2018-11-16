@@ -4,7 +4,7 @@
 
 ### AppCenter
 
-##iOS
+## iOS
 
 * **[Fix]** Fix an issue where concurrent modification of custom properties was not thread safe.
 * **[Fix]** Fix validating and discarding Not a Number (NaN) and infinite double values for custom properties.
@@ -17,7 +17,7 @@
 
 * **[Feature]** Add API to specify event persistence priority.
 
-##iOS
+## iOS
 
 * **[Feature]** Add new trackEvent APIs that take priority (normal or critical) of event logs. Events tracked with critical flag will take precedence over all other logs except crash logs (when AppCenterCrashes is enabled), and only be dropped if storage is full and must make room for newer critical events or crashes logs.
 
@@ -27,7 +27,7 @@
 
 * **[Fix]** Preventing stack overflow crash while reading a huge throwable file.
 
-##iOS
+## iOS
 
 * **[Fix]** Do not force crash macOS application on uncaught exception. If you need this behavior you can set the special flag yourself:
 
