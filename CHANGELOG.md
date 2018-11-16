@@ -14,11 +14,6 @@
 
 - **[Android]** Fix a bug which prevents attachments from being sent if file name is not specified.
 - **[Android]** Fix Preventing stack overflow crash while reading a huge throwable file.
-- **[iOS]** Do not force crash macOS application on uncaught exception. If you need this behavior you can set the special flag yourself:
-
-    ```objc
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"NSApplicationCrashOnExceptions" : @YES }];
-    ```
 
 ### AppCenterPush
 
