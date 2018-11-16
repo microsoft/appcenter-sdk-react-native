@@ -24,8 +24,9 @@ AppCenterCrashes
 
 - [Android] Fix Preventing stack overflow crash while reading a huge throwable file.
 - [IOS] Do not force crash macOS application on uncaught exception. If you need this behavior you can set the special flag yourself:
-
-[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"NSApplicationCrashOnExceptions" : @YES }];
+    ```objc
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"NSApplicationCrashOnExceptions" : @YES }];
+    ```
 
 AppCenterPush
 
