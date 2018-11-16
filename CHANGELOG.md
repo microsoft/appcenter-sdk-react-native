@@ -25,7 +25,7 @@
 ### AppCenterPush
 
 - **[Android]** Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
-- **[iOS]** Fix push:didReceivePushNotification: callback not triggered on notification tapped or received in foreground when a      UNUserNotificationCenterDelegate is set. If you have implemented this delegate please remove any call to the MSPush#didReceiveRemoteNotification: method as it's now handled by the new User Notification Center Delegate Forwarder.
+- **[iOS]** Fix `push:didReceivePushNotification:` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set.  If you have implemented this delegate please remove any call to the `MSPush#didReceiveRemoteNotification:` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/appcenter/sdk/push/ios).
 
 ## Version 1.9.0
 
