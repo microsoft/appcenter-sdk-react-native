@@ -1,12 +1,24 @@
 # App Center SDK for React Native Change Log
 
-## Version 1.10.0 (Under development)
+## Version 1.10.0
 
-### Fixes
+### AppCenter
 
-- Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
-- Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
-- [Android] Fix a bug which prevents ErrorAttachmentLog from being send if fileName is not specified.
+- **[Android]** Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
+- **[iOS]** Fix an issue where concurrent modification of custom properties was not thread safe.
+- **[iOS]** Validating and discarding Not a Number (NaN) and infinite double values for custom properties.
+- **[iOS]** Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
+- **[iOS]** Get database page size dynamically to support custom values.
+
+### AppCenterCrashes
+
+- **[Android]** Fix a bug which prevents attachments from being sent if file name is not specified.
+- **[Android]** Fix Preventing stack overflow crash while reading a huge throwable file.
+
+### AppCenterPush
+
+- **[Android]** Use latest Firebase version [#365](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/365).
+- **[iOS]** Fix `push:didReceivePushNotification:` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set.  If you have implemented this delegate please remove any call to the `MSPush#didReceiveRemoteNotification:` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/appcenter/sdk/push/ios).
 
 ## Version 1.9.0
 
@@ -19,9 +31,9 @@
 
 - Fix consuming the SDK as pod dependencies for non standard projects not using react-native link [#326](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/326).
 - Don't automatically add mock Jest files when installing the App Center packages. [#436](https://github.com/Microsoft/AppCenter-SDK-React-Native/pull/436).
-- [Android] Fix validating and discarding NaN and infinite double values when calling setCustomProperties.
-- [iOS] Add missing network request error logging.
-- [iOS] Fix the list of binary images in crash reports for arm64e-based devices.
+- **[Android]** Fix validating and discarding NaN and infinite double values when calling setCustomProperties.
+- **[iOS]** Add missing network request error logging.
+- **[iOS]** Fix the list of binary images in crash reports for arm64e-based devices.
 
 ___
 
