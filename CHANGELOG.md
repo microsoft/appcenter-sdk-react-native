@@ -17,7 +17,6 @@
 
 * **[Fix]** Preventing stack overflow crash while reading a huge throwable file.
 
-
 ### AppCenterPush
 
 #### iOS
