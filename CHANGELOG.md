@@ -4,7 +4,7 @@
 
 ### AppCenter
 
-### iOS
+#### iOS
 
 * **[Fix]** Fix an issue where concurrent modification of custom properties was not thread safe.
 * **[Fix]** Fix validating and discarding Not a Number (NaN) and infinite double values for custom properties.
@@ -13,21 +13,14 @@
 
 ### AppCenterCrashes
 
-### Android
+#### Android
 
 * **[Fix]** Preventing stack overflow crash while reading a huge throwable file.
 
-### iOS
-
-* **[Fix]** Do not force crash macOS application on uncaught exception. If you need this behavior you can set the special flag yourself:
-
-    ```objc
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"NSApplicationCrashOnExceptions" : @YES }];
-    ```
 
 ### AppCenterPush
 
-##iOS
+#### iOS
 
 * **[Fix]** Fix `PushNotificationReceived` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set. If you have implemented this delegate please remove any call to the `Push.DidReceiveRemoteNotification` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/en-us/appcenter/sdk/push/xamarin-ios).
 
