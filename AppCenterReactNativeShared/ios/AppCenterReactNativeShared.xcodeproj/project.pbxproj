@@ -23,7 +23,6 @@
 /* Begin PBXBuildFile section */
 		5419C25A1D81FDA300DDF3A1 /* AppCenterReactNativeShared.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */; };
 		5419C25C1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m */; };
-		922765C32177D3F800DD96A8 /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922765C22177D3F800DD96A8 /* AppCenter.framework */; };
 		CB4D6D781DB6DE940080D9D6 /* AppCenterReactNativeShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -41,10 +40,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3D3871AD219CEC0500C2D6EA /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenterAnalytics.framework; sourceTree = "<group>"; };
+		3D3871AE219CEC1500C2D6EA /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenterCrashes.framework; sourceTree = "<group>"; };
+		3D3871AF219CED8200C2D6EA /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenter.framework; sourceTree = "<group>"; };
 		5419C2561D81FDA300DDF3A1 /* libAppCenterReactNativeShared.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativeShared.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeShared.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeShared.m; sourceTree = "<group>"; };
-		922765C22177D3F800DD96A8 /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenter.framework; sourceTree = "<group>"; };
 		BA0D8B051E57C298005C4596 /* Global.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Global.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				922765C32177D3F800DD96A8 /* AppCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +65,9 @@
 			children = (
 				5419C2581D81FDA300DDF3A1 /* AppCenterReactNativeShared */,
 				5419C2571D81FDA300DDF3A1 /* Products */,
-				922765C22177D3F800DD96A8 /* AppCenter.framework */,
+				3D3871AF219CED8200C2D6EA /* AppCenter.framework */,
+				3D3871AE219CEC1500C2D6EA /* AppCenterCrashes.framework */,
+				3D3871AD219CEC0500C2D6EA /* AppCenterAnalytics.framework */,
 			);
 			sourceTree = "<group>";
 		};
