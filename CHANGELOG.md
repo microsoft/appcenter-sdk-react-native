@@ -2,8 +2,6 @@
 
 ## Version 1.10.0
 
-### Fixes
-
 ### AppCenter
 
 - **[Android]** Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/451).
