@@ -28,7 +28,7 @@ describe('App Center Analytics tests', () => {
     const eventName = 'Test event';
     const eventProperties = { invalid: { prop: 1 } };
     expect(() => Analytics.trackEvent(eventName, eventProperties))
-    .toThrowError('Properties cannot be serialized. Object must only contain strings');
+      .toThrowError('Properties cannot be serialized. Object must only contain strings');
   });
 
   test('setEnabled is called', async () => {
