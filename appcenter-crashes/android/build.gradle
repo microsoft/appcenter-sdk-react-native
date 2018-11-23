@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
-        versionCode 34
-        versionName '1.9.0'
+        versionCode 35
+        versionName '1.10.0'
         ndk {
             abiFilters 'armeabi-v7a', 'x86'
         }
@@ -19,8 +19,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDynamicVersion
     compile 'com.facebook.react:react-native:+'
-    compile 'com.microsoft.appcenter:appcenter-crashes:1.9.0'
+    compile 'com.microsoft.appcenter:appcenter-crashes:1.10.0'
 
     //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.9.0'
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.10.0'
 }

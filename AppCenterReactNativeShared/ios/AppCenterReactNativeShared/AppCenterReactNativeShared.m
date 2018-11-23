@@ -41,7 +41,7 @@ static MSWrapperSdk *wrapperSdk;
   if (!wrapperSdk) {
       MSWrapperSdk * wrapperSdk =
         [[MSWrapperSdk alloc]
-            initWithWrapperSdkVersion:@"1.9.0"
+            initWithWrapperSdkVersion:@"1.10.0"
             wrapperSdkName:@"appcenter.react-native"
             wrapperRuntimeVersion:nil
             liveUpdateReleaseLabel:nil
