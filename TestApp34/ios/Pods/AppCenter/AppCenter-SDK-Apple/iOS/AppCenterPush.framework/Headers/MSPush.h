@@ -1,5 +1,5 @@
-#import "MSPushDelegate.h"
 #import "MSServiceAbstract.h"
+#import "MSPushDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,10 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Set the delegate.
- *
  * Defines the class that implements the optional protocol `MSPushDelegate`.
  *
- * @param delegate Sender's delegate.
+ * @param delegate The delegate.
  *
  * @see MSPushDelegate
  */

@@ -23,12 +23,12 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		28695939BB2D459B99FA64B0 /* libAppCenterReactNativePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8CA866A41214273AB85E126 /* libAppCenterReactNativePush.a */; };
-		5589205903C14142902AF13A /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F22A508B004077BD45D251 /* libAppCenterReactNativeCrashes.a */; };
-		67279142E7BE4A868C868DE8 /* libAppCenterReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 758925211C1E40B48478846E /* libAppCenterReactNative.a */; };
+		4A13EFC3506745FC86E451F5 /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CAC9F4C68AC431AB3294FCB /* libAppCenterReactNativeAnalytics.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		AAE1C99CC7694CF9A2B69955 /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBC810635E6D436AB96E1D4D /* libAppCenterReactNativeAnalytics.a */; };
 		CD7C2CF85DD7FD0B975DE05D /* libPods-TestApp34.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EBC7F60F0F15BC270B8166 /* libPods-TestApp34.a */; };
+		D64C89FC3E884D3FAD378D2D /* libAppCenterReactNativePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C6376F7C2C64BBBAC9F0174 /* libAppCenterReactNativePush.a */; };
+		D925884F224F423F8CE3AEBB /* libAppCenterReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C2A0510D814A6DA23C5D30 /* libAppCenterReactNative.a */; };
+		E033A0757DFF4CEBB3A96F0A /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17DA20E40F7C4DC7B2B34358 /* libAppCenterReactNativeCrashes.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,34 +109,6 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		9C62F5681FDFA28700BF0F34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 406D68513ED641378718A82D /* AppCenterReactNativeCrashes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5419C2701D824AA700DDF3A1;
-			remoteInfo = AppCenterReactNativeCrashes;
-		};
-		9C62F56D1FDFA28700BF0F34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5846436C8E884FA89DF9A46A /* AppCenterReactNativePush.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BA189FAA1EEE74F100CAD13F;
-			remoteInfo = AppCenterReactNativePush;
-		};
-		9C62F5721FDFA28700BF0F34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1963AE6BF23F4421AA1AAD0F /* AppCenterReactNativeAnalytics.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 548694001D8384E600E6685A;
-			remoteInfo = AppCenterReactNativeAnalytics;
-		};
-		9C62F5771FDFA28700BF0F34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3241DA5653564EEF9E80454E /* AppCenterReactNative.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C35AEC211EF91F9300931F0C;
-			remoteInfo = AppCenterReactNative;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -161,22 +133,22 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TestApp34/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		17608C40C8C9520F3396055B /* Pods-TestApp34.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApp34.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestApp34/Pods-TestApp34.release.xcconfig"; sourceTree = "<group>"; };
-		1963AE6BF23F4421AA1AAD0F /* AppCenterReactNativeAnalytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeAnalytics.xcodeproj; path = "../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics.xcodeproj"; sourceTree = "<group>"; };
-		3241DA5653564EEF9E80454E /* AppCenterReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNative.xcodeproj; path = ../node_modules/appcenter/ios/AppCenterReactNative.xcodeproj; sourceTree = "<group>"; };
-		406D68513ED641378718A82D /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeCrashes.xcodeproj; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; };
+		17DA20E40F7C4DC7B2B34358 /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = archive.ar; name = libAppCenterReactNativeCrashes.a; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
+		1CAC9F4C68AC431AB3294FCB /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = archive.ar; name = libAppCenterReactNativeAnalytics.a; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
+		3C6376F7C2C64BBBAC9F0174 /* libAppCenterReactNativePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = archive.ar; name = libAppCenterReactNativePush.a; path = libAppCenterReactNativePush.a; sourceTree = "<group>"; };
+		43C2A0510D814A6DA23C5D30 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = archive.ar; name = libAppCenterReactNative.a; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		45607D081F984EAE99526A99 /* libRNPush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPush.a; sourceTree = "<group>"; };
-		5846436C8E884FA89DF9A46A /* AppCenterReactNativePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativePush.xcodeproj; path = "../node_modules/appcenter-push/ios/AppCenterReactNativePush.xcodeproj"; sourceTree = "<group>"; };
 		5E39BA42ABFB4097A5E1C6F9 /* AppCenter-Config.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "TestApp34/AppCenter-Config.plist"; sourceTree = "<group>"; };
-		758925211C1E40B48478846E /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		89DB2193A32A4832B31F15D8 /* AppCenterReactNativeAnalytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeAnalytics.xcodeproj; path = "../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics.xcodeproj"; sourceTree = "<group>"; };
 		8E7DB127DBC9B91C73394523 /* Pods-TestApp34.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApp34.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestApp34/Pods-TestApp34.debug.xcconfig"; sourceTree = "<group>"; };
+		999F4B6553D4491BBE750BD7 /* AppCenterReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNative.xcodeproj; path = ../node_modules/appcenter/ios/AppCenterReactNative.xcodeproj; sourceTree = "<group>"; };
 		9CB0E7261FB39461003A1EDC /* TestApp34.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TestApp34.entitlements; path = TestApp34/TestApp34.entitlements; sourceTree = "<group>"; };
-		A2F22A508B004077BD45D251 /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
 		A3EBC7F60F0F15BC270B8166 /* libPods-TestApp34.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestApp34.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA376E1D58524F50B5C6A732 /* libRNCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCrashes.a; sourceTree = "<group>"; };
-		D8CA866A41214273AB85E126 /* libAppCenterReactNativePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativePush.a; sourceTree = "<group>"; };
-		EBC810635E6D436AB96E1D4D /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
+		B4D3399C62AE472581620272 /* AppCenterReactNativePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativePush.xcodeproj; path = "../node_modules/appcenter-push/ios/AppCenterReactNativePush.xcodeproj"; sourceTree = "<group>"; };
+		F669DA69F27E471992AA7D5A /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeCrashes.xcodeproj; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; };
 		F96AB3DD86234566BB8428E3 /* libRNAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAnalytics.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,10 +176,10 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				CD7C2CF85DD7FD0B975DE05D /* libPods-TestApp34.a in Frameworks */,
-				67279142E7BE4A868C868DE8 /* libAppCenterReactNative.a in Frameworks */,
-				AAE1C99CC7694CF9A2B69955 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
-				5589205903C14142902AF13A /* libAppCenterReactNativeCrashes.a in Frameworks */,
-				28695939BB2D459B99FA64B0 /* libAppCenterReactNativePush.a in Frameworks */,
+				D925884F224F423F8CE3AEBB /* libAppCenterReactNative.a in Frameworks */,
+				4A13EFC3506745FC86E451F5 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
+				E033A0757DFF4CEBB3A96F0A /* libAppCenterReactNativeCrashes.a in Frameworks */,
+				D64C89FC3E884D3FAD378D2D /* libAppCenterReactNativePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,10 +314,6 @@
 				F96AB3DD86234566BB8428E3 /* libRNAnalytics.a */,
 				AA376E1D58524F50B5C6A732 /* libRNCrashes.a */,
 				45607D081F984EAE99526A99 /* libRNPush.a */,
-				758925211C1E40B48478846E /* libAppCenterReactNative.a */,
-				EBC810635E6D436AB96E1D4D /* libAppCenterReactNativeAnalytics.a */,
-				A2F22A508B004077BD45D251 /* libAppCenterReactNativeCrashes.a */,
-				D8CA866A41214273AB85E126 /* libAppCenterReactNativePush.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -363,10 +331,10 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				3241DA5653564EEF9E80454E /* AppCenterReactNative.xcodeproj */,
-				1963AE6BF23F4421AA1AAD0F /* AppCenterReactNativeAnalytics.xcodeproj */,
-				406D68513ED641378718A82D /* AppCenterReactNativeCrashes.xcodeproj */,
-				5846436C8E884FA89DF9A46A /* AppCenterReactNativePush.xcodeproj */,
+				999F4B6553D4491BBE750BD7 /* AppCenterReactNative.xcodeproj */,
+				89DB2193A32A4832B31F15D8 /* AppCenterReactNativeAnalytics.xcodeproj */,
+				F669DA69F27E471992AA7D5A /* AppCenterReactNativeCrashes.xcodeproj */,
+				B4D3399C62AE472581620272 /* AppCenterReactNativePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -404,38 +372,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9C62F5651FDFA28700BF0F34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C62F5691FDFA28700BF0F34 /* libAppCenterReactNativeCrashes.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		9C62F56A1FDFA28700BF0F34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C62F56E1FDFA28700BF0F34 /* libAppCenterReactNativePush.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		9C62F56F1FDFA28700BF0F34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C62F5731FDFA28700BF0F34 /* libAppCenterReactNativeAnalytics.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		9C62F5741FDFA28700BF0F34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C62F5781FDFA28700BF0F34 /* libAppCenterReactNative.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -466,8 +402,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				69E714B12235E6CDAB4B7F40 /* [CP] Embed Pods Frameworks */,
-				F4AB418CEF6C85469BE360F4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -519,22 +453,6 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 9C62F5741FDFA28700BF0F34 /* Products */;
-					ProjectRef = 3241DA5653564EEF9E80454E /* AppCenterReactNative.xcodeproj */;
-				},
-				{
-					ProductGroup = 9C62F56F1FDFA28700BF0F34 /* Products */;
-					ProjectRef = 1963AE6BF23F4421AA1AAD0F /* AppCenterReactNativeAnalytics.xcodeproj */;
-				},
-				{
-					ProductGroup = 9C62F5651FDFA28700BF0F34 /* Products */;
-					ProjectRef = 406D68513ED641378718A82D /* AppCenterReactNativeCrashes.xcodeproj */;
-				},
-				{
-					ProductGroup = 9C62F56A1FDFA28700BF0F34 /* Products */;
-					ProjectRef = 5846436C8E884FA89DF9A46A /* AppCenterReactNativePush.xcodeproj */;
-				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -655,34 +573,6 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9C62F5691FDFA28700BF0F34 /* libAppCenterReactNativeCrashes.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppCenterReactNativeCrashes.a;
-			remoteRef = 9C62F5681FDFA28700BF0F34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C62F56E1FDFA28700BF0F34 /* libAppCenterReactNativePush.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppCenterReactNativePush.a;
-			remoteRef = 9C62F56D1FDFA28700BF0F34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C62F5731FDFA28700BF0F34 /* libAppCenterReactNativeAnalytics.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppCenterReactNativeAnalytics.a;
-			remoteRef = 9C62F5721FDFA28700BF0F34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C62F5781FDFA28700BF0F34 /* libAppCenterReactNative.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppCenterReactNative.a;
-			remoteRef = 9C62F5771FDFA28700BF0F34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -720,21 +610,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
 		};
-		69E714B12235E6CDAB4B7F40 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestApp34/Pods-TestApp34-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		C8091210E8942DFDCDC2284E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -751,21 +626,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F4AB418CEF6C85469BE360F4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestApp34/Pods-TestApp34-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

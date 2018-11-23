@@ -8,8 +8,8 @@
 @optional
 
 /**
- * Callback method that will be called whenever a push notification is clicked from notification center or a
- * notification is received in foreground.
+ * Callback method that will be called whenever a push notification is clicked from notification center or a notification is received in
+ * foreground.
  *
  * @param push The instance of MSPush.
  * @param pushNotification The push notification details.
