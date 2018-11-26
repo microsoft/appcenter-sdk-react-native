@@ -22,8 +22,7 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
                     }]
             }])
         ).then((androidAnswer) => {
-            rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics',
-                androidAnswer.whenToEnableAnalytics);
+            rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics', androidAnswer.whenToEnableAnalytics);
             rnpmlink.android.removeAndroidDuplicateLinks();
         }).catch((e) => {
             console.error(`Could not configure AppCenter Analytics for Android. Error Reason - ${e.message}`);
