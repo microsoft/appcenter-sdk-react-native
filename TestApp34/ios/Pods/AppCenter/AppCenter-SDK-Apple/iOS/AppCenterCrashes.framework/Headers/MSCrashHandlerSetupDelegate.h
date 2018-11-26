@@ -22,9 +22,8 @@
  *
  * @return YES if SDK should enable uncaught exception handler, otherwise NO.
  *
- * @discussion Do not register an UncaughtExceptionHandler for Xamarin as we rely on the Xamarin runtime to report
- * NSExceptions. Registering our own UncaughtExceptionHandler will cause the Xamarin debugger to not work properly (it
- * will not stop for NSExceptions).
+ * @discussion Do not register an UncaughtExceptionHandler for Xamarin as we rely on the Xamarin runtime to report NSExceptions. Registering
+ * our own UncaughtExceptionHandler will cause the Xamarin debugger to not work properly (it will not stop for NSExceptions).
  */
 - (BOOL)shouldEnableUncaughtExceptionHandler;
 
