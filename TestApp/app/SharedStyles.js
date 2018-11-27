@@ -42,6 +42,14 @@ export default StyleSheet.create({
     marginBottom: -5,
     textAlign: 'right'
   },
+  underlinedItemInput: {
+    flex: 1,
+    padding: 5,
+    marginTop: -5,
+    marginBottom: -5,
+    textAlign: 'right',
+    borderBottomWidth: 1
+  },
   modalSelector: {
     borderColor: 'gray',
     backgroundColor: 'white'
