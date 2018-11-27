@@ -73,18 +73,19 @@ export default class CrashesScreen extends Component {
       </View>
     );
 
-    const valueRenderItem = ({ item: { title, value, editable, onChange } }) => {
-      if (editable) {
-        return (<View style={SharedStyles.item}>
-          <Text style={SharedStyles.itemTitle}>{title}</Text>
-          <TextInput style={SharedStyles.underlinedItemInput} onChangeText={onChange}>{this.state[value]}</TextInput>
-        </View>);
-      } else {
-        return (<View style={SharedStyles.item}>
+    const valueRenderItem = ({ item: { title, value, onChange } }) => {
+      if (onChange) {
+        return (
+          <View style={SharedStyles.item}>
+            <Text style={SharedStyles.itemTitle}>{title}</Text>
+            <TextInput style={SharedStyles.underlinedItemInput} onChangeText={onChange}>{this.state[value]}</TextInput>
+          </View>);
+      }
+      return (
+        <View style={SharedStyles.item}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
           <Text>{this.state[value]}</Text>
         </View>);
-      }
     };
 
     const actionRenderItem = ({ item: { title, action } }) => (
@@ -141,8 +142,7 @@ export default class CrashesScreen extends Component {
                 {
                   title: 'Text attachment',
                   value: 'textAttachment',
-                  editable: true,
-                  onChange: textAttachment => {
+                  onChange: (textAttachment) => {
                     this.setState({ textAttachment });
                     AttachmentsProvider.saveTextAttachment(textAttachment);
                   }
