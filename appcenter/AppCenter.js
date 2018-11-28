@@ -7,15 +7,50 @@ const PackageJson = require('./package.json');
 const logTag = 'AppCenter';
 
 const AppCenter = {
+    LogLevel: {
+        VERBOSE: AppCenterLog.LogLevelVerbose,     // Logging will be very chatty
+        DEBUG: AppCenterLog.LogLevelDebug,         // Debug information will be logged
+        INFO: AppCenterLog.LogLevelInfo,           // Information will be logged
+        WARNING: AppCenterLog.LogLevelWarning,     // Errors and warnings will be logged
+        ERROR: AppCenterLog.LogLevelError,         // Errors will be logged
+        ASSERT: AppCenterLog.LogLevelAssert,       // Only critical errors will be logged
+        NONE: AppCenterLog.LogLevelNone            // Logging is disabled
+    },
 
-    // By design, these constants match both the iOS SDK values in MSContants.h and the standard Android values in android.util.Log
-    LogLevelVerbose: AppCenterLog.LogLevelVerbose,  // Logging will be very chatty
-    LogLevelDebug: AppCenterLog.LogLevelDebug,      // Debug information will be logged
-    LogLevelInfo: AppCenterLog.LogLevelInfo,        // Information will be logged
-    LogLevelWarning: AppCenterLog.LogLevelWarning,  // Errors and warnings will be logged
-    LogLevelError: AppCenterLog.LogLevelError,      // Errors will be logged
-    LogLevelAssert: AppCenterLog.LogLevelAssert,    // Only critical errors will be logged
-    LogLevelNone: AppCenterLog.LogLevelNone,        // Logging is disabled
+    /**
+     * @deprecated Use `LogLevel.VERBOSE` instead.
+     */
+    LogLevelVerbose: AppCenterLog.LogLevelVerbose,
+
+    /**
+     * @deprecated Use `LogLevel.DEBUG` instead.
+     */
+    LogLevelDebug: AppCenterLog.LogLevelDebug,
+
+    /**
+     * @deprecated Use `LogLevel.INFO` instead.
+     */
+    LogLevelInfo: AppCenterLog.LogLevelInfo,
+
+    /**
+     * @deprecated Use `LogLevel.WARNING` instead.
+     */
+    LogLevelWarning: AppCenterLog.LogLevelWarning,
+
+    /**
+     * @deprecated Use `LogLevel.ERROR` instead.
+     */
+    LogLevelError: AppCenterLog.LogLevelError,
+
+    /**
+     * @deprecated Use `LogLevel.ASSERT` instead.
+     */
+    LogLevelAssert: AppCenterLog.LogLevelAssert,
+
+    /**
+     * @deprecated Use `LogLevel.NONE` instead.
+     */
+    LogLevelNone: AppCenterLog.LogLevelNone,
 
     // async - returns a Promise
     startFromLibrary(service) {
