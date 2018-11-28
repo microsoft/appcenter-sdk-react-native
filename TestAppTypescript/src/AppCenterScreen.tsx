@@ -13,7 +13,7 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import AppCenter, { CustomProperties } from "appcenter";
+import AppCenter, { CustomProperties, LogLevel } from "appcenter";
 import SharedStyles from "./SharedStyles";
 
 export default class AppCenterScreen extends React.Component<
@@ -59,12 +59,12 @@ export default class AppCenterScreen extends React.Component<
   async toggleLogging() {
     let logLevel = await AppCenter.getLogLevel();
     switch (logLevel) {
-      case AppCenter.LogLevelAssert:
-        logLevel = AppCenter.LogLevelNone;
+      case LogLevel.ASSERT:
+        logLevel = LogLevel.NONE;
         break;
 
-      case AppCenter.LogLevelNone:
-        logLevel = AppCenter.LogLevelVerbose;
+      case LogLevel.NONE:
+        logLevel = LogLevel.VERBOSE;
         break;
 
       default:
