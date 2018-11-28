@@ -23,7 +23,7 @@ export default class AppCenterScreen extends React.Component<
     installId: string;
     logLevel: number;
   }
-> {
+  > {
   constructor(props: any) {
     super(props);
     this.state = {

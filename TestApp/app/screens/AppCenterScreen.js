@@ -24,8 +24,6 @@ SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${Sec
 
 const STARTUP_MODE = 'STARTUP_MODE';
 
-var asd = AppCenter.LogLevelDebug;
-
 const StartupModes = [
   {
     label: 'AppCenter target only',
