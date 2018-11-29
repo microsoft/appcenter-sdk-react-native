@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CB4336821B05E38006D00B7 /* AppCenterReactNativePushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35A03961F0275DC00931F0C /* AppCenterReactNativePushDelegate.m */; };
+		0CB4336921B05E38006D00B7 /* AppCenterReactNativePush.m in Sources */ = {isa = PBXBuildFile; fileRef = BA189FAE1EEE74F100CAD13F /* AppCenterReactNativePush.m */; };
+		0CB4336A21B05E38006D00B7 /* AppCenterReactNativePushUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C35A03991F02764000931F0C /* AppCenterReactNativePushUtils.m */; };
+		0CB4336D21B05E38006D00B7 /* AppCenterReactNativePush.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA189FAD1EEE74F100CAD13F /* AppCenterReactNativePush.h */; };
 		BA189FAF1EEE74F100CAD13F /* AppCenterReactNativePush.m in Sources */ = {isa = PBXBuildFile; fileRef = BA189FAE1EEE74F100CAD13F /* AppCenterReactNativePush.m */; };
 		BA189FB01EEE74F100CAD13F /* AppCenterReactNativePush.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA189FAD1EEE74F100CAD13F /* AppCenterReactNativePush.h */; };
 		C35A03971F0275DC00931F0C /* AppCenterReactNativePushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35A03961F0275DC00931F0C /* AppCenterReactNativePushDelegate.m */; };
@@ -14,6 +18,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0CB4336C21B05E38006D00B7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				0CB4336D21B05E38006D00B7 /* AppCenterReactNativePush.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BA189FA81EEE74F100CAD13F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -27,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CB4337121B05E38006D00B7 /* libAppCenterReactNativePush-macos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppCenterReactNativePush-macos.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA189FAA1EEE74F100CAD13F /* libAppCenterReactNativePush.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativePush.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA189FAD1EEE74F100CAD13F /* AppCenterReactNativePush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativePush.h; sourceTree = "<group>"; };
 		BA189FAE1EEE74F100CAD13F /* AppCenterReactNativePush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativePush.m; sourceTree = "<group>"; };
@@ -37,6 +52,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0CB4336B21B05E38006D00B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BA189FA71EEE74F100CAD13F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -59,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				BA189FAA1EEE74F100CAD13F /* libAppCenterReactNativePush.a */,
+				0CB4337121B05E38006D00B7 /* libAppCenterReactNativePush-macos.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,6 +102,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0CB4336621B05E38006D00B7 /* AppCenterReactNativePush-macos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0CB4336E21B05E38006D00B7 /* Build configuration list for PBXNativeTarget "AppCenterReactNativePush-macos" */;
+			buildPhases = (
+				0CB4336721B05E38006D00B7 /* Sources */,
+				0CB4336B21B05E38006D00B7 /* Frameworks */,
+				0CB4336C21B05E38006D00B7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppCenterReactNativePush-macos";
+			productName = AppCenterReactNativePush;
+			productReference = 0CB4337121B05E38006D00B7 /* libAppCenterReactNativePush-macos.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		BA189FA91EEE74F100CAD13F /* AppCenterReactNativePush */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BA189FB31EEE74F100CAD13F /* Build configuration list for PBXNativeTarget "AppCenterReactNativePush" */;
@@ -124,11 +164,22 @@
 			projectRoot = "";
 			targets = (
 				BA189FA91EEE74F100CAD13F /* AppCenterReactNativePush */,
+				0CB4336621B05E38006D00B7 /* AppCenterReactNativePush-macos */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0CB4336721B05E38006D00B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0CB4336821B05E38006D00B7 /* AppCenterReactNativePushDelegate.m in Sources */,
+				0CB4336921B05E38006D00B7 /* AppCenterReactNativePush.m in Sources */,
+				0CB4336A21B05E38006D00B7 /* AppCenterReactNativePushUtils.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BA189FA61EEE74F100CAD13F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -142,6 +193,54 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0CB4336F21B05E38006D00B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../../ios/Pods/AppCenter/**",
+					"$(SRCROOT)/../../../ios/Pods/AppCenterReactNativeShared/**",
+					"$(SRCROOT)/../../../ios/Vendor/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/Base",
+					"$(SRCROOT)/../../react-native/React/Modules",
+					"$(SRCROOT)/../../react-native/React/CSSLayout",
+					"$(SRCROOT)/../../react-native/React/Views",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		0CB4337021B05E38006D00B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../../ios/Pods/AppCenter/**",
+					"$(SRCROOT)/../../../ios/Pods/AppCenterReactNativeShared/**",
+					"$(SRCROOT)/../../../ios/Vendor/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/Base",
+					"$(SRCROOT)/../../react-native/React/Modules",
+					"$(SRCROOT)/../../react-native/React/CSSLayout",
+					"$(SRCROOT)/../../react-native/React/Views",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		BA189FB11EEE74F100CAD13F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -190,6 +289,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -238,6 +338,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -291,6 +392,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0CB4336E21B05E38006D00B7 /* Build configuration list for PBXNativeTarget "AppCenterReactNativePush-macos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0CB4336F21B05E38006D00B7 /* Debug */,
+				0CB4337021B05E38006D00B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BA189FA51EEE74F100CAD13F /* Build configuration list for PBXProject "AppCenterReactNativePush" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
