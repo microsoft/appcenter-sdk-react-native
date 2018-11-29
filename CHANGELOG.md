@@ -1,5 +1,15 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.12.0 (Under active development)
+
+### AppCenterCrashes
+
+#### UWP
+
+* **[Fix]** Downgrade the platforms verification error to a warning.
+
+___
+
 ## Version 1.11.0
 
 ### AppCenter
