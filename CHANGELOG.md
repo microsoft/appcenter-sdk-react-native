@@ -7,6 +7,7 @@
 #### UWP
 
 * **[Fix]** Downgrade the platforms verification error to a warning.
+* **[Fix]** Update vulnerable `Microsoft.NETCore.UniversalWindowsPlatform` dependency.
 
 ___
 
