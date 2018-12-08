@@ -10,9 +10,16 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
+import com.microsoft.appcenter.utils.storage.SharedPreferencesManager;
 
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativePushModule extends BaseJavaModule {
+
+    private static final String ENABLE_PUSH_IN_JAVASCRIPT = "enable_push_in_javascript";
+
+    private static final String PUSH_ONCE_ENABLED = "PushOnceEnabled";
+
+    private boolean mPushStarted;
 
     private AppCenterReactNativePushEventListener mPushListener;
 
@@ -21,7 +28,21 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
         Push.setListener(mPushListener);
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
-            AppCenter.start(Push.class);
+            boolean startPush = true;
+            boolean enablePushInJavascript = AppCenterReactNativeShared.getConfiguration().optBoolean(ENABLE_PUSH_IN_JAVASCRIPT);
+            if (enablePushInJavascript) {
+
+                /*
+                 * TODO expose a way to post command in background looper in native SDK to avoid accessing storage directly here.
+                 * Storage might not be ready yet.
+                 */
+                SharedPreferencesManager.initialize(application.getApplicationContext());
+                startPush = SharedPreferencesManager.getBoolean(PUSH_ONCE_ENABLED);
+            }
+            if (startPush) {
+                AppCenter.start(Push.class);
+                mPushStarted = true;
+            }
         }
     }
 
@@ -37,11 +58,20 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setEnabled(boolean enabled, final Promise promise) {
+    public void setEnabled(final boolean enabled, final Promise promise) {
+        if (!mPushStarted) {
+            AppCenter.start(Push.class);
+            mPushStarted = true;
+        }
         Push.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
 
             @Override
             public void accept(Void result) {
+                if (enabled) {
+
+                    /* TODO expose a way to post command in background looper in native SDK to avoid accessing storage directly here. */
+                    SharedPreferencesManager.putBoolean(PUSH_ONCE_ENABLED, true);
+                }
                 promise.resolve(result);
             }
         });
