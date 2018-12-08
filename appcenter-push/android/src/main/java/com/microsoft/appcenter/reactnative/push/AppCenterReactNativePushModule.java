@@ -59,7 +59,7 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
 
     @ReactMethod
     public void setEnabled(final boolean enabled, final Promise promise) {
-        if (!mPushStarted) {
+        if (!mPushStarted && enabled) {
             AppCenter.start(Push.class);
             mPushStarted = true;
         }

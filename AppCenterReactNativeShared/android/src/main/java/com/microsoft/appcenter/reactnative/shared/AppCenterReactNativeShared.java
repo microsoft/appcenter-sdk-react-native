@@ -8,7 +8,6 @@ import com.microsoft.appcenter.ingestion.models.WrapperSdk;
 import com.microsoft.appcenter.utils.AppCenterLog;
 
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.InputStream;
 
