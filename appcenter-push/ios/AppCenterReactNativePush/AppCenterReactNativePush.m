@@ -69,7 +69,7 @@ RCT_EXPORT_MODULE();
   if ([MSAppCenter isConfigured]) {
     BOOL startPush = YES;
     id enablePushInJavascript = [AppCenterReactNativeShared getConfiguration][kEnablePushInJavascript];
-    if ([enablePushInJavascript isKindOfClass:[NSNumber class]] || [enablePushInJavascript boolValue]) {
+    if ([enablePushInJavascript isKindOfClass:[NSNumber class]] && [enablePushInJavascript boolValue]) {
       startPush = [[NSUserDefaults standardUserDefaults] boolForKey:kPushOnceEnabled];
     }
     if (startPush) {
