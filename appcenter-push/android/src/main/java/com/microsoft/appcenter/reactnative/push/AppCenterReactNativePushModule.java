@@ -34,7 +34,7 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
 
                 /*
                  * TODO expose a way to post command in background looper in native SDK to avoid accessing storage directly here.
-                 * Storage might not be ready yet.
+                 * Storage might not be ready yet so we initialize it here to make sure.
                  */
                 SharedPreferencesManager.initialize(application.getApplicationContext());
                 startPush = SharedPreferencesManager.getBoolean(PUSH_ONCE_ENABLED);

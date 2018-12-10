@@ -8,7 +8,7 @@
 
 ### AppCenterPush
 
-- **[Feature]** Add manual configuration to delay the first start of Push module.
+- **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
 
 ## Version 1.10.0
 

@@ -4,6 +4,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+
+        // TODO remove that once https://issuetracker.google.com/issues/120759347 fixed.
+        maven {
+            url 'https://dl.bintray.com/android/android-tools'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'

@@ -74,6 +74,7 @@ public class AppCenterReactNativeShared {
                 sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
             } catch (Exception e) {
                 AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
+                sConfiguration = new JSONObject();
             }
         }
     }
