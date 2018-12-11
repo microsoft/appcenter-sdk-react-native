@@ -6,6 +6,10 @@
 
 - Introduce new `LogLevel` constants, deprecating old ones.
 
+### AppCenterCrashes
+
+- **[iOS]** Fixes an issue where duplicate crash logs could be sent.
+
 ### AppCenterPush
 
 - **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
