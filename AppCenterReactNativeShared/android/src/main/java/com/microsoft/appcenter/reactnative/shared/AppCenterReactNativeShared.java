@@ -23,6 +23,8 @@ public class AppCenterReactNativeShared {
 
     private static Application sApplication;
 
+    private static JSONObject sConfiguration;
+
     private static String sAppSecret;
 
     private static boolean sStartAutomatically;
@@ -67,11 +69,12 @@ public class AppCenterReactNativeShared {
                 configStream.read(buffer);
                 configStream.close();
                 String jsonContents = new String(buffer, "UTF-8");
-                JSONObject json = new JSONObject(jsonContents);
-                sAppSecret = json.optString(APP_SECRET_KEY);
-                sStartAutomatically = json.optBoolean(START_AUTOMATICALLY_KEY, true);
+                sConfiguration = new JSONObject(jsonContents);
+                sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
+                sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
             } catch (Exception e) {
                 AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
+                sConfiguration = new JSONObject();
             }
         }
     }
@@ -82,5 +85,9 @@ public class AppCenterReactNativeShared {
 
     public static synchronized void setStartAutomatically(boolean startAutomatically) {
         sStartAutomatically = startAutomatically;
+    }
+
+    public static synchronized JSONObject getConfiguration() {
+        return sConfiguration;
     }
 }

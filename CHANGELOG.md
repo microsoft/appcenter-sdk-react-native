@@ -10,6 +10,10 @@
 
 - **[iOS]** Fixes an issue where duplicate crash logs could be sent.
 
+### AppCenterPush
+
+- **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
+
 ## Version 1.10.0
 
 ### AppCenter
