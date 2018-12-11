@@ -1,10 +1,14 @@
 # App Center SDK for React Native Change Log
 
-## Version 1.10.1 (under active development)
+## Version 1.11.0 (under active development)
 
 ### AppCenter
 
 - Introduce new `LogLevel` constants, deprecating old ones.
+
+### AppCenterCrashes
+
+- **[iOS]** Fixes an issue where duplicate crash logs could be sent.
 
 ## Version 1.10.0
 
