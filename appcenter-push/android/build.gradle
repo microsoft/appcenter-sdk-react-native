@@ -27,6 +27,6 @@ dependencies {
     compile 'com.google.firebase:firebase-core:16.0.4'
     compile 'com.google.firebase:firebase-messaging:17.3.4'
 
-    //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.10.0'
+    compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+    //compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.10.0'
 }
