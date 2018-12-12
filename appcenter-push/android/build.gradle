@@ -27,6 +27,18 @@ dependencies {
     compile 'com.google.firebase:firebase-core:16.0.4'
     compile 'com.google.firebase:firebase-messaging:17.3.4'
 
+    /*
+     * For projects that needs to execute :verifyReleaseResources yet have :lint also succeed,
+     * we need to depend on the same support lib version of the app.
+     * If we just need :lint to work, excluding the support libs from push/react native is enough,
+     * so if ext.supportLibVersion is undefined that should still work for older apps.
+     */
+    def supportLibVersion = rootProject.properties.get('supportLibVersion');
+    if (supportLibVersion != null) {
+        compile "com.android.support:appcompat-v7:${supportLibVersion}"
+        compile "com.android.support:support-v4:${supportLibVersion}"
+    }
+
     compile project(':AppCenterReactNativeShared')   // For testing with TestApp
     //compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.10.0'
 }

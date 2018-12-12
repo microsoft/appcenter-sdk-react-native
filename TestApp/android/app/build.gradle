@@ -133,8 +133,8 @@ dependencies {
     compile project(':react-native-fs')
     compile project(':react-native-image-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile 'com.android.support:support-media-compat:27.1.1'
-    compile 'com.android.support:support-v4:27.1.1'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:support-v4:${supportLibVersion}"
     compile 'com.facebook.react:react-native:+'
 }
 

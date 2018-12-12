@@ -13,6 +13,7 @@
 ### AppCenterPush
 
 - **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
+- **[Fix]** Fix build.gradle for release builds [#481](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/481).
 
 ## Version 1.10.0
 
