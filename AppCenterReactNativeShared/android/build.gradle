@@ -111,7 +111,7 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.microsoft.appcenter:appcenter:1.10.0'
+    compile 'com.microsoft.appcenter:appcenter:1.11.0'
 }
 
 artifacts {

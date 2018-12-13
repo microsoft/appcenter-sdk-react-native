@@ -21,7 +21,7 @@ dependencies {
     compile ('com.facebook.react:react-native:+') {
         exclude group: 'com.android.support'
     }
-    compile ('com.microsoft.appcenter:appcenter-push:1.10.0') {
+    compile ('com.microsoft.appcenter:appcenter-push:1.11.0'
         exclude group: 'com.google.firebase'
     }
     compile 'com.google.firebase:firebase-core:16.0.4'
@@ -39,6 +39,6 @@ dependencies {
         compile "com.android.support:support-v4:${supportLibVersion}"
     }
 
-    compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    //compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.10.0'
+    //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
+    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.11.0'
 }
