@@ -7,9 +7,9 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Crashes</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>1.11.0-SNAPSHOT</Version>
+    <Version>1.12.0-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>1.11.0.0</FileVersion>
+    <FileVersion>1.12.0.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Crashes</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>

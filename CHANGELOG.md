@@ -1,5 +1,42 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.12.0 
+
+### AppCenter
+
+#### UWP
+
+* **[Fix]** Update vulnerable `Microsoft.NETCore.UniversalWindowsPlatform` dependency from version `5.2.2` to `5.2.6`.
+
+#### Android
+
+* **[Fix]** Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+* **[Fix]** Fix disabling logging of network state changes according to AppCenter.getLogLevel.
+* **[Fix]** Fix logs duplication on unstable network.
+
+#### iOS
+
+* **[Fix]** Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+* **[Fix]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
+* **[Fix]** Fix a memory leak issue during executing SQL queries.
+
+### AppCenterCrashes
+
+#### UWP
+
+* **[Fix]** Downgrade the platforms verification error to a warning.
+
+#### Android
+
+* **[Fix]** Fix a bug where crash data file could leak when the database is full.
+
+### AppCenterPush
+
+#### Android
+
+* **[Fix]** Fix `PushNotificationReceived` event for pushes received in foreground after re-enabling the push service.
+___
+
 ## Version 1.11.0
 
 ### AppCenter
