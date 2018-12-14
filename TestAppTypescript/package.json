@@ -12,11 +12,11 @@
     "clean": "rimraf artifacts"
   },
   "dependencies": {
-    "appcenter": "file:appcenter-1.8.1.tgz",
-    "appcenter-analytics": "file:appcenter-analytics-1.8.1.tgz",
-    "appcenter-crashes": "file:appcenter-crashes-1.8.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-1.8.1.tgz",
-    "appcenter-push": "file:appcenter-push-1.8.1.tgz",
+    "appcenter": "file:appcenter-1.10.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.10.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.10.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.10.0.tgz",
+    "appcenter-push": "file:appcenter-push-1.10.0.tgz",
     "react": "16.3.0-alpha.1",
     "react-native": "0.54.4",
     "react-native-dialog-component": "^0.2.17",

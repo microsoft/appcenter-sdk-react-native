@@ -35,19 +35,14 @@ echo "React-Native Android version $oldAndroidSdkVersion will be updated to $new
 
 # Update android sdk version in build.gradle for appcenter, appcenter-crashes, appcenter-analytics,
 # appcenter-push and AppCenterReactNativeShared projects
-gradleFileContent="$(cat ./appcenter/android/build.gradle)"
-echo "${gradleFileContent/com.microsoft.appcenter\:appcenter\:$oldAndroidSdkVersion/com.microsoft.appcenter:appcenter:$newAndroidSdkVersion}" > ./appcenter/android/build.gradle
-
-gradleFileContent="$(cat ./appcenter-crashes/android/build.gradle)"
-echo "${gradleFileContent/com.microsoft.appcenter\:appcenter-crashes\:$oldAndroidSdkVersion/com.microsoft.appcenter:appcenter-crashes:$newAndroidSdkVersion}" > ./appcenter-crashes/android/build.gradle
-
-gradleFileContent="$(cat ./appcenter-analytics/android/build.gradle)"
-echo "${gradleFileContent/com.microsoft.appcenter\:appcenter-analytics\:$oldAndroidSdkVersion/com.microsoft.appcenter:appcenter-analytics:$newAndroidSdkVersion}" > ./appcenter-analytics/android/build.gradle
-
-gradleFileContent="$(cat ./appcenter-push/android/build.gradle)"
-echo "${gradleFileContent/com.microsoft.appcenter\:appcenter-push\:$oldAndroidSdkVersion/com.microsoft.appcenter:appcenter-push:$newAndroidSdkVersion}" > ./appcenter-push/android/build.gradle
-
-gradleFileContent="$(cat ./AppCenterReactNativeShared/android/build.gradle)"
-echo "${gradleFileContent/com.microsoft.appcenter\:appcenter\:$oldAndroidSdkVersion/com.microsoft.appcenter:appcenter:$newAndroidSdkVersion}" > ./AppCenterReactNativeShared/android/build.gradle
+for file in \
+    "appcenter/android/build.gradle" \
+    "appcenter-analytics/android/build.gradle" \
+    "appcenter-crashes/android/build.gradle" \
+    "appcenter-push/android/build.gradle" \
+    "AppCenterReactNativeShared/android/build.gradle"
+do
+    sed -E -i '' "s#(com\.microsoft\.appcenter:appcenter.*:)([^:'])+#\1$newAndroidSdkVersion#g" $file
+done
 
 echo "done."

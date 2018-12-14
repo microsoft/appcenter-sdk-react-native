@@ -1,5 +1,21 @@
 # App Center SDK for React Native Change Log
 
+## Version 1.11.0
+
+### AppCenter
+
+- Introduce new `LogLevel` constants, deprecating old ones.
+- Fix bug with linking process being stuck when developing on windows machines. [#471](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/471).
+
+### AppCenterCrashes
+
+- **[iOS]** Fixes an issue where duplicate crash logs could be sent.
+
+### AppCenterPush
+
+- **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
+- **[Fix]** Fix build.gradle for release builds [#481](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/481).
+
 ## Version 1.10.0
 
 ### AppCenter

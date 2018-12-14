@@ -11,11 +11,11 @@ import DialsTabBarIcon from '../assets/dials.png';
 
 const SecretStrings = {
   ios: {
-    appSecret: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5',
+    appSecret: 'f5f84a76-6622-437a-9130-07b27d3c72e7',
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {
-    appSecret: '32fcfc69-d576-41dc-8d49-4be159e3d7b2',
+    appSecret: 'e65c7490-1f58-4e93-bb55-a2e11dac4368',
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
   }
 };

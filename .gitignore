@@ -52,3 +52,6 @@ artifacts/
 
 # Android release generated files
 **/app/**/release/**
+
+# Shared framework build
+AppCenterReactNativeShared/Products/AppCenterReactNativeShared/AppCenterReactNativeShared.framework/AppCenterReactNativeShared

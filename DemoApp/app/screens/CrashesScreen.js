@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
-import DialogInput from 'react-native-dialog-input';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 import Crashes from 'appcenter-crashes';
@@ -27,8 +26,7 @@ export default class CrashesScreen extends Component {
     crashesEnabled: false,
     lastSessionStatus: '',
     textAttachment: '',
-    binaryAttachment: '',
-    isAttachmentDialogVisible: false
+    binaryAttachment: ''
   }
 
   async componentWillMount() {
@@ -75,12 +73,20 @@ export default class CrashesScreen extends Component {
       </View>
     );
 
-    const valueRenderItem = ({ item: { title, value } }) => (
-      <View style={SharedStyles.item}>
-        <Text style={SharedStyles.itemTitle}>{title}</Text>
-        <Text>{this.state[value]}</Text>
-      </View>
-    );
+    const valueRenderItem = ({ item: { title, value, onChange } }) => {
+      if (onChange) {
+        return (
+          <View style={SharedStyles.item}>
+            <Text style={SharedStyles.itemTitle}>{title}</Text>
+            <TextInput style={SharedStyles.underlinedItemInput} onChangeText={onChange}>{this.state[value]}</TextInput>
+          </View>);
+      }
+      return (
+        <View style={SharedStyles.item}>
+          <Text style={SharedStyles.itemTitle}>{title}</Text>
+          <Text>{this.state[value]}</Text>
+        </View>);
+    };
 
     const actionRenderItem = ({ item: { title, action } }) => (
       <TouchableOpacity style={SharedStyles.item} onPress={action}>
@@ -122,13 +128,6 @@ export default class CrashesScreen extends Component {
                   action: this.nativeCrash
                 },
                 {
-                  title: 'Set text error attachment',
-                  action: () => {
-                    const isAttachmentDialogVisible = true;
-                    this.setState({ isAttachmentDialogVisible });
-                  }
-                },
-                {
                   title: 'Select image as binary error attachment',
                   action: this.showFilePicker
                 },
@@ -139,34 +138,19 @@ export default class CrashesScreen extends Component {
               title: 'Miscellaneous',
               data: [
                 { title: 'Last session status', value: 'lastSessionStatus' },
-                { title: 'Text attachment', value: 'textAttachment' },
                 { title: 'Binary attachment', value: 'binaryAttachment' },
+                {
+                  title: 'Text attachment',
+                  value: 'textAttachment',
+                  onChange: (textAttachment) => {
+                    this.setState({ textAttachment });
+                    AttachmentsProvider.saveTextAttachment(textAttachment);
+                  }
+                }
               ],
               renderItem: valueRenderItem
-            },
+            }
           ]}
-        />
-        <DialogInput
-          ref={(dialogComponent) => { this.dialogComponent = dialogComponent; }}
-          dialogStyle={SharedStyles.dialogInput}
-          isDialogVisible={this.state.isAttachmentDialogVisible}
-          title="Set text error attachment"
-          submitText="Save"
-          submitInput={(textAttachment) => {
-            const isAttachmentDialogVisible = false;
-            this.setState({ isAttachmentDialogVisible, textAttachment });
-            AttachmentsProvider.saveTextAttachment(textAttachment);
-
-            // The dialog remembers text state for next time.
-            // if you enter empty text next time it reuses the old value.
-            // Reset state to avoid that...
-            const inputModal = '';
-            this.dialogComponent.setState({ inputModal });
-          }}
-          closeDialog={() => {
-            const isAttachmentDialogVisible = false;
-            this.setState({ isAttachmentDialogVisible });
-          }}
         />
       </View>
     );

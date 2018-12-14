@@ -22,8 +22,7 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
                     }]
             }])
         ).then((androidAnswer) => {
-            rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics',
-                androidAnswer.whenToEnableAnalytics);
+            rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics', androidAnswer.whenToEnableAnalytics);
             rnpmlink.android.removeAndroidDuplicateLinks();
         }).catch((e) => {
             console.error(`Could not configure AppCenter Analytics for Android. Error Reason - ${e.message}`);
@@ -66,8 +65,8 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Analytics', version: '1.11.0' },
-                    { pod: 'AppCenterReactNativeShared', version: '1.10.0' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenter/Analytics', version: '1.12.0' },
+                    { pod: 'AppCenterReactNativeShared', version: '1.11.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );

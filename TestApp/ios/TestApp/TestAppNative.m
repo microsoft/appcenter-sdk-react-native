@@ -23,7 +23,6 @@
 
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
-static NSString* const kAppCenterConfigResource = @"AppCenter-Config";
 
 RCT_EXPORT_MODULE();
 
