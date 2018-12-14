@@ -36,7 +36,7 @@ static NSDictionary *configuration;
 
 + (void)configureAppCenter {
   if (!wrapperSdk) {
-    MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc] initWithWrapperSdkVersion:@"1.10.0"
+    MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc] initWithWrapperSdkVersion:@"1.11.0"
                                                                 wrapperSdkName:@"appcenter.react-native"
                                                          wrapperRuntimeVersion:nil
                                                         liveUpdateReleaseLabel:nil
