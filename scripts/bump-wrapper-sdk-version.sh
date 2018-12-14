@@ -69,7 +69,7 @@ for file in \
     "appcenter-push/android/build.gradle" \
     "AppCenterReactNativeShared/android/build.gradle"
 do
-    sed -E -i '' "s#(com\.microsoft\.appcenter\.reactnative:appcenter-react-native:)([^:])+#\1$newWrapperSdkVersion'#g" $file
+    sed -E -i '' "s#(com\.microsoft\.appcenter\.reactnative:appcenter-react-native:)([^:'])+#\1$newWrapperSdkVersion#g" $file
     sed -E -i '' "s#versionName '(.*)'#versionName '$newWrapperSdkVersion'#g" $file
     sed -E -i '' "s#versionCode (.*)#versionCode $newAndroidVersionCode#g" $file
     sed -E -i '' "s#[^/](compile project\(':AppCenterReactNativeShared'\))# //\1#g" $file
