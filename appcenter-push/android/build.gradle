@@ -21,7 +21,7 @@ dependencies {
     compile ('com.facebook.react:react-native:+') {
         exclude group: 'com.android.support'
     }
-    compile ('com.microsoft.appcenter:appcenter-push:1.11.0'
+    compile ('com.microsoft.appcenter:appcenter-push:1.11.0') {
         exclude group: 'com.google.firebase'
     }
     compile 'com.google.firebase:firebase-core:16.0.4'
