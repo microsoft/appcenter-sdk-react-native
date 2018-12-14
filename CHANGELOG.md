@@ -17,23 +17,21 @@
 * **[Fix]** Fix minimum storage size verification to match minimum possible value.
 * **[Fix]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
 * **[Fix]** Fix a memory leak issue during executing SQL queries.
+* **[Feature]** Add preview support for arm64e CPU architecture.
 
 ### AppCenterCrashes
 
 #### UWP
-
 * **[Fix]** Downgrade the platforms verification error to a warning.
 * **[Fix]** Update vulnerable `Microsoft.NETCore.UniversalWindowsPlatform` dependency from version `5.2.2` to `5.2.6`.
 
 #### Android
-
 * **[Fix]** Fix a bug where crash data file could leak when the database is full.
 
 ### AppCenterPush
 
 #### Android
-
-* **[Fix]** Fix `PushNotificationReceived` event for pushes received in foreground after re-enabling the push service.
+* **[Fix]** Fix PushNotificationReceived event for pushes received in foreground after re-enabling the push service.
 ___
 
 ## Version 1.11.0
