@@ -1,6 +1,27 @@
 # App Center SDK for .NET Change Log
 
-## Version 1.12.0 (Under active development)
+## Version 1.12.0 
+
+### AppCenter
+
+#### Android
+  
+* **[Feature]** Allow users to set userId that applies to crashes, error and push logs. This feature adds an API, but is not yet supported on the App Center backend.
+* **[Fix]** Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+* **[Fix]** Fix error detection of setMaxStorageSize API if database uses custom page size.
+* **[Fix]** Fix minimum storage size verification to match minimum possible value.
+* **[Fix]** Fix disabling logging of network state changes according to AppCenter.getLogLevel.
+* **[Fix]** Fix logs duplication on unstable network.
+
+#### IOS
+
+* **[Feature]** Allow users to set userId that applies to crashes, error and push logs. This feature adds an API, but is not yet supported on the App Center backend.
+* **[Fix]** Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+* **[Fix]** Fix minimum storage size verification to match minimum possible value.
+* **[Fix]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
+* **[Fix]** Fix a memory leak issue during executing SQL queries.
+* **[Fix]** Fix a keychain permission issue on macOS applications.
+* **[Feature]** Add preview support for arm64e CPU architecture.
 
 ### AppCenterCrashes
 
@@ -9,6 +30,35 @@
 * **[Fix]** Downgrade the platforms verification error to a warning.
 * **[Fix]** Update vulnerable `Microsoft.NETCore.UniversalWindowsPlatform` dependency from version `5.2.2` to `5.2.6`.
 
+#### ANDROID
+
+* **[Fix]** Fix a bug where crash data file could leak when the database is full.
+
+#### IOS
+
+* **[Feature]** Add preview support for arm64e CPU architecture by using PLCrashReporter 1.2.3-rc1. PLCrashReporter 1.2.3-rc1 is a fork of the official repository and can be found at https://github.com/Microsoft/PLCrashReporter. It is based on version It is maintained by the App Center team and based on PLCrashReporter 1.2.1 (commit fda23306) with additional fixes and changes.
+
+### AppCenterAnalytics
+
+#### IOS
+
+* **[Feature]** Add preview support for arm64e CPU architecture.
+
+### AppCenterDistribute
+
+#### IOS
+
+* **[Feature]** Add preview support for arm64e CPU architecture.
+
+### AppCenterPush
+
+#### IOS
+
+* **[Feature]**  Add preview support for arm64e CPU architecture.
+
+#### ANDROID
+
+ * **[Fix]** Fix push foreground listener after re-enabling push service.
 ___
 
 ## Version 1.11.0
