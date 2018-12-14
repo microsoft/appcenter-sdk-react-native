@@ -42,7 +42,7 @@ for file in \
     "appcenter-push/android/build.gradle" \
     "AppCenterReactNativeShared/android/build.gradle"
 do
-    sed -E -i '' "s#(com\.microsoft\.appcenter:appcenter.*:)([^:])+#\1$newAndroidSdkVersion'#g" $file
+    sed -E -i '' "s#(com\.microsoft\.appcenter:appcenter.*:)([^:'])+#\1$newAndroidSdkVersion#g" $file
 done
 
 echo "done."
