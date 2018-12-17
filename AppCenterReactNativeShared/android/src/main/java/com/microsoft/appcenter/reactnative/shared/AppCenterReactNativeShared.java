@@ -58,24 +58,24 @@ public class AppCenterReactNativeShared {
     }
 
     private static void readConfigurationFile() {
-        if (sAppSecret == null) {
-            try {
-                AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
-                InputStream configStream = sApplication.getAssets().open(APPCENTER_CONFIG_ASSET);
-                int size = configStream.available();
-                byte[] buffer = new byte[size];
+        try {
+            AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
+            InputStream configStream = sApplication.getAssets().open(APPCENTER_CONFIG_ASSET);
+            int size = configStream.available();
+            byte[] buffer = new byte[size];
 
-                //noinspection ResultOfMethodCallIgnored
-                configStream.read(buffer);
-                configStream.close();
-                String jsonContents = new String(buffer, "UTF-8");
-                sConfiguration = new JSONObject(jsonContents);
+            //noinspection ResultOfMethodCallIgnored
+            configStream.read(buffer);
+            configStream.close();
+            String jsonContents = new String(buffer, "UTF-8");
+            sConfiguration = new JSONObject(jsonContents);
+            if (sAppSecret == null) {
                 sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
                 sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
-            } catch (Exception e) {
-                AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
-                sConfiguration = new JSONObject();
             }
+        } catch (Exception e) {
+            AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
+            sConfiguration = new JSONObject();
         }
     }
 
