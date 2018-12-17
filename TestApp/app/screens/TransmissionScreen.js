@@ -48,6 +48,12 @@ export default class TransmissionScreen extends Component {
   async componentWillMount() {
     await AppCenter.startFromLibrary(Analytics);
     await this.createTargetsFromTokens(0, Analytics);
+
+    const transmissionTarget = this.transmissionTargets[this.state.targetToken.key];
+    if (transmissionTarget) {
+      const targetEnabled = await transmissionTarget.isEnabled();
+      this.setState({ targetEnabled });
+    }
   }
 
   async createTargetsFromTokens(index, parentTarget) {
