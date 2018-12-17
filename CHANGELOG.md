@@ -6,7 +6,6 @@
 
 - Introduce new `LogLevel` constants, deprecating old ones.
 - Fix bug with linking process being stuck when developing on windows machines. [#471](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/471).
-- Fix crash on startup if `setAppSecret` method of `AppCenterReactNativeShared` was called.
 
 ### AppCenterCrashes
 
