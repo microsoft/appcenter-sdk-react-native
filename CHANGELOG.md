@@ -6,15 +6,22 @@
 
 - Introduce new `LogLevel` constants, deprecating old ones.
 - Fix bug with linking process being stuck when developing on windows machines. [#471](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/471).
+- Fix logs duplication on unstable network.
+- Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+- **[Android]** Fix disabling logging of network state changes according to `AppCenter.LogLevel`.
+- **[iOS]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
+- **[iOS]** Fix a memory leak issue during executing SQL queries.
 
 ### AppCenterCrashes
 
 - **[iOS]** Fixes an issue where duplicate crash logs could be sent.
+- **[Android]** Fix a bug where crash data file could leak when the database is full.
 
 ### AppCenterPush
 
 - **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
 - **[Fix]** Fix build.gradle for release builds [#481](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/481).
+- **[Android]** Fix push notification received event for pushes received in foreground after re-enabling the push service.
 
 ## Version 1.10.0
 
