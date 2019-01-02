@@ -1,5 +1,11 @@
 # App Center SDK for React Native Change Log
 
+## Version 1.11.1
+
+### AppCenter
+
+- **[Fix]** Preparing for future React Native release which should eliminate compiler warnings when linking.
+
 ## Version 1.11.0
 
 ### AppCenter
