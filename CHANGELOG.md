@@ -4,7 +4,7 @@
 
 ### AppCenter
 
-- **[Fix]** No longer use deprecated `compile` Gradle keyword in App Center gradle modules. Please note that if `react-native link` was executed prior to version **0.58**, the **app/build.gradle** will still contain references to the `compile` keyword, this behavior is from the `react-native link` command and not from App Center SDK files. You need to manually edit **app/build.gradle** to replace `compile` by `implementation` for existing projects.
+- **[Fix]** No longer use deprecated `compile` Gradle keyword in App Center gradle modules. Please note that if `react-native link` was executed prior to version **0.58**, the **app/build.gradle** will still contain references to the `compile` keyword, this behavior is from the `react-native link` command and not from App Center SDK files. You need to manually edit **app/build.gradle** to replace `compile` by `implementation` for existing projects **after updating React Native to version 0.5.8**.
 
 ## Version 1.11.0
 
