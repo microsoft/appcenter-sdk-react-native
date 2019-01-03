@@ -50,7 +50,7 @@ namespace Contoso.Forms.Puppet
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
                 AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
-                Distribute.SetApiUrl("https://appcenter-int.trafficmanager.net/api/v0.1");
+                Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
                 AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
                 AppCenter.IsEnabledAsync().ContinueWith(enabled =>
                 {
