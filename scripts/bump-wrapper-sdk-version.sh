@@ -72,8 +72,8 @@ do
     sed -E -i '' "s#(com\.microsoft\.appcenter\.reactnative:appcenter-react-native:)([^:'])+#\1$newWrapperSdkVersion#g" $file
     sed -E -i '' "s#versionName '(.*)'#versionName '$newWrapperSdkVersion'#g" $file
     sed -E -i '' "s#versionCode (.*)#versionCode $newAndroidVersionCode#g" $file
-    sed -E -i '' "s#[^/](compile project\(':AppCenterReactNativeShared'\))# //\1#g" $file
-    sed -E -i '' "s#//(compile 'com\.microsoft\.appcenter\.reactnative)#\1#g" $file
+    sed -E -i '' "s#[^/](api project\(':AppCenterReactNativeShared'\))# //\1#g" $file
+    sed -E -i '' "s#//(api 'com\.microsoft\.appcenter\.reactnative)#\1#g" $file
 done
 
 # Update wrapper sdk version in postlink.js for appcenter, appcenter-crashes, appcenter-analytics,

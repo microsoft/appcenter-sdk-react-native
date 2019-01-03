@@ -16,16 +16,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDynamicVersion
-    compile ('com.facebook.react:react-native:+') {
+    implementation ('com.facebook.react:react-native:+') {
         exclude group: 'com.android.support'
     }
-    compile ('com.microsoft.appcenter:appcenter-push:1.11.0') {
+    api ('com.microsoft.appcenter:appcenter-push:1.11.0') {
         exclude group: 'com.google.firebase'
     }
-    compile 'com.google.firebase:firebase-core:16.0.4'
-    compile 'com.google.firebase:firebase-messaging:17.3.4'
+    api 'com.google.firebase:firebase-core:16.0.4'
+    api 'com.google.firebase:firebase-messaging:17.3.4'
 
     /*
      * For projects that needs to execute :verifyReleaseResources yet have :lint also succeed,
@@ -35,10 +35,10 @@ dependencies {
      */
     def supportLibVersion = rootProject.properties.get('supportLibVersion');
     if (supportLibVersion != null) {
-        compile "com.android.support:appcompat-v7:${supportLibVersion}"
-        compile "com.android.support:support-v4:${supportLibVersion}"
+        api "com.android.support:appcompat-v7:${supportLibVersion}"
+        api "com.android.support:support-v4:${supportLibVersion}"
     }
 
-    //compile project(':AppCenterReactNativeShared')   // For testing with TestApp
-    compile 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.11.0'
+    //api project(':AppCenterReactNativeShared')   // For testing with TestApp
+    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.11.0'
 }

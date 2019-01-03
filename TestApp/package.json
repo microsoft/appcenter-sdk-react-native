@@ -23,12 +23,12 @@
     "react-navigation": "^2.11.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.54",
-    "@babel/plugin-external-helpers": "^7.0.0",
-    "babel-core": "^7.0.0-beta.47",
+    "@babel/core": "7.2.0",
+    "@babel/plugin-external-helpers": "7.2.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
-    "babel-jest": "^23.4.0",
-    "eslint": "^4.5.0",
+    "babel-jest": "23.6.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
