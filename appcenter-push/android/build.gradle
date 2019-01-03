@@ -35,8 +35,8 @@ dependencies {
      */
     def supportLibVersion = rootProject.properties.get('supportLibVersion');
     if (supportLibVersion != null) {
-        implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-        implementation "com.android.support:support-v4:${supportLibVersion}"
+        api "com.android.support:appcompat-v7:${supportLibVersion}"
+        api "com.android.support:support-v4:${supportLibVersion}"
     }
 
     //api project(':AppCenterReactNativeShared')   // For testing with TestApp
