@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace Microsoft.AppCenter
 {
+    using System;
+    using System.Globalization;
+
     public static partial class AppCenterLog
     {
         /// <summary>
@@ -118,7 +121,8 @@ namespace Microsoft.AppCenter
             {
                 if (Level <= level)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[{tag}] {levelName}: {message}");
+                    var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                    System.Diagnostics.Debug.WriteLine($"{timestamp} [{tag}] {levelName}: {message}");
                 }
             }
         }
