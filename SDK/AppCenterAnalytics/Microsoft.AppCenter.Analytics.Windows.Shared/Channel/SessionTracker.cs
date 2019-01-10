@@ -92,7 +92,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 {
                     return;
                 }
-                SendStartSessionIfNeeded();
                 e.Log.Sid = Sid;
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
@@ -123,21 +122,15 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Internal and static so that it can be tested more easily
         internal static bool HasSessionTimedOut(long now, long lastQueuedLogTime, long lastResumedTime, long lastPausedTime)
         {
-            var noLogSentForLong = lastQueuedLogTime == 0 || now - lastQueuedLogTime >= SessionTimeout;
             if (lastPausedTime == 0)
             {
-                return lastResumedTime == 0 && noLogSentForLong;
+                return false;
             }
-            if (lastResumedTime == 0)
-            {
-                return noLogSentForLong;
-            }
-            var isBackgroundForLong = lastPausedTime >= lastResumedTime && now - lastPausedTime >= SessionTimeout;
+            var noLogSentForLong = lastQueuedLogTime == 0 || now - lastQueuedLogTime >= SessionTimeout;
             var wasBackgroundForLong = lastResumedTime - Math.Max(lastPausedTime, lastQueuedLogTime) >= SessionTimeout;
             AppCenterLog.Debug(Analytics.Instance.LogTag, $"noLogSentForLong={noLogSentForLong} " +
-                                                    $"isBackgroundForLong={isBackgroundForLong} " +
                                                     $"wasBackgroundForLong={wasBackgroundForLong}");
-            return noLogSentForLong && (isBackgroundForLong || wasBackgroundForLong);
+            return noLogSentForLong && wasBackgroundForLong;
         }
 
         internal static bool SetExistingSessionId(Log log, IDictionary<long, Guid> sessions)

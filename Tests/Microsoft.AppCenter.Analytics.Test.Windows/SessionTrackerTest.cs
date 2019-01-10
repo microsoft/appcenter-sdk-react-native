@@ -117,7 +117,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         }
 
         /// <summary>
-        ///     Verify that an enqueuing log is adjusted and a session is started when a log is enqueued
+        ///     Verify that an enqueuing log is adjusted and a session is not started when a log is enqueued
         /// </summary>
         [TestMethod]
         public void HandleEnqueuingLogOutsideSession()
@@ -127,7 +127,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             var eventArgs = new EnqueuingLogEventArgs(eventLog);
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, eventArgs);
 
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Never());
             Assert.IsNotNull(eventLog.Sid);
         }
 
@@ -194,20 +194,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             Assert.IsFalse(success);
             Assert.IsFalse(log.Sid.HasValue);
-        }
-
-        /// <summary>
-        ///     Verify session timeout is true if log was never sent and only pause has occurred
-        /// </summary>
-        [TestMethod]
-        public void HasSessionTimedOutPausedNeverResumed()
-        {
-            const long now = 10;
-            const long lastQueuedLogTime = 0;
-            const long lastResumedTime = 0;
-            const long lastPausedTime = 5;
-
-            Assert.IsTrue(SessionTracker.HasSessionTimedOut(now, lastQueuedLogTime, lastResumedTime, lastPausedTime));
         }
 
         /// <summary>
