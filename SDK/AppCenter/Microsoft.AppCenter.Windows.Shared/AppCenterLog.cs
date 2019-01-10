@@ -1,10 +1,10 @@
 ﻿#define DEBUG
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Microsoft.AppCenter
 {
     using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
     using System.Globalization;
 
     public static partial class AppCenterLog
