@@ -204,6 +204,10 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Export("setLogLevel:")]
         void SetLogLevel(MSLogLevel logLevel);
 
+        [Static]
+        [Export("setUserId:")]
+        void SetUserId(string userId);
+
         // +(void)setLogHandler:(MSLogHandler)logHandler;
         [Static]
         [Export("setLogHandler:")]
