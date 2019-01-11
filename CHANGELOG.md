@@ -1,6 +1,16 @@
 # App Center SDK for .NET Change Log
 
-## Version 1.12.0 
+## Version 1.12.1 (Under active development)
+
+### AppCenterAnalytics
+
+#### UWP
+
+* **[Fix]** Extend the current session instead of starting a new session when sending events from the background.
+
+___
+
+## Version 1.12.0
 
 ### AppCenter
 
@@ -35,6 +45,7 @@
 #### Android
 
 * **[Fix]** Fix `PushNotificationReceived` event for pushes received in foreground after re-enabling the push service.
+
 ___
 
 ## Version 1.11.0
