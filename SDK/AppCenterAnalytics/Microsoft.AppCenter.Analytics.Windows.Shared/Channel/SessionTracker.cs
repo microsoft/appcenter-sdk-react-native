@@ -35,7 +35,8 @@ namespace Microsoft.AppCenter.Analytics.Channel
         // Since we don't have session history anymore, when disabling /enabling analytics a new instance is created.
         // But the correlation identifier in AppCenter is static and thus updating session will fail test and set if we don't know previous value.
         // The field is thus static to remember previous sessions across instances... Internal because read and reset in tests.
-        internal static Guid Sid;
+        internal static Guid LastSid;
+        private Guid? _sid;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
@@ -92,7 +93,7 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 {
                     return;
                 }
-                e.Log.Sid = Sid;
+                e.Log.Sid = _sid;
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -100,17 +101,18 @@ namespace Microsoft.AppCenter.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (_lastQueuedLogTime > 0 && !HasSessionTimedOut(now))
+            if (_sid != null && !HasSessionTimedOut(now))
             {
                 return;
             }
-            var previousSid = Sid;
-            Sid = Guid.NewGuid();
+            var sid = Guid.NewGuid();
 #pragma warning disable CS0612 // Type or member is obsolete
-            AppCenter.TestAndSetCorrelationId(previousSid, ref Sid);
+            AppCenter.TestAndSetCorrelationId(LastSid, ref sid);
 #pragma warning restore CS0612 // Type or member is obsolete
+            LastSid = sid;
+            _sid = sid;
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
-            var startSessionLog = new StartSessionLog { Sid = Sid };
+            var startSessionLog = new StartSessionLog { Sid = sid };
             _channel.EnqueueAsync(startSessionLog);
         }
 
