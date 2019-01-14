@@ -2,6 +2,18 @@
 
 ## Version 1.12.1 (Under active development)
 
+### AppCenter
+
+#### Android
+**[Feature]** AppCenter SDK now supports a 256 character User ID string that applies to crashes, error, and push logs. 
+Settable via `AppCenter.SetUserId()`. 
+This feature adds an API, but is not yet supported on the App Center backend.
+
+#### iOS
+**[Feature]** AppCenter SDK now supports a 256 character User ID string that applies to crashes, error, and push logs. 
+Settable via `AppCenter.SetUserId()`. 
+This feature adds an API, but is not yet supported on the App Center backend.
+
 ### AppCenterAnalytics
 
 #### UWP
