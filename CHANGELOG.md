@@ -1,5 +1,7 @@
 # App Center SDK for React Native Change Log
 
+### AppCenter
+
 ## Version 1.11.1
 
 ### AppCenter
@@ -9,6 +11,16 @@
     * Update react-native to version 0.58+ and update App Center SDK packages.
     * Edit **app/build.gradle** to replace `compile` by `implementation`.
     * Run `react-native link` again.
+
+#### Android
+**[Feature]** AppCenter SDK now supports a 256 character User ID string that applies to crashes, error, and push logs. 
+Settable via `AppCenter.SetUserId()`. 
+This feature adds an API, but is not yet supported on the App Center backend.
+
+#### iOS
+**[Feature]** AppCenter SDK now supports a 256 character User ID string that applies to crashes, error, and push logs. 
+Settable via `AppCenter.SetUserId()`. 
+This feature adds an API, but is not yet supported on the App Center backend.
 
 ## Version 1.11.0
 
