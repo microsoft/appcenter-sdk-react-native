@@ -26,7 +26,8 @@ export default class CrashesScreen extends Component {
     crashesEnabled: false,
     lastSessionStatus: '',
     textAttachment: '',
-    binaryAttachment: ''
+    binaryAttachment: '',
+    userId: ''
   }
 
   async componentWillMount() {
