@@ -6,6 +6,10 @@ namespace Microsoft.AppCenter
     {
         private const string PlatformIdentifier = "uwp";
 
+        static void PlatformSetUserId(string userId)
+        {
+        }
+
         /// <summary>
         /// Sets the two-letter ISO country code to send to the backend.
         /// </summary>

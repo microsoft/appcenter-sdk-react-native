@@ -3,5 +3,9 @@
     public partial class AppCenter
     {
         private const string PlatformIdentifier = "windowsdesktop";
+
+        static void PlatformSetUserId(string userId)
+        {
+        }
     }
 }
