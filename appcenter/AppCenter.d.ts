@@ -31,5 +31,6 @@ export function getLogLevel(): Promise<LogLevel | AppCenterLogLevel>;
 export function getSdkVersion(): string;
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
+export function setUserId(string: boolean): Promise<void>;
 export function getInstallId(): Promise<string>;
 export function setCustomProperties(properties: CustomProperties);
