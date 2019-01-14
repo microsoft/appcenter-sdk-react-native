@@ -11,16 +11,7 @@
     * Update react-native to version 0.58+ and update App Center SDK packages.
     * Edit **app/build.gradle** to replace `compile` by `implementation`.
     * Run `react-native link` again.
-
-#### Android
-**[Feature]** AppCenter SDK now supports a 256 character User ID string that applies to crashes, error, and push logs. 
-Settable via `AppCenter.SetUserId()`. 
-This feature adds an API, but is not yet supported on the App Center backend.
-
-#### iOS
-**[Feature]** AppCenter SDK now supports a 256 character User ID string that applies to crashes, error, and push logs. 
-Settable via `AppCenter.SetUserId()`. 
-This feature adds an API, but is not yet supported on the App Center backend.
+- Support a 256 character User ID string that applies to crashes, error, and push logs. Settable via `AppCenter.setUserId()`.
 
 ## Version 1.11.0
 
