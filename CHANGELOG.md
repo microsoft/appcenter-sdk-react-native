@@ -1,7 +1,5 @@
 # App Center SDK for React Native Change Log
 
-### AppCenter
-
 ## Version 1.11.1
 
 ### AppCenter
