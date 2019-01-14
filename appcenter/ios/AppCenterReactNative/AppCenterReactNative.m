@@ -79,6 +79,14 @@ RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve
     resolve([[MSAppCenter installId] UUIDString]);
 }
 
+RCT_EXPORT_METHOD(setUserId:(NSString *)userId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [MSAppCenter setUserId:userId];
+    resolve(nil);
+}
+
 RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
