@@ -26,5 +26,8 @@
                 <Button Text="Write Log" InputTransparent="true" Clicked="WriteLog"/>
             </ViewCell>
         </TableSection>
+        <TableSection Title="Logging">
+            <EntryCell Label="User Id" x:Name="UserIdEntryCell" HorizontalTextAlignment="=End" Completed="UserIdCompleted"/>
+        </TableSection>
     </TableView>
 </ContentPage>
