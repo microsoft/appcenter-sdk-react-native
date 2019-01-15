@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AppCenter.Utils;
+﻿using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter
 {
@@ -9,7 +8,7 @@ namespace Microsoft.AppCenter
 
         static void PlatformSetUserId(string userId)
         {
-            Debug.WriteLine("This API is not supported on UWP.");
+            AppCenterLog.Error(AppCenterLog.LogTag, "AppCenter.SetUserId is not supported on UWP.");
         }
 
         /// <summary>
