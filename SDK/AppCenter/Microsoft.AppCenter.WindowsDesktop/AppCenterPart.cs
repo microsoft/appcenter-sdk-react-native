@@ -1,4 +1,6 @@
-﻿namespace Microsoft.AppCenter
+﻿using System.Diagnostics;
+
+namespace Microsoft.AppCenter
 {
     public partial class AppCenter
     {
@@ -6,6 +8,7 @@
 
         static void PlatformSetUserId(string userId)
         {
+            Debug.WriteLine("This API is not supported on Windows.");
         }
     }
 }
