@@ -146,10 +146,10 @@ export default class AppCenterScreen extends Component {
       </View>
     );
 
-    const valueRenderItem = ({ item: { title, value, onChange } }) => (
+    const valueRenderItem = ({ item: { title, value, onEndEditing } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        { onChange ? <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
+        { onEndEditing ? <TextInput style={SharedStyles.itemInput} onEndEditingText={onEndEditing}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
       </View>
     );
 
@@ -228,7 +228,7 @@ export default class AppCenterScreen extends Component {
                 {
                   title: 'User ID',
                   value: 'userId',
-                  onChange: async (userId) => {
+                  onEndEditing: async (userId) => {
                     this.setState({ userId });
                     await AppCenter.setUserId(userId);
                   }
