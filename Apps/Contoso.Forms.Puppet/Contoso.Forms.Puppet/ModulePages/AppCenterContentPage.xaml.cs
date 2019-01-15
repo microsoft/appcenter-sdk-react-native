@@ -89,7 +89,8 @@ namespace Contoso.Forms.Puppet
 
         void UserIdCompleted(object sender, EventArgs e)
         {
-            AppCenter.SetUserId(UserIdEntryCell.Text);
+            var text = string.IsNullOrEmpty(UserIdEntryCell.Text) ? null : UserIdEntryCell.Text;
+            AppCenter.SetUserId(text);
         }
     }
 }

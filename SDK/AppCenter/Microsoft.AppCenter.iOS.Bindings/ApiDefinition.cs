@@ -207,7 +207,7 @@ namespace Microsoft.AppCenter.iOS.Bindings
         // + (void)setUserId:(NSString *)userId;
         [Static]
         [Export("setUserId:")]
-        void SetUserId(string userId);
+        void SetUserId([NullAllowed] string userId);
 
         // +(void)setLogHandler:(MSLogHandler)logHandler;
         [Static]
