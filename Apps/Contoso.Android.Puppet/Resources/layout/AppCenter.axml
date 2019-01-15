@@ -109,11 +109,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="right" />
             </LinearLayout>
-<!--            <Button
-                android:id="@+id/write_user_id_btn"
-                android:text="@string/AppCenterWriteUserId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
--->        </LinearLayout>
+       </LinearLayout>
     </ScrollView>
 </LinearLayout>
