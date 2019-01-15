@@ -114,7 +114,7 @@ namespace Contoso.Android.Puppet
 
         private void UserIdTextKeyPressedHandler(object sender, View.KeyEventArgs e)
         {
-            if(e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
+            if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
             {
                 AppCenter.SetUserId(UserIdText.Text);
             }
