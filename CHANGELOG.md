@@ -6,15 +6,11 @@
 
 #### Android
 
-* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. 
-Settable via `AppCenter.SetUserId()`. 
-This feature adds an API, but is not yet supported on the App Center backend.
+* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. Settable via `AppCenter.SetUserId()`.
 
 #### iOS
 
-* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. 
-Settable via `AppCenter.SetUserId()`. 
-This feature adds an API, but is not yet supported on the App Center backend.
+* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. Settable via `AppCenter.SetUserId()`.
 
 ### AppCenterAnalytics
 
