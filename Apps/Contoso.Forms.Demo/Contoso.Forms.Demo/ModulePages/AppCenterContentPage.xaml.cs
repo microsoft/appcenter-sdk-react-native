@@ -1,4 +1,5 @@
-﻿using Microsoft.AppCenter;
+﻿using System;
+using Microsoft.AppCenter;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -24,6 +25,12 @@ namespace Contoso.Forms.Demo
         async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
             await AppCenter.SetEnabledAsync(e.Value);
+        }
+
+        void UserIdCompleted(object sender, EventArgs e)
+        {
+            //TODO: Enable this once NuGet package is updated as part of release process.
+            //AppCenter.SetUserId(UserIdEntryCell.Text);
         }
     }
 }

@@ -86,5 +86,10 @@ namespace Contoso.Forms.Puppet
         {
             LogWriteLevelLabel.Text = LogLevelNames[LogWriteLevel];
         }
+
+        void UserIdCompleted(object sender, EventArgs e)
+        {
+            AppCenter.SetUserId(UserIdEntryCell.Text);
+        }
     }
 }

@@ -76,6 +76,11 @@ namespace Microsoft.AppCenter
             }
         }
 
+        static void PlatformSetUserId(string userId)
+        {
+            iOSAppCenter.SetUserId(userId);
+        }
+
         static void PlatformSetLogUrl(string logUrl)
         {
             iOSAppCenter.SetLogUrl(logUrl);

@@ -37,6 +37,10 @@ namespace Microsoft.AppCenter
         {
         }
 
+        static void PlatformSetUserId(string userId)
+        {
+        }
+
         static bool PlatformConfigured { get; }
 
         static void PlatformConfigure(string appSecret)

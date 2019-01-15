@@ -36,6 +36,11 @@ namespace Contoso.iOS.Puppet
             LogWriteLevelLabel.Text = LogLevelNames[mLogWriteLevel];
         }
 
+        partial void UpdateUserId(UITextField sender)
+        {
+            AppCenter.SetUserId(sender.Text);
+        }
+
         public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
         {
             base.PrepareForSegue(segue, sender);
