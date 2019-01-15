@@ -30,7 +30,8 @@ namespace Contoso.Forms.Demo
         void UserIdCompleted(object sender, EventArgs e)
         {
             //TODO: Enable this once NuGet package is updated as part of release process.
-            //AppCenter.SetUserId(UserIdEntryCell.Text);
+            //var text = string.IsNullOrEmpty(UserIdEntryCell.Text) ? null : UserIdEntryCell.Text;
+            //AppCenter.SetUserId(text);
         }
     }
 }

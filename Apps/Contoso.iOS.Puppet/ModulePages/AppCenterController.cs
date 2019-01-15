@@ -38,7 +38,8 @@ namespace Contoso.iOS.Puppet
 
         partial void UpdateUserId(UITextField sender)
         {
-            AppCenter.SetUserId(sender.Text);
+            var text = string.IsNullOrEmpty(sender.Text) ? null : sender.Text;
+            AppCenter.SetUserId(text);
         }
 
         public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)

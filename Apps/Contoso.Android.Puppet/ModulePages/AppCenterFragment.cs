@@ -116,7 +116,8 @@ namespace Contoso.Android.Puppet
         {
             if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
             {
-                AppCenter.SetUserId(UserIdText.Text);
+                var text = string.IsNullOrEmpty(UserIdText.Text) ? null : UserIdText.Text;
+                AppCenter.SetUserId(text);
             }
         }
 
