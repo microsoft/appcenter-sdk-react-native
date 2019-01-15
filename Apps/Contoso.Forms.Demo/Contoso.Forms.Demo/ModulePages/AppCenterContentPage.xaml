@@ -7,5 +7,8 @@
         <TableSection Title="AppCenter Settings">
             <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
         </TableSection>
+        <TableSection Title="Logging">
+            <EntryCell Label="User Id" x:Name="UserIdEntryCell" HorizontalTextAlignment="End" Completed="UserIdCompleted"/>
+        </TableSection>
     </TableView>
 </ContentPage>
