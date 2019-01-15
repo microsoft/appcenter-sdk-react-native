@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
