@@ -13,9 +13,6 @@
 static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificationReceived";
 
 @implementation AppCenterReactNativePushDelegateBase
-{
-    bool hasListeners;
-}
 
 - (instancetype) init
 {
@@ -32,7 +29,7 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
     if (self.saveInitialNotification && self.initialNotification == nil) {
         self.initialNotification = convertNotificationToJS(pushNotification);
     }
-    else if (hasListeners) {
+    else {
         [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:convertNotificationToJS(pushNotification)];
     }
 }
@@ -40,9 +37,7 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
 - (void)sendAndClearInitialNotification
 {
     if (self.initialNotification) {
-        if (hasListeners) {
-            [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
-        }
+        [self.eventEmitter sendEventWithName:ON_PUSH_NOTIFICATION_RECEIVED_EVENT body:self.initialNotification];
         self.initialNotification = nil;
     }
     self.saveInitialNotification = false;
@@ -51,14 +46,6 @@ static NSString *ON_PUSH_NOTIFICATION_RECEIVED_EVENT = @"AppCenterPushNotificati
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[ON_PUSH_NOTIFICATION_RECEIVED_EVENT];
-}
-
-- (void)startObserving {
-    hasListeners = YES;
-}
-
-- (void)stopObserving {
-    hasListeners = NO;
 }
 
 @end

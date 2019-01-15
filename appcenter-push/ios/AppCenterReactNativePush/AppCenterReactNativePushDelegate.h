@@ -21,12 +21,6 @@
 - (void)sendAndClearInitialNotification;
 
 @required
-- (void)startObserving;
-
-@required
-- (void)stopObserving;
-
-@required
 - (NSArray<NSString *> *)supportedEvents;
 
 @end

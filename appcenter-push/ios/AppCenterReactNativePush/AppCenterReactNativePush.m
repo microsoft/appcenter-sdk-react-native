@@ -79,16 +79,6 @@ RCT_EXPORT_MODULE();
   }
 }
 
-- (void)startObserving {
-  // Will be called when this module's first listener is added.
-  [pushDelegate startObserving];
-}
-
-- (void)stopObserving {
-  // Will be called when this module's last listener is removed, or on dealloc.
-  [pushDelegate stopObserving];
-}
-
 RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   resolve([NSNumber numberWithBool:[MSPush isEnabled]]);
 }
