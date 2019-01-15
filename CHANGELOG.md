@@ -9,6 +9,7 @@
     * Update react-native to version 0.58+ and update App Center SDK packages.
     * Edit **app/build.gradle** to replace `compile` by `implementation`.
     * Run `react-native link` again.
+- **[Feature]** Allow users to set userId that applies to crashes, error and push logs.
 
 ## Version 1.11.0
 

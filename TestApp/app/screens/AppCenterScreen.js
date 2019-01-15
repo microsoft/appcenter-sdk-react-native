@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -66,12 +66,12 @@ export default class AppCenterScreen extends Component {
     pushEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
-    startupMode: StartupModes[0]
+    startupMode: StartupModes[0],
+    userId: ''
   }
 
   async componentWillMount() {
     await this.refreshUI();
-
     const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
     for (let index = 0; index < StartupModes.length; index++) {
       const startupMode = StartupModes[index];
@@ -146,10 +146,10 @@ export default class AppCenterScreen extends Component {
       </View>
     );
 
-    const valueRenderItem = ({ item: { title, value } }) => (
+    const valueRenderItem = ({ item: { title, value, onChange } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        <Text>{this.state[value]}</Text>
+        { onChange ? <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
       </View>
     );
 
@@ -225,9 +225,17 @@ export default class AppCenterScreen extends Component {
               data: [
                 { title: 'Install ID', value: 'installId' },
                 { title: 'SDK Version', value: 'sdkVersion' },
+                {
+                  title: 'User ID',
+                  value: 'userId',
+                  onChange: async (userId) => {
+                    this.setState({ userId });
+                    await AppCenter.setUserId(userId);
+                  }
+                }
               ],
               renderItem: valueRenderItem
-            },
+            }
           ]}
         />
       </View>

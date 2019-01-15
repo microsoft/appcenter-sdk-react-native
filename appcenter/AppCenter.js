@@ -68,6 +68,11 @@ const AppCenter = {
     },
 
     // async - returns a Promise
+    setUserId(userId) {
+        return AppCenterReactNative.setUserId(userId);
+    },
+
+    // async - returns a Promise
     getInstallId() {
         return AppCenterReactNative.getInstallId();
     },
