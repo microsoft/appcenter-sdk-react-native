@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 1.12.1 (Under active development)
+## Version 1.13.0 
 
 ### AppCenter
 
@@ -8,9 +8,12 @@
 
 * **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. Settable via `AppCenter.SetUserId()`.
 
+* **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
+
 #### iOS
 
 * **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. Settable via `AppCenter.SetUserId()`.
+* **[Fix]** Fix issue where the SDK source could not be built in a directory that contains escaped characters (applies to all modules).
 
 ### AppCenterAnalytics
 
@@ -18,6 +21,15 @@
 
 * **[Fix]** Extend the current session instead of starting a new session when sending events from the background.
 
+#### Android
+
+* **[Fix]** Extend the current session instead of starting a new session when sending events from the background. Sessions are also no longer started in background by sending an event or a log from another service such as push, as a consequence the push registration information will be missing from crash events information.
+
+### AppCenterDistribute
+
+#### Android
+
+* **[Fix]** Fix issue with forcing Chrome to open links when other browsers are the default.
 ___
 
 ## Version 1.12.0
