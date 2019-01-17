@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="55" android:versionName="1.12.1-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="55" android:versionName="1.13.0-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="26" />
 	<application android:label="ACFPuppet">
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
