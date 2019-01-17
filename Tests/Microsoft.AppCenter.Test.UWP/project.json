@@ -1,0 +1,16 @@
+﻿{
+  "dependencies": {
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.6",
+    "Moq": "4.7.12",
+    "MSTest.TestAdapter": "1.1.18",
+    "MSTest.TestFramework": "1.1.18"
+  },
+  "frameworks": {
+    "uap10.0.10240": {}
+  },
+  "runtimes": {
+    "win10-arm": {},
+    "win10-x86": {},
+    "win10-x64": {}
+  }
+}
