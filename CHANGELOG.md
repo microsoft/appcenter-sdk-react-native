@@ -21,10 +21,6 @@
 
 * **[Fix]** Extend the current session instead of starting a new session when sending events from the background.
 
-#### iOS
-
-* **[Feature]** Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
-
 #### Android
 
 * **[Fix]** Extend the current session instead of starting a new session when sending events from the background. Sessions are also no longer started in background by sending an event or a log from another service such as push, as a consequence the push registration information will be missing from crash events information.
