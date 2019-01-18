@@ -126,11 +126,11 @@ android {
 }
 
 dependencies {
+//TODO change to implementation once RN 0.58 is released
     compile project(':appcenter-push')
     compile project(':appcenter-crashes')
     compile project(':appcenter-analytics')
     compile project(':appcenter')
-    //TODO change to implementation once RN 0.58 is released
     compile project(':react-native-fs')
     compile project(':react-native-image-picker')
     implementation fileTree(dir: "libs", include: ["*.jar"])
