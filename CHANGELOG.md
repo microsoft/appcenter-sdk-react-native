@@ -16,8 +16,8 @@
 
 ### AppCenterDistribute
 
+#### Android
 * **[Fix]** Fix issue with forcing Chrome to open links when other browsers are the default.
-
 
 ## Version 1.11.1
 
