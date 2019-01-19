@@ -7,16 +7,19 @@
 * **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes and push logs. Settable via `AppCenter.setUserId`.
 
 #### Android
+
 * **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
 
 ### AppCenterAnalytics
 
 #### Android
+
 * **[Fix]** Extend the current session instead of starting a new session when sending events from the background. Sessions are also no longer started in background by sending an event or a log from another service such as push, as a consequence the push registration information will be missing from crash events information.
 
 ### AppCenterDistribute
 
 #### Android
+
 * **[Fix]** Fix issue with forcing Chrome to open links when other browsers are the default.
 
 ## Version 1.11.1
