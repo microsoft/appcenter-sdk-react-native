@@ -4,6 +4,8 @@
 
 ### AppCenter
 
+* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes and push logs. Settable via `AppCenter.setUserId`.
+
 #### Android
 * **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
 
