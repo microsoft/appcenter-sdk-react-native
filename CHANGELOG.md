@@ -4,12 +4,12 @@
 
 ### AppCenter
 
-* **[Fix]** Fix issue where the SDK source could not be built in a directory that contains escaped characters (applies to all modules).
+#### Android
 * **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
 
 ### AppCenterAnalytics
 
-* **[Feature]** Preparation work for a future change in transmission protocol and endpoint for Analytics data. There is no impact on your current workflow when using App Center.
+#### Android
 * **[Fix]** Extend the current session instead of starting a new session when sending events from the background. Sessions are also no longer started in background by sending an event or a log from another service such as push, as a consequence the push registration information will be missing from crash events information.
 
 ### AppCenterDistribute
