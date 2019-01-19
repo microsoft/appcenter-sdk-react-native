@@ -1,20 +1,60 @@
 # App Center SDK for React Native Change Log
 
+## Version 1.12.0
+
+### AppCenter
+
+* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes and push logs. Settable via `AppCenter.setUserId`.
+
+#### Android
+
+* **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
+
+### AppCenterAnalytics
+
+#### Android
+
+* **[Fix]** Extend the current session instead of starting a new session when sending events from the background. Sessions are also no longer started in background by sending an event or a log from another service such as push, as a consequence the push registration information will be missing from crash events information.
+
+### AppCenterDistribute
+
+#### Android
+
+* **[Fix]** Fix issue with forcing Chrome to open links when other browsers are the default.
+
+## Version 1.11.1
+
+### AppCenter
+
+- **[Fix]** No longer use the deprecated `compile` Gradle keyword in the App Center gradle modules. Please note that if `react-native link` was executed prior to version **0.58** of React Native, the **app/build.gradle** file will still contain references to the `compile` keyword, this behavior is from the `react-native link` command and not from App Center SDK files. To resolve all warnings you need to follow the operations in that order: 
+
+    * Update react-native to version 0.58+ and update App Center SDK packages.
+    * Edit **app/build.gradle** to replace `compile` by `implementation`.
+    * Run `react-native link` again.
+- **[Feature]** Allow users to set userId that applies to crashes, error and push logs.
+
 ## Version 1.11.0
 
 ### AppCenter
 
 - Introduce new `LogLevel` constants, deprecating old ones.
 - Fix bug with linking process being stuck when developing on windows machines. [#471](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/471).
+- Fix logs duplication on unstable network.
+- Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+- **[Android]** Fix disabling logging of network state changes according to `AppCenter.LogLevel`.
+- **[iOS]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
+- **[iOS]** Fix a memory leak issue during executing SQL queries.
 
 ### AppCenterCrashes
 
 - **[iOS]** Fixes an issue where duplicate crash logs could be sent.
+- **[Android]** Fix a bug where crash data file could leak when the database is full.
 
 ### AppCenterPush
 
 - **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/287).
 - **[Fix]** Fix build.gradle for release builds [#481](https://github.com/Microsoft/AppCenter-SDK-React-Native/issues/481).
+- **[Android]** Fix push notification received event for pushes received in foreground after re-enabling the push service.
 
 ## Version 1.10.0
 

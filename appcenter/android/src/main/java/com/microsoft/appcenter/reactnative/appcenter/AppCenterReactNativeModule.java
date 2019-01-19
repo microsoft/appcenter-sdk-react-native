@@ -86,6 +86,11 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void setUserId(String userId) {
+        AppCenter.setUserId(userId);
+    }
+
+    @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
         AppCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
     }

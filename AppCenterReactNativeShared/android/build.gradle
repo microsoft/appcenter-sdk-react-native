@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -34,8 +34,8 @@ allprojects {
         defaultConfig {
             minSdkVersion 16
             targetSdkVersion 26
-            versionCode 36
-            versionName '1.11.0'
+            versionCode 37
+            versionName '1.12.0'
             group groupId
             version versionName
             buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
@@ -111,7 +111,7 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.microsoft.appcenter:appcenter:1.11.0'
+    api 'com.microsoft.appcenter:appcenter:1.11.2'
 }
 
 artifacts {

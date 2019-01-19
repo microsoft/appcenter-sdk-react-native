@@ -7,9 +7,9 @@ target 'TestApp' do
   # use_frameworks!
 
   # Pods for TestApp
-  pod 'AppCenter/Crashes', '~> 1.12.0'
-  pod 'AppCenter/Analytics', '~> 1.12.0'
-  pod 'AppCenter/Push', '~> 1.12.0'
+  pod 'AppCenter/Crashes', '~> 1.13.0'
+  pod 'AppCenter/Analytics', '~> 1.13.0'
+  pod 'AppCenter/Push', '~> 1.13.0'
   
   pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
 
