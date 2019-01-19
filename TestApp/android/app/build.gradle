@@ -126,7 +126,7 @@ android {
 }
 
 dependencies {
-//TODO change to implementation once RN 0.58 is released
+    //TODO change to implementation once RN 0.58 is released
     compile project(':appcenter-push')
     compile project(':appcenter-crashes')
     compile project(':appcenter-analytics')
