@@ -4,13 +4,12 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Devices.Geolocation;
+using Windows.Globalization;
+using Windows.Services.Maps;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Windows.Devices.Geolocation;
-using Windows.Services.Maps;
-using Windows.Globalization;
-using System.Globalization;
 
 namespace Contoso.Forms.Puppet.UWP
 {
