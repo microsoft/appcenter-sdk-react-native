@@ -26,20 +26,20 @@ namespace Contoso.Forms.Puppet.UWP
         /// </summary>
         public App()
         {
-            // First we synchronously set a fallback country code before initialization occurs.
-            // This fallback country code does not reflect the physical device location, but rather the
-            // country that corresponds to the culture it uses. 
-            AppCenter.SetCountryCode(new GeographicRegion().CodeTwoLetter);
-
-            // Then asynchronously set the country code using location service, which is a more proper way to retrieve it.
-            SetCountryCodeAsync();
+            // Set the country before initialization occurs so App Center can send the field to the backend.
+            SetCountryCode();
             EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
         }
 
-        async public static void SetCountryCodeAsync()
+        async public static void SetCountryCode()
         {
+            // The following country code is used only as a fallback for the main implementation.
+            // This fallback country code does not reflect the physical device location, but rather the
+            // country that corresponds to the culture it uses. 
+            var fallbackGeographicRegion = new GeographicRegion();
+            var fallbackCountryCode = fallbackGeographicRegion.CodeTwoLetter;
             var accessStatus = await Geolocator.RequestAccessAsync();
             switch (accessStatus)
             {
@@ -64,17 +64,22 @@ namespace Contoso.Forms.Puppet.UWP
                     var result = await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
                     if (result.Status != MapLocationFinderStatus.Success || result.Locations == null || result.Locations.Count == 0)
                     {
+                        AppCenter.SetCountryCode(fallbackCountryCode);
                         break;
                     }
                     string country = result.Locations[0].Address.CountryCode;
                     if (country == null)
                     {
+                        AppCenter.SetCountryCode(fallbackCountryCode);
                         break;
                     }
-                    AppCenter.SetCountryCode(new GeographicRegion(country).CodeTwoLetter);
+                    var geographicRegion = new GeographicRegion(country);
+                    var countryCode = geographicRegion.CodeTwoLetter;
+                    AppCenter.SetCountryCode(countryCode);
                         break;
                     case GeolocationAccessStatus.Denied:
                     case GeolocationAccessStatus.Unspecified:
+                        AppCenter.SetCountryCode(fallbackCountryCode);
                         break;
                }
         }
