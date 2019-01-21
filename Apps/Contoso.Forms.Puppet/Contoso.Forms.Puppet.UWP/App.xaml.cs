@@ -37,9 +37,8 @@ namespace Contoso.Forms.Puppet.UWP
         {
             // The following country code is used only as a fallback for the main implementation.
             // This fallback country code does not reflect the physical device location, but rather the
-            // country that corresponds to the culture it uses. 
-            var fallbackGeographicRegion = new GeographicRegion();
-            var fallbackCountryCode = fallbackGeographicRegion.CodeTwoLetter;
+            // country that corresponds to the culture it uses.
+            var countryCode = new GeographicRegion().CodeTwoLetter;
             var accessStatus = await Geolocator.RequestAccessAsync();
             switch (accessStatus)
             {
@@ -64,24 +63,20 @@ namespace Contoso.Forms.Puppet.UWP
                     var result = await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
                     if (result.Status != MapLocationFinderStatus.Success || result.Locations == null || result.Locations.Count == 0)
                     {
-                        AppCenter.SetCountryCode(fallbackCountryCode);
                         break;
                     }
                     string country = result.Locations[0].Address.CountryCode;
                     if (country == null)
                     {
-                        AppCenter.SetCountryCode(fallbackCountryCode);
                         break;
                     }
-                    var geographicRegion = new GeographicRegion(country);
-                    var countryCode = geographicRegion.CodeTwoLetter;
-                    AppCenter.SetCountryCode(countryCode);
+                    countryCode = new GeographicRegion(country).CodeTwoLetter;
                         break;
                     case GeolocationAccessStatus.Denied:
                     case GeolocationAccessStatus.Unspecified:
-                        AppCenter.SetCountryCode(fallbackCountryCode);
                         break;
-               }
+            }
+            AppCenter.SetCountryCode(countryCode);
         }
 
         /// <summary>
