@@ -10,6 +10,8 @@
     <string name="AppCenterLogMessage">Log Message</string>
     <string name="AppCenterLogTag">Log Tag</string>
     <string name="AppCenterWriteLog">Write Log</string>
+    <string name="AppCenterWriteUserId">Write User Id</string>
+    <string name="AppCenterUserId">User Id</string>
     <string name="AnalyticsEnabled">Analytics Enabled</string>
     <string name="AnalyticsEventName">Event Name</string>
     <string name="AnalyticsProperties">Properties</string>

@@ -6,6 +6,11 @@ namespace Microsoft.AppCenter
     {
         private const string PlatformIdentifier = "uwp";
 
+        static void PlatformSetUserId(string userId)
+        {
+            AppCenterLog.Error(AppCenterLog.LogTag, "AppCenter.SetUserId is not supported on UWP.");
+        }
+
         /// <summary>
         /// Sets the two-letter ISO country code to send to the backend.
         /// </summary>

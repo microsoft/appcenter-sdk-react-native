@@ -65,6 +65,15 @@ namespace Microsoft.AppCenter
         }
 
         /// <summary>
+        ///     Set the custom user id.
+        /// </summary>
+        /// <param name="userId">Custom string to identify user. 256 characters or less.</param>
+        public static void SetUserId(string userId)
+        {
+            PlatformSetUserId(userId);
+        }
+
+        /// <summary>
         /// Get the current version of AppCenter SDK.
         /// </summary>
         public static string SdkVersion => WrapperSdk.Version;

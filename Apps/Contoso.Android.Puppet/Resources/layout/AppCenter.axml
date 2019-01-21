@@ -93,6 +93,22 @@
                 android:text="@string/AppCenterWriteLog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="@string/AppCenterUserId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp" />
+                <EditText
+                    android:id="@+id/write_user_id"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right" />
+            </LinearLayout>
+       </LinearLayout>
     </ScrollView>
 </LinearLayout>

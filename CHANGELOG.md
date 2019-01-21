@@ -1,12 +1,72 @@
 # App Center SDK for .NET Change Log
 
-## Version 1.12.0 (Under active development)
+## Version 1.13.0 
+
+### AppCenter
+
+#### Android
+
+* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. Settable via `AppCenter.SetUserId()`.
+
+* **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
+
+#### iOS
+
+* **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes, handled errors, and push logs. Settable via `AppCenter.SetUserId()`.
+* **[Fix]** Fix issue where the SDK source could not be built in a directory that contains escaped characters (applies to all modules).
+
+### AppCenterAnalytics
+
+#### UWP
+
+* **[Fix]** Extend the current session instead of starting a new session when sending events from the background.
+
+#### Android
+
+* **[Fix]** Extend the current session instead of starting a new session when sending events from the background. Sessions are also no longer started in background by sending an event or a log from another service such as push, as a consequence the push registration information will be missing from crash events information.
+
+### AppCenterDistribute
+
+#### Android
+
+* **[Fix]** Fix issue with forcing Chrome to open links when other browsers are the default.
+___
+
+## Version 1.12.0
+
+### AppCenter
+
+#### UWP
+
+* **[Fix]** Update vulnerable `Microsoft.NETCore.UniversalWindowsPlatform` dependency from version `5.2.2` to `5.2.6`.
+
+#### Android
+
+* **[Fix]** Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+* **[Fix]** Fix disabling logging of network state changes according to AppCenter.getLogLevel.
+* **[Fix]** Fix logs duplication on unstable network.
+
+#### iOS
+
+* **[Fix]** Do not delete old logs when trying to add a log larger than the maximum storage capacity.
+* **[Fix]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
+* **[Fix]** Fix a memory leak issue during executing SQL queries.
 
 ### AppCenterCrashes
 
 #### UWP
 
 * **[Fix]** Downgrade the platforms verification error to a warning.
+
+#### Android
+
+* **[Fix]** Fix a bug where crash data file could leak when the database is full.
+
+### AppCenterPush
+
+#### Android
+
+* **[Fix]** Fix `PushNotificationReceived` event for pushes received in foreground after re-enabling the push service.
 
 ___
 

@@ -34,6 +34,7 @@ namespace Contoso.Android.Puppet
         private EditText LogWriteTagText;
         private TextView LogWriteLevelLabel;
         private Button LogWriteButton;
+        private EditText UserIdText;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -51,12 +52,14 @@ namespace Contoso.Android.Puppet
             LogWriteTagText = view.FindViewById(Resource.Id.write_log_tag) as EditText;
             LogWriteLevelLabel = view.FindViewById(Resource.Id.write_log_level) as TextView;
             LogWriteButton = view.FindViewById(Resource.Id.write_log) as Button;
+            UserIdText = view.FindViewById(Resource.Id.write_user_id) as EditText;
 
             // Subscribe to events.
             AppCenterEnabledSwitch.CheckedChange += UpdateEnabled;
             ((View)LogLevelLabel.Parent).Click += LogLevelClicked;
             ((View)LogWriteLevelLabel.Parent).Click += LogWriteLevelClicked;
             LogWriteButton.Click += WriteLog;
+            UserIdText.KeyPress += UserIdTextKeyPressedHandler;
 
             UpdateState();
         }
@@ -107,6 +110,15 @@ namespace Contoso.Android.Puppet
         {
             var intent = new Intent(Activity.ApplicationContext, typeof(LogLevelActivity));
             StartActivityForResult(intent, 1);
+        }
+
+        private void UserIdTextKeyPressedHandler(object sender, View.KeyEventArgs e)
+        {
+            if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
+            {
+                var text = string.IsNullOrEmpty(UserIdText.Text) ? null : UserIdText.Text;
+                AppCenter.SetUserId(text);
+            }
         }
 
         private void WriteLog(object sender, EventArgs e)

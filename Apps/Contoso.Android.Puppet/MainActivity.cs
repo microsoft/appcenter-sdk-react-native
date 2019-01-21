@@ -59,7 +59,7 @@ namespace Contoso.Android.Puppet
             Distribute.ReleaseAvailable = OnReleaseAvailable;
             AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Distribute.SetInstallUrl("http://install.asgard-int.trafficmanager.net");
+            Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
 
             // Enable Firebase Analytics if set

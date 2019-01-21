@@ -80,6 +80,11 @@ namespace Microsoft.AppCenter
             }
         }
 
+        static void PlatformSetUserId(string userId)
+        {
+            AndroidAppCenter.SetUserId(userId);
+        }
+
         static void PlatformSetLogUrl(string logUrl)
         {
             AndroidAppCenter.SetLogUrl(logUrl);
