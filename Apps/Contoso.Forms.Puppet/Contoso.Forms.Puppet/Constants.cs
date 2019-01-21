@@ -8,5 +8,6 @@
         public const string Info = "Info";
         public const string Warning = "Warning";
         public const string Error = "Error";
+        public const string BingMapsToken = "paste-token-here";
     }
 }

@@ -4,10 +4,13 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Windows.Devices.Geolocation;
+using Windows.Services.Maps;
+using Windows.Globalization;
+using System.Globalization;
 
 namespace Contoso.Forms.Puppet.UWP
 {
@@ -16,21 +19,69 @@ namespace Contoso.Forms.Puppet.UWP
     /// </summary>
     sealed partial class App : Application
     {
+        public const string LogTag = "AppCenterXamarinPuppet";
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
+            EventFilterHolder.Implementation = new EventFilterWrapper();
+            InitializeComponent();
+            Suspending += OnSuspending;
             // Set the country before initialization occurs so App Center can send the field to the backend
             // Note that the country code provided does not reflect the physical device location, but rather the
             // country that corresponds to the culture it uses. You may wish to retrieve the country code using
             // a different means, such as device location.
-            var geographicRegion = new GeographicRegion();
-            AppCenter.SetCountryCode(geographicRegion.CodeTwoLetter);
-            EventFilterHolder.Implementation = new EventFilterWrapper();
-            InitializeComponent();
-            Suspending += OnSuspending;
+            SetCountryCode();
+        }
+
+        async public static void SetCountryCode()
+        {
+            var fallbackGeographicRegion = new GeographicRegion();
+            var fallbackCountryCode = fallbackGeographicRegion.CodeTwoLetter;
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+                    var geolocator = new Geolocator();
+                    geolocator.DesiredAccuracyInMeters = 100;
+                    var position = await geolocator.GetGeopositionAsync();
+                    var myLocation = new BasicGeoposition
+                    {
+                        Longitude = position.Coordinate.Point.Position.Longitude,
+                        Latitude = position.Coordinate.Point.Position.Latitude
+                    };
+                    var pointToReverseGeocode = new Geopoint(myLocation);
+                    try
+                    {
+                        MapService.ServiceToken = Constants.BingMapsToken;
+                    }
+                    catch (Exception e)
+                    {
+                        AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps token/ For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
+                    }
+                    var result = await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
+                    if (result.Status != MapLocationFinderStatus.Success || result.Locations == null || result.Locations.Count == 0)
+                    {
+                        AppCenter.SetCountryCode(fallbackCountryCode);
+                        break;
+                    }
+                    string country = result.Locations[0].Address.CountryCode;
+                    if (country == null)
+                    {
+                        AppCenter.SetCountryCode(fallbackCountryCode);
+                        break;
+                    }
+                    var geographicRegion = new GeographicRegion(country);
+                    var countryCode = geographicRegion.CodeTwoLetter;
+                    AppCenter.SetCountryCode(countryCode);
+                        break;
+                    case GeolocationAccessStatus.Denied:
+                    case GeolocationAccessStatus.Unspecified:
+                        AppCenter.SetCountryCode(fallbackCountryCode);
+                        break;
+               }
         }
 
         /// <summary>
