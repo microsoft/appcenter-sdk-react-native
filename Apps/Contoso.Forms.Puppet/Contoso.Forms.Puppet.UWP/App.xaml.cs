@@ -60,13 +60,16 @@ namespace Contoso.Forms.Puppet.UWP
                     }
                     catch (SEHException tokenException)
                     {
-                        AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps token/ For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
+                        AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps token. For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
                     }
                     var result = await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
                     if (result.Status != MapLocationFinderStatus.Success || result.Locations == null || result.Locations.Count == 0)
                     {
                         break;
                     }
+
+                    // The returned country code is in 3-letter format (ISO 3166-1 alpha-3).
+                    // Below we convert it to ISO 3166-1 alpha-2 (two letter).
                     string country = result.Locations[0].Address.CountryCode;
                     if (country == null)
                     {
