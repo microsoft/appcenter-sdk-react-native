@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
@@ -33,7 +34,7 @@ namespace Contoso.Forms.Puppet.UWP
             Suspending += OnSuspending;
         }
 
-        async public static void SetCountryCode()
+        public static async Task SetCountryCode()
         {
             // The following country code is used only as a fallback for the main implementation.
             // This fallback country code does not reflect the physical device location, but rather the
