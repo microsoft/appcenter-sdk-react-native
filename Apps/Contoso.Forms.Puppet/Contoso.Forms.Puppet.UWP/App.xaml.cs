@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
@@ -57,7 +58,7 @@ namespace Contoso.Forms.Puppet.UWP
                     {
                         MapService.ServiceToken = Constants.BingMapsToken;
                     }
-                    catch (Exception e)
+                    catch (SEHException tokenException)
                     {
                         AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps token/ For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
                     }
@@ -72,10 +73,10 @@ namespace Contoso.Forms.Puppet.UWP
                         break;
                     }
                     countryCode = new GeographicRegion(country).CodeTwoLetter;
-                        break;
-                    case GeolocationAccessStatus.Denied:
-                    case GeolocationAccessStatus.Unspecified:
-                        break;
+                    break;
+                case GeolocationAccessStatus.Denied:
+                case GeolocationAccessStatus.Unspecified:
+                    break;
             }
             AppCenter.SetCountryCode(countryCode);
         }
