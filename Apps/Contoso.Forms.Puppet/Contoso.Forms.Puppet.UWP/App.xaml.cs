@@ -26,10 +26,7 @@ namespace Contoso.Forms.Puppet.UWP
         /// </summary>
         public App()
         {
-            // Set the country before initialization occurs so App Center can send the field to the backend
-            // Note that the country code provided does not reflect the physical device location, but rather the
-            // country that corresponds to the culture it uses. You may wish to retrieve the country code using
-            // a different means, such as device location.
+            // Set the country before initialization occurs so App Center can send the field to the backend.
             SetCountryCode();
             EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
@@ -38,6 +35,9 @@ namespace Contoso.Forms.Puppet.UWP
 
         async public static void SetCountryCode()
         {
+            // The following country code is used only as a fallback for the main implementation.
+            // This fallback country code does not reflect the physical device location, but rather the
+            // country that corresponds to the culture it uses. 
             var fallbackGeographicRegion = new GeographicRegion();
             var fallbackCountryCode = fallbackGeographicRegion.CodeTwoLetter;
             var accessStatus = await Geolocator.RequestAccessAsync();
