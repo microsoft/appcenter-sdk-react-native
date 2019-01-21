@@ -25,14 +25,14 @@ namespace Contoso.Forms.Puppet.UWP
         /// </summary>
         public App()
         {
-            EventFilterHolder.Implementation = new EventFilterWrapper();
-            InitializeComponent();
-            Suspending += OnSuspending;
             // Set the country before initialization occurs so App Center can send the field to the backend
             // Note that the country code provided does not reflect the physical device location, but rather the
             // country that corresponds to the culture it uses. You may wish to retrieve the country code using
             // a different means, such as device location.
             SetCountryCode();
+            EventFilterHolder.Implementation = new EventFilterWrapper();
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         async public static void SetCountryCode()
