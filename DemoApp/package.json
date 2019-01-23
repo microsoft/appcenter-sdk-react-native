@@ -8,10 +8,10 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "^1.11.0",
-    "appcenter-analytics": "^1.11.0",
-    "appcenter-crashes": "^1.11.0",
-    "appcenter-push": "^1.11.0",
+    "appcenter": "^1.12.0",
+    "appcenter-analytics": "^1.12.0",
+    "appcenter-crashes": "^1.12.0",
+    "appcenter-push": "^1.12.0",
     "metro": "0.48.1",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
