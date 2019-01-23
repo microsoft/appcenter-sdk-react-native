@@ -29,7 +29,9 @@ namespace Contoso.Forms.Puppet.UWP
         public App()
         {
             // Set the country before initialization occurs so App Center can send the field to the backend.
-            SetCountryCode().Wait();
+            // We do not use await here because we don't need to wait for this task to complete,
+            // and await would block the UI in App constructor.
+            _ = SetCountryCode();
             EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
