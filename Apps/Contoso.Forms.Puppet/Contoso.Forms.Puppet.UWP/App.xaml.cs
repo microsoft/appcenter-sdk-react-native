@@ -20,7 +20,7 @@ namespace Contoso.Forms.Puppet.UWP
     /// </summary>
     sealed partial class App : Application
     {
-        public const string LogTag = "AppCenterXamarinPuppet";
+        private const string LogTag = "AppCenterXamarinPuppet";
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -29,13 +29,13 @@ namespace Contoso.Forms.Puppet.UWP
         public App()
         {
             // Set the country before initialization occurs so App Center can send the field to the backend.
-            SetCountryCode();
+            SetCountryCode().Wait();
             EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
         }
 
-        public static async Task SetCountryCode()
+        private static async Task SetCountryCode()
         {
             // The following country code is used only as a fallback for the main implementation.
             // This fallback country code does not reflect the physical device location, but rather the
@@ -45,9 +45,9 @@ namespace Contoso.Forms.Puppet.UWP
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:
-                    var geolocator = new Geolocator();
-                    geolocator.DesiredAccuracyInMeters = 100;
-                    var position = await geolocator.GetGeopositionAsync();
+                    var geoLocator = new Geolocator();
+                    geoLocator.DesiredAccuracyInMeters = 100;
+                    var position = await geoLocator.GetGeopositionAsync();
                     var myLocation = new BasicGeoposition
                     {
                         Longitude = position.Coordinate.Point.Position.Longitude,
@@ -56,11 +56,11 @@ namespace Contoso.Forms.Puppet.UWP
                     var pointToReverseGeocode = new Geopoint(myLocation);
                     try
                     {
-                        MapService.ServiceToken = Constants.BingMapsToken;
+                        MapService.ServiceToken = Constants.BingMapsAuthKey;
                     }
-                    catch (SEHException tokenException)
+                    catch (SEHException)
                     {
-                        AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps token. For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
+                        AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps authentication key. For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
                     }
                     var result = await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
                     if (result.Status != MapLocationFinderStatus.Success || result.Locations == null || result.Locations.Count == 0)
@@ -70,7 +70,7 @@ namespace Contoso.Forms.Puppet.UWP
 
                     // The returned country code is in 3-letter format (ISO 3166-1 alpha-3).
                     // Below we convert it to ISO 3166-1 alpha-2 (two letter).
-                    string country = result.Locations[0].Address.CountryCode;
+                    var country = result.Locations[0].Address.CountryCode;
                     if (country == null)
                     {
                         break;
@@ -78,6 +78,8 @@ namespace Contoso.Forms.Puppet.UWP
                     countryCode = new GeographicRegion(country).CodeTwoLetter;
                     break;
                 case GeolocationAccessStatus.Denied:
+                    AppCenterLog.Info(LogTag, "Geolocation access denied. In order to set country code in App Center, enable location service in Windows 10.");
+                    break;
                 case GeolocationAccessStatus.Unspecified:
                     break;
             }
