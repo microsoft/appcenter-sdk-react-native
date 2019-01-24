@@ -75,10 +75,6 @@ namespace Contoso.Forms.Puppet.UWP
                     // The returned country code is in 3-letter format (ISO 3166-1 alpha-3).
                     // Below we convert it to ISO 3166-1 alpha-2 (two letter).
                     var country = result.Locations[0].Address.CountryCode;
-                    if (country == null)
-                    {
-                        break;
-                    }
                     countryCode = new GeographicRegion(country).CodeTwoLetter;
                     break;
                 case GeolocationAccessStatus.Denied:
