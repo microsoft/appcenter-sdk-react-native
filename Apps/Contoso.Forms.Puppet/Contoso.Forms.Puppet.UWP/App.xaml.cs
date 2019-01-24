@@ -47,8 +47,10 @@ namespace Contoso.Forms.Puppet.UWP
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:
-                    var geoLocator = new Geolocator();
-                    geoLocator.DesiredAccuracyInMeters = 100;
+                    var geoLocator = new Geolocator
+                    {
+                        DesiredAccuracyInMeters = 100
+                    };
                     var position = await geoLocator.GetGeopositionAsync();
                     var myLocation = new BasicGeoposition
                     {
