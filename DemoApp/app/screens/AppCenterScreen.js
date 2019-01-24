@@ -150,7 +150,7 @@ export default class AppCenterScreen extends Component {
     const valueRenderItem = ({ item: { title, value, onChange } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        { onChange ? <TextInput style={SharedStyles.itemInput} onChange={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
+        { onChange ? <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
       </View>
     );
 
