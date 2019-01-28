@@ -6,6 +6,7 @@ import Toast from 'react-native-simple-toast';
 import AppCenter, { CustomProperties } from 'appcenter';
 import Push from 'appcenter-push';
 
+import { setPreviousAppState } from '../App';
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
