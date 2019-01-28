@@ -89,14 +89,14 @@ export default class AppCenterScreen extends Component {
   }
 
   componentDidMount() {
-    AppState.addEventListener('change', this.appCenterhandleAppStateChange);
+    AppState.addEventListener('change', this.appCenterHandleAppStateChange);
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.appCenterhandleAppStateChange);
+    AppState.removeEventListener('change', this.appCenterHandleAppStateChange);
   }
 
-  async appCenterhandleAppStateChange(nextAppState) {
+  async appCenterHandleAppStateChange(nextAppState) {
     setPreviousAppState(nextAppState);
   }
 
