@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, AppState, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -84,6 +84,18 @@ export default class AppCenterScreen extends Component {
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
+  }
+
+  componentDidMount() {
+    AppState.addEventListener('change', this.appCenterhandleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.appCenterhandleAppStateChange);
+  }
+
+  async appCenterhandleAppStateChange(nextAppState) {
+    setPreviousAppState(nextAppState);
   }
 
   async refreshUI() {
