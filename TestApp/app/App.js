@@ -29,6 +29,7 @@ export default createBottomTabNavigator(
 let previousAppState = AppState.currentState;
 export const setPreviousAppState = (appState) => {
   previousAppState = appState;
+  // Workaround to distinguish between notifications received in the foreground or while the app was in the background.
   setTimeout(() => {
     previousAppState = AppState.currentState;
   }, 1000);
