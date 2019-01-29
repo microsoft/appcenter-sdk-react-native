@@ -37,9 +37,7 @@ export const setPreviousAppState = (appState) => {
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
-    if (previousAppState !== 'active') {
-      Alert.alert('Alert', 'Notification was received in background');
-    }
+    const appStateText = previousAppState === 'active' ? 'foreground' : 'background';
     let message = pushNotification.message;
     const title = pushNotification.title;
 
@@ -54,7 +52,7 @@ Push.setListener({
     if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
       message += `Custom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
     }
-
+    message = `${message}\n[Notification was received in ${appStateText}]`;
     if (AppState.currentState === 'active') {
       Alert.alert(title, message);
     } else {
