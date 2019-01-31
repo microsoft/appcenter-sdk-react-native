@@ -1,5 +1,15 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.13.1 (Not yet released)
+
+### AppCenterCrashes
+
+#### iOS
+
+* **[Fix]** Fix a crash on iOS when triggering null reference exception and starting Crashes in background. The conditon might still occur very rarely if trigger a null reference exception in another thread during the short time where the [SDK configures native crash reporter](https://www.mono-project.com/docs/advanced/signals/). It is thus recommended to initialize AppCenter Crashes as early as possible (which is also recommended to capture early crashes).
+
+___
+
 ## Version 1.13.0 
 
 ### AppCenter

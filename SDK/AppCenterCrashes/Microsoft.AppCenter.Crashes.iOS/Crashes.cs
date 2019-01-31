@@ -78,13 +78,18 @@ namespace Microsoft.AppCenter.Crashes
         /// <summary>
         /// We keep the reference to avoid it being freed, inlining this object will cause listeners not to be called.
         /// </summary>
+        static readonly CrashesInitializationDelegate _crashesInitializationDelegate = new CrashesInitializationDelegate();
+
+        /// <summary>
+        /// We keep the reference to avoid it being freed, inlining this object will cause listeners not to be called.
+        /// </summary>
         static readonly CrashesDelegate _crashesDelegate = new CrashesDelegate();
 
         static Crashes()
         {
             /* Perform custom setup around the native SDK's for setting signal handlers */
             MSCrashes.DisableMachExceptionHandler();
-            MSWrapperCrashesHelper.SetCrashHandlerSetupDelegate(new CrashesInitializationDelegate());
+            MSWrapperCrashesHelper.SetCrashHandlerSetupDelegate(_crashesInitializationDelegate);
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             MSCrashes.SetUserConfirmationHandler((reports) =>
                     {
