@@ -77,6 +77,9 @@ Task("PrepareAssemblies").IsDependentOn("Build")
     foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
     {
         CleanDirectory(assemblyGroup.Folder);
+    }
+    foreach (var assemblyGroup in AssemblyPlatformPaths.UploadAssemblyGroups)
+    {
         CopyFiles(assemblyGroup.AssemblyPaths.Where(i => FileExists(i)), assemblyGroup.Folder, false);
     }
 }).OnError(HandleError);
