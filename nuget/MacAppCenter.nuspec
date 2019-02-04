@@ -26,16 +26,20 @@
 
     <!-- Portable -->
     <file src="$pcl_dir$/Microsoft.AppCenter.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.xml" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
     <file src="$netstandard_dir$/Microsoft.AppCenter.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.xml" target="lib/netstandard1.0" />
 
     <!-- Android -->
     <file src="$android_dir$/Microsoft.AppCenter.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.xml" target="lib/MonoAndroid403" />
     <file src="$android_dir$/Microsoft.AppCenter.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
     <file src="$ios_dir$/Microsoft.AppCenter.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.xml" target="lib/Xamarin.iOS10" />
     <file src="$ios_dir$/Microsoft.AppCenter.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
   </files>
 </package>
