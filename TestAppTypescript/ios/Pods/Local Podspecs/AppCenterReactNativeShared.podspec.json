@@ -1,6 +1,6 @@
 {
   "name": "AppCenterReactNativeShared",
-  "version": "1.10.0",
+  "version": "1.12.0",
   "summary": "React Native plugin for Visual Studio App Center",
   "license": {
     "type": "MIT",
@@ -12,7 +12,7 @@
     "Microsoft": "appcentersdk@microsoft.com"
   },
   "source": {
-    "http": "https://github.com/Microsoft/AppCenter-SDK-React-Native/releases/download/1.10.0/AppCenter-SDK-ReactNative-iOS-Pod-1.10.0.zip"
+    "http": "https://github.com/Microsoft/AppCenter-SDK-React-Native/releases/download/1.12.0/AppCenter-SDK-ReactNative-iOS-Pod-1.12.0.zip"
   },
   "platforms": {
     "ios": "9.0"
@@ -21,7 +21,7 @@
   "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
   "dependencies": {
     "AppCenter/Core": [
-      "1.11.0"
+      "1.13.0"
     ]
   }
 }
