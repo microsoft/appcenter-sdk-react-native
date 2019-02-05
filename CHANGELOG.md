@@ -2,6 +2,10 @@
 
 ## Version 1.13.1 (Not yet released)
 
+###AppCenter
+
+* **[Improvement]** Add missing XML documentation in the NuGet packages.
+
 ### AppCenterCrashes
 
 #### iOS
