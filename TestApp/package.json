@@ -18,7 +18,7 @@
     "react-native": "0.58.3",
     "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.26.7",
-    "react-native-modal-selector": "0.0.28",
+    "react-native-modal-selector": "git+https://github.com/dominicrico/react-native-modal-multiselector.git#d0bb31fc89d899215c9bd4ff0520ddda4720bbc7",
     "react-native-simple-toast": "0.0.8",
     "react-navigation": "^2.11.2"
   },
