@@ -24,6 +24,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <NoWarn>CS0109</NoWarn>
+    <DocumentationFile>bin\Debug\Microsoft.AppCenter.Distribute.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <NoWarn>CS0109</NoWarn>
+    <DocumentationFile>bin\Release\Microsoft.AppCenter.Distribute.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
