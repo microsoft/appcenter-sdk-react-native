@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "watch": "tsc -w",
     "ios": "npm run build && concurrently -r \"npm run watch\" \"react-native run-ios\"",
-    "android": "npm run build && concurrently -r \"start npm run watch\" \"start react-native run-android\"",
+    "android": "npm run build && concurrently -r \"npm run watch\" \"react-native run-android\"",
     "build": "npm run clean && npm run tsc",
     "clean": "rimraf artifacts"
   },
@@ -17,20 +17,20 @@
     "appcenter-crashes": "file:appcenter-crashes-1.12.0.tgz",
     "appcenter-link-scripts": "file:appcenter-link-scripts-1.12.0.tgz",
     "appcenter-push": "file:appcenter-push-1.12.0.tgz",
-    "react": "16.3.0-alpha.1",
-    "react-native": "0.54.4",
+    "react": "16.6.3",
+    "react-native": "0.58.3",
     "react-native-dialog-component": "^0.2.17",
     "react-native-fs": "^2.9.11",
     "react-native-image-picker": "^0.26.7",
     "react-navigation": "^1.5.9",
-    "typescript": "2.7.2"
+    "typescript": "3.3.1"
   },
   "devDependencies": {
     "@types/react-native": "0.52.13",
     "@types/react-native-fs": "^2.8.1",
     "@types/react-navigation": "^1.5.4",
     "babel-jest": "22.4.3",
-    "babel-preset-react-native": "4.0.0",
+    "metro-react-native-babel-preset": "^0.51.1",
     "concurrently": "3.5.1",
     "prettier": "1.10.2",
     "rimraf": "2.6.2"
