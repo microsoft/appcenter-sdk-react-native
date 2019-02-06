@@ -14,11 +14,11 @@
     "appcenter-link-scripts": "file:appcenter-link-scripts-1.12.0.tgz",
     "appcenter-push": "file:appcenter-push-1.12.0.tgz",
     "metro": "0.48.1",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.3",
+    "react": "16.6.3",
+    "react-native": "0.58.3",
     "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.26.7",
-    "react-native-modal-selector": "0.0.28",
+    "react-native-modal-selector": "^1.0.2",
     "react-native-simple-toast": "0.0.8",
     "react-navigation": "^2.11.2"
   },
@@ -36,7 +36,7 @@
     "jest": "22.4.3",
     "metro-react-native-babel-preset": "^0.45.3",
     "prop-types": "15.6.0",
-    "react-test-renderer": "16.6.0-alpha.8af6728"
+    "react-test-renderer": "16.6.3"
   },
   "jest": {
     "preset": "react-native",
