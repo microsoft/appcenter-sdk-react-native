@@ -11,6 +11,7 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>1.13.1.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Crashes</AssemblyTitle>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.AppCenter.Crashes.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />

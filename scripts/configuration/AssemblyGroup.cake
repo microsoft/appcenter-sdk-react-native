@@ -52,7 +52,13 @@ public class AssemblyGroup
             var childNode = groupNode.ChildNodes.Item(i);
             if (childNode.Name == "assembly")
             {
-                AssemblyPaths.Add(childNode.Attributes.GetNamedItem("path").Value);
+                var assemblyName = childNode.Attributes.GetNamedItem("path").Value;
+                AssemblyPaths.Add(assemblyName);
+                if (System.IO.Path.GetExtension(assemblyName) == ".dll")
+                {
+                    var docName = System.IO.Path.ChangeExtension(assemblyName, "xml");
+                    AssemblyPaths.Add(docName);
+                }
             }
             else if (childNode.Name == "group")
             {
