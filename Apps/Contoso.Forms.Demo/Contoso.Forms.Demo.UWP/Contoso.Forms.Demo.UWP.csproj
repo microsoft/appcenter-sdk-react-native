@@ -131,11 +131,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.13.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.13.0" />
-    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.13.0" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.13.0" />
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1009999" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.13.1" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.13.1" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.13.1" />
+    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.13.1" />
+    <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.9" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
