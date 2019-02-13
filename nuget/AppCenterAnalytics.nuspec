@@ -23,24 +23,30 @@
 
     <!-- Portable -->
     <file src="$pcl_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Analytics.xml" target="lib/portable-net45+win8+wpa81+wp8" />
 
     <!-- .NET Standard -->
     <file src="$netstandard_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Analytics.xml" target="lib/netstandard1.0" />
 
     <!-- Android -->
     <file src="$android_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Analytics.xml" target="lib/MonoAndroid403" />
     <file src="$android_dir$/Microsoft.AppCenter.Analytics.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
     <file src="$ios_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Analytics.xml" target="lib/Xamarin.iOS10" />
     <file src="$ios_dir$/Microsoft.AppCenter.Analytics.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
     <!-- UWP -->
     <file src="$uwp_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Analytics.xml" target="lib/uap10.0" />
 
     <!-- Windows Classic (WPF and WinForms) -->
     <!-- TODO: Uncomment when it's time to release these. -->
     <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.Analytics.dll" target="lib/net45" / -->
+    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.Analytics.xml" target="lib/net45" / -->
 
   </files>
 </package>

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Devices.Geolocation;
 using Windows.Globalization;
+using Windows.Services.Maps;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -16,21 +20,70 @@ namespace Contoso.Forms.Puppet.UWP
     /// </summary>
     sealed partial class App : Application
     {
+        private const string LogTag = "AppCenterXamarinPuppet";
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
-            // Set the country before initialization occurs so App Center can send the field to the backend
-            // Note that the country code provided does not reflect the physical device location, but rather the
-            // country that corresponds to the culture it uses. You may wish to retrieve the country code using
-            // a different means, such as device location.
-            var geographicRegion = new GeographicRegion();
-            AppCenter.SetCountryCode(geographicRegion.CodeTwoLetter);
+            // Set the country before initialization occurs so App Center can send the field to the backend.
+            // We do not use await here because we don't need to wait for this task to complete,
+            // and await would block the UI in App constructor.
+            _ = SetCountryCode();
             EventFilterHolder.Implementation = new EventFilterWrapper();
             InitializeComponent();
             Suspending += OnSuspending;
+        }
+
+        private static async Task SetCountryCode()
+        {
+            // The following country code is used only as a fallback for the main implementation.
+            // This fallback country code does not reflect the physical device location, but rather the
+            // country that corresponds to the culture it uses.
+            var countryCode = new GeographicRegion().CodeTwoLetter;
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+                    var geoLocator = new Geolocator
+                    {
+                        DesiredAccuracyInMeters = 100
+                    };
+                    var position = await geoLocator.GetGeopositionAsync();
+                    var myLocation = new BasicGeoposition
+                    {
+                        Longitude = position.Coordinate.Point.Position.Longitude,
+                        Latitude = position.Coordinate.Point.Position.Latitude
+                    };
+                    var pointToReverseGeocode = new Geopoint(myLocation);
+                    try
+                    {
+                        MapService.ServiceToken = Constants.BingMapsAuthKey;
+                    }
+                    catch (SEHException)
+                    {
+                        AppCenterLog.Info(LogTag, "Please provide a valid Bing Maps authentication key. For more info see: https://docs.microsoft.com/en-us/windows/uwp/maps-and-location/authentication-key");
+                    }
+                    var result = await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
+                    if (result.Status != MapLocationFinderStatus.Success || result.Locations == null || result.Locations.Count == 0)
+                    {
+                        break;
+                    }
+
+                    // The returned country code is in 3-letter format (ISO 3166-1 alpha-3).
+                    // Below we convert it to ISO 3166-1 alpha-2 (two letter).
+                    var country = result.Locations[0].Address.CountryCode;
+                    countryCode = new GeographicRegion(country).CodeTwoLetter;
+                    break;
+                case GeolocationAccessStatus.Denied:
+                    AppCenterLog.Info(LogTag, "Geolocation access denied. In order to set country code in App Center, enable location service in Windows 10.");
+                    break;
+                case GeolocationAccessStatus.Unspecified:
+                    break;
+            }
+            AppCenter.SetCountryCode(countryCode);
         }
 
         /// <summary>
