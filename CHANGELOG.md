@@ -4,6 +4,8 @@
 
 ### AppCenter
 
+#### iOS
+
 * **[Fix]** Fix a possible deadlock if the SDK is started from a background thread.
 
 #### Android
