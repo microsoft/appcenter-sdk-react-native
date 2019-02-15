@@ -5,7 +5,7 @@
              x:Class="Contoso.Forms.Demo.AppCenterContentPage">
     <TableView Intent="Form">
         <TableSection Title="AppCenter Settings">
-            <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
+            <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled" OnColor="Accent"/>
         </TableSection>
         <TableSection Title="Logging">
             <EntryCell Label="User Id" x:Name="UserIdEntryCell" HorizontalTextAlignment="End" Completed="UserIdCompleted"/>
