@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 1.12.2 (Not yet released)
+
+### AppCenter
+
+#### Android
+
+* **[Fix]** Fix a lint error caused by a string value injected by link script.
+
 ## Version 1.12.1
 
 ### AppCenter
