@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 1.13.1 
+## Version 1.13.2
 
 ### AppCenter
 
@@ -13,6 +13,7 @@
 #### iOS
 
 * **[Fix]** Fix a possible deadlock if the SDK is started from a background thread.
+* **[Fix]** Fix a crash if database query failed.
 
 ### AppCenterDistribute
 
@@ -20,6 +21,10 @@
 
 * **[Fix]** Fix exception if we receive deep link intent with setup failure before onStart.
 * **[Fix]** Fix checking updates for applications installed on corporate-owned single-use devices.
+
+#### iOS
+
+* **[Fix]** Fix a race condition crash on upgrading the application to newer version.
 
 ### AppCenterCrashes
 
