@@ -44,7 +44,7 @@ module.exports = {
         const stringsFile = path.join('android', 'app', 'src', 'main', 'res', 'values', 'strings.xml');
         let stringsXml = fs.readFileSync(stringsFile, 'utf-8');
         const pattern = new RegExp(`<string.*name="${key}".*>.*</string>`);
-        const newValue = `<string name="${key}" moduleConfig="true">${value}</string>`;
+        const newValue = `<string name="${key}" moduleConfig="true" translatable="false">${value}</string>`;
         if (stringsXml.match(pattern)) {
             stringsXml = stringsXml.replace(pattern, newValue);
         } else {

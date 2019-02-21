@@ -1,18 +1,24 @@
 # App Center SDK for React Native Change Log
 
-## Version 1.12.1
+## Version 1.12.2
 
 ### AppCenter
 
 #### iOS
 
 * **[Fix]** Fix a possible deadlock if the SDK is started from a background thread.
+* **[Fix]** Fix a crash if database query failed.
 
 #### Android
 
 * **[Fix]** The SDK normally disables storing and sending logs when SQLite is failing instead of crashing the application. New SQLite APIs were introduced in version 1.9.0 and the new API exceptions were not caught, this is now fixed.
+* **[Fix]** Fix a lint error caused by a string value injected by link script.
 
 ### AppCenterDistribute
+
+#### iOS
+
+* **[Fix]** Fix a race condition crash on upgrading the application to newer version.
 
 #### Android
 
