@@ -7,6 +7,7 @@
 #### iOS
 
 * **[Fix]** Fix a possible deadlock if the SDK is started from a background thread.
+* **[Fix]** Fix a crash if database query failed.
 
 #### Android
 
@@ -14,6 +15,10 @@
 * **[Fix]** Fix a lint error caused by a string value injected by link script.
 
 ### AppCenterDistribute
+
+#### iOS
+
+* **[Fix]** Fix a race condition crash on upgrading the application to newer version.
 
 #### Android
 
