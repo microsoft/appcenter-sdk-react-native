@@ -8,11 +8,11 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
-    "appcenter": "file:appcenter-1.12.1.tgz",
-    "appcenter-analytics": "file:appcenter-analytics-1.12.1.tgz",
-    "appcenter-crashes": "file:appcenter-crashes-1.12.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-1.12.1.tgz",
-    "appcenter-push": "file:appcenter-push-1.12.1.tgz",
+    "appcenter": "file:appcenter-1.12.2.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-1.12.2.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-1.12.2.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-1.12.2.tgz",
+    "appcenter-push": "file:appcenter-push-1.12.2.tgz",
     "metro": "0.48.1",
     "react": "16.6.3",
     "react-native": "0.58.3",
