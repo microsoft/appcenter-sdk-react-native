@@ -128,9 +128,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.13.1" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.13.1" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.13.1" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.13.2" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.13.2" />
+    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.13.2" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.2.6" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
