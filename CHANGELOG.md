@@ -1,5 +1,15 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.13.2
+
+### AppCenter
+
+* **[Fix]* Fix a crash if database query failed.
+
+### AppCenterDistribute
+
+* **[Fix]* Fix a race condition crash on upgrading the application to newer version.
+
 ## Version 1.13.1 
 
 ### AppCenter
