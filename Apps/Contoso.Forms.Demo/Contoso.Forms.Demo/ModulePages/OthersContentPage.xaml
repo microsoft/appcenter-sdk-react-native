@@ -5,10 +5,10 @@
              x:Class="Contoso.Forms.Demo.OthersContentPage">
     <TableView Intent="Form">
         <TableSection Title="Distribute">
-            <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled"/>
+            <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
         </TableSection>
         <TableSection Title="Push">
-            <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled"/>
+            <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
         </TableSection>
     </TableView>
 </ContentPage>
