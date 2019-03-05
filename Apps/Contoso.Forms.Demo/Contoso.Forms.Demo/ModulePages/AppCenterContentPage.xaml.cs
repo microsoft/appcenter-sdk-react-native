@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.AppCenter;
 using Xamarin.Forms;
 
@@ -26,11 +27,35 @@ namespace Contoso.Forms.Demo
         {
             await AppCenter.SetEnabledAsync(e.Value);
         }
+    }
 
-        void UserIdCompleted(object sender, EventArgs e)
+    public class EntryCellTextChanged : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private string _userId;
+
+        public string UserId
         {
-            var text = string.IsNullOrEmpty(UserIdEntryCell.Text) ? null : UserIdEntryCell.Text;
-            AppCenter.SetUserId(text);
+            get { return _userId; }
+
+            set
+            {
+                _userId = value;
+                OnTextChanged(_userId);
+            }
+        }
+
+        public ICommand TextChanged;
+
+        protected virtual void OnTextChanged(string inputText)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(inputText));
+                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
+                AppCenter.SetUserId(text);
+            }
         }
     }
 }
