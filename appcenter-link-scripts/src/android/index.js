@@ -18,7 +18,7 @@ module.exports = {
         return false;
     },
 
-    initAppCenterConfig() {
+    /* initAppCenterConfig() {
         const config = new AppCenterConfig(AppCenterConfig.searchForFile());
         const currentAppSecret = config.get('app_secret');
 
@@ -38,7 +38,7 @@ module.exports = {
             console.log(`App Secret for Android written to ${file}`);
             return file;
         });
-    },
+    }, */
 
     patchStrings(key, value) {
         const stringsFile = path.join('android', 'app', 'src', 'main', 'res', 'values', 'strings.xml');

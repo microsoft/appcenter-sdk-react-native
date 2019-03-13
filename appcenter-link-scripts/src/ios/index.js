@@ -28,7 +28,7 @@ module.exports = {
         return true;
     },
 
-    initAppCenterConfig() {
+    /*initAppCenterConfig() {
         console.log('Adding AppCenter configuration file...');
         const config = new AppCenterConfig(AppCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         const currentAppSecret = config.get('AppSecret');
@@ -56,7 +56,7 @@ module.exports = {
                 return Promise.reject(e);
             }
         });
-    },
+    },*/
 
     initInAppDelegate(header, initCode, oldInitCodeRegExp) {
         console.log(`Patching file ${appDelegatePath}`);

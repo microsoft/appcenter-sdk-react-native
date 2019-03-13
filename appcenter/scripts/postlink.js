@@ -4,10 +4,8 @@ const rnpmlink = require('appcenter-link-scripts');
 let promise = null;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     console.log('Configuring AppCenter Analytics for Android');
-    promise = rnpmlink.android.initAppCenterConfig()
-        .then(() => {
-            rnpmlink.android.removeAndroidDuplicateLinks();
-        }).catch((e) => {
+    promise = rnpmlink.android.removeAndroidDuplicateLinks()
+        .catch((e) => {
             console.error(`Could not configure AppCenter for Android. Error Reason - ${e.message}`);
             return Promise.resolve();
         });
@@ -18,10 +16,6 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
 // Then iOS even if Android failed.
 if (rnpmlink.ios.checkIfAppDelegateExists()) {
     promise
-        .then(() => {
-            console.log('Configuring AppCenter for iOS');
-            return rnpmlink.ios.initAppCenterConfig();
-        })
         .then(() => {
             const code = '  [AppCenterReactNative register];  // Initialize AppCenter ';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNative/AppCenterReactNative.h>', code);
