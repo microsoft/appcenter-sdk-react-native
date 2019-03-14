@@ -5,7 +5,7 @@ let promise = null;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     console.log('Configuring AppCenter Analytics for Android');
     try {
-        rnpmlink.android.removeAndroidDuplicateLinks()
+        rnpmlink.android.removeAndroidDuplicateLinks();
         promise = Promise.resolve();
     } catch (e) {
         console.error(`Could not configure AppCenter for Android. Error Reason - ${e.message}`);
