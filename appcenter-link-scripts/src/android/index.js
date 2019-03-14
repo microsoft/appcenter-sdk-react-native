@@ -15,28 +15,6 @@ module.exports = {
         return false;
     },
 
-    /* initAppCenterConfig() {
-        const config = new AppCenterConfig(AppCenterConfig.searchForFile());
-        const currentAppSecret = config.get('app_secret');
-
-        // If an app secret is already set, don't prompt again, instead give the user instructions on how they can change it themselves
-        // if they want
-        if (typeof (currentAppSecret) === 'string') {
-            console.log(`Android App Secret is already set in ${config.AppCenterConfigPath}`);
-            return Promise.resolve(null);
-        }
-        return inquirer.prompt([{
-            type: 'input',
-            message: 'What secret does your Android app use? [None]',
-            name: 'app_secret',
-        }]).then((answers) => {
-            config.set('app_secret', answers.app_secret);
-            const file = config.save();
-            console.log(`App Secret for Android written to ${file}`);
-            return file;
-        });
-    }, */
-
     patchStrings(key, value) {
         const stringsFile = path.join('android', 'app', 'src', 'main', 'res', 'values', 'strings.xml');
         let stringsXml = fs.readFileSync(stringsFile, 'utf-8');
@@ -53,6 +31,7 @@ module.exports = {
     // Workaround for bug in react-native 0.53
     removeAndroidDuplicateLinks() {
         try {
+
             // Settings file
             let lines = {};
             const settingsPath = 'android/settings.gradle';
