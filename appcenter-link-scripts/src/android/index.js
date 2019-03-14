@@ -3,8 +3,6 @@ const path = require('path');
 const glob = require('glob');
 const debug = require('debug')('appcenter-link:android:index');
 
-const AppCenterConfig = require('./AppCenterConfig');
-
 module.exports = {
     checkIfAndroidDirectoryExists() {
         try {
@@ -111,10 +109,9 @@ module.exports = {
                 appContent = appContent.replace(/(import.*\n\n)\n/g, '$1');
                 appContent = appContent.replace(/(new.*AppCenterReactNative.*Package.*\n)\n/g, '$1');
                 fs.writeFileSync(appFile, appContent);
-            }
-            
+            }            
         } catch (e) {
-            console.error(`Could not remove Android Duplicate Links. Error Reason - ${e.message}`);   
+            console.error(`Could not remove Android Duplicate Links. Error Reason - ${e.message}`);
         }
     }
 };
