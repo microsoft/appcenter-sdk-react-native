@@ -109,7 +109,7 @@ module.exports = {
                 appContent = appContent.replace(/(import.*\n\n)\n/g, '$1');
                 appContent = appContent.replace(/(new.*AppCenterReactNative.*Package.*\n)\n/g, '$1');
                 fs.writeFileSync(appFile, appContent);
-            }            
+            }
         } catch (e) {
             console.error(`Could not remove Android Duplicate Links. Error Reason - ${e.message}`);
         }
