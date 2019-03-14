@@ -3,7 +3,6 @@ const path = require('path');
 
 const debug = require('debug')('appcenter-link:ios:index');
 const glob = require('glob');
-const inquirer = require('inquirer');
 
 // Assumption - react-native link is always called from the top of the project
 // As indicated in https://github.com/facebook/react-native/blob/4082a546495c5d9f4c6fd1b0c2f64e9bc7a88bc7/local-cli/link/getProjectDependencies.js#L7
@@ -39,23 +38,17 @@ module.exports = {
             console.log(`iOS App Secret is already set in ${config.plistPath}`);
             return Promise.resolve(null);
         }
-        return inquirer.prompt([{
-            type: 'input',
-            message: 'What secret does your iOS app use? [None]',
-            name: 'AppSecret',
-        }]).then((answers) => {
-            try {
-                config.set('AppSecret', answers.AppSecret);
-                return config.save()
-                    .then((file) => {
-                        console.log(`App Secret for iOS written to ${file}`);
-                        return file;
-                    });
-            } catch (e) {
-                debug('Could not save config', e);
-                return Promise.reject(e);
-            }
-        });
+        try {
+            config.set('AppSecret', 'YOUR_APP_SECRET');
+            return config.save()
+                .then((file) => {
+                    console.log(`App Secret for iOS written to ${file}`);
+                    return file;
+                });
+        } catch (e) {
+            debug('Could not save config', e);
+            return Promise.reject(e);
+        }
     },
 
     initInAppDelegate(header, initCode, oldInitCodeRegExp) {

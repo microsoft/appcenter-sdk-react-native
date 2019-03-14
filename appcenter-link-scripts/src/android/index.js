@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const inquirer = require('inquirer');
 const debug = require('debug')('appcenter-link:android:index');
 
 const AppCenterConfig = require('./AppCenterConfig');
@@ -28,16 +27,10 @@ module.exports = {
             console.log(`Android App Secret is already set in ${config.AppCenterConfigPath}`);
             return Promise.resolve(null);
         }
-        return inquirer.prompt([{
-            type: 'input',
-            message: 'What secret does your Android app use? [None]',
-            name: 'app_secret',
-        }]).then((answers) => {
-            config.set('app_secret', answers.app_secret);
+            config.set('app_secret', 'YOUR_APP_SECRET');
             const file = config.save();
             console.log(`App Secret for Android written to ${file}`);
-            return file;
-        });
+            return Promise.resolve(file);
     },
 
     patchStrings(key, value) {
