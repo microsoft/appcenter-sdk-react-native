@@ -1,5 +1,30 @@
 # App Center SDK for .NET Change Log
 
+## Version 1.14.0
+
+### AppCenter
+
+#### iOS
+
+* **[Fix]** Fix a crash in case decrypting a value failed.
+
+#### Android
+
+* **[Fix]** Fix network connection state tracking issue, which prevented sending data in some restricted networks.
+* **[Fix]** Fix possible deadlock on changing network connection state.
+
+### AppCenterPush
+
+#### iOS
+
+* **[Fix]** Fix crash on invoking an optional push callback when it isn't implemented in the push delegate.
+
+### AppCenterDistribute
+
+#### Android
+
+* **[Fix]** Fix in-app updates not working on devices using Xiaomi MIUI from versions 10 and above.
+
 ## Version 1.13.2
 
 ### AppCenter
