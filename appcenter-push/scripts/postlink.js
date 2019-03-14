@@ -7,14 +7,9 @@ console.log('For more information: https://docs.microsoft.com/en-us/appcenter/sd
 let promise = null;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     console.log('Configuring AppCenter Analytics for Android');
-    promise = rnpmlink.android.removeAndroidDuplicateLinks()
-        .catch((e) => {
-            console.error(`Could not configure AppCenter Push for Android. Error Reason - ${e.message}`);
-            return Promise.resolve();
-        });
-} else {
-    promise = Promise.resolve();
+    rnpmlink.android.removeAndroidDuplicateLinks();
 }
+promise = Promise.resolve();
 
 // Then iOS even if Android failed.
 if (rnpmlink.ios.checkIfAppDelegateExists()) {

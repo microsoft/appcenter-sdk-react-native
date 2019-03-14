@@ -3,13 +3,11 @@ const path = require('path');
 
 const debug = require('debug')('appcenter-link:ios:index');
 const glob = require('glob');
-const inquirer = require('inquirer');
 
 // Assumption - react-native link is always called from the top of the project
 // As indicated in https://github.com/facebook/react-native/blob/4082a546495c5d9f4c6fd1b0c2f64e9bc7a88bc7/local-cli/link/getProjectDependencies.js#L7
 const pjson = require(path.join(process.cwd(), './package.json'));
 
-const AppCenterConfig = require('./AppCenterConfig');
 const AppDelegate = require('./AppDelegate');
 const PodFile = require('./PodFile');
 
@@ -28,7 +26,7 @@ module.exports = {
         return true;
     },
 
-    /*initAppCenterConfig() {
+    /* initAppCenterConfig() {
         console.log('Adding AppCenter configuration file...');
         const config = new AppCenterConfig(AppCenterConfig.searchForFile(path.dirname(appDelegatePath)));
         const currentAppSecret = config.get('AppSecret');
@@ -56,7 +54,7 @@ module.exports = {
                 return Promise.reject(e);
             }
         });
-    },*/
+    }, */
 
     initInAppDelegate(header, initCode, oldInitCodeRegExp) {
         console.log(`Patching file ${appDelegatePath}`);
