@@ -1,15 +1,16 @@
 const rnpmlink = require('appcenter-link-scripts');
-const inquirer = require('inquirer');
 
 // Configure Android first.
 let promise = null;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     console.log('Configuring AppCenter Analytics for Android');
-    promise = rnpmlink.android.removeAndroidDuplicateLinks()
-        .catch((e) => {
-            console.error(`Could not configure AppCenter Analytics for Android. Error Reason - ${e.message}`);
-            return Promise.resolve();
-        });
+    try {
+        rnpmlink.android.removeAndroidDuplicateLinks()
+        promise = Promise.resolve();
+    } catch (e) {
+        console.error(`Could not configure AppCenter Analytics for Android. Error Reason - ${e.message}`);
+        promise = Promise.resolve();
+    }
 } else {
     promise = Promise.resolve();
 }
