@@ -29,6 +29,7 @@ namespace Contoso.Forms.Demo
         }
     }
 
+    [Android.Runtime.Preserve(AllMembers = true)]
     public class EntryCellTextChanged : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
