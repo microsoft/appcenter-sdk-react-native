@@ -36,19 +36,17 @@ AppDelegate.prototype.addInitCode = function (code, oldCodeRegExp) {
     if (this.appDelegateContents.indexOf(code) === -1) {
         /* If new code not found but old code found, replace. */
         if (oldCodeMatches) {
-            this.appDelegateContents = this.appDelegateContents.replace(oldCodeMatches[0], code);
+            this.appDelegateContents = this.appDelegateContents.replace(oldCodeMatches[0], `  ${code}`);
             debug('Replaced code', code, 'to file', this.appDelegatePath);
         } else {
-            const match = this.appDelegateContents.match(/NSURL \*jsCodeLocation;[ \t]*\r*\n/);
+            /* Find the beginning of the didFinishLaunchingWithOptions method. */
+            const match = this.appDelegateContents.match(/[^\n]*didFinishLaunchingWithOptions[^{]*{[\s]*/);
             if (match === null) {
-                throw Error(`
-        Could not find line "NSURL \*jsCodeLocation;" in file AppDelegate.m.
-        Update AppDelegate.m so that text is present, as we match on it and insert '${code}' after for AppCenter SDK integration.
-`);
+                throw Error('Could not find the start of the didFinishLaunchingWithOptions method in the AppDelegate.m file.');
             }
 
             const existingLine = match[0];
-            this.appDelegateContents = this.appDelegateContents.replace(existingLine, `${existingLine}\n${code}\n`);
+            this.appDelegateContents = this.appDelegateContents.replace(existingLine, `${existingLine}${code}\n  `);
             debug('Added code', code, 'to file', this.appDelegatePath);
         }
     } else {

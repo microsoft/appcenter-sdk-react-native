@@ -26,15 +26,15 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return rnpmlink.ios.initAppCenterConfig();
         })
         .then(() => {
-            const code = '  [AppCenterReactNativePush register];  // Initialize AppCenter push';
+            const code = '[AppCenterReactNativePush register];  // Initialize AppCenter push';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativePush/AppCenterReactNativePush.h>', code);
         })
         .then((file) => {
             console.log(`Added code to initialize iOS Push SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Push', version: '1.13.2' },
-                    { pod: 'AppCenterReactNativeShared', version: '1.12.2' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenter/Push', version: '1.14.0' },
+                    { pod: 'AppCenterReactNativeShared', version: '1.13.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );

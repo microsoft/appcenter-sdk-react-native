@@ -58,16 +58,16 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         )
         .then((iosAnswer) => {
             const code = iosAnswer.whenToSendCrashes === 'ALWAYS_SEND' ?
-                '  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes' :
-                '  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes';
+                '[AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes' :
+                '[AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>', code, /.*\[AppCenterReactNativeCrashes register.*/g);
         })
         .then((file) => {
             console.log(`Added code to initialize iOS Crashes SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Crashes', version: '1.13.2' },
-                    { pod: 'AppCenterReactNativeShared', version: '1.12.2' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenter/Crashes', version: '1.14.0' },
+                    { pod: 'AppCenterReactNativeShared', version: '1.13.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );

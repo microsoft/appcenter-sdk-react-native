@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
-        versionCode 39
-        versionName '1.12.2'
+        versionCode 40
+        versionName '1.13.0'
         ndk {
             abiFilters 'armeabi-v7a', 'x86'
         }
@@ -19,8 +19,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
-    api 'com.microsoft.appcenter:appcenter:1.11.3'
+    api 'com.microsoft.appcenter:appcenter:1.11.4'
 
     //api project(':AppCenterReactNativeShared')   // For testing with TestApp
-    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.12.2'
+    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.13.0'
 }

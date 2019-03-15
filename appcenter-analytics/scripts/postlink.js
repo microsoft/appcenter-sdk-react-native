@@ -57,16 +57,16 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         )
         .then((iosAnswer) => {
             const code = iosAnswer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
-                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
-                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
+                '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
+                '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g);
         })
         .then((file) => {
             console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Analytics', version: '1.13.2' },
-                    { pod: 'AppCenterReactNativeShared', version: '1.12.2' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenter/Analytics', version: '1.14.0' },
+                    { pod: 'AppCenterReactNativeShared', version: '1.13.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );

@@ -23,13 +23,13 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return rnpmlink.ios.initAppCenterConfig();
         })
         .then(() => {
-            const code = '  [AppCenterReactNative register];  // Initialize AppCenter ';
+            const code = '[AppCenterReactNative register];  // Initialize AppCenter';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNative/AppCenterReactNative.h>', code);
         })
         .then((file) => {
             console.log(`Added code to initialize iOS AppCenter SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
-                [{ pod: 'AppCenterReactNativeShared', version: '1.12.2' }],
+                [{ pod: 'AppCenterReactNativeShared', version: '1.13.0' }],
                 { platform: 'ios', version: '9.0' }
             );
         })
