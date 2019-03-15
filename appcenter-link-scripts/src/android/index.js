@@ -36,6 +36,9 @@ module.exports = {
     patchStrings(key, value) {
         const stringsFile = path.join('android', 'app', 'src', 'main', 'res', 'values', 'strings.xml');
         let stringsXml = fs.readFileSync(stringsFile, 'utf-8');
+        if (stringsXml.indexOf(key) > 0) {
+            return;
+        }
         const pattern = new RegExp(`<string.*name="${key}".*>.*</string>`);
         const newValue = `<string name="${key}" moduleConfig="true" translatable="false">${value}</string>`;
         if (stringsXml.match(pattern)) {

@@ -43,4 +43,3 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return Promise.resolve();
         });
 }
-return promise;
