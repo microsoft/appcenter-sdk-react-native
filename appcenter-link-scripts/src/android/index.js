@@ -27,10 +27,10 @@ module.exports = {
             console.log(`Android App Secret is already set in ${config.AppCenterConfigPath}`);
             return Promise.resolve(null);
         }
-            config.set('app_secret', 'YOUR_APP_SECRET');
-            const file = config.save();
-            console.log(`App Secret for Android written to ${file}`);
-            return Promise.resolve(file);
+        config.set('app_secret', 'YOUR_APP_SECRET');
+        const file = config.save();
+        console.log(`App Secret for Android written to ${file}`);
+        return Promise.resolve(file);
     },
 
     patchStrings(key, value) {
