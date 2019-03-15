@@ -57,8 +57,8 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         )
         .then((iosAnswer) => {
             const code = iosAnswer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
-                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
-                '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
+                '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
+                '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g);
         })
         .then((file) => {

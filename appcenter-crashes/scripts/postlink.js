@@ -58,8 +58,8 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         )
         .then((iosAnswer) => {
             const code = iosAnswer.whenToSendCrashes === 'ALWAYS_SEND' ?
-                '  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes' :
-                '  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes';
+                '[AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes' :
+                '[AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>', code, /.*\[AppCenterReactNativeCrashes register.*/g);
         })
         .then((file) => {
