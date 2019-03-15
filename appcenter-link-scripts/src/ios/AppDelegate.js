@@ -42,10 +42,7 @@ AppDelegate.prototype.addInitCode = function (code, oldCodeRegExp) {
             /* Find the beginning of the didFinishLaunchingWithOptions method. */
             const match = this.appDelegateContents.match(/[^\n]*didFinishLaunchingWithOptions[^{]*{[\s]*/);
             if (match === null) {
-                throw Error(`
-        Could not find the start of the didFinishLaunchingWithOptions method in file AppDelegate.m.
-        Update AppDelegate.m so that text is present, as we match on it and insert '${code}' after for AppCenter SDK integration.
-`);
+                throw Error(`Could not find the start of the didFinishLaunchingWithOptions method in the AppDelegate.m file.`);
             }
 
             const existingLine = match[0];
