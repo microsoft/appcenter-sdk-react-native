@@ -26,7 +26,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return rnpmlink.ios.initAppCenterConfig();
         })
         .then(() => {
-            const code = '  [AppCenterReactNativePush register];  // Initialize AppCenter push';
+            const code = '[AppCenterReactNativePush register];  // Initialize AppCenter push';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativePush/AppCenterReactNativePush.h>', code);
         })
         .then((file) => {
