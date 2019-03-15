@@ -1,6 +1,6 @@
 {
   "name": "appcenter",
-  "version": "1.12.2",
+  "version": "1.13.0",
   "description": "Node module that contains common functionality needed to appcenter-* modules",
   "main": "AppCenter.js",
   "types": "AppCenter.d.ts",
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "appcenter-link-scripts": "1.12.2"
+    "appcenter-link-scripts": "1.13.0"
   },
   "rnpm": {
     "android": {
