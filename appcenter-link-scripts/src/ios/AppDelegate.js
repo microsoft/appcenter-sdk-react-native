@@ -34,13 +34,11 @@ AppDelegate.prototype.addInitCode = function (code, oldCodeRegExp) {
         }
     }
     if (this.appDelegateContents.indexOf(code) === -1) {
-        
         /* If new code not found but old code found, replace. */
         if (oldCodeMatches) {
             this.appDelegateContents = this.appDelegateContents.replace(oldCodeMatches[0], `  ${code}`);
             debug('Replaced code', code, 'to file', this.appDelegatePath);
         } else {
-
             /* Find the beginning of the didFinishLaunchingWithOptions method. */
             const match = this.appDelegateContents.match(/[^\n]*didFinishLaunchingWithOptions[^{]*{[\s]*/);
             if (match === null) {
