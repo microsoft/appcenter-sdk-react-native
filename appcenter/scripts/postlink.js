@@ -23,7 +23,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return rnpmlink.ios.initAppCenterConfig();
         })
         .then(() => {
-            const code = '  [AppCenterReactNative register];  // Initialize AppCenter ';
+            const code = '[AppCenterReactNative register];  // Initialize AppCenter';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNative/AppCenterReactNative.h>', code);
         })
         .then((file) => {

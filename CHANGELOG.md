@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 1.13.0
+
+### AppCenter
+
+#### iOS
+
+* **[Fix]** Fix `react-native link` not patching `AppDelegate.m` correctly on React Native 0.59.
+
 ## Version 1.12.2
 
 ### AppCenter

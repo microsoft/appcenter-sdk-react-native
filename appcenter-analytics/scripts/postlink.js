@@ -25,6 +25,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         })
         .then(() => {
             const code = '  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics';
+
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g);
         })
         .then((file) => {
