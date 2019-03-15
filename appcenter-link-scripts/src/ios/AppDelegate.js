@@ -42,7 +42,7 @@ AppDelegate.prototype.addInitCode = function (code, oldCodeRegExp) {
             /* Find the beginning of the didFinishLaunchingWithOptions method. */
             const match = this.appDelegateContents.match(/[^\n]*didFinishLaunchingWithOptions[^{]*{[\s]*/);
             if (match === null) {
-                throw Error(`Could not find the start of the didFinishLaunchingWithOptions method in the AppDelegate.m file.`);
+                throw Error('Could not find the start of the didFinishLaunchingWithOptions method in the AppDelegate.m file.');
             }
 
             const existingLine = match[0];
