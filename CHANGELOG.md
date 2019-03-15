@@ -7,6 +7,18 @@
 #### iOS
 
 * **[Fix]** Fix `react-native link` not patching `AppDelegate.m` correctly on React Native 0.59.
+* **[Fix]** Fix a crash in case decrypting a value failed.
+
+#### Android
+
+* **[Fix]** Fix network connection state tracking issue, which prevented sending data in some restricted networks.
+* **[Fix]** Fix possible deadlock on changing network connection state.
+
+### AppCenterPush
+
+#### iOS
+
+* **[Fix]** Fix crash on invoking an optional push callback when it isn't implemented in the push delegate.
 
 ## Version 1.12.2
 
