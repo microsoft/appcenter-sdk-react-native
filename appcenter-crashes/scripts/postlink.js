@@ -25,7 +25,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return rnpmlink.ios.initAppCenterConfig();
         })
         .then(() => {
-            const code = '  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes';
+            const code = '[AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>', code, /.*\[AppCenterReactNativeCrashes register.*/g);
         })
         .then((file) => {
