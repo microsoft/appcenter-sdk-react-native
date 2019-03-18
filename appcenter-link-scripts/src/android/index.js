@@ -37,7 +37,7 @@ module.exports = {
         const stringsFile = path.join('android', 'app', 'src', 'main', 'res', 'values', 'strings.xml');
         let stringsXml = fs.readFileSync(stringsFile, 'utf-8');
 
-        // If strings doesn't contain key, then return default value
+        // If strings doesn't contain key, then insert default value
         if (stringsXml.indexOf(key) > 0) {
             return;
         }
