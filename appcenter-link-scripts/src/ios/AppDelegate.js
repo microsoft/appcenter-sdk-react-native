@@ -34,7 +34,7 @@ AppDelegate.prototype.addInitCode = function (code, oldCodeRegExp) {
         }
     }
     if (this.appDelegateContents.indexOf(code) === -1) {
-        /* If new code not found but old code found, replace. */
+        /* If old code not found, check AppDelegateContents. */
         if (!oldCodeMatches) {
             /* Find the beginning of the didFinishLaunchingWithOptions method. */
             const match = this.appDelegateContents.match(/[^\n]*didFinishLaunchingWithOptions[^{]*{[\s]*/);

@@ -1,7 +1,7 @@
 const rnpmlink = require('appcenter-link-scripts');
 
 // Configure Android first.
-let promise = null;
+let promise;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     console.log('Configuring AppCenter Crashes for Android');
     promise = rnpmlink.android.initAppCenterConfig()
