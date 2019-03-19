@@ -1,4 +1,7 @@
-﻿using Microsoft.AppCenter.Utils;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.Storage;
 

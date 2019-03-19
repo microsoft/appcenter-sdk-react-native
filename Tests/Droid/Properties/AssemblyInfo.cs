@@ -1,6 +1,9 @@
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 using System.Reflection;
 
 [assembly: AssemblyTitle("Contoso.Forms.Test.Droid")]

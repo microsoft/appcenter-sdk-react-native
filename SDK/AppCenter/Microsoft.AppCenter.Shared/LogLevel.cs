@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AppCenter
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace Microsoft.AppCenter
 {
     /// <summary>
     /// Log level threshold for logs emitted by the SDK.

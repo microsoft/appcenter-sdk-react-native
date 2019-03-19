@@ -1,4 +1,7 @@
-﻿using Microsoft.AppCenter.Ingestion.Models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.Ingestion.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

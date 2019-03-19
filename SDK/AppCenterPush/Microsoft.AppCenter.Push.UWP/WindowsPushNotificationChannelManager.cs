@@ -1,4 +1,7 @@
-﻿using Windows.Foundation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Windows.Foundation;
 using Windows.Networking.PushNotifications;
 
 namespace Microsoft.AppCenter.Push

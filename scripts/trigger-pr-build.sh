@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 set -e
 
 build_id=`curl -s -u $VSTS_USER:$VSTS_PASSWORD \

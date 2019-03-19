@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AppCenter.Ingestion.Models
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace Microsoft.AppCenter.Ingestion.Models
 {
     /// <summary>
     /// Exception thrown when ingestion models fail to validate

@@ -1,4 +1,7 @@
-﻿#pragma warning disable RECS0154 // Parameter is never used: portable methods are stubs so every method will trigger this.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+#pragma warning disable RECS0154 // Parameter is never used: portable methods are stubs so every method will trigger this.
 
 using System;
 using System.Collections.Generic;

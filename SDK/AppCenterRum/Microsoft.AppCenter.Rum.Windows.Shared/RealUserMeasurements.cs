@@ -1,4 +1,7 @@
-﻿using Microsoft.AppCenter.Channel;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Http;
 using Newtonsoft.Json;
 using System;

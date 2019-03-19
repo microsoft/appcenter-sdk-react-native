@@ -1,4 +1,7 @@
-﻿using Android.Content;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Android.Content;
 using Android.Support.V4.App;
 using Java.Lang;
 

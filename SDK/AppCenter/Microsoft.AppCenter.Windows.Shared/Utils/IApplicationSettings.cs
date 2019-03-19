@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AppCenter.Utils
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace Microsoft.AppCenter.Utils
 {
     /// <summary>
     /// Represents a store of persistent application settings that is behaves like a dictionary.

@@ -1,4 +1,7 @@
-﻿using UIKit;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using UIKit;
 
 namespace Contoso.Forms.Demo.iOS
 {

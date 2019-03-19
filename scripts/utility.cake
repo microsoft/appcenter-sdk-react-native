@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 // This file contains various utilities that are used or can be used by multiple cake scripts.
 
 // Static variables defined outside of a class can cause issues.

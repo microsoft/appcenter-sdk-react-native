@@ -1,4 +1,7 @@
-﻿using Foundation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Foundation;
 using Microsoft.AppCenter.Crashes.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Crashes

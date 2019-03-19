@@ -1,4 +1,7 @@
-﻿using Android.Runtime;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Android.Runtime;
 
 namespace Microsoft.AppCenter.Push
 {
