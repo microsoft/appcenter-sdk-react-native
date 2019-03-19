@@ -1,4 +1,7 @@
-﻿using Xamarin.UITest;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Xamarin.UITest;
 using Xamarin.UITest.Configuration;
 
 namespace Contoso.Forms.Test.UITests

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 # Download and install NPM if it is not already installed
 npm -v &>/dev/null
 if [ $? -ne 0 ]; then

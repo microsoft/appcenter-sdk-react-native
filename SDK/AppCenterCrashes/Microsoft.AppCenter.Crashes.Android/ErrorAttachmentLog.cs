@@ -1,4 +1,7 @@
-﻿using Com.Microsoft.Appcenter.Crashes.Ingestion.Models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Com.Microsoft.Appcenter.Crashes.Ingestion.Models;
 
 namespace Microsoft.AppCenter.Crashes
 {

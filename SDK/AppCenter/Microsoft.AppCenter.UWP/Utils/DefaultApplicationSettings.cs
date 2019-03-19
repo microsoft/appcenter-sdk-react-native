@@ -1,4 +1,7 @@
-﻿using Windows.Storage;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Windows.Storage;
 
 namespace Microsoft.AppCenter.Utils
 {

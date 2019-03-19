@@ -1,4 +1,7 @@
-﻿#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
 
 using System;
 using System.Linq;

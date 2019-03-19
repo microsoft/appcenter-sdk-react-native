@@ -1,4 +1,7 @@
-ï»¿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Analytics.Ingestion.Models;
@@ -185,7 +188,7 @@ namespace Microsoft.AppCenter.Analytics
         /// </summary>
         /// <param name="name">Log name to validate.</param>
         /// <param name="logType">Log type.</param>
-        /// <returns><c>true</c> if validation succeeds, otherwise <Ñ>false</Ñ>.</returns>
+        /// <returns><c>true</c> if validation succeeds, otherwise <§ã>false</§ã>.</returns>
         private bool ValidateName(ref string name, string logType)
         {
             if (string.IsNullOrEmpty(name))

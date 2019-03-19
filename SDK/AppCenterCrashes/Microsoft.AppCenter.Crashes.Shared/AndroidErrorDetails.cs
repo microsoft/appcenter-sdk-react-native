@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AppCenter.Crashes
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace Microsoft.AppCenter.Crashes
 {
     /// <summary>
     /// Error report details pertinent only to devices running Android.
