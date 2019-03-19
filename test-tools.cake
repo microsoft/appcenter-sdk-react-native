@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #tool nuget:?package=XamarinComponent
 #addin nuget:?package=Cake.Xamarin
 #addin nuget:?package=Cake.FileHelpers&version=3.0.0
