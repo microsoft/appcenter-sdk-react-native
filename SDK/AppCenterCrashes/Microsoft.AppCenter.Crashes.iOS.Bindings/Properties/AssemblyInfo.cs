@@ -1,4 +1,7 @@
 using Foundation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 using System.Reflection;
 
 // This attribute allows you to mark your assemblies as “safe to link”. 
