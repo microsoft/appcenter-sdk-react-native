@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 ##########################################################################
 # This is the Cake bootstrapper script for Linux and OS X.
 # This file was downloaded from https://github.com/cake-build/resources
