@@ -15,7 +15,7 @@
     "appcenter-push": "file:appcenter-push-1.13.0.tgz",
     "metro": "0.48.1",
     "react": "16.8.3",
-    "react-native": "0.59.0",
+    "react-native": "^0.59.0",
     "react-native-fs": "^2.9.12",
     "react-native-image-picker": "^0.28.0",
     "react-native-modal-selector": "^1.0.2",
