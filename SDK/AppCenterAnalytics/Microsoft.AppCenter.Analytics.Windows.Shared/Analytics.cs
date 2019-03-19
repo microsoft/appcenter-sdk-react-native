@@ -188,7 +188,7 @@ namespace Microsoft.AppCenter.Analytics
         /// </summary>
         /// <param name="name">Log name to validate.</param>
         /// <param name="logType">Log type.</param>
-        /// <returns><c>true</c> if validation succeeds, otherwise <зу>false</зу>.</returns>
+        /// <returns><c>true</c> if validation succeeds, otherwise <c>false</c>.</returns>
         private bool ValidateName(ref string name, string logType)
         {
             if (string.IsNullOrEmpty(name))
