@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 const rnpmlink = require('appcenter-link-scripts');
 
 // Configure Android first.

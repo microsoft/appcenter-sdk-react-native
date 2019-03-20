@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import <AppCenterCrashes/AppCenterCrashes.h>
 #import "AppCenterReactNativeCrashesDelegate.h"
 #import "AppCenterReactNativeCrashesUtils.h"

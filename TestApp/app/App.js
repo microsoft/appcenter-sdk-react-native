@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import Toast from 'react-native-simple-toast';

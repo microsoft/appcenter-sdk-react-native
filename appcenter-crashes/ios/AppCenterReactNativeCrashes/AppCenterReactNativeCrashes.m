@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import "AppCenterReactNativeCrashes.h"
 
 // Support React Native headers both in the React namespace, where they are in RN version 0.40+,
