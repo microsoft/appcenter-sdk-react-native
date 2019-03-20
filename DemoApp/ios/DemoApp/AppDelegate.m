@@ -14,6 +14,7 @@
 #import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
+#import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 @import AppCenter;
@@ -33,8 +34,6 @@
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
-  
-  NSURL *jsCodeLocation;
 
   [AppCenterReactNative register];  // Initialize AppCenter 
 
@@ -44,12 +43,10 @@
 
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
 
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"DemoApp"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"RnDiffApp"
+                                            initialProperties:nil];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -58,6 +55,15 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+#if DEBUG
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
 }
 
 @end
