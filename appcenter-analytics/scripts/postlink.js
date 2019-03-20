@@ -64,7 +64,10 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         .then((file) => {
             console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
-                [{ pod: 'AppCenterReactNativeAnalytics', path: '../node_modules/appcenter-analytics/ios' }],
+                [
+                    { pod: 'AppCenterReactNativeAnalytics', path: '../node_modules/appcenter-analytics/ios' },
+                    { pod: 'AppCenterReactNative', path: '../node_modules/appcenter/ios' }
+                ],
                 { platform: 'ios', version: '9.0' }
             );
         })

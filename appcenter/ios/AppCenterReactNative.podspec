@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.requires_arc      = true
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'
-  s.dependency 'AppCenterReactNativeShared'
-  s.dependency 'AppCenter'
+  s.dependency 'AppCenterReactNativeShared', '1.13.0'
+  s.dependency 'AppCenter', '1.13.0'
   s.dependency 'React'
 end

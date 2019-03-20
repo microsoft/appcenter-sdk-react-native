@@ -32,7 +32,10 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         .then((file) => {
             console.log(`Added code to initialize iOS Push SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
-                [{ pod: 'AppCenterReactNativePush', path: '../node_modules/appcenter-push/ios' }],
+                [
+                    { pod: 'AppCenterReactNativePush', path: '../node_modules/appcenter-push/ios' },
+                    { pod: 'AppCenterReactNative', path: '../node_modules/appcenter/ios' }
+                ],
                 { platform: 'ios', version: '9.0' }
             );
         })
