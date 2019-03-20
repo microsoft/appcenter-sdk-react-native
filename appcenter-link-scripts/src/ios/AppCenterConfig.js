@@ -30,57 +30,7 @@ AppCenterConfigPlist.prototype.save = function () {
     const plistContents = plist.build(this.parsedInfoPlist);
     fs.writeFileSync(this.plistPath, plistContents);
     debug(`Saved App Secret in ${this.plistPath}`);
-
-    return addConfigToProject(this.plistPath);
 };
-
-function addConfigToProject(file) {
-    return new Promise(((resolve, reject) => {
-        debug(`Trying to add ${file} to XCode project`);
-
-        const globString = 'ios/*.xcodeproj/project.pbxproj';
-        const projectPaths = glob.sync(globString, { ignore: 'node_modules/**' });
-
-        if (projectPaths.length !== 1) {
-            reject(new Error(`
-                Could not locate the xcode project to add AppCenter-Config.plist file to. 
-                Looked in paths - 
-                ${JSON.stringify(projectPaths)}`));
-            return;
-        }
-
-        const projectPath = projectPaths[0];
-        debug(`Adding ${file} to  ${projectPath}`);
-
-        const project = xcode.project(projectPath);
-
-        project.parse((err) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            try {
-                const relativeFilePath = path.relative(path.resolve(projectPath, '../..'), file);
-                const plistPbxFile = project.addFile(relativeFilePath, project.getFirstProject().firstProject.mainGroup);
-                if (plistPbxFile === null) {
-                    debug(`Looks like ${file} was already added to ${projectPath}`);
-                    resolve(file);
-                    return;
-                }
-                plistPbxFile.uuid = project.generateUuid();
-                plistPbxFile.target = project.getFirstTarget().uuid;
-                project.addToPbxBuildFileSection(plistPbxFile);
-                project.addToPbxResourcesBuildPhase(plistPbxFile);
-
-                fs.writeFileSync(projectPath, project.writeSync());
-                debug(`Added ${file} to ${projectPath}`);
-            } catch (e) {
-                reject(e);
-            }
-            resolve(file);
-        });
-    }));
-}
 
 AppCenterConfigPlist.searchForFile = function (cwd) {
     const configPaths = glob.sync(path.join(cwd, 'AppCenter-Config.plist').replace(/\\/g, '/'), {

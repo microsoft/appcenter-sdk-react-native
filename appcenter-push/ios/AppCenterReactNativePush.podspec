@@ -3,7 +3,7 @@ require 'json'
 package = JSON.parse(File.read(File.join(__dir__, '../', 'package.json')))
 
 Pod::Spec.new do |s|
-  s.name              = package['name']
+  s.name              = 'AppCenterReactNativePush'
   s.version           = package['version']
   s.summary           = package['description']
   s.license           = package['license']
@@ -13,13 +13,13 @@ Pod::Spec.new do |s|
   s.author            = { 'Microsoft' => 'appcentersdk@microsoft.com' }
 
   s.source            = { :git => "https://github.com/Microsoft/AppCenter-SDK-React-Native.git" }
-  s.source_files      = "AppCenterReactNativeCrashes/**/*.{h,m}"
+  s.source_files      = "AppCenterReactNativePush/**/*.{h,m}"
   s.platform          = :ios, '9.0'
   s.requires_arc      = true
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'
 
   s.dependency 'AppCenterReactNativeShared'
-  s.dependency 'AppCenter/Crashes'
+  s.dependency 'AppCenter/Push'
   s.dependency 'React'
 end
