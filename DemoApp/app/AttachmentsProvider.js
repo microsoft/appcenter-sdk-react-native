@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import { AsyncStorage } from 'react-native';
 import RNFS from 'react-native-fs';
 

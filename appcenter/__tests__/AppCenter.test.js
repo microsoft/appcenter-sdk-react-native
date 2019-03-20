@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 const CustomProperties = require('../AppCenter.js').CustomProperties;
 
 it('CustomProperties set numbers correctly', () => {

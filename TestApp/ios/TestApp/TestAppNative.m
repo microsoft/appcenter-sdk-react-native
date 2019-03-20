@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import "TestAppNative.h"
 
 #if __has_include(<React/RCTAssert.h>)

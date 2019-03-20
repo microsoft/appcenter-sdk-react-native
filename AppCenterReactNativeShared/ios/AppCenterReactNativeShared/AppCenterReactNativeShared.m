@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #import "AppCenterReactNativeShared.h"
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenter/MSWrapperSdk.h>
