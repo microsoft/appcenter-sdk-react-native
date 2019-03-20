@@ -1,4 +1,7 @@
 PODS:
+  - AppCenter (1.14.0):
+    - AppCenter/Analytics (= 1.14.0)
+    - AppCenter/Crashes (= 1.14.0)
   - AppCenter/Analytics (1.14.0):
     - AppCenter/Core
   - AppCenter/Core (1.14.0)
@@ -6,27 +9,147 @@ PODS:
     - AppCenter/Core
   - AppCenter/Push (1.14.0):
     - AppCenter/Core
+  - AppCenterReactNative (1.13.0):
+    - AppCenter
+    - AppCenterReactNativeShared
+    - React
+  - AppCenterReactNativeAnalytics (1.13.0):
+    - AppCenter/Analytics
+    - AppCenterReactNativeShared
+    - React
+  - AppCenterReactNativeCrashes (1.13.0):
+    - AppCenter/Crashes
+    - AppCenterReactNativeShared
+    - React
+  - AppCenterReactNativePush (1.13.0):
+    - AppCenter/Push
+    - AppCenterReactNativeShared
+    - React
   - AppCenterReactNativeShared (1.13.0):
     - AppCenter/Core (= 1.14.0)
+  - boost-for-react-native (1.63.0)
+  - DoubleConversion (1.1.6)
+  - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
+  - React (0.58.3):
+    - React/Core (= 0.58.3)
+  - React/Core (0.58.3):
+    - yoga (= 0.58.3.React)
+  - React/CxxBridge (0.58.3):
+    - Folly (= 2018.10.22.00)
+    - React/Core
+    - React/cxxreact
+    - React/jsiexecutor
+  - React/cxxreact (0.58.3):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2018.10.22.00)
+    - React/jsinspector
+  - React/DevSupport (0.58.3):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.58.3)
+  - React/jsi (0.58.3):
+    - Folly (= 2018.10.22.00)
+  - React/jsiexecutor (0.58.3):
+    - Folly (= 2018.10.22.00)
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.58.3)
+  - React/RCTActionSheet (0.58.3):
+    - React/Core
+  - React/RCTAnimation (0.58.3):
+    - React/Core
+  - React/RCTBlob (0.58.3):
+    - React/Core
+  - React/RCTGeolocation (0.58.3):
+    - React/Core
+  - React/RCTImage (0.58.3):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.58.3):
+    - React/Core
+  - React/RCTNetwork (0.58.3):
+    - React/Core
+  - React/RCTSettings (0.58.3):
+    - React/Core
+  - React/RCTText (0.58.3):
+    - React/Core
+  - React/RCTVibration (0.58.3):
+    - React/Core
+  - React/RCTWebSocket (0.58.3):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - yoga (0.58.3.React)
 
 DEPENDENCIES:
-  - AppCenter/Analytics (~> 1.14.0)
-  - AppCenter/Crashes (~> 1.14.0)
-  - AppCenter/Push (~> 1.14.0)
+  - AppCenterReactNative (from `../node_modules/appcenter/ios`)
+  - AppCenterReactNativeAnalytics (from `../node_modules/appcenter-analytics/ios`)
+  - AppCenterReactNativeCrashes (from `../node_modules/appcenter-crashes/ios`)
+  - AppCenterReactNativePush (from `../node_modules/appcenter-push/ios`)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/CxxBridge (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AppCenter
+    - boost-for-react-native
 
 EXTERNAL SOURCES:
+  AppCenterReactNative:
+    :path: "../node_modules/appcenter/ios"
+  AppCenterReactNativeAnalytics:
+    :path: "../node_modules/appcenter-analytics/ios"
+  AppCenterReactNativeCrashes:
+    :path: "../node_modules/appcenter-crashes/ios"
+  AppCenterReactNativePush:
+    :path: "../node_modules/appcenter-push/ios"
   AppCenterReactNativeShared:
     :path: "../../AppCenterReactNativeShared/Products/"
+  DoubleConversion:
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  Folly:
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  React:
+    :path: "../node_modules/react-native"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
-  AppCenterReactNativeShared: 3ee9a6cd726c3881194fd4f6552ca2cd55ee4d2c
+  AppCenterReactNative: a4ac86a351828dd243dfc63d8cbf4100278bbc71
+  AppCenterReactNativeAnalytics: 79be4b79c969ed5eacdb0174609d7881d4c8ce69
+  AppCenterReactNativeCrashes: 7a8405da62d74af3ac73578ef5d29784ed60bc54
+  AppCenterReactNativePush: 10567f2384b303712f27ec9425cd1521ca1c1523
+  AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  React: d099597d6ba7001f0219dbc48532b63cfd8d0eca
+  yoga: 220e7595ec3cfe80c5ce02a0d0881be66b405e81
 
-PODFILE CHECKSUM: 6ac2bd5f79437343dd5bc2e07dd5b8d3fbad2c41
+PODFILE CHECKSUM: ff79768f892ebd11f04274bb3a60f4438df7a32d
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

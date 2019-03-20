@@ -1,0 +1,31 @@
+{
+  "name": "AppCenterReactNativeAnalytics",
+  "version": "1.13.0",
+  "summary": "React Native plugin for AppCenter Analytics",
+  "license": "MIT",
+  "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-analytics/README.md",
+  "documentation_url": "https://docs.microsoft.com/en-us/appcenter/",
+  "authors": {
+    "Microsoft": "appcentersdk@microsoft.com"
+  },
+  "source": {
+    "git": "https://github.com/Microsoft/AppCenter-SDK-React-Native.git"
+  },
+  "source_files": "AppCenterReactNativeAnalytics/**/*.{h,m}",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "requires_arc": true,
+  "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
+  "dependencies": {
+    "AppCenterReactNativeShared": [
+
+    ],
+    "AppCenter/Analytics": [
+
+    ],
+    "React": [
+
+    ]
+  }
+}
