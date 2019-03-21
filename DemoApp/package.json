@@ -40,7 +40,9 @@
   "jest": {
     "preset": "react-native",
     "verbose": true,
-    "setupFilesAfterEnv": "./jest/setup.js",
+    "setupFilesAfterEnv": [
+      "./jest/setup.js"
+    ],
     "setupFiles": [
       "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
       "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
