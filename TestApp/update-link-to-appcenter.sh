@@ -21,7 +21,4 @@ mkdir -p ios/Pods/AppCenterReactNativeShared
 cp -R ../AppCenterReactNativeShared/Products/AppCenterReactNativeShared ios/Pods/AppCenterReactNativeShared
 
 echo 'Linking...'
-react-native link appcenter
-react-native link appcenter-crashes
-react-native link appcenter-analytics
-react-native link appcenter-push
+react-native link
