@@ -20,7 +20,7 @@
     "react-native-image-picker": "^0.28.0",
     "react-native-modal-selector": "^1.0.2",
     "react-native-simple-toast": "0.0.8",
-    "react-navigation": "^2.11.2"
+    "react-navigation": "2.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
