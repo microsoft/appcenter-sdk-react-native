@@ -235,7 +235,7 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
-                    let userId = this.state.userId.length == 0 ? null : this.state.userId;
+                    const userId = this.state.userId.length === 0 ? null : this.state.userId;
                     await AppCenter.setUserId(userId);
                   }
                 }
