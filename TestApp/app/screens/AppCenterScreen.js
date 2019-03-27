@@ -237,7 +237,7 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
-                    // TODO: 1DS setUserId API allows null but not empty string as userId
+                    // 1DS setUserId API allows null but not empty string as userId
                     const userId = this.state.userId.length === 0 ? null : this.state.userId;
                     await AppCenter.setUserId(userId);
                   }
