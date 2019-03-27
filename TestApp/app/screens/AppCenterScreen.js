@@ -149,6 +149,8 @@ export default class AppCenterScreen extends Component {
       </View>
     );
 
+    // After trying to fix the next line lint warning, the code was harder to read and format, disable it once.
+    // eslint-disable-next-line object-curly-newline
     const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
@@ -235,6 +237,7 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
+                    // TODO: 1DS setUserId API allows null but not empty string as userId
                     const userId = this.state.userId.length === 0 ? null : this.state.userId;
                     await AppCenter.setUserId(userId);
                   }
