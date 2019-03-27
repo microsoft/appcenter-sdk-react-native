@@ -29,7 +29,10 @@ void CopyFiles(IEnumerable<string> files, string targetDirectory, bool clean = t
     }
     foreach (var file in files)
     {
-        CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
+        if (FileExists(file))
+        {
+            CopyFile(file, targetDirectory + "/" + System.IO.Path.GetFileName(file));
+        }
     }
 }
 
