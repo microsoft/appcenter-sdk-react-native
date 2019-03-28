@@ -1,12 +1,12 @@
 /**
  * Your own [temporary?] transform for React Native
  */
-const generate = require('@babel/generator').default
-const transformer = require('metro-react-native-babel-transformer')
-const createCacheKeyFunction = require('fbjs-scripts/jest/createCacheKeyFunction')
-const metroBabelRegister = require('metro-babel-register')
+const generate = require('@babel/generator').default;
+const transformer = require('metro-react-native-babel-transformer');
+const createCacheKeyFunction = require('fbjs-scripts/jest/createCacheKeyFunction');
+const metroBabelRegister = require('metro-babel-register');
 
-metroBabelRegister([])
+metroBabelRegister([]);
 
 module.exports = {
   process(src, file) {
@@ -27,7 +27,7 @@ module.exports = {
       },
       src,
       plugins: metroBabelRegister.config.plugins,
-    })
+    });
 
     return generate(
       ast,
@@ -41,7 +41,7 @@ module.exports = {
         sourceMaps: true,
       },
       src,
-    ).code
+    ).code;
   },
 
   getCacheKey: createCacheKeyFunction([
@@ -49,4 +49,4 @@ module.exports = {
     require.resolve('metro-react-native-babel-transformer'),
     require.resolve('@babel/core/package.json'),
   ]),
-}
+};
