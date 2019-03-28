@@ -8,35 +8,36 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
+    "react": "16.8.3",
+    "react-native": "0.59.2",
+    "react-navigation": "^3.5.1",
     "appcenter": "file:appcenter-1.13.0.tgz",
     "appcenter-analytics": "file:appcenter-analytics-1.13.0.tgz",
     "appcenter-crashes": "file:appcenter-crashes-1.13.0.tgz",
     "appcenter-link-scripts": "file:appcenter-link-scripts-1.13.0.tgz",
     "appcenter-push": "file:appcenter-push-1.13.0.tgz",
     "metro": "0.48.1",
-    "react": "16.8.3",
-    "react-native": "^0.59.0",
     "react-native-fs": "^2.9.12",
+    "react-native-gesture-handler": "^1.1.0",
     "react-native-image-picker": "^0.28.0",
     "react-native-modal-selector": "^1.0.2",
-    "react-native-simple-toast": "0.0.8",
-    "react-navigation": "2.18.2"
+    "react-native-simple-toast": "0.0.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/runtime": "^7.3.4",
+    "@babel/core": "7.4.0",
+    "@babel/runtime": "7.4.2",
+    "@react-native-community/eslint-config": "0.0.3",
+    "babel-jest": "24.5.0",
+    "eslint": "5.15.3",
+    "jest": "^24.5.0",
+    "metro-react-native-babel-preset": "0.53.1",
+    "react-test-renderer": "16.8.3",
     "@babel/plugin-external-helpers": "7.2.0",
     "babel-eslint": "8.2.3",
-    "babel-jest": "^24.4.0",
-    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.2.1",
-    "jest": "24.4.0",
-    "metro-react-native-babel-preset": "^0.53.0",
-    "prop-types": "15.6.0",
-    "react-test-renderer": "16.8.3"
+    "eslint-plugin-react": "^7.2.1"
   },
   "jest": {
     "preset": "react-native",
@@ -54,7 +55,7 @@
       "!node_modules/react-native"
     ],
     "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+      "^.+\\.js$": "<rootDir>/jest/preprocessor.js"
     }
   }
 }
