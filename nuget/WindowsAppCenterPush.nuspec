@@ -20,5 +20,6 @@
   </metadata>
   <files>
     <file src="$uwp_dir$/Microsoft.AppCenter.Push.dll" target="lib/uap10.0" />
+    <file src="$uwp_dir$/Microsoft.AppCenter.Push.xml" target="lib/uap10.0" />
   </files>
 </package>

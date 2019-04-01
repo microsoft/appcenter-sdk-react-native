@@ -1,5 +1,19 @@
 # App Center SDK for .NET Change Log
 
+## Version Next
+
+### AppCenterCrashes
+
+* **[Fix]** Fix intellisense for APIs.
+
+### AppCenterDistribute
+
+* **[Fix]** Fix intellisense for APIs.
+
+### AppCenterPush
+
+* **[Fix]** Fix intellisense for APIs.
+
 ## Version 1.14.0
 
 ### AppCenter
