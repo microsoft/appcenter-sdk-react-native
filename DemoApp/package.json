@@ -13,34 +13,38 @@
     "appcenter-crashes": "^1.13.0",
     "appcenter-push": "^1.13.0",
     "metro": "0.48.1",
-    "react": "16.6.3",
-    "react-native": "0.58.3",
+    "react": "16.8.3",
+    "react-native": "0.59.2",
     "react-native-fs": "^2.9.12",
+    "react-native-gesture-handler": "^1.1.0",
     "react-native-image-picker": "^0.28.0",
     "react-native-modal-selector": "^1.0.2",
     "react-native-simple-toast": "0.0.8",
-    "react-navigation": "^2.11.2"
+    "react-navigation": "^3.5.1",
+    "stacktrace-parser": "^0.1.4"
   },
   "devDependencies": {
-    "@babel/core": "7.2.0",
+    "@babel/core": "7.4.0",
+    "@babel/runtime": "7.4.2",
+    "@react-native-community/eslint-config": "0.0.3",
+    "babel-jest": "24.5.0",
+    "eslint": "5.15.3",
+    "jest": "^24.5.0",
+    "metro-react-native-babel-preset": "0.53.1",
+    "react-test-renderer": "16.8.3",
     "@babel/plugin-external-helpers": "7.2.0",
-    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
-    "babel-jest": "23.6.0",
-    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.2.1",
-    "jest": "22.4.3",
-    "metro-react-native-babel-preset": "^0.45.3",
-    "prop-types": "15.6.0",
-    "react-test-renderer": "16.6.3"
+    "eslint-plugin-react": "^7.2.1"
   },
   "jest": {
     "preset": "react-native",
     "verbose": true,
-    "setupTestFrameworkScriptFile": "./jest/setup.js",
+    "setupFilesAfterEnv": [
+      "./jest/setup.js"
+    ],
     "setupFiles": [
       "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
       "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
@@ -51,7 +55,7 @@
       "!node_modules/react-native"
     ],
     "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+      "^.+\\.js$": "<rootDir>/jest/preprocessor.js"
     }
   }
 }

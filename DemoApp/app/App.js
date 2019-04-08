@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
@@ -14,7 +14,7 @@ import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-export default createBottomTabNavigator(
+const TabNavigator = createBottomTabNavigator(
   {
     AppCenter: AppCenterScreen,
     Analytics: AnalyticsScreen,
@@ -28,6 +28,8 @@ export default createBottomTabNavigator(
     },
   }
 );
+
+export default createAppContainer(TabNavigator);
 
 Push.setListener({
   onPushNotificationReceived(pushNotification) {
