@@ -3,6 +3,7 @@
 
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
@@ -54,7 +55,7 @@ namespace Contoso.Forms.Puppet
                 AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
-                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth));
                 AppCenter.IsEnabledAsync().ContinueWith(enabled =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
@@ -71,6 +72,17 @@ namespace Contoso.Forms.Puppet
                 Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                });
+                Auth.SignInAsync().ContinueWith(signInResult =>
+                {
+                    if (signInResult.Result.Exception != null)
+                    {
+                        AppCenterLog.Error(LogTag, "Auth: failed to sign in", signInResult.Result.Exception);
+                    }
+                    else
+                    {
+                        AppCenterLog.Info(LogTag, "Auth: signed in with accountId=" + signInResult.Result.UserInformation?.AccountId);
+                    }
                 });
             }
         }

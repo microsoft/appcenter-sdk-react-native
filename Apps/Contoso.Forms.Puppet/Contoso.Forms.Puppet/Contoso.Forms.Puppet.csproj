@@ -150,6 +150,10 @@
       <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
       <Name>Microsoft.AppCenter.Rum</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth\Microsoft.AppCenter.Auth.csproj">
+      <Project>{CFE0475E-4A94-4D92-901B-E174E3658A49}</Project>
+      <Name>Microsoft.AppCenter.Auth</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
