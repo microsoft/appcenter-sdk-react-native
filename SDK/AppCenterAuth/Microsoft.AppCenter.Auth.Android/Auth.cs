@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Auth
     {
         private static Task<SignInResult> PlatformSignInAsync()
         {
-            Identity.signIn();
+            AndroidIdentity.signIn();
             return Task.FromResult(new SignInResult
             {
                 Exception = new NotImplementedException()
