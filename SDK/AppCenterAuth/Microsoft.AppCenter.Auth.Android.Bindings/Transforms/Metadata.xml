@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <attr path="/api/package[@name='com.microsoft.appcenter.identity']/class[@name='Identity']" name="managedName">AndroidIdentity</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter.identity']/class[@name='Identity']" name="managedName">AndroidAuth</attr>
 </metadata>

@@ -3,24 +3,26 @@
 
 using System;
 using System.Threading.Tasks;
+using Android.Runtime;
+using Com.Microsoft.Appcenter;
 using Com.Microsoft.Appcenter.Identity;
 
 namespace Microsoft.AppCenter.Auth
 {
-    using AndroidSignInResult = Com.Microsoft.Appcenter.Identity.SignInResult;
-
     public partial class Auth
     {
-        private static Task<SignInResult> PlatformSignInAsync()
+        [Preserve]
+        public static Type BindingType => typeof(AndroidAuth);
+
+        private static Task<UserInformation> PlatformSignInAsync()
         {
-            var future = AndroidIdentity.SignIn();
-            return Task.Run(() => {
-                var result = (AndroidSignInResult)future.Get();
-                var userInformation = result.UserInformation != null ? new UserInformation { AccountId = result.UserInformation.AccountId } : null;
-                return new SignInResult
+            var future = AndroidAuth.SignIn();
+            return Task.Run(() =>
+            {
+                var userInformation = (AndroidUserInformation)future.Get();
+                return new UserInformation
                 {
-                    UserInformation = userInformation,
-                    Exception = result.Exception
+                    AccountId = userInformation.AccountId
                 };
             });
         }
