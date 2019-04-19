@@ -11,6 +11,5 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Auth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInformation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SignInResult.cs" />
   </ItemGroup>
 </Project>
