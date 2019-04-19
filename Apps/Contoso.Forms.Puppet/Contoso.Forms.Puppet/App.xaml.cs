@@ -69,19 +69,19 @@ namespace Contoso.Forms.Puppet
                 {
                     AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
                 });
-                Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
+                Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
                 {
-                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
                 });
-                Auth.SignInAsync().ContinueWith(signInResult =>
+                Auth.SignInAsync().ContinueWith(task =>
                 {
-                    if (signInResult.Result.Exception != null)
+                    if (task.Exception != null)
                     {
-                        AppCenterLog.Error(LogTag, "Auth: failed to sign in", signInResult.Result.Exception);
+                        AppCenterLog.Error(LogTag, "Auth: failed to sign in", task.Exception);
                     }
                     else
                     {
-                        AppCenterLog.Info(LogTag, "Auth: signed in with accountId=" + signInResult.Result.UserInformation?.AccountId);
+                        AppCenterLog.Info(LogTag, "Auth: signed in with accountId=" + task.Result.AccountId);
                     }
                 });
             }
