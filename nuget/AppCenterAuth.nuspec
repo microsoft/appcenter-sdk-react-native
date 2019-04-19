@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.AppCenter.Auth</id>
+    <title>App Center Auth</title>
+    <authors>Microsoft</authors>
+    <owners>microsoft,appcenter</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>App Center Auth is an identity management service.</summary>
+    <description>App Center Auth is an identity management service that allows you to customize and control how your users interact with your app. We provide an out of the box UI that allows app developers to authenticate their users to an app. In addition, app developers may use and track the user's identity across App Center services.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter auth</tags>
+    <language>en-US</language>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/k76877</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.AppCenter" version="$version$" />
+    </dependencies>
+    <version>$version$</version>
+  </metadata>
+  <files>
+
+    <!-- Portable -->
+    <file src="$pcl_dir$/Microsoft.AppCenter.Auth.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Auth.xml" target="lib/portable-net45+win8+wpa81+wp8" />
+
+    <!-- .NET Standard -->
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Auth.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Auth.xml" target="lib/netstandard1.0" />
+
+    <!-- Android -->
+    <!-- <file src="$android_dir$/Microsoft.AppCenter.Auth.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Auth.xml" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Auth.Android.Bindings.dll" target="lib/MonoAndroid403" /> -->
+
+    <!-- iOS -->
+    <!-- <file src="$ios_dir$/Microsoft.AppCenter.Auth.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Auth.xml" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Auth.iOS.Bindings.dll" target="lib/Xamarin.iOS10" /> -->
+
+  </files>
+</package>
