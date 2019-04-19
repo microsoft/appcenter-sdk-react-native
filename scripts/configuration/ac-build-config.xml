@@ -94,6 +94,7 @@
     <module dotnetModule="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute" nuspec="AppCenterDistribute.nuspec"/>
     <module dotnetModule="SDK/AppCenterPush/Microsoft.AppCenter.Push" nuspec="AppCenterPush.nuspec"/>
     <module dotnetModule="SDK/AppCenterRum/Microsoft.AppCenter.Rum" nuspec="AppCenterRum.nuspec"/>
+    <module dotnetModule="SDK/AppCenterAuth/Microsoft.AppCenter.Auth" nuspec="AppCenterAuth.nuspec"/>
     <buildGroup platformId="mac" solutionPath="AppCenter-SDK-Build-Mac.sln">
         <build configuration="Release"/>
     </buildGroup>
