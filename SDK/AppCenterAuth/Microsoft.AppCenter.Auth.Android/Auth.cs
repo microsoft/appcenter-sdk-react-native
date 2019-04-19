@@ -19,10 +19,14 @@ namespace Microsoft.AppCenter.Auth
             var future = AndroidAuth.SignIn();
             return Task.Run(() =>
             {
-                var userInformation = (AndroidUserInformation)future.Get();
+                var signInResult = (SignInResult)future.Get();
+                if (signInResult.Exception != null)
+                {
+                    throw signInResult.Exception;
+                }
                 return new UserInformation
                 {
-                    AccountId = userInformation.AccountId
+                    AccountId = signInResult.UserInformation.AccountId
                 };
             });
         }
