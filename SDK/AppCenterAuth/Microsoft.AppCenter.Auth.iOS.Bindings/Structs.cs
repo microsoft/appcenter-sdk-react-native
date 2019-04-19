@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NativeLibrary
+namespace Microsoft.AppCenter.Auth.iOS.Bindings
 {
 }
 

@@ -7,9 +7,9 @@
     <ProjectGuid>{AA8B3644-7C06-40BD-B3E5-4C51E485CCBE}</ProjectGuid>
     <TemplateGuid>{b6f3ff35-79b2-4f25-a2fc-60a7cf61013b}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>NativeLibrary</RootNamespace>
+    <RootNamespace>Microsoft.AppCenter.Auth.iOS.Bindings</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>NativeLibrary</AssemblyName>
+    <AssemblyName>Microsoft.AppCenter.Auth.iOS.Bindings</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

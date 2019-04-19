@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Auth
     {
         private static Task<SignInResult> PlatformSignInAsync()
         {
-            MSAuth.SignIn(null);
+            MSIdentity.SignIn(null);
             return null;
         }
     }

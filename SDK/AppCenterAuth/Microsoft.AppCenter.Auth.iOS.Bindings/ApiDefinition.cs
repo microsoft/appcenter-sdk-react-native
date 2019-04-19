@@ -4,7 +4,7 @@ using ObjCRuntime;
 using Foundation;
 using UIKit;
 
-namespace NativeLibrary
+namespace Microsoft.AppCenter.Auth.iOS.Bindings
 {
     // @interface MSIdentity : MSService
     [BaseType(typeof(NSObject))]
