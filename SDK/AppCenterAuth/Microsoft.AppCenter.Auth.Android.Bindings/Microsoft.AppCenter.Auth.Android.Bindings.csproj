@@ -56,6 +56,20 @@
       <Link>Jars\appcenter-identity-release.aar</Link>
     </LibraryProjectZip>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.AppCenter.Auth.Android.Bindings.Msal\Microsoft.AppCenter.Auth.Android.Bindings.Msal.csproj">
+      <Project>{9898EDAE-E071-4098-A9DF-C909A8EB9082}</Project>
+      <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.csproj">
+      <Project>{C1F8B170-BEBA-4432-B88C-9789BCC4533D}</Project>
+      <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
+      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
+      <Name>Microsoft.AppCenter.Android.Bindings</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

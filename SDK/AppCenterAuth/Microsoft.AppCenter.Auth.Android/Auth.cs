@@ -7,14 +7,17 @@ using Com.Microsoft.Appcenter.Identity;
 
 namespace Microsoft.AppCenter.Auth
 {
+    using AndroidSignInResult = Com.Microsoft.Appcenter.Identity.SignInResult;
+
     public partial class Auth
     {
         private static Task<SignInResult> PlatformSignInAsync()
         {
-            AndroidIdentity.signIn();
-            return Task.FromResult(new SignInResult
-            {
-                Exception = new NotImplementedException()
+            var future = AndroidIdentity.SignIn();
+            return Task.Run(() => {
+                var result = (AndroidSignInResult)future.Get();
+                // TODO convert result
+                return new SignInResult();
             });
         }
     }

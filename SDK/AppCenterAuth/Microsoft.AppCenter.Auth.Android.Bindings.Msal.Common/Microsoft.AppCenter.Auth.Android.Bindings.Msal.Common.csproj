@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</RootNamespace>
-    <AssemblyName>Microsoft.AppCenter.Auth.Android.Bindings</AssemblyName>
+    <AssemblyName>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidClassParser>class-parse</AndroidClassParser>
