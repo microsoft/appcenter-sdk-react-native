@@ -16,8 +16,12 @@ namespace Microsoft.AppCenter.Auth
             var future = AndroidIdentity.SignIn();
             return Task.Run(() => {
                 var result = (AndroidSignInResult)future.Get();
-                // TODO convert result
-                return new SignInResult();
+                var userInformation = result.UserInformation != null ? new UserInformation { AccountId = result.UserInformation.AccountId } : null;
+                return new SignInResult
+                {
+                    UserInformation = userInformation,
+                    Exception = result.Exception
+                };
             });
         }
     }
