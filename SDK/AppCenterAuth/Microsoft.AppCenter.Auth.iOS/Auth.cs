@@ -16,9 +16,15 @@ namespace Microsoft.AppCenter.Auth
             MSIdentity.SignIn((userInformation, error) =>
             {
                 SignInResult result = new SignInResult();
-                result.UserInformation = new UserInformation();
-                result.UserInformation.AccountId = userInformation.AccountId;
-                result.Exception = new Exception(error.LocalizedDescription);
+                if (userInformation != null)
+                {
+                    result.UserInformation = new UserInformation();
+                    result.UserInformation.AccountId = userInformation.AccountId;
+                }
+                if (error != null)
+                {
+                    result.Exception = new Exception(error.LocalizedDescription);
+                }
                 promise.TrySetResult(result);
             });
             return promise.Task;
