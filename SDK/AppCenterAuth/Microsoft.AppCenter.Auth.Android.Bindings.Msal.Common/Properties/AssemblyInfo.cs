@@ -6,7 +6,7 @@ using Android.App;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.AppCenter.Auth.Android.Bindings")]
+[assembly: AssemblyTitle("Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]

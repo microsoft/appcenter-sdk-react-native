@@ -10,7 +10,7 @@
     <TemplateGuid>{77efb91c-a7e9-4b0e-a7c5-31eeec3c6d46}</TemplateGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.AppCenter.Auth.Android.Bindings</RootNamespace>
+    <RootNamespace>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Auth.Android.Bindings</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
@@ -77,9 +77,6 @@
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.v7.AppCompat.28.0.0.1\lib\monoandroid81\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleGson">
-      <HintPath>..\..\..\packages\GoogleGson.2.8.5\lib\monoandroid44\GoogleGson.dll</HintPath>
-    </Reference>
     <Reference Include="Java.Interop" />
   </ItemGroup>
   <ItemGroup>
@@ -96,23 +93,13 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.Android.Bindings\Microsoft.AppCenter.Android.Bindings.csproj">
-      <Project>{C3B5BA33-DA39-400D-B5B3-85C68354FD74}</Project>
-      <Name>Microsoft.AppCenter.Android.Bindings</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <InputJar Include="Jars\accessors-smart-1.2.jar" />
-    <InputJar Include="Jars\asm-5.0.4.jar" />
-    <InputJar Include="Jars\json-smart-2.3.jar" />
-    <InputJar Include="Jars\nimbus-jose-jwt-5.7.jar" />
-  </ItemGroup>
-  <ItemGroup>
     <LibraryProjectZip Include="Jars\common-0.0.10-RC10.aar" />
-    <LibraryProjectZip Include="Jars\msal-0.3.1-RC2.aar" />
-    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-identity-release.aar">
-      <Link>Jars\appcenter-identity-release.aar</Link>
-    </LibraryProjectZip>
+  </ItemGroup>
+  <ItemGroup>
+    <ReferenceJar Include="Jars\accessors-smart-1.2.jar" />
+    <ReferenceJar Include="Jars\asm-5.0.4.jar" />
+    <ReferenceJar Include="Jars\json-smart-2.3.jar" />
+    <ReferenceJar Include="Jars\nimbus-jose-jwt-5.7.jar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
