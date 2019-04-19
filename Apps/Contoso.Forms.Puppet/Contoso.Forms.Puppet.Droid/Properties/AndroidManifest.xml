@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="56" android:versionName="2.0.0-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="26" />
 	<application android:label="ACFPuppet">
