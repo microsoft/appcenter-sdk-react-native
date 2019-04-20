@@ -22,3 +22,20 @@ NOTE: Do not add "android.jar" as a reference jar.  It will be added automatical
 based on the Target Framework selected.
 
 Set the build action for these jars in the properties page to "ReferenceJar".
+
++--- project :sdk:appcenter-identity
+|    +--- project :sdk:appcenter
+|    \--- com.microsoft.identity.client:msal:0.3.1-RC2
+|         +--- com.android.support:appcompat-v7:27.1.1 -> 28.0.0 (*)
+|         +--- com.android.support:customtabs:27.1.1 -> 28.0.0 (*)
+|         +--- com.google.code.gson:gson:2.8.4 -> 2.8.5
+|         +--- com.nimbusds:nimbus-jose-jwt:5.7
+|         |    +--- com.github.stephenc.jcip:jcip-annotations:1.0-1
+|         |    \--- net.minidev:json-smart:[1.3.1,2.3] -> 2.3
+|         |         \--- net.minidev:accessors-smart:1.2
+|         |              \--- org.ow2.asm:asm:5.0.4
+|         \--- com.microsoft.identity:common:0.0.10-RC10
+|              +--- com.nimbusds:nimbus-jose-jwt:5.7 (*)
+|              +--- com.android.support:appcompat-v7:27.1.+ -> 28.0.0 (*)
+|              +--- com.google.code.gson:gson:2.8.4 -> 2.8.5
+|              \--- com.android.support:customtabs:27.1.+ -> 28.0.0 (*)
