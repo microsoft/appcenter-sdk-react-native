@@ -19,5 +19,14 @@ namespace Microsoft.AppCenter.Auth
         {
             return PlatformSignInAsync();
         }
+
+        /// <summary>
+        /// Sets the remote configuration base URL.
+        /// </summary>
+        /// <param name="configUrl">Remote configuration base URL.</param>
+        public static void SetConfigUrl(string configUrl)
+        {
+            PlatformSetConfigUrl(configUrl);
+        }
     }
 }

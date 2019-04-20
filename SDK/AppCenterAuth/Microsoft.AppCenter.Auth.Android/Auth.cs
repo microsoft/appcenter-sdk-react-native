@@ -30,5 +30,10 @@ namespace Microsoft.AppCenter.Auth
                 };
             });
         }
+
+        private static void PlatformSetConfigUrl(string configUrl)
+        {
+            AndroidAuth.SetConfigUrl(configUrl);
+        }
     }
 }
