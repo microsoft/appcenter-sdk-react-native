@@ -147,6 +147,10 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\packages\Xamarin.Forms.2.5.1.527436\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleGson">
+      <HintPath>..\..\..\packages\GoogleGson.2.8.5\lib\monoandroid44\GoogleGson.dll</HintPath>
+    </Reference>
+    <Reference Include="Java.Interop" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
