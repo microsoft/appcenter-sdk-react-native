@@ -25,7 +25,7 @@
         <dependency id="Xamarin.Android.Support.CustomTabs" version="28.0.0.1" />
 
         <!-- 
-          We get conflicts between Forms and Messaging if we don't resolve those packages explicitly.
+          We get conflicts between Forms and Msal if we don't resolve those packages explicitly.
           Remove any of these and it will not install in Demo app... This is really the minimal set.
         -->
         <dependency id="Xamarin.Android.Support.Design" version="28.0.0.1" />
