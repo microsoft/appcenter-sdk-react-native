@@ -11,12 +11,4 @@
     <remove-node path="/api/package[@name='com.microsoft.identity.common.internal.providers.microsoft.azureactivedirectory']" />
     <remove-node path="/api/package[@name='com.microsoft.identity.common.internal.providers.microsoft.azureactivedirectoryb2c']" />
     <remove-node path="/api/package[@name='com.microsoft.identity.common.internal.providers.microsoft.activedirectoryfederationservices']" />
-    
-<!--    <remove-node path="/api/package[@name='com.nimbusds.jwt']/class[@name='EncryptedJWT']" />
-    <remove-node path="/api/package[starts-with(@name, 'com.nimbusds.jose')]" />
-   
-    <remove-node path="/api/package[@name='net.minidev.asm']/class[@name='ConvertDate.StringCmpNS']" />
-    <remove-node path="/api/package[@name='net.minidev.json.reader']" />-->
-    
-<!--    <remove-node path="/api/package[@name='net.minidev.asm']/class[@name='BeansAccessBuilder']" />-->
 </metadata>

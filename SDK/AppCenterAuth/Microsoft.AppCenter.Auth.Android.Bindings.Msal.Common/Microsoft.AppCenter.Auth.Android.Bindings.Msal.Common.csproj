@@ -96,10 +96,10 @@
     <LibraryProjectZip Include="Jars\common-0.0.10-RC10.aar" />
   </ItemGroup>
   <ItemGroup>
-    <ReferenceJar Include="Jars\accessors-smart-1.2.jar" />
-    <ReferenceJar Include="Jars\asm-5.0.4.jar" />
-    <ReferenceJar Include="Jars\json-smart-2.3.jar" />
-    <ReferenceJar Include="Jars\nimbus-jose-jwt-5.7.jar" />
+    <EmbeddedReferenceJar Include="Jars\nimbus-jose-jwt-5.7.jar" />
+    <EmbeddedReferenceJar Include="Jars\json-smart-2.3.jar" />
+    <EmbeddedReferenceJar Include="Jars\asm-5.0.4.jar" />
+    <EmbeddedReferenceJar Include="Jars\accessors-smart-1.2.jar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
