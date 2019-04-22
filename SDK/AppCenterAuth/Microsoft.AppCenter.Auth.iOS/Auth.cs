@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Auth
     {
         private static Task<SignInResult> PlatformSignInAsync()
         {
-            var promise = new TaskCompletionSource<SignInResult>();
+            var taskCompletionSource = new TaskCompletionSource<SignInResult>();
 
             MSIdentity.SignIn((userInformation, error) =>
             {
@@ -25,9 +25,9 @@ namespace Microsoft.AppCenter.Auth
                 {
                     result.Exception = new Exception(error.LocalizedDescription);
                 }
-                promise.TrySetResult(result);
+                taskCompletionSource.TrySetResult(result);
             });
-            return promise.Task;
+            return taskCompletionSource.Task;
         }
     }
 }
