@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace Microsoft.AppCenter.Auth
+namespace Microsoft.AppCenter
 {
     /// <summary>
     /// User information.
@@ -9,9 +9,9 @@ namespace Microsoft.AppCenter.Auth
     public class UserInformation
     {
         /// <summary>
-        /// Get the account identifier.
+        /// Account identifier.
         /// </summary>
         /// <value>The account identifier.</value>
-        public string AccountId { get; internal set; }
+        public string AccountId { get; set; }
     }
 }

@@ -147,6 +147,10 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\packages\Xamarin.Forms.2.5.1.527436\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleGson">
+      <HintPath>..\..\..\packages\GoogleGson.2.8.5\lib\monoandroid44\GoogleGson.dll</HintPath>
+    </Reference>
+    <Reference Include="Java.Interop" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -222,6 +226,22 @@
     <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android.Bindings\Microsoft.AppCenter.Rum.Android.Bindings.csproj">
       <Project>{7E130457-B427-4043-A5A2-9484CB5809BF}</Project>
       <Name>Microsoft.AppCenter.Rum.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings\Microsoft.AppCenter.Auth.Android.Bindings.csproj">
+      <Project>{E2936797-F00E-4709-A696-14B3C05B336F}</Project>
+      <Name>Microsoft.AppCenter.Auth.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android\Microsoft.AppCenter.Auth.Android.csproj">
+      <Project>{C566819E-C6BE-478D-B061-6F89CC7F30C2}</Project>
+      <Name>Microsoft.AppCenter.Auth.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings.Msal\Microsoft.AppCenter.Auth.Android.Bindings.Msal.csproj">
+      <Project>{9898EDAE-E071-4098-A9DF-C909A8EB9082}</Project>
+      <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.csproj">
+      <Project>{C1F8B170-BEBA-4432-B88C-9789BCC4533D}</Project>
+      <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

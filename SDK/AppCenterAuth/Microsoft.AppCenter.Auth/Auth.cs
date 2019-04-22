@@ -14,5 +14,9 @@ namespace Microsoft.AppCenter.Auth
             task.SetException(new NotImplementedException());
             return task.Task;
         }
+
+        private static void PlatformSetConfigUrl(string configUrl)
+        {
+        }
     }
 }

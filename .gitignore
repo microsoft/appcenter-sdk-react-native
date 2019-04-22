@@ -1,4 +1,5 @@
-# Ignore aar files
+# Ignore jar/aar files
+*.jar
 *.aar
 
 # Ignore .a files
