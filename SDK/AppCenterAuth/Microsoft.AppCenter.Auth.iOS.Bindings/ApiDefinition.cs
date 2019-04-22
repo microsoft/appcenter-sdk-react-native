@@ -13,27 +13,27 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
     [BaseType(typeof(NSObject))]
     interface MSIdentity
     {
-        // +(void)setEnabled:(BOOL)isEnabled;
+        // + (void)setEnabled:(BOOL)isEnabled;
         [Static]
         [Export("setEnabled:")]
         void SetEnabled(bool isEnabled);
 
-        // +(BOOL)isEnabled;
+        // + (BOOL)isEnabled;
         [Static]
         [Export("isEnabled")]
         bool IsEnabled();
 
-        // + (void) signInWithCompletionHandler:(MSSignInCompletionHandler _Nullable) completionHandler;
+        // + (void)signInWithCompletionHandler:(MSSignInCompletionHandler _Nullable) completionHandler;
         [Static]
         [Export("signInWithCompletionHandler:")]
         void SignIn(MSSignInCompletionHandler completionHandler);
 
-        // + (void) signOut;
+        // + (void)signOut;
         [Static]
         [Export("signOut")]
         void SignOut();
 
-        // + (void) setConfigUrl:(NSString*) configUrl;
+        // + (void)setConfigUrl:(NSString*) configUrl;
         [Static]
         [Export("setConfigUrl:")]
         void SetConfigUrl(string configUrl);
