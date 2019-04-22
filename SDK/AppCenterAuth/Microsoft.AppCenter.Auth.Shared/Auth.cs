@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Auth
     public partial class Auth
     { 
         /// <summary>
-        /// Check whether the Crashes service is enabled or not.
+        /// Check whether the Auth service is enabled or not.
         /// </summary>
         /// <returns>A task with result being true if enabled, false if disabled.</returns>
         public static Task<bool> IsEnabledAsync()
@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Auth
         }
 
         /// <summary>
-        /// Enable or disable the Crashes service.
+        /// Enable or disable the Auth service.
         /// </summary>
         /// <returns>A task to monitor the operation.</returns>
         public static Task SetEnabledAsync(bool enabled)
