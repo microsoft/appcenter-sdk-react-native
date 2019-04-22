@@ -10,6 +10,7 @@ namespace Microsoft.AppCenter.Auth
     /// </summary>
     public partial class Auth
     {
+        /// <summary>
         /// Sets the remote configuration base URL.
         /// </summary>
         /// <param name="configUrl">Remote configuration base URL.</param>
