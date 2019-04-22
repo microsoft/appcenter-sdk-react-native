@@ -13,6 +13,11 @@ namespace Microsoft.AppCenter.Auth
         [Preserve]
         public static Type BindingType => typeof(MSIdentity);
 
+        private static void PlatformSetConfigUrl(string configUrl)
+        {
+            MSIdentity.SetConfigUrl(configUrl);
+        }
+
         static Task<bool> PlatformIsEnabledAsync()
         {
             return Task.FromResult(MSIdentity.IsEnabled());
@@ -35,7 +40,7 @@ namespace Microsoft.AppCenter.Auth
                 }
                 taskCompletionSource.TrySetResult(new UserInformation
                 {
-                    AccountId = userInformation?.AccountId
+                    AccountId = userInformation.AccountId
                 });
             });
             return taskCompletionSource.Task;
@@ -44,11 +49,6 @@ namespace Microsoft.AppCenter.Auth
         private static void PlatformSignOut()
         {
             MSIdentity.SignOut();
-        }
-
-        private static void PlatformSetConfigUrl(string configUrl)
-        {
-            MSIdentity.SetConfigUrl(configUrl);
         }
     }
 }

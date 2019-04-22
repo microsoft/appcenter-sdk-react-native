@@ -1,11 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-
-using ObjCRuntime;
 using Foundation;
-using UIKit;
 
 namespace Microsoft.AppCenter.Auth.iOS.Bindings
 {
@@ -13,15 +9,20 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
     [BaseType(typeof(NSObject))]
     interface MSIdentity
     {
-        // + (void)setEnabled:(BOOL)isEnabled;
+        // + (void)setConfigUrl:(NSString*) configUrl;
         [Static]
-        [Export("setEnabled:")]
-        void SetEnabled(bool isEnabled);
+        [Export("setConfigUrl:")]
+        void SetConfigUrl(string configUrl);
 
         // + (BOOL)isEnabled;
         [Static]
         [Export("isEnabled")]
         bool IsEnabled();
+
+        // + (void)setEnabled:(BOOL)isEnabled;
+        [Static]
+        [Export("setEnabled:")]
+        void SetEnabled(bool isEnabled);
 
         // + (void)signInWithCompletionHandler:(MSSignInCompletionHandler _Nullable) completionHandler;
         [Static]
@@ -32,11 +33,6 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
         [Static]
         [Export("signOut")]
         void SignOut();
-
-        // + (void)setConfigUrl:(NSString*) configUrl;
-        [Static]
-        [Export("setConfigUrl:")]
-        void SetConfigUrl(string configUrl);
     }
 
     // typedef void (^MSSignInCompletionHandler)(MSUserInformation* _Nullable userInformation, NSError * _Nullable error);

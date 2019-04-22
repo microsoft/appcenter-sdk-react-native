@@ -3,7 +3,7 @@
     <sdkInfo>
         <sdkVersion>2.0.0-SNAPSHOT</sdkVersion>
         <iosVersion>2.0.0-189+1f5f7725098b3e661f17369ab2da793d82cae674</iosVersion>
-        <androidVersion>1.11.3</androidVersion>
+        <androidVersion>2.0.0-13+c34daf8a3</androidVersion>
     </sdkInfo>
     <group id="ios" folder="iOSAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll"/>
@@ -32,8 +32,10 @@
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/bin/Release/Microsoft.AppCenter.Push.Android.Bindings.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android/bin/Release/Microsoft.AppCenter.Rum.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android.Bindings/bin/Release/Microsoft.AppCenter.Rum.Android.Bindings.dll"/>
-        <!-- <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android/bin/Release/Microsoft.AppCenter.Auth.dll"/>
-        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.dll"/> -->
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android/bin/Release/Microsoft.AppCenter.Auth.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings.Msal/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.Msal.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.dll"/>
     </group>
     <group id="pcl" folder="PCLAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll"/>
