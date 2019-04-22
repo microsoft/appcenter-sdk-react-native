@@ -10,4 +10,5 @@
     <remove-node path="/api/package[@name='com.microsoft.appcenter.utils']/interface[contains(@name, 'Helper') or contains(@name, 'Utils')]" />
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='AppCenter']" name="managedName">AndroidAppCenter</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='CustomProperties']" name="managedName">AndroidCustomProperties</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='UserInformation']" name="managedName">AndroidUserInformation</attr>
 </metadata>

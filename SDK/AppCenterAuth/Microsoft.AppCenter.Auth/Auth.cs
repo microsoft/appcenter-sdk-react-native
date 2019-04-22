@@ -8,6 +8,10 @@ namespace Microsoft.AppCenter.Auth
 {
     public partial class Auth
     {
+        private static void PlatformSetConfigUrl(string configUrl)
+        {
+        }
+
         private static Task<bool> PlatformIsEnabledAsync()
         {
             return Task.FromResult(false);
