@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Android.Runtime;
 using Com.Microsoft.Appcenter;
@@ -14,6 +15,18 @@ namespace Microsoft.AppCenter.Auth
         [Preserve]
         public static Type BindingType => typeof(AndroidAuth);
 
+        private static Task<bool> PlatformIsEnabledAsync()
+        {
+            var future = AndroidAuth.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
+        }
+
+        private static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            var future = AndroidAuth.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
+        }
+
         private static Task<UserInformation> PlatformSignInAsync()
         {
             var future = AndroidAuth.SignIn();
@@ -22,13 +35,19 @@ namespace Microsoft.AppCenter.Auth
                 var signInResult = (SignInResult)future.Get();
                 if (signInResult.Exception != null)
                 {
-                    throw signInResult.Exception;
+                    // Keep the stacktrace clean.
+                    ExceptionDispatchInfo.Capture(signInResult.Exception).Throw();
                 }
                 return new UserInformation
                 {
                     AccountId = signInResult.UserInformation.AccountId
                 };
             });
+        }
+
+        private static void PlatformSignOut()
+        {
+            AndroidAuth.SignOut();
         }
 
         private static void PlatformSetConfigUrl(string configUrl)
