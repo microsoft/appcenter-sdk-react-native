@@ -54,9 +54,9 @@
     <file src="$android_dir$/Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <!-- <file src="$ios_dir$/Microsoft.AppCenter.Auth.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Auth.dll" target="lib/Xamarin.iOS10" />
     <file src="$ios_dir$/Microsoft.AppCenter.Auth.xml" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.AppCenter.Auth.iOS.Bindings.dll" target="lib/Xamarin.iOS10" /> -->
+    <file src="$ios_dir$/Microsoft.AppCenter.Auth.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
   </files>
 </package>
