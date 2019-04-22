@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Foundation;
+using Microsoft.AppCenter.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Auth.iOS.Bindings
 {
@@ -37,12 +38,4 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
 
     // typedef void (^MSSignInCompletionHandler)(MSUserInformation* _Nullable userInformation, NSError * _Nullable error);
     delegate void MSSignInCompletionHandler([NullAllowed] MSUserInformation userInformation, [NullAllowed] NSError error);
-
-    [BaseType(typeof(NSObject))]
-    interface MSUserInformation
-    {
-        // @property(nonatomic, copy) NSString *accountId;
-        [Export("accountId")]
-        string AccountId { get; set; }
-    }
 }
