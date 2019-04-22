@@ -53,6 +53,8 @@
   <ItemGroup>
     <NativeReference Include="..\..\..\externals\ios\AppCenterIdentity.a">
       <Kind>Static</Kind>
+      <ForceLoad>True</ForceLoad>
+      <Frameworks>WebKit AuthenticationServices</Frameworks>
       <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>

@@ -36,12 +36,22 @@ namespace Microsoft.AppCenter.Auth
             {
                 if (error != null)
                 {
-                    throw new NSErrorException(error);
+                    try
+                    {
+                        throw new NSErrorException(error);
+                    }
+                    catch (NSErrorException e)
+                    {
+                        taskCompletionSource.TrySetException(e);
+                    }
                 }
-                taskCompletionSource.TrySetResult(new UserInformation
+                else
                 {
-                    AccountId = userInformation.AccountId
-                });
+                    taskCompletionSource.TrySetResult(new UserInformation
+                    {
+                        AccountId = userInformation.AccountId
+                    });
+                }
             });
             return taskCompletionSource.Task;
         }
