@@ -3,31 +3,52 @@
 
 using System;
 using System.Threading.Tasks;
+using Foundation;
 using Microsoft.AppCenter.Auth.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Auth
 {
     public partial class Auth : AppCenterService
     {
-        private static Task<SignInResult> PlatformSignInAsync()
-        {
-            var taskCompletionSource = new TaskCompletionSource<SignInResult>();
+        [Preserve]
+        public static Type BindingType => typeof(MSIdentity);
 
+        static Task<bool> PlatformIsEnabledAsync()
+        {
+            return Task.FromResult(MSIdentity.IsEnabled());
+        }
+
+        static Task PlatformSetEnabledAsync(bool enabled)
+        {
+            MSIdentity.SetEnabled(enabled);
+            return Task.FromResult(default(object));
+        }
+
+        private static Task<UserInformation> PlatformSignInAsync()
+        {
+            var taskCompletionSource = new TaskCompletionSource<UserInformation>();
             MSIdentity.SignIn((userInformation, error) =>
             {
-                SignInResult result = new SignInResult();
-                if (userInformation != null)
-                {
-                    result.UserInformation = new UserInformation();
-                    result.UserInformation.AccountId = userInformation.AccountId;
-                }
                 if (error != null)
                 {
-                    result.Exception = new Exception(error.LocalizedDescription);
+                    throw new NSErrorException(error);
                 }
-                taskCompletionSource.TrySetResult(result);
+                taskCompletionSource.TrySetResult(new UserInformation
+                {
+                    AccountId = userInformation?.AccountId
+                });
             });
             return taskCompletionSource.Task;
+        }
+
+        private static void PlatformSignOut()
+        {
+            MSIdentity.SignOut();
+        }
+
+        private static void PlatformSetConfigUrl(string configUrl)
+        {
+            MSIdentity.SetConfigUrl(configUrl);
         }
     }
 }

@@ -32,6 +32,11 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
         [Static]
         [Export("signOut")]
         void SignOut();
+
+        // + (void) setConfigUrl:(NSString*) configUrl;
+        [Static]
+        [Export("setConfigUrl:")]
+        void SetConfigUrl(string configUrl);
     }
 
     // typedef void (^MSSignInCompletionHandler)(MSUserInformation* _Nullable userInformation, NSError * _Nullable error);
