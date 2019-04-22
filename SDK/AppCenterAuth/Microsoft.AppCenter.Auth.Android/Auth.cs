@@ -15,6 +15,11 @@ namespace Microsoft.AppCenter.Auth
         [Preserve]
         public static Type BindingType => typeof(AndroidAuth);
 
+        private static void PlatformSetConfigUrl(string configUrl)
+        {
+            AndroidAuth.SetConfigUrl(configUrl);
+        }
+
         private static Task<bool> PlatformIsEnabledAsync()
         {
             var future = AndroidAuth.IsEnabled();
@@ -48,11 +53,6 @@ namespace Microsoft.AppCenter.Auth
         private static void PlatformSignOut()
         {
             AndroidAuth.SignOut();
-        }
-
-        private static void PlatformSetConfigUrl(string configUrl)
-        {
-            AndroidAuth.SetConfigUrl(configUrl);
         }
     }
 }
