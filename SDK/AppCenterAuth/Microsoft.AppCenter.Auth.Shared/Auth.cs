@@ -9,7 +9,25 @@ namespace Microsoft.AppCenter.Auth
     /// Auth service.
     /// </summary>
     public partial class Auth
-    {
+    { 
+        /// <summary>
+        /// Check whether the Crashes service is enabled or not.
+        /// </summary>
+        /// <returns>A task with result being true if enabled, false if disabled.</returns>
+        public static Task<bool> IsEnabledAsync()
+        {
+            return PlatformIsEnabledAsync();
+        }
+
+        /// <summary>
+        /// Enable or disable the Crashes service.
+        /// </summary>
+        /// <returns>A task to monitor the operation.</returns>
+        public static Task SetEnabledAsync(bool enabled)
+        {
+            return PlatformSetEnabledAsync(enabled);
+        }
+
         /// <summary>
         /// Sign in to get user information.
         /// </summary>
@@ -18,6 +36,14 @@ namespace Microsoft.AppCenter.Auth
         public static Task<UserInformation> SignInAsync()
         {
             return PlatformSignInAsync();
+        }
+
+        /// <summary>
+        /// Sign out user and invalidate a user's token.
+        /// </summary>
+        public static void SignOut()
+        {
+            PlatformSignOut();
         }
     }
 }
