@@ -8,12 +8,11 @@ namespace Microsoft.AppCenter.Auth
 {
     public partial class Auth
     {
-        private static Task<SignInResult> PlatformSignInAsync()
+        private static Task<UserInformation> PlatformSignInAsync()
         {
-            return Task.FromResult(new SignInResult
-            {
-                Exception = new NotImplementedException()
-            });
+            var task = new TaskCompletionSource<UserInformation>();
+            task.SetException(new NotImplementedException());
+            return task.Task;
         }
     }
 }

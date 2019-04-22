@@ -13,8 +13,9 @@ namespace Microsoft.AppCenter.Auth
         /// <summary>
         /// Sign in to get user information.
         /// </summary>
-        /// <returns>Sign in result.</returns>
-        public static Task<SignInResult> SignInAsync()
+        /// <returns>User information.</returns>
+        /// <exception cref="System.Exception">If sign-in failed.</exception>
+        public static Task<UserInformation> SignInAsync()
         {
             return PlatformSignInAsync();
         }
