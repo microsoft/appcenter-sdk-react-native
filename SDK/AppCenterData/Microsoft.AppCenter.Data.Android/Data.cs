@@ -3,27 +3,36 @@
 
 using System;
 using System.Threading.Tasks;
+using Android.Runtime;
+using Com.Microsoft.Appcenter.Storage;
 
 namespace Microsoft.AppCenter.Data
 {
     public partial class Data
     {
+        [Preserve]
+        public static Type BindingType => typeof(AndroidData);
+
         private static void PlatformSetApiUrl(string apiUrl)
         {
+            AndroidData.SetApiUrl(apiUrl);
         }
 
         private static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.FromResult(false);
+            var future = AndroidData.IsEnabled();
+            return Task.Run(() => (bool)future.Get());
         }
 
         private static Task PlatformSetEnabledAsync(bool enabled)
         {
-            return Task.FromResult(default(object));
+            var future = AndroidData.SetEnabled(enabled);
+            return Task.Run(() => future.Get());
         }
 
         private static Task<Document<T>> PlatformRead<T>(string partition, string documentId)
         {
+            var future = AndroidData.Read(partition, documentId, null /* TODO */);
             return Task.FromResult<Document<T>>(null);
         }
 
