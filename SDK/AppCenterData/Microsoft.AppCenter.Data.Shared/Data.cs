@@ -39,6 +39,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<T>> Read<T>(string partition, string documentId)
         {
+            return PlatformRead<T>(partition, documentId);
         }
 
         /// <summary>
@@ -46,6 +47,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<T>> Read<T>(string partition, string documentId, ReadOptions readOptions)
         {
+            return PlatformRead<T>(partition, documentId, readOptions);
         }
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<PaginatedDocuments<T>> List<T>(string partition)
         {
+            return PlatformList<T>(partition);
         }
 
         /// <summary>
@@ -60,6 +63,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<T>> Create<T>(string partition, string documentId, T document)
         {
+            return PlatformCreate(partition, documentId, document);
         }
 
         /// <summary>
@@ -67,6 +71,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<T>> Create<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
+            return PlatformCreate(partition, documentId, document, writeOptions);
         }
 
         /// <summary>
@@ -74,6 +79,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<object>> Delete(string partition, string documentId)
         {
+            return PlatformDelete(partition, documentId);
         }
 
         /// <summary>
@@ -81,6 +87,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<T>> Replace<T>(string partition, string documentId, T document)
         {
+            return PlatformReplace(partition, documentId, document);
         }
 
         /// <summary>
@@ -88,6 +95,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public static Task<Document<T>> Replace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
+            return PlatformReplace(partition, documentId, document, writeOptions);
         }
     }
 }
