@@ -60,5 +60,15 @@ namespace Microsoft.AppCenter.Auth
         {
             MSIdentity.SignOut();
         }
+
+        /// <summary>
+        /// Process URL request for the Auth service.
+        /// Place this method call into app delegate openUrl method.
+        /// </summary>
+        /// <param name="url">The url with parameters.</param>
+        public static void OpenUrl(NSUrl url)
+        {
+            MSIdentity.OpenUrl(url);
+        }
     }
 }
