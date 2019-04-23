@@ -8,5 +8,55 @@ namespace Microsoft.AppCenter.Data
 {
     public class Document<T>
     {
+        /// <summary>
+        /// Deserialized document.
+        /// </summary>
+        public string Document { get; }
+
+        /// <summary>
+        /// Document partition.
+        /// </summary>
+        public string Partition { get; }
+
+        /// <summary>
+        /// Document id.
+        /// </summary>
+        public string Id { get; }
+
+        /// <summary>
+        /// ETag.
+        /// </summary>
+        public string ETag { get; }
+
+        /// <summary>
+        /// UTC unix timestamp.
+        /// </summary>
+        public string Timestamp { get; }
+
+        /// <summary>
+        /// Flag indicating if data was retrieved from the local cache (for offline mode)
+        /// </summary>
+        public bool IsFromCache { get; set; }
+
+        /// <summary>
+        /// The pending operation saved in the local storage.
+        /// </summary>
+        public string PendingOperation { get; set; }
+
+        /// <summary>
+        /// Check whether the Data service is enabled or not.
+        /// </summary>
+        public string HasFailed
+        {
+            get
+            {
+                return DocumentError != null;
+            }
+        }
+
+        /// <summary>
+        /// Document error.
+        /// </summary>
+        public Exception DocumentError { get; }
     }
 }
