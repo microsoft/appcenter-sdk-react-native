@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Deserialized document.
         /// </summary>
-        public string Document { get; }
+        public T Document { get; }
 
         /// <summary>
         /// Document partition.
@@ -31,7 +31,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// UTC unix timestamp.
         /// </summary>
-        public string Timestamp { get; }
+        public long Timestamp { get; }
 
         /// <summary>
         /// Flag indicating if data was retrieved from the local cache (for offline mode)
