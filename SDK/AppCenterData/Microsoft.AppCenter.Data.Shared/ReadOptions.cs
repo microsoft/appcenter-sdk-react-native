@@ -10,9 +10,15 @@ namespace Microsoft.AppCenter.Data
     /// </summary>
     public class ReadOptions : BaseOptions
     {
-        public static ReadOptions InfiniteCache { get { return new ReadOptions(TimeSpan.MaxValue); } }
+        /// <summary>
+        /// Cache does not expire.
+        /// </summary>
+        public static ReadOptions InfiniteCache { get => new ReadOptions(TimeSpan.MaxValue); }
 
-        public static ReadOptions NoCache { get { return new ReadOptions(TimeSpan.Zero); } }
+        /// <summary>
+        /// Do not cache documents locally.
+        /// </summary>
+        public static ReadOptions NoCache { get => new ReadOptions(TimeSpan.Zero); }
 
         public ReadOptions()
         {

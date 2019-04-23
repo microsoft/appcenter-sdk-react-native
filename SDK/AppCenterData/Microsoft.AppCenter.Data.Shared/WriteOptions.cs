@@ -10,9 +10,15 @@ namespace Microsoft.AppCenter.Data
     /// </summary>
     public class WriteOptions : BaseOptions
     {
-        public static WriteOptions InfiniteCache { get { return new WriteOptions(TimeSpan.MaxValue); } }
+        /// <summary>
+        /// Cache does not expire.
+        /// </summary>
+        public static WriteOptions InfiniteCache { get => new WriteOptions(TimeSpan.MaxValue); }
 
-        public static WriteOptions NoCache { get { return new WriteOptions(TimeSpan.Zero); } }
+        /// <summary>
+        /// Do not cache documents locally.
+        /// </summary>
+        public static WriteOptions NoCache { get => new WriteOptions(TimeSpan.Zero); }
 
         public WriteOptions()
         {
