@@ -46,7 +46,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Check whether the Data service is enabled or not.
         /// </summary>
-        public string HasFailed
+        public bool HasFailed
         {
             get
             {
