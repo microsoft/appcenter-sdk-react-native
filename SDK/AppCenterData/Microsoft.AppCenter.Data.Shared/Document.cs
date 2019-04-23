@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Deserialized document.
         /// </summary>
-        public T Document { get; internal set; }
+        public T DocumentData { get; internal set; }
 
         /// <summary>
         /// Document partition.
@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Document id.
         /// </summary>
-        public string Id { get internal set; }
+        public string Id { get; internal set; }
 
         /// <summary>
         /// ETag.
