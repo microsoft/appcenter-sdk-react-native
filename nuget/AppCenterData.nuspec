@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Microsoft.AppCenter.Data</id>
+    <title>App Center Data</title>
+    <authors>Microsoft</authors>
+    <owners>microsoft,appcenter</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft App Center Data package provides analytics capabilities for your mobile applications.</summary>
+    <description>This package contains functionalities to collect session, device properties, events etc… for your application.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>app center appcenter data mobilecenter</tags>
+    <language>en-US</language>
+    <projectUrl>https://aka.ms/telgml</projectUrl>
+    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <iconUrl>https://aka.ms/k76877</iconUrl>
+    <dependencies>
+      <dependency id="Microsoft.AppCenter" version="$version$" />
+    </dependencies>
+    <version>$version$</version>
+  </metadata>
+  <files>
+
+    <!-- Portable -->
+    <file src="$pcl_dir$/Microsoft.AppCenter.Data.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.Data.xml" target="lib/portable-net45+win8+wpa81+wp8" />
+
+    <!-- .NET Standard -->
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Data.dll" target="lib/netstandard1.0" />
+    <file src="$netstandard_dir$/Microsoft.AppCenter.Data.xml" target="lib/netstandard1.0" />
+
+    <!-- Android -->
+    <!-- <file src="$android_dir$/Microsoft.AppCenter.Data.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Data.xml" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Data.Android.Bindings.dll" target="lib/MonoAndroid403" /> -->
+
+    <!-- iOS -->
+    <!-- <file src="$ios_dir$/Microsoft.AppCenter.Data.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Data.xml" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Data.iOS.Bindings.dll" target="lib/Xamarin.iOS10" /> -->
+
+  </files>
+</package>
