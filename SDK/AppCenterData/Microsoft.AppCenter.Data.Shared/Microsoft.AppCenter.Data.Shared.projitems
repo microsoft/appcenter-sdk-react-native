@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{F707D6CC-E43A-442F-AA38-B913EAE3D7C1}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Microsoft.AppCenter.Data</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Data.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReadOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WriteOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Document.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+    <Compile Include="$(MSBuildThisFileDirectory)PaginatedDocuments.cs" />
+  </ItemGroup>
+</Project>
