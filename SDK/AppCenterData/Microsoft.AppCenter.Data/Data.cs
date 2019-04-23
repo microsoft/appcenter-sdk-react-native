@@ -7,6 +7,10 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class Data
     {
+        private static void PlatformSetApiUrl(string apiUrl)
+        {
+        }
+
         private static Task<bool> PlatformIsEnabledAsync()
         {
             return Task.FromResult(false);
@@ -17,42 +21,42 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult(default(object));
         }
 
-        public static Task<Document<T>> PlatformRead<T>(string partition, string documentId)
+        private static Task<Document<T>> PlatformRead<T>(string partition, string documentId)
         {
             return Task.FromResult<Document<T>>(null);
         }
 
-        public static Task<Document<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<Document<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
             return Task.FromResult<Document<T>>(null);
         }
 
-        public static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
+        private static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
         {
             return Task.FromResult<PaginatedDocuments<T>>(null);
         }
 
-        public static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document)
+        private static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document)
         {
             return Task.FromResult<Document<T>>(null);
         }
 
-        public static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             return Task.FromResult<Document<T>>(null);
         }
 
-        public static Task<Document<object>> PlatformDelete(string partition, string documentId)
+        private static Task<Document<object>> PlatformDelete(string partition, string documentId)
         {
             return Task.FromResult<Document<object>>(null);
         }
 
-        public static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document)
+        private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document)
         {
             return Task.FromResult<Document<T>>(null);
         }
 
-        public static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             return Task.FromResult<Document<T>>(null);
         }

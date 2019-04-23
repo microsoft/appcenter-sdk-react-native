@@ -14,6 +14,7 @@ namespace Microsoft.AppCenter.Data
         /// <param name="apiUrl">API base URL.</param>
         public static void SetApiUrl(string apiUrl)
         {
+            PlatformSetApiUrl(apiUrl);
         }
 
         /// <summary>
