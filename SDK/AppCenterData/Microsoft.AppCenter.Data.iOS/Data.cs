@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Data
         /// Internal SDK property not intended for public use.
         /// </summary>
         /// <value>
-        /// The iOS SDK Crashes bindings type.
+        /// The iOS SDK Data bindings type.
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(MSDataStore);
