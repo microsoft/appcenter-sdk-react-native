@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Asynchronously fetch the next page.
         /// </summary>
-        public Task<Page<T>> GetNextPage()
+        public Task<Page<T>> GetNextPageAsync()
         {
             return Task.FromResult<Page<T>>(null);
         }
