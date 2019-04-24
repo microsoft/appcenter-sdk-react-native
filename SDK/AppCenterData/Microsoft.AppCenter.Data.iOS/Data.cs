@@ -95,16 +95,7 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Delete(partition, documentId, (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
             });
             return taskCompletionSource.Task;
         }
