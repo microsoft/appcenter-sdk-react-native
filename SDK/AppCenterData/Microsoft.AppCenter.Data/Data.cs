@@ -46,9 +46,9 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult<Document<T>>(null);
         }
 
-        private static Task<Document<object>> PlatformDelete(string partition, string documentId)
+        private static Task<Document<T>> PlatformDelete<T>(string partition, string documentId)
         {
-            return Task.FromResult<Document<object>>(null);
+            return Task.FromResult<Document<T>>(null);
         }
 
         private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document)

@@ -9,7 +9,7 @@ namespace Microsoft.AppCenter.Data
     /// <summary>
     /// A document coming back from CosmosDB.
     /// </summary>
-    public class Document<T>
+    public partial class Document<T>
     {
         /// <summary>
         /// Deserialized document.
@@ -55,5 +55,7 @@ namespace Microsoft.AppCenter.Data
         /// Document error.
         /// </summary>
         public Exception DocumentError { get; internal set; }
+
+
     }
 }

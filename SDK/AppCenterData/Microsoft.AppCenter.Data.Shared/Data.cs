@@ -78,9 +78,9 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Delete a document.
         /// </summary>
-        public static Task<Document<object>> Delete(string partition, string documentId)
+        public static Task<Document<T>> Delete<T>(string partition, string documentId)
         {
-            return PlatformDelete(partition, documentId);
+            return PlatformDelete<T>(partition, documentId);
         }
 
         /// <summary>
