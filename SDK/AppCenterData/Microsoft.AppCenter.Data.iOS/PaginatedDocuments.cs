@@ -4,31 +4,38 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AppCenter.Data.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Data
 {
-    public partial class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
+    public partial class PaginatedDocuments<T>
     {
-        private List<DocumentWrapper<T>> documents;
+        internal MSPaginatedDocuments internalDocuments { get; }
 
-        public PaginatedDocuments()
+        PaginatedDocuments(MSPaginatedDocuments iosDocuments)
         {
-            this.documents = new List<DocumentWrapper<T>>();
+            internalDocuments = iosDocuments;
+        }  
+
+        bool PlatformHasNextPage()
+        {
+            return internalDocuments.HasNextPage();
         }
 
-        public void Add(DocumentWrapper<T> document)
+        Page PlatformCurrentPage()
         {
-            this.documents.Add(document);
+            return new Page(internalDocuments.CurrentPage());
         }
 
-        public IEnumerator<DocumentWrapper<T>> GetEnumerator()
+        Task<Page> PlatformNextPage()
         {
-            return this.documents.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.documents.GetEnumerator();
+            var taskCompletionSource = new TaskCompletionSource<Page>();
+            internalDocuments.NextPage((page) =>
+            {
+                taskCompletionSource.TrySetResult(new Page(page));
+            });
+            return taskCompletionSource.Task;
         }
     }
 }

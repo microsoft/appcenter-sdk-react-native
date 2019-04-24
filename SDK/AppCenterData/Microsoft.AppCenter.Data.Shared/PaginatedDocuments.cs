@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Data
     /// <summary>
     /// A (paginated) list of documents from CosmosDB.
     /// </summary>
-    public partial class PaginatedDocuments<T> 
+    public partial class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
     {
     }
 }
