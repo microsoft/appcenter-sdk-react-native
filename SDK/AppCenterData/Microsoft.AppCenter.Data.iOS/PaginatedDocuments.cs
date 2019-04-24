@@ -43,13 +43,20 @@ namespace Microsoft.AppCenter.Data
         /// Asynchronously fetch the next page.
         /// </summary>
         /// <returns>The next page of documents.</returns>
-        public Task<Page<T>> GetNextPage()
+        public Task<Page<T>> GetNextPageAsync()
         {
             var taskCompletionSource = new TaskCompletionSource<Page<T>>();
             InternalDocuments.NextPage((internalPage) =>
             {
-                var source = internalPage.Items;
-                taskCompletionSource.TrySetResult(GetPageFromInternalSource(source));
+                if (internalPage.Error != null)
+                {
+                    taskCompletionSource.TrySetException(new NSErrorException(internalPage.Error.Error));
+                }
+                else
+                {
+                    var source = internalPage.Items;
+                    taskCompletionSource.TrySetResult(GetPageFromInternalSource(source));
+                }
             });
             return taskCompletionSource.Task;
         }
