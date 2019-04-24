@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Change the URL used to retrieve CosmosDB resource tokens.
         /// </summary>
-        /// <param name="apiUrl">Token Exchange service URL.</param>
+        /// <param name="tokenExchangeUrl">Token Exchange service URL.</param>
         public static void SetTokenExchangeUrl(string tokenExchangeUrl)
         {
             PlatformSetTokenExchangeUrl(tokenExchangeUrl);
@@ -43,9 +43,10 @@ namespace Microsoft.AppCenter.Data
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
-        public static Task<DocumentWrapper<T>> Read<T>(string partition, string documentId)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> ReadAsync<T>(string partition, string documentId)
         {
-            return PlatformRead<T>(partition, documentId, new ReadOptions());
+            return PlatformReadAsync<T>(partition, documentId, new ReadOptions());
         }
 
         /// <summary>
@@ -55,9 +56,10 @@ namespace Microsoft.AppCenter.Data
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <param name="readOptions">Options for reading and storing the document.</param>
-        public static Task<DocumentWrapper<T>> Read<T>(string partition, string documentId, ReadOptions readOptions)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> ReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
         {
-            return PlatformRead<T>(partition, documentId, readOptions);
+            return PlatformReadAsync<T>(partition, documentId, readOptions);
         }
 
         /// <summary>
@@ -65,9 +67,10 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.PaginatedDocuments" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
-        public static Task<PaginatedDocuments<T>> List<T>(string partition)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<PaginatedDocuments<T>> ListAsync<T>(string partition)
         {
-            return PlatformList<T>(partition);
+            return PlatformListAsync<T>(partition);
         }
 
         /// <summary>
@@ -77,9 +80,10 @@ namespace Microsoft.AppCenter.Data
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="document">The document to be stored in CosmosDB.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
-        public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> CreateAsync<T>(string partition, string documentId, T document)
         {
-            return PlatformCreate(partition, documentId, document, new WriteOptions());
+            return PlatformCreateAsync(partition, documentId, document, new WriteOptions());
         }
 
         /// <summary>
@@ -90,9 +94,10 @@ namespace Microsoft.AppCenter.Data
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <param name="document">The document to be stored in CosmosDB.</param>
         /// <param name="writeOptions">Options for writing and storing the document.</param>
-        public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> CreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return PlatformCreate(partition, documentId, document, writeOptions);
+            return PlatformCreateAsync(partition, documentId, document, writeOptions);
         }
 
         /// <summary>
@@ -101,9 +106,10 @@ namespace Microsoft.AppCenter.Data
         /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
-        public static Task<DocumentWrapper<T>> Delete<T>(string partition, string documentId)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> DeleteAsync<T>(string partition, string documentId)
         {
-            return PlatformDelete<T>(partition, documentId);
+            return PlatformDeleteAsync<T>(partition, documentId);
         }
 
         /// <summary>
@@ -113,9 +119,10 @@ namespace Microsoft.AppCenter.Data
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <param name="document">The document to be stored in CosmosDB.</param>
-        public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> ReplaceAsync<T>(string partition, string documentId, T document)
         {
-            return PlatformReplace(partition, documentId, document, new WriteOptions());
+            return PlatformReplaceAsync(partition, documentId, document, new WriteOptions());
         }
 
         /// <summary>
@@ -126,9 +133,10 @@ namespace Microsoft.AppCenter.Data
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <param name="document">The document to be stored in CosmosDB.</param>
         /// <param name="writeOptions">Options for writing and storing the document.</param>
-        public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> ReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return PlatformReplace(partition, documentId, document, writeOptions);
+            return PlatformReplaceAsync(partition, documentId, document, writeOptions);
         }
     }
 }
