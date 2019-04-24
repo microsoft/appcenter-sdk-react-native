@@ -14,5 +14,9 @@ namespace Microsoft.AppCenter.Data
         /// Device document time-to-live. Default is one day.
         /// </summary>
         public TimeSpan DeviceTimeToLive { get; set; } = TimeToLive.Default;
+
+        internal BaseOptions()
+        {
+        }
     }
 }

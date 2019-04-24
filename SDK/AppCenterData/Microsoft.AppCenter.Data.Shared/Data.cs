@@ -143,5 +143,10 @@ namespace Microsoft.AppCenter.Data
         {
             return PlatformReplaceAsync(partition, documentId, document, writeOptions);
         }
+
+        /// <summary>
+        /// The event handler for the remote operation.
+        /// </summary>
+        public static event EventHandler<RemoteOperationCompletedEventArgs> RemoteOperationCompleted;
     }
 }

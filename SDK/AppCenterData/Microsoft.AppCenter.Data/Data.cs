@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Data
@@ -23,27 +24,34 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
         private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
-            return Task.FromResult<PaginatedDocuments<T>>(null);
+            return GenerateFailedTask<PaginatedDocuments<T>>();
         }
 
         private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
         private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
         private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return GenerateFailedTask<DocumentWrapper<T>>();
+        }
+
+        private static Task<T> GenerateFailedTask<T>()
+        {
+            var task = new TaskCompletionSource<T>();
+            task.SetException(new DataException(null, new NotImplementedException()));
+            return task.Task;
         }
     }
 }
