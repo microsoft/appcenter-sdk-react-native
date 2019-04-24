@@ -9,12 +9,12 @@ namespace Microsoft.AppCenter.Data
     public partial class Data
     {
         /// <summary>
-        /// Change the base URL used to make API calls.
+        /// Change the URL used to retrieve CosmosDB resource tokens.
         /// </summary>
-        /// <param name="apiUrl">API base URL.</param>
-        public static void SetTokenExchangeUrl(string apiUrl)
+        /// <param name="apiUrl">Token Exchange service URL.</param>
+        public static void SetTokenExchangeUrl(string tokenExchangeUrl)
         {
-            PlatformSetTokenExchangeUrl(apiUrl);
+            PlatformSetTokenExchangeUrl(tokenExchangeUrl);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Data
         /// <typeparam name="T">The 1st type parameter.</typeparam>
         public static Task<DocumentWrapper<T>> Read<T>(string partition, string documentId)
         {
-            return PlatformRead<T>(partition, documentId);
+            return PlatformRead<T>(partition, documentId, new ReadOptions());
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Microsoft.AppCenter.Data
         /// <param name="documentId">The CosmosDB document id.</param>
         public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document)
         {
-            return PlatformCreate(partition, documentId, document);
+            return PlatformCreate(partition, documentId, document, new WriteOptions());
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Microsoft.AppCenter.Data
         /// <param name="document">The document to be stored in CosmosDB.</param>
         public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document)
         {
-            return PlatformReplace(partition, documentId, document);
+            return PlatformReplace(partition, documentId, document, new WriteOptions());
         }
 
         /// <summary>
