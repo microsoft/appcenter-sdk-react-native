@@ -4,7 +4,7 @@
 using System;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.Appcenter.Storage;
+using Com.Microsoft.Appcenter.Data;
 
 namespace Microsoft.AppCenter.Data
 {
