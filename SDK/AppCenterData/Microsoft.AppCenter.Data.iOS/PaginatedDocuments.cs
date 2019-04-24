@@ -47,18 +47,7 @@ namespace Microsoft.AppCenter.Data
             var page = new Page<T>();
             foreach (var item in source)
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = item.Partition,
-                    Id = item.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(item.DeserializedValue),
-                    ETag = item.ETag,
-                    LastUpdatedDate = (DateTime)item.LastUpdatedDate,
-                    FromDeviceCache = item.FromDeviceCache,
-                    Error = Data.ConvertErrorToException(item.Error)
-                };
-
-                page.Items.Add(doc);
+                page.Items.Add(Data.ConvertInternalDocToExternal(item));
             }
             return page;
         }

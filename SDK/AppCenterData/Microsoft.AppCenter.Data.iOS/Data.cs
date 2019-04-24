@@ -39,20 +39,9 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            MSDataStore.Read(partition, documentId, (resultDoc) => 
+            MSDataStore.Read(partition, documentId, (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -66,17 +55,7 @@ namespace Microsoft.AppCenter.Data
             };
             MSDataStore.Read(partition, documentId, msReadOptions, (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -97,17 +76,7 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Create(partition, documentId, document.ToString(), (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -121,17 +90,7 @@ namespace Microsoft.AppCenter.Data
             };
             MSDataStore.Create(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -141,18 +100,7 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Replace(partition, documentId, document.ToString(), (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -167,17 +115,7 @@ namespace Microsoft.AppCenter.Data
 
             MSDataStore.Replace(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                var doc = new DocumentWrapper<T>
-                {
-                    Partition = resultDoc.Partition,
-                    Id = resultDoc.DocumentId,
-                    DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                    ETag = resultDoc.ETag,
-                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
-                    FromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error)
-                };
-                taskCompletionSource.TrySetResult(doc);
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -201,7 +139,21 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        public static DataException ConvertErrorToException(MSDataSourceError error) 
+        internal DocumentWrapper<T> ConvertInternalDocToExternal<T>(MSDocumentWrapper internalDoc) 
+        {
+            return new DocumentWrapper<T>
+            {
+                Partition = internalDoc.Partition,
+                Id = internalDoc.DocumentId,
+                DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.DeserializedValue),
+                ETag = internalDoc.ETag,
+                LastUpdatedDate = (DateTime)internalDoc.LastUpdatedDate,
+                FromDeviceCache = internalDoc.FromDeviceCache,
+                Error = ConvertErrorToException(internalDoc.Error)
+            };
+        }
+
+        internal static DataException ConvertErrorToException(MSDataSourceError error) 
         {
             var exception = new NSErrorException(error.Error);
             return new DataException(exception.Message, exception);
