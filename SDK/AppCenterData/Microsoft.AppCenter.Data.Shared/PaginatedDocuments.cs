@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
-    public class PaginatedDocuments<T> : IEnumerable<Document<T>>
+    public class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
     {
-        public IEnumerator<Document<T>> GetEnumerator()
+        public IEnumerator<DocumentWrapper<T>> GetEnumerator()
         {
             throw new NotImplementedException();
         }
