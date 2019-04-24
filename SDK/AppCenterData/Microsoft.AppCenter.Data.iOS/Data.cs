@@ -1,13 +1,10 @@
-﻿using Foundation;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Foundation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Data.iOS.Bindings;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Data;
-using ObjCRuntime;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -50,9 +47,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -76,9 +73,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -103,9 +100,9 @@ namespace Microsoft.AppCenter.Data
                             Id = item.DocumentId,
                             DeserializedValue = Document<T>.DeserializeString(item.DeserializedValue),
                             ETag = item.ETag,
-                            LastUpdatedDate = ((DateTime)item.LastUpdatedDate).Ticks,
+                            LastUpdatedDate = GetTimeStamp(item.LastUpdatedDate),
                             IsFromDeviceCache = item.FromDeviceCache,
-                            Error = new DataException(item.Error.Error.LocalizedDescription)
+                            Error = ConvertErrorToException(item.Error.Error)
                         };
 
                         paginatedDocs.Add(doc);
@@ -134,9 +131,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -161,9 +158,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -182,9 +179,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -209,9 +206,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -229,14 +226,26 @@ namespace Microsoft.AppCenter.Data
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
                     IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
+                    Error = ConvertErrorToException(resultDoc.Error.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
             });
             return taskCompletionSource.Task;
+        }
+
+        static long GetTimeStamp(NSDate date)
+        {
+            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            return (long)((DateTime)date - startTime).TotalSeconds;
+        }
+
+        static DataException ConvertErrorToException(NSError error) 
+        {
+            NSErrorException exception = new NSErrorException(error);
+            return exception.InnerException as DataException;
         }
     }
 }
