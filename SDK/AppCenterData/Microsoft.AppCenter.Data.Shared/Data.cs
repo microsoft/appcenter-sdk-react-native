@@ -29,7 +29,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Enable or disable the Data service.
         /// </summary>
-        /// <param name="enabled">Enabled.</param>
+        /// <param name="enabled">true to enable, false to disable.</param>
         /// <returns>A task to monitor the operation.</returns>
         public static Task SetEnabledAsync(bool enabled)
         {
@@ -39,7 +39,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Read the specified partition and documentId.
         /// </summary>
-        /// <returns>A task with DocumentWrapper.</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
@@ -51,7 +51,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Read a document.
         /// </summary>
-        /// <returns>A task with DocumentWrapper</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         /// <param name="readOptions">Options for reading and storing the document.</param>
@@ -61,9 +61,9 @@ namespace Microsoft.AppCenter.Data
         }
 
         /// <summary>
-        /// List (need optional signature to configure page size).
+        /// Retrieve a paginated list of the documents in a partition.
         /// </summary>
-        /// <returns>A task with PaginatedDocuments</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.PaginatedDocuments" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         public static Task<PaginatedDocuments<T>> List<T>(string partition)
         {
@@ -73,9 +73,9 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Create a document.
         /// </summary>
-        /// <returns>A task with DocumentWrapper</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
-        /// <param name="document">The document to be stored in CosmosDB. Must conform to SerializableDocument protocol.</param>
+        /// <param name="document">The document to be stored in CosmosDB.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document)
         {
@@ -85,10 +85,10 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Create a document.
         /// </summary>
-        /// <returns>A task with DocumentWrapper</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
-        /// <param name="document">The document to be stored in CosmosDB. Must conform to SerializableDocument protocol.</param>
+        /// <param name="document">The document to be stored in CosmosDB.</param>
         /// <param name="writeOptions">Options for writing and storing the document.</param>
         public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
@@ -98,7 +98,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Delete a document.
         /// </summary>
-        /// <returns>A task with DocumentWrapper</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
         public static Task<DocumentWrapper<T>> Delete<T>(string partition, string documentId)
@@ -109,10 +109,10 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Replace a document.
         /// </summary>
-        /// <returns>A task with DocumentWrapper</returns>
-        /// <param name="partition">The CosmosDB partition key..</param>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
+        /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
-        /// <param name="document">The document to be stored in CosmosDB. Must conform to SerializableDocument protocol.</param>
+        /// <param name="document">The document to be stored in CosmosDB.</param>
         public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document)
         {
             return PlatformReplace(partition, documentId, document);
@@ -121,10 +121,10 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Replace a document.
         /// </summary>
-        /// <returns>A task with DocumentWrapper</returns>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
-        /// <param name="document">The document to be stored in CosmosDB. Must conform to SerializableDocument protocol.</param>
+        /// <param name="document">The document to be stored in CosmosDB.</param>
         /// <param name="writeOptions">Options for writing and storing the document.</param>
         public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
