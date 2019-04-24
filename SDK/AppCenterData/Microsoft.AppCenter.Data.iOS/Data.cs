@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -72,7 +72,7 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -84,33 +84,9 @@ namespace Microsoft.AppCenter.Data
         private static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
         {
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
-            var paginatedDocs = new PaginatedDocuments<T>();
             MSDataStore.List(partition, (resultPages) =>
             {
-                var currentPage = resultPages.CurrentPage();
-                do
-                {
-                    foreach (var item in currentPage.Items)
-                    {
-                        var doc = new DocumentWrapper<T>
-                        {
-                            Partition = item.Partition,
-                            Id = item.DocumentId,
-                            DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
-                            ETag = item.ETag,
-                            LastUpdatedDate = new DateTime(item.LastUpdatedDate),
-                            FromDeviceCache = item.FromDeviceCache,
-                            Error = ConvertErrorToException(item.Error)
-                        };
-
-                        paginatedDocs.Add(doc);
-                    }
-
-                    resultPages.NextPage((page) =>
-                    {
-                        currentPage = page as MSPage;
-                    });
-                } while (currentPage == null);
+                var paginatedDocs = new PaginatedDocuments<T>(resultPages);
                 taskCompletionSource.TrySetResult(paginatedDocs);
             });
             return taskCompletionSource.Task;
@@ -127,7 +103,7 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -151,7 +127,7 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -171,7 +147,7 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -197,7 +173,7 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = JsonConvert.DeserializeObject<T>(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -216,7 +192,7 @@ namespace Microsoft.AppCenter.Data
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = new DateTime(item.LastUpdatedDate),
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
                     FromDeviceCache = resultDoc.FromDeviceCache,
                     Error = ConvertErrorToException(resultDoc.Error)
                 };
@@ -225,7 +201,7 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        static DataException ConvertErrorToException(MSDataSourceError error) 
+        public static DataException ConvertErrorToException(MSDataSourceError error) 
         {
             var exception = new NSErrorException(error.Error);
             return new DataException(exception.Message, exception);

@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Microsoft.AppCenter.Data.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Data
@@ -13,27 +12,62 @@ namespace Microsoft.AppCenter.Data
     {
         internal MSPaginatedDocuments internalDocuments { get; }
 
-        PaginatedDocuments(MSPaginatedDocuments iosDocuments)
+        public PaginatedDocuments(MSPaginatedDocuments iosDocuments)
         {
             internalDocuments = iosDocuments;
         }  
 
-        bool PlatformHasNextPage()
+        bool HasNextPage
         {
-            return internalDocuments.HasNextPage();
+            get { return internalDocuments.HasNextPage(); }
         }
 
-        Page PlatformCurrentPage()
+        Page<T> CurrentPage
         {
-            return new Page(internalDocuments.CurrentPage());
-        }
-
-        Task<Page> PlatformNextPage()
-        {
-            var taskCompletionSource = new TaskCompletionSource<Page>();
-            internalDocuments.NextPage((page) =>
+            get
             {
-                taskCompletionSource.TrySetResult(new Page(page));
+                var page = new Page<T>();
+                foreach (var item in internalDocuments.CurrentPage().Items)
+                {
+                    var doc = new DocumentWrapper<T>
+                    {
+                        Partition = item.Partition,
+                        Id = item.DocumentId,
+                        DeserializedValue = JsonConvert.DeserializeObject<T>(item.DeserializedValue),
+                        ETag = item.ETag,
+                        LastUpdatedDate = (DateTime)item.LastUpdatedDate,
+                        FromDeviceCache = item.FromDeviceCache,
+                        Error = Data.ConvertErrorToException(item.Error)
+                    };
+
+                    page.Items.Add(doc);
+                }
+                return page;
+            }
+        }
+
+        Task<Page<T>> GetNextPage()
+        {
+            var taskCompletionSource = new TaskCompletionSource<Page<T>>();
+            internalDocuments.NextPage((internalPage) =>
+            {
+                var page = new Page<T>();
+                foreach (var item in internalPage.Items)
+                {
+                    var doc = new DocumentWrapper<T>
+                    {
+                        Partition = item.Partition,
+                        Id = item.DocumentId,
+                        DeserializedValue = JsonConvert.DeserializeObject<T>(item.DeserializedValue),
+                        ETag = item.ETag,
+                        LastUpdatedDate = (DateTime)item.LastUpdatedDate,
+                        FromDeviceCache = item.FromDeviceCache,
+                        Error = Data.ConvertErrorToException(item.Error)
+                    };
+
+                    page.Items.Add(doc);
+                }
+                taskCompletionSource.TrySetResult(page);
             });
             return taskCompletionSource.Task;
         }
