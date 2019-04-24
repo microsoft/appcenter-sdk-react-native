@@ -21,6 +21,5 @@ namespace Microsoft.AppCenter.Data
         /// Document eTag.
         /// </summary>
         public string ETag { get; internal set; }
-
     }
 }
