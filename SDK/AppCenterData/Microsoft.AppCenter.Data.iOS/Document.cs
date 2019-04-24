@@ -3,7 +3,7 @@
 
 using System;
 using System.Threading.Tasks;
-//using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -13,8 +13,8 @@ namespace Microsoft.AppCenter.Data
     public partial class Document<T>
     {
         public static T DeserializeString(string objectString)
-        {
-            return default(T);
+        {            
+            return JsonConvert.DeserializeObject<T>(objectString);
         }
     }
 }

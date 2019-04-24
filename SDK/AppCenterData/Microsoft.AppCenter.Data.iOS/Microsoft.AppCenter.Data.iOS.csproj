@@ -57,6 +57,11 @@
       <Name>Microsoft.AppCenter.Data.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="..\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
