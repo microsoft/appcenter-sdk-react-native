@@ -36,14 +36,7 @@ namespace Microsoft.AppCenter.Auth
             {
                 if (error != null)
                 {
-                    try
-                    {
-                        throw new NSErrorException(error);
-                    }
-                    catch (NSErrorException e)
-                    {
-                        taskCompletionSource.TrySetException(e);
-                    }
+                    taskCompletionSource.TrySetException(new NSErrorException(error));
                 }
                 else
                 {

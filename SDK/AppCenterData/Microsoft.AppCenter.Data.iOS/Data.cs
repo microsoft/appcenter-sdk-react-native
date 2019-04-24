@@ -39,10 +39,17 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            var msReadOptions = ConvertReadOptionsToInternal(readOptions);
+            var msReadOptions = readOptions.ToiOSReadOptions();
             MSDataStore.Read(partition, documentId, msReadOptions, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
+                if (resultDoc.Error != null)
+                {
+                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                }
+                else
+                {
+                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
+                }
             });
             return taskCompletionSource.Task;
         }
@@ -61,10 +68,17 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
+            var msWriteOptions = writeOptions.ToiOSWriteOptions();
             MSDataStore.Create(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
+                if (resultDoc.Error != null)
+                {
+                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                }
+                else
+                {
+                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
+                }
             });
             return taskCompletionSource.Task;
         }
@@ -72,10 +86,17 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
+            var msWriteOptions = writeOptions.ToiOSWriteOptions();
             MSDataStore.Replace(partition, documentId, JsonConvert.SerializeObject(document), msWriteOptions, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
+                if (resultDoc.Error != null)
+                {
+                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                }
+                else
+                {
+                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
+                }
             });
             return taskCompletionSource.Task;
         }
@@ -85,44 +106,16 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Delete(partition, documentId, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
+                if (resultDoc.Error != null)
+                {
+                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                }
+                else
+                {
+                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
+                }
             });
             return taskCompletionSource.Task;
-        }
-
-        internal static DocumentWrapper<T> ConvertInternalDocToExternal<T>(MSDocumentWrapper internalDoc) 
-        {
-            return new DocumentWrapper<T>
-            {
-                Partition = internalDoc.Partition,
-                Id = internalDoc.DocumentId,
-                DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.JsonValue),
-                ETag = internalDoc.ETag,
-                LastUpdatedDate = (DateTime)internalDoc.LastUpdatedDate,
-                FromDeviceCache = internalDoc.FromDeviceCache
-            };
-        }
-
-        internal static DataException ConvertErrorToException(MSDataSourceError error) 
-        {
-            var exception = new NSErrorException(error.Error);
-            return new DataException(exception.Message, exception);
-        }
-
-        private static MSWriteOptions ConvertWriteOptionsToInternal(WriteOptions writeOptions)
-        {
-            return new MSWriteOptions
-            {
-                DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
-            };
-        }
-
-        private static MSReadOptions ConvertReadOptionsToInternal(ReadOptions readOptions)
-        {
-            return new MSReadOptions
-            {
-                DeviceTimeToLive = readOptions.DeviceTimeToLive.Ticks
-            };
         }
     }
 }
