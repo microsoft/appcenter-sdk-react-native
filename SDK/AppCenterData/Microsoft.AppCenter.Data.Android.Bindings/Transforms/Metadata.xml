@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <attr path="/api/package[@name='com.microsoft.appcenter.storage']/class[@name='Storage']" name="managedName">AndroidData</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter.data']/class[@name='Data']" name="managedName">AndroidData</attr>
 </metadata>

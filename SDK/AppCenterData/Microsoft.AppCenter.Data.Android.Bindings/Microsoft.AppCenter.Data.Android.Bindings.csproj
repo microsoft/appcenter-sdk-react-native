@@ -52,8 +52,8 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-storage-release.aar">
-      <Link>Jars\appcenter-storage-release.aar</Link>
+    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-data-release.aar">
+      <Link>Jars\appcenter-data-release.aar</Link>
     </LibraryProjectZip>
   </ItemGroup>
   <ItemGroup>

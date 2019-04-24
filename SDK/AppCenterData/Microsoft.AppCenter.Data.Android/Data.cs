@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Data
         [Preserve]
         public static Type BindingType => typeof(AndroidData);
 
-        private static void PlatformSetApiUrl(string apiUrl)
+        private static void PlatformSetTokenExchangeUrl(string apiUrl)
         {
             AndroidData.SetApiUrl(apiUrl);
         }
