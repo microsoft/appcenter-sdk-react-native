@@ -2,21 +2,28 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Data
 {
     public partial class PaginatedDocuments<T>
     {
-        public IEnumerator<DocumentWrapper<T>> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// The current page.
+        /// </summary>
+        public Page<T> CurrentPage { get => null; }
+        
+        /// <summary>
+        /// Boolean indicating if an extra page is available.
+        /// </summary>
+        public bool HasNextPage { get => false; }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Asynchronously fetch the next page.
+        /// </summary>
+        public Task<Page<T>> GetNextPage()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

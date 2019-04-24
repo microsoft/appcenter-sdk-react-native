@@ -16,5 +16,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DocumentWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PaginatedDocuments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Page.cs" />
   </ItemGroup>
 </Project>
