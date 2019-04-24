@@ -34,6 +34,11 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
         [Static]
         [Export("signOut")]
         void SignOut();
+
+        // + (void)openURL:(NSURL *)url;
+        [Static]
+        [Export("openURL:")]
+        void OpenUrl(NSUrl url);
     }
 
     // typedef void (^MSSignInCompletionHandler)(MSUserInformation* _Nullable userInformation, NSError * _Nullable error);
