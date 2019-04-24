@@ -38,21 +38,21 @@ namespace Microsoft.AppCenter.Data
             MSDataStore.SetTokenExchangeUrl(apiUrl);
         }
 
-        private static Task<Document<T>> PlatformRead<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
 
             MSDataStore.Read(partition, documentId, (resultDoc) => 
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
-                    DocumentData = Document<T>.DeserializeString(resultDoc.DeserializedValue),
+                    DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -60,9 +60,9 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<Document<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
 
             MSReadOptions msReadOptions = new MSReadOptions 
             {
@@ -70,15 +70,15 @@ namespace Microsoft.AppCenter.Data
             };
             MSDataStore.Read(partition, documentId, msReadOptions, (resultDoc) =>
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
-                    DocumentData = Document<T>.DeserializeString(resultDoc.DeserializedValue),
+                    DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -97,15 +97,15 @@ namespace Microsoft.AppCenter.Data
                 {
                     foreach (var item in currentPage.Items)
                     {
-                        Document<T> doc = new Document<T>
+                        DocumentWrapper<T> doc = new DocumentWrapper<T>
                         {
                             Partition = item.Partition,
                             Id = item.DocumentId,
-                            DocumentData = Document<T>.DeserializeString(item.DeserializedValue),
+                            DeserializedValue = Document<T>.DeserializeString(item.DeserializedValue),
                             ETag = item.ETag,
-                            Timestamp = ((DateTime)item.LastUpdatedDate).Ticks,
-                            IsFromCache = item.FromDeviceCache,
-                            DocumentError = new Exception(item.Error.Error.LocalizedDescription)
+                            LastUpdatedDate = ((DateTime)item.LastUpdatedDate).Ticks,
+                            IsFromDeviceCache = item.FromDeviceCache,
+                            Error = new DataException(item.Error.Error.LocalizedDescription)
                         };
 
                         paginatedDocs.Add(doc);
@@ -122,21 +122,21 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document)
+        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
 
             MSDataStore.Create(partition, documentId, document.ToString(), (resultDoc) =>
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
-                    DocumentData = Document<T>.DeserializeString(resultDoc.DeserializedValue),
+                    DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -144,9 +144,9 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
 
             MSWriteOptions msWriteOptions = new MSWriteOptions
             {
@@ -155,15 +155,15 @@ namespace Microsoft.AppCenter.Data
 
             MSDataStore.Create(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
-                    DocumentData = Document<T>.DeserializeString(resultDoc.DeserializedValue),
+                    DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -171,20 +171,20 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document)
+        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Replace(partition, documentId, document.ToString(), (resultDoc) =>
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
-                    DocumentData = Document<T>.DeserializeString(resultDoc.DeserializedValue),
+                    DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -192,9 +192,9 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
 
             MSWriteOptions msWriteOptions = new MSWriteOptions
             {
@@ -203,15 +203,15 @@ namespace Microsoft.AppCenter.Data
 
             MSDataStore.Replace(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
-                    DocumentData = Document<T>.DeserializeString(resultDoc.DeserializedValue),
+                    DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -219,19 +219,19 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<Document<T>> PlatformDelete<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<object>> PlatformDelete(string partition, string documentId)
         {
-            var taskCompletionSource = new TaskCompletionSource<Document<T>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<object>>();
             MSDataStore.Delete(partition, documentId, (resultDoc) =>
             {
-                Document<T> doc = new Document<T>
+                DocumentWrapper<object> doc = new DocumentWrapper<object>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
                     ETag = resultDoc.ETag,
-                    Timestamp = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
-                    IsFromCache = resultDoc.FromDeviceCache,
-                    DocumentError = new Exception(resultDoc.Error.Error.LocalizedDescription)
+                    LastUpdatedDate = ((DateTime)resultDoc.LastUpdatedDate).Ticks,
+                    IsFromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = new DataException(resultDoc.Error.Error.LocalizedDescription)
                 };
 
                 taskCompletionSource.TrySetResult(doc);

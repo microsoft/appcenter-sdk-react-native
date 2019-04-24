@@ -13,7 +13,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)BaseOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReadOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WriteOptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Document.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DocumentWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PaginatedDocuments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataException.cs" />
   </ItemGroup>
 </Project>

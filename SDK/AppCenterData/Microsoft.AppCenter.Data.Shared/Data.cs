@@ -12,7 +12,7 @@ namespace Microsoft.AppCenter.Data
         /// Change the base URL used to make API calls.
         /// </summary>
         /// <param name="apiUrl">API base URL.</param>
-        public static void SetApiUrl(string apiUrl)
+        public static void SetTokenExchangeUrl(string apiUrl)
         {
             PlatformSetApiUrl(apiUrl);
         }
@@ -35,10 +35,8 @@ namespace Microsoft.AppCenter.Data
             return PlatformSetEnabledAsync(enabled);
         }
 
-        /// <summary>
-        /// Read a document.
-        /// </summary>
-        public static Task<Document<T>> Read<T>(string partition, string documentId)
+
+        public static Task<DocumentWrapper<T>> Read<T>(string partition, string documentId)
         {
             return PlatformRead<T>(partition, documentId);
         }
@@ -46,7 +44,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Read a document.
         /// </summary>
-        public static Task<Document<T>> Read<T>(string partition, string documentId, ReadOptions readOptions)
+        public static Task<DocumentWrapper<T>> Read<T>(string partition, string documentId, ReadOptions readOptions)
         {
             return PlatformRead<T>(partition, documentId, readOptions);
         }
@@ -62,7 +60,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Create a document.
         /// </summary>
-        public static Task<Document<T>> Create<T>(string partition, string documentId, T document)
+        public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document)
         {
             return PlatformCreate(partition, documentId, document);
         }
@@ -70,7 +68,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Create a document.
         /// </summary>
-        public static Task<Document<T>> Create<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        public static Task<DocumentWrapper<T>> Create<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             return PlatformCreate(partition, documentId, document, writeOptions);
         }
@@ -78,15 +76,15 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Delete a document.
         /// </summary>
-        public static Task<Document<T>> Delete<T>(string partition, string documentId)
+        public static Task<DocumentWrapper<object>> Delete(string partition, string documentId)
         {
-            return PlatformDelete<T>(partition, documentId);
+            return PlatformDelete(partition, documentId);
         }
 
         /// <summary>
         /// Replace a document.
         /// </summary>
-        public static Task<Document<T>> Replace<T>(string partition, string documentId, T document)
+        public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document)
         {
             return PlatformReplace(partition, documentId, document);
         }
@@ -94,7 +92,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Replace a document.
         /// </summary>
-        public static Task<Document<T>> Replace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        public static Task<DocumentWrapper<T>> Replace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             return PlatformReplace(partition, documentId, document, writeOptions);
         }

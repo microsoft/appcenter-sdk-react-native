@@ -7,21 +7,21 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
-    public class PaginatedDocuments<T> : IEnumerable<Document<T>>
+    public class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
     {
-        private List<Document<T>> documents;
+        private List<DocumentWrapper<T>> documents;
 
         public PaginatedDocuments()
         {
-            this.documents = new List<Document<T>>();
+            this.documents = new List<DocumentWrapper<T>>();
         }
 
-        public void Add(Document<T> document)
+        public void Add(DocumentWrapper<T> document)
         {
             this.documents.Add(document);
         }
 
-        public IEnumerator<Document<T>> GetEnumerator()
+        public IEnumerator<DocumentWrapper<T>> GetEnumerator()
         {
             return this.documents.GetEnumerator();
         }

@@ -21,14 +21,14 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult(default(object));
         }
 
-        private static Task<Document<T>> PlatformRead<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
-        private static Task<Document<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
         private static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
@@ -36,29 +36,29 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult<PaginatedDocuments<T>>(null);
         }
 
-        private static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document)
+        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
-        private static Task<Document<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
-        private static Task<Document<T>> PlatformDelete<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<object>> PlatformDelete(string partition, string documentId)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<object>>(null);
         }
 
-        private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document)
+        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
-        private static Task<Document<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return Task.FromResult<Document<T>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
     }
 }

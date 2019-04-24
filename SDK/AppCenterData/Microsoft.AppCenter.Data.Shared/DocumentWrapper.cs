@@ -9,12 +9,12 @@ namespace Microsoft.AppCenter.Data
     /// <summary>
     /// A document coming back from CosmosDB.
     /// </summary>
-    public partial class Document<T>
+    public class DocumentWrapper<T>
     {
         /// <summary>
         /// Deserialized document.
         /// </summary>
-        public T DocumentData { get; internal set; }
+        public T DeserializedValue { get; internal set; }
 
         /// <summary>
         /// Document partition.
@@ -34,12 +34,12 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// UTC unix timestamp.
         /// </summary>
-        public long Timestamp { get; internal set; }
+        public long LastUpdatedDate { get; internal set; }
 
         /// <summary>
         /// Flag indicating if data was retrieved from the local cache (for offline mode)
         /// </summary>
-        public bool IsFromCache { get; set; }
+        public bool IsFromDeviceCache { get; set; }
 
         /// <summary>
         /// The pending operation saved in the local storage.
@@ -49,13 +49,11 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Check whether the Data service is enabled or not.
         /// </summary>
-        public bool HasFailed { get => DocumentError != null; }
+        public bool HasFailed { get => Error != null; }
 
         /// <summary>
         /// Document error.
         /// </summary>
-        public Exception DocumentError { get; internal set; }
-
-
+        public DataException Error { get; internal set; }
     }
 }
