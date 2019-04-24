@@ -21,11 +21,6 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult(default(object));
         }
 
-        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId)
-        {
-            return Task.FromResult<DocumentWrapper<T>>(null);
-        }
-
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
             return Task.FromResult<DocumentWrapper<T>>(null);
@@ -36,22 +31,12 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult<PaginatedDocuments<T>>(null);
         }
 
-        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document)
-        {
-            return Task.FromResult<DocumentWrapper<T>>(null);
-        }
-
         private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
         private static Task<DocumentWrapper<T>> PlatformDelete<T>(string partition, string documentId)
-        {
-            return Task.FromResult<DocumentWrapper<T>>(null);
-        }
-
-        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document)
         {
             return Task.FromResult<DocumentWrapper<T>>(null);
         }
