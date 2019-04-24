@@ -96,7 +96,7 @@ namespace Microsoft.AppCenter.Data
             {
                 Partition = internalDoc.Partition,
                 Id = internalDoc.DocumentId,
-                DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.DeserializedValue),
+                DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.JsonValue),
                 ETag = internalDoc.ETag,
                 LastUpdatedDate = (DateTime)internalDoc.LastUpdatedDate,
                 FromDeviceCache = internalDoc.FromDeviceCache,
