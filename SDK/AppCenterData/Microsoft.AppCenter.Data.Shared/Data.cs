@@ -9,12 +9,12 @@ namespace Microsoft.AppCenter.Data
     public partial class Data
     {
         /// <summary>
-        /// Change the base URL used to make API calls.
+        /// Change the URL used to retrieve CosmosDB resource tokens.
         /// </summary>
-        /// <param name="apiUrl">API base URL.</param>
-        public static void SetTokenExchangeUrl(string apiUrl)
+        /// <param name="apiUrl">Token Exchange service URL.</param>
+        public static void SetTokenExchangeUrl(string tokenExchangeUrl)
         {
-            PlatformSetTokenExchangeUrl(apiUrl);
+            PlatformSetTokenExchangeUrl(tokenExchangeUrl);
         }
 
         /// <summary>
