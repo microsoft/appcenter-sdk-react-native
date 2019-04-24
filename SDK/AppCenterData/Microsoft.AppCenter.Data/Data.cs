@@ -7,7 +7,7 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class Data
     {
-        private static void PlatformSetTokenExchangeUrl(string apiUrl)
+        private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
         {
         }
 
