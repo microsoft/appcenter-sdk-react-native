@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Data
         /// <param name="apiUrl">API base URL.</param>
         public static void SetTokenExchangeUrl(string apiUrl)
         {
-            PlatformSetApiUrl(apiUrl);
+            PlatformSetTokenExchangeUrl(apiUrl);
         }
 
         /// <summary>
@@ -101,9 +101,9 @@ namespace Microsoft.AppCenter.Data
         /// <returns>A task with DocumentWrapper</returns>
         /// <param name="partition">The CosmosDB partition key.</param>
         /// <param name="documentId">The CosmosDB document id.</param>
-        public static Task<DocumentWrapper<object>> Delete(string partition, string documentId)
+        public static Task<DocumentWrapper<T>> Delete<T>(string partition, string documentId)
         {
-            return PlatformDelete(partition, documentId);
+            return PlatformDelete<T>(partition, documentId);
         }
 
         /// <summary>

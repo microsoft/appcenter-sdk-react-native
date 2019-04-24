@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Data
         public T DeserializedValue { get; internal set; }
 
         /// <summary>
-        /// Document partition.
+        /// Cosmos Db document partition.
         /// </summary>
         public string Partition { get; internal set; }
 
@@ -27,19 +27,19 @@ namespace Microsoft.AppCenter.Data
         public string Id { get; internal set; }
 
         /// <summary>
-        /// ETag.
+        /// Document eTag.
         /// </summary>
         public string ETag { get; internal set; }
 
         /// <summary>
-        /// UTC unix timestamp.
+        /// Last update timestamp.
         /// </summary>
-        public long LastUpdatedDate { get; internal set; }
+        public DateTime LastUpdatedDate { get; internal set; }
 
         /// <summary>
-        /// Flag indicating if data was retrieved from the local cache (for offline mode)
+        /// Flag indicating if data was retrieved from the local cache.
         /// </summary>
-        public bool IsFromDeviceCache { get; set; }
+        public bool FromDeviceCache { get; set; }
 
         /// <summary>
         /// The pending operation saved in the local storage.

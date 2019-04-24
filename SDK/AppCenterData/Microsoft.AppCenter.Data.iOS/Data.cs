@@ -30,7 +30,7 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult(default(object));
         }
 
-        private static void PlatformSetApiUrl(string apiUrl)
+        private static void PlatformSetTokenExchangeUrl(string apiUrl)
         {
             MSDataStore.SetTokenExchangeUrl(apiUrl);
         }
@@ -47,9 +47,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -73,9 +73,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -89,7 +89,7 @@ namespace Microsoft.AppCenter.Data
             PaginatedDocuments<T> paginatedDocs = new PaginatedDocuments<T>();
             MSDataStore.List(partition, (resultPages) =>
             {
-                MSPage currentPage = resultPages.CurrentPage() as MSPage;
+                MSPage currentPage = resultPages.CurrentPage();
                 do
                 {
                     foreach (var item in currentPage.Items)
@@ -100,9 +100,9 @@ namespace Microsoft.AppCenter.Data
                             Id = item.DocumentId,
                             DeserializedValue = Document<T>.DeserializeString(item.DeserializedValue),
                             ETag = item.ETag,
-                            LastUpdatedDate = GetTimeStamp(item.LastUpdatedDate),
-                            IsFromDeviceCache = item.FromDeviceCache,
-                            Error = ConvertErrorToException(item.Error.Error)
+                            LastUpdatedDate = (DateTime)item.LastUpdatedDate,
+                            FromDeviceCache = item.FromDeviceCache,
+                            Error = ConvertErrorToException(item.Error)
                         };
 
                         paginatedDocs.Add(doc);
@@ -131,9 +131,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -158,9 +158,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -179,9 +179,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -206,9 +206,9 @@ namespace Microsoft.AppCenter.Data
                     Id = resultDoc.DocumentId,
                     DeserializedValue = Document<T>.DeserializeString(resultDoc.DeserializedValue),
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -216,19 +216,19 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<DocumentWrapper<object>> PlatformDelete(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformDelete<T>(string partition, string documentId)
         {
-            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<object>>();
+            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Delete(partition, documentId, (resultDoc) =>
             {
-                DocumentWrapper<object> doc = new DocumentWrapper<object>
+                DocumentWrapper<T> doc = new DocumentWrapper<T>
                 {
                     Partition = resultDoc.Partition,
                     Id = resultDoc.DocumentId,
                     ETag = resultDoc.ETag,
-                    LastUpdatedDate = GetTimeStamp(resultDoc.LastUpdatedDate),
-                    IsFromDeviceCache = resultDoc.FromDeviceCache,
-                    Error = ConvertErrorToException(resultDoc.Error.Error)
+                    LastUpdatedDate = (DateTime)resultDoc.LastUpdatedDate,
+                    FromDeviceCache = resultDoc.FromDeviceCache,
+                    Error = ConvertErrorToException(resultDoc.Error)
                 };
 
                 taskCompletionSource.TrySetResult(doc);
@@ -236,16 +236,10 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        static long GetTimeStamp(NSDate date)
+        static DataException ConvertErrorToException(MSDataSourceError error) 
         {
-            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-            return (long)((DateTime)date - startTime).TotalSeconds;
-        }
-
-        static DataException ConvertErrorToException(NSError error) 
-        {
-            NSErrorException exception = new NSErrorException(error);
-            return exception.InnerException as DataException;
+            NSErrorException exception = new NSErrorException(error.Error);
+            return new DataException(exception.Message, exception.InnerException);
         }
     }
 }

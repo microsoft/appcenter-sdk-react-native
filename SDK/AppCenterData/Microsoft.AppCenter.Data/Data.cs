@@ -7,7 +7,7 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class Data
     {
-        private static void PlatformSetApiUrl(string apiUrl)
+        private static void PlatformSetTokenExchangeUrl(string apiUrl)
         {
         }
 
@@ -46,9 +46,9 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
-        private static Task<DocumentWrapper<object>> PlatformDelete(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformDelete<T>(string partition, string documentId)
         {
-            return Task.FromResult<DocumentWrapper<object>>(null);
+            return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
         private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document)
