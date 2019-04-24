@@ -7,16 +7,10 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
-    public class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
+    /// <summary>
+    /// A (paginated) list of documents from CosmosDB.
+    /// </summary>
+    public partial class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
     {
-        public IEnumerator<DocumentWrapper<T>> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
