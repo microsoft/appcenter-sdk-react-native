@@ -40,7 +40,7 @@ namespace Microsoft.AppCenter.Data
             return Task.Run(() => future.Get());
         }
 
-        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
         {
             var future = AndroidData.Read(partition, documentId, null, readOptions.ToAndroidReadOptions());
             return Task.Run(() =>
@@ -50,13 +50,13 @@ namespace Microsoft.AppCenter.Data
             });
         }
 
-        private static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
+        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
             var future = AndroidData.List(partition, null);
             return Task.FromResult<PaginatedDocuments<T>>(null);
         }
 
-        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var jsonValue = JsonConvert.SerializeObject(document);
             var future = AndroidData.Create(partition, documentId, jsonValue, null, writeOptions.ToAndroidWriteOptions());
@@ -67,12 +67,12 @@ namespace Microsoft.AppCenter.Data
             });
         }
 
-        private static Task<DocumentWrapper<T>> PlatformDelete<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId)
         {
             return Task.FromResult<DocumentWrapper<T>>(null);
         }
 
-        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var jsonValue = JsonConvert.SerializeObject(document);
             var future = AndroidData.Replace(partition, documentId, jsonValue, null, writeOptions.ToAndroidWriteOptions());

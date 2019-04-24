@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Linq;
 using Com.Microsoft.Appcenter.Data.Models;
 using Newtonsoft.Json;
 
@@ -13,6 +14,10 @@ namespace Microsoft.AppCenter.Data
 
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this AndroidDocumentWrapper documentWrapper)
         {
+            if (documentWrapper.Error != null)
+            {
+                throw new DataException(documentWrapper.Error.Message, documentWrapper.Error);
+            }
             var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
             var lastUpdateDate = UnixEpoch.AddTicks(documentWrapper.LastUpdatedDate * TimeSpan.TicksPerSecond);
             return new DocumentWrapper<T>
@@ -23,14 +28,22 @@ namespace Microsoft.AppCenter.Data
                 ETag = documentWrapper.ETag,
                 LastUpdatedDate = lastUpdateDate,
                 FromDeviceCache = documentWrapper.IsFromDeviceCache,
-                PendingOperation = documentWrapper.PendingOperation,
-                Error = new DataException("" /* TODO */, documentWrapper.Error)
+                PendingOperation = documentWrapper.PendingOperation
             };
         }
 
         public static Page<T> ToPage<T>(this AndroidPage page)
         {
-            return new Page<T>(); // TODO
+            if (page.Error != null)
+            {
+                throw new DataException(page.Error.Message, page.Error);
+            }
+            return new Page<T>
+            {
+                Items = page.Items
+                    .Cast<AndroidDocumentWrapper>()
+                    .Select(i => i.ToDocumentWrapper<T>()).ToList()
+            };
         }
 
         public static AndroidReadOptions ToAndroidReadOptions(this ReadOptions readOptions)

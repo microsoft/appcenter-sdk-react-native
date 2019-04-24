@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Asynchronously fetch the next page.
         /// </summary>
-        public Task<Page<T>> GetNextPage()
+        public Task<Page<T>> GetNextPageAsync()
         {
             var future = mPaginatedDocuments.NextPage;
             return Task.Run(() =>
