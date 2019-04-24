@@ -6,8 +6,6 @@
     <remove-node path="/api/package[@name='com.microsoft.appcenter.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.persistence']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.utils.storage']" />
-    <remove-node path="/api/package[@name='com.microsoft.appcenter.utils']/class[contains(@name, 'Helper') or contains(@name, 'Utils')]" />
-    <remove-node path="/api/package[@name='com.microsoft.appcenter.utils']/interface[contains(@name, 'Helper') or contains(@name, 'Utils')]" />
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='AppCenter']" name="managedName">AndroidAppCenter</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='CustomProperties']" name="managedName">AndroidCustomProperties</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='UserInformation']" name="managedName">AndroidUserInformation</attr>
