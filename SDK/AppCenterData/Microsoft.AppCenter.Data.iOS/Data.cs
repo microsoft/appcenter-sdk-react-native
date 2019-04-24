@@ -73,7 +73,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
-            MSDataStore.Replace(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
+            MSDataStore.Replace(partition, documentId, JsonConvert.SerializeObject(document), msWriteOptions, (resultDoc) =>
             {
                 taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
             });

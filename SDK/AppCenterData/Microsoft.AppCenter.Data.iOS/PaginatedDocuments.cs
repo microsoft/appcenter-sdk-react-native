@@ -10,31 +10,43 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class PaginatedDocuments<T>
     {
-        internal MSPaginatedDocuments internalDocuments { get; }
+        internal MSPaginatedDocuments InternalDocuments { get; }
 
         public PaginatedDocuments(MSPaginatedDocuments iosDocuments)
         {
-            internalDocuments = iosDocuments;
-        }  
-
-        bool HasNextPage
-        {
-            get { return internalDocuments.HasNextPage(); }
+            InternalDocuments = iosDocuments;
         }
 
-        Page<T> CurrentPage
+        /// <summary>
+        /// Boolean indicating if an extra page is available.
+        /// </summary>
+        /// <returns>True if there is another page of documents, false otherwise.</returns>
+        public bool HasNextPage
+        {
+            get { return InternalDocuments.HasNextPage(); }
+        }
+
+        /// <summary>
+        /// Return the current page.
+        /// </summary>
+        /// <returns>The current page of documents.</returns>
+        public Page<T> CurrentPage
         {
             get
             {
-                var source = internalDocuments.CurrentPage().Items;
+                var source = InternalDocuments.CurrentPage().Items;
                 return GetPageFromInternalSource(source);
             }
         }
 
-        Task<Page<T>> GetNextPage()
+        /// <summary>
+        /// Asynchronously fetch the next page.
+        /// </summary>
+        /// <returns>The next page of documents.</returns>
+        public Task<Page<T>> GetNextPage()
         {
             var taskCompletionSource = new TaskCompletionSource<Page<T>>();
-            internalDocuments.NextPage((internalPage) =>
+            InternalDocuments.NextPage((internalPage) =>
             {
                 var source = internalPage.Items;
                 taskCompletionSource.TrySetResult(GetPageFromInternalSource(source));
