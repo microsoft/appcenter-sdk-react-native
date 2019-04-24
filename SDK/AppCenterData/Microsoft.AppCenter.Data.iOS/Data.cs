@@ -39,10 +39,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            var msReadOptions = new MSReadOptions 
-            {
-                DeviceTimeToLive= readOptions.DeviceTimeToLive.Ticks
-            };
+            var msReadOptions = ConvertReadOptionsToInternal(readOptions);
             MSDataStore.Read(partition, documentId, msReadOptions, (resultDoc) =>
             {
                 taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
@@ -64,10 +61,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            var msWriteOptions = new MSWriteOptions
-            {
-                DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
-            };
+            var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
             MSDataStore.Create(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
                 taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
@@ -78,11 +72,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            var msWriteOptions = new MSWriteOptions
-            {
-                DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
-            };
-
+            var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
             MSDataStore.Replace(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
                 taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
@@ -118,6 +108,22 @@ namespace Microsoft.AppCenter.Data
         {
             var exception = new NSErrorException(error.Error);
             return new DataException(exception.Message, exception);
+        }
+
+        private static MSWriteOptions ConvertWriteOptionsToInternal(WriteOptions writeOptions)
+        {
+            return new MSWriteOptions
+            {
+                DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
+            };
+        }
+
+        private static MSReadOptions ConvertReadOptionsToInternal(ReadOptions readOptions)
+        {
+            return new MSReadOptions
+            {
+                DeviceTimeToLive = readOptions.DeviceTimeToLive.Ticks
+            };
         }
     }
 }
