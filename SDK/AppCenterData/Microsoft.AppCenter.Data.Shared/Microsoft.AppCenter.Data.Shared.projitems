@@ -17,5 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PaginatedDocuments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Page.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeToLive.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DocumentMetadata.cs" />
   </ItemGroup>
 </Project>

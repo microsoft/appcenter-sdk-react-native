@@ -16,9 +16,9 @@ namespace Microsoft.AppCenter.Data
         {
             while (true)
             {
-                foreach (var i in CurrentPage?.Items ?? Enumerable.Empty<DocumentWrapper<T>>())
+                foreach (var item in CurrentPage?.Items ?? Enumerable.Empty<DocumentWrapper<T>>())
                 {
-                    yield return i;
+                    yield return item;
                 }
                 if (!HasNextPage)
                 {

@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Documents in the page.
         /// </summary>
-        public IList<DocumentWrapper<T>> Items { get; set; }
+        public IList<DocumentWrapper<T>> Items { get; internal set; }
 
         internal Page()
         {

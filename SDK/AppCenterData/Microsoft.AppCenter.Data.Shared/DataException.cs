@@ -8,6 +8,11 @@ namespace Microsoft.AppCenter.Data
     public class DataException : Exception
     {
         /// <summary>
+        /// Optional document metadata.
+        /// </summary>
+        public DocumentMetadata DocumentMetadata { get; internal set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="T:Microsoft.AppCenter.Data.DataException" /> class.
         /// </summary>
         public DataException()
