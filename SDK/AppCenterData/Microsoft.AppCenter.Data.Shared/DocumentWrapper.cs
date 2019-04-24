@@ -9,15 +9,15 @@ namespace Microsoft.AppCenter.Data
     /// <summary>
     /// A document coming back from CosmosDB.
     /// </summary>
-    public class Document<T>
+    public class DocumentWrapper<T>
     {
         /// <summary>
         /// Deserialized document.
         /// </summary>
-        public T DocumentData { get; internal set; }
+        public T DeserializedValue { get; internal set; }
 
         /// <summary>
-        /// Document partition.
+        /// Cosmos Db document partition.
         /// </summary>
         public string Partition { get; internal set; }
 
@@ -27,19 +27,19 @@ namespace Microsoft.AppCenter.Data
         public string Id { get; internal set; }
 
         /// <summary>
-        /// ETag.
+        /// Document eTag.
         /// </summary>
         public string ETag { get; internal set; }
 
         /// <summary>
-        /// UTC unix timestamp.
+        /// Last update timestamp.
         /// </summary>
-        public long Timestamp { get; internal set; }
+        public DateTime LastUpdatedDate { get; internal set; }
 
         /// <summary>
-        /// Flag indicating if data was retrieved from the local cache (for offline mode)
+        /// Flag indicating if data was retrieved from the local cache.
         /// </summary>
-        public bool IsFromCache { get; set; }
+        public bool FromDeviceCache { get; set; }
 
         /// <summary>
         /// The pending operation saved in the local storage.
@@ -49,11 +49,11 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Check whether the Data service is enabled or not.
         /// </summary>
-        public bool HasFailed { get => DocumentError != null; }
+        public bool HasFailed { get => Error != null; }
 
         /// <summary>
         /// Document error.
         /// </summary>
-        public Exception DocumentError { get; internal set; }
+        public DataException Error { get; internal set; }
     }
 }
