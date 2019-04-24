@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Data
             MSDataStore.SetTokenExchangeUrl(tokenExchangeUrl);
         }
 
-        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msReadOptions = ConvertReadOptionsToInternal(readOptions);
@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
+        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
             MSDataStore.List(partition, (resultPages) =>
@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = ConvertWriteOptionsToInternal(writeOptions);
@@ -80,7 +80,7 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<DocumentWrapper<T>> PlatformDelete<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSDataStore.Delete(partition, documentId, (resultDoc) =>
@@ -99,8 +99,7 @@ namespace Microsoft.AppCenter.Data
                 DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.JsonValue),
                 ETag = internalDoc.ETag,
                 LastUpdatedDate = (DateTime)internalDoc.LastUpdatedDate,
-                FromDeviceCache = internalDoc.FromDeviceCache,
-                Error = ConvertErrorToException(internalDoc.Error)
+                FromDeviceCache = internalDoc.FromDeviceCache
             };
         }
 
