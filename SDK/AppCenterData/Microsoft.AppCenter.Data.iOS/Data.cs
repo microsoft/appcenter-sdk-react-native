@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Data
         /// Internal SDK property not intended for public use.
         /// </summary>
         /// <value>
-        /// The iOS SDK Crashes bindings type.
+        /// The iOS SDK Data bindings type.
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(MSDataStore);
@@ -96,7 +96,7 @@ namespace Microsoft.AppCenter.Data
             {
                 Partition = internalDoc.Partition,
                 Id = internalDoc.DocumentId,
-                DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.DeserializedValue),
+                DeserializedValue = JsonConvert.DeserializeObject<T>(internalDoc.JsonValue),
                 ETag = internalDoc.ETag,
                 LastUpdatedDate = (DateTime)internalDoc.LastUpdatedDate,
                 FromDeviceCache = internalDoc.FromDeviceCache,
