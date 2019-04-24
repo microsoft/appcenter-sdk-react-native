@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Data
         /// </summary>
         public Task<Page<T>> GetNextPage()
         {
-            throw new NotSupportedException();
+            return Task.FromResult<Page<T>>(null);
         }
     }
 }
