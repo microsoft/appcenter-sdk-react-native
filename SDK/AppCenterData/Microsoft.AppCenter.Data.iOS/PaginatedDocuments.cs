@@ -26,23 +26,8 @@ namespace Microsoft.AppCenter.Data
         {
             get
             {
-                var page = new Page<T>();
-                foreach (var item in internalDocuments.CurrentPage().Items)
-                {
-                    var doc = new DocumentWrapper<T>
-                    {
-                        Partition = item.Partition,
-                        Id = item.DocumentId,
-                        DeserializedValue = JsonConvert.DeserializeObject<T>(item.DeserializedValue),
-                        ETag = item.ETag,
-                        LastUpdatedDate = (DateTime)item.LastUpdatedDate,
-                        FromDeviceCache = item.FromDeviceCache,
-                        Error = Data.ConvertErrorToException(item.Error)
-                    };
-
-                    page.Items.Add(doc);
-                }
-                return page;
+                var source = internalDocuments.CurrentPage().Items;
+                return GetPageFromInternalSource(source);
             }
         }
 
@@ -51,25 +36,31 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<Page<T>>();
             internalDocuments.NextPage((internalPage) =>
             {
-                var page = new Page<T>();
-                foreach (var item in internalPage.Items)
-                {
-                    var doc = new DocumentWrapper<T>
-                    {
-                        Partition = item.Partition,
-                        Id = item.DocumentId,
-                        DeserializedValue = JsonConvert.DeserializeObject<T>(item.DeserializedValue),
-                        ETag = item.ETag,
-                        LastUpdatedDate = (DateTime)item.LastUpdatedDate,
-                        FromDeviceCache = item.FromDeviceCache,
-                        Error = Data.ConvertErrorToException(item.Error)
-                    };
-
-                    page.Items.Add(doc);
-                }
-                taskCompletionSource.TrySetResult(page);
+                var source = internalPage.Items;
+                taskCompletionSource.TrySetResult(GetPageFromInternalSource(source));
             });
             return taskCompletionSource.Task;
+        }
+
+        private Page<T> GetPageFromInternalSource(MSDocumentWrapper[] source) 
+        {
+            var page = new Page<T>();
+            foreach (var item in source)
+            {
+                var doc = new DocumentWrapper<T>
+                {
+                    Partition = item.Partition,
+                    Id = item.DocumentId,
+                    DeserializedValue = JsonConvert.DeserializeObject<T>(item.DeserializedValue),
+                    ETag = item.ETag,
+                    LastUpdatedDate = (DateTime)item.LastUpdatedDate,
+                    FromDeviceCache = item.FromDeviceCache,
+                    Error = Data.ConvertErrorToException(item.Error)
+                };
+
+                page.Items.Add(doc);
+            }
+            return page;
         }
     }
 }
