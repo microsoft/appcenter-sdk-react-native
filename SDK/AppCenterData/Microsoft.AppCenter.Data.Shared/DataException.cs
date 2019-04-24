@@ -5,6 +5,9 @@ using System;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Exception thrown by asynchronous Data service APIs.
+    /// </summary>
     public class DataException : Exception
     {
         /// <summary>

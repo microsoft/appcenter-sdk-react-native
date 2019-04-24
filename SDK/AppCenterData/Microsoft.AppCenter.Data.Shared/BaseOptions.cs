@@ -5,6 +5,9 @@ using System;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Base class for read and write options.
+    /// </summary>
     public abstract class BaseOptions
     {
         /// <summary>

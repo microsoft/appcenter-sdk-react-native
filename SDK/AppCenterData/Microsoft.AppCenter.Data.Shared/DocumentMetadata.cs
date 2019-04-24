@@ -5,6 +5,9 @@ using System;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Document meta-data.
+    /// </summary>
     public class DocumentMetadata
     {
         /// <summary>

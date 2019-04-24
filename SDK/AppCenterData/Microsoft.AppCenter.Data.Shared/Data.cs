@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Data service.
+    /// </summary>
     public partial class Data
     {
         /// <summary>

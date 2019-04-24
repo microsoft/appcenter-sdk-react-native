@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Page of documents in a list.
+    /// </summary>
     public class Page<T>
     {
         /// <summary>

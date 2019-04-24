@@ -5,6 +5,9 @@ using System;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Constants for document time to live on device.
+    /// </summary>
     public static class TimeToLive
     {
         /// <summary>
