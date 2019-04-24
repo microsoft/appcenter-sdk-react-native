@@ -115,6 +115,8 @@ namespace Microsoft.AppCenter.Data
             return PlatformDeleteAsync<T>(partition, documentId);
         }
 
+        // TODO bind additional delete with WriteOptions parameter
+
         /// <summary>
         /// Replace a document.
         /// </summary>
