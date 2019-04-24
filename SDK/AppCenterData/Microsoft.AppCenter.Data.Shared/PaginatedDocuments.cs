@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Data
                 {
                     yield break;
                 }
-                GetNextPage().Wait();
+                GetNextPageAsync().Wait();
             }
         }
 
