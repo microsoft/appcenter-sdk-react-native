@@ -32,28 +32,105 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId)
         {
-            var future = AndroidData.Read(partition, documentId, null /* TODO */);
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return Data.PlatformRead(partition, documentId, new ReadOptions());
         }
 
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            var future = AndroidData.Read(partition, documentId, null /* TODO */);
+
+            return Task.Run(() =>
+            {
+                var document = (DocumentWrapper)future.Get();
+
+                return new DocumentWrapper<T>()
+                {
+                    Partition = document.Partition,
+                    DeserializedValue = document.DeserializedValue,
+                    Id = document.Id,
+                    ETag = document.ETag,
+                    LastUpdatedDate = document.LastUpdatedDate,
+                    FromDeviceCache = document.FromDeviceCache,
+                    PendingOperation = document.PendingOperation,
+                    Error = new DataException()
+                };
+            });
         }
 
         private static Task<PaginatedDocuments<T>> PlatformList<T>(string partition)
         {
-            return Task.FromResult<PaginatedDocuments<T>>(null);
+            var future = AndroidData.List(partition);
+
+            return Task.Run(() =>
+            {
+                var doc = (DocumentWrapper)future.Get();
+
+                return new DocumentWrapper<T>()
+                {
+                    Partition = doc.Partition,
+                    DeserializedValue = doc.DeserializedValue,
+                    Id = doc.Id,
+                    ETag = doc.ETag,
+                    LastUpdatedDate = doc.LastUpdatedDate,
+                    FromDeviceCache = doc.FromDeviceCache,
+                    PendingOperation = doc.PendingOperation,
+                    Error = new DataException()
+                };
+            });
+            /*
+             var future = AndroidData.Create(partition, documentId, document, writeOptions, null);
+            PaginatedDocuments<T> pages = new PaginatedDocuments<T>();
+            return Task.Run(() =>
+            {
+                var page = (Page)future.Get();
+                do
+                {
+                    foreach (var item in page.Items)
+                    {
+                        var doc = (DocumentWrapper)future.Get();
+                        pages.Add(new DocumentWrapper<T>()
+                        {
+                            Partition = doc.Partition,
+                            DeserializedValue = doc.DeserializedValue,
+                            Id = doc.Id,
+                            ETag = doc.ETag,
+                            LastUpdatedDate = doc.LastUpdatedDate,
+                            FromDeviceCache = doc.FromDeviceCache,
+                            PendingOperation = doc.PendingOperation,
+                            Error = new DataException()
+                        });
+                    }
+
+                } while (page == null);
+                return pages;
+            });*/
         }
 
         private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return Data.PlatformCreate(partition, documentId, document, new WriteOptions());
         }
 
         private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            var future = AndroidData.Create(partition, documentId, document, writeOptions, null);
+
+            return Task.Run(() =>
+            {
+                var doc = (DocumentWrapper)future.Get();
+
+                return new DocumentWrapper<T>()
+                {
+                    Partition = doc.Partition,
+                    DeserializedValue = doc.DeserializedValue,
+                    Id = doc.Id,
+                    ETag = doc.ETag,
+                    LastUpdatedDate = doc.LastUpdatedDate,
+                    FromDeviceCache = doc.FromDeviceCache,
+                    PendingOperation = doc.PendingOperation,
+                    Error = new DataException()
+                };
+            });
         }
 
         private static Task<DocumentWrapper<object>> PlatformDelete(string partition, string documentId)
@@ -63,12 +140,29 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            return Data.PlatformReplace(partition, documentId, document, new WriteOptions());
         }
 
         private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
+            var future = AndroidData.Replace(partition, documentId, document, writeOptions, null);
+
+            return Task.Run(() =>
+            {
+                var doc = (DocumentWrapper)future.Get();
+
+                return new DocumentWrapper<T>()
+                {
+                    Partition = doc.Partition,
+                    DeserializedValue = doc.DeserializedValue,
+                    Id = doc.Id,
+                    ETag = doc.ETag,
+                    LastUpdatedDate = doc.LastUpdatedDate,
+                    FromDeviceCache = doc.FromDeviceCache,
+                    PendingOperation = doc.PendingOperation,
+                    Error = new DataException()
+                };
+            });
         }
     }
 }
