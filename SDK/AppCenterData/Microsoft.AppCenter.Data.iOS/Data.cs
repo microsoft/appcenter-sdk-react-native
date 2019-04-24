@@ -31,9 +31,9 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult(default(object));
         }
 
-        private static void PlatformSetTokenExchangeUrl(string apiUrl)
+        private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
         {
-            MSDataStore.SetTokenExchangeUrl(apiUrl);
+            MSDataStore.SetTokenExchangeUrl(tokenExchangeUrl);
         }
 
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
