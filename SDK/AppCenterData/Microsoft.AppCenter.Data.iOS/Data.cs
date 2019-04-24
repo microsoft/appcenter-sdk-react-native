@@ -36,16 +36,6 @@ namespace Microsoft.AppCenter.Data
             MSDataStore.SetTokenExchangeUrl(apiUrl);
         }
 
-        private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId)
-        {
-            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            MSDataStore.Read(partition, documentId, (resultDoc) =>
-            {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
-            });
-            return taskCompletionSource.Task;
-        }
-
         private static Task<DocumentWrapper<T>> PlatformRead<T>(string partition, string documentId, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
@@ -55,7 +45,7 @@ namespace Microsoft.AppCenter.Data
             };
             MSDataStore.Read(partition, documentId, msReadOptions, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -71,16 +61,6 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document)
-        {
-            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            MSDataStore.Create(partition, documentId, document.ToString(), (resultDoc) =>
-            {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
-            });
-            return taskCompletionSource.Task;
-        }
-
         private static Task<DocumentWrapper<T>> PlatformCreate<T>(string partition, string documentId, T document, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
@@ -90,17 +70,7 @@ namespace Microsoft.AppCenter.Data
             };
             MSDataStore.Create(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
-            });
-            return taskCompletionSource.Task;
-        }
-
-        private static Task<DocumentWrapper<T>> PlatformReplace<T>(string partition, string documentId, T document)
-        {
-            var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            MSDataStore.Replace(partition, documentId, document.ToString(), (resultDoc) =>
-            {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -115,7 +85,7 @@ namespace Microsoft.AppCenter.Data
 
             MSDataStore.Replace(partition, documentId, document.ToString(), msWriteOptions, (resultDoc) =>
             {
-                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal(resultDoc));
+                taskCompletionSource.TrySetResult(ConvertInternalDocToExternal<T>(resultDoc));
             });
             return taskCompletionSource.Task;
         }
@@ -139,7 +109,7 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        internal DocumentWrapper<T> ConvertInternalDocToExternal<T>(MSDocumentWrapper internalDoc) 
+        internal static DocumentWrapper<T> ConvertInternalDocToExternal<T>(MSDocumentWrapper internalDoc) 
         {
             return new DocumentWrapper<T>
             {

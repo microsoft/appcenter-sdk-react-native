@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter.Data
             var page = new Page<T>();
             foreach (var item in source)
             {
-                page.Items.Add(Data.ConvertInternalDocToExternal(item));
+                page.Items.Add(Data.ConvertInternalDocToExternal<T>(item));
             }
             return page;
         }
