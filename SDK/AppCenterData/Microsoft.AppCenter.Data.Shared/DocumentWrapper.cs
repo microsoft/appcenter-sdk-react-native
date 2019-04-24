@@ -45,15 +45,5 @@ namespace Microsoft.AppCenter.Data
         /// The pending operation saved in the local storage.
         /// </summary>
         public string PendingOperation { get; set; }
-
-        /// <summary>
-        /// Check whether the Data service is enabled or not.
-        /// </summary>
-        public bool HasFailed { get => Error != null; }
-
-        /// <summary>
-        /// Document error.
-        /// </summary>
-        public DataException Error { get; internal set; }
     }
 }
