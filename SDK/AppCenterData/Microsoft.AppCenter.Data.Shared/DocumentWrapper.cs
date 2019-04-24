@@ -17,6 +17,11 @@ namespace Microsoft.AppCenter.Data
         public T DeserializedValue { get; internal set; }
 
         /// <summary>
+        /// Non-serialized document.
+        /// </summary>
+        public string JsonValue { get; internal set; }
+
+        /// <summary>
         /// Last update timestamp.
         /// </summary>
         public DateTimeOffset LastUpdatedDate { get; internal set; }

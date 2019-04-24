@@ -19,5 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Page.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimeToLive.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DocumentMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DefaultPartitions.cs" />
   </ItemGroup>
 </Project>
