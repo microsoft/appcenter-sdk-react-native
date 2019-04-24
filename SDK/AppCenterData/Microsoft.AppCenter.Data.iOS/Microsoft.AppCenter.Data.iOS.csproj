@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.AppCenter.Data</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Microsoft.AppCenter.Data.iOS</AssemblyName>
+    <AssemblyName>Microsoft.AppCenter.Data</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
