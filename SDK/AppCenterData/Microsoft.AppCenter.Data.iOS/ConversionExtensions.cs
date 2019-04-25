@@ -60,7 +60,7 @@ namespace Microsoft.AppCenter.Data
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
             NSDictionary dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
-            return new MSDictionaryDocument.Init(dic);
+            return new MSDictionaryDocument().Init(dic);
         }
 
         public static DataException ToDataException(this MSDataError error) 
