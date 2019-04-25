@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Data
             MSData.SetTokenExchangeUrl(tokenExchangeUrl);
         }
 
-        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string documentId, string partition, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msReadOptions = readOptions.ToMSReadOptions();
@@ -44,7 +44,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
                 }
                 else
                 {
@@ -65,8 +65,7 @@ namespace Microsoft.AppCenter.Data
                 }
                 else
                 {
-                    var paginatedDocs = new PaginatedDocuments<T>(resultPages);
-                    taskCompletionSource.TrySetResult(paginatedDocs);
+                    taskCompletionSource.TrySetResult(resultPages.ToPaginatedDocuments<T>());
                 }
             });
             return taskCompletionSource.Task;
@@ -80,7 +79,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
                 }
                 else
                 {
@@ -98,7 +97,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
                 }
                 else
                 {
@@ -115,7 +114,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
                 }
                 else
                 {
