@@ -8,7 +8,7 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class PaginatedDocuments<T>
     {
-        private MSPaginatedDocuments PaginatedDocumentsInternal { get; }
+        private MSPaginatedDocuments PaginatedDocuments { get; }
 
         public PaginatedDocuments(MSPaginatedDocuments paginatedDocuments)
         {
@@ -19,13 +19,13 @@ namespace Microsoft.AppCenter.Data
         /// Boolean indicating if an extra page is available.
         /// </summary>
         /// <returns>True if there is another page of documents, false otherwise.</returns>
-        public bool HasNextPage { get => PaginatedDocumentsInternal.HasNextPage(); }
+        public bool HasNextPage => PaginatedDocumentsInternal.HasNextPage(); 
 
         /// <summary>
         /// Return the current page.
         /// </summary>
         /// <returns>The current page of documents.</returns>
-        public Page<T> CurrentPage { get => PaginatedDocumentsInternal.CurrentPage().ToPage<T>(); }
+        public Page<T> CurrentPage => PaginatedDocumentsInternal.CurrentPage().ToPage<T>(); 
 
         /// <summary>
         /// Asynchronously fetch the next page.

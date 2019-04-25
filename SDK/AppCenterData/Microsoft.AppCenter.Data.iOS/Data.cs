@@ -28,7 +28,7 @@ namespace Microsoft.AppCenter.Data
         private static Task PlatformSetEnabledAsync(bool enabled)
         {
             MSData.SetEnabled(enabled);
-            return Task.FromResult(default(object));
+            return Task.CompletedTask;
         }
 
         private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
