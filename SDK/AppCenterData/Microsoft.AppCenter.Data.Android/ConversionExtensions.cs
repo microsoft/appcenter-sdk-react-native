@@ -27,9 +27,13 @@ namespace Microsoft.AppCenter.Data
                 Id = documentWrapper.Id,
                 ETag = documentWrapper.ETag,
                 LastUpdatedDate = lastUpdateDate,
-                FromDeviceCache = documentWrapper.IsFromDeviceCache,
-                PendingOperation = documentWrapper.PendingOperation
+                IsFromDeviceCache = documentWrapper.IsFromDeviceCache
             };
+        }
+
+        public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this AndroidPaginatedDocuments paginatedDocuments)
+        {
+            return new PaginatedDocuments<T>(paginatedDocuments);
         }
 
         public static Page<T> ToPage<T>(this AndroidPage page)

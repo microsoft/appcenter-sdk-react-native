@@ -45,6 +45,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleGson">
+      <HintPath>..\..\..\packages\GoogleGson.2.8.5\lib\monoandroid44\GoogleGson.dll</HintPath>
+    </Reference>
+    <Reference Include="Java.Interop" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data.cs" />

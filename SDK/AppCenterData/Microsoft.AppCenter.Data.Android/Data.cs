@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using Android.Runtime;
 using Com.Microsoft.Appcenter.Data;
 using Com.Microsoft.Appcenter.Data.Models;
+using GoogleGson;
 using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Data
 {
     public partial class Data
     {
-        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         /// <summary>
         /// Internal SDK property not intended for public use.
         /// </summary>
@@ -22,6 +21,10 @@ namespace Microsoft.AppCenter.Data
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(AndroidData);
+
+        private static readonly Java.Lang.Class JsonElementClass = Java.Lang.Class.FromType(typeof(JsonElement));
+
+        private static readonly Gson Gson = new GsonBuilder().Create();
 
         private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
         {
@@ -40,9 +43,9 @@ namespace Microsoft.AppCenter.Data
             return Task.Run(() => future.Get());
         }
 
-        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string documentId, string partition, ReadOptions readOptions)
         {
-            var future = AndroidData.Read(partition, documentId, null, readOptions.ToAndroidReadOptions());
+            var future = AndroidData.Read(documentId, JsonElementClass, partition, readOptions.ToAndroidReadOptions());
             return Task.Run(() =>
             {
                 var documentWrapper = (AndroidDocumentWrapper)future.Get();
@@ -52,14 +55,17 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
-            var future = AndroidData.List(partition, null);
-            return Task.FromResult<PaginatedDocuments<T>>(null);
+            var future = AndroidData.List(JsonElementClass, partition);
+            return Task.Run(() =>
+            {
+                var paginatedDocuments = (AndroidPaginatedDocuments)future.Get();
+                return paginatedDocuments.ToPaginatedDocuments<T>();
+            });
         }
 
-        private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string documentId, T document, string partition, WriteOptions writeOptions)
         {
-            var jsonValue = JsonConvert.SerializeObject(document);
-            var future = AndroidData.Create(partition, documentId, jsonValue, null, writeOptions.ToAndroidWriteOptions());
+            var future = AndroidData.Create(documentId, ToJsonElement(document), JsonElementClass, partition, writeOptions.ToAndroidWriteOptions());
             return Task.Run(() =>
             {
                 var documentWrapper = (AndroidDocumentWrapper)future.Get();
@@ -67,20 +73,30 @@ namespace Microsoft.AppCenter.Data
             });
         }
 
-        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string documentId, string partition, WriteOptions writeOptions)
         {
-            return Task.FromResult<DocumentWrapper<T>>(null);
-        }
-
-        private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
-        {
-            var jsonValue = JsonConvert.SerializeObject(document);
-            var future = AndroidData.Replace(partition, documentId, jsonValue, null, writeOptions.ToAndroidWriteOptions());
+            var future = AndroidData.Delete(documentId, partition, writeOptions.ToAndroidWriteOptions());
             return Task.Run(() =>
             {
                 var documentWrapper = (AndroidDocumentWrapper)future.Get();
                 return documentWrapper.ToDocumentWrapper<T>();
             });
+        }
+
+        private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string documentId, T document, string partition, WriteOptions writeOptions)
+        {
+            var future = AndroidData.Replace(documentId, ToJsonElement(document), JsonElementClass, partition, writeOptions.ToAndroidWriteOptions());
+            return Task.Run(() =>
+            {
+                var documentWrapper = (AndroidDocumentWrapper)future.Get();
+                return documentWrapper.ToDocumentWrapper<T>();
+            });
+        }
+
+        private static JsonElement ToJsonElement<T>(T document)
+        {
+            var jsonValue = JsonConvert.SerializeObject(document);
+            return (JsonElement)Gson.FromJson(jsonValue, JsonElementClass);
         }
     }
 }
