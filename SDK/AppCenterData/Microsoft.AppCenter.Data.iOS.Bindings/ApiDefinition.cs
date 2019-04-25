@@ -6,27 +6,17 @@ using Foundation;
 
 namespace Microsoft.AppCenter.Data.iOS.Bindings
 {
-    // @protocol MSSerializableDocument <NSObject>
-    [Protocol, Model]
-    [BaseType(typeof(NSObject))]
-    interface MSSerializableDocument
-    {
-        // @required - (instancetype)initFromDictionary:(NSDictionary *)dictionary;
-        [Export("initFromDictionary:")]
-        MSSerializableDocument Init(NSDictionary dictionary);
-
-        // - (nonnull NSDictionary *)serializeToDictionary
-        [Export("serializeToDictionary:")]
-        NSDictionary SerializeToDictionary();
-    }
-
     // @interface MSDictionaryDocument : NSObject<MSSerializableDocument>
-    [BaseType(typeof(MSSerializableDocument))]
+    [BaseType(typeof(NSObject))]
     interface MSDictionaryDocument
     {
         // @required - (instancetype)initFromDictionary:(NSDictionary *)dictionary;
         [Export("initFromDictionary:")]
         MSDictionaryDocument Init(NSDictionary dictionary);
+
+        // @required - (nonnull NSDictionary *)serializeToDictionary
+        [Export("serializeToDictionary")]
+        NSDictionary SerializeToDictionary();
 
         // @property(readonly) NSDictionary *dictionary;
         [Export("dictionary")]

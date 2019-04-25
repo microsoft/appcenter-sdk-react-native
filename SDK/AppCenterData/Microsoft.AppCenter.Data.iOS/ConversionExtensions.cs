@@ -66,7 +66,7 @@ namespace Microsoft.AppCenter.Data
         public static DataException ToDataException(this MSDataError error) 
         {
             var exception = new NSErrorException(error.Error);
-            return new DataException(error.Error.LocalizedDescription, exception);
+            return new DataException(exception.Message, exception);
         }
     }
 }
