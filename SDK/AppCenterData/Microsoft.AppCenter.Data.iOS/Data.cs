@@ -4,7 +4,6 @@
 using Foundation;
 using System;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Microsoft.AppCenter.Data.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Data
@@ -44,7 +43,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
                 }
                 else
                 {
@@ -59,8 +58,15 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
             MSData.List(partition, resultPages =>
             {
-                var paginatedDocs = new PaginatedDocuments<T>(resultPages);
-                taskCompletionSource.TrySetResult(paginatedDocs);
+                if (resultPages.CurrentPage().Error != null)
+                {
+                    taskCompletionSource.TrySetException(resultPages.CurrentPage().Error.ToDataException());
+                }
+                else
+                {
+                    var paginatedDocs = new PaginatedDocuments<T>(resultPages);
+                    taskCompletionSource.TrySetResult(paginatedDocs);
+                }
             });
             return taskCompletionSource.Task;
         }
@@ -73,7 +79,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
                 }
                 else
                 {
@@ -91,7 +97,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
                 }
                 else
                 {
@@ -108,7 +114,7 @@ namespace Microsoft.AppCenter.Data
             {
                 if (resultDoc.Error != null)
                 {
-                    taskCompletionSource.TrySetException(new NSErrorException(resultDoc.Error.Error));
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException());
                 }
                 else
                 {

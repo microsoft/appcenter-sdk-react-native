@@ -13,7 +13,19 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
     {
         // @required - (instancetype)initFromDictionary:(NSDictionary *)dictionary;
         [Export("initFromDictionary:")]
-        MSSerializableDocument init(NSDictionary dictionary);
+        MSSerializableDocument Init(NSDictionary dictionary);
+
+        // - (nonnull NSDictionary *)serializeToDictionary
+        NSDictionary SerializeToDictionary();
+    }
+
+    // @interface MSDictionaryDocument : NSObject<MSSerializableDocument>
+    [BaseType(typeof(MSSerializableDocument))]
+    interface MSDictionaryDocument
+    {
+        // @property(readonly) NSDictionary *dictionary;
+        [Export("dictionary")]
+        NSDictionary Dictionary { get; }
     }
 
     // @interface MSData : MSService
@@ -58,7 +70,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
         [Export("createWithPartition:documentId:document:writeOptions:completionHandler:")]
-        void Create(string partition, string documentId, MSSerializableDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        void Create(string partition, string documentId, MSDictionaryDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
         // + (void)replaceWithPartition:(NSString *)partition 
         //                   documentId:(NSString*) documentId 
@@ -67,7 +79,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         //            completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
         [Export("replaceWithPartition:documentId:document:writeOptions:completionHandler:")]
-        void Replace(string partition, string documentId, MSSerializableDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        void Replace(string partition, string documentId, MSDictionaryDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
         // + (void)deleteWithPartition:(NSString *)partition 
         //                  documentId:(NSString*) documentId
@@ -95,7 +107,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
 
         // @property(nonatomic, strong, readonly) id<MSSerializableDocument> deserializedValue;
         [Export("deserializedValue")]
-        MSSerializableDocument DeserializedValue { get; }
+        MSDictionaryDocument DeserializedValue { get; }
 
         // @property(nonatomic, strong, readonly) NSString *partition;
         [Export("partition")]

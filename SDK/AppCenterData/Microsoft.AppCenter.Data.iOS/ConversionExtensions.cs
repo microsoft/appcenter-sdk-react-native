@@ -4,7 +4,9 @@
 using Foundation;
 using System;
 using Newtonsoft.Json;
+using System.Linq;
 using Microsoft.AppCenter.Data.iOS.Bindings;
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -42,18 +44,29 @@ namespace Microsoft.AppCenter.Data
 
         public static Page<T> ToPage<T>(this MSPage msPage)
         {
-            var page = new Page<T>();
-            foreach (var item in msPage.Items)
+            List<MSDocumentWrapper> lst = msPage.Items.OfType<MSDocumentWrapper>().ToList();
+            if (msPage.Error != null)
             {
-                page.Items.Add(item.ToDocumentWrapper<T>());
+                throw msPage.Error.ToDataException();
             }
-            return page;
+            return new Page<T>
+            {
+                Items = lst
+                    .Cast<MSDocumentWrapper>()
+                    .Select(i => i.ToDocumentWrapper<T>()).ToList()
+            };
         }
 
-        public static MSSerializableDocument ToMSDocument<T>(this T document)
+        public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
             NSDictionary dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
-            return new MSSerializableDocument().init(dic);
+            return new MSDictionaryDocument.Init(dic);
+        }
+
+        public static DataException ToDataException(this MSDataError error) 
+        {
+            var exception = new NSErrorException(error.Error);
+            return new DataException(error.Error.LocalizedDescription, exception);
         }
     }
 }

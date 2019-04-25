@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Foundation;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Data.iOS.Bindings;
 
@@ -9,7 +8,7 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class PaginatedDocuments<T>
     {
-        internal MSPaginatedDocuments InternalDocuments { get; }
+        private MSPaginatedDocuments InternalDocuments { get; }
 
         public PaginatedDocuments(MSPaginatedDocuments iosDocuments)
         {
@@ -41,15 +40,14 @@ namespace Microsoft.AppCenter.Data
         public Task<Page<T>> GetNextPageAsync()
         {
             var taskCompletionSource = new TaskCompletionSource<Page<T>>();
-            InternalDocuments.NextPage((internalPage) =>
+            InternalDocuments.NextPage(internalPage =>
             {
                 if (internalPage.Error != null)
                 {
-                    taskCompletionSource.TrySetException(new NSErrorException(internalPage.Error.Error));
+                    taskCompletionSource.TrySetException(internalPage.Error.ToDataException());
                 }
                 else
                 {
-                    var source = internalPage.Items;
                     taskCompletionSource.TrySetResult(internalPage.ToPage<T>());
                 }
             });
