@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.AppCenter;
+using Microsoft.AppCenter.Auth;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;
@@ -73,6 +77,31 @@ namespace Contoso.Forms.Puppet
                 }
                 await EventFilterHolder.Implementation.SetEnabledAsync(e.Value);
             }
+        }
+
+        async void RunMBaaSAsync(object sender, EventArgs e)
+        {
+            try
+            {
+                var userInfo = await Auth.SignInAsync();
+                AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
+                await Data.ListAsync<TestDocument>(DefaultPartitions.AppDocuments);
+            }
+            catch (Exception ex)
+            {
+                AppCenterLog.Error(App.LogTag, "MBaaS scenario failed", ex);
+                Crashes.TrackError(ex);
+            }
+        }
+
+        void SignOut(object sender, EventArgs e)
+        {
+            Auth.SignOut();
+        }
+
+        public class TestDocument
+        {
+            public string Key { get; set; }
         }
     }
 }
