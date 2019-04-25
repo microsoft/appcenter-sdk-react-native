@@ -36,13 +36,13 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<Page<T>>();
             PaginatedDocumentsInternal.NextPage(internalPage =>
             {
-                if (internalPage.Error != null)
+                if (internalPage.Error == null)
                 {
-                    taskCompletionSource.TrySetException(internalPage.Error.ToDataException());
+                    taskCompletionSource.TrySetResult(internalPage.ToPage<T>());
                 }
                 else
                 {
-                    taskCompletionSource.TrySetResult(internalPage.ToPage<T>());
+                    taskCompletionSource.TrySetException(internalPage.Error.ToDataException());
                 }
             });
             return taskCompletionSource.Task;
