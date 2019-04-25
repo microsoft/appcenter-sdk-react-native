@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Data
                 ETag = documentWrapper.ETag,
                 Id = documentWrapper.DocumentId,
                 LastUpdatedDate = (DateTime)documentWrapper.LastUpdatedDate,
-                FromDeviceCache = documentWrapper.FromDeviceCache
+                IsFromDeviceCache = documentWrapper.FromDeviceCache
             };
         }
 
