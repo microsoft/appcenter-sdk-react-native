@@ -8,7 +8,7 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class PaginatedDocuments<T>
     {
-        private MSPaginatedDocuments PaginatedDocuments { get; }
+        private MSPaginatedDocuments PaginatedDocumentsInternal { get; }
 
         public PaginatedDocuments(MSPaginatedDocuments paginatedDocuments)
         {
