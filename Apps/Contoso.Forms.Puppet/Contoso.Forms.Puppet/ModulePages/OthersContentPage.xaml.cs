@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -92,9 +93,12 @@ namespace Contoso.Forms.Puppet
                     TimeStamp = DateTime.UtcNow
                 };
                 var document = await Data.ReplaceAsync(person.Name, person, DefaultPartitions.UserDocuments);
-                AppCenterLog.Info(App.LogTag, "Create result=" + JsonConvert.SerializeObject(document));
+                AppCenterLog.Info(App.LogTag, "Replace result=" + JsonConvert.SerializeObject(document));
                 document = await Data.ReadAsync<Person>(person.Name, DefaultPartitions.UserDocuments);
                 AppCenterLog.Info(App.LogTag, "Read result=" + JsonConvert.SerializeObject(document));
+                var list = await Data.ListAsync<Person>(DefaultPartitions.UserDocuments);
+                document = list.CurrentPage.Items.First();
+                AppCenterLog.Info(App.LogTag, "List first result=" + JsonConvert.SerializeObject(document));
                 document = await Data.DeleteAsync<Person>(person.Name, DefaultPartitions.UserDocuments);
                 AppCenterLog.Info(App.LogTag, "Delete result=" + JsonConvert.SerializeObject(document));
             }
