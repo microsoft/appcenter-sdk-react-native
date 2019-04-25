@@ -24,6 +24,14 @@ namespace Contoso.Forms.Puppet
 
         static bool _eventFilterStarted;
 
+        static OthersContentPage()
+        {
+            Data.RemoteOperationCompleted += (s, remoteOperationEvent) =>
+            {
+                AppCenterLog.Info(App.LogTag, "Remote operation completed event=" + JsonConvert.SerializeObject(remoteOperationEvent));
+            };
+        }
+
         public OthersContentPage()
         {
             InitializeComponent();
@@ -87,24 +95,41 @@ namespace Contoso.Forms.Puppet
             {
                 var userInfo = await Auth.SignInAsync();
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
-                var person = new Person
-                {
-                    Name = "alice",
-                    TimeStamp = DateTime.UtcNow
-                };
-                var document = await Data.ReplaceAsync(person.Name, person, DefaultPartitions.UserDocuments);
-                AppCenterLog.Info(App.LogTag, "Replace result=" + JsonConvert.SerializeObject(document));
-                document = await Data.ReadAsync<Person>(person.Name, DefaultPartitions.UserDocuments);
-                AppCenterLog.Info(App.LogTag, "Read result=" + JsonConvert.SerializeObject(document));
-                var list = await Data.ListAsync<Person>(DefaultPartitions.UserDocuments);
-                document = list.CurrentPage.Items.First();
+            }
+            catch (Exception ex)
+            {
+                AppCenterLog.Error(App.LogTag, "Auth scenario failed", ex);
+                Crashes.TrackError(ex);
+            }
+            try
+            {
+                var list = await Data.ListAsync<CustomDocument>(DefaultPartitions.UserDocuments);
+                var document = list.CurrentPage.Items.First();
                 AppCenterLog.Info(App.LogTag, "List first result=" + JsonConvert.SerializeObject(document));
-                document = await Data.DeleteAsync<Person>(person.Name, DefaultPartitions.UserDocuments);
+                document = await Data.DeleteAsync<CustomDocument>(document.Id, DefaultPartitions.UserDocuments);
                 AppCenterLog.Info(App.LogTag, "Delete result=" + JsonConvert.SerializeObject(document));
             }
             catch (Exception ex)
             {
-                AppCenterLog.Error(App.LogTag, "MBaaS scenario failed", ex);
+                AppCenterLog.Error(App.LogTag, "Data list/delete first scenario failed", ex);
+                Crashes.TrackError(ex);
+            }
+            try
+            {
+                var customDoc = new CustomDocument
+                {
+                    Id = Guid.NewGuid(),
+                    TimeStamp = DateTime.UtcNow
+                };
+                var id = customDoc.Id.ToString();
+                var document = await Data.ReplaceAsync(id, customDoc, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Replace result=" + JsonConvert.SerializeObject(document));
+                document = await Data.ReadAsync<CustomDocument>(id, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Read result=" + JsonConvert.SerializeObject(document));
+            }
+            catch (Exception ex)
+            {
+                AppCenterLog.Error(App.LogTag, "Data person scenario failed", ex);
                 Crashes.TrackError(ex);
             }
         }
@@ -114,10 +139,10 @@ namespace Contoso.Forms.Puppet
             Auth.SignOut();
         }
 
-        public class Person
+        public class CustomDocument
         {
-            [JsonProperty("name")]
-            public string Name { get; set; }
+            [JsonProperty("id")]
+            public Guid? Id { get; set; }
 
             [JsonProperty("timestamp")]
             public DateTime TimeStamp { get; set; }
