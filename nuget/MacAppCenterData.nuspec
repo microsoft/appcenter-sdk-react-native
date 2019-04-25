@@ -41,9 +41,9 @@
     <file src="$android_dir$/Microsoft.AppCenter.Data.Android.Bindings.dll" target="lib/MonoAndroid403" /> -->
 
     <!-- iOS -->
-    <!-- <file src="$ios_dir$/Microsoft.AppCenter.Data.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Data.dll" target="lib/Xamarin.iOS10" />
     <file src="$ios_dir$/Microsoft.AppCenter.Data.xml" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.AppCenter.Data.iOS.Bindings.dll" target="lib/Xamarin.iOS10" /> -->
+    <file src="$ios_dir$/Microsoft.AppCenter.Data.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
   </files>
 </package>
