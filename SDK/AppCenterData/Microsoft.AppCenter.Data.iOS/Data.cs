@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSDataStore.Create(partition, documentId, document.ToString(), msWriteOptions, resultDoc =>
+            MSDataStore.Create(partition, documentId, JsonConvert.SerializeObject(document), msWriteOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {

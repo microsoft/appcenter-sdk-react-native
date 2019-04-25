@@ -28,14 +28,6 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         // + (void)readWithPartition:(NSString *)partition 
         //                documentId:(NSString*) documentId 
         //              documentType:(Class) documentType 
-        //         completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
-        [Static]
-        [Export("readWithPartition:documentId:documentType:completionHandler:")]
-        void Read(string partition, string documentId, MSDocumentWrapperCompletionHandler completionHandler);
-
-        // + (void)readWithPartition:(NSString *)partition 
-        //                documentId:(NSString*) documentId 
-        //              documentType:(Class) documentType 
         //               readOptions:(MSReadOptions *_Nullable)readOptions 
         //         completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
@@ -52,27 +44,11 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         // + (void)createWithPartition:(NSString *)partition 
         //                  documentId:(NSString*) documentId 
         //                    document:(T) document 
-        //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
-        [Static]
-        [Export("createWithPartition:documentId:document:completionHandler:")]
-        void Create(string partition, string documentId, string document, MSDocumentWrapperCompletionHandler completionHandler);
-
-        // + (void)createWithPartition:(NSString *)partition 
-        //                  documentId:(NSString*) documentId 
-        //                    document:(T) document 
         //                writeOptions:(MSWriteOptions *_Nullable)writeOptions 
         //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
         [Export("createWithPartition:documentId:document:writeOptions:completionHandler:")]
         void Create(string partition, string documentId, string document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
-
-        // + (void)replaceWithPartition:(NSString *)partition 
-        //                   documentId:(NSString*) documentId 
-        //                     document:(T) document 
-        //            completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
-        [Static]
-        [Export("replaceWithPartition:documentId:document:completionHandler:")]
-        void Replace(string partition, string documentId, string document, MSDocumentWrapperCompletionHandler completionHandler);
 
         // + (void)replaceWithPartition:(NSString *)partition 
         //                   documentId:(NSString*) documentId 
