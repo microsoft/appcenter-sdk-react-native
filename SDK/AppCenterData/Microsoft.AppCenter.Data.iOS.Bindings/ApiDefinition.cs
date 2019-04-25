@@ -16,6 +16,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         MSSerializableDocument Init(NSDictionary dictionary);
 
         // - (nonnull NSDictionary *)serializeToDictionary
+        [Export("serializeToDictionary:")]
         NSDictionary SerializeToDictionary();
     }
 
