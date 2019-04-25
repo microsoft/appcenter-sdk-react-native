@@ -54,7 +54,7 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\externals\ios\AppCenterAuth.a">
+    <NativeReference Include="..\..\..\externals\ios\AppCenterIdentity.a">
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
       <Frameworks>WebKit AuthenticationServices</Frameworks>
