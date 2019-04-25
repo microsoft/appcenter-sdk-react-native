@@ -52,8 +52,8 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-identity-release.aar">
-      <Link>Jars\appcenter-identity-release.aar</Link>
+    <LibraryProjectZip Include="..\..\..\externals\android\appcenter-auth-release.aar">
+      <Link>Jars\appcenter-auth-release.aar</Link>
     </LibraryProjectZip>
   </ItemGroup>
   <ItemGroup>
