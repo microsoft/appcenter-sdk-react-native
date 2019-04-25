@@ -5,6 +5,7 @@ using Foundation;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Data.iOS.Bindings;
+using ObjCRuntime;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -39,7 +40,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msReadOptions = readOptions.ToMSReadOptions();
-            MSData.Read(partition, documentId, msReadOptions, resultDoc =>
+            MSData.Read(documentId, new Class(typeof(T)), partition, msReadOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {
@@ -56,7 +57,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
-            MSData.List(partition, resultPages =>
+            MSData.List(new Class(typeof(T)), partition, resultPages =>
             {
                 if (resultPages.CurrentPage().Error != null)
                 {
@@ -75,7 +76,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSData.Create(partition, documentId, document.ToMSDocument<T>(), msWriteOptions, resultDoc =>
+            MSData.Create(documentId, document.ToMSDocument<T>(), partition, msWriteOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {
@@ -93,7 +94,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSData.Replace(partition, documentId, document.ToMSDocument<T>(), msWriteOptions, resultDoc =>
+            MSData.Replace(documentId, document.ToMSDocument<T>(), partition, msWriteOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {
