@@ -12,13 +12,17 @@ namespace Microsoft.AppCenter.Data
     /// </summary>
     public partial class PaginatedDocuments<T> : IEnumerable<DocumentWrapper<T>>
     {
+        /// <summary>
+        /// Returns an enumerator that iterates through the paginated documents.
+        /// </summary>
+        /// <returns>Enumerator for the paginated documents.</returns>
         public IEnumerator<DocumentWrapper<T>> GetEnumerator()
         {
             while (true)
             {
-                foreach (var i in CurrentPage?.Items ?? Enumerable.Empty<DocumentWrapper<T>>())
+                foreach (var item in CurrentPage?.Items ?? Enumerable.Empty<DocumentWrapper<T>>())
                 {
-                    yield return i;
+                    yield return item;
                 }
                 if (!HasNextPage)
                 {

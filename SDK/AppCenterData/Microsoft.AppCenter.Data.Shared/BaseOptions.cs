@@ -5,25 +5,18 @@ using System;
 
 namespace Microsoft.AppCenter.Data
 {
+    /// <summary>
+    /// Base class for read and write options.
+    /// </summary>
     public abstract class BaseOptions
     {
         /// <summary>
-        /// Default caching value of one day.
+        /// Device document time-to-live. Default is one day.
         /// </summary>
-        public static readonly TimeSpan DefaultExpiration = TimeSpan.FromDays(1);
+        public TimeSpan DeviceTimeToLive { get; set; } = TimeToLive.Default;
 
-        /// <summary>
-        /// Device document time-to-live in seconds. Default is one day.
-        /// </summary>
-        public TimeSpan DeviceTimeToLive { get; }
-
-        protected BaseOptions() : this(DefaultExpiration)
+        internal BaseOptions()
         {
-        }
-
-        protected BaseOptions(TimeSpan ttl)
-        {
-            DeviceTimeToLive = ttl;
         }
     }
 }
