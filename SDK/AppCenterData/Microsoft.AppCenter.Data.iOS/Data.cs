@@ -95,13 +95,13 @@ namespace Microsoft.AppCenter.Data
             var msWriteOptions = writeOptions.ToMSWriteOptions();
             MSData.Replace(documentId, document.ToMSDocument<T>(), partition, msWriteOptions, resultDoc =>
             {
-                if (resultDoc.Error != null)
+                if (resultDoc.Error == null)
                 {
-                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
+                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
                 }
                 else
                 {
-                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
                 }
             });
             return taskCompletionSource.Task;
@@ -112,13 +112,13 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             MSData.Delete(partition, documentId, resultDoc =>
             {
-                if (resultDoc.Error != null)
+                if (resultDoc.Error == null)
                 {
-                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
+                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
                 }
                 else
                 {
-                    taskCompletionSource.TrySetResult(resultDoc.ToDocumentWrapper<T>());
+                    taskCompletionSource.TrySetException(resultDoc.Error.ToDataException(resultDoc));
                 }
             });
             return taskCompletionSource.Task;
