@@ -18,29 +18,29 @@ namespace Microsoft.AppCenter.Data
         /// The iOS SDK Data bindings type.
         /// </value>
         [Preserve]
-        public static Type BindingType => typeof(MSDataStore);
+        public static Type BindingType => typeof(MSData);
 
         private static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.FromResult(MSDataStore.IsEnabled());
+            return Task.FromResult(MSData.IsEnabled());
         }
 
         private static Task PlatformSetEnabledAsync(bool enabled)
         {
-            MSDataStore.SetEnabled(enabled);
+            MSData.SetEnabled(enabled);
             return Task.FromResult(default(object));
         }
 
         private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
         {
-            MSDataStore.SetTokenExchangeUrl(tokenExchangeUrl);
+            MSData.SetTokenExchangeUrl(tokenExchangeUrl);
         }
 
         private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msReadOptions = readOptions.ToMSReadOptions();
-            MSDataStore.Read(partition, documentId, msReadOptions, resultDoc =>
+            MSData.Read(partition, documentId, msReadOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {
@@ -57,7 +57,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
-            MSDataStore.List(partition, resultPages =>
+            MSData.List(partition, resultPages =>
             {
                 var paginatedDocs = new PaginatedDocuments<T>(resultPages);
                 taskCompletionSource.TrySetResult(paginatedDocs);
@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSDataStore.Create(partition, documentId, JsonConvert.SerializeObject(document), msWriteOptions, resultDoc =>
+            MSData.Create(partition, documentId, document.ToMSDocument<T>(), msWriteOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {
@@ -87,7 +87,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSDataStore.Replace(partition, documentId, JsonConvert.SerializeObject(document), msWriteOptions, resultDoc =>
+            MSData.Replace(partition, documentId, document.ToMSDocument<T>(), msWriteOptions, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {
@@ -104,7 +104,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string documentId, string partition, WriteOptions writeOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
-            MSDataStore.Delete(partition, documentId, resultDoc =>
+            MSData.Delete(partition, documentId, resultDoc =>
             {
                 if (resultDoc.Error != null)
                 {

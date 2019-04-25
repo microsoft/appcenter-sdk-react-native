@@ -6,9 +6,19 @@ using Foundation;
 
 namespace Microsoft.AppCenter.Data.iOS.Bindings
 {
-    // @interface MSDataStore<T : id <MSSerializableDocument>> : MSService
+    // @protocol MSSerializableDocument <NSObject>
+    [Protocol, Model]
     [BaseType(typeof(NSObject))]
-    interface MSDataStore
+    interface MSSerializableDocument
+    {
+        // @required - (instancetype)initFromDictionary:(NSDictionary *)dictionary;
+        [Export("initFromDictionary:")]
+        MSSerializableDocument init(NSDictionary dictionary);
+    }
+
+    // @interface MSData : MSService
+    [BaseType(typeof(NSObject))]
+    interface MSData
     {
         // +(void)setEnabled:(BOOL)isEnabled;
         [Static]
@@ -43,21 +53,21 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
 
         // + (void)createWithPartition:(NSString *)partition 
         //                  documentId:(NSString*) documentId 
-        //                    document:(T) document 
+        //                    document:(id<MSSerializableDocument>)document
         //                writeOptions:(MSWriteOptions *_Nullable)writeOptions 
         //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
         [Export("createWithPartition:documentId:document:writeOptions:completionHandler:")]
-        void Create(string partition, string documentId, string document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        void Create(string partition, string documentId, MSSerializableDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
         // + (void)replaceWithPartition:(NSString *)partition 
         //                   documentId:(NSString*) documentId 
-        //                     document:(T) document 
+        //                     document:(id<MSSerializableDocument>)document 
         //                 writeOptions:(MSWriteOptions *_Nullable)writeOptions 
         //            completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
         [Export("replaceWithPartition:documentId:document:writeOptions:completionHandler:")]
-        void Replace(string partition, string documentId, string document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        void Replace(string partition, string documentId, MSSerializableDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
         // + (void)deleteWithPartition:(NSString *)partition 
         //                  documentId:(NSString*) documentId
@@ -75,7 +85,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         void Delete(string partition, string documentId, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
     }
 
-    // @interface MSDocumentWrapper<T : id <MSSerializableDocument>> : NSObject
+    // @interface MSDocumentWrapper : NSObject
     [BaseType(typeof(NSObject))]
     interface MSDocumentWrapper
     {
@@ -83,9 +93,9 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         [Export("jsonValue")]
         string JsonValue { get; }
 
-        // @property(nonatomic, strong, readonly) T deserializedValue;
+        // @property(nonatomic, strong, readonly) id<MSSerializableDocument> deserializedValue;
         [Export("deserializedValue")]
-        string DeserializedValue { get; }
+        MSSerializableDocument DeserializedValue { get; }
 
         // @property(nonatomic, strong, readonly) NSString *partition;
         [Export("partition")]
@@ -103,16 +113,16 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         [Export("lastUpdatedDate")]
         NSDate LastUpdatedDate { get; }
 
-        // @property(nonatomic, strong, readonly) MSDataSourceError *error;
+        // @property(nonatomic, strong, readonly) MSDataError *error;
         [Export("error")]
-        MSDataSourceError Error { get; }
+        MSDataError Error { get; }
 
         // @property(nonatomic, readonly) BOOL fromDeviceCache;
         [Export("fromDeviceCache")]
         bool FromDeviceCache { get; set; }
     }
 
-    // @interface MSPaginatedDocuments<T : id <MSSerializableDocument>> : NSObject
+    // @interface MSPaginatedDocuments : NSObject
     [BaseType(typeof(NSObject))]
     interface MSPaginatedDocuments
     {
@@ -120,31 +130,31 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         [Export("hasNextPage")]
         bool HasNextPage();
 
-        // - (MSPage<T> *)currentPage;
+        // - (MSPage *)currentPage;
         [Export("currentPage")]
         MSPage CurrentPage();
 
-        // - (void)nextPageWithCompletionHandler:(void (^)(MSPage<T> *page))completionHandler;
+        // - (void)nextPageWithCompletionHandler:(void (^)(MSPage *page))completionHandler;
         [Export("nextPageWithCompletionHandler:")]
         void NextPage(MSPageCompletionHandler completionHandler);
     }
 
-    // @interface MSPage<T : id <MSSerializableDocument>> : NSObject
+    // @interface MSPage : NSObject
     [BaseType(typeof(NSObject))]
     interface MSPage
     {
-        // @property(readonly) NSArray<MSDocumentWrapper<T> *> *items;
+        // @property(readonly) NSArray<MSDocumentWrapper *> *items;
         [Export("items")]
         MSDocumentWrapper[] Items { get; }
 
-        // @property(readonly) MSDataSourceError *error;
+        // @property(readonly) MSDataError *error;
         [Export("error")]
-        MSDataSourceError Error { get; }
+        MSDataError Error { get; }
     }
 
-    // @interface MSDataSourceError : NSObject
+    // @interface MSDataError : NSObject
     [BaseType(typeof(NSObject))]
-    interface MSDataSourceError
+    interface MSDataError
     {
         // @property(nonatomic, strong, readonly) NSError *error;
         [Export("error")]
@@ -159,7 +169,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
     [BaseType(typeof(NSObject))]
     interface MSBaseOptions
     {
-        // @property long deviceTimeToLive;
+        // @property NSInteger deviceTimeToLive;
         [Export("deviceTimeToLive")]
         long DeviceTimeToLive { get; set; }
     }

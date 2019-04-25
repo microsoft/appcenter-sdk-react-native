@@ -48,7 +48,7 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="Native References/AppCenterDataStorage.a">
+    <NativeReference Include="..\..\..\externals\ios\AppCenterData.a">
       <Kind>Static</Kind>
     </NativeReference>
   </ItemGroup>

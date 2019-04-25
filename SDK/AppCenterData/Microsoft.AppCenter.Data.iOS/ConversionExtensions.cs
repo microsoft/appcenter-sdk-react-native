@@ -49,5 +49,11 @@ namespace Microsoft.AppCenter.Data
             }
             return page;
         }
+
+        public static MSSerializableDocument ToMSDocument<T>(this T document)
+        {
+            NSDictionary dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
+            return new MSSerializableDocument().init(dic);
+        }
     }
 }
