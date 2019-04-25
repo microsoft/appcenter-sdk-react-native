@@ -26,7 +26,7 @@ namespace Microsoft.AppCenter.Auth
         static Task PlatformSetEnabledAsync(bool enabled)
         {
             MSAuth.SetEnabled(enabled);
-            return Task.FromResult(default(object));
+            return Task.CompletedTask;
         }
 
         private static Task<UserInformation> PlatformSignInAsync()
