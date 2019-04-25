@@ -51,8 +51,8 @@ var AndroidMsalDependencies = new string [] {
     "https://jcenter.bintray.com/net/minidev/json-smart/2.3/json-smart-2.3.jar",
     "https://jcenter.bintray.com/net/minidev/accessors-smart/1.2/accessors-smart-1.2.jar",
     "https://jcenter.bintray.com/org/ow2/asm/asm/5.0.4/asm-5.0.4.jar",
-    "https://mobilecentersdkdev.blob.core.windows.net/sdk/AppCenter-SDK-DotNet/AndroidMsal/common-0.0.10-RC10.aar",
-    "https://mobilecentersdkdev.blob.core.windows.net/sdk/AppCenter-SDK-DotNet/AndroidMsal/msal-0.3.1-RC2.aar"
+    "https://jcenter.bintray.com/com/microsoft/identity/common/0.0.10-alpha/common-0.0.10-alpha.aar",
+    "https://jcenter.bintray.com/com/microsoft/identity/client/msal/0.3.1-alpha/msal-0.3.1-alpha.aar"
 };
 
 // Task Target for build
