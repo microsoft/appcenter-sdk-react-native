@@ -22,7 +22,7 @@ namespace Microsoft.AppCenter.Data
         /// <returns>True if there is another page of documents, false otherwise.</returns>
         public bool HasNextPage
         {
-            get { return InternalDocuments.HasNextPage(); }
+            get => InternalDocuments.HasNextPage();
         }
 
         /// <summary>
@@ -31,11 +31,7 @@ namespace Microsoft.AppCenter.Data
         /// <returns>The current page of documents.</returns>
         public Page<T> CurrentPage
         {
-            get
-            {
-                var source = InternalDocuments.CurrentPage().Items;
-                return GetPageFromInternalSource(source);
-            }
+            get => InternalDocuments.CurrentPage().ToPage<T>();
         }
 
         /// <summary>
@@ -54,20 +50,10 @@ namespace Microsoft.AppCenter.Data
                 else
                 {
                     var source = internalPage.Items;
-                    taskCompletionSource.TrySetResult(GetPageFromInternalSource(source));
+                    taskCompletionSource.TrySetResult(internalPage.ToPage<T>());
                 }
             });
             return taskCompletionSource.Task;
-        }
-
-        private Page<T> GetPageFromInternalSource(MSDocumentWrapper[] source) 
-        {
-            var page = new Page<T>();
-            foreach (var item in source)
-            {
-                page.Items.Add(item.ToDocumentWrapper<T>());
-            }
-            return page;
         }
     }
 }

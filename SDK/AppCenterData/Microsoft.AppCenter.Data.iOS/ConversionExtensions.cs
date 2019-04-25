@@ -10,8 +10,6 @@ namespace Microsoft.AppCenter.Data
 {
     public static class ConversionExtensions
     {
-        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
             var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
@@ -26,7 +24,7 @@ namespace Microsoft.AppCenter.Data
             };
         }
 
-        public static MSReadOptions ToiOSReadOptions(this ReadOptions readOptions)
+        public static MSReadOptions ToMSReadOptions(this ReadOptions readOptions)
         {
             return new MSReadOptions
             {
@@ -34,12 +32,22 @@ namespace Microsoft.AppCenter.Data
             };
         }
 
-        public static MSWriteOptions ToiOSWriteOptions(this WriteOptions writeOptions)
+        public static MSWriteOptions ToMSWriteOptions(this WriteOptions writeOptions)
         {
             return new MSWriteOptions
             {
                 DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
             };
+        }
+
+        public static Page<T> ToPage<T>(this MSPage msPage)
+        {
+            var page = new Page<T>();
+            foreach (var item in msPage.Items)
+            {
+                page.Items.Add(item.ToDocumentWrapper<T>());
+            }
+            return page;
         }
     }
 }
