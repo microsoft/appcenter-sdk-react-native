@@ -13,12 +13,12 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// The current page.
         /// </summary>
-        public Page<T> CurrentPage { get => mPaginatedDocuments.CurrentPage.ToPage<T>(); }
+        public Page<T> CurrentPage => mPaginatedDocuments.CurrentPage.ToPage<T>(); 
 
         /// <summary>
         /// Boolean indicating if an extra page is available.
         /// </summary>
-        public bool HasNextPage { get => mPaginatedDocuments.HasNextPage; }
+        public bool HasNextPage => mPaginatedDocuments.HasNextPage; 
 
         /// <summary>
         /// Asynchronously fetch the next page.
