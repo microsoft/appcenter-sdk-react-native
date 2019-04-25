@@ -3,6 +3,7 @@
 
 using System;
 using Foundation;
+using ObjCRuntime;
 
 namespace Microsoft.AppCenter.Data.iOS.Bindings
 {
@@ -52,54 +53,54 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         [Export("setTokenExchangeUrl:")]
         void SetTokenExchangeUrl(string tokenExchangeUrl);
 
-        // + (void)readWithPartition:(NSString *)partition 
-        //                documentId:(NSString*) documentId 
-        //              documentType:(Class) documentType 
-        //               readOptions:(MSReadOptions *_Nullable)readOptions 
-        //         completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
+        // + (void)readDocumentWithID:(NSString *)documentID
+        //                       type:(Class)documentType
+        //                  partition:(NSString *)partition
+        //                readOptions:(MSReadOptions *_Nullable)readOptions
+        //          completionHandler:(MSDocumentWrapperCompletionHandler)completionHandler;
         [Static]
-        [Export("readWithPartition:documentId:documentType:readOptions:completionHandler:")]
-        void Read(string partition, string documentId, [NullAllowed] MSReadOptions readOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        [Export("readDocumentWithID:type:partition:readOptions:completionHandler:")]
+        void Read(string documentId, Class type, string partition, [NullAllowed] MSReadOptions readOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
-        // + (void)listWithPartition:(NSString *)partition
-        //              documentType:(Class) documentType
-        //         completionHandler:(MSPaginatedDocumentsCompletionHandler) completionHandler;
+        // (void)listDocumentsWithType:(Class)documentType
+        //                   partition:(NSString*) partition
+        //           completionHandler:(MSPaginatedDocumentsCompletionHandler) completionHandler;
         [Static]
-        [Export("listWithPartition:documentType:completionHandler:")]
-        void List(string partition, MSPaginatedDocumentsCompletionHandler completionHandler);
+        [Export("listDocumentsWithType:partition:completionHandler:")]
+        void List(Class type, string partition, MSPaginatedDocumentsCompletionHandler completionHandler);
 
-        // + (void)createWithPartition:(NSString *)partition 
-        //                  documentId:(NSString*) documentId 
-        //                    document:(id<MSSerializableDocument>)document
-        //                writeOptions:(MSWriteOptions *_Nullable)writeOptions 
-        //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
+        // + (void) createDocumentWithID:(NSString*) documentID
+        //                      document:(id<MSSerializableDocument>) document
+        //                     partition:(NSString*) partition
+        //                  writeOptions:(MSWriteOptions* _Nullable) writeOptions
+        //             completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
-        [Export("createWithPartition:documentId:document:writeOptions:completionHandler:")]
-        void Create(string partition, string documentId, MSDictionaryDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        [Export("createDocumentWithID:document:partition:writeOptions:completionHandler:")]
+        void Create(string documentId, MSSerializableDocument document, string partition, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
-        // + (void)replaceWithPartition:(NSString *)partition 
-        //                   documentId:(NSString*) documentId 
-        //                     document:(id<MSSerializableDocument>)document 
-        //                 writeOptions:(MSWriteOptions *_Nullable)writeOptions 
+        // + (void) replaceDocumentWithID:(NSString*) documentID
+        //                       document:(id<MSSerializableDocument>) document
+        //                      partition:(NSString*) partition
+        //                   writeOptions:(MSWriteOptions* _Nullable) writeOptions
+        //              completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
+        [Static]
+        [Export("replaceDocumentWithID:document:partition:writeOptions:completionHandler:")]
+        void Replace(string documentId, MSSerializableDocument document, string partition, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+
+        // + (void) deleteDocumentWithID:(NSString*) documentID
+        //                     partition:(NSString*) partition
+        //             completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
+        [Static]
+        [Export("deleteDocumentWithID:partition:completionHandler:")]
+        void Delete(string documentId, string partition, MSDocumentWrapperCompletionHandler completionHandler);
+
+        // + (void)deleteDocumentWithID:(NSString *)partition 
+        //                    partition:(NSString*) documentId
+        //                 writeOptions:(MSWriteOptions *_Nullable)writeOptions
         //            completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
         [Static]
-        [Export("replaceWithPartition:documentId:document:writeOptions:completionHandler:")]
-        void Replace(string partition, string documentId, MSDictionaryDocument document, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
-
-        // + (void)deleteWithPartition:(NSString *)partition 
-        //                  documentId:(NSString*) documentId
-        //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
-        [Static]
-        [Export("deleteWithPartition:documentId:completionHandler:")]
-        void Delete(string partition, string documentId, MSDocumentWrapperCompletionHandler completionHandler);
-
-        // + (void)deleteWithPartition:(NSString *)partition 
-        //                  documentId:(NSString*) documentId
-        //                writeOptions:(MSWriteOptions *_Nullable)writeOptions
-        //           completionHandler:(MSDocumentWrapperCompletionHandler) completionHandler;
-        [Static]
-        [Export("deleteWithPartition:documentId:writeOptions:completionHandler:")]
-        void Delete(string partition, string documentId, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        [Export("deleteDocumentWithID:partition:writeOptions:completionHandler:")]
+        void Delete(string documentId, string partition, [NullAllowed] MSWriteOptions writeOptions, MSDocumentWrapperCompletionHandler completionHandler);
     }
 
     // @interface MSDocumentWrapper : NSObject
@@ -112,7 +113,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
 
         // @property(nonatomic, strong, readonly) id<MSSerializableDocument> deserializedValue;
         [Export("deserializedValue")]
-        MSDictionaryDocument DeserializedValue { get; }
+        MSSerializableDocument DeserializedValue { get; }
 
         // @property(nonatomic, strong, readonly) NSString *partition;
         [Export("partition")]
