@@ -30,7 +30,7 @@ namespace Microsoft.AppCenter.Data
         {
             return new MSReadOptions
             {
-                DeviceTimeToLive = readOptions.DeviceTimeToLive.Ticks
+                DeviceTimeToLive = readOptions.DeviceTimeToLive
             };
         }
 
@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Data
         {
             return new MSWriteOptions
             {
-                DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
+                DeviceTimeToLive = writeOptions.DeviceTimeToLive
             };
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.AppCenter.Data
             }
             return new Page<T>
             {
-                Items = msPage.Items.OfType<MSDocumentWrapper>().ToList()
+                Items = msPage.Items
                 .Cast<MSDocumentWrapper>()
                 .Select(i => i.ToDocumentWrapper<T>()).ToList()
             };
@@ -58,8 +58,17 @@ namespace Microsoft.AppCenter.Data
 
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
-            var dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
-            return new MSDictionaryDocument().Init(dic);
+            try
+            {
+                var dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
+                return new MSDictionaryDocument().Init(dic);
+            }
+            catch (JsonException e)
+            {
+                AppCenterLog.Error("tag? TODO", "Unable to deserialize obeject: " + e.Message);
+                //TODO return empty dictionary?
+                return null;
+            }
         }
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments mSPaginatedDocuments)
