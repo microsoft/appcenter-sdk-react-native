@@ -11,28 +11,28 @@ namespace Microsoft.AppCenter.Auth
     public partial class Auth : AppCenterService
     {
         [Preserve]
-        public static Type BindingType => typeof(MSIdentity);
+        public static Type BindingType => typeof(MSAuth);
 
         private static void PlatformSetConfigUrl(string configUrl)
         {
-            MSIdentity.SetConfigUrl(configUrl);
+            MSAuth.SetConfigUrl(configUrl);
         }
 
         static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.FromResult(MSIdentity.IsEnabled());
+            return Task.FromResult(MSAuth.IsEnabled());
         }
 
         static Task PlatformSetEnabledAsync(bool enabled)
         {
-            MSIdentity.SetEnabled(enabled);
+            MSAuth.SetEnabled(enabled);
             return Task.FromResult(default(object));
         }
 
         private static Task<UserInformation> PlatformSignInAsync()
         {
             var taskCompletionSource = new TaskCompletionSource<UserInformation>();
-            MSIdentity.SignIn((userInformation, error) =>
+            MSAuth.SignIn((userInformation, error) =>
             {
                 if (error != null)
                 {
@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Auth
 
         private static void PlatformSignOut()
         {
-            MSIdentity.SignOut();
+            MSAuth.SignOut();
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.AppCenter.Auth
         /// <param name="url">The url with parameters.</param>
         public static void OpenUrl(NSUrl url)
         {
-            MSIdentity.OpenUrl(url);
+            MSAuth.OpenUrl(url);
         }
     }
 }
