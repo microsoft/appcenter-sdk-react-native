@@ -5,6 +5,7 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using System;
@@ -56,7 +57,8 @@ namespace Contoso.Forms.Puppet
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
                 Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
-                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth));
+                Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
+                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth), typeof(Data));
                 AppCenter.IsEnabledAsync().ContinueWith(enabled =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
