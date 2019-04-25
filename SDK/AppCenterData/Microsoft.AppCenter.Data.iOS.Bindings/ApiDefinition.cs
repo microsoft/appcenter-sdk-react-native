@@ -193,13 +193,13 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
     {
     }
 
-    // typedef void (^MSDocumentWrapperCompletionHandler)(MSDocumentWrapper<T> *document);
+    // typedef void (^MSDocumentWrapperCompletionHandler)(MSDocumentWrapper *document);
     delegate void MSDocumentWrapperCompletionHandler(MSDocumentWrapper document);
 
-    // typedef void (^MSPaginatedDocumentsCompletionHandler)(MSPaginatedDocuments<T> *documents);
+    // typedef void (^MSPaginatedDocumentsCompletionHandler)(MSPaginatedDocuments *documents);
     delegate void MSPaginatedDocumentsCompletionHandler(MSPaginatedDocuments documents);
 
-    // void (^)(MSPage<T> *page)
+    // void (^)(MSPage *page)
     delegate void MSPageCompletionHandler(MSPage page);
 }
 
