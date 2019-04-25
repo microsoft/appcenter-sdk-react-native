@@ -22,7 +22,7 @@ namespace Microsoft.AppCenter.Data
             return Task.FromResult(default(object));
         }
 
-        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string partition, string documentId, ReadOptions readOptions)
+        private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string documentId, string partition, ReadOptions readOptions)
         {
             return GenerateFailedTask<DocumentWrapper<T>>();
         }
@@ -32,17 +32,17 @@ namespace Microsoft.AppCenter.Data
             return GenerateFailedTask<PaginatedDocuments<T>>();
         }
 
-        private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string documentId, T document, string partition, WriteOptions writeOptions)
         {
             return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
-        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string documentId, string partition, WriteOptions writeOptions)
         {
             return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
-        private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string partition, string documentId, T document, WriteOptions writeOptions)
+        private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string documentId, T document, string partition, WriteOptions writeOptions)
         {
             return GenerateFailedTask<DocumentWrapper<T>>();
         }
