@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Android.Runtime;
 using Com.Microsoft.Appcenter.Data;
+using Com.Microsoft.Appcenter.Data.Exception;
 using Com.Microsoft.Appcenter.Data.Models;
 using GoogleGson;
 using Newtonsoft.Json;
@@ -25,6 +26,12 @@ namespace Microsoft.AppCenter.Data
         private static readonly Java.Lang.Class JsonElementClass = Java.Lang.Class.FromType(typeof(JsonElement));
 
         private static readonly Gson Gson = new GsonBuilder().Create();
+
+        static Data()
+        {
+            // Set up bridge between Java listener and .NET events/callbacks.
+            AndroidData.SetDataStoreRemoteOperationListener(new AndroidDataEventListener());
+        }
 
         private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
         {
@@ -97,6 +104,27 @@ namespace Microsoft.AppCenter.Data
         {
             var jsonValue = JsonConvert.SerializeObject(document);
             return (JsonElement)Gson.FromJson(jsonValue, JsonElementClass);
+        }
+
+        /// <summary>
+        /// Bridge between C# events/callbacks and Java listeners.
+        /// </summary>
+        class AndroidDataEventListener : Java.Lang.Object, IDataStoreEventListener
+        {
+            public void OnDataStoreOperationResult(string operation, AndroidDocumentMetadata document, AndroidDataException error)
+            {
+                if (RemoteOperationCompleted == null)
+                {
+                    return;
+                }
+                var eventArgs = new RemoteOperationCompletedEventArgs
+                {
+                    Operation = operation,
+                    DocumentMetadata = document.ToDocumentMetadata(),
+                    Error = error?.ToDataException()
+                };
+                RemoteOperationCompleted(null, eventArgs);
+            }
         }
     }
 }

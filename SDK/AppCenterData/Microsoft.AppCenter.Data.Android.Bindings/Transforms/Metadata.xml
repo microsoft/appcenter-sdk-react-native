@@ -2,6 +2,7 @@
 <metadata>
     <attr path="/api/package[@name='com.microsoft.appcenter.data']/class[@name='Data']" name="managedName">AndroidData</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.data.exception']/class[@name='DataException']" name="managedName">AndroidDataException</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter.data.models']/class[@name='DocumentMetadata']" name="managedName">AndroidDocumentMetadata</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.data.models']/class[@name='DocumentWrapper']" name="managedName">AndroidDocumentWrapper</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.data.models']/class[@name='PaginatedDocuments']" name="managedName">AndroidPaginatedDocuments</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.data.models']/class[@name='Page']" name="managedName">AndroidPage</attr>
