@@ -26,9 +26,9 @@ namespace Contoso.Forms.Puppet
 
         static OthersContentPage()
         {
-            Data.RemoteOperationCompleted += (s, remoteOperationEvent) =>
+            Data.RemoteOperationCompleted += (sender, eventArgs) =>
             {
-                AppCenterLog.Info(App.LogTag, "Remote operation completed event=" + JsonConvert.SerializeObject(remoteOperationEvent));
+                AppCenterLog.Info(App.LogTag, "Remote operation completed event=" + JsonConvert.SerializeObject(eventArgs) + " sender=" + sender);
             };
         }
 
