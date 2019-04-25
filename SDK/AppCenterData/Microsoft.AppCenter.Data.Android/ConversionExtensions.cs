@@ -42,6 +42,7 @@ namespace Microsoft.AppCenter.Data
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
+                JsonValue = documentWrapper.JsonValue,
                 Partition = documentWrapper.Partition,
                 Id = documentWrapper.Id,
                 ETag = documentWrapper.ETag,

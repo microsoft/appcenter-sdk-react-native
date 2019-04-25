@@ -9,6 +9,7 @@ using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -85,7 +86,17 @@ namespace Contoso.Forms.Puppet
             {
                 var userInfo = await Auth.SignInAsync();
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
-                await Data.ListAsync<TestDocument>(DefaultPartitions.AppDocuments);
+                var person = new Person
+                {
+                    Name = "alice",
+                    TimeStamp = DateTime.UtcNow
+                };
+                var document = await Data.ReplaceAsync(person.Name, person, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Create result=" + JsonConvert.SerializeObject(document));
+                document = await Data.ReadAsync<Person>(person.Name, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Read result=" + JsonConvert.SerializeObject(document));
+                document = await Data.DeleteAsync<Person>(person.Name, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Delete result=" + JsonConvert.SerializeObject(document));
             }
             catch (Exception ex)
             {
@@ -99,9 +110,13 @@ namespace Contoso.Forms.Puppet
             Auth.SignOut();
         }
 
-        public class TestDocument
+        public class Person
         {
-            public string Key { get; set; }
+            [JsonProperty("name")]
+            public string Name { get; set; }
+
+            [JsonProperty("timestamp")]
+            public DateTime TimeStamp { get; set; }
         }
     }
 }
