@@ -12,6 +12,14 @@
         </TableSection>
         <TableSection Title="EventFilter">
             <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled" />
-        </TableSection>        
+        </TableSection>
+        <TableSection Title="MBaaS">
+            <ViewCell Tapped="RunMBaaSAsync">
+                <Button Text="Test MBaaS (hardcoded scenario)" InputTransparent="true" Clicked="RunMBaaSAsync" />
+            </ViewCell>
+            <ViewCell Tapped="SignOut">
+                <Button Text="Sign Out" InputTransparent="true" Clicked="SignOut" />
+            </ViewCell>
+        </TableSection>
     </TableView>
 </ContentPage>

@@ -74,17 +74,6 @@ namespace Contoso.Forms.Puppet
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
                 });
-                Auth.SignInAsync().ContinueWith(task =>
-                {
-                    if (task.Exception != null)
-                    {
-                        AppCenterLog.Error(LogTag, "Auth: failed to sign in", task.Exception);
-                    }
-                    else
-                    {
-                        AppCenterLog.Info(LogTag, "Auth: signed in with accountId=" + task.Result.AccountId);
-                    }
-                });
             }
         }
 
