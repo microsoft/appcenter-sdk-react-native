@@ -21,7 +21,7 @@ namespace Microsoft.AppCenter.Data
         public static readonly TimeSpan NoCache = TimeSpan.Zero;
 
         /// <summary>
-        /// Default caching value of one day (in seconds).
+        /// Default caching value of one day.
         /// </summary>
         public static readonly TimeSpan Default = TimeSpan.FromDays(1);
     }
