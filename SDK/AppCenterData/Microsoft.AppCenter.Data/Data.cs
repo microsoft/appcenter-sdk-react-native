@@ -37,7 +37,7 @@ namespace Microsoft.AppCenter.Data
             return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
-        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId)
+        private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string partition, string documentId, WriteOptions writeOptions)
         {
             return GenerateFailedTask<DocumentWrapper<T>>();
         }

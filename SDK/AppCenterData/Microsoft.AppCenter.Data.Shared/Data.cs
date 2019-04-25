@@ -112,10 +112,21 @@ namespace Microsoft.AppCenter.Data
         /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
         public static Task<DocumentWrapper<T>> DeleteAsync<T>(string partition, string documentId)
         {
-            return PlatformDeleteAsync<T>(partition, documentId);
+            return PlatformDeleteAsync<T>(partition, documentId, new WriteOptions());
         }
 
-        // TODO bind additional delete with WriteOptions parameter
+        /// <summary>
+        /// Delete a document.
+        /// </summary>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.DocumentWrapper" />.</returns>
+        /// <param name="partition">The CosmosDB partition key.</param>
+        /// <param name="documentId">The CosmosDB document id.</param>
+        /// <param name="writeOptions">Options for deleting the document.</param>
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<DocumentWrapper<T>> DeleteAsync<T>(string partition, string documentId, WriteOptions writeOptions)
+        {
+            return PlatformDeleteAsync<T>(partition, documentId, writeOptions);
+        }
 
         /// <summary>
         /// Replace a document.
@@ -145,7 +156,7 @@ namespace Microsoft.AppCenter.Data
         }
 
         /// <summary>
-        /// The event handler for the remote operation.
+        /// Event handler to suscribe to the remote operations executed as part of offline data synchronization when the network becomes available.
         /// </summary>
         public static event EventHandler<RemoteOperationCompletedEventArgs> RemoteOperationCompleted;
     }
