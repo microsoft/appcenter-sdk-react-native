@@ -63,8 +63,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="..\..\..\externals\android\msal-0.3.1-RC2.aar">
-      <Link>Jars\msal-0.3.1-RC2.aar</Link>
+    <LibraryProjectZip Include="..\..\..\externals\android\msal-0.3.1-alpha.aar">
+      <Link>Jars\msal-0.3.1-alpha.aar</Link>
     </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />

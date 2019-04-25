@@ -93,11 +93,6 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="..\..\..\externals\android\common-0.0.10-RC10.aar">
-      <Link>Jars\common-0.0.10-RC10.aar</Link>
-    </LibraryProjectZip>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedReferenceJar Include="..\..\..\externals\android\accessors-smart-1.2.jar">
       <Link>Jars\accessors-smart-1.2.jar</Link>
     </EmbeddedReferenceJar>
@@ -110,6 +105,11 @@
     <EmbeddedReferenceJar Include="..\..\..\externals\android\nimbus-jose-jwt-5.7.jar">
       <Link>Jars\nimbus-jose-jwt-5.7.jar</Link>
     </EmbeddedReferenceJar>
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryProjectZip Include="..\..\..\externals\android\common-0.0.10-alpha.aar">
+      <Link>Jars\common-0.0.10-alpha.aar</Link>
+    </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
