@@ -44,29 +44,47 @@ namespace Microsoft.AppCenter.Data
 
         public static Page<T> ToPage<T>(this MSPage msPage)
         {
-            List<MSDocumentWrapper> lst = msPage.Items.OfType<MSDocumentWrapper>().ToList();
             if (msPage.Error != null)
             {
                 throw msPage.Error.ToDataException();
             }
             return new Page<T>
             {
-                Items = lst
-                    .Cast<MSDocumentWrapper>()
-                    .Select(i => i.ToDocumentWrapper<T>()).ToList()
+                Items = msPage.Items.OfType<MSDocumentWrapper>().ToList()
+                .Cast<MSDocumentWrapper>()
+                .Select(i => i.ToDocumentWrapper<T>()).ToList()
             };
         }
 
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
-            NSDictionary dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
+            var dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
             return new MSDictionaryDocument().Init(dic);
         }
 
-        public static DataException ToDataException(this MSDataError error) 
+        public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments mSPaginatedDocuments)
+        {
+            return new PaginatedDocuments<T>(mSPaginatedDocuments);
+        }
+
+        public static DocumentMetadata ToDocumentMetadata(this MSDocumentWrapper documentWrapper)
+        {
+            var doc = new DocumentMetadata();
+            doc.ETag = documentWrapper.ETag;
+            doc.Id = documentWrapper.DocumentId;
+            doc.Partition = documentWrapper.Partition;
+            return doc;
+        }
+
+        public static DataException ToDataException(this MSDataError error, MSDocumentWrapper msDocumentWrapper = null) 
         {
             var exception = new NSErrorException(error.Error);
-            return new DataException(exception.Message, exception);
+            var dataException = new DataException(exception.Message, exception);
+            if (msDocumentWrapper != null) 
+            {
+                dataException.DocumentMetadata = msDocumentWrapper.ToDocumentMetadata();
+            }
+            return dataException;
         }
     }
 }
