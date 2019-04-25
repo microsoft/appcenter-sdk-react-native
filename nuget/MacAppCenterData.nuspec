@@ -36,9 +36,9 @@
     <file src="$netstandard_dir$/Microsoft.AppCenter.Data.xml" target="lib/netstandard1.0" />
 
     <!-- Android -->
-    <!-- <file src="$android_dir$/Microsoft.AppCenter.Data.dll" target="lib/MonoAndroid403" />
+    <file src="$android_dir$/Microsoft.AppCenter.Data.dll" target="lib/MonoAndroid403" />
     <file src="$android_dir$/Microsoft.AppCenter.Data.xml" target="lib/MonoAndroid403" />
-    <file src="$android_dir$/Microsoft.AppCenter.Data.Android.Bindings.dll" target="lib/MonoAndroid403" /> -->
+    <file src="$android_dir$/Microsoft.AppCenter.Data.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
     <!-- <file src="$ios_dir$/Microsoft.AppCenter.Data.dll" target="lib/Xamarin.iOS10" />
