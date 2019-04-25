@@ -107,6 +107,7 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<T> RunJsonTask<T>(Func<T> backgroundCode)
         {
+            // We run JSON inside a task, see https://forums.xamarin.com/discussion/94867/how-to-speed-up-newtonsoft-json-on-android
             return Task.Run(() =>
             {
                 try
