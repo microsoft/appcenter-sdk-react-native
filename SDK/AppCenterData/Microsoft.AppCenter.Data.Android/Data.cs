@@ -93,7 +93,7 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<DocumentWrapper<T>> RunDocumentWrapperTask<T>(IAppCenterFuture future)
         {
-            return Task.Run(() =>
+            return RunJsonTask(() =>
             {
                 return ToDocumentWrapper<T>(future);
             });
