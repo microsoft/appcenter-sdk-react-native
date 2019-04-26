@@ -22,7 +22,7 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>true</MtouchFastDev>
-    <MtouchLink>None</MtouchLink>
+    <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
@@ -97,8 +97,9 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\packages\Xamarin.Forms.2.5.1.527436\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -131,18 +132,6 @@
     <BundleResource Include="Resources\handbag%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
-      <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
-      <Name>Contoso.Forms.Puppet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.iOS\Microsoft.AppCenter.iOS.csproj">
-      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
-      <Name>Microsoft.AppCenter.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">
-      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
-      <Name>Microsoft.AppCenter.iOS.Bindings</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.iOS\Microsoft.AppCenter.Analytics.iOS.csproj">
       <Project>{EF5D0090-9E12-45B5-961C-45D787BD80A5}</Project>
       <Name>Microsoft.AppCenter.Analytics.iOS</Name>
@@ -151,37 +140,33 @@
       <Project>{45EA6818-8759-4E48-BD7A-E240E4D4B0F7}</Project>
       <Name>Microsoft.AppCenter.Analytics.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS\Microsoft.AppCenter.Auth.iOS.csproj">
-      <Project>{D2ACDD48-183E-4788-97DC-8FE859C2C3C8}</Project>
-      <Name>Microsoft.AppCenter.Auth.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS.Bindings\Microsoft.AppCenter.Auth.iOS.Bindings.csproj">
-      <Project>{AA8B3644-7C06-40BD-B3E5-4C51E485CCBE}</Project>
-      <Name>Microsoft.AppCenter.Auth.iOS.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.iOS\Microsoft.AppCenter.Crashes.iOS.csproj">
-      <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
-      <Name>Microsoft.AppCenter.Crashes.iOS</Name>
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.iOS\Microsoft.AppCenter.iOS.csproj">
+      <Project>{B87370CD-AF51-45E0-AA15-3E0ABC0C30A0}</Project>
+      <Name>Microsoft.AppCenter.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.iOS.Bindings\Microsoft.AppCenter.Crashes.iOS.Bindings.csproj">
       <Project>{FCEB9729-627A-4964-B853-1649CA1FA76D}</Project>
       <Name>Microsoft.AppCenter.Crashes.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS.Bindings\Microsoft.AppCenter.Data.iOS.Bindings.csproj">
-      <Project>{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}</Project>
-      <Name>Microsoft.AppCenter.Data.iOS.Bindings</Name>
+    <ProjectReference Include="..\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj">
+      <Project>{92313C69-3BC4-4276-A1C8-100C86183F12}</Project>
+      <Name>Contoso.Forms.Puppet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj">
-      <Project>{E71F3053-056C-4381-9638-048ED73BDFF6}</Project>
-      <Name>Microsoft.AppCenter.Data.iOS</Name>
+    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">
+      <Project>{5490FECC-63B2-4543-B4FE-EDD8D1BD8351}</Project>
+      <Name>Microsoft.AppCenter.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.iOS\Microsoft.AppCenter.Distribute.iOS.csproj">
-      <Project>{60241627-33BB-45F9-A1B6-6F1CB2BF2C4A}</Project>
-      <Name>Microsoft.AppCenter.Distribute.iOS</Name>
+    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.iOS\Microsoft.AppCenter.Crashes.iOS.csproj">
+      <Project>{4936A94C-BE22-4F73-8468-64FA4371FF80}</Project>
+      <Name>Microsoft.AppCenter.Crashes.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.iOS.Bindings\Microsoft.AppCenter.Distribute.iOS.Bindings.csproj">
       <Project>{278DFD3C-A0DD-4DD2-97C5-44EC4BEE8462}</Project>
       <Name>Microsoft.AppCenter.Distribute.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.iOS\Microsoft.AppCenter.Distribute.iOS.csproj">
+      <Project>{60241627-33BB-45F9-A1B6-6F1CB2BF2C4A}</Project>
+      <Name>Microsoft.AppCenter.Distribute.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS\Microsoft.AppCenter.Push.iOS.csproj">
       <Project>{D8F25BA5-249D-4BB0-A4B1-A3245F2437FF}</Project>
@@ -190,6 +175,22 @@
     <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS.Bindings\Microsoft.AppCenter.Push.iOS.Bindings.csproj">
       <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
       <Name>Microsoft.AppCenter.Push.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS.Bindings\Microsoft.AppCenter.Auth.iOS.Bindings.csproj">
+      <Project>{AA8B3644-7C06-40BD-B3E5-4C51E485CCBE}</Project>
+      <Name>Microsoft.AppCenter.Auth.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS\Microsoft.AppCenter.Auth.iOS.csproj">
+      <Project>{D2ACDD48-183E-4788-97DC-8FE859C2C3C8}</Project>
+      <Name>Microsoft.AppCenter.Auth.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS.Bindings\Microsoft.AppCenter.Data.iOS.Bindings.csproj">
+      <Project>{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}</Project>
+      <Name>Microsoft.AppCenter.Data.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj">
+      <Project>{E71F3053-056C-4381-9638-048ED73BDFF6}</Project>
+      <Name>Microsoft.AppCenter.Data.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
