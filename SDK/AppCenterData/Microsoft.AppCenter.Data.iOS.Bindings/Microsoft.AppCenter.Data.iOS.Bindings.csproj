@@ -7,7 +7,7 @@
     <ProjectGuid>{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}</ProjectGuid>
     <TemplateGuid>{b6f3ff35-79b2-4f25-a2fc-60a7cf61013b}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.AppCenter.Data</RootNamespace>
+    <RootNamespace>Microsoft.AppCenter.Data.iOS.Bindings</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Microsoft.AppCenter.Data.iOS.Bindings</AssemblyName>
   </PropertyGroup>
