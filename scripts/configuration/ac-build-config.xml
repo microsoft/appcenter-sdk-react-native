@@ -18,8 +18,8 @@
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS.Bindings/bin/Release/Microsoft.AppCenter.Push.iOS.Bindings.dll"/>
         <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.iOS/bin/Release/Microsoft.AppCenter.Auth.dll"/>
         <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.iOS.Bindings/bin/Release/Microsoft.AppCenter.Auth.iOS.Bindings.dll"/>
-        <!-- <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.iOS/bin/Release/Microsoft.AppCenter.Data.dll"/>
-        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.iOS.Bindings/bin/Release/Microsoft.AppCenter.Data.iOS.Bindings.dll"/> -->
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.iOS/bin/Release/Microsoft.AppCenter.Data.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.iOS.Bindings/bin/Release/Microsoft.AppCenter.Data.iOS.Bindings.dll"/>
     </group>
     <group id="android" folder="AndroidAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.dll"/>
