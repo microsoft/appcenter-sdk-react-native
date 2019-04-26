@@ -54,7 +54,6 @@ namespace Microsoft.AppCenter.Data
             return new Page<T>
             {
                 Items = msPage.Items
-                              .Cast<MSDocumentWrapper>()
                               .Select(i => i.ToDocumentWrapper<T>()).ToList()
             };
         }

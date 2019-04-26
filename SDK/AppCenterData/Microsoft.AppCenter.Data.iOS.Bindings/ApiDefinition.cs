@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
 
     // @interface MSDictionaryDocument : NSObject<MSSerializableDocument>
     [BaseType(typeof(MSSerializableDocument))]
-    interface MSDictionaryDocument
+    interface MSDictionaryDocument : MSSerializableDocument
     {
         // @required - (instancetype)initFromDictionary:(NSDictionary *)dictionary;
         [Export("initFromDictionary:")]
