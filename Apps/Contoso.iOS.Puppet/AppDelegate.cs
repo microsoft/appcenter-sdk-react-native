@@ -9,6 +9,7 @@ using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using UIKit;
@@ -55,6 +56,7 @@ namespace Contoso.iOS.Puppet
             Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
             Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
             Distribute.DontCheckForUpdatesInDebug();
+            Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
             AppCenter.Start("e94aaff4-e80d-4fee-9a5f-a84eb6e688fc", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
             return true;
         }
