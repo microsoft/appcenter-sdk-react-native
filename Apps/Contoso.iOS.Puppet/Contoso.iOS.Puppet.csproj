@@ -85,6 +85,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -121,6 +124,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -192,6 +196,14 @@
     <ProjectReference Include="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.iOS.Bindings\Microsoft.AppCenter.Push.iOS.Bindings.csproj">
       <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
       <Name>Microsoft.AppCenter.Push.iOS.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj">
+      <Project>{E71F3053-056C-4381-9638-048ED73BDFF6}</Project>
+      <Name>Microsoft.AppCenter.Data.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS.Bindings\Microsoft.AppCenter.Data.iOS.Bindings.csproj">
+      <Project>{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}</Project>
+      <Name>Microsoft.AppCenter.Data.iOS.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

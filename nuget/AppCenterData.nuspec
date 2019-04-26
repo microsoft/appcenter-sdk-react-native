@@ -21,7 +21,11 @@
       <group targetFramework="MonoAndroid403">
         <dependency id="Microsoft.AppCenter" version="$version$" />
         <dependency id="GoogleGson" version="2.8.5" />
-        <dependency id="Newtonsoft.Json" version="10.0.1" />
+        <dependency id="Newtonsoft.Json" version="12.0.2" />
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="Microsoft.AppCenter" version="$version$" />
+        <dependency id="Newtonsoft.Json" version="12.0.2" />
       </group>
     </dependencies>
     <version>$version$</version>
@@ -42,9 +46,9 @@
     <file src="$android_dir$/Microsoft.AppCenter.Data.Android.Bindings.dll" target="lib/MonoAndroid403" />
 
     <!-- iOS -->
-    <!-- <file src="$ios_dir$/Microsoft.AppCenter.Data.dll" target="lib/Xamarin.iOS10" />
+    <file src="$ios_dir$/Microsoft.AppCenter.Data.dll" target="lib/Xamarin.iOS10" />
     <file src="$ios_dir$/Microsoft.AppCenter.Data.xml" target="lib/Xamarin.iOS10" />
-    <file src="$ios_dir$/Microsoft.AppCenter.Data.iOS.Bindings.dll" target="lib/Xamarin.iOS10" /> -->
+    <file src="$ios_dir$/Microsoft.AppCenter.Data.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
   </files>
 </package>

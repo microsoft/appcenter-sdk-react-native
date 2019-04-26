@@ -26,7 +26,7 @@ namespace Microsoft.AppCenter.Auth
         static Task PlatformSetEnabledAsync(bool enabled)
         {
             MSAuth.SetEnabled(enabled);
-            return Task.FromResult(default(object));
+            return Task.CompletedTask;
         }
 
         private static Task<UserInformation> PlatformSignInAsync()
@@ -36,14 +36,7 @@ namespace Microsoft.AppCenter.Auth
             {
                 if (error != null)
                 {
-                    try
-                    {
-                        throw new NSErrorException(error);
-                    }
-                    catch (NSErrorException e)
-                    {
-                        taskCompletionSource.TrySetException(e);
-                    }
+                    taskCompletionSource.TrySetException(new NSErrorException(error));
                 }
                 else
                 {
