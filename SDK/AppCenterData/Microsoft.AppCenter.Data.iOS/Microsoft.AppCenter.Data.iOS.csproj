@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.1</Version>
+      <Version>12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems')" />
