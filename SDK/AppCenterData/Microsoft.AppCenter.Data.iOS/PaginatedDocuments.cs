@@ -19,13 +19,13 @@ namespace Microsoft.AppCenter.Data
         /// Boolean indicating if an extra page is available.
         /// </summary>
         /// <returns>True if there is another page of documents, false otherwise.</returns>
-        public bool HasNextPage { get => PaginatedDocumentsInternal.HasNextPage(); }
+        public bool HasNextPage => PaginatedDocumentsInternal.HasNextPage(); 
 
         /// <summary>
         /// Return the current page.
         /// </summary>
         /// <returns>The current page of documents.</returns>
-        public Page<T> CurrentPage { get => PaginatedDocumentsInternal.CurrentPage().ToPage<T>(); }
+        public Page<T> CurrentPage => PaginatedDocumentsInternal.CurrentPage().ToPage<T>(); 
 
         /// <summary>
         /// Asynchronously fetch the next page.
@@ -36,13 +36,13 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<Page<T>>();
             PaginatedDocumentsInternal.NextPage(internalPage =>
             {
-                if (internalPage.Error != null)
+                if (internalPage.Error == null)
                 {
-                    taskCompletionSource.TrySetException(internalPage.Error.ToDataException());
+                    taskCompletionSource.SetResult(internalPage.ToPage<T>());
                 }
                 else
                 {
-                    taskCompletionSource.TrySetResult(internalPage.ToPage<T>());
+                    taskCompletionSource.SetException(internalPage.Error.ToDataException());
                 }
             });
             return taskCompletionSource.Task;

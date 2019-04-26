@@ -6,9 +6,9 @@ using Microsoft.AppCenter.iOS.Bindings;
 
 namespace Microsoft.AppCenter.Auth.iOS.Bindings
 {
-    // @interface MSIdentity : MSService
+    // @interface MSAuth : MSService
     [BaseType(typeof(NSObject))]
-    interface MSIdentity
+    interface MSAuth
     {
         // + (void)setConfigUrl:(NSString*) configUrl;
         [Static]

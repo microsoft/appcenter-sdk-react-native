@@ -6,7 +6,6 @@ using System;
 using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.AppCenter.Data.iOS.Bindings;
-using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -18,6 +17,7 @@ namespace Microsoft.AppCenter.Data
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
+                JsonValue = documentWrapper.JsonValue,
                 Partition = documentWrapper.Partition,
                 ETag = documentWrapper.ETag,
                 Id = documentWrapper.DocumentId,
@@ -30,7 +30,7 @@ namespace Microsoft.AppCenter.Data
         {
             return new MSReadOptions
             {
-                DeviceTimeToLive = readOptions.DeviceTimeToLive.Ticks
+                DeviceTimeToLive = (long)readOptions.DeviceTimeToLive.TotalSeconds
             };
         }
 
@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Data
         {
             return new MSWriteOptions
             {
-                DeviceTimeToLive = writeOptions.DeviceTimeToLive.Ticks
+                DeviceTimeToLive = (long)writeOptions.DeviceTimeToLive.TotalSeconds
             };
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.AppCenter.Data
             }
             return new Page<T>
             {
-                Items = msPage.Items.OfType<MSDocumentWrapper>().ToList()
+                Items = msPage.Items
                 .Cast<MSDocumentWrapper>()
                 .Select(i => i.ToDocumentWrapper<T>()).ToList()
             };
@@ -76,11 +76,11 @@ namespace Microsoft.AppCenter.Data
             return doc;
         }
 
-        public static DataException ToDataException(this MSDataError error, MSDocumentWrapper msDocumentWrapper = null) 
+        public static DataException ToDataException(this MSDataError error, MSDocumentWrapper msDocumentWrapper = null)
         {
             var exception = new NSErrorException(error.Error);
             var dataException = new DataException(exception.Message, exception);
-            if (msDocumentWrapper != null) 
+            if (msDocumentWrapper != null)
             {
                 dataException.DocumentMetadata = msDocumentWrapper.ToDocumentMetadata();
             }
