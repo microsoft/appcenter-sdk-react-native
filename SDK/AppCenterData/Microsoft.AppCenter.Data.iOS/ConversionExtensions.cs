@@ -15,6 +15,7 @@ namespace Microsoft.AppCenter.Data
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
             // We can not use JsonValue here - it contains not the document itself, but the whole MSDocumentWrapper serialized.
+            // TODO fix this when the native bug is fixed.
             var deserializedValue = documentWrapper.DeserializedValue.ToDocument<T>(); 
             return new DocumentWrapper<T>
             {
@@ -53,8 +54,8 @@ namespace Microsoft.AppCenter.Data
             return new Page<T>
             {
                 Items = msPage.Items
-                .Cast<MSDocumentWrapper>()
-                .Select(i => i.ToDocumentWrapper<T>()).ToList()
+                              .Cast<MSDocumentWrapper>()
+                              .Select(i => i.ToDocumentWrapper<T>()).ToList()
             };
         }
 
@@ -62,43 +63,21 @@ namespace Microsoft.AppCenter.Data
         {
             var deserialized = JsonConvert.SerializeObject(document);
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(deserialized);
-            return new MSDictionaryDocument().Init(dict.ToNSDictionary());
+            var nativeDict = NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
+            return new MSDictionaryDocument().Init(nativeDict);
         }
 
         public static T ToDocument<T>(this MSDictionaryDocument document)
         {
-            var dict = document.SerializeToDictionary().ToDictionary();
+            var dict = document.SerializeToDictionary()
+                               .ToDictionary(i => (string)(NSString)i.Key, i => (string)(NSString)i.Value);
             var serialized = JsonConvert.SerializeObject(dict);
             return JsonConvert.DeserializeObject<T>(serialized);
         }
 
-        public static NSDictionary ToNSDictionary(this Dictionary<string, string> dict)
+        public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments paginatedDocuments)
         {
-            var nativeDict = new NSMutableDictionary();
-            if (dict == null) 
-            {
-                return nativeDict;
-            }
-            foreach (var item in dict)
-            {
-                nativeDict.Add((NSString)item.Key, (NSString)item.Value);
-            }
-            return nativeDict;
-        }
-
-        public static Dictionary<string, string> ToDictionary(this NSDictionary nativeDict)
-        {
-            var dict = new Dictionary<string, string>();
-            foreach (var item in nativeDict)
-            {
-                dict.Add((NSString)item.Key, (NSString)item.Value);
-            }
-            return dict;
-        }
-
-        public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments mSPaginatedDocuments)
-        {
-            return new PaginatedDocuments<T>(mSPaginatedDocuments);
+            return new PaginatedDocuments<T>(paginatedDocuments);
         }
 
         public static DocumentMetadata ToDocumentMetadata(this MSDocumentWrapper documentWrapper)
