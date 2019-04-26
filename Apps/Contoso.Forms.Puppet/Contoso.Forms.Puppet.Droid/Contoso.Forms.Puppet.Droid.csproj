@@ -243,6 +243,14 @@
       <Project>{C1F8B170-BEBA-4432-B88C-9789BCC4533D}</Project>
       <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.Android.Bindings\Microsoft.AppCenter.Data.Android.Bindings.csproj">
+      <Project>{715F7D40-4134-419A-9D63-DBE846F9A708}</Project>
+      <Name>Microsoft.AppCenter.Data.Android.Bindings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.Android\Microsoft.AppCenter.Data.Android.csproj">
+      <Project>{8CCB60CC-7592-4959-A63D-826201524B11}</Project>
+      <Name>Microsoft.AppCenter.Data.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="proguard.cfg" />

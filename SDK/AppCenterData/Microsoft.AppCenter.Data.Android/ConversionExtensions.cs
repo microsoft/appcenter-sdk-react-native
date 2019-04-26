@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using Com.Microsoft.Appcenter.Data.Exception;
 using Com.Microsoft.Appcenter.Data.Models;
 using Newtonsoft.Json;
 
@@ -12,17 +13,36 @@ namespace Microsoft.AppCenter.Data
     {
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
+        public static DocumentMetadata ToDocumentMetadata(this AndroidDocumentMetadata documentMetadata)
+        {
+            return new DocumentMetadata
+            {
+                Partition = documentMetadata.Partition,
+                Id = documentMetadata.Id,
+                ETag = documentMetadata.ETag
+            };
+        }
+
+        public static DataException ToDataException(this AndroidDataException error, AndroidDocumentMetadata documentMetadata = null)
+        {
+            return new DataException(error.Message, error)
+            {
+                DocumentMetadata = documentMetadata?.ToDocumentMetadata()
+            };
+        }
+
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this AndroidDocumentWrapper documentWrapper)
         {
             if (documentWrapper.Error != null)
             {
-                throw new DataException(documentWrapper.Error.Message, documentWrapper.Error);
+                throw documentWrapper.Error.ToDataException(documentWrapper);
             }
             var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
             var lastUpdateDate = UnixEpoch.AddTicks(documentWrapper.LastUpdatedDate * TimeSpan.TicksPerSecond);
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
+                JsonValue = documentWrapper.JsonValue,
                 Partition = documentWrapper.Partition,
                 Id = documentWrapper.Id,
                 ETag = documentWrapper.ETag,
@@ -33,6 +53,11 @@ namespace Microsoft.AppCenter.Data
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this AndroidPaginatedDocuments paginatedDocuments)
         {
+            // If first page is in error, don't wait until iteration to throw.
+            if (paginatedDocuments.CurrentPage.Error != null)
+            {
+                throw paginatedDocuments.CurrentPage.Error.ToDataException();
+            }
             return new PaginatedDocuments<T>(paginatedDocuments);
         }
 
@@ -40,7 +65,7 @@ namespace Microsoft.AppCenter.Data
         {
             if (page.Error != null)
             {
-                throw new DataException(page.Error.Message, page.Error);
+                throw page.Error.ToDataException();
             }
             return new Page<T>
             {

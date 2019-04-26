@@ -5,7 +5,9 @@ using System;
 using System.Threading.Tasks;
 using Android.Runtime;
 using Com.Microsoft.Appcenter.Data;
+using Com.Microsoft.Appcenter.Data.Exception;
 using Com.Microsoft.Appcenter.Data.Models;
+using Com.Microsoft.Appcenter.Utils.Async;
 using GoogleGson;
 using Newtonsoft.Json;
 
@@ -25,6 +27,12 @@ namespace Microsoft.AppCenter.Data
         private static readonly Java.Lang.Class JsonElementClass = Java.Lang.Class.FromType(typeof(JsonElement));
 
         private static readonly Gson Gson = new GsonBuilder().Create();
+
+        static Data()
+        {
+            // Set up bridge between Java listener and .NET events/callbacks.
+            AndroidData.SetDataStoreRemoteOperationListener(new AndroidDataEventListener());
+        }
 
         private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
         {
@@ -46,11 +54,7 @@ namespace Microsoft.AppCenter.Data
         private static Task<DocumentWrapper<T>> PlatformReadAsync<T>(string documentId, string partition, ReadOptions readOptions)
         {
             var future = AndroidData.Read(documentId, JsonElementClass, partition, readOptions.ToAndroidReadOptions());
-            return Task.Run(() =>
-            {
-                var documentWrapper = (AndroidDocumentWrapper)future.Get();
-                return documentWrapper.ToDocumentWrapper<T>();
-            });
+            return RunDocumentWrapperTask<T>(future);
         }
 
         private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
@@ -65,31 +69,55 @@ namespace Microsoft.AppCenter.Data
 
         private static Task<DocumentWrapper<T>> PlatformCreateAsync<T>(string documentId, T document, string partition, WriteOptions writeOptions)
         {
-            var future = AndroidData.Create(documentId, ToJsonElement(document), JsonElementClass, partition, writeOptions.ToAndroidWriteOptions());
-            return Task.Run(() =>
+            return RunJsonTask(() =>
             {
-                var documentWrapper = (AndroidDocumentWrapper)future.Get();
-                return documentWrapper.ToDocumentWrapper<T>();
+                var future = AndroidData.Create(documentId, ToJsonElement(document), JsonElementClass, partition, writeOptions.ToAndroidWriteOptions());
+                return ToDocumentWrapper<T>(future);
             });
         }
 
         private static Task<DocumentWrapper<T>> PlatformDeleteAsync<T>(string documentId, string partition, WriteOptions writeOptions)
         {
             var future = AndroidData.Delete(documentId, partition, writeOptions.ToAndroidWriteOptions());
-            return Task.Run(() =>
-            {
-                var documentWrapper = (AndroidDocumentWrapper)future.Get();
-                return documentWrapper.ToDocumentWrapper<T>();
-            });
+            return RunDocumentWrapperTask<T>(future);
         }
 
         private static Task<DocumentWrapper<T>> PlatformReplaceAsync<T>(string documentId, T document, string partition, WriteOptions writeOptions)
         {
-            var future = AndroidData.Replace(documentId, ToJsonElement(document), JsonElementClass, partition, writeOptions.ToAndroidWriteOptions());
+            return RunJsonTask(() =>
+            {
+                var future = AndroidData.Replace(documentId, ToJsonElement(document), JsonElementClass, partition, writeOptions.ToAndroidWriteOptions());
+                return ToDocumentWrapper<T>(future);
+            });
+        }
+
+        private static Task<DocumentWrapper<T>> RunDocumentWrapperTask<T>(IAppCenterFuture future)
+        {
+            return RunJsonTask(() =>
+            {
+                return ToDocumentWrapper<T>(future);
+            });
+        }
+
+        private static DocumentWrapper<T> ToDocumentWrapper<T>(IAppCenterFuture future)
+        {
+            var documentWrapper = (AndroidDocumentWrapper)future.Get();
+            return documentWrapper.ToDocumentWrapper<T>();
+        }
+
+        private static Task<T> RunJsonTask<T>(Func<T> backgroundCode)
+        {
+            // We run JSON inside a task, see https://forums.xamarin.com/discussion/94867/how-to-speed-up-newtonsoft-json-on-android
             return Task.Run(() =>
             {
-                var documentWrapper = (AndroidDocumentWrapper)future.Get();
-                return documentWrapper.ToDocumentWrapper<T>();
+                try
+                {
+                    return backgroundCode();
+                }
+                catch (JsonException e)
+                {
+                    throw new DataException("Document parsing failed.", e);
+                }
             });
         }
 
@@ -97,6 +125,28 @@ namespace Microsoft.AppCenter.Data
         {
             var jsonValue = JsonConvert.SerializeObject(document);
             return (JsonElement)Gson.FromJson(jsonValue, JsonElementClass);
+        }
+
+        /// <summary>
+        /// Bridge between C# events/callbacks and Java listeners.
+        /// </summary>
+        class AndroidDataEventListener : Java.Lang.Object, IDataStoreEventListener
+        {
+            public void OnDataStoreOperationResult(string operation, AndroidDocumentMetadata document, AndroidDataException error)
+            {
+                if (RemoteOperationCompleted == null)
+                {
+                    return;
+                }
+                var documentMetadata = document.ToDocumentMetadata();
+                var eventArgs = new RemoteOperationCompletedEventArgs
+                {
+                    Operation = operation,
+                    DocumentMetadata = documentMetadata,
+                    Error = error?.ToDataException()
+                };
+                RemoteOperationCompleted(documentMetadata, eventArgs);
+            }
         }
     }
 }
