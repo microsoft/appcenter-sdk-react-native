@@ -61,10 +61,11 @@ namespace Microsoft.AppCenter.Data
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
             try
             {
-                MSData.List(new Class(typeof(T)), partition, resultPages =>
+                MSData.List(new Class(typeof(MSDictionaryDocument)), partition, resultPages =>
                 {
                     if (resultPages.CurrentPage().Error == null)
                     {
+                        //TODO need to change each page document from dictionary document to T
                         taskCompletionSource.SetResult(resultPages.ToPaginatedDocuments<T>());
                     }
                     else
