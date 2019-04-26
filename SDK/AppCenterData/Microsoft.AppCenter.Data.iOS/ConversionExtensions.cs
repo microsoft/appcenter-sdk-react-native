@@ -83,7 +83,12 @@ namespace Microsoft.AppCenter.Data
 
         public static DocumentMetadata ToDocumentMetadata(this MSDocumentWrapper documentWrapper)
         {
-            var doc = new DocumentMetadata();
+            return new DocumentMetadata
+            {
+                Id = documentWrapper.DocumentId,
+                Partition = documentWrapper.Partition,
+                ETag = documentWrapper.ETag
+            };
             doc.ETag = documentWrapper.ETag;
             doc.Id = documentWrapper.DocumentId;
             doc.Partition = documentWrapper.Partition;
