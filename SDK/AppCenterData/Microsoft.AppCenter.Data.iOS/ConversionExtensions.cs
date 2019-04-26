@@ -96,11 +96,6 @@ namespace Microsoft.AppCenter.Data
             {
                 DocumentMetadata = msDocumentWrapper?.ToDocumentMetadata()
             };
-            if (msDocumentWrapper != null)
-            {
-                dataException.DocumentMetadata = msDocumentWrapper.ToDocumentMetadata();
-            }
-            return dataException;
         }
     }
 }
