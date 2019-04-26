@@ -23,6 +23,9 @@
         <dependency id="GoogleGson" version="2.8.5" />
         <dependency id="Newtonsoft.Json" version="10.0.1" />
       </group>
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="Microsoft.AppCenter" version="$version$" />
+        <dependency id="Newtonsoft.Json" version="10.0.1" />
     </dependencies>
     <version>$version$</version>
   </metadata>
