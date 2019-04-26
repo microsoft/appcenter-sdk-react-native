@@ -113,7 +113,10 @@ namespace Microsoft.AppCenter.Data
         public static DataException ToDataException(this MSDataError error, MSDocumentWrapper msDocumentWrapper = null)
         {
             var exception = new NSErrorException(error.Error);
-            var dataException = new DataException(exception.Message, exception);
+            return new DataException(exception.Message, exception)
+            {
+                DocumentMetadata = msDocumentWrapper?.ToDocumentMetadata()
+            };
             if (msDocumentWrapper != null)
             {
                 dataException.DocumentMetadata = msDocumentWrapper.ToDocumentMetadata();
