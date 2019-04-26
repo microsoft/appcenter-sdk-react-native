@@ -21,6 +21,7 @@
       <group targetFramework="MonoAndroid403">
         <dependency id="Microsoft.AppCenter" version="$version$" />
         <dependency id="GoogleGson" version="2.8.5" />
+        <dependency id="Newtonsoft.Json" version="10.0.1" />
       </group>
     </dependencies>
     <version>$version$</version>
