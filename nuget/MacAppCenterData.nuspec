@@ -26,6 +26,7 @@
       <group targetFramework="Xamarin.iOS10">
         <dependency id="Microsoft.AppCenter" version="$version$" />
         <dependency id="Newtonsoft.Json" version="10.0.1" />
+      </group>
     </dependencies>
     <version>$version$</version>
   </metadata>

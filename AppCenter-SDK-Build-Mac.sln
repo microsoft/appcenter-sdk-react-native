@@ -110,6 +110,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.iOS", "SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj", "{E71F3053-056C-4381-9638-048ED73BDFF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.iOS.Bindings", "SDK\AppCenterData\Microsoft.AppCenter.Data.iOS.Bindings\Microsoft.AppCenter.Data.iOS.Bindings.csproj", "{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.Android", "SDK\AppCenterData\Microsoft.AppCenter.Data.Android\Microsoft.AppCenter.Data.Android.csproj", "{8CCB60CC-7592-4959-A63D-826201524B11}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.Android.Bindings", "SDK\AppCenterData\Microsoft.AppCenter.Data.Android.Bindings\Microsoft.AppCenter.Data.Android.Bindings.csproj", "{715F7D40-4134-419A-9D63-DBE846F9A708}"
