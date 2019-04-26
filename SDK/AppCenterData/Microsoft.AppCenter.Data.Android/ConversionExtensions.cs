@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Data
         {
             return new DataException(error.Message, error)
             {
-                DocumentMetadata = documentMetadata.ToDocumentMetadata()
+                DocumentMetadata = documentMetadata?.ToDocumentMetadata()
             };
         }
 
