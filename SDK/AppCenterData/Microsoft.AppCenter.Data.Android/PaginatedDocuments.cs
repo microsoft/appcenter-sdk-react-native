@@ -8,24 +8,24 @@ namespace Microsoft.AppCenter.Data
 {
     public partial class PaginatedDocuments<T>
     {
-        private readonly AndroidPaginatedDocuments mPaginatedDocuments;
+        private readonly AndroidPaginatedDocuments _paginatedDocuments;
 
         /// <summary>
         /// The current page.
         /// </summary>
-        public Page<T> CurrentPage => mPaginatedDocuments.CurrentPage.ToPage<T>(); 
+        public Page<T> CurrentPage => _paginatedDocuments.CurrentPage.ToPage<T>(); 
 
         /// <summary>
         /// Boolean indicating if an extra page is available.
         /// </summary>
-        public bool HasNextPage => mPaginatedDocuments.HasNextPage; 
+        public bool HasNextPage => _paginatedDocuments.HasNextPage; 
 
         /// <summary>
         /// Asynchronously fetch the next page.
         /// </summary>
         public Task<Page<T>> GetNextPageAsync()
         {
-            var future = mPaginatedDocuments.NextPage;
+            var future = _paginatedDocuments.NextPage;
             return Task.Run(() =>
             {
                 var page = (AndroidPage)future.Get();
@@ -35,7 +35,7 @@ namespace Microsoft.AppCenter.Data
 
         internal PaginatedDocuments(AndroidPaginatedDocuments paginatedDocuments)
         {
-            mPaginatedDocuments = paginatedDocuments;
+            _paginatedDocuments = paginatedDocuments;
         }
     }
 }

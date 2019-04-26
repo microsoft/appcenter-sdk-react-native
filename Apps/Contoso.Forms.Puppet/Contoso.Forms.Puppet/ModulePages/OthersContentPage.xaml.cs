@@ -104,6 +104,10 @@ namespace Contoso.Forms.Puppet
             try
             {
                 var list = await Data.ListAsync<CustomDocument>(DefaultPartitions.UserDocuments);
+                foreach (var doc in list)
+                {
+                    AppCenterLog.Info(App.LogTag, "List result=" + JsonConvert.SerializeObject(doc));
+                }
                 var document = list.CurrentPage.Items.First();
                 AppCenterLog.Info(App.LogTag, "List first result=" + JsonConvert.SerializeObject(document));
                 document = await Data.DeleteAsync<CustomDocument>(document.Id, DefaultPartitions.UserDocuments);
