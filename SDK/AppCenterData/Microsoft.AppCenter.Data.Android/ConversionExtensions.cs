@@ -53,6 +53,11 @@ namespace Microsoft.AppCenter.Data
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this AndroidPaginatedDocuments paginatedDocuments)
         {
+            // If first page is in error, don't wait until iteration to throw.
+            if (paginatedDocuments.CurrentPage.Error != null)
+            {
+                throw paginatedDocuments.CurrentPage.Error.ToDataException();
+            }
             return new PaginatedDocuments<T>(paginatedDocuments);
         }
 
