@@ -89,10 +89,6 @@ namespace Microsoft.AppCenter.Data
                 Partition = documentWrapper.Partition,
                 ETag = documentWrapper.ETag
             };
-            doc.ETag = documentWrapper.ETag;
-            doc.Id = documentWrapper.DocumentId;
-            doc.Partition = documentWrapper.Partition;
-            return doc;
         }
 
         public static DataException ToDataException(this MSDataError error, MSDocumentWrapper msDocumentWrapper = null)
