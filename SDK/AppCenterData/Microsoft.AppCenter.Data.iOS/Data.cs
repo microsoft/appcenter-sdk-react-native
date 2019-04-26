@@ -43,7 +43,6 @@ namespace Microsoft.AppCenter.Data
             var msReadOptions = readOptions.ToMSReadOptions();
             try
             {
-
                 MSData.Read(documentId, new Class(typeof(T)), partition, msReadOptions, resultDoc =>
                 {
                     ProcessResult(resultDoc, taskCompletionSource);
@@ -65,7 +64,6 @@ namespace Microsoft.AppCenter.Data
                 {
                     if (resultPages.CurrentPage().Error == null)
                     {
-                        //TODO need to change each page document from dictionary document to T
                         taskCompletionSource.SetResult(resultPages.ToPaginatedDocuments<T>());
                     }
                     else
@@ -103,7 +101,7 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            try 
+            try
             {
                 MSData.Replace(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
                 {
