@@ -12,11 +12,13 @@ namespace Microsoft.AppCenter.Data
 {
     public static class ConversionExtensions
     {
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
             // We can not use JsonValue here - it contains not the document itself, but the whole MSDocumentWrapper serialized.
             // TODO fix this when the native bug is fixed.
-            var deserializedValue = documentWrapper.DeserializedValue != null ? documentWrapper.DeserializedValue.ToDocument<T>() : default(T); 
+            var deserializedValue = documentWrapper.DeserializedValue != null ? documentWrapper.DeserializedValue.ToDocument<T>() : default(T);
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
@@ -24,7 +26,7 @@ namespace Microsoft.AppCenter.Data
                 Partition = documentWrapper.Partition,
                 ETag = documentWrapper.ETag,
                 Id = documentWrapper.DocumentId,
-                LastUpdatedDate = (DateTime)documentWrapper.LastUpdatedDate,
+                LastUpdatedDate = documentWrapper.LastUpdatedDate != null ? (DateTime)documentWrapper?.LastUpdatedDate : UnixEpoch,
                 IsFromDeviceCache = documentWrapper.FromDeviceCache
             };
         }
