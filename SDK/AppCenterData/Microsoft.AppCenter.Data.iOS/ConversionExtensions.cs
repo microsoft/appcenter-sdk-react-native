@@ -13,10 +13,9 @@ namespace Microsoft.AppCenter.Data
     {
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
-            var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
             return new DocumentWrapper<T>
             {
-                DeserializedValue = deserializedValue,
+                DeserializedValue = documentWrapper.DeserializedValue.ToMSDocument<T>(),
                 JsonValue = documentWrapper.JsonValue,
                 Partition = documentWrapper.Partition,
                 ETag = documentWrapper.ETag,
