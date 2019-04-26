@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -9,6 +10,7 @@ using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
@@ -21,6 +23,14 @@ namespace Contoso.Forms.Puppet
         static bool _rumStarted;
 
         static bool _eventFilterStarted;
+
+        static OthersContentPage()
+        {
+            Data.RemoteOperationCompleted += (sender, eventArgs) =>
+            {
+                AppCenterLog.Info(App.LogTag, "Remote operation completed event=" + JsonConvert.SerializeObject(eventArgs) + " sender=" + sender);
+            };
+        }
 
         public OthersContentPage()
         {
@@ -85,11 +95,45 @@ namespace Contoso.Forms.Puppet
             {
                 var userInfo = await Auth.SignInAsync();
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
-                await Data.ListAsync<TestDocument>(DefaultPartitions.AppDocuments);
             }
             catch (Exception ex)
             {
-                AppCenterLog.Error(App.LogTag, "MBaaS scenario failed", ex);
+                AppCenterLog.Error(App.LogTag, "Auth scenario failed", ex);
+                Crashes.TrackError(ex);
+            }
+            try
+            {
+                var list = await Data.ListAsync<CustomDocument>(DefaultPartitions.UserDocuments);
+                foreach (var doc in list)
+                {
+                    AppCenterLog.Info(App.LogTag, "List result=" + JsonConvert.SerializeObject(doc));
+                }
+                var document = list.CurrentPage.Items.First();
+                AppCenterLog.Info(App.LogTag, "List first result=" + JsonConvert.SerializeObject(document));
+                document = await Data.DeleteAsync<CustomDocument>(document.Id, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Delete result=" + JsonConvert.SerializeObject(document));
+            }
+            catch (Exception ex)
+            {
+                AppCenterLog.Error(App.LogTag, "Data list/delete first scenario failed", ex);
+                Crashes.TrackError(ex);
+            }
+            try
+            {
+                var customDoc = new CustomDocument
+                {
+                    Id = Guid.NewGuid(),
+                    TimeStamp = DateTime.UtcNow
+                };
+                var id = customDoc.Id.ToString();
+                var document = await Data.ReplaceAsync(id, customDoc, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Replace result=" + JsonConvert.SerializeObject(document));
+                document = await Data.ReadAsync<CustomDocument>(id, DefaultPartitions.UserDocuments);
+                AppCenterLog.Info(App.LogTag, "Read result=" + JsonConvert.SerializeObject(document));
+            }
+            catch (Exception ex)
+            {
+                AppCenterLog.Error(App.LogTag, "Data person scenario failed", ex);
                 Crashes.TrackError(ex);
             }
         }
@@ -99,9 +143,13 @@ namespace Contoso.Forms.Puppet
             Auth.SignOut();
         }
 
-        public class TestDocument
+        public class CustomDocument
         {
-            public string Key { get; set; }
+            [JsonProperty("id")]
+            public Guid? Id { get; set; }
+
+            [JsonProperty("timestamp")]
+            public DateTime TimeStamp { get; set; }
         }
     }
 }
