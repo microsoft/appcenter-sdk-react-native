@@ -41,17 +41,10 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msReadOptions = readOptions.ToMSReadOptions();
-            try
+            MSData.Read(documentId, new Class(typeof(MSDictionaryDocument)), partition, msReadOptions, resultDoc =>
             {
-                MSData.Read(documentId, new Class(typeof(T)), partition, msReadOptions, resultDoc =>
-                {
-                    ProcessResult(resultDoc, taskCompletionSource);
-                });
-            }
-            catch (JsonException e)
-            {
-                taskCompletionSource.SetException(new DataException("Failed to read data object", e));
-            }
+                ProcessResult(resultDoc, taskCompletionSource);
+            });
             return taskCompletionSource.Task;
         }
 
@@ -83,17 +76,10 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            try
+            MSData.Create(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
             {
-                MSData.Create(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
-                {
-                    ProcessResult(resultDoc, taskCompletionSource);
-                });
-            }
-            catch (JsonException e)
-            {
-                taskCompletionSource.SetException(new DataException("Failed to create data object", e));
-            }
+                ProcessResult(resultDoc, taskCompletionSource);
+            });
             return taskCompletionSource.Task;
         }
 
@@ -101,17 +87,10 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            try
+            MSData.Replace(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
             {
-                MSData.Replace(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
-                {
-                    ProcessResult(resultDoc, taskCompletionSource);
-                });
-            }
-            catch (JsonException e)
-            {
-                taskCompletionSource.SetException(new DataException("Failed to replace data object", e));
-            }
+                ProcessResult(resultDoc, taskCompletionSource);
+            });
             return taskCompletionSource.Task;
         }
 
@@ -119,17 +98,10 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            try
+            MSData.Delete(documentId, partition, msWriteOptions, resultDoc =>
             {
-                MSData.Delete(documentId, partition, msWriteOptions, resultDoc =>
-                {
-                    ProcessResult(resultDoc, taskCompletionSource);
-                });
-            }
-            catch (JsonException e)
-            {
-                taskCompletionSource.SetException(new DataException("Failed to delete data object", e));
-            }
+                ProcessResult(resultDoc, taskCompletionSource);
+            });
             return taskCompletionSource.Task;
         }
 
@@ -137,7 +109,14 @@ namespace Microsoft.AppCenter.Data
         {
             if (resultDoc.Error == null)
             {
-                taskCompletionSource.SetResult(resultDoc.ToDocumentWrapper<T>());
+                try
+                {
+                    taskCompletionSource.SetResult(resultDoc.ToDocumentWrapper<T>());
+                }
+                catch (JsonException e)
+                {
+                    taskCompletionSource.SetException(new DataException("Failed to process doc: serialization failed", e));
+                }
             }
             else
             {
