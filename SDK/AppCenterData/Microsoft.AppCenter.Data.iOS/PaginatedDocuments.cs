@@ -38,11 +38,11 @@ namespace Microsoft.AppCenter.Data
             {
                 if (internalPage.Error == null)
                 {
-                    taskCompletionSource.TrySetResult(internalPage.ToPage<T>());
+                    taskCompletionSource.SetResult(internalPage.ToPage<T>());
                 }
                 else
                 {
-                    taskCompletionSource.TrySetException(internalPage.Error.ToDataException());
+                    taskCompletionSource.SetException(internalPage.Error.ToDataException());
                 }
             });
             return taskCompletionSource.Task;
