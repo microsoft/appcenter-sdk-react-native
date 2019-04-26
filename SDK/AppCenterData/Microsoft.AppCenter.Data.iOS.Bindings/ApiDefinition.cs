@@ -113,7 +113,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
 
         // @property(nonatomic, strong, readonly) id<MSSerializableDocument> deserializedValue;
         [Export("deserializedValue")]
-        MSSerializableDocument DeserializedValue { get; }
+        MSDictionaryDocument DeserializedValue { get; }
 
         // @property(nonatomic, strong, readonly) NSString *partition;
         [Export("partition")]

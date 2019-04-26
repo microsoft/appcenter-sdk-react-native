@@ -6,6 +6,7 @@ using System;
 using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.AppCenter.Data.iOS.Bindings;
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -13,7 +14,8 @@ namespace Microsoft.AppCenter.Data
     {
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
-            var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
+            // We can not use JsonValue here - it contains not the document itself, but the whole MSDocumentWrapper serialized.
+            var deserializedValue = documentWrapper.DeserializedValue.ToDocument<T>(); 
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
@@ -58,8 +60,40 @@ namespace Microsoft.AppCenter.Data
 
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
-            var dic = JsonConvert.DeserializeObject<NSDictionary>(JsonConvert.SerializeObject(document));
-            return new MSDictionaryDocument().Init(dic);
+            var deserialized = JsonConvert.SerializeObject(document);
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(deserialized);
+            return new MSDictionaryDocument().Init(dict.ToNSDictionary());
+        }
+
+        public static T ToDocument<T>(this MSDictionaryDocument document)
+        {
+            var dict = document.SerializeToDictionary().ToDictionary();
+            var serialized = JsonConvert.SerializeObject(dict);
+            return JsonConvert.DeserializeObject<T>(serialized);
+        }
+
+        public static NSDictionary ToNSDictionary(this Dictionary<string, string> dict)
+        {
+            var nativeDict = new NSMutableDictionary();
+            if (dict == null) 
+            {
+                return nativeDict;
+            }
+            foreach (var item in dict)
+            {
+                nativeDict.Add((NSString)item.Key, (NSString)item.Value);
+            }
+            return nativeDict;
+        }
+
+        public static Dictionary<string, string> ToDictionary(this NSDictionary nativeDict)
+        {
+            var dict = new Dictionary<string, string>();
+            foreach (var item in nativeDict)
+            {
+                dict.Add((NSString)item.Key, (NSString)item.Value);
+            }
+            return dict;
         }
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments mSPaginatedDocuments)
