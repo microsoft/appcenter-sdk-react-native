@@ -164,7 +164,7 @@ namespace Microsoft.AppCenter.Data
         }
 
         /// <summary>
-        /// Event handler to suscribe to the remote operations executed as part of offline data synchronization when the network becomes available.
+        /// Event handler to suscribe to the remote operations executed as part of offline data synchronization when the network becomes available. This event is currently triggered only on Android.
         /// </summary>
         public static event EventHandler<RemoteOperationCompletedEventArgs> RemoteOperationCompleted;
     }
