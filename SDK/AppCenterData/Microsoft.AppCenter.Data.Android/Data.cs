@@ -31,7 +31,7 @@ namespace Microsoft.AppCenter.Data
         static Data()
         {
             // Set up bridge between Java listener and .NET events/callbacks.
-            AndroidData.SetDataStoreRemoteOperationListener(new AndroidDataEventListener());
+            AndroidData.SetRemoteOperationListener(new AndroidRemoteOperationListener());
         }
 
         private static void PlatformSetTokenExchangeUrl(string tokenExchangeUrl)
@@ -130,9 +130,9 @@ namespace Microsoft.AppCenter.Data
         /// <summary>
         /// Bridge between C# events/callbacks and Java listeners.
         /// </summary>
-        class AndroidDataEventListener : Java.Lang.Object, IDataStoreEventListener
+        class AndroidRemoteOperationListener : Java.Lang.Object, IRemoteOperationListener
         {
-            public void OnDataStoreOperationResult(string operation, AndroidDocumentMetadata document, AndroidDataException error)
+            public void OnRemoteOperationCompleted(string operation, AndroidDocumentMetadata document, AndroidDataException error)
             {
                 if (RemoteOperationCompleted == null)
                 {
