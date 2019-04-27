@@ -54,20 +54,20 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         void SetTokenExchangeUrl(string tokenExchangeUrl);
 
         // + (void)readDocumentWithID:(NSString *)documentID
-        //                       type:(Class)documentType
+        //               documentType:(Class)documentType
         //                  partition:(NSString *)partition
         //                readOptions:(MSReadOptions *_Nullable)readOptions
         //          completionHandler:(MSDocumentWrapperCompletionHandler)completionHandler;
         [Static]
-        [Export("readDocumentWithID:type:partition:readOptions:completionHandler:")]
-        void Read(string documentId, Class type, string partition, [NullAllowed] MSReadOptions readOptions, MSDocumentWrapperCompletionHandler completionHandler);
+        [Export("readDocumentWithID:documentType:partition:readOptions:completionHandler:")]
+        void Read(string documentId, Class documentType, string partition, [NullAllowed] MSReadOptions readOptions, MSDocumentWrapperCompletionHandler completionHandler);
 
         // (void)listDocumentsWithType:(Class)documentType
         //                   partition:(NSString*) partition
         //           completionHandler:(MSPaginatedDocumentsCompletionHandler) completionHandler;
         [Static]
         [Export("listDocumentsWithType:partition:completionHandler:")]
-        void List(Class type, string partition, MSPaginatedDocumentsCompletionHandler completionHandler);
+        void List(Class documentType, string partition, MSPaginatedDocumentsCompletionHandler completionHandler);
 
         // + (void) createDocumentWithID:(NSString*) documentID
         //                      document:(id<MSSerializableDocument>) document
