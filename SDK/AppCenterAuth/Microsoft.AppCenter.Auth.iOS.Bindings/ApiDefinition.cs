@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
     [BaseType(typeof(NSObject))]
     interface MSAuth
     {
-        // + (void)setConfigUrl:(NSString*) configUrl;
+        // + (void)setConfigUrl:(NSString *)configUrl;
         [Static]
         [Export("setConfigUrl:")]
         void SetConfigUrl(string configUrl);
@@ -25,7 +25,7 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
         [Export("setEnabled:")]
         void SetEnabled(bool isEnabled);
 
-        // + (void)signInWithCompletionHandler:(MSSignInCompletionHandler _Nullable) completionHandler;
+        // + (void)signInWithCompletionHandler:(MSSignInCompletionHandler _Nullable)completionHandler;
         [Static]
         [Export("signInWithCompletionHandler:")]
         void SignIn(MSSignInCompletionHandler completionHandler);
@@ -35,12 +35,12 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
         [Export("signOut")]
         void SignOut();
 
-        // + (void)openURL:(NSURL *)url;
+        // + (BOOL)openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options;
         [Static]
-        [Export("openURL:")]
-        void OpenUrl(NSUrl url);
+        [Export("openURL:options:")]
+        void OpenUrl(NSUrl url, NSDictionary options);
     }
 
-    // typedef void (^MSSignInCompletionHandler)(MSUserInformation* _Nullable userInformation, NSError * _Nullable error);
+    // typedef void (^MSSignInCompletionHandler)(MSUserInformation *_Nullable userInformation, NSError *_Nullable error);
     delegate void MSSignInCompletionHandler([NullAllowed] MSUserInformation userInformation, [NullAllowed] NSError error);
 }
