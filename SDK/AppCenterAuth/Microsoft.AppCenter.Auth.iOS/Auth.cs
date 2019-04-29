@@ -59,9 +59,10 @@ namespace Microsoft.AppCenter.Auth
         /// Place this method call into app delegate openUrl method.
         /// </summary>
         /// <param name="url">The url with parameters.</param>
-        public static void OpenUrl(NSUrl url)
+        /// <param name="options">A dictionary of URL handling options.</param>
+        public static void OpenUrl(NSUrl url, NSDictionary options)
         {
-            MSAuth.OpenUrl(url);
+            MSAuth.OpenUrl(url, options);
         }
     }
 }
