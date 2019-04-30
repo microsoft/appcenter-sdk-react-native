@@ -38,6 +38,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+
+    <!-- work around for appcenter build of forms.ios.puppet -->
+    <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
