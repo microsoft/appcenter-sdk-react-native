@@ -115,6 +115,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.UWP.Demo", "Contoso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.UWP.Demo", "Apps\Contoso.UWP.Demo\Contoso.UWP.Demo.csproj", "{612D30FE-E1F1-4CEE-8256-911C03A16890}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterData", "AppCenterData", "{5BC8C674-8474-4C49-B1E4-DA4C70E86322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterAuth", "AppCenterAuth", "{596CE983-2E16-41EA-9D06-570C36943789}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Auth.Shared", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.shproj", "{3B661923-87AF-4D7B-A451-1EDC6D741E32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Auth", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth\Microsoft.AppCenter.Auth.csproj", "{C2369F56-DCD8-4744-971A-17957AE445DC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Data.Shared", "SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.shproj", "{F707D6CC-E43A-442F-AA38-B913EAE3D7C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Data", "SDK\AppCenterData\Microsoft.AppCenter.Data\Microsoft.AppCenter.Data.csproj", "{0043E55C-F25A-4925-B558-7CFD141834E7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
@@ -127,6 +139,7 @@ Global
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}*SharedItemsImports = 4
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}*SharedItemsImports = 4
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
+		SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.projitems*{3b661923-87af-4d7b-a451-1edc6d741e32}*SharedItemsImports = 13
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{3f190edf-f524-4b8d-9031-cd7b045eb6a5}*SharedItemsImports = 13
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 		SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.Shared\Microsoft.AppCenter.Distribute.Shared.projitems*{41febc72-c12b-47e1-b6f6-51d50158c825}*SharedItemsImports = 4
@@ -151,6 +164,7 @@ Global
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{dc55c086-714d-4e2f-b6ce-3c14bc3b6646}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
+		SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems*{f707d6cc-e43a-442f-aa38-b913eae3d7c1}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -894,6 +908,54 @@ Global
 		{612D30FE-E1F1-4CEE-8256-911C03A16890}.Release|x86.ActiveCfg = Release|x86
 		{612D30FE-E1F1-4CEE-8256-911C03A16890}.Release|x86.Build.0 = Release|x86
 		{612D30FE-E1F1-4CEE-8256-911C03A16890}.Release|x86.Deploy.0 = Release|x86
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|ARM.Build.0 = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|iPhone.Build.0 = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|x64.Build.0 = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2369F56-DCD8-4744-971A-17957AE445DC}.Release|x86.Build.0 = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|x64.Build.0 = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Debug|x86.Build.0 = Debug|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|ARM.Build.0 = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|iPhone.Build.0 = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x64.ActiveCfg = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x64.Build.0 = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x86.ActiveCfg = Release|Any CPU
+		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -952,6 +1014,12 @@ Global
 		{3F190EDF-F524-4B8D-9031-CD7B045EB6A5} = {A60D537E-41F7-44D6-95C8-5DDB77B07308}
 		{134CB8CA-3521-4B8F-A4BA-F457E6F573DC} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 		{612D30FE-E1F1-4CEE-8256-911C03A16890} = {134CB8CA-3521-4B8F-A4BA-F457E6F573DC}
+		{5BC8C674-8474-4C49-B1E4-DA4C70E86322} = {52B933EB-4C7D-4646-B12B-DF6BBAD7921A}
+		{596CE983-2E16-41EA-9D06-570C36943789} = {52B933EB-4C7D-4646-B12B-DF6BBAD7921A}
+		{3B661923-87AF-4D7B-A451-1EDC6D741E32} = {596CE983-2E16-41EA-9D06-570C36943789}
+		{C2369F56-DCD8-4744-971A-17957AE445DC} = {596CE983-2E16-41EA-9D06-570C36943789}
+		{F707D6CC-E43A-442F-AA38-B913EAE3D7C1} = {5BC8C674-8474-4C49-B1E4-DA4C70E86322}
+		{0043E55C-F25A-4925-B558-7CFD141834E7} = {5BC8C674-8474-4C49-B1E4-DA4C70E86322}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {328868E2-F749-412D-B82F-84A683A1719C}
