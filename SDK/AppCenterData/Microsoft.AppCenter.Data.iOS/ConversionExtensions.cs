@@ -16,9 +16,7 @@ namespace Microsoft.AppCenter.Data
 
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
-            // We can not use JsonValue here - it contains not the document itself, but the whole MSDocumentWrapper serialized.
-            // TODO fix this when the native bug is fixed.
-            var deserializedValue = documentWrapper.DeserializedValue != null ? documentWrapper.DeserializedValue.ToDocument<T>() : default(T);
+            var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
