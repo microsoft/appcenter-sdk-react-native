@@ -138,14 +138,13 @@ namespace Microsoft.AppCenter.Data
                 {
                     return;
                 }
-                var documentMetadata = document.ToDocumentMetadata();
                 var eventArgs = new RemoteOperationCompletedEventArgs
                 {
                     Operation = operation,
-                    DocumentMetadata = documentMetadata,
+                    DocumentMetadata = document.ToDocumentMetadata(),
                     Error = error?.ToDataException()
                 };
-                RemoteOperationCompleted(documentMetadata, eventArgs);
+                RemoteOperationCompleted(typeof(Data), eventArgs);
             }
         }
     }

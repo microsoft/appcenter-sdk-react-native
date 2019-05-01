@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Data
                 throw documentWrapper.Error.ToDataException(documentWrapper);
             }
             var jsonValue = documentWrapper.JsonValue;
-            var deserializedValue = JsonConvert.DeserializeObject<T>(jsonValue);
+            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(jsonValue) : default(T);
             var lastUpdateDate = DateTimeOffset.FromUnixTimeMilliseconds(documentWrapper.LastUpdatedDate.Time);
             return new DocumentWrapper<T>
             {
