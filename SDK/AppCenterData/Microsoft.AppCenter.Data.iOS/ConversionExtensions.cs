@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Data
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
             var jsonValue = documentWrapper.JsonValue;
-            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue) : default(T);
+            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(jsonValue) : default(T);
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
