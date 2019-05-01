@@ -170,17 +170,13 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         MSDataError Error { get; }
     }
 
-    // @interface MSDataError : NSObject
-    [BaseType(typeof(NSObject))]
+    // @interface MSDataError : NSError
+    [BaseType(typeof(NSError))]
     interface MSDataError
     {
-        // @property(nonatomic, strong, readonly) NSError *error;
-        [Export("error")]
-        NSError Error { get; }
-
-        // @property(nonatomic, readonly) NSInteger errorCode;
-        [Export("errorCode")]
-        IntPtr errorCode { get; }
+        // - (NSError *)innerError;
+        [Export("innerError")]
+        NSError InnerError { get; }
     }
 
     // @interface MSBaseOptions : NSObject
