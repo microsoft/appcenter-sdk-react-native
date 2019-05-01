@@ -11,8 +11,6 @@ namespace Microsoft.AppCenter.Data
 {
     public static class ConversionExtensions
     {
-        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         public static DocumentMetadata ToDocumentMetadata(this AndroidDocumentMetadata documentMetadata)
         {
             return new DocumentMetadata
@@ -37,12 +35,13 @@ namespace Microsoft.AppCenter.Data
             {
                 throw documentWrapper.Error.ToDataException(documentWrapper);
             }
-            var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
-            var lastUpdateDate = UnixEpoch.AddTicks(documentWrapper.LastUpdatedDate * TimeSpan.TicksPerSecond);
+            var jsonValue = documentWrapper.JsonValue;
+            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(jsonValue) : default(T);
+            var lastUpdateDate = DateTimeOffset.FromUnixTimeMilliseconds(documentWrapper.LastUpdatedDate.Time);
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
-                JsonValue = documentWrapper.JsonValue,
+                JsonValue = jsonValue,
                 Partition = documentWrapper.Partition,
                 Id = documentWrapper.Id,
                 ETag = documentWrapper.ETag,
