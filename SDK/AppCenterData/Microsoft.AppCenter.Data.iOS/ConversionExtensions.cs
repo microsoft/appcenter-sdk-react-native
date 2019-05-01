@@ -16,11 +16,12 @@ namespace Microsoft.AppCenter.Data
 
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
-            var deserializedValue = JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue);
+            var jsonValue = documentWrapper.JsonValue;
+            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(documentWrapper.JsonValue) : default(T);
             return new DocumentWrapper<T>
             {
                 DeserializedValue = deserializedValue,
-                JsonValue = documentWrapper.JsonValue,
+                JsonValue = jsonValue,
                 Partition = documentWrapper.Partition,
                 ETag = documentWrapper.ETag,
                 Id = documentWrapper.DocumentId,
