@@ -7,7 +7,7 @@
     <owners>microsoft,appcenter</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>App Center Auth is an identity management service.</summary>
-    <description>App Center Auth is an identity management service that allows you to customize and control how your users interact with your app. We provide an out of the box UI that allows app developers to authenticate their users to an app. In addition, app developers may use and track the user's identity across App Center services.</description>
+    <description>App Center Auth is an identity management service that allows you to customize and control how your users interact with your app. App Center provides an out of the box UI that allows app developers to authenticate their users to an app. In addition, app developers may use and track the user's identity across App Center services.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter auth</tags>
     <language>en-US</language>
