@@ -4,19 +4,15 @@
 
 Version 2.0.0 of the App Center SDK includes two new modules: Auth and Data.
 
-These modules are only supported in Xamarin (Android and iOS).
+These new modules are only supported in Xamarin (Android and iOS).
 
 This version has a **breaking change** for Xamarin.iOS, it only supports Xcode 10.0.0+ and Mono 5.12+.
 
 ### App Center Auth
 
-#### Xamarin
-
 App Center Auth is a cloud-based identity management service that enables you to authenticate users and manage their identities. You can also leverage user identities in other App Center services.
 
 ### App Center Data
-
-#### Xamarin
 
 The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms.
 
@@ -34,10 +30,11 @@ The App Center Data service provides functionality enabling developers to persis
 
 ### App Center Distribute
 
+* **[Fix]** Fix intellisense for APIs.
+
 #### iOS
 
 * **[Fix]** Starting the application with "Guided Access" enabled blocks the update flow since in-app update is not possible in this mode.
-* **[Fix]** Fix intellisense for APIs.
 
 #### Android
 
