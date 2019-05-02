@@ -6,7 +6,7 @@
     <authors>Microsoft</authors>
     <owners>microsoft,appcenter</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <summary>The App Center Data Storage service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users on multiple platforms.</summary>
+    <summary>App Center Data provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users on multiple platforms.</summary>
     <description>This package enables you to create, read, update, and delete private documents and read public documents. In addition, this package allows you to configure offline document persistence, enabling offline access for data in your app.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>app center appcenter data mobilecenter</tags>
