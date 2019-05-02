@@ -58,6 +58,7 @@
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
       <Frameworks>WebKit AuthenticationServices</Frameworks>
+      <WeakFrameworks>SafariServices</WeakFrameworks>
       <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>
