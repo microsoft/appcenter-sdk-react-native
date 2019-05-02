@@ -57,7 +57,7 @@
     <NativeReference Include="..\..\..\externals\ios\AppCenterAuth.a">
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
-      <Frameworks>WebKit AuthenticationServices SafariServices</Frameworks>
+      <WeakFrameworks>AuthenticationServices</WeakFrameworks>
       <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>
