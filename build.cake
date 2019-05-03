@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 #tool nuget:?package=XamarinComponent
 #addin nuget:?package=Cake.FileHelpers&version=3.0.0
 #addin nuget:?package=Cake.Git&version=0.18.0
@@ -43,6 +46,14 @@ var WindowsAssembliesUrl = SdkStorageUrl + WindowsAssembliesZip;
 VersionReader.ReadVersions();
 var AndroidUrl = $"{SdkStorageUrl}AppCenter-SDK-Android-{VersionReader.AndroidVersion}.zip";
 var IosUrl = $"{SdkStorageUrl}AppCenter-SDK-Apple-{VersionReader.IosVersion}.zip";
+var AndroidMsalDependencies = new string [] {
+    "https://jcenter.bintray.com/com/nimbusds/nimbus-jose-jwt/5.7/nimbus-jose-jwt-5.7.jar",
+    "https://jcenter.bintray.com/net/minidev/json-smart/2.3/json-smart-2.3.jar",
+    "https://jcenter.bintray.com/net/minidev/accessors-smart/1.2/accessors-smart-1.2.jar",
+    "https://jcenter.bintray.com/org/ow2/asm/asm/5.0.4/asm-5.0.4.jar",
+    "https://jcenter.bintray.com/com/microsoft/identity/common/0.0.10-alpha/common-0.0.10-alpha.aar",
+    "https://jcenter.bintray.com/com/microsoft/identity/client/msal/0.3.1-alpha/msal-0.3.1-alpha.aar"
+};
 
 // Task Target for build
 var Target = Argument("Target", Argument("t", "Default"));
@@ -109,6 +120,11 @@ Task("Externals-Android")
     DeleteFile(pushLibFile);
     CopyFiles(manifestUpdateFile, pushLibUnzippedPath);
     Zip(pushLibUnzippedPath, pushLibFile);
+
+    // Download Msal dependencies
+    foreach (string url in AndroidMsalDependencies) {
+        DownloadFile(url, System.IO.Path.Combine(AndroidExternals, url.Split('/').Last()));
+    }
 }).OnError(HandleError);
 
 // Downloading iOS binaries.

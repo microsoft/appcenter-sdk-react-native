@@ -1,4 +1,7 @@
-﻿using Microsoft.AppCenter.iOS.Bindings;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.iOS.Bindings;
 
 namespace Microsoft.AppCenter
 {

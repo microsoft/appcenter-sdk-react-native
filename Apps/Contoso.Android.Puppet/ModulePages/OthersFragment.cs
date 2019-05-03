@@ -1,4 +1,7 @@
-﻿using Android.OS;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Microsoft.AppCenter;

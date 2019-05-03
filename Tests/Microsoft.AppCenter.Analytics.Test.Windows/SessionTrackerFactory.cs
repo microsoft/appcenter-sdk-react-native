@@ -1,4 +1,7 @@
-﻿using Microsoft.AppCenter.Analytics.Channel;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.Analytics.Channel;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Utils;
 using Moq;

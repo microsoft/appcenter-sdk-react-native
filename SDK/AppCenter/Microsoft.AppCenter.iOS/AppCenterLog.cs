@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AppCenter
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace Microsoft.AppCenter
 {
 	using iOSMessageProvider = Microsoft.AppCenter.iOS.Bindings.MSLogMessageProvider;
 	using iOSLogger = Microsoft.AppCenter.iOS.Bindings.MSWrapperLogger;

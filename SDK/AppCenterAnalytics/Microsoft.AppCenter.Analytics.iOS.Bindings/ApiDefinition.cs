@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 using Foundation;
 
 namespace Microsoft.AppCenter.Analytics.iOS.Bindings

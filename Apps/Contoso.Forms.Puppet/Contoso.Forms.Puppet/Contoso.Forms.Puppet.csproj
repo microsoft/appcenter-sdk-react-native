@@ -150,6 +150,14 @@
       <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
       <Name>Microsoft.AppCenter.Rum</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth\Microsoft.AppCenter.Auth.csproj">
+      <Project>{CFE0475E-4A94-4D92-901B-E174E3658A49}</Project>
+      <Name>Microsoft.AppCenter.Auth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data\Microsoft.AppCenter.Data.csproj">
+      <Project>{7FE5A0E2-B042-40CA-87FF-FA0CB10A6910}</Project>
+      <Name>Microsoft.AppCenter.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

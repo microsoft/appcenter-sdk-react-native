@@ -1,4 +1,7 @@
-﻿using SQLite;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using SQLite;
 
 namespace Microsoft.AppCenter.Test
 {

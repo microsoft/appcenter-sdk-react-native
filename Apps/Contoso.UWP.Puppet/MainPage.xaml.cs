@@ -1,4 +1,7 @@
-﻿using System;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System;
 using Microsoft.AppCenter.Analytics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

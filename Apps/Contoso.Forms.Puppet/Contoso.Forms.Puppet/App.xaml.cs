@@ -1,6 +1,11 @@
-﻿using Microsoft.AppCenter;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using System;
@@ -51,7 +56,9 @@ namespace Contoso.Forms.Puppet
                 AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
-                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+                Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
+                Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
+                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth), typeof(Data));
                 AppCenter.IsEnabledAsync().ContinueWith(enabled =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
@@ -65,9 +72,9 @@ namespace Contoso.Forms.Puppet
                 {
                     AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
                 });
-                Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
+                Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
                 {
-                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
                 });
             }
         }

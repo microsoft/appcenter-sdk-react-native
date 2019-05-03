@@ -1,4 +1,7 @@
-﻿namespace Microsoft.AppCenter.Utils.Synchronization
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+namespace Microsoft.AppCenter.Utils.Synchronization
 {
     /// <summary>
     /// Represents a particular state

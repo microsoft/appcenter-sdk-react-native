@@ -1,5 +1,54 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.0.0
+
+Version 2.0.0 of the App Center SDK includes two new modules: Auth and Data.
+
+These new modules are only supported in Xamarin (Android and iOS).
+
+This version has a **breaking change** for Xamarin.iOS, it only supports Xcode 10.0.0+ and Mono 5.12+.
+
+### App Center Auth
+
+App Center Auth is a cloud-based identity management service that enables you to authenticate users and manage their identities. You can also leverage user identities in other App Center services.
+
+### App Center Data
+
+The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms.
+
+### App Center Crashes
+
+* **[Fix]** Fix intellisense for APIs.
+
+#### Xamarin
+
+* **[Feature]** After calling `Auth.SignInAsync()`, the next crashes are associated with an `accountId` corresponding to the signed in user. This is a different field than the `userId` set by `AppCenter.SetUserId(string)`. Calling `Auth.SignOut()` stops the `accountId` association for the next crashes.
+
+##### iOS
+
+* **[Fix]** Print an error and return immediately when calling `Crashes.NotifyUserConfirmation(UserConfirmation)` with confirmation handlers not implemented.
+
+### App Center Distribute
+
+* **[Fix]** Fix intellisense for APIs.
+
+#### iOS
+
+* **[Fix]** Starting the application with "Guided Access" enabled blocks the update flow since in-app update is not possible in this mode.
+
+#### Android
+
+* **[Fix]** Fix in-app updates not working on new Samsung devices.
+
+### App Center Push
+
+* **[Fix]** Fix intellisense for APIs.
+
+#### Xamarin
+
+* **[Feature]** After calling `Auth.SignInAsync()`, the push installation is associated to the signed in user with an `accountId` and can be pushed by using the `accountId` audience. This is a different field than the `userId` set by `AppCenter.SetUserId(string)`. The push installation is also updated on calling `Auth.SignOut()` to stop the association.
+* **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling `AppCenter.setUserId`.
+
 ## Version 1.14.0
 
 ### AppCenter

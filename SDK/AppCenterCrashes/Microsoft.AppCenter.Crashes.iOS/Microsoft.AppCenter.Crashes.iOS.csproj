@@ -24,6 +24,7 @@
     </MtouchHttpClientHandler>
     <MtouchTlsProvider>
     </MtouchTlsProvider>
+    <DocumentationFile>bin\Debug\Microsoft.AppCenter.Crashes.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -38,6 +39,7 @@
     </MtouchHttpClientHandler>
     <MtouchTlsProvider>
     </MtouchTlsProvider>
+    <DocumentationFile>bin\Release\Microsoft.AppCenter.Crashes.xml</DocumentationFile>  
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

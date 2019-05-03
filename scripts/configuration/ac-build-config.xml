@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <sdkInfo>
-        <sdkVersion>1.14.0-SNAPSHOT</sdkVersion>
-        <iosVersion>1.13.2</iosVersion>
-        <androidVersion>1.11.3</androidVersion>
+        <sdkVersion>2.0.0-SNAPSHOT</sdkVersion>
+        <iosVersion>2.0.1</iosVersion>
+        <androidVersion>2.0.0</androidVersion>
     </sdkInfo>
     <group id="ios" folder="iOSAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll"/>
@@ -16,6 +16,10 @@
         <assembly path="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute.iOS/bin/Release/Microsoft.AppCenter.Distribute.iOS.Bindings.dll"/>
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS/bin/Release/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.iOS.Bindings/bin/Release/Microsoft.AppCenter.Push.iOS.Bindings.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.iOS/bin/Release/Microsoft.AppCenter.Auth.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.iOS.Bindings/bin/Release/Microsoft.AppCenter.Auth.iOS.Bindings.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.iOS/bin/Release/Microsoft.AppCenter.Data.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.iOS.Bindings/bin/Release/Microsoft.AppCenter.Data.iOS.Bindings.dll"/>
     </group>
     <group id="android" folder="AndroidAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.Android/bin/Release/Microsoft.AppCenter.dll"/>
@@ -30,6 +34,12 @@
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/bin/Release/Microsoft.AppCenter.Push.Android.Bindings.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android/bin/Release/Microsoft.AppCenter.Rum.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.Android.Bindings/bin/Release/Microsoft.AppCenter.Rum.Android.Bindings.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android/bin/Release/Microsoft.AppCenter.Auth.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings.Msal/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.Msal.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common/bin/Release/Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.Android/bin/Release/Microsoft.AppCenter.Data.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.Android.Bindings/bin/Release/Microsoft.AppCenter.Data.Android.Bindings.dll"/>
     </group>
     <group id="pcl" folder="PCLAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll"/>
@@ -38,6 +48,8 @@
         <assembly path="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Distribute.dll"/>
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Rum.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Auth.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Data.dll"/>
     </group>
     <group id="netstandard" folder="NETStandardAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/netstandard1.0/Microsoft.AppCenter.dll"/>
@@ -46,6 +58,8 @@
         <assembly path="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/netstandard1.0/Microsoft.AppCenter.Distribute.dll"/>
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/netstandard1.0/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/netstandard1.0/Microsoft.AppCenter.Rum.dll"/>
+        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth/bin/Release/netstandard1.0/Microsoft.AppCenter.Auth.dll"/>
+        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data/bin/Release/netstandard1.0/Microsoft.AppCenter.Data.dll"/>
     </group>
     <group id="windows_desktop" folder="WindowsDesktopAssemblies" buildGroup="windows">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.WindowsDesktop/bin/Release/Microsoft.AppCenter.dll"/>
@@ -88,6 +102,8 @@
     <module dotnetModule="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute" nuspec="AppCenterDistribute.nuspec"/>
     <module dotnetModule="SDK/AppCenterPush/Microsoft.AppCenter.Push" nuspec="AppCenterPush.nuspec"/>
     <module dotnetModule="SDK/AppCenterRum/Microsoft.AppCenter.Rum" nuspec="AppCenterRum.nuspec"/>
+    <module dotnetModule="SDK/AppCenterAuth/Microsoft.AppCenter.Auth" nuspec="AppCenterAuth.nuspec"/>
+    <module dotnetModule="SDK/AppCenterData/Microsoft.AppCenter.Data" nuspec="AppCenterData.nuspec"/>
     <buildGroup platformId="mac" solutionPath="AppCenter-SDK-Build-Mac.sln">
         <build configuration="Release"/>
     </buildGroup>

@@ -1,4 +1,7 @@
-﻿using Microsoft.AppCenter.Ingestion;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.Ingestion;
 using System;
 using System.Collections.Generic;
 using System.Linq;

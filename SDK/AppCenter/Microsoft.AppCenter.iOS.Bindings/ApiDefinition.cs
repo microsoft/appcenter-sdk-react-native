@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 using Foundation;
 using ObjCRuntime;
 using System;
@@ -125,8 +128,8 @@ namespace Microsoft.AppCenter.iOS.Bindings
         bool IsEqual(MSDevice device);
     }
 
-	// @interface MSCustomProperties : NSObject
-	[BaseType(typeof(NSObject))]
+    // @interface MSCustomProperties : NSObject
+    [BaseType(typeof(NSObject))]
     interface MSCustomProperties
     {
         // - (instancetype)setString:(NSString *)value forKey:(NSString *)key;
@@ -274,5 +277,14 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Static]
         [Export("MSWrapperLog:tag:level:")]
         void MSWrapperLog(MSLogMessageProvider message, string tag, MSLogLevel level);
+    }
+
+    // @interface MSUserInformation : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSUserInformation
+    {
+        // @property(nonatomic, copy) NSString *accountId;
+        [Export("accountId")]
+        string AccountId { get; set; }
     }
 }
