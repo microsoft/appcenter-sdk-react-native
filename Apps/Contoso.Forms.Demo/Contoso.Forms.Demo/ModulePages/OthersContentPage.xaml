@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="Others"
-             xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="Contoso.Forms.Demo.OthersContentPage">
+<ContentPage Title="Others" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.OthersContentPage">
     <TableView Intent="Form">
         <TableSection Title="Distribute">
-            <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
+            <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
         <TableSection Title="Push">
-            <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
+            <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
+        </TableSection>
+        <TableSection Title="MBaaS">
+            <ViewCell Tapped="RunMBaaSAsync">
+                <Button Text="Test MBaaS (hardcoded scenario)" InputTransparent="true" Clicked="RunMBaaSAsync" />
+            </ViewCell>
+            <ViewCell Tapped="SignOut">
+                <Button Text="Sign Out" InputTransparent="true" Clicked="SignOut" />
+            </ViewCell>
         </TableSection>
     </TableView>
 </ContentPage>
