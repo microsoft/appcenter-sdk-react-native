@@ -7,7 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
@@ -16,7 +18,7 @@ namespace Contoso.Forms.Demo
 {
     public partial class App : Application
     {
-        const string LogTag = "AppCenterXamarinDemo";
+        public const string LogTag = "AppCenterXamarinDemo";
 
         const string uwpKey = "5bce20c8-f00b-49ca-8580-7a49d5705d4c";
         const string androidKey = "987b5941-4fac-4968-933e-98a7ff29237c";
@@ -43,7 +45,7 @@ namespace Contoso.Forms.Demo
                 Distribute.ReleaseAvailable = OnReleaseAvailable;
                 Push.PushNotificationReceived += OnPushNotificationReceived;
                 AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                                   typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
+                                   typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth), typeof(Data));
                 AppCenter.GetInstallIdAsync().ContinueWith(installId =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.InstallId=" + installId.Result);
