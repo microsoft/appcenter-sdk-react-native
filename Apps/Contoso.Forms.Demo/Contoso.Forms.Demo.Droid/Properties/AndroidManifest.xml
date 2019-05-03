@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.forms.demo" android:versionName="1.14.0" android:versionCode="62">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.forms.demo" android:versionName="2.0.0" android:versionCode="63">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="27" />
 	<application android:label="ACFDemo">
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
@@ -12,5 +12,13 @@
 		</receiver>
 		<meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_appcenter_logo" />
 		<meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/appcenter_logo" />
+		<activity android:name="com.microsoft.identity.client.BrowserTabActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:host="auth" android:scheme="msal987b5941-4fac-4968-933e-98a7ff29237c" />
+			</intent-filter>
+		</activity>
 	</application>
 </manifest>
