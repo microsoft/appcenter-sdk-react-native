@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="56" android:versionName="2.0.0-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="57" android:versionName="2.0.1-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="26" />
 	<application android:label="ACFPuppet">
 		<activity android:name="com.microsoft.identity.client.BrowserTabActivity">
