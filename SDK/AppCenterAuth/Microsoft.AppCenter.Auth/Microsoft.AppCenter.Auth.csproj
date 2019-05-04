@@ -1,14 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-<Import Project="..\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.projitems" Label="Shared" />
+  <Import Project="..\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.projitems" Label="Shared" />
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;portable-net45+win8+wpa81+wp8</TargetFrameworks>
     <Optimize>true</Optimize>
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Auth</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>2.0.0-SNAPSHOT</Version>
+    <Version>2.0.1-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <FileVersion>2.0.1.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Auth</AssemblyTitle>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.AppCenter.Auth.xml</DocumentationFile>
   </PropertyGroup>
