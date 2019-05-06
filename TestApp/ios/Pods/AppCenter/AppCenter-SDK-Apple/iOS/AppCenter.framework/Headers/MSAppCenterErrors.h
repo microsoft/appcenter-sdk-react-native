@@ -3,34 +3,30 @@
 
 #import <Foundation/Foundation.h>
 
-#define MS_APP_CENTER_BASE_DOMAIN @"com.Microsoft.AppCenter."
-
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Domain
 
-static NSString *const kMSACErrorDomain = MS_APP_CENTER_BASE_DOMAIN @"ErrorDomain";
+extern NSString *const kMSACErrorDomain;
 
-#pragma mark - General
+#pragma mark - Log
 
-// Error codes.
-NS_ENUM(NSInteger){MSACLogInvalidContainerErrorCode = 1, MSACCanceledErrorCode = 2, MSACDisabledErrorCode = 3};
+// Error codes
+NS_ENUM(NSInteger){kMSACLogInvalidContainerErrorCode = 1};
 
-// Error descriptions.
-static NSString const *kMSACLogInvalidContainerErrorDesc = @"Invalid log container.";
-static NSString const *kMSACCanceledErrorDesc = @"The operation was canceled.";
-static NSString const *kMSACDisabledErrorDesc = @"The service is disabled.";
+// Error descriptions
+extern NSString const *kMSACLogInvalidContainerErrorDesc;
 
 #pragma mark - Connection
 
-// Error codes.
-NS_ENUM(NSInteger){MSACConnectionPausedErrorCode = 100, MSACConnectionHttpErrorCode = 101};
+// Error codes
+NS_ENUM(NSInteger){kMSACConnectionPausedErrorCode = 100, kMSACConnectionHttpErrorCode = 101};
 
-// Error descriptions.
-static NSString const *kMSACConnectionHttpErrorDesc = @"An HTTP error occured.";
-static NSString const *kMSACConnectionPausedErrorDesc = @"Canceled, connection paused with log deletion.";
+// Error descriptions
+extern NSString const *kMSACConnectionHttpErrorDesc;
+extern NSString const *kMSACConnectionPausedErrorDesc;
 
-// Error user info keys.
-static NSString const *kMSACConnectionHttpCodeErrorKey = @"MSACConnectionHttpCode";
+// Error user info keys
+extern NSString const *kMSACConnectionHttpCodeErrorKey;
 
 NS_ASSUME_NONNULL_END
