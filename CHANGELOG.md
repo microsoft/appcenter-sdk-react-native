@@ -1,5 +1,13 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.0.1
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix a crash when tracking an exception without a message.
+
 ## Version 2.0.0
 
 Version 2.0.0 of the App Center SDK includes two new modules: Auth and Data.
