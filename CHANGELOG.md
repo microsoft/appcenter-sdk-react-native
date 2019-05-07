@@ -1,26 +1,24 @@
 # App Center SDK for React Native Change Log
 
 ## Version 2.0.0
+
 Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
-
-### AppCenter Auth
-App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices. **iOS only, not available for macOS.*
-
-### AppCenter Data
-The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms. *iOS only, not available for macOS.
 
 ### AppCenter Crashes
 
 #### iOS
+
 * **[Feature]** After calling [MSAuth signInWithCompletionHandler:], the next crashes are associated with an accountId corresponding to the signed in user. This is a different field than the userId set by [MSAppCenter setUserId:]. Calling [MSAuth signOut] stops the accountId association for the next crashes.
 * **[Fix]** Print an error and return immediately when calling [MSCrashes notifyWithUserConfirmation:] with confirmation handlers not implemented.
 
 #### Android
+
 * **[Feature]** After calling Auth.signIn, the next crashes are associated with an accountId corresponding to the signed in user. This is a different field than the userId set by AppCenter.setUserId. Calling Auth.signOut stops the accountId association for the next crashes.
 
 ### AppCenter Push
 
 #### iOS
+
 * **[Feature]** After calling [MSAuth signInWithCompletionHandler:], the push installation is associated to the signed in user with an accountId and can be pushed by using the accountId audience. This is a different field than the userId set by [MSAppCenter setUserId:]. The push installation is also updated on calling [MSAuth signOut] to stop the association.
 * **[Fix]** Fix updating push installation when setting the user identifier via [MSAppCenter setUserId:].
 
