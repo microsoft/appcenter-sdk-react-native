@@ -14,6 +14,5 @@ target 'TestApp' do
   pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
 
   platform :ios, '9.0'
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
 end
