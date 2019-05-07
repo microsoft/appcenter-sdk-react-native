@@ -4,7 +4,16 @@
 
 Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
+### App Center
+
+* **[Feature]** Removed interactive prompts when running `react-native link`. The documentation now has instructions how to manually configure the SDK.
+* **[Fix]** Add missing licence copyright headers to most of the files. The `.md` extension has been removed in package licence files.
+
 ### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix a crash at startup when the serialized `Throwable` file for an error report is not found.
 
 #### iOS
 
