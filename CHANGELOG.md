@@ -4,15 +4,13 @@
 
 Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
-### AppCenter Crashes
+### App Center Crashes
 
 #### iOS
 
-* **[Fix]** Print an error and return immediately when calling [MSCrashes notifyWithUserConfirmation:] with confirmation handlers not implemented.
+* **[Fix]** Print an error and return immediately when calling `Crashes.notifyWithUserConfirmation` while not using `Crashes.setListener`.
 
-### AppCenter Push
-
-#### Android
+### App Center Push
 
 * **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling `AppCenter.setUserId`.
 
