@@ -8,23 +8,16 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 #### iOS
 
-* **[Feature]** After calling [MSAuth signInWithCompletionHandler:], the next crashes are associated with an accountId corresponding to the signed in user. This is a different field than the userId set by [MSAppCenter setUserId:]. Calling [MSAuth signOut] stops the accountId association for the next crashes.
 * **[Fix]** Print an error and return immediately when calling [MSCrashes notifyWithUserConfirmation:] with confirmation handlers not implemented.
-
-#### Android
-
-* **[Feature]** After calling Auth.signIn, the next crashes are associated with an accountId corresponding to the signed in user. This is a different field than the userId set by AppCenter.setUserId. Calling Auth.signOut stops the accountId association for the next crashes.
 
 ### AppCenter Push
 
 #### iOS
 
-* **[Feature]** After calling [MSAuth signInWithCompletionHandler:], the push installation is associated to the signed in user with an accountId and can be pushed by using the accountId audience. This is a different field than the userId set by [MSAppCenter setUserId:]. The push installation is also updated on calling [MSAuth signOut] to stop the association.
 * **[Fix]** Fix updating push installation when setting the user identifier via [MSAppCenter setUserId:].
 
 #### Android
 
-* **[Feature]** After calling Auth.signIn, the push installation is associated to the signed in user with an accountId and can be pushed by using the accountId audience. This is a different field than the userId set by AppCenter.setUserId. The push installation is also updated on calling Auth.signOut to stop the association.
 * **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling AppCenter.setUserId.
 
 ## Version 1.13.0
