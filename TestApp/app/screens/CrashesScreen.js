@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
 import ImagePicker from 'react-native-image-picker';

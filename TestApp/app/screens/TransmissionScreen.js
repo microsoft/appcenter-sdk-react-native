@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import React, { Component } from 'react';
 import { Image, View, SectionList, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-simple-toast';

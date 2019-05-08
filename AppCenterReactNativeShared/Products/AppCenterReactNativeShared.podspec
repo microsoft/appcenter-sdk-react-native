@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name              = 'AppCenterReactNativeShared'
-  s.version           = '1.13.0'
+  s.version           = '2.0.0'
   s.summary           = 'React Native plugin for Visual Studio App Center'
-  s.license           = { :type => 'MIT',  :file => 'AppCenterReactNativeShared/LICENSE.md' }
+  s.license           = { :type => 'MIT',  :file => 'AppCenterReactNativeShared/LICENSE' }
   s.homepage          = 'https://github.com/Microsoft/AppCenter-SDK-React-Native'
   s.documentation_url = "https://docs.microsoft.com/en-us/appcenter/"
 
@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'
 
-  s.dependency 'AppCenter/Core', '1.14.0'
+  s.dependency 'AppCenter/Core', '2.0.1'
 end

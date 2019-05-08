@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
@@ -146,10 +149,12 @@ export default class AppCenterScreen extends Component {
       </View>
     );
 
-    const valueRenderItem = ({ item: { title, value, onChange } }) => (
+    // After trying to fix the next line lint warning, the code was harder to read and format, disable it once.
+    // eslint-disable-next-line object-curly-newline
+    const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        { onChange ? <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
+        { onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
       </View>
     );
 
@@ -230,6 +235,10 @@ export default class AppCenterScreen extends Component {
                   value: 'userId',
                   onChange: async (userId) => {
                     this.setState({ userId });
+                  },
+                  onSubmit: async () => {
+                    // 1DS setUserId API allows null but not empty string as userId
+                    const userId = this.state.userId.length === 0 ? null : this.state.userId;
                     await AppCenter.setUserId(userId);
                   }
                 }

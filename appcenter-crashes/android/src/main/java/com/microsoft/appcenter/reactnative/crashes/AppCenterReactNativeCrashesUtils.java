@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.appcenter.reactnative.crashes;
 
 import android.util.Log;
@@ -38,10 +41,13 @@ class AppCenterReactNativeCrashesUtils {
         errorReportMap.putString("threadName", errorReport.getThreadName());
         errorReportMap.putString("appErrorTime", "" + errorReport.getAppErrorTime().getTime());
         errorReportMap.putString("appStartTime", "" + errorReport.getAppStartTime().getTime());
-        errorReportMap.putString("exception", Log.getStackTraceString(errorReport.getThrowable()));
+        
         //noinspection ThrowableResultOfMethodCallIgnored
-        errorReportMap.putString("exceptionReason", errorReport.getThrowable().getMessage());
-
+        Throwable error = errorReport.getThrowable();
+        if (error != null) {
+            errorReportMap.putString("exception", Log.getStackTraceString(error));
+            errorReportMap.putString("exceptionReason", error.getMessage());
+        }
         /* Convert device info. */
         Device deviceInfo = errorReport.getDevice();
         WritableMap deviceInfoMap;

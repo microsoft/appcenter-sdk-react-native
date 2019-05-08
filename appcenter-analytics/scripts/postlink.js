@@ -1,28 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 const rnpmlink = require('appcenter-link-scripts');
-const inquirer = require('inquirer');
 
 // Configure Android first.
-let promise = null;
+let promise;
 if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     console.log('Configuring AppCenter Analytics for Android');
     promise = rnpmlink.android.initAppCenterConfig()
-        .then(() =>
-            inquirer.prompt([{
-                type: 'list',
-                name: 'whenToEnableAnalytics',
-                message: 'For the Android app, should user tracking be enabled automatically?',
-                choices: [
-                    {
-                        name: 'Enable Automatically',
-                        value: 'ALWAYS_SEND'
-                    },
-                    {
-                        name: 'Enable in JavaScript',
-                        value: 'ENABLE_IN_JS'
-                    }]
-            }])
-        ).then((androidAnswer) => {
-            rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics', androidAnswer.whenToEnableAnalytics);
+        .then(() => {
+            rnpmlink.android.patchStrings('appCenterAnalytics_whenToEnableAnalytics', 'ALWAYS_SEND');
             rnpmlink.android.removeAndroidDuplicateLinks();
         }).catch((e) => {
             console.error(`Could not configure AppCenter Analytics for Android. Error Reason - ${e.message}`);
@@ -39,34 +26,16 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             console.log('Configuring AppCenter Analytics for iOS');
             return rnpmlink.ios.initAppCenterConfig();
         })
-        .then(() =>
-            inquirer.prompt([{
-                type: 'list',
-                name: 'whenToEnableAnalytics',
-                message: 'For the iOS app, should user tracking be enabled automatically?',
-                choices: [
-                    {
-                        name: 'Enable Automatically',
-                        value: 'ALWAYS_SEND'
-                    },
-                    {
-                        name: 'Enable in JavaScript',
-                        value: 'ENABLE_IN_JS'
-                    }]
-            }])
-        )
-        .then((iosAnswer) => {
-            const code = iosAnswer.whenToEnableAnalytics === 'ALWAYS_SEND' ?
-                '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics' :
-                '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:false];  // Initialize AppCenter analytics';
+        .then(() => {
+            const code = '[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics';
             return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>', code, /.*\[AppCenterReactNativeAnalytics register.*/g);
         })
         .then((file) => {
             console.log(`Added code to initialize iOS Analytics SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Analytics', version: '1.14.0' },
-                    { pod: 'AppCenterReactNativeShared', version: '1.13.0' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenter/Analytics', version: '2.0.1' },
+                    { pod: 'AppCenterReactNativeShared', version: '2.0.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );
@@ -76,4 +45,3 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return Promise.resolve();
         });
 }
-return promise;

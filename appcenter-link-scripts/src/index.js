@@ -1,9 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 const android = require('./android');
 const ios = require('./ios');
-const inquirer = require('inquirer');
 
 module.exports = {
     android,
-    ios,
-    inquirer
+    ios
 };

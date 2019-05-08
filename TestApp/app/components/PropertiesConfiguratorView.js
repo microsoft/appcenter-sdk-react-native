@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import React, { Component } from 'react';
 import { View, Text, TextInput, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 

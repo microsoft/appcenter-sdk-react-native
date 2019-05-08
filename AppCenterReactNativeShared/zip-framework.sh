@@ -8,6 +8,6 @@ if [ -f $zipfilename ] ; then
     rm $zipfilename
     echo "  removed old zip"
 fi
-cp ../LICENSE.md AppCenterReactNativeShared
+cp ../LICENSE AppCenterReactNativeShared
 zip -r $zipfilename AppCenterReactNativeShared
 echo "output is here: Products/$zipfilename"
