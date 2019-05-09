@@ -12,6 +12,8 @@ import Push from 'appcenter-push';
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
+const USER_ID_KEY = 'USER_ID_KEY';
+
 const SecretStrings = {
   ios: {
     appSecret: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5',
@@ -83,7 +85,7 @@ export default class AppCenterScreen extends Component {
         break;
       }
     }
-
+    this.state.userId = await AsyncStorage.getItem(USER_ID_KEY);
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
@@ -237,7 +239,11 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
-                    // 1DS setUserId API allows null but not empty string as userId
+                    await AsyncStorage.setItem(USER_ID_KEY, this.state.userId);
+
+                    // Note that app UI doesn't differentiate empty string from null string,
+                    // but setUserId API allows null but not empty string,
+                    // so convert empty userId to null.
                     const userId = this.state.userId.length === 0 ? null : this.state.userId;
                     await AppCenter.setUserId(userId);
                   }
