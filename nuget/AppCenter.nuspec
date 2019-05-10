@@ -12,7 +12,7 @@
     <tags>app center appcenter mobilecenter</tags>
     <language>en-US</language>
     <projectUrl>https://aka.ms/telgml</projectUrl>
-    <licenseUrl>https://aka.ms/vbgfx2</licenseUrl>
+    <license type="expression">MIT</license>
     <iconUrl>https://aka.ms/k76877</iconUrl>
     <dependencies>
       <group targetFramework="uap10.0">
