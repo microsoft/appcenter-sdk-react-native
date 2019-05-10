@@ -243,7 +243,6 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
-
                     // We use empty text in UI to delete userID (null for AppCenter API).
                     const userId = this.state.userId.length === 0 ? null : this.state.userId;
                     if (userId !== null) {
