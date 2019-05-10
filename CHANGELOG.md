@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.0.1 (Under development)
+
+### App Center Push
+
+#### Android
+
+* **[Fix]** Fix a crash when calling `Push.setEnabled` when `appcenter.json` contains both `"start_automatically": false` and `"enable_push_in_javascript": true`.
+
 ## Version 2.0.0
 
 Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
