@@ -12,6 +12,8 @@ import Push from 'appcenter-push';
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
+const USER_ID_KEY = 'USER_ID_KEY';
+
 const SecretStrings = {
   ios: {
     appSecret: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5',
@@ -83,7 +85,11 @@ export default class AppCenterScreen extends Component {
         break;
       }
     }
-
+    const userId = await AsyncStorage.getItem(USER_ID_KEY);
+    if (userId !== null) {
+      this.state.userId = userId;
+      await AppCenter.setUserId(userId);
+    }
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
@@ -154,7 +160,7 @@ export default class AppCenterScreen extends Component {
     const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        { onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
+        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text>}
       </View>
     );
 
@@ -237,8 +243,13 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
-                    // 1DS setUserId API allows null but not empty string as userId
+                    // We use empty text in UI to delete userID (null for AppCenter API).
                     const userId = this.state.userId.length === 0 ? null : this.state.userId;
+                    if (userId !== null) {
+                      await AsyncStorage.setItem(USER_ID_KEY, userId);
+                    } else {
+                      await AsyncStorage.removeItem(USER_ID_KEY);
+                    }
                     await AppCenter.setUserId(userId);
                   }
                 }
