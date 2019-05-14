@@ -3,13 +3,27 @@
 
 using Foundation;
 using System;
+using System.Reflection;
 using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.AppCenter.Data.iOS.Bindings;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Microsoft.AppCenter.Data
 {
+
+    public class TimeActionStuff
+    {
+        public TimeSpan TimeAction(Action blockingAction)
+        {
+            Stopwatch stopWatch = Stopwatch.StartNew();
+            blockingAction();
+            stopWatch.Stop();
+            return stopWatch.Elapsed;
+        }
+    }
+
     public static class ConversionExtensions
     {
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -61,8 +75,20 @@ namespace Microsoft.AppCenter.Data
 
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
-            var deserialized = JsonConvert.SerializeObject(document);
-            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(deserialized);
+            var deserialized = "";
+            var dict = new Dictionary<string, string>();
+            var dictNew = new Dictionary<string, string>();
+            var tas = new TimeActionStuff();
+            var elapsed1 = tas.TimeAction(() =>
+            {
+                deserialized = JsonConvert.SerializeObject(document);
+                dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(deserialized);
+            });
+            var elapsed2 = tas.TimeAction(() =>
+            {
+                dictNew = document.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                    .ToDictionary(prop => prop.Name.ToLower(), prop => prop.GetValue(document, null).ToString().ToLower());
+            });
             var nativeDict = NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
             return new MSDictionaryDocument().Init(nativeDict);
         }
