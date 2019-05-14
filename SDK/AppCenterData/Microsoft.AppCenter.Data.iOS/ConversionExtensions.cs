@@ -89,7 +89,13 @@ namespace Microsoft.AppCenter.Data
                 dictNew = document.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                     .ToDictionary(prop => prop.Name.ToLower(), prop => prop.GetValue(document, null));
             });
-            var nativeDict = NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
+
+            NSData jsonData = NSData.FromString(deserialized);
+            NSError error;
+            NSDictionary nativeDict = (NSDictionary)NSJsonSerialization.Deserialize(jsonData, new NSJsonReadingOptions(), out error);
+            
+            //var valuesArr = new object[dictNew.Count];
+            //var nativeDict = NSDictionary.FromObjectsAndKeys(dictNew.Values.ToArray(), dictNew.Keys.ToArray());
             return new MSDictionaryDocument().Init(nativeDict);
         }
 
