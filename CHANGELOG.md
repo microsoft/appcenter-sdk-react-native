@@ -338,7 +338,7 @@ This version contains bug fixes.
 
 #### iOS
 
-* **[Fix #670]** [Previous release](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.6.0) was unintentionally requiring Mono 5.8 on iOS applications. This build issue is now fixed.
+* **[Fix #670]** [Previous release](https://github.com/microsoft/appcenter-sdk-dotnet/releases/tag/1.6.0) was unintentionally requiring Mono 5.8 on iOS applications. This build issue is now fixed.
 
 #### UWP
 
@@ -564,9 +564,9 @@ ___
 
 ## Version 1.0.1
 
-This release fixes the NuGet packages that were released for [1.0.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.0.0).
+This release fixes the NuGet packages that were released for [1.0.0](https://github.com/microsoft/appcenter-sdk-dotnet/releases/tag/1.0.0).
 
-Please read the [1.0.0 release notes](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.0.0) if you are not yet aware of this version.
+Please read the [1.0.0 release notes](https://github.com/microsoft/appcenter-sdk-dotnet/releases/tag/1.0.0) if you are not yet aware of this version.
 
 Fixes from 1.0.1:
 
