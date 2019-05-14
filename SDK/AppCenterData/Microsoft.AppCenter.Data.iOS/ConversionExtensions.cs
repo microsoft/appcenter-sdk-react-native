@@ -76,18 +76,18 @@ namespace Microsoft.AppCenter.Data
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
             var deserialized = "";
-            var dict = new Dictionary<string, string>();
-            var dictNew = new Dictionary<string, string>();
+            var dict = new Dictionary<string, object>();
+            var dictNew = new Dictionary<string, object>();
             var tas = new TimeActionStuff();
             var elapsed1 = tas.TimeAction(() =>
             {
                 deserialized = JsonConvert.SerializeObject(document);
-                dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(deserialized);
+                dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(deserialized);
             });
             var elapsed2 = tas.TimeAction(() =>
             {
                 dictNew = document.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-                    .ToDictionary(prop => prop.Name.ToLower(), prop => prop.GetValue(document, null).ToString().ToLower());
+                    .ToDictionary(prop => prop.Name.ToLower(), prop => prop.GetValue(document, null));
             });
             var nativeDict = NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
             return new MSDictionaryDocument().Init(nativeDict);
