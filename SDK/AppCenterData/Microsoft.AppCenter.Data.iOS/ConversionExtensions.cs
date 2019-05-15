@@ -12,18 +12,6 @@ using System.Diagnostics;
 
 namespace Microsoft.AppCenter.Data
 {
-
-    public class TimeActionStuff
-    {
-        public TimeSpan TimeAction(Action blockingAction)
-        {
-            Stopwatch stopWatch = Stopwatch.StartNew();
-            blockingAction();
-            stopWatch.Stop();
-            return stopWatch.Elapsed;
-        }
-    }
-
     public static class ConversionExtensions
     {
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -75,36 +63,16 @@ namespace Microsoft.AppCenter.Data
 
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
-            var deserialized = "";
-            var dict = new Dictionary<string, object>();
-            var dictNew = new Dictionary<string, object>();
-            var tas = new TimeActionStuff();
-            var elapsed1 = tas.TimeAction(() =>
-            {
-                deserialized = JsonConvert.SerializeObject(document);
-                dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(deserialized);
-            });
-            var elapsed2 = tas.TimeAction(() =>
-            {
-                dictNew = document.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-                    .ToDictionary(prop => prop.Name.ToLower(), prop => prop.GetValue(document, null));
-            });
-
-            NSData jsonData = NSData.FromString(deserialized);
+            var jsonString = JsonConvert.SerializeObject(document);
+            var data = NSData.FromString(jsonString);
             NSError error;
-            NSDictionary nativeDict = (NSDictionary)NSJsonSerialization.Deserialize(jsonData, new NSJsonReadingOptions(), out error);
-            
-            //var valuesArr = new object[dictNew.Count];
-            //var nativeDict = NSDictionary.FromObjectsAndKeys(dictNew.Values.ToArray(), dictNew.Keys.ToArray());
-            return new MSDictionaryDocument().Init(nativeDict);
-        }
+            var nativeDict = (NSDictionary)NSJsonSerialization.Deserialize(data, new NSJsonReadingOptions(), out error);
+            if (error != null)
+            {
+                throw new NSErrorException(error);
 
-        public static T ToDocument<T>(this MSDictionaryDocument document)
-        {
-            var dict = document.SerializeToDictionary()
-                               .ToDictionary(i => (string)(NSString)i.Key, i => (string)(NSString)i.Value);
-            var serialized = JsonConvert.SerializeObject(dict);
-            return JsonConvert.DeserializeObject<T>(serialized);
+            }
+            return new MSDictionaryDocument().Init(nativeDict);
         }
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments paginatedDocuments)

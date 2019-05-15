@@ -76,10 +76,18 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSData.Create(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
+            try
             {
-                ProcessResult(resultDoc, taskCompletionSource);
-            });
+                var msDictionaryDocument = document.ToMSDocument();
+                MSData.Create(documentId, msDictionaryDocument, partition, msWriteOptions, resultDoc =>
+                {
+                    ProcessResult(resultDoc, taskCompletionSource);
+                });
+            }
+            catch (NSErrorException e)
+            {
+                taskCompletionSource.SetException(e);
+            }
             return taskCompletionSource.Task;
         }
 
@@ -87,10 +95,18 @@ namespace Microsoft.AppCenter.Data
         {
             var taskCompletionSource = new TaskCompletionSource<DocumentWrapper<T>>();
             var msWriteOptions = writeOptions.ToMSWriteOptions();
-            MSData.Replace(documentId, document.ToMSDocument(), partition, msWriteOptions, resultDoc =>
+            try
             {
-                ProcessResult(resultDoc, taskCompletionSource);
-            });
+                var msDictionaryDocument = document.ToMSDocument();
+                MSData.Replace(documentId, msDictionaryDocument, partition, msWriteOptions, resultDoc =>
+                {
+                    ProcessResult(resultDoc, taskCompletionSource);
+                });
+            }
+            catch (NSErrorException e)
+            {
+                taskCompletionSource.SetException(e);
+            }
             return taskCompletionSource.Task;
         }
 
