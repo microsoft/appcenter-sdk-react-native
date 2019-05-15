@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Foundation;
 using System;
-using System.Reflection;
-using Newtonsoft.Json;
 using System.Linq;
+using Foundation;
 using Microsoft.AppCenter.Data.iOS.Bindings;
-using System.Collections.Generic;
-using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Data
 {
