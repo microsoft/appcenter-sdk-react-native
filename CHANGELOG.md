@@ -7,6 +7,7 @@
 #### iOS
 
 * **[Fix]** Fix a crash when tracking an exception without a message.
+* **[Fix]** Fix document serialization/deserialization to handle non string types inside an object.
 
 ## Version 2.0.0
 

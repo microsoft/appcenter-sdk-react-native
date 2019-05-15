@@ -3,6 +3,8 @@
 
 using System;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -120,10 +122,48 @@ namespace Contoso.Forms.Puppet
             }
             try
             {
+                var objectCollection = new List<Uri>();
+                objectCollection.Add(new Uri("http://google.com/"));
+                objectCollection.Add(new Uri("http://microsoft.com/"));
+                objectCollection.Add(new Uri("http://facebook.com/"));
+                var primitiveCollection = new List<int>();
+                primitiveCollection.Add(1);
+                primitiveCollection.Add(2);
+                primitiveCollection.Add(3);
+                var dict = new Dictionary<string, Uri>();
+                dict.Add("key1", new Uri("http://google.com/"));
+                dict.Add("key2", new Uri("http://microsoft.com/"));
+                dict.Add("key3", new Uri("http://facebook.com/"));
                 var customDoc = new CustomDocument
                 {
                     Id = Guid.NewGuid(),
-                    TimeStamp = DateTime.UtcNow
+                    TimeStamp = DateTime.UtcNow,
+                    SomeNumber = 123,
+                    SomeObject = dict,
+                    SomePrimitiveArray = new int[] { 1, 2, 3 },
+                    SomeObjectArray = new CustomDocument[] { 
+                        new CustomDocument { 
+                            Id = Guid.NewGuid(),
+                            TimeStamp = DateTime.UtcNow,
+                            SomeNumber = 123,
+                            SomeObject = dict,
+                            SomePrimitiveArray = new int[] { 1, 2, 3 },
+                            SomeObjectCollection = objectCollection,
+                            SomePrimitiveCollection = primitiveCollection  
+                        } 
+                    },
+                    SomeObjectCollection = objectCollection,
+                    SomePrimitiveCollection = primitiveCollection,
+                    Custom = new CustomDocument
+                    {
+                        Id = Guid.NewGuid(),
+                        TimeStamp = DateTime.UtcNow,
+                        SomeNumber = 123,
+                        SomeObject = dict,
+                        SomePrimitiveArray = new int[] { 1, 2, 3 },
+                        SomeObjectCollection = objectCollection,
+                        SomePrimitiveCollection = primitiveCollection
+                    }
                 };
                 var id = customDoc.Id.ToString();
                 var document = await Data.ReplaceAsync(id, customDoc, DefaultPartitions.UserDocuments);
@@ -150,6 +190,27 @@ namespace Contoso.Forms.Puppet
 
             [JsonProperty("timestamp")]
             public DateTime TimeStamp { get; set; }
+
+            [JsonProperty("somenumber")]
+            public int SomeNumber { get; set; }
+
+            [JsonProperty("someprimitivearray")]
+            public int[] SomePrimitiveArray { get; set; }
+
+            [JsonProperty("someobjectarray")]
+            public CustomDocument[] SomeObjectArray { get; set; }
+
+            [JsonProperty("someprimitivecollection")]
+            public IList SomePrimitiveCollection { get; set; }
+
+            [JsonProperty("someobjectcollection")]
+            public IList SomeObjectCollection { get; set; }
+
+            [JsonProperty("someobject")]
+            public Dictionary<string, Uri> SomeObject { get; set; }
+
+            [JsonProperty("customdocument")]
+            public CustomDocument Custom { get; set; }
         }
     }
 }
