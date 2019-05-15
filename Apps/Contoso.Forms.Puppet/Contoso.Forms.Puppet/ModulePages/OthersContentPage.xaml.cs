@@ -108,7 +108,7 @@ namespace Contoso.Forms.Puppet
                 var list = await Data.ListAsync<CustomDocument>(DefaultPartitions.UserDocuments);
                 foreach (var doc in list)
                 {
-                    AppCenterLog.Info(App.LogTag, "List result=" + doc.Id);
+                    AppCenterLog.Info(App.LogTag, "List result=" + JsonConvert.SerializeObject(doc));
                 }
                 var document = list.CurrentPage.Items.First();
                 AppCenterLog.Info(App.LogTag, "List first result=" + JsonConvert.SerializeObject(document));
@@ -170,8 +170,6 @@ namespace Contoso.Forms.Puppet
                 AppCenterLog.Info(App.LogTag, "Replace result=" + JsonConvert.SerializeObject(document));
                 document = await Data.ReadAsync<CustomDocument>(id, DefaultPartitions.UserDocuments);
                 AppCenterLog.Info(App.LogTag, "Read result=" + JsonConvert.SerializeObject(document));
-                await Data.ReplaceAsync(Guid.NewGuid().ToString(), customDoc, DefaultPartitions.UserDocuments);
-                await Data.ReplaceAsync(Guid.NewGuid().ToString(), customDoc, DefaultPartitions.UserDocuments);
             }
             catch (Exception ex)
             {
