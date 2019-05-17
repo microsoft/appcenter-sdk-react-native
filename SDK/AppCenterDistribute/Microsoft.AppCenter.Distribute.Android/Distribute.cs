@@ -51,6 +51,15 @@ namespace Microsoft.AppCenter.Distribute
             }
         }
 
+        /// <summary>
+        /// Set whether the distribute service can be used within a debuggable build.
+        /// </summary>
+        /// <param name="enabled"><c>true</c> to enable, <c>false</c> to disable (the initial default value is <c>false</c>).</param>
+        public static void SetEnabledForDebuggableBuild(bool enabled)
+        {
+            AndroidDistribute.SetEnabledForDebuggableBuild(enabled);
+        }
+
         static Listener _listener;
 
         static ReleaseAvailableCallback _releaseAvailableCallback;
