@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{AA6821F3-930A-49E4-BA3F-D68255F39F1E}"
 EndProject
@@ -205,8 +205,8 @@ Global
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C}.Release|x64.Build.0 = Release|Any CPU
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C}.Release|x86.ActiveCfg = Release|Any CPU
 		{3FE04B97-48DE-4895-8612-ECBDFEBD917C}.Release|x86.Build.0 = Release|Any CPU
-		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.Build.0 = Debug|x86
+		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|ARM.ActiveCfg = Debug|ARM
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|ARM.Build.0 = Debug|ARM
 		{15E3FC9B-7714-4468-A296-81627A5B8F01}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -648,6 +648,7 @@ Global
 		{44E1971C-3399-4C88-AFE5-54EB53737D31}.Release|x86.ActiveCfg = Release|Any CPU
 		{44E1971C-3399-4C88-AFE5-54EB53737D31}.Release|x86.Build.0 = Release|Any CPU
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|Any CPU.Build.0 = Debug|Win32
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|ARM.ActiveCfg = Debug|ARM
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|ARM.Build.0 = Debug|ARM
 		{B977BF28-3A1C-4A89-A673-A22EDDC9D23D}.Debug|iPhone.ActiveCfg = Debug|Win32
