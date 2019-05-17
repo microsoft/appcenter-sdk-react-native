@@ -12,7 +12,7 @@
 
 #### Android
 
-* **[Feature]** Add `Distribute.SetEnabledForDebuggableBuild(boolean)` method to allow in-app updates in debuggable builds.
+* **[Feature]** Add `Distribute.SetEnabledForDebuggableBuild(bool)` method to allow in-app updates in debuggable builds.
 * **[Fix]** Fix duplicate in-app update dialog when restarting (or switching) activity quickly after clicking download. Also fixes a crash when choosing "Ask me in a day" in the duplicate dialog.
 * **[Fix]** Fix a crash that could occur when downloading the update with a customized dialog and then calling `Distribute.NotifyUserConfirmation(UpdateAction.Postpone)` right after calling `Distribute.NotifyUserConfirmation(UpdateAction.Update)`.
 
