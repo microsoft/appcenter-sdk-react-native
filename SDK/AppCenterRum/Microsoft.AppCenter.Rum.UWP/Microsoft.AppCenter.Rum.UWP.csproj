@@ -112,6 +112,10 @@
     <DocumentationFile>bin\x64\Release\Microsoft.AppCenter.Rum.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Microsoft.AppCenter.Rum.UWP.rd.xml" />
   </ItemGroup>
@@ -120,14 +124,6 @@
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
       <Name>Microsoft.AppCenter.UWP</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.2.6</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>6.0.1</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="..\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.projitems" Label="Shared" />
   <Import Project="..\Microsoft.AppCenter.Rum.Windows.Shared\Microsoft.AppCenter.Rum.Windows.Shared.projitems" Label="Shared" />
