@@ -6,7 +6,6 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BCD888D1-A62F-458C-A72B-9DF731EE1A55}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>uap10.0</TargetFramework>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.AppCenter.Rum</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Rum</AssemblyName>

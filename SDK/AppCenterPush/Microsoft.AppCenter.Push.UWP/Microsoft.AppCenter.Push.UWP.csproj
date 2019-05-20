@@ -6,7 +6,6 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{8072449C-C6A8-4B36-87DC-173F295D161C}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>uap10.0</TargetFramework>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.AppCenter.Push</RootNamespace>
     <AssemblyName>Microsoft.AppCenter.Push</AssemblyName>
