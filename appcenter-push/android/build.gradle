@@ -21,11 +21,7 @@ dependencies {
     implementation ('com.facebook.react:react-native:+') {
         exclude group: 'com.android.support'
     }
-    api ('com.microsoft.appcenter:appcenter-push:2.0.0') {
-        exclude group: 'com.google.firebase'
-    }
-    api 'com.google.firebase:firebase-core:16.0.4'
-    api 'com.google.firebase:firebase-messaging:17.3.4'
+    api 'com.microsoft.appcenter:appcenter-push:2.1.0-5+7a77b791c'
 
     /*
      * For projects that needs to execute :verifyReleaseResources yet have :lint also succeed,
