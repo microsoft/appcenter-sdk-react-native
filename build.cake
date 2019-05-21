@@ -111,16 +111,6 @@ Task("Externals-Android")
     var files = GetFiles($"{AndroidExternals}/*/*");
     CopyFiles(files, AndroidExternals);
 
-    // Edit push manifest due to Xamarin manifest merge limitations
-    var pushLib = "appcenter-push-release";
-    var pushLibFile = $"{AndroidExternals}/{pushLib}.aar";
-    var pushLibUnzippedPath = $"{AndroidExternals}/{pushLib}";
-    var manifestUpdateFile = "SDK/AppCenterPush/Microsoft.AppCenter.Push.Android.Bindings/AndroidManifest.xml";
-    Unzip(pushLibFile, pushLibUnzippedPath);
-    DeleteFile(pushLibFile);
-    CopyFiles(manifestUpdateFile, pushLibUnzippedPath);
-    Zip(pushLibUnzippedPath, pushLibFile);
-
     // Download Msal dependencies
     foreach (string url in AndroidMsalDependencies) {
         DownloadFile(url, System.IO.Path.Combine(AndroidExternals, url.Split('/').Last()));
