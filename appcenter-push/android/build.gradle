@@ -21,7 +21,7 @@ dependencies {
     implementation ('com.facebook.react:react-native:+') {
         exclude group: 'com.android.support'
     }
-    api 'com.microsoft.appcenter:appcenter-push:2.1.0-5+7a77b791c'
+    api 'com.microsoft.appcenter:appcenter-push:2.1.0-7+df4dfd7f7'
 
     /*
      * For projects that needs to execute :verifyReleaseResources yet have :lint also succeed,
