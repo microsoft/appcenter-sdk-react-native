@@ -3,7 +3,7 @@
     <sdkInfo>
         <sdkVersion>2.1.0-SNAPSHOT</sdkVersion>
         <iosVersion>2.0.1</iosVersion>
-        <androidVersion>2.1.0-0+b78fb109d</androidVersion>
+        <androidVersion>2.1.0-7+df4dfd7f7</androidVersion>
     </sdkInfo>
     <group id="ios" folder="iOSAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll"/>
