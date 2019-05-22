@@ -1,13 +1,13 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.0.1 (Under development)
+## Version 2.1.0 (Under development)
 
 ### App Center Push
 
 #### Android
 
 * **[Fix]** Fix a crash when calling `Push.setEnabled` when `appcenter.json` contains both `"start_automatically": false` and `"enable_push_in_javascript": true`.
-* **[Fix]** Update Firebase dependency to avoid conflict in applications using latest support libraries (v28) or the latest Firebase messaging version (v18).
+* **[Fix]** Update Firebase dependency and AppCenter push logic to avoid a runtime issue with the latest Firebase messaging version 18.0.0.
 
 ## Version 2.0.0
 
