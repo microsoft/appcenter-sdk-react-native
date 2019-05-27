@@ -17,7 +17,6 @@ public class BuildGroup
         private string _platform { get; set; }
         private string _configuration { get; set; }
         private string _toolVersion { get; set; }
-        private string _programFilesDir { get; set; }
         public BuildConfig(string platform, string configuration, string toolVersion)
         {
             _platform = platform;
@@ -30,16 +29,16 @@ public class BuildGroup
             Statics.Context.MSBuild(solutionPath, settings => {
                 if (_toolVersion == "VS2019")
                 {
-                    _programFilesDir = Statics.Context.EnvironmentVariable("programfiles");
-                    if (string.IsNullOrEmpty(_programFilesDir))
+                    var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
+                    if (string.IsNullOrEmpty(programFilesDir))
                     {
-                        _programFilesDir = Statics.Context.EnvironmentVariable("programfiles");
+                        programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
                     }
                     Statics.Context.Debug(string.Join(
-                        _programFilesDir,
+                        programFilesDir,
                         @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe"));
                     settings.ToolPath = string.Join(
-                        _programFilesDir,
+                        programFilesDir,
                         @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
                 }
                 if (_platform != null)
