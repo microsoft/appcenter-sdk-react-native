@@ -30,7 +30,7 @@ public class BuildGroup
             Statics.Context.MSBuild(solutionPath, settings => {
                 if (_toolVersion == "VS2019")
                 {
-                    _programFilesDir = Statics.Context.EnvironmentVariable("programfiles(x86)");
+                    _programFilesDir = Statics.Context.EnvironmentVariable("programfiles");
                     if (string.IsNullOrEmpty(_programFilesDir))
                     {
                         _programFilesDir = Statics.Context.EnvironmentVariable("programfiles");
