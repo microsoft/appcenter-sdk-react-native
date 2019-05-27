@@ -10,6 +10,7 @@ public class BuildGroup
     private string _platformId;
     private string _toolVersion;
     private string _solutionPath;
+    private string _programFilesDir;
     private IList<BuildConfig> _builds;
 
     private class BuildConfig
@@ -17,8 +18,10 @@ public class BuildGroup
         private string _platform { get; set; }
         private string _configuration { get; set; }
         private string _toolVersion { get; set; }
-        public BuildConfig(string platform, string configuration, string toolVersion)
+        private string _programFilesDir { get; set; }
+        public BuildConfig(string platform, string configuration, string toolVersion, string programFilesDir)
         {
+            _programFilesDir = programFilesDir;
             _platform = platform;
             _configuration = configuration;
             _toolVersion = toolVersion;
@@ -29,16 +32,9 @@ public class BuildGroup
             Statics.Context.MSBuild(solutionPath, settings => {
                 if (_toolVersion == "VS2019")
                 {
-                    var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
-                    if (string.IsNullOrEmpty(programFilesDir))
-                    {
-                        programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
-                    }
-                    Statics.Context.Debug(string.Join(
-                        programFilesDir,
-                        @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe"));
+                    Statics.Context.Debug(_programFilesDir);
                     settings.ToolPath = string.Join(
-                        programFilesDir,
+                        _programFilesDir,
                         @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
                 }
                 if (_platform != null)
@@ -53,10 +49,11 @@ public class BuildGroup
         }
     }
 
-    public BuildGroup(string platformId, string toolVersion)
+    public BuildGroup(string platformId, string toolVersion, string programFilesDir)
     {
         _platformId = platformId;
         _toolVersion = toolVersion;
+        _programFilesDir = programFilesDir;
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
         while (reader.Read())
@@ -93,7 +90,7 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration, _toolVersion));
+                _builds.Add(new BuildConfig(platform, configuration, _toolVersion, _programFilesDir));
             }
         }
     }
