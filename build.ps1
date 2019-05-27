@@ -226,7 +226,7 @@ if (!(Test-Path $CAKE_EXE)) {
 # Build Cake arguments
 $cakeArguments = @("$Script");
 if ($Target) { $cakeArguments += "-target=$Target" }
-if ($ToolVersion) { $cakeArguments += "-ToolVersion=$ToolVersion" }
+if ($ToolVersion) { $cakeArguments += "-ToolVersion=MSBuildSettings.VS2019" }
 if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
 if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
 if ($ShowDescription) { $cakeArguments += "-showdescription" }
