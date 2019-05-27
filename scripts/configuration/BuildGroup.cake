@@ -37,7 +37,7 @@ public class BuildGroup
                     }
                     settings.ToolPath = string.Join(
                         _programFilesDir,
-                        @"Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
+                        @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
                 }
                 if (_platform != null)
                 {
