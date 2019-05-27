@@ -24,9 +24,14 @@ public class BuildGroup
             Statics.Context.MSBuild(solutionPath, settings => {
                 if (_toolVersion == "VS2019")
                 {
+                    var programFilesDir = EnvironmentVariable("programfiles(x86)");
+                    if (string.IsNullOrEmpty(programFilesDir))
+                    {
+                        var programFilesDir = EnvironmentVariable("programfiles");
+                    }
                     settings.ToolPath = string.Join(
-    EnvironmentVariable("programfiles"), 
-    "Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
+                        programFilesDir,
+                        @"Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
                 }
                 if (_platform != null)
                 {
