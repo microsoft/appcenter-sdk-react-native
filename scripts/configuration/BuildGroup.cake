@@ -1,5 +1,10 @@
 // A Build Group contains information on what solutions to build for which platform,
 // and how to do so.
+
+#addin nuget:?package=Cake.FileHelpers&version=3.0.0
+using System.Linq;
+using System.Collections.Generic;
+
 public class BuildGroup
 {
     private string _platformId;
