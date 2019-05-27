@@ -57,7 +57,6 @@ var AndroidMsalDependencies = new string [] {
 
 // Task Target for build
 var Target = Argument("Target", Argument("t", "Default"));
-var ToolVersion = Argument("ToolVersion", EnvironmentVariable("TOOL_VERSION"));
 
 var NuspecFolder = "nuget";
 
@@ -77,7 +76,7 @@ Task("Build")
     .Does(() =>
 {
     var platformId = IsRunningOnUnix() ? "mac" : "windows";
-    var buildGroup = new BuildGroup(platformId, "MSBuildToolVersion.VS2019");
+    var buildGroup = new BuildGroup(platformId, Argument("ToolVersion", EnvironmentVariable("TOOL_VERSION")));
     buildGroup.ExecuteBuilds();
 }).OnError(HandleError);
 
