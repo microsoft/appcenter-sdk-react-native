@@ -3,7 +3,7 @@
 public class BuildGroup
 {
     private string _platformId;
-    private boolean _toolVersion;
+    private bool _toolVersion;
     private string _solutionPath;
     private IList<BuildConfig> _builds;
 
@@ -11,8 +11,8 @@ public class BuildGroup
     {
         private string _platform { get; set; }
         private string _configuration { get; set; }
-        private boolean _toolVersion { get; set; }
-        public BuildConfig(string platform, string configuration, boolean toolVersion)
+        private bool _toolVersion { get; set; }
+        public BuildConfig(string platform, string configuration, bool toolVersion)
         {
             _platform = platform;
             _configuration = configuration;
@@ -40,7 +40,7 @@ public class BuildGroup
         }
     }
 
-    public BuildGroup(string platformId, boolean toolVersion)
+    public BuildGroup(string platformId, bool toolVersion)
     {
         _platformId = platformId;
         _toolVersion = toolVersion;
