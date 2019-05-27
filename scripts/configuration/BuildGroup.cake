@@ -27,7 +27,7 @@ public class BuildGroup
                     var programFilesDir = EnvironmentVariable("programfiles(x86)");
                     if (string.IsNullOrEmpty(programFilesDir))
                     {
-                        var programFilesDir = EnvironmentVariable("programfiles");
+                        programFilesDir = EnvironmentVariable("programfiles");
                     }
                     settings.ToolPath = string.Join(
                         programFilesDir,
@@ -41,8 +41,6 @@ public class BuildGroup
                 {
                     settings.Configuration = _configuration;
                 }
-            settings.SetVerbosity(Verbosity.Normal);
-            /*UseToolVersion(MSBuildToolVersion.VS2019) */
             });
         }
     }
