@@ -29,7 +29,7 @@ public class BuildGroup
                     {
                         programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
                     }
-                    settings.ToolPath = programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe"#;
+                    settings.ToolPath = programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe";
                 }
                 if (_platform != null)
                 {
