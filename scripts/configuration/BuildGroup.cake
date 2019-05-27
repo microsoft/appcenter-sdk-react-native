@@ -32,7 +32,9 @@ public class BuildGroup
             Statics.Context.MSBuild(solutionPath, settings => {
                 if (_toolVersion == "VS2019")
                 {
-                    Statics.Context.Debug(_programFilesDir);
+                    Statics.Context.Debug(string.Join(
+                        _programFilesDir,
+                        @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe"));
                     settings.ToolPath = string.Join(
                         _programFilesDir,
                         @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
