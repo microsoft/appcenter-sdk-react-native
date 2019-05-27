@@ -22,6 +22,8 @@ The build script to execute.
 The build script target to run.
 .PARAMETER Configuration
 The build configuration to use.
+.PARAMETER Toolversion
+The MSBuild version to use.
 .PARAMETER Verbosity
 Specifies the amount of information to be displayed.
 .PARAMETER ShowDescription
@@ -47,6 +49,7 @@ Param(
     [string]$Script = "build.cake",
     [string]$Target,
     [string]$Configuration,
+    [string]$ToolVersion,
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "diagnostic",
     [switch]$ShowDescription,
@@ -223,6 +226,7 @@ if (!(Test-Path $CAKE_EXE)) {
 # Build Cake arguments
 $cakeArguments = @("$Script");
 if ($Target) { $cakeArguments += "-target=$Target" }
+if ($ToolVersion) { $cakeArguments += "-toolVersion=$ToolVersion" }
 if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
 if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
 if ($ShowDescription) { $cakeArguments += "-showdescription" }

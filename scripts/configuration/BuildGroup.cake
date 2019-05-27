@@ -3,6 +3,7 @@
 public class BuildGroup
 {
     private string _platformId;
+    private string _toolVersion;
     private string _solutionPath;
     private IList<BuildConfig> _builds;
 
@@ -19,6 +20,10 @@ public class BuildGroup
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
+                if (_toolVersion == MSBuildToolVersion.VS2019)
+                {
+                    settings.ToolPath = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe";
+                }
                 if (_platform != null)
                 {
                     settings.SetConfiguration(_configuration).WithProperty("Platform", _platform);
@@ -31,9 +36,10 @@ public class BuildGroup
         }
     }
 
-    public BuildGroup(string platformId)
+    public BuildGroup(string platformId, string toolVersion)
     {
         _platformId = platformId;
+        _toolVersion = toolVersion;
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
         while (reader.Read())
