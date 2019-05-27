@@ -3,6 +3,7 @@
 public class BuildGroup
 {
     private string _platformId;
+    private string _toolVersion;
     private string _solutionPath;
     private IList<BuildConfig> _builds;
 
@@ -10,15 +11,26 @@ public class BuildGroup
     {
         private string _platform { get; set; }
         private string _configuration { get; set; }
-        public BuildConfig(string platform, string configuration)
+        private string _toolVersion { get; set; }
+        public BuildConfig(string platform, string configuration, string toolVersion)
         {
             _platform = platform;
             _configuration = configuration;
+            _toolVersion = toolVersion;
         }
 
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
+                if (_toolVersion == "VS2019")
+                {
+                    var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
+                    if (string.IsNullOrEmpty(programFilesDir))
+                    {
+                        programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
+                    }
+                    settings.ToolPath = programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe";
+                }
                 if (_platform != null)
                 {
                     settings.SetConfiguration(_configuration).WithProperty("Platform", _platform);
@@ -31,9 +43,10 @@ public class BuildGroup
         }
     }
 
-    public BuildGroup(string platformId)
+    public BuildGroup(string platformId, string toolVersion)
     {
         _platformId = platformId;
+        _toolVersion = toolVersion;
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
         while (reader.Read())
@@ -70,7 +83,7 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration));
+                _builds.Add(new BuildConfig(platform, configuration, _toolVersion));
             }
         }
     }
