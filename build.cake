@@ -76,12 +76,7 @@ Task("Build")
     .Does(() =>
 {
     var platformId = IsRunningOnUnix() ? "mac" : "windows";
-    var programFilesDir = EnvironmentVariable("ProgramFiles(x86)");
-    if (string.IsNullOrEmpty(programFilesDir))
-    {
-        programFilesDir = EnvironmentVariable("ProgramFiles");
-    }
-    var buildGroup = new BuildGroup(platformId, Argument("ToolVersion", ""), programFilesDir);
+    var buildGroup = new BuildGroup(platformId, Argument("ToolVersion", ""));
     buildGroup.ExecuteBuilds();
 }).OnError(HandleError);
 

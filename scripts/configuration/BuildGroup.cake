@@ -1,16 +1,10 @@
 // A Build Group contains information on what solutions to build for which platform,
 // and how to do so.
-
-#addin nuget:?package=Cake.FileHelpers&version=3.0.0
-using System.Linq;
-using System.Collections.Generic;
-
 public class BuildGroup
 {
     private string _platformId;
     private string _toolVersion;
     private string _solutionPath;
-    private string _programFilesDir;
     private IList<BuildConfig> _builds;
 
     private class BuildConfig
@@ -18,10 +12,8 @@ public class BuildGroup
         private string _platform { get; set; }
         private string _configuration { get; set; }
         private string _toolVersion { get; set; }
-        private string _programFilesDir { get; set; }
-        public BuildConfig(string platform, string configuration, string toolVersion, string programFilesDir)
+        public BuildConfig(string platform, string configuration, string toolVersion)
         {
-            _programFilesDir = programFilesDir;
             _platform = platform;
             _configuration = configuration;
             _toolVersion = toolVersion;
@@ -32,8 +24,12 @@ public class BuildGroup
             Statics.Context.MSBuild(solutionPath, settings => {
                 if (_toolVersion == "VS2019")
                 {
-                    Statics.Context.Debug(_programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
-                    settings.ToolPath = _programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe";
+                    var programFilesDir = EnvironmentVariable("ProgramFiles(x86)");
+                    if (string.IsNullOrEmpty(programFilesDir))
+                    {
+                        programFilesDir = EnvironmentVariable("ProgramFiles");
+                    }
+                    settings.ToolPath = programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe"#;
                 }
                 if (_platform != null)
                 {
@@ -47,11 +43,10 @@ public class BuildGroup
         }
     }
 
-    public BuildGroup(string platformId, string toolVersion, string programFilesDir)
+    public BuildGroup(string platformId, string toolVersion)
     {
         _platformId = platformId;
         _toolVersion = toolVersion;
-        _programFilesDir = programFilesDir;
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
         while (reader.Read())
@@ -88,7 +83,7 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration, _toolVersion, _programFilesDir));
+                _builds.Add(new BuildConfig(platform, configuration, _toolVersion));
             }
         }
     }
