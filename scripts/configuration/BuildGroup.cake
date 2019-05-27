@@ -11,10 +11,12 @@ public class BuildGroup
     {
         private string _platform { get; set; }
         private string _configuration { get; set; }
-        public BuildConfig(string platform, string configuration)
+        private string _toolVersion { get; set; }
+        public BuildConfig(string platform, string configuration, string toolVersion)
         {
             _platform = platform;
             _configuration = configuration;
+            _toolVersion = toolVersion;
         }
 
         public void Build(string solutionPath)
@@ -32,6 +34,8 @@ public class BuildGroup
                 {
                     settings.Configuration = _configuration;
                 }
+            settings.SetVerbosity(Verbosity.Normal);
+            /*UseToolVersion(MSBuildToolVersion.VS2019) */
             });
         }
     }
@@ -76,7 +80,7 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration));
+                _builds.Add(new BuildConfig(platform, configuration, _toolVersion));
             }
         }
     }
