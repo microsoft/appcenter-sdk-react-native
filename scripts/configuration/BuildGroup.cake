@@ -22,10 +22,10 @@ public class BuildGroup
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
-              //  if (_toolVersion == "MSBuildToolVersion.VS2019")
-              //  {
+                if (_toolVersion == "MSBuildToolVersion.VS2019")
+                {
                     settings.ToolPath = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe";
-              //  }
+                }
                 if (_platform != null)
                 {
                     settings.SetConfiguration(_configuration).WithProperty("Platform", _platform);
