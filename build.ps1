@@ -22,7 +22,7 @@ The build script to execute.
 The build script target to run.
 .PARAMETER Configuration
 The build configuration to use.
-.PARAMETER Toolversion
+.PARAMETER ToolVersion
 The MSBuild version to use.
 .PARAMETER Verbosity
 Specifies the amount of information to be displayed.
