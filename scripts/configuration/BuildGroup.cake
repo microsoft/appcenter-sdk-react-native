@@ -35,6 +35,9 @@ public class BuildGroup
                     {
                         _programFilesDir = Statics.Context.EnvironmentVariable("programfiles");
                     }
+                    Debug(Statics.Context, string.Join(
+                        _programFilesDir,
+                        @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe"));
                     settings.ToolPath = string.Join(
                         _programFilesDir,
                         @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe");
