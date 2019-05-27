@@ -76,7 +76,7 @@ Task("Build")
     .Does(() =>
 {
     var platformId = IsRunningOnUnix() ? "mac" : "windows";
-    var buildGroup = new BuildGroup(platformId, Argument("ToolVersion", EnvironmentVariable("TOOL_VERSION")));
+    var buildGroup = new BuildGroup(platformId, true);
     buildGroup.ExecuteBuilds();
 }).OnError(HandleError);
 
