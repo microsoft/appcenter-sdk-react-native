@@ -25,7 +25,7 @@ public class BuildGroup
                 if (_toolVersion == "VS2019")
                 {
                     var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
-                    if (string.IsNullOrEmpty(programFilesDir))
+                    if (!DirectoryExists(programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe") || string.IsNullOrEmpty(programFilesDir))
                     {
                         programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
                     }
