@@ -50,7 +50,6 @@ public class BuildGroup
         {
             _vs2019path = GetVisualStudio2019Path();
         }
-        Statics.Context.Debug(_vs2019path);
 
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
@@ -109,7 +108,6 @@ public class BuildGroup
         {
             programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
         }
-        Statics.Context.Debug($"visual studio 2019 path = {programFilesDir}");
 
         foreach (var edition in vsEditions)
         {
@@ -119,7 +117,6 @@ public class BuildGroup
                 string.Join(System.IO.Path.DirectorySeparatorChar.ToString(),
                     "Microsoft Visual Studio", "2019", edition, "MSBuild", "Current", "Bin")
                 ); 
-            Statics.Context.Debug($"bin Path is {binPath}");
 
             if (!string.IsNullOrEmpty(binPath) && System.IO.Directory.Exists(binPath))
             {
