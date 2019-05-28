@@ -6,6 +6,7 @@ import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-
 import Toast from 'react-native-simple-toast';
 
 import Analytics from 'appcenter-analytics';
+import Data from 'appcenter-data';
 
 import SharedStyles from '../SharedStyles';
 import AnalyticsTabBarIcon from '../assets/analytics.png';
@@ -29,6 +30,8 @@ export default class AnalyticsScreen extends Component {
   }
 
   async componentWillMount() {
+    Data.show("hello world", 5000);
+
     await this.refreshToggle();
 
     this.props.navigation.setParams({
