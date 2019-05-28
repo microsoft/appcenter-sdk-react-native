@@ -1,35 +1,34 @@
 // A Build Group contains information on what solutions to build for which platform,
 // and how to do so.
+using Cake.Common.Tools.MSBuild;
+
 public class BuildGroup
 {
     private string _platformId;
     private string _toolVersion;
     private string _solutionPath;
+    private string _vs2019path;
     private IList<BuildConfig> _builds;
 
     private class BuildConfig
     {
         private string _platform { get; set; }
         private string _configuration { get; set; }
-        private string _toolVersion { get; set; }
-        public BuildConfig(string platform, string configuration, string toolVersion)
+        private string _toolPath { get; set; }
+
+        public BuildConfig(string platform, string configuration, string toolPath)
         {
             _platform = platform;
             _configuration = configuration;
-            _toolVersion = toolVersion;
+            _toolPath = toolPath;
         }
 
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
-                if (_toolVersion == "VS2019")
+                if (_toolPath != null)
                 {
-                    var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
-                    if (string.IsNullOrEmpty(programFilesDir))
-                    {
-                        programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
-                    }
-                    settings.ToolPath = programFilesDir + @"\Microsoft Visual Studio\2019\Community\MSBuild\Current\bin\amd64\MSBuild.exe";
+                    settings.ToolPath = _toolPath;
                 }
                 if (_platform != null)
                 {
@@ -47,6 +46,12 @@ public class BuildGroup
     {
         _platformId = platformId;
         _toolVersion = toolVersion;
+        if (_toolVersion.Length >=6 && _toolVersion.Substring(_toolVersion.Length-6) == "VS2019")
+        {
+            _vs2019path = GetVisualStudio2019Path();
+        }
+        Statics.Context.Debug(_vs2019path);
+
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
         while (reader.Read())
@@ -83,8 +88,46 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration, _toolVersion));
+                _builds.Add(new BuildConfig(platform, configuration, _vs2019path));
             }
         }
+    }
+
+    // Copy from the cake's internal MSBuildRunner.GetVisualStudio2019Path()
+    private string GetVisualStudio2019Path()
+    {
+        var vsEditions = new[]
+        {
+            "Enterprise",
+            "Professional",
+            "Community",
+            "BuildTools"
+        };
+
+        var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
+        if (string.IsNullOrEmpty(programFilesDir))
+        {
+            programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
+        }
+        Statics.Context.Debug($"visual studio 2019 path = {programFilesDir}");
+
+        foreach (var edition in vsEditions)
+        {
+            // Get the bin path.
+            // Cake have its' own Cake.Core.IO.Path class
+            var binPath = System.IO.Path.Combine(programFilesDir, 
+                string.Join(System.IO.Path.DirectorySeparatorChar.ToString(),
+                    "Microsoft Visual Studio", "2019", edition, "MSBuild", "Current", "Bin")
+                ); 
+            Statics.Context.Debug($"bin Path is {binPath}");
+
+            if (!string.IsNullOrEmpty(binPath) && System.IO.Directory.Exists(binPath))
+            {
+                return string.Join(System.IO.Path.DirectorySeparatorChar.ToString(), 
+                    (Environment.Is64BitOperatingSystem ? System.IO.Path.Combine(binPath, "amd64") : binPath),
+                    "MSBuild.exe");
+            }
+        }
+        return System.IO.Path.Combine(programFilesDir, "Microsoft Visual Studio/2019/Professional/MSBuild/16.0/Bin/MSbuild.exe");
     }
 }
