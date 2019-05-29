@@ -30,8 +30,6 @@ export default class AnalyticsScreen extends Component {
   }
 
   async componentWillMount() {
-    Data.show("hello world", 5000);
-
     await this.refreshToggle();
 
     this.props.navigation.setParams({

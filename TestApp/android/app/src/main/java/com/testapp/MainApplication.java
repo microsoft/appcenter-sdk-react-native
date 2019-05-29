@@ -7,6 +7,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.appcenter.analytics.Analytics;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -42,7 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new AppCenterReactNativePushPackage(MainApplication.this),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
                     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-                    new AppCenterReactNativeDataPackage(),
+                    new AppCenterReactNativeDataPackage(MainApplication.this, true),
                     new AppCenterReactNativePackage(MainApplication.this),
                     new RNFSPackage(),
                     new ImagePickerPackage()

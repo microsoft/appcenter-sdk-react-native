@@ -1,5 +1,7 @@
 package com.microsoft.appcenter.reactnative.data;
 
+import android.app.Application;
+
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -11,6 +13,12 @@ import java.util.List;
 
 public class AppCenterReactNativeDataPackage implements ReactPackage {
 
+    private AppCenterReactNativeDataModule mDataModule;
+
+    public AppCenterReactNativeDataPackage(Application application, boolean startEnabled) {
+        this.mDataModule = new AppCenterReactNativeDataModule(application, startEnabled);
+    }
+
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Collections.emptyList();
@@ -21,7 +29,7 @@ public class AppCenterReactNativeDataPackage implements ReactPackage {
                                 ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new AppCenterReactNativeDataModule(reactContext));
+        modules.add(mDataModule);
 
         return modules;
     }

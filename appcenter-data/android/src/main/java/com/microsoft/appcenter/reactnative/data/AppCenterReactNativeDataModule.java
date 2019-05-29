@@ -1,32 +1,135 @@
 package com.microsoft.appcenter.reactnative.data;
 
-import android.widget.Toast;
+import android.app.Application;
 
-import com.facebook.react.bridge.NativeModule;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.BaseJavaModule;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 
-import java.util.Map;
-import java.util.HashMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
-public class AppCenterReactNativeDataModule extends ReactContextBaseJavaModule {
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.data.Data;
+import com.microsoft.appcenter.data.models.DocumentWrapper;
+import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
-  private static final String DURATION_SHORT_KEY = "SHORT";
-  private static final String DURATION_LONG_KEY = "LONG";
 
-  public AppCenterReactNativeDataModule(ReactApplicationContext reactContext) {
-    super(reactContext);
-  }
+public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
-  @Override
-  public String getName() {
-    return "AppCenterReactNativeData";
-  }
+    public AppCenterReactNativeDataModule(Application application, boolean startEnabled) {
+        AppCenterReactNativeShared.configureAppCenter(application);
 
-  @ReactMethod
-  public void show(String message, int duration) {
-    Toast.makeText(getReactApplicationContext(), message, duration).show();
-  }
+        if (AppCenter.isConfigured()) {
+            AppCenter.start(Data.class);
+
+            if (!startEnabled) {
+                Data.setEnabled(false);
+            }
+        }
+    }
+
+    @Override
+    public String getName() {
+        return "AppCenterReactNativeData";
+    }
+
+    @ReactMethod
+    public void read(String documentId, String partition, final Promise promise) {
+        Data.read(documentId, JsonElement.class, partition).thenAccept(new AppCenterConsumer<DocumentWrapper<JsonElement>>() {
+            @Override
+            public void accept(DocumentWrapper<JsonElement> documentWrapper) {
+                JsonElement element = documentWrapper.getDeserializedValue();
+
+                if (element.isJsonPrimitive()) {
+                    JsonPrimitive jsonPrimitive = element.getAsJsonPrimitive();
+
+                    if (jsonPrimitive.isString()) {
+                        promise.resolve(jsonPrimitive.getAsString());
+                    } else if (jsonPrimitive.isNumber()) {
+                        promise.resolve(jsonPrimitive.getAsNumber());
+                    } else if (jsonPrimitive.isBoolean()) {
+                        promise.resolve(jsonPrimitive.getAsBoolean());
+                    }
+                } else if (element.isJsonObject()) {
+                    JsonObject jsonObject = element.getAsJsonObject();
+                    WritableMap writableMap = convertJsonObjectToWritableMap(jsonObject);
+
+                    promise.resolve(writableMap);
+                } else if (element.isJsonArray()) {
+                    JsonArray jsonArray = element.getAsJsonArray();
+                    WritableArray writableArray = convertJsonArrayToWritableArray(jsonArray);
+
+                    promise.resolve(writableArray);
+                } else {
+                    promise.resolve(element.getAsJsonNull());
+                }
+            }
+        });
+    }
+
+    private static WritableMap convertJsonObjectToWritableMap(JsonObject jsonObject) {
+        WritableMap writableMap = new WritableNativeMap();
+
+        for (String key : jsonObject.keySet()) {
+            JsonElement child = jsonObject.get(key);
+
+            if (child.isJsonPrimitive()) {
+                JsonPrimitive jsonPrimitive = child.getAsJsonPrimitive();
+
+                if (jsonPrimitive.isString()) {
+                    writableMap.putString(key, jsonPrimitive.getAsString());
+                } else if (jsonPrimitive.isNumber()) {
+                    writableMap.putDouble(key, jsonPrimitive.getAsDouble());
+                } else if (jsonPrimitive.isBoolean()) {
+                    writableMap.putBoolean(key, jsonPrimitive.getAsBoolean());
+                }
+            } else if (child.isJsonObject()) {
+                writableMap.putMap(key, convertJsonObjectToWritableMap(child.getAsJsonObject()));
+            } else if (child.isJsonArray()) {
+                writableMap.putArray(key, convertJsonArrayToWritableArray(child.getAsJsonArray()));
+            } else {
+                writableMap.putNull(key);
+            }
+        }
+
+        return writableMap;
+    }
+
+    private static WritableArray convertJsonArrayToWritableArray(JsonArray jsonArray) {
+        WritableArray writableArray = new WritableNativeArray();
+
+        if (!jsonArray.isJsonArray()) {
+            return writableArray;
+        }
+
+        for (JsonElement jsonElement : jsonArray) {
+            if (jsonElement.isJsonPrimitive()) {
+                JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+
+                if (jsonPrimitive.isString()) {
+                    writableArray.pushString(jsonPrimitive.getAsString());
+                } else if (jsonPrimitive.isNumber()) {
+                    writableArray.pushDouble(jsonPrimitive.getAsDouble());
+                } else if (jsonPrimitive.isBoolean()) {
+                    writableArray.pushBoolean(jsonPrimitive.getAsBoolean());
+                }
+            } else if (jsonElement.isJsonObject()) {
+                writableArray.pushMap(convertJsonObjectToWritableMap(jsonElement.getAsJsonObject()));
+            } else if (jsonElement.isJsonArray()) {
+                writableArray.pushArray(convertJsonArrayToWritableArray(jsonElement.getAsJsonArray()));
+            } else {
+                writableArray.pushNull();
+            }
+        }
+
+        return writableArray;
+    }
 }

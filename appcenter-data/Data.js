@@ -6,8 +6,8 @@ const ReactNative = require('react-native');
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
 
 const Data = {
-    show(message, duration) {
-        AppCenterReactNativeData.show(message, duration);
+    read(documentId, partition) {
+        return AppCenterReactNativeData.read(documentId, partition);
     }
 };
 
