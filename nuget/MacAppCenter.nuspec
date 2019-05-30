@@ -25,8 +25,8 @@
   <files>
 
     <!-- Portable -->
-   <file src="$pcl_dir$/Microsoft.AppCenter.dll" target="lib/portable-net45+win8+wpa81+wp8" />
-    <file src="$pcl_dir$/Microsoft.AppCenter.xml" target="lib/portable-net45+win8+wpa81+wp8" />
+   <!--<file src="$pcl_dir$/Microsoft.AppCenter.dll" target="lib/portable-net45+win8+wpa81+wp8" />
+    <file src="$pcl_dir$/Microsoft.AppCenter.xml" target="lib/portable-net45+win8+wpa81+wp8" />-->
 
     <!-- .NET Standard -->
     <file src="$netstandard_dir$/Microsoft.AppCenter.dll" target="lib/netstandard1.0" />
