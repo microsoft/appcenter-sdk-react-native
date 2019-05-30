@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <sdkInfo>
-        <sdkVersion>2.1.0-SNAPSHOT</sdkVersion>
+        <sdkVersion>2.0.1-SNAPSHOT</sdkVersion>
         <iosVersion>2.0.1</iosVersion>
-        <androidVersion>2.1.0-7+df4dfd7f7</androidVersion>
+        <androidVersion>2.0.0</androidVersion>
     </sdkInfo>
     <group id="ios" folder="iOSAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.iOS/bin/Release/Microsoft.AppCenter.dll"/>
@@ -41,7 +41,7 @@
         <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.Android/bin/Release/Microsoft.AppCenter.Data.dll"/>
         <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.Android.Bindings/bin/Release/Microsoft.AppCenter.Data.Android.Bindings.dll"/>
     </group>
-    <group id="pcl" folder="PCLAssemblies" buildGroup="mac">
+    <!--<group id="pcl" folder="PCLAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll"/>
         <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll"/>
@@ -50,7 +50,7 @@
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Rum.dll"/>
         <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Auth.dll"/>
         <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Data.dll"/>
-    </group>
+    </group>-->
     <group id="netstandard" folder="NETStandardAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/netstandard1.0/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/netstandard1.0/Microsoft.AppCenter.Analytics.dll"/>
