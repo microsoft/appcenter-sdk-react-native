@@ -15,8 +15,8 @@ public class AppCenterReactNativeDataPackage implements ReactPackage {
 
     private AppCenterReactNativeDataModule mDataModule;
 
-    public AppCenterReactNativeDataPackage(Application application, boolean startEnabled) {
-        this.mDataModule = new AppCenterReactNativeDataModule(application, startEnabled);
+    public AppCenterReactNativeDataPackage(Application application) {
+        this.mDataModule = new AppCenterReactNativeDataModule(application);
     }
 
     @Override
@@ -25,12 +25,9 @@ public class AppCenterReactNativeDataPackage implements ReactPackage {
     }
 
     @Override
-    public List<NativeModule> createNativeModules(
-                                ReactApplicationContext reactContext) {
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-
         modules.add(mDataModule);
-
         return modules;
     }
 }
