@@ -60,7 +60,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                     WritableArray writableArray = convertJsonArrayToWritableArray(jsonArray);
                     promise.resolve(writableArray);
                 } else {
-                    promise.resolve(element.getAsJsonNull());
+                    promise.resolve(null);
                 }
             }
         });
