@@ -26,18 +26,6 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     api 'com.microsoft.appcenter:appcenter-data:2.1.0-7+df4dfd7f7'
 
-    /*
-     * For projects that needs to execute :verifyReleaseResources yet have :lint also succeed,
-     * we need to depend on the same support lib version of the app.
-     * If we just need :lint to work, excluding the support libs from push/react native is enough,
-     * so if ext.supportLibVersion is undefined that should still work for older apps.
-     */
-    def supportLibVersion = rootProject.properties.get('supportLibVersion');
-    if (supportLibVersion != null) {
-        api "com.android.support:appcompat-v7:${supportLibVersion}"
-        api "com.android.support:support-v4:${supportLibVersion}"
-    }
-
     //api project(':AppCenterReactNativeShared')   // For testing with TestApp
     api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.0.0'
 }
