@@ -18,15 +18,10 @@ import java.util.List;
 
 public class AppCenterReactNativeDataPackage implements ReactPackage {
 
-    private AppCenterReactNativeDataModule mDataModule;
+    private final AppCenterReactNativeDataModule mDataModule;
 
     public AppCenterReactNativeDataPackage(Application application) {
-        this.mDataModule = new AppCenterReactNativeDataModule(application);
-    }
-
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        mDataModule = new AppCenterReactNativeDataModule(application);
     }
 
     @Override
@@ -34,5 +29,15 @@ public class AppCenterReactNativeDataPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(mDataModule);
         return modules;
+    }
+
+    // No @Override to support applications using React Native 0.47.0 or later
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+        return Collections.emptyList();
     }
 }
