@@ -1,0 +1,44 @@
+{
+  "name": "appcenter-data",
+  "version": "2.0.0",
+  "description": "React Native plugin for AppCenter Data",
+  "main": "Data.js",
+  "types": "Data.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/appcenter-sdk-react-native.git"
+  },
+  "keywords": [
+    "react-native",
+    "appcenter",
+    "data"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/appcenter-sdk-react-native/issues"
+  },
+  "homepage": "https://github.com/microsoft/appcenter-sdk-react-native/blob/master/appcenter-data/README.md",
+  "dependencies": {
+    "appcenter": "2.0.0"
+  },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new AppCenterReactNativeDataPackage(MainApplication.this)"
+    },
+    "commands": {
+      "postlink": "node node_modules/appcenter-data/scripts/postlink"
+    }
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.2.1"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint ."
+  }
+}
