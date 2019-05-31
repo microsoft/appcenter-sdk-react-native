@@ -6,7 +6,7 @@
   "types": "Data.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/appcenter-sdk-react-native.git"
+    "url": "git+https://github.com/microsoft/appcenter-sdk-react-native.git"
   },
   "keywords": [
     "react-native",
@@ -16,9 +16,9 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Microsoft/appcenter-sdk-react-native/issues"
+    "url": "https://github.com/microsoft/appcenter-sdk-react-native/issues"
   },
-  "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-data/README.md",
+  "homepage": "https://github.com/microsoft/appcenter-sdk-react-native/blob/master/appcenter-data/README.md",
   "dependencies": {
     "appcenter": "2.0.0"
   },
