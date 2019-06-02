@@ -21,15 +21,8 @@
 #import "RCTUtils.h"
 #endif
 
-#import <AppCenter/MSAppCenter.h>
-#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
-
-typedef NSMutableDictionary<NSString *, MSDataTransmissionTarget *>
-    MSTargetsDictionary;
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
-
-@property(nonatomic) MSTargetsDictionary *transmissionTargets;
 
 @end
 
