@@ -49,7 +49,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void read(String documentId, final String partition, final Promise promise) {
+    public void read(String documentId, String partition, final Promise promise) {
         Data.read(documentId, JsonElement.class, partition).thenAccept(new AppCenterConsumer<DocumentWrapper<JsonElement>>() {
 
             @Override
