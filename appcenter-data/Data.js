@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-const ReactNative = require("react-native");
+const ReactNative = require('react-native');
 
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
 
