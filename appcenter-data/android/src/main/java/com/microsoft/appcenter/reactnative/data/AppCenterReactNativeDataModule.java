@@ -29,11 +29,17 @@ import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String DESERIALIZED_VALUE_FIELD = "deserializedValue";
+
     private static final String JSON_VALUE_FIELD = "jsonValue";
-    private static final String ETAG_FIELD = "etag";
+
+    private static final String ETAG_FIELD = "eTag";
+
     private static final String LAST_UPDATED_DATE_FIELD = "lastUpdatedDate";
+
     private static final String IS_FROM_DEVICE_CACHE_FIELD = "isFromDeviceCache";
+
     private static final String ID_FIELD = "id";
+
     private static final String PARTITION_FIELD = "partition";
 
     public AppCenterReactNativeDataModule(Application application) {
@@ -62,9 +68,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_FIELD, documentWrapper.isFromDeviceCache());
                 jsDocumentWrapper.putString(ID_FIELD, documentWrapper.getId());
                 jsDocumentWrapper.putString(PARTITION_FIELD, documentWrapper.getPartition());
-                if (deserializedValue == null || deserializedValue.isJsonNull()) {
-                    jsDocumentWrapper.putNull(DESERIALIZED_VALUE_FIELD);
-                } else if (deserializedValue.isJsonPrimitive()) {
+                if (deserializedValue.isJsonPrimitive()) {
                     JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
                     if (jsonPrimitive.isString()) {
                         jsDocumentWrapper.putString(DESERIALIZED_VALUE_FIELD, jsonPrimitive.getAsString());
@@ -81,6 +85,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                     JsonArray jsonArray = deserializedValue.getAsJsonArray();
                     WritableArray writableArray = convertJsonArrayToWritableArray(jsonArray);
                     jsDocumentWrapper.putArray(DESERIALIZED_VALUE_FIELD, writableArray);
+                } else {
+                    jsDocumentWrapper.putNull(DESERIALIZED_VALUE_FIELD);
                 }
                 promise.resolve(jsDocumentWrapper);
             }
