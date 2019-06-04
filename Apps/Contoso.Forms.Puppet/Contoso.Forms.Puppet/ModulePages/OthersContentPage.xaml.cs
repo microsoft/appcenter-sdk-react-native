@@ -101,7 +101,7 @@ namespace Contoso.Forms.Puppet
             {
                 await Auth.SignInAsync().ContinueWith(task => {
                     userInfo = task.Result;
-                    SignInInformationButton.Text = "User authenticated " +userInfo.AccountId;
+                    SignInInformationButton.Text = "User authenticated";
                 });
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
@@ -224,12 +224,9 @@ namespace Contoso.Forms.Puppet
         {
             if (userInfo!=null)
             {
-                string accessToken = userInfo.AccessToken;
-                var token = Decode(accessToken, "");
-               // if (accessToken?.Length > 10) accessToken = "<...>" + accessToken?.Substring(accessToken.Length - 10);
-                string idToken = userInfo.IdToken;
-                if (idToken?.Length > 10) idToken = "<...>" + idToken?.Substring(idToken.Length - 10);
-                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, token, idToken));
+                string accessToken = Decode(userInfo.AccessToken, "");
+                string idToken = Decode(userInfo.IdToken, "");
+                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
             }
         }
 
