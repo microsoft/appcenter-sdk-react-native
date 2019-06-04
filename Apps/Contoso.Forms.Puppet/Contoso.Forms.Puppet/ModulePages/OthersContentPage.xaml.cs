@@ -26,6 +26,8 @@ namespace Contoso.Forms.Puppet
 
         static bool _eventFilterStarted;
 
+        private UserInformation userInfo = null;
+
         static OthersContentPage()
         {
             Data.RemoteOperationCompleted += (sender, eventArgs) =>
@@ -95,7 +97,7 @@ namespace Contoso.Forms.Puppet
         {
             try
             {
-                var userInfo = await Auth.SignInAsync();
+                userInfo = await Auth.SignInAsync();
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -181,6 +183,18 @@ namespace Contoso.Forms.Puppet
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
+        }
+
+        async void SignInInformation(object sender, EventArgs e)
+        {
+            if (userInfo!=null)
+            {
+                string accessToken = userInfo.AccessToken;
+                if (accessToken?.Length > 10) accessToken = "<...>" + accessToken?.Substring(accessToken.Length - 10);
+                string idToken = userInfo.IdToken;
+                if (idToken?.Length > 10) idToken = "<...>" + idToken?.Substring(idToken.Length - 10);
+                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
+            }
         }
 
         public class CustomDocument

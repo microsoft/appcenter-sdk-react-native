@@ -20,6 +20,9 @@
             <ViewCell Tapped="SignOut">
                 <Button Text="Sign Out" InputTransparent="true" Clicked="SignOut" />
             </ViewCell>
+            <ViewCell Tapped="SignInInformation">
+                <Button Text="Signed out" InputTransparent="true" Clicked="SignInInformation" />
+            </ViewCell>
         </TableSection>
     </TableView>
 </ContentPage>
