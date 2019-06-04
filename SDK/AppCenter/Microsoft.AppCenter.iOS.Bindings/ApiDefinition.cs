@@ -286,5 +286,13 @@ namespace Microsoft.AppCenter.iOS.Bindings
         // @property(nonatomic, copy) NSString *accountId;
         [Export("accountId")]
         string AccountId { get; set; }
+
+        // @property(nonatomic, copy) NSString *accountId;
+        [Export("accessToken")]
+        string AccessToken { get; set; }
+
+        // @property(nonatomic, copy) NSString *accountId;
+        [Export("idToken")]
+        string IdToken { get; set; }
     }
 }
