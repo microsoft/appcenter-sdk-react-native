@@ -43,10 +43,7 @@ namespace Microsoft.AppCenter.Auth
                     // Keep the stacktrace clean.
                     ExceptionDispatchInfo.Capture(signInResult.Exception).Throw();
                 }
-                return new UserInformation
-                {
-                    AccountId = signInResult.UserInformation.AccountId
-                };
+                return new UserInformation(signInResult.UserInformation.AccountId, signInResult.UserInformation.AccessToken, signInResult.UserInformation.IdToken);
             });
         }
 
