@@ -5,4 +5,6 @@
 
 @interface AppCenterReactNativeData : NSObject
 
++ (void)register;
+
 @end

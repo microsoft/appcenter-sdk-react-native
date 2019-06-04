@@ -21,6 +21,9 @@
 #import "RCTUtils.h"
 #endif
 
+#import <AppCenter/MSAppCenter.h>
+#import <AppCenterData/MSData.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
 
@@ -29,5 +32,12 @@
 @implementation AppCenterReactNativeData
 
 RCT_EXPORT_MODULE();
+
++ (void)register{
+    [AppCenterReactNativeShared configureAppCenter];
+    if ([MSAppCenter isConfigured]) {
+        [MSAppCenter startService:[MSData class]];
+    }
+}
 
 @end
