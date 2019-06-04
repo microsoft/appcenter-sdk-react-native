@@ -33,7 +33,7 @@
 
 RCT_EXPORT_MODULE();
 
-+ (void)register{
++ (void)register {
     [AppCenterReactNativeShared configureAppCenter];
     if ([MSAppCenter isConfigured]) {
         [MSAppCenter startService:[MSData class]];
