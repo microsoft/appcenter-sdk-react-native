@@ -287,11 +287,11 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Export("accountId")]
         string AccountId { get; set; }
 
-        // @property(nonatomic, copy) NSString *accountId;
+        // @property(nonatomic, copy) NSString *accessToken;
         [Export("accessToken")]
         string AccessToken { get; set; }
 
-        // @property(nonatomic, copy) NSString *accountId;
+        // @property(nonatomic, copy) NSString *idToken;
         [Export("idToken")]
         string IdToken { get; set; }
     }
