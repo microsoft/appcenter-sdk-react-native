@@ -14,6 +14,8 @@ using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;
 using Newtonsoft.Json;
 using Xamarin.Forms;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Contoso.Forms.Puppet
 {
@@ -97,7 +99,10 @@ namespace Contoso.Forms.Puppet
         {
             try
             {
-                userInfo = await Auth.SignInAsync();
+                await Auth.SignInAsync().ContinueWith(task => {
+                    userInfo = task.Result;
+                    SignInInformationButton.Text = "User authenticated " +userInfo.AccountId;
+                });
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -183,6 +188,36 @@ namespace Contoso.Forms.Puppet
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
+            SignInInformationButton.Text = "User Not Authenticated";
+        }
+
+        private static byte[] Base64UrlDecode(string input)
+        {
+            var output = input;
+            output = output.Replace('-', '+'); // 62nd char of encoding
+            output = output.Replace('_', '/'); // 63rd char of encoding
+            switch (output.Length % 4) // Pad with trailing '='s
+            {
+                case 0: break; // No pad chars in this case
+                case 2: output += "=="; break; // Two pad chars
+                case 3: output += "="; break; // One pad char
+                default: throw new System.Exception("Illegal base64url string!");
+            }
+            var converted = Convert.FromBase64String(output); // Standard base64 decoder
+            return converted;
+        }
+
+        public static string Decode(string token, string key)
+        {
+            var parts = token.Split('.');
+            var header = parts[0];
+            var payload = parts[1];
+            byte[] crypto = Base64UrlDecode(parts[2]);
+            byte[] headerData = Base64UrlDecode(header);
+            var headerJson = Encoding.UTF8.GetString(headerData,0, headerData.Length);
+            byte[] payloadData = Base64UrlDecode(payload);
+            var payloadJson = Encoding.UTF8.GetString(payloadData, 0, payloadData.Length);
+            return payloadJson;
         }
 
         async void SignInInformation(object sender, EventArgs e)
@@ -190,10 +225,11 @@ namespace Contoso.Forms.Puppet
             if (userInfo!=null)
             {
                 string accessToken = userInfo.AccessToken;
-                if (accessToken?.Length > 10) accessToken = "<...>" + accessToken?.Substring(accessToken.Length - 10);
+                var token = Decode(accessToken, "");
+               // if (accessToken?.Length > 10) accessToken = "<...>" + accessToken?.Substring(accessToken.Length - 10);
                 string idToken = userInfo.IdToken;
                 if (idToken?.Length > 10) idToken = "<...>" + idToken?.Substring(idToken.Length - 10);
-                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
+                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, token, idToken));
             }
         }
 
