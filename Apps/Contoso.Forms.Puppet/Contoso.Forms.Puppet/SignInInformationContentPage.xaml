@@ -1,5 +1,20 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.SignInInformationContentPage">
-    <ContentPage.Content>
-    </ContentPage.Content>
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Contoso.Forms.Puppet.SignInInformationContentPage">
+    <StackLayout Padding="20">
+        <StackLayout Orientation="Horizontal">
+            <Label Text="AccountId" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Entry HorizontalOptions="FillAndExpand" x:Name="AccountIdEntry" IsEnabled="false"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="AccessToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Entry HorizontalOptions="FillAndExpand" x:Name="AccessTokenEntry" IsEnabled="false"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="IdToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Entry HorizontalOptions="FillAndExpand" x:Name="IdTokenEntry" IsEnabled="false"/>
+        </StackLayout>
+        <Button Text="OK" Clicked="OK" />
+    </StackLayout>
 </ContentPage>
