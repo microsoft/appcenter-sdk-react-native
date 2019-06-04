@@ -11,6 +11,7 @@
  */
 
 #import "AppDelegate.h"
+#import <AppCenterReactNativeData/AppCenterReactNativeData.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
@@ -26,6 +27,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [AppCenterReactNativeData register];  // Initialize AppCenter data
   [MSAppCenter setLogLevel: MSLogLevelVerbose];
   
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
