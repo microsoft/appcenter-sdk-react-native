@@ -99,7 +99,8 @@ namespace Contoso.Forms.Puppet
         {
             try
             {
-                await Auth.SignInAsync().ContinueWith(task => {
+                await Auth.SignInAsync().ContinueWith(task =>
+                {
                     userInfo = task.Result;
                     SignInInformationButton.Text = "User authenticated";
                 });
@@ -148,16 +149,16 @@ namespace Contoso.Forms.Puppet
                     SomeNumber = 123,
                     SomeObject = dict,
                     SomePrimitiveArray = new int[] { 1, 2, 3 },
-                    SomeObjectArray = new CustomDocument[] { 
-                        new CustomDocument { 
+                    SomeObjectArray = new CustomDocument[] {
+                        new CustomDocument {
                             Id = Guid.NewGuid(),
                             TimeStamp = DateTime.UtcNow,
                             SomeNumber = 123,
                             SomeObject = dict,
                             SomePrimitiveArray = new int[] { 1, 2, 3 },
                             SomeObjectCollection = objectCollection,
-                            SomePrimitiveCollection = primitiveCollection  
-                        } 
+                            SomePrimitiveCollection = primitiveCollection
+                        }
                     },
                     SomeObjectCollection = objectCollection,
                     SomePrimitiveCollection = primitiveCollection,
@@ -218,7 +219,7 @@ namespace Contoso.Forms.Puppet
 
         async void SignInInformation(object sender, EventArgs e)
         {
-            if (userInfo!=null)
+            if (userInfo != null)
             {
                 string accessToken = Decode(userInfo.AccessToken);
                 string idToken = Decode(userInfo.IdToken);
