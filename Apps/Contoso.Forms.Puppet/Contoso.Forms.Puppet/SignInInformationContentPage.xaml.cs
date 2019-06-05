@@ -7,9 +7,9 @@ using Xamarin.Forms;
 namespace Contoso.Forms.Puppet
 {
     [Android.Runtime.Preserve(AllMembers = true)]
-    public partial class SignInInformationCP : ContentPage
+    public partial class SignInInformationContentPage : ContentPage
     {
-        public SignInInformationCP(string accountIdText, string accessTokenText, string idTokenText)
+        public SignInInformationContentPage(string accountIdText, string accessTokenText, string idTokenText)
         {
             InitializeComponent();
             AccountIdEntry.Text = accountIdText;
