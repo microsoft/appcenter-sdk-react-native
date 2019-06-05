@@ -5,15 +5,15 @@
     <StackLayout Padding="20">
         <StackLayout Orientation="Horizontal">
             <Label Text="AccountId" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-            <Entry HorizontalOptions="FillAndExpand" x:Name="AccountIdEntry" IsEnabled="false"/>
+            <Label HorizontalOptions="FillAndExpand" x:Name="AccountIdEntry"/>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
             <Label Text="AccessToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-            <Entry HorizontalOptions="FillAndExpand" x:Name="AccessTokenEntry" IsEnabled="false"/>
+            <Label HorizontalOptions="FillAndExpand" x:Name="AccessTokenEntry"/>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
             <Label Text="IdToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-            <Entry HorizontalOptions="FillAndExpand" x:Name="IdTokenEntry" IsEnabled="false"/>
+            <Label HorizontalOptions="FillAndExpand" x:Name="IdTokenEntry"/>
         </StackLayout>
         <Button Text="OK" Clicked="OK" />
     </StackLayout>
