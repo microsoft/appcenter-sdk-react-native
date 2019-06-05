@@ -24,6 +24,8 @@
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterData/MSData.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
+#import <AppCenterData/MSDocumentWrapper.h>
+#import <AppCenterData/MSDictionaryDocument.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
 
@@ -38,6 +40,25 @@ RCT_EXPORT_MODULE();
     if ([MSAppCenter isConfigured]) {
         [MSAppCenter startService:[MSData class]];
     }
+}
+
+RCT_EXPORT_METHOD(read:(NSString *)documentId
+                  partition:(NSString *) partition
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
+    [MSData readDocumentWithID: documentId
+                  documentType:[MSDictionaryDocument class]
+                     partition: partition
+             completionHandler:^(MSDocumentWrapper *_Nonnull document) {
+                 NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                 dict[@"isFromDeviceCache"] = [NSNumber numberWithBool:document.fromDeviceCache];
+                 dict[@"jsonValue"] = document.jsonValue;
+                 dict[@"eTag"] = document.eTag;
+                 dict[@"partition"] = document.partition;
+                 dict[@"lastUpdatedDate"] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
+                 dict[@"deserializedValue"] = document.deserializedValue.serializeToDictionary;
+                 return resolve(dict);
+             }];
 }
 
 @end
