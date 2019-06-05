@@ -15,6 +15,7 @@ using Microsoft.AppCenter.Rum;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Contoso.Forms.Puppet
 {
@@ -190,36 +191,21 @@ namespace Contoso.Forms.Puppet
             SignInInformationButton.Text = "User not authenticated";
         }
 
-        private static byte[] Base64UrlDecode(string input)
+        string ObfuscateToken(string token)
         {
-            var output = input;
-            output = output.Replace('-', '+');
-            output = output.Replace('_', '/');
-            switch (output.Length % 4)
-            {
-                case 0: break;
-                case 2: output += "=="; break;
-                case 3: output += "="; break;
-                default: throw new System.Exception("Illegal base64url string!");
-            }
-            return Convert.FromBase64String(output);
-        }
-
-        public static string Decode(string token)
-        {
-            var parts = token.Split('.');
-            var payload = parts[1];
-            byte[] payloadData = Base64UrlDecode(payload);
-            var payloadJson = Encoding.UTF8.GetString(payloadData, 0, payloadData.Length);
-            return payloadJson;
+            if (token?.Length == 0) return token;
+            var tokenData = token.Split('.');
+            if (tokenData.Length != 3) return token;
+            tokenData[2] = "***";
+            return String.Join(".", tokenData);
         }
 
         async void SignInInformation(object sender, EventArgs e)
         {
             if (userInfo != null)
             {
-                string accessToken = Decode(userInfo.AccessToken);
-                string idToken = Decode(userInfo.IdToken);
+                string accessToken = ObfuscateToken(userInfo.AccessToken);
+                string idToken = ObfuscateToken(userInfo.IdToken);
                 await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
             }
         }
