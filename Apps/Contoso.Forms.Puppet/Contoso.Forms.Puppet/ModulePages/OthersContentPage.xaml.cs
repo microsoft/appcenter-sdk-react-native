@@ -59,6 +59,7 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
+            if (userInfo.AccountId != null) SignInInformationButton.Text = "User authenticated";
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -102,7 +103,7 @@ namespace Contoso.Forms.Puppet
                 await Auth.SignInAsync().ContinueWith(task =>
                 {
                     userInfo = task.Result;
-                    SignInInformationButton.Text = "User authenticated";
+                    if (userInfo.AccountId != null) SignInInformationButton.Text = "User authenticated";
                 });
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
