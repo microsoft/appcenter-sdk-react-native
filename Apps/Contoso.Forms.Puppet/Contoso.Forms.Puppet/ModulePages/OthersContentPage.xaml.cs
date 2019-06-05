@@ -188,22 +188,22 @@ namespace Contoso.Forms.Puppet
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
-            SignInInformationButton.Text = "User Not Authenticated";
+            SignInInformationButton.Text = "User not authenticated";
         }
 
         private static byte[] Base64UrlDecode(string input)
         {
             var output = input;
-            output = output.Replace('-', '+'); // 62nd char of encoding
-            output = output.Replace('_', '/'); // 63rd char of encoding
-            switch (output.Length % 4) // Pad with trailing '='s
+            output = output.Replace('-', '+');
+            output = output.Replace('_', '/');
+            switch (output.Length % 4)
             {
-                case 0: break; // No pad chars in this case
-                case 2: output += "=="; break; // Two pad chars
-                case 3: output += "="; break; // One pad char
+                case 0: break;
+                case 2: output += "=="; break;
+                case 3: output += "="; break;
                 default: throw new System.Exception("Illegal base64url string!");
             }
-            var converted = Convert.FromBase64String(output); // Standard base64 decoder
+            var converted = Convert.FromBase64String(output);
             return converted;
         }
 
