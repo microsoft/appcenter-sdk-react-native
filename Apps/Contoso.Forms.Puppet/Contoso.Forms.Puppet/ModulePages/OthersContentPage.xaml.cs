@@ -59,7 +59,10 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
-            if (userInfo?.AccountId != null) SignInInformationButton.Text = "User authenticated";
+            if (userInfo?.AccountId != null)
+            {
+                SignInInformationButton.Text = "User authenticated";
+            }
             else SignInInformationButton.Text = "User not authenticated";
         }
 
@@ -102,7 +105,10 @@ namespace Contoso.Forms.Puppet
             try
             {
                 userInfo = await Auth.SignInAsync();
-                if (userInfo.AccountId != null) SignInInformationButton.Text = "User authenticated";
+                if (userInfo.AccountId != null)
+                {
+                    SignInInformationButton.Text = "User authenticated";
+                }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -194,9 +200,15 @@ namespace Contoso.Forms.Puppet
 
         string ObfuscateToken(string token)
         {
-            if (token?.Length == 0) return token;
+            if (token?.Length == 0) 
+            {
+                return token;
+            }
             var tokenData = token.Split('.');
-            if (tokenData.Length != 3) return token;
+            if (tokenData.Length != 3) 
+            {
+                return token;
+            }
             tokenData[2] = "***";
             return String.Join(".", tokenData);
         }
