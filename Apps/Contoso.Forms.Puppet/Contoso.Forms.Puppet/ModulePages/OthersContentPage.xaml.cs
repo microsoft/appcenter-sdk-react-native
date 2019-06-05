@@ -188,6 +188,7 @@ namespace Contoso.Forms.Puppet
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
+            userInfo = null;
             SignInInformationButton.Text = "User not authenticated";
         }
 
