@@ -207,7 +207,7 @@ namespace Contoso.Forms.Puppet
             return converted;
         }
 
-        public static string Decode(string token, string key)
+        public static string Decode(string token)
         {
             var parts = token.Split('.');
             var header = parts[0];
@@ -224,8 +224,8 @@ namespace Contoso.Forms.Puppet
         {
             if (userInfo!=null)
             {
-                string accessToken = Decode(userInfo.AccessToken, "");
-                string idToken = Decode(userInfo.IdToken, "");
+                string accessToken = Decode(userInfo.AccessToken);
+                string idToken = Decode(userInfo.IdToken);
                 await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
             }
         }
