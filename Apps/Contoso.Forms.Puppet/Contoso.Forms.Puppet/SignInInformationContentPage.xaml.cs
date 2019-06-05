@@ -1,17 +1,15 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
-    public partial class SignInInformationContentPage : ContentPage
+    [Android.Runtime.Preserve(AllMembers = true)]
+    public partial class SignInInformationCP : ContentPage
     {
-
-        public SignInInformationContentPage()
-        {
-            InitializeComponent();
-        }
-
-        public SignInInformationContentPage(string accountIdText, string accessTokenText, string idTokenText)
+        public SignInInformationCP(string accountIdText, string accessTokenText, string idTokenText)
         {
             InitializeComponent();
             AccountIdEntry.Text = accountIdText;
@@ -19,7 +17,7 @@ namespace Contoso.Forms.Puppet
             IdTokenEntry.Text = idTokenText;
         }
 
-        async void OK(object sender, EventArgs e)
+        async void OkOnClick(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }

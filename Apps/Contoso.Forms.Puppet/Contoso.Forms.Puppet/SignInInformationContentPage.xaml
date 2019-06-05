@@ -7,14 +7,11 @@
             <Label Text="AccountId" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
             <Label HorizontalOptions="FillAndExpand" x:Name="AccountIdEntry"/>
         </StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="AccessToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-            <Label HorizontalOptions="FillAndExpand" x:Name="AccessTokenEntry"/>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="IdToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
-            <Label HorizontalOptions="FillAndExpand" x:Name="IdTokenEntry"/>
-        </StackLayout>
-        <Button Text="OK" Clicked="OK" />
+        <Label Text="AccessToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+        <Label HorizontalOptions="FillAndExpand" x:Name="AccessTokenEntry"/>
+    
+        <Label Text="IdToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+        <Label HorizontalOptions="FillAndExpand" x:Name="IdTokenEntry"/>
+        <Button Text="OK" Clicked="OkOnClick" />
     </StackLayout>
 </ContentPage>

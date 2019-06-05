@@ -15,7 +15,6 @@ using Microsoft.AppCenter.Rum;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using System.Text;
-using Newtonsoft.Json.Linq;
 
 namespace Contoso.Forms.Puppet
 {
@@ -59,7 +58,8 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
-            if (userInfo.AccountId != null) SignInInformationButton.Text = "User authenticated";
+            if (userInfo?.AccountId != null) SignInInformationButton.Text = "User authenticated";
+            else SignInInformationButton.Text = "User not authenticated";
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -100,11 +100,8 @@ namespace Contoso.Forms.Puppet
         {
             try
             {
-                await Auth.SignInAsync().ContinueWith(task =>
-                {
-                    userInfo = task.Result;
-                    if (userInfo.AccountId != null) SignInInformationButton.Text = "User authenticated";
-                });
+                userInfo = await Auth.SignInAsync();
+                if (userInfo.AccountId != null) SignInInformationButton.Text = "User authenticated";
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -205,8 +202,7 @@ namespace Contoso.Forms.Puppet
                 case 3: output += "="; break;
                 default: throw new System.Exception("Illegal base64url string!");
             }
-            var converted = Convert.FromBase64String(output);
-            return converted;
+            return Convert.FromBase64String(output);
         }
 
         public static string Decode(string token)
