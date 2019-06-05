@@ -210,11 +210,7 @@ namespace Contoso.Forms.Puppet
         public static string Decode(string token)
         {
             var parts = token.Split('.');
-            var header = parts[0];
             var payload = parts[1];
-            byte[] crypto = Base64UrlDecode(parts[2]);
-            byte[] headerData = Base64UrlDecode(header);
-            var headerJson = Encoding.UTF8.GetString(headerData,0, headerData.Length);
             byte[] payloadData = Base64UrlDecode(payload);
             var payloadJson = Encoding.UTF8.GetString(payloadData, 0, payloadData.Length);
             return payloadJson;
