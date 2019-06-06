@@ -23,9 +23,9 @@
 
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterData/MSData.h>
-#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 #import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterData/MSDictionaryDocument.h>
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
 
@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(read:(NSString *)documentId
                      partition: partition
              completionHandler:^(MSDocumentWrapper *_Nonnull document) {
                  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-                 dict[kMSDeserializedValue] = document.deserializedValue.serializeToDictionary;
+                 dict[kMSDeserializedValue] = [document.deserializedValue serializeToDictionary];
                  dict[kMSjsonValue] = document.jsonValue;
                  dict[kMSPartition] = document.partition;
                  dict[kMSId] = document.documentId;
