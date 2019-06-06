@@ -33,6 +33,14 @@
 
 @implementation AppCenterReactNativeData
 
+static NSString *const kMSDeserializedValue = @"deserializedValue";
+static NSString *const kMSjsonValue = @"jsonValue";
+static NSString *const kMSPartition = @"partition";
+static NSString *const kMSId = @"id";
+static NSString *const kMSETag = @"eTag";
+static NSString *const kMSLastUpdatedDate = @"lastUpdatedDate";
+static NSString *const kMSIsFromDeviceCache = @"isFromDeviceCache";
+
 RCT_EXPORT_MODULE();
 
 + (void)register {
@@ -51,12 +59,13 @@ RCT_EXPORT_METHOD(read:(NSString *)documentId
                      partition: partition
              completionHandler:^(MSDocumentWrapper *_Nonnull document) {
                  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-                 dict[@"isFromDeviceCache"] = [NSNumber numberWithBool:document.fromDeviceCache];
-                 dict[@"jsonValue"] = document.jsonValue;
-                 dict[@"eTag"] = document.eTag;
-                 dict[@"partition"] = document.partition;
-                 dict[@"lastUpdatedDate"] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
-                 dict[@"deserializedValue"] = document.deserializedValue.serializeToDictionary;
+                 dict[kMSDeserializedValue] = document.deserializedValue.serializeToDictionary;
+                 dict[kMSjsonValue] = document.jsonValue;
+                 dict[kMSPartition] = document.partition;
+                 dict[kMSId] = document.documentId;
+                 dict[kMSETag] = document.eTag;
+                 dict[kMSLastUpdatedDate] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
+                 dict[kMSIsFromDeviceCache] = [NSNumber numberWithBool:document.fromDeviceCache];
                  return resolve(dict);
              }];
 }
