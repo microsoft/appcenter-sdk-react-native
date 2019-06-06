@@ -20,10 +20,6 @@
   </metadata>
   <files>
 
-    <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/portable-net45+win8+wpa81+wp8" />
-    <file src="$pcl_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/portable-net45+win8+wpa81+wp8" />
-
     <!-- .NET Standard -->
     <file src="$netstandard_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/netstandard1.0" />
     <file src="$netstandard_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/netstandard1.0" />
