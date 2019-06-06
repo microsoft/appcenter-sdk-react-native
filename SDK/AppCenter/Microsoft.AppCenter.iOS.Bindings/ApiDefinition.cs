@@ -278,13 +278,4 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Export("MSWrapperLog:tag:level:")]
         void MSWrapperLog(MSLogMessageProvider message, string tag, MSLogLevel level);
     }
-
-    // @interface MSUserInformation : NSObject
-    [BaseType(typeof(NSObject))]
-    interface MSUserInformation
-    {
-        // @property(nonatomic, copy) NSString *accountId;
-        [Export("accountId")]
-        string AccountId { get; set; }
-    }
 }

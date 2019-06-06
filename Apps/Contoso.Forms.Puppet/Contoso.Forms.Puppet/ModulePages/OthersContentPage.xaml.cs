@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -25,6 +25,8 @@ namespace Contoso.Forms.Puppet
         static bool _rumStarted;
 
         static bool _eventFilterStarted;
+
+        private UserInformation userInfo = null;
 
         static OthersContentPage()
         {
@@ -55,6 +57,11 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
+            if (userInfo?.AccountId != null)
+            {
+                SignInInformationButton.Text = "User authenticated";
+            }
+            else SignInInformationButton.Text = "User not authenticated";
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -95,7 +102,11 @@ namespace Contoso.Forms.Puppet
         {
             try
             {
-                var userInfo = await Auth.SignInAsync();
+                userInfo = await Auth.SignInAsync();
+                if (userInfo.AccountId != null)
+                {
+                    SignInInformationButton.Text = "User authenticated";
+                }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -141,16 +152,16 @@ namespace Contoso.Forms.Puppet
                     SomeNumber = 123,
                     SomeObject = dict,
                     SomePrimitiveArray = new int[] { 1, 2, 3 },
-                    SomeObjectArray = new CustomDocument[] { 
-                        new CustomDocument { 
+                    SomeObjectArray = new CustomDocument[] {
+                        new CustomDocument {
                             Id = Guid.NewGuid(),
                             TimeStamp = DateTime.UtcNow,
                             SomeNumber = 123,
                             SomeObject = dict,
                             SomePrimitiveArray = new int[] { 1, 2, 3 },
                             SomeObjectCollection = objectCollection,
-                            SomePrimitiveCollection = primitiveCollection  
-                        } 
+                            SomePrimitiveCollection = primitiveCollection
+                        }
                     },
                     SomeObjectCollection = objectCollection,
                     SomePrimitiveCollection = primitiveCollection,
@@ -181,6 +192,18 @@ namespace Contoso.Forms.Puppet
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
+            userInfo = null;
+            SignInInformationButton.Text = "User not authenticated";
+        }
+
+        async void SignInInformation(object sender, EventArgs e)
+        {
+            if (userInfo != null)
+            {
+                string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
+                string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
+                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
+            }
         }
 
         public class CustomDocument

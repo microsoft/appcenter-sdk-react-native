@@ -5,7 +5,6 @@ using System;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.Appcenter;
 using Com.Microsoft.Appcenter.Auth;
 
 namespace Microsoft.AppCenter.Auth
@@ -43,10 +42,7 @@ namespace Microsoft.AppCenter.Auth
                     // Keep the stacktrace clean.
                     ExceptionDispatchInfo.Capture(signInResult.Exception).Throw();
                 }
-                return new UserInformation
-                {
-                    AccountId = signInResult.UserInformation.AccountId
-                };
+                return new UserInformation(signInResult.UserInformation.AccountId, signInResult.UserInformation.AccessToken, signInResult.UserInformation.IdToken);
             });
         }
 
