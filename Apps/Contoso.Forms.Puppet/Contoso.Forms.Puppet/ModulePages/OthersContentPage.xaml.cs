@@ -196,27 +196,12 @@ namespace Contoso.Forms.Puppet
             SignInInformationButton.Text = "User not authenticated";
         }
 
-        string ObfuscateToken(string token)
-        {
-            if (token?.Length == 0) 
-            {
-                return token;
-            }
-            var tokenData = token.Split('.');
-            if (tokenData.Length != 3) 
-            {
-                return token;
-            }
-            tokenData[2] = "***";
-            return String.Join(".", tokenData);
-        }
-
         async void SignInInformation(object sender, EventArgs e)
         {
             if (userInfo != null)
             {
-                string accessToken = ObfuscateToken(userInfo.AccessToken);
-                string idToken = ObfuscateToken(userInfo.IdToken);
+                string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
+                string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
                 await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
             }
         }
