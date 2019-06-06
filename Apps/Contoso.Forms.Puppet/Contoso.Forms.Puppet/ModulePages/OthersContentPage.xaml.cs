@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -14,8 +14,6 @@ using Microsoft.AppCenter.Push;
 using Microsoft.AppCenter.Rum;
 using Newtonsoft.Json;
 using Xamarin.Forms;
-using System.Text;
-using Newtonsoft.Json.Linq;
 
 namespace Contoso.Forms.Puppet
 {
