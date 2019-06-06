@@ -2,6 +2,12 @@
 
 ## Version 2.1.0 (Under development)
 
+### App Center
+
+#### iOS
+
+* **[Fix]** Improve encryption security.
+
 ### App Center Crashes
 
 #### iOS
@@ -18,9 +24,18 @@
 
 ### App Center Auth
 
+* **[Feature]** Expose the ID Token and Access Token (as raw JWT format) in the `UserInformation` object returned from the sign-in method.
+* **[Breaking change]** The `UserInformation` class has been moved from the `Microsoft.AppCenter` namespace to `Microsoft.AppCenter.Auth` namespace.
+
 #### Android
 
 * **[Fix]** Fix missing proguard rules so that the app does not have to specify them.
+* **[Fix]** Fix crash on silently refreshing token if initialization of MSAL fails.
+
+#### iOS
+
+* **[Fix]** Fix changing signing status may cause logs (e.g., events) to be delayed.
+* **[Fix]** Validate custom URL scheme before starting Auth and log an error message when it is invalid.
 
 ### App Center Data
 
