@@ -5,7 +5,6 @@ using System;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Android.Runtime;
-using Com.Microsoft.Appcenter;
 using Com.Microsoft.Appcenter.Auth;
 
 namespace Microsoft.AppCenter.Auth
