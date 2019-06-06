@@ -17,4 +17,31 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
 } else {
     promise = Promise.resolve();
 }
+
+// Then iOS even if Android failed.
+if (rnpmlink.ios.checkIfAppDelegateExists()) {
+    promise
+        .then(() => {
+            console.log('Configuring AppCenter Data for iOS');
+            return rnpmlink.ios.initAppCenterConfig();
+        })
+        .then(() => {
+            const code = '[AppCenterReactNativeData register];  // Initialize AppCenter data';
+            return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeData/AppCenterReactNativeData.h>', code, /.*\[AppCenterReactNativeData register.*/g);
+        })
+        .then((file) => {
+            console.log(`Added code to initialize iOS Data SDK in ${file}`);
+            return rnpmlink.ios.addPodDeps(
+                [
+                    { pod: 'AppCenter/Data', version: '2.0.1' },
+                    { pod: 'AppCenterReactNativeShared', version: '2.0.0' } // in case people don't link appcenter (core)
+                ],
+                { platform: 'ios', version: '9.0' }
+            );
+        })
+        .catch((e) => {
+            console.error(`Could not configure AppCenter Data for iOS. Error Reason - ${e.message}`);
+            promise = Promise.resolve();
+        });
+}
 return promise;
