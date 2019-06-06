@@ -40,10 +40,5 @@ namespace Microsoft.AppCenter
             AccessToken = accessToken;
             IdToken = idToken;
         }
-
-        public static implicit operator UserInformation(string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
