@@ -56,7 +56,7 @@ Param(
     [switch]$Mono,
     [switch]$SkipToolPackageRestore,
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
-    [string[]]$ScriptArgs
+    [string[]]$ScriptArgs = @('-ToolVersion="VS2019"')
 )
 
 [Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null
@@ -217,8 +217,6 @@ if (Test-Path $MODULES_PACKAGES_CONFIG) {
 if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe at $CAKE_EXE"
 }
-
-
 
 # Build Cake arguments
 $cakeArguments = @("$Script");
