@@ -8,23 +8,11 @@ package com.microsoft.appcenter.reactnative.auth;
 import android.app.Application;
 
 import com.facebook.react.bridge.BaseJavaModule;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeArray;
-import com.facebook.react.bridge.WritableNativeMap;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.auth.Auth;
-import com.microsoft.appcenter.auth.models.DocumentWrapper;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 public class AppCenterReactNativeAuthModule extends BaseJavaModule {
 
@@ -38,10 +26,5 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
     @Override
     public String getName() {
         return "AppCenterReactNativeAuth";
-    }
-
-    @ReactMethod
-    public void foo() {
-        System.out.println("Android Native Code");
     }
 }
