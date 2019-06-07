@@ -54,4 +54,45 @@
       <Name>Microsoft.AppCenter.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Update="AddPropertyContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="LogLevelPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="MainPuppetPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ModulePages\AnalyticsContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ModulePages\AppCenterContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ModulePages\CrashesContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ModulePages\CustomPropertiesContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ModulePages\OthersContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="PropertiesContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="SignInInformationContentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\CustomPropertyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\TextAttachmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
 </Project>
