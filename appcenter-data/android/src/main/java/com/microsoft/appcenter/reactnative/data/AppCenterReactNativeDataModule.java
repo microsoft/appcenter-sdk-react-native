@@ -28,6 +28,20 @@ import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
 public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
+    private static final String DESERIALIZED_VALUE_KEY = "deserializedValue";
+
+    private static final String JSON_VALUE_KEY = "jsonValue";
+
+    private static final String ETAG_KEY = "eTag";
+
+    private static final String LAST_UPDATED_DATE_KEY = "lastUpdatedDate";
+
+    private static final String IS_FROM_DEVICE_CACHE_KEY = "isFromDeviceCache";
+
+    private static final String ID_KEY = "id";
+
+    private static final String PARTITION_KEY = "partition";
+
     public AppCenterReactNativeDataModule(Application application) {
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
@@ -46,27 +60,37 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
             @Override
             public void accept(DocumentWrapper<JsonElement> documentWrapper) {
-                JsonElement element = documentWrapper.getDeserializedValue();
-                if (element.isJsonPrimitive()) {
-                    JsonPrimitive jsonPrimitive = element.getAsJsonPrimitive();
+                JsonElement deserializedValue = documentWrapper.getDeserializedValue();
+                WritableMap jsDocumentWrapper = new WritableNativeMap();
+                jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+                jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
+
+                // Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values
+                jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
+                jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+                jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
+                jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
+                if (deserializedValue.isJsonPrimitive()) {
+                    JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
                     if (jsonPrimitive.isString()) {
-                        promise.resolve(jsonPrimitive.getAsString());
+                        jsDocumentWrapper.putString(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsString());
                     } else if (jsonPrimitive.isNumber()) {
-                        promise.resolve(jsonPrimitive.getAsNumber());
+                        jsDocumentWrapper.putDouble(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsDouble());
                     } else if (jsonPrimitive.isBoolean()) {
-                        promise.resolve(jsonPrimitive.getAsBoolean());
+                        jsDocumentWrapper.putBoolean(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsBoolean());
                     }
-                } else if (element.isJsonObject()) {
-                    JsonObject jsonObject = element.getAsJsonObject();
+                } else if (deserializedValue.isJsonObject()) {
+                    JsonObject jsonObject = deserializedValue.getAsJsonObject();
                     WritableMap writableMap = convertJsonObjectToWritableMap(jsonObject);
-                    promise.resolve(writableMap);
-                } else if (element.isJsonArray()) {
-                    JsonArray jsonArray = element.getAsJsonArray();
+                    jsDocumentWrapper.putMap(DESERIALIZED_VALUE_KEY, writableMap);
+                } else if (deserializedValue.isJsonArray()) {
+                    JsonArray jsonArray = deserializedValue.getAsJsonArray();
                     WritableArray writableArray = convertJsonArrayToWritableArray(jsonArray);
-                    promise.resolve(writableArray);
+                    jsDocumentWrapper.putArray(DESERIALIZED_VALUE_KEY, writableArray);
                 } else {
-                    promise.resolve(null);
+                    jsDocumentWrapper.putNull(DESERIALIZED_VALUE_KEY);
                 }
+                promise.resolve(jsDocumentWrapper);
             }
         });
     }

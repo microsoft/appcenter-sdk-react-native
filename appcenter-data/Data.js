@@ -7,7 +7,12 @@ const { AppCenterReactNativeData } = ReactNative.NativeModules;
 
 const Data = {
     read(documentId, partition) {
-        return AppCenterReactNativeData.read(documentId, partition);
+        return AppCenterReactNativeData.read(documentId, partition).then(result => {
+
+            // Create a new `Date` object from timestamp as milliseconds
+            result.lastUpdatedDate = new Date(result.lastUpdatedDate);
+            return result;
+        });
     }
 };
 
