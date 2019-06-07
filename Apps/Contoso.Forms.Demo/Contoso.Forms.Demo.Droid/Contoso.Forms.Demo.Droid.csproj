@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -58,7 +58,7 @@
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.0.0" />
     <PackageReference Include="Microsoft.AppCenter.Data" Version="2.0.0" />
     <PackageReference Include="Xamarin.Forms">
-      <Version>3.6.0.344457</Version>
+      <Version>4.0.0.482894</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
