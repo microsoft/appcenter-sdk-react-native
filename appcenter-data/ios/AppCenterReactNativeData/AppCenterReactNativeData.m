@@ -23,8 +23,8 @@
 
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterData/MSData.h>
-#import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterData/MSDictionaryDocument.h>
+#import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
