@@ -6,10 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
-#if REFERENCE
-#else
-using WatsonRegistrationUtility;
-#endif
 
 namespace Microsoft.AppCenter.Crashes
 {
@@ -30,28 +26,6 @@ namespace Microsoft.AppCenter.Crashes
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            try
-            {
-#if REFERENCE
-#else
-                WatsonRegistrationManager.Start(appSecret);
-#pragma warning disable CS0612 // Type or member is obsolete
-                AppCenter.CorrelationIdChanged += (s, id) =>
-                {
-                    WatsonRegistrationManager.SetCorrelationId(id.ToString());
-                };
-
-                // Checking for null and setting id needs to be atomic to avoid
-                // overwriting
-                var newId = Guid.NewGuid();
-                AppCenter.TestAndSetCorrelationId(Guid.Empty, ref newId);
-#pragma warning restore CS0612 // Type or member is obsolete
-#endif
-            }
-            catch (Exception e)
-            {
-                AppCenterLog.Error(AppCenterLog.LogTag, "Failed to register crashes with Watson", e);
-            }
         }
 
         private static Task<bool> PlatformIsEnabledAsync()

@@ -42,7 +42,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;USES_WATSON;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -124,10 +124,6 @@
       <Name>Microsoft.AppCenter.UWP</Name>
     </ProjectReference>
     <!-- Do not include watson utility when compiling for reference|anycpu-->
-    <ProjectReference Condition="'$(Configuration)|$(Platform)' != 'Reference|AnyCPU'" Include="..\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
-      <Project>{b977bf28-3a1c-4a89-a673-a22eddc9d23d}</Project>
-      <Name>WatsonRegistrationUtility</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems" Label="Shared" />
   <Import Project="..\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems" Label="Shared" />
