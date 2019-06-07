@@ -32,7 +32,7 @@ namespace Microsoft.AppCenter.Auth
         /// <param name="accountId">Account identifier.</param>
         /// <param name="accessToken">Access token.</param>
         /// <param name="idToken">Identifier token.</param>
-        public UserInformation(string accountId, string accessToken, string idToken)
+        internal UserInformation(string accountId, string accessToken, string idToken)
         {
             AccountId = accountId;
             AccessToken = accessToken;
