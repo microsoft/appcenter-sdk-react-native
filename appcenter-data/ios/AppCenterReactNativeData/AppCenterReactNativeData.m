@@ -23,6 +23,8 @@
 
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterData/MSData.h>
+#import <AppCenterData/MSDictionaryDocument.h>
+#import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
@@ -31,6 +33,14 @@
 
 @implementation AppCenterReactNativeData
 
+static NSString *const kMSDeserializedValue = @"deserializedValue";
+static NSString *const kMSjsonValue = @"jsonValue";
+static NSString *const kMSPartition = @"partition";
+static NSString *const kMSId = @"id";
+static NSString *const kMSETag = @"eTag";
+static NSString *const kMSLastUpdatedDate = @"lastUpdatedDate";
+static NSString *const kMSIsFromDeviceCache = @"isFromDeviceCache";
+
 RCT_EXPORT_MODULE();
 
 + (void)register {
@@ -38,6 +48,26 @@ RCT_EXPORT_MODULE();
     if ([MSAppCenter isConfigured]) {
         [MSAppCenter startService:[MSData class]];
     }
+}
+
+RCT_EXPORT_METHOD(read:(NSString *)documentId
+                  partition:(NSString *) partition
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
+    [MSData readDocumentWithID: documentId
+                  documentType:[MSDictionaryDocument class]
+                     partition: partition
+             completionHandler:^(MSDocumentWrapper *_Nonnull document) {
+                 NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                 dict[kMSDeserializedValue] = [document.deserializedValue serializeToDictionary];
+                 dict[kMSjsonValue] = document.jsonValue;
+                 dict[kMSPartition] = document.partition;
+                 dict[kMSId] = document.documentId;
+                 dict[kMSETag] = document.eTag;
+                 dict[kMSLastUpdatedDate] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
+                 dict[kMSIsFromDeviceCache] = [NSNumber numberWithBool:document.fromDeviceCache];
+                 return resolve(dict);
+             }];
 }
 
 @end
