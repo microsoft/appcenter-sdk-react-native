@@ -39,4 +39,9 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
     public String getName() {
         return "AppCenterReactNativeAuth";
     }
+
+    @ReactMethod
+    public void foo() {
+        System.out.println("Android Native Code");
+    }
 }
