@@ -18,6 +18,7 @@ import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyti
 import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.push.AppCenterReactNativePushPackage;
+import com.microsoft.appcenter.reactnative.auth.AppCenterReactNativeAuthPackage;
 import com.rnfs.RNFSPackage;
 
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new AppCenterReactNativePushPackage(MainApplication.this),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
                     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
+                    new AppCenterReactNativeAuthPackage(MainApplication.this),
                     new AppCenterReactNativePackage(MainApplication.this),
                     new RNFSPackage(),
                     new ImagePickerPackage()
