@@ -64,6 +64,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 WritableMap jsDocumentWrapper = new WritableNativeMap();
                 jsDocumentWrapper.putString(JSON_VALUE_FIELD, documentWrapper.getJsonValue());
                 jsDocumentWrapper.putString(ETAG_FIELD, documentWrapper.getETag());
+
+                // Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values
                 jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_FIELD, documentWrapper.getLastUpdatedDate().getTime());
                 jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_FIELD, documentWrapper.isFromDeviceCache());
                 jsDocumentWrapper.putString(ID_FIELD, documentWrapper.getId());
