@@ -10,6 +10,7 @@
   "dependencies": {
     "appcenter": "file:appcenter-2.0.0.tgz",
     "appcenter-analytics": "file:appcenter-analytics-2.0.0.tgz",
+    "appcenter-auth": "file:appcenter-auth-2.0.0.tgz",
     "appcenter-crashes": "file:appcenter-crashes-2.0.0.tgz",
     "appcenter-link-scripts": "file:appcenter-link-scripts-2.0.0.tgz",
     "appcenter-push": "file:appcenter-push-2.0.0.tgz",
