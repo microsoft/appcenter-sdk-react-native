@@ -34,10 +34,11 @@ fi
 echo "React-Native Android version $oldAndroidSdkVersion will be updated to $newAndroidSdkVersion"
 
 # Update android sdk version in build.gradle for appcenter, appcenter-crashes, appcenter-analytics,
-# appcenter-push and AppCenterReactNativeShared projects
+# appcenter-auth, appcenter-push and AppCenterReactNativeShared projects
 for file in \
     "appcenter/android/build.gradle" \
     "appcenter-analytics/android/build.gradle" \
+    "appcenter-auth/android/build.gradle" \
     "appcenter-crashes/android/build.gradle" \
     "appcenter-push/android/build.gradle" \
     "AppCenterReactNativeShared/android/build.gradle"
