@@ -233,5 +233,5 @@ $cakeArguments += $ScriptArgs
 
 # Start Cake
 Write-Host "Running build script..."
-&$CAKE_EXE $cakeArguments --settings_skipverification=true
+&$CAKE_EXE $cakeArguments --settings_skipverification=true -ToolVersion="VS2019"
 exit $LASTEXITCODE
