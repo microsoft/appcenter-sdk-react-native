@@ -42,7 +42,7 @@ fileContent="$(cat ./appcenter-analytics/scripts/postlink.js)"
 echo "${fileContent/\'AppCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Analytics', version: '$newiOSSdkVersion'}" > ./appcenter-analytics/scripts/postlink.js
 
 fileContent="$(cat ./appcenter-auth/scripts/postlink.js)"
-echo "${fileContent/\'AppCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Analytics', version: '$newiOSSdkVersion'}" > ./appcenter-auth/scripts/postlink.js
+echo "${fileContent/\'AppCenter\/Auth\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Auth', version: '$newiOSSdkVersion'}" > ./appcenter-auth/scripts/postlink.js
 
 fileContent="$(cat ./appcenter-push/scripts/postlink.js)"
 echo "${fileContent/\'AppCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Push', version: '$newiOSSdkVersion'}" > ./appcenter-push/scripts/postlink.js
