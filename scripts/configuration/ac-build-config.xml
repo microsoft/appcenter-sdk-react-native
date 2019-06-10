@@ -75,6 +75,6 @@
         <build configuration="Release"/>
     </buildGroup>
     <buildGroup platformId="windows" solutionPath="AppCenter-SDK-Build-Windows.sln">
-        <build configuration="Release"/>
+        <build configuration="Release" toolVersion="VS2019"/>
     </buildGroup>
 </config>
