@@ -5,30 +5,29 @@ using Cake.Common.Tools.MSBuild;
 public class BuildGroup
 {
     private string _platformId;
-    private string _toolVersion;
     private string _solutionPath;
-    private string _vs2019path;
     private IList<BuildConfig> _builds;
 
     private class BuildConfig
     {
         private string _platform { get; set; }
         private string _configuration { get; set; }
-        private string _toolPath { get; set; }
+        private string _toolVersion { get; set; }
 
-        public BuildConfig(string platform, string configuration, string toolPath)
+        public BuildConfig(string platform, string configuration, string toolVersion)
         {
             _platform = platform;
             _configuration = configuration;
-            _toolPath = toolPath;
+            _toolVersion = toolVersion;
         }
 
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
-                if (_toolPath != null)
+                if (_toolVersion != null)
                 {
-                    settings.ToolPath = _toolPath;
+                    Enum.TryParse(_toolVersion, out MSBuildToolVersion msBuildToolVersion);
+                    settings.ToolVersion = msBuildToolVersion;
                 }
                 if (_platform != null)
                 {
@@ -42,14 +41,9 @@ public class BuildGroup
         }
     }
 
-    public BuildGroup(string platformId, string toolVersion)
+    public BuildGroup(string platformId)
     {
         _platformId = platformId;
-        _toolVersion = toolVersion;
-        if (_toolVersion.Length >= 6 && _toolVersion.Substring(_toolVersion.Length - 6) == "VS2019")
-        {
-            _vs2019path = GetVisualStudio2019Path();
-        }
 
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
@@ -87,44 +81,9 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration, _vs2019path));
+                var toolVersion = childNode.Attributes.GetNamedItem("toolVersion")?.Value;
+                _builds.Add(new BuildConfig(platform, configuration, toolVersion));
             }
         }
-    }
-
-    // Copy from the cake's internal MSBuildRunner.GetVisualStudio2019Path()
-    private string GetVisualStudio2019Path()
-    {
-        var vsEditions = new[]
-        {
-            "Enterprise",
-            "Professional",
-            "Community",
-            "BuildTools"
-        };
-
-        var programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles(x86)");
-        if (string.IsNullOrEmpty(programFilesDir))
-        {
-            programFilesDir = Statics.Context.EnvironmentVariable("ProgramFiles");
-        }
-
-        foreach (var edition in vsEditions)
-        {
-            // Get the bin path.
-            // Cake has its own Cake.Core.IO.Path class.
-            var binPath = System.IO.Path.Combine(programFilesDir, 
-                string.Join(System.IO.Path.DirectorySeparatorChar.ToString(),
-                    "Microsoft Visual Studio", "2019", edition, "MSBuild", "Current", "Bin")
-                ); 
-
-            if (!string.IsNullOrEmpty(binPath) && System.IO.Directory.Exists(binPath))
-            {
-                return string.Join(System.IO.Path.DirectorySeparatorChar.ToString(), 
-                    (Environment.Is64BitOperatingSystem ? System.IO.Path.Combine(binPath, "amd64") : binPath),
-                    "MSBuild.exe");
-            }
-        }
-        return System.IO.Path.Combine(programFilesDir, "Microsoft Visual Studio/2019/Professional/MSBuild/16.0/Bin/MSbuild.exe");
     }
 }

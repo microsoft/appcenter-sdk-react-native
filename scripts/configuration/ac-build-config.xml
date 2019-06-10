@@ -98,10 +98,10 @@
         <build configuration="Release"/>
     </buildGroup>
     <buildGroup platformId="windows" solutionPath="AppCenter-SDK-Build-Windows.sln">
-        <build configuration="Release" platform="x86"/>
-        <build configuration="Release" platform="x64"/>
-        <build configuration="Release" platform="ARM"/>
-        <build configuration="Release"/>
-        <build configuration="Reference"/>
+        <build configuration="Release" platform="x86" toolVersion="VS2019"/>
+        <build configuration="Release" platform="x64" toolVersion="VS2019"/>
+        <build configuration="Release" platform="ARM" toolVersion="VS2019"/>
+        <build configuration="Release" toolVersion="VS2019"/>
+        <build configuration="Reference" toolVersion="VS2019"/>
     </buildGroup>
 </config>
