@@ -18,4 +18,31 @@ if (rnpmlink.android.checkIfAndroidDirectoryExists()) {
     promise = Promise.resolve();
 }
 
+// Then iOS even if Android failed.
+if (rnpmlink.ios.checkIfAppDelegateExists()) {
+    promise
+        .then(() => {
+            console.log('Configuring AppCenter Auth for iOS');
+            return rnpmlink.ios.initAppCenterConfig();
+        })
+        .then(() => {
+            const code = '[AppCenterReactNativeAuth register];  // Initialize AppCenter auth';
+            return rnpmlink.ios.initInAppDelegate('#import <AppCenterReactNativeAuth/AppCenterReactNativeAuth.h>', code, /.*\[AppCenterReactNativeAuth register.*/g);
+        })
+        .then((file) => {
+            console.log(`Added code to initialize iOS Auth SDK in ${file}`);
+            return rnpmlink.ios.addPodDeps(
+                [
+                    { pod: 'AppCenter/Auth', version: '2.0.1' },
+                    { pod: 'AppCenterReactNativeShared', version: '2.0.0' } // in case people don't link appcenter (core)
+                ],
+                { platform: 'ios', version: '9.0' }
+            );
+        })
+        .catch((e) => {
+            console.error(`Could not configure AppCenter Auth for iOS. Error Reason - ${e.message}`);
+            promise = Promise.resolve();
+        });
+}
+
 return promise;
