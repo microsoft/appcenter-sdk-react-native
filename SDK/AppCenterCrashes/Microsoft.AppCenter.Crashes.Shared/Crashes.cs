@@ -33,7 +33,6 @@ namespace Microsoft.AppCenter.Crashes
 		/// <summary>
 		/// Occurs when an error report has failed to be sent.
 		/// </summary>
-
 		public static event FailedToSendErrorReportEventHandler FailedToSendErrorReport;
 
 		/// <summary>
