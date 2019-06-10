@@ -114,25 +114,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Release\Microsoft.AppCenter.Push.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|x86'">
-    <OutputPath>bin\x86\Reference\</OutputPath>
-    <DocumentationFile>bin\x86\Reference\Microsoft.AppCenter.Push.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|ARM'">
-    <OutputPath>bin\ARM\Reference\</OutputPath>
-    <DocumentationFile>bin\ARM\Reference\Microsoft.AppCenter.Push.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|x64'">
-    <OutputPath>bin\x64\Reference\</OutputPath>
-    <DocumentationFile>bin\x64\Reference\Microsoft.AppCenter.Push.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|AnyCPU'">
-    <OutputPath>bin\Reference\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DocumentationFile>bin\Reference\Microsoft.AppCenter.Push.xml</DocumentationFile>
-  </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="project.json" />
