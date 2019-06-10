@@ -46,7 +46,7 @@ public class BuildGroup
     {
         _platformId = platformId;
         _toolVersion = toolVersion;
-        if (_toolVersion.Length >=6 && _toolVersion.Substring(_toolVersion.Length-6) == "VS2019")
+        if (_toolVersion.Length >= 6 && _toolVersion.Substring(_toolVersion.Length - 6) == "VS2019")
         {
             _vs2019path = GetVisualStudio2019Path();
         }
@@ -112,7 +112,7 @@ public class BuildGroup
         foreach (var edition in vsEditions)
         {
             // Get the bin path.
-            // Cake have its' own Cake.Core.IO.Path class
+            // Cake has its own Cake.Core.IO.Path class.
             var binPath = System.IO.Path.Combine(programFilesDir, 
                 string.Join(System.IO.Path.DirectorySeparatorChar.ToString(),
                     "Microsoft Visual Studio", "2019", edition, "MSBuild", "Current", "Bin")
