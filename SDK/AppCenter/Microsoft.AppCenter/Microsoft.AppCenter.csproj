@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems" Label="Shared" />
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;portable-net45+win8+wpa81+wp8</TargetFrameworks>
+    <TargetFramework>netstandard1.0</TargetFramework>
     <Optimize>true</Optimize>
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Core</Product>
