@@ -8,25 +8,28 @@ namespace Microsoft.AppCenter.Ingestion.Models
     using System.Linq;
 
     /// <summary>
-    /// Clear an existing property.
+    /// Boolean property.
     /// </summary>
-    [Newtonsoft.Json.JsonObject("clear")]
-    public partial class ClearProperty : CustomProperty
+    [Newtonsoft.Json.JsonObject("boolean")]
+    public partial class BooleanTypedProperty : TypedProperty
     {
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the BooleanTypedProperty class.
         /// </summary>
-        public ClearProperty()
+        public BooleanTypedProperty()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the BooleanTypedProperty class.
         /// </summary>
-        public ClearProperty(string name)
+        /// <param name="name">Property key.</param>
+        /// <param name="value">Boolean property value.</param>
+        public BooleanTypedProperty(string name, bool value)
             : base(name)
         {
+            Value = value;
             CustomInit();
         }
 
@@ -34,6 +37,12 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets boolean property value.
+        /// </summary>
+        [JsonProperty(PropertyName = "value")]
+        public bool Value { get; set; }
 
         /// <summary>
         /// Validate the object.

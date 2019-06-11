@@ -12,21 +12,22 @@ namespace Microsoft.AppCenter.Ingestion.Models
     /// String property.
     /// </summary>
     [Newtonsoft.Json.JsonObject("string")]
-    public partial class StringProperty : CustomProperty
+    public partial class StringTypedProperty : TypedProperty
     {
         /// <summary>
-        /// Initializes a new instance of the StringProperty class.
+        /// Initializes a new instance of the StringTypedProperty class.
         /// </summary>
-        public StringProperty()
+        public StringTypedProperty()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the StringProperty class.
+        /// Initializes a new instance of the StringTypedProperty class.
         /// </summary>
+        /// <param name="name">Property key.</param>
         /// <param name="value">String property value.</param>
-        public StringProperty(string name, string value)
+        public StringTypedProperty(string name, string value)
             : base(name)
         {
             Value = value;
@@ -59,9 +60,9 @@ namespace Microsoft.AppCenter.Ingestion.Models
             }
             if (Value != null)
             {
-                if (Value.Length > 128)
+                if (Value.Length > 125)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "Value", 128);
+                    throw new ValidationException(ValidationRules.MaxLength, "Value", 125);
                 }
             }
         }
