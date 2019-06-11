@@ -19,10 +19,27 @@ namespace Microsoft.AppCenter.Crashes
         /// </summary>
         public bool InstanceEnabled { get; set; }
 
-        private static Crashes _instanceField;
+        private static readonly object CrashesLock = new object();
 
-        // ReSharper disable once UnusedMember.Global
-        public static Crashes Instance => _instanceField ?? (_instanceField = new Crashes());
+        private static Crashes _instanceField;
+        
+        public static Crashes Instance
+        {
+            get
+            {
+                lock (CrashesLock)
+                {
+                    return _instanceField ?? (_instanceField = new Crashes());
+                }
+            }
+            set
+            {
+                lock (CrashesLock)
+                {
+                    _instanceField = value;
+                }
+            }
+        }
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
@@ -30,13 +47,19 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Task<bool> PlatformIsEnabledAsync()
         {
-            return Task.FromResult(false);
+            lock (CrashesLock)
+            {
+                return Task.FromResult(Instance.InstanceEnabled);
+            }
         }
-
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+        
         private static Task PlatformSetEnabledAsync(bool enabled)
         {
-            return Task.FromResult(default(object));
+            lock (CrashesLock)
+            {
+                Instance.InstanceEnabled = enabled;
+                return Task.FromResult(default(object));
+            }
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
