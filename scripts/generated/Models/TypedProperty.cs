@@ -8,20 +8,21 @@ namespace Microsoft.AppCenter.Ingestion.Models
     using Newtonsoft.Json;
     using System.Linq;
 
-    public partial class CustomProperty
+    public partial class TypedProperty
     {
         /// <summary>
-        /// Initializes a new instance of the CustomProperty class.
+        /// Initializes a new instance of the TypedProperty class.
         /// </summary>
-        public CustomProperty()
+        public TypedProperty()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the CustomProperty class.
+        /// Initializes a new instance of the TypedProperty class.
         /// </summary>
-        public CustomProperty(string name)
+        /// <param name="name">Property key.</param>
+        public TypedProperty(string name)
         {
             Name = name;
             CustomInit();
@@ -33,6 +34,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         partial void CustomInit();
 
         /// <summary>
+        /// Gets or sets property key.
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -51,13 +53,13 @@ namespace Microsoft.AppCenter.Ingestion.Models
             }
             if (Name != null)
             {
-                if (Name.Length > 128)
+                if (Name.Length > 125)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "Name", 128);
+                    throw new ValidationException(ValidationRules.MaxLength, "Name", 125);
                 }
-                if (!System.Text.RegularExpressions.Regex.IsMatch(Name, "^[a-zA-Z][a-zA-Z0-9\\-_]*$"))
+                if (Name.Length < 1)
                 {
-                    throw new ValidationException(ValidationRules.Pattern, "Name", "^[a-zA-Z][a-zA-Z0-9\\-_]*$");
+                    throw new ValidationException(ValidationRules.MinLength, "Name", 1);
                 }
             }
         }

@@ -4,29 +4,31 @@
 
 namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.Rest;
     using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// Describe a AppCenter.Start API call from the SDK.
+    /// Log is used to update distribution group identifier for session (a
+    /// marker event for analytics service).
     /// </summary>
-    [Newtonsoft.Json.JsonObject("startService")]
-    public partial class StartServiceLog : Log
+    [Newtonsoft.Json.JsonObject("distributionStartSession")]
+    public partial class DistributionStartSessionLog : Log
     {
         /// <summary>
-        /// Initializes a new instance of the StartServiceLog class.
+        /// Initializes a new instance of the DistributionStartSessionLog
+        /// class.
         /// </summary>
-        public StartServiceLog()
+        public DistributionStartSessionLog()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the StartServiceLog class.
+        /// Initializes a new instance of the DistributionStartSessionLog
+        /// class.
         /// </summary>
+        /// <param name="distributionGroupId">Distribution group
+        /// identifier.</param>
         /// <param name="timestamp">Log timestamp, example:
         /// '2017-03-13T18:05:42Z'.
         /// </param>
@@ -41,12 +43,10 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <param name="userId">optional string used for associating logs with
         /// users.
         /// </param>
-        /// <param name="services">The list of services of the AppCenter Start
-        /// API call.</param>
-        public StartServiceLog(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), IList<string> services = default(IList<string>))
+        public DistributionStartSessionLog(Device device, System.Guid distributionGroupId, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string))
             : base(device, timestamp, sid, userId)
         {
-            Services = services;
+            DistributionGroupId = distributionGroupId;
             CustomInit();
         }
 
@@ -56,27 +56,20 @@ namespace Microsoft.AppCenter.Ingestion.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets the list of services of the AppCenter Start API call.
+        /// Gets or sets distribution group identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "services")]
-        public IList<string> Services { get; set; }
+        [JsonProperty(PropertyName = "distributionGroupId")]
+        public System.Guid DistributionGroupId { get; set; }
 
         /// <summary>
         /// Validate the object.
         /// </summary>
-        /// <exception cref="ValidationException">
+        /// <exception cref="Rest.ValidationException">
         /// Thrown if validation fails
         /// </exception>
         public override void Validate()
         {
             base.Validate();
-            if (Services != null)
-            {
-                if (Services.Count < 1)
-                {
-                    throw new ValidationException(ValidationRules.MinItems, "Services", 1);
-                }
-            }
         }
     }
 }

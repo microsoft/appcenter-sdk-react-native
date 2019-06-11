@@ -8,25 +8,28 @@ namespace Microsoft.AppCenter.Ingestion.Models
     using System.Linq;
 
     /// <summary>
-    /// Clear an existing property.
+    /// Long property (64 bits signed integer).
     /// </summary>
-    [Newtonsoft.Json.JsonObject("clear")]
-    public partial class ClearProperty : CustomProperty
+    [Newtonsoft.Json.JsonObject("long")]
+    public partial class LongTypedProperty : TypedProperty
     {
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the LongTypedProperty class.
         /// </summary>
-        public ClearProperty()
+        public LongTypedProperty()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the LongTypedProperty class.
         /// </summary>
-        public ClearProperty(string name)
+        /// <param name="name">Property key.</param>
+        /// <param name="value">Long property value.</param>
+        public LongTypedProperty(string name, long value)
             : base(name)
         {
+            Value = value;
             CustomInit();
         }
 
@@ -34,6 +37,12 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets long property value.
+        /// </summary>
+        [JsonProperty(PropertyName = "value")]
+        public long Value { get; set; }
 
         /// <summary>
         /// Validate the object.

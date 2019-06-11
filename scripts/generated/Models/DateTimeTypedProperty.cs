@@ -8,25 +8,28 @@ namespace Microsoft.AppCenter.Ingestion.Models
     using System.Linq;
 
     /// <summary>
-    /// Clear an existing property.
+    /// Date and time property.
     /// </summary>
-    [Newtonsoft.Json.JsonObject("clear")]
-    public partial class ClearProperty : CustomProperty
+    [Newtonsoft.Json.JsonObject("dateTime")]
+    public partial class DateTimeTypedProperty : TypedProperty
     {
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the DateTimeTypedProperty class.
         /// </summary>
-        public ClearProperty()
+        public DateTimeTypedProperty()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the DateTimeTypedProperty class.
         /// </summary>
-        public ClearProperty(string name)
+        /// <param name="name">Property key.</param>
+        /// <param name="value">Date time property value.</param>
+        public DateTimeTypedProperty(string name, System.DateTime value)
             : base(name)
         {
+            Value = value;
             CustomInit();
         }
 
@@ -34,6 +37,12 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets date time property value.
+        /// </summary>
+        [JsonProperty(PropertyName = "value")]
+        public System.DateTime Value { get; set; }
 
         /// <summary>
         /// Validate the object.

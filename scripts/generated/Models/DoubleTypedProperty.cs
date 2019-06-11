@@ -8,25 +8,28 @@ namespace Microsoft.AppCenter.Ingestion.Models
     using System.Linq;
 
     /// <summary>
-    /// Clear an existing property.
+    /// Double property.
     /// </summary>
-    [Newtonsoft.Json.JsonObject("clear")]
-    public partial class ClearProperty : CustomProperty
+    [Newtonsoft.Json.JsonObject("double")]
+    public partial class DoubleTypedProperty : TypedProperty
     {
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the DoubleTypedProperty class.
         /// </summary>
-        public ClearProperty()
+        public DoubleTypedProperty()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the ClearProperty class.
+        /// Initializes a new instance of the DoubleTypedProperty class.
         /// </summary>
-        public ClearProperty(string name)
+        /// <param name="name">Property key.</param>
+        /// <param name="value">Double property value.</param>
+        public DoubleTypedProperty(string name, double value)
             : base(name)
         {
+            Value = value;
             CustomInit();
         }
 
@@ -34,6 +37,12 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets double property value.
+        /// </summary>
+        [JsonProperty(PropertyName = "value")]
+        public double Value { get; set; }
 
         /// <summary>
         /// Validate the object.
