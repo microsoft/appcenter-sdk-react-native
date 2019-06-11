@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Crashes
             {
                 lock (CrashesLock)
                 {
-                    _instanceField = value; //for testing
+                    _instanceField = value;
                 }
             }
         }
