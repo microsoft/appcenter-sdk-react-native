@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Crashes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.Forms.Puppet", "Contoso.Forms.Puppet", "{AC1B688C-2519-4C40-9F23-D4021C30E115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet", "Apps\Contoso.Forms.Puppet\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj", "{92313C69-3BC4-4276-A1C8-100C86183F12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Forms.Puppet", "Apps\Contoso.Forms.Puppet\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj", "{92313C69-3BC4-4276-A1C8-100C86183F12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet.UWP", "Apps\Contoso.Forms.Puppet\Contoso.Forms.Puppet.UWP\Contoso.Forms.Puppet.UWP.csproj", "{F2E21B65-DF87-40F0-BB2E-E67E728B86DA}"
 EndProject
@@ -124,6 +124,8 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Data.Shared", "SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.shproj", "{F707D6CC-E43A-442F-AA38-B913EAE3D7C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Data", "SDK\AppCenterData\Microsoft.AppCenter.Data\Microsoft.AppCenter.Data.csproj", "{0043E55C-F25A-4925-B558-7CFD141834E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Crashes.Test.Windows", "Tests\Microsoft.AppCenter.Crashes.Test.Windows\Microsoft.AppCenter.Crashes.Test.Windows.csproj", "{1F1DBE94-AAEE-4A43-8586-EF8743672587}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -935,6 +937,30 @@ Global
 		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x64.Build.0 = Release|Any CPU
 		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{0043E55C-F25A-4925-B558-7CFD141834E7}.Release|x86.Build.0 = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|x64.Build.0 = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|ARM.Build.0 = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|iPhone.Build.0 = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|x64.Build.0 = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -998,6 +1024,7 @@ Global
 		{C2369F56-DCD8-4744-971A-17957AE445DC} = {596CE983-2E16-41EA-9D06-570C36943789}
 		{F707D6CC-E43A-442F-AA38-B913EAE3D7C1} = {5BC8C674-8474-4C49-B1E4-DA4C70E86322}
 		{0043E55C-F25A-4925-B558-7CFD141834E7} = {5BC8C674-8474-4C49-B1E4-DA4C70E86322}
+		{1F1DBE94-AAEE-4A43-8586-EF8743672587} = {BC900C35-E0AD-46D2-BA4A-EF1904820B4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {328868E2-F749-412D-B82F-84A683A1719C}
