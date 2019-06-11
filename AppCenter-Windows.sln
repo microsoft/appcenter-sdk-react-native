@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Crashes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contoso.Forms.Puppet", "Contoso.Forms.Puppet", "{AC1B688C-2519-4C40-9F23-D4021C30E115}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Forms.Puppet", "Apps\Contoso.Forms.Puppet\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj", "{92313C69-3BC4-4276-A1C8-100C86183F12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet", "Apps\Contoso.Forms.Puppet\Contoso.Forms.Puppet\Contoso.Forms.Puppet.csproj", "{92313C69-3BC4-4276-A1C8-100C86183F12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Forms.Puppet.UWP", "Apps\Contoso.Forms.Puppet\Contoso.Forms.Puppet.UWP\Contoso.Forms.Puppet.UWP.csproj", "{F2E21B65-DF87-40F0-BB2E-E67E728B86DA}"
 EndProject
