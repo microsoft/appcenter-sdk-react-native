@@ -43,6 +43,7 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
     @ReactMethod
     public void isEnabled(final Promise promise) {
         Auth.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
+
             @Override
             public void accept(Boolean isEnabled) {
                 promise.resolve(isEnabled);
@@ -53,6 +54,7 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
     @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
         Auth.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
+
             @Override
             public void accept(Void aVoid) {
                 promise.resolve(null);
@@ -63,11 +65,13 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
     @ReactMethod
     public void signIn(final Promise promise) {
         Auth.signIn().thenAccept(new AppCenterConsumer<SignInResult>() {
+
             @Override
             public void accept(SignInResult signInResult) {
                 WritableMap writableMap = new WritableNativeMap();
                 if (signInResult.getException() == null) {
-                    //sign in succeeded
+
+                    /* Sign-in succeeded, convert Java result to a JavaScript result. */
                     UserInformation userInformation = signInResult.getUserInformation();
                     writableMap.putString(ACCESS_TOKEN_KEY, userInformation.getAccessToken());
                     writableMap.putString(ACCOUNT_ID_KEY, userInformation.getAccountId());
@@ -75,7 +79,7 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
                     promise.resolve(writableMap);
                 } else {
                     Exception signInFailureException = signInResult.getException();
-                    promise.reject("Sign In Error", signInFailureException);
+                    promise.reject("Sign-in failed", signInFailureException);
                 }
             }
         });
