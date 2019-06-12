@@ -11,6 +11,11 @@ namespace Microsoft.AppCenter.Ingestion.Http
         // Static initializer specific to windows desktop platforms.
         static HttpNetworkAdapter()
         {
+            EnableTls12();
+        }
+
+        internal static void EnableTls12()
+        {
             // ReSharper disable once InvertIf
             if ((ServicePointManager.SecurityProtocol & SecurityProtocolType.Tls12) != SecurityProtocolType.Tls12)
             {
