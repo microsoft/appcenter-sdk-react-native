@@ -58,9 +58,9 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
 RCT_EXPORT_METHOD(signIn:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     [MSAuth signInWithCompletionHandler:^(MSUserInformation * _Nullable userInformation, NSError * _Nullable error) {
-        if(!error) {
+        if (!error) {
             
-            /* Sign-in succeeded, convert Java result to a JavaScript result. */
+            /* Sign-in succeeded, convert native result to a JavaScript result. */
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             dict[kMSAccountId] = userInformation.accountId;
             resolve(dict);
