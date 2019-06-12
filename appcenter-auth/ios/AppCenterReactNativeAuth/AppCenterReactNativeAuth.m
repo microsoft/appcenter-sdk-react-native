@@ -33,6 +33,8 @@
 @implementation AppCenterReactNativeAuth
 
 static NSString *const kMSAccountId = @"accountId";
+static NSString *const kMSAccessToken = @"accessToken";
+static NSString *const kMSIdToken = @"idToken";
 
 RCT_EXPORT_MODULE();
 
@@ -63,6 +65,8 @@ RCT_EXPORT_METHOD(signIn:(RCTPromiseResolveBlock)resolve
             /* Sign-in succeeded, convert native result to a JavaScript result. */
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             dict[kMSAccountId] = userInformation.accountId;
+            dict[kMSAccessToken] = userInformation.accessToken;
+            dict[kMSIdToken] = userInformation.idToken;
             resolve(dict);
         } else {
             reject(@"sign_in_failed", @"Sign-in failed", error);
