@@ -20,6 +20,8 @@ import com.microsoft.appcenter.auth.UserInformation;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
+import javax.annotation.Nonnull;
+
 public class AppCenterReactNativeAuthModule extends BaseJavaModule {
 
     private static final String ACCESS_TOKEN_KEY = "accessToken";
@@ -35,6 +37,7 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
         }
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return "AppCenterReactNativeAuth";
@@ -79,7 +82,7 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
                     promise.resolve(writableMap);
                 } else {
                     Exception signInFailureException = signInResult.getException();
-                    promise.reject("sign_in_failed", "Sign-in failed", signInFailureException);
+                    promise.reject("Sign-in failed", signInFailureException);
                 }
             }
         });
