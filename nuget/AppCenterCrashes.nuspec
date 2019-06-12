@@ -35,12 +35,12 @@
     <file src="$ios_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/Xamarin.iOS10" />
     <file src="$ios_dir$/Microsoft.AppCenter.Crashes.iOS.Bindings.dll" target="lib/Xamarin.iOS10" />
 
-    <!-- WindowsDesktop (WPF and WinForms) -->
-    <!-- TODO: Uncomment when it's time to release these. -->
-    <!-- file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net45" /-->
-
     <!-- UWP -->
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/uap10.0" />
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/uap10.0" />
+
+    <!-- WindowsDesktop (WPF and WinForms) -->
+    <file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net45" />
+    <file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/net45" />
   </files>
 </package>

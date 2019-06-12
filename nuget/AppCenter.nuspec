@@ -54,8 +54,7 @@
     <file src="$uwp_dir$/Microsoft.AppCenter.xml" target="lib/uap10.0" />
 
     <!-- Windows Classic Desktop (WPF and WinForms) -->
-    <!-- TODO: Uncomment when it's time to release these. -->
-    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" /-->
-    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.xml" target="lib/net45" /-->
+    <file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" />
+    <file src="$windows_desktop_dir$/Microsoft.AppCenter.xml" target="lib/net45" />
   </files>
 </package>
