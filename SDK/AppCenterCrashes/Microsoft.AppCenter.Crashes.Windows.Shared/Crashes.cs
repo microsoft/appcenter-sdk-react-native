@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Crashes
         /// </summary>
         public bool InstanceEnabled { get; set; }
 
-        private static ErrorReport LastSessionErrorReport = null;
+        private readonly ErrorReport LastSessionErrorReport = null;
 
         private static readonly object CrashesLock = new object();
 
@@ -66,12 +66,12 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
         {
-            return Task.FromResult(LastSessionErrorReport != null);
+            return Task.FromResult(Instance.LastSessionErrorReport != null);
         }
 
         private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
-            return Task.FromResult(LastSessionErrorReport);
+            return Task.FromResult(Instance.LastSessionErrorReport);
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
