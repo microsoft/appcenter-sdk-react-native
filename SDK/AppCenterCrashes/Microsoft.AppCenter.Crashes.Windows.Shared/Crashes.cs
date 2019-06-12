@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Crashes
         private static readonly object CrashesLock = new object();
 
         private static Crashes _instanceField;
-        
+
         public static Crashes Instance
         {
             get
@@ -54,7 +54,7 @@ namespace Microsoft.AppCenter.Crashes
                 return Task.FromResult(Instance.InstanceEnabled);
             }
         }
-        
+
         private static Task PlatformSetEnabledAsync(bool enabled)
         {
             lock (CrashesLock)

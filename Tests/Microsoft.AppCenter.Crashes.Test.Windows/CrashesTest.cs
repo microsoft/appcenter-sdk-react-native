@@ -37,4 +37,5 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsNull(Crashes.GetLastSessionCrashReportAsync().Result);
             Assert.IsFalse(Crashes.HasCrashedInLastSessionAsync().Result);
         }
+    }
 }
