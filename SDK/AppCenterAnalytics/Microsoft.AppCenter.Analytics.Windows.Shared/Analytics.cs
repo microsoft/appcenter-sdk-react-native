@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Analytics
 {
-    public class Analytics : AppCenterService
+    public partial class Analytics : AppCenterService
     {
         #region static
 
