@@ -80,13 +80,16 @@ namespace Microsoft.AppCenter.Crashes
 			return PlatformSetEnabledAsync(enabled);
 		}
 
-		/// <summary>
-		/// Provides information whether the app crashed in its last session.
-		/// </summary>
-		/// <value>
-		/// Task with result being <c>true</c> if a crash was recorded in the last session, otherwise <c>false</c>.
-		/// </value>
-		public static Task<bool> HasCrashedInLastSessionAsync() => PlatformHasCrashedInLastSessionAsync();
+        /// <summary>
+        /// Provides information whether the app crashed in its last session.
+        /// </summary>
+        /// <value>
+        /// Task with result being <c>true</c> if a crash was recorded in the last session, otherwise <c>false</c>.
+        /// </value>
+        public static Task<bool> HasCrashedInLastSessionAsync()
+        {
+            return PlatformHasCrashedInLastSessionAsync();
+        }
 
 		/// <summary>
 		/// Gets the crash report generated in the last session if there was a crash.

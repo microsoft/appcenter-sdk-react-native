@@ -30,5 +30,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.SetEnabledAsync(true).Wait();
             Assert.IsTrue(Crashes.IsEnabledAsync().Result);
         }
-    }
+
+        [TestMethod]
+        public void LastSessionErrorReportIsNullOnStart()
+        {
+            Assert.IsNull(Crashes.GetLastSessionCrashReportAsync().Result);
+            Assert.IsFalse(Crashes.HasCrashedInLastSessionAsync().Result);
+        }
 }
