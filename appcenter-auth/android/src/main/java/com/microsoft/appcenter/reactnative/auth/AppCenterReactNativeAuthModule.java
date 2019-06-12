@@ -79,7 +79,7 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
                     promise.resolve(writableMap);
                 } else {
                     Exception signInFailureException = signInResult.getException();
-                    promise.reject("Sign-in failed", signInFailureException);
+                    promise.reject("sign_in_failed", "Sign-in failed", signInFailureException);
                 }
             }
         });
