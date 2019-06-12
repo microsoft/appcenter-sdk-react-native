@@ -23,6 +23,7 @@
 
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenterAuth/MSAuth.h>
+#import <AppCenterAuth/MSUserInformation.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeAuth () <RCTBridgeModule>
@@ -31,6 +32,10 @@
 
 @implementation AppCenterReactNativeAuth
 
+static NSString *const kMSAccountId = @"accountId";
+static NSString *const kMSAccessToken = @"accessToken";
+static NSString *const kMSIdToken = @"idToken";
+
 RCT_EXPORT_MODULE();
 
 + (void)register {
@@ -38,6 +43,39 @@ RCT_EXPORT_MODULE();
     if ([MSAppCenter isConfigured]) {
         [MSAppCenter startService:[MSAuth class]];
     }
+}
+
+RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve([NSNumber numberWithBool:[MSAuth isEnabled]]);
+}
+
+RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [MSAuth setEnabled:shouldEnable];
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(signIn:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [MSAuth signInWithCompletionHandler:^(MSUserInformation * _Nullable userInformation, NSError * _Nullable error) {
+        if (!error) {
+            
+            /* Sign-in succeeded, convert native result to a JavaScript result. */
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            dict[kMSAccountId] = userInformation.accountId;
+            dict[kMSAccessToken] = userInformation.accessToken;
+            dict[kMSIdToken] = userInformation.idToken;
+            resolve(dict);
+        } else {
+            reject(@"sign_in_failed", @"Sign-in failed", error);
+        }
+    }];
+}
+
+RCT_EXPORT_METHOD(signOut) {
+    [MSAuth signOut];
 }
 
 @end
