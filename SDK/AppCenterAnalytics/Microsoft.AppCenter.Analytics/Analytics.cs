@@ -9,7 +9,7 @@ namespace Microsoft.AppCenter.Analytics
     /// <summary>
     ///     Analytics feature.
     /// </summary>
-    public partial class Analytics
+    public class Analytics
     {
         private Analytics()
         {
