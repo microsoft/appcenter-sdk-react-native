@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter.Crashes
 {
@@ -58,8 +59,17 @@ namespace Microsoft.AppCenter.Crashes
             lock (CrashesLock)
             {
                 Instance.InstanceEnabled = enabled;
+                if (enabled)
+                {
+                    ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
+                }
                 return Task.FromResult(default(object));
             }
+        }
+
+        private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
+        {
+
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()

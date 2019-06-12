@@ -4,14 +4,13 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-
 using Microsoft.AppCenter.Windows.Shared.Utils;
 
 namespace Microsoft.AppCenter.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     {
-        public virtual async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
+        public virtual Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
             var device = new Ingestion.Models.Device
             {
@@ -37,8 +36,7 @@ namespace Microsoft.AppCenter.Utils
                 LiveUpdateDeploymentKey = GetLiveUpdateDevelopmentKey(),
                 LiveUpdatePackageHash = GetLiveUpdatePackageHash()
             };
-
-            return await Task<Ingestion.Models.Device>.Factory.StartNew(() => device).ConfigureAwait(false);
+            return Task.FromResult(device);
         }
 
         protected abstract string GetSdkName();
