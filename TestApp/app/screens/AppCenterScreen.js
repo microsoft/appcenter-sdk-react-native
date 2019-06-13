@@ -75,7 +75,8 @@ export default class AppCenterScreen extends Component {
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
     userId: '',
-    accountId: ''
+    accountId: '',
+    isTokenSet: false
   }
 
   async componentWillMount() {
@@ -166,7 +167,7 @@ export default class AppCenterScreen extends Component {
     const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text>}
+        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{String(this.state[value])}</TextInput> : <Text>{String(this.state[value])}</Text>}
       </View>
     );
 
@@ -253,14 +254,14 @@ export default class AppCenterScreen extends Component {
                   title: 'Sign In',
                   action: async () => {
                     const result = await Auth.signIn();
-                    this.setState({ accountId: result.accountId });
+                    this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
                   }
                 },
                 {
                   title: 'Sign Out',
                   action: () => {
                     Auth.signOut();
-                    this.setState({ accountId: '' });
+                    this.setState({ accountId: '', isTokenSet: false });
                   }
                 },
               ],
@@ -293,6 +294,13 @@ export default class AppCenterScreen extends Component {
                       await AsyncStorage.removeItem(USER_ID_KEY);
                     }
                     await AppCenter.setUserId(userId);
+                  }
+                },
+                {
+                  title: 'Is Token Set',
+                  value: 'isTokenSet',
+                  onChange: async (isTokenSet) => {
+                    this.setState({ isTokenSet });
                   }
                 }
               ],
