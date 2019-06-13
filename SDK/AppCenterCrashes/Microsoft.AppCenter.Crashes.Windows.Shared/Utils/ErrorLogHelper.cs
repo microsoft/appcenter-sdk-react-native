@@ -39,10 +39,12 @@ public class ErrorLogHelper
 
     public async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception)
     {
-        ManagedErrorLog errorLog = new ManagedErrorLog();
-        errorLog.Id = Guid.NewGuid();
-        errorLog.Timestamp = DateTime.UtcNow;
-        errorLog.Device = await _deviceInformationHelper.GetDeviceInformationAsync();
+        var errorLog = new ManagedErrorLog
+        {
+            Id = Guid.NewGuid(),
+            Timestamp = DateTime.UtcNow,
+            Device = await _deviceInformationHelper.GetDeviceInformationAsync()
+        };
 #if WINDOWS_UWP
         // TODO get parent process info?
         errorLog.ProcessId = (int)Windows.System.Diagnostics.ProcessDiagnosticInfo.GetForCurrentProcess().ProcessId;
