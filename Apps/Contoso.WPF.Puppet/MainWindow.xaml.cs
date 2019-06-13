@@ -17,16 +17,17 @@ namespace Contoso.WPF.Puppet
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    // ReSharper disable once UnusedMember.Global
+    public partial class MainWindow
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
             new Dictionary<LogLevel, Action<string, string>>
             {
-                {LogLevel.Verbose, AppCenterLog.Verbose},
-                {LogLevel.Debug, AppCenterLog.Debug},
-                {LogLevel.Info, AppCenterLog.Info},
-                {LogLevel.Warn, AppCenterLog.Warn},
-                {LogLevel.Error, AppCenterLog.Error}
+                {Microsoft.AppCenter.LogLevel.Verbose, AppCenterLog.Verbose},
+                {Microsoft.AppCenter.LogLevel.Debug, AppCenterLog.Debug},
+                {Microsoft.AppCenter.LogLevel.Info, AppCenterLog.Info},
+                {Microsoft.AppCenter.LogLevel.Warn, AppCenterLog.Warn},
+                {Microsoft.AppCenter.LogLevel.Error, AppCenterLog.Error}
             };
 
         public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
@@ -35,38 +36,37 @@ namespace Contoso.WPF.Puppet
         {
             InitializeComponent();
             UpdateState();
-            appCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
-            eventProperties.ItemsSource = Properties;
+            AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
+            EventProperties.ItemsSource = Properties;
         }
 
 
         private void UpdateState()
         {
-            appCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
-            crashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
-            analyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
+            AppCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
+            CrashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
+            AnalyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
-        private void appCenterEnabled_Checked(object sender, RoutedEventArgs e)
+        private void AppCenterEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (appCenterEnabled.IsChecked.HasValue)
+            if (AppCenterEnabled.IsChecked.HasValue)
             {
-                AppCenter.SetEnabledAsync(appCenterEnabled.IsChecked.Value).Wait();
+                AppCenter.SetEnabledAsync(AppCenterEnabled.IsChecked.Value).Wait();
             }
         }
 
-        private void analyticsEnabled_Checked(object sender, RoutedEventArgs e)
+        private void AnalyticsEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (analyticsEnabled.IsChecked.HasValue)
+            if (AnalyticsEnabled.IsChecked.HasValue)
             {
-                Analytics.SetEnabledAsync(analyticsEnabled.IsChecked.Value).Wait();
+                Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
             }
         }
 
-
-        private void appCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
+        private void AppCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            AppCenter.LogLevel = (LogLevel)appCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel)AppCenterLogLevel.SelectedIndex;
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -74,20 +74,20 @@ namespace Contoso.WPF.Puppet
             UpdateState();
         }
 
-        private void writeLog_Click(object sender, RoutedEventArgs e)
+        private void WriteLog_Click(object sender, RoutedEventArgs e)
         {
-            if (logLevel.SelectedIndex == -1)
+            if (LogLevel.SelectedIndex == -1)
             {
                 return;
             }
 
-            var level = (LogLevel)logLevel.SelectedIndex;
-            var tag = logTag.Text;
-            var message = logMessage.Text;
+            var level = (LogLevel)LogLevel.SelectedIndex;
+            var tag = LogTag.Text;
+            var message = LogMessage.Text;
             LogFunctions[level](tag, message);
         }
 
-        private void trackEvent_Click(object sender, RoutedEventArgs e)
+        private void TrackEvent_Click(object sender, RoutedEventArgs e)
         {
             var name = eventName.Text;
             var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
@@ -96,6 +96,14 @@ namespace Contoso.WPF.Puppet
         }
 
         #region Crash
+
+        private void CrashesEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            if (CrashesEnabled.IsChecked.HasValue)
+            {
+                Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
+            }
+        }
 
         public class NonSerializableException : Exception
         {
@@ -177,26 +185,6 @@ namespace Contoso.WPF.Puppet
             }
         }
 
-        private void crashesEnabled_Checked(object sender, RoutedEventArgs e)
-        {
-            if (crashesEnabled.IsChecked.HasValue)
-            {
-                Crashes.SetEnabledAsync(crashesEnabled.IsChecked.Value).Wait();
-            }
-        }
-
-        public int val
-        {
-            get
-            {
-                return val;
-            }
-        }
-
-        private void StackOverflow_Click(object sender, RoutedEventArgs e)
-        {
-            int stackOverflowVar = val;
-        }
         #endregion
     }
 }
