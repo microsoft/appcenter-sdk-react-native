@@ -213,7 +213,7 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled, accountId: '' });
+                    this.setState({ authEnabled, accountId: '', isTokenSet: false });
                   }
                 },
                 {
@@ -253,8 +253,12 @@ export default class AppCenterScreen extends Component {
                 {
                   title: 'Sign In',
                   action: async () => {
-                    const result = await Auth.signIn();
-                    this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
+                    try {
+                      const result = await Auth.signIn();
+                      this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
+                    } catch (e) {
+                      console.log(e);
+                    }
                   }
                 },
                 {
@@ -273,13 +277,6 @@ export default class AppCenterScreen extends Component {
                 { title: 'Install ID', value: 'installId' },
                 { title: 'SDK Version', value: 'sdkVersion' },
                 {
-                  title: 'Account ID',
-                  value: 'accountId',
-                  onChange: async (accountId) => {
-                    this.setState({ accountId });
-                  }
-                },
-                {
                   title: 'User ID',
                   value: 'userId',
                   onChange: async (userId) => {
@@ -294,6 +291,13 @@ export default class AppCenterScreen extends Component {
                       await AsyncStorage.removeItem(USER_ID_KEY);
                     }
                     await AppCenter.setUserId(userId);
+                  }
+                },
+                {
+                  title: 'Account ID',
+                  value: 'accountId',
+                  onChange: async (accountId) => {
+                    this.setState({ accountId });
                   }
                 },
                 {
