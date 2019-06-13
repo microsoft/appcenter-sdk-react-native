@@ -7,6 +7,7 @@ import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
+import Auth from 'appcenter-auth';
 import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
@@ -69,10 +70,12 @@ export default class AppCenterScreen extends Component {
   state = {
     appCenterEnabled: false,
     pushEnabled: false,
+    authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    userId: ''
+    userId: '',
+    accountId: ''
   }
 
   async componentWillMount() {
@@ -98,6 +101,9 @@ export default class AppCenterScreen extends Component {
   async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
+
+    const authEnabled = await Auth.isEnabled();
+    this.setState({ authEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -201,6 +207,16 @@ export default class AppCenterScreen extends Component {
                   }
                 },
                 {
+                  title: 'Auth Enabled',
+                  value: 'authEnabled',
+                  toggle: async () => {
+                    await Auth.setEnabled(!this.state.authEnabled);
+                    const authEnabled = await Auth.isEnabled();
+                    this.setState({ authEnabled });
+                    this.setState({ accountId: '' })
+                  }
+                },
+                {
                   title: 'Push Enabled',
                   value: 'pushEnabled',
                   toggle: async () => {
@@ -232,10 +248,38 @@ export default class AppCenterScreen extends Component {
               renderItem: actionRenderItem
             },
             {
+              title: 'Auth',
+              data: [
+                {
+                  title: 'Sign In',
+                  action: async () => {
+                    const result = await Auth.signIn();
+                    var { accountId } = result;
+                    this.setState({ accountId })
+                  }
+                },
+                {
+                  title: 'Sign Out',
+                  action: () => {
+                    Auth.signOut()
+                    this.setState({ accountId: '' });
+                  }
+                },
+              ],
+              renderItem: actionRenderItem
+            },
+            {
               title: 'Miscellaneous',
               data: [
                 { title: 'Install ID', value: 'installId' },
                 { title: 'SDK Version', value: 'sdkVersion' },
+                { 
+                  title: 'Account ID', 
+                  value: 'accountId', 
+                  onChange: async (accountId) => {
+                    this.setState({ accountId });
+                  }
+                },
                 {
                   title: 'User ID',
                   value: 'userId',
