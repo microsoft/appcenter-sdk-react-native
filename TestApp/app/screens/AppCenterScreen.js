@@ -212,8 +212,7 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled });
-                    this.setState({ accountId: '' })
+                    this.setState({ authEnabled, accountId: ''});
                   }
                 },
                 {
