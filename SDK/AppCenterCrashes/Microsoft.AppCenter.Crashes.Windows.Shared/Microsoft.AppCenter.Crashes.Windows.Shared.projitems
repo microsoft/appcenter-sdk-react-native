@@ -11,9 +11,11 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Crashes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorAttachmentLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorReport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\AbstractErrorLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Exception.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ManagedErrorLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ErrorLogHelper.cs" />
   </ItemGroup>
 </Project>

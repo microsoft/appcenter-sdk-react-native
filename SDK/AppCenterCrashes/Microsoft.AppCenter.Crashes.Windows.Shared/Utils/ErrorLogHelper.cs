@@ -5,7 +5,11 @@ using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using ModelException = Microsoft.AppCenter.Ingestion.Models.Exception;
 
 /// <summary>
@@ -19,14 +23,9 @@ public class ErrorLogHelper
     public const string ErrorLogFileExtension = ".json";
 
     /// <summary>
-    /// For huge stack traces such as giant StackOverflowError, we keep only beginning and end of frames according to this limit.
-    /// </summary>
-    public const int StackFrameLimit = 256;
-
-    /// <summary>
     /// Error log directory within application files.
     /// </summary>
-    private const string ErrorDirectory = "Microsoft.AppCenter.Error";
+    private const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
 
     /// <summary>
     /// Device information utility.
@@ -126,82 +125,75 @@ public class ErrorLogHelper
         return modelException;
     }
 
-    public File getErrorStorageDirectory()
+    /// <summary>
+    /// Returns the directory where errors are stored.
+    /// </summary>
+    public DirectoryInfo ErrorStorageDirectory
     {
-        File
-        if (sErrorLogDirectory == null)
+        get
         {
-            sErrorLogDirectory = new File(Constants.FILES_PATH, ERROR_DIRECTORY);
-            FileManager.mkdir(sErrorLogDirectory.getAbsolutePath());
+            // TODO exception handling. Move to a helper class? Cache this value?
+            return Directory.CreateDirectory(ErrorStorageDirectoryName);
         }
-        return sErrorLogDirectory;
     }
 
-@NonNull
-    public static File[] getStoredErrorLogFiles()
-{
-    File[] files = getErrorStorageDirectory().listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename)
+    /// <summary>
+    /// Gets all files with the error log file extension in the error directory.
+    /// </summary>
+    public IEnumerable<FileInfo> GetErrorLogFiles()
     {
-        return filename.endsWith(ERROR_LOG_FILE_EXTENSION);
-    }
-});
-        return files != null ? files : new File[0];
+        return ErrorStorageDirectory.EnumerateFiles($".{ErrorLogFileExtension}");
     }
 
-@Nullable
-    public static File getLastErrorLogFile()
-{
-    return FileManager.lastModifiedFile(getErrorStorageDirectory(), new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename)
+    /// <summary>
+    /// Gets the most recently modified error log file.
+    /// </summary>
+    /// <returns>The most recently modified error log file.</returns>
+    public FileInfo GetLastErrorLogFile()
     {
-        return filename.endsWith(ERROR_LOG_FILE_EXTENSION);
-    }
-});
+        FileInfo lastErrorLogFile = null;
+        foreach (var errorLogFile in GetErrorLogFiles())
+        {
+            if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+            {
+                lastErrorLogFile = errorLogFile;
+            }
+        }
+        return lastErrorLogFile;
     }
 
-@Nullable
-    static File getStoredErrorLogFile(@NonNull UUID id)
-{
-    return getStoredFile(id, ERROR_LOG_FILE_EXTENSION);
-}
-
-public static void removeStoredErrorLogFile(@NonNull UUID id)
-{
-    File file = getStoredErrorLogFile(id);
-    if (file != null)
+    /// <summary>
+    /// Gets the error log file with the given ID.
+    /// </summary>
+    /// <param name="errorId">The ID for the error log.</param>
+    /// <returns>The error log file or null if it is not found.</returns>
+    public FileInfo GetStoredErrorLogFile(Guid errorId)
     {
-        AppCenterLog.info(Crashes.LOG_TAG, "Deleting error log file " + file.getName());
-        FileManager.delete(file);
+        return GetStoredFile(errorId, ErrorLogFileExtension);
     }
-}
 
-@NonNull
-    public static ErrorReport getErrorReportFromErrorLog(@NonNull ManagedErrorLog log, Throwable throwable)
-{
-    ErrorReport report = new ErrorReport();
-    report.setId(log.getId().toString());
-    report.setThreadName(log.getErrorThreadName());
-    report.setThrowable(throwable);
-    report.setAppStartTime(log.getAppLaunchTimestamp());
-    report.setAppErrorTime(log.getTimestamp());
-    report.setDevice(log.getDevice());
-    return report;
-}
-
-@Nullable
-    private static File getStoredFile(@NonNull final UUID id, @NonNull final String extension)
-{
-    File[] files = getErrorStorageDirectory().listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename)
+    /// <summary>
+    /// Gets a file from storage with the given ID and extension.
+    /// </summary>
+    /// <param name="errorId">The error ID.</param>
+    /// <param name="extension">The file extension.</param>
+    /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
+    private FileInfo GetStoredFile(Guid errorId, string extension)
     {
-        return filename.startsWith(id.toString()) && filename.endsWith(extension);
+        return ErrorStorageDirectory.GetFiles($"{errorId}.{extension}").SingleOrDefault();
     }
-});
 
-        return files != null && files.length > 0 ? files[0] : null;
+    /// <summary>
+    /// Deletes an error log from disk.
+    /// </summary>
+    /// <param name="errorId">The ID for the error log.</param>
+    public void RemoveStoredErrorLogFile(Guid errorId)
+    {
+        var file = GetStoredErrorLogFile(errorId);
+        if (file != null)
+        {
+            AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
+            file.Delete();
+        }
     }
 }
