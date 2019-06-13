@@ -8,7 +8,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="App Center WPF Puppet App" Height="257.794" Width="335">
+        Title="App Center WPF Puppet App" Height="300.078" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="App Center">
@@ -82,11 +82,13 @@
                 <StackPanel>
                     <GroupBox Header="Crash">
                         <StackPanel Orientation="Vertical" Margin="2">
+                            <CheckBox Name="crashesEnabled" Content="Crashes Enabled" Margin="0,10,0,10" Checked="crashesEnabled_Checked" Unchecked="crashesEnabled_Checked" />
                             <Button Content="Call Crashes.GenerateTestCrash (debug only)" Margin="2" Click="CrashWithTestException_Click"/>
                             <Button Content="Generate non serializable Exception" Margin="2" Click="CrashWithNonSerializableException_Click" />
                             <Button Content="Divide by zero" Margin="2" Click="CrashWithDivisionByZero_Click" />
                             <Button Content="Aggregate Exception" Margin="2" Click="CrashWithAggregateException_Click" />
                             <Button Content="Crash with null reference" Margin="2" Click="CrashWithNullReference_Click"/>
+                            <Button Content="Stackoverflow exception" Margin="2" Click="StackOverflow_Click"/>
                             <Button Content="Async task crash" Margin="2" Click="CrashInsideAsyncTask_Click"/>
                         </StackPanel>
                     </GroupBox>

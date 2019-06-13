@@ -43,6 +43,7 @@ namespace Contoso.WPF.Puppet
         private void UpdateState()
         {
             appCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
+            crashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
             analyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
@@ -176,6 +177,26 @@ namespace Contoso.WPF.Puppet
             }
         }
 
+        private void crashesEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            if (crashesEnabled.IsChecked.HasValue)
+            {
+                Crashes.SetEnabledAsync(crashesEnabled.IsChecked.Value).Wait();
+            }
+        }
+
+        public int val
+        {
+            get
+            {
+                return val;
+            }
+        }
+
+        private void StackOverflow_Click(object sender, RoutedEventArgs e)
+        {
+            int stackOverflowVar = val;
+        }
         #endregion
     }
 }
