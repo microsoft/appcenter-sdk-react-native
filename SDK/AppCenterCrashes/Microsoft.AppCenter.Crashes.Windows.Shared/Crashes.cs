@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter.Crashes
@@ -23,7 +25,12 @@ namespace Microsoft.AppCenter.Crashes
         private static readonly object CrashesLock = new object();
 
         private static Crashes _instanceField;
-        
+
+        private Crashes()
+        {
+            LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
+        }
+
         public static Crashes Instance
         {
             get
@@ -69,7 +76,9 @@ namespace Microsoft.AppCenter.Crashes
 
         private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
-
+            // TODO: errorLog should not wait for screen size
+            var errorLog = ErrorLogHelper.CreateErrorLogAsync(args.Exception).Result;
+            ErrorLogHelper.SaveErrorLogFiles(args.Exception, errorLog);
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
@@ -88,7 +97,7 @@ namespace Microsoft.AppCenter.Crashes
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
+        private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties)
         {
         }
     }

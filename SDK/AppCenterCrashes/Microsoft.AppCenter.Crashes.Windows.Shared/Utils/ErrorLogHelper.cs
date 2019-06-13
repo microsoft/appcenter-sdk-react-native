@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.AppCenter.Ingestion.Models;
-using Microsoft.AppCenter.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
-using ModelException = Microsoft.AppCenter.Ingestion.Models.Exception;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
+using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 /// <summary>
 /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
@@ -30,20 +31,20 @@ public class ErrorLogHelper
     /// <summary>
     /// Device information utility.
     /// </summary>
-    private readonly DeviceInformationHelper _deviceInformationHelper;
+    private static readonly DeviceInformationHelper DeviceInformationHelper;
 
-    public ErrorLogHelper()
+    static ErrorLogHelper()
     {
-        _deviceInformationHelper = new DeviceInformationHelper();
+        DeviceInformationHelper = new DeviceInformationHelper();
     }
 
-    public async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception)
+    public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception)
     {
         var errorLog = new ManagedErrorLog
         {
             Id = Guid.NewGuid(),
             Timestamp = DateTime.UtcNow,
-            Device = await _deviceInformationHelper.GetDeviceInformationAsync()
+            Device = await DeviceInformationHelper.GetDeviceInformationAsync()
         };
 #if WINDOWS_UWP
         // TODO get parent process info?
@@ -130,7 +131,7 @@ public class ErrorLogHelper
     /// <summary>
     /// Returns the directory where errors are stored.
     /// </summary>
-    public DirectoryInfo ErrorStorageDirectory
+    public static DirectoryInfo ErrorStorageDirectory
     {
         get
         {
@@ -142,16 +143,16 @@ public class ErrorLogHelper
     /// <summary>
     /// Gets all files with the error log file extension in the error directory.
     /// </summary>
-    public IEnumerable<FileInfo> GetErrorLogFiles()
+    public static IEnumerable<FileInfo> GetErrorLogFiles()
     {
-        return ErrorStorageDirectory.EnumerateFiles($".{ErrorLogFileExtension}");
+        return ErrorStorageDirectory.EnumerateFiles($"*{ErrorLogFileExtension}");
     }
 
     /// <summary>
     /// Gets the most recently modified error log file.
     /// </summary>
     /// <returns>The most recently modified error log file.</returns>
-    public FileInfo GetLastErrorLogFile()
+    public static FileInfo GetLastErrorLogFile()
     {
         FileInfo lastErrorLogFile = null;
         foreach (var errorLogFile in GetErrorLogFiles())
@@ -169,7 +170,7 @@ public class ErrorLogHelper
     /// </summary>
     /// <param name="errorId">The ID for the error log.</param>
     /// <returns>The error log file or null if it is not found.</returns>
-    public FileInfo GetStoredErrorLogFile(Guid errorId)
+    public static FileInfo GetStoredErrorLogFile(Guid errorId)
     {
         return GetStoredFile(errorId, ErrorLogFileExtension);
     }
@@ -180,16 +181,29 @@ public class ErrorLogHelper
     /// <param name="errorId">The error ID.</param>
     /// <param name="extension">The file extension.</param>
     /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
-    private FileInfo GetStoredFile(Guid errorId, string extension)
+    private static FileInfo GetStoredFile(Guid errorId, string extension)
     {
-        return ErrorStorageDirectory.GetFiles($"{errorId}.{extension}").SingleOrDefault();
+        return ErrorStorageDirectory.GetFiles($"{errorId}{extension}").SingleOrDefault();
+    }
+
+    /// <summary>
+    /// Saves an error log on disk.
+    /// </summary>
+    /// <param name="exception"></param>
+    /// <param name="errorLog">The error log.</param>
+    public static void SaveErrorLogFiles(System.Exception exception, ManagedErrorLog errorLog)
+    {
+        var errorLogString = LogSerializer.Serialize(errorLog);
+        var filePath = Path.Combine(ErrorStorageDirectory.FullName, errorLog.Id + ErrorLogFileExtension);
+        File.WriteAllText(filePath, errorLogString);
+        AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in file {filePath}.");
     }
 
     /// <summary>
     /// Deletes an error log from disk.
     /// </summary>
     /// <param name="errorId">The ID for the error log.</param>
-    public void RemoveStoredErrorLogFile(Guid errorId)
+    public static void RemoveStoredErrorLogFile(Guid errorId)
     {
         var file = GetStoredErrorLogFile(errorId);
         if (file != null)

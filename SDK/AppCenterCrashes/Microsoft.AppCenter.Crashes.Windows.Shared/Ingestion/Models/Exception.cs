@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.AppCenter.Ingestion.Models
+namespace Microsoft.AppCenter.Crashes.Ingestion.Models
 {
     /// <summary>
     /// Exception definition for any platform.
