@@ -212,7 +212,7 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled, accountId: ''});
+                    this.setState({ authEnabled, accountId: '' });
                   }
                 },
                 {
@@ -253,14 +253,13 @@ export default class AppCenterScreen extends Component {
                   title: 'Sign In',
                   action: async () => {
                     const result = await Auth.signIn();
-                    var { accountId } = result;
-                    this.setState({ accountId })
+                    this.setState({ accountId: result.accountId });
                   }
                 },
                 {
                   title: 'Sign Out',
                   action: () => {
-                    Auth.signOut()
+                    Auth.signOut();
                     this.setState({ accountId: '' });
                   }
                 },
@@ -272,9 +271,9 @@ export default class AppCenterScreen extends Component {
               data: [
                 { title: 'Install ID', value: 'installId' },
                 { title: 'SDK Version', value: 'sdkVersion' },
-                { 
-                  title: 'Account ID', 
-                  value: 'accountId', 
+                {
+                  title: 'Account ID',
+                  value: 'accountId',
                   onChange: async (accountId) => {
                     this.setState({ accountId });
                   }
