@@ -7,7 +7,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Contoso.WPF.Puppet"
         mc:Ignorable="d"
         Title="App Center WPF Puppet App" Height="257.794" Width="335">
     <StackPanel>
@@ -82,8 +81,13 @@
             <TabItem Header="Crashes">
                 <StackPanel>
                     <GroupBox Header="Crash">
-                        <StackPanel Orientation="Vertical">
-                            <Button Name="CrashWithNullReference" Content="Crash with NullReferenceException" Click="CrashWithNullReference_Click"/>
+                        <StackPanel Orientation="Vertical" Margin="2">
+                            <Button Content="Call Crashes.GenerateTestCrash (debug only)" Margin="2" Click="CrashWithTestException_Click"/>
+                            <Button Content="Generate non serializable Exception" Margin="2" Click="CrashWithNonSerializableException_Click" />
+                            <Button Content="Divide by zero" Margin="2" Click="CrashWithDivisionByZero_Click" />
+                            <Button Content="Aggregate Exception" Margin="2" Click="CrashWithAggregateException_Click" />
+                            <Button Content="Crash with null reference" Margin="2" Click="CrashWithNullReference_Click"/>
+                            <Button Content="Async task crash" Margin="2" Click="CrashInsideAsyncTask_Click"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

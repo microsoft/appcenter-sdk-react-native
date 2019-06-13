@@ -4,10 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Contoso.WPF.Puppet
 {
@@ -16,13 +19,15 @@ namespace Contoso.WPF.Puppet
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, AppCenterLog.Verbose },
-            { LogLevel.Debug, AppCenterLog.Debug },
-            { LogLevel.Info, AppCenterLog.Info },
-            { LogLevel.Warn, AppCenterLog.Warn },
-            { LogLevel.Error, AppCenterLog.Error }
-        };
+        private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
+            new Dictionary<LogLevel, Action<string, string>>
+            {
+                {LogLevel.Verbose, AppCenterLog.Verbose},
+                {LogLevel.Debug, AppCenterLog.Debug},
+                {LogLevel.Info, AppCenterLog.Info},
+                {LogLevel.Warn, AppCenterLog.Warn},
+                {LogLevel.Error, AppCenterLog.Error}
+            };
 
         public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
 
@@ -30,7 +35,7 @@ namespace Contoso.WPF.Puppet
         {
             InitializeComponent();
             UpdateState();
-            appCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
+            appCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
             eventProperties.ItemsSource = Properties;
         }
 
@@ -60,7 +65,7 @@ namespace Contoso.WPF.Puppet
 
         private void appCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            AppCenter.LogLevel = (LogLevel) appCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel)appCenterLogLevel.SelectedIndex;
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -74,7 +79,8 @@ namespace Contoso.WPF.Puppet
             {
                 return;
             }
-            var level = (LogLevel) logLevel.SelectedIndex;
+
+            var level = (LogLevel)logLevel.SelectedIndex;
             var tag = logTag.Text;
             var message = logMessage.Text;
             LogFunctions[level](tag, message);
@@ -84,8 +90,70 @@ namespace Contoso.WPF.Puppet
         {
             var name = eventName.Text;
             var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
-                                                 .ToDictionary(property => property.Key, property => property.Value);
+                .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
+        }
+
+        #region Crash
+
+        public class NonSerializableException : Exception
+        {
+        }
+
+        private void CrashWithTestException_Click(object sender, RoutedEventArgs e)
+        {
+            Crashes.GenerateTestCrash();
+        }
+
+        private void CrashWithNonSerializableException_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NonSerializableException();
+        }
+
+        private void CrashWithDivisionByZero_Click(object sender, RoutedEventArgs e)
+        {
+            _ = 42 / int.Parse("0");
+        }
+
+        private void CrashWithAggregateException_Click(object sender, RoutedEventArgs e)
+        {
+            throw GenerateAggregateException();
+        }
+
+        private static Exception GenerateAggregateException()
+        {
+            try
+            {
+                throw new AggregateException(SendHttp(), new ArgumentException("Invalid parameter", ValidateLength()));
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+        }
+
+        private static Exception SendHttp()
+        {
+            try
+            {
+                throw new IOException("Network down");
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+        }
+
+        private static Exception ValidateLength()
+        {
+            try
+            {
+                throw new ArgumentOutOfRangeException(null, "It's over 9000!");
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
         }
 
         private void CrashWithNullReference_Click(object sender, RoutedEventArgs e)
@@ -94,5 +162,20 @@ namespace Contoso.WPF.Puppet
             var b = values[1].Trim();
             System.Diagnostics.Debug.WriteLine(b);
         }
+
+        private async void CrashInsideAsyncTask_Click(object sender, RoutedEventArgs e)
+        {
+            await FakeService.DoStuffInBackground();
+        }
+
+        private static class FakeService
+        {
+            public static async Task DoStuffInBackground()
+            {
+                await Task.Run(() => throw new IOException("Server did not respond"));
+            }
+        }
+
+        #endregion
     }
 }
