@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -12,16 +11,8 @@ using Microsoft.AppCenter.Utils;
 
 namespace Microsoft.AppCenter.Crashes
 {
-    public partial class Crashes : IAppCenterService
+    public partial class Crashes : AppCenterService
     {
-        public string ServiceName => "Crashes";
-
-        /// <inheritdoc />
-        /// <summary>
-        /// This property does not return a meaningful value on Windows.
-        /// </summary>
-        public bool InstanceEnabled { get; set; }
-
         private static readonly object CrashesLock = new object();
 
         private static Crashes _instanceField;
@@ -44,13 +35,9 @@ namespace Microsoft.AppCenter.Crashes
             {
                 lock (CrashesLock)
                 {
-                    _instanceField = value;
+                    _instanceField = value; //for testing
                 }
             }
-        }
-
-        public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
-        {
         }
 
         private static Task<bool> PlatformIsEnabledAsync()
@@ -60,16 +47,12 @@ namespace Microsoft.AppCenter.Crashes
                 return Task.FromResult(Instance.InstanceEnabled);
             }
         }
-        
+
         private static Task PlatformSetEnabledAsync(bool enabled)
         {
             lock (CrashesLock)
             {
                 Instance.InstanceEnabled = enabled;
-                if (enabled)
-                {
-                    ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
-                }
                 return Task.FromResult(default(object));
             }
         }
@@ -99,6 +82,67 @@ namespace Microsoft.AppCenter.Crashes
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties)
         {
+        }
+
+        protected override string ChannelName => "crashes";
+
+        public override string ServiceName => "Crashes";
+
+        /// <summary>
+        /// Method that is called to signal start of Crashes service.
+        /// </summary>
+        /// <param name="channelGroup">Channel group</param>
+        /// <param name="appSecret">App secret</param>
+        public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
+        {
+            lock (CrashesLock)
+            {
+                base.OnChannelGroupReady(channelGroup, appSecret);
+                ApplyEnabledState(InstanceEnabled);
+            }
+        }
+        
+        private void ApplyEnabledState(bool enabled)
+        {
+            lock (CrashesLock)
+            {
+                lock (_serviceLock)
+                {
+                    if (enabled && ChannelGroup != null)
+                    {
+                        ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
+                    }
+                    else if (!enabled)
+                    {
+                        ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
+                        Channel.ShutdownAsync();
+                        foreach (var file in ErrorLogHelper.GetErrorLogFiles())
+                        {
+                            AppCenterLog.Debug(LogTag, "Deleting file" + file);
+                            file.Delete();
+                        }
+                        AppCenterLog.Info(LogTag, "Deleted crashes local files");
+                    }
+                }
+            }
+        }
+
+        public override bool InstanceEnabled
+        {
+            get => base.InstanceEnabled;
+
+            set
+            {
+                lock (_serviceLock)
+                {
+                    var prevValue = InstanceEnabled;
+                    base.InstanceEnabled = value;
+                    if (value != prevValue)
+                    {
+                        ApplyEnabledState(value);
+                    }
+                }
+            }
         }
     }
 }
