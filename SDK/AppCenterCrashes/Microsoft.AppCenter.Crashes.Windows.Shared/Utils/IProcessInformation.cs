@@ -41,15 +41,5 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// Gets the CPU architecture that the current process is running on.
         /// </summary>
         string ProcessArchitecture { get; }
-
-        /// <summary>
-        /// Gets the current thread's ID.
-        /// </summary>
-        int? ThreadId { get; }
-
-        /// <summary>
-        /// Gets the current thread's name.
-        /// </summary>
-       string ThreadName { get; }
     }
 }

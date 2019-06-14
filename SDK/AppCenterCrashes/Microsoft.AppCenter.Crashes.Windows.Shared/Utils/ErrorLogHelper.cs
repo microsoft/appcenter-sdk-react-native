@@ -61,8 +61,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 ParentProcessId = ProcessInformation.ParentProcessId,
                 ParentProcessName = ProcessInformation.ParentProcessName,
                 AppLaunchTimestamp = ProcessInformation.ProcessStartTime,
-                ErrorThreadId = ProcessInformation.ThreadId,
-                ErrorThreadName = ProcessInformation.ThreadName,
                 Fatal = true,
                 Exception = CreateModelException(exception)
             };

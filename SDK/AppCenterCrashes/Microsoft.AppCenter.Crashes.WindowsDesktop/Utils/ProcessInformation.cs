@@ -75,9 +75,5 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 }
             }
         }
-
-        public int? ThreadId => System.Threading.Thread.CurrentThread.ManagedThreadId;
-
-        public string ThreadName => System.Threading.Thread.CurrentThread.Name;
     }
 }

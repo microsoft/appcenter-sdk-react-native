@@ -20,11 +20,5 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public string ParentProcessName => ProcessDiagnosticInfo.GetForCurrentProcess().Parent?.ExecutableFileName;
 
         public string ProcessArchitecture => Package.Current.Id.Architecture.ToString();
-
-        // Thread information is not available.
-        public int? ThreadId => null;
-
-        // Thread information is not available.
-        public string ThreadName => null;
     }
 }
