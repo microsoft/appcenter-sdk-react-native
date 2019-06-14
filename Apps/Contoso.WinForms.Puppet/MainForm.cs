@@ -16,11 +16,11 @@ namespace Contoso.WinForms.Demo
     public partial class MainForm : Form
     {
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { Microsoft.AppCenter.LogLevel.Verbose, AppCenterLog.Verbose },
-            { Microsoft.AppCenter.LogLevel.Debug, AppCenterLog.Debug },
-            { Microsoft.AppCenter.LogLevel.Info, AppCenterLog.Info },
-            { Microsoft.AppCenter.LogLevel.Warn, AppCenterLog.Warn },
-            { Microsoft.AppCenter.LogLevel.Error, AppCenterLog.Error }
+            { LogLevel.Verbose, AppCenterLog.Verbose },
+            { LogLevel.Debug, AppCenterLog.Debug },
+            { LogLevel.Info, AppCenterLog.Info },
+            { LogLevel.Warn, AppCenterLog.Warn },
+            { LogLevel.Error, AppCenterLog.Error }
         };
 
         public MainForm()
@@ -58,11 +58,11 @@ namespace Contoso.WinForms.Demo
 
         private void WriteLog_Click(object sender, EventArgs e)
         {
-            if (LogLevel.SelectedIndex == -1)
+            if (LogLevelValue.SelectedIndex == -1)
             {
                 return;
             }
-            var level = (LogLevel)LogLevel.SelectedIndex;
+            var level = (LogLevel)LogLevelValue.SelectedIndex;
             var tag = LogTag.Text;
             var message = LogMessage.Text;
             LogFunctions[level](tag, message);
