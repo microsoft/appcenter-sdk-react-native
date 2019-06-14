@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
+using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 
@@ -26,7 +27,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Crashes _instanceField;
 
-        private Crashes()
+        static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
         }
@@ -78,7 +79,7 @@ namespace Microsoft.AppCenter.Crashes
         {
             // TODO: errorLog should not wait for screen size
             var errorLog = ErrorLogHelper.CreateErrorLogAsync(args.Exception).Result;
-            ErrorLogHelper.SaveErrorLogFiles(args.Exception, errorLog);
+            ErrorLogHelper.SaveErrorLogFile(errorLog);
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
