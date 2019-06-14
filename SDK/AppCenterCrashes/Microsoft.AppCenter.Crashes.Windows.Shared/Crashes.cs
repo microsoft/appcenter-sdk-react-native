@@ -104,25 +104,29 @@ namespace Microsoft.AppCenter.Crashes
         
         private void ApplyEnabledState(bool enabled)
         {
-            lock (CrashesLock)
+            lock (_serviceLock)
             {
-                lock (_serviceLock)
+                Channel.SetEnabled(enabled);
+                if (enabled && ChannelGroup != null)
                 {
-                    if (enabled && ChannelGroup != null)
+                    ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
+                }
+                else if (!enabled)
+                {
+                    ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
+                    foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                     {
-                        ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
-                    }
-                    else if (!enabled)
-                    {
-                        ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
-                        Channel.ShutdownAsync();
-                        foreach (var file in ErrorLogHelper.GetErrorLogFiles())
+                        AppCenterLog.Debug(LogTag, "Deleting file " + file);
+                        try
                         {
-                            AppCenterLog.Debug(LogTag, "Deleting file" + file);
                             file.Delete();
                         }
-                        AppCenterLog.Info(LogTag, "Deleted crashes local files");
+                        catch (System.Exception exception)
+                        {
+                            AppCenterLog.Warn(LogTag, "Failed to delete file " + file);
+                        }
                     }
+                    AppCenterLog.Info(LogTag, "Deleted crashes local files");
                 }
             }
         }
