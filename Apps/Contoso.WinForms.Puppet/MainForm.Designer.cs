@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.Tabs = new System.Windows.Forms.TabControl();
-            this.appCenter = new System.Windows.Forms.TabPage();
-            this.logBox = new System.Windows.Forms.GroupBox();
+            this.AppCenterTab = new System.Windows.Forms.TabPage();
+            this.LogBox = new System.Windows.Forms.GroupBox();
             this.WriteLog = new System.Windows.Forms.Button();
             this.LogTag = new System.Windows.Forms.TextBox();
             this.LogMessage = new System.Windows.Forms.TextBox();
-            this.logMessageLabel = new System.Windows.Forms.Label();
-            this.logTagLabel = new System.Windows.Forms.Label();
-            this.logLevelLabel = new System.Windows.Forms.Label();
+            this.LogMessageLabel = new System.Windows.Forms.Label();
+            this.LogTagLabel = new System.Windows.Forms.Label();
+            this.LogLevelLabel = new System.Windows.Forms.Label();
             this.LogLevel = new System.Windows.Forms.ComboBox();
             this.appCenterLogLevelLabel = new System.Windows.Forms.Label();
             this.AppCenterLogLevel = new System.Windows.Forms.ComboBox();
             this.AppCenterEnabled = new System.Windows.Forms.CheckBox();
-            this.analytics = new System.Windows.Forms.TabPage();
+            this.AnalyticsTab = new System.Windows.Forms.TabPage();
             this.EventBox = new System.Windows.Forms.GroupBox();
             this.TrackEvent = new System.Windows.Forms.Button();
             this.eventProperties = new System.Windows.Forms.DataGridView();
@@ -50,7 +50,7 @@
             this.EventName = new System.Windows.Forms.TextBox();
             this.eventNameLabel = new System.Windows.Forms.Label();
             this.AnalyticsEnabled = new System.Windows.Forms.CheckBox();
-            this.crashes = new System.Windows.Forms.TabPage();
+            this.CrashesTab = new System.Windows.Forms.TabPage();
             this.CrashBox = new System.Windows.Forms.GroupBox();
             this.CrashInsideAsyncTask = new System.Windows.Forms.Button();
             this.CrashWithNullReference = new System.Windows.Forms.Button();
@@ -61,20 +61,20 @@
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
             this.others = new System.Windows.Forms.TabPage();
             this.Tabs.SuspendLayout();
-            this.appCenter.SuspendLayout();
-            this.logBox.SuspendLayout();
-            this.analytics.SuspendLayout();
+            this.AppCenterTab.SuspendLayout();
+            this.LogBox.SuspendLayout();
+            this.AnalyticsTab.SuspendLayout();
             this.EventBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).BeginInit();
-            this.crashes.SuspendLayout();
+            this.CrashesTab.SuspendLayout();
             this.CrashBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
             // 
-            this.Tabs.Controls.Add(this.appCenter);
-            this.Tabs.Controls.Add(this.analytics);
-            this.Tabs.Controls.Add(this.crashes);
+            this.Tabs.Controls.Add(this.AppCenterTab);
+            this.Tabs.Controls.Add(this.AnalyticsTab);
+            this.Tabs.Controls.Add(this.CrashesTab);
             this.Tabs.Controls.Add(this.others);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
@@ -85,38 +85,38 @@
             this.Tabs.TabIndex = 0;
             this.Tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
-            // appCenter
+            // AppCenterTab
             // 
-            this.appCenter.Controls.Add(this.logBox);
-            this.appCenter.Controls.Add(this.appCenterLogLevelLabel);
-            this.appCenter.Controls.Add(this.AppCenterLogLevel);
-            this.appCenter.Controls.Add(this.AppCenterEnabled);
-            this.appCenter.Location = new System.Drawing.Point(8, 39);
-            this.appCenter.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.appCenter.Name = "appCenter";
-            this.appCenter.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.appCenter.Size = new System.Drawing.Size(752, 481);
-            this.appCenter.TabIndex = 0;
-            this.appCenter.Text = "App Center";
-            this.appCenter.UseVisualStyleBackColor = true;
+            this.AppCenterTab.Controls.Add(this.LogBox);
+            this.AppCenterTab.Controls.Add(this.appCenterLogLevelLabel);
+            this.AppCenterTab.Controls.Add(this.AppCenterLogLevel);
+            this.AppCenterTab.Controls.Add(this.AppCenterEnabled);
+            this.AppCenterTab.Location = new System.Drawing.Point(8, 39);
+            this.AppCenterTab.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.AppCenterTab.Name = "AppCenterTab";
+            this.AppCenterTab.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.AppCenterTab.Size = new System.Drawing.Size(752, 481);
+            this.AppCenterTab.TabIndex = 0;
+            this.AppCenterTab.Text = "App Center";
+            this.AppCenterTab.UseVisualStyleBackColor = true;
             // 
-            // logBox
+            // LogBox
             // 
-            this.logBox.Controls.Add(this.WriteLog);
-            this.logBox.Controls.Add(this.LogTag);
-            this.logBox.Controls.Add(this.LogMessage);
-            this.logBox.Controls.Add(this.logMessageLabel);
-            this.logBox.Controls.Add(this.logTagLabel);
-            this.logBox.Controls.Add(this.logLevelLabel);
-            this.logBox.Controls.Add(this.LogLevel);
-            this.logBox.Location = new System.Drawing.Point(16, 121);
-            this.logBox.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.logBox.Name = "logBox";
-            this.logBox.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.logBox.Size = new System.Drawing.Size(720, 250);
-            this.logBox.TabIndex = 5;
-            this.logBox.TabStop = false;
-            this.logBox.Text = "Log";
+            this.LogBox.Controls.Add(this.WriteLog);
+            this.LogBox.Controls.Add(this.LogTag);
+            this.LogBox.Controls.Add(this.LogMessage);
+            this.LogBox.Controls.Add(this.LogMessageLabel);
+            this.LogBox.Controls.Add(this.LogTagLabel);
+            this.LogBox.Controls.Add(this.LogLevelLabel);
+            this.LogBox.Controls.Add(this.LogLevel);
+            this.LogBox.Location = new System.Drawing.Point(16, 121);
+            this.LogBox.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.LogBox.Name = "LogBox";
+            this.LogBox.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.LogBox.Size = new System.Drawing.Size(720, 250);
+            this.LogBox.TabIndex = 5;
+            this.LogBox.TabStop = false;
+            this.LogBox.Text = "Log";
             // 
             // WriteLog
             // 
@@ -151,35 +151,35 @@
             this.LogMessage.Size = new System.Drawing.Size(487, 31);
             this.LogMessage.TabIndex = 9;
             // 
-            // logMessageLabel
+            // LogMessageLabel
             // 
-            this.logMessageLabel.Location = new System.Drawing.Point(12, 78);
-            this.logMessageLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.logMessageLabel.Name = "logMessageLabel";
-            this.logMessageLabel.Size = new System.Drawing.Size(188, 44);
-            this.logMessageLabel.TabIndex = 8;
-            this.logMessageLabel.Text = "Log Message";
-            this.logMessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogMessageLabel.Location = new System.Drawing.Point(12, 78);
+            this.LogMessageLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.LogMessageLabel.Name = "LogMessageLabel";
+            this.LogMessageLabel.Size = new System.Drawing.Size(188, 44);
+            this.LogMessageLabel.TabIndex = 8;
+            this.LogMessageLabel.Text = "Log Message";
+            this.LogMessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // logTagLabel
+            // LogTagLabel
             // 
-            this.logTagLabel.Location = new System.Drawing.Point(12, 32);
-            this.logTagLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.logTagLabel.Name = "logTagLabel";
-            this.logTagLabel.Size = new System.Drawing.Size(188, 44);
-            this.logTagLabel.TabIndex = 7;
-            this.logTagLabel.Text = "Log Tag";
-            this.logTagLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogTagLabel.Location = new System.Drawing.Point(12, 32);
+            this.LogTagLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.LogTagLabel.Name = "LogTagLabel";
+            this.LogTagLabel.Size = new System.Drawing.Size(188, 44);
+            this.LogTagLabel.TabIndex = 7;
+            this.LogTagLabel.Text = "Log Tag";
+            this.LogTagLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // logLevelLabel
+            // LogLevelLabel
             // 
-            this.logLevelLabel.Location = new System.Drawing.Point(12, 128);
-            this.logLevelLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.logLevelLabel.Name = "logLevelLabel";
-            this.logLevelLabel.Size = new System.Drawing.Size(188, 44);
-            this.logLevelLabel.TabIndex = 6;
-            this.logLevelLabel.Text = "Log Level";
-            this.logLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogLevelLabel.Location = new System.Drawing.Point(12, 128);
+            this.LogLevelLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.LogLevelLabel.Name = "LogLevelLabel";
+            this.LogLevelLabel.Size = new System.Drawing.Size(188, 44);
+            this.LogLevelLabel.TabIndex = 6;
+            this.LogLevelLabel.Text = "Log Level";
+            this.LogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LogLevel
             // 
@@ -239,18 +239,18 @@
             this.AppCenterEnabled.UseVisualStyleBackColor = true;
             this.AppCenterEnabled.CheckedChanged += new System.EventHandler(this.AppCenterEnabled_CheckedChanged);
             // 
-            // analytics
+            // AnalyticsTab
             // 
-            this.analytics.Controls.Add(this.EventBox);
-            this.analytics.Controls.Add(this.AnalyticsEnabled);
-            this.analytics.Location = new System.Drawing.Point(8, 39);
-            this.analytics.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.analytics.Name = "analytics";
-            this.analytics.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.analytics.Size = new System.Drawing.Size(752, 481);
-            this.analytics.TabIndex = 1;
-            this.analytics.Text = "Analytics";
-            this.analytics.UseVisualStyleBackColor = true;
+            this.AnalyticsTab.Controls.Add(this.EventBox);
+            this.AnalyticsTab.Controls.Add(this.AnalyticsEnabled);
+            this.AnalyticsTab.Location = new System.Drawing.Point(8, 39);
+            this.AnalyticsTab.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.AnalyticsTab.Name = "AnalyticsTab";
+            this.AnalyticsTab.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.AnalyticsTab.Size = new System.Drawing.Size(752, 481);
+            this.AnalyticsTab.TabIndex = 1;
+            this.AnalyticsTab.Text = "Analytics";
+            this.AnalyticsTab.UseVisualStyleBackColor = true;
             // 
             // EventBox
             // 
@@ -350,17 +350,17 @@
             this.AnalyticsEnabled.UseVisualStyleBackColor = true;
             this.AnalyticsEnabled.CheckedChanged += new System.EventHandler(this.AnalyticsEnabled_CheckedChanged);
             // 
-            // crashes
+            // CrashesTab
             // 
-            this.crashes.Controls.Add(this.CrashBox);
-            this.crashes.Controls.Add(this.CrashesEnabled);
-            this.crashes.Location = new System.Drawing.Point(8, 39);
-            this.crashes.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.crashes.Name = "crashes";
-            this.crashes.Size = new System.Drawing.Size(752, 481);
-            this.crashes.TabIndex = 2;
-            this.crashes.Text = "Crashes";
-            this.crashes.UseVisualStyleBackColor = true;
+            this.CrashesTab.Controls.Add(this.CrashBox);
+            this.CrashesTab.Controls.Add(this.CrashesEnabled);
+            this.CrashesTab.Location = new System.Drawing.Point(8, 39);
+            this.CrashesTab.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.CrashesTab.Name = "CrashesTab";
+            this.CrashesTab.Size = new System.Drawing.Size(752, 481);
+            this.CrashesTab.TabIndex = 2;
+            this.CrashesTab.Text = "Crashes";
+            this.CrashesTab.UseVisualStyleBackColor = true;
             // 
             // CrashBox
             // 
@@ -492,14 +492,14 @@
             this.Name = "MainForm";
             this.Text = "App Center Puppet App";
             this.Tabs.ResumeLayout(false);
-            this.appCenter.ResumeLayout(false);
-            this.logBox.ResumeLayout(false);
-            this.logBox.PerformLayout();
-            this.analytics.ResumeLayout(false);
+            this.AppCenterTab.ResumeLayout(false);
+            this.LogBox.ResumeLayout(false);
+            this.LogBox.PerformLayout();
+            this.AnalyticsTab.ResumeLayout(false);
             this.EventBox.ResumeLayout(false);
             this.EventBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).EndInit();
-            this.crashes.ResumeLayout(false);
+            this.CrashesTab.ResumeLayout(false);
             this.CrashBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -508,20 +508,20 @@
         #endregion
 
         private System.Windows.Forms.TabControl Tabs;
-        private System.Windows.Forms.TabPage appCenter;
-        private System.Windows.Forms.TabPage analytics;
-        private System.Windows.Forms.TabPage crashes;
+        private System.Windows.Forms.TabPage AppCenterTab;
+        private System.Windows.Forms.TabPage AnalyticsTab;
+        private System.Windows.Forms.TabPage CrashesTab;
         private System.Windows.Forms.TabPage others;
         private System.Windows.Forms.CheckBox AppCenterEnabled;
         private System.Windows.Forms.Label appCenterLogLevelLabel;
         private System.Windows.Forms.ComboBox AppCenterLogLevel;
-        private System.Windows.Forms.GroupBox logBox;
+        private System.Windows.Forms.GroupBox LogBox;
         private System.Windows.Forms.Button WriteLog;
         private System.Windows.Forms.TextBox LogTag;
         private System.Windows.Forms.TextBox LogMessage;
-        private System.Windows.Forms.Label logMessageLabel;
-        private System.Windows.Forms.Label logTagLabel;
-        private System.Windows.Forms.Label logLevelLabel;
+        private System.Windows.Forms.Label LogMessageLabel;
+        private System.Windows.Forms.Label LogTagLabel;
+        private System.Windows.Forms.Label LogLevelLabel;
         private System.Windows.Forms.ComboBox LogLevel;
         private System.Windows.Forms.GroupBox EventBox;
         private System.Windows.Forms.CheckBox AnalyticsEnabled;
