@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabs = new System.Windows.Forms.TabControl();
+            this.Tabs = new System.Windows.Forms.TabControl();
             this.appCenter = new System.Windows.Forms.TabPage();
             this.logBox = new System.Windows.Forms.GroupBox();
             this.WriteLog = new System.Windows.Forms.Button();
@@ -42,7 +42,7 @@
             this.AppCenterLogLevel = new System.Windows.Forms.ComboBox();
             this.AppCenterEnabled = new System.Windows.Forms.CheckBox();
             this.analytics = new System.Windows.Forms.TabPage();
-            this.eventBox = new System.Windows.Forms.GroupBox();
+            this.EventBox = new System.Windows.Forms.GroupBox();
             this.TrackEvent = new System.Windows.Forms.Button();
             this.eventProperties = new System.Windows.Forms.DataGridView();
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,7 +51,7 @@
             this.eventNameLabel = new System.Windows.Forms.Label();
             this.AnalyticsEnabled = new System.Windows.Forms.CheckBox();
             this.crashes = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CrashBox = new System.Windows.Forms.GroupBox();
             this.CrashInsideAsyncTask = new System.Windows.Forms.Button();
             this.CrashWithNullReference = new System.Windows.Forms.Button();
             this.CrashWithAggregateException = new System.Windows.Forms.Button();
@@ -60,30 +60,30 @@
             this.CrashWithTestException = new System.Windows.Forms.Button();
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
             this.others = new System.Windows.Forms.TabPage();
-            this.tabs.SuspendLayout();
+            this.Tabs.SuspendLayout();
             this.appCenter.SuspendLayout();
             this.logBox.SuspendLayout();
             this.analytics.SuspendLayout();
-            this.eventBox.SuspendLayout();
+            this.EventBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).BeginInit();
             this.crashes.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.CrashBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabs
+            // Tabs
             // 
-            this.tabs.Controls.Add(this.appCenter);
-            this.tabs.Controls.Add(this.analytics);
-            this.tabs.Controls.Add(this.crashes);
-            this.tabs.Controls.Add(this.others);
-            this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabs.Location = new System.Drawing.Point(0, 0);
-            this.tabs.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(768, 528);
-            this.tabs.TabIndex = 0;
-            this.tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
+            this.Tabs.Controls.Add(this.appCenter);
+            this.Tabs.Controls.Add(this.analytics);
+            this.Tabs.Controls.Add(this.crashes);
+            this.Tabs.Controls.Add(this.others);
+            this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tabs.Location = new System.Drawing.Point(0, 0);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.Tabs.Name = "Tabs";
+            this.Tabs.SelectedIndex = 0;
+            this.Tabs.Size = new System.Drawing.Size(768, 528);
+            this.Tabs.TabIndex = 0;
+            this.Tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
             // appCenter
             // 
@@ -241,7 +241,7 @@
             // 
             // analytics
             // 
-            this.analytics.Controls.Add(this.eventBox);
+            this.analytics.Controls.Add(this.EventBox);
             this.analytics.Controls.Add(this.AnalyticsEnabled);
             this.analytics.Location = new System.Drawing.Point(8, 39);
             this.analytics.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -252,20 +252,20 @@
             this.analytics.Text = "Analytics";
             this.analytics.UseVisualStyleBackColor = true;
             // 
-            // eventBox
+            // EventBox
             // 
-            this.eventBox.Controls.Add(this.TrackEvent);
-            this.eventBox.Controls.Add(this.eventProperties);
-            this.eventBox.Controls.Add(this.EventName);
-            this.eventBox.Controls.Add(this.eventNameLabel);
-            this.eventBox.Location = new System.Drawing.Point(16, 69);
-            this.eventBox.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.eventBox.Name = "eventBox";
-            this.eventBox.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.eventBox.Size = new System.Drawing.Size(720, 368);
-            this.eventBox.TabIndex = 3;
-            this.eventBox.TabStop = false;
-            this.eventBox.Text = "Event";
+            this.EventBox.Controls.Add(this.TrackEvent);
+            this.EventBox.Controls.Add(this.eventProperties);
+            this.EventBox.Controls.Add(this.EventName);
+            this.EventBox.Controls.Add(this.eventNameLabel);
+            this.EventBox.Location = new System.Drawing.Point(16, 69);
+            this.EventBox.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.EventBox.Name = "EventBox";
+            this.EventBox.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.EventBox.Size = new System.Drawing.Size(720, 368);
+            this.EventBox.TabIndex = 3;
+            this.EventBox.TabStop = false;
+            this.EventBox.Text = "Event";
             // 
             // TrackEvent
             // 
@@ -352,7 +352,7 @@
             // 
             // crashes
             // 
-            this.crashes.Controls.Add(this.groupBox1);
+            this.crashes.Controls.Add(this.CrashBox);
             this.crashes.Controls.Add(this.CrashesEnabled);
             this.crashes.Location = new System.Drawing.Point(8, 39);
             this.crashes.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -362,22 +362,22 @@
             this.crashes.Text = "Crashes";
             this.crashes.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // CrashBox
             // 
-            this.groupBox1.Controls.Add(this.CrashInsideAsyncTask);
-            this.groupBox1.Controls.Add(this.CrashWithNullReference);
-            this.groupBox1.Controls.Add(this.CrashWithAggregateException);
-            this.groupBox1.Controls.Add(this.CrashWithDivisionByZero);
-            this.groupBox1.Controls.Add(this.CrashWithNonSerializableException);
-            this.groupBox1.Controls.Add(this.CrashWithTestException);
-            this.groupBox1.Location = new System.Drawing.Point(16, 69);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.groupBox1.Size = new System.Drawing.Size(720, 393);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Crashes";
+            this.CrashBox.Controls.Add(this.CrashInsideAsyncTask);
+            this.CrashBox.Controls.Add(this.CrashWithNullReference);
+            this.CrashBox.Controls.Add(this.CrashWithAggregateException);
+            this.CrashBox.Controls.Add(this.CrashWithDivisionByZero);
+            this.CrashBox.Controls.Add(this.CrashWithNonSerializableException);
+            this.CrashBox.Controls.Add(this.CrashWithTestException);
+            this.CrashBox.Location = new System.Drawing.Point(16, 69);
+            this.CrashBox.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.CrashBox.Name = "CrashBox";
+            this.CrashBox.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.CrashBox.Size = new System.Drawing.Size(720, 393);
+            this.CrashBox.TabIndex = 4;
+            this.CrashBox.TabStop = false;
+            this.CrashBox.Text = "Crashes";
             // 
             // CrashInsideAsyncTask
             // 
@@ -485,29 +485,29 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(768, 528);
-            this.Controls.Add(this.tabs);
+            this.Controls.Add(this.Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "App Center Puppet App";
-            this.tabs.ResumeLayout(false);
+            this.Tabs.ResumeLayout(false);
             this.appCenter.ResumeLayout(false);
             this.logBox.ResumeLayout(false);
             this.logBox.PerformLayout();
             this.analytics.ResumeLayout(false);
-            this.eventBox.ResumeLayout(false);
-            this.eventBox.PerformLayout();
+            this.EventBox.ResumeLayout(false);
+            this.EventBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).EndInit();
             this.crashes.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.CrashBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabs;
+        private System.Windows.Forms.TabControl Tabs;
         private System.Windows.Forms.TabPage appCenter;
         private System.Windows.Forms.TabPage analytics;
         private System.Windows.Forms.TabPage crashes;
@@ -523,7 +523,7 @@
         private System.Windows.Forms.Label logTagLabel;
         private System.Windows.Forms.Label logLevelLabel;
         private System.Windows.Forms.ComboBox LogLevel;
-        private System.Windows.Forms.GroupBox eventBox;
+        private System.Windows.Forms.GroupBox EventBox;
         private System.Windows.Forms.CheckBox AnalyticsEnabled;
         private System.Windows.Forms.TextBox EventName;
         private System.Windows.Forms.Label eventNameLabel;
@@ -532,7 +532,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.Button TrackEvent;
         private System.Windows.Forms.CheckBox CrashesEnabled;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox CrashBox;
         private System.Windows.Forms.Button CrashWithTestException;
         private System.Windows.Forms.Button CrashWithNonSerializableException;
         private System.Windows.Forms.Button CrashWithDivisionByZero;
