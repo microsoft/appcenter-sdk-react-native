@@ -13,6 +13,7 @@ using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {
+    //TODO thread safety
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
@@ -29,14 +30,14 @@ namespace Microsoft.AppCenter.Crashes.Utils
         private const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
 
         /// <summary>
-        /// Device information utility.
+        /// Device information utility. Public for testing purposes only.
         /// </summary>
-        private static readonly DeviceInformationHelper DeviceInformationHelper;
+        public static IDeviceInformationHelper DeviceInformationHelper;
 
         /// <summary>
-        /// Process information utility.
+        /// Process information utility. Public for testing purposes only.
         /// </summary>
-        private static readonly IProcessInformation ProcessInformation;
+        public static IProcessInformation ProcessInformation;
 
         static ErrorLogHelper()
         {
@@ -49,18 +50,20 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <returns>A new error log instance.</returns>
-        public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception)
+        public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception) // TODO make this synchronous
         {
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.UtcNow,
+                //TODO expose synchronous way to get device information. also cache the value for the class.
                 Device = await DeviceInformationHelper.GetDeviceInformationAsync(),
                 ProcessId = ProcessInformation.ProcessId ?? 0,
                 ProcessName = ProcessInformation.ProcessName,
                 ParentProcessId = ProcessInformation.ParentProcessId,
                 ParentProcessName = ProcessInformation.ParentProcessName,
                 AppLaunchTimestamp = ProcessInformation.ProcessStartTime,
+                Architecture = ProcessInformation.ProcessArchitecture,
                 Fatal = true,
                 Exception = CreateModelException(exception)
             };
@@ -83,6 +86,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         public static IEnumerable<FileInfo> GetErrorLogFiles()
         {
+            // TODO exception handling.
             return ErrorStorageDirectory.EnumerateFiles($"*{ErrorLogFileExtension}");
         }
 
@@ -95,6 +99,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             FileInfo lastErrorLogFile = null;
             foreach (var errorLogFile in GetErrorLogFiles())
             {
+                // TODO exception handling. 
                 if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
                 {
                     lastErrorLogFile = errorLogFile;
@@ -135,6 +140,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             if (file != null)
             {
                 AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
+                // TODO exception handling. 
                 file.Delete();
             }
         }
@@ -174,6 +180,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
         private static FileInfo GetStoredFile(Guid errorId, string extension)
         {
+            // TODO exception handling.
             return ErrorStorageDirectory.GetFiles($"{errorId}{extension}").SingleOrDefault();
         }
     }

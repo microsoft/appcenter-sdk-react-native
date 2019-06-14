@@ -2,15 +2,13 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {
     /// <summary>
     /// Utility to get information about the current process. Has different implementations on different platforms. Some information will be unavailable on certain platforms.
     /// </summary>
-    interface IProcessInformation
+    public interface IProcessInformation
     {
         /// <summary>
         /// Gets the start time of the current process.
