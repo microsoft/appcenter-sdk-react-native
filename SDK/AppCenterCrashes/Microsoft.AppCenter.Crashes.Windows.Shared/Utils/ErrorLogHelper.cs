@@ -6,210 +6,182 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
-/// <summary>
-/// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
-/// </summary>
-public class ErrorLogHelper
+namespace Microsoft.AppCenter.Crashes.Utils
 {
+    //TODO thread safety
     /// <summary>
-    /// Error log file extension for the JSON schema.
+    /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
-    public const string ErrorLogFileExtension = ".json";
-
-    /// <summary>
-    /// Error log directory within application files.
-    /// </summary>
-    private const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
-
-    /// <summary>
-    /// Device information utility.
-    /// </summary>
-    private static readonly DeviceInformationHelper DeviceInformationHelper;
-
-    static ErrorLogHelper()
+    public class ErrorLogHelper
     {
-        DeviceInformationHelper = new DeviceInformationHelper();
-    }
+        /// <summary>
+        /// Error log file extension for the JSON schema.
+        /// </summary>
+        public const string ErrorLogFileExtension = ".json";
 
-    public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception)
-    {
-        var errorLog = new ManagedErrorLog
-        {
-            Id = Guid.NewGuid(),
-            Timestamp = DateTime.UtcNow,
-            Device = await DeviceInformationHelper.GetDeviceInformationAsync()
-        };
-#if WINDOWS_UWP
-        // TODO get parent process info?
-        errorLog.ProcessId = (int)Windows.System.Diagnostics.ProcessDiagnosticInfo.GetForCurrentProcess().ProcessId;
-        errorLog.ProcessName = Windows.System.Diagnostics.ProcessDiagnosticInfo.GetForCurrentProcess().ExecutableFileName; //TODO double check
-        errorLog.Architecture = Windows.ApplicationModel.Package.Current.Id.Architecture.ToString(); //TODO unify with names for winforms
-        errorLog.AppLaunchTimestamp = Windows.System.Diagnostics.ProcessDiagnosticInfo.GetForCurrentProcess().ProcessStartTime.DateTime;
-#else
-        var process = System.Diagnostics.Process.GetCurrentProcess();
-        try
-        {
-            errorLog.AppLaunchTimestamp = process.StartTime;
-        }
-        catch (System.Exception e) when (e is InvalidOperationException || e is PlatformNotSupportedException || e is NotSupportedException || e is System.ComponentModel.Win32Exception)
-        {
-            //TODO log
-        }
-        try
-        {
-            errorLog.ProcessId = process.Id;
-        }
-        catch (System.Exception e) when (e is InvalidOperationException || e is PlatformNotSupportedException)
-        {
-            //TODO log
-        }
-        try
-        {
-            errorLog.ProcessName = process.ProcessName;
-        }
-        catch (System.Exception e) when (e is InvalidOperationException || e is PlatformNotSupportedException || e is NotSupportedException)
-        {
-            //TODO log
-        }
-        try
-        {
-            errorLog.Architecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"); //TODO improve this
-        }
-        catch (System.Exception e) when (e is ArgumentNullException || e is System.Security.SecurityException)
-        {
-            //TODO log
-        }
-        errorLog.ErrorThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-        try
-        {
-            errorLog.ErrorThreadName = System.Threading.Thread.CurrentThread.Name;
-        }
-        catch (InvalidOperationException e)
-        {
-            //TODO log
-        }
-#endif
-        errorLog.Fatal = true;
-        errorLog.Exception = CreateModelException(exception);
-        return errorLog;
-    }
+        /// <summary>
+        /// Error log directory within application files.
+        /// </summary>
+        private const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
 
-    private static ModelException CreateModelException(System.Exception exception)
-    {
-        var modelException = new ModelException
+        /// <summary>
+        /// Device information utility. Public for testing purposes only.
+        /// </summary>
+        public static IDeviceInformationHelper DeviceInformationHelper;
+
+        /// <summary>
+        /// Process information utility. Public for testing purposes only.
+        /// </summary>
+        public static IProcessInformation ProcessInformation;
+
+        static ErrorLogHelper()
         {
-            Type = exception.GetType().ToString(),
-            Message = exception.Message,
-            StackTrace = exception.StackTrace
-        };
-        if (exception is AggregateException aggregateException)
+            DeviceInformationHelper = new DeviceInformationHelper();
+            ProcessInformation = new ProcessInformation();
+        }
+
+        /// <summary>
+        /// Creates an error log for the given exception object.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <returns>A new error log instance.</returns>
+        public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception) // TODO make this synchronous
         {
-            if (aggregateException.InnerExceptions.Count != 0)
+            return new ManagedErrorLog
             {
-                modelException.InnerExceptions = new List<ModelException>();
-                foreach (var innerException in aggregateException.InnerExceptions)
+                Id = Guid.NewGuid(),
+                Timestamp = DateTime.UtcNow,
+                //TODO expose synchronous way to get device information. also cache the value for the class.
+                Device = await DeviceInformationHelper.GetDeviceInformationAsync(),
+                ProcessId = ProcessInformation.ProcessId ?? 0,
+                ProcessName = ProcessInformation.ProcessName,
+                ParentProcessId = ProcessInformation.ParentProcessId,
+                ParentProcessName = ProcessInformation.ParentProcessName,
+                AppLaunchTimestamp = ProcessInformation.ProcessStartTime,
+                Architecture = ProcessInformation.ProcessArchitecture,
+                Fatal = true,
+                Exception = CreateModelException(exception)
+            };
+        }
+
+        /// <summary>
+        /// Returns the directory where errors are stored.
+        /// </summary>
+        public static DirectoryInfo ErrorStorageDirectory
+        {
+            get
+            {
+                // TODO exception handling. Move to a helper class? Cache this value?
+                return Directory.CreateDirectory(ErrorStorageDirectoryName);
+            }
+        }
+
+        /// <summary>
+        /// Gets all files with the error log file extension in the error directory.
+        /// </summary>
+        public static IEnumerable<FileInfo> GetErrorLogFiles()
+        {
+            // TODO exception handling.
+            return ErrorStorageDirectory.EnumerateFiles($"*{ErrorLogFileExtension}");
+        }
+
+        /// <summary>
+        /// Gets the most recently modified error log file.
+        /// </summary>
+        /// <returns>The most recently modified error log file.</returns>
+        public static FileInfo GetLastErrorLogFile()
+        {
+            FileInfo lastErrorLogFile = null;
+            foreach (var errorLogFile in GetErrorLogFiles())
+            {
+                // TODO exception handling. 
+                if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
                 {
-                    modelException.InnerExceptions.Add(CreateModelException(innerException));
+                    lastErrorLogFile = errorLogFile;
                 }
             }
+            return lastErrorLogFile;
         }
-        if (exception.InnerException != null)
+
+        /// <summary>
+        /// Gets the error log file with the given ID.
+        /// </summary>
+        /// <param name="errorId">The ID for the error log.</param>
+        /// <returns>The error log file or null if it is not found.</returns>
+        public static FileInfo GetStoredErrorLogFile(Guid errorId)
         {
-            modelException.InnerExceptions = modelException.InnerExceptions ?? new List<ModelException>();
-            modelException.InnerExceptions.Add(CreateModelException(exception.InnerException));
+            return GetStoredFile(errorId, ErrorLogFileExtension);
         }
-        return modelException;
-    }
 
-    /// <summary>
-    /// Returns the directory where errors are stored.
-    /// </summary>
-    public static DirectoryInfo ErrorStorageDirectory
-    {
-        get
+        /// <summary>
+        /// Saves an error log on disk.
+        /// </summary>
+        /// <param name="errorLog">The error log.</param>
+        public static void SaveErrorLogFile(ManagedErrorLog errorLog)
         {
-            // TODO exception handling. Move to a helper class? Cache this value?
-            return Directory.CreateDirectory(ErrorStorageDirectoryName);
+            var errorLogString = LogSerializer.Serialize(errorLog);
+            var filePath = Path.Combine(ErrorStorageDirectory.FullName, errorLog.Id + ErrorLogFileExtension);
+            File.WriteAllText(filePath, errorLogString);
+            AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in file {filePath}.");
         }
-    }
 
-    /// <summary>
-    /// Gets all files with the error log file extension in the error directory.
-    /// </summary>
-    public static IEnumerable<FileInfo> GetErrorLogFiles()
-    {
-        return ErrorStorageDirectory.EnumerateFiles($"*{ErrorLogFileExtension}");
-    }
-
-    /// <summary>
-    /// Gets the most recently modified error log file.
-    /// </summary>
-    /// <returns>The most recently modified error log file.</returns>
-    public static FileInfo GetLastErrorLogFile()
-    {
-        FileInfo lastErrorLogFile = null;
-        foreach (var errorLogFile in GetErrorLogFiles())
+        /// <summary>
+        /// Deletes an error log from disk.
+        /// </summary>
+        /// <param name="errorId">The ID for the error log.</param>
+        public static void RemoveStoredErrorLogFile(Guid errorId)
         {
-            if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+            var file = GetStoredErrorLogFile(errorId);
+            if (file != null)
             {
-                lastErrorLogFile = errorLogFile;
+                AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
+                // TODO exception handling. 
+                file.Delete();
             }
         }
-        return lastErrorLogFile;
-    }
 
-    /// <summary>
-    /// Gets the error log file with the given ID.
-    /// </summary>
-    /// <param name="errorId">The ID for the error log.</param>
-    /// <returns>The error log file or null if it is not found.</returns>
-    public static FileInfo GetStoredErrorLogFile(Guid errorId)
-    {
-        return GetStoredFile(errorId, ErrorLogFileExtension);
-    }
-
-    /// <summary>
-    /// Gets a file from storage with the given ID and extension.
-    /// </summary>
-    /// <param name="errorId">The error ID.</param>
-    /// <param name="extension">The file extension.</param>
-    /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
-    private static FileInfo GetStoredFile(Guid errorId, string extension)
-    {
-        return ErrorStorageDirectory.GetFiles($"{errorId}{extension}").SingleOrDefault();
-    }
-
-    /// <summary>
-    /// Saves an error log on disk.
-    /// </summary>
-    /// <param name="exception"></param>
-    /// <param name="errorLog">The error log.</param>
-    public static void SaveErrorLogFiles(System.Exception exception, ManagedErrorLog errorLog)
-    {
-        var errorLogString = LogSerializer.Serialize(errorLog);
-        var filePath = Path.Combine(ErrorStorageDirectory.FullName, errorLog.Id + ErrorLogFileExtension);
-        File.WriteAllText(filePath, errorLogString);
-        AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in file {filePath}.");
-    }
-
-    /// <summary>
-    /// Deletes an error log from disk.
-    /// </summary>
-    /// <param name="errorId">The ID for the error log.</param>
-    public static void RemoveStoredErrorLogFile(Guid errorId)
-    {
-        var file = GetStoredErrorLogFile(errorId);
-        if (file != null)
+        private static ModelException CreateModelException(System.Exception exception)
         {
-            AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
-            file.Delete();
+            var modelException = new ModelException
+            {
+                Type = exception.GetType().ToString(),
+                Message = exception.Message,
+                StackTrace = exception.StackTrace
+            };
+            if (exception is AggregateException aggregateException)
+            {
+                if (aggregateException.InnerExceptions.Count != 0)
+                {
+                    modelException.InnerExceptions = new List<ModelException>();
+                    foreach (var innerException in aggregateException.InnerExceptions)
+                    {
+                        modelException.InnerExceptions.Add(CreateModelException(innerException));
+                    }
+                }
+            }
+            if (exception.InnerException != null)
+            {
+                modelException.InnerExceptions = modelException.InnerExceptions ?? new List<ModelException>();
+                modelException.InnerExceptions.Add(CreateModelException(exception.InnerException));
+            }
+            return modelException;
+        }
+
+        /// <summary>
+        /// Gets a file from storage with the given ID and extension.
+        /// </summary>
+        /// <param name="errorId">The error ID.</param>
+        /// <param name="extension">The file extension.</param>
+        /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
+        private static FileInfo GetStoredFile(Guid errorId, string extension)
+        {
+            // TODO exception handling.
+            return ErrorStorageDirectory.GetFiles($"{errorId}{extension}").SingleOrDefault();
         }
     }
 }
