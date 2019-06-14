@@ -11,8 +11,12 @@ namespace Microsoft.AppCenter.Utils
     /// </summary>
     public class FileHelper
     {
-        private DirectoryInfo _baseDirectory;
+        private readonly DirectoryInfo _baseDirectory;
 
+        /// <summary>
+        /// Creates an instance with the given base path.
+        /// </summary>
+        /// <param name="basePath">The path to use as the base for all operations.</param>
         public FileHelper(string basePath)
         {
             _baseDirectory = new DirectoryInfo(basePath);
@@ -33,7 +37,7 @@ namespace Microsoft.AppCenter.Utils
         /// </summary>
         /// <param name="relativePath">The destination path relative to the base path.</param>
         /// <param name="contents">The text to write to the file.</param>
-        public virtual void WriteFileContents(string relativePath, string contents)
+        public virtual void CreateFile(string relativePath, string contents)
         {
             if (!_baseDirectory.Exists)
             {
@@ -41,20 +45,6 @@ namespace Microsoft.AppCenter.Utils
             }
             var filePath = Path.Combine(_baseDirectory.FullName, relativePath);
             File.WriteAllText(filePath, contents);
-        }
-
-        /// <summary>
-        /// Deletes a file at the given relative path.
-        /// </summary>
-        /// <param name="relativePath">The destination path relative to the base path.</param>
-        public virtual void DeleteFile(string relativePath)
-        {
-            if (!_baseDirectory.Exists)
-            {
-                return;
-            }
-            var filePath = Path.Combine(_baseDirectory.FullName, relativePath);
-            File.Delete(filePath);
         }
     }
 }

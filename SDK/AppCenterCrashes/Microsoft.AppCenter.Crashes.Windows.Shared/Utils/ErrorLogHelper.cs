@@ -13,7 +13,7 @@ using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {
-    //TODO thread safety
+    //TODO thread safety (maybe if filehelper is thread safe that would suffice).
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
@@ -39,10 +39,16 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         public static IProcessInformation ProcessInformation;
 
+        /// <summary>
+        /// File system utility. Public for testing purposes only.
+        /// </summary>
+        public static FileHelper FileHelper;
+
         static ErrorLogHelper()
         {
             DeviceInformationHelper = new DeviceInformationHelper();
             ProcessInformation = new ProcessInformation();
+            FileHelper = new FileHelper(ErrorStorageDirectoryName);
         }
 
         /// <summary>
@@ -70,24 +76,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
         }
 
         /// <summary>
-        /// Returns the directory where errors are stored.
-        /// </summary>
-        public static DirectoryInfo ErrorStorageDirectory
-        {
-            get
-            {
-                // TODO exception handling. Move to a helper class? Cache this value?
-                return Directory.CreateDirectory(ErrorStorageDirectoryName);
-            }
-        }
-
-        /// <summary>
         /// Gets all files with the error log file extension in the error directory.
         /// </summary>
         public static IEnumerable<FileInfo> GetErrorLogFiles()
         {
             // TODO exception handling.
-            return ErrorStorageDirectory.EnumerateFiles($"*{ErrorLogFileExtension}");
+            return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}");
         }
 
         /// <summary>
@@ -125,9 +119,10 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static void SaveErrorLogFile(ManagedErrorLog errorLog)
         {
             var errorLogString = LogSerializer.Serialize(errorLog);
-            var filePath = Path.Combine(ErrorStorageDirectory.FullName, errorLog.Id + ErrorLogFileExtension);
-            File.WriteAllText(filePath, errorLogString);
-            AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in file {filePath}.");
+            var fileName = errorLog.Id + ErrorLogFileExtension;
+            //TODO exception handling.
+            FileHelper.CreateFile(fileName, errorLogString);
+            AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
         /// <summary>
@@ -140,7 +135,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             if (file != null)
             {
                 AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
-                // TODO exception handling. 
+                // TODO exception handling
                 file.Delete();
             }
         }
@@ -181,7 +176,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         private static FileInfo GetStoredFile(Guid errorId, string extension)
         {
             // TODO exception handling.
-            return ErrorStorageDirectory.GetFiles($"{errorId}{extension}").SingleOrDefault();
+            return FileHelper.EnumerateFiles($"{errorId}{extension}").SingleOrDefault();
         }
     }
 }
