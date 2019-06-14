@@ -44,11 +44,11 @@
             this.AnalyticsTab = new System.Windows.Forms.TabPage();
             this.EventBox = new System.Windows.Forms.GroupBox();
             this.TrackEvent = new System.Windows.Forms.Button();
-            this.eventProperties = new System.Windows.Forms.DataGridView();
+            this.EventProperties = new System.Windows.Forms.DataGridView();
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventName = new System.Windows.Forms.TextBox();
-            this.eventNameLabel = new System.Windows.Forms.Label();
+            this.EventNameLabel = new System.Windows.Forms.Label();
             this.AnalyticsEnabled = new System.Windows.Forms.CheckBox();
             this.CrashesTab = new System.Windows.Forms.TabPage();
             this.CrashBox = new System.Windows.Forms.GroupBox();
@@ -59,13 +59,13 @@
             this.CrashWithNonSerializableException = new System.Windows.Forms.Button();
             this.CrashWithTestException = new System.Windows.Forms.Button();
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
-            this.others = new System.Windows.Forms.TabPage();
+            this.OthersTab = new System.Windows.Forms.TabPage();
             this.Tabs.SuspendLayout();
             this.AppCenterTab.SuspendLayout();
             this.LogBox.SuspendLayout();
             this.AnalyticsTab.SuspendLayout();
             this.EventBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).BeginInit();
             this.CrashesTab.SuspendLayout();
             this.CrashBox.SuspendLayout();
             this.SuspendLayout();
@@ -75,7 +75,7 @@
             this.Tabs.Controls.Add(this.AppCenterTab);
             this.Tabs.Controls.Add(this.AnalyticsTab);
             this.Tabs.Controls.Add(this.CrashesTab);
-            this.Tabs.Controls.Add(this.others);
+            this.Tabs.Controls.Add(this.OthersTab);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
             this.Tabs.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -255,9 +255,9 @@
             // EventBox
             // 
             this.EventBox.Controls.Add(this.TrackEvent);
-            this.EventBox.Controls.Add(this.eventProperties);
+            this.EventBox.Controls.Add(this.EventProperties);
             this.EventBox.Controls.Add(this.EventName);
-            this.EventBox.Controls.Add(this.eventNameLabel);
+            this.EventBox.Controls.Add(this.EventNameLabel);
             this.EventBox.Location = new System.Drawing.Point(16, 69);
             this.EventBox.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.EventBox.Name = "EventBox";
@@ -280,23 +280,23 @@
             this.TrackEvent.UseVisualStyleBackColor = true;
             this.TrackEvent.Click += new System.EventHandler(this.TrackEvent_Click);
             // 
-            // eventProperties
+            // EventProperties
             // 
-            this.eventProperties.AllowUserToResizeColumns = false;
-            this.eventProperties.AllowUserToResizeRows = false;
-            this.eventProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.EventProperties.AllowUserToResizeColumns = false;
+            this.EventProperties.AllowUserToResizeRows = false;
+            this.EventProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eventProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.eventProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.EventProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.EventProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Key,
             this.Value});
-            this.eventProperties.Location = new System.Drawing.Point(19, 85);
-            this.eventProperties.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.eventProperties.Name = "eventProperties";
-            this.eventProperties.RowHeadersWidth = 82;
-            this.eventProperties.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.eventProperties.Size = new System.Drawing.Size(684, 211);
-            this.eventProperties.TabIndex = 13;
+            this.EventProperties.Location = new System.Drawing.Point(19, 85);
+            this.EventProperties.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.EventProperties.Name = "EventProperties";
+            this.EventProperties.RowHeadersWidth = 82;
+            this.EventProperties.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.EventProperties.Size = new System.Drawing.Size(684, 211);
+            this.EventProperties.TabIndex = 13;
             // 
             // Key
             // 
@@ -327,15 +327,15 @@
             this.EventName.Size = new System.Drawing.Size(487, 31);
             this.EventName.TabIndex = 12;
             // 
-            // eventNameLabel
+            // EventNameLabel
             // 
-            this.eventNameLabel.Location = new System.Drawing.Point(12, 31);
-            this.eventNameLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.eventNameLabel.Name = "eventNameLabel";
-            this.eventNameLabel.Size = new System.Drawing.Size(188, 44);
-            this.eventNameLabel.TabIndex = 11;
-            this.eventNameLabel.Text = "Event Name";
-            this.eventNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.EventNameLabel.Location = new System.Drawing.Point(12, 31);
+            this.EventNameLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.EventNameLabel.Name = "EventNameLabel";
+            this.EventNameLabel.Size = new System.Drawing.Size(188, 44);
+            this.EventNameLabel.TabIndex = 11;
+            this.EventNameLabel.Text = "Event Name";
+            this.EventNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // AnalyticsEnabled
             // 
@@ -470,15 +470,15 @@
             this.CrashesEnabled.UseVisualStyleBackColor = true;
             this.CrashesEnabled.CheckedChanged += new System.EventHandler(this.CrashesEnabled_CheckedChanged);
             // 
-            // others
+            // OthersTab
             // 
-            this.others.Location = new System.Drawing.Point(8, 39);
-            this.others.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.others.Name = "others";
-            this.others.Size = new System.Drawing.Size(752, 481);
-            this.others.TabIndex = 3;
-            this.others.Text = "Others";
-            this.others.UseVisualStyleBackColor = true;
+            this.OthersTab.Location = new System.Drawing.Point(8, 39);
+            this.OthersTab.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.OthersTab.Name = "OthersTab";
+            this.OthersTab.Size = new System.Drawing.Size(752, 481);
+            this.OthersTab.TabIndex = 3;
+            this.OthersTab.Text = "Others";
+            this.OthersTab.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -498,7 +498,7 @@
             this.AnalyticsTab.ResumeLayout(false);
             this.EventBox.ResumeLayout(false);
             this.EventBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).EndInit();
             this.CrashesTab.ResumeLayout(false);
             this.CrashBox.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -511,7 +511,7 @@
         private System.Windows.Forms.TabPage AppCenterTab;
         private System.Windows.Forms.TabPage AnalyticsTab;
         private System.Windows.Forms.TabPage CrashesTab;
-        private System.Windows.Forms.TabPage others;
+        private System.Windows.Forms.TabPage OthersTab;
         private System.Windows.Forms.CheckBox AppCenterEnabled;
         private System.Windows.Forms.Label appCenterLogLevelLabel;
         private System.Windows.Forms.ComboBox AppCenterLogLevel;
@@ -526,8 +526,8 @@
         private System.Windows.Forms.GroupBox EventBox;
         private System.Windows.Forms.CheckBox AnalyticsEnabled;
         private System.Windows.Forms.TextBox EventName;
-        private System.Windows.Forms.Label eventNameLabel;
-        private System.Windows.Forms.DataGridView eventProperties;
+        private System.Windows.Forms.Label EventNameLabel;
+        private System.Windows.Forms.DataGridView EventProperties;
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.Button TrackEvent;

@@ -71,7 +71,7 @@ namespace Contoso.WinForms.Demo
         private void TrackEvent_Click(object sender, EventArgs e)
         {
             var name = EventName.Text;
-            var properties = eventProperties.Rows.Cast<DataGridViewRow>()
+            var properties = EventProperties.Rows.Cast<DataGridViewRow>()
                 .Where(row => row.Cells["Key"].Value != null && row.Cells["Value"].Value != null)
                 .ToDictionary(
                     row => row.Cells["Key"].Value?.ToString(),
