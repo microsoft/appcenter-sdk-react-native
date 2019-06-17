@@ -9,6 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
+using System.IO;
+using System.Collections.ObjectModel;
+using Microsoft.QualityTools.Testing.Fakes;
+using System.IO.Fakes;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 {
@@ -20,18 +25,19 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             ErrorLogHelper.ProcessInformation = Mock.Of<IProcessInformation>();
             ErrorLogHelper.DeviceInformationHelper = Mock.Of<IDeviceInformationHelper>();
+            ErrorLogHelper.FileHelper = Mock.Of<FileHelper>();
         }
 
         [TestMethod]
         public void CreateErrorLog()
         {
             // Set up an exception. This is needed because inner exceptions cannot be mocked.
-            Exception exception;
+            System.Exception exception;
             try
             {
-                throw new AggregateException("mainException", new Exception("innerException1"), new Exception("innerException2", new Exception("veryInnerException")));
+                throw new AggregateException("mainException", new System.Exception("innerException1"), new System.Exception("innerException2", new System.Exception("veryInnerException")));
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 exception = e;
             }
@@ -94,6 +100,70 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.AreEqual(processName, log.ProcessName);
             Assert.AreEqual(processStartTime, log.AppLaunchTimestamp);
             Assert.IsTrue(log.Fatal);
+        }
+
+        [TestMethod]
+        public void GetSingleErrorLogFile()
+        {
+            var id = Guid.NewGuid();
+            var expectedFileInfo = new FileInfo("file");
+            var fileInfoList = new List<FileInfo> { expectedFileInfo };
+            Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles($"{id}.json")).Returns(fileInfoList);
+
+            // Retrieve the error log by the ID.
+            var errorLogFileInfo = ErrorLogHelper.GetStoredErrorLogFile(id);
+
+            // Validate the contents.
+            Assert.AreSame(expectedFileInfo, errorLogFileInfo);
+        }
+
+        [TestMethod]
+        public void GetErrorLogFiles()
+        {
+            // Mock multiple error log files.
+            var expectedFileInfo1 = new FileInfo("file");
+            var expectedFileInfo2 = new FileInfo("file2");
+            var fileInfoList = new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
+            Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles("*.json")).Returns(fileInfoList);
+
+            // Retrieve the error logs.
+            var errorLogFileInfos = ErrorLogHelper.GetErrorLogFiles().ToList();
+
+            // Validate the contents.
+            Assert.AreEqual(fileInfoList.Count, errorLogFileInfos.Count);
+            foreach (var fileInfo in errorLogFileInfos)
+            {
+                Assert.IsNotNull(fileInfo);
+                CollectionAssert.Contains(fileInfoList, fileInfo);
+                fileInfoList.Remove(fileInfo);
+            }
+        }
+
+        [TestMethod]
+        public void GetLastErrorLogFile()
+        {
+            // Mock multiple error log files.
+            using (ShimsContext.Create())
+            {
+                var oldFileInfo = new System.IO.Fakes.ShimFileInfo();
+                var oldFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(oldFileInfo)
+                {
+                    LastWriteTimeGet = () => DateTime.Now.AddDays(-200)
+                };
+                var recentFileInfo = new System.IO.Fakes.ShimFileInfo();
+                var recentFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(oldFileInfo)
+                {
+                    LastWriteTimeGet = () => DateTime.Now
+                };
+                var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
+                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles("*.json")).Returns(fileInfoList);
+
+                // Retrieve the error logs.
+                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
+
+                // Validate the contents.
+                Assert.AreSame(recentFileInfo.Instance, errorLogFileInfo);
+            }
         }
     }
 }

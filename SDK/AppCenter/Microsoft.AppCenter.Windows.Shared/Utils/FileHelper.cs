@@ -14,6 +14,13 @@ namespace Microsoft.AppCenter.Utils
         private readonly DirectoryInfo _baseDirectory;
 
         /// <summary>
+        /// Creates an instance. This parameterless constructor is needed for tests.
+        /// </summary>
+        public FileHelper()
+        {
+        }
+
+        /// <summary>
         /// Creates an instance with the given base path.
         /// </summary>
         /// <param name="basePath">The path to use as the base for all operations.</param>

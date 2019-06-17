@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <summary>
         /// Error log directory within application files.
         /// </summary>
-        private const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
+        public const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
 
         /// <summary>
         /// Device information utility. Public for testing purposes only.
