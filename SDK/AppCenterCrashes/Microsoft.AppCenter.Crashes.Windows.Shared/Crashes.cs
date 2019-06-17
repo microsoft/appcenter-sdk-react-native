@@ -107,7 +107,7 @@ namespace Microsoft.AppCenter.Crashes
         {
             lock (_serviceLock)
             {
-                Channel.SetEnabled(enabled);
+                // Channel.SetEnabled(enabled);
                 if (enabled && ChannelGroup != null)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
