@@ -1,19 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using System.IO;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
+using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 using Microsoft.QualityTools.Testing.Fakes;
-using System.IO.Fakes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 {
@@ -142,9 +141,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         [TestMethod]
         public void GetLastErrorLogFile()
         {
-            // Mock multiple error log files.
             using (ShimsContext.Create())
             {
+
+                // Mock multiple error log files.
                 var oldFileInfo = new System.IO.Fakes.ShimFileInfo();
                 var oldFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(oldFileInfo)
                 {
@@ -163,6 +163,36 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 
                 // Validate the contents.
                 Assert.AreSame(recentFileInfo.Instance, errorLogFileInfo);
+            }
+        }
+
+        [TestMethod]
+        public void SaveErrorLogFile()
+        {
+            var errorLog = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                ProcessId = 123
+            };
+            var fileName = errorLog.Id + ".json";
+            var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            Mock.Get(ErrorLogHelper.FileHelper).Verify(instance => instance.CreateFile(fileName, serializedErrorLog), Times.Once);
+        }
+
+        [TestMethod]
+        public void RemoveStoredErrorLogFile()
+        {
+            using (ShimsContext.Create())
+            {
+                var fileInfo = new System.IO.Fakes.ShimFileInfo();
+                var count = 0;
+                fileInfo.Delete = () => { count++; };
+                var fileInfoList = new List<FileInfo> { fileInfo };
+                var id = Guid.NewGuid();
+                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles($"{id}.json")).Returns(fileInfoList);
+                ErrorLogHelper.RemoveStoredErrorLogFile(id);
+                Assert.AreEqual(1, count);
             }
         }
     }
