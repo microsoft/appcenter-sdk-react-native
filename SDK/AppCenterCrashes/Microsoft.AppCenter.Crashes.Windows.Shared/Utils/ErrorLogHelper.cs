@@ -80,8 +80,15 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         public static IEnumerable<FileInfo> GetErrorLogFiles()
         {
-            // TODO exception handling.
-            return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}");
+            try
+            {
+                return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}");
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
+            }
+            return null;
         }
 
         /// <summary>
@@ -91,7 +98,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static FileInfo GetLastErrorLogFile()
         {
             FileInfo lastErrorLogFile = null;
-            foreach (var errorLogFile in GetErrorLogFiles())
+            var errorLogFiles = GetErrorLogFiles();
+            if (errorLogFiles == null)
+            {
+                return null;
+            }
+            foreach (var errorLogFile in errorLogFiles)
             {
                 // TODO exception handling. 
                 if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
@@ -120,8 +132,15 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             var errorLogString = LogSerializer.Serialize(errorLog);
             var fileName = errorLog.Id + ErrorLogFileExtension;
-            //TODO exception handling.
-            FileHelper.CreateFile(fileName, errorLogString);
+            try
+            {
+                FileHelper.CreateFile(fileName, errorLogString);
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Error(Crashes.LogTag, "Failed to save error log.", ex);
+                return;
+            }
             AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
@@ -134,9 +153,15 @@ namespace Microsoft.AppCenter.Crashes.Utils
             var file = GetStoredErrorLogFile(errorId);
             if (file != null)
             {
-                AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
-                // TODO exception handling
-                file.Delete();
+                AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
+                try
+                {
+                    file.Delete();
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                }
             }
         }
 
@@ -175,8 +200,16 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
         private static FileInfo GetStoredFile(Guid errorId, string extension)
         {
-            // TODO exception handling.
-            return FileHelper.EnumerateFiles($"{errorId}{extension}").SingleOrDefault();
+            var fileName = $"{errorId}{extension}";
+            try
+            {
+                return FileHelper.EnumerateFiles(fileName).SingleOrDefault();
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Error(Crashes.LogTag, $"Failed to retrieve error log file {fileName}.", ex);
+            }
+            return null;
         }
     }
 }
