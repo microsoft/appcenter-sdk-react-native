@@ -61,6 +61,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\CultureInfoHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationLifecycleHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettingsFactory.cs" />
