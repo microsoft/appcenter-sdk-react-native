@@ -18,6 +18,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 }
                 catch (Exception e)
                 {
+                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process start time.", e);
                     return null;
                 }
             }
@@ -33,7 +34,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 }
                 catch (Exception e)
                 {
-                    //TODO log
+                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process ID.", e);
                     return null;
                 }
             }
@@ -49,7 +50,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 }
                 catch (Exception e)
                 {
-                    //TODO log
+                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process name.", e);
                     return null;
                 }
             }
@@ -71,6 +72,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 }
                 catch (Exception e)
                 {
+                    AppCenterLog.Warn(Crashes.LogTag, "Unable to get process architecture.", e);
                     return null;
                 }
             }

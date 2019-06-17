@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         public int? ProcessId => (int)ProcessDiagnosticInfo.GetForCurrentProcess().ProcessId;
 
-        public string ProcessName => ProcessDiagnosticInfo.GetForCurrentProcess().ExecutableFileName; //TODO double check
+        public string ProcessName => ProcessDiagnosticInfo.GetForCurrentProcess().ExecutableFileName;
 
         public int? ParentProcessId => (int)ProcessDiagnosticInfo.GetForCurrentProcess().Parent?.ProcessId;
 
