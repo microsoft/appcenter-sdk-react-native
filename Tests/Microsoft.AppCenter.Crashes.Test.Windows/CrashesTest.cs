@@ -71,8 +71,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // listener stops listening
             // error log files are deleted
-
-            // Create the error log.
         }
     }
 }
