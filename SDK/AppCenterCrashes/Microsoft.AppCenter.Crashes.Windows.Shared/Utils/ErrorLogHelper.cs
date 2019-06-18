@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
@@ -13,7 +12,6 @@ using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {
-    //TODO thread safety (maybe if filehelper is thread safe that would suffice).
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
@@ -27,7 +25,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <summary>
         /// Error log directory within application files.
         /// </summary>
-        private const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
+        public const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
 
         /// <summary>
         /// Device information utility. Public for testing purposes only.
@@ -44,6 +42,11 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         public static FileHelper FileHelper;
 
+        /// <summary>
+        /// Static lock object.
+        /// </summary>
+        private readonly static object LockObject = new object();
+
         static ErrorLogHelper()
         {
             DeviceInformationHelper = new DeviceInformationHelper();
@@ -56,14 +59,13 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <returns>A new error log instance.</returns>
-        public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception) // TODO make this synchronous
+        public static ManagedErrorLog CreateErrorLog(System.Exception exception)
         {
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.UtcNow,
-                //TODO expose synchronous way to get device information. also cache the value for the class.
-                Device = await DeviceInformationHelper.GetDeviceInformationAsync(),
+                Device = DeviceInformationHelper.GetDeviceInformation(),
                 ProcessId = ProcessInformation.ProcessId ?? 0,
                 ProcessName = ProcessInformation.ProcessName,
                 ParentProcessId = ProcessInformation.ParentProcessId,
@@ -80,8 +82,19 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         public static IEnumerable<FileInfo> GetErrorLogFiles()
         {
-            // TODO exception handling.
-            return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}");
+            lock (LockObject)
+            {
+                try
+                {
+                    // Convert to list so enumeration does not occur outside the lock.
+                    return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
+                }
+                return null;
+            }
         }
 
         /// <summary>
@@ -91,15 +104,30 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static FileInfo GetLastErrorLogFile()
         {
             FileInfo lastErrorLogFile = null;
-            foreach (var errorLogFile in GetErrorLogFiles())
+            lock (LockObject)
             {
-                // TODO exception handling. 
-                if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                var errorLogFiles = GetErrorLogFiles();
+                if (errorLogFiles == null)
                 {
-                    lastErrorLogFile = errorLogFile;
+                    return null;
+                }
+                try
+                {
+                    foreach (var errorLogFile in errorLogFiles)
+                    {
+                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                        {
+                            lastErrorLogFile = errorLogFile;
+                        }
+                    }
+                    return lastErrorLogFile;
+                }
+                catch (System.Exception e)
+                {
+                    AppCenterLog.Error(Crashes.LogTag, "Encountered an unexpected error while retrieving the latest error log.", e);
                 }
             }
-            return lastErrorLogFile;
+            return null;
         }
 
         /// <summary>
@@ -120,8 +148,18 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             var errorLogString = LogSerializer.Serialize(errorLog);
             var fileName = errorLog.Id + ErrorLogFileExtension;
-            //TODO exception handling.
-            FileHelper.CreateFile(fileName, errorLogString);
+            try
+            {
+                lock (LockObject)
+                {
+                    FileHelper.CreateFile(fileName, errorLogString);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Error(Crashes.LogTag, "Failed to save error log.", ex);
+                return;
+            }
             AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
@@ -131,12 +169,21 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <param name="errorId">The ID for the error log.</param>
         public static void RemoveStoredErrorLogFile(Guid errorId)
         {
-            var file = GetStoredErrorLogFile(errorId);
-            if (file != null)
+            lock (LockObject)
             {
-                AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}");
-                // TODO exception handling
-                file.Delete();
+                var file = GetStoredErrorLogFile(errorId);
+                if (file != null)
+                {
+                    AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                    }
+                }
             }
         }
 
@@ -175,8 +222,19 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
         private static FileInfo GetStoredFile(Guid errorId, string extension)
         {
-            // TODO exception handling.
-            return FileHelper.EnumerateFiles($"{errorId}{extension}").SingleOrDefault();
+            var fileName = $"{errorId}{extension}";
+            try
+            {
+                lock (LockObject)
+                {
+                    return FileHelper.EnumerateFiles(fileName).SingleOrDefault();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Error(Crashes.LogTag, $"Failed to retrieve error log file {fileName}.", ex);
+            }
+            return null;
         }
     }
 }

@@ -12,7 +12,12 @@ namespace Microsoft.AppCenter.Utils
     {
         public virtual Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
-            var device = new Ingestion.Models.Device
+            return Task.FromResult(GetDeviceInformation());
+        }
+
+        public virtual Ingestion.Models.Device GetDeviceInformation()
+        {
+            return new Ingestion.Models.Device
             {
                 SdkName = GetSdkName(),
                 SdkVersion = GetSdkVersion(),
@@ -36,7 +41,6 @@ namespace Microsoft.AppCenter.Utils
                 LiveUpdateDeploymentKey = GetLiveUpdateDevelopmentKey(),
                 LiveUpdatePackageHash = GetLiveUpdatePackageHash()
             };
-            return Task.FromResult(device);
         }
 
         protected abstract string GetSdkName();
