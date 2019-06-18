@@ -45,7 +45,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             // Mock device information.
             var device = new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion", "locale", 1,
                 "appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize", null, null, "appNamespace", null, null, null, null);
-            Mock.Get(ErrorLogHelper.DeviceInformationHelper).Setup(instance => instance.GetDeviceInformationAsync()).Returns(Task.FromResult(device));
+            Mock.Get(ErrorLogHelper.DeviceInformationHelper).Setup(instance => instance.GetDeviceInformation()).Returns(device);
 
             // Mock process information.
             var parentProcessId = 0;
@@ -62,7 +62,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ProcessStartTime).Returns(processStartTime);
 
             // Create the error log.
-            var log = ErrorLogHelper.CreateErrorLogAsync(exception).Result;
+            var log = ErrorLogHelper.CreateErrorLog(exception);
 
             // Validate the result.
             Assert.AreEqual(exception.StackTrace, log.Exception.StackTrace);

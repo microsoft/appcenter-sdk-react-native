@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
@@ -60,14 +59,13 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <returns>A new error log instance.</returns>
-        public static async Task<ManagedErrorLog> CreateErrorLogAsync(System.Exception exception) // TODO make this synchronous
+        public static ManagedErrorLog CreateErrorLog(System.Exception exception)
         {
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.UtcNow,
-                //TODO expose synchronous way to get device information. also cache the value for the class.
-                Device = await DeviceInformationHelper.GetDeviceInformationAsync(),
+                Device = DeviceInformationHelper.GetDeviceInformation(),
                 ProcessId = ProcessInformation.ProcessId ?? 0,
                 ProcessName = ProcessInformation.ProcessName,
                 ParentProcessId = ProcessInformation.ParentProcessId,
@@ -105,9 +103,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The most recently modified error log file.</returns>
         public static FileInfo GetLastErrorLogFile()
         {
+            FileInfo lastErrorLogFile = null;
             lock (LockObject)
             {
-                FileInfo lastErrorLogFile = null;
                 var errorLogFiles = GetErrorLogFiles();
                 if (errorLogFiles == null)
                 {
@@ -128,8 +126,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 {
                     AppCenterLog.Error(Crashes.LogTag, "Encountered an unexpected error while retrieving the latest error log.", e);
                 }
-                return null;
             }
+            return null;
         }
 
         /// <summary>

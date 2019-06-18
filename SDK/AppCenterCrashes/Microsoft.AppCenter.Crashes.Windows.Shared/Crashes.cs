@@ -77,8 +77,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
-            // TODO: errorLog should not wait for screen size
-            var errorLog = ErrorLogHelper.CreateErrorLogAsync(args.Exception).Result;
+            var errorLog = ErrorLogHelper.CreateErrorLog(args.Exception);
             ErrorLogHelper.SaveErrorLogFile(errorLog);
         }
 
