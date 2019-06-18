@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import RNFS from "react-native-fs";
 
 const TEXT_ATTACHMENT_KEY = "TEXT_ATTACHMENT_KEY";

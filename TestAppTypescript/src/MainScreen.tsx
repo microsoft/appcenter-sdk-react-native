@@ -146,11 +146,11 @@ Crashes.setListener({
       ]);
       //TODO type of binary attachment is always string?
       return [
-        ErrorAttachmentLog.attachmentWithText(textAttachment, "hello.txt"),
+        ErrorAttachmentLog.attachmentWithText(textAttachment || "", "hello.txt"),
         ErrorAttachmentLog.attachmentWithBinary(
           binaryAttachment,
           binaryName,
-          binaryType
+          binaryType || ""
         )
       ];
     })();
