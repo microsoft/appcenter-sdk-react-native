@@ -103,15 +103,22 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 return null;
             }
-            foreach (var errorLogFile in errorLogFiles)
+            try
             {
-                // TODO exception handling. 
-                if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                foreach (var errorLogFile in errorLogFiles)
                 {
-                    lastErrorLogFile = errorLogFile;
+                    if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                    {
+                        lastErrorLogFile = errorLogFile;
+                    }
                 }
+                return lastErrorLogFile;
             }
-            return lastErrorLogFile;
+            catch (System.Exception e)
+            {
+                AppCenterLog.Error(Crashes.LogTag, "Encountered an unexpected error while retrieving the latest error log.", e);
+            }
+            return null;
         }
 
         /// <summary>

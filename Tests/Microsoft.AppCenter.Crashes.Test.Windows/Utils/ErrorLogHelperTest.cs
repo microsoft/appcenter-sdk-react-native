@@ -209,6 +209,58 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
+        [DataRow(typeof(IOException))]
+        [DataRow(typeof(PlatformNotSupportedException))]
+        [DataRow(typeof(ArgumentOutOfRangeException))]
+        public void GetLastErrorLogFileDoesNotThrowWhenLastWriteTimeThrows(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            using (ShimsContext.Create())
+            {
+                // Mock multiple error log files.
+                var oldFileInfo = new System.IO.Fakes.ShimFileInfo();
+                var oldFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(oldFileInfo)
+                {
+                    LastWriteTimeGet = () => { throw exception; }
+                };
+                var recentFileInfo = new System.IO.Fakes.ShimFileInfo();
+                var recentFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(oldFileInfo)
+                {
+                    LastWriteTimeGet = () => { throw exception; }
+                };
+                var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
+                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles("*.json")).Returns(fileInfoList);
+
+                // Retrieve the error logs.
+                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
+                Assert.IsNull(errorLogFileInfo);
+            }
+        }
+
+        [TestMethod]
+        public void GetLastErrorLogFileWhenOnlyOneIsSaved()
+        {
+            using (ShimsContext.Create())
+            {
+                // Mock multiple error log files.
+                var fileInfo = new System.IO.Fakes.ShimFileInfo();
+                var fileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(fileInfo)
+                {
+                    LastWriteTimeGet = () => DateTime.Now.AddDays(-200)
+                };
+                var fileInfoList = new List<FileInfo> { fileInfo };
+                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles("*.json")).Returns(fileInfoList);
+
+                // Retrieve the error logs.
+                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
+
+                // Validate the contents.
+                Assert.AreSame(fileInfo.Instance, errorLogFileInfo);
+            }
+        }
+
+        [TestMethod]
         public void SaveErrorLogFile()
         {
             var errorLog = new ManagedErrorLog
