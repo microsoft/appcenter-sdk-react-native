@@ -5,6 +5,7 @@ set -e
 
 echo 'Unlinking...'
 react-native unlink appcenter
+react-native unlink appcenter-auth
 react-native unlink appcenter-crashes
 react-native unlink appcenter-analytics
 react-native unlink appcenter-push
