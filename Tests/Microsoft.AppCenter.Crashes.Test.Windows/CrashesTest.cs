@@ -20,6 +20,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         private Mock<IChannelGroup> _mockChannelGroup;
         private Mock<IChannelUnit> _mockChannel;
         private Mock<ErrorLogHelper> _mockErrorLogHelper;
+        private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
 
         [TestInitialize]
         public void InitializeCrashTest()
@@ -28,10 +29,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockChannelGroup = new Mock<IChannelGroup>();
             _mockChannel = new Mock<IChannelUnit>();
             _mockErrorLogHelper = new Mock<ErrorLogHelper>();
+            _mockApplicationLifecycleHelper = new Mock<IApplicationLifecycleHelper>();
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
-            //ApplicationLifecycleHelper.Instance = _applicationLifecycleHelper;
+            ApplicationLifecycleHelper.Instance = _mockApplicationLifecycleHelper.Object;
         }
 
         [TestMethod]
@@ -68,6 +70,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             };
 
             // TODO Raise an arbitrary event for UnhandledExceptionOccurred handler
+            _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
+                new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
 
             _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
             Assert.IsTrue(passed);

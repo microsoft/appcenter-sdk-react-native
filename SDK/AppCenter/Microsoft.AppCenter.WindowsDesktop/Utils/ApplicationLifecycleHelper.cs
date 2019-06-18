@@ -13,8 +13,8 @@ namespace Microsoft.AppCenter.Utils
     public class ApplicationLifecycleHelper : IApplicationLifecycleHelper
     {
         // Singleton instance of ApplicationLifecycleHelper
-        private static ApplicationLifecycleHelper _instance;
-        public static ApplicationLifecycleHelper Instance
+        private static IApplicationLifecycleHelper _instance;
+        public static IApplicationLifecycleHelper Instance
         {
             get { return _instance ?? (_instance = new ApplicationLifecycleHelper()); }
 
