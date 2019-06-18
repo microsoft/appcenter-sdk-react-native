@@ -11,11 +11,11 @@ namespace Microsoft.AppCenter.Crashes.Utils
     {
         public DateTime? ProcessStartTime => ProcessDiagnosticInfo.GetForCurrentProcess().ProcessStartTime.DateTime;
 
-        public int? ProcessId => (int)ProcessDiagnosticInfo.GetForCurrentProcess().ProcessId;
+        public int? ProcessId => (int?)ProcessDiagnosticInfo.GetForCurrentProcess().ProcessId;
 
         public string ProcessName => ProcessDiagnosticInfo.GetForCurrentProcess().ExecutableFileName;
 
-        public int? ParentProcessId => (int)ProcessDiagnosticInfo.GetForCurrentProcess().Parent?.ProcessId;
+        public int? ParentProcessId => (int?)ProcessDiagnosticInfo.GetForCurrentProcess().Parent?.ProcessId;
 
         public string ParentProcessName => ProcessDiagnosticInfo.GetForCurrentProcess().Parent?.ExecutableFileName;
 

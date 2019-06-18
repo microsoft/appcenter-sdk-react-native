@@ -178,7 +178,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                     LastWriteTimeGet = () => DateTime.Now.AddDays(-200)
                 };
                 var recentFileInfo = new System.IO.Fakes.ShimFileInfo();
-                var recentFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(oldFileInfo)
+                var recentFileSystemInfo = new System.IO.Fakes.ShimFileSystemInfo(recentFileInfo)
                 {
                     LastWriteTimeGet = () => DateTime.Now
                 };

@@ -115,7 +115,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 {
                     foreach (var errorLogFile in errorLogFiles)
                     {
-                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime < errorLogFile.LastWriteTime)
                         {
                             lastErrorLogFile = errorLogFile;
                         }

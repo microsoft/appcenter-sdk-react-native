@@ -26,6 +26,13 @@ namespace Microsoft.AppCenter.Utils
         /// <param name="basePath">The path to use as the base for all operations.</param>
         public FileHelper(string basePath)
         {
+#if WINDOWS_UWP
+            var basePathPrefix = global::Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+#else
+            //TODO what should this be?
+            var basePathPrefix = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+#endif
+            basePath = Path.Combine(basePathPrefix, basePath);
             _baseDirectory = new DirectoryInfo(basePath);
         }
 
