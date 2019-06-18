@@ -227,7 +227,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    return FileHelper.EnumerateFiles(fileName).SingleOrDefault();
+                    return FileHelper.EnumerateFiles(fileName).Single();
                 }
             }
             catch (System.Exception ex)
