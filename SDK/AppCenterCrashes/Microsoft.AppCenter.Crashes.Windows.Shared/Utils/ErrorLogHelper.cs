@@ -13,7 +13,6 @@ using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {
-    //TODO thread safety (maybe if filehelper is thread safe that would suffice).
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
@@ -43,6 +42,11 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// File system utility. Public for testing purposes only.
         /// </summary>
         public static FileHelper FileHelper;
+
+        /// <summary>
+        /// Static lock object.
+        /// </summary>
+        private readonly static object LockObject = new object();
 
         static ErrorLogHelper()
         {
@@ -80,15 +84,19 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         public static IEnumerable<FileInfo> GetErrorLogFiles()
         {
-            try
+            lock (LockObject)
             {
-                return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}");
+                try
+                {
+                    // Convert to list so enumeration does not occur outside the lock.
+                    return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
+                }
+                return null;
             }
-            catch (System.Exception ex)
-            {
-                AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
-            }
-            return null;
         }
 
         /// <summary>
@@ -97,28 +105,31 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The most recently modified error log file.</returns>
         public static FileInfo GetLastErrorLogFile()
         {
-            FileInfo lastErrorLogFile = null;
-            var errorLogFiles = GetErrorLogFiles();
-            if (errorLogFiles == null)
+            lock (LockObject)
             {
+                FileInfo lastErrorLogFile = null;
+                var errorLogFiles = GetErrorLogFiles();
+                if (errorLogFiles == null)
+                {
+                    return null;
+                }
+                try
+                {
+                    foreach (var errorLogFile in errorLogFiles)
+                    {
+                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                        {
+                            lastErrorLogFile = errorLogFile;
+                        }
+                    }
+                    return lastErrorLogFile;
+                }
+                catch (System.Exception e)
+                {
+                    AppCenterLog.Error(Crashes.LogTag, "Encountered an unexpected error while retrieving the latest error log.", e);
+                }
                 return null;
             }
-            try
-            {
-                foreach (var errorLogFile in errorLogFiles)
-                {
-                    if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
-                    {
-                        lastErrorLogFile = errorLogFile;
-                    }
-                }
-                return lastErrorLogFile;
-            }
-            catch (System.Exception e)
-            {
-                AppCenterLog.Error(Crashes.LogTag, "Encountered an unexpected error while retrieving the latest error log.", e);
-            }
-            return null;
         }
 
         /// <summary>
@@ -141,7 +152,10 @@ namespace Microsoft.AppCenter.Crashes.Utils
             var fileName = errorLog.Id + ErrorLogFileExtension;
             try
             {
-                FileHelper.CreateFile(fileName, errorLogString);
+                lock (LockObject)
+                {
+                    FileHelper.CreateFile(fileName, errorLogString);
+                }
             }
             catch (System.Exception ex)
             {
@@ -157,17 +171,20 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <param name="errorId">The ID for the error log.</param>
         public static void RemoveStoredErrorLogFile(Guid errorId)
         {
-            var file = GetStoredErrorLogFile(errorId);
-            if (file != null)
+            lock (LockObject)
             {
-                AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
-                try
+                var file = GetStoredErrorLogFile(errorId);
+                if (file != null)
                 {
-                    file.Delete();
-                }
-                catch (System.Exception ex)
-                {
-                    AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                    AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                    }
                 }
             }
         }
@@ -210,7 +227,10 @@ namespace Microsoft.AppCenter.Crashes.Utils
             var fileName = $"{errorId}{extension}";
             try
             {
-                return FileHelper.EnumerateFiles(fileName).SingleOrDefault();
+                lock (LockObject)
+                {
+                    return FileHelper.EnumerateFiles(fileName).SingleOrDefault();
+                }
             }
             catch (System.Exception ex)
             {
