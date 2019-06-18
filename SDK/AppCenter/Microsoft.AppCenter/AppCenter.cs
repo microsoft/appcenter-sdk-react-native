@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter
 
         /* Error message to display for unsupported targets. */
         const string ErrorMessage =
-            "[AppCenter] ASSERT: Cannot use App Center on this target. If you are on Android or iOS or UWP, you must add the NuGet packages in the Android and iOS and UWP projects as well. Other targets are not yet supported.";
+            "[AppCenter] ASSERT: Cannot use App Center on this target. If you are using the SDK from a .NET standard library, you must also add the App Center NuGet packages in the Android, iOS and UWP/WPF/WinForms projects as well. Other targets are not yet supported.";
 
         static LogLevel PlatformLogLevel { get; set; }
 
