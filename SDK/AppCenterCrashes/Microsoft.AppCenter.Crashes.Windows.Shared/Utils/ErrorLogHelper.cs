@@ -38,6 +38,11 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static IProcessInformation ProcessInformation;
 
         /// <summary>
+        /// Storage operations utility. Public for testing purposes only.
+        /// </summary>
+        public static IStorageOperationsHelper StorageOperationsHelper;
+
+        /// <summary>
         /// File system utility. Public for testing purposes only.
         /// </summary>
         public static FileHelper FileHelper;
@@ -51,6 +56,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             DeviceInformationHelper = new DeviceInformationHelper();
             ProcessInformation = new ProcessInformation();
+            StorageOperationsHelper = new StorageOperationsHelper();
             FileHelper = new FileHelper(ErrorStorageDirectoryName);
         }
 
@@ -144,24 +150,11 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// Saves an error log on disk.
         /// </summary>
         /// <param name="errorLog">The error log.</param>
-        public static void SaveErrorLogFile(ManagedErrorLog errorLog)
+        public void SaveErrorLogFile(ManagedErrorLog errorLog)
         {
-            var errorLogString = LogSerializer.Serialize(errorLog);
-            var fileName = errorLog.Id + ErrorLogFileExtension;
-            try
-            {
-                lock (LockObject)
-                {
-                    FileHelper.CreateFile(fileName, errorLogString);
-                }
-            }
-            catch (System.Exception ex)
-            {
-                AppCenterLog.Error(Crashes.LogTag, "Failed to save error log.", ex);
-                return;
-            }
-            AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
+            StorageOperationsHelper.SaveErrorLogFile(errorLog);
         }
+
 
         /// <summary>
         /// Deletes an error log from disk.

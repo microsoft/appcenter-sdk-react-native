@@ -61,7 +61,8 @@ namespace Microsoft.AppCenter.Crashes
         private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
             var errorLog = ErrorLogHelper.CreateErrorLog(args.Exception);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            var errorLogHelper = new ErrorLogHelper();
+            errorLogHelper.SaveErrorLogFile(errorLog);
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()

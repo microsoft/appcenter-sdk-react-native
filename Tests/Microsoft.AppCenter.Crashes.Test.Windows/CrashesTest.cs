@@ -8,6 +8,9 @@ using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
+using Microsoft.AppCenter.Crashes.Utils.Fakes;
+using Castle.DynamicProxy.Generators;
+using System.Runtime.Remoting.Messaging;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -17,7 +20,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         private Mock<IChannelGroup> _mockChannelGroup;
         private Mock<IChannelUnit> _mockChannel;
         private Mock<ErrorLogHelper> _mockErrorLogHelper;
-        private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
 
         [TestInitialize]
         public void InitializeCrashTest()
@@ -26,7 +28,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockChannelGroup = new Mock<IChannelGroup>();
             _mockChannel = new Mock<IChannelUnit>();
             _mockErrorLogHelper = new Mock<ErrorLogHelper>();
-            _mockApplicationLifecycleHelper = new Mock<IApplicationLifecycleHelper>();
             _mockChannelGroup.Setup(
                     group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
@@ -57,13 +58,19 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
-            // Raise an arbitrary event for UnhandledExceptionOccurred handler
-            _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
-                new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
+            bool passed = false;
+            IStorageOperationsHelper storageOperationsHelper = new StubIStorageOperationsHelper()
+            {
+                SaveErrorLogFileManagedErrorLog = (managedErrorLog) => 
+                {
+                    passed = true;
+                }
+            };
 
-            // Channel is enabled and listener is listening
+            // TODO Raise an arbitrary event for UnhandledExceptionOccurred handler
+
             _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
-            _mockErrorLogHelper.Verify(errorLogHelper => ErrorLogHelper.SaveErrorLogFile(It.IsAny<ManagedErrorLog>()), Times.Once());
+            Assert.IsTrue(passed);
         }
 
         [TestMethod]
@@ -78,10 +85,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             //_applicationLifecycleHelper.InvokeUnhandledException();
 
             // listener is listening
-            _mockErrorLogHelper.Verify(asdasd => ErrorLogHelper.SaveErrorLogFile(It.IsAny<ManagedErrorLog>()), Times.Never());
+            _mockErrorLogHelper.Verify(errorLogHelper => errorLogHelper.SaveErrorLogFile(It.IsAny<ManagedErrorLog>()), Times.Never());
             
             // error log files are deleted
-            _mockErrorLogHelper.Verify(asdas => ErrorLogHelper.RemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Once());
+            _mockErrorLogHelper.Verify(errorLogHelper => ErrorLogHelper.RemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]

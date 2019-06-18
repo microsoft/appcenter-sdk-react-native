@@ -269,7 +269,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             };
             var fileName = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            //ErrorLogHelper.SaveErrorLogFile(errorLog);
             Mock.Get(ErrorLogHelper.FileHelper).Verify(instance => instance.CreateFile(fileName, serializedErrorLog), Times.Once);
         }
 
@@ -294,7 +294,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var fileName = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
             Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.CreateFile(fileName, serializedErrorLog)).Throws(exception);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            // ErrorLogHelper.SaveErrorLogFile(errorLog);
 
             // No exception should be thrown.
         }
