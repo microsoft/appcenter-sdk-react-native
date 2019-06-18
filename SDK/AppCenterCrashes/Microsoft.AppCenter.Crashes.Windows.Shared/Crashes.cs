@@ -52,6 +52,7 @@ namespace Microsoft.AppCenter.Crashes
 
         public void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
+            PlatformSetEnabledAsync(true);
         }
 
         private static Task<bool> PlatformIsEnabledAsync()
