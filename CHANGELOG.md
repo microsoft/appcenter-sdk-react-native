@@ -16,6 +16,7 @@
 ### App Center Crashes
 
 #### iOS
+
 * **[Fix]** Fix a crash when tracking an exception without a message.
 
 #### Android
