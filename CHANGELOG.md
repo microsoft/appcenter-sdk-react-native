@@ -1,18 +1,33 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.1.0 (Under development)
+## Version 2.1.0
 
 ### App Center
 
 #### iOS
 
+* **[Fix]** Remove Keychain permission pop-up on macOS.
 * **[Fix]** Improve encryption security.
+
+#### Android
+* **[Fix]** Handle incorrect usage of `AppCenter.setLogUrl` API to provide readable error message.
+* **[Fix]** Fix decrypting values that have been stored for more than a year (such as the in-app update token).
+
+### App Center Analytics
+
+#### iOS
+* **[Feature]** Support setting latency of sending events via `[MSAnalytics setTransmissionInterval:]`.
+
+#### Android
+* **[Feature]** Support setting latency of sending events via `Analytics.setTransmissionInterval`.
 
 ### App Center Crashes
 
 #### iOS
-
 * **[Fix]** Fix a crash when tracking an exception without a message.
+
+#### Android
+* **[Fix]** Fix a crash that could sometimes occur while processing native crash reports.
 
 ### App Center Distribute
 
