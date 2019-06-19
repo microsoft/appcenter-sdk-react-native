@@ -18,6 +18,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ErrorLogHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IProcessInformation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\IStorageOperationsHelper.cs" />
   </ItemGroup>
 </Project>

@@ -38,11 +38,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static IProcessInformation ProcessInformation;
 
         /// <summary>
-        /// Storage operations utility. Public for testing purposes only.
-        /// </summary>
-        public static IStorageOperationsHelper StorageOperationsHelper;
-
-        /// <summary>
         /// File system utility. Public for testing purposes only.
         /// </summary>
         public static FileHelper FileHelper;
@@ -56,7 +51,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             DeviceInformationHelper = new DeviceInformationHelper();
             ProcessInformation = new ProcessInformation();
-            StorageOperationsHelper = new StorageOperationsHelper();
             FileHelper = new FileHelper(ErrorStorageDirectoryName);
         }
 
@@ -99,7 +93,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 {
                     AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
                 }
-                return null;
+                return new List<FileInfo>();
             }
         }
 
@@ -150,9 +144,23 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// Saves an error log on disk.
         /// </summary>
         /// <param name="errorLog">The error log.</param>
-        public void SaveErrorLogFile(ManagedErrorLog errorLog)
+        public static void SaveErrorLogFile(ManagedErrorLog errorLog)
         {
-            StorageOperationsHelper.SaveErrorLogFile(errorLog);
+            var errorLogString = LogSerializer.Serialize(errorLog);
+            var fileName = errorLog.Id + ErrorLogFileExtension;
+            try
+            {
+                lock (LockObject)
+                {
+                    FileHelper.CreateFile(fileName, errorLogString);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Error(Crashes.LogTag, "Failed to save error log.", ex);
+                return;
+            }
+            AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
 
@@ -166,6 +174,28 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 var file = GetStoredErrorLogFile(errorId);
                 if (file != null)
+                {
+                    AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all stored error log files.
+        /// </summary>
+        public static void RemoveAllStoredErrorLogFiles()
+        {
+            lock (LockObject)
+            {
+                foreach (var file in GetErrorLogFiles())
                 {
                     AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
                     try

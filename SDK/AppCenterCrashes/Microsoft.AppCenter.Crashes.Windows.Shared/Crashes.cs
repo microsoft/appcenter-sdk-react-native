@@ -61,8 +61,7 @@ namespace Microsoft.AppCenter.Crashes
         private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
             var errorLog = ErrorLogHelper.CreateErrorLog(args.Exception);
-            var errorLogHelper = new ErrorLogHelper();
-            errorLogHelper.SaveErrorLogFile(errorLog);
+            ErrorLogHelper.SaveErrorLogFile(errorLog);
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
@@ -107,7 +106,7 @@ namespace Microsoft.AppCenter.Crashes
         {
             lock (_serviceLock)
             {
-                // Channel.SetEnabled(enabled);
+                Channel.SetEnabled(enabled);
                 if (enabled && ChannelGroup != null)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
@@ -115,18 +114,7 @@ namespace Microsoft.AppCenter.Crashes
                 else if (!enabled)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
-                    foreach (var file in ErrorLogHelper.GetErrorLogFiles())
-                    {
-                        AppCenterLog.Debug(LogTag, "Deleting file " + file);
-                        try
-                        {
-                            file.Delete();
-                        }
-                        catch (System.Exception exception)
-                        {
-                            AppCenterLog.Warn(LogTag, "Failed to delete file " + file);
-                        }
-                    }
+                    ErrorLogHelper.RemoveAllStoredErrorLogFiles();
                     AppCenterLog.Info(LogTag, "Deleted crashes local files");
                 }
             }

@@ -11,6 +11,7 @@ using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils.Fakes;
 using Castle.DynamicProxy.Generators;
 using System.Runtime.Remoting.Messaging;
+using Microsoft.QualityTools.Testing.Fakes;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -61,20 +62,19 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             bool passed = false;
-            IStorageOperationsHelper storageOperationsHelper = new StubIStorageOperationsHelper()
+            using (ShimsContext.Create())
             {
-                SaveErrorLogFileManagedErrorLog = (managedErrorLog) => 
+                ShimErrorLogHelper.SaveErrorLogFileManagedErrorLog = (managedErrorLog) =>
                 {
                     passed = true;
-                }
-            };
+                };
+                // Raise an arbitrary event for UnhandledExceptionOccurred handler
+                _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
+                    new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
 
-            // TODO Raise an arbitrary event for UnhandledExceptionOccurred handler
-            _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
-                new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
-
-            _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
-            Assert.IsTrue(passed);
+                _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
+                Assert.IsTrue(passed);
+            }
         }
 
         [TestMethod]
@@ -84,15 +84,28 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.SetEnabledAsync(false).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
-            _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
-            // listener stops listening
-            //_applicationLifecycleHelper.InvokeUnhandledException();
+            bool saveErrorLogFileCalled = false;
+            bool removeErrorLogFilesCalled = false;
+            using (ShimsContext.Create())
+            {
+                ShimErrorLogHelper.SaveErrorLogFileManagedErrorLog = (managedErrorLog) =>
+                {
+                    saveErrorLogFileCalled = true;
+                };
+                ShimErrorLogHelper.RemoveAllStoredErrorLogFiles = () =>
+                {
+                    removeErrorLogFilesCalled = true;
+                };
+                
+                // Raise an arbitrary event for UnhandledExceptionOccurred handler
+                _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
+                    new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
 
-            // listener is listening
-            _mockErrorLogHelper.Verify(errorLogHelper => errorLogHelper.SaveErrorLogFile(It.IsAny<ManagedErrorLog>()), Times.Never());
-            
-            // error log files are deleted
-            _mockErrorLogHelper.Verify(errorLogHelper => ErrorLogHelper.RemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Once());
+                _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
+                _mockChannel.Verify(channel => channel.ShutdownAsync(), Times.Once());
+                Assert.IsFalse(saveErrorLogFileCalled);
+                Assert.IsTrue(removeErrorLogFilesCalled);
+            }
         }
 
         [TestMethod]
