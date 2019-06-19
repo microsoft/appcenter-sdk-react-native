@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Foundation;
 using System;
-using Newtonsoft.Json;
 using System.Linq;
+using Foundation;
 using Microsoft.AppCenter.Data.iOS.Bindings;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -61,18 +60,16 @@ namespace Microsoft.AppCenter.Data
 
         public static MSDictionaryDocument ToMSDocument<T>(this T document)
         {
-            var deserialized = JsonConvert.SerializeObject(document);
-            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(deserialized);
-            var nativeDict = NSDictionary.FromObjectsAndKeys(dict.Values.ToArray(), dict.Keys.ToArray());
-            return new MSDictionaryDocument().Init(nativeDict);
-        }
+            var jsonString = JsonConvert.SerializeObject(document);
+            var data = NSData.FromString(jsonString);
+            NSError error;
+            var nativeDict = (NSDictionary)NSJsonSerialization.Deserialize(data, new NSJsonReadingOptions(), out error);
+            if (error != null)
+            {
+                throw new NSErrorException(error);
 
-        public static T ToDocument<T>(this MSDictionaryDocument document)
-        {
-            var dict = document.SerializeToDictionary()
-                               .ToDictionary(i => (string)(NSString)i.Key, i => (string)(NSString)i.Value);
-            var serialized = JsonConvert.SerializeObject(dict);
-            return JsonConvert.DeserializeObject<T>(serialized);
+            }
+            return new MSDictionaryDocument().Init(nativeDict);
         }
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this MSPaginatedDocuments paginatedDocuments)

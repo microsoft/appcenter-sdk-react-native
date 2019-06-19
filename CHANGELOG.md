@@ -1,5 +1,62 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.1.0
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Improve encryption security.
+
+#### Android
+
+* **[Fix]** Handle incorrect usage of `AppCenter.setLogUrl` API to provide readable error message.
+* **[Fix]** Fix decrypting values that have been stored for more than a year (such as the in-app update token).
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix a crash when tracking an exception without a message.
+
+#### Android
+
+* **[Fix]** Fix a crash that could sometimes occur while processing native crash reports.
+
+### App Center Distribute
+
+#### Android
+
+* **[Feature]** Add `Distribute.SetEnabledForDebuggableBuild(bool)` method to allow in-app updates in debuggable builds.
+* **[Fix]** Fix duplicate in-app update dialog when restarting (or switching) activity quickly after clicking download. Also fixes a crash when choosing "Ask me in a day" in the duplicate dialog.
+* **[Fix]** Fix a crash that could occur when downloading the update with a customized dialog and then calling `Distribute.NotifyUserConfirmation(UpdateAction.Postpone)` right after calling `Distribute.NotifyUserConfirmation(UpdateAction.Update)`.
+* **[Fix]** Fix a crash that could occur while trying to open the browser on some devices.
+
+### App Center Auth
+
+* **[Feature]** Expose the ID Token and Access Token (as raw JWT format) in the `UserInformation` object returned from the sign-in method.
+* **[Breaking change]** The `UserInformation` class has been moved from the `Microsoft.AppCenter` namespace to `Microsoft.AppCenter.Auth` namespace.
+
+#### iOS
+
+* **[Fix]** Fix changing signing status may cause logs (e.g., events) to be delayed.
+* **[Fix]** Validate custom URL scheme before starting Auth and log an error message when it is invalid.
+* **[Fix]** Fix rare condition where a user is prompted again for their credentials instead of refreshing the token silently.
+
+#### Android
+
+* **[Fix]** Fix missing proguard rules so that the app does not have to specify them.
+* **[Fix]** Fix crash on silently refreshing token if initialization of MSAL fails.
+* **[Fix]** Fix sign-in before start auth service never ends and blocks every next try.
+
+### App Center Data
+
+* **[Fix]** Fix an issue where invalid characters in the document ID are accepted at creation time but causing errors while trying to read or delete the document. The characters are `#`, `\`, `/`, `?`, and all whitespaces.
+
+#### iOS
+
+* **[Fix]** Fix document serialization/deserialization to handle non string types inside an object.
+
 ## Version 2.0.0
 
 Version 2.0.0 of the App Center SDK includes two new modules: Auth and Data.
@@ -330,7 +387,7 @@ This version contains bug fixes.
 
 #### iOS
 
-* **[Fix #670]** [Previous release](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.6.0) was unintentionally requiring Mono 5.8 on iOS applications. This build issue is now fixed.
+* **[Fix #670]** [Previous release](https://github.com/microsoft/appcenter-sdk-dotnet/releases/tag/1.6.0) was unintentionally requiring Mono 5.8 on iOS applications. This build issue is now fixed.
 
 #### UWP
 
@@ -556,9 +613,9 @@ ___
 
 ## Version 1.0.1
 
-This release fixes the NuGet packages that were released for [1.0.0](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.0.0).
+This release fixes the NuGet packages that were released for [1.0.0](https://github.com/microsoft/appcenter-sdk-dotnet/releases/tag/1.0.0).
 
-Please read the [1.0.0 release notes](https://github.com/Microsoft/AppCenter-SDK-DotNet/releases/tag/1.0.0) if you are not yet aware of this version.
+Please read the [1.0.0 release notes](https://github.com/microsoft/appcenter-sdk-dotnet/releases/tag/1.0.0) if you are not yet aware of this version.
 
 Fixes from 1.0.1:
 

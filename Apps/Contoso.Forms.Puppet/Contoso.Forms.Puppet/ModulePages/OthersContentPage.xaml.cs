@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
@@ -23,6 +25,8 @@ namespace Contoso.Forms.Puppet
         static bool _rumStarted;
 
         static bool _eventFilterStarted;
+
+        private UserInformation userInfo = null;
 
         static OthersContentPage()
         {
@@ -53,6 +57,11 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
+            if (userInfo?.AccountId != null)
+            {
+                SignInInformationButton.Text = "User authenticated";
+            }
+            else SignInInformationButton.Text = "User not authenticated";
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -93,7 +102,11 @@ namespace Contoso.Forms.Puppet
         {
             try
             {
-                var userInfo = await Auth.SignInAsync();
+                userInfo = await Auth.SignInAsync();
+                if (userInfo.AccountId != null)
+                {
+                    SignInInformationButton.Text = "User authenticated";
+                }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -120,10 +133,48 @@ namespace Contoso.Forms.Puppet
             }
             try
             {
+                var objectCollection = new List<Uri>();
+                objectCollection.Add(new Uri("http://google.com/"));
+                objectCollection.Add(new Uri("http://microsoft.com/"));
+                objectCollection.Add(new Uri("http://facebook.com/"));
+                var primitiveCollection = new List<int>();
+                primitiveCollection.Add(1);
+                primitiveCollection.Add(2);
+                primitiveCollection.Add(3);
+                var dict = new Dictionary<string, Uri>();
+                dict.Add("key1", new Uri("http://google.com/"));
+                dict.Add("key2", new Uri("http://microsoft.com/"));
+                dict.Add("key3", new Uri("http://facebook.com/"));
                 var customDoc = new CustomDocument
                 {
                     Id = Guid.NewGuid(),
-                    TimeStamp = DateTime.UtcNow
+                    TimeStamp = DateTime.UtcNow,
+                    SomeNumber = 123,
+                    SomeObject = dict,
+                    SomePrimitiveArray = new int[] { 1, 2, 3 },
+                    SomeObjectArray = new CustomDocument[] {
+                        new CustomDocument {
+                            Id = Guid.NewGuid(),
+                            TimeStamp = DateTime.UtcNow,
+                            SomeNumber = 123,
+                            SomeObject = dict,
+                            SomePrimitiveArray = new int[] { 1, 2, 3 },
+                            SomeObjectCollection = objectCollection,
+                            SomePrimitiveCollection = primitiveCollection
+                        }
+                    },
+                    SomeObjectCollection = objectCollection,
+                    SomePrimitiveCollection = primitiveCollection,
+                    Custom = new CustomDocument
+                    {
+                        Id = Guid.NewGuid(),
+                        TimeStamp = DateTime.UtcNow,
+                        SomeNumber = 123,
+                        SomeObject = dict,
+                        SomePrimitiveArray = new int[] { 1, 2, 3 },
+                        SomeObjectCollection = objectCollection,
+                        SomePrimitiveCollection = primitiveCollection
+                    }
                 };
                 var id = customDoc.Id.ToString();
                 var document = await Data.ReplaceAsync(id, customDoc, DefaultPartitions.UserDocuments);
@@ -141,6 +192,18 @@ namespace Contoso.Forms.Puppet
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
+            userInfo = null;
+            SignInInformationButton.Text = "User not authenticated";
+        }
+
+        async void SignInInformation(object sender, EventArgs e)
+        {
+            if (userInfo != null)
+            {
+                string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
+                string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
+                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
+            }
         }
 
         public class CustomDocument
@@ -150,6 +213,27 @@ namespace Contoso.Forms.Puppet
 
             [JsonProperty("timestamp")]
             public DateTime TimeStamp { get; set; }
+
+            [JsonProperty("somenumber")]
+            public int SomeNumber { get; set; }
+
+            [JsonProperty("someprimitivearray")]
+            public int[] SomePrimitiveArray { get; set; }
+
+            [JsonProperty("someobjectarray")]
+            public CustomDocument[] SomeObjectArray { get; set; }
+
+            [JsonProperty("someprimitivecollection")]
+            public IList SomePrimitiveCollection { get; set; }
+
+            [JsonProperty("someobjectcollection")]
+            public IList SomeObjectCollection { get; set; }
+
+            [JsonProperty("someobject")]
+            public Dictionary<string, Uri> SomeObject { get; set; }
+
+            [JsonProperty("customdocument")]
+            public CustomDocument Custom { get; set; }
         }
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.SignInInformationContentPage">
+    <StackLayout>
+        <StackLayout.Margin>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="16,48,16,0" />
+                <On Platform="Android, UWP" Value="16,16,16,0" />
+            </OnPlatform>
+        </StackLayout.Margin>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="AccountId" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Label HorizontalOptions="FillAndExpand" x:Name="AccountIdEntry" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="AccessToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Label HorizontalOptions="FillAndExpand" x:Name="AccessTokenEntry" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="IdToken" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="120" />
+            <Label HorizontalOptions="FillAndExpand" x:Name="IdTokenEntry" />
+        </StackLayout>
+        <Button Text="OK" Clicked="OkOnClick" />
+    </StackLayout>
+</ContentPage>

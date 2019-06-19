@@ -40,10 +40,7 @@ namespace Microsoft.AppCenter.Auth
                 }
                 else
                 {
-                    taskCompletionSource.TrySetResult(new UserInformation
-                    {
-                        AccountId = userInformation.AccountId
-                    });
+                    taskCompletionSource.TrySetResult(new UserInformation(userInformation.AccountId, userInformation.AccessToken, userInformation.IdToken));
                 }
             });
             return taskCompletionSource.Task;

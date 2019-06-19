@@ -8,7 +8,7 @@ Param(
 
 $basePackage="Microsoft.AppCenter"
 $version=(Select-String -Path windows/nuspecs/nuget/AppCenter.nuspec -Pattern "version>(.*)<").Matches.Groups[1].Value
-foreach ($packageSuffix in @("", ".Analytics", ".Crashes", ".Distribute", ".Push")) {
+foreach ($packageSuffix in @("", ".Analytics", ".Crashes", ".Distribute", ".Push", ".Auth", ".Data")) {
   $package = "$basePackage$packageSuffix"
   $url = "https://msmobilecenter.pkgs.visualstudio.com/_apis/packaging/feeds/$env:NUGET_FEED_ID/nuget/packages/$package/versions/$version/content"
   $password = [System.Text.Encoding]::UTF8.GetBytes("appcenter:$NugetPassword")

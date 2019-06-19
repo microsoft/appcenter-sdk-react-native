@@ -64,6 +64,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="SignInInformationContentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -109,6 +113,9 @@
       <DependentUpon>TextAttachmentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Property.cs" />
+    <Compile Include="SignInInformationContentPage.xaml.cs">
+      <DependentUpon>SignInInformationContentPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

@@ -41,6 +41,23 @@ namespace Microsoft.AppCenter.Auth.iOS.Bindings
         void OpenUrl(NSUrl url, NSDictionary options);
     }
 
+    // @interface MSUserInformation : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSUserInformation
+    {
+        // @property(nonatomic, copy) NSString *accountId;
+        [Export("accountId")]
+        string AccountId { get; set; }
+
+        // @property(nonatomic, copy) NSString *accessToken;
+        [Export("accessToken")]
+        string AccessToken { get; set; }
+
+        // @property(nonatomic, copy) NSString *idToken;
+        [Export("idToken")]
+        string IdToken { get; set; }
+    }
+
     // typedef void (^MSSignInCompletionHandler)(MSUserInformation *_Nullable userInformation, NSError *_Nullable error);
     delegate void MSSignInCompletionHandler([NullAllowed] MSUserInformation userInformation, [NullAllowed] NSError error);
 }
