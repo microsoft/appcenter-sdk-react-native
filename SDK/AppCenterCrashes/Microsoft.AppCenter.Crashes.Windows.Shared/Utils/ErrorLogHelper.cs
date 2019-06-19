@@ -163,7 +163,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
             AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
-
         /// <summary>
         /// Deletes an error log from disk.
         /// </summary>
@@ -197,7 +196,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 foreach (var file in GetErrorLogFiles())
                 {
-                    AppCenterLog.Info(Crashes.LogTag, $"Deleting error log file {file.Name}.");
+                    AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log file {file.Name}.");
                     try
                     {
                         file.Delete();
@@ -208,7 +207,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     }
                 }
             }
-            AppCenterLog.Info(Crashes.LogTag, "Deleted crashes local files");
+            AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files");
         }
 
         private static ModelException CreateModelException(System.Exception exception)
