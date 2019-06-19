@@ -25,7 +25,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <summary>
         /// Error log directory within application files.
         /// </summary>
-        public const string ErrorStorageDirectoryName = "Microsoft.AppCenter.Error";
+        public const string ErrorStorageDirectoryName = "Errors";
 
         /// <summary>
         /// Device information utility. Public for testing purposes only.
@@ -38,9 +38,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static IProcessInformation ProcessInformation;
 
         /// <summary>
-        /// File system utility. Public for testing purposes only.
+        /// Directory containing crashes files.
         /// </summary>
-        public static FileHelper FileHelper;
+        public static DirectoryInfo CrashesDirectory;
 
         /// <summary>
         /// Static lock object.
@@ -51,7 +51,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             DeviceInformationHelper = new DeviceInformationHelper();
             ProcessInformation = new ProcessInformation();
-            FileHelper = new FileHelper(ErrorStorageDirectoryName);
+            var crashesDirectoryLocation = Path.Combine(Constants.AppCenterFilesDirectoryLocation, Constants.AppCenterFilesDirectoryName, ErrorStorageDirectoryName);
+            CrashesDirectory = new DirectoryInfo(crashesDirectoryLocation);
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 try
                 {
                     // Convert to list so enumeration does not occur outside the lock.
-                    return FileHelper.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
+                    return CrashesDirectory.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
                 }
                 catch (System.Exception ex)
                 {
@@ -152,7 +153,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    FileHelper.CreateFile(fileName, errorLogString);
+                    if (!CrashesDirectory.Exists)
+                    {
+                        CrashesDirectory.Create();
+                    }
+                    var filePath = Path.Combine(CrashesDirectory.FullName, fileName);
+                    File.WriteAllText(filePath, errorLogString);
                 }
             }
             catch (System.Exception ex)
@@ -250,7 +256,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    return FileHelper.EnumerateFiles(fileName).Single();
+                    return CrashesDirectory.EnumerateFiles(fileName).Single();
                 }
             }
             catch (System.Exception ex)

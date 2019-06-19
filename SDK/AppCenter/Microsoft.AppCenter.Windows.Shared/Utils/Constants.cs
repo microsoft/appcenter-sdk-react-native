@@ -8,7 +8,7 @@ namespace Microsoft.AppCenter.Utils
     /// <summary>
     /// Various constants used by the SDK.
     /// </summary>
-    public static class Constants
+    public static partial class Constants
     {
         // Prefix for App Center application settings
         public const string KeyPrefix = "AppCenter";
@@ -17,5 +17,8 @@ namespace Microsoft.AppCenter.Utils
         public const int DefaultTriggerCount = 50;
         public static readonly TimeSpan DefaultTriggerInterval = TimeSpan.FromSeconds(3);
         public const int DefaultTriggerMaxParallelRequests = 3;
+
+        // File Storage
+        public static readonly string AppCenterFilesDirectoryName = "Microsoft.AppCenter";
     }
 }
