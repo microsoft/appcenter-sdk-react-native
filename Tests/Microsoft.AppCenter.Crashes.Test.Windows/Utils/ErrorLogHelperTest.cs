@@ -163,7 +163,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 
             // Retrieve the error logs.
             var errorLogFiles = ErrorLogHelper.GetErrorLogFiles();
-            Assert.IsNull(errorLogFiles);
+            Assert.AreEqual(errorLogFiles.Count(), 0);
         }
 
         [TestMethod]
@@ -269,7 +269,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             };
             var fileName = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
-            //ErrorLogHelper.SaveErrorLogFile(errorLog);
+            ErrorLogHelper.SaveErrorLogFile(errorLog);
             Mock.Get(ErrorLogHelper.FileHelper).Verify(instance => instance.CreateFile(fileName, serializedErrorLog), Times.Once);
         }
 
@@ -333,6 +333,46 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var id = Guid.NewGuid();
                 Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles($"{id}.json")).Returns(fileInfoList);
                 ErrorLogHelper.RemoveStoredErrorLogFile(id);
+
+                // No exception should be thrown.
+            }
+        }
+
+        [TestMethod]
+        public void RemoveAllStoredErrorLogFiles()
+        {
+            using (ShimsContext.Create())
+            {
+                var fileInfo = new System.IO.Fakes.ShimFileInfo();
+                var file2Info = new System.IO.Fakes.ShimFileInfo();
+                var count = 0;
+                fileInfo.Delete = () => { count++; };
+                file2Info.Delete = () => { count++; };
+                var fileInfoList = new List<FileInfo> { fileInfo, file2Info };
+                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles("*.json")).Returns(fileInfoList);
+                ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+                Assert.AreEqual(2, count);
+            }
+        }
+
+        [TestMethod]
+        [DataRow(typeof(IOException))]
+        [DataRow(typeof(System.Security.SecurityException))]
+        [DataRow(typeof(UnauthorizedAccessException))]
+        public void RemoveAllStoredErrorLogFilesDoesNotThrow(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            using (ShimsContext.Create())
+            {
+                var fileInfo = new System.IO.Fakes.ShimFileInfo
+                {
+                    Delete = () => { throw exception; }
+                };
+                var fileInfoList = new List<FileInfo> { fileInfo };
+                var id = Guid.NewGuid();
+                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles($"*.json")).Returns(fileInfoList);
+                ErrorLogHelper.RemoveAllStoredErrorLogFiles();
 
                 // No exception should be thrown.
             }
