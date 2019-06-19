@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ingestion\Http\HttpNetworkAdapter.cs" />
     <Compile Include="Ingestion\Http\NetworkStateAdapter.cs" />
     <Compile Include="AppCenterPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

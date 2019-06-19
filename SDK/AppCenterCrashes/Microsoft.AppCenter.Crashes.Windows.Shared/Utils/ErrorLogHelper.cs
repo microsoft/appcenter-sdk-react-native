@@ -115,7 +115,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 {
                     foreach (var errorLogFile in errorLogFiles)
                     {
-                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime > errorLogFile.LastWriteTime)
+                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime < errorLogFile.LastWriteTime)
                         {
                             lastErrorLogFile = errorLogFile;
                         }
@@ -250,7 +250,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    return FileHelper.EnumerateFiles(fileName).SingleOrDefault();
+                    return FileHelper.EnumerateFiles(fileName).Single();
                 }
             }
             catch (System.Exception ex)

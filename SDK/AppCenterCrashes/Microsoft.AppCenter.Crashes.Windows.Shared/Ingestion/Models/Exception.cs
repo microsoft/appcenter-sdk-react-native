@@ -70,7 +70,6 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         /// Gets or sets name of the wrapper SDK that emitted this exeption.
         /// Consists of the name of the SDK and the wrapper platform, e.g.
         /// "appcenter.xamarin", "hockeysdk.cordova".
-        ///
         /// </summary>
         [JsonProperty(PropertyName = "wrapperSdkName")]
         public string WrapperSdkName { get; set; }
