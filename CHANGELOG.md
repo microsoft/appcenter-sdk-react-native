@@ -9,6 +9,7 @@
 * **[Fix]** Improve encryption security.
 
 #### Android
+
 * **[Fix]** Handle incorrect usage of `AppCenter.setLogUrl` API to provide readable error message.
 * **[Fix]** Fix decrypting values that have been stored for more than a year (such as the in-app update token).
 
