@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Crashes.Utils.Fakes;
 using Microsoft.AppCenter.Utils;
+using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Microsoft.AppCenter.Crashes.Ingestion.Models;
-using Microsoft.AppCenter.Crashes.Utils.Fakes;
-using Castle.DynamicProxy.Generators;
-using System.Runtime.Remoting.Messaging;
-using Microsoft.QualityTools.Testing.Fakes;
+using System;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -20,7 +17,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
     {
         private Mock<IChannelGroup> _mockChannelGroup;
         private Mock<IChannelUnit> _mockChannel;
-        private Mock<ErrorLogHelper> _mockErrorLogHelper;
         private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
 
         [TestInitialize]
@@ -29,10 +25,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance = new Crashes();
             _mockChannelGroup = new Mock<IChannelGroup>();
             _mockChannel = new Mock<IChannelUnit>();
-            _mockErrorLogHelper = new Mock<ErrorLogHelper>();
             _mockApplicationLifecycleHelper = new Mock<IApplicationLifecycleHelper>();
-            _mockChannelGroup.Setup(
-                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+            _mockChannelGroup.Setup(group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), 
+                    It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
             ApplicationLifecycleHelper.Instance = _mockApplicationLifecycleHelper.Object;
         }
@@ -65,7 +60,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     passed = true;
                 };
 
-                // enabled state is applied
                 Crashes.SetEnabledAsync(true).Wait();
                 Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
@@ -81,8 +75,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void ApplyEnabledStateCleansUp()
         {
-            // disabled state is applied
-
             bool saveErrorLogFileCalled = false;
             bool removeErrorLogFilesCalled = false;
             using (ShimsContext.Create())
