@@ -60,7 +60,7 @@ export default class CrashesScreen extends Component<
       component.setState({ lastSessionStatus: status });
     }
 
-    const textAttachmentValue = await AttachmentsProvider.getTextAttachment() || "";
+    const textAttachmentValue = await AttachmentsProvider.getTextAttachment();
     component.setState({ textAttachment: textAttachmentValue });
 
     const binaryAttachmentValue = await AttachmentsProvider.getBinaryAttachmentInfo();
