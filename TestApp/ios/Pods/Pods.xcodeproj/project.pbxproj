@@ -46,7 +46,8 @@
 			children = (
 				9F7D1D049228EA2AEEC27808BDA6E48A /* AppCenterAnalytics.framework */,
 			);
-			name = Frameworks;
+			name = "Pods-TestApp";
+			path = "Target Support Files/Pods-TestApp";
 			sourceTree = "<group>";
 		};
 		011EA1DF8800979C74A3025FDAD8A36A /* Pods-TestApp */ = {
@@ -60,8 +61,7 @@
 				31DD1C1D4DB83FCB6A41B982428EFA79 /* Pods-TestApp.debug.xcconfig */,
 				F48B77B7A5D0AE4B443F9CDC0549738A /* Pods-TestApp.release.xcconfig */,
 			);
-			name = "Pods-TestApp";
-			path = "Target Support Files/Pods-TestApp";
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		104638DE8E65AF414B82A76D3D161FCE /* AppCenter */ = {
@@ -99,7 +99,7 @@
 			children = (
 				297012C8CDAFE7480DF0CFAD1ADB8529 /* Frameworks */,
 			);
-			name = Push;
+			name = Crashes;
 			sourceTree = "<group>";
 		};
 		519CAEB196331C34EE43D0196835956F /* Products */ = {
@@ -155,7 +155,7 @@
 			children = (
 				DB934F3E959D7E48F967208658DDEF29 /* AppCenterReactNativeShared.framework */,
 			);
-			name = Frameworks;
+			name = Push;
 			sourceTree = "<group>";
 		};
 		A758FA1AB7B2065185214362117BC934 /* Frameworks */ = {

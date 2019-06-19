@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import <AppCenterReactNativeData/AppCenterReactNativeData.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativeAuth/AppCenterReactNativeAuth.h>
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
@@ -40,6 +41,8 @@
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   } 
   
+  [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
+
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes

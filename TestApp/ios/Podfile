@@ -1,4 +1,4 @@
-# source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git'
+source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private.git'
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -11,6 +11,7 @@ target 'TestApp' do
   pod 'AppCenter/Analytics', '~> 2.0.1'
   pod 'AppCenter/Push', '~> 2.0.1'
   pod 'AppCenter/Data', '~> 2.0.1'
+  pod 'AppCenter/Auth', '~> 2.0.2-82'
   
   pod 'AppCenterReactNativeShared', :path => '../../AppCenterReactNativeShared/Products/'
 
