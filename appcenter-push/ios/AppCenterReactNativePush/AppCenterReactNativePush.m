@@ -97,15 +97,18 @@ RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPro
 }
 
 RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  if (!startedPush && shouldEnable) {
-    [MSAppCenter startService:[MSPush class]];
-    startedPush = YES;
-  }
-  [MSPush setEnabled:shouldEnable];
-  if (shouldEnable) {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPushOnceEnabled];
-  }
-  resolve(nil);
+  // [UIApplication registerForRemoteNotifications] should be called from the main thread.
+  dispatch_async(dispatch_get_main_queue(), ^(void) {
+    if (!startedPush && shouldEnable) {
+      [MSAppCenter startService:[MSPush class]];
+      startedPush = YES;
+    }
+    [MSPush setEnabled:shouldEnable];
+    if (shouldEnable) {
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPushOnceEnabled];
+    }
+    resolve(nil);
+  });
 }
 
 RCT_EXPORT_METHOD(sendAndClearInitialNotification : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
