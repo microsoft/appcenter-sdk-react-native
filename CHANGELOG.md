@@ -27,6 +27,7 @@
 * **[Fix]** Fix a crash when tracking an exception without a message.
 
 #### Android
+
 * **[Fix]** Fix a crash that could sometimes occur while processing native crash reports.
 
 ### App Center Distribute
