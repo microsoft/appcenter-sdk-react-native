@@ -6,7 +6,6 @@
 
 #### iOS
 
-* **[Fix]** Remove Keychain permission pop-up on macOS.
 * **[Fix]** Improve encryption security.
 
 #### Android
