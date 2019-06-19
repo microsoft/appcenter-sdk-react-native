@@ -13,14 +13,6 @@
 * **[Fix]** Handle incorrect usage of `AppCenter.setLogUrl` API to provide readable error message.
 * **[Fix]** Fix decrypting values that have been stored for more than a year (such as the in-app update token).
 
-### App Center Analytics
-
-#### iOS
-* **[Feature]** Support setting latency of sending events via `[MSAnalytics setTransmissionInterval:]`.
-
-#### Android
-* **[Feature]** Support setting latency of sending events via `Analytics.setTransmissionInterval`.
-
 ### App Center Crashes
 
 #### iOS
