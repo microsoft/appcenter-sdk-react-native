@@ -65,7 +65,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettingsFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\State.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutexException.cs" />
