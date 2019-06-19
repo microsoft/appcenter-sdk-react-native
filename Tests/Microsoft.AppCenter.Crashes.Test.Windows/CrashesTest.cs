@@ -57,10 +57,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void ApplyEnabledStateStartsListening()
         {
-            // enabled state is applied
-            Crashes.SetEnabledAsync(true).Wait();
-            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-
             bool passed = false;
             using (ShimsContext.Create())
             {
@@ -68,6 +64,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     passed = true;
                 };
+
+                // enabled state is applied
+                Crashes.SetEnabledAsync(true).Wait();
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
                 // Raise an arbitrary event for UnhandledExceptionOccurred handler
                 _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
                     new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
@@ -81,8 +82,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         public void ApplyEnabledStateCleansUp()
         {
             // disabled state is applied
-            Crashes.SetEnabledAsync(false).Wait();
-            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             bool saveErrorLogFileCalled = false;
             bool removeErrorLogFilesCalled = false;
@@ -96,27 +95,18 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     removeErrorLogFilesCalled = true;
                 };
-                
+
+                Crashes.SetEnabledAsync(false).Wait();
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
                 // Raise an arbitrary event for UnhandledExceptionOccurred handler
                 _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
                     new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
 
                 _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
-                _mockChannel.Verify(channel => channel.ShutdownAsync(), Times.Once());
                 Assert.IsFalse(saveErrorLogFileCalled);
                 Assert.IsTrue(removeErrorLogFilesCalled);
             }
-        }
-
-        [TestMethod]
-        public void ApplyEnabledStateDeleteFails()
-        {
-            // disabled state is applied
-            Crashes.SetEnabledAsync(false).Wait();
-            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-
-            // file deletion throws
-            
         }
     }
 }

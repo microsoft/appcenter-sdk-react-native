@@ -106,7 +106,6 @@ namespace Microsoft.AppCenter.Crashes
         {
             lock (_serviceLock)
             {
-                Channel.SetEnabled(enabled);
                 if (enabled && ChannelGroup != null)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
@@ -115,7 +114,6 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
-                    AppCenterLog.Info(LogTag, "Deleted crashes local files");
                 }
             }
         }

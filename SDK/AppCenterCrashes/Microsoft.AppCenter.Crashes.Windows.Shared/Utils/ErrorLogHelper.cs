@@ -208,6 +208,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     }
                 }
             }
+            AppCenterLog.Info(Crashes.LogTag, "Deleted crashes local files");
         }
 
         private static ModelException CreateModelException(System.Exception exception)
