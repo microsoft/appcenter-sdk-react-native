@@ -111,7 +111,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             {
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == $"{id}.json" ? fileInfoList : null;
+                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error log by the ID.
@@ -153,7 +153,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             {
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -177,11 +177,17 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles(It.IsAny<string>())).Throws(exception);
+            using (ShimsContext.Create())
+            {
+                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
+                {
+                    throw exception;
+                };
 
-            // Retrieve the error logs.
-            var errorLogFiles = ErrorLogHelper.GetErrorLogFiles();
-            Assert.AreEqual(errorLogFiles.Count(), 0);
+                // Retrieve the error logs.
+                var errorLogFiles = ErrorLogHelper.GetErrorLogFiles();
+                Assert.AreEqual(errorLogFiles.Count(), 0);
+            }
         }
 
         [TestMethod]
@@ -203,7 +209,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -258,7 +264,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -281,7 +287,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var fileInfoList = new List<FileInfo> { fileInfo };
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -364,7 +370,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var id = Guid.NewGuid();
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == $"{id}.json" ? fileInfoList : null;
+                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
                 };
                 ErrorLogHelper.RemoveStoredErrorLogFile(id);
                 Assert.AreEqual(1, count);
@@ -389,7 +395,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var id = Guid.NewGuid();
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == $"{id}.json" ? fileInfoList : null;
+                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
                 };
                 ErrorLogHelper.RemoveStoredErrorLogFile(id);
             }
@@ -401,13 +407,16 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             using (ShimsContext.Create())
             {
-                var fileInfo = new System.IO.Fakes.ShimFileInfo();
-                var file2Info = new System.IO.Fakes.ShimFileInfo();
+                var fileInfo = new ShimFileInfo();
+                var file2Info = new ShimFileInfo();
                 var count = 0;
                 fileInfo.Delete = () => { count++; };
                 file2Info.Delete = () => { count++; };
                 var fileInfoList = new List<FileInfo> { fileInfo, file2Info };
-                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles("*.json")).Returns(fileInfoList);
+                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
+                {
+                    return pattern == $"*.json" ? fileInfoList : new List<FileInfo>();
+                };
                 ErrorLogHelper.RemoveAllStoredErrorLogFiles();
                 Assert.AreEqual(2, count);
             }
@@ -415,7 +424,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 
         [TestMethod]
         [DataRow(typeof(IOException))]
-        [DataRow(typeof(System.Security.SecurityException))]
+        [DataRow(typeof(SecurityException))]
         [DataRow(typeof(UnauthorizedAccessException))]
         public void RemoveAllStoredErrorLogFilesDoesNotThrow(Type exceptionType)
         {
@@ -423,13 +432,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
             using (ShimsContext.Create())
             {
-                var fileInfo = new System.IO.Fakes.ShimFileInfo
+                var fileInfo = new ShimFileInfo
                 {
                     Delete = () => { throw exception; }
                 };
                 var fileInfoList = new List<FileInfo> { fileInfo };
-                var id = Guid.NewGuid();
-                Mock.Get(ErrorLogHelper.FileHelper).Setup(instance => instance.EnumerateFiles($"*.json")).Returns(fileInfoList);
+                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
+                {
+                    return pattern == $"*.json" ? fileInfoList : new List<FileInfo>();
+                };
                 ErrorLogHelper.RemoveAllStoredErrorLogFiles();
 
                 // No exception should be thrown.
