@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,8 +10,15 @@ namespace Microsoft.AppCenter.Utils
     /// <summary>
     /// Utilities for the file system.
     /// </summary>
-    public class FileHelper
+    public partial class FileHelper
     {
+        /// <summary>
+        /// Path to the directory where App Center files are stored.
+        /// </summary>
+        public static string AppCenterFolderPath => Path.Combine(AppCenterFolderLocation, AppCenterFolderName);
+
+        private static string AppCenterFolderName = "Microsoft.AppCenter";
+
         private readonly DirectoryInfo _baseDirectory;
 
         /// <summary>
@@ -18,22 +26,17 @@ namespace Microsoft.AppCenter.Utils
         /// </summary>
         public FileHelper()
         {
+            _baseDirectory = new DirectoryInfo(AppCenterFolderPath);
         }
 
         /// <summary>
         /// Creates an instance with the given base path.
         /// </summary>
-        /// <param name="basePath">The path to use as the base for all operations.</param>
-        public FileHelper(string basePath)
+        /// <param name="baseDirectoryName">The path to use as the base for all operations.</param>
+        public FileHelper(string baseDirectoryName)
         {
-#if WINDOWS_UWP
-            var basePathPrefix = global::Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-#else
-            //TODO what should this be?
-            var basePathPrefix = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-#endif
-            basePath = Path.Combine(basePathPrefix, basePath);
-            _baseDirectory = new DirectoryInfo(basePath);
+            baseDirectoryName = Path.Combine(AppCenterFolderPath, baseDirectoryName);
+            _baseDirectory = new DirectoryInfo(baseDirectoryName);
         }
 
         /// <summary>
