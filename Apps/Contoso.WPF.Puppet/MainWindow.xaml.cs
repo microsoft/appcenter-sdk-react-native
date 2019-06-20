@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +40,6 @@ namespace Contoso.WPF.Puppet
             AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
             EventProperties.ItemsSource = Properties;
         }
-
 
         private void UpdateState()
         {
@@ -93,6 +93,38 @@ namespace Contoso.WPF.Puppet
             var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
+        }
+
+        private void countryCodeEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbEnableCountryCode.IsChecked.HasValue)
+            {
+                if (!cbEnableCountryCode.IsChecked.Value)
+                {
+                    lCountryCode.Text = "";
+                    AppCenter.SetCountryCode(null);
+                }
+                else
+                {
+                    lCountryCode.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                    AppCenter.SetCountryCode(lCountryCode.Text);
+                }
+                spCountryCode.IsEnabled = cbEnableCountryCode.IsChecked.Value;
+            }
+        }
+
+        private void countryCodeSave_ClickListener(object sender, RoutedEventArgs e)
+        {
+            // Checked that input country code is valid.
+            bool isValidCountryCode = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                .Select(culture => new RegionInfo(culture.LCID))
+                .Any(region => region.TwoLetterISORegionName == lCountryCode.Text.ToUpper());
+            if (!isValidCountryCode)
+            {
+                // Reset country code to default if input country code is not valid.
+                lCountryCode.Text = "";
+            }
+            AppCenter.SetCountryCode(lCountryCode.Text.Length > 0 ? lCountryCode.Text : null);
         }
 
         #region Crash
