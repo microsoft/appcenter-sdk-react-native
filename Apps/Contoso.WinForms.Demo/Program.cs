@@ -18,7 +18,8 @@ namespace Contoso.WinForms.Demo
         static void Main()
         {
             AppCenter.LogLevel = LogLevel.Verbose;
-            AppCenter.Start("f4e2a83d-3052-4884-8176-8b2c50277d16", typeof(Analytics), typeof(Crashes));
+            AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+            AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
