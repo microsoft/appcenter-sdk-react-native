@@ -304,7 +304,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var filePath = Path.Combine(Constants.AppCenterFilesDirectoryLocation, Constants.AppCenterFilesDirectoryName, "Errors", errorLog.Id + ".json");
+            var filePath = Path.Combine(Constants.AppCenterFilesDirectoryPath, "Errors", errorLog.Id + ".json");
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
             using (ShimsContext.Create())
             {

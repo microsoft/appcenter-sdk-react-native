@@ -157,9 +157,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     {
                         CrashesDirectory.Create();
                     }
-                    var filePath = Path.Combine(CrashesDirectory.FullName, fileName);
-                    File.WriteAllText(filePath, errorLogString);
                 }
+                var filePath = Path.Combine(CrashesDirectory.FullName, fileName);
+                File.WriteAllText(filePath, errorLogString);
             }
             catch (System.Exception ex)
             {

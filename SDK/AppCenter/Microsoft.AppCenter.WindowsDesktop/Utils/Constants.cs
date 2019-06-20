@@ -11,8 +11,7 @@ namespace Microsoft.AppCenter.Utils
     /// </summary>
     public static partial class Constants
     {
-        // File Storage
-
+        // File Storage.
         // These aren't exactly "Constants," per se, but probably not worth moving somewhere else.
         private static string AppCenterFilesDirectoryPathBacking;
 
