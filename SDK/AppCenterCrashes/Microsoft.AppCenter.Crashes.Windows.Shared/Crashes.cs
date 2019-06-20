@@ -94,8 +94,16 @@ namespace Microsoft.AppCenter.Crashes
             _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
         }
 
+        /// <inheritdoc />
         protected override string ChannelName => "crashes";
 
+        /// <inheritdoc />
+        protected override int TriggerCount => 1;
+
+        /// <inheritdoc />
+        protected override TimeSpan TriggerInterval => TimeSpan.FromSeconds(1);
+
+        /// <inheritdoc />
         public override string ServiceName => "Crashes";
 
         /// <summary>
@@ -155,23 +163,31 @@ namespace Microsoft.AppCenter.Crashes
             foreach (var file in ErrorLogHelper.GetErrorLogFiles())
             {
                 AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
+                ManagedErrorLog log;
                 try
                 {
-                    var log = ErrorLogHelper.ReadErrorLogFile(file);
-                    if (log == null)
-                    {
-                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
-                        SafeDeleteFile(file);
-                    }
-                    else
-                    {
-                        _unprocessedManagedErrorLogs.Add(log.Id, log);
-                    }
+                    log = ErrorLogHelper.ReadErrorLogFile(file);
                 }
                 catch (System.Exception ex)
                 {
-                    AppCenterLog.Error(LogTag, $"Failed to read crash file. Deleting invalid file: {file.Name}");
-                    SafeDeleteFile(file);
+                    AppCenterLog.Error(LogTag, $"Error reading error log file: {file.Name}", ex);
+                    log = null;
+                }
+                if (log == null)
+                {
+                    AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                    }
+                }
+                else
+                {
+                    _unprocessedManagedErrorLogs.Add(log.Id, log);
                 }
             }
             SendCrashReportsOrAwaitUserConfirmation();
@@ -192,18 +208,6 @@ namespace Microsoft.AppCenter.Crashes
                 Channel.EnqueueAsync(_unprocessedManagedErrorLogs[key]);
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
-            }
-        }
-
-        private void SafeDeleteFile(FileInfo file)
-        {
-            try
-            {
-                file.Delete();
-            }
-            catch (System.Exception ex)
-            {
-                AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
             }
         }
     }
