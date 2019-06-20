@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -42,7 +43,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new AppCenterReactNativePushPackage(MainApplication.this),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
                     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-                    new AppCenterReactNativePackage(MainApplication.this)
+                    new AppCenterReactNativePackage(MainApplication.this),
+                    new AsyncStoragePackage()
             );
         }
     };
