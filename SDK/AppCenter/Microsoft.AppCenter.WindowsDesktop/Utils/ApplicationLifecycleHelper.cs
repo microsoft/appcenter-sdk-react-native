@@ -19,7 +19,7 @@ namespace Microsoft.AppCenter.Utils
             get { return _instance ?? (_instance = new ApplicationLifecycleHelper()); }
 
             // Setter for testing
-            set { _instance = value; }
+            internal set { _instance = value; }
         }
 
         #region WinEventHook
