@@ -494,6 +494,7 @@
             this.gbCountryCode.Controls.Add(this.label2);
             this.gbCountryCode.Controls.Add(this.button1);
             this.gbCountryCode.Controls.Add(this.lCountryCode);
+            this.gbCountryCode.Enabled = false;
             this.gbCountryCode.Location = new System.Drawing.Point(8, 31);
             this.gbCountryCode.Name = "gbCountryCode";
             this.gbCountryCode.Size = new System.Drawing.Size(360, 100);
