@@ -68,7 +68,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 try
                 {
-                    return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE"); // TODO improve
+                    return Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
                 }
                 catch (Exception e)
                 {
