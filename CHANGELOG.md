@@ -17,7 +17,7 @@ Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
 ### iOS
 
-* **[Fix]** Fix calling UI API on background thread.
+* **[Fix]** Fix registering push notifications in the UI thread when delaying the start of the Push module.
 
 ## Version 2.0.0
 
