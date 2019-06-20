@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationLifecycleHelper.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DefaultApplicationSettings.cs" />
     <Compile Include="DeviceInformationHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
