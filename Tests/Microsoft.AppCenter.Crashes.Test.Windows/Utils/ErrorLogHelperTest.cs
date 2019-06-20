@@ -407,18 +407,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             using (ShimsContext.Create())
             {
-                var fileInfo = new ShimFileInfo();
-                var file2Info = new ShimFileInfo();
-                var count = 0;
-                fileInfo.Delete = () => { count++; };
-                file2Info.Delete = () => { count++; };
-                var fileInfoList = new List<FileInfo> { fileInfo, file2Info };
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
+                var wasCalledWithTrue = false;
+                ShimDirectoryInfo.AllInstances.DeleteBoolean = (info, recursive) =>
                 {
-                    return pattern == $"*.json" ? fileInfoList : new List<FileInfo>();
+                    wasCalledWithTrue = recursive;
                 };
                 ErrorLogHelper.RemoveAllStoredErrorLogFiles();
-                Assert.AreEqual(2, count);
+                Assert.IsTrue(wasCalledWithTrue);
             }
         }
 
@@ -432,14 +427,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
             using (ShimsContext.Create())
             {
-                var fileInfo = new ShimFileInfo
+                ShimDirectoryInfo.AllInstances.DeleteBoolean = (info, recursive) =>
                 {
-                    Delete = () => { throw exception; }
-                };
-                var fileInfoList = new List<FileInfo> { fileInfo };
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == $"*.json" ? fileInfoList : new List<FileInfo>();
+                    throw exception;
                 };
                 ErrorLogHelper.RemoveAllStoredErrorLogFiles();
 

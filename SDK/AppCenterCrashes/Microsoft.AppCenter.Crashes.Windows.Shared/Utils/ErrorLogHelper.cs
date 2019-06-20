@@ -200,20 +200,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             lock (LockObject)
             {
-                foreach (var file in GetErrorLogFiles())
+                AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log directory.");
+                try
                 {
-                    AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log file {file.Name}.");
-                    try
-                    {
-                        file.Delete();
-                    }
-                    catch (System.Exception ex)
-                    {
-                        AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
-                    }
+                    CrashesDirectory.Delete(true);
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log directory.", ex);
                 }
             }
-            AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files");
+            AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files.");
         }
 
         private static ModelException CreateModelException(System.Exception exception)
