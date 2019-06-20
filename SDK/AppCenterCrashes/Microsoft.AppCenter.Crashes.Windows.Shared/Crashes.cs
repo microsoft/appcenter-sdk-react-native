@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
@@ -84,6 +87,13 @@ namespace Microsoft.AppCenter.Crashes
         {
         }
 
+        private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+
+        public Crashes()
+        {
+            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+        }
+
         protected override string ChannelName => "crashes";
 
         public override string ServiceName => "Crashes";
@@ -99,9 +109,13 @@ namespace Microsoft.AppCenter.Crashes
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
+                if (InstanceEnabled)
+                {
+                    ProcessPendingErrors();
+                }
             }
         }
-        
+
         private void ApplyEnabledState(bool enabled)
         {
             lock (_serviceLock)
@@ -133,6 +147,63 @@ namespace Microsoft.AppCenter.Crashes
                         ApplyEnabledState(value);
                     }
                 }
+            }
+        }
+
+        private void ProcessPendingErrors()
+        {
+            foreach (var file in ErrorLogHelper.GetErrorLogFiles())
+            {
+                AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
+                try
+                {
+                    var log = ErrorLogHelper.ReadErrorLogFile(file);
+                    if (log == null)
+                    {
+                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
+                        SafeDeleteFile(file);
+                    }
+                    else
+                    {
+                        _unprocessedManagedErrorLogs.Add(log.Id, log);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Error(LogTag, $"Failed to read crash file. Deleting invalid file: {file.Name}");
+                    SafeDeleteFile(file);
+                }
+            }
+            SendCrashReportsOrAwaitUserConfirmation();
+        }
+
+        private void SendCrashReportsOrAwaitUserConfirmation()
+        {
+            HandleUserConfirmation();
+        }
+
+        private void HandleUserConfirmation()
+        {
+
+            /* Send every pending log. */
+            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
+            foreach (var key in keys)
+            {
+                Channel.EnqueueAsync(_unprocessedManagedErrorLogs[key]);
+                _unprocessedManagedErrorLogs.Remove(key);
+                ErrorLogHelper.RemoveStoredErrorLogFile(key);
+            }
+        }
+
+        private void SafeDeleteFile(FileInfo file)
+        {
+            try
+            {
+                file.Delete();
+            }
+            catch (System.Exception ex)
+            {
+                AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
             }
         }
     }

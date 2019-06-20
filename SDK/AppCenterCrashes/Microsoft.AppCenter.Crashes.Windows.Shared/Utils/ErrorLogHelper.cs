@@ -142,6 +142,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
         }
 
         /// <summary>
+        /// Reads error log file from the given file.
+        /// </summary>
+        /// <param name="fileInfo">The file that contains error log.</param>
+        /// <returns>An error log instance or null if the file doesn't contain error log.</returns>
+        public static ManagedErrorLog ReadErrorLogFile(FileInfo fileInfo)
+        {
+            var errorLogString = File.ReadAllText(fileInfo.FullName);
+            return (ManagedErrorLog)LogSerializer.DeserializeLog(errorLogString);
+        }
+
+        /// <summary>
         /// Saves an error log on disk.
         /// </summary>
         /// <param name="errorLog">The error log.</param>
