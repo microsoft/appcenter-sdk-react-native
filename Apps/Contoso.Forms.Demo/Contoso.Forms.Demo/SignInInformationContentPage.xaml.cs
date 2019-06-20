@@ -4,7 +4,7 @@
 using System;
 using Xamarin.Forms;
 
-namespace Contoso.Forms.Puppet
+namespace Contoso.Forms.Demo
 {
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class SignInInformationContentPage : ContentPage
