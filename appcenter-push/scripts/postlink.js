@@ -36,7 +36,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             console.log(`Added code to initialize iOS Push SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Push', version: '2.0.1' },
+                    { pod: 'AppCenter/Push', version: '2.0.2-82' },
                     { pod: 'AppCenterReactNativeShared', version: '2.0.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }

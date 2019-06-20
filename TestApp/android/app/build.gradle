@@ -138,6 +138,7 @@ android {
 dependencies {
     implementation project(':appcenter-push')
     implementation project(':appcenter-data')
+    implementation project(':appcenter-auth')
     implementation project(':appcenter-crashes')
     implementation project(':appcenter-analytics')
     implementation project(':appcenter')

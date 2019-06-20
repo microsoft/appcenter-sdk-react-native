@@ -2,6 +2,12 @@
 
 ## Version 2.1.0 (Under development)
 
+Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
+
+### AppCenterAuth
+
+ App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices.
+
 ### App Center Push
 
 #### Android

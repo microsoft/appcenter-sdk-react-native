@@ -1,15 +1,14 @@
 PODS:
-  - AppCenter/Analytics (2.0.1):
+  - AppCenter/Analytics (2.0.2-82):
     - AppCenter/Core
-  - AppCenter/Core (2.0.1)
-  - AppCenter/Crashes (2.0.1):
+  - AppCenter/Auth (2.0.2-82):
     - AppCenter/Core
   - AppCenter/Data (2.0.1):
     - AppCenter/Core
   - AppCenter/Push (2.0.1):
     - AppCenter/Core
   - AppCenterReactNativeShared (2.0.0):
-    - AppCenter/Core (= 2.0.1)
+    - AppCenter/Core (= 2.0.2-82)
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 2.0.1)
@@ -19,7 +18,7 @@ DEPENDENCIES:
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
     - AppCenter
 
 EXTERNAL SOURCES:
