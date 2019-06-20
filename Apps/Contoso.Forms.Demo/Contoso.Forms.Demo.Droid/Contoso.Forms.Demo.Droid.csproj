@@ -57,9 +57,7 @@
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.1.0" />
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.1.0" />
     <PackageReference Include="Microsoft.AppCenter.Data" Version="2.1.0" />
-    <PackageReference Include="Xamarin.Forms">
-      <Version>3.6.0.344457</Version>
-    </PackageReference>
+    <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
