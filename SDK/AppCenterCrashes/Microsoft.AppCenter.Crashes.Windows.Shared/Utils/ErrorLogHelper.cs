@@ -94,7 +94,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 {
                     AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
                 }
-                return null;
+                return new List<FileInfo>();
             }
         }
 
@@ -191,6 +191,26 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Removes all stored error log files.
+        /// </summary>
+        public static void RemoveAllStoredErrorLogFiles()
+        {
+            lock (LockObject)
+            {
+                AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log directory.");
+                try
+                {
+                    CrashesDirectory.Delete(true);
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log directory.", ex);
+                }
+            }
+            AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files.");
         }
 
         private static ModelException CreateModelException(System.Exception exception)

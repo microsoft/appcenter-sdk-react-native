@@ -111,7 +111,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             {
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == $"{id}.json" ? fileInfoList : null;
+                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error log by the ID.
@@ -153,7 +153,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             {
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -183,8 +183,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 {
                     throw exception;
                 };
+
+                // Retrieve the error logs.
                 var errorLogFiles = ErrorLogHelper.GetErrorLogFiles();
-                Assert.IsNull(errorLogFiles);
+                Assert.AreEqual(errorLogFiles.Count(), 0);
             }
         }
 
@@ -207,7 +209,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -262,7 +264,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -285,7 +287,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var fileInfoList = new List<FileInfo> { fileInfo };
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == "*.json" ? fileInfoList : null;
+                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
                 };
 
                 // Retrieve the error logs.
@@ -368,7 +370,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var id = Guid.NewGuid();
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == $"{id}.json" ? fileInfoList : null;
+                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
                 };
                 ErrorLogHelper.RemoveStoredErrorLogFile(id);
                 Assert.AreEqual(1, count);
@@ -393,11 +395,46 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 var id = Guid.NewGuid();
                 ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
                 {
-                    return pattern == $"{id}.json" ? fileInfoList : null;
+                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
                 };
                 ErrorLogHelper.RemoveStoredErrorLogFile(id);
             }
             // No exception should be thrown.
+        }
+
+        [TestMethod]
+        public void RemoveAllStoredErrorLogFiles()
+        {
+            using (ShimsContext.Create())
+            {
+                var wasCalledWithTrue = false;
+                ShimDirectoryInfo.AllInstances.DeleteBoolean = (info, recursive) =>
+                {
+                    wasCalledWithTrue = recursive;
+                };
+                ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+                Assert.IsTrue(wasCalledWithTrue);
+            }
+        }
+
+        [TestMethod]
+        [DataRow(typeof(IOException))]
+        [DataRow(typeof(SecurityException))]
+        [DataRow(typeof(UnauthorizedAccessException))]
+        public void RemoveAllStoredErrorLogFilesDoesNotThrow(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            using (ShimsContext.Create())
+            {
+                ShimDirectoryInfo.AllInstances.DeleteBoolean = (info, recursive) =>
+                {
+                    throw exception;
+                };
+                ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+
+                // No exception should be thrown.
+            }
         }
     }
 }
