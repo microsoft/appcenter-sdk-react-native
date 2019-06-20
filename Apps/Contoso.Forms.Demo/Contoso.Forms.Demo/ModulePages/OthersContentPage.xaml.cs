@@ -26,7 +26,7 @@ namespace Contoso.Forms.Demo
             };
         }
 
-        private UserInformation userInfo = null;
+        private UserInformation userInfo;
 	
         public OthersContentPage()
         {
@@ -66,7 +66,7 @@ namespace Contoso.Forms.Demo
         {
             try
             {
-                var userInfo = await Auth.SignInAsync();
+                userInfo = await Auth.SignInAsync();
                 if (userInfo.AccountId != null)
                 {
                     SignInInformationButton.Text = "User authenticated";
