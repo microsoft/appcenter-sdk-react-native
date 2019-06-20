@@ -11,6 +11,15 @@ namespace Microsoft.AppCenter.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     {
+        public static event EventHandler InformationInvalidated;
+        private static string _country;
+
+        internal static void SetCountryCode(string country)
+        {
+            _country = country;
+            InvalidateInformation();
+        }
+
         public virtual async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
             var device = new Ingestion.Models.Device
@@ -41,32 +50,49 @@ namespace Microsoft.AppCenter.Utils
             return await Task<Ingestion.Models.Device>.Factory.StartNew(() => device).ConfigureAwait(false);
         }
 
+        protected static void InvalidateInformation()
+        {
+            InformationInvalidated?.Invoke(null, EventArgs.Empty);
+        }
+
         protected abstract string GetSdkName();
+
         protected abstract string GetDeviceModel();
+
         protected abstract string GetDeviceOemName();
+
         protected abstract string GetOsName();
+
         protected abstract string GetOsBuild();
+
         protected abstract string GetOsVersion();
+
         protected abstract string GetAppVersion();
+
         protected abstract string GetAppBuild();
+
         protected abstract string GetScreenSize();
 
         protected virtual string GetCarrierName()
         {
             return null;
         }
+
         protected virtual string GetCarrierCountry()
         {
-            return null;
+            return _country;
         }
+
         protected virtual string GetAppNamespace()
         {
             return null;
         }
+
         protected virtual string GetLiveUpdateReleaseLabel()
         {
             return null;
         }
+
         protected virtual string GetLiveUpdateDevelopmentKey()
         {
             return null;

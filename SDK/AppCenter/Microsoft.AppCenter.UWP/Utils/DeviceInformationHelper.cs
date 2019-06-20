@@ -14,8 +14,6 @@ namespace Microsoft.AppCenter.Utils
     /// </summary>
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        public static event EventHandler InformationInvalidated;
-        private static string _country;
         private readonly IScreenSizeProvider _screenSizeProvider;
         private static IScreenSizeProviderFactory _screenSizeProviderFactory =
             new DefaultScreenSizeProviderFactory();
@@ -33,18 +31,12 @@ namespace Microsoft.AppCenter.Utils
             return await base.GetDeviceInformationAsync().ConfigureAwait(false);
         }
 
-        internal static void SetCountryCode(string country)
-        {
-            _country = country;
-            InformationInvalidated?.Invoke(null, EventArgs.Empty);
-        }
-
         public DeviceInformationHelper()
         {
             _screenSizeProvider = _screenSizeProviderFactory.CreateScreenSizeProvider();
             _screenSizeProvider.ScreenSizeChanged += (sender, e) =>
             {
-                InformationInvalidated?.Invoke(sender, e);
+                InvalidateInformation();
             };
         }
 
@@ -114,11 +106,6 @@ namespace Microsoft.AppCenter.Utils
         protected override string GetScreenSize()
         {
             return _screenSizeProvider.ScreenSize;
-        }
-
-        protected override string GetCarrierCountry()
-        {
-            return _country;
         }
     }
 }
