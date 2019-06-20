@@ -51,7 +51,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             DeviceInformationHelper = new DeviceInformationHelper();
             ProcessInformation = new ProcessInformation();
-            var crashesDirectoryLocation = Path.Combine(Constants.AppCenterFilesDirectoryLocation, Constants.AppCenterFilesDirectoryName, ErrorStorageDirectoryName);
+            var crashesDirectoryLocation = Path.Combine(Constants.AppCenterFilesDirectoryPath, ErrorStorageDirectoryName);
             CrashesDirectory = new DirectoryInfo(crashesDirectoryLocation);
         }
 

@@ -17,8 +17,5 @@ namespace Microsoft.AppCenter.Utils
         public const int DefaultTriggerCount = 50;
         public static readonly TimeSpan DefaultTriggerInterval = TimeSpan.FromSeconds(3);
         public const int DefaultTriggerMaxParallelRequests = 3;
-
-        // File Storage
-        public static readonly string AppCenterFilesDirectoryName = "Microsoft.AppCenter";
     }
 }

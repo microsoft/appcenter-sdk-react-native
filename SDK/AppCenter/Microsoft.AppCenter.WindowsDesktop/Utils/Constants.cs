@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.IO;
 
 namespace Microsoft.AppCenter.Utils
 {
@@ -11,6 +12,24 @@ namespace Microsoft.AppCenter.Utils
     public static partial class Constants
     {
         // File Storage
-        public static readonly string AppCenterFilesDirectoryLocation = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+
+        // These aren't exactly "Constants," per se, but probably not worth moving somewhere else.
+        private static string AppCenterFilesDirectoryPathBacking;
+
+        public static string AppCenterFilesDirectoryPath
+        {
+            get
+            {
+                if (AppCenterFilesDirectoryPathBacking == null)
+                {
+                    var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+                    // This shouldn't block in reality.
+                    var installId = AppCenter.GetInstallIdAsync().Result.ToString();
+                    AppCenterFilesDirectoryPathBacking = Path.Combine(localAppData, "Microsoft", "AppCenter", installId);
+                }
+                return AppCenterFilesDirectoryPathBacking;
+            }
+        }
     }
 }

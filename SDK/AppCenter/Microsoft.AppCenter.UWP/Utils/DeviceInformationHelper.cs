@@ -16,20 +16,35 @@ namespace Microsoft.AppCenter.Utils
     {
         public static event EventHandler InformationInvalidated;
         private static string _country;
-        private readonly IScreenSizeProvider _screenSizeProvider;
-        private static IScreenSizeProviderFactory _screenSizeProviderFactory =
+        private static IScreenSizeProvider ScreenSizeProvider;
+        private static IScreenSizeProviderFactory ScreenSizeProviderFactory =
             new DefaultScreenSizeProviderFactory();
 
         // This method must be called *before* any instance of DeviceInformationHelper has been created
         // for a custom screen size provider to be used.
         public static void SetScreenSizeProviderFactory(IScreenSizeProviderFactory factory)
         {
-            _screenSizeProviderFactory = factory;
+            ScreenSizeProviderFactory = factory;
+        }
+
+        public DeviceInformationHelper()
+        {
+            lock (ScreenSizeProviderFactory)
+            {
+                if (ScreenSizeProvider == null)
+                {
+                    ScreenSizeProvider = ScreenSizeProviderFactory.CreateScreenSizeProvider();
+                    ScreenSizeProvider.ScreenSizeChanged += (sender, e) =>
+                    {
+                        InformationInvalidated?.Invoke(sender, e);
+                    };
+                }
+            }
         }
 
         public override async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
         {
-            await _screenSizeProvider.WaitUntilReadyAsync().ConfigureAwait(false);
+            await ScreenSizeProvider.WaitUntilReadyAsync().ConfigureAwait(false);
             return await base.GetDeviceInformationAsync().ConfigureAwait(false);
         }
 
@@ -37,15 +52,6 @@ namespace Microsoft.AppCenter.Utils
         {
             _country = country;
             InformationInvalidated?.Invoke(null, EventArgs.Empty);
-        }
-
-        public DeviceInformationHelper()
-        {
-            _screenSizeProvider = _screenSizeProviderFactory.CreateScreenSizeProvider();
-            _screenSizeProvider.ScreenSizeChanged += (sender, e) =>
-            {
-                InformationInvalidated?.Invoke(sender, e);
-            };
         }
 
         protected override string GetSdkName()
@@ -113,7 +119,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetScreenSize()
         {
-            return _screenSizeProvider.ScreenSize;
+            return ScreenSizeProvider.ScreenSize;
         }
 
         protected override string GetCarrierCountry()

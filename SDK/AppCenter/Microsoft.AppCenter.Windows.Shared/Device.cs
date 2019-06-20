@@ -18,7 +18,7 @@ namespace Microsoft.AppCenter
             OsName = device.OsName;
             OsVersion = device.OsVersion;
             OsBuild = device.OsBuild;
-            OsApiLevel = device.OsApiLevel ?? 0; //TODO verify
+            OsApiLevel = device.OsApiLevel;
             Locale = device.Locale;
             TimeZoneOffset = device.TimeZoneOffset;
             ScreenSize = device.ScreenSize;
