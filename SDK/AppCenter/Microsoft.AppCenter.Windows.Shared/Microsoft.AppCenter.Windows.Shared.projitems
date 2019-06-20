@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroupFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
