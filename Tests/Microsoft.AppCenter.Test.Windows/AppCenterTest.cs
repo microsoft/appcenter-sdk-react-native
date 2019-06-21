@@ -101,6 +101,30 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
+        /// Verify country code setter
+        /// </summary>
+        [TestMethod]
+        public void SetCountryCode()
+        {
+            string valideCountryCode = "US";
+            string invalidCountryCcode = "US1";
+            string countryCodeNull = null;
+            Mock<DeviceInformationHelper> mockDeviceInformationHelper = new Mock<DeviceInformationHelper>();
+           
+            AppCenter.SetCountryCode(valideCountryCode);
+            var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
+            Assert.AreEqual(device.CarrierCountry, valideCountryCode);
+
+            AppCenter.SetCountryCode(invalidCountryCcode);
+            device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
+            Assert.AreEqual(device.CarrierCountry, valideCountryCode);
+
+            AppCenter.SetCountryCode(countryCodeNull);
+            device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
+            Assert.AreEqual(device.CarrierCountry, countryCodeNull);
+        }
+
+        /// <summary>
         /// Verify that starting the same service twice (separately) only calls its OnChannelGroupReady
         /// </summary>
         [TestMethod]
