@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public class AppCenterReactNativeDataUtils {
+    
     public static WritableMap convertJsonObjectToWritableMap(JsonObject jsonObject) {
         WritableMap writableMap = new WritableNativeMap();
         for (String key : jsonObject.keySet()) {

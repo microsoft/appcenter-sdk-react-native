@@ -20,7 +20,7 @@ const Data = {
     TimeToLive,
     DefaultPartitions,
     read(documentId, partition, ttl) {
-        if(ttl === undefined) {
+        if (ttl === undefined) {
             ttl = TimeToLive.DEFAULT
         }
 
