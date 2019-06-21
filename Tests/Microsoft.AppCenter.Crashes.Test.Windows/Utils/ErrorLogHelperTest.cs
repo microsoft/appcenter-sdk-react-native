@@ -25,6 +25,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             ErrorLogHelper.ProcessInformation = Mock.Of<IProcessInformation>();
             ErrorLogHelper.DeviceInformationHelper = Mock.Of<IDeviceInformationHelper>();
+            LogSerializer.AddLogType("managedError", typeof(ManagedErrorLog));
         }
 
         [TestMethod]
@@ -295,6 +296,37 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 
                 // Validate the contents.
                 Assert.AreSame(fileInfo.Instance, errorLogFileInfo);
+            }
+        }
+
+        [TestMethod]
+        public void ReadErrorLogFile()
+        {
+            var errorLog = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                ProcessId = 123
+            };
+            var file = new FileInfo("test");
+            var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            using (ShimsContext.Create())
+            {
+                ShimFile.ReadAllTextString = (path) => serializedErrorLog;
+                var actualContents = ErrorLogHelper.ReadErrorLogFile(file);
+                Assert.AreEqual(errorLog.Id, actualContents.Id);
+                Assert.AreEqual(errorLog.ProcessId, actualContents.ProcessId);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IOException))]
+        public void ReadErrorLogFileThrowsException()
+        {
+            var file = new FileInfo("test");
+            using (ShimsContext.Create())
+            {
+                ShimFile.ReadAllTextString = (path) => throw new IOException();
+                var actualContents = ErrorLogHelper.ReadErrorLogFile(file);
             }
         }
 
