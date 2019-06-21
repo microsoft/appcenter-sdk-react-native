@@ -229,10 +229,6 @@ namespace Microsoft.AppCenter.Storage
                         .GetAwaiter().GetResult();
                 foreach (var entry in retrievedEntries)
                 {
-                    if (_pendingDbIdentifiers.Contains(entry.Id))
-                    {
-                        continue;
-                    }
                     try
                     {
                         var log = LogSerializer.DeserializeLog(entry.Log);
