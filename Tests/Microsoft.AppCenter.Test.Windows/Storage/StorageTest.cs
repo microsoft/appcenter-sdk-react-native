@@ -22,7 +22,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that counting number of logs stored when there are no logs returns 0.
+        /// Verify that counting number of logs stored when there are no logs returns 0.
         /// </summary>
         [TestMethod]
         public void CountEmptyStorage()
@@ -32,7 +32,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that after adding 'n' logs, counting logs returns 'n'.
+        /// Verify that after adding 'n' logs, counting logs returns 'n'.
         /// </summary>
         [TestMethod]
         public void CountNonemptyStorage()
@@ -44,7 +44,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that storing a log and then retrieving it from storage does not alter the log.
+        /// Verify that storing a log and then retrieving it from storage does not alter the log.
         /// </summary>
         [TestMethod]
         public void PutOneLog()
@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that deleting all logs for a given channel does so.
+        /// Verify that deleting all logs for a given channel does so.
         /// </summary>
         [TestMethod]
         public void DeleteLogsNoBatchId()
@@ -70,7 +70,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that deleting a particular batch deletes exactly the number of logs for that batch.
+        /// Verify that deleting a particular batch deletes exactly the number of logs for that batch.
         /// </summary>
         [TestMethod]
         public void DeleteLogsWithBatchId()
@@ -86,7 +86,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that when the limit equals the number of logs for the given channel, all logs are returned.
+        /// Verify that when the limit equals the number of logs for the given channel, all logs are returned.
         /// </summary>
         [TestMethod]
         public void GetLogsExactLimit()
@@ -100,7 +100,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that when the limit is lower than the number of logs for the given channel, all logs are returned.
+        /// Verify that when the limit is lower than the number of logs for the given channel, all logs are returned.
         /// </summary>
         [TestMethod]
         public void GetLogsLowLimit()
@@ -115,7 +115,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that when the limit exceeds the number of logs for the given channel, 'limit' logs are correctly returned.
+        /// Verify that when the limit exceeds the number of logs for the given channel, 'limit' logs are correctly returned.
         /// </summary>
         [TestMethod]
         public void GetLogsHighLimit()
@@ -129,7 +129,29 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that when logs are retrieved, the batchId is not null.
+        /// Verify that when the limit is lower than the number of logs for the given channel, all logs are returned.
+        /// </summary>
+        [TestMethod]
+        public void GetLogsExcludesPendingLogsWithoutAffectingLimit()
+        {
+            var numLogsToAdd = 5;
+            var limit = 5;
+
+            // Add some logs and then retrieve them so they are marked as pending.
+            PutNLogs(numLogsToAdd);
+            _storage.GetLogsAsync(StorageTestChannelName, limit, new List<Log>()).RunNotAsync();
+            
+            // Add some new logs.
+            var addedLogs = PutNLogs(numLogsToAdd);
+            var retrievedLogs = new List<Log>();
+
+            //  Retrieve logs and make sure all of the new ones are returned, but not the pending logs.
+            _storage.GetLogsAsync(StorageTestChannelName, limit, retrievedLogs).RunNotAsync();
+            CollectionAssert.AreEquivalent(addedLogs, retrievedLogs);
+        }
+
+        /// <summary>
+        /// Verify that when logs are retrieved, the batchId is not null.
         /// </summary>
         [TestMethod]
         public void GetLogsHasBatchId()
@@ -143,7 +165,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that when no logs are retrieved, the batchId is null.
+        /// Verify that when no logs are retrieved, the batchId is null.
         /// </summary>
         [TestMethod]
         public void GetNoLogsHasNoBatchId()
@@ -157,7 +179,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that storage does not return same log more than once.
+        /// Verify that storage does not return same log more than once.
         /// </summary>
         [TestMethod]
         public void GetDuplicateLogs()
@@ -174,7 +196,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that a channel that starts with the name of another channel does not cause problems.
+        /// Verify that a channel that starts with the name of another channel does not cause problems.
         /// </summary>
         [TestMethod]
         public void GetLogsFromChannelWithSimilarNames()
@@ -187,7 +209,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that storage returns log more than once if pending state is cleared.
+        /// Verify that storage returns log more than once if pending state is cleared.
         /// </summary>
         [TestMethod]
         public void ClearPendingState()
@@ -205,7 +227,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        ///     Verify that an invalid log in the database, when retrieved, is deleted and no logs are returned.
+        /// Verify that an invalid log in the database, when retrieved, is deleted and no logs are returned.
         /// </summary>
         [TestMethod]
         public void FailToGetALog()
