@@ -169,7 +169,7 @@ namespace Contoso.WinForms.Demo
 
         #endregion
 
-        private void CountruCodeEnable_CheckedChanged(object sender, EventArgs e)
+        private void CountryCodeEnable_CheckedChanged(object sender, EventArgs e)
         {
             if (!cbCountryCode.Checked)
             {
@@ -184,7 +184,7 @@ namespace Contoso.WinForms.Demo
             gbCountryCode.Enabled = cbCountryCode.Checked;
         }
 
-        private void btnSave_ClickListener(object sender, EventArgs e)
+        private void BtnSave_ClickListener(object sender, EventArgs e)
         {
             // Checked that input country code is valid.
             bool isValidCountryCode = CultureInfo.GetCultures(CultureTypes.SpecificCultures)

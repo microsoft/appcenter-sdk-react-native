@@ -520,7 +520,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnSave_ClickListener);
+            this.button1.Click += new System.EventHandler(this.BtnSave_ClickListener);
             // 
             // lCountryCode
             // 
@@ -538,7 +538,7 @@
             this.cbCountryCode.TabIndex = 0;
             this.cbCountryCode.Text = "Country Code Enable";
             this.cbCountryCode.UseVisualStyleBackColor = true;
-            this.cbCountryCode.CheckedChanged += new System.EventHandler(this.CountruCodeEnable_CheckedChanged);
+            this.cbCountryCode.CheckedChanged += new System.EventHandler(this.CountryCodeEnable_CheckedChanged);
             // 
             // MainForm
             // 

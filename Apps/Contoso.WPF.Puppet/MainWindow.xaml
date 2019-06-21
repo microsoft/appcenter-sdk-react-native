@@ -95,14 +95,14 @@
             </TabItem>
             <TabItem Header="Others">
                 <StackPanel>
-                    <CheckBox Name="cbEnableCountryCode" Content="Country Code Enabled" Margin="0,10,0,10" Checked="countryCodeEnabled_Checked" Unchecked="countryCodeEnabled_Checked"/>
+                    <CheckBox Name="cbEnableCountryCode" Content="Country Code Enabled" Margin="0,10,0,10" Checked="CountryCodeEnabled_Checked" Unchecked="CountryCodeEnabled_Checked"/>
                     <GroupBox Header="Country code">
                         <StackPanel IsEnabled="False" Name="spCountryCode">
                             <DockPanel LastChildFill="True">
                                 <Label Name="tbCountryCode">Country code</Label>
                                 <TextBox Name="lCountryCode"  VerticalAlignment="Center"></TextBox>
                             </DockPanel>
-                            <Button Name="btnSaveCountryCode" Click="countryCodeSave_ClickListener">Save</Button>
+                            <Button Name="btnSaveCountryCode" Click="CountryCodeSave_ClickListener">Save</Button>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

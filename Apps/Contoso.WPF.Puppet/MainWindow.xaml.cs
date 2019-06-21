@@ -95,7 +95,7 @@ namespace Contoso.WPF.Puppet
             Analytics.TrackEvent(name, propertiesDictionary);
         }
 
-        private void countryCodeEnabled_Checked(object sender, RoutedEventArgs e)
+        private void CountryCodeEnabled_Checked(object sender, RoutedEventArgs e)
         {
             if (cbEnableCountryCode.IsChecked.HasValue)
             {
@@ -113,7 +113,7 @@ namespace Contoso.WPF.Puppet
             }
         }
 
-        private void countryCodeSave_ClickListener(object sender, RoutedEventArgs e)
+        private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
             // Checked that input country code is valid.
             bool isValidCountryCode = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
