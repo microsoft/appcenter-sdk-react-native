@@ -1,21 +1,3 @@
-Skip to content
- 
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@russelarms 
-22
-570 27 react-native-community/rn-diff-purge
- Code  Issues 2  Pull requests 0  Projects 0  Security  Insights
-rn-diff-purge/RnDiffApp/android/gradlew.bat
-@pvinis pvinis Release 0.59.9
-bfbc3a7 15 days ago
-101 lines (76 sloc)  2.87 KB
-    
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -116,15 +98,3 @@ exit /b 1
 if "%OS%"=="Windows_NT" endlocal
 
 :omega
-© 2019 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
