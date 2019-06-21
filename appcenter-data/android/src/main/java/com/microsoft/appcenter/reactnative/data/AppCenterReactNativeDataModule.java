@@ -61,21 +61,22 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
             @Override
             public void accept(DocumentWrapper<JsonElement> documentWrapper) {
+                WritableMap jsDocumentWrapper = new WritableNativeMap();
+                jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
+                jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
+                jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
                 if (documentWrapper.getError() != null) {
                     DataException dataException = documentWrapper.getError();
-                    promise.reject("Read failed", dataException);
+                    promise.reject("Read failed", dataException.getMessage(), dataException, jsDocumentWrapper);
                     return;
                 }
                 JsonElement deserializedValue = documentWrapper.getDeserializedValue();
-                WritableMap jsDocumentWrapper = new WritableNativeMap();
                 jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
-                jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
 
                 // Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values
                 jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
                 jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
-                jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
-                jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
+
                 if (deserializedValue.isJsonPrimitive()) {
                     JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
                     if (jsonPrimitive.isString()) {

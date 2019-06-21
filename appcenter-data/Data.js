@@ -12,8 +12,8 @@ const TimeToLive = {
 };
 
 const DefaultPartitions = {
-    USER_DOCUMENTS = 'user',
-    APP_DOCUMENTS = 'readonly'
+    USER_DOCUMENTS: 'user',
+    APP_DOCUMENTS: 'readonly'
 };
 
 const Data = {
