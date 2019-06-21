@@ -11,8 +11,14 @@ const TimeToLive = {
     DEFAULT: 86400
 };
 
+const DefaultPartitions = {
+    USER_DOCUMENTS = 'user',
+    APP_DOCUMENTS = 'readonly'
+};
+
 const Data = {
     TimeToLive,
+    DefaultPartitions,
     read(documentId, partition, ttl) {
         if(ttl === undefined) {
             ttl = TimeToLive.DEFAULT
