@@ -21,10 +21,10 @@ const Data = {
     DefaultPartitions,
     read(documentId, partition, ttl) {
         if (ttl === undefined) {
-            ttl = TimeToLive.DEFAULT
+            ttl = TimeToLive.DEFAULT;
         }
 
-        return AppCenterReactNativeData.read(documentId, partition, ttl).then(result => {
+        return AppCenterReactNativeData.read(documentId, partition, ttl).then((result) => {
             // Create a new `Date` object from timestamp as milliseconds
             result.lastUpdatedDate = new Date(result.lastUpdatedDate);
             return result;
