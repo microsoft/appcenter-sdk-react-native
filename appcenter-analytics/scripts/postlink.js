@@ -35,7 +35,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             return rnpmlink.ios.addPodDeps(
                 [
                     { pod: 'AppCenter/Analytics', version: '2.0.2-82' },
-                    { pod: 'AppCenterReactNativeShared', version: '2.0.0' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenterReactNativeShared', version: '2.1.0' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );
