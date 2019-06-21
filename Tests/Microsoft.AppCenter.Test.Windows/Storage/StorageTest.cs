@@ -129,7 +129,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify that when the limit is lower than the number of logs for the given channel, all logs are returned.
+        /// Verify that pending logs are not returned but other logs are.
         /// </summary>
         [TestMethod]
         public void GetLogsExcludesPendingLogsWithoutAffectingLimit()
