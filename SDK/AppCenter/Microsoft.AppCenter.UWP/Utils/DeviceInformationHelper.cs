@@ -54,6 +54,14 @@ namespace Microsoft.AppCenter.Utils
             InformationInvalidated?.Invoke(null, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// This is for testing purposes only. Do not call (unless you are a test).
+        /// </summary>
+        internal static void ResetScreenSizeProvider()
+        {
+            ScreenSizeProvider = null;
+        }
+
         protected override string GetSdkName()
         {
             return "appcenter.uwp";
