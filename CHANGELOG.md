@@ -1,6 +1,6 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.1.0 (Under development)
+## Version 2.1.0
 
 Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
