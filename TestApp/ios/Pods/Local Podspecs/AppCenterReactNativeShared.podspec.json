@@ -21,7 +21,7 @@
   "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
   "dependencies": {
     "AppCenter/Core": [
-      "2.0.2-82"
+      "2.1.0"
     ]
   }
 }
