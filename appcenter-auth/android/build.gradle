@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.properties.get('compileSdkVersion', 26)
+    buildToolsVersion rootProject.properties.get('buildToolsVersion', '27.0.3')
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
+        versionCode 42
+        versionName '2.1.0'
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'
+    api 'com.microsoft.appcenter:appcenter-auth:2.1.0'
+
+    //api project(':AppCenterReactNativeShared')   // For testing with TestApp
+    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.1.0'
+}

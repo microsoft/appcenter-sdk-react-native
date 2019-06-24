@@ -12,8 +12,11 @@ import com.facebook.react.bridge.ReactMethod;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.push.Push;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.microsoft.appcenter.utils.AppCenterLog;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 import com.microsoft.appcenter.utils.storage.SharedPreferencesManager;
+
+import javax.annotation.Nonnull;
 
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativePushModule extends BaseJavaModule {
@@ -55,6 +58,7 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
         }
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return "AppCenterReactNativePush";
@@ -62,22 +66,26 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
 
     @ReactMethod
     public void setEnabled(final boolean enabled, final Promise promise) {
-        if (!mPushStarted && enabled) {
-            AppCenter.start(Push.class);
-            mPushStarted = true;
-        }
-        Push.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
-
-            @Override
-            public void accept(Void result) {
-                if (enabled) {
-
-                    /* TODO expose a way to post command in background looper in native SDK to avoid accessing storage directly here. */
-                    SharedPreferencesManager.putBoolean(PUSH_ONCE_ENABLED, true);
-                }
-                promise.resolve(result);
+        if (AppCenter.isConfigured()) {
+            if (!mPushStarted && enabled) {
+                AppCenter.start(Push.class);
+                mPushStarted = true;
             }
-        });
+            Push.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
+
+                @Override
+                public void accept(Void result) {
+                    if (enabled) {
+
+                        /* TODO expose a way to post command in background looper in native SDK to avoid accessing storage directly here. */
+                        SharedPreferencesManager.putBoolean(PUSH_ONCE_ENABLED, true);
+                    }
+                    promise.resolve(result);
+                }
+            });
+        } else {
+            AppCenterLog.error(getName(), "AppCenter needs to be started before Push can be enabled.");
+        }
     }
 
     @ReactMethod

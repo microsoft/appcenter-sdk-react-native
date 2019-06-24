@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import RNFS from "react-native-fs";
 
 const TEXT_ATTACHMENT_KEY = "TEXT_ATTACHMENT_KEY";
@@ -58,9 +58,10 @@ export default class AttachmentsProvider {
   }
 }
 
-async function getItemFromStorage(key: string, defaultValue = "") {
+async function getItemFromStorage(key: string, defaultValue = "") : Promise<string> {
   try {
-    return await AsyncStorage.getItem(key);
+    const item = await AsyncStorage.getItem(key);
+    return item || defaultValue;
   } catch (error) {
     console.error(`Error retrieving item with key: ${key}`);
     console.error(error.message);

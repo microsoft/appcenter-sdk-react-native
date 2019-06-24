@@ -2,15 +2,19 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
+import Auth from 'appcenter-auth';
 import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
+
+const USER_ID_KEY = 'USER_ID_KEY';
 
 const SecretStrings = {
   ios: {
@@ -67,10 +71,13 @@ export default class AppCenterScreen extends Component {
   state = {
     appCenterEnabled: false,
     pushEnabled: false,
+    authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    userId: ''
+    userId: '',
+    accountId: '',
+    isTokenSet: false
   }
 
   async componentWillMount() {
@@ -83,7 +90,11 @@ export default class AppCenterScreen extends Component {
         break;
       }
     }
-
+    const userId = await AsyncStorage.getItem(USER_ID_KEY);
+    if (userId !== null) {
+      this.state.userId = userId;
+      await AppCenter.setUserId(userId);
+    }
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
@@ -92,6 +103,9 @@ export default class AppCenterScreen extends Component {
   async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
+
+    const authEnabled = await Auth.isEnabled();
+    this.setState({ authEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -154,7 +168,7 @@ export default class AppCenterScreen extends Component {
     const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        { onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
+        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{String(this.state[value])}</TextInput> : <Text>{String(this.state[value])}</Text>}
       </View>
     );
 
@@ -195,6 +209,15 @@ export default class AppCenterScreen extends Component {
                   }
                 },
                 {
+                  title: 'Auth Enabled',
+                  value: 'authEnabled',
+                  toggle: async () => {
+                    await Auth.setEnabled(!this.state.authEnabled);
+                    const authEnabled = await Auth.isEnabled();
+                    this.setState({ authEnabled, accountId: '', isTokenSet: false });
+                  }
+                },
+                {
                   title: 'Push Enabled',
                   value: 'pushEnabled',
                   toggle: async () => {
@@ -226,6 +249,30 @@ export default class AppCenterScreen extends Component {
               renderItem: actionRenderItem
             },
             {
+              title: 'Auth',
+              data: [
+                {
+                  title: 'Sign In',
+                  action: async () => {
+                    try {
+                      const result = await Auth.signIn();
+                      this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  }
+                },
+                {
+                  title: 'Sign Out',
+                  action: () => {
+                    Auth.signOut();
+                    this.setState({ accountId: '', isTokenSet: false });
+                  }
+                },
+              ],
+              renderItem: actionRenderItem
+            },
+            {
               title: 'Miscellaneous',
               data: [
                 { title: 'Install ID', value: 'installId' },
@@ -237,9 +284,28 @@ export default class AppCenterScreen extends Component {
                     this.setState({ userId });
                   },
                   onSubmit: async () => {
-                    // 1DS setUserId API allows null but not empty string as userId
+                    // We use empty text in UI to delete userID (null for AppCenter API).
                     const userId = this.state.userId.length === 0 ? null : this.state.userId;
+                    if (userId !== null) {
+                      await AsyncStorage.setItem(USER_ID_KEY, userId);
+                    } else {
+                      await AsyncStorage.removeItem(USER_ID_KEY);
+                    }
                     await AppCenter.setUserId(userId);
+                  }
+                },
+                {
+                  title: 'Account ID',
+                  value: 'accountId',
+                  onChange: async (accountId) => {
+                    this.setState({ accountId });
+                  }
+                },
+                {
+                  title: 'Is Token Set',
+                  value: 'isTokenSet',
+                  onChange: async (isTokenSet) => {
+                    this.setState({ isTokenSet });
                   }
                 }
               ],

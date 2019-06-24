@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -11,6 +12,8 @@ import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
+
+const USER_ID_KEY = 'USER_ID_KEY';
 
 const SecretStrings = {
   ios: {
@@ -75,7 +78,6 @@ export default class AppCenterScreen extends Component {
 
   async componentWillMount() {
     await this.refreshUI();
-
     const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
     for (let index = 0; index < StartupModes.length; index++) {
       const startupMode = StartupModes[index];
@@ -84,7 +86,11 @@ export default class AppCenterScreen extends Component {
         break;
       }
     }
-
+    const userId = await AsyncStorage.getItem(USER_ID_KEY);
+    if (userId !== null) {
+      this.state.userId = userId;
+      await AppCenter.setUserId(userId);
+    }
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
@@ -150,10 +156,12 @@ export default class AppCenterScreen extends Component {
       </View>
     );
 
-    const valueRenderItem = ({ item: { title, value, onChange } }) => (
+    // After trying to fix the next line lint warning, the code was harder to read and format, disable it once.
+    // eslint-disable-next-line object-curly-newline
+    const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        { onChange ? <TextInput style={SharedStyles.itemInput} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text> }
+        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text>}
       </View>
     );
 
@@ -234,6 +242,15 @@ export default class AppCenterScreen extends Component {
                   value: 'userId',
                   onChange: async (userId) => {
                     this.setState({ userId });
+                  },
+                  onSubmit: async () => {
+                    // We use empty text in UI to delete userID (null for AppCenter API).
+                    const userId = this.state.userId.length === 0 ? null : this.state.userId;
+                    if (userId !== null) {
+                      await AsyncStorage.setItem(USER_ID_KEY, userId);
+                    } else {
+                      await AsyncStorage.removeItem(USER_ID_KEY);
+                    }
                     await AppCenter.setUserId(userId);
                   }
                 }

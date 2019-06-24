@@ -15,6 +15,8 @@ The App Center SDK uses a modular architecture so you can use any or all of the 
 
 3. **App Center Push**: App Center Push enables you to send push notifications to users of your app from the App Center portal. We use APNs for iOS apps and FCM for Android. You can also segment your user base based on a set of properties and send them targeted notifications.
 
+4. **App Center Auth**: App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices.
+
 ## 1. Get started
 It is super easy to use App Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/appcenter/sdk/) is available as well.
 
