@@ -37,6 +37,7 @@ namespace Microsoft.AppCenter.Storage
 
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
+
         // Blocking collection is thread safe
         private readonly BlockingCollection<Task> _queue = new BlockingCollection<Task>();
         private readonly SemaphoreSlim _flushSemaphore = new SemaphoreSlim(0);
@@ -224,14 +225,10 @@ namespace Microsoft.AppCenter.Storage
                 var idPairs = new List<Tuple<Guid?, long>>();
                 var failedToDeserializeALog = false;
                 var retrievedEntries =
-                    _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName, limit)
+                    _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName && !_pendingDbIdentifiers.Contains(entry.Id), limit)
                         .GetAwaiter().GetResult();
                 foreach (var entry in retrievedEntries)
                 {
-                    if (_pendingDbIdentifiers.Contains(entry.Id))
-                    {
-                        continue;
-                    }
                     try
                     {
                         var log = LogSerializer.DeserializeLog(entry.Log);

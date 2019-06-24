@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Utils
         internal static void SetCountryCode(string country)
         {
             _country = country;
-            InvalidateInformation();
+            InvalidateInformation(null, EventArgs.Empty);
         }
 
         public virtual Task<Ingestion.Models.Device> GetDeviceInformationAsync()
@@ -52,9 +52,9 @@ namespace Microsoft.AppCenter.Utils
             };
         }
 
-        protected static void InvalidateInformation()
+        protected static void InvalidateInformation(object sender, EventArgs e)
         {
-            InformationInvalidated?.Invoke(null, EventArgs.Empty);
+            InformationInvalidated?.Invoke(sender, e);
         }
 
         protected abstract string GetSdkName();
