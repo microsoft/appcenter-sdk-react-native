@@ -11,10 +11,11 @@
  */
 
 #import "AppDelegate.h"
+#import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativeAuth/AppCenterReactNativeAuth.h>
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import <React/RCTBridge.h>
@@ -39,6 +40,8 @@
   }
 
   [AppCenterReactNative register];  // Initialize AppCenter 
+
+  [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
