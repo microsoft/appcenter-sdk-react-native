@@ -2,13 +2,15 @@
 // Licensed under the MIT License.
 
 using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils.Fakes;
 using Microsoft.AppCenter.Utils;
 using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -22,11 +24,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestInitialize]
         public void InitializeCrashTest()
         {
-            Crashes.Instance = new Crashes();
             _mockChannelGroup = new Mock<IChannelGroup>();
             _mockChannel = new Mock<IChannelUnit>();
             _mockApplicationLifecycleHelper = new Mock<IApplicationLifecycleHelper>();
-            _mockChannelGroup.Setup(group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), 
+            _mockChannelGroup.Setup(group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(),
                     It.IsAny<TimeSpan>(), It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
             ApplicationLifecycleHelper.Instance = _mockApplicationLifecycleHelper.Object;
@@ -99,6 +100,61 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Assert.IsFalse(saveErrorLogFileCalled);
                 Assert.IsTrue(removeErrorLogFilesCalled);
             }
+        }
+
+        [TestMethod]
+        public void OnChannelGroupReadySendsPendingCrashes()
+        {
+            var expectedFileInfo1 = new FileInfo("file");
+            var expectedFileInfo2 = new FileInfo("file2");
+            var expectedprocessId = 123;
+            var expectedLogIds = new List<Guid>();
+            var removedLogIds = new List<Guid>();
+            using (ShimsContext.Create())
+            {
+                // Stub get/read/delete error files
+                ShimErrorLogHelper.GetErrorLogFiles = () =>
+                {
+                    return new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
+                };
+                ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo file) =>
+                {
+                    var errorLog = new ManagedErrorLog
+                    {
+                        Id = Guid.NewGuid(),
+                        ProcessId = expectedprocessId
+                    };
+                    expectedLogIds.Add(errorLog.Id);
+                    return errorLog;
+                };
+                ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) =>
+                {
+                    removedLogIds.Add(guid);
+                };
+
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+                // Verify crashes logs have been queued to the channel
+                foreach (var expectedLogId in expectedLogIds)
+                {
+                    _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedLogId && log.ProcessId == expectedprocessId)), Times.Once());
+                }
+                CollectionAssert.AreEqual(expectedLogIds, removedLogIds);
+            }
+        }
+        [TestMethod]
+        public void ProcessingPendingErrorsOnChannelGroupReadyWhenEnabled()
+        {
+            // TODO
+            //var mockCrashes = new Mock<Crashes>();
+            //Crashes.SetEnabledAsync(true).Wait();
+            //Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+        }
+
+        [TestMethod]
+        public void NotProcessingPendingErrorsOnChannelGroupReadyWhenDisabled()
+        {
+            //TODO
         }
     }
 }

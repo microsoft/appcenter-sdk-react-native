@@ -89,7 +89,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
 
-        private Crashes()
+        internal Crashes()
         {
             _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
         }
