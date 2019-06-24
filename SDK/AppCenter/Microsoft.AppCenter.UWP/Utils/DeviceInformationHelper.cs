@@ -18,6 +18,8 @@ namespace Microsoft.AppCenter.Utils
         private static IScreenSizeProviderFactory ScreenSizeProviderFactory =
             new DefaultScreenSizeProviderFactory();
 
+        // This method must be called before instance of DeviceInformationHelper has been created
+        // for a custom screen size provider to be used.
         public static void SetScreenSizeProviderFactory(IScreenSizeProviderFactory factory)
         {
             ScreenSizeProviderFactory = factory;
