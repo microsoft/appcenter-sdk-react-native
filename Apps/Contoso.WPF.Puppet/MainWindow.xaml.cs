@@ -97,20 +97,23 @@ namespace Contoso.WPF.Puppet
 
         private void CountryCodeEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (cbEnableCountryCode.IsChecked.HasValue)
+            if (!cbEnableCountryCode.IsChecked.HasValue)
             {
-                if (!cbEnableCountryCode.IsChecked.Value)
-                {
-                    lCountryCode.Text = "";
-                    AppCenter.SetCountryCode(null);
-                }
-                else
-                {
-                    lCountryCode.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                    AppCenter.SetCountryCode(lCountryCode.Text);
-                }
-                spCountryCode.IsEnabled = cbEnableCountryCode.IsChecked.Value;
+                return;
             }
+
+            if (!cbEnableCountryCode.IsChecked.Value)
+            {
+                lCountryCode.Text = "";
+                AppCenter.SetCountryCode(null);
+            }
+            else
+            {
+                lCountryCode.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(lCountryCode.Text);
+            }
+            spCountryCode.IsEnabled = cbEnableCountryCode.IsChecked.Value;
+
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
