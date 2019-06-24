@@ -186,7 +186,7 @@ namespace Contoso.WinForms.Demo
 
         private void BtnSave_ClickListener(object sender, EventArgs e)
         {
-            // Checked that input country code is valid.
+            // Check that input country code is valid.
             bool isValidCountryCode = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
                 .Select(culture => new RegionInfo(culture.LCID))
                 .Any(region => region.TwoLetterISORegionName == lCountryCode.Text.ToUpper());
