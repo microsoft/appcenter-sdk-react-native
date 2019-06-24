@@ -30,5 +30,7 @@ namespace Microsoft.AppCenter.Utils
                 return AppCenterFilesDirectoryPathBacking;
             }
         }
+
+        public static string AppCenterDatabasePath = Path.Combine(AppCenterFilesDirectoryPath, "Logs.db");
     }
 }
