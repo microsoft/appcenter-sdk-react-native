@@ -171,22 +171,22 @@ namespace Contoso.WinForms.Demo
 
         private void CountryCodeEnable_CheckedChanged(object sender, EventArgs e)
         {
-            if (!cbCountryCode.Checked)
+            if (!countryCodeEnabledCheckbox.Checked)
             {
-                lCountryCode.Text = "";
+                countryCodeText.Text = "";
                 AppCenter.SetCountryCode(null);
             }
             else
             {
-                lCountryCode.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                AppCenter.SetCountryCode(lCountryCode.Text);
+                countryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(countryCodeText.Text);
             }
-            gbCountryCode.Enabled = cbCountryCode.Checked;
+            countryCodePanel.Enabled = countryCodeEnabledCheckbox.Checked;
         }
 
         private void BtnSave_ClickListener(object sender, EventArgs e)
         {
-            AppCenter.SetCountryCode(lCountryCode.Text.Length > 0 ? lCountryCode.Text : null);
+            AppCenter.SetCountryCode(countryCodeText.Text.Length > 0 ? countryCodeText.Text : null);
         }
     }
 }
