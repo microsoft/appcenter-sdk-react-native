@@ -115,15 +115,6 @@ namespace Contoso.WPF.Puppet
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
-            // Check that input country code is valid.
-            bool isValidCountryCode = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-                .Select(culture => new RegionInfo(culture.LCID))
-                .Any(region => region.TwoLetterISORegionName == lCountryCode.Text.ToUpper());
-            if (!isValidCountryCode)
-            {
-                // Reset country code to default if input country code is not valid.
-                lCountryCode.Text = "";
-            }
             AppCenter.SetCountryCode(lCountryCode.Text.Length > 0 ? lCountryCode.Text : null);
         }
 
