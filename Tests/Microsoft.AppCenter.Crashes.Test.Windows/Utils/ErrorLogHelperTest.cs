@@ -319,14 +319,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IOException))]
         public void ReadErrorLogFileThrowsException()
         {
             var file = new FileInfo("test");
             using (ShimsContext.Create())
             {
                 ShimFile.ReadAllTextString = (path) => throw new IOException();
-                var actualContents = ErrorLogHelper.ReadErrorLogFile(file);
+                Assert.IsNull(ErrorLogHelper.ReadErrorLogFile(file));
             }
         }
 

@@ -163,16 +163,7 @@ namespace Microsoft.AppCenter.Crashes
             foreach (var file in ErrorLogHelper.GetErrorLogFiles())
             {
                 AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
-                ManagedErrorLog log;
-                try
-                {
-                    log = ErrorLogHelper.ReadErrorLogFile(file);
-                }
-                catch (System.Exception ex)
-                {
-                    AppCenterLog.Error(LogTag, $"Error reading error log file: {file.Name}", ex);
-                    log = null;
-                }
+                var log = ErrorLogHelper.ReadErrorLogFile(file);
                 if (log == null)
                 {
                     AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");

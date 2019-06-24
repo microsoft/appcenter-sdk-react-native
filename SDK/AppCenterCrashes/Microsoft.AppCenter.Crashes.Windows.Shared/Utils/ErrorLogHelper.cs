@@ -148,8 +148,16 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>An error log instance or null if the file doesn't contain error log.</returns>
         public static ManagedErrorLog ReadErrorLogFile(FileInfo fileInfo)
         {
-            var errorLogString = File.ReadAllText(fileInfo.FullName);
-            return (ManagedErrorLog)LogSerializer.DeserializeLog(errorLogString);
+            try
+            {
+                var errorLogString = File.ReadAllText(fileInfo.FullName);
+                return (ManagedErrorLog)LogSerializer.DeserializeLog(errorLogString);
+            }
+            catch (System.Exception e)
+            {
+                AppCenterLog.Error(Crashes.LogTag, $"Encountered an unexpected error while reading an error log file: {fileInfo.Name}", e);
+            }
+            return null;
         }
 
         /// <summary>
