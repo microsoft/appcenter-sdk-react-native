@@ -19,16 +19,21 @@ const DefaultPartitions = {
 const Data = {
     TimeToLive,
     DefaultPartitions,
-    read(documentId, partition, ttl) {
-        if (ttl === undefined) {
-            ttl = TimeToLive.DEFAULT;
+    read(documentId, partition, readOptions) {
+        if (readOptions === undefined) {
+            readOptions = new Data.ReadOptions(TimeToLive.DEFAULT);
         }
-
-        return AppCenterReactNativeData.read(documentId, partition, ttl).then((result) => {
+        return AppCenterReactNativeData.read(documentId, partition, readOptions).then((result) => {
             // Create a new `Date` object from timestamp as milliseconds
             result.lastUpdatedDate = new Date(result.lastUpdatedDate);
             return result;
         });
+    }
+};
+
+Data.ReadOptions = class {
+    constructor(timeToLive) {
+        this.timeToLive = timeToLive;
     }
 };
 

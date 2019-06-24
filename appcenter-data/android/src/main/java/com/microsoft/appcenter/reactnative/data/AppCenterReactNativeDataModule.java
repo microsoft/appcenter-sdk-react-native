@@ -10,6 +10,7 @@ import android.app.Application;
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
@@ -21,6 +22,7 @@ import com.google.gson.JsonPrimitive;
 
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.data.Data;
+import com.microsoft.appcenter.data.TimeToLive;
 import com.microsoft.appcenter.data.exception.DataException;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
 import com.microsoft.appcenter.data.models.ReadOptions;
@@ -43,6 +45,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String PARTITION_KEY = "partition";
 
+    private static final String TIME_TO_LIVE_KEY = "timeToLive";
+
     public AppCenterReactNativeDataModule(Application application) {
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
@@ -56,8 +60,12 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void read(String documentId, String partition, int ttl, final Promise promise) {
-        Data.read(documentId, JsonElement.class, partition, new ReadOptions(ttl)).thenAccept(new AppCenterConsumer<DocumentWrapper<JsonElement>>() {
+    public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
+        ReadOptions readOptions = new ReadOptions(TimeToLive.DEFAULT);
+        if (readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        }
+        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new AppCenterConsumer<DocumentWrapper<JsonElement>>() {
 
             @Override
             public void accept(DocumentWrapper<JsonElement> documentWrapper) {
