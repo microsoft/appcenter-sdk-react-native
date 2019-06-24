@@ -61,9 +61,11 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
-        ReadOptions readOptions = new ReadOptions(TimeToLive.DEFAULT);
+        ReadOptions readOptions;
         if (readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            readOptions = new ReadOptions(TimeToLive.DEFAULT);
         }
         Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new AppCenterConsumer<DocumentWrapper<JsonElement>>() {
 
