@@ -39,9 +39,9 @@
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
 
-  [AppCenterReactNative register];  // Initialize AppCenter 
-
   [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
+
+  [AppCenterReactNative register];  // Initialize AppCenter 
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
