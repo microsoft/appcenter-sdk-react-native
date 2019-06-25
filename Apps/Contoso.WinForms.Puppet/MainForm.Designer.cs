@@ -61,7 +61,7 @@
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
             this.OthersTab = new System.Windows.Forms.TabPage();
             this.CountryCodeGroup = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.CountryCodeLabel = new System.Windows.Forms.Label();
             this.SaveCountryCodeButton = new System.Windows.Forms.Button();
             this.CountryCodeText = new System.Windows.Forms.TextBox();
             this.CountryCodeEnableCheckbox = new System.Windows.Forms.CheckBox();
@@ -491,7 +491,7 @@
             // 
             // CountryCodeGroup
             // 
-            this.CountryCodeGroup.Controls.Add(this.label2);
+            this.CountryCodeGroup.Controls.Add(this.CountryCodeLabel);
             this.CountryCodeGroup.Controls.Add(this.SaveCountryCodeButton);
             this.CountryCodeGroup.Controls.Add(this.CountryCodeText);
             this.CountryCodeGroup.Enabled = false;
@@ -502,15 +502,15 @@
             this.CountryCodeGroup.TabStop = false;
             this.CountryCodeGroup.Text = "Country Code";
             // 
-            // label2
+            // CountryCodeLabel
             // 
-            this.label2.Location = new System.Drawing.Point(15, 31);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(94, 23);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Country Code";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CountryCodeLabel.Location = new System.Drawing.Point(15, 31);
+            this.CountryCodeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.CountryCodeLabel.Name = "CountryCodeLabel";
+            this.CountryCodeLabel.Size = new System.Drawing.Size(94, 23);
+            this.CountryCodeLabel.TabIndex = 12;
+            this.CountryCodeLabel.Text = "Country Code";
+            this.CountryCodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // SaveCountryCodeButton
             // 
@@ -604,7 +604,7 @@
         private System.Windows.Forms.Button CrashWithNullReference;
         private System.Windows.Forms.Button CrashInsideAsyncTask;
         private System.Windows.Forms.GroupBox CountryCodeGroup;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label CountryCodeLabel;
         private System.Windows.Forms.Button SaveCountryCodeButton;
         private System.Windows.Forms.TextBox CountryCodeText;
         private System.Windows.Forms.CheckBox CountryCodeEnableCheckbox;
