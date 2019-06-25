@@ -139,6 +139,7 @@ dependencies {
     implementation project(':react-native-gesture-handler')
     implementation project(':appcenter-push')
     implementation project(':appcenter-crashes')
+    implementation project(':appcenter-auth')
     implementation project(':appcenter-analytics')
     implementation project(':appcenter')
     implementation project(':react-native-fs')

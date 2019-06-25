@@ -11,10 +11,11 @@
  */
 
 #import "AppDelegate.h"
+#import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativeAuth/AppCenterReactNativeAuth.h>
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import <React/RCTBridge.h>
@@ -37,6 +38,8 @@
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
+
+  [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
 
   [AppCenterReactNative register];  // Initialize AppCenter 
 
