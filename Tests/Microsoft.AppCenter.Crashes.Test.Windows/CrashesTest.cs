@@ -1,16 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Fakes;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils.Fakes;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -24,6 +27,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestInitialize]
         public void InitializeCrashTest()
         {
+            Crashes.Instance = new Crashes();
             _mockChannelGroup = new Mock<IChannelGroup>();
             _mockChannel = new Mock<IChannelUnit>();
             _mockApplicationLifecycleHelper = new Mock<IApplicationLifecycleHelper>();
@@ -113,10 +117,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             using (ShimsContext.Create())
             {
                 // Stub get/read/delete error files
-                ShimErrorLogHelper.GetErrorLogFiles = () =>
-                {
-                    return new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
-                };
+                ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
+                ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) => removedLogIds.Add(guid);
                 ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo file) =>
                 {
                     var errorLog = new ManagedErrorLog
@@ -127,11 +129,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     expectedLogIds.Add(errorLog.Id);
                     return errorLog;
                 };
-                ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) =>
-                {
-                    removedLogIds.Add(guid);
-                };
 
+                Crashes.SetEnabledAsync(true).Wait();
                 Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
                 // Verify crashes logs have been queued to the channel
@@ -142,19 +141,80 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 CollectionAssert.AreEqual(expectedLogIds, removedLogIds);
             }
         }
+
         [TestMethod]
-        public void ProcessingPendingErrorsOnChannelGroupReadyWhenEnabled()
+        public void OnChannelGroupReadyDoesNotSendsPendingCrashesOnDisabled()
         {
-            // TODO
-            //var mockCrashes = new Mock<Crashes>();
-            //Crashes.SetEnabledAsync(true).Wait();
-            //Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            using (ShimsContext.Create())
+            {
+                var getErrorLogFilesCalled = false;
+                // Stub get/read/delete error files
+                ShimErrorLogHelper.GetErrorLogFiles = () =>
+                {
+                    getErrorLogFilesCalled = true;
+                    return new List<FileInfo>();
+                };
+                Crashes.SetEnabledAsync(false).Wait();
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+                _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
+                Assert.IsFalse(getErrorLogFilesCalled);
+            }
         }
 
         [TestMethod]
-        public void NotProcessingPendingErrorsOnChannelGroupReadyWhenDisabled()
+        public void OnChannelGroupReadyDoesNotSendPendingCrashesIfNoneExist()
         {
-            //TODO
+            using (ShimsContext.Create())
+            {
+                // Stub get/read/delete error files
+                ShimErrorLogHelper.GetErrorLogFiles = () =>
+                {
+                    return new List<FileInfo>();
+                };
+                Crashes.SetEnabledAsync(true).Wait();
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+                _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
+            }
+        }
+
+        [TestMethod]
+        public void ProcessPendingErrorsExcludesCorruptedFiles()
+        {
+            var corruptedFileName = "corruptedFile";
+            var file = new FileInfo("file");
+            var corruptedFile = new FileInfo(corruptedFileName);
+            var fileDeletionCount = 0;
+            var expectedLogId = Guid.NewGuid();
+            var actualSentLogIds = new List<Guid>();
+            var removedLogIds = new List<Guid>();
+            using (ShimsContext.Create())
+            {
+                // Stub get/read/delete error files
+                _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>())).Callback<Log>(log => actualSentLogIds.Add(((ManagedErrorLog)log).Id));
+                ShimFileInfo.AllInstances.Delete = (FileInfo _) => fileDeletionCount++;
+                ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { file, corruptedFile };
+                ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) => removedLogIds.Add(guid);
+                ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo info) =>
+                {
+                    if (info.Name == corruptedFileName)
+                    {
+                        return null;
+                    }
+                    return new ManagedErrorLog
+                    {
+                        Id = expectedLogId
+                    };
+                };
+
+                Crashes.SetEnabledAsync(true).Wait();
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+                Assert.IsTrue(actualSentLogIds.Count == 1);
+                Assert.AreEqual(actualSentLogIds[0], expectedLogId);
+                Assert.IsTrue(removedLogIds.Count == 1);
+                Assert.AreEqual(removedLogIds[0], expectedLogId);
+                // FIXME: fileDeletionCount is 0.
+                Assert.IsTrue(fileDeletionCount == 2);
+            }
         }
     }
 }
