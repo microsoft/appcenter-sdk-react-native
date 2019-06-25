@@ -14,17 +14,16 @@ namespace Microsoft.AppCenter.Utils
     /// </summary>
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        public static event EventHandler InformationInvalidated;
-        private static string _country;
         private static IScreenSizeProvider ScreenSizeProvider;
         private static IScreenSizeProviderFactory ScreenSizeProviderFactory =
             new DefaultScreenSizeProviderFactory();
 
-        // This method must be called *before* any instance of DeviceInformationHelper has been created
+        // This method must be called before instance of DeviceInformationHelper has been created
         // for a custom screen size provider to be used.
         public static void SetScreenSizeProviderFactory(IScreenSizeProviderFactory factory)
         {
             ScreenSizeProviderFactory = factory;
+            ScreenSizeProvider = null;
         }
 
         public DeviceInformationHelper()
@@ -36,7 +35,7 @@ namespace Microsoft.AppCenter.Utils
                     ScreenSizeProvider = ScreenSizeProviderFactory.CreateScreenSizeProvider();
                     ScreenSizeProvider.ScreenSizeChanged += (sender, e) =>
                     {
-                        InformationInvalidated?.Invoke(sender, e);
+                        InvalidateInformation(sender, e);
                     };
                 }
             }
@@ -46,20 +45,6 @@ namespace Microsoft.AppCenter.Utils
         {
             await ScreenSizeProvider.WaitUntilReadyAsync().ConfigureAwait(false);
             return await base.GetDeviceInformationAsync().ConfigureAwait(false);
-        }
-
-        internal static void SetCountryCode(string country)
-        {
-            _country = country;
-            InformationInvalidated?.Invoke(null, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// This is for testing purposes only. Do not call (unless you are a test).
-        /// </summary>
-        internal static void ResetScreenSizeProvider()
-        {
-            ScreenSizeProvider = null;
         }
 
         protected override string GetSdkName()
@@ -128,11 +113,6 @@ namespace Microsoft.AppCenter.Utils
         protected override string GetScreenSize()
         {
             return ScreenSizeProvider.ScreenSize;
-        }
-
-        protected override string GetCarrierCountry()
-        {
-            return _country;
         }
     }
 }

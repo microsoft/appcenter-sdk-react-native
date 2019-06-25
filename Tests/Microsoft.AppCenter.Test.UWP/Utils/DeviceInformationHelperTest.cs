@@ -48,7 +48,6 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
             screenSizeProviderFactoryMock.Setup(factory => factory.CreateScreenSizeProvider()).Returns(screenSizeProviderMock.Object);
             screenSizeProviderMock.Setup(provider => provider.ScreenSize).Returns(testScreenSize);
             DeviceInformationHelper.SetScreenSizeProviderFactory(screenSizeProviderFactoryMock.Object);
-            DeviceInformationHelper.ResetScreenSizeProvider();
 
             // Screen size is returned from screen size provider
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;

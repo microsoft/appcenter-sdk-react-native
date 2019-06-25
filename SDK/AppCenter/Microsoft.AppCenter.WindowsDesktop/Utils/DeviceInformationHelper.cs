@@ -15,8 +15,6 @@ namespace Microsoft.AppCenter.Utils
     /// </summary>
     public class DeviceInformationHelper : AbstractDeviceInformationHelper
     {
-        public static event EventHandler InformationInvalidated;
-
         protected override string GetSdkName()
         {
             return WpfHelper.IsRunningOnWpf ? "appcenter.wpf" : "appcenter.winforms";
