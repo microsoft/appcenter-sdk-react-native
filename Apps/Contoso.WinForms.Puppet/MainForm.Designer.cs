@@ -60,11 +60,11 @@
             this.CrashWithTestException = new System.Windows.Forms.Button();
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
             this.OthersTab = new System.Windows.Forms.TabPage();
-            this.gbCountryCode = new System.Windows.Forms.GroupBox();
+            this.CountryCodeGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.lCountryCode = new System.Windows.Forms.TextBox();
-            this.cbCountryCode = new System.Windows.Forms.CheckBox();
+            this.SaveCountryCodeButton = new System.Windows.Forms.Button();
+            this.CountryCodeText = new System.Windows.Forms.TextBox();
+            this.CountryCodeEnableCheckbox = new System.Windows.Forms.CheckBox();
             this.Tabs.SuspendLayout();
             this.AppCenterTab.SuspendLayout();
             this.LogBox.SuspendLayout();
@@ -74,7 +74,7 @@
             this.CrashesTab.SuspendLayout();
             this.CrashBox.SuspendLayout();
             this.OthersTab.SuspendLayout();
-            this.gbCountryCode.SuspendLayout();
+            this.CountryCodeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -479,8 +479,8 @@
             // 
             // OthersTab
             // 
-            this.OthersTab.Controls.Add(this.gbCountryCode);
-            this.OthersTab.Controls.Add(this.cbCountryCode);
+            this.OthersTab.Controls.Add(this.CountryCodeGroup);
+            this.OthersTab.Controls.Add(this.CountryCodeEnableCheckbox);
             this.OthersTab.Location = new System.Drawing.Point(4, 22);
             this.OthersTab.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.OthersTab.Name = "OthersTab";
@@ -489,18 +489,18 @@
             this.OthersTab.Text = "Others";
             this.OthersTab.UseVisualStyleBackColor = true;
             // 
-            // gbCountryCode
+            // CountryCodeGroup
             // 
-            this.gbCountryCode.Controls.Add(this.label2);
-            this.gbCountryCode.Controls.Add(this.button1);
-            this.gbCountryCode.Controls.Add(this.lCountryCode);
-            this.gbCountryCode.Enabled = false;
-            this.gbCountryCode.Location = new System.Drawing.Point(8, 31);
-            this.gbCountryCode.Name = "gbCountryCode";
-            this.gbCountryCode.Size = new System.Drawing.Size(360, 100);
-            this.gbCountryCode.TabIndex = 1;
-            this.gbCountryCode.TabStop = false;
-            this.gbCountryCode.Text = "Country Code";
+            this.CountryCodeGroup.Controls.Add(this.label2);
+            this.CountryCodeGroup.Controls.Add(this.SaveCountryCodeButton);
+            this.CountryCodeGroup.Controls.Add(this.CountryCodeText);
+            this.CountryCodeGroup.Enabled = false;
+            this.CountryCodeGroup.Location = new System.Drawing.Point(8, 31);
+            this.CountryCodeGroup.Name = "CountryCodeGroup";
+            this.CountryCodeGroup.Size = new System.Drawing.Size(360, 100);
+            this.CountryCodeGroup.TabIndex = 1;
+            this.CountryCodeGroup.TabStop = false;
+            this.CountryCodeGroup.Text = "Country Code";
             // 
             // label2
             // 
@@ -512,33 +512,33 @@
             this.label2.Text = "Country Code";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button1
+            // SaveCountryCodeButton
             // 
-            this.button1.Location = new System.Drawing.Point(9, 71);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(345, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.BtnSave_ClickListener);
+            this.SaveCountryCodeButton.Location = new System.Drawing.Point(9, 71);
+            this.SaveCountryCodeButton.Name = "SaveCountryCodeButton";
+            this.SaveCountryCodeButton.Size = new System.Drawing.Size(345, 23);
+            this.SaveCountryCodeButton.TabIndex = 2;
+            this.SaveCountryCodeButton.Text = "Save";
+            this.SaveCountryCodeButton.UseVisualStyleBackColor = true;
+            this.SaveCountryCodeButton.Click += new System.EventHandler(this.BtnSave_ClickListener);
             // 
-            // lCountryCode
+            // CountryCodeText
             // 
-            this.lCountryCode.Location = new System.Drawing.Point(114, 34);
-            this.lCountryCode.Name = "lCountryCode";
-            this.lCountryCode.Size = new System.Drawing.Size(240, 20);
-            this.lCountryCode.TabIndex = 0;
+            this.CountryCodeText.Location = new System.Drawing.Point(114, 34);
+            this.CountryCodeText.Name = "CountryCodeText";
+            this.CountryCodeText.Size = new System.Drawing.Size(240, 20);
+            this.CountryCodeText.TabIndex = 0;
             // 
-            // cbCountryCode
+            // CountryCodeEnableCheckbox
             // 
-            this.cbCountryCode.AutoSize = true;
-            this.cbCountryCode.Location = new System.Drawing.Point(10, 8);
-            this.cbCountryCode.Name = "cbCountryCode";
-            this.cbCountryCode.Size = new System.Drawing.Size(126, 17);
-            this.cbCountryCode.TabIndex = 0;
-            this.cbCountryCode.Text = "Country Code Enable";
-            this.cbCountryCode.UseVisualStyleBackColor = true;
-            this.cbCountryCode.CheckedChanged += new System.EventHandler(this.CountryCodeEnable_CheckedChanged);
+            this.CountryCodeEnableCheckbox.AutoSize = true;
+            this.CountryCodeEnableCheckbox.Location = new System.Drawing.Point(10, 8);
+            this.CountryCodeEnableCheckbox.Name = "CountryCodeEnableCheckbox";
+            this.CountryCodeEnableCheckbox.Size = new System.Drawing.Size(126, 17);
+            this.CountryCodeEnableCheckbox.TabIndex = 0;
+            this.CountryCodeEnableCheckbox.Text = "Country Code Enable";
+            this.CountryCodeEnableCheckbox.UseVisualStyleBackColor = true;
+            this.CountryCodeEnableCheckbox.CheckedChanged += new System.EventHandler(this.CountryCodeEnable_CheckedChanged);
             // 
             // MainForm
             // 
@@ -563,8 +563,8 @@
             this.CrashBox.ResumeLayout(false);
             this.OthersTab.ResumeLayout(false);
             this.OthersTab.PerformLayout();
-            this.gbCountryCode.ResumeLayout(false);
-            this.gbCountryCode.PerformLayout();
+            this.CountryCodeGroup.ResumeLayout(false);
+            this.CountryCodeGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -603,11 +603,11 @@
         private System.Windows.Forms.Button CrashWithAggregateException;
         private System.Windows.Forms.Button CrashWithNullReference;
         private System.Windows.Forms.Button CrashInsideAsyncTask;
-        private System.Windows.Forms.GroupBox gbCountryCode;
+        private System.Windows.Forms.GroupBox CountryCodeGroup;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox lCountryCode;
-        private System.Windows.Forms.CheckBox cbCountryCode;
+        private System.Windows.Forms.Button SaveCountryCodeButton;
+        private System.Windows.Forms.TextBox CountryCodeText;
+        private System.Windows.Forms.CheckBox CountryCodeEnableCheckbox;
     }
 }
 

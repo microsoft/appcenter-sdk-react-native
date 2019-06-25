@@ -97,28 +97,28 @@ namespace Contoso.WPF.Puppet
 
         private void CountryCodeEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (!cbEnableCountryCode.IsChecked.HasValue)
+            if (!CountryCodeEnableCheckbox.IsChecked.HasValue)
             {
                 return;
             }
 
-            if (!cbEnableCountryCode.IsChecked.Value)
+            if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
-                lCountryCode.Text = "";
+               CountryCodeText.Text = "";
                 AppCenter.SetCountryCode(null);
             }
             else
             {
-                lCountryCode.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                AppCenter.SetCountryCode(lCountryCode.Text);
+                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(CountryCodeText.Text);
             }
-            spCountryCode.IsEnabled = cbEnableCountryCode.IsChecked.Value;
+            spCountryCode.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
 
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
-            AppCenter.SetCountryCode(lCountryCode.Text.Length > 0 ? lCountryCode.Text : null);
+            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
 
         #region Crash
