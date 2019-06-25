@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,6 +17,20 @@ namespace Microsoft.AppCenter.Storage
 
         public StorageAdapter(string databasePath)
         {
+            // Create the directory in case it does not exist.
+            var databaseDirectory = Path.GetDirectoryName(databasePath);
+            if (databaseDirectory != string.Empty)
+            {
+                try
+                {
+                    Directory.CreateDirectory(databaseDirectory);
+                }
+                catch (Exception e)
+                {
+                    throw new StorageException("Cannot initialize SQLite library.", e);
+                }
+            }
+
             // In SQLite-net 1.5.231 constructor parameters were changed.
             // Using reflection to accept newer library version.
             _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
