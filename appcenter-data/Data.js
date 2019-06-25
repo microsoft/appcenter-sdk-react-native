@@ -23,11 +23,10 @@ const Data = {
         if (readOptions === undefined) {
             readOptions = new Data.ReadOptions(TimeToLive.DEFAULT);
         }
-        return AppCenterReactNativeData.read(documentId, partition, readOptions).then((result) => {
-            // Create a new `Date` object from timestamp as milliseconds
-            result.lastUpdatedDate = new Date(result.lastUpdatedDate);
-            return result;
-        });
+        return AppCenterReactNativeData.read(documentId, partition, readOptions).then(convertTimestampToDate);
+    },
+    create(documentId, document, partition) {
+        return AppCenterReactNativeData.create(documentId, document, partition).then(convertTimestampToDate);
     }
 };
 
@@ -36,5 +35,11 @@ Data.ReadOptions = class {
         this.timeToLive = timeToLive;
     }
 };
+
+function convertTimestampToDate(result) {
+    // Create a new `Date` object from timestamp as milliseconds
+    result.lastUpdatedDate = new Date(result.lastUpdatedDate);
+    return result;
+}
 
 module.exports = Data;
