@@ -45,7 +45,7 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            if (userInfo?.AccountId != null)
+            if (Application.Current.Properties.ContainsKey("accountId") && Application.Current.Properties["accountId"] is string id)
             {
                 SignInInformationButton.Text = "User authenticated";
             }
@@ -69,6 +69,7 @@ namespace Contoso.Forms.Demo
                 userInfo = await Auth.SignInAsync();
                 if (userInfo.AccountId != null)
                 {
+                    Application.Current.Properties["accountId"] = userInfo.AccountId;
                     SignInInformationButton.Text = "User authenticated";
                 }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
@@ -126,6 +127,7 @@ namespace Contoso.Forms.Demo
         {
             if (userInfo != null)
             {
+                Application.Current.Properties["accountId"] = null;
                 string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
                 string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
                 await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
