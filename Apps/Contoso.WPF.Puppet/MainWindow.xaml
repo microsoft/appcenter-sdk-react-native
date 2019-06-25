@@ -99,7 +99,7 @@
                     <GroupBox Header="Country code">
                         <StackPanel IsEnabled="False" Name="CountryCodePanel">
                             <DockPanel LastChildFill="True">
-                                <Label Name="CountryCodeLable">Country code</Label>
+                                <Label Name="CountryCodeLabel">Country code</Label>
                                 <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>
                             </DockPanel>
                             <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
