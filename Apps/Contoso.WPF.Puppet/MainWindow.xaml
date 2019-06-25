@@ -97,7 +97,7 @@
                 <StackPanel>
                     <CheckBox Name="CountryCodeEnableCheckbox" Content="Country Code Enabled" Margin="0,10,0,10" Checked="CountryCodeEnabled_Checked" Unchecked="CountryCodeEnabled_Checked"/>
                     <GroupBox Header="Country code">
-                        <StackPanel IsEnabled="False" Name="spCountryCode">
+                        <StackPanel IsEnabled="False" Name="CountryCodePanel">
                             <DockPanel LastChildFill="True">
                                 <Label Name="CountryCodeLable">Country code</Label>
                                 <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>

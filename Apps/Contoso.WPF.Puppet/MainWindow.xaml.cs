@@ -112,7 +112,7 @@ namespace Contoso.WPF.Puppet
                 CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
                 AppCenter.SetCountryCode(CountryCodeText.Text);
             }
-            spCountryCode.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
+            CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
 
         }
 
