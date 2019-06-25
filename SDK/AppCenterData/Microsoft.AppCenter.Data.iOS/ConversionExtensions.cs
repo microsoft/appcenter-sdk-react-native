@@ -15,19 +15,30 @@ namespace Microsoft.AppCenter.Data
 
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this MSDocumentWrapper documentWrapper)
         {
-            var jsonValue = documentWrapper.JsonValue;
-            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(jsonValue) : default(T);
-            return new DocumentWrapper<T>
+            DocumentWrapper<T> parsedDocument = new DocumentWrapper<T>
             {
-                DeserializedValue = deserializedValue,
-                JsonValue = jsonValue,
                 Partition = documentWrapper.Partition,
                 ETag = documentWrapper.ETag,
                 Id = documentWrapper.DocumentId,
-                LastUpdatedDate = documentWrapper.LastUpdatedDate != null ? (DateTime)documentWrapper?.LastUpdatedDate : UnixEpoch,
                 IsFromDeviceCache = documentWrapper.FromDeviceCache
             };
-        }
+
+            try
+            {
+                var jsonValue = documentWrapper.JsonValue;
+                var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(jsonValue) : default(T);
+                parsedDocument.DeserializedValue = deserializedValue;
+                parsedDocument.JsonValue = jsonValue;
+                parsedDocument.LastUpdatedDate = documentWrapper.LastUpdatedDate != null ? (DateTime)documentWrapper?.LastUpdatedDate : UnixEpoch;
+                return parsedDocument;
+            }
+            catch(Exception ex)
+            {
+                parsedDocument.Error = new DataException(ex.Message);
+                parsedDocument.LastUpdatedDate = UnixEpoch;
+                return parsedDocument;
+            }
+       }
 
         public static MSReadOptions ToMSReadOptions(this ReadOptions readOptions)
         {
