@@ -101,7 +101,6 @@ namespace Contoso.WPF.Puppet
             {
                 return;
             }
-
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
                CountryCodeText.Text = "";
