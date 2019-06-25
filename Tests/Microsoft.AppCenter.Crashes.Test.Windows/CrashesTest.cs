@@ -181,8 +181,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         public void ProcessPendingErrorsExcludesCorruptedFiles()
         {
             var corruptedFileName = "corruptedFile";
-            var file = new FileInfo("file");
-            var corruptedFile = new FileInfo(corruptedFileName);
             var fileDeletionCount = 0;
             var expectedLogId = Guid.NewGuid();
             var actualSentLogIds = new List<Guid>();
@@ -190,8 +188,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             using (ShimsContext.Create())
             {
                 // Stub get/read/delete error files
+                var file = new FileInfo("file");
+                var corruptedFile = new FileInfo(corruptedFileName);
                 _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>())).Callback<Log>(log => actualSentLogIds.Add(((ManagedErrorLog)log).Id));
-                ShimFileInfo.AllInstances.Delete = (FileInfo _) => fileDeletionCount++;
+                ShimFileInfo.AllInstances.Delete = (FileInfo info) => fileDeletionCount++;
                 ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { file, corruptedFile };
                 ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) => removedLogIds.Add(guid);
                 ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo info) =>
@@ -208,12 +208,12 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
                 Crashes.SetEnabledAsync(true).Wait();
                 Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-                Assert.IsTrue(actualSentLogIds.Count == 1);
+                Assert.AreEqual(actualSentLogIds.Count, 1);
                 Assert.AreEqual(actualSentLogIds[0], expectedLogId);
-                Assert.IsTrue(removedLogIds.Count == 1);
+                Assert.AreEqual(removedLogIds.Count, 1);
                 Assert.AreEqual(removedLogIds[0], expectedLogId);
-                // FIXME: fileDeletionCount is 0.
-                Assert.IsTrue(fileDeletionCount == 2);
+                // Valid error log file couldn't be deleted in this test because the test mocks RemoveStoredErrorLogFileGuid which deletes the file.
+                Assert.AreEqual(fileDeletionCount, 1);
             }
         }
     }
