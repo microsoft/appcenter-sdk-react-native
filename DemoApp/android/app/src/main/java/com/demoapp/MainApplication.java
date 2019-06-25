@@ -17,8 +17,10 @@ import com.imagepicker.ImagePickerPackage;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
+import com.microsoft.appcenter.reactnative.auth.AppCenterReactNativeAuthPackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.push.AppCenterReactNativePushPackage;
+
 import com.rnfs.RNFSPackage;
 
 import java.util.Arrays;
@@ -27,6 +29,7 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
         @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
@@ -40,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new ImagePickerPackage(),
                     new RNFSPackage(),
                     new DemoAppNativePackage(MainApplication.this),
+                    new AppCenterReactNativeAuthPackage(MainApplication.this),
                     new AppCenterReactNativePushPackage(MainApplication.this),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
                     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
