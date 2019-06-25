@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -167,5 +168,25 @@ namespace Contoso.WinForms.Demo
         }
 
         #endregion
+
+        private void CountryCodeEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!CountryCodeEnableCheckbox.Checked)
+            {
+                CountryCodeText.Text = "";
+                AppCenter.SetCountryCode(null);
+            }
+            else
+            {
+                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(CountryCodeText.Text);
+            }
+            CountryCodeGroup.Enabled = CountryCodeEnableCheckbox.Checked;
+        }
+
+        private void BtnSave_ClickListener(object sender, EventArgs e)
+        {
+            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
+        }
     }
 }
