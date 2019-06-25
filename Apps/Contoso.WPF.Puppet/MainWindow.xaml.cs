@@ -113,7 +113,6 @@ namespace Contoso.WPF.Puppet
                 AppCenter.SetCountryCode(CountryCodeText.Text);
             }
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
-
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
