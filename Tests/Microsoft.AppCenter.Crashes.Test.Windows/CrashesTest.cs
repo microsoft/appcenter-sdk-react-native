@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Fakes;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils.Fakes;
@@ -214,6 +213,23 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Assert.AreEqual(removedLogIds[0], expectedLogId);
                 // Valid error log file couldn't be deleted in this test because the test mocks RemoveStoredErrorLogFileGuid which deletes the file.
                 Assert.AreEqual(fileDeletionCount, 1);
+            }
+        }
+
+        [TestMethod]
+        public void ProcessPendingErrorsDoesNotCrashOnFileDeletionFailure()
+        {
+            using (ShimsContext.Create())
+            {
+                // Stub get/read/delete error files
+                ShimFileInfo.AllInstances.Delete = (FileInfo info) => throw new FileNotFoundException();
+                ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { new FileInfo("test") };
+                ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo info) => null;
+
+                Crashes.SetEnabledAsync(true).Wait();
+                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+                _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
             }
         }
     }
