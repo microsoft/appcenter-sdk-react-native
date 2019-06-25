@@ -115,7 +115,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var removedLogIds = new List<Guid>();
             using (ShimsContext.Create())
             {
-                // Stub get/read/delete error files
+                // Stub get/read/delete error files.
                 ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
                 ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) => removedLogIds.Add(guid);
                 ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo file) =>
@@ -132,7 +132,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Crashes.SetEnabledAsync(true).Wait();
                 Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
-                // Verify crashes logs have been queued to the channel
+                // Verify crashes logs have been queued to the channel.
                 foreach (var expectedLogId in expectedLogIds)
                 {
                     _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedLogId && log.ProcessId == expectedprocessId)), Times.Once());
@@ -142,12 +142,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void OnChannelGroupReadyDoesNotSendsPendingCrashesOnDisabled()
+        public void OnChannelGroupReadyDoesNotSendPendingCrashesOnDisabled()
         {
             using (ShimsContext.Create())
             {
                 var getErrorLogFilesCalled = false;
-                // Stub get/read/delete error files
+
+                // Stub get/read/delete error files.
                 ShimErrorLogHelper.GetErrorLogFiles = () =>
                 {
                     getErrorLogFilesCalled = true;
@@ -165,7 +166,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             using (ShimsContext.Create())
             {
-                // Stub get/read/delete error files
+                // Stub get/read/delete error files.
                 ShimErrorLogHelper.GetErrorLogFiles = () =>
                 {
                     return new List<FileInfo>();
@@ -186,7 +187,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var removedLogIds = new List<Guid>();
             using (ShimsContext.Create())
             {
-                // Stub get/read/delete error files
+                // Stub get/read/delete error files.
                 var file = new FileInfo("file");
                 var corruptedFile = new FileInfo(corruptedFileName);
                 _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>())).Callback<Log>(log => actualSentLogIds.Add(((ManagedErrorLog)log).Id));
@@ -211,6 +212,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Assert.AreEqual(actualSentLogIds[0], expectedLogId);
                 Assert.AreEqual(removedLogIds.Count, 1);
                 Assert.AreEqual(removedLogIds[0], expectedLogId);
+
                 // Valid error log file couldn't be deleted in this test because the test mocks RemoveStoredErrorLogFileGuid which deletes the file.
                 Assert.AreEqual(fileDeletionCount, 1);
             }
@@ -221,7 +223,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             using (ShimsContext.Create())
             {
-                // Stub get/read/delete error files
+                // Stub get/read/delete error files.
                 ShimFileInfo.AllInstances.Delete = (FileInfo info) => throw new FileNotFoundException();
                 ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { new FileInfo("test") };
                 ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo info) => null;

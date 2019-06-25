@@ -192,7 +192,7 @@ namespace Microsoft.AppCenter.Crashes
         private void HandleUserConfirmation()
         {
 
-            /* Send every pending log. */
+            // Send every pending log.
             var keys = _unprocessedManagedErrorLogs.Keys.ToList();
             foreach (var key in keys)
             {
