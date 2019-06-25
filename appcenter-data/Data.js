@@ -25,12 +25,21 @@ const Data = {
         }
         return AppCenterReactNativeData.read(documentId, partition, readOptions).then(convertTimestampToDate);
     },
-    create(documentId, document, partition) {
-        return AppCenterReactNativeData.create(documentId, document, partition).then(convertTimestampToDate);
+    create(documentId, document, partition, writeOptions) {
+        if (writeOptions === undefined) {
+            writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
+        }
+        return AppCenterReactNativeData.create(documentId, document, partition, writeOptions).then(convertTimestampToDate);
     }
 };
 
 Data.ReadOptions = class {
+    constructor(timeToLive) {
+        this.timeToLive = timeToLive;
+    }
+};
+
+Data.WriteOptions = class {
     constructor(timeToLive) {
         this.timeToLive = timeToLive;
     }

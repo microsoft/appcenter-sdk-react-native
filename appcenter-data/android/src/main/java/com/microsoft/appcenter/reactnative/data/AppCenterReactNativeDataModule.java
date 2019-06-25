@@ -26,6 +26,7 @@ import com.microsoft.appcenter.data.TimeToLive;
 import com.microsoft.appcenter.data.exception.DataException;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
 import com.microsoft.appcenter.data.models.ReadOptions;
+import com.microsoft.appcenter.data.models.WriteOptions;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
@@ -71,9 +72,15 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void create(final String documentId, ReadableMap readableMap, String partition, final Promise promise) {
+    public void create(final String documentId, ReadableMap readableMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
+        }
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(readableMap);
-        Data.create(documentId, jsonObject, JsonElement.class, partition).thenAccept(new Consumer("Create failed", promise));
+        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer("Create failed", promise));
     }
 
     private class Consumer implements AppCenterConsumer<DocumentWrapper<JsonElement>> {
