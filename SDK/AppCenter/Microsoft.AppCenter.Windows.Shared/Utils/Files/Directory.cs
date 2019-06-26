@@ -2,10 +2,14 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Microsoft.AppCenter.Utils.Files
 {
+    /// <summary>
+    /// This class wraps System.IO.DirectoryInfo for the unit tests.
+    /// </summary>
     public class Directory
     {
         private readonly DirectoryInfo _implementation;
