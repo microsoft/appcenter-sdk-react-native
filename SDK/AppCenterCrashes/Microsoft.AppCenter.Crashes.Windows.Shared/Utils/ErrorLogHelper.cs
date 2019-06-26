@@ -3,11 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Files;
+
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
@@ -40,7 +41,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <summary>
         /// Directory containing crashes files.
         /// </summary>
-        public static DirectoryInfo CrashesDirectory;
+        public static Directory CrashesDirectory;
 
         /// <summary>
         /// Static lock object.
@@ -51,8 +52,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             DeviceInformationHelper = new DeviceInformationHelper();
             ProcessInformation = new ProcessInformation();
-            var crashesDirectoryLocation = Path.Combine(Constants.AppCenterFilesDirectoryPath, ErrorStorageDirectoryName);
-            CrashesDirectory = new DirectoryInfo(crashesDirectoryLocation);
+            var crashesDirectoryLocation = System.IO.Path.Combine(Constants.AppCenterFilesDirectoryPath, ErrorStorageDirectoryName);
+            CrashesDirectory = new Directory(crashesDirectoryLocation);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <summary>
         /// Gets all files with the error log file extension in the error directory.
         /// </summary>
-        public static IEnumerable<FileInfo> GetErrorLogFiles()
+        public static IEnumerable<File> GetErrorLogFiles()
         {
             lock (LockObject)
             {
@@ -94,7 +95,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 {
                     AppCenterLog.Error(Crashes.LogTag, "Failed to retrieve error log files.", ex);
                 }
-                return new List<FileInfo>();
+                return new List<File>();
             }
         }
 
@@ -102,9 +103,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// Gets the most recently modified error log file.
         /// </summary>
         /// <returns>The most recently modified error log file.</returns>
-        public static FileInfo GetLastErrorLogFile()
+        public static File GetLastErrorLogFile()
         {
-            FileInfo lastErrorLogFile = null;
+            File lastErrorLogFile = null;
             lock (LockObject)
             {
                 var errorLogFiles = GetErrorLogFiles();
@@ -136,7 +137,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         /// <param name="errorId">The ID for the error log.</param>
         /// <returns>The error log file or null if it is not found.</returns>
-        public static FileInfo GetStoredErrorLogFile(Guid errorId)
+        public static File GetStoredErrorLogFile(Guid errorId)
         {
             return GetStoredFile(errorId, ErrorLogFileExtension);
         }
@@ -153,13 +154,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    if (!CrashesDirectory.Exists)
-                    {
-                        CrashesDirectory.Create();
-                    }
+                    CrashesDirectory.Create();
                 }
-                var filePath = Path.Combine(CrashesDirectory.FullName, fileName);
-                File.WriteAllText(filePath, errorLogString);
+                CrashesDirectory.CreateFile(fileName, errorLogString);
             }
             catch (System.Exception ex)
             {
@@ -246,7 +243,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <param name="errorId">The error ID.</param>
         /// <param name="extension">The file extension.</param>
         /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
-        private static FileInfo GetStoredFile(Guid errorId, string extension)
+        private static File GetStoredFile(Guid errorId, string extension)
         {
             var fileName = $"{errorId}{extension}";
             try
