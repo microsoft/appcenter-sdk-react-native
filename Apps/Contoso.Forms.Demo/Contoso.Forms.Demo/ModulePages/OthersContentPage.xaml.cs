@@ -15,7 +15,7 @@ namespace Contoso.Forms.Demo
 {
     using XamarinDevice = Xamarin.Forms.Device;
 
-    private const string ACCOUNT_ID = "accountId";
+    private const string AccountId = "accountId";
 
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
@@ -47,7 +47,7 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            if (Application.Current.Properties.ContainsKey(ACCOUNT_ID) && Application.Current.Properties[ACCOUNT_ID] is string id)
+            if (Application.Current.Properties.ContainsKey(AccountId) && Application.Current.Properties[ACCOUNT_ID] is string id)
             {
                 SignInInformationButton.Text = "User authenticated";
             }
@@ -71,7 +71,7 @@ namespace Contoso.Forms.Demo
                 userInfo = await Auth.SignInAsync();
                 if (userInfo.AccountId != null)
                 {
-                    Application.Current.Properties[ACCOUNT_ID] = userInfo.AccountId;
+                    Application.Current.Properties[AccountId] = userInfo.AccountId;
                     SignInInformationButton.Text = "User authenticated";
                 }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
@@ -129,7 +129,7 @@ namespace Contoso.Forms.Demo
         {
             if (userInfo != null)
             {
-                Application.Current.Properties[ACCOUNT_ID] = null;
+                Application.Current.Properties[AccountId] = null;
                 string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
                 string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
                 await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
