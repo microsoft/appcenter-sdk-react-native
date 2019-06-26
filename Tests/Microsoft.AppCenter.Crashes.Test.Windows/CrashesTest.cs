@@ -208,6 +208,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
                 Crashes.SetEnabledAsync(true).Wait();
                 Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+                Crashes.Instance.ProcessPendingErrorsTask.Wait();
                 Assert.AreEqual(actualSentLogIds.Count, 1);
                 Assert.AreEqual(actualSentLogIds[0], expectedLogId);
                 Assert.AreEqual(removedLogIds.Count, 1);

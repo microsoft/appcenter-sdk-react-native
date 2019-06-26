@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
@@ -87,6 +86,9 @@ namespace Microsoft.AppCenter.Crashes
         {
         }
 
+        /// <summary>
+        /// A dictionary that contains unprocessed managed error logs before getting a user confirmation.
+        /// </summary>
         private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
 
         internal Crashes()
@@ -107,6 +109,11 @@ namespace Microsoft.AppCenter.Crashes
         public override string ServiceName => "Crashes";
 
         /// <summary>
+        /// A task of processing pending error log files.
+        /// </summary>
+        internal Task ProcessPendingErrorsTask { get; set; }
+
+        /// <summary>
         /// Method that is called to signal start of Crashes service.
         /// </summary>
         /// <param name="channelGroup">Channel group</param>
@@ -119,7 +126,7 @@ namespace Microsoft.AppCenter.Crashes
                 ApplyEnabledState(InstanceEnabled);
                 if (InstanceEnabled)
                 {
-                    ProcessPendingErrors();
+                    ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
                 }
             }
         }
@@ -158,30 +165,33 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
-        private void ProcessPendingErrors()
+        private async Task ProcessPendingErrorsAsync()
         {
-            foreach (var file in ErrorLogHelper.GetErrorLogFiles())
+            await Task.Run(() =>
             {
-                AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
-                var log = ErrorLogHelper.ReadErrorLogFile(file);
-                if (log == null)
+                foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
-                    AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
-                    try
+                    AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
+                    var log = ErrorLogHelper.ReadErrorLogFile(file);
+                    if (log == null)
                     {
-                        file.Delete();
+                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
+                        try
+                        {
+                            file.Delete();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                        }
                     }
-                    catch (System.Exception ex)
+                    else
                     {
-                        AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                        _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
                 }
-                else
-                {
-                    _unprocessedManagedErrorLogs.Add(log.Id, log);
-                }
-            }
-            SendCrashReportsOrAwaitUserConfirmation();
+                SendCrashReportsOrAwaitUserConfirmation();
+            }).ContinueWith((_) => ProcessPendingErrorsTask = null );
         }
 
         private void SendCrashReportsOrAwaitUserConfirmation()
@@ -191,7 +201,6 @@ namespace Microsoft.AppCenter.Crashes
 
         private void HandleUserConfirmation()
         {
-
             // Send every pending log.
             var keys = _unprocessedManagedErrorLogs.Keys.ToList();
             foreach (var key in keys)
