@@ -40,7 +40,7 @@ function read(documentId, partition, readOptions) {
 }
 
 /**
- * Create a document
+ * Create a document.
  *
  * @param {string} documentId - The CosmosDB document id.
  * @param {object} document - The document.
@@ -69,7 +69,7 @@ Data.WriteOptions = class {
 };
 
 function convertTimestampToDate(result) {
-    if (!result === undefined || !result.lastUpdatedDate === undefined) {
+    if (result === undefined || result.lastUpdatedDate === undefined) {
         return result;
     }
     // Create a new `Date` object from timestamp as milliseconds.
