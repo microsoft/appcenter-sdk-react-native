@@ -1,5 +1,11 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.2.0 (Under development)
+
+### App Center Data
+
+* **[Feature]** Change the default time-to-live (TTL) from 1 day to infinite (never expire).
+
 ## Version 2.1.1
 
 ### App Center Distribute
