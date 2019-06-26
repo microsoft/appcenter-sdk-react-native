@@ -108,6 +108,13 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static File GetStoredErrorLogFile(Guid errorId) => Instance.InstanceGetStoredErrorLogFile(errorId);
 
         /// <summary>
+        /// Reads an error log on disk.
+        /// </summary>
+        /// <param name="file">The error log file.</param>
+        /// <returns>The managed error log instance.</returns>
+        public static ManagedErrorLog ReadErrorLogFile(File file) => Instance.InstanceReadErrorLogFile(file);
+
+        /// <summary>
         /// Saves an error log on disk.
         /// </summary>
         /// <param name="errorLog">The error log.</param>
@@ -142,7 +149,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             };
         }
 
-        private IEnumerable<File> InstanceGetErrorLogFiles()
+        public virtual IEnumerable<File> InstanceGetErrorLogFiles()
         {
             lock (LockObject)
             {
@@ -193,6 +200,29 @@ namespace Microsoft.AppCenter.Crashes.Utils
             return GetStoredFile(errorId, ErrorLogFileExtension);
         }
 
+        /// <summary>
+        /// Reads error log file from the given file.
+        /// </summary>
+        /// <param name="file">The file that contains error log.</param>
+        /// <returns>An error log instance or null if the file doesn't contain error log.</returns>
+        public virtual ManagedErrorLog InstanceReadErrorLogFile(File file)
+        {
+            try
+            {
+                var errorLogString = file.ReadAllText();
+                return (ManagedErrorLog)LogSerializer.DeserializeLog(errorLogString);
+            }
+            catch (System.Exception e)
+            {
+                AppCenterLog.Error(Crashes.LogTag, $"Encountered an unexpected error while reading an error log file: {file.Name}", e);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Saves an error log on disk.
+        /// </summary>
+        /// <param name="errorLog">The error log.</param>
         public virtual void InstanceSaveErrorLogFile(ManagedErrorLog errorLog)
         {
             var errorLogString = LogSerializer.Serialize(errorLog);
@@ -213,7 +243,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
-        private void InstanceRemoveStoredErrorLogFile(Guid errorId)
+        public virtual void InstanceRemoveStoredErrorLogFile(Guid errorId)
         {
             lock (LockObject)
             {

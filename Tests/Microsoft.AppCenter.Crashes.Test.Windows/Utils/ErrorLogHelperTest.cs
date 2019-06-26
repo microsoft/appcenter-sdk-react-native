@@ -7,12 +7,11 @@ using System.Linq;
 using System.Security;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Utils.Files;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json.Schema;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 {
@@ -24,6 +23,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             ErrorLogHelper.Instance._processInformation = Mock.Of<IProcessInformation>();
             ErrorLogHelper.Instance._deviceInformationHelper = Mock.Of<IDeviceInformationHelper>();
+            LogSerializer.AddLogType("managedError", typeof(ManagedErrorLog));
         }
 
         [TestCleanup]
@@ -255,6 +255,30 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 
             // Validate the contents.
             Assert.AreSame(file, errorLogFileInfo);
+        }
+
+        [TestMethod]
+        public void ReadErrorLogFile()
+        {
+            var errorLog = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                ProcessId = 123
+            };
+            var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            var mockFile = Mock.Of<File>();
+            Mock.Get(mockFile).Setup(file => file.ReadAllText()).Returns(serializedErrorLog);
+            var actualContents = ErrorLogHelper.ReadErrorLogFile(mockFile);
+            Assert.AreEqual(errorLog.Id, actualContents.Id);
+            Assert.AreEqual(errorLog.ProcessId, actualContents.ProcessId);
+        }
+
+        [TestMethod]
+        public void ReadErrorLogFileThrowsException()
+        {
+            var mockFile = Mock.Of<File>();
+            Mock.Get(mockFile).Setup(file => file.ReadAllText()).Throws(new System.IO.IOException());
+            Assert.IsNull(ErrorLogHelper.ReadErrorLogFile(mockFile));
         }
 
         [TestMethod]

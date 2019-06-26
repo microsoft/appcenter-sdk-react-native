@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
@@ -84,9 +86,32 @@ namespace Microsoft.AppCenter.Crashes
         {
         }
 
+        /// <summary>
+        /// A dictionary that contains unprocessed managed error logs before getting a user confirmation.
+        /// </summary>
+        private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+
+        internal Crashes()
+        {
+            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+        }
+
+        /// <inheritdoc />
         protected override string ChannelName => "crashes";
 
+        /// <inheritdoc />
+        protected override int TriggerCount => 1;
+
+        /// <inheritdoc />
+        protected override TimeSpan TriggerInterval => TimeSpan.FromSeconds(1);
+
+        /// <inheritdoc />
         public override string ServiceName => "Crashes";
+
+        /// <summary>
+        /// A task of processing pending error log files.
+        /// </summary>
+        internal Task ProcessPendingErrorsTask { get; set; }
 
         /// <summary>
         /// Method that is called to signal start of Crashes service.
@@ -99,9 +124,13 @@ namespace Microsoft.AppCenter.Crashes
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
+                if (InstanceEnabled)
+                {
+                    ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
+                }
             }
         }
-        
+
         private void ApplyEnabledState(bool enabled)
         {
             lock (_serviceLock)
@@ -133,6 +162,52 @@ namespace Microsoft.AppCenter.Crashes
                         ApplyEnabledState(value);
                     }
                 }
+            }
+        }
+
+        private Task ProcessPendingErrorsAsync()
+        {
+            return Task.Run(() =>
+            {
+                foreach (var file in ErrorLogHelper.GetErrorLogFiles())
+                {
+                    AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
+                    var log = ErrorLogHelper.ReadErrorLogFile(file);
+                    if (log == null)
+                    {
+                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
+                        try
+                        {
+                            file.Delete();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                        }
+                    }
+                    else
+                    {
+                        _unprocessedManagedErrorLogs.Add(log.Id, log);
+                    }
+                }
+                SendCrashReportsOrAwaitUserConfirmation();
+            }).ContinueWith((_) => ProcessPendingErrorsTask = null);
+        }
+
+        private void SendCrashReportsOrAwaitUserConfirmation()
+        {
+            HandleUserConfirmation();
+        }
+
+        private void HandleUserConfirmation()
+        {
+            // Send every pending log.
+            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
+            foreach (var key in keys)
+            {
+                Channel.EnqueueAsync(_unprocessedManagedErrorLogs[key]);
+                _unprocessedManagedErrorLogs.Remove(key);
+                ErrorLogHelper.RemoveStoredErrorLogFile(key);
             }
         }
     }
