@@ -72,7 +72,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void create(final String documentId, ReadableMap readableMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+    public void create(String documentId, ReadableMap readableMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions;
         if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
