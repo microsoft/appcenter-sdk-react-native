@@ -1,5 +1,13 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.1.1
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix a crash (regression from version 2.1.0) when checking for in-app updates.
+
 ## Version 2.1.0
 
 ### App Center
