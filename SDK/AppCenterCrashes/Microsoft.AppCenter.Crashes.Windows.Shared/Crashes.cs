@@ -165,9 +165,9 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
-        private async Task ProcessPendingErrorsAsync()
+        private Task ProcessPendingErrorsAsync()
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
