@@ -11,6 +11,8 @@ namespace Contoso.Forms.Demo
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AppCenterContentPage : ContentPage
     {
+        public static string UserIdKey = "userId";
+
         public AppCenterContentPage()
         {
             InitializeComponent();
@@ -24,6 +26,10 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
+            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
+            {
+                UserIdEntryCell.Text = id;
+            }
         }
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)
@@ -59,6 +65,7 @@ namespace Contoso.Forms.Demo
                 PropertyChanged(this, new PropertyChangedEventArgs(inputText));
                 var text = string.IsNullOrEmpty(inputText) ? null : inputText;
                 AppCenter.SetUserId(text);
+                Application.Current.Properties[AppCenterContentPage.UserIdKey] = text;
             }
         }
     }
