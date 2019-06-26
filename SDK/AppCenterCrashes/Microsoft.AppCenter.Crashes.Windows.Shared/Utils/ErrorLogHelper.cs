@@ -29,31 +29,57 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public const string ErrorStorageDirectoryName = "Errors";
 
         /// <summary>
-        /// Device information utility. Public for testing purposes only.
+        /// Device information utility. Exposed for testing purposes only.
         /// </summary>
-        public static IDeviceInformationHelper DeviceInformationHelper;
+        internal IDeviceInformationHelper _deviceInformationHelper;
 
         /// <summary>
-        /// Process information utility. Public for testing purposes only.
+        /// Process information utility. Exposed for testing purposes only.
         /// </summary>
-        public static IProcessInformation ProcessInformation;
+        internal IProcessInformation _processInformation;
 
         /// <summary>
-        /// Directory containing crashes files.
+        /// Directory containing crashes files. Exposed for testing purposes only.
         /// </summary>
-        public static Directory CrashesDirectory;
+        internal Directory _crashesDirectory;
 
         /// <summary>
         /// Static lock object.
         /// </summary>
         private readonly static object LockObject = new object();
 
-        static ErrorLogHelper()
+        private static ErrorLogHelper _instanceField;
+
+        /// <summary>
+        /// Singleton instance. Should only be accessed from unit tests.
+        /// </summary>
+        internal static ErrorLogHelper Instance
         {
-            DeviceInformationHelper = new DeviceInformationHelper();
-            ProcessInformation = new ProcessInformation();
+            get
+            {
+                lock (LockObject)
+                {
+                    return _instanceField ?? (_instanceField = new ErrorLogHelper());
+                }
+            }
+            set
+            {
+                lock (LockObject)
+                {
+                    _instanceField = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Public constructor for testing purposes.
+        /// </summary>
+        public ErrorLogHelper()
+        {
+            _deviceInformationHelper = new DeviceInformationHelper();
+            _processInformation = new ProcessInformation();
             var crashesDirectoryLocation = System.IO.Path.Combine(Constants.AppCenterFilesDirectoryPath, ErrorStorageDirectoryName);
-            CrashesDirectory = new Directory(crashesDirectoryLocation);
+            _crashesDirectory = new Directory(crashesDirectoryLocation);
         }
 
         /// <summary>
@@ -61,35 +87,69 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <returns>A new error log instance.</returns>
-        public static ManagedErrorLog CreateErrorLog(System.Exception exception)
+        public static ManagedErrorLog CreateErrorLog(System.Exception exception) => Instance.InstanceCreateErrorLog(exception);
+
+        /// <summary>
+        /// Gets all files with the error log file extension in the error directory.
+        /// </summary>
+        public static IEnumerable<File> GetErrorLogFiles() => Instance.InstanceGetErrorLogFiles();
+
+        /// <summary>
+        /// Gets the most recently modified error log file.
+        /// </summary>
+        /// <returns>The most recently modified error log file.</returns>
+        public static File GetLastErrorLogFile() => Instance.InstanceGetLastErrorLogFile();
+
+        /// <summary>
+        /// Gets the error log file with the given ID.
+        /// </summary>
+        /// <param name="errorId">The ID for the error log.</param>
+        /// <returns>The error log file or null if it is not found.</returns>
+        public static File GetStoredErrorLogFile(Guid errorId) => Instance.InstanceGetStoredErrorLogFile(errorId);
+
+        /// <summary>
+        /// Saves an error log on disk.
+        /// </summary>
+        /// <param name="errorLog">The error log.</param>
+        public static void SaveErrorLogFile(ManagedErrorLog errorLog) => Instance.InstanceSaveErrorLogFile(errorLog);
+
+        /// <summary>
+        /// Deletes an error log from disk.
+        /// </summary>
+        /// <param name="errorId">The ID for the error log.</param>
+        public static void RemoveStoredErrorLogFile(Guid errorId) => Instance.InstanceRemoveStoredErrorLogFile(errorId);
+
+        /// <summary>
+        /// Removes all stored error log files.
+        /// </summary>
+        public static void RemoveAllStoredErrorLogFiles() => Instance.InstanceRemoveAllStoredErrorLogFiles();
+
+        private ManagedErrorLog InstanceCreateErrorLog(System.Exception exception)
         {
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.UtcNow,
-                Device = DeviceInformationHelper.GetDeviceInformation(),
-                ProcessId = ProcessInformation.ProcessId ?? 0,
-                ProcessName = ProcessInformation.ProcessName,
-                ParentProcessId = ProcessInformation.ParentProcessId,
-                ParentProcessName = ProcessInformation.ParentProcessName,
-                AppLaunchTimestamp = ProcessInformation.ProcessStartTime,
-                Architecture = ProcessInformation.ProcessArchitecture,
+                Device = _deviceInformationHelper.GetDeviceInformation(),
+                ProcessId = _processInformation.ProcessId ?? 0,
+                ProcessName = _processInformation.ProcessName,
+                ParentProcessId = _processInformation.ParentProcessId,
+                ParentProcessName = _processInformation.ParentProcessName,
+                AppLaunchTimestamp = _processInformation.ProcessStartTime,
+                Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
                 Exception = CreateModelException(exception)
             };
         }
 
-        /// <summary>
-        /// Gets all files with the error log file extension in the error directory.
-        /// </summary>
-        public static IEnumerable<File> GetErrorLogFiles()
+        private IEnumerable<File> InstanceGetErrorLogFiles()
         {
             lock (LockObject)
             {
                 try
                 {
                     // Convert to list so enumeration does not occur outside the lock.
-                    return CrashesDirectory.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
+                    return _crashesDirectory.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
                 }
                 catch (System.Exception ex)
                 {
@@ -99,16 +159,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
             }
         }
 
-        /// <summary>
-        /// Gets the most recently modified error log file.
-        /// </summary>
-        /// <returns>The most recently modified error log file.</returns>
-        public static File GetLastErrorLogFile()
+        private File InstanceGetLastErrorLogFile()
         {
             File lastErrorLogFile = null;
             lock (LockObject)
             {
-                var errorLogFiles = GetErrorLogFiles();
+                var errorLogFiles = InstanceGetErrorLogFiles();
                 if (errorLogFiles == null)
                 {
                     return null;
@@ -132,21 +188,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
             return null;
         }
 
-        /// <summary>
-        /// Gets the error log file with the given ID.
-        /// </summary>
-        /// <param name="errorId">The ID for the error log.</param>
-        /// <returns>The error log file or null if it is not found.</returns>
-        public static File GetStoredErrorLogFile(Guid errorId)
+        private File InstanceGetStoredErrorLogFile(Guid errorId)
         {
             return GetStoredFile(errorId, ErrorLogFileExtension);
         }
 
-        /// <summary>
-        /// Saves an error log on disk.
-        /// </summary>
-        /// <param name="errorLog">The error log.</param>
-        public static void SaveErrorLogFile(ManagedErrorLog errorLog)
+        public virtual void InstanceSaveErrorLogFile(ManagedErrorLog errorLog)
         {
             var errorLogString = LogSerializer.Serialize(errorLog);
             var fileName = errorLog.Id + ErrorLogFileExtension;
@@ -154,9 +201,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    CrashesDirectory.Create();
+                    _crashesDirectory.Create();
                 }
-                CrashesDirectory.CreateFile(fileName, errorLogString);
+                _crashesDirectory.CreateFile(fileName, errorLogString);
             }
             catch (System.Exception ex)
             {
@@ -166,11 +213,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
-        /// <summary>
-        /// Deletes an error log from disk.
-        /// </summary>
-        /// <param name="errorId">The ID for the error log.</param>
-        public static void RemoveStoredErrorLogFile(Guid errorId)
+        private void InstanceRemoveStoredErrorLogFile(Guid errorId)
         {
             lock (LockObject)
             {
@@ -190,17 +233,14 @@ namespace Microsoft.AppCenter.Crashes.Utils
             }
         }
 
-        /// <summary>
-        /// Removes all stored error log files.
-        /// </summary>
-        public static void RemoveAllStoredErrorLogFiles()
+        public virtual void InstanceRemoveAllStoredErrorLogFiles()
         {
             lock (LockObject)
             {
                 AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log directory.");
                 try
                 {
-                    CrashesDirectory.Delete(true);
+                    _crashesDirectory.Delete(true);
                 }
                 catch (System.Exception ex)
                 {
@@ -243,14 +283,14 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <param name="errorId">The error ID.</param>
         /// <param name="extension">The file extension.</param>
         /// <returns>The file corresponding to the given parameters, or null if not found.</returns>
-        private static File GetStoredFile(Guid errorId, string extension)
+        private File GetStoredFile(Guid errorId, string extension)
         {
             var fileName = $"{errorId}{extension}";
             try
             {
                 lock (LockObject)
                 {
-                    return CrashesDirectory.EnumerateFiles(fileName).Single();
+                    return _crashesDirectory.EnumerateFiles(fileName).Single();
                 }
             }
             catch (System.Exception ex)

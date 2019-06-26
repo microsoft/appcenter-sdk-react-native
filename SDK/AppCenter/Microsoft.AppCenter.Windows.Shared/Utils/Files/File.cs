@@ -2,15 +2,24 @@
 // Licensed under the MIT License.
 
 using System;
-using System.IO;
 
 namespace Microsoft.AppCenter.Utils.Files
 {
+    /// <summary>
+    /// This class wraps FileInfo for the 
+    /// </summary>
     public class File
     {
-        private FileInfo _implementation;
+        private readonly System.IO.FileInfo _implementation;
 
-        internal File(FileInfo fileInfo)
+        /// <summary>
+        /// Parameterless constructor needed for testing.
+        /// </summary>
+        public File()
+        {
+        }
+
+        internal File(System.IO.FileInfo fileInfo)
         {
             _implementation = fileInfo;
         }

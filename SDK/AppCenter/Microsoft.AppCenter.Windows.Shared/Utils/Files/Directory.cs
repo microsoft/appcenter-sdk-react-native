@@ -2,14 +2,20 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Microsoft.AppCenter.Utils.Files
 {
     public class Directory
     {
-        private DirectoryInfo _implementation;
+        private readonly DirectoryInfo _implementation;
+
+        /// <summary>
+        /// Parameterless constructor needed for testing.
+        /// </summary>
+        public Directory()
+        {
+        }
 
         public Directory(string directoryPath)
         {
