@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Crashes.Utils.Fakes;
 using Microsoft.AppCenter.Utils;
-using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -32,6 +31,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             ApplicationLifecycleHelper.Instance = _mockApplicationLifecycleHelper.Object;
         }
 
+        [TestCleanup]
+        public void Cleanup()
+        {
+            // If a mock was set, reset it to null before moving on.
+            ErrorLogHelper.Instance = null;
+            ApplicationLifecycleHelper.Instance = null;
+            Crashes.Instance = null;
+        }
+
         [TestMethod]
         public void InstanceIsNotNull()
         {
@@ -44,7 +52,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             Crashes.SetEnabledAsync(false).Wait();
             Assert.IsFalse(Crashes.IsEnabledAsync().Result);
-
             Crashes.SetEnabledAsync(true).Wait();
             Assert.IsTrue(Crashes.IsEnabledAsync().Result);
         }
@@ -52,53 +59,28 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void ApplyEnabledStateStartsListening()
         {
-            bool passed = false;
-            using (ShimsContext.Create())
-            {
-                ShimErrorLogHelper.SaveErrorLogFileManagedErrorLog = (managedErrorLog) =>
-                {
-                    passed = true;
-                };
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
-                Crashes.SetEnabledAsync(true).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-
-                // Raise an arbitrary event for UnhandledExceptionOccurred handler
-                _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
-                    new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
-
-                _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
-                Assert.IsTrue(passed);
-            }
+            // Raise an arbitrary event for UnhandledExceptionOccurred handler
+            _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
+                new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
+            _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
+            Mock.Get(mockErrorLogHelper).Verify(instance => instance.InstanceSaveErrorLogFile(It.IsAny<ManagedErrorLog>()));
         }
 
         [TestMethod]
         public void ApplyEnabledStateCleansUp()
         {
-            bool saveErrorLogFileCalled = false;
-            bool removeErrorLogFilesCalled = false;
-            using (ShimsContext.Create())
-            {
-                ShimErrorLogHelper.SaveErrorLogFileManagedErrorLog = (managedErrorLog) =>
-                {
-                    saveErrorLogFileCalled = true;
-                };
-                ShimErrorLogHelper.RemoveAllStoredErrorLogFiles = () =>
-                {
-                    removeErrorLogFilesCalled = true;
-                };
-
-                Crashes.SetEnabledAsync(false).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-
-                // Raise an arbitrary event for UnhandledExceptionOccurred handler
-                _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
-                    new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
-
-                _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
-                Assert.IsFalse(saveErrorLogFileCalled);
-                Assert.IsTrue(removeErrorLogFilesCalled);
-            }
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.SetEnabledAsync(false).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            _mockChannel.Verify(channel => channel.SetEnabled(false), Times.Once());
+            Mock.Get(mockErrorLogHelper).Verify(instance => instance.InstanceRemoveAllStoredErrorLogFiles());
         }
     }
 }

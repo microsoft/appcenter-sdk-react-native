@@ -3,17 +3,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Fakes;
 using System.Linq;
 using System.Security;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Utils.Files;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
-using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Schema;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 {
@@ -23,8 +22,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         [TestInitialize]
         public void SetUp()
         {
-            ErrorLogHelper.ProcessInformation = Mock.Of<IProcessInformation>();
-            ErrorLogHelper.DeviceInformationHelper = Mock.Of<IDeviceInformationHelper>();
+            ErrorLogHelper.Instance._processInformation = Mock.Of<IProcessInformation>();
+            ErrorLogHelper.Instance._deviceInformationHelper = Mock.Of<IDeviceInformationHelper>();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            // If a mock was set, reset it to null before moving on.
+            ErrorLogHelper.Instance = null;
         }
 
         [TestMethod]
@@ -44,7 +50,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             // Mock device information.
             var device = new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion", "locale", 1,
                 "appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize", null, null, "appNamespace", null, null, null, null);
-            Mock.Get(ErrorLogHelper.DeviceInformationHelper).Setup(instance => instance.GetDeviceInformation()).Returns(device);
+            Mock.Get(ErrorLogHelper.Instance._deviceInformationHelper).Setup(instance => instance.GetDeviceInformation()).Returns(device);
 
             // Mock process information.
             var parentProcessId = 0;
@@ -53,12 +59,12 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var processId = 1;
             var processName = "processName";
             var processStartTime = DateTime.Now;
-            Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ParentProcessId).Returns(parentProcessId);
-            Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ParentProcessName).Returns(parentProcessName);
-            Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ProcessArchitecture).Returns(processArchitecture);
-            Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ProcessId).Returns(processId);
-            Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ProcessName).Returns(processName);
-            Mock.Get(ErrorLogHelper.ProcessInformation).SetupGet(instance => instance.ProcessStartTime).Returns(processStartTime);
+            Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ParentProcessId).Returns(parentProcessId);
+            Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ParentProcessName).Returns(parentProcessName);
+            Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ProcessArchitecture).Returns(processArchitecture);
+            Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ProcessId).Returns(processId);
+            Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ProcessName).Returns(processName);
+            Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ProcessStartTime).Returns(processStartTime);
 
             // Create the error log.
             var log = ErrorLogHelper.CreateErrorLog(exception);
@@ -105,197 +111,150 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         public void GetSingleErrorLogFile()
         {
             var id = Guid.NewGuid();
-            var expectedFileInfo = new FileInfo("file");
-            var fileInfoList = new List<FileInfo> { expectedFileInfo };
-            using (ShimsContext.Create())
-            {
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
-                };
+            var expectedFile = Mock.Of<File>();
+            var fileList = new List<File> { expectedFile };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.json")).Returns(fileList);
 
-                // Retrieve the error log by the ID.
-                var errorLogFileInfo = ErrorLogHelper.GetStoredErrorLogFile(id);
+            // Retrieve the error log by the ID.
+            var errorLogFile = ErrorLogHelper.GetStoredErrorLogFile(id);
 
-                // Validate the contents.
-                Assert.AreSame(expectedFileInfo, errorLogFileInfo);
-            }
+            // Validate the contents.
+            Assert.AreSame(expectedFile, errorLogFile);
         }
 
         [TestMethod]
-        [DataRow(typeof(DirectoryNotFoundException))]
+        [DataRow(typeof(System.IO.DirectoryNotFoundException))]
         [DataRow(typeof(SecurityException))]
         public void GetSingleErrorLogFileDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            using (ShimsContext.Create())
-            {
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    throw exception;
-                };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
 
-                // Retrieve the error log by the ID.
-                var errorLogFileInfo = ErrorLogHelper.GetStoredErrorLogFile(Guid.NewGuid());
-                Assert.IsNull(errorLogFileInfo);
-            }
+            // Retrieve the error log by the ID.
+            var errorLogFile = ErrorLogHelper.GetStoredErrorLogFile(Guid.NewGuid());
+            Assert.IsNull(errorLogFile);
         }
 
         [TestMethod]
         public void GetErrorLogFiles()
         {
             // Mock multiple error log files.
-            var expectedFileInfo1 = new FileInfo("file");
-            var expectedFileInfo2 = new FileInfo("file2");
-            var fileInfoList = new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
-            using (ShimsContext.Create())
+            var expectedFile1 = Mock.Of<File>();
+            var expectedFile2 = Mock.Of<File>();
+            var expectedFiles = new List<File> { expectedFile1, expectedFile2 };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"*.json")).Returns(expectedFiles);
+
+            // Retrieve the error logs.
+            var errorLogFiles = ErrorLogHelper.GetErrorLogFiles().ToList();
+
+            // Validate the contents.
+            Assert.AreEqual(expectedFiles.Count, errorLogFiles.Count);
+            foreach (var fileInfo in errorLogFiles)
             {
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
-                };
-
-                // Retrieve the error logs.
-                var errorLogFileInfos = ErrorLogHelper.GetErrorLogFiles().ToList();
-
-                // Validate the contents.
-                Assert.AreEqual(fileInfoList.Count, errorLogFileInfos.Count);
-                foreach (var fileInfo in errorLogFileInfos)
-                {
-                    Assert.IsNotNull(fileInfo);
-                    CollectionAssert.Contains(fileInfoList, fileInfo);
-                    fileInfoList.Remove(fileInfo);
-                }
+                Assert.IsNotNull(fileInfo);
+                CollectionAssert.Contains(expectedFiles, fileInfo);
+                expectedFiles.Remove(fileInfo);
             }
         }
 
         [TestMethod]
-        [DataRow(typeof(DirectoryNotFoundException))]
+        [DataRow(typeof(System.IO.DirectoryNotFoundException))]
         [DataRow(typeof(SecurityException))]
         public void GetErrorLogFilesDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            using (ShimsContext.Create())
-            {
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    throw exception;
-                };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
 
-                // Retrieve the error logs.
-                var errorLogFiles = ErrorLogHelper.GetErrorLogFiles();
-                Assert.AreEqual(errorLogFiles.Count(), 0);
-            }
+            // Retrieve the error logs.
+            var errorLogFiles = ErrorLogHelper.GetErrorLogFiles();
+            Assert.AreEqual(errorLogFiles.Count(), 0);
         }
 
         [TestMethod]
         public void GetLastErrorLogFile()
         {
-            using (ShimsContext.Create())
-            {
-                // Mock multiple error log files.
-                var oldFileInfo = new ShimFileInfo();
-                var oldFileSystemInfo = new ShimFileSystemInfo(oldFileInfo)
-                {
-                    LastWriteTimeGet = () => DateTime.Now.AddDays(-200)
-                };
-                var recentFileInfo = new ShimFileInfo();
-                var recentFileSystemInfo = new ShimFileSystemInfo(recentFileInfo)
-                {
-                    LastWriteTimeGet = () => DateTime.Now
-                };
-                var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
-                };
+            // Mock multiple error log files.
+            var oldFile = Mock.Of<File>();
+            Mock.Get(oldFile).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now.AddDays(-200));
+            var recentFile = Mock.Of<File>();
+            Mock.Get(recentFile).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now);
+            var expectedFiles = new List<File> { oldFile, recentFile };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"*.json")).Returns(expectedFiles);
 
-                // Retrieve the error logs.
-                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
+            // Retrieve the error logs.
+            var errorLogFile = ErrorLogHelper.GetLastErrorLogFile();
 
-                // Validate the contents.
-                Assert.AreSame(recentFileInfo.Instance, errorLogFileInfo);
-            }
+            // Validate the contents.
+            Assert.AreSame(recentFile, errorLogFile);
         }
 
         [TestMethod]
-        [DataRow(typeof(DirectoryNotFoundException))]
+        [DataRow(typeof(System.IO.DirectoryNotFoundException))]
         [DataRow(typeof(SecurityException))]
         public void GetLastErrorLogFileDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            using (ShimsContext.Create())
-            {
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    throw exception;
-                };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
 
-                // Retrieve the error logs.
-                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
-                Assert.IsNull(errorLogFileInfo);
-            }
+            // Retrieve the error logs.
+            var errorLogFile = ErrorLogHelper.GetLastErrorLogFile();
+            Assert.IsNull(errorLogFile);
         }
 
         [TestMethod]
-        [DataRow(typeof(IOException))]
+        [DataRow(typeof(System.IO.IOException))]
         [DataRow(typeof(PlatformNotSupportedException))]
         [DataRow(typeof(ArgumentOutOfRangeException))]
         public void GetLastErrorLogFileDoesNotThrowWhenLastWriteTimeThrows(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            using (ShimsContext.Create())
-            {
-                // Mock multiple error log files.
-                var oldFileInfo = new ShimFileInfo();
-                var oldFileSystemInfo = new ShimFileSystemInfo(oldFileInfo)
-                {
-                    LastWriteTimeGet = () => { throw exception; }
-                };
-                var recentFileInfo = new ShimFileInfo();
-                var recentFileSystemInfo = new ShimFileSystemInfo(oldFileInfo)
-                {
-                    LastWriteTimeGet = () => { throw exception; }
-                };
-                var fileInfoList = new List<FileInfo> { oldFileInfo, recentFileInfo };
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
-                };
 
-                // Retrieve the error logs.
-                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
-                Assert.IsNull(errorLogFileInfo);
-            }
+            // Mock multiple error log files.
+            var oldFile = Mock.Of<File>();
+            Mock.Get(oldFile).SetupGet(f => f.LastWriteTime).Throws(exception);
+            var recentFile = Mock.Of<File>();
+            Mock.Get(recentFile).SetupGet(f => f.LastWriteTime).Throws(exception);
+            var expectedFiles = new List<File> { oldFile, recentFile };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"*.json")).Returns(expectedFiles);
+
+            // Retrieve the error logs.
+            var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
+            Assert.IsNull(errorLogFileInfo);
         }
 
         [TestMethod]
         public void GetLastErrorLogFileWhenOnlyOneIsSaved()
         {
-            using (ShimsContext.Create())
-            {
-                // Mock multiple error log files.
-                var fileInfo = new ShimFileInfo();
-                var fileSystemInfo = new ShimFileSystemInfo(fileInfo)
-                {
-                    LastWriteTimeGet = () => DateTime.Now.AddDays(-200)
-                };
-                var fileInfoList = new List<FileInfo> { fileInfo };
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == "*.json" ? fileInfoList : new List<FileInfo>();
-                };
+            var file = Mock.Of<File>();
+            Mock.Get(file).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now);
+            var expectedFiles = new List<File> { file };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"*.json")).Returns(expectedFiles);
 
-                // Retrieve the error logs.
-                var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
+            // Retrieve the error logs.
+            var errorLogFileInfo = ErrorLogHelper.GetLastErrorLogFile();
 
-                // Validate the contents.
-                Assert.AreSame(fileInfo.Instance, errorLogFileInfo);
-            }
+            // Validate the contents.
+            Assert.AreSame(file, errorLogFileInfo);
         }
 
         [TestMethod]
@@ -306,33 +265,20 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var filePath = Path.Combine(Constants.AppCenterFilesDirectoryPath, "Errors", errorLog.Id + ".json");
+            var fileName = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
-            using (ShimsContext.Create())
-            {
-                var actualPath = "";
-                var actualContents = "";
-                var callCount = 0;
-                ShimDirectoryInfo.AllInstances.ExistsGet = info => true;
-                ShimFile.WriteAllTextStringString = (path, contents) =>
-                {
-                    callCount++;
-                    actualPath = path;
-                    actualContents = contents;
-                };
-                ErrorLogHelper.SaveErrorLogFile(errorLog);
-                Assert.AreEqual(filePath, actualPath);
-                Assert.AreEqual(serializedErrorLog, actualContents);
-                Assert.AreEqual(1, callCount);
-            }
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(fileName, serializedErrorLog));
         }
 
         [TestMethod]
         [DataRow(typeof(ArgumentException))]
         [DataRow(typeof(ArgumentNullException))]
-        [DataRow(typeof(PathTooLongException))]
-        [DataRow(typeof(DirectoryNotFoundException))]
-        [DataRow(typeof(IOException))]
+        [DataRow(typeof(System.IO.PathTooLongException))]
+        [DataRow(typeof(System.IO.DirectoryNotFoundException))]
+        [DataRow(typeof(System.IO.IOException))]
         [DataRow(typeof(UnauthorizedAccessException))]
         [DataRow(typeof(NotSupportedException))]
         [DataRow(typeof(SecurityException))]
@@ -347,94 +293,72 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             };
             var fileName = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
-            using (ShimsContext.Create())
-            {
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    throw exception;
-                };
-                ErrorLogHelper.SaveErrorLogFile(errorLog);
-            }
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
+            ErrorLogHelper.SaveErrorLogFile(errorLog);
+
             // No exception should be thrown.
         }
 
         [TestMethod]
         public void RemoveStoredErrorLogFile()
         {
-            using (ShimsContext.Create())
-            {
-                var fileInfo = new ShimFileInfo();
-                var count = 0;
-                fileInfo.Delete = () => { count++; };
-                var fileInfoList = new List<FileInfo> { fileInfo };
-                var id = Guid.NewGuid();
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
-                };
-                ErrorLogHelper.RemoveStoredErrorLogFile(id);
-                Assert.AreEqual(1, count);
-            }
+            var file = Mock.Of<File>();
+            var expectedFiles = new List<File> { file };
+            var id = Guid.NewGuid();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.json")).Returns(expectedFiles);
+            ErrorLogHelper.RemoveStoredErrorLogFile(id);
+            Mock.Get(file).Verify(f => f.Delete());
         }
 
         [TestMethod]
-        [DataRow(typeof(IOException))]
+        [DataRow(typeof(System.IO.IOException))]
         [DataRow(typeof(SecurityException))]
         [DataRow(typeof(UnauthorizedAccessException))]
         public void RemoveStoredErrorLogFileDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            using (ShimsContext.Create())
-            {
-                var fileInfo = new ShimFileInfo
-                {
-                    Delete = () => { throw exception; }
-                };
-                var fileInfoList = new List<FileInfo> { fileInfo };
-                var id = Guid.NewGuid();
-                ShimDirectoryInfo.AllInstances.EnumerateFilesString = (info, pattern) =>
-                {
-                    return pattern == $"{id}.json" ? fileInfoList : new List<FileInfo>();
-                };
-                ErrorLogHelper.RemoveStoredErrorLogFile(id);
-            }
+            var file = Mock.Of<File>();
+            Mock.Get(file).Setup(f => f.Delete()).Throws(exception);
+            var expectedFiles = new List<File> { file };
+            var id = Guid.NewGuid();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.json")).Returns(expectedFiles);
+            ErrorLogHelper.RemoveStoredErrorLogFile(id);
+            Mock.Get(file).Verify(f => f.Delete());
+            ErrorLogHelper.RemoveStoredErrorLogFile(id);
+
             // No exception should be thrown.
         }
 
         [TestMethod]
         public void RemoveAllStoredErrorLogFiles()
         {
-            using (ShimsContext.Create())
-            {
-                var wasCalledWithTrue = false;
-                ShimDirectoryInfo.AllInstances.DeleteBoolean = (info, recursive) =>
-                {
-                    wasCalledWithTrue = recursive;
-                };
-                ErrorLogHelper.RemoveAllStoredErrorLogFiles();
-                Assert.IsTrue(wasCalledWithTrue);
-            }
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+            Mock.Get(mockDirectory).Verify(d => d.Delete(true));
         }
 
         [TestMethod]
-        [DataRow(typeof(IOException))]
+        [DataRow(typeof(System.IO.IOException))]
         [DataRow(typeof(SecurityException))]
         [DataRow(typeof(UnauthorizedAccessException))]
         public void RemoveAllStoredErrorLogFilesDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
-            using (ShimsContext.Create())
-            {
-                ShimDirectoryInfo.AllInstances.DeleteBoolean = (info, recursive) =>
-                {
-                    throw exception;
-                };
-                ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
+            ErrorLogHelper.RemoveAllStoredErrorLogFiles();
 
-                // No exception should be thrown.
-            }
+            // No exception should be thrown.
         }
     }
 }
