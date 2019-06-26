@@ -69,6 +69,9 @@ Data.WriteOptions = class {
 };
 
 function convertTimestampToDate(result) {
+    if (!result === undefined || !result.lastUpdatedDate === undefined) {
+        return result;
+    }
     // Create a new `Date` object from timestamp as milliseconds.
     result.lastUpdatedDate = new Date(result.lastUpdatedDate);
     return result;
