@@ -33,5 +33,10 @@ namespace Microsoft.AppCenter.Utils.Files
         {
             _underlyingFileInfo.Delete();
         }
+
+        public virtual string ReadAllText()
+        {
+            return System.IO.File.ReadAllText(_underlyingFileInfo.FullName);
+        }
     }
 }

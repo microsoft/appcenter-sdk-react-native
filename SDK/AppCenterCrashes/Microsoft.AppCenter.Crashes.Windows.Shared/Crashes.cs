@@ -191,7 +191,7 @@ namespace Microsoft.AppCenter.Crashes
                     }
                 }
                 SendCrashReportsOrAwaitUserConfirmation();
-            }).ContinueWith((_) => ProcessPendingErrorsTask = null );
+            }).ContinueWith((_) => ProcessPendingErrorsTask = null);
         }
 
         private void SendCrashReportsOrAwaitUserConfirmation()

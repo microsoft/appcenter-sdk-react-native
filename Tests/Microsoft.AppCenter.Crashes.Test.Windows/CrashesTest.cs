@@ -3,13 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Fakes;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -65,6 +63,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
+
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
@@ -90,132 +89,91 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void OnChannelGroupReadySendsPendingCrashes()
         {
-            var expectedFileInfo1 = new FileInfo("file");
-            var expectedFileInfo2 = new FileInfo("file2");
+            var mockFile1 = Mock.Of<File>();
+            var mockFile2 = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
             var expectedprocessId = 123;
-            var expectedLogIds = new List<Guid>();
-            var removedLogIds = new List<Guid>();
-            using (ShimsContext.Create())
-            {
-                // Stub get/read/delete error files.
-                ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { expectedFileInfo1, expectedFileInfo2 };
-                ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) => removedLogIds.Add(guid);
-                ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo file) =>
-                {
-                    var errorLog = new ManagedErrorLog
-                    {
-                        Id = Guid.NewGuid(),
-                        ProcessId = expectedprocessId
-                    };
-                    expectedLogIds.Add(errorLog.Id);
-                    return errorLog;
-                };
+            var expectedManagedErrorLog1 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedprocessId };
+            var expectedManagedErrorLog2 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedprocessId };
 
-                Crashes.SetEnabledAsync(true).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            // Stub get/read/delete error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile1, mockFile2 });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile1)).Returns(expectedManagedErrorLog1);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile2)).Returns(expectedManagedErrorLog2);
 
-                // Verify crashes logs have been queued to the channel.
-                foreach (var expectedLogId in expectedLogIds)
-                {
-                    _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedLogId && log.ProcessId == expectedprocessId)), Times.Once());
-                }
-                CollectionAssert.AreEqual(expectedLogIds, removedLogIds);
-            }
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+            // Verify crashes logs have been queued to the channel.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == expectedprocessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog2.Id && log.ProcessId == expectedprocessId)), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog1.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog2.Id), Times.Once());
         }
 
         [TestMethod]
-        public void OnChannelGroupReadyDoesNotSendPendingCrashesOnDisabled()
+        [DataRow(true)]
+        [DataRow(false)]
+        public void OnChannelGroupReadyDoesNotSendPendingCrashes(bool enabled)
         {
-            using (ShimsContext.Create())
-            {
-                var getErrorLogFilesCalled = false;
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
 
-                // Stub get/read/delete error files.
-                ShimErrorLogHelper.GetErrorLogFiles = () =>
-                {
-                    getErrorLogFilesCalled = true;
-                    return new List<FileInfo>();
-                };
-                Crashes.SetEnabledAsync(false).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-                _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
-                Assert.IsFalse(getErrorLogFilesCalled);
-            }
-        }
+            // Stub get/read/delete error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { });
 
-        [TestMethod]
-        public void OnChannelGroupReadyDoesNotSendPendingCrashesIfNoneExist()
-        {
-            using (ShimsContext.Create())
-            {
-                // Stub get/read/delete error files.
-                ShimErrorLogHelper.GetErrorLogFiles = () =>
-                {
-                    return new List<FileInfo>();
-                };
-                Crashes.SetEnabledAsync(true).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-                _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
-            }
+            Crashes.SetEnabledAsync(enabled).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+            // Verify no crashes logs have been queued to the channel.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
         public void ProcessPendingErrorsExcludesCorruptedFiles()
         {
-            var corruptedFileName = "corruptedFile";
-            var fileDeletionCount = 0;
-            var expectedLogId = Guid.NewGuid();
-            var actualSentLogIds = new List<Guid>();
-            var removedLogIds = new List<Guid>();
-            using (ShimsContext.Create())
-            {
-                // Stub get/read/delete error files.
-                var file = new FileInfo("file");
-                var corruptedFile = new FileInfo(corruptedFileName);
-                _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>())).Callback<Log>(log => actualSentLogIds.Add(((ManagedErrorLog)log).Id));
-                ShimFileInfo.AllInstances.Delete = (FileInfo info) => fileDeletionCount++;
-                ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { file, corruptedFile };
-                ShimErrorLogHelper.RemoveStoredErrorLogFileGuid = (Guid guid) => removedLogIds.Add(guid);
-                ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo info) =>
-                {
-                    if (info.Name == corruptedFileName)
-                    {
-                        return null;
-                    }
-                    return new ManagedErrorLog
-                    {
-                        Id = expectedLogId
-                    };
-                };
+            var mockFile = Mock.Of<File>();
+            var mockCorruptedFile = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid() };
 
-                Crashes.SetEnabledAsync(true).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-                Crashes.Instance.ProcessPendingErrorsTask.Wait();
-                Assert.AreEqual(actualSentLogIds.Count, 1);
-                Assert.AreEqual(actualSentLogIds[0], expectedLogId);
-                Assert.AreEqual(removedLogIds.Count, 1);
-                Assert.AreEqual(removedLogIds[0], expectedLogId);
+            // Stub get/read/delete error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile, mockCorruptedFile });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockCorruptedFile)).Returns<ManagedErrorLog>(null);
 
-                // Valid error log file couldn't be deleted in this test because the test mocks RemoveStoredErrorLogFileGuid which deletes the file.
-                Assert.AreEqual(fileDeletionCount, 1);
-            }
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify the corrupted file got ignored and deleted.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(expectedManagedErrorLog), Times.Once());
+            Mock.Get(mockCorruptedFile).Verify(file => file.Delete(), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
         }
 
         [TestMethod]
         public void ProcessPendingErrorsDoesNotCrashOnFileDeletionFailure()
         {
-            using (ShimsContext.Create())
-            {
-                // Stub get/read/delete error files.
-                ShimFileInfo.AllInstances.Delete = (FileInfo info) => throw new FileNotFoundException();
-                ShimErrorLogHelper.GetErrorLogFiles = () => new List<FileInfo> { new FileInfo("test") };
-                ShimErrorLogHelper.ReadErrorLogFileFileInfo = (FileInfo info) => null;
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var mockFile = Mock.Of<File>();
+            Mock.Get(mockFile).Setup(file => file.Delete()).Throws(new System.IO.FileNotFoundException());
 
-                Crashes.SetEnabledAsync(true).Wait();
-                Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            // Stub get/read/delete error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns<ManagedErrorLog>(null);
 
-                _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
-            }
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+            // Verify crashes logs have been queued to the channel.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Never());
+            Mock.Get(mockFile).Verify(file => file.Delete(), Times.Once());
         }
     }
 }
