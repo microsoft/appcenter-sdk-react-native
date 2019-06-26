@@ -74,6 +74,4 @@ function convertTimestampToDate(result) {
     return result;
 }
 
-this.read();
-
 module.exports = Data;
