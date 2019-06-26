@@ -104,6 +104,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify crashes logs have been queued to the channel.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == expectedprocessId)), Times.Once());
@@ -125,6 +126,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             Crashes.SetEnabledAsync(enabled).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            if (enabled)
+            {
+                Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            }
 
             // Verify no crashes logs have been queued to the channel.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
@@ -169,6 +174,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify crashes logs have been queued to the channel.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ManagedErrorLog>()), Times.Never());
