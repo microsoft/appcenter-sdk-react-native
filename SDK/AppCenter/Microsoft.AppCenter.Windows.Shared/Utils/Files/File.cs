@@ -2,15 +2,16 @@
 // Licensed under the MIT License.
 
 using System;
+using System.IO;
 
 namespace Microsoft.AppCenter.Utils.Files
 {
     /// <summary>
-    /// This class wraps FileInfo for the 
+    /// This class wraps System.IO.FileInfo for the unit tests.
     /// </summary>
     public class File
     {
-        private readonly System.IO.FileInfo _implementation;
+        private readonly FileInfo _underlyingFileInfo;
 
         /// <summary>
         /// Parameterless constructor needed for testing.
@@ -19,18 +20,18 @@ namespace Microsoft.AppCenter.Utils.Files
         {
         }
 
-        internal File(System.IO.FileInfo fileInfo)
+        internal File(FileInfo fileInfo)
         {
-            _implementation = fileInfo;
+            _underlyingFileInfo = fileInfo;
         }
 
-        public virtual DateTime LastWriteTime => _implementation.LastWriteTime;
+        public virtual DateTime LastWriteTime => _underlyingFileInfo.LastWriteTime;
 
-        public virtual string Name => _implementation.Name;
+        public virtual string Name => _underlyingFileInfo.Name;
 
         public virtual void Delete()
         {
-            _implementation.Delete();
+            _underlyingFileInfo.Delete();
         }
     }
 }
