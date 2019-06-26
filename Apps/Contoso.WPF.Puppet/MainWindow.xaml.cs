@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +40,6 @@ namespace Contoso.WPF.Puppet
             AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
             EventProperties.ItemsSource = Properties;
         }
-
 
         private void UpdateState()
         {
@@ -93,6 +93,30 @@ namespace Contoso.WPF.Puppet
             var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
+        }
+
+        private void CountryCodeEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!CountryCodeEnableCheckbox.IsChecked.HasValue)
+            {
+                return;
+            }
+            if (!CountryCodeEnableCheckbox.IsChecked.Value)
+            {
+               CountryCodeText.Text = "";
+                AppCenter.SetCountryCode(null);
+            }
+            else
+            {
+                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(CountryCodeText.Text);
+            }
+            CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
+        }
+
+        private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
+        {
+            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
 
         #region Crash

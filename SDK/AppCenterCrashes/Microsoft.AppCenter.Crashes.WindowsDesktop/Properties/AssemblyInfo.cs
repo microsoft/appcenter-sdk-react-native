@@ -30,5 +30,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion("0.0.0.0")]
 [assembly: AssemblyFileVersion("2.1.0.0")]
 [assembly: AssemblyInformationalVersion("2.1.0-SNAPSHOT")]
-
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Crashes.Test.Windows")]
