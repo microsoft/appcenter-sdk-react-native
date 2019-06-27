@@ -64,10 +64,11 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
 
         // (void)listDocumentsWithType:(Class)documentType
         //                   partition:(NSString*) partition
+        //                 readOptions:(MSReadOptions* _Nullable) readOptions
         //           completionHandler:(MSPaginatedDocumentsCompletionHandler) completionHandler;
         [Static]
-        [Export("listDocumentsWithType:partition:completionHandler:")]
-        void List(Class documentType, string partition, MSPaginatedDocumentsCompletionHandler completionHandler);
+        [Export("listDocumentsWithType:partition:readOptions:completionHandler:")]
+        void List(Class documentType, string partition, [NullAllowed] MSReadOptions readOptions, MSPaginatedDocumentsCompletionHandler completionHandler);
 
         // + (void) createDocumentWithID:(NSString*) documentID
         //                      document:(id<MSSerializableDocument>) document
