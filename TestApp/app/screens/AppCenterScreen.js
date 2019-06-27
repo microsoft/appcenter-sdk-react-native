@@ -258,7 +258,7 @@ export default class AppCenterScreen extends Component {
                       const result = await Auth.signIn();
                       this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
 
-                      runHardCodedDataCalls();
+                      runMBaaSCode();
                     } catch (e) {
                       console.log(e);
                     }
@@ -320,8 +320,7 @@ export default class AppCenterScreen extends Component {
   }
 }
 
-function runHardCodedDataCalls() {
-  /* Hard coded testing code */
+function runMBaaSCode() {
   const MY_DOCUMENT_ID = 'some-random-document-id';
   const readOptions = new Data.ReadOptions(5000);
   const writeOptions = new Data.WriteOptions(5000);
