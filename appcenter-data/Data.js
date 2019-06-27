@@ -20,7 +20,8 @@ const Data = {
     TimeToLive,
     DefaultPartitions,
     read,
-    create
+    create,
+    remove
 };
 
 /**
@@ -54,6 +55,19 @@ function create(documentId, document, partition, writeOptions) {
         writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
     }
     return AppCenterReactNativeData.create(documentId, document, partition, writeOptions).then(convertTimestampToDate);
+}
+
+/**
+ * Delete a document.
+ * @param {string} documentId - The CosmosDB document id.
+ * @param {string} partition - The CosmosDB partition key.
+ * @param {object} writeOptions - Cache write options when the operation is done offline.
+ */
+function remove(documentId, partition, writeOptions) {
+    if (!writeOptions) {
+        writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
+    }
+    return AppCenterReactNativeData.remove(documentId, partition, writeOptions);
 }
 
 Data.ReadOptions = class {

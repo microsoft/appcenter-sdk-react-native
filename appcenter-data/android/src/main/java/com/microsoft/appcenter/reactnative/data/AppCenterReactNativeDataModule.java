@@ -68,7 +68,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         } else {
             readOptions = new ReadOptions(TimeToLive.DEFAULT);
         }
-        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer("Read failed", promise));
+        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>("Read failed", promise));
     }
 
     @ReactMethod
@@ -80,10 +80,21 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             writeOptions = new WriteOptions(TimeToLive.DEFAULT);
         }
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(readableMap);
-        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer("Create failed", promise));
+        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Create failed", promise));
     }
 
-    private class Consumer implements AppCenterConsumer<DocumentWrapper<JsonElement>> {
+    @ReactMethod
+    public void remove(String documentId, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
+        }
+        Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>("Delete failed", promise));
+    }
+
+    private class Consumer<T> implements AppCenterConsumer<DocumentWrapper<T>> {
 
         private Promise mPromise;
 
@@ -95,22 +106,26 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         }
 
         @Override
-        public void accept(DocumentWrapper<JsonElement> documentWrapper) {
+        public void accept(DocumentWrapper<T> documentWrapper) {
             WritableMap jsDocumentWrapper = new WritableNativeMap();
             jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
             jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
             jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
+
+            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
+            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
+            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
             if (documentWrapper.getError() != null) {
                 DataException dataException = documentWrapper.getError();
                 mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
                 return;
             }
-            JsonElement deserializedValue = documentWrapper.getDeserializedValue();
-            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
-
-            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
-            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
-            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+            if (documentWrapper.getDeserializedValue() == null || !(documentWrapper.getDeserializedValue() instanceof JsonElement)) {
+                mPromise.resolve(jsDocumentWrapper);
+                return;
+            }
+            JsonElement deserializedValue = (JsonElement) documentWrapper.getDeserializedValue();
             if (deserializedValue.isJsonPrimitive()) {
                 JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
                 if (jsonPrimitive.isString()) {
