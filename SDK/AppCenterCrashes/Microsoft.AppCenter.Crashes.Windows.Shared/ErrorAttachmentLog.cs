@@ -17,12 +17,20 @@ namespace Microsoft.AppCenter.Crashes
 
         static ErrorAttachmentLog PlatformAttachmentWithText(string text, string fileName)
         {
+            if (text == null)
+            {
+                return null;
+            }
             var data = Encoding.UTF8.GetBytes(text);
             return PlatformAttachmentWithBinary(data, fileName, ContentTypePlainText);
         }
 
         static ErrorAttachmentLog PlatformAttachmentWithBinary(byte[] data, string fileName, string contentType)
         {
+            if (data == null)
+            {
+                return null;
+            }
             return new ErrorAttachmentLog()
             {
                 Data = data,
