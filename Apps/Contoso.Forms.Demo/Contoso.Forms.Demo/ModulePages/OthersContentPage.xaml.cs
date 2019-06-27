@@ -15,11 +15,10 @@ namespace Contoso.Forms.Demo
 {
     using XamarinDevice = Xamarin.Forms.Device;
 
-    private const string AccountId = "accountId";
-
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
-    { 
+    {
+
         static OthersContentPage()
         {
             Data.RemoteOperationCompleted += (sender, eventArgs) =>
@@ -29,7 +28,8 @@ namespace Contoso.Forms.Demo
         }
 
         private UserInformation userInfo;
-	
+        private const string AccountId = "accountId";
+
         public OthersContentPage()
         {
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            if (Application.Current.Properties.ContainsKey(AccountId) && Application.Current.Properties[ACCOUNT_ID] is string id)
+            if (Application.Current.Properties.ContainsKey(AccountId) && Application.Current.Properties[AccountId] is string id)
             {
                 SignInInformationButton.Text = "User authenticated";
             }
@@ -122,6 +122,7 @@ namespace Contoso.Forms.Demo
         {
             Auth.SignOut();
             userInfo = null;
+            Application.Current.Properties[AccountId] = null;
             SignInInformationButton.Text = "User not authenticated";
         }
 
@@ -129,7 +130,6 @@ namespace Contoso.Forms.Demo
         {
             if (userInfo != null)
             {
-                Application.Current.Properties[AccountId] = null;
                 string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
                 string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
                 await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
