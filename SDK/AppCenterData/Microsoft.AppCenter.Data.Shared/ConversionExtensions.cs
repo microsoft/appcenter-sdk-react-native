@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Data
 {
@@ -11,6 +10,7 @@ namespace Microsoft.AppCenter.Data
             string id,
             bool isFromDeviceCache,
             string jsonValue,
+            Func<string, T> deserealizer,
             DateTimeOffset date)
         {
             DocumentWrapper<T> parsedDocument = new DocumentWrapper<T>
@@ -30,7 +30,7 @@ namespace Microsoft.AppCenter.Data
                 // Set deserialized value.
                 if (parsedDocument.JsonValue != null)
                 {
-                    parsedDocument.DeserializedValue = JsonConvert.DeserializeObject<T>(parsedDocument.JsonValue);
+                    parsedDocument.DeserializedValue = deserealizer(parsedDocument.JsonValue);
                 }
             }
             catch (Exception ex)

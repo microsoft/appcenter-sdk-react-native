@@ -37,6 +37,7 @@ namespace Microsoft.AppCenter.Data
                 documentWrapper.Id,
                 documentWrapper.IsFromDeviceCache,
                 documentWrapper.JsonValue,
+                p => JsonConvert.DeserializeObject<T>(p),
                 DateTimeOffset.FromUnixTimeMilliseconds(documentWrapper.LastUpdatedDate.Time));
         }
 

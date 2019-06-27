@@ -21,6 +21,7 @@ namespace Microsoft.AppCenter.Data
                 documentWrapper.DocumentId,
                 documentWrapper.FromDeviceCache,
                 documentWrapper.JsonValue,
+                p => JsonConvert.DeserializeObject<T>(p),
                 documentWrapper.LastUpdatedDate != null ? (DateTime)documentWrapper?.LastUpdatedDate : UnixEpoch);
         }
 
