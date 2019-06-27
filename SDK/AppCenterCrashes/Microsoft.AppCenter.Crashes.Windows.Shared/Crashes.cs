@@ -153,9 +153,12 @@ namespace Microsoft.AppCenter.Crashes
                 else if (!enabled)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
-                    ChannelGroup.SendingLog -= ChannelSendingLog;
-                    ChannelGroup.SentLog -= ChannelSentLog;
-                    ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
+                    if (ChannelGroup != null)
+                    {
+                        ChannelGroup.SendingLog -= ChannelSendingLog;
+                        ChannelGroup.SentLog -= ChannelSentLog;
+                        ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
+                    }
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
                 }
             }
