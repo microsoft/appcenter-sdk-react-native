@@ -101,7 +101,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static File GetLastErrorLogFile() => Instance.InstanceGetLastErrorLogFile();
 
         /// <summary>
-        /// Get the error storage directory, or creates it if it does not exist.
+        /// Gets the error storage directory, or creates it if it does not exist.
         /// </summary>
         /// <returns>The error storage directory.</returns>
         public static Directory GetErrorStorageDirectory() => Instance.InstanceGetErrorStorageDirectory();
