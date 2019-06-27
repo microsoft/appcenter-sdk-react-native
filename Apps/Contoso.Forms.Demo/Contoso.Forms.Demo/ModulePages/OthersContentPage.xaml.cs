@@ -45,6 +45,8 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
+            AuthEnabledSwitchCell.On = await Auth.IsEnabledAsync();
+            AuthEnabledSwitchCell.IsEnabled = acEnabled;
             if (userInfo?.AccountId != null)
             {
                 SignInInformationButton.Text = "User authenticated";
@@ -60,6 +62,11 @@ namespace Contoso.Forms.Demo
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
             await Push.SetEnabledAsync(e.Value);
+        }
+
+        async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
+        {
+            await Auth.SetEnabledAsync(e.Value);
         }
 
         async void RunMBaaSAsync(object sender, EventArgs e)
