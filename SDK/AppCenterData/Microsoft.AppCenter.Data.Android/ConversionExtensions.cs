@@ -31,23 +31,13 @@ namespace Microsoft.AppCenter.Data
 
         public static DocumentWrapper<T> ToDocumentWrapper<T>(this AndroidDocumentWrapper documentWrapper)
         {
-            if (documentWrapper.Error != null)
-            {
-                throw documentWrapper.Error.ToDataException(documentWrapper);
-            }
-            var jsonValue = documentWrapper.JsonValue;
-            var deserializedValue = jsonValue != null ? JsonConvert.DeserializeObject<T>(jsonValue) : default(T);
-            var lastUpdateDate = DateTimeOffset.FromUnixTimeMilliseconds(documentWrapper.LastUpdatedDate.Time);
-            return new DocumentWrapper<T>
-            {
-                DeserializedValue = deserializedValue,
-                JsonValue = jsonValue,
-                Partition = documentWrapper.Partition,
-                Id = documentWrapper.Id,
-                ETag = documentWrapper.ETag,
-                LastUpdatedDate = lastUpdateDate,
-                IsFromDeviceCache = documentWrapper.IsFromDeviceCache
-            };
+            return SharedConversionExtensions.ToDocumentWrapper<T>(
+                documentWrapper.Partition,
+                documentWrapper.ETag,
+                documentWrapper.Id,
+                documentWrapper.IsFromDeviceCache,
+                documentWrapper.JsonValue,
+                DateTimeOffset.FromUnixTimeMilliseconds(documentWrapper.LastUpdatedDate.Time));
         }
 
         public static PaginatedDocuments<T> ToPaginatedDocuments<T>(this AndroidPaginatedDocuments paginatedDocuments)
