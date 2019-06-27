@@ -3,7 +3,7 @@ module.exports = {
       platforms: {
         ios: {},
         android: {
-          packageInstance: "new AppCenterReactNativePackage(MainApplication.this)"
+          packageInstance: "new AppCenterReactNativePackage(getApplication())"
         },
       },
       assets: [],

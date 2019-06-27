@@ -3,7 +3,7 @@ module.exports = {
     platforms: {
       ios: {},
       android: {
-        packageInstance: "new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics))"
+        packageInstance: "new AppCenterReactNativeAnalyticsPackage(getApplication(), getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics))"
       },
     },
     assets: [],
