@@ -77,7 +77,7 @@ export default class AppCenterScreen extends Component {
     startupMode: StartupModes[0],
     userId: '',
     accountId: '',
-    isTokenSet: false
+    isTokenSet: 'Authentication status unknown'
   }
 
   async componentWillMount() {
@@ -214,7 +214,7 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled, accountId: '', isTokenSet: false });
+                    this.setState({ authEnabled, accountId: '', isTokenSet: 'User is not authenticated' });
                   }
                 },
                 {
@@ -256,7 +256,7 @@ export default class AppCenterScreen extends Component {
                   action: async () => {
                     try {
                       const result = await Auth.signIn();
-                      this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
+                      this.setState({ accountId: result.accountId, isTokenSet: 'User is authenticated' });
                     } catch (e) {
                       console.log(e);
                     }
@@ -266,7 +266,7 @@ export default class AppCenterScreen extends Component {
                   title: 'Sign Out',
                   action: () => {
                     Auth.signOut();
-                    this.setState({ accountId: '', isTokenSet: false });
+                    this.setState({ accountId: '', isTokenSet: 'User is not authenticated' });
                   }
                 },
               ],
@@ -302,7 +302,7 @@ export default class AppCenterScreen extends Component {
                   }
                 },
                 {
-                  title: 'Is Token Set',
+                  title: 'Auth Status',
                   value: 'isTokenSet',
                   onChange: async (isTokenSet) => {
                     this.setState({ isTokenSet });
