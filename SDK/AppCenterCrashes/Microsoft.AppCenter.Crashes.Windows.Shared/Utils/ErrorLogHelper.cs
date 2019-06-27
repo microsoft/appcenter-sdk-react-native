@@ -291,7 +291,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log directory.");
                 try
                 {
-                    InstanceGetErrorStorageDirectory().Delete(true);
+                    _crashesDirectory.Delete(true);
                 }
                 catch (System.Exception ex)
                 {
