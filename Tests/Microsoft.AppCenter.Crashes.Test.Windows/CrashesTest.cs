@@ -199,7 +199,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = 123, AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
             var expectedException = new ArgumentException("ttl must be positive");
 
             // Stub get/read/delete error files.
@@ -251,7 +251,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = 123, AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
             var expectedException = new ArgumentException("ttl must be positive");
             var expectedFailedToSendException = new System.IO.IOException("broken pipe");
 
