@@ -9,6 +9,7 @@ import Toast from 'react-native-simple-toast';
 import AppCenter, { CustomProperties } from 'appcenter';
 import Auth from 'appcenter-auth';
 import Push from 'appcenter-push';
+import Data from 'appcenter-data';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
@@ -256,6 +257,8 @@ export default class AppCenterScreen extends Component {
                     try {
                       const result = await Auth.signIn();
                       this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
+
+                      runHardCodedDataCalls();
                     } catch (e) {
                       console.log(e);
                     }
@@ -315,4 +318,44 @@ export default class AppCenterScreen extends Component {
       </View>
     );
   }
+}
+
+function runHardCodedDataCalls() {
+  /* Hard coded testing code */
+  const MY_DOCUMENT_ID = 'some-random-document-id';
+  const readOptions = new Data.ReadOptions(5000);
+  const writeOptions = new Data.WriteOptions(5000);
+
+  const user = {
+    name: 'Alex',
+    email: 'alex@appcenter.ms',
+    phone: '+1-(855)-555-5555',
+    someNull: null,
+    nestedObject: {
+      nestedString: 'key1',
+      nestedBoolean: true,
+      nestedNumber: 42.2,
+      nestedArray: [1, 2, 3.0, 'four', '👻', null, true, false, { nestedCat: '😺' }]
+    },
+    someNumber: 26.1,
+    someOtherNumber: 26.0,
+    someBoolean: false,
+    '👻 as a key': '🤖'
+  };
+
+  Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions).then((res) => {
+    console.log('Successful create');
+    console.log(res);
+  }).catch((err) => {
+    console.log('Failed create');
+    console.log(err);
+  });
+
+  Data.read(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, readOptions).then((res) => {
+    console.log('Successful read');
+    console.log(res);
+  }).catch((err) => {
+    console.log('Failed read');
+    console.log(err);
+  });
 }
