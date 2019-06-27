@@ -84,12 +84,14 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     private class Consumer implements AppCenterConsumer<DocumentWrapper<JsonElement>> {
-        private Promise promise;
-        private String errorCode;
 
-        private Consumer(String errorCode, final Promise promise) {
-            this.promise = promise;
-            this.errorCode = errorCode;
+        private Promise mPromise;
+
+        private String mErrorCode;
+
+        private Consumer(String errorCode, Promise promise) {
+            mPromise = promise;
+            mErrorCode = errorCode;
         }
 
         @Override
@@ -100,13 +102,13 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
             if (documentWrapper.getError() != null) {
                 DataException dataException = documentWrapper.getError();
-                promise.reject(errorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
+                mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
                 return;
             }
             JsonElement deserializedValue = documentWrapper.getDeserializedValue();
             jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
 
-            // Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values
+            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
             jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
             jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
             if (deserializedValue.isJsonPrimitive()) {
@@ -129,7 +131,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             } else {
                 jsDocumentWrapper.putNull(DESERIALIZED_VALUE_KEY);
             }
-            promise.resolve(jsDocumentWrapper);
+            mPromise.resolve(jsDocumentWrapper);
         }
     }
 }

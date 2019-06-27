@@ -30,7 +30,7 @@ const Data = {
  * @param {string} partition - The CosmosDB partition key.
  * @param {object} readOptions - Cache read options when the operation is done offline.
  * @return {Promise} Future asynchronous operation with result being the document with metadata.
- * If the operation fails, the error can be checked by reading the error object.
+ * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
 function read(documentId, partition, readOptions) {
     if (readOptions === undefined) {
@@ -47,7 +47,7 @@ function read(documentId, partition, readOptions) {
  * @param {string} partition - The CosmosDB partition key.
  * @param {object} writeOptions - Cache write options when the operation is done offline.
  * @return {Promise} Future asynchronous operation with result being the document with metadata.
- * If the operation fails, the error can be checked by reading the error object.
+ * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
 function create(documentId, document, partition, writeOptions) {
     if (writeOptions === undefined) {

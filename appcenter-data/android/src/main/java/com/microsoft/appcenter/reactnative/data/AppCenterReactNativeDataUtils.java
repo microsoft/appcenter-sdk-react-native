@@ -96,6 +96,7 @@ public class AppCenterReactNativeDataUtils {
                     jsonObject.add(key, convertReadableArrayToJsonArray(readableMap.getArray(key)));
                     break;
                 default:
+                    jsonObject.add(key, JsonNull.INSTANCE);
                     break;
             }
         }
