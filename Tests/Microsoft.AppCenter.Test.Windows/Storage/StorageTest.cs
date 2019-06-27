@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SQLite;
 
 namespace Microsoft.AppCenter.Test
@@ -13,12 +16,24 @@ namespace Microsoft.AppCenter.Test
     public class StorageTest
     {
         private const string StorageTestChannelName = "storageTestChannelName";
-        private readonly Microsoft.AppCenter.Storage.Storage _storage = new Microsoft.AppCenter.Storage.Storage();
+        private Microsoft.AppCenter.Storage.Storage _storage = new Microsoft.AppCenter.Storage.Storage();
 
         [TestInitialize]
         public void InitializeStorageTest()
         {
             _storage.DeleteLogs(StorageTestChannelName);
+        }
+
+        [TestMethod]
+        public void TestDatabaseIsInitialized()
+        {
+            var mockStorageAdapter = Mock.Of<IStorageAdapter>();
+            var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter);
+            storage.WaitOperationsAsync(TimeSpan.FromSeconds(10)).Wait();
+
+            // Verify database is initialized as a result of calling constructor.
+            Mock.Get(mockStorageAdapter).Verify(adapter => adapter.CreateTableAsync<Microsoft.AppCenter.Storage.Storage.LogEntry>());
+            Mock.Get(mockStorageAdapter).Verify(adapter => adapter.InitializeStorageAsync());
         }
 
         /// <summary>
