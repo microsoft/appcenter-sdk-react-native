@@ -5,6 +5,7 @@
 ### App Center Data
 
 * **[Feature]** Change the default time-to-live (TTL) from 1 day to infinite (never expire).
+* **[Feature]** Add a new parameter (ReadOptions) to the list documents API.
 
 ## Version 2.1.1
 
