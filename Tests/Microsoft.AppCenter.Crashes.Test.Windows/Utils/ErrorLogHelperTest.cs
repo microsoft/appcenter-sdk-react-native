@@ -157,21 +157,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        public void getErrorStorageDirectoryExists()
-        {
-            // Mock where directory doesn't exist.
-            var mockDirectory = Mock.Of<Directory>();
-            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
-            Mock.Get(mockDirectory).Setup(d => d.Create()).Throws(new System.Exception("Should not be called"));
-            Mock.Get(mockDirectory).Setup(d => d.Exists()).Returns(true);
-
-            var errorStorageDirectory = ErrorLogHelper.GetErrorStorageDirectory();
-
-            // Verify _crashesDirectory was returned
-            Assert.IsInstanceOfType(errorStorageDirectory, typeof(Directory));
-        }
-
-        [TestMethod]
         public void GetErrorLogFiles()
         {
             // Mock multiple error log files.

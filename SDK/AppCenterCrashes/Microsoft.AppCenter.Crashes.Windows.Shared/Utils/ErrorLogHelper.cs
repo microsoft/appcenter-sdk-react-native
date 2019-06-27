@@ -226,21 +226,13 @@ namespace Microsoft.AppCenter.Crashes.Utils
         }
 
         /// <summary>
-        /// Creates the error storage directory if it does not exist.
+        /// Get the error storage directory, or creates it if it does not exist.
         /// </summary>
         /// <returns>The error storage directory.</returns>
         public virtual Directory InstanceGetErrorStorageDirectory()
         {
-            if (!_crashesDirectory.Exists())
-            {
-                lock (LockObject)
-                {
-                    if (!_crashesDirectory.Exists())
-                    {
-                        _crashesDirectory.Create();
-                    }
-                }
-            }
+
+            _crashesDirectory.Create();
             return _crashesDirectory;
         }
 
