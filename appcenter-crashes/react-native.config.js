@@ -3,12 +3,12 @@ module.exports = {
       platforms: {
         ios: {},
         android: {
-          packageInstance: "new AppCenterReactNativeCrashesPackage(getApplication(), getResources().getString(R.string.appCenterCrashes_whenToSendCrashes))"
+          packageInstance: 'new AppCenterReactNativeCrashesPackage(getApplication(), getResources().getString(R.string.appCenterCrashes_whenToSendCrashes))'
         },
       },
       assets: [],
       hooks: {
-        postlink: "./node_modules/appcenter-crashes/scripts/postlink"
+        postlink: './node_modules/appcenter-crashes/scripts/postlink'
       }
     },
   };

@@ -3,12 +3,12 @@ module.exports = {
       platforms: {
         ios: {},
         android: {
-          packageInstance: "new AppCenterReactNativePushPackage(getApplication())"
+          packageInstance: 'new AppCenterReactNativePushPackage(getApplication())'
         },
       },
       assets: [],
       hooks: {
-        postlink: "./node_modules/appcenter-push/scripts/postlink"
+        postlink: './node_modules/appcenter-push/scripts/postlink'
       }
     },
   };

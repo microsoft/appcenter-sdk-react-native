@@ -3,12 +3,12 @@ module.exports = {
       platforms: {
         ios: {},
         android: {
-          packageInstance: "new AppCenterReactNativeAuthPackage(getApplication())"
+          packageInstance: 'new AppCenterReactNativeAuthPackage(getApplication())'
         },
       },
       assets: [],
       hooks: {
-        postlink: "./node_modules/appcenter-auth/scripts/postlink"
+        postlink: './node_modules/appcenter-auth/scripts/postlink'
       }
     },
   };
