@@ -141,7 +141,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        public void getErrorStorageDirectoryCreate()
+        public void GetErrorStorageDirectoryCreate()
         {
             // Mock where directory doesn't exist.
             var mockDirectory = Mock.Of<Directory>();
