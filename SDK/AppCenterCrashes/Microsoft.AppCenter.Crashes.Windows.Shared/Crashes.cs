@@ -130,12 +130,6 @@ namespace Microsoft.AppCenter.Crashes
         {
             lock (CrashesLock)
             {
-                // Add event handlers for callback to an application.
-                channelGroup.SendingLog += ChannelSendingLog;
-                channelGroup.SentLog += ChannelSentLog;
-                channelGroup.FailedToSendLog += ChannelFailedToSendLog;
-
-                // Start Crashes service.
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
                 if (InstanceEnabled)
@@ -152,10 +146,16 @@ namespace Microsoft.AppCenter.Crashes
                 if (enabled && ChannelGroup != null)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
+                    ChannelGroup.SendingLog += ChannelSendingLog;
+                    ChannelGroup.SentLog += ChannelSentLog;
+                    ChannelGroup.FailedToSendLog += ChannelFailedToSendLog;
                 }
                 else if (!enabled)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
+                    ChannelGroup.SendingLog -= ChannelSendingLog;
+                    ChannelGroup.SentLog -= ChannelSentLog;
+                    ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
                 }
             }
@@ -200,7 +200,7 @@ namespace Microsoft.AppCenter.Crashes
                             AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
                         }
                     }
-                    else if (ShouldProcessErrorReport?.Invoke(report) ?? false)
+                    else if (ShouldProcessErrorReport?.Invoke(report) ?? true)
                     {
                         // TODO: Why the Android SDK reads report from the cache? Why the Android SDK has log property in ErrorReport?
                         _unprocessedManagedErrorLogs.Add(log.Id, log);
@@ -260,7 +260,7 @@ namespace Microsoft.AppCenter.Crashes
             var report = ProcessEventHandlers(e, false);
             if (report != null)
             {
-                SendingErrorReport?.Invoke(sender, new SendingErrorReportEventArgs { Report = null });
+                SendingErrorReport?.Invoke(sender, new SendingErrorReportEventArgs { Report = report });
             }
         }
 
@@ -269,7 +269,7 @@ namespace Microsoft.AppCenter.Crashes
             var report = ProcessEventHandlers(e);
             if (report != null)
             {
-                SentErrorReport?.Invoke(sender, new SentErrorReportEventArgs { Report = null });
+                SentErrorReport?.Invoke(sender, new SentErrorReportEventArgs { Report = report });
             }
         }
 
@@ -278,15 +278,14 @@ namespace Microsoft.AppCenter.Crashes
             var report = ProcessEventHandlers(e);
             if (report != null)
             {
-                FailedToSendErrorReport?.Invoke(sender, new FailedToSendErrorReportEventArgs { Report = null, Exception = e.Exception });
+                FailedToSendErrorReport?.Invoke(sender, new FailedToSendErrorReportEventArgs { Report = report, Exception = e.Exception });
             }
         }
 
         private ErrorReport ProcessEventHandlers(ChannelEventArgs e, bool deleteExceptionFile = true)
         {
-            if (e.Log is ManagedErrorLog)
+            if (e.Log is ManagedErrorLog log)
             {
-                var log = e.Log as ManagedErrorLog;
                 var report = BuildErrorReport(log);
                 if (report == null)
                 {
