@@ -231,7 +231,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The error storage directory.</returns>
         public virtual Directory InstanceGetErrorStorageDirectory()
         {
-
             _crashesDirectory.Create();
             return _crashesDirectory;
         }
