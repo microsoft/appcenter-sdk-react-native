@@ -94,6 +94,18 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>("Delete failed", promise));
     }
 
+    @ReactMethod
+    public void replace(String documentId, ReadableMap documentMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
+        }
+        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
+        Data.replace(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Replace failed", promise));
+    }
+
     private class Consumer<T> implements AppCenterConsumer<DocumentWrapper<T>> {
 
         private Promise mPromise;
