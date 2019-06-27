@@ -36,7 +36,9 @@ namespace Contoso.Forms.Demo
     public class EntryCellTextChanged : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private const string UserIdKey = "userId";
+
         private string _userId;
 
         public EntryCellTextChanged()
