@@ -24,14 +24,6 @@
   "dependencies": {
     "appcenter": "2.1.0"
   },
-  "rnpm": {
-    "android": {
-      "packageInstance": "new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes))"
-    },
-    "commands": {
-      "postlink": "node node_modules/appcenter-crashes/scripts/postlink"
-    }
-  },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^4.5.0",
