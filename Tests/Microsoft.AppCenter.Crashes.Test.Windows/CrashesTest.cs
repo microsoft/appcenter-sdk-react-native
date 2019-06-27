@@ -193,7 +193,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void SubscribeToSendingAndSentCallbacks()
+        public void SubscribeAndUnsubscribeSendingAndSentCallbacks()
         {
             var mockErrorLogFile = Mock.Of<File>();
             var mockExceptionFile = Mock.Of<File>();
@@ -210,14 +210,18 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Subscribe to callbacks.
             ErrorReport actualSendingReport = null;
+            var sendingReportCallCount = 0;
             Crashes.SendingErrorReport += (_, e) =>
             {
                 actualSendingReport = e.Report;
+                sendingReportCallCount++;
             };
             ErrorReport actualSentReport = null;
+            var sentReportCallCount = 0;
             Crashes.SentErrorReport += (_, e) =>
             {
                 actualSentReport = e.Report;
+                sentReportCallCount++;
             };
 
             // Start Crashes.
@@ -228,7 +232,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Verify crashes logs have been queued to the channel on start.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id)), Times.Once());
 
-            // Simulate and verify sending callback.
+            // Simulate and verify sending callback is called.
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
             Assert.IsNotNull(actualSendingReport);
             Assert.AreEqual(expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
@@ -238,14 +242,27 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
             Assert.IsNull(actualSendingReport.AndroidDetails);
             Assert.IsNull(actualSendingReport.iOSDetails);
+            Assert.AreEqual(1, sendingReportCallCount);
 
-            // Simulate and verify sent callback.
+            // Simulate and verify sent callback is called.
             _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
             Assert.AreSame(actualSendingReport, actualSentReport);
+            Assert.AreEqual(1, sentReportCallCount);
+
+            // Disable crashes.
+            Crashes.SetEnabledAsync(false).Wait();
+
+            // Simulate and verify sending callback isn't called.
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            Assert.AreEqual(1, sendingReportCallCount);
+
+            // Simulate and verify sent callback isn't called.
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
+            Assert.AreEqual(1, sentReportCallCount);
         }
 
         [TestMethod]
-        public void SubscribeToSendingAndFailedToSendCallbacks()
+        public void SubscribeAndUnsubscribeSendingAndFailedToSendCallbacks()
         {
             var mockErrorLogFile = Mock.Of<File>();
             var mockExceptionFile = Mock.Of<File>();
@@ -263,16 +280,20 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Subscribe to callbacks.
             ErrorReport actualSendingReport = null;
+            var sendingReportCallCount = 0;
             Crashes.SendingErrorReport += (_, e) =>
             {
                 actualSendingReport = e.Report;
+                sendingReportCallCount++;
             };
             ErrorReport actualFailedToSentReport = null;
             System.Exception actualFailedToSendException = null;
+            var failedToSendReportCallCount = 0;
             Crashes.FailedToSendErrorReport += (_, e) =>
             {
                 actualFailedToSentReport = e.Report;
                 actualFailedToSendException = e.Exception as System.Exception;
+                failedToSendReportCallCount++;
             };
 
             // Start Crashes.
@@ -283,7 +304,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Verify crashes logs have been queued to the channel on start.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id)), Times.Once());
 
-            // Simulate and verify sending callback.
+            // Simulate and verify sending callback is called.
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
             Assert.IsNotNull(actualSendingReport);
             Assert.AreEqual(expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
@@ -293,11 +314,24 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
             Assert.IsNull(actualSendingReport.AndroidDetails);
             Assert.IsNull(actualSendingReport.iOSDetails);
+            Assert.AreEqual(1, sendingReportCallCount);
 
-            // Simulate and verify sent callback.
+            // Simulate and verify sent callback is called.
             _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, expectedFailedToSendException));
             Assert.AreSame(actualSendingReport, actualFailedToSentReport);
             Assert.AreSame(expectedFailedToSendException, actualFailedToSendException);
+            Assert.AreEqual(1, failedToSendReportCallCount);
+
+            // Disable crashes.
+            Crashes.SetEnabledAsync(false).Wait();
+
+            // Simulate and verify sending callback isn't called.
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            Assert.AreEqual(1, sendingReportCallCount);
+
+            // Simulate and verify sent callback isn't called.
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
+            Assert.AreEqual(1, failedToSendReportCallCount);
         }
     }
 }
