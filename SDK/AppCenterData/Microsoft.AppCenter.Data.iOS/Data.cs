@@ -51,24 +51,17 @@ namespace Microsoft.AppCenter.Data
         private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
         {
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
-            try
+            MSData.List(new Class(typeof(MSDictionaryDocument)), partition, resultPages =>
             {
-                MSData.List(new Class(typeof(MSDictionaryDocument)), partition, resultPages =>
+                if (resultPages.CurrentPage().Error == null)
                 {
-                    if (resultPages.CurrentPage().Error == null)
-                    {
-                        taskCompletionSource.SetResult(resultPages.ToPaginatedDocuments<T>());
-                    }
-                    else
-                    {
-                        taskCompletionSource.SetException(resultPages.CurrentPage().Error.ToDataException());
-                    }
-                });
-            }
-            catch (JsonException e)
-            {
-                taskCompletionSource.SetException(new DataException("Failed to list data object(s)", e));
-            }
+                    taskCompletionSource.SetResult(resultPages.ToPaginatedDocuments<T>());
+                }
+                else
+                {
+                    taskCompletionSource.SetException(resultPages.CurrentPage().Error.ToDataException());
+                }
+            });
             return taskCompletionSource.Task;
         }
 
