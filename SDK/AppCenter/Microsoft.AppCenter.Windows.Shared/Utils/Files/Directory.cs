@@ -48,5 +48,10 @@ namespace Microsoft.AppCenter.Utils.Files
         {
             _underlyingDirectoryInfo.Delete(recursive);
         }
+
+        public virtual bool Exists()
+        {
+            return _underlyingDirectoryInfo.Exists;
+        }
     }
 }

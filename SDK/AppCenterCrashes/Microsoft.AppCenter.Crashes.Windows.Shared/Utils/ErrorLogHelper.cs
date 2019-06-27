@@ -106,6 +106,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static File GetLastErrorLogFile() => Instance.InstanceGetLastErrorLogFile();
 
         /// <summary>
+        /// Gets the error storage directory, or creates it if it does not exist.
+        /// </summary>
+        /// <returns>The error storage directory.</returns>
+        public static Directory GetErrorStorageDirectory() => Instance.InstanceGetErrorStorageDirectory();
+
+        /// <summary>
         /// Gets the error log file with the given ID.
         /// </summary>
         /// <param name="errorId">The ID for the error log.</param>
@@ -182,7 +188,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 try
                 {
                     // Convert to list so enumeration does not occur outside the lock.
-                    return _crashesDirectory.EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
+                    return InstanceGetErrorStorageDirectory().EnumerateFiles($"*{ErrorLogFileExtension}").ToList();
                 }
                 catch (System.Exception ex)
                 {
@@ -272,6 +278,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         /// <summary>
         /// Saves an error log and an exception on disk.
+        /// Get the error storage directory, or creates it if it does not exist.
+        /// </summary>
+        /// <returns>The error storage directory.</returns>
+        public virtual Directory InstanceGetErrorStorageDirectory()
+        {
+            _crashesDirectory.Create();
+            return _crashesDirectory;
+        }
+
+        /// <summary>
+        /// Saves an error log on disk.
         /// </summary>
         /// <param name="exception">The exception that caused the crash.</param>
         /// <param name="errorLog">The error log.</param>
@@ -281,18 +298,14 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 var errorLogString = LogSerializer.Serialize(errorLog);
                 var errorLogFileName = errorLog.Id + ErrorLogFileExtension;
-                lock (LockObject)
-                {
-                    _crashesDirectory.Create();
-                }
                 AppCenterLog.Debug(Crashes.LogTag, "Saving uncaught exception.");
-                _crashesDirectory.CreateFile(errorLogFileName, errorLogString);
+                InstanceGetErrorStorageDirectory().CreateFile(errorLogFileName, errorLogString);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {errorLogFileName}.");
 
                 // TODO: Property serialize Exception instance + error handling on exceptions.
                 var exceptionString = exception.ToString();
                 var exceptionFileName = errorLog.Id + ExceptionFileExtension;
-                _crashesDirectory.CreateFile(exceptionFileName, exceptionString);
+                InstanceGetErrorStorageDirectory().CreateFile(exceptionFileName, exceptionString);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved exception in directory {ErrorStorageDirectoryName} with name {exceptionFileName}.");
             }
             catch (System.Exception ex)
@@ -399,7 +412,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    return _crashesDirectory.EnumerateFiles(fileName).Single();
+                    return InstanceGetErrorStorageDirectory().EnumerateFiles(fileName).Single();
                 }
             }
             catch (System.Exception ex)
