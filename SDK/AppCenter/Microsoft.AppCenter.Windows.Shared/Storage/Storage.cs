@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
@@ -66,7 +65,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 return new StorageAdapter(Constants.AppCenterDatabasePath);
             }
-            catch (FileLoadException e)
+            catch (System.IO.FileLoadException e)
             {
                 if (e.Message.Contains("SQLite-net"))
                 {
@@ -281,6 +280,7 @@ namespace Microsoft.AppCenter.Storage
         {
             try
             {
+                await _storageAdapter.InitializeStorageAsync().ConfigureAwait(false);
                 await _storageAdapter.CreateTableAsync<LogEntry>().ConfigureAwait(false);
             }
             catch (Exception e)
