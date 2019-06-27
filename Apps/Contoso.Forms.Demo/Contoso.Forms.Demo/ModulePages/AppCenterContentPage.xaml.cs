@@ -28,7 +28,7 @@ namespace Contoso.Forms.Demo
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
             if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
             {
-                UserIdEntryCell.Text = id;
+                UserId = id;
             }
         }
 
