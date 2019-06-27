@@ -282,19 +282,25 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        public void SaveErrorLogFile()
+        public void SaveErrorLogFiles()
         {
             var errorLog = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var fileName = errorLog.Id + ".json";
+            var exception = new System.Exception("test");
+            var errorLogFilename = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            var exceptionFilename = errorLog.Id + ".exception";
+
+            // TODO: Replace ToString() to object serialization.
+            var serializedException = exception.ToString();
             var mockDirectory = Mock.Of<Directory>();
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
-            Mock.Get(mockDirectory).Verify(d => d.CreateFile(fileName, serializedErrorLog));
+            ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(exceptionFilename, serializedException));
         }
 
         [TestMethod]
@@ -320,7 +326,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var mockDirectory = Mock.Of<Directory>();
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
             Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            ErrorLogHelper.SaveErrorLogFiles(null, errorLog);
 
             // No exception should be thrown.
         }

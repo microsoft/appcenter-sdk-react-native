@@ -71,7 +71,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
                 new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
             _mockChannel.Verify(channel => channel.SetEnabled(true), Times.Once());
-            Mock.Get(mockErrorLogHelper).Verify(instance => instance.InstanceSaveErrorLogFile(It.IsAny<ManagedErrorLog>()));
+            Mock.Get(mockErrorLogHelper).Verify(instance => instance.InstanceSaveErrorLogFiles(It.IsAny<System.Exception>(), It.IsAny<ManagedErrorLog>()));
         }
 
         [TestMethod]
@@ -89,20 +89,27 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void OnChannelGroupReadySendsPendingCrashes()
         {
-            var mockFile1 = Mock.Of<File>();
-            var mockFile2 = Mock.Of<File>();
+            var mockErrorLogFile1 = Mock.Of<File>();
+            var mockErrorLogFile2 = Mock.Of<File>();
+            var mockExceptionFile1 = Mock.Of<File>();
+            var mockExceptionFile2 = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
             var expectedprocessId = 123;
-            var expectedManagedErrorLog1 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedprocessId };
-            var expectedManagedErrorLog2 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedprocessId };
+            var expectedManagedErrorLog1 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedprocessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog2 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedprocessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
 
             // Stub get/read/delete error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile1, mockFile2 });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile1)).Returns(expectedManagedErrorLog1);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile2)).Returns(expectedManagedErrorLog2);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile1, mockErrorLogFile2 });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile1)).Returns(expectedManagedErrorLog1);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile2)).Returns(expectedManagedErrorLog2);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception());
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception());
 
             Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldProcessErrorReport += (ErrorReport report) => true;
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
@@ -125,6 +132,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { });
 
             Crashes.SetEnabledAsync(enabled).Wait();
+            Crashes.ShouldProcessErrorReport += (ErrorReport report) => true;
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             if (enabled)
             {
@@ -139,24 +147,29 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void ProcessPendingErrorsExcludesCorruptedFiles()
         {
-            var mockFile = Mock.Of<File>();
-            var mockCorruptedFile = Mock.Of<File>();
+            // TODO: We need to verify exception files get deleted.
+            var mockErrorLogFile = Mock.Of<File>();
+            var mockErrorLogCorruptedFile = Mock.Of<File>();
+            var mockExceptionFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid() };
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
 
             // Stub get/read/delete error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile, mockCorruptedFile });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockCorruptedFile)).Returns<ManagedErrorLog>(null);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile, mockErrorLogCorruptedFile });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogCorruptedFile)).Returns<ManagedErrorLog>(null);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
 
             Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldProcessErrorReport += (ErrorReport report) => true;
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify the corrupted file got ignored and deleted.
             _mockChannel.Verify(channel => channel.EnqueueAsync(expectedManagedErrorLog), Times.Once());
-            Mock.Get(mockCorruptedFile).Verify(file => file.Delete(), Times.Once());
+            Mock.Get(mockErrorLogCorruptedFile).Verify(file => file.Delete(), Times.Once());
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
         }
 
@@ -173,6 +186,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns<ManagedErrorLog>(null);
 
             Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldProcessErrorReport += (ErrorReport report) => true;
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 

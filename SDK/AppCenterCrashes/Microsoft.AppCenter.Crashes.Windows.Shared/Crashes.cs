@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,6 +12,7 @@ using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Files;
 
 namespace Microsoft.AppCenter.Crashes
 {
@@ -63,7 +65,7 @@ namespace Microsoft.AppCenter.Crashes
         private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
             var errorLog = ErrorLogHelper.CreateErrorLog(args.Exception);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            ErrorLogHelper.SaveErrorLogFiles(args.Exception, errorLog);
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
@@ -89,11 +91,17 @@ namespace Microsoft.AppCenter.Crashes
         /// <summary>
         /// A dictionary that contains unprocessed managed error logs before getting a user confirmation.
         /// </summary>
-        private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+        private readonly IDictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+
+        /// <summary>
+        /// A dictionary for a cache that contains error report.
+        /// </summary>
+        private readonly IDictionary<Guid, ErrorReport> _errorReportCache;
 
         internal Crashes()
         {
             _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+            _errorReportCache = new ConcurrentDictionary<Guid, ErrorReport>();
         }
 
         /// <inheritdoc />
@@ -122,6 +130,12 @@ namespace Microsoft.AppCenter.Crashes
         {
             lock (CrashesLock)
             {
+                // Add event handlers for callback to an application.
+                channelGroup.SendingLog += ChannelSendingLog;
+                channelGroup.SentLog += ChannelSentLog;
+                channelGroup.FailedToSendLog += ChannelFailedToSendLog;
+
+                // Start Crashes service.
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
                 if (InstanceEnabled)
@@ -173,7 +187,8 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
-                    if (log == null)
+                    var report = BuildErrorReport(log);
+                    if (report == null)
                     {
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         try
@@ -185,9 +200,14 @@ namespace Microsoft.AppCenter.Crashes
                             AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
                         }
                     }
+                    else if (ShouldProcessErrorReport?.Invoke(report) ?? false)
+                    {
+                        // TODO: Why the Android SDK reads report from the cache? Why the Android SDK has log property in ErrorReport?
+                        _unprocessedManagedErrorLogs.Add(log.Id, log);
+                    }
                     else
                     {
-                        _unprocessedManagedErrorLogs.Add(log.Id, log);
+                        AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
                     }
                 }
                 SendCrashReportsOrAwaitUserConfirmation();
@@ -209,6 +229,83 @@ namespace Microsoft.AppCenter.Crashes
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
             }
+        }
+
+        private ErrorReport BuildErrorReport(ManagedErrorLog log)
+        {
+            if (log == null)
+            {
+                return null;
+            }
+            if (_errorReportCache.ContainsKey(log.Id))
+            {
+                return _errorReportCache[log.Id];
+            }
+            else
+            {
+                File file = ErrorLogHelper.GetStoredExceptionFile(log.Id);
+                if (file != null)
+                {
+                    System.Exception exception = ErrorLogHelper.ReadExceptionFile(file);
+                    var report = new ErrorReport(log, exception);
+                    _errorReportCache.Add(log.Id, report);
+                    return report;
+                }
+            }
+            return null;
+        }
+
+        private void ChannelSendingLog(object sender, SendingLogEventArgs e)
+        {
+            var report = ProcessEventHandlers(e, false);
+            if (report != null)
+            {
+                SendingErrorReport?.Invoke(sender, new SendingErrorReportEventArgs { Report = null });
+            }
+        }
+
+        private void ChannelSentLog(object sender, SentLogEventArgs e)
+        {
+            var report = ProcessEventHandlers(e);
+            if (report != null)
+            {
+                SentErrorReport?.Invoke(sender, new SentErrorReportEventArgs { Report = null });
+            }
+        }
+
+        private void ChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
+        {
+            var report = ProcessEventHandlers(e);
+            if (report != null)
+            {
+                FailedToSendErrorReport?.Invoke(sender, new FailedToSendErrorReportEventArgs { Report = null, Exception = e.Exception });
+            }
+        }
+
+        private ErrorReport ProcessEventHandlers(ChannelEventArgs e, bool deleteExceptionFile = true)
+        {
+            if (e.Log is ManagedErrorLog)
+            {
+                var log = e.Log as ManagedErrorLog;
+                var report = BuildErrorReport(log);
+                if (report == null)
+                {
+                    AppCenterLog.Warn(LogTag, $"Cannot find crash report for the error log: {log.Id}");
+                }
+                else
+                {
+                    if (deleteExceptionFile)
+                    {
+                        ErrorLogHelper.RemoveStoredExceptionFile(log.Id);
+                    }
+                    return report;
+                }
+            }
+            else
+            {
+                AppCenterLog.Warn(LogTag, $"A different type of log comes to crashes: {e.Log.GetType().Name}");
+            }
+            return null;
         }
     }
 }
