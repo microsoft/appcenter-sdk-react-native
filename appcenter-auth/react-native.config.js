@@ -1,15 +1,14 @@
 module.exports = {
-    dependency: {
-      platforms: {
-        ios: {},
-        android: {
-          packageInstance: 'new AppCenterReactNativeAuthPackage(getApplication())'
-        },
+  dependency: {
+    platforms: {
+      ios: {},
+      android: {
+        packageInstance: 'new AppCenterReactNativeAuthPackage(getApplication())'
       },
-      assets: [],
-      hooks: {
-        postlink: './node_modules/appcenter-auth/scripts/postlink'
-      }
     },
-  };
-  
+    assets: [],
+    hooks: {
+      postlink: './node_modules/appcenter-auth/scripts/postlink'
+    }
+  },
+};

@@ -1,15 +1,14 @@
 module.exports = {
-    dependency: {
-      platforms: {
-        ios: {},
-        android: {
-          packageInstance: 'new AppCenterReactNativePushPackage(getApplication())'
-        },
+  dependency: {
+    platforms: {
+      ios: {},
+      android: {
+        packageInstance: 'new AppCenterReactNativePushPackage(getApplication())'
       },
-      assets: [],
-      hooks: {
-        postlink: './node_modules/appcenter-push/scripts/postlink'
-      }
     },
-  };
-  
+    assets: [],
+    hooks: {
+      postlink: './node_modules/appcenter-push/scripts/postlink'
+    }
+  },
+};
