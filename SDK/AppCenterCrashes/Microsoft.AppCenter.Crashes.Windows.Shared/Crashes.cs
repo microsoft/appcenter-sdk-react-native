@@ -132,6 +132,7 @@ namespace Microsoft.AppCenter.Crashes
                     ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
                     _lastSessionErrorReportTask = Task.Run(() =>
                     {
+                        AppCenterLog.Debug(LogTag, "Getting last session error report.");
                         ErrorReport lastSessionErrorReport = null;
                         var lastSessionErrorLogFile = ErrorLogHelper.GetLastErrorLogFile();
                         if (lastSessionErrorLogFile != null)
@@ -140,6 +141,7 @@ namespace Microsoft.AppCenter.Crashes
                             if (lastSessionErrorLog != null)
                             {
                                 lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                                AppCenterLog.Debug(LogTag, "Found an error report.");
                             }
                         }
                         return lastSessionErrorReport;
