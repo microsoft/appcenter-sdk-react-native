@@ -20,8 +20,6 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Crashes _instanceField;
 
-        private ErrorReport _lastSessionErrorReport;
-
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
@@ -93,11 +91,6 @@ namespace Microsoft.AppCenter.Crashes
         /// </summary>
         private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
 
-        internal Crashes()
-        {
-            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
-        }
-
         /// <inheritdoc />
         protected override string ChannelName => "crashes";
 
@@ -114,6 +107,27 @@ namespace Microsoft.AppCenter.Crashes
         /// A task of processing pending error log files.
         /// </summary>
         internal Task ProcessPendingErrorsTask { get; set; }
+
+        // Task to get the last session error report, if one is found.
+        private readonly Task<ErrorReport> _lastSessionErrorReportTask = Task.Run(() =>
+        {
+            ErrorReport lastSessionErrorReport = null;
+            var lastSessionErrorLogFile = ErrorLogHelper.GetLastErrorLogFile();
+            if (lastSessionErrorLogFile != null)
+            {
+                var lastSessionErrorLog = ErrorLogHelper.ReadErrorLogFile(lastSessionErrorLogFile);
+                if (lastSessionErrorLog != null)
+                {
+                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                }
+            }
+            return lastSessionErrorReport;
+        });
+
+        internal Crashes()
+        {
+            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+        }
 
         /// <summary>
         /// Method that is called to signal start of Crashes service.
@@ -167,14 +181,14 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
-        private Task<bool> InstanceHasCrashedInLastSessionAsync()
+        private async Task<bool> InstanceHasCrashedInLastSessionAsync()
         {
-            return Task.FromResult(Instance.LastSessionErrorReport != null);
+            return (await _lastSessionErrorReportTask) != null;
         }
 
         private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
         {
-            return Task.FromResult(Instance.LastSessionErrorReport);
+            return _lastSessionErrorReportTask;
         }
 
         private Task ProcessPendingErrorsAsync()
@@ -205,7 +219,7 @@ namespace Microsoft.AppCenter.Crashes
                 SendCrashReportsOrAwaitUserConfirmation();
             }).ContinueWith((_) => ProcessPendingErrorsTask = null);
         }
-
+        
         private void SendCrashReportsOrAwaitUserConfirmation()
         {
             HandleUserConfirmation();
