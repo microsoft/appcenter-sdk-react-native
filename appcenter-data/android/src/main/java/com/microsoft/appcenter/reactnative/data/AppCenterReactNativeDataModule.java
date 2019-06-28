@@ -133,7 +133,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
                 return;
             }
-            if (documentWrapper.getDeserializedValue() == null || !(documentWrapper.getDeserializedValue() instanceof JsonElement)) {
+            if (!(documentWrapper.getDeserializedValue() instanceof JsonElement)) {
                 mPromise.resolve(jsDocumentWrapper);
                 return;
             }
