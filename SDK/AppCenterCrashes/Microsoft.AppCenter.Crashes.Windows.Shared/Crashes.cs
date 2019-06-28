@@ -213,6 +213,7 @@ namespace Microsoft.AppCenter.Crashes
                     {
                         AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
                         await HandleUserConfirmationAsync(UserConfirmation.Send);
+                        return;
                     }
 
                     if (ShouldAwaitUserConfirmation?.Invoke() ?? false)
