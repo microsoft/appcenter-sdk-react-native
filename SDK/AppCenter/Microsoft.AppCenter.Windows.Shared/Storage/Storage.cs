@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
+using Microsoft.AppCenter.Utils;
 using Newtonsoft.Json;
 using SQLite;
 
@@ -32,11 +32,11 @@ namespace Microsoft.AppCenter.Storage
         }
 
         private readonly IStorageAdapter _storageAdapter;
-        private const string Database = "Microsoft.AppCenter.Storage";
         private const string DbIdentifierDelimiter = "@";
 
         private readonly Dictionary<string, List<long>> _pendingDbIdentifierGroups = new Dictionary<string, List<long>>();
         private readonly HashSet<long> _pendingDbIdentifiers = new HashSet<long>();
+
         // Blocking collection is thread safe
         private readonly BlockingCollection<Task> _queue = new BlockingCollection<Task>();
         private readonly SemaphoreSlim _flushSemaphore = new SemaphoreSlim(0);
@@ -63,9 +63,9 @@ namespace Microsoft.AppCenter.Storage
         {
             try
             {
-                return new StorageAdapter(Database);
+                return new StorageAdapter(Constants.AppCenterDatabasePath);
             }
-            catch (FileLoadException e)
+            catch (System.IO.FileLoadException e)
             {
                 if (e.Message.Contains("SQLite-net"))
                 {
@@ -224,14 +224,10 @@ namespace Microsoft.AppCenter.Storage
                 var idPairs = new List<Tuple<Guid?, long>>();
                 var failedToDeserializeALog = false;
                 var retrievedEntries =
-                    _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName, limit)
+                    _storageAdapter.GetAsync<LogEntry>(entry => entry.Channel == channelName && !_pendingDbIdentifiers.Contains(entry.Id), limit)
                         .GetAwaiter().GetResult();
                 foreach (var entry in retrievedEntries)
                 {
-                    if (_pendingDbIdentifiers.Contains(entry.Id))
-                    {
-                        continue;
-                    }
                     try
                     {
                         var log = LogSerializer.DeserializeLog(entry.Log);
@@ -284,6 +280,7 @@ namespace Microsoft.AppCenter.Storage
         {
             try
             {
+                await _storageAdapter.InitializeStorageAsync().ConfigureAwait(false);
                 await _storageAdapter.CreateTableAsync<LogEntry>().ConfigureAwait(false);
             }
             catch (Exception e)

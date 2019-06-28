@@ -54,7 +54,7 @@ namespace Microsoft.AppCenter
         /// Gets the OS API level.
         /// </summary>
         /// <value>API level when applicable like in Android (example: 15).</value>
-        public int OsApiLevel { get; }
+        public int? OsApiLevel { get; }
 
         /// <summary>
         /// Gets the locale.

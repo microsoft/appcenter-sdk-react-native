@@ -26,6 +26,8 @@ namespace Contoso.Forms.Demo
             };
         }
 
+        private UserInformation userInfo;
+	
         public OthersContentPage()
         {
             InitializeComponent();
@@ -43,6 +45,11 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
+            if (userInfo?.AccountId != null)
+            {
+                SignInInformationButton.Text = "User authenticated";
+            }
+            else SignInInformationButton.Text = "User not authenticated";
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -59,7 +66,11 @@ namespace Contoso.Forms.Demo
         {
             try
             {
-                var userInfo = await Auth.SignInAsync();
+                userInfo = await Auth.SignInAsync();
+                if (userInfo.AccountId != null)
+                {
+                    SignInInformationButton.Text = "User authenticated";
+                }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
             }
             catch (Exception ex)
@@ -107,8 +118,20 @@ namespace Contoso.Forms.Demo
         void SignOut(object sender, EventArgs e)
         {
             Auth.SignOut();
+            userInfo = null;
+            SignInInformationButton.Text = "User not authenticated";
         }
 
+        async void SignInInformation(object sender, EventArgs e)
+        {
+            if (userInfo != null)
+            {
+                string accessToken = userInfo.AccessToken?.Length > 0 ? "Set" : "Unset";
+                string idToken = userInfo.IdToken?.Length > 0 ? "Set" : "Unset";
+                await Navigation.PushModalAsync(new SignInInformationContentPage(userInfo.AccountId, accessToken, idToken));
+            }
+        }
+	
         public class CustomDocument
         {
             public Guid? id { get; set; }

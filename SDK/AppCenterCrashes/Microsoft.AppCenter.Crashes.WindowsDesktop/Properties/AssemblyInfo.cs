@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 
 // General Information about an assembly is controlled through the following 
@@ -27,5 +28,6 @@ using System.Reflection;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("2.1.0.0")]
-[assembly: AssemblyInformationalVersion("2.1.0-SNAPSHOT")]
+[assembly: AssemblyFileVersion("2.2.0.0")]
+[assembly: AssemblyInformationalVersion("2.2.0-SNAPSHOT")]
+[assembly: InternalsVisibleTo("Microsoft.AppCenter.Crashes.Test.Windows")]

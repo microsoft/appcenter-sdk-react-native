@@ -56,25 +56,6 @@ namespace Microsoft.AppCenter.Test.UWP
         }
 
         /// <summary>
-        /// Verify country code setter
-        /// </summary>
-        [TestMethod]
-        public void SetCountryCode()
-        {
-            var informationInvalidated = false;
-
-            void InformationInvalidated(object sender, EventArgs e)
-            {
-                informationInvalidated = true;
-            }
-
-            DeviceInformationHelper.InformationInvalidated += InformationInvalidated;
-            AppCenter.SetCountryCode("US");
-            DeviceInformationHelper.InformationInvalidated -= InformationInvalidated;
-            Assert.AreEqual(informationInvalidated, true);
-        }
-
-        /// <summary>
         /// Verify multiple unhandled exceptions handling
         /// </summary>
         [TestMethod]

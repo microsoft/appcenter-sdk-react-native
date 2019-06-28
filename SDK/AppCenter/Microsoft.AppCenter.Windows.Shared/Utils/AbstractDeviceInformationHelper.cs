@@ -4,16 +4,29 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-
 using Microsoft.AppCenter.Windows.Shared.Utils;
 
 namespace Microsoft.AppCenter.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     {
-        public virtual async Task<Ingestion.Models.Device> GetDeviceInformationAsync()
+        public static event EventHandler InformationInvalidated;
+        private static string _country;
+
+        internal static void SetCountryCode(string country)
         {
-            var device = new Ingestion.Models.Device
+            _country = country;
+            InvalidateInformation(null, EventArgs.Empty);
+        }
+
+        public virtual Task<Ingestion.Models.Device> GetDeviceInformationAsync()
+        {
+            return Task.FromResult(GetDeviceInformation());
+        }
+
+        public virtual Ingestion.Models.Device GetDeviceInformation()
+        {
+            return new Ingestion.Models.Device
             {
                 SdkName = GetSdkName(),
                 SdkVersion = GetSdkVersion(),
@@ -37,36 +50,51 @@ namespace Microsoft.AppCenter.Utils
                 LiveUpdateDeploymentKey = GetLiveUpdateDevelopmentKey(),
                 LiveUpdatePackageHash = GetLiveUpdatePackageHash()
             };
+        }
 
-            return await Task<Ingestion.Models.Device>.Factory.StartNew(() => device).ConfigureAwait(false);
+        protected static void InvalidateInformation(object sender, EventArgs e)
+        {
+            InformationInvalidated?.Invoke(sender, e);
         }
 
         protected abstract string GetSdkName();
+
         protected abstract string GetDeviceModel();
+
         protected abstract string GetDeviceOemName();
+
         protected abstract string GetOsName();
+
         protected abstract string GetOsBuild();
+
         protected abstract string GetOsVersion();
+
         protected abstract string GetAppVersion();
+
         protected abstract string GetAppBuild();
+
         protected abstract string GetScreenSize();
 
         protected virtual string GetCarrierName()
         {
             return null;
         }
+
         protected virtual string GetCarrierCountry()
         {
-            return null;
+            return _country;
         }
+
         protected virtual string GetAppNamespace()
         {
             return null;
         }
+
         protected virtual string GetLiveUpdateReleaseLabel()
         {
             return null;
         }
+
         protected virtual string GetLiveUpdateDevelopmentKey()
         {
             return null;
