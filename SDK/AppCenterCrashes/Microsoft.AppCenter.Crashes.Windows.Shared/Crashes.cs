@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 
@@ -20,9 +21,12 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Crashes _instanceField;
 
+        private const int MaxAttachmentsPerCrash = 2;
+
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
+            LogSerializer.AddLogType(ErrorAttachmentLog.JsonIdentifier, typeof(ErrorAttachmentLog));
         }
 
         public static Crashes Instance
@@ -167,7 +171,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private Task ProcessPendingErrorsAsync()
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
@@ -190,25 +194,73 @@ namespace Microsoft.AppCenter.Crashes
                         _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
                 }
-                SendCrashReportsOrAwaitUserConfirmation();
-            }).ContinueWith((_) => ProcessPendingErrorsTask = null);
+                await SendCrashReportsOrAwaitUserConfirmationAsync();
+            });
         }
 
-        private void SendCrashReportsOrAwaitUserConfirmation()
+        private Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            HandleUserConfirmation();
+            return HandleUserConfirmationAsync();
         }
 
-        private void HandleUserConfirmation()
+        private Task HandleUserConfirmationAsync()
         {
             // Send every pending log.
             var keys = _unprocessedManagedErrorLogs.Keys.ToList();
+            var tasks = new List<Task>();
             foreach (var key in keys)
             {
-                Channel.EnqueueAsync(_unprocessedManagedErrorLogs[key]);
+                var log = _unprocessedManagedErrorLogs[key];
+                tasks.Add(Channel.EnqueueAsync(log));
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
+                var errorReport = new ErrorReport(log, null);
+
+                // This must never called while a lock is held.
+                var attachments = GetErrorAttachments?.Invoke(errorReport);
+                if (attachments == null)
+                {
+                    AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                }
+                else
+                {
+                    tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                }
             }
+            return Task.WhenAll(tasks);
+        }
+
+        private Task SendErrorAttachmentsAsync(Guid errorId, IEnumerable<ErrorAttachmentLog> attachments)
+        {
+            var totalErrorAttachments = 0;
+            var tasks = new List<Task>();
+            foreach (var attachment in attachments)
+            {
+                if (attachment != null)
+                {
+                    attachment.Id = Guid.NewGuid();
+                    attachment.ErrorId = errorId;
+                    try
+                    {
+                        attachment.Validate();
+                        ++totalErrorAttachments;
+                        tasks.Add(Channel.EnqueueAsync(attachment));
+                    }
+                    catch (ValidationException e)
+                    {
+                        AppCenterLog.Error(LogTag, "Not all required fields are present in ErrorAttachmentLog.", e);
+                    }
+                }
+                else
+                {
+                    AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
+                }
+            }
+            if (totalErrorAttachments > MaxAttachmentsPerCrash)
+            {
+                AppCenterLog.Warn(LogTag, $"A limit of {MaxAttachmentsPerCrash} attachments per error report might be enforced by server.");
+            }
+            return Task.WhenAll(tasks);
         }
     }
 }

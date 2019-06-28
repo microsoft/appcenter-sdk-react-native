@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.AppCenter.Crashes.Test
+namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
     [TestClass]
     public class ErrorAttachmentLogTest
