@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
@@ -190,9 +191,9 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
-                    var report = BuildErrorReport(log);
-                    if (report == null)
+                    if (log == null)
                     {
+                        // TODO should we try to see if the name is {guid}.json and call RemoveAllStoredErrorLogFiles when possible? In case json corrupted we should delete exception file as well.
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         try
                         {
@@ -202,6 +203,13 @@ namespace Microsoft.AppCenter.Crashes
                         {
                             AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
                         }
+                        continue;
+                    }
+                    var report = BuildErrorReport(log);
+                    if (report == null)
+                    {
+                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
+                        RemoveAllStoredErrorLogFiles(log.Id);
                     }
                     else if (ShouldProcessErrorReport?.Invoke(report) ?? true)
                     {
@@ -211,10 +219,19 @@ namespace Microsoft.AppCenter.Crashes
                     else
                     {
                         AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
+                        RemoveAllStoredErrorLogFiles(log.Id);
                     }
                 }
                 SendCrashReportsOrAwaitUserConfirmation();
             }).ContinueWith((_) => ProcessPendingErrorsTask = null);
+        }
+
+        private void RemoveAllStoredErrorLogFiles(Guid errorId)
+        {
+            // ReSharper disable once InconsistentlySynchronizedField this is a concurrent dictionary.
+            _errorReportCache.Remove(errorId);
+            ErrorLogHelper.RemoveStoredErrorLogFile(errorId);
+            ErrorLogHelper.RemoveStoredExceptionFile(errorId);
         }
 
         private void SendCrashReportsOrAwaitUserConfirmation()
@@ -236,10 +253,6 @@ namespace Microsoft.AppCenter.Crashes
 
         private ErrorReport BuildErrorReport(ManagedErrorLog log)
         {
-            if (log == null)
-            {
-                return null;
-            }
             if (_errorReportCache.ContainsKey(log.Id))
             {
                 return _errorReportCache[log.Id];
