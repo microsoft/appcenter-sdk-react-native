@@ -20,6 +20,8 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Crashes _instanceField;
 
+        private ErrorReport _lastSessionErrorReport;
+
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
@@ -68,12 +70,12 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
         {
-            return Task.FromResult(Instance.LastSessionErrorReport != null);
+            return Instance.InstanceHasCrashedInLastSessionAsync();
         }
 
         private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
-            return Task.FromResult(Instance.LastSessionErrorReport);
+            return Instance.InstanceGetLastSessionCrashReportAsync();
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
@@ -163,6 +165,16 @@ namespace Microsoft.AppCenter.Crashes
                     }
                 }
             }
+        }
+
+        private Task<bool> InstanceHasCrashedInLastSessionAsync()
+        {
+            return Task.FromResult(Instance.LastSessionErrorReport != null);
+        }
+
+        private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
+        {
+            return Task.FromResult(Instance.LastSessionErrorReport);
         }
 
         private Task ProcessPendingErrorsAsync()
