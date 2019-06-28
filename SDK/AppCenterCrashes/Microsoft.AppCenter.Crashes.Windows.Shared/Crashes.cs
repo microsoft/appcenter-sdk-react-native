@@ -223,7 +223,14 @@ namespace Microsoft.AppCenter.Crashes
 
                     // This must never called while a lock is held.
                     var attachments = errorAttachmentsCallback.Invoke(errorReport);
-                    tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    if (attachments == null)
+                    {
+                        AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    }
+                    else
+                    {
+                        tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    }
                 }
             }
             return Task.WhenAll(tasks);
@@ -231,11 +238,6 @@ namespace Microsoft.AppCenter.Crashes
 
         private Task SendErrorAttachmentsAsync(Guid errorId, IEnumerable<ErrorAttachmentLog> attachments)
         {
-            if (attachments == null)
-            {
-                AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {errorId}.");
-                return Task.FromResult(0);
-            }
             var totalErrorAttachments = 0;
             var tasks = new List<Task>();
             foreach (var attachment in attachments)
