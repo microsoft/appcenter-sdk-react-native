@@ -11,9 +11,10 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AppCenterContentPage : ContentPage
     {
+        private const string UserIdKey = "userId";
+        
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
-        private const string UserIdKey = "userId";
         Dictionary<LogLevel, Action<string, string>> LogFunctions;
         Dictionary<LogLevel, string> LogLevelNames;
         LogLevel LogWriteLevel;
