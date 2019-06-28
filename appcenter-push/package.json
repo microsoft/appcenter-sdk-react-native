@@ -22,6 +22,14 @@
   "dependencies": {
     "appcenter": "2.1.0"
   },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new AppCenterReactNativePushPackage(MainApplication.this)"
+    },
+    "commands": {
+      "postlink": "node node_modules/appcenter-push/scripts/postlink"
+    }
+  },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^4.5.0",

@@ -21,6 +21,14 @@
   "dependencies": {
     "appcenter-link-scripts": "2.1.0"
   },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new AppCenterReactNativePackage(MainApplication.this)"
+    },
+    "commands": {
+      "postlink": "node node_modules/appcenter/scripts/postlink"
+    }
+  },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-jest": "^21.0.2",
