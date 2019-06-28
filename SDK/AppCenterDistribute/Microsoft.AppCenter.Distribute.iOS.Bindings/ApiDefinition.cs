@@ -79,8 +79,8 @@ namespace Microsoft.AppCenter.Distribute.iOS.Bindings
         [Export("releaseNotesUrl")]
         NSUrl ReleaseNotesUrl { get; }
 
-        // @property(nonatomic) BOOL mandatoryUpdate;
-        [Export("mandatoryUpdate")]
+        // @property(nonatomic, getter=isMandatoryUpdate) BOOL mandatoryUpdate;
+        [Export("isMandatoryUpdate")]
         bool MandatoryUpdate { get; }
     }
 }

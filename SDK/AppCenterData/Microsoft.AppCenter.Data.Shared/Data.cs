@@ -75,7 +75,20 @@ namespace Microsoft.AppCenter.Data
         /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
         public static Task<PaginatedDocuments<T>> ListAsync<T>(string partition)
         {
-            return PlatformListAsync<T>(partition);
+            return PlatformListAsync<T>(partition, new ReadOptions());
+        }
+
+        /// <summary>
+        /// Retrieve a paginated list of the documents in a partition.
+        /// </summary>
+        /// <returns>A task with <see cref="T:Microsoft.AppCenter.Data.PaginatedDocuments" />.</returns>
+        /// <param name="partition">The CosmosDB partition key.</param>
+        /// <param name="readOptions">Options for reading and storing the document.</param>
+        /// <typeparam name="T">The document type.</typeparam>
+        /// <exception cref="Microsoft.AppCenter.Data.DataException">If operation failed.</exception>
+        public static Task<PaginatedDocuments<T>> ListAsync<T>(string partition, ReadOptions readOptions)
+        {
+            return PlatformListAsync<T>(partition, readOptions);
         }
 
         /// <summary>

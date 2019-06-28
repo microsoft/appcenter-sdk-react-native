@@ -11,7 +11,7 @@ namespace Microsoft.AppCenter.Data
     public abstract class BaseOptions
     {
         /// <summary>
-        /// Device document time-to-live. Default is one day.
+        /// Device document time-to-live in seconds.
         /// </summary>
         public TimeSpan DeviceTimeToLive { get; }
 

@@ -48,10 +48,10 @@ namespace Microsoft.AppCenter.Data
             return taskCompletionSource.Task;
         }
 
-        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
+        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition, ReadOptions readOptions)
         {
             var taskCompletionSource = new TaskCompletionSource<PaginatedDocuments<T>>();
-            MSData.List(new Class(typeof(MSDictionaryDocument)), partition, resultPages =>
+            MSData.List(new Class(typeof(MSDictionaryDocument)), partition, readOptions.ToMSReadOptions(), resultPages =>
             {
                 if (resultPages.CurrentPage().Error == null)
                 {

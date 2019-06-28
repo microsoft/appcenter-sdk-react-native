@@ -116,7 +116,7 @@ namespace Contoso.Forms.Puppet
             }
             try
             {
-                var list = await Data.ListAsync<CustomDocument>(DefaultPartitions.UserDocuments);
+                var list = await Data.ListAsync<CustomDocument>(DefaultPartitions.UserDocuments, new ReadOptions());
                 foreach (var doc in list)
                 {
                     AppCenterLog.Info(App.LogTag, "List result=" + JsonConvert.SerializeObject(doc));
