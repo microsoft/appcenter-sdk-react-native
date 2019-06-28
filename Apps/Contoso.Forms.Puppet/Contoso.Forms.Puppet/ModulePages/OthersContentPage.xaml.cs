@@ -65,11 +65,11 @@ namespace Contoso.Forms.Puppet
             }
             else if (Application.Current.Properties[AccountId] is string)
             {
-                SignInInformationButton.Text = "User authenticated";
+                SignInInformationButton.Text = "User is authenticated";
             }
             else
             {
-                SignInInformationButton.Text = "User not authenticated";
+                SignInInformationButton.Text = "User is not authenticated";
             }
         }
 
