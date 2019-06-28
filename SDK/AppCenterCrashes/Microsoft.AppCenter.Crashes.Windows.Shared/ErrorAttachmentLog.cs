@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Text;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace Microsoft.AppCenter.Crashes
 {
