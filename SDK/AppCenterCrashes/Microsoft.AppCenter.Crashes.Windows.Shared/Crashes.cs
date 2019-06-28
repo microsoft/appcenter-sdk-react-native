@@ -258,12 +258,16 @@ namespace Microsoft.AppCenter.Crashes
                     tasks.Add(Channel.EnqueueAsync(log));
                     _unprocessedManagedErrorLogs.Remove(key);
                     ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                    if (GetErrorAttachments != null)
-                    {
-                        var errorReport = new ErrorReport(log, null);
+                    var errorReport = new ErrorReport(log, null);
 
-                        // This must never called while a lock is held.
-                        var attachments = GetErrorAttachments?.Invoke(errorReport);
+                    // This must never called while a lock is held.
+                    var attachments = GetErrorAttachments?.Invoke(errorReport);
+                    if (attachments == null)
+                    {
+                        AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    }
+                    else
+                    {
                         tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
                     }
                 }
