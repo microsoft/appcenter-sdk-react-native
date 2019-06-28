@@ -59,7 +59,11 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
-            if (Application.Current.Properties.ContainsKey(AccountId) && Application.Current.Properties[AccountId] is string id)
+            if (!Application.Current.Properties.ContainsKey(AccountId))
+            {
+                SignInInformationButton.Text = "Authentication status unknown";
+            }
+            else if (Application.Current.Properties[AccountId] is string)
             {
                 SignInInformationButton.Text = "User authenticated";
             }

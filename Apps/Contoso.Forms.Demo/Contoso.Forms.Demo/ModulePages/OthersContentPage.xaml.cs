@@ -47,11 +47,18 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            if (Application.Current.Properties.ContainsKey(AccountId) && Application.Current.Properties[AccountId] is string id)
+            if (!Application.Current.Properties.ContainsKey(AccountId))
+            {
+                SignInInformationButton.Text = "Authentication status unknown";
+            }
+            else if (Application.Current.Properties[AccountId] is string)
             {
                 SignInInformationButton.Text = "User authenticated";
             }
-            else SignInInformationButton.Text = "User not authenticated";
+            else
+            {
+                SignInInformationButton.Text = "User not authenticated";
+            }
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
