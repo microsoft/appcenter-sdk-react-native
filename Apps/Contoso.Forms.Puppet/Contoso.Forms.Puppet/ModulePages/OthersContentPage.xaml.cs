@@ -22,6 +22,8 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
     {
+        private const string AccountId = "accountId";
+
         static bool _rumStarted;
 
         static bool _eventFilterStarted;
@@ -57,11 +59,14 @@ namespace Contoso.Forms.Puppet
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
-            if (userInfo?.AccountId != null)
+            if (Application.Current.Properties.ContainsKey(AccountId) && Application.Current.Properties[AccountId] is string id)
             {
                 SignInInformationButton.Text = "User authenticated";
             }
-            else SignInInformationButton.Text = "User not authenticated";
+            else
+            {
+                SignInInformationButton.Text = "User not authenticated";
+            }
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -105,6 +110,7 @@ namespace Contoso.Forms.Puppet
                 userInfo = await Auth.SignInAsync();
                 if (userInfo.AccountId != null)
                 {
+                    Application.Current.Properties[AccountId] = userInfo.AccountId;
                     SignInInformationButton.Text = "User authenticated";
                 }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
@@ -194,6 +200,7 @@ namespace Contoso.Forms.Puppet
             Auth.SignOut();
             userInfo = null;
             SignInInformationButton.Text = "User not authenticated";
+            Application.Current.Properties[AccountId] = null;
         }
 
         async void SignInInformation(object sender, EventArgs e)
