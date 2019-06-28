@@ -13,7 +13,6 @@ using Moq;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
-
     /// <summary>
     /// This class tests the error attachments functionality of the Crashes class.
     /// </summary>
