@@ -18,7 +18,6 @@ namespace Contoso.Forms.Demo
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
     {
-
         static OthersContentPage()
         {
             Data.RemoteOperationCompleted += (sender, eventArgs) =>
@@ -28,6 +27,7 @@ namespace Contoso.Forms.Demo
         }
 
         private UserInformation userInfo;
+
         private const string AccountId = "accountId";
 
         public OthersContentPage()
