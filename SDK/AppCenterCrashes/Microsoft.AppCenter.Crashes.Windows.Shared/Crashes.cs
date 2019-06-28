@@ -23,6 +23,8 @@ namespace Microsoft.AppCenter.Crashes
 
         private const int MaxAttachmentsPerCrash = 2;
 
+        private bool mAutomaticProcessing = true;
+
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
@@ -80,8 +82,9 @@ namespace Microsoft.AppCenter.Crashes
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
+        private static void PlatformNotifyUserConfirmation(UserConfirmation userConfirmation)
         {
+            Instance.HandleUserConfirmationAsync(userConfirmation);
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
@@ -199,27 +202,74 @@ namespace Microsoft.AppCenter.Crashes
 
         private Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            return HandleUserConfirmationAsync();
+            bool alwaysSend = true; // TODO: change to get from preferences
+
+            if (_unprocessedManagedErrorLogs.Count() > 0)
+            {
+                // Check for always send: this bypasses user confirmation callback.
+                if (alwaysSend)
+                {
+                    AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
+                    return HandleUserConfirmationAsync(UserConfirmation.Send);
+                }
+
+                // TODO: mAutomaticProcessing doesn't currently exist on Windows
+                // If automatic processing is disabled, don't call the listener.
+                //if (!mAutomaticProcessing)
+                //{
+                //    AppCenterLog.Debug(LogTag, "Automatic processing disabled, will wait for explicit user confirmation.");
+                //    return Task.WhenAll(new Task(null)); // TODO: What to do when returning empty
+                //}
+
+                if (!ShouldAwaitUserConfirmation())
+                {
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false, will send logs.");
+                    return HandleUserConfirmationAsync(UserConfirmation.Send);
+                }
+                else
+                {
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false, wait sending logs.");
+                }
+            }
+
+            return HandleUserConfirmationAsync(UserConfirmation.Send); // TODO: Android returns a boolean (alwaysSend), and HandleUserCOnfirmation may or may not run
         }
 
-        private Task HandleUserConfirmationAsync()
+        private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
         {
-            // Send every pending log.
             var keys = _unprocessedManagedErrorLogs.Keys.ToList();
             var tasks = new List<Task>();
-            foreach (var key in keys)
-            {
-                var log = _unprocessedManagedErrorLogs[key];
-                tasks.Add(Channel.EnqueueAsync(log));
-                _unprocessedManagedErrorLogs.Remove(key);
-                ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                if (GetErrorAttachments != null)
-                {
-                    var errorReport = new ErrorReport(log, null);
 
-                    // This must never called while a lock is held.
-                    var attachments = GetErrorAttachments?.Invoke(errorReport);
-                    tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+            if (userConfirmation == UserConfirmation.DontSend)
+            {
+                foreach (var key in keys)
+                {
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+                }
+            }
+            else
+            {
+                if (userConfirmation == UserConfirmation.AlwaysSend)
+                {
+                    // TODO: Save the AlwaysSend preference
+                }
+
+                // Send every pending log.
+                foreach (var key in keys)
+                {
+                    var log = _unprocessedManagedErrorLogs[key];
+                    tasks.Add(Channel.EnqueueAsync(log));
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+                    if (GetErrorAttachments != null)
+                    {
+                        var errorReport = new ErrorReport(log, null);
+
+                        // This must never called while a lock is held.
+                        var attachments = GetErrorAttachments?.Invoke(errorReport);
+                        tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    }
                 }
             }
             return Task.WhenAll(tasks);
