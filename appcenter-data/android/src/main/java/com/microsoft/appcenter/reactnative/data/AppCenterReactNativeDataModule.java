@@ -26,6 +26,7 @@ import com.microsoft.appcenter.data.TimeToLive;
 import com.microsoft.appcenter.data.exception.DataException;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
 import com.microsoft.appcenter.data.models.ReadOptions;
+import com.microsoft.appcenter.data.models.WriteOptions;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
@@ -67,48 +68,70 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         } else {
             readOptions = new ReadOptions(TimeToLive.DEFAULT);
         }
-        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new AppCenterConsumer<DocumentWrapper<JsonElement>>() {
+        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer("Read failed", promise));
+    }
 
-            @Override
-            public void accept(DocumentWrapper<JsonElement> documentWrapper) {
-                WritableMap jsDocumentWrapper = new WritableNativeMap();
-                jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
-                jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
-                jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
-                if (documentWrapper.getError() != null) {
-                    DataException dataException = documentWrapper.getError();
-                    promise.reject("Read failed", dataException.getMessage(), dataException, jsDocumentWrapper);
-                    return;
-                }
-                JsonElement deserializedValue = documentWrapper.getDeserializedValue();
-                jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+    @ReactMethod
+    public void create(String documentId, ReadableMap readableMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
+        }
+        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(readableMap);
+        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer("Create failed", promise));
+    }
 
-                // Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values
-                jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
-                jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+    private class Consumer implements AppCenterConsumer<DocumentWrapper<JsonElement>> {
 
-                if (deserializedValue.isJsonPrimitive()) {
-                    JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
-                    if (jsonPrimitive.isString()) {
-                        jsDocumentWrapper.putString(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsString());
-                    } else if (jsonPrimitive.isNumber()) {
-                        jsDocumentWrapper.putDouble(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsDouble());
-                    } else if (jsonPrimitive.isBoolean()) {
-                        jsDocumentWrapper.putBoolean(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsBoolean());
-                    }
-                } else if (deserializedValue.isJsonObject()) {
-                    JsonObject jsonObject = deserializedValue.getAsJsonObject();
-                    WritableMap writableMap = AppCenterReactNativeDataUtils.convertJsonObjectToWritableMap(jsonObject);
-                    jsDocumentWrapper.putMap(DESERIALIZED_VALUE_KEY, writableMap);
-                } else if (deserializedValue.isJsonArray()) {
-                    JsonArray jsonArray = deserializedValue.getAsJsonArray();
-                    WritableArray writableArray = AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonArray);
-                    jsDocumentWrapper.putArray(DESERIALIZED_VALUE_KEY, writableArray);
-                } else {
-                    jsDocumentWrapper.putNull(DESERIALIZED_VALUE_KEY);
-                }
-                promise.resolve(jsDocumentWrapper);
+        private Promise mPromise;
+
+        private String mErrorCode;
+
+        private Consumer(String errorCode, Promise promise) {
+            mPromise = promise;
+            mErrorCode = errorCode;
+        }
+
+        @Override
+        public void accept(DocumentWrapper<JsonElement> documentWrapper) {
+            WritableMap jsDocumentWrapper = new WritableNativeMap();
+            jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
+            jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
+            jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
+            if (documentWrapper.getError() != null) {
+                DataException dataException = documentWrapper.getError();
+                mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
+                return;
             }
-        });
+            JsonElement deserializedValue = documentWrapper.getDeserializedValue();
+            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+
+            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
+            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
+            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+            if (deserializedValue.isJsonPrimitive()) {
+                JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
+                if (jsonPrimitive.isString()) {
+                    jsDocumentWrapper.putString(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsString());
+                } else if (jsonPrimitive.isNumber()) {
+                    jsDocumentWrapper.putDouble(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsDouble());
+                } else if (jsonPrimitive.isBoolean()) {
+                    jsDocumentWrapper.putBoolean(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsBoolean());
+                }
+            } else if (deserializedValue.isJsonObject()) {
+                JsonObject jsonObject = deserializedValue.getAsJsonObject();
+                WritableMap writableMap = AppCenterReactNativeDataUtils.convertJsonObjectToWritableMap(jsonObject);
+                jsDocumentWrapper.putMap(DESERIALIZED_VALUE_KEY, writableMap);
+            } else if (deserializedValue.isJsonArray()) {
+                JsonArray jsonArray = deserializedValue.getAsJsonArray();
+                WritableArray writableArray = AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonArray);
+                jsDocumentWrapper.putArray(DESERIALIZED_VALUE_KEY, writableArray);
+            } else {
+                jsDocumentWrapper.putNull(DESERIALIZED_VALUE_KEY);
+            }
+            mPromise.resolve(jsDocumentWrapper);
+        }
     }
 }
