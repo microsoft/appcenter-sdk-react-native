@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +13,6 @@ using Moq;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
-
     /// <summary>
     /// This class tests the error attachments functionality of the Crashes class.
     /// </summary>

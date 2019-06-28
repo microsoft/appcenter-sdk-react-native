@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Text;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
@@ -29,13 +30,28 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             // Create an error attachment log with text.
             var text = "This is the text.";
-            var fileName = "binary attachment";
+            var fileName = "text attachment";
             var attachment = ErrorAttachmentLog.AttachmentWithText(text, fileName);
 
             // Verify the contents.
             Assert.AreEqual("text/plain", attachment.ContentType);
             Assert.AreEqual(fileName, attachment.FileName);
             Assert.AreEqual(text, Encoding.UTF8.GetString(attachment.Data));
+        }
+
+        [TestMethod]
+        public void TestNullFileNameIsAllowed()
+        {
+            // Create an error attachment log.
+            var contentType = "mime/type";
+            var data = new byte[] { 0, 3, 2, 1, 0 };
+            string fileName = null;
+            var attachment = ErrorAttachmentLog.AttachmentWithBinary(data, fileName, contentType);
+
+            // Verify the contents.
+            Assert.AreEqual(contentType, attachment.ContentType);
+            Assert.AreEqual(fileName, attachment.FileName);
+            CollectionAssert.AreEqual(data, attachment.Data);
         }
 
         [TestMethod]
@@ -56,11 +72,54 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             // Attempt to create an error attachment log with null text.
             string text = null;
-            var fileName = "binary attachment";
+            var fileName = "text attachment";
             var attachment = ErrorAttachmentLog.AttachmentWithText(text, fileName);
 
             // Verify the result is null.
             Assert.IsNull(attachment);
+        }
+
+        [TestMethod]
+        public void TestValidateDoesNotThrowForValidLog()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                ContentType = "ContentType",
+                Data = new byte[] { 1, 2, 3, 4 },
+                Device = GetValidDevice()
+            };
+
+            // Pass if validate does not throw.
+            validErrorAttachmentLog.Validate();
+        }
+
+        [TestMethod]
+        public void TestValidateThrowsIfMissingData()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                ContentType = "ContentType",
+                Device = GetValidDevice()
+            };
+            Assert.ThrowsException<ValidationException>(() => validErrorAttachmentLog.Validate());
+        }
+
+        [TestMethod]
+        public void TestValidateThrowsIfMissingContentType()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                Data = new byte[] { 1, 2, 3, 4 },
+                Device = GetValidDevice()
+            };
+            Assert.ThrowsException<ValidationException>(() => validErrorAttachmentLog.Validate());
+        }
+
+        private Microsoft.AppCenter.Ingestion.Models.Device GetValidDevice()
+        {
+            return new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion",
+                "locale", 1,"appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize",
+                null, null, "appNamespace", null, null, null, null);
         }
     }
 }

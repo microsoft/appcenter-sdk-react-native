@@ -28,6 +28,7 @@ namespace Microsoft.AppCenter.Crashes
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
+            LogSerializer.AddLogType(ErrorAttachmentLog.JsonIdentifier, typeof(ErrorAttachmentLog));
         }
 
         public static Crashes Instance
@@ -272,11 +273,6 @@ namespace Microsoft.AppCenter.Crashes
 
         private Task SendErrorAttachmentsAsync(Guid errorId, IEnumerable<ErrorAttachmentLog> attachments)
         {
-            if (attachments == null)
-            {
-                AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {errorId}.");
-                return Task.FromResult(0);
-            }
             var totalErrorAttachments = 0;
             var tasks = new List<Task>();
             foreach (var attachment in attachments)
