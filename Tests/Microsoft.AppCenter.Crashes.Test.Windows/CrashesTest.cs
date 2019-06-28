@@ -181,5 +181,60 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Never());
             Mock.Get(mockFile).Verify(file => file.Delete(), Times.Once());
         }
+
+        [TestMethod]
+        public void PlatformNotifyUserConfirmation()
+        {
+            // Verify HandleUserConfirmationAsync is called with userConfirmation
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncAlwaysTrue()
+        {
+            // Set PrefKeyAlwaysSend to AlwaysSend
+            // Verify HandleUserConfirmationAsync is called with UserSettings.Send
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncNullCallback()
+        {
+            // Verify HandleUserConfirmationAsync is called with UserSettings.Send
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncFalseCallback()
+        {
+            // Verify HandleUserConfirmationAsync is called with UserSettings.Send
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncTrueCallback()
+        {
+            // Verify HandleUserConfirmationAsync is not called
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncDontSend()
+        {
+            // Verify ApplicationSettings.SetValue is not called
+            // Verify _unprocessedManagedErrorLogs.Remove(key);
+            // Verify ErrorLogHelper.RemoveStoredErrorLogFile(key);
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncSend()
+        {
+            // Verify ApplicationSettings.SetValue is not called
+            // Verify Removals
+            // Verify Sends
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncAlwaysSend()
+        {
+            // Verify ApplicationSettings.SetValue(PrefKeyAlwaysSend, true) is called
+            // Verify Removals
+            // Verify Sends
+        }
     }
 }
