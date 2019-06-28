@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -243,11 +244,19 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsNull(actualSendingReport.AndroidDetails);
             Assert.IsNull(actualSendingReport.iOSDetails);
             Assert.AreEqual(1, sendingReportCallCount);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+
+            // Check unknown log type does not crash.
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(Mock.Of<Log>()));
 
             // Simulate and verify sent callback is called.
             _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
             Assert.AreSame(actualSendingReport, actualSentReport);
             Assert.AreEqual(1, sentReportCallCount);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Once());
+
+            // Check unknown log type does not crash.
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(Mock.Of<Log>()));
 
             // Disable crashes.
             Crashes.SetEnabledAsync(false).Wait();
@@ -315,12 +324,20 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsNull(actualSendingReport.AndroidDetails);
             Assert.IsNull(actualSendingReport.iOSDetails);
             Assert.AreEqual(1, sendingReportCallCount);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+
+            // Check unknown log type does not crash.
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(Mock.Of<Log>()));
 
             // Simulate and verify sent callback is called.
             _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, expectedFailedToSendException));
             Assert.AreSame(actualSendingReport, actualFailedToSentReport);
             Assert.AreSame(expectedFailedToSendException, actualFailedToSendException);
             Assert.AreEqual(1, failedToSendReportCallCount);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Once());
+
+            // Check unknown log type does not crash.
+            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(Mock.Of<Log>(), new System.Exception()));
 
             // Disable crashes.
             Crashes.SetEnabledAsync(false).Wait();
@@ -330,8 +347,47 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(1, sendingReportCallCount);
 
             // Simulate and verify sent callback isn't called.
-            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, new System.Exception()));
             Assert.AreEqual(1, failedToSendReportCallCount);
+        }
+
+        [TestMethod]
+        public void EventNotTriggeredWhenExceptionFileCannotBeFound()
+        {
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            Mock.Get(ErrorLogHelper.Instance)
+                .Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(default(File));
+
+            // Subscribe to callbacks.
+            var sendingReportCallCount = 0;
+            Crashes.SendingErrorReport += (_, e) =>
+            {
+                sendingReportCallCount++;
+            };
+            var sentReportCallCount = 0;
+            Crashes.SentErrorReport += (_, e) =>
+            {
+                sentReportCallCount++;
+            };
+            var failedToSendReportCallCount = 0;
+            Crashes.FailedToSendErrorReport += (_, e) =>
+            {
+                failedToSendReportCallCount++;
+            };
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+            // None of the events work if the exception file is unreadable.
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, new System.Exception()));
+            Assert.AreEqual(0, sendingReportCallCount);
+            Assert.AreEqual(0, sentReportCallCount);
+            Assert.AreEqual(0, failedToSendReportCallCount);
         }
     }
 }
