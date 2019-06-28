@@ -53,6 +53,8 @@ namespace Contoso.Forms.Puppet
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
+            AuthEnabledSwitchCell.On = await Auth.IsEnabledAsync();
+            AuthEnabledSwitchCell.IsEnabled = acEnabled;
             RumEnabledSwitchCell.On = _rumStarted && await RealUserMeasurements.IsEnabledAsync();
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
@@ -72,6 +74,11 @@ namespace Contoso.Forms.Puppet
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
             await Push.SetEnabledAsync(e.Value);
+        }
+
+        async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
+        {
+            await Auth.SetEnabledAsync(e.Value);
         }
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)
