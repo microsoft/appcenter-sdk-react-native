@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private const int MaxAttachmentsPerCrash = 2;
 
-        private bool mAutomaticProcessing = true;
+        internal const string PrefKeyAlwaysSend = Constants.KeyPrefix + "CrashesAlwaysSend";
 
         static Crashes()
         {
@@ -202,37 +202,30 @@ namespace Microsoft.AppCenter.Crashes
 
         private Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            bool alwaysSend = true; // TODO: change to get from preferences
+            bool alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
 
-            if (_unprocessedManagedErrorLogs.Count() > 0)
+            return Task.Run(async () =>
             {
-                // Check for always send: this bypasses user confirmation callback.
-                if (alwaysSend)
+                if (_unprocessedManagedErrorLogs.Count() > 0)
                 {
-                    AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
-                    return HandleUserConfirmationAsync(UserConfirmation.Send);
-                }
+                    // Check for always send: this bypasses user confirmation callback.
+                    if (alwaysSend)
+                    {
+                        AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
+                        await HandleUserConfirmationAsync(UserConfirmation.Send);
+                    }
 
-                // TODO: mAutomaticProcessing doesn't currently exist on Windows
-                // If automatic processing is disabled, don't call the listener.
-                //if (!mAutomaticProcessing)
-                //{
-                //    AppCenterLog.Debug(LogTag, "Automatic processing disabled, will wait for explicit user confirmation.");
-                //    return Task.WhenAll(new Task(null)); // TODO: What to do when returning empty
-                //}
-
-                if (!ShouldAwaitUserConfirmation())
-                {
-                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false, will send logs.");
-                    return HandleUserConfirmationAsync(UserConfirmation.Send);
+                    if (ShouldAwaitUserConfirmation?.Invoke() ?? false)
+                    {
+                        AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned true, wait sending logs.");
+                    }
+                    else
+                    {
+                        AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false, will send logs.");
+                        await HandleUserConfirmationAsync(UserConfirmation.Send);
+                    }
                 }
-                else
-                {
-                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false, wait sending logs.");
-                }
-            }
-
-            return HandleUserConfirmationAsync(UserConfirmation.Send); // TODO: Android returns a boolean (alwaysSend), and HandleUserCOnfirmation may or may not run
+            });
         }
 
         private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
@@ -246,13 +239,14 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     _unprocessedManagedErrorLogs.Remove(key);
                     ErrorLogHelper.RemoveStoredErrorLogFile(key);
+                    // TODO: Remove exception files
                 }
             }
             else
             {
                 if (userConfirmation == UserConfirmation.AlwaysSend)
                 {
-                    // TODO: Save the AlwaysSend preference
+                    ApplicationSettings.SetValue(PrefKeyAlwaysSend, true);
                 }
 
                 // Send every pending log.
