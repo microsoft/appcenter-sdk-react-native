@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 
@@ -20,8 +19,6 @@ namespace Microsoft.AppCenter.Crashes
         private static readonly object CrashesLock = new object();
 
         private static Crashes _instanceField;
-
-        private const int MaxAttachmentsPerCrash = 2;
 
         static Crashes()
         {
@@ -170,7 +167,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private Task ProcessPendingErrorsAsync()
         {
-            return Task.Run(async () =>
+            return Task.Run(() =>
             {
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
@@ -193,69 +190,25 @@ namespace Microsoft.AppCenter.Crashes
                         _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
                 }
-                await SendCrashReportsOrAwaitUserConfirmationAsync();
+                SendCrashReportsOrAwaitUserConfirmation();
             }).ContinueWith((_) => ProcessPendingErrorsTask = null);
         }
 
-        private Task SendCrashReportsOrAwaitUserConfirmationAsync()
+        private void SendCrashReportsOrAwaitUserConfirmation()
         {
-            return HandleUserConfirmationAsync();
+            HandleUserConfirmation();
         }
 
-        private Task HandleUserConfirmationAsync()
+        private void HandleUserConfirmation()
         {
             // Send every pending log.
             var keys = _unprocessedManagedErrorLogs.Keys.ToList();
-            var tasks = new List<Task>();
             foreach (var key in keys)
             {
-                var log = _unprocessedManagedErrorLogs[key];
-                tasks.Add(Channel.EnqueueAsync(log));
+                Channel.EnqueueAsync(_unprocessedManagedErrorLogs[key]);
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                var errorReport = new ErrorReport(log, null);
-                var attachments = GetErrorAttachments?.Invoke(errorReport);
-                tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
             }
-            return Task.WhenAll(tasks);
-        }
-
-        private Task SendErrorAttachmentsAsync(Guid errorId, IEnumerable<ErrorAttachmentLog> attachments)
-        {
-            if (attachments == null)
-            {
-                AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {errorId}.");
-                return Task.FromResult(0);
-            }
-            var totalErrorAttachments = 0;
-            var tasks = new List<Task>();
-            foreach (var attachment in attachments)
-            {
-                if (attachment != null)
-                {
-                    attachment.Id = Guid.NewGuid();
-                    attachment.ErrorId = errorId;
-                    try
-                    {
-                        attachment.Validate();
-                        ++totalErrorAttachments;
-                        tasks.Add(Channel.EnqueueAsync(attachment));
-                    }
-                    catch (ValidationException e)
-                    {
-                        AppCenterLog.Error(LogTag, "Not all required fields are present in ErrorAttachmentLog.", e);
-                    }
-                }
-                else
-                {
-                    AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
-                }
-            }
-            if (totalErrorAttachments > MaxAttachmentsPerCrash)
-            {
-                AppCenterLog.Warn(LogTag, $"A limit of {MaxAttachmentsPerCrash} attachments per error report might be enforced by server.");
-            }
-            return Task.WhenAll(tasks);
         }
     }
 }
