@@ -45,6 +45,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             ErrorLogHelper.Instance = null;
             ApplicationLifecycleHelper.Instance = null;
             Crashes.Instance = null;
+            Crashes.GetErrorAttachments = null;
         }
 
         [TestMethod]
@@ -67,9 +68,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 AppLaunchTimestamp = DateTime.Now,
                 Device = new Microsoft.AppCenter.Ingestion.Models.Device()
             };
-
-            // Mock error attachment log so that Validate method does not throw.
-            var mockErrorAttachment = Mock.Of<ErrorAttachmentLog>();
+            var validErrorAttachment = GetValidErrorAttachmentLog();
 
             // Stub get/read/delete error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile1, mockFile2 });
@@ -81,7 +80,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             {
                 if (errorReport.Id == expectedManagedErrorLog1.Id.ToString())
                 {
-                    return new List<ErrorAttachmentLog> { mockErrorAttachment };
+                    return new List<ErrorAttachmentLog> { validErrorAttachment };
                 }
                 return null;
             };
@@ -91,12 +90,12 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify attachment log has been queued to the channel. (And only one attachment log).
-            _mockChannel.Verify(channel => channel.EnqueueAsync(mockErrorAttachment), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment), Times.Once());
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ErrorAttachmentLog>()), Times.Once());
 
             // Verify that the attachment has been modified with the right fields.
-            Mock.Get(mockErrorAttachment).VerifySet(attachment => attachment.ErrorId = expectedManagedErrorLog1.Id);
-            Mock.Get(mockErrorAttachment).VerifySet(attachment => attachment.Id = It.IsAny<Guid>());
+            Assert.AreEqual(expectedManagedErrorLog1.Id, validErrorAttachment.ErrorId);
+            Assert.AreNotEqual(Guid.Empty, validErrorAttachment.ErrorId);
         }
 
         [TestMethod]
@@ -164,19 +163,18 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile2)).Returns(expectedManagedErrorLog2);
 
             // Create two valid and one invalid attachment.
-            var mockInvalidErrorAttachment1 = Mock.Of<ErrorAttachmentLog>();
-            Mock.Get(mockInvalidErrorAttachment1).Setup(attachment => attachment.Validate()).Throws(new ValidationException());
-            var mockValidErrorAttachment1 = Mock.Of<ErrorAttachmentLog>();
-            var mockValidErrorAttachment2 = Mock.Of<ErrorAttachmentLog>();
+            var invalidErrorAttachment1 = new ErrorAttachmentLog();
+            var validErrorAttachment1 = GetValidErrorAttachmentLog();
+            var validErrorAttachment2 = GetValidErrorAttachmentLog();
 
             // Implement attachments callback.
             Crashes.GetErrorAttachments = errorReport =>
             {
                 if (errorReport.Id == expectedManagedErrorLog1.Id.ToString())
                 {
-                    return new List<ErrorAttachmentLog> { mockInvalidErrorAttachment1, mockValidErrorAttachment1 };
+                    return new List<ErrorAttachmentLog> { invalidErrorAttachment1, validErrorAttachment1 };
                 }
-                return new List<ErrorAttachmentLog> { mockValidErrorAttachment2 };
+                return new List<ErrorAttachmentLog> { validErrorAttachment2 };
             };
 
             Crashes.SetEnabledAsync(true).Wait();
@@ -184,9 +182,16 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify all valid attachment logs has been queued to the channel, but not invalid one.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(mockInvalidErrorAttachment1), Times.Never());
-            _mockChannel.Verify(channel => channel.EnqueueAsync(mockValidErrorAttachment1), Times.Once());
-            _mockChannel.Verify(channel => channel.EnqueueAsync(mockValidErrorAttachment2), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(invalidErrorAttachment1), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment1), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment2), Times.Once());
+        }
+
+        private ErrorAttachmentLog GetValidErrorAttachmentLog()
+        {
+            var device = new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion", "locale", 1,
+                "appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize", null, null, "appNamespace", null, null, null, null);
+            return new ErrorAttachmentLog() { ContentType = "contenttype", Data = new byte[] { 1 }, Device = device };
         }
     }
 }
