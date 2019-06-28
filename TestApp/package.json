@@ -38,6 +38,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
     "jest": "^24.8.0",
+    "jetifier": "^1.5.1",
     "metro-react-native-babel-preset": "^0.54.1",
     "react-test-renderer": "16.8.6"
   },
