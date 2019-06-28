@@ -13,6 +13,7 @@ namespace Contoso.Forms.Puppet
     {
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
+        private const string UserIdKey = "userId";
         Dictionary<LogLevel, Action<string, string>> LogFunctions;
         Dictionary<LogLevel, string> LogLevelNames;
         LogLevel LogWriteLevel;
@@ -50,6 +51,10 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
+            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
+            {
+                UserIdEntryCell.Text = id;
+            }
         }
 
         void LogLevelCellTapped(object sender, EventArgs e)
@@ -94,6 +99,7 @@ namespace Contoso.Forms.Puppet
         {
             var text = string.IsNullOrEmpty(UserIdEntryCell.Text) ? null : UserIdEntryCell.Text;
             AppCenter.SetUserId(text);
+            Application.Current.Properties[UserIdKey] = text;
         }
     }
 }
