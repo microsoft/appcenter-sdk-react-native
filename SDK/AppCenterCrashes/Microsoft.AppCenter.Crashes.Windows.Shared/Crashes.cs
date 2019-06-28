@@ -109,25 +109,11 @@ namespace Microsoft.AppCenter.Crashes
         internal Task ProcessPendingErrorsTask { get; set; }
 
         // Task to get the last session error report, if one is found.
-        private readonly Task<ErrorReport> _lastSessionErrorReportTask;
+        private Task<ErrorReport> _lastSessionErrorReportTask;
 
         internal Crashes()
         {
             _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
-            _lastSessionErrorReportTask = Task.Run(() =>
-            {
-                ErrorReport lastSessionErrorReport = null;
-                var lastSessionErrorLogFile = ErrorLogHelper.GetLastErrorLogFile();
-                if (lastSessionErrorLogFile != null)
-                {
-                    var lastSessionErrorLog = ErrorLogHelper.ReadErrorLogFile(lastSessionErrorLogFile);
-                    if (lastSessionErrorLog != null)
-                    {
-                        lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
-                    }
-                }
-                return lastSessionErrorReport;
-            });
         }
 
         /// <summary>
@@ -137,13 +123,27 @@ namespace Microsoft.AppCenter.Crashes
         /// <param name="appSecret">App secret</param>
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            lock (CrashesLock)
+            lock (_serviceLock)
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
                 if (InstanceEnabled)
                 {
                     ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
+                    _lastSessionErrorReportTask = Task.Run(() =>
+                    {
+                        ErrorReport lastSessionErrorReport = null;
+                        var lastSessionErrorLogFile = ErrorLogHelper.GetLastErrorLogFile();
+                        if (lastSessionErrorLogFile != null)
+                        {
+                            var lastSessionErrorLog = ErrorLogHelper.ReadErrorLogFile(lastSessionErrorLogFile);
+                            if (lastSessionErrorLog != null)
+                            {
+                                lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                            }
+                        }
+                        return lastSessionErrorReport;
+                    });
                 }
             }
         }
@@ -184,12 +184,12 @@ namespace Microsoft.AppCenter.Crashes
 
         private async Task<bool> InstanceHasCrashedInLastSessionAsync()
         {
-            return (await _lastSessionErrorReportTask) != null;
+            return (await InstanceGetLastSessionCrashReportAsync()) != null;
         }
 
         private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
         {
-            return _lastSessionErrorReportTask;
+            return _lastSessionErrorReportTask ?? Task.FromResult<ErrorReport>(null);
         }
 
         private Task ProcessPendingErrorsAsync()

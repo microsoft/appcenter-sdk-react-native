@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -56,13 +57,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsFalse(Crashes.IsEnabledAsync().Result);
             Crashes.SetEnabledAsync(true).Wait();
             Assert.IsTrue(Crashes.IsEnabledAsync().Result);
-        }
-
-        [TestMethod]
-        public void LastSessionErrorReportIsNullOnStart()
-        {
-            Assert.IsNull(Crashes.GetLastSessionCrashReportAsync().Result);
-            Assert.IsFalse(Crashes.HasCrashedInLastSessionAsync().Result);
         }
 
         [TestMethod]
@@ -188,5 +182,102 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Never());
             Mock.Get(mockFile).Verify(file => file.Delete(), Times.Once());
         }
+
+
+        [TestMethod]
+        public void LastSessionErrorReportIsNullBeforeStart()
+        {
+            Assert.IsNull(Crashes.GetLastSessionCrashReportAsync().Result);
+            Assert.IsFalse(Crashes.HasCrashedInLastSessionAsync().Result);
+        }
+
+        [TestMethod]
+        public void OnChannelGroupReadyGetsLastSessionErrorReportWhenEnabledAndCrashOnDisk()
+        {
+            var mockFile = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+            
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns(mockFile);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
+
+            // Start crashes service in an enabled to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNotNull(lastSessionErrorReport);
+            Assert.AreEqual(expectedManagedErrorLog.Id.ToString(), lastSessionErrorReport.Id);
+            Assert.IsTrue(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void OnChannelGroupReadyGetsLastSessionErrorReportWhenEnabledAndNoCrashOnDisk()
+        {
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns((File)null);
+
+            // Start crashes service in an enabled to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void OnChannelGroupReadyGetsLastSessionErrorReportWhenEnabledAndInvalidCrashOnDisk()
+        {
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns(new File());
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(It.IsAny<File>())).Returns((ManagedErrorLog)null);
+
+            // Start crashes service in an enabled to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void OnChannelGroupReadyDoesNotGetLastSessionErrorReportWhenDisabledAndCrashOnDisk()
+        {
+            var mockFile = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns(mockFile);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
+
+            // Start crashes service in an enabled to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(false).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
     }
 }

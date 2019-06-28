@@ -172,7 +172,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             }
         }
 
-        private File InstanceGetLastErrorLogFile()
+        public virtual File InstanceGetLastErrorLogFile()
         {
             File lastErrorLogFile = null;
             lock (LockObject)
