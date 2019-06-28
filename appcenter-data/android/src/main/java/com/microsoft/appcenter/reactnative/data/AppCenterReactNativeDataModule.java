@@ -72,14 +72,14 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void create(String documentId, ReadableMap readableMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+    public void create(String documentId, ReadableMap documentMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions;
         if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
         } else {
             writeOptions = new WriteOptions(TimeToLive.DEFAULT);
         }
-        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(readableMap);
+        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
         Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Create failed", promise));
     }
 
