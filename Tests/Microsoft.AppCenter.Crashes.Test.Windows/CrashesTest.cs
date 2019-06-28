@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.Remoting.Lifetime;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -12,6 +9,8 @@ using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -178,7 +177,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             ErrorLogHelper.Instance = mockErrorLogHelper;
 
             // Stub get/read/delete error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File>());
 
             Crashes.SetEnabledAsync(enabled).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
