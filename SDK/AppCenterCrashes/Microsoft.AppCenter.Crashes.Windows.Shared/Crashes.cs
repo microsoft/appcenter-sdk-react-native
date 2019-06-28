@@ -214,12 +214,15 @@ namespace Microsoft.AppCenter.Crashes
                 tasks.Add(Channel.EnqueueAsync(log));
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                if (GetErrorAttachments != null)
+                
+                // Save callback into a local variable to avoid a race condition.
+                var errorAttachmentsCallback = GetErrorAttachments;
+                if (errorAttachmentsCallback != null)
                 {
                     var errorReport = new ErrorReport(log, null);
 
                     // This must never called while a lock is held.
-                    var attachments = GetErrorAttachments?.Invoke(errorReport);
+                    var attachments = errorAttachmentsCallback.Invoke(errorReport);
                     tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
                 }
             }
