@@ -10,9 +10,11 @@ namespace Microsoft.AppCenter.Crashes
     /// <summary>
     /// Error attachment log.
     /// </summary>
-    [JsonObject("errorAttachment")]
+    [JsonObject(JsonIdentifier)]
     public partial class ErrorAttachmentLog : Log
     {
+        internal const string JsonIdentifier = "errorAttachment";
+
         private const string ContentTypePlainText = "text/plain";
 
         static ErrorAttachmentLog PlatformAttachmentWithText(string text, string fileName)

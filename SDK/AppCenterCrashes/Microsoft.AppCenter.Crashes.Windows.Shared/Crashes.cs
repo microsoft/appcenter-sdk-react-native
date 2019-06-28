@@ -26,6 +26,7 @@ namespace Microsoft.AppCenter.Crashes
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
+            LogSerializer.AddLogType(ErrorAttachmentLog.JsonIdentifier, typeof(ErrorAttachmentLog));
         }
 
         public static Crashes Instance
