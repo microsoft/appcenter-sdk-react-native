@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Data
             return GenerateFailedTask<DocumentWrapper<T>>();
         }
 
-        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
+        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition, ReadOptions readOptions)
         {
             return GenerateFailedTask<PaginatedDocuments<T>>();
         }
