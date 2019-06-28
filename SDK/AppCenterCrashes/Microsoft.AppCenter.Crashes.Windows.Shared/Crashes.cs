@@ -109,24 +109,25 @@ namespace Microsoft.AppCenter.Crashes
         internal Task ProcessPendingErrorsTask { get; set; }
 
         // Task to get the last session error report, if one is found.
-        private readonly Task<ErrorReport> _lastSessionErrorReportTask = Task.Run(() =>
-        {
-            ErrorReport lastSessionErrorReport = null;
-            var lastSessionErrorLogFile = ErrorLogHelper.GetLastErrorLogFile();
-            if (lastSessionErrorLogFile != null)
-            {
-                var lastSessionErrorLog = ErrorLogHelper.ReadErrorLogFile(lastSessionErrorLogFile);
-                if (lastSessionErrorLog != null)
-                {
-                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
-                }
-            }
-            return lastSessionErrorReport;
-        });
+        private readonly Task<ErrorReport> _lastSessionErrorReportTask;
 
         internal Crashes()
         {
             _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+            _lastSessionErrorReportTask = Task.Run(() =>
+            {
+                ErrorReport lastSessionErrorReport = null;
+                var lastSessionErrorLogFile = ErrorLogHelper.GetLastErrorLogFile();
+                if (lastSessionErrorLogFile != null)
+                {
+                    var lastSessionErrorLog = ErrorLogHelper.ReadErrorLogFile(lastSessionErrorLogFile);
+                    if (lastSessionErrorLog != null)
+                    {
+                        lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                    }
+                }
+                return lastSessionErrorReport;
+            });
         }
 
         /// <summary>
