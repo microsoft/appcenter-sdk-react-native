@@ -406,5 +406,72 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 
             // No exception should be thrown.
         }
+
+        [TestMethod]
+        public void GetStoredExceptionFile()
+        {
+            var id = Guid.NewGuid();
+            var expectedFile = Mock.Of<File>();
+            var fileList = new List<File> { expectedFile };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.exception")).Returns(fileList);
+
+            // Retrieve the error log by the ID.
+            var exceptionLogFile = ErrorLogHelper.GetStoredExceptionFile(id);
+
+            // Validate the contents.
+            Assert.AreSame(expectedFile, exceptionLogFile);
+        }
+
+        [TestMethod]
+        public void RemoveStoredExceptionFile()
+        {
+            var file = Mock.Of<File>();
+            var expectedFiles = new List<File> { file };
+            var id = Guid.NewGuid();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.exception")).Returns(expectedFiles);
+            ErrorLogHelper.RemoveStoredExceptionFile(id);
+            Mock.Get(file).Verify(f => f.Delete());
+        }
+
+        [TestMethod]
+        [DataRow(typeof(System.IO.IOException))]
+        [DataRow(typeof(SecurityException))]
+        [DataRow(typeof(UnauthorizedAccessException))]
+        public void RemoveExceptionFileDoesNotThrowWhenRetrievingFileToDelete(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
+            ErrorLogHelper.RemoveStoredExceptionFile(Guid.NewGuid());
+           
+            // No exception should be thrown.
+        }
+
+        [TestMethod]
+        [DataRow(typeof(System.IO.IOException))]
+        [DataRow(typeof(SecurityException))]
+        [DataRow(typeof(UnauthorizedAccessException))]
+        public void RemoveExceptionFileDoesNotThrowWhenDeleteFails(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            var file = Mock.Of<File>();
+            Mock.Get(file).Setup(f => f.Delete()).Throws(exception);
+            var expectedFiles = new List<File> { file };
+            var id = Guid.NewGuid();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.exception")).Returns(expectedFiles);
+            ErrorLogHelper.RemoveStoredExceptionFile(id);
+            Mock.Get(file).Verify(f => f.Delete());
+
+            // No exception should be thrown.
+        }
     }
 }
