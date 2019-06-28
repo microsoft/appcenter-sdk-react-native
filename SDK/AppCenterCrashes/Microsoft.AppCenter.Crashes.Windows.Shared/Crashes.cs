@@ -319,10 +319,6 @@ namespace Microsoft.AppCenter.Crashes
                     return report;
                 }
             }
-            else
-            {
-                AppCenterLog.Warn(LogTag, $"A different type of log comes to crashes: {e.Log.GetType().Name}");
-            }
             return null;
         }
     }
