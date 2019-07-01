@@ -63,7 +63,9 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
         ReadOptions readOptions;
-        if (readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+        if(readOptionsMap == null) {
+            readOptions = null;
+        } else if (readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
         } else {
             readOptions = new ReadOptions(TimeToLive.DEFAULT);
@@ -74,7 +76,9 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     @ReactMethod
     public void create(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions;
-        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+        if(writeOptionsMap == null) {
+            writeOptions = null;
+        } else if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
         } else {
             writeOptions = new WriteOptions(TimeToLive.DEFAULT);
@@ -86,7 +90,9 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     @ReactMethod
     public void remove(String documentId, String partition, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions;
-        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+        if(writeOptionsMap == null) {
+            writeOptions = null;
+        } else if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
         } else {
             writeOptions = new WriteOptions(TimeToLive.DEFAULT);
@@ -97,7 +103,9 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     @ReactMethod
     public void replace(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions;
-        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+        if(writeOptionsMap == null) {
+            writeOptions = null;
+        } else if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
             writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
         } else {
             writeOptions = new WriteOptions(TimeToLive.DEFAULT);
