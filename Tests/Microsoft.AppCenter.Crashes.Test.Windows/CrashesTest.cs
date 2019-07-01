@@ -236,7 +236,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
-            Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
+            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyAlwaysSend, true);
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
