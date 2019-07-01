@@ -260,7 +260,7 @@ namespace Microsoft.AppCenter.Crashes
                     ErrorLogHelper.RemoveStoredErrorLogFile(key);
                     var errorReport = new ErrorReport(log, null);
 
-                    // This must never called while a lock is held.
+                    // This must never be called while a lock is held.
                     var attachments = GetErrorAttachments?.Invoke(errorReport);
                     if (attachments == null)
                     {
