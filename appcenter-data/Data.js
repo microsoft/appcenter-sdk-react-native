@@ -8,7 +8,7 @@ const { AppCenterReactNativeData } = ReactNative.NativeModules;
 const TimeToLive = {
     INFINITE: -1,
     NO_CACHE: 0,
-    DEFAULT: 86400
+    DEFAULT: -1
 };
 
 const DefaultPartitions = {
@@ -35,7 +35,7 @@ const Data = {
  * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
 function read(documentId, partition, readOptions) {
-    if (readOptions === undefined) {
+    if (!readOptions) {
         readOptions = new Data.ReadOptions(TimeToLive.DEFAULT);
     }
     return AppCenterReactNativeData.read(documentId, partition, readOptions).then(convertTimestampToDate);
@@ -52,10 +52,10 @@ function read(documentId, partition, readOptions) {
  * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
 function create(documentId, document, partition, writeOptions) {
-    if (writeOptions === undefined) {
+    if (!writeOptions) {
         writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
     }
-    return AppCenterReactNativeData.create(documentId, document, partition, writeOptions).then(convertTimestampToDate);
+    return AppCenterReactNativeData.create(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
 
 /**
@@ -85,10 +85,10 @@ function remove(documentId, partition, writeOptions) {
  * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
 function replace(documentId, document, partition, writeOptions) {
-    if (writeOptions === undefined) {
+    if (!writeOptions) {
         writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
     }
-    return AppCenterReactNativeData.replace(documentId, document, partition, writeOptions).then(convertTimestampToDate);
+    return AppCenterReactNativeData.replace(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
 
 Data.ReadOptions = class {
