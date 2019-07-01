@@ -315,7 +315,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
 
             // Verify the logs have not been processed and have been removed.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>()), Times.Never());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
