@@ -345,7 +345,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
-            Crashes.ShouldAwaitUserConfirmation = () => { return true; }; // Avoids processing the logs during the ProcessPendingErrorsTask
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
