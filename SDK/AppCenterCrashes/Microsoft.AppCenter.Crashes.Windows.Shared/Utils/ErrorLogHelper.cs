@@ -95,12 +95,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static IEnumerable<File> GetErrorLogFiles() => Instance.InstanceGetErrorLogFiles();
 
         /// <summary>
-        /// Gets the most recently modified error log file.
-        /// </summary>
-        /// <returns>The most recently modified error log file.</returns>
-        public static File GetLastErrorLogFile() => Instance.InstanceGetLastErrorLogFile();
-
-        /// <summary>
         /// Gets the error storage directory, or creates it if it does not exist.
         /// </summary>
         /// <returns>The error storage directory.</returns>
@@ -170,35 +164,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 }
                 return new List<File>();
             }
-        }
-
-        public virtual File InstanceGetLastErrorLogFile()
-        {
-            File lastErrorLogFile = null;
-            lock (LockObject)
-            {
-                var errorLogFiles = InstanceGetErrorLogFiles();
-                if (errorLogFiles == null)
-                {
-                    return null;
-                }
-                try
-                {
-                    foreach (var errorLogFile in errorLogFiles)
-                    {
-                        if (lastErrorLogFile == null || lastErrorLogFile.LastWriteTime < errorLogFile.LastWriteTime)
-                        {
-                            lastErrorLogFile = errorLogFile;
-                        }
-                    }
-                    return lastErrorLogFile;
-                }
-                catch (System.Exception e)
-                {
-                    AppCenterLog.Error(Crashes.LogTag, "Encountered an unexpected error while retrieving the latest error log.", e);
-                }
-            }
-            return null;
         }
 
         private File InstanceGetStoredErrorLogFile(Guid errorId)
