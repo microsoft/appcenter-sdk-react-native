@@ -213,7 +213,8 @@ namespace Microsoft.AppCenter.Crashes
                     return;
                 }
 
-                if (ShouldAwaitUserConfirmation?.Invoke() ?? false)
+                var shouldAwaitUserConfirmation = ShouldAwaitUserConfirmation?.Invoke();
+                if (shouldAwaitUserConfirmation == true)
                 {
                     AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned true, wait sending logs.");
                 }
