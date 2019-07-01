@@ -312,18 +312,15 @@ namespace Microsoft.AppCenter.Crashes
             {
                 return _errorReportCache[log.Id];
             }
-            else
+            var file = ErrorLogHelper.GetStoredExceptionFile(log.Id);
+            if (file == null)
             {
-                File file = ErrorLogHelper.GetStoredExceptionFile(log.Id);
-                if (file != null)
-                {
-                    System.Exception exception = ErrorLogHelper.ReadExceptionFile(file);
-                    var report = new ErrorReport(log, exception);
-                    _errorReportCache.Add(log.Id, report);
-                    return report;
-                }
+                return null;
             }
-            return null;
+            var exception = ErrorLogHelper.ReadExceptionFile(file);
+            var report = new ErrorReport(log, exception);
+            _errorReportCache.Add(log.Id, report);
+            return report;
         }
 
         private void ChannelSendingLog(object sender, SendingLogEventArgs e)
