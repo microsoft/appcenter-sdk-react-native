@@ -100,8 +100,22 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
             var expectedProcessId = 123;
-            var expectedManagedErrorLog1 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedProcessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
-            var expectedManagedErrorLog2 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedProcessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog1 = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                Timestamp = DateTime.Now,
+                AppLaunchTimestamp = DateTime.Now,
+                Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
+                ProcessId = expectedProcessId
+            };
+            var expectedManagedErrorLog2 = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                Timestamp = DateTime.Now,
+                AppLaunchTimestamp = DateTime.Now,
+                Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
+                ProcessId = expectedProcessId
+            };
 
             // Stub get/read/delete error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile1, mockErrorLogFile2 });
@@ -200,7 +214,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                Timestamp = DateTime.Now,
+                AppLaunchTimestamp = DateTime.Now,
+                Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
+            };
 
             // Stub get/read/delete error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile, mockErrorLogCorruptedFile1, mockErrorLogCorruptedFile2 });
