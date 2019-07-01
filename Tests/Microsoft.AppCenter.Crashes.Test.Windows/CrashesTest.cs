@@ -262,7 +262,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void OnChannelGroupReadyGetsLastSessionErrorReportWhenEnabledAndInvalidCrashOnDisk()
+        public void GetLastSessionErrorReportWhenEnabledAndInvalidCrashOnDisk()
         {
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
@@ -317,7 +317,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void OnChannelGroupReadyDoesNotGetLastSessionErrorReportWhenDisabledAndCrashOnDisk()
+        public void DoesNotGetLastSessionErrorReportWhenDisabledAndCrashOnDisk()
         {
             var mockFile = Mock.Of<File>();
             Mock.Get(mockFile).SetupGet(file => file.LastWriteTime).Returns(DateTime.UtcNow);
@@ -329,7 +329,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
 
-            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            // Start crashes service in a disabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(false).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
@@ -344,7 +344,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [DataRow(typeof(System.IO.IOException))]
         [DataRow(typeof(PlatformNotSupportedException))]
         [DataRow(typeof(ArgumentOutOfRangeException))]
-        public void GetLastSessionCrashReportDoesNotThrowOrHangWhenLastWriteTimeThrows(Type exceptionType)
+        public void DoesNotThrowOrHangWhenLastWriteTimeThrows(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
             var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
@@ -362,7 +362,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(expectedFiles);
 
             // Start crashes service in an enabled state to initiate the process of getting the error report.
-            Crashes.SetEnabledAsync(false).Wait();
+            Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
             var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;

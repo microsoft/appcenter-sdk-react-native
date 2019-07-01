@@ -237,6 +237,8 @@ namespace Microsoft.AppCenter.Crashes
                     if (lastSessionErrorLog != null)
                     {
                         AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
+
+                        // TODO: Build error report from cache.
                         lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
                     }
                     else
@@ -265,6 +267,8 @@ namespace Microsoft.AppCenter.Crashes
                 tasks.Add(Channel.EnqueueAsync(log));
                 _unprocessedManagedErrorLogs.Remove(key);
                 ErrorLogHelper.RemoveStoredErrorLogFile(key);
+
+                // TODO: Build error report from cache.
                 var errorReport = new ErrorReport(log, null);
 
                 // This must never called while a lock is held.
