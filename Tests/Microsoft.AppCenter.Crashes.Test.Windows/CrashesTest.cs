@@ -343,8 +343,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Stub get/read error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
             var fileDeleted = false;
-
-            // When the file is deleted, release the semaphore.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id)).Callback(() =>
             {
                 fileDeleted = true;
