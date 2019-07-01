@@ -21,5 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DocumentMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultPartitions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteOperationCompletedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedConversionExtensions.cs" />
   </ItemGroup>
 </Project>

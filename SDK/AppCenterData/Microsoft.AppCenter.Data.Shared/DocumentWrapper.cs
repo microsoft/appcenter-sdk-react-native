@@ -22,6 +22,12 @@ namespace Microsoft.AppCenter.Data
         public string JsonValue { get; internal set; }
 
         /// <summary>
+        /// The document error, or null if the operation was successful.
+        /// </summary>
+        /// <value>The error.</value>
+        public DataException Error { get; internal set; }
+
+        /// <summary>
         /// Last update timestamp.
         /// </summary>
         public DateTimeOffset LastUpdatedDate { get; internal set; }
