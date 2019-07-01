@@ -6,6 +6,7 @@
 
 * **[Feature]** Change the default time-to-live (TTL) from 1 day to infinite (never expire).
 * **[Feature]** Add a new parameter (ReadOptions) to the list documents API.
+* **[Feature]** Deserialization errors are now exposed through the document `Error` property (and leaving `DeserializedValue` null) instead of throwing an exception.
 
 ## Version 2.1.1
 

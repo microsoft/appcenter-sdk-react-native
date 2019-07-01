@@ -32,7 +32,16 @@ namespace Microsoft.AppCenter.Data
             }
             catch (Exception ex)
             {
-                parsedDocument.Error = new DataException(ex.Message);
+                parsedDocument.Error =
+                    new DataException(ex.Message)
+                    {
+                        DocumentMetadata = new DocumentMetadata
+                        {
+                            Partition = partition,
+                            Id = id,
+                            ETag = eTag
+                        }
+                    };
             }
             return parsedDocument;
         }
