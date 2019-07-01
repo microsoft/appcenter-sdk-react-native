@@ -223,7 +223,7 @@ namespace Microsoft.AppCenter.Crashes
                     }
                     else
                     {
-                        AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false, will send logs.");
+                        AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false or is not implemented, will send logs.");
                         await HandleUserConfirmationAsync(UserConfirmation.Send);
                     }
                 }
