@@ -271,7 +271,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
-            Crashes.ShouldAwaitUserConfirmation = () => { return false; };
+            Crashes.ShouldAwaitUserConfirmation = () => false;
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
