@@ -223,7 +223,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns(mockFile);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
 
-            // Start crashes service in an enabled to initiate the process of getting the error report.
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
@@ -244,7 +244,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Stub get/read error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns((File)null);
 
-            // Start crashes service in an enabled to initiate the process of getting the error report.
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
@@ -265,7 +265,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns(new File());
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(It.IsAny<File>())).Returns((ManagedErrorLog)null);
 
-            // Start crashes service in an enabled to initiate the process of getting the error report.
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
@@ -288,7 +288,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetLastErrorLogFile()).Returns(mockFile);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
 
-            // Start crashes service in an enabled to initiate the process of getting the error report.
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(false).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
