@@ -217,7 +217,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void PlatformNotifyUserConfirmationDefault()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -232,7 +232,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void SendCrashReportsOrAwaitUserConfirmationAsyncAlwaysTrue()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -250,7 +250,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void SendCrashReportsOrAwaitUserConfirmationAsyncNullCallback()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes. `ShouldAwaitUserConfirmation` is null.
             Crashes.SetEnabledAsync(true).Wait();
@@ -267,7 +267,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void SendCrashReportsOrAwaitUserConfirmationAsyncFalseCallback()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -285,7 +285,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void SendCrashReportsOrAwaitUserConfirmationAsyncTrueCallback()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -303,7 +303,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void HandleUserConfirmationAsyncDontSend()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -322,7 +322,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void HandleUserConfirmationAsyncSend()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -341,7 +341,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void HandleUserConfirmationAsyncAlwaysSend()
         {
-            ErrorLogHelper.Instance = GenerateErrorLogHelperWithPendingFile();
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -362,8 +362,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         /// <summary>
         /// Convenience function to create a mock ErrorLogHelper with a file added.
         /// </summary>
-        /// <returns></returns>
-        private ErrorLogHelper GenerateErrorLogHelperWithPendingFile()
+        /// <returns>The mock error log helper.</returns>
+        private ErrorLogHelper GenerateMockErrorLogHelperWithPendingFile()
         {
             var mockErrorLogFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();

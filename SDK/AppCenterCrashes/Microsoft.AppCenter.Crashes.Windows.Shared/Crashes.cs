@@ -201,33 +201,29 @@ namespace Microsoft.AppCenter.Crashes
             });
         }
 
-        private Task SendCrashReportsOrAwaitUserConfirmationAsync()
+        private async Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
             bool alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
-
-            return Task.Run(async () =>
+            if (_unprocessedManagedErrorLogs.Count() > 0)
             {
-                if (_unprocessedManagedErrorLogs.Count() > 0)
+                // Check for always send: this bypasses user confirmation callback.
+                if (alwaysSend)
                 {
-                    // Check for always send: this bypasses user confirmation callback.
-                    if (alwaysSend)
-                    {
-                        AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
-                        await HandleUserConfirmationAsync(UserConfirmation.Send);
-                        return;
-                    }
-
-                    if (ShouldAwaitUserConfirmation?.Invoke() ?? false)
-                    {
-                        AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned true, wait sending logs.");
-                    }
-                    else
-                    {
-                        AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false or is not implemented, will send logs.");
-                        await HandleUserConfirmationAsync(UserConfirmation.Send);
-                    }
+                    AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
+                    await HandleUserConfirmationAsync(UserConfirmation.Send);
+                    return;
                 }
-            });
+
+                if (ShouldAwaitUserConfirmation?.Invoke() ?? false)
+                {
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned true, wait sending logs.");
+                }
+                else
+                {
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false or is not implemented, will send logs.");
+                    await HandleUserConfirmationAsync(UserConfirmation.Send);
+                }
+            }
         }
 
         private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
