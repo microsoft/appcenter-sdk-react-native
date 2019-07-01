@@ -82,7 +82,6 @@ namespace Microsoft.AppCenter.Crashes
             return Task.FromResult((ErrorReport)null);
         }
 
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void PlatformNotifyUserConfirmation(UserConfirmation userConfirmation)
         {
             Instance.HandleUserConfirmationAsync(userConfirmation);
