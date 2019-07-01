@@ -1,5 +1,11 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.1.1 (Active Development)
+
+### AppCenterAuth
+
+* **[Fix]** Fix incorrect file name of iOS **appcenter-auth.podspec** of Auth SDK.
+
 ## Version 2.1.0
 
 Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
