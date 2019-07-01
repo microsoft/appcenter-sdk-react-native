@@ -40,12 +40,12 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.asList(
                     new MainReactPackage(),
                     new RNGestureHandlerPackage(),
-                    new TestAppNativePackage(MainApplication.this),
-                    new AppCenterReactNativeAuthPackage(MainApplication.this),
-                    new AppCenterReactNativePushPackage(MainApplication.this),
-                    new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
-                    new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-                    new AppCenterReactNativePackage(MainApplication.this),
+                    new TestAppNativePackage(getApplication()),
+                    new AppCenterReactNativeAuthPackage(getApplication()),
+                    new AppCenterReactNativePushPackage(getApplication()),
+                    new AppCenterReactNativeCrashesPackage(getApplication(), getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
+                    new AppCenterReactNativeAnalyticsPackage(getApplication(), getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
+                    new AppCenterReactNativePackage(getApplication()),
                     new RNFSPackage(),
                     new ImagePickerPackage(),
                     new AsyncStoragePackage()
