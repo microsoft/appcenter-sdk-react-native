@@ -258,9 +258,6 @@ namespace Microsoft.AppCenter.Crashes
         {
             // Send every pending log.
             var keys = _unprocessedManagedErrorLogs.Keys.ToList();
-
-            // Before deleting logs, allow "InstanceGetLastSessionCrashReportAsync" to complete to avoid a race condition.
-            InstanceGetLastSessionCrashReportAsync().Wait();
             var tasks = new List<Task>();
             foreach (var key in keys)
             {
