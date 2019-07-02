@@ -227,8 +227,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             var expectedException = new ArgumentException("test");
             var mockFile = Mock.Of<File>();
-            var mockStream = Mock.Of<System.IO.Stream>();
-            var binaryFormatter = Mock.Of<BinaryFormatter>();
+            var mockStream = new System.IO.MemoryStream();
+            new BinaryFormatter().Serialize(mockStream, expectedException);
+            mockStream.Position = 0;
             string actualFullFileName = null;
             System.IO.FileMode? actualFileMode = null;
 
@@ -239,12 +240,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 actualFileMode = mode;
                 return mockStream;
             };
-            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
-            Mock.Get(binaryFormatter).Setup(b => b.Deserialize(mockStream)).Returns(expectedException);
 
             var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
 
-            Assert.AreSame(expectedException, actualException);
+            Assert.IsInstanceOfType(actualException, expectedException.GetType());
+            Assert.AreEqual(expectedException.Message, actualException.Message);
             Assert.AreEqual(mockFile.FullName, actualFullFileName);
             Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
         }
@@ -254,7 +254,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         {
             var mockFile = Mock.Of<File>();
             var mockStream = Mock.Of<System.IO.Stream>();
-            var binaryFormatter = Mock.Of<BinaryFormatter>();
             string actualFullFileName = null;
             System.IO.FileMode? actualFileMode = null;
 
@@ -265,8 +264,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 actualFileMode = mode;
                 return mockStream;
             };
-            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
-            Mock.Get(binaryFormatter).Setup(b => b.Deserialize(mockStream)).Throws(new SerializationException());
 
             var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
 
@@ -283,12 +280,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var exception = new System.Exception("test");
+            var expectedException = new System.Exception("test");
             var errorLogFilename = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
             var exceptionFilename = errorLog.Id + ".exception";
-            var binaryFormatter = Mock.Of<BinaryFormatter>();
-            var fileStream = Mock.Of<System.IO.Stream>();
+            var mockStream = new System.IO.MemoryStream();
             var mockDirectory = Mock.Of<Directory>();
             Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
             var expectedFullFileName = $"Errors\\{exceptionFilename}";
@@ -300,15 +296,18 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             {
                 actualFullFileName = name;
                 actualFileMode = mode;
-                return fileStream;
+                return mockStream;
             };
-            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
-            ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
+            ErrorLogHelper.SaveErrorLogFiles(expectedException, errorLog);
 
             Assert.AreEqual(expectedFullFileName, actualFullFileName);
             Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
             Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
-            Mock.Get(binaryFormatter).Verify(b => b.Serialize(fileStream, exception));
+
+            // Check what was serialized.
+            var actualException = new BinaryFormatter().Deserialize(new System.IO.MemoryStream(mockStream.ToArray()));
+            Assert.IsInstanceOfType(actualException, expectedException.GetType());
+            Assert.AreEqual(expectedException.Message, actualException.Message);
         }
 
         [TestMethod]
@@ -355,13 +354,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var errorLogFilename = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
             var exceptionFilename = errorLog.Id + ".exception";
-            var binaryFormatter = Mock.Of<BinaryFormatter>();
-            var fileStream = Mock.Of<System.IO.Stream>();
             var mockDirectory = Mock.Of<Directory>();
+            var mockStream = new System.IO.MemoryStream();
             Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
             var expectedFullFileName = $"Errors\\{exceptionFilename}";
             string actualFullFileName = null;
             System.IO.FileMode? actualFileMode = null;
+
+            // Cause stream to fail writing
+            mockStream.Dispose();
 
             // Given we succeed saving log file but fail saving exception file.
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
@@ -369,10 +370,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             {
                 actualFullFileName = name;
                 actualFileMode = mode;
-                return fileStream;
+                return mockStream;
             };
-            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
-            Mock.Get(binaryFormatter).Setup(b => b.Serialize(fileStream, exception)).Throws(new SerializationException());
 
             // When we save files.
             ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
@@ -381,7 +380,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.AreEqual(expectedFullFileName, actualFullFileName);
             Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
             Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
-            Mock.Get(binaryFormatter).Verify(b => b.Serialize(fileStream, exception));
         }
 
         [TestMethod]

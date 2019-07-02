@@ -12,15 +12,13 @@ namespace Microsoft.AppCenter.Crashes.Utils
     {
         internal Func<string, FileMode, Stream> NewFileStream { get; set; } = (name, mode) => new FileStream(name, mode);
 
-        internal Func<BinaryFormatter> NewBinaryFormatter { get; set; } = () => new BinaryFormatter();
-
         private void SaveExceptionFile(Directory directory, string fileName, Exception exception)
         {
             try
             {
                 using (var fileStream = NewFileStream(Path.Combine(directory.FullName, fileName), FileMode.Create))
                 {
-                    var formatter = NewBinaryFormatter();
+                    var formatter = new BinaryFormatter();
                     formatter.Serialize(fileStream, exception);
                 }
             }
@@ -51,7 +49,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 using (var fileStream = NewFileStream(file.FullName, FileMode.Open))
                 {
-                    var formatter = NewBinaryFormatter();
+                    var formatter = new BinaryFormatter();
                     return formatter.Deserialize(fileStream);
                 }
             }
