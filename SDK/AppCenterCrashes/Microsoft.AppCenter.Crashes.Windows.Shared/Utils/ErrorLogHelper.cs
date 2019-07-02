@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
-    public class ErrorLogHelper
+    public partial class ErrorLogHelper
     {
         /// <summary>
         /// Error log file extension for the JSON schema.
@@ -137,7 +137,11 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// </summary>
         /// <param name="file">The exception file.</param>
         /// <returns>The exception instance.</returns>
-        public static System.Exception ReadExceptionFile(File file) => Instance.InstanceReadExceptionFile(file);
+        public static System.Exception ReadExceptionFile(File file)
+        {
+            // The instance method is implemented in the other parts of the partial class in platform specific projects.
+            return Instance.InstanceReadExceptionFile(file);
+        }
 
         /// <summary>
         /// Saves an error log and an exception on disk.
@@ -257,26 +261,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
         }
 
         /// <summary>
-        /// Reads an exception file from the given file.
-        /// </summary>
-        /// <param name="file">The file that contains exception.</param>
-        /// <returns>An exception instance or null if the file doesn't contain an exception.</returns>
-        public virtual System.Exception InstanceReadExceptionFile(File file)
-        {
-            try
-            {
-                var exceptionString = file.ReadAllText();
-                // TODO: Implement deserialization of Exception.
-                return new System.Exception();
-            }
-            catch (System.Exception e)
-            {
-                AppCenterLog.Error(Crashes.LogTag, $"Encountered an unexpected error while reading an exception file: {file.Name}", e);
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Saves an error log and an exception on disk.
         /// Get the error storage directory, or creates it if it does not exist.
         /// </summary>
@@ -302,16 +286,14 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 InstanceGetErrorStorageDirectory().CreateFile(errorLogFileName, errorLogString);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {errorLogFileName}.");
 
-                // TODO: Property serialize Exception instance + error handling on exceptions.
-                var exceptionString = exception.ToString();
+                // Serialize exception.
                 var exceptionFileName = errorLog.Id + ExceptionFileExtension;
-                InstanceGetErrorStorageDirectory().CreateFile(exceptionFileName, exceptionString);
+                SaveExceptionFile(InstanceGetErrorStorageDirectory(), exceptionFileName, exception);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved exception in directory {ErrorStorageDirectoryName} with name {exceptionFileName}.");
             }
             catch (System.Exception ex)
             {
                 AppCenterLog.Error(Crashes.LogTag, "Failed to save error log.", ex);
-                return;
             }
         }
 
