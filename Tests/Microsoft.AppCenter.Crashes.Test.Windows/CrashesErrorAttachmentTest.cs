@@ -55,33 +55,40 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile2 = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog1 = new ManagedErrorLog {
+            var lastExpectedManagedErrorLog = new ManagedErrorLog
+            {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.Now,
                 AppLaunchTimestamp = DateTime.Now,
                 Device = new Microsoft.AppCenter.Ingestion.Models.Device()
             };
-            var expectedManagedErrorLog2 = new ManagedErrorLog
+            var olderExpectedManagedErrorLog = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
-                Timestamp = DateTime.Now,
-                AppLaunchTimestamp = DateTime.Now,
+                Timestamp = lastExpectedManagedErrorLog.Timestamp.Value.AddDays(-1),
+                AppLaunchTimestamp = lastExpectedManagedErrorLog.Timestamp.Value.AddDays(-1),
                 Device = new Microsoft.AppCenter.Ingestion.Models.Device()
             };
             var validErrorAttachment = GetValidErrorAttachmentLog();
+            var expectedException = new ArgumentOutOfRangeException();
 
             // Stub get/read/delete error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile1, mockFile2 });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile1)).Returns(expectedManagedErrorLog1);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile2)).Returns(expectedManagedErrorLog2);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile1)).Returns(lastExpectedManagedErrorLog);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile2)).Returns(olderExpectedManagedErrorLog);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(lastExpectedManagedErrorLog.Id)).Returns(mockExceptionFile1);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(olderExpectedManagedErrorLog.Id)).Returns(mockExceptionFile2);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(expectedException);
+            Mock.Get(mockFile1).Setup(f => f.LastWriteTime).Returns(lastExpectedManagedErrorLog.Timestamp.Value);
+            Mock.Get(mockFile2).Setup(f => f.LastWriteTime).Returns(olderExpectedManagedErrorLog.Timestamp.Value);
 
             // Implement attachments callback.
+            System.Exception actualException = null;
             Crashes.GetErrorAttachments = errorReport =>
             {
-                if (errorReport.Id == expectedManagedErrorLog1.Id.ToString())
+                if (errorReport.Id == lastExpectedManagedErrorLog.Id.ToString())
                 {
+                    actualException = errorReport.Exception;
                     return new List<ErrorAttachmentLog> { validErrorAttachment };
                 }
                 return null;
@@ -96,8 +103,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<ErrorAttachmentLog>()), Times.Once());
 
             // Verify that the attachment has been modified with the right fields.
-            Assert.AreEqual(expectedManagedErrorLog1.Id, validErrorAttachment.ErrorId);
+            Assert.AreEqual(lastExpectedManagedErrorLog.Id, validErrorAttachment.ErrorId);
             Assert.AreNotEqual(Guid.Empty, validErrorAttachment.ErrorId);
+
+            // Verify exception was attached to report in the callback.
+            Assert.AreSame(expectedException, actualException);
         }
 
         [TestMethod]

@@ -211,26 +211,11 @@ namespace Microsoft.AppCenter.Crashes
             return Task.Run(async () =>
             {
                 var lastSessionErrorLogTimestamp = DateTime.MinValue;
-                ManagedErrorLog lastSessionErrorLog = null;
+                ErrorReport lastSessionErrorReport = null;
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
-
-                    // Process the file for last session crash report. It doesn't matter if the log is null.
-                    try
-                    {
-                        var otherFileTimestamp = file.LastWriteTime;
-                        if (lastSessionErrorLogTimestamp < otherFileTimestamp)
-                        {
-                            lastSessionErrorLogTimestamp = otherFileTimestamp;
-                            lastSessionErrorLog = log;
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
-                    }
 
                     // Finish processing the file.
                     if (log == null)
@@ -253,28 +238,33 @@ namespace Microsoft.AppCenter.Crashes
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         RemoveAllStoredErrorLogFiles(log.Id);
                     }
-                    else if (ShouldProcessErrorReport?.Invoke(report) ?? true)
-                    {
-                        // TODO: Why the Android SDK reads report from the cache? Why the Android SDK has log property in ErrorReport?
-                        _unprocessedManagedErrorLogs.Add(log.Id, log);
-                    }
                     else
                     {
-                        AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
-                        RemoveAllStoredErrorLogFiles(log.Id);
-                    }
-                }
-                ErrorReport lastSessionErrorReport = null;
-                if (lastSessionErrorLog != null)
-                {
-                    AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
+                        try
+                        {
+                            var otherFileTimestamp = file.LastWriteTime;
+                            if (lastSessionErrorLogTimestamp < otherFileTimestamp)
+                            {
+                                lastSessionErrorLogTimestamp = otherFileTimestamp;
+                                lastSessionErrorReport = report;
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
+                        }
 
-                    // TODO: Build error report from cache.
-                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
-                }
-                else
-                {
-                    AppCenterLog.Debug(LogTag, "Setting last session error report to null.");
+                        if (ShouldProcessErrorReport?.Invoke(report) ?? true)
+                        {
+                            // TODO: Why the Android SDK reads report from the cache? Why the Android SDK has log property in ErrorReport?
+                            _unprocessedManagedErrorLogs.Add(log.Id, log);
+                        }
+                        else
+                        {
+                            AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
+                            RemoveAllStoredErrorLogFiles(log.Id);
+                        }
+                    }
                 }
                 _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
                 await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
@@ -343,8 +333,8 @@ namespace Microsoft.AppCenter.Crashes
                     _unprocessedManagedErrorLogs.Remove(key);
                     ErrorLogHelper.RemoveStoredErrorLogFile(key);
 
-                    // TODO: Build error report from cache.
-                    var errorReport = new ErrorReport(log, null);
+                    // Get error report (will be in cache).
+                    var errorReport = BuildErrorReport(log);
 
                     // This must never be called while a lock is held.
                     var attachments = GetErrorAttachments?.Invoke(errorReport);
