@@ -291,8 +291,8 @@ namespace Microsoft.AppCenter.Crashes
 
         private async Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            bool alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
-            if (_unprocessedManagedErrorLogs.Count() > 0)
+            var alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
+            if (_unprocessedManagedErrorLogs.Any())
             {
                 // Check for always send: this bypasses user confirmation callback.
                 if (alwaysSend)
