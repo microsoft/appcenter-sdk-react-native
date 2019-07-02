@@ -325,8 +325,7 @@ namespace Microsoft.AppCenter.Crashes
                 foreach (var key in keys)
                 {
                     _unprocessedManagedErrorLogs.Remove(key);
-                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                    // TODO: Remove exception files
+                    RemoveAllStoredErrorLogFiles(key);
                 }
             }
             else

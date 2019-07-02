@@ -764,7 +764,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void HandleUserConfirmationAsyncDontSend()
+        public void HandleUserConfirmationAsyncDoNotSend()
         {
             ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
@@ -782,6 +782,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Once());
         }
 
         [TestMethod]
@@ -803,6 +804,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+
+            // We need to keep exception file until sent or failed to sent, tested in other tests.
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
         }
 
         [TestMethod]
@@ -824,6 +828,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
             Assert.IsTrue(alwaysSendValue);
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+           
+            // We need to keep exception file until sent or failed to sent, tested in other tests.
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
         }
 
         /// <summary>
