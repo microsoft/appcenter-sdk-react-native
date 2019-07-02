@@ -833,12 +833,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         private ErrorLogHelper GenerateMockErrorLogHelperWithPendingFile()
         {
             var mockErrorLogFile = Mock.Of<File>();
+            var mockExceptionFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
 
             // Stub get/read/delete error files.
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
             return mockErrorLogHelper;
         }
     }
