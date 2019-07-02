@@ -58,7 +58,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var processArchitecture = "processArchitecture";
             var processId = 1;
             var processName = "processName";
-            var processStartTime = DateTime.Now;
+            var processStartTime = DateTime.Now.ToUniversalTime();
             Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ParentProcessId).Returns(parentProcessId);
             Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ParentProcessName).Returns(parentProcessName);
             Mock.Get(ErrorLogHelper.Instance._processInformation).SetupGet(instance => instance.ProcessArchitecture).Returns(processArchitecture);
