@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Directory = Microsoft.AppCenter.Utils.Files.Directory;
 using File = Microsoft.AppCenter.Utils.Files.File;
 
@@ -50,7 +51,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 using (var fileStream = NewFileStream(file.FullName, FileMode.Open))
                 {
                     var formatter = new BinaryFormatter();
-                    return formatter.Deserialize(fileStream);
+                    return (Exception) formatter.Deserialize(fileStream);
                 }
             }
             catch (Exception e)

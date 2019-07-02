@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCrashException.cs" />
-    <Compile Include="Utils\BinaryFormatter.cs" />
     <Compile Include="Utils\ErrorLogHelper.cs" />
     <Compile Include="Utils\ProcessInformation.cs" />
   </ItemGroup>

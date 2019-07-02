@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -307,7 +308,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             // Check what was serialized.
             var actualException = new BinaryFormatter().Deserialize(new System.IO.MemoryStream(mockStream.ToArray()));
             Assert.IsInstanceOfType(actualException, expectedException.GetType());
-            Assert.AreEqual(expectedException.Message, actualException.Message);
+            Assert.AreEqual(expectedException.Message, ((System.Exception) actualException).Message);
         }
 
         [TestMethod]
