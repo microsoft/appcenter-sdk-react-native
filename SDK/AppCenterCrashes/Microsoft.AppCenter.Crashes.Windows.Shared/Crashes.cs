@@ -23,6 +23,8 @@ namespace Microsoft.AppCenter.Crashes
 
         private const int MaxAttachmentsPerCrash = 2;
 
+        internal const string PrefKeyAlwaysSend = Constants.KeyPrefix + "CrashesAlwaysSend";
+
         static Crashes()
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
@@ -80,9 +82,9 @@ namespace Microsoft.AppCenter.Crashes
             return Instance.InstanceGetLastSessionCrashReportAsync();
         }
 
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
+        private static void PlatformNotifyUserConfirmation(UserConfirmation userConfirmation)
         {
+            Instance.HandleUserConfirmationAsync(userConfirmation);
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
@@ -245,35 +247,74 @@ namespace Microsoft.AppCenter.Crashes
             });
         }
 
-        private Task SendCrashReportsOrAwaitUserConfirmationAsync()
+        private async Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            return HandleUserConfirmationAsync();
-        }
-
-        private Task HandleUserConfirmationAsync()
-        {
-            // Send every pending log.
-            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
-            var tasks = new List<Task>();
-            foreach (var key in keys)
+            bool alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
+            if (_unprocessedManagedErrorLogs.Count() > 0)
             {
-                var log = _unprocessedManagedErrorLogs[key];
-                tasks.Add(Channel.EnqueueAsync(log));
-                _unprocessedManagedErrorLogs.Remove(key);
-                ErrorLogHelper.RemoveStoredErrorLogFile(key);
-
-                // TODO: Build error report from cache.
-                var errorReport = new ErrorReport(log, null);
-
-                // This must never called while a lock is held.
-                var attachments = GetErrorAttachments?.Invoke(errorReport);
-                if (attachments == null)
+                // Check for always send: this bypasses user confirmation callback.
+                if (alwaysSend)
                 {
-                    AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
+                    await HandleUserConfirmationAsync(UserConfirmation.Send);
+                    return;
+                }
+
+                var shouldAwaitUserConfirmation = ShouldAwaitUserConfirmation?.Invoke();
+                if (shouldAwaitUserConfirmation.HasValue && shouldAwaitUserConfirmation.Value)
+                {
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned true, wait sending logs.");
                 }
                 else
                 {
-                    tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false or is not implemented, will send logs.");
+                    await HandleUserConfirmationAsync(UserConfirmation.Send);
+                }
+            }
+        }
+
+        private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
+        {
+            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
+            var tasks = new List<Task>();
+
+            if (userConfirmation == UserConfirmation.DontSend)
+            {
+                foreach (var key in keys)
+                {
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+                    // TODO: Remove exception files
+                }
+            }
+            else
+            {
+                if (userConfirmation == UserConfirmation.AlwaysSend)
+                {
+                    ApplicationSettings.SetValue(PrefKeyAlwaysSend, true);
+                }
+
+                // Send every pending log.
+                foreach (var key in keys)
+                {
+                    var log = _unprocessedManagedErrorLogs[key];
+                    tasks.Add(Channel.EnqueueAsync(log));
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+
+                    // TODO: Build error report from cache.
+                    var errorReport = new ErrorReport(log, null);
+
+                    // This must never be called while a lock is held.
+                    var attachments = GetErrorAttachments?.Invoke(errorReport);
+                    if (attachments == null)
+                    {
+                        AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    }
+                    else
+                    {
+                        tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    }
                 }
             }
             return Task.WhenAll(tasks);

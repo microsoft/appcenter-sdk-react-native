@@ -23,6 +23,17 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         private Mock<IChannelUnit> _mockChannel;
         private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
 
+        private const int expectedProcessId = 123;
+
+        private ManagedErrorLog expectedManagedErrorLog = new ManagedErrorLog
+        {
+            Id = Guid.NewGuid(),
+            ProcessId = expectedProcessId,
+            AppLaunchTimestamp = DateTime.Now,
+            Timestamp = DateTime.Now,
+            Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>()
+        };
+
         [TestInitialize]
         public void InitializeCrashTest()
         {
@@ -43,6 +54,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             ErrorLogHelper.Instance = null;
             ApplicationLifecycleHelper.Instance = null;
             Crashes.Instance = null;
+            AppCenter.Instance.ApplicationSettings.Remove(Crashes.PrefKeyAlwaysSend);
         }
 
         [TestMethod]
@@ -204,7 +216,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(It.IsAny<Guid>()), Times.Never());
             Mock.Get(mockFile).Verify(file => file.Delete(), Times.Once());
         }
-
 
         [TestMethod]
         public void LastSessionErrorReportIsNullBeforeStart()
@@ -397,6 +408,171 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Verify results.
             Assert.IsNull(lastSessionErrorReport);
             Assert.IsFalse(hasCrashedInLastSession);
+        }
+        
+        [TestMethod]
+        public void PlatformNotifyUserConfirmationDefault()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify the value has been set.
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncAlwaysTrue()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyAlwaysSend, true);
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify logs have been processed and removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
+            Assert.IsTrue(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncNullCallback()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes. `ShouldAwaitUserConfirmation` is null.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify logs have been processed and removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncFalseCallback()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldAwaitUserConfirmation = () => false;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify the logs have not been processed and have been removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncTrueCallback()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify nothing in HandleUserConfirmationAsync has been called.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Never());
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncDontSend()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
+
+            // Verify the logs have not been processed and have been removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncSend()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.NotifyUserConfirmation(UserConfirmation.Send);
+
+            // Verify logs have been processed and removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncAlwaysSend()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
+
+            // Verify logs have been processed and removed, alwaysSendValue is saved.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
+            Assert.IsTrue(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        /// <summary>
+        /// Convenience function to create a mock ErrorLogHelper with a file added.
+        /// </summary>
+        /// <returns>The mock error log helper.</returns>
+        private ErrorLogHelper GenerateMockErrorLogHelperWithPendingFile()
+        {
+            var mockErrorLogFile = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Stub get/read/delete error files.
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
+            return mockErrorLogHelper;
         }
     }
 }
