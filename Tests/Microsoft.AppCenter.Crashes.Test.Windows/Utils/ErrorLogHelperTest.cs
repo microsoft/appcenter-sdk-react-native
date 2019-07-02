@@ -221,6 +221,60 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.IsNull(ErrorLogHelper.ReadErrorLogFile(mockFile));
         }
 
+
+        [TestMethod]
+        public void ReadExceptionFile()
+        {
+            var expectedException = new ArgumentException("test");
+            var mockFile = Mock.Of<File>();
+            var mockStream = Mock.Of<System.IO.Stream>();
+            var binaryFormatter = Mock.Of<BinaryFormatter>();
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
+            Mock.Get(mockFile).Setup(f => f.FullName).Returns("test.exception");
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return mockStream;
+            };
+            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
+            Mock.Get(binaryFormatter).Setup(b => b.Deserialize(mockStream)).Returns(expectedException);
+
+            var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
+
+            Assert.AreSame(expectedException, actualException);
+            Assert.AreEqual(mockFile.FullName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
+        }
+
+        [TestMethod]
+        public void ReadExceptionFileFailureDoesNotThrow()
+        {
+            var mockFile = Mock.Of<File>();
+            var mockStream = Mock.Of<System.IO.Stream>();
+            var binaryFormatter = Mock.Of<BinaryFormatter>();
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
+            Mock.Get(mockFile).Setup(f => f.FullName).Returns("test.exception");
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return mockStream;
+            };
+            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
+            Mock.Get(binaryFormatter).Setup(b => b.Deserialize(mockStream)).Throws(new SerializationException());
+
+            var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
+
+            Assert.IsNull(actualException);
+            Assert.AreEqual(mockFile.FullName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
+        }
+
         [TestMethod]
         public void SaveErrorLogFiles()
         {
