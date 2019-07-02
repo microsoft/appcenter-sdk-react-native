@@ -62,54 +62,26 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
-        ReadOptions readOptions;
-        if(readOptionsMap == null) {
-            readOptions = null;
-        } else if (readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
-        } else {
-            readOptions = new ReadOptions(TimeToLive.DEFAULT);
-        }
+        ReadOptions readOptions = getReadOptions(readOptionsMap);
         Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>("Read failed", promise));
     }
 
     @ReactMethod
     public void create(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions;
-        if(writeOptionsMap == null) {
-            writeOptions = null;
-        } else if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
-        } else {
-            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
-        }
+        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
         Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Create failed", promise));
     }
 
     @ReactMethod
     public void remove(String documentId, String partition, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions;
-        if(writeOptionsMap == null) {
-            writeOptions = null;
-        } else if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
-        } else {
-            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
-        }
+        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
         Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>("Delete failed", promise));
     }
 
     @ReactMethod
     public void replace(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions;
-        if(writeOptionsMap == null) {
-            writeOptions = null;
-        } else if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
-        } else {
-            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
-        }
+        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
         Data.replace(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Replace failed", promise));
     }
@@ -168,5 +140,25 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             }
             mPromise.resolve(jsDocumentWrapper);
         }
+    }
+
+    private ReadOptions getReadOptions(ReadableMap readOptionsMap) {
+        ReadOptions readOptions;
+        if (readOptionsMap != null && readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            readOptions = new ReadOptions();
+        }
+        return readOptions;
+    }
+
+    private WriteOptions getWriteOptions(ReadableMap writeOptionsMap) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap != null && writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions();
+        }
+        return writeOptions;
     }
 }

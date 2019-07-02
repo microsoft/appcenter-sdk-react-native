@@ -258,7 +258,7 @@ export default class AppCenterScreen extends Component {
                       const result = await Auth.signIn();
                       this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
 
-                      runMBaaSCode();
+                      runDataCrudScenarios();
                     } catch (e) {
                       console.log(e);
                     }
@@ -320,7 +320,7 @@ export default class AppCenterScreen extends Component {
   }
 }
 
-async function runMBaaSCode() {
+async function runDataCrudScenarios() {
   const MY_DOCUMENT_ID = 'some-random-document-id';
 
   const readOptions = new Data.ReadOptions(5000);
