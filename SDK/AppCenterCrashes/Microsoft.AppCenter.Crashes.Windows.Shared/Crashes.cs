@@ -210,7 +210,6 @@ namespace Microsoft.AppCenter.Crashes
         {
             return Task.Run(async () =>
             {
-                var lastSessionErrorLogTimestamp = DateTime.MinValue;
                 ErrorReport lastSessionErrorReport = null;
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
@@ -241,20 +240,10 @@ namespace Microsoft.AppCenter.Crashes
                     }
                     else
                     {
-                        try
+                        if (lastSessionErrorReport == null || lastSessionErrorReport.AppErrorTime < report.AppErrorTime)
                         {
-                            var otherFileTimestamp = file.LastWriteTime;
-                            if (lastSessionErrorLogTimestamp < otherFileTimestamp)
-                            {
-                                lastSessionErrorLogTimestamp = otherFileTimestamp;
-                                lastSessionErrorReport = report;
-                            }
+                            lastSessionErrorReport = report;
                         }
-                        catch (System.Exception ex)
-                        {
-                            AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
-                        }
-
                         if (ShouldProcessErrorReport?.Invoke(report) ?? true)
                         {
                             _unprocessedManagedErrorLogs.Add(log.Id, log);

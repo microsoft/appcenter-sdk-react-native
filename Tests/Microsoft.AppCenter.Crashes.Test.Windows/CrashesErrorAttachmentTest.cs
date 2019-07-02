@@ -79,8 +79,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(lastExpectedManagedErrorLog.Id)).Returns(mockExceptionFile1);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(olderExpectedManagedErrorLog.Id)).Returns(mockExceptionFile2);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(expectedException);
-            Mock.Get(mockFile1).Setup(f => f.LastWriteTime).Returns(lastExpectedManagedErrorLog.Timestamp.Value);
-            Mock.Get(mockFile2).Setup(f => f.LastWriteTime).Returns(olderExpectedManagedErrorLog.Timestamp.Value);
 
             // Implement attachments callback.
             System.Exception actualException = null;
