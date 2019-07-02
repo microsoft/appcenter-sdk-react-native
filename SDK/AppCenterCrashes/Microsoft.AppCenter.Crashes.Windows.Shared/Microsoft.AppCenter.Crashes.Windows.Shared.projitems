@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\AbstractErrorLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\Exception.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ManagedErrorLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ErrorLogHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IProcessInformation.cs" />
   </ItemGroup>
