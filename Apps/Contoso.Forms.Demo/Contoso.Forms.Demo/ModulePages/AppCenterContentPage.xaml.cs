@@ -37,7 +37,7 @@ namespace Contoso.Forms.Demo
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private const string UserIdKey = "userId";
+        internal static string UserIdKey = "userId";
 
         private string _userId;
 

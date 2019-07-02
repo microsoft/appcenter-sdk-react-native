@@ -35,6 +35,10 @@ namespace Contoso.Forms.Demo
             if (!AppCenter.Configured)
             {
                 AppCenter.LogLevel = LogLevel.Verbose;
+                if (Current.Properties.ContainsKey(EntryCellTextChanged.UserIdKey) && Current.Properties[EntryCellTextChanged.UserIdKey] is string id)
+                {
+                    AppCenter.SetUserId(id);
+                }
                 Crashes.SendingErrorReport += SendingErrorReportHandler;
                 Crashes.SendingErrorReport += SendingErrorReportHandler;
                 Crashes.SentErrorReport += SentErrorReportHandler;

@@ -54,6 +54,10 @@ namespace Contoso.Forms.Puppet
 
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
                 AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+                if (Current.Properties.ContainsKey(EntryCellTextChanged.UserIdKey) && Current.Properties[EntryCellTextChanged.UserIdKey] is string id)
+                {
+                    AppCenter.SetUserId(id);
+                }
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
                 Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
