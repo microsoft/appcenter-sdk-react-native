@@ -248,7 +248,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             ErrorLogHelper.Instance = mockErrorLogHelper;
 
             // Stub get/read error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns<List<File>>(null);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File>());
 
             // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();
@@ -386,7 +386,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Stub get/read error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(expectedFiles);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(recentFile)).Throws(new System.Exception());
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(recentFile)).Returns<File>(null);
 
             // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();

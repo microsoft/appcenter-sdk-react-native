@@ -190,64 +190,58 @@ namespace Microsoft.AppCenter.Crashes
             {
                 var lastSessionErrorLogTimestamp = DateTime.MinValue;
                 ManagedErrorLog lastSessionErrorLog = null;
-                try
+                foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
-                    foreach (var file in ErrorLogHelper.GetErrorLogFiles())
-                    {
-                        AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
-                        var log = ErrorLogHelper.ReadErrorLogFile(file);
+                    AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
+                    var log = ErrorLogHelper.ReadErrorLogFile(file);
 
-                        // Process the file for last session crash report. It doesn't matter if the log is null.
+                    // Process the file for last session crash report. It doesn't matter if the log is null.
+                    try
+                    {
+                        var otherFileTimestamp = file.LastWriteTime;
+                        if (lastSessionErrorLogTimestamp < otherFileTimestamp)
+                        {
+                            lastSessionErrorLogTimestamp = otherFileTimestamp;
+                            lastSessionErrorLog = log;
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
+                    }
+
+                    // Finish processing the file.
+                    if (log == null)
+                    {
+                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         try
                         {
-                            var otherFileTimestamp = file.LastWriteTime;
-                            if (lastSessionErrorLogTimestamp < otherFileTimestamp)
-                            {
-                                lastSessionErrorLogTimestamp = otherFileTimestamp;
-                                lastSessionErrorLog = log;
-                            }
+                            file.Delete();
                         }
                         catch (System.Exception ex)
                         {
-                            AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
+                            AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
                         }
-
-                        // Finish processing the file.
-                        if (log == null)
-                        {
-                            AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
-                            try
-                            {
-                                file.Delete();
-                            }
-                            catch (System.Exception ex)
-                            {
-                                AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
-                            }
-                        }
-                        else
-                        {
-                            _unprocessedManagedErrorLogs.Add(log.Id, log);
-                        }
-                    }
-                }
-                finally
-                {
-                    ErrorReport lastSessionErrorReport = null;
-                    if (lastSessionErrorLog != null)
-                    {
-                        AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
-
-                        // TODO: Build error report from cache.
-                        lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
                     }
                     else
                     {
-                        AppCenterLog.Debug(LogTag, "Setting last session error report to null.");
+                        _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
-                    _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
                 }
-                await SendCrashReportsOrAwaitUserConfirmationAsync();
+                ErrorReport lastSessionErrorReport = null;
+                if (lastSessionErrorLog != null)
+                {
+                    AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
+
+                    // TODO: Build error report from cache.
+                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                }
+                else
+                {
+                    AppCenterLog.Debug(LogTag, "Setting last session error report to null.");
+                }
+                _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
+                await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
             });
         }
 
