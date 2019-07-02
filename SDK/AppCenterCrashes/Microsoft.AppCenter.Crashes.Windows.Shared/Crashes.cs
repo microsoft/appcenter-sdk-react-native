@@ -256,7 +256,6 @@ namespace Microsoft.AppCenter.Crashes
 
                         if (ShouldProcessErrorReport?.Invoke(report) ?? true)
                         {
-                            // TODO: Why the Android SDK reads report from the cache? Why the Android SDK has log property in ErrorReport?
                             _unprocessedManagedErrorLogs.Add(log.Id, log);
                         }
                         else
