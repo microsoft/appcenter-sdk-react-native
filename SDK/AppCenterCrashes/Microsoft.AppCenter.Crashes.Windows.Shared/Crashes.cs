@@ -74,12 +74,12 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
         {
-            return Task.FromResult(false);
+            return Instance.InstanceHasCrashedInLastSessionAsync();
         }
 
         private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
-            return Task.FromResult((ErrorReport)null);
+            return Instance.InstanceGetLastSessionCrashReportAsync();
         }
 
         private static void PlatformNotifyUserConfirmation(UserConfirmation userConfirmation)
@@ -96,11 +96,6 @@ namespace Microsoft.AppCenter.Crashes
         /// A dictionary that contains unprocessed managed error logs before getting a user confirmation.
         /// </summary>
         private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
-
-        internal Crashes()
-        {
-            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
-        }
 
         /// <inheritdoc />
         protected override string ChannelName => "crashes";
@@ -119,6 +114,14 @@ namespace Microsoft.AppCenter.Crashes
         /// </summary>
         internal Task ProcessPendingErrorsTask { get; set; }
 
+        // Task to get the last session error report, if one is found.
+        private TaskCompletionSource<ErrorReport> _lastSessionErrorReportTaskSource;
+
+        internal Crashes()
+        {
+            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+        }
+
         /// <summary>
         /// Method that is called to signal start of Crashes service.
         /// </summary>
@@ -126,12 +129,13 @@ namespace Microsoft.AppCenter.Crashes
         /// <param name="appSecret">App secret</param>
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            lock (CrashesLock)
+            lock (_serviceLock)
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
                 if (InstanceEnabled)
                 {
+                    _lastSessionErrorReportTaskSource = new TaskCompletionSource<ErrorReport>();
                     ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
                 }
             }
@@ -149,6 +153,7 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+                    _lastSessionErrorReportTaskSource = null;
                 }
             }
         }
@@ -171,14 +176,43 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
+        private async Task<bool> InstanceHasCrashedInLastSessionAsync()
+        {
+            return (await InstanceGetLastSessionCrashReportAsync()) != null;
+        }
+
+        private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
+        {
+            return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport>(null);
+        }
+
         private Task ProcessPendingErrorsAsync()
         {
             return Task.Run(async () =>
             {
+                var lastSessionErrorLogTimestamp = DateTime.MinValue;
+                ManagedErrorLog lastSessionErrorLog = null;
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
+
+                    // Process the file for last session crash report. It doesn't matter if the log is null.
+                    try
+                    {
+                        var otherFileTimestamp = file.LastWriteTime;
+                        if (lastSessionErrorLogTimestamp < otherFileTimestamp)
+                        {
+                            lastSessionErrorLogTimestamp = otherFileTimestamp;
+                            lastSessionErrorLog = log;
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
+                    }
+
+                    // Finish processing the file.
                     if (log == null)
                     {
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
@@ -196,7 +230,20 @@ namespace Microsoft.AppCenter.Crashes
                         _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
                 }
-                await SendCrashReportsOrAwaitUserConfirmationAsync();
+                ErrorReport lastSessionErrorReport = null;
+                if (lastSessionErrorLog != null)
+                {
+                    AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
+
+                    // TODO: Build error report from cache.
+                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                }
+                else
+                {
+                    AppCenterLog.Debug(LogTag, "Setting last session error report to null.");
+                }
+                _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
+                await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
             });
         }
 
@@ -254,6 +301,8 @@ namespace Microsoft.AppCenter.Crashes
                     tasks.Add(Channel.EnqueueAsync(log));
                     _unprocessedManagedErrorLogs.Remove(key);
                     ErrorLogHelper.RemoveStoredErrorLogFile(key);
+
+                    // TODO: Build error report from cache.
                     var errorReport = new ErrorReport(log, null);
 
                     // This must never be called while a lock is held.
