@@ -142,7 +142,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 ProcessName = _processInformation.ProcessName,
                 ParentProcessId = _processInformation.ParentProcessId,
                 ParentProcessName = _processInformation.ParentProcessName,
-                AppLaunchTimestamp = _processInformation.ProcessStartTime,
+                AppLaunchTimestamp = _processInformation.ProcessStartTime?.ToUniversalTime(),
                 Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
                 Exception = CreateModelException(exception)
