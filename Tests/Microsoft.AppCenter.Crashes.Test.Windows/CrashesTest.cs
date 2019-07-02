@@ -1,6 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -20,6 +25,17 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         private Mock<IChannelGroup> _mockChannelGroup;
         private Mock<IChannelUnit> _mockChannel;
         private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
+
+        private const int expectedProcessId = 123;
+
+        private ManagedErrorLog expectedManagedErrorLog = new ManagedErrorLog
+        {
+            Id = Guid.NewGuid(),
+            ProcessId = expectedProcessId,
+            AppLaunchTimestamp = DateTime.Now,
+            Timestamp = DateTime.Now,
+            Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>()
+        };
 
         [TestInitialize]
         public void InitializeCrashTest()
@@ -44,6 +60,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.ShouldProcessErrorReport = null;
             Crashes.ShouldAwaitUserConfirmation = null;
             Crashes.GetErrorAttachments = null;
+            AppCenter.Instance.ApplicationSettings.Remove(Crashes.PrefKeyAlwaysSend);
         }
 
         [TestMethod]
@@ -465,6 +482,364 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(0, sendingReportCallCount);
             Assert.AreEqual(0, sentReportCallCount);
             Assert.AreEqual(0, failedToSendReportCallCount);
+        }
+
+        [TestMethod]
+        public void LastSessionErrorReportIsNullBeforeStart()
+        {
+            Assert.IsNull(Crashes.GetLastSessionCrashReportAsync().Result);
+            Assert.IsFalse(Crashes.HasCrashedInLastSessionAsync().Result);
+        }
+
+        [TestMethod]
+        public void LastSessionCrashReportWhenEnabledAndCrashOnDisk()
+        {
+            var oldFile = Mock.Of<File>();
+            Mock.Get(oldFile).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now.AddDays(-200));
+            var recentFile = Mock.Of<File>();
+            Mock.Get(recentFile).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now);
+            var expectedFiles = new List<File> { oldFile, recentFile };
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+            
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(expectedFiles);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(recentFile)).Returns(expectedManagedErrorLog);
+
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNotNull(lastSessionErrorReport);
+            Assert.AreEqual(expectedManagedErrorLog.Id.ToString(), lastSessionErrorReport.Id);
+            Assert.IsTrue(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void LastSessionErrorReportWhenEnabledAndNoCrashOnDisk()
+        {
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File>());
+
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void GetLastSessionErrorReportWhenEnabledAndInvalidCrashOnDisk()
+        {
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var mockFile = Mock.Of<File>();
+            Mock.Get(mockFile).SetupGet(file => file.LastWriteTime).Returns(DateTime.UtcNow);
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(It.IsAny<File>())).Returns<ManagedErrorLog>(null);
+
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void DisablingCrashesCleansUpLastSessionReport()
+        {
+            var mockFile = Mock.Of<File>();
+            Mock.Get(mockFile).SetupGet(file => file.LastWriteTime).Returns(DateTime.UtcNow);
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
+
+            // Start crashes service in an enabled to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Make sure that the report is not null.
+            Assert.IsNotNull(lastSessionErrorReport);
+
+            // Disable crashes and retrieve the error report again.
+            Crashes.SetEnabledAsync(false).Wait();
+            hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void DoesNotGetLastSessionErrorReportWhenDisabledAndCrashOnDisk()
+        {
+            var mockFile = Mock.Of<File>();
+            Mock.Get(mockFile).SetupGet(file => file.LastWriteTime).Returns(DateTime.UtcNow);
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
+
+            // Start crashes service in a disabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(false).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        [DataRow(typeof(System.IO.IOException))]
+        [DataRow(typeof(PlatformNotSupportedException))]
+        [DataRow(typeof(ArgumentOutOfRangeException))]
+        public void DoesNotThrowOrHangWhenLastWriteTimeThrows(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+
+            // Mock multiple error log files.
+            var oldFile = Mock.Of<File>();
+            Mock.Get(oldFile).SetupGet(f => f.LastWriteTime).Throws(exception);
+            var recentFile = Mock.Of<File>();
+            Mock.Get(recentFile).SetupGet(f => f.LastWriteTime).Throws(exception);
+            var expectedFiles = new List<File> { oldFile, recentFile };
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(expectedFiles);
+
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+
+        [TestMethod]
+        public void LastSessionCrashReportWhenMultipleCrashesAndRecentCrashIsInvalid()
+        {
+            var oldFile = Mock.Of<File>();
+            Mock.Get(oldFile).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now.AddDays(-200));
+            var recentFile = Mock.Of<File>();
+            Mock.Get(recentFile).SetupGet(f => f.LastWriteTime).Returns(DateTime.Now);
+            var expectedFiles = new List<File> { oldFile, recentFile };
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+
+            // Stub get/read error files.
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(expectedFiles);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(recentFile)).Returns<File>(null);
+
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            var hasCrashedInLastSession = Crashes.HasCrashedInLastSessionAsync().Result;
+            var lastSessionErrorReport = Crashes.GetLastSessionCrashReportAsync().Result;
+
+            // Verify results.
+            Assert.IsNull(lastSessionErrorReport);
+            Assert.IsFalse(hasCrashedInLastSession);
+        }
+        
+        [TestMethod]
+        public void PlatformNotifyUserConfirmationDefault()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify the value has been set.
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncAlwaysTrue()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyAlwaysSend, true);
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify logs have been processed and removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
+            Assert.IsTrue(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncNullCallback()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes. `ShouldAwaitUserConfirmation` is null.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify logs have been processed and removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncFalseCallback()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldAwaitUserConfirmation = () => false;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify the logs have not been processed and have been removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void SendCrashReportsOrAwaitUserConfirmationAsyncTrueCallback()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify nothing in HandleUserConfirmationAsync has been called.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Never());
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncDontSend()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
+
+            // Verify the logs have not been processed and have been removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncSend()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.NotifyUserConfirmation(UserConfirmation.Send);
+
+            // Verify logs have been processed and removed.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
+            Assert.IsFalse(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        [TestMethod]
+        public void HandleUserConfirmationAsyncAlwaysSend()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+
+            // Avoids processing the logs during the ProcessPendingErrorsTask
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+            Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
+
+            // Verify logs have been processed and removed, alwaysSendValue is saved.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
+            Assert.IsTrue(alwaysSendValue);
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+        }
+
+        /// <summary>
+        /// Convenience function to create a mock ErrorLogHelper with a file added.
+        /// </summary>
+        /// <returns>The mock error log helper.</returns>
+        private ErrorLogHelper GenerateMockErrorLogHelperWithPendingFile()
+        {
+            var mockErrorLogFile = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Stub get/read/delete error files.
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
+            return mockErrorLogHelper;
         }
     }
 }

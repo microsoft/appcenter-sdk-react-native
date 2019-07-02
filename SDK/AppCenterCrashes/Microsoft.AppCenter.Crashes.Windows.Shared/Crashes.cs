@@ -7,7 +7,6 @@ using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
-using Microsoft.AppCenter.Utils.Files;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -24,6 +23,8 @@ namespace Microsoft.AppCenter.Crashes
         private static Crashes _instanceField;
 
         private const int MaxAttachmentsPerCrash = 2;
+
+        internal const string PrefKeyAlwaysSend = Constants.KeyPrefix + "CrashesAlwaysSend";
 
         static Crashes()
         {
@@ -77,17 +78,17 @@ namespace Microsoft.AppCenter.Crashes
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
         {
-            return Task.FromResult(false);
+            return Instance.InstanceHasCrashedInLastSessionAsync();
         }
 
         private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
-            return Task.FromResult((ErrorReport)null);
+            return Instance.InstanceGetLastSessionCrashReportAsync();
         }
 
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        private static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
+        private static void PlatformNotifyUserConfirmation(UserConfirmation userConfirmation)
         {
+            Instance.HandleUserConfirmationAsync(userConfirmation);
         }
 
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
@@ -104,12 +105,6 @@ namespace Microsoft.AppCenter.Crashes
         /// A dictionary for a cache that contains error report.
         /// </summary>
         private readonly IDictionary<Guid, ErrorReport> _errorReportCache;
-
-        internal Crashes()
-        {
-            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
-            _errorReportCache = new ConcurrentDictionary<Guid, ErrorReport>();
-        }
 
         /// <inheritdoc />
         protected override string ChannelName => "crashes";
@@ -128,6 +123,15 @@ namespace Microsoft.AppCenter.Crashes
         /// </summary>
         internal Task ProcessPendingErrorsTask { get; set; }
 
+        // Task to get the last session error report, if one is found.
+        private TaskCompletionSource<ErrorReport> _lastSessionErrorReportTaskSource;
+
+        internal Crashes()
+        {
+            _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+            _errorReportCache = new ConcurrentDictionary<Guid, ErrorReport>();
+        }
+
         /// <summary>
         /// Method that is called to signal start of Crashes service.
         /// </summary>
@@ -135,12 +139,13 @@ namespace Microsoft.AppCenter.Crashes
         /// <param name="appSecret">App secret</param>
         public override void OnChannelGroupReady(IChannelGroup channelGroup, string appSecret)
         {
-            lock (CrashesLock)
+            lock (_serviceLock)
             {
                 base.OnChannelGroupReady(channelGroup, appSecret);
                 ApplyEnabledState(InstanceEnabled);
                 if (InstanceEnabled)
                 {
+                    _lastSessionErrorReportTaskSource = new TaskCompletionSource<ErrorReport>();
                     ProcessPendingErrorsTask = ProcessPendingErrorsAsync();
                 }
             }
@@ -167,6 +172,7 @@ namespace Microsoft.AppCenter.Crashes
                         ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
                     }
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+                    _lastSessionErrorReportTaskSource = null;
                 }
             }
         }
@@ -190,14 +196,43 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
+        private async Task<bool> InstanceHasCrashedInLastSessionAsync()
+        {
+            return (await InstanceGetLastSessionCrashReportAsync()) != null;
+        }
+
+        private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
+        {
+            return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport>(null);
+        }
+
         private Task ProcessPendingErrorsAsync()
         {
             return Task.Run(async () =>
             {
+                var lastSessionErrorLogTimestamp = DateTime.MinValue;
+                ManagedErrorLog lastSessionErrorLog = null;
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
+
+                    // Process the file for last session crash report. It doesn't matter if the log is null.
+                    try
+                    {
+                        var otherFileTimestamp = file.LastWriteTime;
+                        if (lastSessionErrorLogTimestamp < otherFileTimestamp)
+                        {
+                            lastSessionErrorLogTimestamp = otherFileTimestamp;
+                            lastSessionErrorLog = log;
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
+                    }
+
+                    // Finish processing the file.
                     if (log == null)
                     {
                         // TODO should we try to see if the name is {guid}.json and call RemoveAllStoredErrorLogFiles when possible? In case json corrupted we should delete exception file as well.
@@ -229,7 +264,20 @@ namespace Microsoft.AppCenter.Crashes
                         RemoveAllStoredErrorLogFiles(log.Id);
                     }
                 }
-                await SendCrashReportsOrAwaitUserConfirmationAsync();
+                ErrorReport lastSessionErrorReport = null;
+                if (lastSessionErrorLog != null)
+                {
+                    AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
+
+                    // TODO: Build error report from cache.
+                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
+                }
+                else
+                {
+                    AppCenterLog.Debug(LogTag, "Setting last session error report to null.");
+                }
+                _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
+                await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
             });
         }
 
@@ -241,33 +289,74 @@ namespace Microsoft.AppCenter.Crashes
             ErrorLogHelper.RemoveStoredExceptionFile(errorId);
         }
 
-        private Task SendCrashReportsOrAwaitUserConfirmationAsync()
+        private async Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            return HandleUserConfirmationAsync();
-        }
-
-        private Task HandleUserConfirmationAsync()
-        {
-            // Send every pending log.
-            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
-            var tasks = new List<Task>();
-            foreach (var key in keys)
+            bool alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
+            if (_unprocessedManagedErrorLogs.Count() > 0)
             {
-                var log = _unprocessedManagedErrorLogs[key];
-                tasks.Add(Channel.EnqueueAsync(log));
-                _unprocessedManagedErrorLogs.Remove(key);
-                ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                var errorReport = new ErrorReport(log, null);
-
-                // This must never called while a lock is held.
-                var attachments = GetErrorAttachments?.Invoke(errorReport);
-                if (attachments == null)
+                // Check for always send: this bypasses user confirmation callback.
+                if (alwaysSend)
                 {
-                    AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    AppCenterLog.Debug(LogTag, "The flag for user confirmation is set to AlwaysSend, will send logs.");
+                    await HandleUserConfirmationAsync(UserConfirmation.Send);
+                    return;
+                }
+
+                var shouldAwaitUserConfirmation = ShouldAwaitUserConfirmation?.Invoke();
+                if (shouldAwaitUserConfirmation.HasValue && shouldAwaitUserConfirmation.Value)
+                {
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned true, wait sending logs.");
                 }
                 else
                 {
-                    tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    AppCenterLog.Debug(LogTag, "ShouldAwaitUserConfirmation returned false or is not implemented, will send logs.");
+                    await HandleUserConfirmationAsync(UserConfirmation.Send);
+                }
+            }
+        }
+
+        private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
+        {
+            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
+            var tasks = new List<Task>();
+
+            if (userConfirmation == UserConfirmation.DontSend)
+            {
+                foreach (var key in keys)
+                {
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+                    // TODO: Remove exception files
+                }
+            }
+            else
+            {
+                if (userConfirmation == UserConfirmation.AlwaysSend)
+                {
+                    ApplicationSettings.SetValue(PrefKeyAlwaysSend, true);
+                }
+
+                // Send every pending log.
+                foreach (var key in keys)
+                {
+                    var log = _unprocessedManagedErrorLogs[key];
+                    tasks.Add(Channel.EnqueueAsync(log));
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+
+                    // TODO: Build error report from cache.
+                    var errorReport = new ErrorReport(log, null);
+
+                    // This must never be called while a lock is held.
+                    var attachments = GetErrorAttachments?.Invoke(errorReport);
+                    if (attachments == null)
+                    {
+                        AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    }
+                    else
+                    {
+                        tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    }
                 }
             }
             return Task.WhenAll(tasks);
