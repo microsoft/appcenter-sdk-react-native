@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.AppCenter;
 using Xamarin.Forms;
 
@@ -11,8 +13,7 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AppCenterContentPage : ContentPage
     {
-        private const string UserIdKey = "userId";
-        
+
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
         Dictionary<LogLevel, Action<string, string>> LogFunctions;
@@ -52,10 +53,7 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
-            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
-            {
-                UserIdEntryCell.Text = id;
-            }
+
         }
 
         void LogLevelCellTapped(object sender, EventArgs e)
@@ -95,12 +93,47 @@ namespace Contoso.Forms.Puppet
         {
             LogWriteLevelLabel.Text = LogLevelNames[LogWriteLevel];
         }
+    }
 
-        void UserIdCompleted(object sender, EventArgs e)
+    [Android.Runtime.Preserve(AllMembers = true)]
+    public class EntryCellTextChanged : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private const string UserIdKey = "userId";
+
+        private string _userId;
+
+        public EntryCellTextChanged()
         {
-            var text = string.IsNullOrEmpty(UserIdEntryCell.Text) ? null : UserIdEntryCell.Text;
-            AppCenter.SetUserId(text);
-            Application.Current.Properties[UserIdKey] = text;
+            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
+            {
+                UserId = id;
+            }
+        }
+
+        public string UserId
+        {
+            get { return _userId; }
+
+            set
+            {
+                _userId = value;
+                OnTextChanged(_userId);
+            }
+        }
+
+        public ICommand TextChanged;
+
+        protected virtual void OnTextChanged(string inputText)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(inputText));
+                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
+                AppCenter.SetUserId(text);
+                Application.Current.Properties[UserIdKey] = text;
+            }
         }
     }
 }

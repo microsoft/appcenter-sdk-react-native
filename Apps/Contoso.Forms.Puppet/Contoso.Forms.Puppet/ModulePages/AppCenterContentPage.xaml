@@ -3,6 +3,9 @@
              xmlns:local="clr-namespace:Contoso.Forms.Puppet"
              xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AppCenterContentPage">
+    <ContentPage.BindingContext>
+        <local:EntryCellTextChanged/>
+    </ContentPage.BindingContext>
     <TableView Intent="Form">
         <TableSection Title="AppCenter Settings">
             <SwitchCell Text="App Center Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
@@ -27,7 +30,7 @@
             </ViewCell>
         </TableSection>
         <TableSection Title="Logging">
-            <EntryCell Label="User Id" x:Name="UserIdEntryCell" HorizontalTextAlignment="End" Completed="UserIdCompleted"/>
+            <EntryCell Label="User Id" x:Name="UserIdEntryCell" Text="{Binding UserId, Mode=TwoWay}" HorizontalTextAlignment="End"/>
         </TableSection>
     </TableView>
 </ContentPage>
