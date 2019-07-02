@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -345,20 +346,65 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         public void SaveErrorLogFileDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
-            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
             var errorLog = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var fileName = errorLog.Id + ".json";
-            var serializedErrorLog = LogSerializer.Serialize(errorLog);
             var mockDirectory = Mock.Of<Directory>();
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
             Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
             ErrorLogHelper.SaveErrorLogFiles(null, errorLog);
 
             // No exception should be thrown.
+        }
+
+        private class NonSerializableException : System.Exception
+        {
+        }
+
+        [TestMethod]
+        [DataRow(typeof(ArgumentException))]
+        [DataRow(typeof(NonSerializableException))]
+        public void SaveBinaryExceptionDoesNotThrow(Type exceptionType)
+        {
+            var errorLog = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                ProcessId = 123
+            };
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
+            var errorLogFilename = errorLog.Id + ".json";
+            var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            var exceptionFilename = errorLog.Id + ".exception";
+            var binaryFormatter = Mock.Of<BinaryFormatter>();
+            var fileStream = Mock.Of<System.IO.Stream>();
+            var mockDirectory = Mock.Of<Directory>();
+            Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
+            var expectedFullFileName = $"Errors\\{exceptionFilename}";
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
+            // Given we succeed saving log file but fail saving exception file.
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return fileStream;
+            };
+            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
+            Mock.Get(binaryFormatter).Setup(b => b.Serialize(fileStream, exception)).Throws(new SerializationException());
+
+            // When we save files.
+            ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
+
+            // Then it does not throw.
+            Assert.AreEqual(expectedFullFileName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
+            Mock.Get(binaryFormatter).Verify(b => b.Serialize(fileStream, exception));
         }
 
         [TestMethod]
