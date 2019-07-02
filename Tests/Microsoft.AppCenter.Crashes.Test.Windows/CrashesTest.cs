@@ -226,6 +226,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         public void ProcessPendingErrorsExcludesCorruptedFiles()
         {
             var mockErrorLogFile = Mock.Of<File>();
+            var corruptedId1 = Guid.NewGuid();
             var mockErrorLogCorruptedFile1 = Mock.Of<File>();
             var mockErrorLogCorruptedFile2 = Mock.Of<File>();
             var mockExceptionFile = Mock.Of<File>();
@@ -247,6 +248,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
             Mock.Get(mockErrorLogCorruptedFile1).Setup(file => file.Delete()).Throws(new System.IO.IOException());
+            Mock.Get(mockErrorLogCorruptedFile1).Setup(file => file.Name).Returns($"{corruptedId1}.exception");
 
             // Start Crashes.
             Crashes.SetEnabledAsync(true).Wait();
@@ -256,6 +258,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Verify the corrupted file got ignored and deleted, even if deletion fails.
             Mock.Get(mockErrorLogCorruptedFile1).Verify(file => file.Delete(), Times.Once());
             Mock.Get(mockErrorLogCorruptedFile2).Verify(file => file.Delete(), Times.Once());
+
+            // Verify we deleted the exception file if we could match the file name.
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(corruptedId1), Times.Once());
 
             // The regular process file has just the json file being deleted and exception file being kept.
             _mockChannel.Verify(channel => channel.EnqueueAsync(expectedManagedErrorLog), Times.Once());

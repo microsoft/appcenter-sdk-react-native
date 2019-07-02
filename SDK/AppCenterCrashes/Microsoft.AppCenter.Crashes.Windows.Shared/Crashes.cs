@@ -219,8 +219,6 @@ namespace Microsoft.AppCenter.Crashes
                     // Finish processing the file.
                     if (log == null)
                     {
-                        // TODO should we try to see if the name is {guid}.json and call RemoveAllStoredErrorLogFiles when possible? In case json corrupted we should delete exception file as well.
-                        // Android does not clean the file either.
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         try
                         {
@@ -229,6 +227,12 @@ namespace Microsoft.AppCenter.Crashes
                         catch (System.Exception ex)
                         {
                             AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                        }
+
+                        // Also try to delete paired exception file.
+                        if (Guid.TryParse(System.IO.Path.GetFileNameWithoutExtension(file.Name), out var id))
+                        {
+                            ErrorLogHelper.RemoveStoredExceptionFile(id);
                         }
                         continue;
                     }
