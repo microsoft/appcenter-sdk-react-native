@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public const string ErrorLogFileExtension = ".json";
 
         /// <summary>
-        /// Error log file extension for the serialized exception for client side inspection..
+        /// Error log file extension for the serialized exception for client side inspection.
         /// </summary>
         public const string ExceptionFileExtension = ".exception";
 
