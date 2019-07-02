@@ -4,7 +4,7 @@ using SystemBinaryFormatter = System.Runtime.Serialization.Formatters.Binary.Bin
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {
-    internal class BinaryFormatter
+    public class BinaryFormatter
     {
         private readonly SystemBinaryFormatter _systemBinaryFormatter = new SystemBinaryFormatter();
 

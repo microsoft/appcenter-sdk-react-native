@@ -280,15 +280,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             try
             {
+                // Serialize main log file.
                 var errorLogString = LogSerializer.Serialize(errorLog);
                 var errorLogFileName = errorLog.Id + ErrorLogFileExtension;
                 AppCenterLog.Debug(Crashes.LogTag, "Saving uncaught exception.");
-                InstanceGetErrorStorageDirectory().CreateFile(errorLogFileName, errorLogString);
+                var directory = InstanceGetErrorStorageDirectory();
+                directory.CreateFile(errorLogFileName, errorLogString);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {errorLogFileName}.");
 
-                // Serialize exception.
+                // Serialize binary exception.
                 var exceptionFileName = errorLog.Id + ExceptionFileExtension;
-                SaveExceptionFile(InstanceGetErrorStorageDirectory(), exceptionFileName, exception);
+                SaveExceptionFile(directory, exceptionFileName, exception);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved exception in directory {ErrorStorageDirectoryName} with name {exceptionFileName}.");
             }
             catch (System.Exception ex)

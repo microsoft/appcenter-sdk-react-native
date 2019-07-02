@@ -10,13 +10,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
 {
     public partial class ErrorLogHelper
     {
+        internal Func<string, FileMode, Stream> NewFileStream { get; set; } = (name, mode) => new FileStream(name, FileMode.Create);
+
+        internal Func<BinaryFormatter> NewBinaryFormatter { get; set; } = () => new BinaryFormatter();
+
         private void SaveExceptionFile(Directory directory, string fileName, Exception exception)
         {
             try
             {
-                using (var fileStream = new FileStream(Path.Combine(directory.FullName, fileName), FileMode.Create))
+                using (var fileStream = NewFileStream(Path.Combine(directory.FullName, fileName), FileMode.Create))
                 {
-                    var formatter = new BinaryFormatter();
+                    var formatter = NewBinaryFormatter();
                     formatter.Serialize(fileStream, exception);
                 }
             }
@@ -45,9 +49,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             try
             {
-                using (var fileStream = new FileStream(file.FullName, FileMode.Open))
+                using (var fileStream = NewFileStream(file.FullName, FileMode.Open))
                 {
-                    var formatter = new BinaryFormatter();
+                    var formatter = NewBinaryFormatter();
                     return formatter.Deserialize(fileStream);
                 }
             }

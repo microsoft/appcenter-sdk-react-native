@@ -309,14 +309,28 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var errorLogFilename = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
             var exceptionFilename = errorLog.Id + ".exception";
-
-            // TODO: Replace ToString() to object serialization.
-            var serializedException = exception.ToString();
+            var binaryFormatter = Mock.Of<BinaryFormatter>();
+            var fileStream = Mock.Of<System.IO.Stream>();
             var mockDirectory = Mock.Of<Directory>();
+            Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
+            var expectedFullFileName = $"Errors\\{exceptionFilename}";
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return fileStream;
+            };
+            ErrorLogHelper.Instance.NewBinaryFormatter = () => binaryFormatter;
             ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
+
+            Assert.AreEqual(expectedFullFileName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
             Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
-            Mock.Get(mockDirectory).Verify(d => d.CreateFile(exceptionFilename, serializedException));
+            Mock.Get(binaryFormatter).Verify(b => b.Serialize(fileStream, exception));
         }
 
         [TestMethod]
@@ -449,7 +463,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
             Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
             ErrorLogHelper.RemoveStoredExceptionFile(Guid.NewGuid());
-           
+
             // No exception should be thrown.
         }
 
