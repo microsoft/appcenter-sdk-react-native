@@ -221,6 +221,7 @@ namespace Microsoft.AppCenter.Crashes
                     if (log == null)
                     {
                         // TODO should we try to see if the name is {guid}.json and call RemoveAllStoredErrorLogFiles when possible? In case json corrupted we should delete exception file as well.
+                        // Android does not clean the file either.
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         try
                         {
