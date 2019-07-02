@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
 {
     public partial class ErrorLogHelper
     {
-        internal Func<string, FileMode, Stream> NewFileStream { get; set; } = (name, mode) => new FileStream(name, FileMode.Create);
+        internal Func<string, FileMode, Stream> NewFileStream { get; set; } = (name, mode) => new FileStream(name, mode);
 
         internal Func<BinaryFormatter> NewBinaryFormatter { get; set; } = () => new BinaryFormatter();
 
