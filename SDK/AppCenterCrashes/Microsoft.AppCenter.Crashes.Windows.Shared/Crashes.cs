@@ -396,7 +396,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private void ChannelSendingLog(object sender, SendingLogEventArgs e)
         {
-            var report = ProcessEventHandlers(e, false);
+            var report = MapLogEventToReportAndDeleteOnLastEvent(e);
             if (report != null)
             {
                 SendingErrorReport?.Invoke(sender, new SendingErrorReportEventArgs { Report = report });
@@ -405,7 +405,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private void ChannelSentLog(object sender, SentLogEventArgs e)
         {
-            var report = ProcessEventHandlers(e);
+            var report = MapLogEventToReportAndDeleteOnLastEvent(e);
             if (report != null)
             {
                 SentErrorReport?.Invoke(sender, new SentErrorReportEventArgs { Report = report });
@@ -414,16 +414,16 @@ namespace Microsoft.AppCenter.Crashes
 
         private void ChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
         {
-            var report = ProcessEventHandlers(e);
+            var report = MapLogEventToReportAndDeleteOnLastEvent(e);
             if (report != null)
             {
                 FailedToSendErrorReport?.Invoke(sender, new FailedToSendErrorReportEventArgs { Report = report, Exception = e.Exception });
             }
         }
 
-        private ErrorReport ProcessEventHandlers(ChannelEventArgs e, bool deleteExceptionFile = true)
+        private ErrorReport MapLogEventToReportAndDeleteOnLastEvent(ChannelEventArgs channelEventArgs)
         {
-            if (e.Log is ManagedErrorLog log)
+            if (channelEventArgs.Log is ManagedErrorLog log)
             {
                 var report = BuildErrorReport(log);
                 if (report == null)
@@ -432,7 +432,7 @@ namespace Microsoft.AppCenter.Crashes
                 }
                 else
                 {
-                    if (deleteExceptionFile)
+                    if (channelEventArgs is SentLogEventArgs || channelEventArgs is FailedToSendLogEventArgs)
                     {
                         ErrorLogHelper.RemoveStoredExceptionFile(log.Id);
                     }
