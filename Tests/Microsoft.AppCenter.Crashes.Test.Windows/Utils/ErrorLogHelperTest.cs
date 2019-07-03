@@ -19,6 +19,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
     [TestClass]
     public class ErrorLogHelperTest
     {
+        private class NonSerializableException : System.Exception
+        {
+        }
+
         [TestInitialize]
         public void SetUp()
         {
@@ -334,10 +338,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             ErrorLogHelper.SaveErrorLogFiles(null, errorLog);
 
             // No exception should be thrown.
-        }
-
-        private class NonSerializableException : System.Exception
-        {
         }
 
         [TestMethod]

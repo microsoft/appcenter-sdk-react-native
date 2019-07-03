@@ -9,10 +9,11 @@ namespace Microsoft.AppCenter.Crashes
     [Serializable]
     public partial class TestCrashException
     {
-
         /// <summary>
         /// Deserialization constructor. Not intended for public use.
         /// </summary>
-        protected TestCrashException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected TestCrashException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

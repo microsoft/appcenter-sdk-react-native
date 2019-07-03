@@ -51,7 +51,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 using (var fileStream = NewFileStream(file.FullName, FileMode.Open))
                 {
                     var formatter = new BinaryFormatter();
-                    return (Exception) formatter.Deserialize(fileStream);
+                    return (Exception)formatter.Deserialize(fileStream);
                 }
             }
             catch (Exception e)
