@@ -54,15 +54,16 @@ namespace Contoso.Forms.Puppet
 
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
                 AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-                if (Current.Properties.ContainsKey(EntryCellTextChanged.UserIdKey) && Current.Properties[EntryCellTextChanged.UserIdKey] is string id)
-                {
-                    AppCenter.SetUserId(id);
-                }
+               
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
                 Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
                 Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
                 AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth), typeof(Data));
+                if (Current.Properties.ContainsKey(EntryCellTextChanged.UserIdKey) && Current.Properties[EntryCellTextChanged.UserIdKey] is string id)
+                {
+                    AppCenter.SetUserId(id);
+                }
                 AppCenter.IsEnabledAsync().ContinueWith(enabled =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
