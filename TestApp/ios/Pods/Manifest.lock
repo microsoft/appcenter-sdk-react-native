@@ -17,7 +17,7 @@ DEPENDENCIES:
   - AppCenter/Analytics (~> 2.1.0)
   - AppCenter/Auth (~> 2.1.0)
   - AppCenter/Crashes (~> 2.1.0)
-  - AppCenter/Data (~> 2.0.1)
+  - AppCenter/Data (~> 2.1.0)
   - AppCenter/Push (~> 2.1.0)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
 
@@ -33,6 +33,6 @@ SPEC CHECKSUMS:
   AppCenter: 21decaa4488024e8355e650e44ccabb69ca60d47
   AppCenterReactNativeShared: fbaf318a3a0183fe60922e617b1dcc3576141f98
 
-PODFILE CHECKSUM: fa07973f9d4e2f4653fa557ac1f03bb0f6d558d6
+PODFILE CHECKSUM: 78da235a2ed7b0aabdf4d2766dac56ee09c80856
 
 COCOAPODS: 1.5.3
