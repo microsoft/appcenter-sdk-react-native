@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
@@ -77,7 +78,7 @@ export default class AppCenterScreen extends Component {
     startupMode: StartupModes[0],
     userId: '',
     accountId: '',
-    isTokenSet: false
+    authStatus: 'Authentication status unknown'
   }
 
   async componentWillMount() {
@@ -204,8 +205,9 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setEnabled(!this.state.appCenterEnabled);
                     const appCenterEnabled = await AppCenter.isEnabled();
+                    const authEnabled = await Auth.isEnabled();
                     const pushEnabled = await Push.isEnabled();
-                    this.setState({ appCenterEnabled, pushEnabled });
+                    this.setState({ appCenterEnabled, authEnabled, pushEnabled });
                   }
                 },
                 {
@@ -214,7 +216,7 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled, accountId: '', isTokenSet: false });
+                    this.setState({ authEnabled, accountId: '', authStatus: 'User is not authenticated' });
                   }
                 },
                 {
@@ -256,8 +258,7 @@ export default class AppCenterScreen extends Component {
                   action: async () => {
                     try {
                       const result = await Auth.signIn();
-                      this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
-
+                      this.setState({ accountId: result.accountId, authStatus: 'User is authenticated' });
                       runDataCrudScenarios();
                     } catch (e) {
                       console.log(e);
@@ -268,7 +269,7 @@ export default class AppCenterScreen extends Component {
                   title: 'Sign Out',
                   action: () => {
                     Auth.signOut();
-                    this.setState({ accountId: '', isTokenSet: false });
+                    this.setState({ accountId: '', authStatus: 'User is not authenticated' });
                   }
                 },
               ],
@@ -304,10 +305,10 @@ export default class AppCenterScreen extends Component {
                   }
                 },
                 {
-                  title: 'Is Token Set',
-                  value: 'isTokenSet',
-                  onChange: async (isTokenSet) => {
-                    this.setState({ isTokenSet });
+                  title: 'Auth Status',
+                  value: 'authStatus',
+                  onChange: async (authStatus) => {
+                    this.setState({ authStatus });
                   }
                 }
               ],

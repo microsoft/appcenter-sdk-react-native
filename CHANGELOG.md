@@ -1,6 +1,12 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.1.0 (Under development)
+## Version 2.1.1 (Active Development)
+
+### AppCenterAuth
+
+* **[Fix]** Fix incorrect file name of iOS **appcenter-auth.podspec** of Auth SDK.
+
+## Version 2.1.0
 
 Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
@@ -14,6 +20,10 @@ Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
 * **[Fix]** Fix a crash when calling `Push.setEnabled` when `appcenter.json` contains both `"start_automatically": false` and `"enable_push_in_javascript": true`.
 * **[Fix]** Update Firebase dependency and AppCenter push logic to avoid a runtime issue with the latest Firebase messaging version 18.0.0.
+
+### iOS
+
+* **[Fix]** Fix registering push notifications in the UI thread when delaying the start of the Push module.
 
 ## Version 2.0.0
 
