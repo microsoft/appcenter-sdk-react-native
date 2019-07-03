@@ -133,7 +133,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <returns>The exception instance.</returns>
         public static System.Exception ReadExceptionFile(File file)
         {
-            // The instance method is implemented in the other parts of the partial class in platform specific projects.
+            // The instance method is implemented in the other parts of the partial class in platform-specific projects.
             return Instance.InstanceReadExceptionFile(file);
         }
 
