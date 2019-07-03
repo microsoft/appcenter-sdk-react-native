@@ -1,11 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -26,12 +21,12 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         private Mock<IChannelUnit> _mockChannel;
         private Mock<IApplicationLifecycleHelper> _mockApplicationLifecycleHelper;
 
-        private const int expectedProcessId = 123;
+        private const int ExpectedProcessId = 123;
 
-        private ManagedErrorLog expectedManagedErrorLog = new ManagedErrorLog
+        private readonly ManagedErrorLog _expectedManagedErrorLog = new ManagedErrorLog
         {
             Id = Guid.NewGuid(),
-            ProcessId = expectedProcessId,
+            ProcessId = ExpectedProcessId,
             AppLaunchTimestamp = DateTime.Now,
             Timestamp = DateTime.Now,
             Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>()
@@ -116,14 +111,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile2 = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedProcessId = 123;
             var expectedManagedErrorLog1 = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.Now,
                 AppLaunchTimestamp = DateTime.Now,
                 Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
-                ProcessId = expectedProcessId
+                ProcessId = ExpectedProcessId
             };
             var expectedManagedErrorLog2 = new ManagedErrorLog
             {
@@ -131,7 +125,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Timestamp = DateTime.Now,
                 AppLaunchTimestamp = DateTime.Now,
                 Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
-                ProcessId = expectedProcessId
+                ProcessId = ExpectedProcessId
             };
 
             // Stub get/read/delete error files.
@@ -148,8 +142,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify crashes logs have been queued to the channel.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == expectedProcessId)), Times.Once());
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog2.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog2.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog1.Id), Times.Once());
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog2.Id), Times.Once());
         }
@@ -163,9 +157,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile2 = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedProcessId = 123;
-            var expectedManagedErrorLog1 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedProcessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
-            var expectedManagedErrorLog2 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = expectedProcessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog1 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = ExpectedProcessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
+            var expectedManagedErrorLog2 = new ManagedErrorLog { Id = Guid.NewGuid(), ProcessId = ExpectedProcessId, AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
 
             // Stub get/read/delete error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile1, mockErrorLogFile2 });
@@ -185,8 +178,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify only the should processed logs have been queued to the channel.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == expectedProcessId)), Times.Never());
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog2.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == ExpectedProcessId)), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog2.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
 
             // Either way, all log files are deleted.
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog1.Id), Times.Once());
@@ -594,6 +587,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Make sure that the report is not null.
             Assert.IsNotNull(lastSessionErrorReport);
+            Assert.IsTrue(hasCrashedInLastSession);
 
             // Disable crashes and retrieve the error report again.
             Crashes.SetEnabledAsync(false).Wait();
@@ -685,10 +679,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify logs have been processed and removed.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
             Assert.IsTrue(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
         }
 
         [TestMethod]
@@ -702,10 +696,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify logs have been processed and removed.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
         }
 
         [TestMethod]
@@ -720,10 +714,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify the logs have not been processed and have been removed.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
         }
 
         [TestMethod]
@@ -738,10 +732,10 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify nothing in HandleUserConfirmationAsync has been called.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Never());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Never());
         }
 
         [TestMethod]
@@ -759,11 +753,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.NotifyUserConfirmation(UserConfirmation.DontSend);
 
             // Verify the logs have not been processed and have been removed.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Never());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Once());
         }
 
         [TestMethod]
@@ -781,13 +775,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.NotifyUserConfirmation(UserConfirmation.Send);
 
             // Verify logs have been processed and removed.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, true);
             Assert.IsFalse(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
 
             // We need to keep exception file until sent or failed to sent, tested in other tests.
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
         }
 
         [TestMethod]
@@ -805,13 +799,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
 
             // Verify logs have been processed and removed, alwaysSendValue is saved.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id && log.ProcessId == expectedProcessId)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
             Assert.IsTrue(alwaysSendValue);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
            
             // We need to keep exception file until sent or failed to sent, tested in other tests.
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
         }
 
         /// <summary>
@@ -827,8 +821,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Stub get/read/delete error files.
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
-            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
-            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(_expectedManagedErrorLog);
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
             return mockErrorLogHelper;
         }
