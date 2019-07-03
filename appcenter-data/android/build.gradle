@@ -28,4 +28,7 @@ dependencies {
 
     api project(':AppCenterReactNativeShared')   // For testing with TestApp
 //    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.1.0'
+
+//    TODO Remove gson once Android SDK dependencies are updated
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
