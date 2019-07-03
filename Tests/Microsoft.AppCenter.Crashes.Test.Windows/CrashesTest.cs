@@ -32,6 +32,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>()
         };
 
+        private readonly System.Exception _expectedException = new DivideByZeroException();
+
         [TestInitialize]
         public void InitializeCrashTest()
         {
@@ -225,20 +227,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockExceptionFile = Mock.Of<File>();
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog
-            {
-                Id = Guid.NewGuid(),
-                Timestamp = DateTime.Now,
-                AppLaunchTimestamp = DateTime.Now,
-                Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
-            };
 
             // Stub get/read/delete error files.
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile, mockErrorLogCorruptedFile1, mockErrorLogCorruptedFile2 });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(_expectedManagedErrorLog);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogCorruptedFile1)).Returns<ManagedErrorLog>(null);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogCorruptedFile2)).Returns<ManagedErrorLog>(null);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
             Mock.Get(mockErrorLogCorruptedFile1).Setup(file => file.Delete()).Throws(new System.IO.IOException());
             Mock.Get(mockErrorLogCorruptedFile1).Setup(file => file.Name).Returns($"{corruptedId1}.exception");
@@ -256,9 +251,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(corruptedId1), Times.Once());
 
             // The regular process file has just the json file being deleted and exception file being kept.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(expectedManagedErrorLog), Times.Once());
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog.Id), Times.Once());
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(_expectedManagedErrorLog), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
         }
 
         [TestMethod]
@@ -288,18 +283,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void SubscribeAndUnsubscribeSendingAndSentCallbacks()
         {
-            var mockErrorLogFile = Mock.Of<File>();
-            var mockExceptionFile = Mock.Of<File>();
-            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
-            ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
-            var expectedException = new ArgumentException("ttl must be positive");
-
-            // Stub get/read/delete error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(expectedException);
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Subscribe to callbacks.
             ErrorReport actualSendingReport = null;
@@ -323,29 +307,29 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify crashes logs have been queued to the channel on start.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id)), Times.Once());
 
             // Simulate and verify sending callback is called.
-            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             Assert.IsNotNull(actualSendingReport);
-            Assert.AreEqual(expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
-            Assert.AreEqual(expectedException, actualSendingReport.Exception);
+            Assert.AreEqual(_expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
+            Assert.AreEqual(_expectedException, actualSendingReport.Exception);
             Assert.IsNotNull(actualSendingReport.Device);
-            Assert.AreEqual(expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
-            Assert.AreEqual(expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
+            Assert.AreEqual(_expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
+            Assert.AreEqual(_expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
             Assert.IsNull(actualSendingReport.AndroidDetails);
             Assert.IsNull(actualSendingReport.iOSDetails);
             Assert.AreEqual(1, sendingReportCallCount);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
 
             // Check unknown log type does not crash.
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(Mock.Of<Log>()));
 
             // Simulate and verify sent callback is called.
-            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(_expectedManagedErrorLog));
             Assert.AreSame(actualSendingReport, actualSentReport);
             Assert.AreEqual(1, sentReportCallCount);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Once());
 
             // Check unknown log type does not crash.
             _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(Mock.Of<Log>()));
@@ -354,30 +338,19 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.SetEnabledAsync(false).Wait();
 
             // Simulate and verify sending callback isn't called.
-            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             Assert.AreEqual(1, sendingReportCallCount);
 
             // Simulate and verify sent callback isn't called.
-            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(_expectedManagedErrorLog));
             Assert.AreEqual(1, sentReportCallCount);
         }
 
         [TestMethod]
         public void SubscribeAndUnsubscribeSendingAndFailedToSendCallbacks()
         {
-            var mockErrorLogFile = Mock.Of<File>();
-            var mockExceptionFile = Mock.Of<File>();
-            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
-            ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
-            var expectedException = new ArgumentException("ttl must be positive");
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
             var expectedFailedToSendException = new System.IO.IOException("broken pipe");
-
-            // Stub get/read/delete error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(expectedManagedErrorLog);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(expectedException);
 
             // Subscribe to callbacks.
             ErrorReport actualSendingReport = null;
@@ -403,30 +376,30 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
             // Verify crashes logs have been queued to the channel on start.
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog.Id)), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id)), Times.Once());
 
             // Simulate and verify sending callback is called.
-            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             Assert.IsNotNull(actualSendingReport);
-            Assert.AreEqual(expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
-            Assert.AreEqual(expectedException, actualSendingReport.Exception);
+            Assert.AreEqual(_expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
+            Assert.AreEqual(_expectedException, actualSendingReport.Exception);
             Assert.IsNotNull(actualSendingReport.Device);
-            Assert.AreEqual(expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
-            Assert.AreEqual(expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
+            Assert.AreEqual(_expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
+            Assert.AreEqual(_expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
             Assert.IsNull(actualSendingReport.AndroidDetails);
             Assert.IsNull(actualSendingReport.iOSDetails);
             Assert.AreEqual(1, sendingReportCallCount);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Never());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
 
             // Check unknown log type does not crash.
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(Mock.Of<Log>()));
 
             // Simulate and verify sent callback is called.
-            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, expectedFailedToSendException));
+            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(_expectedManagedErrorLog, expectedFailedToSendException));
             Assert.AreSame(actualSendingReport, actualFailedToSentReport);
             Assert.AreSame(expectedFailedToSendException, actualFailedToSendException);
             Assert.AreEqual(1, failedToSendReportCallCount);
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(expectedManagedErrorLog.Id), Times.Once());
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Once());
 
             // Check unknown log type does not crash.
             _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(Mock.Of<Log>(), new System.Exception()));
@@ -435,11 +408,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.SetEnabledAsync(false).Wait();
 
             // Simulate and verify sending callback isn't called.
-            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             Assert.AreEqual(1, sendingReportCallCount);
 
             // Simulate and verify sent callback isn't called.
-            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, new System.Exception()));
+            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(_expectedManagedErrorLog, new System.Exception()));
             Assert.AreEqual(1, failedToSendReportCallCount);
         }
 
@@ -448,9 +421,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.UtcNow, Timestamp = DateTime.UtcNow, Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>() };
             Mock.Get(ErrorLogHelper.Instance)
-                .Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(default(File));
+                .Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(default(File));
 
             // Subscribe to callbacks.
             var sendingReportCallCount = 0;
@@ -474,9 +446,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
 
             // None of the events work if the exception file is unreadable.
-            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(expectedManagedErrorLog));
-            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(expectedManagedErrorLog));
-            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(expectedManagedErrorLog, new System.Exception()));
+            _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(_expectedManagedErrorLog));
+            _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(_expectedManagedErrorLog, new System.Exception()));
             Assert.AreEqual(0, sendingReportCallCount);
             Assert.AreEqual(0, sentReportCallCount);
             Assert.AreEqual(0, failedToSendReportCallCount);
@@ -569,15 +541,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void DisablingCrashesCleansUpLastSessionReport()
         {
-            var mockFile = Mock.Of<File>();
-            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
-            ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
-
-            // Stub get/read error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(Mock.Of<File>());
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start crashes service in an enabled to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();
@@ -602,15 +566,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void DoesNotGetLastSessionErrorReportWhenDisabledAndCrashOnDisk()
         {
-            var mockFile = Mock.Of<File>();
-            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
-            ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedManagedErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
-
-            // Stub get/read error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockFile });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile)).Returns(expectedManagedErrorLog);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog.Id)).Returns(Mock.Of<File>());
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
 
             // Start crashes service in a disabled state.
             Crashes.SetEnabledAsync(false).Wait();
@@ -823,7 +779,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(_expectedManagedErrorLog);
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
-            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(_expectedException);
             return mockErrorLogHelper;
         }
     }
