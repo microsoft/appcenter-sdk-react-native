@@ -257,7 +257,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void ProcessPendingErrorsWithCorruptedExceptionFileIsDeleted()
+        public void ProcessPendingErrorWithCorruptedFieldsIsDeleted()
         {
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
@@ -417,7 +417,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void EventNotTriggeredWhenExceptionFileCannotBeFound()
+        public void EventTriggeredWhenExceptionFileCannotBeFound()
         {
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
@@ -425,19 +425,25 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 .Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(default(File));
 
             // Subscribe to callbacks.
+            ErrorReport actualSendingReport = null;
             var sendingReportCallCount = 0;
             Crashes.SendingErrorReport += (_, e) =>
             {
+                actualSendingReport = e.Report;
                 sendingReportCallCount++;
             };
+            ErrorReport actualSentReport = null;
             var sentReportCallCount = 0;
             Crashes.SentErrorReport += (_, e) =>
             {
+                actualSentReport = e.Report;
                 sentReportCallCount++;
             };
+            ErrorReport failedToSendReport = null;
             var failedToSendReportCallCount = 0;
             Crashes.FailedToSendErrorReport += (_, e) =>
             {
+                failedToSendReport = e.Report;
                 failedToSendReportCallCount++;
             };
 
@@ -449,9 +455,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             _mockChannelGroup.Raise(channel => channel.SentLog += null, null, new SentLogEventArgs(_expectedManagedErrorLog));
             _mockChannelGroup.Raise(channel => channel.FailedToSendLog += null, null, new FailedToSendLogEventArgs(_expectedManagedErrorLog, new System.Exception()));
-            Assert.AreEqual(0, sendingReportCallCount);
-            Assert.AreEqual(0, sentReportCallCount);
-            Assert.AreEqual(0, failedToSendReportCallCount);
+            Assert.AreEqual(1, sendingReportCallCount);
+            Assert.AreEqual(1, sentReportCallCount);
+            Assert.AreEqual(1, failedToSendReportCallCount);
+            Assert.IsNotNull(actualSendingReport);
+            Assert.IsNull(actualSendingReport.Exception);
+            Assert.IsNotNull(actualSentReport);
+            Assert.IsNull(actualSentReport.Exception);
+            Assert.IsNotNull(failedToSendReport);
+            Assert.IsNull(failedToSendReport.Exception);
         }
 
         [TestMethod]
@@ -587,7 +599,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var expectedFiles = new List<File> { oldFile, recentFile };
             var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
             ErrorLogHelper.Instance = mockErrorLogHelper;
-            var expectedRecentErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now, Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
+            var expectedRecentErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now, Timestamp = DateTime.Now };
             var expectedOldErrorLog = new ManagedErrorLog { Id = Guid.NewGuid(), AppLaunchTimestamp = DateTime.Now.AddDays(-200), Timestamp = DateTime.Now.AddDays(-200), Device = new Microsoft.AppCenter.Ingestion.Models.Device() };
 
             // Stub get/read error files.

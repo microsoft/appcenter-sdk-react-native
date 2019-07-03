@@ -22,6 +22,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     var formatter = new BinaryFormatter();
                     formatter.Serialize(fileStream, exception);
                 }
+                AppCenterLog.Debug(Crashes.LogTag, $"Saved exception in directory {ErrorStorageDirectoryName} with name {fileName}.");
             }
             catch (Exception e)
             {

@@ -256,7 +256,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 // Serialize binary exception.
                 var exceptionFileName = errorLog.Id + ExceptionFileExtension;
                 SaveExceptionFile(directory, exceptionFileName, exception);
-                AppCenterLog.Debug(Crashes.LogTag, $"Saved exception in directory {ErrorStorageDirectoryName} with name {exceptionFileName}.");
             }
             catch (System.Exception ex)
             {
@@ -361,7 +360,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    return InstanceGetErrorStorageDirectory().EnumerateFiles(fileName).Single();
+                    return InstanceGetErrorStorageDirectory().EnumerateFiles(fileName).SingleOrDefault();
                 }
             }
             catch (System.Exception ex)
