@@ -258,7 +258,7 @@ export default class AppCenterScreen extends Component {
                       const result = await Auth.signIn();
                       this.setState({ accountId: result.accountId, isTokenSet: !!result.accessToken });
 
-                      runMBaaSCode();
+                      runDataCrudScenarios();
                     } catch (e) {
                       console.log(e);
                     }
@@ -320,8 +320,9 @@ export default class AppCenterScreen extends Component {
   }
 }
 
-function runMBaaSCode() {
+async function runDataCrudScenarios() {
   const MY_DOCUMENT_ID = 'some-random-document-id';
+
   const readOptions = new Data.ReadOptions(5000);
   const writeOptions = new Data.WriteOptions(5000);
 
@@ -342,19 +343,32 @@ function runMBaaSCode() {
     '👻 as a key': '🤖'
   };
 
-  Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions).then((res) => {
-    console.log('Successful create');
-    console.log(res);
-  }).catch((err) => {
-    console.log('Failed create');
-    console.log(err);
-  });
+  const updatedUser = {
+    name: 'Bob',
+    email: 'bob@appcenter.ms',
+    number: '+1-(855)-111-1111',
+    someNullOther: null,
+    nestedObject2: {
+      key1: 'key3',
+      key2: 'key4',
+      nestedArray: [1, 2, 3.0, 'four', null]
+    },
+    someNumber: 99.1,
+    someOtherNumber2: 99.0,
+    someBool2: false,
+    someOtherBool: true,
+    '👀': '🙉'
+  };
 
-  Data.read(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, readOptions).then((res) => {
-    console.log('Successful read');
-    console.log(res);
-  }).catch((err) => {
-    console.log('Failed read');
-    console.log(err);
-  });
+  const createResult = await Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
+  console.log('Successful create', createResult);
+
+  const readResult = await Data.read(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, readOptions);
+  console.log('Successful read', readResult);
+
+  const replaceResult = await Data.replace(MY_DOCUMENT_ID, updatedUser, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
+  console.log('Successful replace', replaceResult);
+
+  const removeResult = await Data.remove(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
+  console.log('Successful remove', removeResult);
 }

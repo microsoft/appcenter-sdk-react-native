@@ -62,28 +62,31 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
-        ReadOptions readOptions;
-        if (readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
-        } else {
-            readOptions = new ReadOptions(TimeToLive.DEFAULT);
-        }
-        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer("Read failed", promise));
+        ReadOptions readOptions = getReadOptions(readOptionsMap);
+        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>("Read failed", promise));
     }
 
     @ReactMethod
-    public void create(String documentId, ReadableMap readableMap, String partition, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions;
-        if (writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
-        } else {
-            writeOptions = new WriteOptions(TimeToLive.DEFAULT);
-        }
-        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(readableMap);
-        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer("Create failed", promise));
+    public void create(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
+        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
+        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Create failed", promise));
     }
 
-    private class Consumer implements AppCenterConsumer<DocumentWrapper<JsonElement>> {
+    @ReactMethod
+    public void remove(String documentId, String partition, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
+        Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>("Delete failed", promise));
+    }
+
+    @ReactMethod
+    public void replace(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
+        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
+        JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
+        Data.replace(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Replace failed", promise));
+    }
+
+    private class Consumer<T> implements AppCenterConsumer<DocumentWrapper<T>> {
 
         private Promise mPromise;
 
@@ -95,22 +98,26 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         }
 
         @Override
-        public void accept(DocumentWrapper<JsonElement> documentWrapper) {
+        public void accept(DocumentWrapper<T> documentWrapper) {
             WritableMap jsDocumentWrapper = new WritableNativeMap();
             jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
             jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
             jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
+
+            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
+            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
+            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
             if (documentWrapper.getError() != null) {
                 DataException dataException = documentWrapper.getError();
                 mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
                 return;
             }
-            JsonElement deserializedValue = documentWrapper.getDeserializedValue();
-            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
-
-            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
-            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
-            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+            if (!(documentWrapper.getDeserializedValue() instanceof JsonElement)) {
+                mPromise.resolve(jsDocumentWrapper);
+                return;
+            }
+            JsonElement deserializedValue = (JsonElement) documentWrapper.getDeserializedValue();
             if (deserializedValue.isJsonPrimitive()) {
                 JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
                 if (jsonPrimitive.isString()) {
@@ -133,5 +140,25 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             }
             mPromise.resolve(jsDocumentWrapper);
         }
+    }
+
+    private ReadOptions getReadOptions(ReadableMap readOptionsMap) {
+        ReadOptions readOptions;
+        if (readOptionsMap != null && readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            readOptions = new ReadOptions();
+        }
+        return readOptions;
+    }
+
+    private WriteOptions getWriteOptions(ReadableMap writeOptionsMap) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap != null && writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions();
+        }
+        return writeOptions;
     }
 }

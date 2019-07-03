@@ -8,7 +8,7 @@ const { AppCenterReactNativeData } = ReactNative.NativeModules;
 const TimeToLive = {
     INFINITE: -1,
     NO_CACHE: 0,
-    DEFAULT: 86400
+    DEFAULT: -1
 };
 
 const DefaultPartitions = {
@@ -20,7 +20,9 @@ const Data = {
     TimeToLive,
     DefaultPartitions,
     read,
-    create
+    create,
+    remove,
+    replace
 };
 
 /**
@@ -53,7 +55,40 @@ function create(documentId, document, partition, writeOptions) {
     if (writeOptions === undefined) {
         writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
     }
-    return AppCenterReactNativeData.create(documentId, document, partition, writeOptions).then(convertTimestampToDate);
+    return AppCenterReactNativeData.create(documentId, partition, document, writeOptions).then(convertTimestampToDate);
+}
+
+/**
+ * Delete a document.
+ *
+ * @param {string} documentId - The CosmosDB document id.
+ * @param {string} partition - The CosmosDB partition key.
+ * @param {object} writeOptions - Cache write options when the operation is done offline.
+ * @return {Promise} Future asynchronous operation with result being the document with metadata.
+ * If the operation fails, the promise is rejected with an exception containing the details of the error.
+ */
+function remove(documentId, partition, writeOptions) {
+    if (writeOptions === undefined) {
+        writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
+    }
+    return AppCenterReactNativeData.remove(documentId, partition, writeOptions);
+}
+
+/**
+ * Replace a document.
+ *
+ * @param {string} documentId - The CosmosDB document id.
+ * @param {object} document - The document.
+ * @param {string} partition - The CosmosDB partition key.
+ * @param {object} writeOptions - Cache write options when the operation is done offline.
+ * @return {Promise} Future asynchronous operation with result being the document with metadata.
+ * If the operation fails, the promise is rejected with an exception containing the details of the error.
+ */
+function replace(documentId, document, partition, writeOptions) {
+    if (writeOptions === undefined) {
+        writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
+    }
+    return AppCenterReactNativeData.replace(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
 
 Data.ReadOptions = class {
@@ -69,11 +104,10 @@ Data.WriteOptions = class {
 };
 
 function convertTimestampToDate(result) {
-    if (!result || !result.lastUpdatedDate) {
-        return result;
+    if (result && result.lastUpdatedDate) {
+        // Create a new `Date` object from timestamp as milliseconds.
+        result.lastUpdatedDate = new Date(result.lastUpdatedDate);
     }
-    // Create a new `Date` object from timestamp as milliseconds.
-    result.lastUpdatedDate = new Date(result.lastUpdatedDate);
     return result;
 }
 
