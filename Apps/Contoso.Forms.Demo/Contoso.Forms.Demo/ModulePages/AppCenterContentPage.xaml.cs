@@ -37,7 +37,17 @@ namespace Contoso.Forms.Demo
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        internal static string UserIdKey = "userId";
+
         private string _userId;
+
+        public EntryCellTextChanged()
+        {
+            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
+            {
+                UserId = id;
+            }
+        }
 
         public string UserId
         {
@@ -59,6 +69,7 @@ namespace Contoso.Forms.Demo
                 PropertyChanged(this, new PropertyChangedEventArgs(inputText));
                 var text = string.IsNullOrEmpty(inputText) ? null : inputText;
                 AppCenter.SetUserId(text);
+                Application.Current.Properties[UserIdKey] = text;
             }
         }
     }
