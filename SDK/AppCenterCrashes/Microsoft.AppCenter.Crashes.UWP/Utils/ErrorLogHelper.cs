@@ -10,8 +10,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
     {
         private void SaveExceptionFile(Directory directory, string fileName, Exception exception)
         {
-            // We don't support serializing exception for client side inspection on UWP, but we still need an empty file which acts as a marker for error report lifecycle.
-            directory.CreateFile(fileName, "");
+            // We don't support serializing exception for client side inspection on UWP.
         }
 
         /// <summary>

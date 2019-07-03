@@ -216,7 +216,7 @@ namespace Microsoft.AppCenter.Crashes
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
 
-                    // Finish processing the file.
+                    // Delete file if corrupted.
                     if (log == null)
                     {
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
@@ -236,27 +236,29 @@ namespace Microsoft.AppCenter.Crashes
                         }
                         continue;
                     }
-                    var report = BuildErrorReport(log);
-                    if (report == null)
+
+                    // The error report cannot be built if any of those fields are null.
+                    if (log.Device == null || log.AppLaunchTimestamp == null || log.Timestamp == null)
                     {
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
                         RemoveAllStoredErrorLogFiles(log.Id);
+                        continue;
+                    }
+
+                    // Build and record error report.
+                    var report = BuildErrorReport(log);
+                    if (lastSessionErrorReport == null || lastSessionErrorReport.AppErrorTime < report.AppErrorTime)
+                    {
+                        lastSessionErrorReport = report;
+                    }
+                    if (ShouldProcessErrorReport?.Invoke(report) ?? true)
+                    {
+                        _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
                     else
                     {
-                        if (lastSessionErrorReport == null || lastSessionErrorReport.AppErrorTime < report.AppErrorTime)
-                        {
-                            lastSessionErrorReport = report;
-                        }
-                        if (ShouldProcessErrorReport?.Invoke(report) ?? true)
-                        {
-                            _unprocessedManagedErrorLogs.Add(log.Id, log);
-                        }
-                        else
-                        {
-                            AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
-                            RemoveAllStoredErrorLogFiles(log.Id);
-                        }
+                        AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
+                        RemoveAllStoredErrorLogFiles(log.Id);
                     }
                 }
                 _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
@@ -384,11 +386,7 @@ namespace Microsoft.AppCenter.Crashes
                 return _errorReportCache[log.Id];
             }
             var file = ErrorLogHelper.GetStoredExceptionFile(log.Id);
-            if (file == null)
-            {
-                return null;
-            }
-            var exception = ErrorLogHelper.ReadExceptionFile(file);
+            var exception = file == null ? null : ErrorLogHelper.ReadExceptionFile(file);
             var report = new ErrorReport(log, exception);
             _errorReportCache.Add(log.Id, report);
             return report;
@@ -426,18 +424,11 @@ namespace Microsoft.AppCenter.Crashes
             if (channelEventArgs.Log is ManagedErrorLog log)
             {
                 var report = BuildErrorReport(log);
-                if (report == null)
+                if (channelEventArgs is SentLogEventArgs || channelEventArgs is FailedToSendLogEventArgs)
                 {
-                    AppCenterLog.Warn(LogTag, $"Cannot find crash report for the error log: {log.Id}");
+                    ErrorLogHelper.RemoveStoredExceptionFile(log.Id);
                 }
-                else
-                {
-                    if (channelEventArgs is SentLogEventArgs || channelEventArgs is FailedToSendLogEventArgs)
-                    {
-                        ErrorLogHelper.RemoveStoredExceptionFile(log.Id);
-                    }
-                    return report;
-                }
+                return report;
             }
             return null;
         }
