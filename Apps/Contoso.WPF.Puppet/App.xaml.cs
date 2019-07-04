@@ -5,6 +5,7 @@ using Contoso.WPF.Puppet.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using System.IO;
 using System.Windows;
 
 namespace Contoso.WPF.Puppet
@@ -18,11 +19,19 @@ namespace Contoso.WPF.Puppet
         {
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+
             Crashes.GetErrorAttachments = (ErrorReport report) =>
             {
+                byte[] fileContent = null;
+                string fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
+                if (File.Exists(Settings.Default.FileErrorAttachments))
+                {
+                    fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
+                }
                 return new ErrorAttachmentLog[]
                 {
-                    ErrorAttachmentLog.AttachmentWithText(Settings.Default.TextErrorAttachments, Settings.Default.FileErrorAttachments),
+                    ErrorAttachmentLog.AttachmentWithText(Settings.Default.TextErrorAttachments, fileName),
+                    ErrorAttachmentLog.AttachmentWithBinary(fileContent, fileName, "text/plain")
                 };
             };
             AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));

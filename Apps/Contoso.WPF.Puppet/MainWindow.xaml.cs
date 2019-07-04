@@ -13,6 +13,7 @@ using Contoso.WPF.Puppet.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Win32;
 
 namespace Contoso.WPF.Puppet
 {
@@ -130,13 +131,15 @@ namespace Contoso.WPF.Puppet
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
         {
-            var filePath = string.Empty;
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == true)
+            string filePath = string.Empty;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            bool? result = openFileDialog.ShowDialog();
+            if (result.GetValueOrDefault(false))
             {
                 filePath = openFileDialog.FileName;
                 FileAttachmentLabel.Content = filePath;
