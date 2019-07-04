@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform, AsyncStorage } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
+import Auth from 'appcenter-auth';
 import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
@@ -69,10 +71,13 @@ export default class AppCenterScreen extends Component {
   state = {
     appCenterEnabled: false,
     pushEnabled: false,
+    authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    userId: ''
+    userId: '',
+    accountId: '',
+    authStatus: 'Authentication status unknown'
   }
 
   async componentWillMount() {
@@ -98,6 +103,9 @@ export default class AppCenterScreen extends Component {
   async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
+
+    const authEnabled = await Auth.isEnabled();
+    this.setState({ authEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -160,7 +168,7 @@ export default class AppCenterScreen extends Component {
     const valueRenderItem = ({ item: { title, value, onChange, onSubmit } }) => (
       <View style={SharedStyles.item}>
         <Text style={SharedStyles.itemTitle}>{title}</Text>
-        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{this.state[value]}</TextInput> : <Text>{this.state[value]}</Text>}
+        {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{String(this.state[value])}</TextInput> : <Text>{String(this.state[value])}</Text>}
       </View>
     );
 
@@ -196,8 +204,18 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setEnabled(!this.state.appCenterEnabled);
                     const appCenterEnabled = await AppCenter.isEnabled();
+                    const authEnabled = await Auth.isEnabled();
                     const pushEnabled = await Push.isEnabled();
-                    this.setState({ appCenterEnabled, pushEnabled });
+                    this.setState({ appCenterEnabled, authEnabled, pushEnabled });
+                  }
+                },
+                {
+                  title: 'Auth Enabled',
+                  value: 'authEnabled',
+                  toggle: async () => {
+                    await Auth.setEnabled(!this.state.authEnabled);
+                    const authEnabled = await Auth.isEnabled();
+                    this.setState({ authEnabled, accountId: '', authStatus: 'User is not authenticated' });
                   }
                 },
                 {
@@ -232,6 +250,30 @@ export default class AppCenterScreen extends Component {
               renderItem: actionRenderItem
             },
             {
+              title: 'Auth',
+              data: [
+                {
+                  title: 'Sign In',
+                  action: async () => {
+                    try {
+                      const result = await Auth.signIn();
+                      this.setState({ accountId: result.accountId, authStatus: 'User is authenticated' });
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  }
+                },
+                {
+                  title: 'Sign Out',
+                  action: () => {
+                    Auth.signOut();
+                    this.setState({ accountId: '', authStatus: 'User is not authenticated' });
+                  }
+                },
+              ],
+              renderItem: actionRenderItem
+            },
+            {
               title: 'Miscellaneous',
               data: [
                 { title: 'Install ID', value: 'installId' },
@@ -251,6 +293,20 @@ export default class AppCenterScreen extends Component {
                       await AsyncStorage.removeItem(USER_ID_KEY);
                     }
                     await AppCenter.setUserId(userId);
+                  }
+                },
+                {
+                  title: 'Account ID',
+                  value: 'accountId',
+                  onChange: async (accountId) => {
+                    this.setState({ accountId });
+                  }
+                },
+                {
+                  title: 'Auth Status',
+                  value: 'authStatus',
+                  onChange: async (authStatus) => {
+                    this.setState({ authStatus });
                   }
                 }
               ],

@@ -3,10 +3,10 @@ include ':appcenter-push'
 project(':appcenter-push').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-push/android')
 include ':appcenter-data'
 project(':appcenter-data').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-data/android')
-include ':appcenter-auth'
-project(':appcenter-auth').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-auth/android')
 include ':appcenter-crashes'
 project(':appcenter-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-crashes/android')
+include ':appcenter-auth'
+project(':appcenter-auth').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-auth/android')
 include ':appcenter-analytics'
 project(':appcenter-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-analytics/android')
 include ':appcenter'
@@ -17,6 +17,8 @@ include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
+include ':@react-native-community_async-storage'
+project(':@react-native-community_async-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/async-storage/android')
 
 include 'AppCenterReactNativeShared'
 project(':AppCenterReactNativeShared').projectDir = new File(rootProject.projectDir, '../../AppCenterReactNativeShared/android')
