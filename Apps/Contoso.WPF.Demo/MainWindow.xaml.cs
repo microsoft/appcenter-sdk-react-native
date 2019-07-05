@@ -105,14 +105,14 @@ namespace Contoso.WPF.Demo
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = string.Empty;
+            var filePath = string.Empty;
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "All files (*.*)|*.*",
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
-            bool? result = openFileDialog.ShowDialog();
+            var result = openFileDialog.ShowDialog();
             if (result ?? false)
             {
                 filePath = openFileDialog.FileName;

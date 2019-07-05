@@ -6,9 +6,8 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System.IO;
-using System.Net.Mime;
-using System.Net.Mail;
 using System.Windows;
+using System.Web;
 
 namespace Contoso.WPF.Puppet
 {
@@ -24,11 +23,11 @@ namespace Contoso.WPF.Puppet
             Crashes.GetErrorAttachments = (ErrorReport report) =>
             {
                 byte[] fileContent = null;
-                string fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
-                string mimeType = "";
+                var fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
+                var mimeType = "";
                 if (File.Exists(Settings.Default.FileErrorAttachments))
                 {
-                    mimeType = System.Web.MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
+                    mimeType = MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
                     fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
                 }
                 return new ErrorAttachmentLog[]
