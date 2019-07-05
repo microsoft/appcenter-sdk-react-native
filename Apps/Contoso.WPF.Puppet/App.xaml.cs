@@ -21,7 +21,6 @@ namespace Contoso.WPF.Puppet
         {
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-
             Crashes.GetErrorAttachments = (ErrorReport report) =>
             {
                 byte[] fileContent = null;
@@ -29,7 +28,7 @@ namespace Contoso.WPF.Puppet
                 string mimeType = "";
                 if (File.Exists(Settings.Default.FileErrorAttachments))
                 {
-                    mimeType = new Attachment(fileName, MediaTypeNames.Application.Octet).ContentType.MediaType;
+                    mimeType = System.Web.MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
                     fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
                 }
                 return new ErrorAttachmentLog[]

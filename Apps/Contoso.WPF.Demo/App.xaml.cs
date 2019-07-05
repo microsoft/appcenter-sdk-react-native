@@ -27,7 +27,7 @@ namespace Contoso.WPF.Demo
                 string mimeType = "";
                 if (File.Exists(Settings.Default.FileErrorAttachments))
                 {
-                    mimeType = new Attachment(fileName, MediaTypeNames.Application.Octet).ContentType.MediaType;
+                    mimeType = System.Web.MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
                     fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
                 }
                 return new ErrorAttachmentLog[]
