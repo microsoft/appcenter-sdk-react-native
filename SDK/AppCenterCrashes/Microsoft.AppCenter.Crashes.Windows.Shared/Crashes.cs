@@ -358,7 +358,11 @@ namespace Microsoft.AppCenter.Crashes
                     attachment.ErrorId = errorId;
                     try
                     {
-                        attachment.ValidatePropertiesForAttachment();
+                        if (!attachment.ValidatePropertiesForAttachment())
+                        {
+                            AppCenterLog.Error(LogTag, "Not all required fields are present in ErrorAttachmentLog.");
+                            continue;
+                        }
                         ++totalErrorAttachments;
                         tasks.Add(Channel.EnqueueAsync(attachment));
                     }
