@@ -108,12 +108,12 @@ namespace Contoso.WPF.Demo
             string filePath = string.Empty;
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                Filter = "All files (*.*)|*.*",
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
             bool? result = openFileDialog.ShowDialog();
-            if (result.GetValueOrDefault(false))
+            if (result ?? false)
             {
                 filePath = openFileDialog.FileName;
                 FileAttachmentLabel.Content = filePath;
