@@ -79,7 +79,6 @@ namespace Microsoft.AppCenter.Crashes
         /// </exception>
         public override void Validate()
         {
-            base.Validate();
             if (ContentType == null)
             {
                 throw new ValidationException(ValidationException.Rule.CannotBeNull, "ContentType");
