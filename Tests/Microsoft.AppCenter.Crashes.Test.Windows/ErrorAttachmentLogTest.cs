@@ -115,6 +115,67 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.ThrowsException<ValidationException>(() => validErrorAttachmentLog.Validate());
         }
 
+        [TestMethod]
+        public void TestValidateTrueValidData()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                ContentType = "ContentType",
+                ErrorId = System.Guid.NewGuid(),
+                Data = new byte[] { 1, 2, 3, 4 },
+                Id = System.Guid.NewGuid()
+            };
+            Assert.IsTrue(validErrorAttachmentLog.ValidatePropertiesForAttachment());
+        }
+
+        [TestMethod]
+        public void TestValidateFalseIfMissingData()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                ContentType = "ContentType",
+                ErrorId = System.Guid.NewGuid(),
+                Id = System.Guid.NewGuid()
+            };
+            Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
+        }
+
+        [TestMethod]
+        public void TestValidateeFalseIfMissingContentType()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                Data = new byte[] { 1, 2, 3, 4 },
+                Id = System.Guid.NewGuid(),
+                ErrorId = System.Guid.NewGuid(),
+            };
+            Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
+        }
+
+        [TestMethod]
+        public void TestValidateFalseIfInvalideErrorId()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                Data = new byte[] { 1, 2, 3, 4 },
+                ContentType = "ContentType",
+                Id = System.Guid.NewGuid()
+            };
+            Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
+        }
+
+        [TestMethod]
+        public void TestValidateeFalseIfInvalideAttachId()
+        {
+            var validErrorAttachmentLog = new ErrorAttachmentLog
+            {
+                Data = new byte[] { 1, 2, 3, 4 },
+                ErrorId = System.Guid.NewGuid(),
+                ContentType = "ContentType",
+            };
+            Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
+        }
+
         private Microsoft.AppCenter.Ingestion.Models.Device GetValidDevice()
         {
             return new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion",
