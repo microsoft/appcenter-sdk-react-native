@@ -79,6 +79,7 @@ namespace Microsoft.AppCenter.Crashes
         /// </exception>
         public override void Validate()
         {
+            base.Validate();
             if (ContentType == null)
             {
                 throw new ValidationException(ValidationException.Rule.CannotBeNull, "ContentType");
@@ -87,6 +88,15 @@ namespace Microsoft.AppCenter.Crashes
             {
                 throw new ValidationException(ValidationException.Rule.CannotBeNull, "Data");
             }
+        }
+
+        public bool ValidatePropertiesForAttachment()
+        {
+            bool errorIdValid = ErrorId != System.Guid.Empty;
+            bool attachmentIdValid = Id != System.Guid.Empty;
+            bool attachmentDataValid = (Data != null) && (Data.Length > 0);
+            bool contentTypeValid = !string.IsNullOrEmpty(ContentType);
+            return errorIdValid && attachmentIdValid && attachmentDataValid && contentTypeValid;
         }
     }
 }

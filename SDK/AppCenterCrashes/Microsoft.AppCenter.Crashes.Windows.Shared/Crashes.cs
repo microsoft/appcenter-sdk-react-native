@@ -358,7 +358,7 @@ namespace Microsoft.AppCenter.Crashes
                     attachment.ErrorId = errorId;
                     try
                     {
-                        attachment.Validate();
+                        attachment.ValidatePropertiesForAttachment();
                         ++totalErrorAttachments;
                         tasks.Add(Channel.EnqueueAsync(attachment));
                     }
