@@ -177,6 +177,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Create two valid and one invalid attachment.
             var invalidErrorAttachment1 = new ErrorAttachmentLog();
+            var validErrorAttachmentWithoutDevice = new ErrorAttachmentLog()
+            {
+                ContentType = "ContentType",
+                ErrorId = Guid.NewGuid(),
+                Data = new byte[] { 1 },
+                Id = Guid.NewGuid()
+            };
             var validErrorAttachment1 = GetValidErrorAttachmentLog();
             var validErrorAttachment2 = GetValidErrorAttachmentLog();
 
@@ -185,7 +192,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             {
                 if (errorReport.Id == expectedManagedErrorLog1.Id.ToString())
                 {
-                    return new List<ErrorAttachmentLog> { invalidErrorAttachment1, validErrorAttachment1 };
+                    return new List<ErrorAttachmentLog> { invalidErrorAttachment1, validErrorAttachmentWithoutDevice, validErrorAttachment1 };
                 }
                 return new List<ErrorAttachmentLog> { validErrorAttachment2 };
             };
@@ -196,6 +203,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Verify all valid attachment logs has been queued to the channel, but not invalid one.
             _mockChannel.Verify(channel => channel.EnqueueAsync(invalidErrorAttachment1), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachmentWithoutDevice), Times.Once());
             _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment1), Times.Once());
             _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment2), Times.Once());
         }
@@ -204,7 +212,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             var device = new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion", "locale", 1,
                 "appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize", null, null, "appNamespace", null, null, null, null);
-            return new ErrorAttachmentLog() { ContentType = "contenttype", Data = new byte[] { 1 }, Device = device };
+            return new ErrorAttachmentLog() { ContentType = "contenttype", Id = Guid.NewGuid(), ErrorId = Guid.NewGuid(), Data = new byte[] { 1 }, Device = device };
         }
     }
 }
