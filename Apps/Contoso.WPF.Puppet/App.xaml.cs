@@ -46,14 +46,14 @@ namespace Contoso.WPF.Puppet
 
         bool ConfirmationHandler()
         {
-            Current.Dispatcher.Invoke(new Action(() =>
+            Current.Dispatcher.Invoke(() =>
             {
                 var dialog = new UserConfirmationDialog();
-                if (dialog.ShowDialog() == true)
+                if (dialog.ShowDialog() ?? false)
                 {
                     Crashes.NotifyUserConfirmation(dialog.ClickResult);
                 }
-            }));
+            });
             return true;
         }
 
