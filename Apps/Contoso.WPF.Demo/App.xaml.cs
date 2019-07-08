@@ -61,7 +61,7 @@ namespace Contoso.WPF.Demo
             var report = e.Report;
             if (report.Exception != null)
             {
-                Log(report.Exception.ToString());
+                Log($"ErrorId: {report.Id}");
             }
         }
 
@@ -71,7 +71,7 @@ namespace Contoso.WPF.Demo
             var report = e.Report;
             if (report.Exception != null)
             {
-                Log(report.Exception.ToString());
+                Log($"ErrorId: {report.Id}");
             }
             else
             {
@@ -85,7 +85,7 @@ namespace Contoso.WPF.Demo
             var report = e.Report;
             if (report.Exception != null)
             {
-                Log(report.Exception.ToString());
+                Log($"ErrorId: {report.Id}");
             }
             if (e.Exception != null)
             {
