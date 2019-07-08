@@ -16,12 +16,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
-    public class ErrorLogHelper
+    public partial class ErrorLogHelper
     {
         /// <summary>
         /// Error log file extension for the JSON schema.
         /// </summary>
         public const string ErrorLogFileExtension = ".json";
+
+        /// <summary>
+        /// Error log file extension for the serialized exception for client side inspection.
+        /// </summary>
+        public const string ExceptionFileExtension = ".exception";
 
         /// <summary>
         /// Error log directory within application files.
@@ -108,6 +113,13 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static File GetStoredErrorLogFile(Guid errorId) => Instance.InstanceGetStoredErrorLogFile(errorId);
 
         /// <summary>
+        /// Gets the exception file with the given ID.
+        /// </summary>
+        /// <param name="errorId">The ID for the exception.</param>
+        /// <returns>The exception file or null if it is not found.</returns>
+        public static File GetStoredExceptionFile(Guid errorId) => Instance.InstanceGetStoredExceptionFile(errorId);
+
+        /// <summary>
         /// Reads an error log on disk.
         /// </summary>
         /// <param name="file">The error log file.</param>
@@ -115,16 +127,34 @@ namespace Microsoft.AppCenter.Crashes.Utils
         public static ManagedErrorLog ReadErrorLogFile(File file) => Instance.InstanceReadErrorLogFile(file);
 
         /// <summary>
-        /// Saves an error log on disk.
+        /// Reads an exception on disk.
         /// </summary>
+        /// <param name="file">The exception file.</param>
+        /// <returns>The exception instance.</returns>
+        public static System.Exception ReadExceptionFile(File file)
+        {
+            // The instance method is implemented in the other parts of the partial class in platform-specific projects.
+            return Instance.InstanceReadExceptionFile(file);
+        }
+
+        /// <summary>
+        /// Saves an error log and an exception on disk.
+        /// </summary>
+        /// <param name="exception">The exception that caused the crash.</param>
         /// <param name="errorLog">The error log.</param>
-        public static void SaveErrorLogFile(ManagedErrorLog errorLog) => Instance.InstanceSaveErrorLogFile(errorLog);
+        public static void SaveErrorLogFiles(System.Exception exception, ManagedErrorLog errorLog) => Instance.InstanceSaveErrorLogFiles(exception, errorLog);
 
         /// <summary>
         /// Deletes an error log from disk.
         /// </summary>
         /// <param name="errorId">The ID for the error log.</param>
         public static void RemoveStoredErrorLogFile(Guid errorId) => Instance.InstanceRemoveStoredErrorLogFile(errorId);
+
+        /// <summary>
+        /// Deletes an exception from disk.
+        /// </summary>
+        /// <param name="errorId">The ID for the exception.</param>
+        public static void RemoveStoredExceptionFile(Guid errorId) => Instance.InstanceRemoveStoredExceptionFile(errorId);
 
         /// <summary>
         /// Removes all stored error log files.
@@ -171,11 +201,16 @@ namespace Microsoft.AppCenter.Crashes.Utils
             return GetStoredFile(errorId, ErrorLogFileExtension);
         }
 
+        public virtual File InstanceGetStoredExceptionFile(Guid errorId)
+        {
+            return GetStoredFile(errorId, ExceptionFileExtension);
+        }
+
         /// <summary>
-        /// Reads error log file from the given file.
+        /// Reads an error log file from the given file.
         /// </summary>
         /// <param name="file">The file that contains error log.</param>
-        /// <returns>An error log instance or null if the file doesn't contain error log.</returns>
+        /// <returns>An error log instance or null if the file doesn't contain an error log.</returns>
         public virtual ManagedErrorLog InstanceReadErrorLogFile(File file)
         {
             try
@@ -191,6 +226,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         }
 
         /// <summary>
+        /// Saves an error log and an exception on disk.
         /// Get the error storage directory, or creates it if it does not exist.
         /// </summary>
         /// <returns>The error storage directory.</returns>
@@ -203,21 +239,28 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// <summary>
         /// Saves an error log on disk.
         /// </summary>
+        /// <param name="exception">The exception that caused the crash.</param>
         /// <param name="errorLog">The error log.</param>
-        public virtual void InstanceSaveErrorLogFile(ManagedErrorLog errorLog)
+        public virtual void InstanceSaveErrorLogFiles(System.Exception exception, ManagedErrorLog errorLog)
         {
-            var errorLogString = LogSerializer.Serialize(errorLog);
-            var fileName = errorLog.Id + ErrorLogFileExtension;
             try
             {
-                InstanceGetErrorStorageDirectory().CreateFile(fileName, errorLogString);
+                // Serialize main log file.
+                var errorLogString = LogSerializer.Serialize(errorLog);
+                var errorLogFileName = errorLog.Id + ErrorLogFileExtension;
+                AppCenterLog.Debug(Crashes.LogTag, "Saving uncaught exception.");
+                var directory = InstanceGetErrorStorageDirectory();
+                directory.CreateFile(errorLogFileName, errorLogString);
+                AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {errorLogFileName}.");
+
+                // Serialize binary exception.
+                var exceptionFileName = errorLog.Id + ExceptionFileExtension;
+                SaveExceptionFile(directory, exceptionFileName, exception);
             }
             catch (System.Exception ex)
             {
                 AppCenterLog.Error(Crashes.LogTag, "Failed to save error log.", ex);
-                return;
             }
-            AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {fileName}.");
         }
 
         public virtual void InstanceRemoveStoredErrorLogFile(Guid errorId)
@@ -235,6 +278,26 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     catch (System.Exception ex)
                     {
                         AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log file {file.Name}.", ex);
+                    }
+                }
+            }
+        }
+
+        public virtual void InstanceRemoveStoredExceptionFile(Guid errorId)
+        {
+            lock (LockObject)
+            {
+                var file = GetStoredExceptionFile(errorId);
+                if (file != null)
+                {
+                    AppCenterLog.Info(Crashes.LogTag, $"Deleting exception file {file.Name}.");
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete exception file {file.Name}.", ex);
                     }
                 }
             }
@@ -297,7 +360,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             {
                 lock (LockObject)
                 {
-                    return InstanceGetErrorStorageDirectory().EnumerateFiles(fileName).Single();
+                    return InstanceGetErrorStorageDirectory().EnumerateFiles(fileName).SingleOrDefault();
                 }
             }
             catch (System.Exception ex)

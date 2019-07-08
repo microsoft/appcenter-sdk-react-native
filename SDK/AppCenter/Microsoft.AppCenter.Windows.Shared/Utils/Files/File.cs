@@ -25,9 +25,9 @@ namespace Microsoft.AppCenter.Utils.Files
             _underlyingFileInfo = fileInfo;
         }
 
-        public virtual DateTime LastWriteTime => _underlyingFileInfo.LastWriteTime;
-
         public virtual string Name => _underlyingFileInfo.Name;
+
+        public virtual string FullName => _underlyingFileInfo.FullName;
 
         public virtual void Delete()
         {
@@ -36,7 +36,7 @@ namespace Microsoft.AppCenter.Utils.Files
 
         public virtual string ReadAllText()
         {
-            return System.IO.File.ReadAllText(_underlyingFileInfo.FullName);
+            return System.IO.File.ReadAllText(FullName);
         }
     }
 }

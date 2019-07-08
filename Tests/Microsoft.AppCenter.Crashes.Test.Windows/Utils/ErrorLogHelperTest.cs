@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
@@ -12,12 +8,21 @@ using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
 {
     [TestClass]
     public class ErrorLogHelperTest
     {
+        private class NonSerializableException : System.Exception
+        {
+        }
+
         [TestInitialize]
         public void SetUp()
         {
@@ -220,20 +225,93 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.IsNull(ErrorLogHelper.ReadErrorLogFile(mockFile));
         }
 
+
         [TestMethod]
-        public void SaveErrorLogFile()
+        public void ReadExceptionFile()
+        {
+            var expectedException = new ArgumentException("test");
+            var mockFile = Mock.Of<File>();
+            var mockStream = new System.IO.MemoryStream();
+            new BinaryFormatter().Serialize(mockStream, expectedException);
+            mockStream.Position = 0;
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
+            Mock.Get(mockFile).Setup(f => f.FullName).Returns("test.exception");
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return mockStream;
+            };
+
+            var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
+
+            Assert.IsInstanceOfType(actualException, expectedException.GetType());
+            Assert.AreEqual(expectedException.Message, actualException.Message);
+            Assert.AreEqual(mockFile.FullName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
+        }
+
+        [TestMethod]
+        public void ReadExceptionFileFailureDoesNotThrow()
+        {
+            var mockFile = Mock.Of<File>();
+            var mockStream = Mock.Of<System.IO.Stream>();
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
+            Mock.Get(mockFile).Setup(f => f.FullName).Returns("test.exception");
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return mockStream;
+            };
+
+            var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
+
+            Assert.IsNull(actualException);
+            Assert.AreEqual(mockFile.FullName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
+        }
+
+        [TestMethod]
+        public void SaveErrorLogFiles()
         {
             var errorLog = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var fileName = errorLog.Id + ".json";
+            var expectedException = new System.Exception("test");
+            var errorLogFilename = errorLog.Id + ".json";
             var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            var exceptionFilename = errorLog.Id + ".exception";
+            var mockStream = new System.IO.MemoryStream();
             var mockDirectory = Mock.Of<Directory>();
+            Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
+            var expectedFullFileName = $"Errors\\{exceptionFilename}";
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
-            Mock.Get(mockDirectory).Verify(d => d.CreateFile(fileName, serializedErrorLog));
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return mockStream;
+            };
+            ErrorLogHelper.SaveErrorLogFiles(expectedException, errorLog);
+
+            Assert.AreEqual(expectedFullFileName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
+
+            // Check what was serialized.
+            var actualException = new BinaryFormatter().Deserialize(new System.IO.MemoryStream(mockStream.ToArray()));
+            Assert.IsInstanceOfType(actualException, expectedException.GetType());
+            Assert.AreEqual(expectedException.Message, ((System.Exception) actualException).Message);
         }
 
         [TestMethod]
@@ -248,20 +326,60 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         public void SaveErrorLogFileDoesNotThrow(Type exceptionType)
         {
             // Use reflection to create an exception of the given C# type.
-            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
             var errorLog = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 ProcessId = 123
             };
-            var fileName = errorLog.Id + ".json";
-            var serializedErrorLog = LogSerializer.Serialize(errorLog);
             var mockDirectory = Mock.Of<Directory>();
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
             Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            ErrorLogHelper.SaveErrorLogFiles(null, errorLog);
 
             // No exception should be thrown.
+        }
+
+        [TestMethod]
+        [DataRow(typeof(ArgumentException))]
+        [DataRow(typeof(NonSerializableException))]
+        public void SaveBinaryExceptionDoesNotThrow(Type exceptionType)
+        {
+            var errorLog = new ManagedErrorLog
+            {
+                Id = Guid.NewGuid(),
+                ProcessId = 123
+            };
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes)?.Invoke(null) as System.Exception;
+            var errorLogFilename = errorLog.Id + ".json";
+            var serializedErrorLog = LogSerializer.Serialize(errorLog);
+            var exceptionFilename = errorLog.Id + ".exception";
+            var mockDirectory = Mock.Of<Directory>();
+            var mockStream = new System.IO.MemoryStream();
+            Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
+            var expectedFullFileName = $"Errors\\{exceptionFilename}";
+            string actualFullFileName = null;
+            System.IO.FileMode? actualFileMode = null;
+
+            // Cause stream to fail writing
+            mockStream.Dispose();
+
+            // Given we succeed saving log file but fail saving exception file.
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
+            {
+                actualFullFileName = name;
+                actualFileMode = mode;
+                return mockStream;
+            };
+
+            // When we save files.
+            ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
+
+            // Then it does not throw.
+            Assert.AreEqual(expectedFullFileName, actualFullFileName);
+            Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
         }
 
         [TestMethod]
@@ -320,6 +438,73 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
             Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
             ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+
+            // No exception should be thrown.
+        }
+
+        [TestMethod]
+        public void GetStoredExceptionFile()
+        {
+            var id = Guid.NewGuid();
+            var expectedFile = Mock.Of<File>();
+            var fileList = new List<File> { expectedFile };
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.exception")).Returns(fileList);
+
+            // Retrieve the error log by the ID.
+            var exceptionLogFile = ErrorLogHelper.GetStoredExceptionFile(id);
+
+            // Validate the contents.
+            Assert.AreSame(expectedFile, exceptionLogFile);
+        }
+
+        [TestMethod]
+        public void RemoveStoredExceptionFile()
+        {
+            var file = Mock.Of<File>();
+            var expectedFiles = new List<File> { file };
+            var id = Guid.NewGuid();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.exception")).Returns(expectedFiles);
+            ErrorLogHelper.RemoveStoredExceptionFile(id);
+            Mock.Get(file).Verify(f => f.Delete());
+        }
+
+        [TestMethod]
+        [DataRow(typeof(System.IO.IOException))]
+        [DataRow(typeof(SecurityException))]
+        [DataRow(typeof(UnauthorizedAccessException))]
+        public void RemoveExceptionFileDoesNotThrowWhenRetrievingFileToDelete(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles(It.IsAny<string>())).Throws(exception);
+            ErrorLogHelper.RemoveStoredExceptionFile(Guid.NewGuid());
+
+            // No exception should be thrown.
+        }
+
+        [TestMethod]
+        [DataRow(typeof(System.IO.IOException))]
+        [DataRow(typeof(SecurityException))]
+        [DataRow(typeof(UnauthorizedAccessException))]
+        public void RemoveExceptionFileDoesNotThrowWhenDeleteFails(Type exceptionType)
+        {
+            // Use reflection to create an exception of the given C# type.
+            var exception = exceptionType.GetConstructor(Type.EmptyTypes).Invoke(null) as System.Exception;
+            var file = Mock.Of<File>();
+            Mock.Get(file).Setup(f => f.Delete()).Throws(exception);
+            var expectedFiles = new List<File> { file };
+            var id = Guid.NewGuid();
+            var mockDirectory = Mock.Of<Directory>();
+            ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
+            Mock.Get(mockDirectory).Setup(d => d.EnumerateFiles($"{id}.exception")).Returns(expectedFiles);
+            ErrorLogHelper.RemoveStoredExceptionFile(id);
+            Mock.Get(file).Verify(f => f.Delete());
 
             // No exception should be thrown.
         }

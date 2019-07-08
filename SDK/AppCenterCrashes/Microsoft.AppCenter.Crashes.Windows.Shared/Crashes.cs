@@ -1,17 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Crashes
 {
@@ -31,6 +32,9 @@ namespace Microsoft.AppCenter.Crashes
             LogSerializer.AddLogType(ErrorAttachmentLog.JsonIdentifier, typeof(ErrorAttachmentLog));
         }
 
+        /// <summary>
+        /// Unique instance.
+        /// </summary>
         public static Crashes Instance
         {
             get
@@ -69,7 +73,7 @@ namespace Microsoft.AppCenter.Crashes
         private static void OnUnhandledExceptionOccurred(object sender, UnhandledExceptionOccurredEventArgs args)
         {
             var errorLog = ErrorLogHelper.CreateErrorLog(args.Exception);
-            ErrorLogHelper.SaveErrorLogFile(errorLog);
+            ErrorLogHelper.SaveErrorLogFiles(args.Exception, errorLog);
         }
 
         private static Task<bool> PlatformHasCrashedInLastSessionAsync()
@@ -95,7 +99,12 @@ namespace Microsoft.AppCenter.Crashes
         /// <summary>
         /// A dictionary that contains unprocessed managed error logs before getting a user confirmation.
         /// </summary>
-        private Dictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+        private readonly IDictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+
+        /// <summary>
+        /// A dictionary for a cache that contains error report.
+        /// </summary>
+        private readonly IDictionary<Guid, ErrorReport> _errorReportCache;
 
         /// <inheritdoc />
         protected override string ChannelName => "crashes";
@@ -120,6 +129,7 @@ namespace Microsoft.AppCenter.Crashes
         internal Crashes()
         {
             _unprocessedManagedErrorLogs = new Dictionary<Guid, ManagedErrorLog>();
+            _errorReportCache = new ConcurrentDictionary<Guid, ErrorReport>();
         }
 
         /// <summary>
@@ -148,16 +158,26 @@ namespace Microsoft.AppCenter.Crashes
                 if (enabled && ChannelGroup != null)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred += OnUnhandledExceptionOccurred;
+                    ChannelGroup.SendingLog += ChannelSendingLog;
+                    ChannelGroup.SentLog += ChannelSentLog;
+                    ChannelGroup.FailedToSendLog += ChannelFailedToSendLog;
                 }
                 else if (!enabled)
                 {
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
+                    if (ChannelGroup != null)
+                    {
+                        ChannelGroup.SendingLog -= ChannelSendingLog;
+                        ChannelGroup.SentLog -= ChannelSentLog;
+                        ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
+                    }
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
                     _lastSessionErrorReportTaskSource = null;
                 }
             }
         }
 
+        /// <inheritdoc />
         public override bool InstanceEnabled
         {
             get => base.InstanceEnabled;
@@ -190,29 +210,13 @@ namespace Microsoft.AppCenter.Crashes
         {
             return Task.Run(async () =>
             {
-                var lastSessionErrorLogTimestamp = DateTime.MinValue;
-                ManagedErrorLog lastSessionErrorLog = null;
+                ErrorReport lastSessionErrorReport = null;
                 foreach (var file in ErrorLogHelper.GetErrorLogFiles())
                 {
                     AppCenterLog.Debug(LogTag, $"Process pending error file {file.Name}");
                     var log = ErrorLogHelper.ReadErrorLogFile(file);
 
-                    // Process the file for last session crash report. It doesn't matter if the log is null.
-                    try
-                    {
-                        var otherFileTimestamp = file.LastWriteTime;
-                        if (lastSessionErrorLogTimestamp < otherFileTimestamp)
-                        {
-                            lastSessionErrorLogTimestamp = otherFileTimestamp;
-                            lastSessionErrorLog = log;
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        AppCenterLog.Warn(LogTag, $"Failed to get the last write time for an error file.", ex);
-                    }
-
-                    // Finish processing the file.
+                    // Delete file if corrupted.
                     if (log == null)
                     {
                         AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
@@ -224,33 +228,56 @@ namespace Microsoft.AppCenter.Crashes
                         {
                             AppCenterLog.Warn(LogTag, $"Failed to delete error log file {file.Name}.", ex);
                         }
+
+                        // Also try to delete paired exception file.
+                        if (Guid.TryParse(System.IO.Path.GetFileNameWithoutExtension(file.Name), out var id))
+                        {
+                            ErrorLogHelper.RemoveStoredExceptionFile(id);
+                        }
+                        continue;
                     }
-                    else
+
+                    // The error report cannot be built if any of those fields are null.
+                    if (log.Device == null || log.AppLaunchTimestamp == null || log.Timestamp == null)
+                    {
+                        AppCenterLog.Error(LogTag, $"Error parsing error log. Deleting invalid file: {file.Name}");
+                        RemoveAllStoredErrorLogFiles(log.Id);
+                        continue;
+                    }
+
+                    // Build and record error report.
+                    var report = BuildErrorReport(log);
+                    if (lastSessionErrorReport == null || lastSessionErrorReport.AppErrorTime < report.AppErrorTime)
+                    {
+                        lastSessionErrorReport = report;
+                    }
+                    if (ShouldProcessErrorReport?.Invoke(report) ?? true)
                     {
                         _unprocessedManagedErrorLogs.Add(log.Id, log);
                     }
-                }
-                ErrorReport lastSessionErrorReport = null;
-                if (lastSessionErrorLog != null)
-                {
-                    AppCenterLog.Debug(LogTag, "Setting last session error report to an actual report.");
-
-                    // TODO: Build error report from cache.
-                    lastSessionErrorReport = new ErrorReport(lastSessionErrorLog, null);
-                }
-                else
-                {
-                    AppCenterLog.Debug(LogTag, "Setting last session error report to null.");
+                    else
+                    {
+                        AppCenterLog.Debug(LogTag, $"ShouldProcessErrorReport returned false, clean up and ignore log: {log.Id}");
+                        RemoveAllStoredErrorLogFiles(log.Id);
+                    }
                 }
                 _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
                 await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
             });
         }
 
+        private void RemoveAllStoredErrorLogFiles(Guid errorId)
+        {
+            // ReSharper disable once InconsistentlySynchronizedField this is a concurrent dictionary.
+            _errorReportCache.Remove(errorId);
+            ErrorLogHelper.RemoveStoredErrorLogFile(errorId);
+            ErrorLogHelper.RemoveStoredExceptionFile(errorId);
+        }
+
         private async Task SendCrashReportsOrAwaitUserConfirmationAsync()
         {
-            bool alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
-            if (_unprocessedManagedErrorLogs.Count() > 0)
+            var alwaysSend = ApplicationSettings.GetValue(PrefKeyAlwaysSend, false);
+            if (_unprocessedManagedErrorLogs.Any())
             {
                 // Check for always send: this bypasses user confirmation callback.
                 if (alwaysSend)
@@ -283,8 +310,7 @@ namespace Microsoft.AppCenter.Crashes
                 foreach (var key in keys)
                 {
                     _unprocessedManagedErrorLogs.Remove(key);
-                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
-                    // TODO: Remove exception files
+                    RemoveAllStoredErrorLogFiles(key);
                 }
             }
             else
@@ -302,8 +328,8 @@ namespace Microsoft.AppCenter.Crashes
                     _unprocessedManagedErrorLogs.Remove(key);
                     ErrorLogHelper.RemoveStoredErrorLogFile(key);
 
-                    // TODO: Build error report from cache.
-                    var errorReport = new ErrorReport(log, null);
+                    // Get error report (will be in cache).
+                    var errorReport = BuildErrorReport(log);
 
                     // This must never be called while a lock is held.
                     var attachments = GetErrorAttachments?.Invoke(errorReport);
@@ -351,6 +377,60 @@ namespace Microsoft.AppCenter.Crashes
                 AppCenterLog.Warn(LogTag, $"A limit of {MaxAttachmentsPerCrash} attachments per error report might be enforced by server.");
             }
             return Task.WhenAll(tasks);
+        }
+
+        private ErrorReport BuildErrorReport(ManagedErrorLog log)
+        {
+            if (_errorReportCache.ContainsKey(log.Id))
+            {
+                return _errorReportCache[log.Id];
+            }
+            var file = ErrorLogHelper.GetStoredExceptionFile(log.Id);
+            var exception = file == null ? null : ErrorLogHelper.ReadExceptionFile(file);
+            var report = new ErrorReport(log, exception);
+            _errorReportCache.Add(log.Id, report);
+            return report;
+        }
+
+        private void ChannelSendingLog(object sender, SendingLogEventArgs e)
+        {
+            var report = MapLogEventToReportAndDeleteOnLastEvent(e);
+            if (report != null)
+            {
+                SendingErrorReport?.Invoke(sender, new SendingErrorReportEventArgs { Report = report });
+            }
+        }
+
+        private void ChannelSentLog(object sender, SentLogEventArgs e)
+        {
+            var report = MapLogEventToReportAndDeleteOnLastEvent(e);
+            if (report != null)
+            {
+                SentErrorReport?.Invoke(sender, new SentErrorReportEventArgs { Report = report });
+            }
+        }
+
+        private void ChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
+        {
+            var report = MapLogEventToReportAndDeleteOnLastEvent(e);
+            if (report != null)
+            {
+                FailedToSendErrorReport?.Invoke(sender, new FailedToSendErrorReportEventArgs { Report = report, Exception = e.Exception });
+            }
+        }
+
+        private ErrorReport MapLogEventToReportAndDeleteOnLastEvent(ChannelEventArgs channelEventArgs)
+        {
+            if (channelEventArgs.Log is ManagedErrorLog log)
+            {
+                var report = BuildErrorReport(log);
+                if (channelEventArgs is SentLogEventArgs || channelEventArgs is FailedToSendLogEventArgs)
+                {
+                    ErrorLogHelper.RemoveStoredExceptionFile(log.Id);
+                }
+                return report;
+            }
+            return null;
         }
     }
 }
