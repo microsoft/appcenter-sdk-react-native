@@ -4,6 +4,7 @@
 using System.Text;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -116,61 +117,61 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TestValidateTrueValidData()
+        public void TestValidatePropertiesReturnTrueIfValidData()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
                 ContentType = "ContentType",
-                ErrorId = System.Guid.NewGuid(),
+                ErrorId = Guid.NewGuid(),
                 Data = new byte[] { 1, 2, 3, 4 },
-                Id = System.Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
             Assert.IsTrue(validErrorAttachmentLog.ValidatePropertiesForAttachment());
         }
 
         [TestMethod]
-        public void TestValidateFalseIfMissingData()
+        public void TestValidatePropertiesReturnFalseIfMissingData()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
                 ContentType = "ContentType",
-                ErrorId = System.Guid.NewGuid(),
-                Id = System.Guid.NewGuid()
+                ErrorId = Guid.NewGuid(),
+                Id = Guid.NewGuid()
             };
             Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
         }
 
         [TestMethod]
-        public void TestValidateeFalseIfMissingContentType()
+        public void TestValidatePropertiesReturnFalseIfMissingContentType()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
                 Data = new byte[] { 1, 2, 3, 4 },
-                Id = System.Guid.NewGuid(),
-                ErrorId = System.Guid.NewGuid(),
+                Id = Guid.NewGuid(),
+                ErrorId = Guid.NewGuid(),
             };
             Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
         }
 
         [TestMethod]
-        public void TestValidateFalseIfInvalideErrorId()
+        public void TestValidatePropertiesReturnFalseIfInvalidErrorId()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
                 Data = new byte[] { 1, 2, 3, 4 },
                 ContentType = "ContentType",
-                Id = System.Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
             Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
         }
 
         [TestMethod]
-        public void TestValidateeFalseIfInvalideAttachId()
+        public void TestValidatePropertiesReturnFalseIfInvalidAttachId()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
                 Data = new byte[] { 1, 2, 3, 4 },
-                ErrorId = System.Guid.NewGuid(),
+                ErrorId = Guid.NewGuid(),
                 ContentType = "ContentType",
             };
             Assert.IsFalse(validErrorAttachmentLog.ValidatePropertiesForAttachment());
