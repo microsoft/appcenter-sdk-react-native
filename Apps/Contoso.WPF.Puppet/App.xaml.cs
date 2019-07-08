@@ -19,13 +19,22 @@ namespace Contoso.WPF.Puppet
         {
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
+
+
+            // User callbacks.
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-            Crashes.ShouldProcessErrorReport = ShouldProcess;
+            Crashes.ShouldProcessErrorReport = (report) =>
+            {
+                Log($"Determining whether to process error report with an ID: {report.Id}");
+                return true;
+            };
 
             // Event handlers.
-            Crashes.SendingErrorReport += SendingErrorReportHandler;
-            Crashes.SentErrorReport += SentErrorReportHandler;
-            Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+            Crashes.SendingErrorReport += (_, args) => Log($"Sending error report for an error ID: {args.Report.Id}");
+            Crashes.SentErrorReport += (_, args) => Log($"Sent error report for an error ID: {args.Report.Id}");
+            Crashes.FailedToSendErrorReport += (_, args) => Log($"Failed to send error report for an error ID: {args.Report.Id}");
+
+            // Start AppCenter.
             AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
@@ -35,12 +44,6 @@ namespace Contoso.WPF.Puppet
             {
                 Log("Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
             });
-        }
-
-        private static bool ShouldProcess(ErrorReport report)
-        {
-            Log("Determining whether to process error report");
-            return true;
         }
 
         private static bool ConfirmationHandler()
@@ -54,44 +57,6 @@ namespace Contoso.WPF.Puppet
                 }
             });
             return true;
-        }
-
-        private static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
-        {
-            Log("Sending error report");
-            var report = e.Report;
-            if (report.Exception != null)
-            {
-                Log($"ErrorId: {report.Id}");
-            }
-        }
-
-        private static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
-        {
-            Log("Sent error report");
-            var report = e.Report;
-            if (report.Exception != null)
-            {
-                Log($"ErrorId: {report.Id}");
-            }
-            else
-            {
-                Log("No system exception was found");
-            }
-        }
-
-        private static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
-        {
-            Log("Failed to send error report");
-            var report = e.Report;
-            if (report.Exception != null)
-            {
-                Log($"ErrorId: {report.Id}");
-            }
-            if (e.Exception != null)
-            {
-                Log("There is an exception associated with the failure");
-            }
         }
 
         private static void Log(string message)
