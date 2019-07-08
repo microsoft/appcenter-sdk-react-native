@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections;
+using System.IO;
+using System.Web;
+using System.Windows;
 using Contoso.WPF.Puppet.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using System;
-using System.IO;
-using System.Windows;
-using System.Web;
 
 namespace Contoso.WPF.Puppet
 {
@@ -21,21 +22,34 @@ namespace Contoso.WPF.Puppet
         {
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            Crashes.GetErrorAttachments = (ErrorReport report) =>
+            Crashes.GetErrorAttachments = report =>
             {
-                byte[] fileContent = null;
-                var fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
-                var mimeType = "";
-                if (File.Exists(Settings.Default.FileErrorAttachments))
+                var attachments = new ArrayList();
+
+                // Text attachment
+                if (!string.IsNullOrEmpty(Settings.Default.TextErrorAttachments))
                 {
-                    mimeType = MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
-                    fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
+                    attachments.Add(
+                        ErrorAttachmentLog.AttachmentWithText(Settings.Default.TextErrorAttachments, "text.txt"));
                 }
-                return new ErrorAttachmentLog[]
+
+                // Binary attachment
+                if (!string.IsNullOrEmpty(Settings.Default.FileErrorAttachments))
                 {
-                    ErrorAttachmentLog.AttachmentWithText(Settings.Default.TextErrorAttachments, "text.txt"),
-                    ErrorAttachmentLog.AttachmentWithBinary(fileContent, fileName, mimeType)
-                };
+                    if (File.Exists(Settings.Default.FileErrorAttachments))
+                    {
+                        var fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
+                        var mimeType = MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
+                        var fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
+                        attachments.Add(ErrorAttachmentLog.AttachmentWithBinary(fileContent, fileName, mimeType));
+                    }
+                    else
+                    {
+                        Settings.Default.FileErrorAttachments = null;
+                    }
+                }
+
+                return (ErrorAttachmentLog[])attachments.ToArray();
             };
             Crashes.SendingErrorReport += (sender, args) => Console.WriteLine($@"[App] Sending report Id={args.Report.Id} Exception={args.Report.Exception}");
             Crashes.SentErrorReport += (sender, args) => Console.WriteLine($@"[App] Sent report Id={args.Report.Id}");
