@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Globalization;
+using System.Windows;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using System;
-using System.Windows;
 
 namespace Contoso.WPF.Demo
 {
@@ -14,8 +15,6 @@ namespace Contoso.WPF.Demo
     /// </summary>
     public partial class App
     {
-        private const string LogTag = "AppCenterDemo";
-
         protected override void OnStartup(StartupEventArgs e)
         {
             AppCenter.LogLevel = LogLevel.Verbose;
@@ -29,21 +28,21 @@ namespace Contoso.WPF.Demo
             AppCenter.Start("f4e2a83d-3052-4884-8176-8b2c50277d16", typeof(Analytics), typeof(Crashes));
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
-                AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
+                Log("Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
             {
-                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
+                Log("Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
             });
         }
 
-        bool ShouldProcess(ErrorReport report)
+        private static bool ShouldProcess(ErrorReport report)
         {
-            AppCenterLog.Info(LogTag, "Determining whether to process error report");
+            Log("Determining whether to process error report");
             return true;
         }
 
-        bool ConfirmationHandler()
+        private static bool ConfirmationHandler()
         {
             Current.Dispatcher.Invoke(() =>
             {
@@ -56,42 +55,48 @@ namespace Contoso.WPF.Demo
             return true;
         }
 
-        static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
+        private static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
-            AppCenterLog.Info(LogTag, "Sending error report");
+            Log("Sending error report");
             var report = e.Report;
             if (report.Exception != null)
             {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
+                Log(report.Exception.ToString());
             }
         }
 
         static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
-            AppCenterLog.Info(LogTag, "Sent error report");
+            Log("Sent error report");
             var report = e.Report;
             if (report.Exception != null)
             {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
+                Log(report.Exception.ToString());
             }
             else
             {
-                AppCenterLog.Info(LogTag, "No system exception was found");
+                Log("No system exception was found");
             }
         }
 
-        static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
+        private static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
-            AppCenterLog.Info(LogTag, "Failed to send error report");
+            Log("Failed to send error report");
             var report = e.Report;
             if (report.Exception != null)
             {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
+                Log(report.Exception.ToString());
             }
             if (e.Exception != null)
             {
-                AppCenterLog.Info(LogTag, "There is an exception associated with the failure");
+                Log("There is an exception associated with the failure");
             }
+        }
+
+        private static void Log(string message)
+        {
+            var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            System.Diagnostics.Debug.WriteLine($"{timestamp} [AppCenterDemo] Info: {message}");
         }
     }
 }
