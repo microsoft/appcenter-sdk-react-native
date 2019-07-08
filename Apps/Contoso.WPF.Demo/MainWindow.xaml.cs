@@ -108,8 +108,6 @@ namespace Contoso.WPF.Demo
             var filePath = string.Empty;
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "All files (*.*)|*.*",
-                FilterIndex = 2,
                 RestoreDirectory = true
             };
             var result = openFileDialog.ShowDialog();
