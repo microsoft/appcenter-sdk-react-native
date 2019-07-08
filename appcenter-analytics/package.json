@@ -43,9 +43,7 @@
   },
   "jest": {
     "preset": "react-native",
-    "setupFilesAfterEnv": [
-      "./jest/setup.js"
-    ],
+    "setupTestFrameworkScriptFile": "./jest/setup.js",
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     }
