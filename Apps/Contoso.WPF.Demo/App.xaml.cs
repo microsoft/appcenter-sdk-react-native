@@ -14,7 +14,7 @@ namespace Contoso.WPF.Demo
     /// </summary>
     public partial class App
     {
-        private const string LogTag = "AppCenterSasquatch";
+        private const string LogTag = "AppCenterDemo";
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -22,7 +22,7 @@ namespace Contoso.WPF.Demo
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
             Crashes.ShouldProcessErrorReport = ShouldProcess;
 
-            // Event handlers
+            // Event handlers.
             Crashes.SendingErrorReport += SendingErrorReportHandler;
             Crashes.SentErrorReport += SentErrorReportHandler;
             Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
@@ -60,8 +60,6 @@ namespace Contoso.WPF.Demo
         {
             AppCenterLog.Info(LogTag, "Sending error report");
             var report = e.Report;
-
-            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -72,8 +70,6 @@ namespace Contoso.WPF.Demo
         {
             AppCenterLog.Info(LogTag, "Sent error report");
             var report = e.Report;
-
-            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -88,8 +84,6 @@ namespace Contoso.WPF.Demo
         {
             AppCenterLog.Info(LogTag, "Failed to send error report");
             var report = e.Report;
-
-            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
