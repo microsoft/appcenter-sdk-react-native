@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Globalization;
-using System.Windows;
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Windows;
@@ -69,9 +67,6 @@ namespace Contoso.WPF.Puppet
             Crashes.FailedToSendErrorReport += (_, args) => Log($"Failed to send error report for an error ID: {args.Report.Id}");
 
             // Start AppCenter.
-            Crashes.SendingErrorReport += (sender, args) => Console.WriteLine($@"[App] Sending report Id={args.Report.Id} Exception={args.Report.Exception}");
-            Crashes.SentErrorReport += (sender, args) => Console.WriteLine($@"[App] Sent report Id={args.Report.Id}");
-            Crashes.FailedToSendErrorReport += (sender, args) => Console.WriteLine($@"[App] FailedToSend report Id={args.Report.Id} Error={args.Exception}");
             AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
