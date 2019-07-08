@@ -71,7 +71,7 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
                   documentType:[MSDictionaryDocument class]
                      partition:partition
                    readOptions:readOptions
-             completionHandler:[self dataCompletionHandler:@"Failed read" reject:reject resolve:resolve]];
+             completionHandler:[self dataCompletionHandler:@"Failed read" resolve:resolve reject:reject]];
 }
 
 RCT_EXPORT_METHOD(create:(NSString *)documentID
@@ -79,14 +79,14 @@ RCT_EXPORT_METHOD(create:(NSString *)documentID
                   document: (NSDictionary *)documentMap
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject){
+                  rejecter:(RCTPromiseRejectBlock)reject) {
     MSWriteOptions * writeOptions = [self getWriteOptions:writeOptionsMap];
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData createDocumentWithID:documentID
                         document:document
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:@"Failed create" reject:reject resolve:resolve]];
+               completionHandler:[self dataCompletionHandler:@"Failed create" resolve:resolve reject:reject]];
 }
 
 RCT_EXPORT_METHOD(replace:(NSString *)documentID
@@ -94,14 +94,14 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
                   document:(NSDictionary *)documentMap
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject){
+                  rejecter:(RCTPromiseRejectBlock)reject) {
     MSWriteOptions * writeOptions = [self getWriteOptions:writeOptionsMap];
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData replaceDocumentWithID:documentID
                          document:document
                         partition:partition
                      writeOptions:writeOptions
-                completionHandler:[self dataCompletionHandler:@"Failed replace" reject:reject resolve:resolve]];
+                completionHandler:[self dataCompletionHandler:@"Failed replace" resolve:resolve reject:reject]];
 }
 
 RCT_EXPORT_METHOD(remove:(NSString *)documentID
@@ -113,12 +113,12 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     [MSData deleteDocumentWithID:documentID
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:@"Failed remove" reject:reject resolve:resolve]];
+               completionHandler:[self dataCompletionHandler:@"Failed remove" resolve:resolve reject:reject]];
 }
 
 - (void (^)(MSDocumentWrapper * _Nonnull))dataCompletionHandler:(NSString*)errorCode
-                                                         reject:(RCTPromiseRejectBlock)reject
-                                                        resolve:(RCTPromiseResolveBlock)resolve {
+                                                        resolve:(RCTPromiseResolveBlock)resolve
+                                                         reject:(RCTPromiseRejectBlock)reject{
     return ^(MSDocumentWrapper * _Nonnull documentWrapper) {
         NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
         jsDocumentWrapper[kMSjsonValueKey] = documentWrapper.jsonValue;
@@ -131,7 +131,7 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
             MSDataError *dataError = documentWrapper.error;
             [jsDocumentWrapper addEntriesFromDictionary:dataError.userInfo];
             NSError *error = [[NSError alloc] initWithDomain:dataError.domain code:dataError.code userInfo:jsDocumentWrapper];
-            reject(@"nope", error.description, error);
+            reject(errorCode, error.description, error);
             return;
         }
         jsDocumentWrapper[kMSDeserializedValueKey] = [documentWrapper.deserializedValue serializeToDictionary];
