@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Text;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
@@ -117,7 +117,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TestValidatePropertiesReturnTrueIfValidData()
+        public void TestValidatePropertiesReturnsTrueIfValidData()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
@@ -130,7 +130,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TestValidatePropertiesReturnFalseIfMissingData()
+        public void TestValidatePropertiesReturnsFalseIfMissingData()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
@@ -142,7 +142,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TestValidatePropertiesReturnFalseIfMissingContentType()
+        public void TestValidatePropertiesReturnsFalseIfMissingContentType()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
@@ -154,7 +154,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TestValidatePropertiesReturnFalseIfInvalidErrorId()
+        public void TestValidatePropertiesReturnsFalseIfInvalidErrorId()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {
@@ -166,7 +166,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TestValidatePropertiesReturnFalseIfInvalidAttachId()
+        public void TestValidatePropertiesReturnsFalseIfInvalidAttachId()
         {
             var validErrorAttachmentLog = new ErrorAttachmentLog
             {

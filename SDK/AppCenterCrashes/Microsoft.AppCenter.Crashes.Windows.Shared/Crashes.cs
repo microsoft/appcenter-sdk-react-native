@@ -356,7 +356,6 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     attachment.Id = Guid.NewGuid();
                     attachment.ErrorId = errorId;
-
                     if (!attachment.ValidatePropertiesForAttachment())
                     {
                         AppCenterLog.Error(LogTag, "Not all required fields are present in ErrorAttachmentLog.");

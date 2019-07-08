@@ -212,7 +212,14 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             var device = new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion", "locale", 1,
                 "appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize", null, null, "appNamespace", null, null, null, null);
-            return new ErrorAttachmentLog() { ContentType = "contenttype", Id = Guid.NewGuid(), ErrorId = Guid.NewGuid(), Data = new byte[] { 1 }, Device = device };
+            return new ErrorAttachmentLog()
+            {
+                ContentType = "contenttype",
+                Id = Guid.NewGuid(),
+                ErrorId = Guid.NewGuid(),
+                Data = new byte[] { 1 },
+                Device = device
+            };
         }
     }
 }
