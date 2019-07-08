@@ -54,6 +54,7 @@ namespace Contoso.WPF.Demo
         private void UpdateState()
         {
             AppCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
+            CrashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
             AnalyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
         }
 
