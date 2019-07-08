@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Windows;
@@ -22,7 +22,7 @@ namespace Contoso.WPF.Demo
             AppCenter.LogLevel = LogLevel.Verbose;
             Crashes.GetErrorAttachments = report =>
             {
-                var attachments = new ArrayList();
+                var attachments = new List<ErrorAttachmentLog>();
 
                 // Text attachment
                 if (!string.IsNullOrEmpty(Settings.Default.TextErrorAttachments))
@@ -47,7 +47,7 @@ namespace Contoso.WPF.Demo
                     }
                 }
 
-                return (ErrorAttachmentLog[])attachments.ToArray();
+                return attachments;
             };
             AppCenter.Start("f4e2a83d-3052-4884-8176-8b2c50277d16", typeof(Analytics), typeof(Crashes));
         }

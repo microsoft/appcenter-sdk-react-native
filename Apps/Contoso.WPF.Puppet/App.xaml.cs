@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Windows;
@@ -24,7 +24,7 @@ namespace Contoso.WPF.Puppet
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Crashes.GetErrorAttachments = report =>
             {
-                var attachments = new ArrayList();
+                var attachments = new List<ErrorAttachmentLog>();
 
                 // Text attachment
                 if (!string.IsNullOrEmpty(Settings.Default.TextErrorAttachments))
@@ -49,7 +49,7 @@ namespace Contoso.WPF.Puppet
                     }
                 }
 
-                return (ErrorAttachmentLog[])attachments.ToArray();
+                return attachments;
             };
             Crashes.SendingErrorReport += (sender, args) => Console.WriteLine($@"[App] Sending report Id={args.Report.Id} Exception={args.Report.Exception}");
             Crashes.SentErrorReport += (sender, args) => Console.WriteLine($@"[App] Sent report Id={args.Report.Id}");
