@@ -80,9 +80,22 @@
             </TabItem>
             <TabItem Header="Crashes">
                 <StackPanel>
+                    <CheckBox Name="CrashesEnabled" Content="Crashes Enabled" Margin="0,10,0,10" Checked="CrashesEnabled_Checked" Unchecked="CrashesEnabled_Checked" />
+                    <GroupBox Header="Error attachment">
+                        <StackPanel Orientation="Vertical">
+                            <DockPanel LastChildFill="True">
+                                <Label Content="Text attachment"/>
+                                <TextBox Name="TextAttachmentTextBox" TextChanged="TextAttachmentTextBox_TextChanged" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <DockPanel LastChildFill="True">
+                                <Label Content="File attachment"/>
+                                <Label Name="FileAttachmentLabel" Content="The file isn't selected" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <Button Content="Select file attachment" Margin="2" Click="FileErrorAttachment_Click"/>
+                        </StackPanel>
+                    </GroupBox>
                     <GroupBox Header="Crash">
                         <StackPanel Orientation="Vertical" Margin="2">
-                            <CheckBox Name="CrashesEnabled" Content="Crashes Enabled" Margin="0,10,0,10" Checked="CrashesEnabled_Checked" Unchecked="CrashesEnabled_Checked" />
                             <Button Content="Call Crashes.GenerateTestCrash (debug only)" Margin="2" Click="CrashWithTestException_Click"/>
                             <Button Content="Generate non serializable Exception" Margin="2" Click="CrashWithNonSerializableException_Click" />
                             <Button Content="Divide by zero" Margin="2" Click="CrashWithDivisionByZero_Click" />

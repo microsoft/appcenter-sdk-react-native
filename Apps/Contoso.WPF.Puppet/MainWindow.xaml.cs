@@ -9,9 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using Contoso.WPF.Puppet.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Win32;
 
 namespace Contoso.WPF.Puppet
 {
@@ -21,6 +24,10 @@ namespace Contoso.WPF.Puppet
     // ReSharper disable once UnusedMember.Global
     public partial class MainWindow
     {
+        private string fileAttachments;
+
+        private string textAttachments;
+
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
             new Dictionary<LogLevel, Action<string, string>>
             {
@@ -39,6 +46,10 @@ namespace Contoso.WPF.Puppet
             UpdateState();
             AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
             EventProperties.ItemsSource = Properties;
+            fileAttachments = Settings.Default.FileErrorAttachments;
+            textAttachments = Settings.Default.TextErrorAttachments;
+            TextAttachmentTextBox.Text = textAttachments;
+            FileAttachmentLabel.Content = fileAttachments;
         }
 
         private void UpdateState()
@@ -117,6 +128,34 @@ namespace Contoso.WPF.Puppet
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
             AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
+        }
+
+        private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = string.Empty;
+            var openFileDialog = new OpenFileDialog
+            {
+                RestoreDirectory = true
+            };
+            var result = openFileDialog.ShowDialog();
+            if (result ?? false)
+            {
+                filePath = openFileDialog.FileName;
+                FileAttachmentLabel.Content = filePath;
+            }
+            else
+            {
+                FileAttachmentLabel.Content = "The file isn't selected";
+            }
+            Settings.Default.FileErrorAttachments = filePath;
+            Settings.Default.Save();
+        }
+
+        private void TextAttachmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            textAttachments = TextAttachmentTextBox.Text;
+            Settings.Default.TextErrorAttachments = textAttachments;
+            Settings.Default.Save();
         }
 
         #region Crash

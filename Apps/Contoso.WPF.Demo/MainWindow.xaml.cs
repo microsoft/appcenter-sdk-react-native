@@ -8,9 +8,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using Contoso.WPF.Demo.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Microsoft.Win32;
 
 namespace Contoso.WPF.Demo
 {
@@ -20,6 +23,10 @@ namespace Contoso.WPF.Demo
     // ReSharper disable once UnusedMember.Global
     public partial class MainWindow
     {
+        private string fileAttachments;
+
+        private string textAttachments;
+
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
             new Dictionary<LogLevel, Action<string, string>>
             {
@@ -38,6 +45,10 @@ namespace Contoso.WPF.Demo
             UpdateState();
             AppCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
             EventProperties.ItemsSource = Properties;
+            fileAttachments = Settings.Default.FileErrorAttachments;
+            textAttachments = Settings.Default.TextErrorAttachments;
+            TextAttachmentTextBox.Text = textAttachments;
+            FileAttachmentLabel.Content = fileAttachments;
         }
 
         private void UpdateState()
@@ -92,6 +103,27 @@ namespace Contoso.WPF.Demo
             var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
+        }
+
+        private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = string.Empty;
+            var openFileDialog = new OpenFileDialog
+            {
+                RestoreDirectory = true
+            };
+            var result = openFileDialog.ShowDialog();
+            if (result ?? false)
+            {
+                filePath = openFileDialog.FileName;
+                FileAttachmentLabel.Content = filePath;
+            }
+            else
+            {
+                FileAttachmentLabel.Content = "The file isn't selected";
+            }
+            Settings.Default.FileErrorAttachments = filePath;
+            Settings.Default.Save();
         }
 
         #region Crash
@@ -185,5 +217,12 @@ namespace Contoso.WPF.Demo
         }
 
         #endregion
+
+        private void TextAttachmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            textAttachments = TextAttachmentTextBox.Text;
+            Settings.Default.TextErrorAttachments = textAttachments;
+            Settings.Default.Save();
+        }
     }
 }
