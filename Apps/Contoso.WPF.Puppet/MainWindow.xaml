@@ -91,7 +91,7 @@
                                 <Label Content="File attachment"/>
                                 <Label Name="FileAttachmentLabel" Content="The file isn't selected" VerticalAlignment="Center" />
                             </DockPanel>
-                            <Button Content="Select file attachment"  Margin="2"  Click="FileErrorAttachment_Click"/>
+                            <Button Content="Select file attachment" Margin="2" Click="FileErrorAttachment_Click"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Crash">

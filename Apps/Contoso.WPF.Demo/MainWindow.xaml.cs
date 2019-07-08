@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Contoso.WPF.Demo.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -106,7 +107,7 @@ namespace Contoso.WPF.Demo
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
         {
             var filePath = string.Empty;
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 RestoreDirectory = true
             };
@@ -216,7 +217,7 @@ namespace Contoso.WPF.Demo
 
         #endregion
 
-        private void TextAttachmentTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void TextAttachmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             textAttachments = TextAttachmentTextBox.Text;
             Settings.Default.TextErrorAttachments = textAttachments;

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Contoso.WPF.Puppet.Properties;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -132,12 +133,12 @@ namespace Contoso.WPF.Puppet
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
         {
             var filePath = string.Empty;
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 RestoreDirectory = true
             };
             var result = openFileDialog.ShowDialog();
-            if (result??false)
+            if (result ?? false)
             {
                 filePath = openFileDialog.FileName;
                 FileAttachmentLabel.Content = filePath;
@@ -150,7 +151,7 @@ namespace Contoso.WPF.Puppet
             Settings.Default.Save();
         }
 
-        private void TextAttachmentTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void TextAttachmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             textAttachments = TextAttachmentTextBox.Text;
             Settings.Default.TextErrorAttachments = textAttachments;
