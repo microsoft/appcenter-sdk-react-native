@@ -48,7 +48,7 @@ namespace Contoso.WPF.Puppet
 
         private static bool ConfirmationHandler()
         {
-            Current.Dispatcher.Invoke(() =>
+            Current.Dispatcher.InvokeAsync(() =>
             {
                 var dialog = new UserConfirmationDialog();
                 if (dialog.ShowDialog() ?? false)
