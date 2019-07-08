@@ -89,5 +89,14 @@ namespace Microsoft.AppCenter.Crashes
                 throw new ValidationException(ValidationException.Rule.CannotBeNull, "Data");
             }
         }
+
+        public bool ValidatePropertiesForAttachment()
+        {
+            var isErrorIdValid = ErrorId != System.Guid.Empty;
+            var isAttachmentIdValid = Id != System.Guid.Empty;
+            var isAttachmentDataValid = Data != null && Data.Length > 0;
+            var isContentTypeValid = !string.IsNullOrEmpty(ContentType);
+            return isErrorIdValid && isAttachmentIdValid && isAttachmentDataValid && isContentTypeValid;
+        }
     }
 }
