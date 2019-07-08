@@ -135,7 +135,7 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
             return;
         }
         jsDocumentWrapper[kMSDeserializedValueKey] = [documentWrapper.deserializedValue serializeToDictionary];
-        return resolve(jsDocumentWrapper);
+        resolve(jsDocumentWrapper);
     };
 }
 
