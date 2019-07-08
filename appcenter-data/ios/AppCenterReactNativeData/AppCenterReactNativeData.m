@@ -66,7 +66,7 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
                   readOptions:(NSDictionary *)readOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSReadOptions * readOptions = [self getReadOptions:readOptionsMap];
+    MSReadOptions *readOptions = [self getReadOptions:readOptionsMap];
     [MSData readDocumentWithID:documentID
                   documentType:[MSDictionaryDocument class]
                      partition:partition
@@ -80,7 +80,7 @@ RCT_EXPORT_METHOD(create:(NSString *)documentID
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions * writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData createDocumentWithID:documentID
                         document:document
@@ -95,7 +95,7 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions * writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData replaceDocumentWithID:documentID
                          document:document
@@ -106,17 +106,17 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
 
 RCT_EXPORT_METHOD(remove:(NSString *)documentID
                   partition:(NSString *)partition
-                  writeOptions:(NSDictionary* )writeOptionsMap
+                  writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions * writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
     [MSData deleteDocumentWithID:documentID
                        partition:partition
                     writeOptions:writeOptions
                completionHandler:[self dataCompletionHandler:@"Failed remove" resolve:resolve reject:reject]];
 }
 
-- (void (^)(MSDocumentWrapper * _Nonnull))dataCompletionHandler:(NSString*)errorCode
+- (void (^)(MSDocumentWrapper * _Nonnull))dataCompletionHandler:(NSString *)errorCode
                                                         resolve:(RCTPromiseResolveBlock)resolve
                                                          reject:(RCTPromiseRejectBlock)reject{
     return ^(MSDocumentWrapper * _Nonnull documentWrapper) {
