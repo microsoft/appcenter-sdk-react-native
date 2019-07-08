@@ -92,10 +92,10 @@ namespace Microsoft.AppCenter.Crashes
 
         public bool ValidatePropertiesForAttachment()
         {
-            bool errorIdValid = ErrorId != System.Guid.Empty;
-            bool attachmentIdValid = Id != System.Guid.Empty;
-            bool attachmentDataValid = (Data != null) && (Data.Length > 0);
-            bool contentTypeValid = !string.IsNullOrEmpty(ContentType);
+            var errorIdValid = ErrorId != System.Guid.Empty;
+            var attachmentIdValid = Id != System.Guid.Empty;
+            var attachmentDataValid = Data != null && Data.Length > 0;
+            var contentTypeValid = !string.IsNullOrEmpty(ContentType);
             return errorIdValid && attachmentIdValid && attachmentDataValid && contentTypeValid;
         }
     }
