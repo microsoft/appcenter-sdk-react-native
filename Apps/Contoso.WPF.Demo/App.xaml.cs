@@ -46,7 +46,7 @@ namespace Contoso.WPF.Demo
 
         private static bool ConfirmationHandler()
         {
-            Current.Dispatcher.Invoke(() =>
+            Current.Dispatcher.InvokeAsync(() =>
             {
                 var dialog = new UserConfirmationDialog();
                 if (dialog.ShowDialog() ?? false)
