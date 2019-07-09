@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { Image, View, SectionList, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
-import Toast from 'react-native-simple-toast';
+// import Toast from 'react-native-simple-toast';
 
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
@@ -173,7 +173,7 @@ export default class TransmissionScreen extends Component {
       />
     );
 
-    const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
+    // const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
     return (
       <View style={SharedStyles.container}>
@@ -226,7 +226,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       await transmissionTarget.setEnabled(value);
                       const targetEnabled = await transmissionTarget.isEnabled();
-                      this.setState({ targetEnabled });
+                      // this.setState({ targetEnabled });
                     }
                   }
                 }
@@ -243,7 +243,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       const eventName = 'EventWithoutPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName);
-                      showEventToast(eventName);
+                      // showEventToast(eventName);
                     }
                   }
                 },
@@ -254,7 +254,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       const eventName = 'EventWithPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName, { property1: '100', property2: '200' });
-                      showEventToast(eventName);
+                      // showEventToast(eventName);
                     }
                   }
                 }
