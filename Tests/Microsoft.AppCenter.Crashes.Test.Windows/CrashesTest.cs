@@ -794,6 +794,22 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
         }
 
+        [TestMethod]
+        public void HandleUserConfirmationAsyncAlwaysSendWhileDisabled()
+        {
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(false).Wait();
+
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.NotifyUserConfirmation(UserConfirmation.AlwaysSend);
+
+            // The alwaysSend value should never set because we are disabled
+            var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
+            Assert.IsFalse(alwaysSendValue);
+        }
+
         /// <summary>
         /// Convenience function to create a mock ErrorLogHelper with a file added.
         /// </summary>
