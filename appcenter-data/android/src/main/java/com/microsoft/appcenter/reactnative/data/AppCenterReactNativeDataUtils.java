@@ -17,8 +17,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.microsoft.appcenter.data.models.ReadOptions;
+import com.microsoft.appcenter.data.models.WriteOptions;
 
 public class AppCenterReactNativeDataUtils {
+
+    private static final String TIME_TO_LIVE_KEY = "timeToLive";
 
     public static WritableMap convertJsonObjectToWritableMap(JsonObject jsonObject) {
         WritableMap writableMap = new WritableNativeMap();
@@ -132,5 +136,65 @@ public class AppCenterReactNativeDataUtils {
             }
         }
         return jsonArray;
+    }
+
+    public static void putJsonElementToWritableMap(WritableMap writableMap, String key, JsonElement jsonElement) {
+        if (jsonElement.isJsonPrimitive()) {
+            JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+            if (jsonPrimitive.isString()) {
+                writableMap.putString(key, jsonPrimitive.getAsString());
+            } else if (jsonPrimitive.isNumber()) {
+                writableMap.putDouble(key, jsonPrimitive.getAsDouble());
+            } else if (jsonPrimitive.isBoolean()) {
+                writableMap.putBoolean(key, jsonPrimitive.getAsBoolean());
+            }
+        } else if (jsonElement.isJsonObject()) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            writableMap.putMap(key, AppCenterReactNativeDataUtils.convertJsonObjectToWritableMap(jsonObject));
+        } else if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+            writableMap.putArray(key, AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonArray));
+        } else {
+            writableMap.putNull(key);
+        }
+    }
+
+    public static void pushJsonElementToWritableArray(WritableArray writableArray, JsonElement jsonElement) {
+        if (jsonElement.isJsonPrimitive()) {
+            JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+            if (jsonPrimitive.isString()) {
+                writableArray.pushString(jsonPrimitive.getAsString());
+            } else if (jsonPrimitive.isNumber()) {
+                writableArray.pushDouble(jsonPrimitive.getAsDouble());
+            } else if (jsonPrimitive.isBoolean()) {
+                writableArray.pushBoolean(jsonPrimitive.getAsBoolean());
+            }
+        } else if (jsonElement.isJsonObject()) {
+            writableArray.pushMap(AppCenterReactNativeDataUtils.convertJsonObjectToWritableMap(jsonElement.getAsJsonObject()));
+        } else if (jsonElement.isJsonArray()) {
+            writableArray.pushArray(AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonElement.getAsJsonArray()));
+        } else {
+            writableArray.pushNull();
+        }
+    }
+
+    public static ReadOptions getReadOptions(ReadableMap readOptionsMap) {
+        ReadOptions readOptions;
+        if (readOptionsMap != null && readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            readOptions = new ReadOptions();
+        }
+        return readOptions;
+    }
+
+    public static WriteOptions getWriteOptions(ReadableMap writeOptionsMap) {
+        WriteOptions writeOptions;
+        if (writeOptionsMap != null && writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
+            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+        } else {
+            writeOptions = new WriteOptions();
+        }
+        return writeOptions;
     }
 }
