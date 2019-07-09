@@ -142,7 +142,7 @@ namespace Microsoft.AppCenter.Analytics
                 if (ValidateName(ref name, type))
                 {
                     properties = ValidateProperties(properties, name, type);
-                    var log = new EventLog(null, null, Guid.NewGuid(), name, null, properties);
+                    var log = new EventLog(null, Guid.NewGuid(), name, null, null, null, properties);
                     Channel.EnqueueAsync(log);
                 }
             }

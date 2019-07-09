@@ -30,6 +30,7 @@ namespace Microsoft.AppCenter.Crashes
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
             LogSerializer.AddLogType(ErrorAttachmentLog.JsonIdentifier, typeof(ErrorAttachmentLog));
+            LogSerializer.AddLogType(HandledErrorLog.JsonIdentifier, typeof(HandledErrorLog));
         }
 
         /// <summary>
