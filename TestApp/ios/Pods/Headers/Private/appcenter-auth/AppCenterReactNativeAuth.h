@@ -1,0 +1,1 @@
+../../../../../node_modules/appcenter-auth/ios/AppCenterReactNativeAuth/AppCenterReactNativeAuth.h

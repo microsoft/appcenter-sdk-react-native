@@ -1,0 +1,1 @@
+../../../../../node_modules/appcenter/ios/AppCenterReactNative/AppCenterReactNative.h
