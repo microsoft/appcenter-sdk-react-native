@@ -551,6 +551,24 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
+        public void DisablingCrashesCleansUpUnprocessedManagedErrorLogs()
+        {
+            // Make a pending error log file.
+            ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();
+
+            // Start Crashes.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.ShouldAwaitUserConfirmation = () => true;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.Instance.ProcessPendingErrorsTask.Wait();
+
+            // Verify the unprocessed managed error log is cleaned up after disabling crashes.
+            Assert.AreEqual(Crashes.Instance._unprocessedManagedErrorLogs.Count, 1);
+            Crashes.SetEnabledAsync(false).Wait();
+            Assert.AreEqual(Crashes.Instance._unprocessedManagedErrorLogs.Count, 0);
+        }
+
+        [TestMethod]
         public void DisablingCrashesCleansUpLastSessionReport()
         {
             ErrorLogHelper.Instance = GenerateMockErrorLogHelperWithPendingFile();

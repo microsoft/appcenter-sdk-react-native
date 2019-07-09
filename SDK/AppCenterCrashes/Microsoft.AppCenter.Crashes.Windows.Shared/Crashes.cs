@@ -99,7 +99,7 @@ namespace Microsoft.AppCenter.Crashes
         /// <summary>
         /// A dictionary that contains unprocessed managed error logs before getting a user confirmation.
         /// </summary>
-        private readonly IDictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
+        internal readonly IDictionary<Guid, ManagedErrorLog> _unprocessedManagedErrorLogs;
 
         /// <summary>
         /// A dictionary for a cache that contains error report.
@@ -172,6 +172,7 @@ namespace Microsoft.AppCenter.Crashes
                         ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
                     }
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
+                    _unprocessedManagedErrorLogs.Clear();
                     _lastSessionErrorReportTaskSource = null;
                 }
             }
