@@ -23,14 +23,14 @@
 @end
 
 @implementation TestAppNative
-
+  
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
 
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
-                                  :(BOOL)startAutomatically)
+                  :(BOOL)startAutomatically)
 {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
   if (secretString == nil) {
