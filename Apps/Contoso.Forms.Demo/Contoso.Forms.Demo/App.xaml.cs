@@ -46,7 +46,7 @@ namespace Contoso.Forms.Demo
                 Push.PushNotificationReceived += OnPushNotificationReceived;
                 AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
                                    typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth), typeof(Data));
-                if (Current.Properties.ContainsKey(EntryCellTextChanged.UserIdKey) && Current.Properties[EntryCellTextChanged.UserIdKey] is string id)
+                if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
                 }
