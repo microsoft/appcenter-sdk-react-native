@@ -12,7 +12,7 @@
     "Microsoft": "appcentersdk@microsoft.com"
   },
   "source": {
-    "http": "https://github.com/microsoft/appcenter-sdk-react-native/releases/download/2.1.0/AppCenter-SDK-ReactNative-iOS-Pod-2.1.0.zip"
+    "http": "file:///Users/dihei/Code/appcenter/react-native/AppCenterReactNativeShared/Products/AppCenter-SDK-ReactNative-iOS-Pod-2.1.0.zip"
   },
   "platforms": {
     "ios": "9.0"

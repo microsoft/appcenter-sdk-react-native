@@ -1,0 +1,31 @@
+{
+  "name": "appcenter-auth",
+  "version": "2.1.0",
+  "summary": "React Native plugin for AppCenter Auth",
+  "license": "MIT",
+  "homepage": "https://github.com/microsoft/appcenter-sdk-react-native/blob/master/appcenter-auth/README.md",
+  "documentation_url": "https://docs.microsoft.com/en-us/appcenter/",
+  "authors": {
+    "Microsoft": "appcentersdk@microsoft.com"
+  },
+  "source": {
+    "git": "https://github.com/microsoft/appcenter-sdk-react-native.git"
+  },
+  "source_files": "ios/AppCenterReactNativeAuth/**/*.{h,m}",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "requires_arc": true,
+  "vendored_frameworks": "AppCenterReactNativeShared/AppCenterReactNativeShared.framework",
+  "dependencies": {
+    "AppCenterReactNativeShared": [
+
+    ],
+    "AppCenter/Auth": [
+
+    ],
+    "React": [
+
+    ]
+  }
+}
