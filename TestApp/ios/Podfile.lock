@@ -122,11 +122,11 @@ PODS:
   - yoga (0.60.0.React)
 
 DEPENDENCIES:
-  - appcenter (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter`)
-  - appcenter-analytics (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-analytics`)
-  - appcenter-auth (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-auth`)
-  - appcenter-crashes (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-crashes`)
-  - appcenter-push (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-push`)
+  - appcenter (from `../node_modules/appcenter`)
+  - appcenter-analytics (from `../node_modules/appcenter-analytics`)
+  - appcenter-auth (from `../node_modules/appcenter-auth`)
+  - appcenter-crashes (from `../node_modules/appcenter-crashes`)
+  - appcenter-push (from `../node_modules/appcenter-push`)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/local.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -139,7 +139,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-image-picker (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/react-native-image-picker`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -150,9 +150,9 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
-  - "RNCAsyncStorage (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/@react-native-community/async-storage`)"
-  - RNFS (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/react-native-fs`)
-  - RNGestureHandler (from `/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/react-native-gesture-handler`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - RNFS (from `../node_modules/react-native-fs`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -162,15 +162,15 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   appcenter:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter"
+    :path: "../node_modules/appcenter"
   appcenter-analytics:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-analytics"
+    :path: "../node_modules/appcenter-analytics"
   appcenter-auth:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-auth"
+    :path: "../node_modules/appcenter-auth"
   appcenter-crashes:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-crashes"
+    :path: "../node_modules/appcenter-crashes"
   appcenter-push:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/appcenter-push"
+    :path: "../node_modules/appcenter-push"
   AppCenterReactNativeShared:
     :podspec: "../../AppCenterReactNativeShared/Products/local.podspec"
   DoubleConversion:
@@ -196,7 +196,7 @@ EXTERNAL SOURCES:
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-image-picker:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/react-native-image-picker"
+    :path: "../node_modules/react-native-image-picker"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -218,11 +218,11 @@ EXTERNAL SOURCES:
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
   RNCAsyncStorage:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/@react-native-community/async-storage"
+    :path: "../node_modules/@react-native-community/async-storage"
   RNFS:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/react-native-fs"
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
-    :path: "/Users/dihei/Code/appcenter/react-native/TestApp/node_modules/react-native-gesture-handler"
+    :path: "../node_modules/react-native-gesture-handler"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
