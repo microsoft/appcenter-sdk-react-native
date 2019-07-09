@@ -53,6 +53,10 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
+            if (Application.Current.Properties.ContainsKey(Constants.UserId) && Application.Current.Properties[Constants.UserId] is string id)
+            {
+                UserIdEntry.Text = id;
+            }
             UserIdEntry.Unfocused += (sender, args) =>
             {
                 var inputText = UserIdEntry.Text;
