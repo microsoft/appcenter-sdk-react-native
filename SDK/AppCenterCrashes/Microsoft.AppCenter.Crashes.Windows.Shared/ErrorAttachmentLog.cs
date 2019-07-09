@@ -90,6 +90,10 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
+        /// <summary>
+        /// Check all required fields are present.
+        /// </summary>
+        /// <returns>True if all required fields are present.</returns>
         public bool ValidatePropertiesForAttachment()
         {
             var isErrorIdValid = ErrorId != System.Guid.Empty;
