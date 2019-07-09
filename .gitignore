@@ -58,3 +58,4 @@ artifacts/
 
 # Shared framework build
 AppCenterReactNativeShared/Products/AppCenterReactNativeShared/AppCenterReactNativeShared.framework/AppCenterReactNativeShared
+AppCenterReactNativeShared/Products/AppCenter-SDK-ReactNative-iOS-Pod-*.zip
