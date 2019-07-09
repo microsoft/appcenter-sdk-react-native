@@ -174,8 +174,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 mPromise.resolve(jsDocumentWrapper);
                 return;
             }
-            JsonElement deserializedValue = (JsonElement) documentWrapper.getDeserializedValue();
-            AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedValue);
+            JsonElement deserializedDocument = (JsonElement) documentWrapper.getDeserializedValue();
+            AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
             mPromise.resolve(jsDocumentWrapper);
         }
     }
