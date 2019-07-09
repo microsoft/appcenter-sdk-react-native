@@ -34,6 +34,7 @@ namespace Contoso.WinForms.Demo
         {
             AppCenterEnabled.Checked = AppCenter.IsEnabledAsync().Result;
             AnalyticsEnabled.Checked = Analytics.IsEnabledAsync().Result;
+            CrashesEnabled.Checked = Crashes.IsEnabledAsync().Result;
         }
 
         private void AppCenterEnabled_CheckedChanged(object sender, EventArgs e)

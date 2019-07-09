@@ -67,7 +67,7 @@ namespace Contoso.WPF.Puppet
             Crashes.FailedToSendErrorReport += (_, args) => Log($"Failed to send error report for an error ID: {args.Report.Id}");
 
             // Start AppCenter.
-            AppCenter.Start("42f4a839-c54c-44da-8072-a2f2a61751b2", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("d967daf9-28ed-4899-84e8-17a00c064987", typeof(Analytics), typeof(Crashes));
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
                 Log("Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
