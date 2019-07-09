@@ -53,7 +53,13 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
-
+            UserIdEntry.Unfocused += (sender, args) =>
+            {
+                var inputText = UserIdEntry.Text;
+                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
+                AppCenter.SetUserId(text);
+                Application.Current.Properties[Constants.UserId] = text;
+            };
         }
 
         void LogLevelCellTapped(object sender, EventArgs e)
@@ -92,48 +98,6 @@ namespace Contoso.Forms.Puppet
         void UpdateLogWriteLevelLabel()
         {
             LogWriteLevelLabel.Text = LogLevelNames[LogWriteLevel];
-        }
-    }
-
-    [Android.Runtime.Preserve(AllMembers = true)]
-    public class EntryCellTextChanged : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        internal static string UserIdKey = "userId";
-
-        private string _userId;
-
-        public EntryCellTextChanged()
-        {
-            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
-            {
-                UserId = id;
-            }
-        }
-
-        public string UserId
-        {
-            get { return _userId; }
-
-            set
-            {
-                _userId = value;
-                OnTextChanged(_userId);
-            }
-        }
-
-        public ICommand TextChanged;
-
-        protected virtual void OnTextChanged(string inputText)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(inputText));
-                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
-                AppCenter.SetUserId(text);
-                Application.Current.Properties[UserIdKey] = text;
-            }
         }
     }
 }
