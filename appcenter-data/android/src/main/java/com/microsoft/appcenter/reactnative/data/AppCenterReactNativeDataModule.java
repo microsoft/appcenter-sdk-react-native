@@ -75,7 +75,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             @Override
             public void accept(PaginatedDocuments<JsonElement> documentWrappers) {
                 mPaginatedDocuments = documentWrappers;
-                WritableMap PaginatedDocumentsMap = new WritableNativeMap();
+                WritableMap paginatedDocumentsMap = new WritableNativeMap();
                 WritableMap currentPageMap = new WritableNativeMap();
                 WritableArray itemsArray = new WritableNativeArray();
                 Page<JsonElement> currentPage = mPaginatedDocuments.getCurrentPage();
@@ -87,8 +87,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                     AppCenterReactNativeDataUtils.pushJsonElementToWritableArray(itemsArray, deserializedDocument);
                 }
                 currentPageMap.putArray("items", itemsArray);
-                PaginatedDocumentsMap.putMap("currentPage", currentPageMap);
-                promise.resolve(PaginatedDocumentsMap);
+                paginatedDocumentsMap.putMap("currentPage", currentPageMap);
+                promise.resolve(paginatedDocumentsMap);
             }
         });
     }
