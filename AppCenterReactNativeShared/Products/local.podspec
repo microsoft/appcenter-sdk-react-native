@@ -8,9 +8,9 @@ Pod::Spec.new do |s|
 
   s.author           = { 'Microsoft' => 'appcentersdk@microsoft.com' }
 
-  zipfile = "#{__dir__}/AppCenter-SDK-ReactNative-iOS-Pod-#{s.version}.zip"
   system("SRCROOT=#{__dir__}/../ios #{__dir__}/../prepare-local-podspec.sh")
-  s.source = { :http => "file://#{zipfile}"}
+
+  s.source = { :http => "file://#{__dir__}/AppCenter-SDK-ReactNative-iOS-Pod-#{s.version}.zip"}
 
   s.platform          = :ios, '9.0'
   s.requires_arc      = true

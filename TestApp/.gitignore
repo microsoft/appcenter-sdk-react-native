@@ -59,5 +59,6 @@ fastlane/screenshots
 
 package-lock.json
 
-# With RN 0.60.0 autolinking, we prefer `pod install` instead of checking the ios/Pods/ directory
+# With RN 0.60.0 autolinking, we use `pod install` to install CocoaPods dependencies,
+# and don't check in **ios/Pods/** directory.
 ios/Pods/
