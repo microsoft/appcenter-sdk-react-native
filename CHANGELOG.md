@@ -2,6 +2,12 @@
 
 ## Version 2.2.0 (Under development)
 
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix possible deadlock in `Crashes.TrackError`.
+
 ### App Center Data
 
 * **[Feature]** Change the default time-to-live (TTL) from 1 day to infinite (never expire).
