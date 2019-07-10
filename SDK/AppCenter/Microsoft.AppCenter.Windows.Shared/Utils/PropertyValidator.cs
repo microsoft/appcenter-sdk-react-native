@@ -4,9 +4,9 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
 {
     public static class PropertyValidator
     {
-        private const int MaxEventProperties = 20;
-        private const int MaxEventPropertyKeyLength = 125;
-        private const int MaxEventPropertyValueLength = 125;
+        private const int MaxProperties = 20;
+        private const int MaxPropertyKeyLength = 125;
+        private const int MaxPropertyValueLength = 125;
 
         /// <summary>
         /// Validates properties.
@@ -23,10 +23,10 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
             var result = new Dictionary<string, string>();
             foreach (var property in properties)
             {
-                if (result.Count >= MaxEventProperties)
+                if (result.Count >= MaxProperties)
                 {
                     AppCenterLog.Warn(AppCenterLog.LogTag,
-                        $"{logName} : properties cannot contain more than {MaxEventProperties} items. Skipping other properties.");
+                        $"{logName} : properties cannot contain more than {MaxProperties} items. Skipping other properties.");
                     break;
                 }
 
@@ -47,17 +47,17 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                 }
 
                 // Truncate exceeded property.
-                if (key.Length > MaxEventPropertyKeyLength)
+                if (key.Length > MaxPropertyKeyLength)
                 {
                     AppCenterLog.Warn(AppCenterLog.LogTag,
-                        $"{logName} : property '{key}' : property key length cannot be longer than {MaxEventPropertyKeyLength} characters. Property key will be truncated.");
-                    key = key.Substring(0, MaxEventPropertyKeyLength);
+                        $"{logName} : property '{key}' : property key length cannot be longer than {MaxPropertyKeyLength} characters. Property key will be truncated.");
+                    key = key.Substring(0, MaxPropertyKeyLength);
                 }
-                if (value.Length > MaxEventPropertyValueLength)
+                if (value.Length > MaxPropertyValueLength)
                 {
                     AppCenterLog.Warn(AppCenterLog.LogTag,
-                        $"{logName} : property '{key}' : property value length cannot be longer than {MaxEventPropertyValueLength} characters. Property value will be truncated.");
-                    value = value.Substring(0, MaxEventPropertyValueLength);
+                        $"{logName} : property '{key}' : property value length cannot be longer than {MaxPropertyValueLength} characters. Property value will be truncated.");
+                    value = value.Substring(0, MaxPropertyValueLength);
                 }
                 result.Add(key, value);
             }
