@@ -51,13 +51,15 @@ function read(documentId, partition, readOptions) {
  */
 function list(partition) {
     return AppCenterReactNativeData.list(partition).then((result) => {
-        result.hasNextPage = function hasNextPage() {
-            return AppCenterReactNativeData.hasNextPage();
+        const paginatedDocuments = {};
+        paginatedDocuments.currentPage = result.currentPage;
+        paginatedDocuments.hasNextPage = function hasNextPage() {
+            return AppCenterReactNativeData.hasNextPage(result.uuid);
         };
-        result.getNextPage = function getNextPage() {
-            return AppCenterReactNativeData.getNextPage();
+        paginatedDocuments.getNextPage = function getNextPage() {
+            return AppCenterReactNativeData.getNextPage(result.uuid);
         };
-        return result;
+        return paginatedDocuments;
     });
 }
 

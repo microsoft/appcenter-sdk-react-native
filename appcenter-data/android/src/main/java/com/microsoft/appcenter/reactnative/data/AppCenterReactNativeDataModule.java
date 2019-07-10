@@ -30,7 +30,10 @@ import com.microsoft.appcenter.data.models.WriteOptions;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
@@ -48,13 +51,14 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String PARTITION_KEY = "partition";
 
-    private PaginatedDocuments<JsonElement> mPaginatedDocuments;
+    private Map<String, PaginatedDocuments<JsonElement>> uuidToPaginatedDocuments;
 
     public AppCenterReactNativeDataModule(Application application) {
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
             AppCenter.start(Data.class);
         }
+        uuidToPaginatedDocuments = new HashMap<>();
     }
 
     @Override
@@ -74,11 +78,14 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
             @Override
             public void accept(PaginatedDocuments<JsonElement> documentWrappers) {
-                mPaginatedDocuments = documentWrappers;
+                UUID uuid = UUID.randomUUID();
+                String uuidString = uuid.toString();
+                uuidToPaginatedDocuments.put(uuidString, documentWrappers);
+
                 WritableMap paginatedDocumentsMap = new WritableNativeMap();
                 WritableMap currentPageMap = new WritableNativeMap();
                 WritableArray itemsArray = new WritableNativeArray();
-                Page<JsonElement> currentPage = mPaginatedDocuments.getCurrentPage();
+                Page<JsonElement> currentPage = documentWrappers.getCurrentPage();
                 List<DocumentWrapper<JsonElement>> documents = currentPage.getItems();
 
                 /* Add documents to WritableArray */
@@ -88,25 +95,33 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 }
                 currentPageMap.putArray("items", itemsArray);
                 paginatedDocumentsMap.putMap("currentPage", currentPageMap);
+                paginatedDocumentsMap.putString("uuid", uuidString);
                 promise.resolve(paginatedDocumentsMap);
             }
         });
     }
 
     @ReactMethod
-    public void hasNextPage(final Promise promise) {
-        if (mPaginatedDocuments == null || !mPaginatedDocuments.hasNextPage()) {
+    public void hasNextPage(String uuid, final Promise promise) {
+        if (!uuidToPaginatedDocuments.containsKey(uuid)
+                || uuidToPaginatedDocuments.get(uuid) == null
+                || !uuidToPaginatedDocuments.get(uuid).hasNextPage()) {
             promise.resolve(false);
+            return;
         }
         promise.resolve(true);
     }
 
     @ReactMethod
-    public void getNextPage(final Promise promise) {
-        if (mPaginatedDocuments == null || !mPaginatedDocuments.hasNextPage()) {
+    public void getNextPage(String uuid, final Promise promise) {
+        if (!uuidToPaginatedDocuments.containsKey(uuid)
+                || uuidToPaginatedDocuments.get(uuid) == null
+                || !uuidToPaginatedDocuments.get(uuid).hasNextPage()) {
             promise.resolve(null);
+            return;
         }
-        mPaginatedDocuments.getNextPage().thenAccept(new AppCenterConsumer<Page<JsonElement>>() {
+        PaginatedDocuments<JsonElement> paginatedDocuments = uuidToPaginatedDocuments.get(uuid);
+        paginatedDocuments.getNextPage().thenAccept(new AppCenterConsumer<Page<JsonElement>>() {
 
             @Override
             public void accept(Page<JsonElement> page) {
