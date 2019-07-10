@@ -57,5 +57,5 @@ fastlane/screenshots
 /unused.jsbundle*
 /.vscode/.react
 
-ios/Pods/AppCenterReactNativeShared/AppCenterReactNativeShared/AppCenterReactNativeShared.framework/AppCenterReactNativeShared
+ios/Pods/
 package-lock.json
