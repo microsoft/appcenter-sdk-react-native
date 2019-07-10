@@ -421,6 +421,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         public void RemoveAllStoredErrorLogFiles()
         {
             var mockDirectory = Mock.Of<Directory>();
+            Mock.Get(mockDirectory).Setup(d => d.Exists()).Returns(true);
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
             ErrorLogHelper.RemoveAllStoredErrorLogFiles();
             Mock.Get(mockDirectory).Verify(d => d.Delete(true));
