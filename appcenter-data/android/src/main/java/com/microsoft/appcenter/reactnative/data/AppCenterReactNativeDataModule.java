@@ -81,34 +81,20 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 UUID uuid = UUID.randomUUID();
                 String uuidString = uuid.toString();
                 uuidToPaginatedDocuments.put(uuidString, documentWrappers);
-
                 WritableMap paginatedDocumentsMap = new WritableNativeMap();
                 WritableMap currentPageMap = new WritableNativeMap();
                 WritableArray itemsArray = new WritableNativeArray();
                 Page<JsonElement> currentPage = documentWrappers.getCurrentPage();
-
                 if (currentPage.getError() != null) {
                     DataException dataException = currentPage.getError();
                     promise.reject("Failed list", dataException.getMessage(), dataException);
                     return;
                 }
-
                 List<DocumentWrapper<JsonElement>> documents = currentPage.getItems();
 
                 /* Add documents to WritableArray */
                 for (DocumentWrapper<JsonElement> document : documents) {
-                    WritableMap jsDocumentWrapper = new WritableNativeMap();
-                    addDocumentWrapperMetaData(document, jsDocumentWrapper);
-
-                    if (document.getError() != null) {
-                        DataException dataException = document.getError();
-                        jsDocumentWrapper.putString("errorMessage", dataException.getMessage());
-                    } else {
-                        JsonElement deserializedDocument = document.getDeserializedValue();
-                        AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
-                    }
-
-                    itemsArray.pushMap(jsDocumentWrapper);
+                    addedDocumentToWritableArray(itemsArray, document);
                 }
                 currentPageMap.putArray("items", itemsArray);
                 paginatedDocumentsMap.putMap("currentPage", currentPageMap);
@@ -144,29 +130,16 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             public void accept(Page<JsonElement> page) {
                 WritableMap pageMap = new WritableNativeMap();
                 WritableArray itemsArray = new WritableNativeArray();
-
                 if (page.getError() != null) {
                     DataException dataException = page.getError();
                     promise.reject("Failed list", dataException.getMessage(), dataException);
                     return;
                 }
-
                 List<DocumentWrapper<JsonElement>> documents = page.getItems();
 
                 /* Add documents to WritableArray */
                 for (DocumentWrapper<JsonElement> document : documents) {
-                    WritableMap jsDocumentWrapper = new WritableNativeMap();
-                    addDocumentWrapperMetaData(document, jsDocumentWrapper);
-
-                    if (document.getError() != null) {
-                        DataException dataException = document.getError();
-                        jsDocumentWrapper.putString("errorMessage", dataException.getMessage());
-                    } else {
-                        JsonElement deserializedDocument = document.getDeserializedValue();
-                        AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
-                    }
-
-                    itemsArray.pushMap(jsDocumentWrapper);
+                    addedDocumentToWritableArray(itemsArray, document);
                 }
                 pageMap.putArray("items", itemsArray);
                 promise.resolve(pageMap);
@@ -208,14 +181,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         @Override
         public void accept(DocumentWrapper<T> documentWrapper) {
             WritableMap jsDocumentWrapper = new WritableNativeMap();
-            jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
-            jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
-            jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
-
-            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
-            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
-            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
-            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+            addDocumentWrapperMetaData(documentWrapper, jsDocumentWrapper);
             if (documentWrapper.getError() != null) {
                 DataException dataException = documentWrapper.getError();
                 mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
@@ -231,7 +197,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         }
     }
 
-    private void addDocumentWrapperMetaData(DocumentWrapper<JsonElement> documentWrapper, WritableMap writableMap) {
+    private static <T> void addDocumentWrapperMetaData(DocumentWrapper<T> documentWrapper, WritableMap writableMap) {
         writableMap.putString(ETAG_KEY, documentWrapper.getETag());
         writableMap.putString(ID_KEY, documentWrapper.getId());
         writableMap.putString(PARTITION_KEY, documentWrapper.getPartition());
@@ -240,5 +206,20 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         writableMap.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
         writableMap.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
         writableMap.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+    }
+
+    private static void addedDocumentToWritableArray(WritableArray writableArray, DocumentWrapper<JsonElement> documentWrapper) {
+        WritableMap jsDocumentWrapper = new WritableNativeMap();
+        addDocumentWrapperMetaData(documentWrapper, jsDocumentWrapper);
+
+        if (documentWrapper.getError() != null) {
+            DataException dataException = documentWrapper.getError();
+            jsDocumentWrapper.putString("errorMessage", dataException.getMessage());
+        } else {
+            JsonElement deserializedDocument = documentWrapper.getDeserializedValue();
+            AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
+        }
+
+        writableArray.pushMap(jsDocumentWrapper);
     }
 }
