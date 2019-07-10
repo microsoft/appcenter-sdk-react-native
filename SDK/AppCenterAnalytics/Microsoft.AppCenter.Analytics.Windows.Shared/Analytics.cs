@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Analytics.Channel;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Windows.Shared.Utils;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Analytics
 {
