@@ -305,19 +305,23 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         public virtual void InstanceRemoveAllStoredErrorLogFiles()
         {
-            lock (LockObject)
+            // Crashes directory will not exist if disabling has already deleted the folder.
+            if (_crashesDirectory.Exists())
             {
-                AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log directory.");
-                try
+                lock (LockObject)
                 {
-                    _crashesDirectory.Delete(true);
+                    AppCenterLog.Debug(Crashes.LogTag, $"Deleting error log directory.");
+                    try
+                    {
+                        _crashesDirectory.Delete(true);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log directory.", ex);
+                    }
                 }
-                catch (System.Exception ex)
-                {
-                    AppCenterLog.Warn(Crashes.LogTag, $"Failed to delete error log directory.", ex);
-                }
+                AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files.");
             }
-            AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files.");
         }
 
         private static ModelException CreateModelException(System.Exception exception)
