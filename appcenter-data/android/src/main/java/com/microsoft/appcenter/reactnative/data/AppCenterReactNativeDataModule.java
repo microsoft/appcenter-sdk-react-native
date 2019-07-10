@@ -86,12 +86,29 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 WritableMap currentPageMap = new WritableNativeMap();
                 WritableArray itemsArray = new WritableNativeArray();
                 Page<JsonElement> currentPage = documentWrappers.getCurrentPage();
+
+                if (currentPage.getError() != null) {
+                    DataException dataException = currentPage.getError();
+                    promise.reject("Failed list", dataException.getMessage(), dataException);
+                    return;
+                }
+
                 List<DocumentWrapper<JsonElement>> documents = currentPage.getItems();
 
                 /* Add documents to WritableArray */
                 for (DocumentWrapper<JsonElement> document : documents) {
-                    JsonElement deserializedDocument = document.getDeserializedValue();
-                    AppCenterReactNativeDataUtils.pushJsonElementToWritableArray(itemsArray, deserializedDocument);
+                    WritableMap jsDocumentWrapper = new WritableNativeMap();
+                    addDocumentWrapperMetaData(document, jsDocumentWrapper);
+
+                    if (document.getError() != null) {
+                        DataException dataException = document.getError();
+                        jsDocumentWrapper.putString("errorMessage", dataException.getMessage());
+                    } else {
+                        JsonElement deserializedDocument = document.getDeserializedValue();
+                        AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
+                    }
+
+                    itemsArray.pushMap(jsDocumentWrapper);
                 }
                 currentPageMap.putArray("items", itemsArray);
                 paginatedDocumentsMap.putMap("currentPage", currentPageMap);
@@ -125,15 +142,34 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
             @Override
             public void accept(Page<JsonElement> page) {
+                WritableMap pageMap = new WritableNativeMap();
                 WritableArray itemsArray = new WritableNativeArray();
+
+                if (page.getError() != null) {
+                    DataException dataException = page.getError();
+                    promise.reject("Failed list", dataException.getMessage(), dataException);
+                    return;
+                }
+
                 List<DocumentWrapper<JsonElement>> documents = page.getItems();
 
                 /* Add documents to WritableArray */
                 for (DocumentWrapper<JsonElement> document : documents) {
-                    JsonElement deserializedDocument = document.getDeserializedValue();
-                    AppCenterReactNativeDataUtils.pushJsonElementToWritableArray(itemsArray, deserializedDocument);
+                    WritableMap jsDocumentWrapper = new WritableNativeMap();
+                    addDocumentWrapperMetaData(document, jsDocumentWrapper);
+
+                    if (document.getError() != null) {
+                        DataException dataException = document.getError();
+                        jsDocumentWrapper.putString("errorMessage", dataException.getMessage());
+                    } else {
+                        JsonElement deserializedDocument = document.getDeserializedValue();
+                        AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
+                    }
+
+                    itemsArray.pushMap(jsDocumentWrapper);
                 }
-                promise.resolve(itemsArray);
+                pageMap.putArray("items", itemsArray);
+                promise.resolve(pageMap);
             }
         });
     }
@@ -193,5 +229,16 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
             mPromise.resolve(jsDocumentWrapper);
         }
+    }
+
+    private void addDocumentWrapperMetaData(DocumentWrapper<JsonElement> documentWrapper, WritableMap writableMap) {
+        writableMap.putString(ETAG_KEY, documentWrapper.getETag());
+        writableMap.putString(ID_KEY, documentWrapper.getId());
+        writableMap.putString(PARTITION_KEY, documentWrapper.getPartition());
+
+        /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
+        writableMap.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
+        writableMap.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+        writableMap.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
     }
 }
