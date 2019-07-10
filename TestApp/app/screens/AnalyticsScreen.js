@@ -84,6 +84,7 @@ export default class AnalyticsScreen extends Component {
                   action: () => {
                     const eventName = 'EventWithoutProperties';
                     Analytics.trackEvent(eventName);
+                    console.log(`Scheduled event '${eventName}'.`);
                   }
                 },
                 {
@@ -91,6 +92,7 @@ export default class AnalyticsScreen extends Component {
                   action: () => {
                     const eventName = 'EventWithProperties';
                     Analytics.trackEvent(eventName, { property1: '100', property2: '200' });
+                    console.log(`Scheduled event '${eventName}'.`);
                   }
                 },
                 {
@@ -98,6 +100,7 @@ export default class AnalyticsScreen extends Component {
                   action: () => {
                     const eventName = 'EventWithLongProperties';
                     Analytics.trackEvent(eventName, { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
+                    console.log(`Scheduled event '${eventName}'.`);
                   }
                 },
               ],

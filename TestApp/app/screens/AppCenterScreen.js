@@ -123,10 +123,12 @@ export default class AppCenterScreen extends Component {
       .set('score', 7)
       .set('now', new Date());
     await AppCenter.setCustomProperties(properties);
+    console.log('Scheduled custom properties log. Please check verbose logs.');
   }
 
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
+    console.log('Relaunch app for changes to be applied.');
   }
 
   async selectStartup(key) {

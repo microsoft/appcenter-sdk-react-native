@@ -240,6 +240,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       const eventName = 'EventWithoutPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName);
+                      console.log(`Scheduled event '${eventName}'.`);
                     }
                   }
                 },
@@ -250,6 +251,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       const eventName = 'EventWithPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName, { property1: '100', property2: '200' });
+                      console.log(`Scheduled event '${eventName}'.`);
                     }
                   }
                 }
