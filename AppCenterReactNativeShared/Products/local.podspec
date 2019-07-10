@@ -1,3 +1,6 @@
+# This podspec is intended to be used as local pod reference during development,
+# while the `AppCenterReactNativeShared.podspec` is only used in the official SDK releases.
+
 Pod::Spec.new do |s|
   s.name              = 'AppCenterReactNativeShared'
   s.version           = '2.1.0'

@@ -27,5 +27,8 @@ echo "Build shared framework..."
 echo "Running jetify to resolve AndroidX compatibility issues..."
 npx jetify
 
+echo "Updating CocoaPods repos..."
+pod repo update
+
 echo "Running pod install..."
 (cd ios && pod install)
