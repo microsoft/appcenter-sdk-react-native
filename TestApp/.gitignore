@@ -57,5 +57,7 @@ fastlane/screenshots
 /unused.jsbundle*
 /.vscode/.react
 
-ios/Pods/
 package-lock.json
+
+# With RN 0.60.0 autolinking, we prefer `pod install` instead of checking the ios/Pods/ directory
+ios/Pods/
