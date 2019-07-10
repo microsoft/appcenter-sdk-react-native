@@ -226,7 +226,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       await transmissionTarget.setEnabled(value);
                       const targetEnabled = await transmissionTarget.isEnabled();
-                      // this.setState({ targetEnabled });
+                      this.setState({ targetEnabled });
                     }
                   }
                 }
