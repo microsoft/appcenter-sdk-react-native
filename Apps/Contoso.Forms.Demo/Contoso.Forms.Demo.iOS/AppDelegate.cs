@@ -1,15 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Contoso.Forms.Demo.iOS;
 using Foundation;
 using Microsoft.AppCenter.Distribute;
 using UIKit;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(AppDelegate))]
 namespace Contoso.Forms.Demo.iOS
 {
     [Register("AppDelegate")]
-    public class AppDelegate : Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public class AppDelegate : Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IClearCrashClick
     {
+        public const string kMSUserConfirmationKey = "MSUserConfirmation";
+
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Xamarin.Forms.Forms.Init();
@@ -23,6 +28,11 @@ namespace Contoso.Forms.Demo.iOS
         {
             base.WillEnterForeground(uiApplication);
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+        }
+
+        public void ClearCrashButton()
+        {
+            NSUserDefaults.StandardUserDefaults.RemoveObject(kMSUserConfirmationKey);
         }
     }
 }
