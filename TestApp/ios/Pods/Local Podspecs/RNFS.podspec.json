@@ -1,0 +1,24 @@
+{
+  "name": "RNFS",
+  "version": "2.13.3",
+  "homepage": "https://github.com/itinance/react-native-fs",
+  "summary": "Native filesystem access for react-native",
+  "license": "MIT",
+  "authors": {
+    "Johannes Lumpe": "johannes@lum.pe"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/itinance/react-native-fs",
+    "tag": "v2.13.3"
+  },
+  "source_files": "*.{h,m}",
+  "preserve_paths": "**/*.js",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
