@@ -60,7 +60,6 @@ namespace Contoso.Forms.Demo.Droid
         {
             ISharedPreferences appCenterPreferences = mContext.GetSharedPreferences("AppCenter", FileCreationMode.Private);
             appCenterPreferences.Edit().Remove(PrefKeyAlwaysSend).Apply();
-
         }
     }
 }
