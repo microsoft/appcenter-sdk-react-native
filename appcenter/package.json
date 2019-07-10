@@ -38,9 +38,9 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
-    "jest": "^21.1.0",
-    "react": "^16.3.1",
-    "react-native": "^0.55.4"
+    "jest": "^24.8.0",
+    "react": "^16.6.3",
+    "react-native": "0.57.3"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
@@ -48,6 +48,8 @@
   },
   "jest": {
     "preset": "react-native",
-    "verbose": true
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    }
   }
 }
