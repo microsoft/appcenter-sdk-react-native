@@ -22,7 +22,6 @@ namespace Contoso.Forms.Demo.Droid
 
         public const string PrefKeyAlwaysSend = "com.microsoft.appcenter.crashes.always.send";
 
-
         public TaskCompletionSource<string> FileAttachmentTaskCompletionSource { set; get; }
 
         protected override void OnCreate(Bundle savedInstanceState)

@@ -19,7 +19,6 @@ namespace Contoso.Forms.Demo
     public interface IClearCrashClick
     {
         void ClearCrashButton();
-
     }
     public partial class App : Application
     {
