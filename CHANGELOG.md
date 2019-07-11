@@ -40,7 +40,7 @@ This version temporarily removes support for UWP for Crashes as long as the pack
 
 #### Android
 
-* **[Fix]** The in memory cache of error reports is now cleared when disabling Crashes.
+* **[Fix]** The in-memory cache of error reports is now cleared when disabling Crashes.
 
 ### App Center Data
 
@@ -60,7 +60,7 @@ This version temporarily removes support for UWP for Crashes as long as the pack
 
 #### iOS
 
-* **[Fix]** Fix crash when an application was minimized on trying to reinstall after setup failure. 
+* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure. 
 
 ## Version 2.1.1
 
