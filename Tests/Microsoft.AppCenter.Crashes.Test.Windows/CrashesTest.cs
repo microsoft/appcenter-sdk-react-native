@@ -1,23 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.AppCenter.Ingestion.Models;
-using Microsoft.AppCenter.Ingestion.Models.Serialization;
-using Microsoft.AppCenter.Storage;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
