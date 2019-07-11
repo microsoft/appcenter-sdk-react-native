@@ -20,6 +20,7 @@ namespace Contoso.Forms.Demo
     {
         void ClearCrashButton();
     }
+
     public partial class App : Application
     {
         public const string LogTag = "AppCenterXamarinDemo";

@@ -13,7 +13,7 @@ namespace Contoso.Forms.Demo.iOS
     [Register("AppDelegate")]
     public class AppDelegate : Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IClearCrashClick
     {
-        public const string kMSUserConfirmationKey = "MSUserConfirmation";
+        private const string CrashesUserConfirmationStorageKey = "MSUserConfirmation";
 
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
@@ -32,7 +32,7 @@ namespace Contoso.Forms.Demo.iOS
 
         public void ClearCrashButton()
         {
-            NSUserDefaults.StandardUserDefaults.RemoveObject(kMSUserConfirmationKey);
+            NSUserDefaults.StandardUserDefaults.RemoveObject(CrashesUserConfirmationStorageKey);
         }
     }
 }

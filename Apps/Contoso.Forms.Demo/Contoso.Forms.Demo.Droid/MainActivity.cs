@@ -18,9 +18,7 @@ namespace Contoso.Forms.Demo.Droid
     {
         public static readonly int FileAttachmentId = 1;
 
-        Context mContext = Android.App.Application.Context;
-
-        public const string PrefKeyAlwaysSend = "com.microsoft.appcenter.crashes.always.send";
+        private const string CrashesUserConfirmationStorageKey = "com.microsoft.appcenter.crashes.always.send";
 
         public TaskCompletionSource<string> FileAttachmentTaskCompletionSource { set; get; }
 
@@ -58,8 +56,8 @@ namespace Contoso.Forms.Demo.Droid
 
         public void ClearCrashButton()
         {
-            ISharedPreferences appCenterPreferences = mContext.GetSharedPreferences("AppCenter", FileCreationMode.Private);
-            appCenterPreferences.Edit().Remove(PrefKeyAlwaysSend).Apply();
+            ISharedPreferences appCenterPreferences = Android.App.Application.Context.GetSharedPreferences("AppCenter", FileCreationMode.Private);
+            appCenterPreferences.Edit().Remove(CrashesUserConfirmationStorageKey).Apply();
         }
     }
 }
