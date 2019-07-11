@@ -326,7 +326,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
             }
         }
 
-        private static ModelException CreateModelException(System.Exception exception)
+        internal static ModelException CreateModelException(System.Exception exception)
         {
             var modelException = new ModelException
             {

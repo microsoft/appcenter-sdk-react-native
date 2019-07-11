@@ -7,6 +7,7 @@ using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Microsoft.AppCenter.Crashes
         {
             LogSerializer.AddLogType(ManagedErrorLog.JsonIdentifier, typeof(ManagedErrorLog));
             LogSerializer.AddLogType(ErrorAttachmentLog.JsonIdentifier, typeof(ErrorAttachmentLog));
+            LogSerializer.AddLogType(HandledErrorLog.JsonIdentifier, typeof(HandledErrorLog));
         }
 
         /// <summary>
@@ -91,9 +93,9 @@ namespace Microsoft.AppCenter.Crashes
             Instance.HandleUserConfirmationAsync(userConfirmation);
         }
 
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties)
         {
+            Instance.InstanceTrackError(exception, properties);
         }
 
         /// <summary>
@@ -352,6 +354,20 @@ namespace Microsoft.AppCenter.Crashes
                     }
                 }
                 return Task.WhenAll(tasks);
+            }
+        }
+
+        private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties)
+        {
+            lock (_serviceLock)
+            {
+                if (IsInactive)
+                {
+                    return;
+                }
+                properties = PropertyValidator.ValidateProperties(properties, "HandledError");
+                var log = new HandledErrorLog(exception: ErrorLogHelper.CreateModelException(exception), properties: properties, id: Guid.NewGuid(), device: null);
+                Channel.EnqueueAsync(log);
             }
         }
 
