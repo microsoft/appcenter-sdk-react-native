@@ -38,14 +38,16 @@ namespace Contoso.WPF.Puppet
                 {Microsoft.AppCenter.LogLevel.Error, AppCenterLog.Error}
             };
 
-        public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
+        public ObservableCollection<Property> EventPropertiesSource = new ObservableCollection<Property>();
+        public ObservableCollection<Property> ErrorPropertiesSource = new ObservableCollection<Property>();
 
         public MainWindow()
         {
             InitializeComponent();
             UpdateState();
             AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
-            EventProperties.ItemsSource = Properties;
+            EventProperties.ItemsSource = EventPropertiesSource;
+            ErrorProperties.ItemsSource = ErrorPropertiesSource;
             fileAttachments = Settings.Default.FileErrorAttachments;
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
@@ -101,7 +103,7 @@ namespace Contoso.WPF.Puppet
         private void TrackEvent_Click(object sender, RoutedEventArgs e)
         {
             var name = eventName.Text;
-            var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
+            var propertiesDictionary = EventPropertiesSource.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
         }
@@ -174,22 +176,22 @@ namespace Contoso.WPF.Puppet
 
         private void CrashWithTestException_Click(object sender, RoutedEventArgs e)
         {
-            Crashes.GenerateTestCrash();
+            HandleOrThrow(() => Crashes.GenerateTestCrash());
         }
 
         private void CrashWithNonSerializableException_Click(object sender, RoutedEventArgs e)
         {
-            throw new NonSerializableException();
+            HandleOrThrow(() => throw new NonSerializableException());
         }
 
         private void CrashWithDivisionByZero_Click(object sender, RoutedEventArgs e)
         {
-            _ = 42 / int.Parse("0");
+            HandleOrThrow(() => { _ = 42 / int.Parse("0"); });
         }
 
         private void CrashWithAggregateException_Click(object sender, RoutedEventArgs e)
         {
-            throw GenerateAggregateException();
+            HandleOrThrow(() => throw GenerateAggregateException());
         }
 
         private static Exception GenerateAggregateException()
@@ -230,14 +232,24 @@ namespace Contoso.WPF.Puppet
 
         private void CrashWithNullReference_Click(object sender, RoutedEventArgs e)
         {
-            string[] values = { "a", null, "c" };
-            var b = values[1].Trim();
-            System.Diagnostics.Debug.WriteLine(b);
+            HandleOrThrow(() =>
+            {
+                string[] values = { "a", null, "c" };
+                var b = values[1].Trim();
+                System.Diagnostics.Debug.WriteLine(b);
+            });
         }
 
         private async void CrashInsideAsyncTask_Click(object sender, RoutedEventArgs e)
         {
-            await FakeService.DoStuffInBackground();
+            try
+            {
+                await FakeService.DoStuffInBackground();
+            }
+            catch (Exception ex) when (HandleExceptions.IsChecked.Value)
+            {
+                TrackException(ex);
+            }
         }
 
         private static class FakeService
@@ -245,6 +257,28 @@ namespace Contoso.WPF.Puppet
             public static async Task DoStuffInBackground()
             {
                 await Task.Run(() => throw new IOException("Server did not respond"));
+            }
+        }
+
+        private void TrackException(Exception e)
+        {
+            var properties = ErrorPropertiesSource.Where(property => property.Key != null && property.Value != null).ToDictionary(property => property.Key, property => property.Value);
+            if (properties.Count == 0)
+            {
+                properties = null;
+            }
+            Crashes.TrackError(e, properties);
+        }
+
+        void HandleOrThrow(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e) when (HandleExceptions.IsChecked.Value)
+            {
+                TrackException(e);
             }
         }
 
