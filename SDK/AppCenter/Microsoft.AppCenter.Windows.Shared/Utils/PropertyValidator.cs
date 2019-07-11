@@ -37,13 +37,13 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                 {
                     AppCenterLog.Warn(AppCenterLog.LogTag,
                         $"{logName} : a property key cannot be null or empty. Property will be skipped.");
-                    break;
+                    continue;
                 }
                 if (value == null)
                 {
                     AppCenterLog.Warn(AppCenterLog.LogTag,
                         $"{logName} : property '{key}' : property value cannot be null. Property will be skipped.");
-                    break;
+                    continue;
                 }
 
                 // Truncate exceeded property.

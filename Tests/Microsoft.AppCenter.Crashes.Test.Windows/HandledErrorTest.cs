@@ -3,16 +3,13 @@
 
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
-using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Storage;
-using Microsoft.AppCenter.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,28 +19,22 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
     [TestClass]
     public class HandledErrorTest
     {
-
-        [TestInitialize]
-        public void InitializeCrashTest()
-        {
-            Crashes.Instance = new Crashes();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Crashes.Instance = null;
-        }
-
-        [TestMethod]
-        public void TrackErrorWithValidParameters()
+        private static IHttpNetworkAdapter StartCrashes()
         {
             var mockHttpNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
             var storage = new Storage.Storage(new StorageAdapter("test.db"));
             var ingestion = new IngestionHttp(mockHttpNetworkAdapter);
             var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
+            Crashes.Instance = new Crashes();
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(channelGroup, "app secret");
+            return mockHttpNetworkAdapter;
+        }
+
+        [TestMethod]
+        public void TrackErrorWithValidParameters()
+        {
+            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
             Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
@@ -62,7 +53,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(10000);
+            semaphore.Wait(1000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
@@ -71,11 +62,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void TrackErrorWithTooManyProperties()
         {
-            var mockHttpNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
-            var storage = new Storage.Storage(new StorageAdapter("test.db"));
-            var ingestion = new IngestionHttp(mockHttpNetworkAdapter);
-            var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
-            Crashes.Instance.OnChannelGroupReady(channelGroup, "app secret");
+            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
             Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
@@ -99,11 +86,106 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(10000);
+            semaphore.Wait(1000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.IsSubsetOf(actualLog.Properties as Dictionary<string, string>, properties);
             Assert.AreEqual(maxProperties, actualLog.Properties.Count);
+        }
+
+        [TestMethod]
+        public void TrackErrorWithoutProperties()
+        {
+            var mockHttpNetworkAdapter = StartCrashes();
+            var semaphore = new SemaphoreSlim(0);
+            HandledErrorLog actualLog = null;
+            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<IDictionary<string, string>>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                    semaphore.Release();
+                });
+            var exception = new System.Exception("Something went wrong.");
+            Crashes.TrackError(exception);
+
+            // Wait until the http layer sends the log.
+            semaphore.Wait(1000);
+            Assert.IsNotNull(actualLog);
+            Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+            Assert.IsNull(actualLog.Properties);
+        }
+
+        [TestMethod]
+        public void TrackErrorWithoutException()
+        {
+            var mockHttpNetworkAdapter = StartCrashes();
+            var semaphore = new SemaphoreSlim(0);
+            HandledErrorLog actualLog = null;
+            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<IDictionary<string, string>>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                    semaphore.Release();
+                });
+            Crashes.TrackError(null);
+
+            // Check no log sent.
+            semaphore.Wait(1000);
+            Assert.IsNull(actualLog);
+        }
+
+        [TestMethod]
+        public void TrackErrorWithInvalidPropertiesAreSkipped()
+        {
+            var mockHttpNetworkAdapter = StartCrashes();
+            var semaphore = new SemaphoreSlim(0);
+            HandledErrorLog actualLog = null;
+            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<IDictionary<string, string>>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                    semaphore.Release();
+                });
+            var exception = new System.Exception("Something went wrong.");
+            var properties = new Dictionary<string, string>
+            {
+                [""] = "testEmptyKeySkipped",
+                ["testNullValueSkipped"] = null,
+                [new string('k', 126)] = "testKeyTooLong",
+                ["testValueTooLong"] = new string('v', 126),
+                ["normalKey"] = "normalValue"
+            };
+            Crashes.TrackError(exception, properties);
+
+            // Wait until the http layer sends the log.
+            semaphore.Wait(1000);
+            Assert.IsNotNull(actualLog);
+            Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+
+            // Check original dictionary not sent (copy is made).
+            Assert.IsNotNull(actualLog.Properties);
+            Assert.AreNotSame(properties, actualLog.Properties);
+
+            // Check invalid values were skipped or truncated.
+            Assert.AreEqual(3, actualLog.Properties.Count);
+            Assert.AreEqual("normalValue", actualLog.Properties["normalKey"]);
+            Assert.AreEqual("testKeyTooLong", actualLog.Properties[new string('k', 125)]);
+            Assert.AreEqual(new string('v', 125), actualLog.Properties["testValueTooLong"]);
         }
     }
 }
