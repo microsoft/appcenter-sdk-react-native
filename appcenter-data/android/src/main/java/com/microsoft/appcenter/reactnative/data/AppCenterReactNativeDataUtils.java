@@ -159,25 +159,6 @@ public class AppCenterReactNativeDataUtils {
         }
     }
 
-    public static void pushJsonElementToWritableArray(WritableArray writableArray, JsonElement jsonElement) {
-        if (jsonElement.isJsonPrimitive()) {
-            JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
-            if (jsonPrimitive.isString()) {
-                writableArray.pushString(jsonPrimitive.getAsString());
-            } else if (jsonPrimitive.isNumber()) {
-                writableArray.pushDouble(jsonPrimitive.getAsDouble());
-            } else if (jsonPrimitive.isBoolean()) {
-                writableArray.pushBoolean(jsonPrimitive.getAsBoolean());
-            }
-        } else if (jsonElement.isJsonObject()) {
-            writableArray.pushMap(AppCenterReactNativeDataUtils.convertJsonObjectToWritableMap(jsonElement.getAsJsonObject()));
-        } else if (jsonElement.isJsonArray()) {
-            writableArray.pushArray(AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonElement.getAsJsonArray()));
-        } else {
-            writableArray.pushNull();
-        }
-    }
-
     public static ReadOptions getReadOptions(ReadableMap readOptionsMap) {
         ReadOptions readOptions;
         if (readOptionsMap != null && readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
