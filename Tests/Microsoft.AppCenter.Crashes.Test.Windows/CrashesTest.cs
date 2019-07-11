@@ -824,6 +824,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var storage = new Storage.Storage(new StorageAdapter("test.db"));
             var ingestion = new IngestionHttp(mockHttpNetworkAdapter);
             var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
+            Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(channelGroup, "app secret");
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
@@ -843,7 +844,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait();
+            semaphore.Wait(10000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
@@ -880,7 +881,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait();
+            semaphore.Wait(10000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.IsSubsetOf(actualLog.Properties as Dictionary<string, string>, properties);
