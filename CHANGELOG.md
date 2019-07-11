@@ -1,18 +1,66 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.2.0 (Under development)
+## Version 2.2.0-preview (Under development)
+
+This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
+
+This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+
+### App Center
+
+* **[Breaking Change]** This version is no longer compatible with PCL. Migrating to .NET standard is now required for portable libraries using the AppCenter SDK.
+
+#### Android
+
+* **[Fix]** Remove unsecure UUID fallback for UUID generation failures that cannot occur in reality.
+
+#### WPF/WinForms
+
+* **[Feature]** APIs from the `AppCenter` class can now be consumed in WPF and WinForms applications (except `AppCenter.SetUserId`).
+
+### App Center Analytics
+
+#### WPF/WinForms
+
+* **[Feature]** Add support for WPF and WinForms.
 
 ### App Center Crashes
+
+#### WPF/WinForms
+
+* **[Feature]** Add support for WPF and WinForms. Some crashes features are not yet supported on those platforms: user identification and showing events that lead to the crash.
+
+#### UWP
+
+* **[Breaking Change]** This version introduces a breaking change where the SDK no longers register with Windows error reporting. UWP developers using the Crashes module must keep using the latest stable release (2.1.1).
 
 #### iOS
 
 * **[Fix]** Fix possible deadlock in `Crashes.TrackError`.
 
+#### Android
+
+* **[Fix]** The in-memory cache of error reports is now cleared when disabling Crashes.
+
 ### App Center Data
 
+#### Xamarin
+
+* **[Feature]** Add support for offline list of documents.
 * **[Feature]** Change the default time-to-live (TTL) from 1 day to infinite (never expire).
-* **[Feature]** Add a new parameter (ReadOptions) to the list documents API.
+* **[Feature]** Add `ReadOptions` parameter to the `list` API.
 * **[Feature]** Deserialization errors are now exposed through the document `Error` property (and leaving `DeserializedValue` null) instead of throwing an exception.
+* **[Feature]** Serialize `null` document values.
+
+#### Android
+
+* **[Fix]** Allow null for `ReadOptions` and `WriteOptions` parameters.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure. 
 
 ## Version 2.1.1
 
