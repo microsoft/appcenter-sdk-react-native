@@ -11,7 +11,7 @@
     <AssemblyName>Microsoft.AppCenter.Test.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -99,6 +99,7 @@
     <Compile Include="TestAppCenterService.cs" />
     <Compile Include="Utils\NetworkStateTests.cs" />
     <Compile Include="Utils\DefaultScreenSizeProviderTest.cs" />
+    <Compile Include="UWPCrashesTest.cs" />
     <Compile Include="UWPPushTest.cs" />
     <Compile Include="UnitTestApp.xaml.cs">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -139,10 +140,6 @@
     <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.UWP\Microsoft.AppCenter.Crashes.UWP.csproj">
       <Project>{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}</Project>
       <Name>Microsoft.AppCenter.Crashes.UWP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SDK\AppCenterCrashes\WatsonRegistrationUtility\WatsonRegistrationUtility.vcxproj">
-      <Project>{b977bf28-3a1c-4a89-a673-a22eddc9d23d}</Project>
-      <Name>WatsonRegistrationUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.UWP\Microsoft.AppCenter.Push.UWP.csproj">
       <Project>{8072449c-c6a8-4b36-87dc-173f295d161c}</Project>

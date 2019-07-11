@@ -52,10 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ingestion\Http\HttpNetworkAdapter.cs" />
     <Compile Include="Ingestion\Http\NetworkStateAdapter.cs" />
     <Compile Include="AppCenterPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ApplicationLifecycleHelper.cs" />
+    <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\DefaultApplicationSettings.cs" />
     <Compile Include="Utils\DeviceInformationHelper.cs" />
     <Compile Include="Utils\WpfHelper.cs" />

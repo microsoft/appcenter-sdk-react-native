@@ -101,6 +101,47 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
+        /// Verify country code setter
+        /// </summary>
+        [TestMethod]
+        public void SetCountryCode()
+        {
+            // Mock event handler.
+            var mockInformationInvalidated = new Mock<EventHandler>();
+
+            // Initialize device information helper.
+            DeviceInformationHelper.InformationInvalidated += mockInformationInvalidated.Object;
+            var deviceInformationHelper = new DeviceInformationHelper();
+            var device = deviceInformationHelper.GetDeviceInformationAsync().RunNotAsync();
+            Assert.IsNull(device.CarrierCountry);
+
+            // Valid country code.
+            var validCountryCode = "US";
+            AppCenter.SetCountryCode(validCountryCode);
+            device = deviceInformationHelper.GetDeviceInformationAsync().RunNotAsync();
+            Assert.AreEqual(device.CarrierCountry, validCountryCode);
+            mockInformationInvalidated.Verify(_ => _(It.IsAny<object>(), It.IsAny<EventArgs>()), Times.Once);
+
+            // Invalid country code.
+            var invalidCountryCode = "US1";
+            AppCenter.SetCountryCode(invalidCountryCode);
+            device = deviceInformationHelper.GetDeviceInformationAsync().RunNotAsync();
+
+            // The code has not been updated and the event has not been called.
+            Assert.AreEqual(device.CarrierCountry, validCountryCode);
+            mockInformationInvalidated.Verify(_ => _(It.IsAny<object>(), It.IsAny<EventArgs>()), Times.Once);
+
+            // Reset country code.
+            AppCenter.SetCountryCode(null);
+            device = deviceInformationHelper.GetDeviceInformationAsync().RunNotAsync();
+            Assert.IsNull(device.CarrierCountry);
+            mockInformationInvalidated.Verify(_ => _(It.IsAny<object>(), It.IsAny<EventArgs>()), Times.Exactly(2));
+
+            // Clean.
+            DeviceInformationHelper.InformationInvalidated -= mockInformationInvalidated.Object;
+        }
+
+        /// <summary>
         /// Verify that starting the same service twice (separately) only calls its OnChannelGroupReady
         /// </summary>
         [TestMethod]

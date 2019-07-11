@@ -45,14 +45,13 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
             var informationInvalidated = false;
             var screenSizeProviderMock = new Mock<IScreenSizeProvider>();
             var screenSizeProviderFactoryMock = new Mock<IScreenSizeProviderFactory>();
-
-            screenSizeProviderMock.Setup(provider => provider.ScreenSize).Returns(testScreenSize);
             screenSizeProviderFactoryMock.Setup(factory => factory.CreateScreenSizeProvider()).Returns(screenSizeProviderMock.Object);
+            screenSizeProviderMock.Setup(provider => provider.ScreenSize).Returns(testScreenSize);
             DeviceInformationHelper.SetScreenSizeProviderFactory(screenSizeProviderFactoryMock.Object);
 
             // Screen size is returned from screen size provider
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.AreEqual(device.ScreenSize, testScreenSize);
+            Assert.AreEqual(testScreenSize, device.ScreenSize);
 
             // InformationInvalidated is invoked when ScreenSizeChanged event is raised
             DeviceInformationHelper.InformationInvalidated += (sender, args) => { informationInvalidated = true; };

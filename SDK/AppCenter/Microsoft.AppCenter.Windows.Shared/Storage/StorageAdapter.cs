@@ -6,30 +6,24 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Utils.Files;
 using SQLite;
 
 namespace Microsoft.AppCenter.Storage
 {
     internal class StorageAdapter : IStorageAdapter
     {
-        private readonly SQLiteAsyncConnection _dbConnection;
+        private SQLiteAsyncConnection _dbConnection;
+        internal Directory _databaseDirectory;
+        private readonly string _databasePath;
 
         public StorageAdapter(string databasePath)
         {
-            // In SQLite-net 1.5.231 constructor parameters were changed.
-            // Using reflection to accept newer library version.
-            _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
-                .GetConstructor(new[] { typeof(string), typeof(bool) })
-                ?.Invoke(new object[] { databasePath, true });
-            if (_dbConnection == null)
+            _databasePath = databasePath;
+            var databaseDirectoryPath = System.IO.Path.GetDirectoryName(databasePath);
+            if (databaseDirectoryPath != string.Empty)
             {
-                _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
-                    .GetConstructor(new[] { typeof(string), typeof(bool), typeof(object) })
-                    ?.Invoke(new object[] { databasePath, true, null });
-            }
-            if (_dbConnection == null)
-            {
-                throw new StorageException("Cannot initialize SQLite library.");
+                _databaseDirectory = new Directory(databaseDirectoryPath);
             }
         }
 
@@ -64,17 +58,17 @@ namespace Microsoft.AppCenter.Storage
             }
         }
 
-        public async Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new()
+        public Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new()
         {
             var table = _dbConnection.Table<T>();
-            return await table.Where(pred).CountAsync().ConfigureAwait(false);
+            return table.Where(pred).CountAsync();
         }
 
-        public async Task<int> InsertAsync<T>(T val) where T : new()
+        public Task<int> InsertAsync<T>(T val) where T : new()
         {
             try
             {
-                return await _dbConnection.InsertAsync(val).ConfigureAwait(false);
+                return _dbConnection.InsertAsync(val);
             }
             catch (SQLiteException e)
             {
@@ -99,6 +93,41 @@ namespace Microsoft.AppCenter.Storage
             {
                 throw new StorageException(e);
             }
+        }
+
+        public Task InitializeStorageAsync()
+        {
+            return Task.Run(() =>
+            {
+                // Create the directory in case it does not exist.
+                if (_databaseDirectory != null)
+                {
+                    try
+                    {
+                        _databaseDirectory.Create();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new StorageException("Cannot initialize SQLite library.", e);
+                    }
+                }
+
+                // In SQLite-net 1.5.231 constructor parameters were changed.
+                // Using reflection to accept newer library version.
+                _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
+                    .GetConstructor(new[] { typeof(string), typeof(bool) })
+                    ?.Invoke(new object[] { _databasePath, true });
+                if (_dbConnection == null)
+                {
+                    _dbConnection = (SQLiteAsyncConnection)typeof(SQLiteAsyncConnection)
+                        .GetConstructor(new[] { typeof(string), typeof(bool), typeof(object) })
+                        ?.Invoke(new object[] { _databasePath, true, null });
+                }
+                if (_dbConnection == null)
+                {
+                    throw new StorageException("Cannot initialize SQLite library.");
+                }
+            });
         }
     }
 }

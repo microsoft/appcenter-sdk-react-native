@@ -8,7 +8,7 @@ namespace Microsoft.AppCenter.Utils
     /// <summary>
     /// Various constants used by the SDK.
     /// </summary>
-    public static class Constants
+    public static partial class Constants
     {
         // Prefix for App Center application settings
         public const string KeyPrefix = "AppCenter";

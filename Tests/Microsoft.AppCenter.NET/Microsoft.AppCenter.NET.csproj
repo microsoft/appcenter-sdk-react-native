@@ -36,15 +36,6 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Reference|AnyCPU'">
-    <OutputPath>bin\Reference\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -84,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationLifecycleHelper.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DefaultApplicationSettings.cs" />
     <Compile Include="DeviceInformationHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />

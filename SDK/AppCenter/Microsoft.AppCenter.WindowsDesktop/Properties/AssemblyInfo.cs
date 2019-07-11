@@ -31,3 +31,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("2.2.0.0")]
 [assembly: AssemblyInformationalVersion("2.2.0-SNAPSHOT")]
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Test.WindowsDesktop")]
+[assembly: InternalsVisibleTo("Microsoft.AppCenter.Crashes.Test.Windows")]

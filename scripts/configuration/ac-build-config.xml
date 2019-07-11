@@ -41,16 +41,6 @@
         <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.Android/bin/Release/Microsoft.AppCenter.Data.dll"/>
         <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data.Android.Bindings/bin/Release/Microsoft.AppCenter.Data.Android.Bindings.dll"/>
     </group>
-    <group id="pcl" folder="PCLAssemblies" buildGroup="mac">
-        <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll"/>
-        <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll"/>
-        <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll"/>
-        <assembly path="SDK/AppCenterDistribute/Microsoft.AppCenter.Distribute/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Distribute.dll"/>
-        <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Push.dll"/>
-        <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Rum.dll"/>
-        <assembly path="SDK/AppCenterAuth/Microsoft.AppCenter.Auth/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Auth.dll"/>
-        <assembly path="SDK/AppCenterData/Microsoft.AppCenter.Data/bin/Release/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Data.dll"/>
-    </group>
     <group id="netstandard" folder="NETStandardAssemblies" buildGroup="mac">
         <assembly path="SDK/AppCenter/Microsoft.AppCenter/bin/Release/netstandard1.0/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics/bin/Release/netstandard1.0/Microsoft.AppCenter.Analytics.dll"/>
@@ -67,34 +57,11 @@
         <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.WindowsDesktop/bin/Release/Microsoft.AppCenter.Crashes.dll"/>
     </group>
     <group id="uwp" folder="UWPAssemblies" buildGroup="windows">
-        <!-- Not architecture-specific -->
-        <assembly path="nuget/Microsoft.AppCenter.Crashes.targets"/>
         <assembly path="SDK/AppCenter/Microsoft.AppCenter.UWP/bin/Release/Microsoft.AppCenter.dll"/>
         <assembly path="SDK/AppCenterAnalytics/Microsoft.AppCenter.Analytics.UWP/bin/Release/Microsoft.AppCenter.Analytics.dll"/>
-        <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/Reference/Microsoft.AppCenter.Crashes.dll"/>
+        <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/Release/Microsoft.AppCenter.Crashes.dll"/>
         <assembly path="SDK/AppCenterPush/Microsoft.AppCenter.Push.UWP/bin/Release/Microsoft.AppCenter.Push.dll"/>
         <assembly path="SDK/AppCenterRum/Microsoft.AppCenter.Rum.UWP/bin/Release/Microsoft.AppCenter.Rum.dll"/>
-
-        <!-- x86 -->
-        <group id="x86" folder="x86">
-            <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/x86/Release/Microsoft.AppCenter.Crashes.dll"/>
-            <assembly path="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"/>
-            <assembly path="Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"/>
-        </group>
-
-        <!-- x64 -->
-        <group id="x64" folder="x64">
-            <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/x64/Release/Microsoft.AppCenter.Crashes.dll"/>
-            <assembly path="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"/>
-            <assembly path="x64/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"/>
-        </group>
-
-        <!-- ARM -->
-        <group id="arm" folder="ARM">
-            <assembly path="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/bin/ARM/Release/Microsoft.AppCenter.Crashes.dll"/>
-            <assembly path="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.dll"/>
-            <assembly path="ARM/Release/WatsonRegistrationUtility/WatsonRegistrationUtility.winmd"/>
-        </group>
     </group>
     <module dotnetModule="SDK/AppCenter/Microsoft.AppCenter" nuspec="AppCenter.nuspec"/>
     <module dotnetModule="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes" nuspec="AppCenterAnalytics.nuspec"/>
@@ -108,10 +75,6 @@
         <build configuration="Release"/>
     </buildGroup>
     <buildGroup platformId="windows" solutionPath="AppCenter-SDK-Build-Windows.sln">
-        <build configuration="Release" platform="x86"/>
-        <build configuration="Release" platform="x64"/>
-        <build configuration="Release" platform="ARM"/>
-        <build configuration="Release"/>
-        <build configuration="Reference"/>
+        <build configuration="Release" toolVersion="VS2019"/>
     </buildGroup>
 </config>

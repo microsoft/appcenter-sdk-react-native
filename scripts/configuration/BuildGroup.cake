@@ -1,5 +1,7 @@
 // A Build Group contains information on what solutions to build for which platform,
 // and how to do so.
+using Cake.Common.Tools.MSBuild;
+
 public class BuildGroup
 {
     private string _platformId;
@@ -10,15 +12,23 @@ public class BuildGroup
     {
         private string _platform { get; set; }
         private string _configuration { get; set; }
-        public BuildConfig(string platform, string configuration)
+        private string _toolVersion { get; set; }
+
+        public BuildConfig(string platform, string configuration, string toolVersion)
         {
             _platform = platform;
             _configuration = configuration;
+            _toolVersion = toolVersion;
         }
 
         public void Build(string solutionPath)
         {
             Statics.Context.MSBuild(solutionPath, settings => {
+                if (_toolVersion != null)
+                {
+                    Enum.TryParse(_toolVersion, out MSBuildToolVersion msBuildToolVersion);
+                    settings.ToolVersion = msBuildToolVersion;
+                }
                 if (_platform != null)
                 {
                     settings.SetConfiguration(_configuration).WithProperty("Platform", _platform);
@@ -34,6 +44,7 @@ public class BuildGroup
     public BuildGroup(string platformId)
     {
         _platformId = platformId;
+
         var reader = ConfigFile.CreateReader();
         _builds = new List<BuildConfig>();
         while (reader.Read())
@@ -70,7 +81,8 @@ public class BuildGroup
             {
                 var platform = childNode.Attributes.GetNamedItem("platform")?.Value;
                 var configuration = childNode.Attributes.GetNamedItem("configuration")?.Value;
-                _builds.Add(new BuildConfig(platform, configuration));
+                var toolVersion = childNode.Attributes.GetNamedItem("toolVersion")?.Value;
+                _builds.Add(new BuildConfig(platform, configuration, toolVersion));
             }
         }
     }

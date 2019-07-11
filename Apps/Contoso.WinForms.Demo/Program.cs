@@ -17,9 +17,8 @@ namespace Contoso.WinForms.Demo
         [STAThread]
         static void Main()
         {
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             AppCenter.LogLevel = LogLevel.Verbose;
-            AppCenter.Start("f4e2a83d-3052-4884-8176-8b2c50277d16", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("734be4f7-3607-489b-ae81-284d2eb908f8", typeof(Analytics), typeof(Crashes));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

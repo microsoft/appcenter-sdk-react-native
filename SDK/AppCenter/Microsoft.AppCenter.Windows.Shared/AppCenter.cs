@@ -27,7 +27,6 @@ namespace Microsoft.AppCenter
         private const string NotConfiguredMessage = "App Center hasn't been configured. " +
                                                     "You need to call AppCenter.Start with appSecret or AppCenter.Configure first.";
         private const string ChannelName = "core";
-        private const string DistributeServiceFullType = "Microsoft.AppCenter.Distribute.Distribute";
 
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object AppCenterLock = new object();
@@ -88,6 +87,20 @@ namespace Microsoft.AppCenter
                     AppCenterLog.Level = value;
                 }
             }
+        }
+
+        /// <summary>
+        /// Sets the two-letter ISO country code to send to the backend.
+        /// </summary>
+        /// <param name="countryCode">The two-letter ISO country code. See <see href="https://www.iso.org/obp/ui/#search"/> for more information.</param>
+        public static void SetCountryCode(string countryCode)
+        {
+            if (countryCode != null && countryCode.Length != 2)
+            {
+                AppCenterLog.Error(AppCenterLog.LogTag, "App Center accepts only the two-letter ISO country code.");
+                return;
+            }
+            DeviceInformationHelper.SetCountryCode(countryCode);
         }
 
         // This method must be called *before* instance of AppCenter has been created
@@ -216,7 +229,7 @@ namespace Microsoft.AppCenter
                 }
             }
         }
- 
+
         // Atomically checks if the CorrelationId equals "testValue" and updates the value if true.
         // Returns "true" if value was changed. If not, the current value is assigned to setValue.
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -371,21 +384,13 @@ namespace Microsoft.AppCenter
                 }
                 try
                 {
-                    // We don't support distribute in UWP, not even a custom start.
-                    if (IsDistributeService(serviceType))
+                    var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IAppCenterService;
+                    if (serviceInstance == null)
                     {
-                        AppCenterLog.Warn(AppCenterLog.LogTag, "Distribute service is not yet supported on UWP.");
+                        throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService. The service is either not an App Center service or it's unsupported on this platform or the SDK is used from a .NET standard library and the nuget was not also added to the UWP/WPF/WinForms project.");
                     }
-                    else
-                    {
-                        var serviceInstance = serviceType.GetRuntimeProperty("Instance")?.GetValue(null) as IAppCenterService;
-                        if (serviceInstance == null)
-                        {
-                            throw new AppCenterException("Service type does not contain static 'Instance' property of type IAppCenterService");
-                        }
-                        StartService(serviceInstance);
-                        serviceNames.Add(serviceInstance.ServiceName);
-                    }
+                    StartService(serviceInstance);
+                    serviceNames.Add(serviceInstance.ServiceName);
                 }
                 catch (AppCenterException e)
                 {
@@ -436,12 +441,6 @@ namespace Microsoft.AppCenter
         }
 
         internal Guid InstanceCorrelationId = Guid.Empty;
-
-        // We don't support Distribute in UWP.
-        private static bool IsDistributeService(Type serviceType)
-        {
-            return serviceType?.FullName == DistributeServiceFullType;
-        }
 
         #endregion
     }

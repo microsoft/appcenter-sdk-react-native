@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelGroupFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channel\IChannelUnit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\HttpIngestionException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IHttpNetworkAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Http\IngestionDecorator.cs" />
@@ -60,10 +61,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AbstractDeviceInformationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\CultureInfoHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Files\Directory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Files\File.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationLifecycleHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IApplicationSettingsFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IDeviceInformationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\PropertyValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\State.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutexException.cs" />

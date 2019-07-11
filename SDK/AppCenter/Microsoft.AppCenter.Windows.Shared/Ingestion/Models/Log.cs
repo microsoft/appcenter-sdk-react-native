@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-
 namespace Microsoft.AppCenter.Ingestion.Models
 {
     using Newtonsoft.Json;
-    
-    public abstract class Log
+
+    public partial class Log
     {
         /// <summary>
         /// Initializes a new instance of the Log class.
         /// </summary>
-        protected Log() { }
+        public Log()
+        {
+            CustomInit();
+        }
 
         /// <summary>
         /// Initializes a new instance of the Log class.
@@ -28,12 +29,22 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        public Log(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?))
+        /// <param name="userId">optional string used for associating logs with
+        /// users.
+        /// </param>
+        public Log(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string))
         {
             Timestamp = timestamp;
             Sid = sid;
+            UserId = userId;
             Device = device;
+            CustomInit();
         }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults.
+        /// </summary>
+        partial void CustomInit();
 
         /// <summary>
         /// Gets or sets log timestamp, example: '2017-03-13T18:05:42Z'.
@@ -56,6 +67,13 @@ namespace Microsoft.AppCenter.Ingestion.Models
         public System.Guid? Sid { get; set; }
 
         /// <summary>
+        /// Gets or sets optional string used for associating logs with users.
+        ///
+        /// </summary>
+        [JsonProperty(PropertyName = "userId")]
+        public string UserId { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "device")]
         public Device Device { get; set; }
@@ -70,7 +88,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         {
             if (Device == null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Device));
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, "Device");
             }
             if (Device != null)
             {

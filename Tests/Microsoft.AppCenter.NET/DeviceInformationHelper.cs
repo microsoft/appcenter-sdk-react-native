@@ -9,7 +9,6 @@ namespace Microsoft.AppCenter.Utils
     {
         private const string DefaultValue = "default";
 
-        public static event EventHandler InformationInvalidated;
         protected override string GetSdkName()
         {
             return DefaultValue;
