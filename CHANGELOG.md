@@ -12,11 +12,11 @@ This version temporarily removes support for UWP for Crashes as long as the pack
 
 #### Android
 
-* **[Fix]** Remove unsecure UUID fallback when UUID generation theorically fails, in reality it never fails.
+* **[Fix]** Remove unsecure UUID fallback for UUID generation failures that cannot occur in reality.
 
 #### WPF/WinForms
 
-* **[Feature]** APIs from the `AppCenter` class are now working on WPF and WinForms (except `AppCenter.SetUserId`).
+* **[Feature]** APIs from the `AppCenter` class can now be consumed in WPF and WinForms applications (except `AppCenter.SetUserId`).
 
 ### App Center Analytics
 
@@ -32,7 +32,7 @@ This version temporarily removes support for UWP for Crashes as long as the pack
 
 #### UWP
 
-* **[Breaking Change]** This version introduces a breaking change where the SDK no longers register with Windows error reporting. UWP developers must keep using the last official release (2.1.1).
+* **[Breaking Change]** This version introduces a breaking change where the SDK no longers register with Windows error reporting. UWP developers using the Crashes module must keep using the latest stable release (2.1.1).
 
 #### iOS
 
