@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrashesErrorAttachmentTest.cs" />
+    <Compile Include="HandledErrorTest.cs" />
     <Compile Include="CrashesTest.cs" />
     <Compile Include="ErrorAttachmentLogTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
