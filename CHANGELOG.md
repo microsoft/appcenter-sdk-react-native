@@ -3,8 +3,8 @@
 ## Version 2.2.0-preview (Under development)
 
 This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
-It temporarily removes support for UWP for Crashes as long as the package is in preview (the new UWP SDK actually sends error reports without using the Windows system reporting but the backend is not yet ready to process the data).
-AppCenter.SetUserId is not supported on WPF and WinForms.
+
+This version temporarily removes support for UWP for Crashes as long as the package is in preview (the new UWP SDK implementation sends error reports without using the Windows system reporting but the AppCenter backend is not yet ready to process the data).
 
 ### App Center
 
@@ -13,6 +13,10 @@ AppCenter.SetUserId is not supported on WPF and WinForms.
 #### Android
 
 * **[Fix]** Remove unsecure UUID fallback when UUID generation theorically fails, in reality it never fails.
+
+#### WPF/WinForms
+
+* **[Feature]** APIs from the `AppCenter` class are now working on WPF and WinForms (except `AppCenter.SetUserId`).
 
 ### App Center Analytics
 
