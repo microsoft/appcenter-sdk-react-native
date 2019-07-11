@@ -223,7 +223,6 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     private static void addedDocumentToWritableArray(WritableArray writableArray, DocumentWrapper<JsonElement> documentWrapper) {
         WritableMap jsDocumentWrapper = new WritableNativeMap();
         addDocumentWrapperMetaData(documentWrapper, jsDocumentWrapper);
-
         if (documentWrapper.getError() != null) {
             DataException dataException = documentWrapper.getError();
             WritableMap errorMap = new WritableNativeMap();
