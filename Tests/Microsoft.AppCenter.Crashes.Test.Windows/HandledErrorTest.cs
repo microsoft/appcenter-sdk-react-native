@@ -123,7 +123,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         public void TrackErrorWithoutException()
         {
             var semaphore = new SemaphoreSlim(0);
-            HandledErrorLog actualLog = null;
             Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
@@ -132,14 +131,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     It.IsAny<CancellationToken>()))
                 .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
                 {
-                    actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                    Assert.Fail("This callback should not have been invoked.");
                     semaphore.Release();
                 });
             Crashes.TrackError(null);
 
             // Check no log sent.
             semaphore.Wait(2000);
-            Assert.IsNull(actualLog);
         }
 
         [TestMethod]
