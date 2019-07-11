@@ -7,6 +7,7 @@ using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Storage;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -77,9 +78,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     semaphore.Release();
                 });
             var exception = new System.Exception("Something went wrong.");
-            var maxProperties = 20;
             var properties = new Dictionary<string, string>();
-            for (int i = 0; i < maxProperties + 5; ++i)
+            for (int i = 0; i < PropertyValidator.MaxProperties + 5; ++i)
             {
                 properties[i.ToString()] = i.ToString();
             }
@@ -90,7 +90,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.IsSubsetOf(actualLog.Properties as Dictionary<string, string>, properties);
-            Assert.AreEqual(maxProperties, actualLog.Properties.Count);
+            Assert.AreEqual(PropertyValidator.MaxProperties, actualLog.Properties.Count);
         }
 
         [TestMethod]
@@ -161,8 +161,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             {
                 [""] = "testEmptyKeySkipped",
                 ["testNullValueSkipped"] = null,
-                [new string('k', 126)] = "testKeyTooLong",
-                ["testValueTooLong"] = new string('v', 126),
+                [new string('k', PropertyValidator.MaxPropertyKeyLength + 1)] = "testKeyTooLong",
+                ["testValueTooLong"] = new string('v', PropertyValidator.MaxPropertyValueLength + 1),
                 ["normalKey"] = "normalValue"
             };
             Crashes.TrackError(exception, properties);
@@ -179,8 +179,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Check invalid values were skipped or truncated.
             Assert.AreEqual(3, actualLog.Properties.Count);
             Assert.AreEqual("normalValue", actualLog.Properties["normalKey"]);
-            Assert.AreEqual("testKeyTooLong", actualLog.Properties[new string('k', 125)]);
-            Assert.AreEqual(new string('v', 125), actualLog.Properties["testValueTooLong"]);
+            Assert.AreEqual("testKeyTooLong", actualLog.Properties[new string('k', PropertyValidator.MaxPropertyKeyLength)]);
+            Assert.AreEqual(new string('v', PropertyValidator.MaxPropertyValueLength), actualLog.Properties["testValueTooLong"]);
         }
 
         [TestMethod]

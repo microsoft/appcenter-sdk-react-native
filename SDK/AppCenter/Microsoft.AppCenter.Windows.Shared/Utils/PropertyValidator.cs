@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System.Collections.Generic;
 
 namespace Microsoft.AppCenter.Windows.Shared.Utils
 {
     public static class PropertyValidator
     {
-        private const int MaxProperties = 20;
-        private const int MaxPropertyKeyLength = 125;
-        private const int MaxPropertyValueLength = 125;
+        internal const int MaxProperties = 20;
+        internal const int MaxPropertyKeyLength = 125;
+        internal const int MaxPropertyValueLength = 125;
 
         /// <summary>
         /// Validates properties.
