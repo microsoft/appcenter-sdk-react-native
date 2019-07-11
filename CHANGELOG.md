@@ -4,7 +4,7 @@
 
 This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
 
-This version temporarily removes support for UWP for Crashes as long as the package is in preview (the new UWP SDK implementation sends error reports without using the Windows system reporting but the AppCenter backend is not yet ready to process the data).
+This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
 ### App Center
 
