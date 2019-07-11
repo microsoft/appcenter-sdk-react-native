@@ -19,25 +19,26 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
     [TestClass]
     public class HandledErrorTest
     {
-        private static IHttpNetworkAdapter StartCrashes()
+        private IHttpNetworkAdapter _mockNetworkAdapter;
+
+        [TestInitialize]
+        public void InitializeTest()
         {
-            var mockHttpNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
+            _mockNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
             var storage = new Storage.Storage(new StorageAdapter("test.db"));
-            var ingestion = new IngestionHttp(mockHttpNetworkAdapter);
+            var ingestion = new IngestionHttp(_mockNetworkAdapter);
             var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
             Crashes.Instance = new Crashes();
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(channelGroup, "app secret");
-            return mockHttpNetworkAdapter;
         }
 
         [TestMethod]
         public void TrackErrorWithValidParameters()
         {
-            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
-            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>>(),
@@ -62,10 +63,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void TrackErrorWithTooManyProperties()
         {
-            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
-            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>>(),
@@ -96,10 +96,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void TrackErrorWithoutProperties()
         {
-            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
-            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<IDictionary<string, string>>(),
@@ -123,10 +122,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void TrackErrorWithoutException()
         {
-            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
-            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<IDictionary<string, string>>(),
@@ -147,10 +145,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestMethod]
         public void TrackErrorWithInvalidPropertiesAreSkipped()
         {
-            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
-            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<IDictionary<string, string>>(),
@@ -192,10 +189,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         public void TrackErrorWhenDisabled()
         {
             var logCount = 0;
-            var mockHttpNetworkAdapter = StartCrashes();
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
-            Mock.Get(mockHttpNetworkAdapter).Setup(adapter => adapter.SendAsync(
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<IDictionary<string, string>>(),
