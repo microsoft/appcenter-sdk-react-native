@@ -54,7 +54,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
@@ -86,7 +86,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.IsSubsetOf(actualLog.Properties as Dictionary<string, string>, properties);
@@ -113,7 +113,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             Assert.IsNull(actualLog.Properties);
@@ -138,7 +138,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(null);
 
             // Check no log sent.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNull(actualLog);
         }
 
@@ -170,7 +170,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
 
@@ -213,7 +213,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Then it's not sent.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNull(actualLog);
 
             // If we re-enable.
@@ -223,7 +223,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties);
 
             // Then it's sent.
-            semaphore.Wait(1000);
+            semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(1, logCount);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
