@@ -32,7 +32,7 @@ This version temporarily removes support for UWP for Crashes as long as the pack
 
 #### UWP
 
-* **[Breaking Change]** This version introduces a breaking change where the SDK no longers register with Windows error reporting. UWP developers must keep using the last official release (2.1.0).
+* **[Breaking Change]** This version introduces a breaking change where the SDK no longers register with Windows error reporting. UWP developers must keep using the last official release (2.1.1).
 
 #### iOS
 
