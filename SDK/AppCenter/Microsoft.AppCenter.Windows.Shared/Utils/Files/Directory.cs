@@ -53,5 +53,10 @@ namespace Microsoft.AppCenter.Utils.Files
         {
             return _underlyingDirectoryInfo.Exists;
         }
+
+        public virtual void Refresh()
+        {
+            _underlyingDirectoryInfo.Refresh();
+        }
     }
 }
