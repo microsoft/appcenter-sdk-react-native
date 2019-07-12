@@ -46,22 +46,22 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Xamarin.Android.Support.Annotations">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Annotations.26.0.2\lib\MonoAndroid80\Xamarin.Android.Support.Annotations.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.Annotations.28.0.0.1\lib\monoandroid80\Xamarin.Android.Support.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Compat">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Compat.26.0.2\lib\MonoAndroid80\Xamarin.Android.Support.Compat.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.Compat.28.0.0.1\lib\monoandroid80\Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.UI">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Core.UI.26.0.2\lib\MonoAndroid80\Xamarin.Android.Support.Core.UI.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.Core.UI.28.0.0.1\lib\monoandroid80\Xamarin.Android.Support.Core.UI.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.Utils">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Core.Utils.26.0.2\lib\MonoAndroid80\Xamarin.Android.Support.Core.Utils.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.Core.Utils.28.0.0.1\lib\monoandroid80\Xamarin.Android.Support.Core.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Media.Compat">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Media.Compat.26.0.2\lib\MonoAndroid80\Xamarin.Android.Support.Media.Compat.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.Media.Compat.28.0.0.1\lib\monoandroid80\Xamarin.Android.Support.Media.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Fragment">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Fragment.26.0.2\lib\MonoAndroid80\Xamarin.Android.Support.Fragment.dll</HintPath>
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.Fragment.28.0.0.1\lib\monoandroid80\Xamarin.Android.Support.Fragment.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Basement">
       <HintPath>..\..\..\packages\Xamarin.GooglePlayServices.Basement.60.1142.1\lib\MonoAndroid80\Xamarin.GooglePlayServices.Basement.dll</HintPath>
@@ -104,16 +104,16 @@
     </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Annotations.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Annotations.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Annotations.targets')" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Compat.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Compat.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Compat.targets')" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Core.UI.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Core.UI.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Core.UI.targets')" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Core.Utils.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Core.Utils.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Core.Utils.targets')" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Media.Compat.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Media.Compat.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Media.Compat.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Media.Compat.targets')" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Fragment.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Fragment.26.0.2\build\MonoAndroid80\Xamarin.Android.Support.Fragment.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Build.Download.0.4.9\build\Xamarin.Build.Download.targets" Condition="Exists('..\..\..\packages\Xamarin.Build.Download.0.4.9\build\Xamarin.Build.Download.targets')" />
   <Import Project="..\..\..\packages\Xamarin.GooglePlayServices.Basement.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\..\..\packages\Xamarin.GooglePlayServices.Basement.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Basement.targets')" />
   <Import Project="..\..\..\packages\Xamarin.GooglePlayServices.Tasks.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Tasks.targets" Condition="Exists('..\..\..\packages\Xamarin.GooglePlayServices.Tasks.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Tasks.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Firebase.Common.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Common.targets" Condition="Exists('..\..\..\packages\Xamarin.Firebase.Common.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Common.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Firebase.Iid.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Iid.targets" Condition="Exists('..\..\..\packages\Xamarin.Firebase.Iid.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Iid.targets')" />
   <Import Project="..\..\..\packages\Xamarin.Firebase.Messaging.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Messaging.targets" Condition="Exists('..\..\..\packages\Xamarin.Firebase.Messaging.60.1142.1\build\MonoAndroid80\Xamarin.Firebase.Messaging.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Annotations.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Annotations.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Annotations.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Compat.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Compat.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Compat.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Core.UI.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Core.UI.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Core.UI.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Core.Utils.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Core.Utils.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Core.Utils.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Fragment.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Fragment.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Fragment.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Media.Compat.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Media.Compat.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Media.Compat.28.0.0.1\build\monoandroid80\Xamarin.Android.Support.Media.Compat.targets')" />
 </Project>
