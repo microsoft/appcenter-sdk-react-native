@@ -97,22 +97,33 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void HandleEnqueuingLogDuringSession()
         {
             _sessionTracker.Resume();
-            var eventLog = new EventLog { Timestamp = DateTime.Now };
+            var eventLog = new EventLog();
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(eventLog));
             Assert.IsNotNull(eventLog.Sid);
             Assert.AreNotEqual(Guid.Empty, eventLog.Sid);
         }
 
         /// <summary>
+        ///     Verify that an enqueuing log with already specified timestamp is ignored from session tracker, like crash logs.
+        /// </summary>
+        [TestMethod]
+        public void HandleEnqueuingLogWithExplicitTimestamp()
+        {
+            _sessionTracker.Resume();
+            var eventLog = new EventLog { Timestamp = DateTime.Now };
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(eventLog));
+            Assert.IsNull(eventLog.Sid);
+        }
+
+        /// <summary>
         ///     If two logs are enqueued during the same session, they should have the same session id
         /// </summary>
         [TestMethod]
-        public void HandleEnueuingSecondLogDuringSession()
+        public void HandleEnqueingSecondLogDuringSession()
         {
             _sessionTracker.Resume();
-            var time = DateTime.Now;
-            var firstLog = new EventLog { Timestamp = time };
-            var secondLog = new EventLog { Timestamp = time.AddMilliseconds(1) };
+            var firstLog = new EventLog();
+            var secondLog = new EventLog();
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(firstLog));
             _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null, new EnqueuingLogEventArgs(secondLog));
 
@@ -225,15 +236,12 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void EmptyCorrelationIdIsSetWhenSessionStarts()
         {
-#pragma warning disable CS0612 // Type or member is obsolete
-
             // Correlation ID is Empty.
             AppCenter.Instance.InstanceCorrelationId = Guid.Empty;
             _sessionTracker.Resume();
 
             // Guid.Empty should not be equal to correlation id.
             Assert.IsFalse(AppCenter.TestAndSetCorrelationId(Guid.Empty, ref AppCenter.Instance.InstanceCorrelationId));
-#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         /// <summary>
@@ -242,13 +250,10 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void SidIsInitialCorrelationId()
         {
-#pragma warning disable CS0612 // Type or member is obsolete
-
             var initialCorrelationId = Guid.NewGuid();
             AppCenter.Instance.InstanceCorrelationId = initialCorrelationId;
             _sessionTracker.Resume();
             Assert.AreEqual(SessionTracker.LastSid, initialCorrelationId);
-#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         /// <summary>
@@ -257,7 +262,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void VerifyCorrelationIdIsUpdatedWhenSessionChanges()
         {
-#pragma warning disable CS0612 // Type or member is obsolete
             _sessionTracker.Resume();
             var sid1 = SessionTracker.LastSid;
             Assert.AreNotEqual(Guid.Empty, sid1);
@@ -268,7 +272,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             _sessionTracker.Resume();
             Assert.IsTrue(AppCenter.TestAndSetCorrelationId(SessionTracker.LastSid,
                 ref AppCenter.Instance.InstanceCorrelationId));
-#pragma warning restore CS0612 // Type or member is obsolete
 
             // Verify second session has a different identifier.
             var sid2 = SessionTracker.LastSid;
@@ -282,7 +285,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void VerifySessionChangesOnCorrelationIdUpdatedByOthers()
         {
-#pragma warning disable CS0612 // Type or member is obsolete
             _sessionTracker.Resume();
             var sid1 = SessionTracker.LastSid;
             Assert.AreNotEqual(Guid.Empty, sid1);
@@ -297,7 +299,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
                 ref externalCorrelationid));
 
             _sessionTracker.Resume();
-#pragma warning restore CS0612 // Type or member is obsolete
 
             // Verify second session has a different identifier, not the new one analytics wanted but the updated correlation identifier instead.
             var sid2 = SessionTracker.LastSid;

@@ -86,6 +86,14 @@ namespace Microsoft.AppCenter.Analytics.Channel
             }
         }
 
+        public void Stop()
+        {
+            lock (_lockObject)
+            {
+                UpdateSessionId(Guid.Empty);
+            }
+        }
+
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
         {
             lock (_lockObject)
@@ -96,7 +104,14 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 {
                     return;
                 }
-                e.Log.Sid = _sid;
+
+                // Correlate current session only to logs not specifying timestamps.
+                // Crash before restart when Analytics was disabled at that time must not have session identifier.
+                if (e.Log.Timestamp == null)
+                {
+                    e.Log.Sid = _sid;
+                }
+
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -108,15 +123,17 @@ namespace Microsoft.AppCenter.Analytics.Channel
             {
                 return;
             }
-            var sid = Guid.NewGuid();
-#pragma warning disable CS0612 // Type or member is obsolete
+            UpdateSessionId(Guid.NewGuid());
+            _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
+            var startSessionLog = new StartSessionLog { Sid = _sid };
+            _channel.EnqueueAsync(startSessionLog);
+        }
+
+        private void UpdateSessionId(Guid sid)
+        {
             AppCenter.TestAndSetCorrelationId(LastSid, ref sid);
-#pragma warning restore CS0612 // Type or member is obsolete
             LastSid = sid;
             _sid = sid;
-            _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
-            var startSessionLog = new StartSessionLog { Sid = sid };
-            _channel.EnqueueAsync(startSessionLog);
         }
 
         private bool HasSessionTimedOut(long now)

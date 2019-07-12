@@ -163,6 +163,10 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         private ManagedErrorLog InstanceCreateErrorLog(System.Exception exception)
         {
+            // Get session identifier without overwriting. If we get something else than empty guid, then it was set by Analytics.
+            var correlationId = Guid.Empty;
+            AppCenter.TestAndSetCorrelationId(correlationId, ref correlationId);
+            var sessionId = correlationId == Guid.Empty ? default(Guid?) : correlationId;
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
@@ -175,7 +179,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 AppLaunchTimestamp = _processInformation.ProcessStartTime?.ToUniversalTime(),
                 Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
-                Exception = CreateModelException(exception)
+                Exception = CreateModelException(exception),
+                Sid = sessionId
             };
         }
 

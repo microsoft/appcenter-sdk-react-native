@@ -233,7 +233,6 @@ namespace Microsoft.AppCenter
         // Atomically checks if the CorrelationId equals "testValue" and updates the value if true.
         // Returns "true" if value was changed. If not, the current value is assigned to setValue.
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete]
         public static bool TestAndSetCorrelationId(Guid testValue, ref Guid setValue)
         {
             lock (AppCenterLock)
@@ -253,7 +252,6 @@ namespace Microsoft.AppCenter
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete]
         // Note: Do not access the CorrelationId property in this event handler!
         // Doing so on a different thread can cause deadlocks.
         public static event EventHandler<Guid> CorrelationIdChanged;

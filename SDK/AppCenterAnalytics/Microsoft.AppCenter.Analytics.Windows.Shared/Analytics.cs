@@ -171,6 +171,7 @@ namespace Microsoft.AppCenter.Analytics
                 else if (!enabled)
                 {
                     UnsubscribeFromApplicationLifecycleEvents();
+                    _sessionTracker?.Stop();
                     _sessionTracker = null;
                 }
             }
