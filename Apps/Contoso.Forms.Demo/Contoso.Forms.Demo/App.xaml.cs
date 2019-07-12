@@ -44,12 +44,14 @@ namespace Contoso.Forms.Demo
                 Crashes.GetErrorAttachments = GetErrorAttachments;
                 Distribute.ReleaseAvailable = OnReleaseAvailable;
                 Push.PushNotificationReceived += OnPushNotificationReceived;
-                AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}",
-                                   typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push), typeof(Auth), typeof(Data));
+                AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
                 }
+
+                // Work around for SetUserId race condition.
+                AppCenter.Start(typeof(Push));
                 AppCenter.GetInstallIdAsync().ContinueWith(installId =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.InstallId=" + installId.Result);
