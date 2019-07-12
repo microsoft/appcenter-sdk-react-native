@@ -156,10 +156,5 @@ namespace Contoso.Forms.Demo
 
             public DateTime timestamp { get; set; }
         }
-
-        void ClearCrashUserConfirmation(object sender, EventArgs e)
-        {
-            DependencyService.Get<IClearCrashClick>().ClearCrashButton();
-        }
     }
 }

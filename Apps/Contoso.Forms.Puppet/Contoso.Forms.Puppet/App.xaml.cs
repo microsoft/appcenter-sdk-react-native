@@ -16,6 +16,11 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Puppet
 {
+    public interface IClearCrashClick
+    {
+        void ClearCrashButton();
+    }
+
     public partial class App
     {
         public const string LogTag = "AppCenterXamarinPuppet";

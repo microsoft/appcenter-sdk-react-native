@@ -21,10 +21,5 @@
                 <Button x:Name="SignInInformationButton" Text="Unknown" InputTransparent="true" Clicked="SignInInformation" />
             </ViewCell>
         </TableSection>
-        <TableSection Title="Clear Crash">
-            <ViewCell Tapped="ClearCrashUserConfirmation">
-                <Button Text="Clear Crash User Confirmation" InputTransparent="True" Clicked="ClearCrashUserConfirmation"/>
-            </ViewCell>
-        </TableSection>
     </TableView>
 </ContentPage>

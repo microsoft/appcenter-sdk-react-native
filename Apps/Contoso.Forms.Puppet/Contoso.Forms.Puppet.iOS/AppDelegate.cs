@@ -1,17 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Contoso.Forms.Demo.iOS;
 using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics.iOS.Bindings;
 using Microsoft.AppCenter.Distribute;
 using UIKit;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(AppDelegate))]
 namespace Contoso.Forms.Puppet.iOS
 {
     [Register("AppDelegate")]
-    public class AppDelegate : Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public class AppDelegate : Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IClearCrashClick
     {
+        private const string CrashesUserConfirmationStorageKey = "MSUserConfirmation";
+
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Xamarin.Forms.Forms.Init();
@@ -44,6 +49,11 @@ namespace Contoso.Forms.Puppet.iOS
         public override void DidFailSendingEventLog(MSAnalytics analytics, MSEventLog eventLog, NSError error)
         {
             AppCenterLog.Debug(App.LogTag, "Failed to send event with error: " + error);
+        }
+
+        public void ClearCrashButton()
+        {
+            NSUserDefaults.StandardUserDefaults.RemoveObject(CrashesUserConfirmationStorageKey);
         }
     }
 }
