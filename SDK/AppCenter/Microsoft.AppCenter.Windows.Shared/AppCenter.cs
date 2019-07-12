@@ -219,7 +219,6 @@ namespace Microsoft.AppCenter
                 {
                     AppCenterLog.Error(AppCenterLog.LogTag, ConfigurationErrorMessage, ex);
                 }
-
                 try
                 {
                     Instance.StartInstance(services);
