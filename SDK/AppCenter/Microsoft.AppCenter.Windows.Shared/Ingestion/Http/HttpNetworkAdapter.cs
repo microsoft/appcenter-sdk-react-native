@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Ingestion.Http
 {
-    public sealed class HttpNetworkAdapter : IHttpNetworkAdapter
+    public sealed partial class HttpNetworkAdapter : IHttpNetworkAdapter
     {
         internal const string ContentTypeValue = "application/json; charset=utf-8";
 

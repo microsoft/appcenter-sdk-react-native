@@ -11,9 +11,15 @@ namespace Microsoft.AppCenter.Utils
     public interface IDeviceInformationHelper
     {
         /// <summary>
-        /// Gets the device information.
+        /// Gets the device information asynchronously.
         /// </summary>
         /// <returns>Device object with fields populated appropriately</returns>
         Task<Ingestion.Models.Device> GetDeviceInformationAsync();
+
+        /// <summary>
+        /// Gets the device information without blocking. This might be missing certain properties.
+        /// </summary>
+        /// <returns>Device object with fields populated appropriately</returns>
+        Ingestion.Models.Device GetDeviceInformation();
     }
 }

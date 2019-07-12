@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Analytics.Channel;
+using Microsoft.AppCenter.Analytics.Ingestion.Models;
+using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Windows.Shared.Utils;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter.Analytics
@@ -16,10 +17,7 @@ namespace Microsoft.AppCenter.Analytics
     {
         #region static
 
-        private const int MaxEventProperties = 20;
         private const int MaxEventNameLength = 256;
-        private const int MaxEventPropertyKeyLength = 125;
-        private const int MaxEventPropertyValueLength = 125;
 
         private static readonly object AnalyticsLock = new object();
 
@@ -141,8 +139,8 @@ namespace Microsoft.AppCenter.Analytics
                 const string type = "Event";
                 if (ValidateName(ref name, type))
                 {
-                    properties = ValidateProperties(properties, name, type);
-                    var log = new EventLog(null, null, Guid.NewGuid(), name, null, properties);
+                    properties = PropertyValidator.ValidateProperties(properties, $"{type} '{name}'");
+                    var log = new EventLog(null, Guid.NewGuid(), name, null, null, null, properties);
                     Channel.EnqueueAsync(log);
                 }
             }
@@ -225,63 +223,6 @@ namespace Microsoft.AppCenter.Analytics
         private void ApplicationSuspendedEventHandler(object sender, EventArgs e)
         {
             _sessionTracker?.Pause();
-        }
-
-        /// <summary>
-        /// Validates properties.
-        /// </summary>
-        /// <param name="properties">Properties collection to validate.</param>
-        /// <param name="logName">Log name.</param>
-        /// <param name="logType">Log type.</param>
-        /// <returns>Valid properties collection with maximum size of 5</returns>
-        private IDictionary<string, string> ValidateProperties(IDictionary<string, string> properties, string logName, string logType)
-        {
-            if (properties == null)
-            {
-                return null;
-            }
-            var result = new Dictionary<string, string>();
-            foreach (var property in properties)
-            {
-                if (result.Count >= MaxEventProperties)
-                {
-                    AppCenterLog.Warn(LogTag,
-                        $"{logType} '{logName}' : properties cannot contain more than {MaxEventProperties} items. Skipping other properties.");
-                    break;
-                }
-
-                // Skip empty property.
-                var key = property.Key;
-                var value = property.Value;
-                if (string.IsNullOrEmpty(key))
-                {
-                    AppCenterLog.Warn(LogTag,
-                        $"{logType} '{logName}' : a property key cannot be null or empty. Property will be skipped.");
-                    break;
-                }
-                if (value == null)
-                {
-                    AppCenterLog.Warn(LogTag,
-                        $"{logType} '{logName}' : property '{key}' : property value cannot be null. Property will be skipped.");
-                    break;
-                }
-
-                // Truncate exceeded property.
-                if (key.Length > MaxEventPropertyKeyLength)
-                {
-                    AppCenterLog.Warn(LogTag,
-                        $"{logType} '{logName}' : property '{key}' : property key length cannot be longer than {MaxEventPropertyKeyLength} characters. Property key will be truncated.");
-                    key = key.Substring(0, MaxEventPropertyKeyLength);
-                }
-                if (value.Length > MaxEventPropertyValueLength)
-                {
-                    AppCenterLog.Warn(LogTag,
-                        $"{logType} '{logName}' : property '{key}' : property value length cannot be longer than {MaxEventPropertyValueLength} characters. Property value will be truncated.");
-                    value = value.Substring(0, MaxEventPropertyValueLength);
-                }
-                result.Add(key, value);
-            }
-            return result;
         }
 
         #endregion

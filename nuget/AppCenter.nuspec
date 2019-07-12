@@ -35,10 +35,6 @@
 
   <files>
 
-    <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.AppCenter.dll" target="lib/portable-net45+win8+wpa81+wp8" />
-    <file src="$pcl_dir$/Microsoft.AppCenter.xml" target="lib/portable-net45+win8+wpa81+wp8" />
-
     <!-- .NET Standard -->
     <file src="$netstandard_dir$/Microsoft.AppCenter.dll" target="lib/netstandard1.0" />
     <file src="$netstandard_dir$/Microsoft.AppCenter.xml" target="lib/netstandard1.0" />
@@ -58,8 +54,7 @@
     <file src="$uwp_dir$/Microsoft.AppCenter.xml" target="lib/uap10.0" />
 
     <!-- Windows Classic Desktop (WPF and WinForms) -->
-    <!-- TODO: Uncomment when it's time to release these. -->
-    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" /-->
-    <!--file src="$windows_desktop_dir$/Microsoft.AppCenter.xml" target="lib/net45" /-->
+    <file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" />
+    <file src="$windows_desktop_dir$/Microsoft.AppCenter.xml" target="lib/net45" />
   </files>
 </package>

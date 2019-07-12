@@ -35,7 +35,7 @@ namespace Microsoft.AppCenter.Crashes
         public Device Device { get; }
 
         /// <summary>
-        /// Gets the C# Exception object that caused the crashed.
+        /// Gets the C# Exception object that caused the crash.
         /// </summary>
         /// <value>The exception.</value>
         public Exception Exception { get; }

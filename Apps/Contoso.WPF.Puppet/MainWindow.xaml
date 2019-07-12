@@ -7,17 +7,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Contoso.WPF.Puppet"
         mc:Ignorable="d"
-        Title="App Center WPF Puppet App" Height="257.794" Width="335">
+        Title="App Center WPF Puppet App" Height="300" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="App Center">
                 <StackPanel>
-                    <CheckBox Name="appCenterEnabled" Content="App Center Enabled" Margin="0,10,0,10" Checked="appCenterEnabled_Checked" Unchecked="appCenterEnabled_Checked"/>
+                    <CheckBox Name="AppCenterEnabled" Content="App Center Enabled" Margin="0,10,0,10" Checked="AppCenterEnabled_Checked" Unchecked="AppCenterEnabled_Checked"/>
                     <StackPanel Orientation ="Horizontal" HorizontalAlignment="Right" >
                         <Label Content="Log Level"/>
-                        <ComboBox Name="appCenterLogLevel" Width="200" SelectionChanged="appCenterLogLevel_SelectionChanged">
+                        <ComboBox Name="AppCenterLogLevel" Width="200" SelectionChanged="AppCenterLogLevel_SelectionChanged">
                             <ComboBoxItem Content="Verbose"/>
                             <ComboBoxItem Content="Debug"/>
                             <ComboBoxItem Content="Info"/>
@@ -42,9 +41,9 @@
                             <Label Content="Log Message" Grid.Column="0" Grid.Row="1"/>
                             <Label Content="Log Level" Grid.Column="0" Grid.Row="2"/>
 
-                            <TextBox Name="logTag" Grid.Column="1" Grid.Row="0" Margin="2"/>
-                            <TextBox Name="logMessage" Grid.Column="1" Grid.Row="1" Margin="2"/>
-                            <ComboBox Name="logLevel" Grid.Column="1" Grid.Row="2" Margin="2">
+                            <TextBox Name="LogTag" Grid.Column="1" Grid.Row="0" Margin="2"/>
+                            <TextBox Name="LogMessage" Grid.Column="1" Grid.Row="1" Margin="2"/>
+                            <ComboBox Name="LogLevel" Grid.Column="1" Grid.Row="2" Margin="2">
                                 <ComboBoxItem Content="Verbose"/>
                                 <ComboBoxItem Content="Debug"/>
                                 <ComboBoxItem Content="Info"/>
@@ -52,7 +51,7 @@
                                 <ComboBoxItem Content="Error"/>
                             </ComboBox>
 
-                            <Button Name="writeLog" Content="Write Log" Grid.ColumnSpan="2"  Grid.Row="3" Margin="2" Click="writeLog_Click"/>
+                            <Button Name="WriteLog" Content="Write Log" Grid.ColumnSpan="2"  Grid.Row="3" Margin="2" Click="WriteLog_Click"/>
                         </Grid>
 
                     </GroupBox>
@@ -61,34 +60,74 @@
             </TabItem>
             <TabItem Header="Analytics">
                 <StackPanel>
-                    <CheckBox Name="analyticsEnabled" Content="Analytics Enabled" Margin="0,10,0,10" Checked="analyticsEnabled_Checked" Unchecked="analyticsEnabled_Checked"/>
+                    <CheckBox Name="AnalyticsEnabled" Content="Analytics Enabled" Margin="0,10,0,10" Checked="AnalyticsEnabled_Checked" Unchecked="AnalyticsEnabled_Checked"/>
                     <GroupBox Header="Event">
                         <StackPanel Orientation="Vertical">
                             <DockPanel LastChildFill="True">
                                 <Label Content="Event Name"/>
                                 <TextBox Name="eventName" VerticalAlignment="Center" />
                             </DockPanel>
-                            <DataGrid Name="eventProperties" AutoGenerateColumns="False" CanUserAddRows="True" MinHeight="60" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" SelectionMode="Single" Margin="0,10,0,10">
+                            <DataGrid Name="EventProperties" AutoGenerateColumns="False" CanUserAddRows="True" MinHeight="60" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" SelectionMode="Single" Margin="0,10,0,10">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Property Key" Width="*" Binding="{Binding Key}"/>
                                     <DataGridTextColumn Header="Property Value" Width="*" Binding="{Binding Value}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Button Name="trackEvent" Content="Track event" Click="trackEvent_Click"/>
+                            <Button Name="TrackEvent" Content="Track event" Click="TrackEvent_Click"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Crashes">
                 <StackPanel>
-                    <GroupBox Header="Crash">
+                    <CheckBox Name="CrashesEnabled" Content="Crashes Enabled" Margin="0,10,0,10" Checked="CrashesEnabled_Checked" Unchecked="CrashesEnabled_Checked" />
+                    <CheckBox Name="HandleExceptions" Content="Handle Exceptions" Margin="0,10,0,10" />
+                    <DataGrid Name="ErrorProperties" AutoGenerateColumns="False" CanUserAddRows="True" MinHeight="60" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" SelectionMode="Single" Margin="0,10,0,10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Property Key" Width="*" Binding="{Binding Key}"/>
+                            <DataGridTextColumn Header="Property Value" Width="*" Binding="{Binding Value}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <GroupBox Header="Error attachment">
                         <StackPanel Orientation="Vertical">
-                            <Button Name="CrashWithNullReference" Content="Crash with NullReferenceException" Click="CrashWithNullReference_Click"/>
+                            <DockPanel LastChildFill="True">
+                                <Label Content="Text attachment"/>
+                                <TextBox Name="TextAttachmentTextBox" TextChanged="TextAttachmentTextBox_TextChanged" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <DockPanel LastChildFill="True">
+                                <Label Content="File attachment"/>
+                                <Label Name="FileAttachmentLabel" Content="The file isn't selected" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <Button Content="Select file attachment" Margin="2" Click="FileErrorAttachment_Click"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Crash">
+                        <StackPanel Orientation="Vertical" Margin="2">
+                            <Button Content="Call Crashes.GenerateTestCrash (debug only)" Margin="2" Click="CrashWithTestException_Click"/>
+                            <Button Content="Generate non serializable Exception" Margin="2" Click="CrashWithNonSerializableException_Click" />
+                            <Button Content="Divide by zero" Margin="2" Click="CrashWithDivisionByZero_Click" />
+                            <Button Content="Aggregate Exception" Margin="2" Click="CrashWithAggregateException_Click" />
+                            <Button Content="Crash with null reference" Margin="2" Click="CrashWithNullReference_Click"/>
+                            <Button Content="Async task crash" Margin="2" Click="CrashInsideAsyncTask_Click"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Others"/>
+            <TabItem Header="Others">
+                <StackPanel>
+                    <CheckBox Name="CountryCodeEnableCheckbox" Content="Country Code Enabled" Margin="0,10,0,10" Checked="CountryCodeEnabled_Checked" Unchecked="CountryCodeEnabled_Checked"/>
+                    <GroupBox Header="Country code">
+                        <StackPanel IsEnabled="False" Name="CountryCodePanel">
+                            <DockPanel LastChildFill="True">
+                                <Label Name="CountryCodeLabel">Country code</Label>
+                                <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>
+                            </DockPanel>
+                            <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+            
         </TabControl>
     </StackPanel>
 </Window>

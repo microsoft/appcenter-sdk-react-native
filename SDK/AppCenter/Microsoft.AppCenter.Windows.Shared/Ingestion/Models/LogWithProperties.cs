@@ -1,23 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-
 namespace Microsoft.AppCenter.Ingestion.Models
 {
-    using Microsoft.AppCenter;
-    using Microsoft.AppCenter.Ingestion;
     using Newtonsoft.Json;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
-    public abstract class LogWithProperties : Log
+    public partial class LogWithProperties : Log
     {
         /// <summary>
         /// Initializes a new instance of the LogWithProperties class.
         /// </summary>
-        public LogWithProperties() { }
+        public LogWithProperties()
+        {
+            CustomInit();
+        }
 
         /// <summary>
         /// Initializes a new instance of the LogWithProperties class.
@@ -33,13 +30,22 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
+        /// <param name="userId">optional string used for associating logs with
+        /// users.
+        /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
-        public LogWithProperties(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(device, timestamp, sid)
+        public LogWithProperties(Device device, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>))
+            : base(device, timestamp, sid, userId)
         {
             Properties = properties;
+            CustomInit();
         }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
 
         /// <summary>
         /// Gets or sets additional key/value pair parameters.

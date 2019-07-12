@@ -1,21 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-
-using System;
-using System.Collections.Generic;
-using Microsoft.AppCenter.Ingestion.Models;
-using Newtonsoft.Json;
-
 namespace Microsoft.AppCenter.Analytics.Ingestion.Models
 {
-    using Device = Microsoft.AppCenter.Ingestion.Models.Device;
+    using Microsoft.AppCenter.Ingestion.Models;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Page view log (as in screens or activities).
     /// </summary>
-    [JsonObject(JsonIdentifier)]
+    [Newtonsoft.Json.JsonObject(JsonIdentifier)]
     public partial class PageLog : LogWithProperties
     {
         internal const string JsonIdentifier = "page";
@@ -23,7 +18,10 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         /// <summary>
         /// Initializes a new instance of the PageLog class.
         /// </summary>
-        public PageLog() { }
+        public PageLog()
+        {
+            CustomInit();
+        }
 
         /// <summary>
         /// Initializes a new instance of the PageLog class.
@@ -41,13 +39,22 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
+        /// <param name="userId">optional string used for associating logs with
+        /// users.
+        /// </param>
         /// <param name="properties">Additional key/value pair parameters.
         /// </param>
-        public PageLog(Device device, string name, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(device, timestamp, sid, properties)
+        public PageLog(Device device, string name, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>))
+            : base(device, timestamp, sid, userId, properties)
         {
             Name = name;
+            CustomInit();
         }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
 
         /// <summary>
         /// Gets or sets name of the page.
@@ -67,9 +74,8 @@ namespace Microsoft.AppCenter.Analytics.Ingestion.Models
             base.Validate();
             if (Name == null)
             {
-                throw new ValidationException(ValidationException.Rule.CannotBeNull, nameof(Name));
+                throw new ValidationException(ValidationException.Rule.CannotBeNull, "Name");
             }
         }
     }
 }
-

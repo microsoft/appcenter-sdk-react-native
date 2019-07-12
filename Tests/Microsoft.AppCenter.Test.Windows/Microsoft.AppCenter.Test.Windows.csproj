@@ -122,6 +122,7 @@
     <Compile Include="MockAppCenterService.cs" />
     <Compile Include="Storage\FakeStorageTest.cs" />
     <Compile Include="Storage\MockStorage.cs" />
+    <Compile Include="Storage\StorageAdapterTest.cs" />
     <Compile Include="Storage\StorageTest.cs" />
     <Compile Include="Storage\TestSQLiteException.cs" />
     <Compile Include="TaskExtension.cs" />

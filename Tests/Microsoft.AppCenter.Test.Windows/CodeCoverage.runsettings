@@ -21,7 +21,6 @@
                 <Function>.*\.DeviceInformationHelper\..*</Function>
                 <Function>.*\.NetworkStateAdapter\..*</Function>
                 <Function>.*\.AppCenterPart\..*</Function>
-                <Function>.*\.WatsonCrashesStarter\..*</Function>
                 <Function>.*\.ApplicationLifecycleHelper\..*</Function>
               </Exclude>
             </Functions>

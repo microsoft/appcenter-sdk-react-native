@@ -1,12 +1,66 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.2.0 (Under development)
+## Version 2.2.0-preview (Under development)
+
+This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
+
+This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+
+### App Center
+
+* **[Breaking Change]** This version is no longer compatible with PCL. Migrating to .NET standard is now required for portable libraries using the AppCenter SDK.
+
+#### Android
+
+* **[Fix]** Remove unsecure UUID fallback for UUID generation failures that cannot occur in reality.
+
+#### WPF/WinForms
+
+* **[Feature]** APIs from the `AppCenter` class can now be consumed in WPF and WinForms applications (except `AppCenter.SetUserId`).
+
+### App Center Analytics
+
+#### WPF/WinForms
+
+* **[Feature]** Add support for WPF and WinForms.
+
+### App Center Crashes
+
+#### WPF/WinForms
+
+* **[Feature]** Add support for WPF and WinForms. Some crashes features are not yet supported on those platforms: user identification and showing events that lead to the crash.
+
+#### UWP
+
+* **[Breaking Change]** This version introduces a breaking change where the SDK no longers register with Windows error reporting. UWP developers using the Crashes module must keep using the latest stable release (2.1.1).
+
+#### iOS
+
+* **[Fix]** Fix possible deadlock in `Crashes.TrackError`.
+
+#### Android
+
+* **[Fix]** The in-memory cache of error reports is now cleared when disabling Crashes.
 
 ### App Center Data
 
+#### Xamarin
+
+* **[Feature]** Add support for offline list of documents.
 * **[Feature]** Change the default time-to-live (TTL) from 1 day to infinite (never expire).
-* **[Feature]** Add a new parameter (ReadOptions) to the list documents API.
+* **[Feature]** Add `ReadOptions` parameter to the `list` API.
 * **[Feature]** Deserialization errors are now exposed through the document `Error` property (and leaving `DeserializedValue` null) instead of throwing an exception.
+* **[Feature]** Serialize `null` document values.
+
+#### Android
+
+* **[Fix]** Allow null for `ReadOptions` and `WriteOptions` parameters.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure. 
 
 ## Version 2.1.1
 
@@ -24,20 +78,11 @@
 
 * **[Fix]** Improve encryption security.
 
-#### Android
-
-* **[Fix]** Handle incorrect usage of `AppCenter.setLogUrl` API to provide readable error message.
-* **[Fix]** Fix decrypting values that have been stored for more than a year (such as the in-app update token).
-
 ### App Center Crashes
 
 #### iOS
 
 * **[Fix]** Fix a crash when tracking an exception without a message.
-
-#### Android
-
-* **[Fix]** Fix a crash that could sometimes occur while processing native crash reports.
 
 ### App Center Distribute
 
@@ -46,24 +91,21 @@
 * **[Feature]** Add `Distribute.SetEnabledForDebuggableBuild(bool)` method to allow in-app updates in debuggable builds.
 * **[Fix]** Fix duplicate in-app update dialog when restarting (or switching) activity quickly after clicking download. Also fixes a crash when choosing "Ask me in a day" in the duplicate dialog.
 * **[Fix]** Fix a crash that could occur when downloading the update with a customized dialog and then calling `Distribute.NotifyUserConfirmation(UpdateAction.Postpone)` right after calling `Distribute.NotifyUserConfirmation(UpdateAction.Update)`.
-* **[Fix]** Fix a crash that could occur while trying to open the browser on some devices.
 
 ### App Center Auth
 
 * **[Feature]** Expose the ID Token and Access Token (as raw JWT format) in the `UserInformation` object returned from the sign-in method.
 * **[Breaking change]** The `UserInformation` class has been moved from the `Microsoft.AppCenter` namespace to `Microsoft.AppCenter.Auth` namespace.
 
-#### iOS
-
-* **[Fix]** Fix changing signing status may cause logs (e.g., events) to be delayed.
-* **[Fix]** Validate custom URL scheme before starting Auth and log an error message when it is invalid.
-* **[Fix]** Fix rare condition where a user is prompted again for their credentials instead of refreshing the token silently.
-
 #### Android
 
 * **[Fix]** Fix missing proguard rules so that the app does not have to specify them.
 * **[Fix]** Fix crash on silently refreshing token if initialization of MSAL fails.
-* **[Fix]** Fix sign-in before start auth service never ends and blocks every next try.
+
+#### iOS
+
+* **[Fix]** Fix changing signing status may cause logs (e.g., events) to be delayed.
+* **[Fix]** Validate custom URL scheme before starting Auth and log an error message when it is invalid.
 
 ### App Center Data
 
