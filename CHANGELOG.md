@@ -13,7 +13,6 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### Android
 
 * **[Fix]** Remove unsecure UUID fallback for UUID generation failures that cannot occur in reality.
-* **[Fix]** Updated android.support's packages to 28.0.0.1 version in Push module.
 
 #### WPF/WinForms
 
@@ -42,6 +41,12 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### Android
 
 * **[Fix]** The in-memory cache of error reports is now cleared when disabling Crashes.
+
+### App Center Push
+
+#### Xamarin
+
+* **[Fix]** Updated Android support's packages to 28.0.0.1 version in Push module.
 
 ### App Center Data
 
