@@ -28,7 +28,7 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 #### WPF/WinForms
 
-* **[Feature]** Add support for WPF and WinForms. User identification is however not currently supported.
+* **[Feature]** Add support for WPF and WinForms. User identification is not currently supported.
 
 #### UWP
 

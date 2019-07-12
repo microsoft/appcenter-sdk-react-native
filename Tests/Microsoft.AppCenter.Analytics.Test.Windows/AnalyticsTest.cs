@@ -119,7 +119,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         }
 
         /// <summary>
-        /// Verify that starting while being disabled does nothing.
+        /// Verify that starting while disabled does nothing.
         /// </summary>
         [TestMethod]
         public void StartDisabled()
