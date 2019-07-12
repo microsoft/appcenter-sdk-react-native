@@ -55,7 +55,7 @@ namespace Microsoft.AppCenter.Utils
         protected override string GetDeviceModel()
         {
             var deviceInfo = new EasClientDeviceInformation();
-            return string.IsNullOrEmpty(deviceInfo.SystemProductName) ? deviceInfo.SystemSku : deviceInfo.SystemProductName;
+            return string.IsNullOrEmpty(deviceInfo.SystemSku) ? deviceInfo.SystemProductName : deviceInfo.SystemSku;
         }
 
         protected override string GetAppNamespace()
