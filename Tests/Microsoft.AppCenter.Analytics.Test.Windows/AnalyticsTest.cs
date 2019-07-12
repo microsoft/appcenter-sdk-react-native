@@ -119,10 +119,10 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         }
 
         /// <summary>
-        /// Verify that disabling channel disables lifecycle callbacks
+        /// Verify that starting while disabled does nothing.
         /// </summary>
         [TestMethod]
-        public void SetEnabledFalse()
+        public void StartDisabled()
         {
             Analytics.SetEnabledAsync(false).Wait();
             Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
@@ -132,6 +132,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Never());
             _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Never());
+            _mockSessionTracker.Verify(tracker => tracker.Stop(), Times.Never());
         }
 
         /// <summary>
@@ -149,6 +150,26 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
 
             _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Once());
             _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Exactly(2));
+            _mockSessionTracker.Verify(tracker => tracker.Stop(), Times.Never());
+        }
+
+        /// <summary>
+        /// Verify that disabling Analytics at runtime after started as enabled stops session tracker.
+        /// </summary>
+        [TestMethod]
+        public void DisableAfterEnabling()
+        {
+            Analytics.SetEnabledAsync(true).Wait();
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Analytics.SetEnabledAsync(false).Wait();
+
+            _applicationLifecycleHelper.InvokeSuspended();
+            _applicationLifecycleHelper.InvokeResuming();
+
+            // We were never paused while enabled so no need to pause (the session tracker was stopped and unset instead).
+            _mockSessionTracker.Verify(tracker => tracker.Pause(), Times.Never());
+            _mockSessionTracker.Verify(tracker => tracker.Resume(), Times.Once());
+            _mockSessionTracker.Verify(tracker => tracker.Stop(), Times.Once());
         }
 
         /// <summary>
