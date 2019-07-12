@@ -13,6 +13,7 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### Android
 
 * **[Fix]** Remove unsecure UUID fallback for UUID generation failures that cannot occur in reality.
+* **[Fix]** Updated android.support's packages to 28.0.0.1 version in Push module.
 
 #### WPF/WinForms
 
@@ -60,7 +61,7 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 #### iOS
 
-* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure. 
+* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure.
 
 ## Version 2.1.1
 
@@ -223,7 +224,7 @@ The App Center Data service provides functionality enabling developers to persis
 
 ___
 
-## Version 1.13.0 
+## Version 1.13.0
 
 ### AppCenter
 
