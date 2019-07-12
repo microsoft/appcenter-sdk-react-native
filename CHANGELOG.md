@@ -46,7 +46,7 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 #### Xamarin
 
-* **[Fix]** Updated Android support's packages to 28.0.0.1 version in Push module.
+* **[Fix]** Updated Android support packages to 28.0.0.1 version in Push module.
 
 ### App Center Data
 
