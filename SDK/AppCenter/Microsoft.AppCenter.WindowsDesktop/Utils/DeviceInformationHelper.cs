@@ -22,10 +22,16 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceModel()
         {
-            var managementClass = new ManagementClass("Win32_ComputerSystem");
+            var managementClass = new ManagementClass("Win32_BaseBoard");
+            var defaultDeviceModel = "";
             foreach (var managementObject in managementClass.GetInstances())
             {
-                return (string)managementObject["Model"];
+                defaultDeviceModel = (string)managementObject["Product"];
+            }
+            managementClass = new ManagementClass("Win32_ComputerSystem");
+            foreach (var managementObject in managementClass.GetInstances())
+            {
+                return string.IsNullOrEmpty((string)managementObject["Model"]) ? (string)managementObject["Model"] : defaultDeviceModel;
             }
             return string.Empty;
         }
@@ -37,10 +43,16 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceOemName()
         {
-            var managementClass = new ManagementClass("Win32_ComputerSystem");
+            var managementClass = new ManagementClass("Win32_BaseBoard");
+            var defaultDeviceManufacturer = "";
             foreach (var managementObject in managementClass.GetInstances())
             {
-                return (string)managementObject["Manufacturer"];
+                defaultDeviceManufacturer = (string)managementObject["Manufacturer"];
+            }
+            managementClass = new ManagementClass("Win32_ComputerSystem");
+            foreach (var managementObject in managementClass.GetInstances())
+            {
+                return string.IsNullOrEmpty((string)managementObject["Manufacturer"]) ? (string)managementObject["Manufacturer"] : defaultDeviceManufacturer;
             }
             return string.Empty;
         }
