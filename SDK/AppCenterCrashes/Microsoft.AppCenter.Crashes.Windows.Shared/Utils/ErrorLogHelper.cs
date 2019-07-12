@@ -8,7 +8,7 @@ using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
-
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
@@ -163,10 +163,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         private ManagedErrorLog InstanceCreateErrorLog(System.Exception exception)
         {
-            // Get session identifier without overwriting. If we get something else than empty guid, then it was set by Analytics.
-            var correlationId = Guid.Empty;
-            AppCenter.TestAndSetCorrelationId(correlationId, ref correlationId);
-            var sessionId = correlationId == Guid.Empty ? default(Guid?) : correlationId;
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
@@ -180,7 +176,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
                 Exception = CreateModelException(exception),
-                Sid = sessionId
+                Sid = SessionContext.SessionId
             };
         }
 

@@ -219,6 +219,7 @@ namespace Microsoft.AppCenter
                 {
                     AppCenterLog.Error(AppCenterLog.LogTag, ConfigurationErrorMessage, ex);
                 }
+
                 try
                 {
                     Instance.StartInstance(services);
@@ -229,32 +230,6 @@ namespace Microsoft.AppCenter
                 }
             }
         }
-
-        // Atomically checks if the CorrelationId equals "testValue" and updates the value if true.
-        // Returns "true" if value was changed. If not, the current value is assigned to setValue.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static bool TestAndSetCorrelationId(Guid testValue, ref Guid setValue)
-        {
-            lock (AppCenterLock)
-            {
-                if (testValue == Instance.InstanceCorrelationId)
-                {
-                    // Can't use the property setter here because that would cause the
-                    // event to trigger within the lock, which is not allowed.
-                    // (And calling the setter outside the lock would not be atomic).
-                    Instance.InstanceCorrelationId = setValue;
-                    CorrelationIdChanged?.Invoke(null, setValue);
-                    return true;
-                }
-                setValue = Instance.InstanceCorrelationId;
-            }
-            return false;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        // Note: Do not access the CorrelationId property in this event handler!
-        // Doing so on a different thread can cause deadlocks.
-        public static event EventHandler<Guid> CorrelationIdChanged;
 
         #endregion
 
@@ -437,8 +412,6 @@ namespace Microsoft.AppCenter
             _services.Add(service);
             AppCenterLog.Info(AppCenterLog.LogTag, $"'{service.GetType().Name}' service started.");
         }
-
-        internal Guid InstanceCorrelationId = Guid.Empty;
 
         #endregion
     }

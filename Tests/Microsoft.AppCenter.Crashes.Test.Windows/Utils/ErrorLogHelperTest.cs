@@ -6,6 +6,7 @@ using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -39,19 +40,12 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        [DataRow("00000000-0000-0000-0000-000000000000", null)]
-        [DataRow("da657080-2445-4b80-9b77-4798a6659954", "da657080-2445-4b80-9b77-4798a6659954")]
-        public void CreateErrorLog(string correlationId, string expectedSessionId)
+        [DataRow(null)]
+        [DataRow("da657080-2445-4b80-9b77-4798a6659954")]
+        public void CreateErrorLog(string sessionId)
         {
-            // Set correlation identifier like Analytics does to set sessionId. Empty guid there maps to null sessionId.
-            var lastId = Guid.Empty;
-            var testId = Guid.Parse(correlationId);
-
-            // Get last identifier. There is no getter so need to try to test and get the correction if the test value was not the correlation id.
-            AppCenter.TestAndSetCorrelationId(lastId, ref lastId);
-
-            // Actually update sessionId for testing now that we have the last value.
-            AppCenter.TestAndSetCorrelationId(lastId, ref testId);
+            // Set correlation identifier like Analytics does to set sessionId.
+            SessionContext.SessionId = sessionId == null ? default(Guid?) : Guid.Parse(sessionId);
 
             // Set up an exception. This is needed because inner exceptions cannot be mocked.
             System.Exception exception;
@@ -121,7 +115,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.AreEqual(processId, log.ProcessId);
             Assert.AreEqual(processName, log.ProcessName);
             Assert.AreEqual(processStartTime, log.AppLaunchTimestamp);
-            Assert.AreEqual(expectedSessionId, log.Sid?.ToString());
+            Assert.AreEqual(sessionId, log.Sid?.ToString());
             Assert.IsTrue(log.Fatal);
         }
 

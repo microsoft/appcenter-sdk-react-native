@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Analytics.Channel;
 using Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Models;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -22,6 +24,8 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestInitialize]
         public void InitializeSessionTrackerTest()
         {
+            SessionContext.SessionId = null;
+            SessionTracker.SessionTimeout = 500; // 0.5s
             _mockChannelGroup = new Mock<IChannelGroup>();
             _mockChannel = new Mock<IChannelUnit>();
             _mockChannelGroup.Setup(
@@ -29,8 +33,6 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
                         It.IsAny<int>()))
                 .Returns(_mockChannel.Object);
             _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
-            SessionTracker.SessionTimeout = 500; // 0.5s
-            SessionTracker.LastSid = Guid.Empty;
         }
 
         /// <summary>
@@ -39,9 +41,11 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void ResumeFirstTime()
         {
+            Log actualLog = null;
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
             _sessionTracker.Resume();
-
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once());
+            Assert.IsNotNull(actualLog.Sid);
         }
 
         /// <summary>
@@ -50,12 +54,21 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void ResumeAfterTimeout()
         {
+            Log actualLog = null;
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
+
             _sessionTracker.Resume();
+            var firstLog = actualLog;
+
             _sessionTracker.Pause();
             Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
             _sessionTracker.Resume();
+            var secondLog = actualLog;
 
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Exactly(2));
+            Assert.IsNotNull(firstLog.Sid);
+            Assert.IsNotNull(secondLog.Sid);
+            Assert.AreNotEqual(firstLog.Sid, secondLog.Sid);
         }
 
         /// <summary>
@@ -64,16 +77,28 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void ResumeAfterTimeoutAndSendEvent()
         {
+            Log actualLog = null;
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
+
             _sessionTracker.Resume();
+            var firstSessionLog = actualLog;
+
             _sessionTracker.Pause();
             Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once());
 
             _sessionTracker.Resume();
-            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null,
-                new EnqueuingLogEventArgs(new EventLog()));
+            var secondSessionLog = actualLog;
 
-            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Exactly(2));
+            var eventLog = new EventLog();
+            _mockChannelGroup.Raise(group => group.EnqueuingLog += null, null,
+                new EnqueuingLogEventArgs(eventLog));
+
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Exactly(2));
+            Assert.IsNotNull(firstSessionLog.Sid);
+            Assert.IsNotNull(secondSessionLog.Sid);
+            Assert.AreNotEqual(firstSessionLog.Sid, secondSessionLog.Sid);
+            Assert.AreEqual(secondSessionLog.Sid, eventLog.Sid);
         }
 
         /// <summary>
@@ -83,11 +108,18 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         [TestMethod]
         public void ResumeAfterShortPause()
         {
+            // Make a first session.
             _sessionTracker.Resume();
+            var firstSessionId = SessionContext.SessionId;
+
+            // Short pause and resume.
             _sessionTracker.Pause();
             _sessionTracker.Resume();
 
+            // There is only 1 session.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>()), Times.Once());
+            Assert.IsNotNull(firstSessionId);
+            Assert.AreEqual(firstSessionId, SessionContext.SessionId);
         }
 
         /// <summary>
@@ -230,98 +262,31 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             Assert.IsFalse(SessionTracker.HasSessionTimedOut(now, lastQueuedLogTime, lastResumedTime, lastPausedTime));
         }
 
-        /// <summary>
-        ///     Verify App Center Correlation ID is set when a session starts and current Correlation ID is null
-        /// </summary>
         [TestMethod]
-        public void EmptyCorrelationIdIsSetWhenSessionStarts()
+        public void VerifySessionChangesOnDisableThenEnable()
         {
-            // Correlation ID is Empty.
-            AppCenter.Instance.InstanceCorrelationId = Guid.Empty;
+            // Do a first session.
+            Log actualLog = null;
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.IsAny<StartSessionLog>())).Callback<Log>(log => actualLog = log);
             _sessionTracker.Resume();
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Once());
+            var firstLog = actualLog;
+            Assert.IsNotNull(actualLog.Sid);
+            Assert.AreEqual(SessionContext.SessionId, actualLog.Sid);
 
-            // Guid.Empty should not be equal to correlation id.
-            Assert.IsFalse(AppCenter.TestAndSetCorrelationId(Guid.Empty, ref AppCenter.Instance.InstanceCorrelationId));
-        }
+            // Disable.
+            _sessionTracker.Stop();
+            Assert.IsNull(SessionContext.SessionId);
 
-        /// <summary>
-        ///     Verify Sid is set to initial correlation id when a session starts and Correlation ID has a value
-        /// </summary>
-        [TestMethod]
-        public void SidIsInitialCorrelationId()
-        {
-            var initialCorrelationId = Guid.NewGuid();
-            AppCenter.Instance.InstanceCorrelationId = initialCorrelationId;
-            _sessionTracker.Resume();
-            Assert.AreEqual(SessionTracker.LastSid, initialCorrelationId);
-        }
-
-        /// <summary>
-        ///     Verify App Center Correlation ID is set when the session id changes
-        /// </summary>
-        [TestMethod]
-        public void VerifyCorrelationIdIsUpdatedWhenSessionChanges()
-        {
-            _sessionTracker.Resume();
-            var sid1 = SessionTracker.LastSid;
-            Assert.AreNotEqual(Guid.Empty, sid1);
-
-            // Cause session expiration and start new session.
-            _sessionTracker.Pause();
-            Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
-            _sessionTracker.Resume();
-            Assert.IsTrue(AppCenter.TestAndSetCorrelationId(SessionTracker.LastSid,
-                ref AppCenter.Instance.InstanceCorrelationId));
-
-            // Verify second session has a different identifier.
-            var sid2 = SessionTracker.LastSid;
-            Assert.AreNotEqual(Guid.Empty, sid2);
-            Assert.AreNotEqual(sid1, sid2);
-        }
-
-        /// <summary>
-        ///     Verify App Center session identifier changes on new session if someone else change correlation identifier.
-        /// </summary>
-        [TestMethod]
-        public void VerifySessionChangesOnCorrelationIdUpdatedByOthers()
-        {
-            _sessionTracker.Resume();
-            var sid1 = SessionTracker.LastSid;
-            Assert.AreNotEqual(Guid.Empty, sid1);
-
-            // Cause session expiration and start new session.
-            _sessionTracker.Pause();
-            Task.Delay((int)SessionTracker.SessionTimeout * 2).Wait();
-
-            // Change correlation identifier.
-            var externalCorrelationid = Guid.NewGuid();
-            Assert.IsTrue(AppCenter.TestAndSetCorrelationId(SessionTracker.LastSid,
-                ref externalCorrelationid));
-
-            _sessionTracker.Resume();
-
-            // Verify second session has a different identifier, not the new one analytics wanted but the updated correlation identifier instead.
-            var sid2 = SessionTracker.LastSid;
-            Assert.AreNotEqual(Guid.Empty, sid2);
-            Assert.AreNotEqual(sid1, sid2);
-            Assert.AreEqual(externalCorrelationid, sid2);
-        }
-
-        [TestMethod]
-        public void VerifySessionChangesOnReenabling()
-        {
-            _sessionTracker.Resume();
-            var sid1 = SessionTracker.LastSid;
-            Assert.AreNotEqual(Guid.Empty, sid1);
-
-            // Disable and enable again.
+            // Re-enable.
             _sessionTracker = new SessionTracker(_mockChannelGroup.Object, _mockChannel.Object);
             _sessionTracker.Resume();
 
-            // Verify second session has a different identifier, not the new one analytics wanted but the updated correlation identifier instead.
-            var sid2 = SessionTracker.LastSid;
-            Assert.AreNotEqual(Guid.Empty, sid2);
-            Assert.AreNotEqual(sid1, sid2);
+            // Verify second session has a different identifier, not the new one Analytics wanted but the updated correlation identifier instead.
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.IsNotNull<StartSessionLog>()), Times.Exactly(2));
+            var secondLog = actualLog;
+            Assert.IsNotNull(secondLog.Sid);
+            Assert.AreNotEqual(firstLog.Sid, secondLog.Sid);
         }
     }
 }
