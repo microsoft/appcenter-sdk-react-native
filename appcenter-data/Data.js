@@ -20,6 +20,7 @@ const Data = {
     TimeToLive,
     DefaultPartitions,
     read,
+    list,
     create,
     remove,
     replace
@@ -39,6 +40,31 @@ function read(documentId, partition, readOptions) {
         readOptions = new Data.ReadOptions(TimeToLive.DEFAULT);
     }
     return AppCenterReactNativeData.read(documentId, partition, readOptions).then(convertTimestampToDate);
+}
+
+/**
+ * Retrieve a paginated list of the documents in a partition.
+ *
+ * @param {string} partition - The CosmosDB partition key.
+ * @return {Promise} Future asynchronous operation with result being the document list.
+ * If the operation fails, the promise is rejected with an exception containing the details of the error.
+ */
+function list(partition) {
+    return AppCenterReactNativeData.list(partition).then((result) => {
+        const paginatedDocuments = {
+            currentPage: result.currentPage,
+            hasNextPage() {
+                return AppCenterReactNativeData.hasNextPage(result.paginatedDocumentsId);
+            },
+            getNextPage() {
+                return AppCenterReactNativeData.getNextPage(result.paginatedDocumentsId);
+            },
+            close() {
+                AppCenterReactNativeData.close(result.paginatedDocumentsId);
+            }
+        };
+        return paginatedDocuments;
+    });
 }
 
 /**

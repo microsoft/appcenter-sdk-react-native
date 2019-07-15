@@ -13,22 +13,27 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.data.Data;
-import com.microsoft.appcenter.data.TimeToLive;
 import com.microsoft.appcenter.data.exception.DataException;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
+import com.microsoft.appcenter.data.models.Page;
+import com.microsoft.appcenter.data.models.PaginatedDocuments;
 import com.microsoft.appcenter.data.models.ReadOptions;
 import com.microsoft.appcenter.data.models.WriteOptions;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.microsoft.appcenter.utils.async.AppCenterConsumer;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
@@ -46,7 +51,17 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String PARTITION_KEY = "partition";
 
-    private static final String TIME_TO_LIVE_KEY = "timeToLive";
+    private static final String ERROR_KEY = "errorMessage";
+
+    private static final String PAGINATED_DOCUMENTS_ID_KEY = "paginatedDocumentsId";
+
+    private static final String ITEMS_KEY = "items";
+
+    private static final String CURRENT_PAGE_KEY = "currentPage";
+
+    private static final String MESSAGE_KEY = "message";
+
+    private final Map<String, PaginatedDocuments<JsonElement>> mPaginatedDocuments = new ConcurrentHashMap<>();
 
     public AppCenterReactNativeDataModule(Application application) {
         AppCenterReactNativeShared.configureAppCenter(application);
@@ -62,26 +77,104 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
-        ReadOptions readOptions = getReadOptions(readOptionsMap);
+        ReadOptions readOptions = AppCenterReactNativeDataUtils.getReadOptions(readOptionsMap);
         Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>("Read failed", promise));
     }
 
     @ReactMethod
+    public void list(String partition, final Promise promise) {
+        Data.list(JsonElement.class, partition).thenAccept(new AppCenterConsumer<PaginatedDocuments<JsonElement>>() {
+
+            @Override
+            public void accept(PaginatedDocuments<JsonElement> documentWrappers) {
+                String paginatedDocumentsId = UUID.randomUUID().toString();
+                mPaginatedDocuments.put(paginatedDocumentsId, documentWrappers);
+                WritableMap paginatedDocumentsMap = new WritableNativeMap();
+                WritableMap currentPageMap = new WritableNativeMap();
+                WritableArray itemsArray = new WritableNativeArray();
+                Page<JsonElement> currentPage = documentWrappers.getCurrentPage();
+                if (currentPage.getError() != null) {
+                    DataException dataException = currentPage.getError();
+                    promise.reject("Failed list", dataException.getMessage(), dataException);
+                    return;
+                }
+                List<DocumentWrapper<JsonElement>> documents = currentPage.getItems();
+
+                /* Add documents to WritableArray */
+                for (DocumentWrapper<JsonElement> document : documents) {
+                    addedDocumentToWritableArray(itemsArray, document);
+                }
+                currentPageMap.putArray(ITEMS_KEY, itemsArray);
+                paginatedDocumentsMap.putMap(CURRENT_PAGE_KEY, currentPageMap);
+                paginatedDocumentsMap.putString(PAGINATED_DOCUMENTS_ID_KEY, paginatedDocumentsId);
+                promise.resolve(paginatedDocumentsMap);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void hasNextPage(String paginatedDocumentsId, Promise promise) {
+        PaginatedDocuments<JsonElement> paginatedDocuments = mPaginatedDocuments.get(paginatedDocumentsId);
+        if (paginatedDocuments == null || !paginatedDocuments.hasNextPage()) {
+            close(paginatedDocumentsId);
+            promise.resolve(false);
+        } else {
+            promise.resolve(true);
+        }
+    }
+
+    @ReactMethod
+    public void getNextPage(String paginatedDocumentsId, final Promise promise) {
+        PaginatedDocuments<JsonElement> paginatedDocuments = mPaginatedDocuments.get(paginatedDocumentsId);
+        if (paginatedDocuments == null || !paginatedDocuments.hasNextPage()) {
+            close(paginatedDocumentsId);
+            promise.resolve(null);
+            return;
+        }
+        paginatedDocuments.getNextPage().thenAccept(new AppCenterConsumer<Page<JsonElement>>() {
+
+            @Override
+            public void accept(Page<JsonElement> page) {
+                WritableMap pageMap = new WritableNativeMap();
+                WritableArray itemsArray = new WritableNativeArray();
+                if (page.getError() != null) {
+                    DataException dataException = page.getError();
+                    promise.reject("Failed list", dataException.getMessage(), dataException);
+                    return;
+                }
+                List<DocumentWrapper<JsonElement>> documents = page.getItems();
+
+                /* Add documents to WritableArray */
+                for (DocumentWrapper<JsonElement> document : documents) {
+                    addedDocumentToWritableArray(itemsArray, document);
+                }
+                pageMap.putArray(ITEMS_KEY, itemsArray);
+                promise.resolve(pageMap);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void close(String paginatedDocumentsId) {
+        mPaginatedDocuments.remove(paginatedDocumentsId);
+    }
+
+    @ReactMethod
     public void create(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
+        WriteOptions writeOptions = AppCenterReactNativeDataUtils.getWriteOptions(writeOptionsMap);
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
         Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Create failed", promise));
     }
 
     @ReactMethod
     public void remove(String documentId, String partition, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
+        WriteOptions writeOptions = AppCenterReactNativeDataUtils.getWriteOptions(writeOptionsMap);
         Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>("Delete failed", promise));
     }
 
     @ReactMethod
     public void replace(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
-        WriteOptions writeOptions = getWriteOptions(writeOptionsMap);
+        WriteOptions writeOptions = AppCenterReactNativeDataUtils.getWriteOptions(writeOptionsMap);
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
         Data.replace(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Replace failed", promise));
     }
@@ -100,14 +193,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         @Override
         public void accept(DocumentWrapper<T> documentWrapper) {
             WritableMap jsDocumentWrapper = new WritableNativeMap();
-            jsDocumentWrapper.putString(ETAG_KEY, documentWrapper.getETag());
-            jsDocumentWrapper.putString(ID_KEY, documentWrapper.getId());
-            jsDocumentWrapper.putString(PARTITION_KEY, documentWrapper.getPartition());
-
-            /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
-            jsDocumentWrapper.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
-            jsDocumentWrapper.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
-            jsDocumentWrapper.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+            addDocumentWrapperMetaData(documentWrapper, jsDocumentWrapper);
             if (documentWrapper.getError() != null) {
                 DataException dataException = documentWrapper.getError();
                 mPromise.reject(mErrorCode, dataException.getMessage(), dataException, jsDocumentWrapper);
@@ -117,48 +203,39 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 mPromise.resolve(jsDocumentWrapper);
                 return;
             }
-            JsonElement deserializedValue = (JsonElement) documentWrapper.getDeserializedValue();
-            if (deserializedValue.isJsonPrimitive()) {
-                JsonPrimitive jsonPrimitive = deserializedValue.getAsJsonPrimitive();
-                if (jsonPrimitive.isString()) {
-                    jsDocumentWrapper.putString(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsString());
-                } else if (jsonPrimitive.isNumber()) {
-                    jsDocumentWrapper.putDouble(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsDouble());
-                } else if (jsonPrimitive.isBoolean()) {
-                    jsDocumentWrapper.putBoolean(DESERIALIZED_VALUE_KEY, jsonPrimitive.getAsBoolean());
-                }
-            } else if (deserializedValue.isJsonObject()) {
-                JsonObject jsonObject = deserializedValue.getAsJsonObject();
-                WritableMap writableMap = AppCenterReactNativeDataUtils.convertJsonObjectToWritableMap(jsonObject);
-                jsDocumentWrapper.putMap(DESERIALIZED_VALUE_KEY, writableMap);
-            } else if (deserializedValue.isJsonArray()) {
-                JsonArray jsonArray = deserializedValue.getAsJsonArray();
-                WritableArray writableArray = AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonArray);
-                jsDocumentWrapper.putArray(DESERIALIZED_VALUE_KEY, writableArray);
-            } else {
-                jsDocumentWrapper.putNull(DESERIALIZED_VALUE_KEY);
-            }
+            JsonElement deserializedDocument = (JsonElement) documentWrapper.getDeserializedValue();
+            AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
             mPromise.resolve(jsDocumentWrapper);
         }
     }
 
-    private ReadOptions getReadOptions(ReadableMap readOptionsMap) {
-        ReadOptions readOptions;
-        if (readOptionsMap != null && readOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            readOptions = new ReadOptions(readOptionsMap.getInt(TIME_TO_LIVE_KEY));
+    private static <T> void addDocumentWrapperMetaData(DocumentWrapper<T> documentWrapper, WritableMap writableMap) {
+        writableMap.putString(ETAG_KEY, documentWrapper.getETag());
+        writableMap.putString(ID_KEY, documentWrapper.getId());
+        writableMap.putString(PARTITION_KEY, documentWrapper.getPartition());
+
+        /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
+        writableMap.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
+        writableMap.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
+        if (documentWrapper.getJsonValue() == null) {
+            writableMap.putNull(JSON_VALUE_KEY);
         } else {
-            readOptions = new ReadOptions();
+            writableMap.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
         }
-        return readOptions;
     }
 
-    private WriteOptions getWriteOptions(ReadableMap writeOptionsMap) {
-        WriteOptions writeOptions;
-        if (writeOptionsMap != null && writeOptionsMap.hasKey(TIME_TO_LIVE_KEY)) {
-            writeOptions = new WriteOptions(writeOptionsMap.getInt(TIME_TO_LIVE_KEY));
+    private static void addedDocumentToWritableArray(WritableArray writableArray, DocumentWrapper<JsonElement> documentWrapper) {
+        WritableMap jsDocumentWrapper = new WritableNativeMap();
+        addDocumentWrapperMetaData(documentWrapper, jsDocumentWrapper);
+        if (documentWrapper.getError() != null) {
+            DataException dataException = documentWrapper.getError();
+            WritableMap errorMap = new WritableNativeMap();
+            errorMap.putString(MESSAGE_KEY, dataException.getMessage());
+            jsDocumentWrapper.putMap(ERROR_KEY, errorMap);
         } else {
-            writeOptions = new WriteOptions();
+            JsonElement deserializedDocument = documentWrapper.getDeserializedValue();
+            AppCenterReactNativeDataUtils.putJsonElementToWritableMap(jsDocumentWrapper, DESERIALIZED_VALUE_KEY, deserializedDocument);
         }
-        return writeOptions;
+        writableArray.pushMap(jsDocumentWrapper);
     }
 }
