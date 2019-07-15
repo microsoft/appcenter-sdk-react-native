@@ -217,7 +217,11 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         /* Pass milliseconds back to JS object since `WritableMap` does not support `Date` as values. */
         writableMap.putDouble(LAST_UPDATED_DATE_KEY, documentWrapper.getLastUpdatedDate().getTime());
         writableMap.putBoolean(IS_FROM_DEVICE_CACHE_KEY, documentWrapper.isFromDeviceCache());
-        writableMap.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+        if (documentWrapper.getJsonValue() == null) {
+            writableMap.putNull(JSON_VALUE_KEY);
+        } else {
+            writableMap.putString(JSON_VALUE_KEY, documentWrapper.getJsonValue());
+        }
     }
 
     private static void addedDocumentToWritableArray(WritableArray writableArray, DocumentWrapper<JsonElement> documentWrapper) {

@@ -139,7 +139,9 @@ public class AppCenterReactNativeDataUtils {
     }
 
     public static void putJsonElementToWritableMap(WritableMap writableMap, String key, JsonElement jsonElement) {
-        if (jsonElement.isJsonPrimitive()) {
+        if (jsonElement == null || jsonElement.isJsonNull()) {
+            writableMap.putNull(key);
+        } else if (jsonElement.isJsonPrimitive()) {
             JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
             if (jsonPrimitive.isString()) {
                 writableMap.putString(key, jsonPrimitive.getAsString());
@@ -154,8 +156,6 @@ public class AppCenterReactNativeDataUtils {
         } else if (jsonElement.isJsonArray()) {
             JsonArray jsonArray = jsonElement.getAsJsonArray();
             writableMap.putArray(key, AppCenterReactNativeDataUtils.convertJsonArrayToWritableArray(jsonArray));
-        } else {
-            writableMap.putNull(key);
         }
     }
 
