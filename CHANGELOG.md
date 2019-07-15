@@ -20,6 +20,10 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 ### App Center Analytics
 
+#### UWP
+
+* **[Fix]** Fix validation of `TrackEvent` that was sending the event without properties instead of removing the invalid ones.
+
 #### WPF/WinForms
 
 * **[Feature]** Add support for WPF and WinForms.
