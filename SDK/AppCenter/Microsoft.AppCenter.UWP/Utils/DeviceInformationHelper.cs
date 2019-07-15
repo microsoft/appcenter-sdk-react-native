@@ -66,7 +66,7 @@ namespace Microsoft.AppCenter.Utils
         protected override string GetDeviceOemName()
         {
             var deviceInfo = new EasClientDeviceInformation();
-            return deviceInfo.SystemManufacturer;
+            return string.IsNullOrEmpty(deviceInfo.SystemSku) ? deviceInfo.SystemManufacturer : deviceInfo.SystemSku;
         }
 
         protected override string GetOsName()
