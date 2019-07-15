@@ -42,7 +42,7 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
         public void VerifyDeviceOemName()
         {
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.AreNotEqual(device.OemName.ToLower(), "system manufacturer");
+            Assert.AreNotEqual(device.OemName.ToLower(), AbstractDeviceInformationHelper.DefaultSystemManufacture);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
         public void VerifyDeviceModel()
         {
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.AreNotEqual(device.Model.ToLower(), "system product name");
+            Assert.AreNotEqual(device.Model.ToLower(), AbstractDeviceInformationHelper.DefaultSystemProductName);
         }
 
         /// <summary>
