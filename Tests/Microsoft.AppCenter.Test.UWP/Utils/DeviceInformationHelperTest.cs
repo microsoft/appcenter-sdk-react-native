@@ -36,6 +36,26 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
         }
 
         /// <summary>
+        /// Verify device oem name in device information
+        /// </summary>
+        [TestMethod]
+        public void VerifyDeviceOemName()
+        {
+            var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
+            Assert.AreNotEqual(device.OemName.ToLower(), "system manufacturer");
+        }
+
+        /// <summary>
+        /// Verify device model in device model.
+        /// </summary>
+        [TestMethod]
+        public void VerifyDeviceModel()
+        {
+            var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
+            Assert.AreNotEqual(device.Model.ToLower(), "system product name");
+        }
+
+        /// <summary>
         /// Verify screen size provider
         /// </summary>
         [TestMethod]
