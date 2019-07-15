@@ -28,7 +28,7 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 #### WPF/WinForms
 
-* **[Feature]** Add support for WPF and WinForms. Some crashes features are not yet supported on those platforms: user identification and showing events that lead to the crash.
+* **[Feature]** Add support for WPF and WinForms. User identification is not currently supported.
 
 #### UWP
 
@@ -41,6 +41,12 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### Android
 
 * **[Fix]** The in-memory cache of error reports is now cleared when disabling Crashes.
+
+### App Center Push
+
+#### Xamarin
+
+* **[Fix]** Updated Android support packages to 28.0.0.1 version in Push module.
 
 ### App Center Data
 
@@ -60,7 +66,7 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 #### iOS
 
-* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure. 
+* **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure.
 
 ## Version 2.1.1
 
@@ -223,7 +229,7 @@ The App Center Data service provides functionality enabling developers to persis
 
 ___
 
-## Version 1.13.0 
+## Version 1.13.0
 
 ### AppCenter
 
