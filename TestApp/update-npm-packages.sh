@@ -24,5 +24,5 @@ npm install
 echo "Build shared framework..."
 (cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
 
-echo "Running jetify for react-native 0.60.0-rc3..."
+echo "Running jetify"
 npx jetify
