@@ -10,6 +10,8 @@ namespace Microsoft.AppCenter.Utils
 {
     public abstract class AbstractDeviceInformationHelper : IDeviceInformationHelper
     {
+        public static string DefaultSystemManufacture = "system manufacturer";
+        public static string DefaultSystemProductName = "system product name";
         public static event EventHandler InformationInvalidated;
         private static string _country;
 
