@@ -42,7 +42,7 @@ namespace Microsoft.AppCenter.Test.UWP.Utils
         public void VerifyDeviceOemName()
         {
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.AreNotEqual(device.OemName.ToLower(), AbstractDeviceInformationHelper.DefaultSystemManufacture);
+            Assert.AreNotEqual(device.OemName.ToLower(), AbstractDeviceInformationHelper.DefaultSystemManufacturer);
         }
 
         /// <summary>

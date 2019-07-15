@@ -53,7 +53,7 @@ namespace Microsoft.AppCenter.Utils
             managementClass = new ManagementClass("Win32_ComputerSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                return DefaultSystemManufacture.Equals(((string)managementObject["Manufacturer"]).ToLower()) ? defaultDeviceManufacturer : (string)managementObject["Manufacturer"];
+                return DefaultSystemManufacturer.Equals(((string)managementObject["Manufacturer"]).ToLower()) ? defaultDeviceManufacturer : (string)managementObject["Manufacturer"];
             }
             return string.Empty;
         }
