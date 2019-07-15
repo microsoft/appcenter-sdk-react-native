@@ -31,8 +31,15 @@ Task("IncrementRevisionNumber").Does(()=>
 
 Task("SetReleaseVersion").Does(()=>
 {
-    // Get base version of PCL core
-    var baseSemanticVersion = GetPCLBaseSemanticVersion();
+    var prereleaseSuffix = Argument<string>("PrereleaseSuffix", null);
+
+    // Get base version of .NET standard core
+    var baseSemanticVersion = GetBaseSemanticVersion();
+
+    // Append suffix if any is provided for this release
+    if (prereleaseSuffix != null) {
+        baseSemanticVersion = $"{baseSemanticVersion}-{prereleaseSuffix}";
+    }
 
     // Replace versions in all non-demo app files
     var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
@@ -154,8 +161,8 @@ Task("StartNewVersion").Does(()=>
 
 void IncrementRevisionNumber(bool useHash)
 {
-    // Get base version of PCL core
-    var baseSemanticVersion = GetPCLBaseSemanticVersion();
+    // Get base version of .NET standard core
+    var baseSemanticVersion = GetBaseSemanticVersion();
     var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
     var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1;
@@ -188,7 +195,7 @@ void IncrementRevisionNumber(bool useHash)
     UpdateWrapperSdkVersion(newVersion);
 }
 
-string GetPCLBaseSemanticVersion()
+string GetBaseSemanticVersion()
 {
     return GetBaseVersion(VersionReader.SdkVersion);
 }
