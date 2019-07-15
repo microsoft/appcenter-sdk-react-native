@@ -34,19 +34,19 @@ Task("SetReleaseVersion").Does(()=>
     var prereleaseSuffix = Argument<string>("PrereleaseSuffix", null);
 
     // Get base version of .NET standard core
-    var baseSemanticVersion = GetBaseSemanticVersion();
+    var releaseVersion = GetBaseSemanticVersion();
 
     // Append suffix if any is provided for this release
     if (prereleaseSuffix != null) {
-        baseSemanticVersion = $"{baseSemanticVersion}-{prereleaseSuffix}";
+        releaseVersion = $"{releaseVersion}-{prereleaseSuffix}";
     }
 
     // Replace versions in all non-demo app files
     var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
-    ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
-    UpdateNewProjSdkVersion(baseSemanticVersion, baseSemanticVersion);
-    UpdateWrapperSdkVersion(baseSemanticVersion);
-    UpdateConfigFileSdkVersion(baseSemanticVersion);
+    ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + releaseVersion + "\")", "Demo");
+    UpdateNewProjSdkVersion(releaseVersion, releaseVersion);
+    UpdateWrapperSdkVersion(releaseVersion);
+    UpdateConfigFileSdkVersion(releaseVersion);
 });
 
 Task("UpdateDemoVersion").Does(()=>
