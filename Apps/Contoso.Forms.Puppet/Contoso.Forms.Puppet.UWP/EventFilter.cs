@@ -1,16 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Contoso.Forms.Puppet.UWP;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Channel;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(EventFilter))]
 namespace Contoso.Forms.Puppet.UWP
 {
-    public class EventFilter : AppCenterService
+    public class EventFilter : AppCenterService, IClearCrashClick
     {
+        private const string CrashesUserConfirmationStorageKey = "AppCenterCrashesAlwaysSend";
+
         #region static
 
         private static readonly object EventFilterLock = new object();
@@ -124,6 +129,12 @@ namespace Contoso.Forms.Puppet.UWP
             {
                 e.FilterRequested = true;
             }
+        }
+
+        public void ClearCrashButton()
+        {
+            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values.Remove(CrashesUserConfirmationStorageKey);
         }
 
         #endregion
