@@ -22,6 +22,8 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
     {
+        private const string AccountId = "accountId";
+
         static bool _rumStarted;
 
         static bool _eventFilterStarted;
@@ -53,15 +55,24 @@ namespace Contoso.Forms.Puppet
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
+            AuthEnabledSwitchCell.On = await Auth.IsEnabledAsync();
+            AuthEnabledSwitchCell.IsEnabled = acEnabled;
             RumEnabledSwitchCell.On = _rumStarted && await RealUserMeasurements.IsEnabledAsync();
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
-            if (userInfo?.AccountId != null)
+            if (!Application.Current.Properties.ContainsKey(AccountId))
             {
-                SignInInformationButton.Text = "User authenticated";
+                SignInInformationButton.Text = "Authentication status unknown";
             }
-            else SignInInformationButton.Text = "User not authenticated";
+            else if (Application.Current.Properties[AccountId] is string)
+            {
+                SignInInformationButton.Text = "User is authenticated";
+            }
+            else
+            {
+                SignInInformationButton.Text = "User is not authenticated";
+            }
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -72,6 +83,11 @@ namespace Contoso.Forms.Puppet
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
             await Push.SetEnabledAsync(e.Value);
+        }
+
+        async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
+        {
+            await Auth.SetEnabledAsync(e.Value);
         }
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)
@@ -105,6 +121,7 @@ namespace Contoso.Forms.Puppet
                 userInfo = await Auth.SignInAsync();
                 if (userInfo.AccountId != null)
                 {
+                    Application.Current.Properties[AccountId] = userInfo.AccountId;
                     SignInInformationButton.Text = "User authenticated";
                 }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
@@ -194,6 +211,7 @@ namespace Contoso.Forms.Puppet
             Auth.SignOut();
             userInfo = null;
             SignInInformationButton.Text = "User not authenticated";
+            Application.Current.Properties[AccountId] = null;
         }
 
         async void SignInInformation(object sender, EventArgs e)

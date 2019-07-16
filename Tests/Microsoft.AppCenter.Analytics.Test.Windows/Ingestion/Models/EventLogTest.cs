@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
             var mockDevice = new Mock<Device>();
 
             var emptyLog = new EventLog();
-            var log = new EventLog(Timestamp, mockDevice.Object, Id, Name);
+            var log = new EventLog(mockDevice.Object, Id, Name, Timestamp);
 
             Assert.IsNotNull(emptyLog);
             Assert.IsNotNull(log);
@@ -42,10 +42,9 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         [TestMethod]
         public void TestValidateThrowsExceptionWhenNameIsNull()
         {
-            const string NullName = null;
             var mockDevice = new Mock<Device>();
 
-            var log = new EventLog(Timestamp, mockDevice.Object, Id, NullName);
+            var log = new EventLog(mockDevice.Object, Id, null, Timestamp);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
     }

@@ -11,6 +11,7 @@ using Contoso.Forms.Demo.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace Contoso.Forms.Demo
 {
@@ -101,6 +102,10 @@ namespace Contoso.Forms.Demo
             var addPage = new AddPropertyContentPage();
             addPage.PropertyAdded += (Property property) =>
             {
+                if (property.Name == null || Properties.Any(i => i.Name == property.Name))
+                {
+                    return;
+                }
                 Properties.Add(property);
                 RefreshPropCount();
             };

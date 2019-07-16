@@ -18,9 +18,6 @@
   </metadata>
   <files>
 
-    <!-- Portable -->
-    <file src="$pcl_dir$/Microsoft.AppCenter.Rum.dll" target="lib/portable-net45+win8+wpa81+wp8" />
-
     <!-- .NET Standard -->
     <file src="$netstandard_dir$/Microsoft.AppCenter.Rum.dll" target="lib/netstandard1.0" />
 

@@ -12,5 +12,6 @@ namespace Contoso.Forms.Puppet
         public const string Warning = "Warning";
         public const string Error = "Error";
         public const string BingMapsAuthKey = "paste-key-here";
+        public const string UserId = "userId";
     }
 }

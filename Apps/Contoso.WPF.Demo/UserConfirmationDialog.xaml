@@ -1,0 +1,26 @@
+﻿<Window x:Class="Contoso.WPF.Demo.UserConfirmationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Contoso.WPF.Demo"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        mc:Ignorable="d"
+        Title="Unexpected crash found" Height="150" Width="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Margin="8,16,8,8" Name="DescriptionLable" >
+            <Label.Content>
+                <TextBlock TextWrapping="Wrap">Would you like to send an anonymous report so we can fix the problem?</TextBlock>
+            </Label.Content>
+        </Label>
+        <StackPanel Margin="0, 0, 0, 16" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Height="29">
+            <Button Width="100" Click="SendButton_Click" Margin="2" Content="Send"/>
+            <Button Width="100" Click="AlwaysSendButton_Click" Margin="2" Content="Always Send"/>
+            <Button Width="100" Click="DontSendButton_Click" Margin="2" Content="Don't send"/>
+        </StackPanel>
+    </Grid>
+</Window>

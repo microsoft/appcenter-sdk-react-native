@@ -9,6 +9,7 @@ using Contoso.Forms.Puppet.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace Contoso.Forms.Puppet
 {
@@ -103,6 +104,10 @@ namespace Contoso.Forms.Puppet
             var addPage = new AddPropertyContentPage();
             addPage.PropertyAdded += (Property property) =>
             {
+                if (property.Name == null || Properties.Any(i => i.Name == property.Name))
+                {
+                    return;
+                }
                 Properties.Add(property);
                 RefreshPropCount();
             };

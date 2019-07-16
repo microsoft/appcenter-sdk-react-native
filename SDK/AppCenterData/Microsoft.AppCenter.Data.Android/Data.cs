@@ -57,9 +57,9 @@ namespace Microsoft.AppCenter.Data
             return RunDocumentWrapperTask<T>(future);
         }
 
-        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition)
+        private static Task<PaginatedDocuments<T>> PlatformListAsync<T>(string partition, ReadOptions readOptions)
         {
-            var future = AndroidData.List(JsonElementClass, partition);
+            var future = AndroidData.List(JsonElementClass, partition, readOptions.ToAndroidReadOptions());
             return Task.Run(() =>
             {
                 var paginatedDocuments = (AndroidPaginatedDocuments)future.Get();

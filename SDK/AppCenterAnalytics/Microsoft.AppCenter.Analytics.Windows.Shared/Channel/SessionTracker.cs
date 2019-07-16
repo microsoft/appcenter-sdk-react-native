@@ -8,6 +8,7 @@ using Microsoft.AppCenter.Analytics.Ingestion.Models;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AppCenter.Analytics.Channel
@@ -35,11 +36,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
         internal static long SessionTimeout = 20000;
         private readonly IChannelUnit _channel;
 
-        // Since we don't have session history anymore, when disabling /enabling analytics a new instance is created.
-        // But the correlation identifier in AppCenter is static and thus updating session will fail test and set if we don't know previous value.
-        // The field is thus static to remember previous sessions across instances... Internal because read and reset in tests.
-        internal static Guid LastSid;
-        private Guid? _sid;
         private long _lastQueuedLogTime;
         private long _lastResumedTime;
         private long _lastPausedTime;
@@ -86,6 +82,14 @@ namespace Microsoft.AppCenter.Analytics.Channel
             }
         }
 
+        public void Stop()
+        {
+            lock (_lockObject)
+            {
+                SessionContext.SessionId = null;
+            }
+        }
+
         private void HandleEnqueuingLog(object sender, EnqueuingLogEventArgs e)
         {
             lock (_lockObject)
@@ -96,7 +100,14 @@ namespace Microsoft.AppCenter.Analytics.Channel
                 {
                     return;
                 }
-                e.Log.Sid = _sid;
+
+                // Correlate current session only to logs not specifying timestamps.
+                // Crash before restart when Analytics was disabled at that time must not have session identifier.
+                if (e.Log.Timestamp == null)
+                {
+                    e.Log.Sid = SessionContext.SessionId;
+                }
+
                 _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
             }
         }
@@ -104,18 +115,14 @@ namespace Microsoft.AppCenter.Analytics.Channel
         private void SendStartSessionIfNeeded()
         {
             var now = TimeHelper.CurrentTimeInMilliseconds();
-            if (_sid != null && !HasSessionTimedOut(now))
+            if (SessionContext.SessionId != null && !HasSessionTimedOut(now))
             {
                 return;
             }
-            var sid = Guid.NewGuid();
-#pragma warning disable CS0612 // Type or member is obsolete
-            AppCenter.TestAndSetCorrelationId(LastSid, ref sid);
-#pragma warning restore CS0612 // Type or member is obsolete
-            LastSid = sid;
-            _sid = sid;
+
+            SessionContext.SessionId = Guid.NewGuid();
             _lastQueuedLogTime = TimeHelper.CurrentTimeInMilliseconds();
-            var startSessionLog = new StartSessionLog { Sid = sid };
+            var startSessionLog = new StartSessionLog { Sid = SessionContext.SessionId };
             _channel.EnqueueAsync(startSessionLog);
         }
 

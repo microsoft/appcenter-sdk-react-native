@@ -17,7 +17,7 @@ namespace Contoso.Forms.Demo
 
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class OthersContentPage
-    { 
+    {
         static OthersContentPage()
         {
             Data.RemoteOperationCompleted += (sender, eventArgs) =>
@@ -27,7 +27,9 @@ namespace Contoso.Forms.Demo
         }
 
         private UserInformation userInfo;
-	
+
+        private const string AccountId = "accountId";
+
         public OthersContentPage()
         {
             InitializeComponent();
@@ -45,11 +47,20 @@ namespace Contoso.Forms.Demo
             DistributeEnabledSwitchCell.IsEnabled = acEnabled;
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = acEnabled;
-            if (userInfo?.AccountId != null)
+            AuthEnabledSwitchCell.On = await Auth.IsEnabledAsync();
+            AuthEnabledSwitchCell.IsEnabled = acEnabled;
+            if (!Application.Current.Properties.ContainsKey(AccountId))
             {
-                SignInInformationButton.Text = "User authenticated";
+                SignInInformationButton.Text = "Authentication status unknown";
             }
-            else SignInInformationButton.Text = "User not authenticated";
+            else if (Application.Current.Properties[AccountId] is string)
+            {
+                SignInInformationButton.Text = "User is authenticated";
+            }
+            else
+            {
+                SignInInformationButton.Text = "User is not authenticated";
+            }
         }
 
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
@@ -62,6 +73,11 @@ namespace Contoso.Forms.Demo
             await Push.SetEnabledAsync(e.Value);
         }
 
+        async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
+        {
+            await Auth.SetEnabledAsync(e.Value);
+        }
+
         async void RunMBaaSAsync(object sender, EventArgs e)
         {
             try
@@ -69,6 +85,7 @@ namespace Contoso.Forms.Demo
                 userInfo = await Auth.SignInAsync();
                 if (userInfo.AccountId != null)
                 {
+                    Application.Current.Properties[AccountId] = userInfo.AccountId;
                     SignInInformationButton.Text = "User authenticated";
                 }
                 AppCenterLog.Info(App.LogTag, "Auth.SignInAsync succeeded accountId=" + userInfo.AccountId);
@@ -119,6 +136,7 @@ namespace Contoso.Forms.Demo
         {
             Auth.SignOut();
             userInfo = null;
+            Application.Current.Properties[AccountId] = null;
             SignInInformationButton.Text = "User not authenticated";
         }
 

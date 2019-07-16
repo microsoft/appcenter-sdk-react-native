@@ -38,6 +38,6 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
     {
         public TestLogWithProperties() { }
         public TestLogWithProperties(DateTime? timestamp, Device device, Guid? sid = default(Guid?), IDictionary<string, string> properties = default(IDictionary<string, string>))
-            : base(device, timestamp, sid, properties) { }
+            : base(device, timestamp, sid, null, properties) { }
     }
 }

@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.AppCenter;
 using Xamarin.Forms;
 
@@ -11,6 +13,7 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AppCenterContentPage : ContentPage
     {
+
         // E.g., calling LogFunctions["Verbose"](tag, msg) will be
         // equivalent to calling Verbose(tag, msg)
         Dictionary<LogLevel, Action<string, string>> LogFunctions;
@@ -50,6 +53,17 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             LogLevelLabel.Text = LogLevelNames[AppCenter.LogLevel];
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
+            if (Application.Current.Properties.ContainsKey(Constants.UserId) && Application.Current.Properties[Constants.UserId] is string id)
+            {
+                UserIdEntry.Text = id;
+            }
+            UserIdEntry.Unfocused += (sender, args) =>
+            {
+                var inputText = UserIdEntry.Text;
+                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
+                AppCenter.SetUserId(text);
+                Application.Current.Properties[Constants.UserId] = text;
+            };
         }
 
         void LogLevelCellTapped(object sender, EventArgs e)
@@ -88,12 +102,6 @@ namespace Contoso.Forms.Puppet
         void UpdateLogWriteLevelLabel()
         {
             LogWriteLevelLabel.Text = LogLevelNames[LogWriteLevel];
-        }
-
-        void UserIdCompleted(object sender, EventArgs e)
-        {
-            var text = string.IsNullOrEmpty(UserIdEntryCell.Text) ? null : UserIdEntryCell.Text;
-            AppCenter.SetUserId(text);
         }
     }
 }

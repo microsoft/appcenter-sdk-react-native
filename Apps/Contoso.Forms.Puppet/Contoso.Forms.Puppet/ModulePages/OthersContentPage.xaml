@@ -7,6 +7,9 @@
         <TableSection Title="Push">
             <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" />
         </TableSection>
+        <TableSection Title="Auth">
+            <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled" />
+        </TableSection>
         <TableSection Title="Rum">
             <SwitchCell Text="Rum Enabled" x:Name="RumEnabledSwitchCell" OnChanged="UpdateRumEnabled" />
         </TableSection>

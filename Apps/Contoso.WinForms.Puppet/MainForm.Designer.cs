@@ -28,398 +28,586 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabs = new System.Windows.Forms.TabControl();
-            this.appCenter = new System.Windows.Forms.TabPage();
-            this.logBox = new System.Windows.Forms.GroupBox();
-            this.writeLog = new System.Windows.Forms.Button();
-            this.logTag = new System.Windows.Forms.TextBox();
-            this.logMessage = new System.Windows.Forms.TextBox();
-            this.logMessageLabel = new System.Windows.Forms.Label();
-            this.logTagLabel = new System.Windows.Forms.Label();
-            this.logLevelLabel = new System.Windows.Forms.Label();
-            this.logLevel = new System.Windows.Forms.ComboBox();
-            this.appCenterLogLevelLabel = new System.Windows.Forms.Label();
-            this.appCenterLogLevel = new System.Windows.Forms.ComboBox();
-            this.appCenterEnabled = new System.Windows.Forms.CheckBox();
-            this.analytics = new System.Windows.Forms.TabPage();
-            this.eventBox = new System.Windows.Forms.GroupBox();
-            this.trackEvent = new System.Windows.Forms.Button();
-            this.eventProperties = new System.Windows.Forms.DataGridView();
+            this.Tabs = new System.Windows.Forms.TabControl();
+            this.AppCenterTab = new System.Windows.Forms.TabPage();
+            this.LogBox = new System.Windows.Forms.GroupBox();
+            this.WriteLog = new System.Windows.Forms.Button();
+            this.LogTag = new System.Windows.Forms.TextBox();
+            this.LogMessage = new System.Windows.Forms.TextBox();
+            this.LogMessageLabel = new System.Windows.Forms.Label();
+            this.LogTagLabel = new System.Windows.Forms.Label();
+            this.LogLevelLabel = new System.Windows.Forms.Label();
+            this.LogLevelValue = new System.Windows.Forms.ComboBox();
+            this.AppCenterLogLevelLabel = new System.Windows.Forms.Label();
+            this.AppCenterLogLevel = new System.Windows.Forms.ComboBox();
+            this.AppCenterEnabled = new System.Windows.Forms.CheckBox();
+            this.AnalyticsTab = new System.Windows.Forms.TabPage();
+            this.EventBox = new System.Windows.Forms.GroupBox();
+            this.TrackEvent = new System.Windows.Forms.Button();
+            this.EventProperties = new System.Windows.Forms.DataGridView();
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventName = new System.Windows.Forms.TextBox();
-            this.eventNameLabel = new System.Windows.Forms.Label();
-            this.analyticsEnabled = new System.Windows.Forms.CheckBox();
-            this.crashes = new System.Windows.Forms.TabPage();
-            this.others = new System.Windows.Forms.TabPage();
-            this.CrashWithNullReferenceException = new System.Windows.Forms.Button();
-            this.tabs.SuspendLayout();
-            this.appCenter.SuspendLayout();
-            this.logBox.SuspendLayout();
-            this.analytics.SuspendLayout();
-            this.eventBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).BeginInit();
-            this.crashes.SuspendLayout();
+            this.EventName = new System.Windows.Forms.TextBox();
+            this.EventNameLabel = new System.Windows.Forms.Label();
+            this.AnalyticsEnabled = new System.Windows.Forms.CheckBox();
+            this.CrashesTab = new System.Windows.Forms.TabPage();
+            this.CrashBox = new System.Windows.Forms.GroupBox();
+            this.CrashInsideAsyncTask = new System.Windows.Forms.Button();
+            this.CrashWithNullReference = new System.Windows.Forms.Button();
+            this.CrashWithAggregateException = new System.Windows.Forms.Button();
+            this.CrashWithDivisionByZero = new System.Windows.Forms.Button();
+            this.CrashWithNonSerializableException = new System.Windows.Forms.Button();
+            this.CrashWithTestException = new System.Windows.Forms.Button();
+            this.CrashesEnabled = new System.Windows.Forms.CheckBox();
+            this.OthersTab = new System.Windows.Forms.TabPage();
+            this.CountryCodeGroup = new System.Windows.Forms.GroupBox();
+            this.CountryCodeLabel = new System.Windows.Forms.Label();
+            this.SaveCountryCodeButton = new System.Windows.Forms.Button();
+            this.CountryCodeText = new System.Windows.Forms.TextBox();
+            this.CountryCodeEnableCheckbox = new System.Windows.Forms.CheckBox();
+            this.Tabs.SuspendLayout();
+            this.AppCenterTab.SuspendLayout();
+            this.LogBox.SuspendLayout();
+            this.AnalyticsTab.SuspendLayout();
+            this.EventBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).BeginInit();
+            this.CrashesTab.SuspendLayout();
+            this.CrashBox.SuspendLayout();
+            this.OthersTab.SuspendLayout();
+            this.CountryCodeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabs
+            // Tabs
             // 
-            this.tabs.Controls.Add(this.appCenter);
-            this.tabs.Controls.Add(this.analytics);
-            this.tabs.Controls.Add(this.crashes);
-            this.tabs.Controls.Add(this.others);
-            this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabs.Location = new System.Drawing.Point(0, 0);
-            this.tabs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(576, 402);
-            this.tabs.TabIndex = 0;
-            this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_SelectedIndexChanged);
+            this.Tabs.Controls.Add(this.AppCenterTab);
+            this.Tabs.Controls.Add(this.AnalyticsTab);
+            this.Tabs.Controls.Add(this.CrashesTab);
+            this.Tabs.Controls.Add(this.OthersTab);
+            this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tabs.Location = new System.Drawing.Point(0, 0);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.Tabs.Name = "Tabs";
+            this.Tabs.SelectedIndex = 0;
+            this.Tabs.Size = new System.Drawing.Size(384, 275);
+            this.Tabs.TabIndex = 0;
+            this.Tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
-            // appCenter
+            // AppCenterTab
             // 
-            this.appCenter.Controls.Add(this.logBox);
-            this.appCenter.Controls.Add(this.appCenterLogLevelLabel);
-            this.appCenter.Controls.Add(this.appCenterLogLevel);
-            this.appCenter.Controls.Add(this.appCenterEnabled);
-            this.appCenter.Location = new System.Drawing.Point(4, 29);
-            this.appCenter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.appCenter.Name = "appCenter";
-            this.appCenter.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.appCenter.Size = new System.Drawing.Size(568, 369);
-            this.appCenter.TabIndex = 0;
-            this.appCenter.Text = "App Center";
-            this.appCenter.UseVisualStyleBackColor = true;
+            this.AppCenterTab.Controls.Add(this.LogBox);
+            this.AppCenterTab.Controls.Add(this.AppCenterLogLevelLabel);
+            this.AppCenterTab.Controls.Add(this.AppCenterLogLevel);
+            this.AppCenterTab.Controls.Add(this.AppCenterEnabled);
+            this.AppCenterTab.Location = new System.Drawing.Point(4, 22);
+            this.AppCenterTab.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AppCenterTab.Name = "AppCenterTab";
+            this.AppCenterTab.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AppCenterTab.Size = new System.Drawing.Size(376, 249);
+            this.AppCenterTab.TabIndex = 0;
+            this.AppCenterTab.Text = "App Center";
+            this.AppCenterTab.UseVisualStyleBackColor = true;
             // 
-            // logBox
+            // LogBox
             // 
-            this.logBox.Controls.Add(this.writeLog);
-            this.logBox.Controls.Add(this.logTag);
-            this.logBox.Controls.Add(this.logMessage);
-            this.logBox.Controls.Add(this.logMessageLabel);
-            this.logBox.Controls.Add(this.logTagLabel);
-            this.logBox.Controls.Add(this.logLevelLabel);
-            this.logBox.Controls.Add(this.logLevel);
-            this.logBox.Location = new System.Drawing.Point(12, 97);
-            this.logBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.logBox.Name = "logBox";
-            this.logBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.logBox.Size = new System.Drawing.Size(540, 200);
-            this.logBox.TabIndex = 5;
-            this.logBox.TabStop = false;
-            this.logBox.Text = "Log";
+            this.LogBox.Controls.Add(this.WriteLog);
+            this.LogBox.Controls.Add(this.LogTag);
+            this.LogBox.Controls.Add(this.LogMessage);
+            this.LogBox.Controls.Add(this.LogMessageLabel);
+            this.LogBox.Controls.Add(this.LogTagLabel);
+            this.LogBox.Controls.Add(this.LogLevelLabel);
+            this.LogBox.Controls.Add(this.LogLevelValue);
+            this.LogBox.Location = new System.Drawing.Point(8, 63);
+            this.LogBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.LogBox.Name = "LogBox";
+            this.LogBox.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.LogBox.Size = new System.Drawing.Size(360, 130);
+            this.LogBox.TabIndex = 5;
+            this.LogBox.TabStop = false;
+            this.LogBox.Text = "Log";
             // 
-            // writeLog
+            // WriteLog
             // 
-            this.writeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.WriteLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeLog.Location = new System.Drawing.Point(14, 155);
-            this.writeLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.writeLog.Name = "writeLog";
-            this.writeLog.Size = new System.Drawing.Size(513, 35);
-            this.writeLog.TabIndex = 11;
-            this.writeLog.Text = "Write Log";
-            this.writeLog.UseVisualStyleBackColor = true;
-            this.writeLog.Click += new System.EventHandler(this.writeLog_Click);
+            this.WriteLog.Location = new System.Drawing.Point(10, 101);
+            this.WriteLog.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.WriteLog.Name = "WriteLog";
+            this.WriteLog.Size = new System.Drawing.Size(342, 23);
+            this.WriteLog.TabIndex = 11;
+            this.WriteLog.Text = "Write Log";
+            this.WriteLog.UseVisualStyleBackColor = true;
+            this.WriteLog.Click += new System.EventHandler(this.WriteLog_Click);
             // 
-            // logTag
+            // LogTag
             // 
-            this.logTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.LogTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logTag.Location = new System.Drawing.Point(159, 29);
-            this.logTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.logTag.Name = "logTag";
-            this.logTag.Size = new System.Drawing.Size(366, 26);
-            this.logTag.TabIndex = 10;
+            this.LogTag.Location = new System.Drawing.Point(106, 19);
+            this.LogTag.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.LogTag.Name = "LogTag";
+            this.LogTag.Size = new System.Drawing.Size(246, 20);
+            this.LogTag.TabIndex = 10;
             // 
-            // logMessage
+            // LogMessage
             // 
-            this.logMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.LogMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logMessage.Location = new System.Drawing.Point(159, 65);
-            this.logMessage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.logMessage.Name = "logMessage";
-            this.logMessage.Size = new System.Drawing.Size(366, 26);
-            this.logMessage.TabIndex = 9;
+            this.LogMessage.Location = new System.Drawing.Point(106, 42);
+            this.LogMessage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.LogMessage.Name = "LogMessage";
+            this.LogMessage.Size = new System.Drawing.Size(246, 20);
+            this.LogMessage.TabIndex = 9;
             // 
-            // logMessageLabel
+            // LogMessageLabel
             // 
-            this.logMessageLabel.Location = new System.Drawing.Point(9, 62);
-            this.logMessageLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.logMessageLabel.Name = "logMessageLabel";
-            this.logMessageLabel.Size = new System.Drawing.Size(141, 35);
-            this.logMessageLabel.TabIndex = 8;
-            this.logMessageLabel.Text = "Log Message";
-            this.logMessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogMessageLabel.Location = new System.Drawing.Point(6, 41);
+            this.LogMessageLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LogMessageLabel.Name = "LogMessageLabel";
+            this.LogMessageLabel.Size = new System.Drawing.Size(94, 23);
+            this.LogMessageLabel.TabIndex = 8;
+            this.LogMessageLabel.Text = "Log Message";
+            this.LogMessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // logTagLabel
+            // LogTagLabel
             // 
-            this.logTagLabel.Location = new System.Drawing.Point(9, 26);
-            this.logTagLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.logTagLabel.Name = "logTagLabel";
-            this.logTagLabel.Size = new System.Drawing.Size(141, 35);
-            this.logTagLabel.TabIndex = 7;
-            this.logTagLabel.Text = "Log Tag";
-            this.logTagLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogTagLabel.Location = new System.Drawing.Point(6, 17);
+            this.LogTagLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LogTagLabel.Name = "LogTagLabel";
+            this.LogTagLabel.Size = new System.Drawing.Size(94, 23);
+            this.LogTagLabel.TabIndex = 7;
+            this.LogTagLabel.Text = "Log Tag";
+            this.LogTagLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // logLevelLabel
+            // LogLevelLabel
             // 
-            this.logLevelLabel.Location = new System.Drawing.Point(9, 102);
-            this.logLevelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.logLevelLabel.Name = "logLevelLabel";
-            this.logLevelLabel.Size = new System.Drawing.Size(141, 35);
-            this.logLevelLabel.TabIndex = 6;
-            this.logLevelLabel.Text = "Log Level";
-            this.logLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogLevelLabel.Location = new System.Drawing.Point(6, 67);
+            this.LogLevelLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LogLevelLabel.Name = "LogLevelLabel";
+            this.LogLevelLabel.Size = new System.Drawing.Size(94, 23);
+            this.LogLevelLabel.TabIndex = 6;
+            this.LogLevelLabel.Text = "Log Level";
+            this.LogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // logLevel
+            // LogLevelValue
             // 
-            this.logLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.LogLevelValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logLevel.FormattingEnabled = true;
-            this.logLevel.Items.AddRange(new object[] {
+            this.LogLevelValue.FormattingEnabled = true;
+            this.LogLevelValue.Items.AddRange(new object[] {
             "Verbose",
             "Debug",
             "Info",
             "Warning",
             "Error"});
-            this.logLevel.Location = new System.Drawing.Point(159, 105);
-            this.logLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.logLevel.Name = "logLevel";
-            this.logLevel.Size = new System.Drawing.Size(366, 28);
-            this.logLevel.TabIndex = 5;
+            this.LogLevelValue.Location = new System.Drawing.Point(106, 68);
+            this.LogLevelValue.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.LogLevelValue.Name = "LogLevelValue";
+            this.LogLevelValue.Size = new System.Drawing.Size(246, 21);
+            this.LogLevelValue.TabIndex = 5;
             // 
-            // appCenterLogLevelLabel
+            // AppCenterLogLevelLabel
             // 
-            this.appCenterLogLevelLabel.Location = new System.Drawing.Point(30, 55);
-            this.appCenterLogLevelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.appCenterLogLevelLabel.Name = "appCenterLogLevelLabel";
-            this.appCenterLogLevelLabel.Size = new System.Drawing.Size(132, 35);
-            this.appCenterLogLevelLabel.TabIndex = 4;
-            this.appCenterLogLevelLabel.Text = "Log Level";
-            this.appCenterLogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.AppCenterLogLevelLabel.Location = new System.Drawing.Point(20, 36);
+            this.AppCenterLogLevelLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.AppCenterLogLevelLabel.Name = "AppCenterLogLevelLabel";
+            this.AppCenterLogLevelLabel.Size = new System.Drawing.Size(88, 23);
+            this.AppCenterLogLevelLabel.TabIndex = 4;
+            this.AppCenterLogLevelLabel.Text = "Log Level";
+            this.AppCenterLogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // appCenterLogLevel
+            // AppCenterLogLevel
             // 
-            this.appCenterLogLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.AppCenterLogLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.appCenterLogLevel.FormattingEnabled = true;
-            this.appCenterLogLevel.Items.AddRange(new object[] {
+            this.AppCenterLogLevel.FormattingEnabled = true;
+            this.AppCenterLogLevel.Items.AddRange(new object[] {
             "Verbose",
             "Debug",
             "Info",
             "Warning",
             "Error"});
-            this.appCenterLogLevel.Location = new System.Drawing.Point(171, 58);
-            this.appCenterLogLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.appCenterLogLevel.Name = "appCenterLogLevel";
-            this.appCenterLogLevel.Size = new System.Drawing.Size(366, 28);
-            this.appCenterLogLevel.TabIndex = 3;
-            this.appCenterLogLevel.SelectedIndexChanged += new System.EventHandler(this.appCenterLogLevel_SelectedIndexChanged);
+            this.AppCenterLogLevel.Location = new System.Drawing.Point(114, 37);
+            this.AppCenterLogLevel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AppCenterLogLevel.Name = "AppCenterLogLevel";
+            this.AppCenterLogLevel.Size = new System.Drawing.Size(246, 21);
+            this.AppCenterLogLevel.TabIndex = 3;
+            this.AppCenterLogLevel.SelectedIndexChanged += new System.EventHandler(this.AppCenterLogLevel_SelectedIndexChanged);
             // 
-            // appCenterEnabled
+            // AppCenterEnabled
             // 
-            this.appCenterEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.AppCenterEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.appCenterEnabled.Location = new System.Drawing.Point(12, 9);
-            this.appCenterEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.appCenterEnabled.Name = "appCenterEnabled";
-            this.appCenterEnabled.Size = new System.Drawing.Size(540, 37);
-            this.appCenterEnabled.TabIndex = 1;
-            this.appCenterEnabled.Text = "App Center Enabled";
-            this.appCenterEnabled.UseVisualStyleBackColor = true;
-            this.appCenterEnabled.CheckedChanged += new System.EventHandler(this.appCenterEnabled_CheckedChanged);
+            this.AppCenterEnabled.Location = new System.Drawing.Point(8, 6);
+            this.AppCenterEnabled.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AppCenterEnabled.Name = "AppCenterEnabled";
+            this.AppCenterEnabled.Size = new System.Drawing.Size(360, 24);
+            this.AppCenterEnabled.TabIndex = 1;
+            this.AppCenterEnabled.Text = "App Center Enabled";
+            this.AppCenterEnabled.UseVisualStyleBackColor = true;
+            this.AppCenterEnabled.CheckedChanged += new System.EventHandler(this.AppCenterEnabled_CheckedChanged);
             // 
-            // analytics
+            // AnalyticsTab
             // 
-            this.analytics.Controls.Add(this.eventBox);
-            this.analytics.Controls.Add(this.analyticsEnabled);
-            this.analytics.Location = new System.Drawing.Point(4, 29);
-            this.analytics.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.analytics.Name = "analytics";
-            this.analytics.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.analytics.Size = new System.Drawing.Size(568, 369);
-            this.analytics.TabIndex = 1;
-            this.analytics.Text = "Analytics";
-            this.analytics.UseVisualStyleBackColor = true;
+            this.AnalyticsTab.Controls.Add(this.EventBox);
+            this.AnalyticsTab.Controls.Add(this.AnalyticsEnabled);
+            this.AnalyticsTab.Location = new System.Drawing.Point(4, 22);
+            this.AnalyticsTab.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AnalyticsTab.Name = "AnalyticsTab";
+            this.AnalyticsTab.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AnalyticsTab.Size = new System.Drawing.Size(376, 249);
+            this.AnalyticsTab.TabIndex = 1;
+            this.AnalyticsTab.Text = "Analytics";
+            this.AnalyticsTab.UseVisualStyleBackColor = true;
             // 
-            // eventBox
+            // EventBox
             // 
-            this.eventBox.Controls.Add(this.trackEvent);
-            this.eventBox.Controls.Add(this.eventProperties);
-            this.eventBox.Controls.Add(this.eventName);
-            this.eventBox.Controls.Add(this.eventNameLabel);
-            this.eventBox.Location = new System.Drawing.Point(12, 55);
-            this.eventBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.eventBox.Name = "eventBox";
-            this.eventBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.eventBox.Size = new System.Drawing.Size(540, 294);
-            this.eventBox.TabIndex = 3;
-            this.eventBox.TabStop = false;
-            this.eventBox.Text = "Event";
+            this.EventBox.Controls.Add(this.TrackEvent);
+            this.EventBox.Controls.Add(this.EventProperties);
+            this.EventBox.Controls.Add(this.EventName);
+            this.EventBox.Controls.Add(this.EventNameLabel);
+            this.EventBox.Location = new System.Drawing.Point(8, 36);
+            this.EventBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.EventBox.Name = "EventBox";
+            this.EventBox.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.EventBox.Size = new System.Drawing.Size(360, 191);
+            this.EventBox.TabIndex = 3;
+            this.EventBox.TabStop = false;
+            this.EventBox.Text = "Event";
             // 
-            // trackEvent
+            // TrackEvent
             // 
-            this.trackEvent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.TrackEvent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackEvent.Location = new System.Drawing.Point(14, 249);
-            this.trackEvent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.trackEvent.Name = "trackEvent";
-            this.trackEvent.Size = new System.Drawing.Size(513, 35);
-            this.trackEvent.TabIndex = 14;
-            this.trackEvent.Text = "Track Event";
-            this.trackEvent.UseVisualStyleBackColor = true;
-            this.trackEvent.Click += new System.EventHandler(this.trackEvent_Click);
+            this.TrackEvent.Location = new System.Drawing.Point(10, 162);
+            this.TrackEvent.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.TrackEvent.Name = "TrackEvent";
+            this.TrackEvent.Size = new System.Drawing.Size(342, 23);
+            this.TrackEvent.TabIndex = 14;
+            this.TrackEvent.Text = "Track Event";
+            this.TrackEvent.UseVisualStyleBackColor = true;
+            this.TrackEvent.Click += new System.EventHandler(this.TrackEvent_Click);
             // 
-            // eventProperties
+            // EventProperties
             // 
-            this.eventProperties.AllowUserToResizeColumns = false;
-            this.eventProperties.AllowUserToResizeRows = false;
-            this.eventProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.EventProperties.AllowUserToResizeColumns = false;
+            this.EventProperties.AllowUserToResizeRows = false;
+            this.EventProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eventProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.eventProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.EventProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.EventProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Key,
             this.Value});
-            this.eventProperties.Location = new System.Drawing.Point(14, 68);
-            this.eventProperties.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.eventProperties.Name = "eventProperties";
-            this.eventProperties.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.eventProperties.Size = new System.Drawing.Size(513, 169);
-            this.eventProperties.TabIndex = 13;
+            this.EventProperties.Location = new System.Drawing.Point(10, 44);
+            this.EventProperties.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.EventProperties.Name = "EventProperties";
+            this.EventProperties.RowHeadersWidth = 82;
+            this.EventProperties.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.EventProperties.Size = new System.Drawing.Size(342, 110);
+            this.EventProperties.TabIndex = 13;
             // 
             // Key
             // 
             this.Key.HeaderText = "Key";
             this.Key.MaxInputLength = 64;
+            this.Key.MinimumWidth = 10;
             this.Key.Name = "Key";
             this.Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Key.Width = 200;
             // 
             // Value
             // 
             this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Value.HeaderText = "Value";
             this.Value.MaxInputLength = 64;
+            this.Value.MinimumWidth = 10;
             this.Value.Name = "Value";
             this.Value.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
-            // eventName
+            // EventName
             // 
-            this.eventName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.EventName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.eventName.Location = new System.Drawing.Point(159, 28);
-            this.eventName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.eventName.MaxLength = 256;
-            this.eventName.Name = "eventName";
-            this.eventName.Size = new System.Drawing.Size(366, 26);
-            this.eventName.TabIndex = 12;
+            this.EventName.Location = new System.Drawing.Point(106, 18);
+            this.EventName.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.EventName.MaxLength = 256;
+            this.EventName.Name = "EventName";
+            this.EventName.Size = new System.Drawing.Size(246, 20);
+            this.EventName.TabIndex = 12;
             // 
-            // eventNameLabel
+            // EventNameLabel
             // 
-            this.eventNameLabel.Location = new System.Drawing.Point(9, 25);
-            this.eventNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.eventNameLabel.Name = "eventNameLabel";
-            this.eventNameLabel.Size = new System.Drawing.Size(141, 35);
-            this.eventNameLabel.TabIndex = 11;
-            this.eventNameLabel.Text = "Event Name";
-            this.eventNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.EventNameLabel.Location = new System.Drawing.Point(6, 16);
+            this.EventNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.EventNameLabel.Name = "EventNameLabel";
+            this.EventNameLabel.Size = new System.Drawing.Size(94, 23);
+            this.EventNameLabel.TabIndex = 11;
+            this.EventNameLabel.Text = "Event Name";
+            this.EventNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // analyticsEnabled
+            // AnalyticsEnabled
             // 
-            this.analyticsEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.AnalyticsEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.analyticsEnabled.Location = new System.Drawing.Point(12, 9);
-            this.analyticsEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.analyticsEnabled.Name = "analyticsEnabled";
-            this.analyticsEnabled.Size = new System.Drawing.Size(540, 37);
-            this.analyticsEnabled.TabIndex = 2;
-            this.analyticsEnabled.Text = "Analytics Enabled";
-            this.analyticsEnabled.UseVisualStyleBackColor = true;
-            this.analyticsEnabled.CheckedChanged += new System.EventHandler(this.analyticsEnabled_CheckedChanged);
+            this.AnalyticsEnabled.Location = new System.Drawing.Point(8, 6);
+            this.AnalyticsEnabled.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.AnalyticsEnabled.Name = "AnalyticsEnabled";
+            this.AnalyticsEnabled.Size = new System.Drawing.Size(360, 24);
+            this.AnalyticsEnabled.TabIndex = 2;
+            this.AnalyticsEnabled.Text = "Analytics Enabled";
+            this.AnalyticsEnabled.UseVisualStyleBackColor = true;
+            this.AnalyticsEnabled.CheckedChanged += new System.EventHandler(this.AnalyticsEnabled_CheckedChanged);
             // 
-            // crashes
+            // CrashesTab
             // 
-            this.crashes.Controls.Add(this.CrashWithNullReferenceException);
-            this.crashes.Location = new System.Drawing.Point(4, 29);
-            this.crashes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.crashes.Name = "crashes";
-            this.crashes.Size = new System.Drawing.Size(568, 369);
-            this.crashes.TabIndex = 2;
-            this.crashes.Text = "Crashes";
-            this.crashes.UseVisualStyleBackColor = true;
+            this.CrashesTab.Controls.Add(this.CrashBox);
+            this.CrashesTab.Controls.Add(this.CrashesEnabled);
+            this.CrashesTab.Location = new System.Drawing.Point(4, 22);
+            this.CrashesTab.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashesTab.Name = "CrashesTab";
+            this.CrashesTab.Size = new System.Drawing.Size(376, 249);
+            this.CrashesTab.TabIndex = 2;
+            this.CrashesTab.Text = "Crashes";
+            this.CrashesTab.UseVisualStyleBackColor = true;
             // 
-            // others
+            // CrashBox
             // 
-            this.others.Location = new System.Drawing.Point(4, 29);
-            this.others.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.others.Name = "others";
-            this.others.Size = new System.Drawing.Size(568, 369);
-            this.others.TabIndex = 3;
-            this.others.Text = "Others";
-            this.others.UseVisualStyleBackColor = true;
+            this.CrashBox.Controls.Add(this.CrashInsideAsyncTask);
+            this.CrashBox.Controls.Add(this.CrashWithNullReference);
+            this.CrashBox.Controls.Add(this.CrashWithAggregateException);
+            this.CrashBox.Controls.Add(this.CrashWithDivisionByZero);
+            this.CrashBox.Controls.Add(this.CrashWithNonSerializableException);
+            this.CrashBox.Controls.Add(this.CrashWithTestException);
+            this.CrashBox.Location = new System.Drawing.Point(8, 36);
+            this.CrashBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashBox.Name = "CrashBox";
+            this.CrashBox.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashBox.Size = new System.Drawing.Size(360, 204);
+            this.CrashBox.TabIndex = 4;
+            this.CrashBox.TabStop = false;
+            this.CrashBox.Text = "Crashes";
             // 
-            // CrashWithNullReferenceException
+            // CrashInsideAsyncTask
             // 
-            this.CrashWithNullReferenceException.Location = new System.Drawing.Point(35, 31);
-            this.CrashWithNullReferenceException.Name = "CrashWithNullReferenceException";
-            this.CrashWithNullReferenceException.Size = new System.Drawing.Size(497, 38);
-            this.CrashWithNullReferenceException.TabIndex = 0;
-            this.CrashWithNullReferenceException.Text = "Crash with NullReferenceException";
-            this.CrashWithNullReferenceException.UseVisualStyleBackColor = true;
-            this.CrashWithNullReferenceException.Click += new System.EventHandler(this.CrashWithNullReferenceException_Click);
+            this.CrashInsideAsyncTask.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashInsideAsyncTask.Location = new System.Drawing.Point(8, 167);
+            this.CrashInsideAsyncTask.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashInsideAsyncTask.Name = "CrashInsideAsyncTask";
+            this.CrashInsideAsyncTask.Size = new System.Drawing.Size(342, 23);
+            this.CrashInsideAsyncTask.TabIndex = 19;
+            this.CrashInsideAsyncTask.Text = "Async task crash";
+            this.CrashInsideAsyncTask.UseVisualStyleBackColor = true;
+            this.CrashInsideAsyncTask.Click += new System.EventHandler(this.CrashInsideAsyncTask_Click);
+            // 
+            // CrashWithNullReference
+            // 
+            this.CrashWithNullReference.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashWithNullReference.Location = new System.Drawing.Point(8, 138);
+            this.CrashWithNullReference.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashWithNullReference.Name = "CrashWithNullReference";
+            this.CrashWithNullReference.Size = new System.Drawing.Size(342, 23);
+            this.CrashWithNullReference.TabIndex = 18;
+            this.CrashWithNullReference.Text = "Crash with null reference";
+            this.CrashWithNullReference.UseVisualStyleBackColor = true;
+            this.CrashWithNullReference.Click += new System.EventHandler(this.CrashWithNullReference_Click);
+            // 
+            // CrashWithAggregateException
+            // 
+            this.CrashWithAggregateException.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashWithAggregateException.Location = new System.Drawing.Point(8, 109);
+            this.CrashWithAggregateException.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashWithAggregateException.Name = "CrashWithAggregateException";
+            this.CrashWithAggregateException.Size = new System.Drawing.Size(342, 23);
+            this.CrashWithAggregateException.TabIndex = 17;
+            this.CrashWithAggregateException.Text = "Aggregate Exception";
+            this.CrashWithAggregateException.UseVisualStyleBackColor = true;
+            this.CrashWithAggregateException.Click += new System.EventHandler(this.CrashWithAggregateException_Click);
+            // 
+            // CrashWithDivisionByZero
+            // 
+            this.CrashWithDivisionByZero.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashWithDivisionByZero.Location = new System.Drawing.Point(8, 80);
+            this.CrashWithDivisionByZero.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashWithDivisionByZero.Name = "CrashWithDivisionByZero";
+            this.CrashWithDivisionByZero.Size = new System.Drawing.Size(342, 23);
+            this.CrashWithDivisionByZero.TabIndex = 16;
+            this.CrashWithDivisionByZero.Text = "Divide by zero";
+            this.CrashWithDivisionByZero.UseVisualStyleBackColor = true;
+            this.CrashWithDivisionByZero.Click += new System.EventHandler(this.CrashWithDivisionByZero_Click);
+            // 
+            // CrashWithNonSerializableException
+            // 
+            this.CrashWithNonSerializableException.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashWithNonSerializableException.Location = new System.Drawing.Point(8, 51);
+            this.CrashWithNonSerializableException.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashWithNonSerializableException.Name = "CrashWithNonSerializableException";
+            this.CrashWithNonSerializableException.Size = new System.Drawing.Size(342, 23);
+            this.CrashWithNonSerializableException.TabIndex = 15;
+            this.CrashWithNonSerializableException.Text = "Generate non serializable Exception";
+            this.CrashWithNonSerializableException.UseVisualStyleBackColor = true;
+            this.CrashWithNonSerializableException.Click += new System.EventHandler(this.CrashWithNonSerializableException_Click);
+            // 
+            // CrashWithTestException
+            // 
+            this.CrashWithTestException.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashWithTestException.Location = new System.Drawing.Point(8, 22);
+            this.CrashWithTestException.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashWithTestException.Name = "CrashWithTestException";
+            this.CrashWithTestException.Size = new System.Drawing.Size(342, 23);
+            this.CrashWithTestException.TabIndex = 14;
+            this.CrashWithTestException.Text = "Call Crashes.GenerateTestCrash (debug only)";
+            this.CrashWithTestException.UseVisualStyleBackColor = true;
+            this.CrashWithTestException.Click += new System.EventHandler(this.CrashWithTestException_Click);
+            // 
+            // CrashesEnabled
+            // 
+            this.CrashesEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CrashesEnabled.Location = new System.Drawing.Point(8, 6);
+            this.CrashesEnabled.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.CrashesEnabled.Name = "CrashesEnabled";
+            this.CrashesEnabled.Size = new System.Drawing.Size(360, 24);
+            this.CrashesEnabled.TabIndex = 3;
+            this.CrashesEnabled.Text = "Crashes Enabled";
+            this.CrashesEnabled.UseVisualStyleBackColor = true;
+            this.CrashesEnabled.CheckedChanged += new System.EventHandler(this.CrashesEnabled_CheckedChanged);
+            // 
+            // OthersTab
+            // 
+            this.OthersTab.Controls.Add(this.CountryCodeGroup);
+            this.OthersTab.Controls.Add(this.CountryCodeEnableCheckbox);
+            this.OthersTab.Location = new System.Drawing.Point(4, 22);
+            this.OthersTab.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.OthersTab.Name = "OthersTab";
+            this.OthersTab.Size = new System.Drawing.Size(376, 249);
+            this.OthersTab.TabIndex = 3;
+            this.OthersTab.Text = "Others";
+            this.OthersTab.UseVisualStyleBackColor = true;
+            // 
+            // CountryCodeGroup
+            // 
+            this.CountryCodeGroup.Controls.Add(this.CountryCodeLabel);
+            this.CountryCodeGroup.Controls.Add(this.SaveCountryCodeButton);
+            this.CountryCodeGroup.Controls.Add(this.CountryCodeText);
+            this.CountryCodeGroup.Enabled = false;
+            this.CountryCodeGroup.Location = new System.Drawing.Point(8, 31);
+            this.CountryCodeGroup.Name = "CountryCodeGroup";
+            this.CountryCodeGroup.Size = new System.Drawing.Size(360, 100);
+            this.CountryCodeGroup.TabIndex = 1;
+            this.CountryCodeGroup.TabStop = false;
+            this.CountryCodeGroup.Text = "Country Code";
+            // 
+            // CountryCodeLabel
+            // 
+            this.CountryCodeLabel.Location = new System.Drawing.Point(15, 31);
+            this.CountryCodeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.CountryCodeLabel.Name = "CountryCodeLabel";
+            this.CountryCodeLabel.Size = new System.Drawing.Size(94, 23);
+            this.CountryCodeLabel.TabIndex = 12;
+            this.CountryCodeLabel.Text = "Country Code";
+            this.CountryCodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // SaveCountryCodeButton
+            // 
+            this.SaveCountryCodeButton.Location = new System.Drawing.Point(9, 71);
+            this.SaveCountryCodeButton.Name = "SaveCountryCodeButton";
+            this.SaveCountryCodeButton.Size = new System.Drawing.Size(345, 23);
+            this.SaveCountryCodeButton.TabIndex = 2;
+            this.SaveCountryCodeButton.Text = "Save";
+            this.SaveCountryCodeButton.UseVisualStyleBackColor = true;
+            this.SaveCountryCodeButton.Click += new System.EventHandler(this.BtnSave_ClickListener);
+            // 
+            // CountryCodeText
+            // 
+            this.CountryCodeText.Location = new System.Drawing.Point(114, 34);
+            this.CountryCodeText.Name = "CountryCodeText";
+            this.CountryCodeText.Size = new System.Drawing.Size(240, 20);
+            this.CountryCodeText.TabIndex = 0;
+            // 
+            // CountryCodeEnableCheckbox
+            // 
+            this.CountryCodeEnableCheckbox.AutoSize = true;
+            this.CountryCodeEnableCheckbox.Location = new System.Drawing.Point(10, 8);
+            this.CountryCodeEnableCheckbox.Name = "CountryCodeEnableCheckbox";
+            this.CountryCodeEnableCheckbox.Size = new System.Drawing.Size(126, 17);
+            this.CountryCodeEnableCheckbox.TabIndex = 0;
+            this.CountryCodeEnableCheckbox.Text = "Country Code Enable";
+            this.CountryCodeEnableCheckbox.UseVisualStyleBackColor = true;
+            this.CountryCodeEnableCheckbox.CheckedChanged += new System.EventHandler(this.CountryCodeEnable_CheckedChanged);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 402);
-            this.Controls.Add(this.tabs);
+            this.ClientSize = new System.Drawing.Size(384, 275);
+            this.Controls.Add(this.Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "App Center Puppet App";
-            this.tabs.ResumeLayout(false);
-            this.appCenter.ResumeLayout(false);
-            this.logBox.ResumeLayout(false);
-            this.logBox.PerformLayout();
-            this.analytics.ResumeLayout(false);
-            this.eventBox.ResumeLayout(false);
-            this.eventBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventProperties)).EndInit();
-            this.crashes.ResumeLayout(false);
+            this.Tabs.ResumeLayout(false);
+            this.AppCenterTab.ResumeLayout(false);
+            this.LogBox.ResumeLayout(false);
+            this.LogBox.PerformLayout();
+            this.AnalyticsTab.ResumeLayout(false);
+            this.EventBox.ResumeLayout(false);
+            this.EventBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).EndInit();
+            this.CrashesTab.ResumeLayout(false);
+            this.CrashBox.ResumeLayout(false);
+            this.OthersTab.ResumeLayout(false);
+            this.OthersTab.PerformLayout();
+            this.CountryCodeGroup.ResumeLayout(false);
+            this.CountryCodeGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabs;
-        private System.Windows.Forms.TabPage appCenter;
-        private System.Windows.Forms.TabPage analytics;
-        private System.Windows.Forms.TabPage crashes;
-        private System.Windows.Forms.TabPage others;
-        private System.Windows.Forms.CheckBox appCenterEnabled;
-        private System.Windows.Forms.Label appCenterLogLevelLabel;
-        private System.Windows.Forms.ComboBox appCenterLogLevel;
-        private System.Windows.Forms.GroupBox logBox;
-        private System.Windows.Forms.Button writeLog;
-        private System.Windows.Forms.TextBox logTag;
-        private System.Windows.Forms.TextBox logMessage;
-        private System.Windows.Forms.Label logMessageLabel;
-        private System.Windows.Forms.Label logTagLabel;
-        private System.Windows.Forms.Label logLevelLabel;
-        private System.Windows.Forms.ComboBox logLevel;
-        private System.Windows.Forms.GroupBox eventBox;
-        private System.Windows.Forms.CheckBox analyticsEnabled;
-        private System.Windows.Forms.TextBox eventName;
-        private System.Windows.Forms.Label eventNameLabel;
-        private System.Windows.Forms.DataGridView eventProperties;
+        private System.Windows.Forms.TabControl Tabs;
+        private System.Windows.Forms.TabPage AppCenterTab;
+        private System.Windows.Forms.TabPage AnalyticsTab;
+        private System.Windows.Forms.TabPage CrashesTab;
+        private System.Windows.Forms.TabPage OthersTab;
+        private System.Windows.Forms.CheckBox AppCenterEnabled;
+        private System.Windows.Forms.Label AppCenterLogLevelLabel;
+        private System.Windows.Forms.ComboBox AppCenterLogLevel;
+        private System.Windows.Forms.GroupBox LogBox;
+        private System.Windows.Forms.Button WriteLog;
+        private System.Windows.Forms.TextBox LogTag;
+        private System.Windows.Forms.TextBox LogMessage;
+        private System.Windows.Forms.Label LogMessageLabel;
+        private System.Windows.Forms.Label LogTagLabel;
+        private System.Windows.Forms.Label LogLevelLabel;
+        private System.Windows.Forms.ComboBox LogLevelValue;
+        private System.Windows.Forms.GroupBox EventBox;
+        private System.Windows.Forms.CheckBox AnalyticsEnabled;
+        private System.Windows.Forms.TextBox EventName;
+        private System.Windows.Forms.Label EventNameLabel;
+        private System.Windows.Forms.DataGridView EventProperties;
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
-        private System.Windows.Forms.Button trackEvent;
-        private System.Windows.Forms.Button CrashWithNullReferenceException;
+        private System.Windows.Forms.Button TrackEvent;
+        private System.Windows.Forms.CheckBox CrashesEnabled;
+        private System.Windows.Forms.GroupBox CrashBox;
+        private System.Windows.Forms.Button CrashWithTestException;
+        private System.Windows.Forms.Button CrashWithNonSerializableException;
+        private System.Windows.Forms.Button CrashWithDivisionByZero;
+        private System.Windows.Forms.Button CrashWithAggregateException;
+        private System.Windows.Forms.Button CrashWithNullReference;
+        private System.Windows.Forms.Button CrashInsideAsyncTask;
+        private System.Windows.Forms.GroupBox CountryCodeGroup;
+        private System.Windows.Forms.Label CountryCodeLabel;
+        private System.Windows.Forms.Button SaveCountryCodeButton;
+        private System.Windows.Forms.TextBox CountryCodeText;
+        private System.Windows.Forms.CheckBox CountryCodeEnableCheckbox;
     }
 }
 
