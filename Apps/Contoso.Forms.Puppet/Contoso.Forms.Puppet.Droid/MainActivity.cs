@@ -12,9 +12,9 @@ using Com.Microsoft.Appcenter.Ingestion.Models;
 using HockeyApp.Android;
 using HockeyApp.Android.Utils;
 using Microsoft.AppCenter;
-using Contoso.Forms.Demo.Droid;
 using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
+using Contoso.Forms.Puppet.Droid;
 
 [assembly: Dependency(typeof(MainActivity))]
 namespace Contoso.Forms.Puppet.Droid
@@ -67,6 +67,12 @@ namespace Contoso.Forms.Puppet.Droid
                 FileAttachmentTaskCompletionSource.SetResult(uri?.ToString());
             }
         }
+
+        public void ClearCrashButton()
+        {
+            ISharedPreferences appCenterPreferences = Android.App.Application.Context.GetSharedPreferences("AppCenter", FileCreationMode.Private);
+            appCenterPreferences.Edit().Remove(CrashesUserConfirmationStorageKey).Apply();
+        }
     }
 
     public class AndroidAnalyticsListener : Java.Lang.Object, IAnalyticsListener
@@ -84,12 +90,6 @@ namespace Contoso.Forms.Puppet.Droid
         public void OnBeforeSending(ILog log)
         {
             AppCenterLog.Debug(App.LogTag, "Analytics listener OnBeforeSendingEventLog");
-        }
-
-        public void ClearCrashButton()
-        {
-            ISharedPreferences appCenterPreferences = Android.App.Application.Context.GetSharedPreferences("AppCenter", FileCreationMode.Private);
-            appCenterPreferences.Edit().Remove(CrashesUserConfirmationStorageKey).Apply();
         }
     }
 }

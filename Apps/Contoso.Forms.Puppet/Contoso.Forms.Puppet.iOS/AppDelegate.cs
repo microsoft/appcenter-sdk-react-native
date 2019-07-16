@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Contoso.Forms.Demo.iOS;
+using Contoso.Forms.Puppet.iOS;
 using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics.iOS.Bindings;
@@ -32,6 +32,11 @@ namespace Contoso.Forms.Puppet.iOS
             base.WillEnterForeground(uiApplication);
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
         }
+
+        public void ClearCrashButton()
+        {
+            NSUserDefaults.StandardUserDefaults.RemoveObject(CrashesUserConfirmationStorageKey);
+        }
     }
 
     public class AnalyticsDelegate : MSAnalyticsDelegate
@@ -49,11 +54,6 @@ namespace Contoso.Forms.Puppet.iOS
         public override void DidFailSendingEventLog(MSAnalytics analytics, MSEventLog eventLog, NSError error)
         {
             AppCenterLog.Debug(App.LogTag, "Failed to send event with error: " + error);
-        }
-
-        public void ClearCrashButton()
-        {
-            NSUserDefaults.StandardUserDefaults.RemoveObject(CrashesUserConfirmationStorageKey);
         }
     }
 }
