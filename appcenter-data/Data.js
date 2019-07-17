@@ -49,8 +49,8 @@ function isEnabled() {
 /**
  * Enable or disable Data service.
  *
- * @param {boolean} enabled - true to enabled, false to disable
- * @return Future asynchronous operation with null result to monitor when the operation completes
+ * @param {boolean} enabled - true to enabled, false to disable.
+ * @return Future asynchronous operation with null result to monitor when the operation completes.
  */
 function setEnabled(enabled) {
     return AppCenterReactNativeData.setEnabled(enabled);
