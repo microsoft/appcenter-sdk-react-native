@@ -28,15 +28,21 @@
 #import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterData/MSReadOptions.h>
 #import <AppCenterData/MSWriteOptions.h>
+#import <AppCenterData/MSPaginatedDocuments.h>
+#import <AppCenterData/MSPage.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
+
+@property (nonatomic) NSMutableDictionary *paginatedDocuments;
 
 @end
 
 @implementation AppCenterReactNativeData
 
 static NSString *const kMSReadFailedErrorCode = @"ReadFailed";
+
+static NSString *const kMSListFailedErrorCode = @"ListFailed";
 
 static NSString *const kMSCreateFailedErrorCode = @"CreateFailed";
 
@@ -48,19 +54,39 @@ static NSString *const kMSDeserializedValueKey = @"deserializedValue";
 
 static NSString *const kMSjsonValueKey = @"jsonValue";
 
-static NSString *const kMSPartitionKey = @"partition";
-
-static NSString *const kMSIDKey = @"id";
-
 static NSString *const kMSETagKey = @"eTag";
 
 static NSString *const kMSLastUpdatedDateKey = @"lastUpdatedDate";
 
 static NSString *const kMSIsFromDeviceCacheKey = @"isFromDeviceCache";
 
+static NSString *const kMSIDKey = @"id";
+
+static NSString *const kMSPartitionKey = @"partition";
+
 static NSString *const kMSTimeToLiveKey = @"timeToLive";
 
+static NSString *const kMSErrorKey = @"error";
+
+static NSString *const kMSPaginatedDocumentsIDKey = @"paginatedDocumentsId";
+
+static NSString *const kMSItemsKey = @"items";
+
+static NSString *const kMSCurrentPageKey = @"currentPage";
+
+static NSString *const kMSMessageKey = @"message";
+
 RCT_EXPORT_MODULE();
+
+- (instancetype)init {
+    self = [super init];
+    _paginatedDocuments = [[NSMutableDictionary alloc] init];
+    return self;
+}
+
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
 
 + (void)register {
     [AppCenterReactNativeShared configureAppCenter];
@@ -74,12 +100,78 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
                   readOptions:(NSDictionary *)readOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSReadOptions *readOptions = [self getReadOptions:readOptionsMap];
+    MSReadOptions *readOptions = getReadOptions(readOptionsMap);
     [MSData readDocumentWithID:documentID
                   documentType:[MSDictionaryDocument class]
                      partition:partition
                    readOptions:readOptions
-             completionHandler:[self dataCompletionHandler:kMSReadFailedErrorCode resolve:resolve reject:reject]];
+             completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
+}
+
+RCT_EXPORT_METHOD(list:(NSString *)partition
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [MSData listDocumentsWithType:[MSDictionaryDocument class] partition:partition completionHandler:^(MSPaginatedDocuments* _Nonnull documentWrappers) {
+        NSString *paginatedDocumentsId = [[NSUUID UUID] UUIDString];
+        _paginatedDocuments[paginatedDocumentsId] = documentWrappers;
+        NSMutableDictionary *paginatedDocumentsDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *currentPageDict = [[NSMutableDictionary alloc] init];
+        NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
+        MSPage *currentPage = documentWrappers.currentPage;
+        if(currentPage.error) {
+            reject(kMSListFailedErrorCode, currentPage.error.description, currentPage.error);
+            return;
+        }
+        NSArray<MSDocumentWrapper *> *documents = currentPage.items;
+        for(MSDocumentWrapper *document in documents) {
+            addDocumentToNSMutableArray(itemsArray, document);
+        }
+        currentPageDict[kMSItemsKey] = itemsArray;
+        paginatedDocumentsDict[kMSCurrentPageKey] = currentPageDict;
+        paginatedDocumentsDict[kMSPaginatedDocumentsIDKey] = paginatedDocumentsId;
+        resolve(paginatedDocumentsDict);
+    }];
+}
+
+RCT_EXPORT_METHOD(hasNextPage:(NSString *)paginatedDocumentsId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    MSPaginatedDocuments *paginatedDocuments = _paginatedDocuments[paginatedDocumentsId];
+    if (!paginatedDocuments || ![paginatedDocuments hasNextPage]) {
+        [self closeList:paginatedDocumentsId];
+        resolve(@(NO));
+    } else {
+        resolve(@(YES));
+    }
+}
+
+RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    MSPaginatedDocuments *paginatedDocuments = _paginatedDocuments[paginatedDocumentsId];
+    if (!paginatedDocuments || ![paginatedDocuments hasNextPage]) {
+        [self closeList:paginatedDocumentsId];
+        resolve(nil);
+        return;
+    }
+    [paginatedDocuments nextPageWithCompletionHandler:^(MSPage* _Nonnull page) {
+        NSMutableDictionary *pageMap = [[NSMutableDictionary alloc] init];
+        NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
+        if(page.error) {
+            reject(kMSListFailedErrorCode, page.error.description, page.error);
+            return;
+        }
+        NSArray<MSDocumentWrapper *> *documents = page.items;
+        for(MSDocumentWrapper *document in documents) {
+            addDocumentToNSMutableArray(itemsArray, document);
+        }
+        pageMap[kMSItemsKey] = itemsArray;
+        resolve(pageMap);
+    }];
+}
+
+RCT_EXPORT_METHOD(close:(NSString *) paginatedDocumentsId) {
+    [self closeList:paginatedDocumentsId];
 }
 
 RCT_EXPORT_METHOD(create:(NSString *)documentID
@@ -88,13 +180,13 @@ RCT_EXPORT_METHOD(create:(NSString *)documentID
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = getWriteOptions(writeOptionsMap);
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData createDocumentWithID:documentID
                         document:document
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:kMSCreateFailedErrorCode resolve:resolve reject:reject]];
+               completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
 }
 
 RCT_EXPORT_METHOD(replace:(NSString *)documentID
@@ -103,53 +195,75 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = getWriteOptions(writeOptionsMap);
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData replaceDocumentWithID:documentID
                          document:document
                         partition:partition
                      writeOptions:writeOptions
-                completionHandler:[self dataCompletionHandler:kMSReplaceFailedErrorCode resolve:resolve reject:reject]];
+                completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
 }
 
 RCT_EXPORT_METHOD(remove:(NSString *)documentID
                   partition:(NSString *)partition
-                  writeOptions:(NSDictionary *)writeOptionsMap
+                  writeOptions:(NSDictionary* )writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = getWriteOptions(writeOptionsMap);
     [MSData deleteDocumentWithID:documentID
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:kMSRemoveFailedErrorCode resolve:resolve reject:reject]];
+               completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
 }
 
-- (void (^)(MSDocumentWrapper * _Nonnull))dataCompletionHandler:(NSString *)errorCode
-                                                        resolve:(RCTPromiseResolveBlock)resolve
-                                                         reject:(RCTPromiseRejectBlock)reject{
-    return ^(MSDocumentWrapper * _Nonnull documentWrapper) {
+- (void)closeList:(NSString *)paginatedDocumentsId {
+    [_paginatedDocuments removeObjectForKey:paginatedDocumentsId];
+}
+
+static void (^dataCompletionHandler(NSString* errorCode,
+                                    RCTPromiseResolveBlock resolve,
+                                    RCTPromiseRejectBlock reject))(MSDocumentWrapper* _Nonnull) {
+    return ^(MSDocumentWrapper* _Nonnull documentWrapper) {
         NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
-        jsDocumentWrapper[kMSjsonValueKey] = documentWrapper.jsonValue;
-        jsDocumentWrapper[kMSPartitionKey] = documentWrapper.partition;
-        jsDocumentWrapper[kMSIDKey] = documentWrapper.documentId;
-        jsDocumentWrapper[kMSETagKey] = documentWrapper.eTag;
-        jsDocumentWrapper[kMSLastUpdatedDateKey] = @([documentWrapper.lastUpdatedDate timeIntervalSince1970] * 1000);
-        jsDocumentWrapper[kMSIsFromDeviceCacheKey] = [NSNumber numberWithBool:documentWrapper.fromDeviceCache];
+        addDocumentWrapperMetaData(jsDocumentWrapper, documentWrapper);
         if (documentWrapper.error) {
             MSDataError *dataError = documentWrapper.error;
             [jsDocumentWrapper addEntriesFromDictionary:dataError.userInfo];
             NSError *error = [[NSError alloc] initWithDomain:dataError.domain code:dataError.code userInfo:jsDocumentWrapper];
-            reject(errorCode, error.description, error);
+            reject(errorCode, dataError.description, error);
             return;
         }
-        jsDocumentWrapper[kMSDeserializedValueKey] = [documentWrapper.deserializedValue serializeToDictionary];
-        resolve(jsDocumentWrapper);
+        jsDocumentWrapper[kMSDeserializedValueKey] = documentWrapper.deserializedValue ? [documentWrapper.deserializedValue serializeToDictionary] : [NSNull null];
+        return resolve(jsDocumentWrapper);
     };
 }
 
-- (MSReadOptions *)getReadOptions:(NSDictionary *)readOptionsMap {
+static void addDocumentWrapperMetaData(NSMutableDictionary *jsDocumentWrapper, MSDocumentWrapper *document) {
+    jsDocumentWrapper[kMSETagKey] = document.eTag ? document.eTag : [NSNull null];
+    jsDocumentWrapper[kMSIDKey] = document.documentId ? document.documentId : [NSNull null];
+    jsDocumentWrapper[kMSPartitionKey] = document.partition ? document.partition : [NSNull null];
+    jsDocumentWrapper[kMSLastUpdatedDateKey] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
+    jsDocumentWrapper[kMSIsFromDeviceCacheKey] = [NSNumber numberWithBool:document.fromDeviceCache];
+    jsDocumentWrapper[kMSjsonValueKey] = document.jsonValue ? document.jsonValue : [NSNull null];
+}
+
+static void addDocumentToNSMutableArray(NSMutableArray *itemsArray, MSDocumentWrapper *document) {
+    NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
+    addDocumentWrapperMetaData(jsDocumentWrapper, document);
+    if (document.error) {
+        NSMutableDictionary *errorDict = [[NSMutableDictionary alloc] init];
+        errorDict[kMSMessageKey] = document.error.description;
+        jsDocumentWrapper[kMSErrorKey] = errorDict;
+    } else {
+        jsDocumentWrapper[kMSErrorKey] = nil;
+    }
+    jsDocumentWrapper[kMSDeserializedValueKey] = document.deserializedValue ? [document.deserializedValue serializeToDictionary] : [NSNull null];
+    [itemsArray addObject:jsDocumentWrapper];
+}
+
+static MSReadOptions* getReadOptions(NSDictionary *readOptionsMap) {
     MSReadOptions *readOptions;
-    if (!readOptionsMap && [readOptionsMap valueForKey:kMSTimeToLiveKey]) {
+    if ([readOptionsMap valueForKey:kMSTimeToLiveKey]) {
         readOptions = [[MSReadOptions alloc] initWithDeviceTimeToLive:[[readOptionsMap valueForKey:kMSTimeToLiveKey] integerValue]];
     } else {
         readOptions = [[MSReadOptions alloc] init];
@@ -157,9 +271,9 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     return readOptions;
 }
 
-- (MSWriteOptions *)getWriteOptions:(NSDictionary *)writeOptionsMap {
+static MSWriteOptions* getWriteOptions(NSDictionary *writeOptionsMap) {
     MSWriteOptions *writeOptions;
-    if (!writeOptionsMap && [writeOptionsMap valueForKey:kMSTimeToLiveKey]) {
+    if ([writeOptionsMap valueForKey:kMSTimeToLiveKey]) {
         writeOptions = [[MSWriteOptions alloc] initWithDeviceTimeToLive:[[writeOptionsMap valueForKey:kMSTimeToLiveKey] integerValue]];
     } else {
         writeOptions = [[MSWriteOptions alloc] init];
