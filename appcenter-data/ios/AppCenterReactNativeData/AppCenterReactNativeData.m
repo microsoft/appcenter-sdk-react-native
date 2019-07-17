@@ -36,6 +36,14 @@
 
 @implementation AppCenterReactNativeData
 
+static NSString *const kMSReadFailedErrorCode = @"ReadFailed";
+
+static NSString *const kMSCreateFailedErrorCode = @"CreateFailed";
+
+static NSString *const kMSReplaceFailedErrorCode = @"ReplaceFailed";
+
+static NSString *const kMSRemoveFailedErrorCode = @"RemoveFailed";
+
 static NSString *const kMSDeserializedValueKey = @"deserializedValue";
 
 static NSString *const kMSjsonValueKey = @"jsonValue";
@@ -71,7 +79,7 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
                   documentType:[MSDictionaryDocument class]
                      partition:partition
                    readOptions:readOptions
-             completionHandler:[self dataCompletionHandler:@"Failed read" resolve:resolve reject:reject]];
+             completionHandler:[self dataCompletionHandler:kMSReadFailedErrorCode resolve:resolve reject:reject]];
 }
 
 RCT_EXPORT_METHOD(create:(NSString *)documentID
@@ -86,7 +94,7 @@ RCT_EXPORT_METHOD(create:(NSString *)documentID
                         document:document
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:@"Failed create" resolve:resolve reject:reject]];
+               completionHandler:[self dataCompletionHandler:kMSCreateFailedErrorCode resolve:resolve reject:reject]];
 }
 
 RCT_EXPORT_METHOD(replace:(NSString *)documentID
@@ -101,7 +109,7 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
                          document:document
                         partition:partition
                      writeOptions:writeOptions
-                completionHandler:[self dataCompletionHandler:@"Failed replace" resolve:resolve reject:reject]];
+                completionHandler:[self dataCompletionHandler:kMSReplaceFailedErrorCode resolve:resolve reject:reject]];
 }
 
 RCT_EXPORT_METHOD(remove:(NSString *)documentID
@@ -113,7 +121,7 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     [MSData deleteDocumentWithID:documentID
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:@"Failed remove" resolve:resolve reject:reject]];
+               completionHandler:[self dataCompletionHandler:kMSRemoveFailedErrorCode resolve:resolve reject:reject]];
 }
 
 - (void (^)(MSDocumentWrapper * _Nonnull))dataCompletionHandler:(NSString *)errorCode
