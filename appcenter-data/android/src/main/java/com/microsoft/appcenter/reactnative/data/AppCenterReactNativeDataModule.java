@@ -76,6 +76,33 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void setTokenExchange(String tokenExchangeUrl) {
+        Data.setTokenExchangeUrl(tokenExchangeUrl);
+    }
+
+    @ReactMethod
+    public void isEnabled(final Promise promise) {
+        Data.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
+
+            @Override
+            public void accept(Boolean isEnabled) {
+                promise.resolve(isEnabled);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setEnabled(boolean enabled, final Promise promise) {
+        Data.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
+
+            @Override
+            public void accept(Void aVoid) {
+                promise.resolve(null);
+            }
+        });
+    }
+
+    @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
         ReadOptions readOptions = AppCenterReactNativeDataUtils.getReadOptions(readOptionsMap);
         Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>("Read failed", promise));
