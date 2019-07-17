@@ -106,7 +106,7 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
                   documentType:[MSDictionaryDocument class]
                      partition:partition
                    readOptions:readOptions
-             completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
+             completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSReadFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
 RCT_EXPORT_METHOD(list:(NSString *)partition
@@ -187,7 +187,7 @@ RCT_EXPORT_METHOD(create:(NSString *)documentID
                         document:document
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
+               completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSCreateFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
 RCT_EXPORT_METHOD(replace:(NSString *)documentID
@@ -202,7 +202,7 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
                          document:document
                         partition:partition
                      writeOptions:writeOptions
-                completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
+                completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSReplaceFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
 RCT_EXPORT_METHOD(remove:(NSString *)documentID
@@ -214,12 +214,12 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     [MSData deleteDocumentWithID:documentID
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:dataCompletionHandler(kMSRemoveFailedErrorCode, resolve, reject)];
+               completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSRemoveFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
-static void (^dataCompletionHandler(NSString* errorCode,
-                                    RCTPromiseResolveBlock resolve,
-                                    RCTPromiseRejectBlock reject))(MSDocumentWrapper* _Nonnull) {
++ (void (^)(MSDocumentWrapper* _Nonnull))dataCompletionHandler:(NSString *)errorCode
+                                                      resolver:(RCTPromiseResolveBlock)resolve
+                                                      rejecter:(RCTPromiseRejectBlock)reject {
     return ^(MSDocumentWrapper* _Nonnull documentWrapper) {
         NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
         [AppCenterReactNativeData addDocumentWrapperMetaData:jsDocumentWrapper document:documentWrapper];
@@ -231,7 +231,7 @@ static void (^dataCompletionHandler(NSString* errorCode,
             return;
         }
         jsDocumentWrapper[kMSDeserializedValueKey] = documentWrapper.deserializedValue ? [documentWrapper.deserializedValue serializeToDictionary] : [NSNull null];
-        return resolve(jsDocumentWrapper);
+        resolve(jsDocumentWrapper);
     };
 }
 
@@ -246,7 +246,7 @@ static void (^dataCompletionHandler(NSString* errorCode,
 }
 
 + (void)addDocumentToNSMutableArray:(NSMutableArray *)itemsArray
-                            document:(MSDocumentWrapper *)document {
+                           document:(MSDocumentWrapper *)document {
     NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
     [AppCenterReactNativeData addDocumentWrapperMetaData:jsDocumentWrapper document:document];
     if (document.error) {
