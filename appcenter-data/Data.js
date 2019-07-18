@@ -19,7 +19,7 @@ const DefaultPartitions = {
 const Data = {
     TimeToLive,
     DefaultPartitions,
-    setTokenExchange,
+    setTokenExchangeUrl,
     isEnabled,
     setEnabled,
     read,
@@ -34,8 +34,8 @@ const Data = {
  *
  * @param {string} tokenExchangeUrl - Token Exchange service URL.
  */
-function setTokenExchange(tokenExchangeUrl) {
-    AppCenterReactNativeData.setTokenExchange(tokenExchangeUrl);
+function setTokenExchangeUrl(tokenExchangeUrl) {
+    AppCenterReactNativeData.setTokenExchangeUrl(tokenExchangeUrl);
 }
 
 /**

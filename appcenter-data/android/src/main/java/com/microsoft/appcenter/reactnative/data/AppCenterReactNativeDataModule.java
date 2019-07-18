@@ -76,7 +76,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setTokenExchange(String tokenExchangeUrl) {
+    public void setTokenExchangeUrl(String tokenExchangeUrl) {
         Data.setTokenExchangeUrl(tokenExchangeUrl);
     }
 
