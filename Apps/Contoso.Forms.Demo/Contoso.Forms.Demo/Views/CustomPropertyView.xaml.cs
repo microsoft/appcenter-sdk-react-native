@@ -75,6 +75,7 @@ namespace Contoso.Forms.Demo
                 case PropertyTypes.Number:
                     Editor NumberEditor = new Editor() { Keyboard = Keyboard.Numeric };
                     NumberEditor.TextChanged += NumberEditor_TextChanged;
+                    NumberEditor.TabIndex = 1;
                     PropertyValueHolder.Children.Add(NumberEditor);
                     PropertyValue.IsVisible = true;
                     break;

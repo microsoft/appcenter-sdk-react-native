@@ -6,7 +6,7 @@
         <StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal">
                 <Label Text="Key" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
-                <Entry HorizontalOptions="FillAndExpand" x:Name="PropertyKey" />
+                <Entry HorizontalOptions="FillAndExpand" x:Name="PropertyKey" TabIndex="2"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Type" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="60" />
