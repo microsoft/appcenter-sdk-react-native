@@ -79,7 +79,7 @@ static NSString *const kMSMessageKey = @"message";
 RCT_EXPORT_MODULE();
 
 - (instancetype)init {
-    if((self = [super init])) {
+    if ((self = [super init])) {
         _paginatedDocuments = [[NSMutableDictionary alloc] init];
     }
     return self;
@@ -119,7 +119,7 @@ RCT_EXPORT_METHOD(list:(NSString *)partition
         NSMutableDictionary *currentPageDict = [[NSMutableDictionary alloc] init];
         NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
         MSPage *currentPage = documentWrappers.currentPage;
-        if(currentPage.error) {
+        if (currentPage.error) {
             reject(kMSListFailedErrorCode, currentPage.error.description, currentPage.error);
             return;
         }
@@ -158,7 +158,7 @@ RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
     [paginatedDocuments nextPageWithCompletionHandler:^(MSPage* _Nonnull page) {
         NSMutableDictionary *pageMap = [[NSMutableDictionary alloc] init];
         NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
-        if(page.error) {
+        if (page.error) {
             reject(kMSListFailedErrorCode, page.error.description, page.error);
             return;
         }
@@ -171,7 +171,7 @@ RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
     }];
 }
 
-RCT_EXPORT_METHOD(close:(NSString *) paginatedDocumentsId) {
+RCT_EXPORT_METHOD(close:(NSString *)paginatedDocumentsId) {
     [_paginatedDocuments removeObjectForKey:paginatedDocumentsId];
 }
 
@@ -270,7 +270,7 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     return readOptions;
 }
 
-+ (MSWriteOptions*)getWriteOptions:(NSDictionary *)writeOptionsMap {
++ (MSWriteOptions *)getWriteOptions:(NSDictionary *)writeOptionsMap {
     MSWriteOptions *writeOptions;
     if ([writeOptionsMap valueForKey:kMSTimeToLiveKey]) {
         writeOptions = [[MSWriteOptions alloc] initWithDeviceTimeToLive:[[writeOptionsMap valueForKey:kMSTimeToLiveKey] integerValue]];
