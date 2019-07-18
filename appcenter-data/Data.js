@@ -19,7 +19,6 @@ const DefaultPartitions = {
 const Data = {
     TimeToLive,
     DefaultPartitions,
-    setTokenExchangeUrl,
     isEnabled,
     setEnabled,
     read,
@@ -28,15 +27,6 @@ const Data = {
     remove,
     replace
 };
-
-/**
- * Change the URL used to retrieve CosmosDB resource tokens.
- *
- * @param {string} tokenExchangeUrl - Token Exchange service URL.
- */
-function setTokenExchangeUrl(tokenExchangeUrl) {
-    AppCenterReactNativeData.setTokenExchangeUrl(tokenExchangeUrl);
-}
 
 /**
  * Check whether Data service is enabled or not.

@@ -76,11 +76,6 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setTokenExchangeUrl(String tokenExchangeUrl) {
-        Data.setTokenExchangeUrl(tokenExchangeUrl);
-    }
-
-    @ReactMethod
     public void isEnabled(final Promise promise) {
         Data.isEnabled().thenAccept(new AppCenterConsumer<Boolean>() {
 
