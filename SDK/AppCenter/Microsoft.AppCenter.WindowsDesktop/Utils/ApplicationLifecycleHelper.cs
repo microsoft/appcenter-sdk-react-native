@@ -88,7 +88,7 @@ namespace Microsoft.AppCenter.Utils
                     .GetRawConstantValue();
             }
 
-            
+
 #pragma warning disable CS0618 // Type or member is obsolete
             // We need Windows thread ID, not managed
             var threadId = AppDomain.GetCurrentThreadId();
@@ -122,10 +122,23 @@ namespace Microsoft.AppCenter.Utils
         public ApplicationLifecycleHelper()
         {
             Enabled = true;
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
+
+            // Add the event handler for handling UI thread exceptions to the event.
+            Application.ThreadException += (sender, args) => InvokeUnhandledException(sender, args.Exception);
+
+            // Set the unhandled exception mode to force all Windows Forms errors to go through our handler.
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+            // Add the event handler for handling non-UI thread exceptions to the event. 
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => InvokeUnhandledException(sender, args.ExceptionObject as Exception);
+        }
+
+        private void InvokeUnhandledException(object sender, Exception exception)
+        {
+            if (exception != null)
             {
-                UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs((Exception)eventArgs.ExceptionObject));
-            };
+                UnhandledExceptionOccurred?.Invoke(sender, new UnhandledExceptionOccurredEventArgs(exception));
+            }
         }
 
         private void InvokeResuming()
