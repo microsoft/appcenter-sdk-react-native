@@ -117,7 +117,7 @@ function remove(documentId, partition, writeOptions) {
     if (writeOptions === undefined) {
         writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
     }
-    return AppCenterReactNativeData.remove(documentId, partition, writeOptions);
+    return AppCenterReactNativeData.remove(documentId, partition, writeOptions).then(convertTimestampToDate);
 }
 
 /**
