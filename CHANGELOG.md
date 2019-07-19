@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.2.0-preview
+## Version 2.2.1-preview
 
 This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
 
