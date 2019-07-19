@@ -30,6 +30,7 @@ const Data = {
 
 /**
  * Check whether Data service is enabled or not.
+ *
  * @return Future asynchronous operation with result being true if enabled, false otherwise.
  */
 function isEnabled() {
@@ -39,7 +40,7 @@ function isEnabled() {
 /**
  * Enable or disable Data service.
  *
- * @param {boolean} enabled - true to enabled, false to disable.
+ * @param {boolean} enabled - true to enable, false to disable.
  * @return Future asynchronous operation with null result to monitor when the operation completes.
  */
 function setEnabled(enabled) {
