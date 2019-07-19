@@ -8,7 +8,7 @@ jest.mock('NativeModules', () => {
   return {
     AppCenterReactNativeData: {
       isEnabled: jest.fn(),
-      setEnabled: jest.fn(),
+      setEnabled: jest.fn(() => Promise.resolve(null)),
       read: jest.fn(() => Promise.resolve({ lastUpdatedDate: testTimestamp })),
       list: jest.fn(() => {
         const result = {

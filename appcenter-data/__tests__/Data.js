@@ -14,8 +14,9 @@ describe('App Center Data isEnabled and setEnabled tests', () => {
   test('setEnabled is called', async () => {
     const enabled = true;
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setEnabled');
-    await Data.setEnabled(enabled);
+    const result = await Data.setEnabled(enabled);
     expect(spy).toHaveBeenCalled();
+    expect(result).toBe(null);
   });
 });
 
