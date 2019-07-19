@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Microsoft.AppCenter.Distribute.Shared\Microsoft.AppCenter.Distribute.Shared.projitems" Label="Shared" />
   <PropertyGroup>
@@ -7,9 +7,9 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Distribute</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>2.2.0-SNAPSHOT</Version>
+    <Version>2.2.1-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
+    <FileVersion>2.2.1.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Distribute</AssemblyTitle>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.AppCenter.Distribute.xml</DocumentationFile>
   </PropertyGroup>
