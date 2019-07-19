@@ -27,7 +27,7 @@ namespace Microsoft.AppCenter.Utils
             foreach (var managementObject in managementClass.GetInstances())
             {
                 var model = (string)managementObject["Model"];
-                return (string.IsNullOrEmpty(model) || DefaultSystemProductName.Equals(model.ToLower()) ? null : model);
+                return (string.IsNullOrEmpty(model) || DefaultSystemProductName == model ? null : model);
             }
             return string.Empty;
         }
@@ -42,8 +42,8 @@ namespace Microsoft.AppCenter.Utils
             var managementClass = new ManagementClass("Win32_ComputerSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                var manufacturer =(string)managementObject["Manufacturer"];
-                return (string.IsNullOrEmpty(manufacturer) || DefaultSystemManufacturer.Equals(manufacturer.ToLower()) ? null : manufacturer);
+                var manufacturer = (string)managementObject["Manufacturer"];
+                return (string.IsNullOrEmpty(manufacturer) || DefaultSystemManufacturer == manufacturer ? null : manufacturer);
             }
             return string.Empty;
         }

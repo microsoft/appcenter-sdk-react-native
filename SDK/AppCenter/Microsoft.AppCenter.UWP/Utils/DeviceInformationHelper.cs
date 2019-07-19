@@ -56,14 +56,14 @@ namespace Microsoft.AppCenter.Utils
         {
             var deviceInfo = new EasClientDeviceInformation();
             var systemSku = string.IsNullOrEmpty(deviceInfo.SystemSku)
-                || DefaultSystemSku.Equals(deviceInfo.SystemSku.ToLower())
+                || DefaultSystemSku == deviceInfo.SystemSku
                 ? null
-                : deviceInfo.SystemSku.ToLower();
+                : deviceInfo.SystemSku;
             var systemProductName = string.IsNullOrEmpty(deviceInfo.SystemProductName)
-                || DefaultSystemProductName.Equals(deviceInfo.SystemProductName.ToLower())
+                || DefaultSystemProductName == deviceInfo.SystemProductName
                 ? null
-                : deviceInfo.SystemProductName.ToLower();
-            return string.IsNullOrEmpty(systemSku) ? systemProductName : systemSku;
+                : deviceInfo.SystemProductName;
+            return string.IsNullOrEmpty(systemProductName) ? systemSku : systemProductName;
         }
 
         protected override string GetAppNamespace()
@@ -74,15 +74,11 @@ namespace Microsoft.AppCenter.Utils
         protected override string GetDeviceOemName()
         {
             var deviceInfo = new EasClientDeviceInformation();
-            var systemSku = string.IsNullOrEmpty(deviceInfo.SystemSku) 
-                || DefaultSystemSku.Equals(deviceInfo.SystemSku.ToLower()) 
-                ? null 
-                : deviceInfo.SystemSku.ToLower();
             var systemManufacturer = string.IsNullOrEmpty(deviceInfo.SystemManufacturer) 
-                || DefaultSystemManufacturer.Equals(deviceInfo.SystemManufacturer.ToLower()) 
+                || DefaultSystemManufacturer == deviceInfo.SystemManufacturer 
                 ? null 
-                : deviceInfo.SystemManufacturer.ToLower();
-            return string.IsNullOrEmpty(systemSku) ? systemManufacturer : systemSku;
+                : deviceInfo.SystemManufacturer;
+            return systemManufacturer;
         }
 
         protected override string GetOsName()
