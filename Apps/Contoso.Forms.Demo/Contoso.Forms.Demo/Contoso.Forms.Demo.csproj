@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.1.0" />
     <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.1.0" />
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.1.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.1.0" />
     <PackageReference Include="Microsoft.AppCenter.Data" Version="2.1.0" />
   </ItemGroup>
