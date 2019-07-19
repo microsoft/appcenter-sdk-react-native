@@ -23,16 +23,11 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceModel()
         {
-            var managementClass = new ManagementClass("Win32_BaseBoard");
-            var defaultDeviceModel = "";
+            var managementClass = new ManagementClass("Win32_ComputerSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                defaultDeviceModel = (string)managementObject["Product"];
-            }
-            managementClass = new ManagementClass("Win32_ComputerSystem");
-            foreach (var managementObject in managementClass.GetInstances())
-            {
-                return DefaultSystemProductName.Equals(((string)managementObject["Model"]).ToLower()) ? defaultDeviceModel : (string)managementObject["Model"];
+                var model = (string)managementObject["Model"];
+                return (string.IsNullOrEmpty(model) || DefaultSystemProductName.Equals(model.ToLower()) ? null : model);
             }
             return string.Empty;
         }
@@ -44,16 +39,11 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetDeviceOemName()
         {
-            var managementClass = new ManagementClass("Win32_BaseBoard");
-            var defaultDeviceManufacturer = "";
+            var managementClass = new ManagementClass("Win32_ComputerSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                defaultDeviceManufacturer = (string)managementObject["Manufacturer"];
-            }
-            managementClass = new ManagementClass("Win32_ComputerSystem");
-            foreach (var managementObject in managementClass.GetInstances())
-            {
-                return DefaultSystemManufacturer.Equals(((string)managementObject["Manufacturer"]).ToLower()) ? defaultDeviceManufacturer : (string)managementObject["Manufacturer"];
+                var manufacturer =(string)managementObject["Manufacturer"];
+                return (string.IsNullOrEmpty(manufacturer) || DefaultSystemManufacturer.Equals(manufacturer.ToLower()) ? null : manufacturer);
             }
             return string.Empty;
         }
