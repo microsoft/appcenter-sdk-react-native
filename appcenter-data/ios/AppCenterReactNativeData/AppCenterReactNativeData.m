@@ -117,17 +117,13 @@ RCT_EXPORT_METHOD(list:(NSString *)partition
         _paginatedDocuments[paginatedDocumentsId] = documentWrappers;
         NSMutableDictionary *paginatedDocumentsDict = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *currentPageDict = [[NSMutableDictionary alloc] init];
-        NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
         MSPage *currentPage = documentWrappers.currentPage;
         if (currentPage.error) {
+            [self close:paginatedDocumentsId];
             reject(kMSListFailedErrorCode, currentPage.error.description, currentPage.error);
             return;
         }
-        NSArray<MSDocumentWrapper *> *documents = currentPage.items;
-        for(MSDocumentWrapper *document in documents) {
-            [AppCenterReactNativeData addDocumentToNSMutableArray:itemsArray document:document];
-        }
-        currentPageDict[kMSItemsKey] = itemsArray;
+        currentPageDict[kMSItemsKey] = [AppCenterReactNativeData addDocumentsToArray:currentPage.items];
         paginatedDocumentsDict[kMSCurrentPageKey] = currentPageDict;
         paginatedDocumentsDict[kMSPaginatedDocumentsIDKey] = paginatedDocumentsId;
         resolve(paginatedDocumentsDict);
@@ -157,16 +153,12 @@ RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
     }
     [paginatedDocuments nextPageWithCompletionHandler:^(MSPage* _Nonnull page) {
         NSMutableDictionary *pageMap = [[NSMutableDictionary alloc] init];
-        NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
         if (page.error) {
+            [self close:paginatedDocumentsId];
             reject(kMSListFailedErrorCode, page.error.description, page.error);
             return;
         }
-        NSArray<MSDocumentWrapper *> *documents = page.items;
-        for(MSDocumentWrapper *document in documents) {
-            [AppCenterReactNativeData addDocumentToNSMutableArray:itemsArray document:document];
-        }
-        pageMap[kMSItemsKey] = itemsArray;
+        pageMap[kMSItemsKey] = [AppCenterReactNativeData addDocumentsToArray:page.items];;
         resolve(pageMap);
     }];
 }
@@ -245,19 +237,22 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     jsDocumentWrapper[kMSjsonValueKey] = document.jsonValue ? document.jsonValue : [NSNull null];
 }
 
-+ (void)addDocumentToNSMutableArray:(NSMutableArray *)itemsArray
-                           document:(MSDocumentWrapper *)document {
-    NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
-    [AppCenterReactNativeData addDocumentWrapperMetaData:jsDocumentWrapper document:document];
-    if (document.error) {
-        NSMutableDictionary *errorDict = [[NSMutableDictionary alloc] init];
-        errorDict[kMSMessageKey] = document.error.description;
-        jsDocumentWrapper[kMSErrorKey] = errorDict;
-    } else {
-        jsDocumentWrapper[kMSErrorKey] = nil;
++ (NSMutableArray *)addDocumentsToArray:(NSArray<MSDocumentWrapper *> *)documents {
+    NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
+    for (MSDocumentWrapper *document in documents) {
+        NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
+        [AppCenterReactNativeData addDocumentWrapperMetaData:jsDocumentWrapper document:document];
+        if (document.error) {
+            NSMutableDictionary *errorDict = [[NSMutableDictionary alloc] init];
+            errorDict[kMSMessageKey] = document.error.description;
+            jsDocumentWrapper[kMSErrorKey] = errorDict;
+        } else {
+            jsDocumentWrapper[kMSErrorKey] = nil;
+        }
+        jsDocumentWrapper[kMSDeserializedValueKey] = document.deserializedValue ? [document.deserializedValue serializeToDictionary] : [NSNull null];
+        [itemsArray addObject:jsDocumentWrapper];
     }
-    jsDocumentWrapper[kMSDeserializedValueKey] = document.deserializedValue ? [document.deserializedValue serializeToDictionary] : [NSNull null];
-    [itemsArray addObject:jsDocumentWrapper];
+    return itemsArray;
 }
 
 + (MSReadOptions *)getReadOptions:(NSDictionary *)readOptionsMap {
