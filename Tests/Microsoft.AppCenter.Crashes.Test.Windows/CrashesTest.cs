@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
@@ -551,6 +553,28 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
+        public void DisableWhileProcessing()
+        {
+            var mockErrorLogFile = Mock.Of<File>();
+            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper;
+
+            // Make file read slow to prove we are waiting in disable, not ideal but since we cannot mock Wait() and since Crashes.SetEnabledAsync(false) is not really async there is no real way to test this.
+            // The test does fail all the time if you remove the patch to wait process tasks in disable code.
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile }).Callback(() => Task.Delay(1000).Wait());
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(_expectedManagedErrorLog);
+
+            // Start crashes service in an enabled state to initiate the process of getting the error report.
+            Crashes.SetEnabledAsync(true).Wait();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.SetEnabledAsync(false).Wait();
+
+            // Verify files deleted and didn't prevent log being enqueued.
+            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveAllStoredErrorLogFiles(), Times.Once());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == _expectedManagedErrorLog.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
+        }
+
+        [TestMethod]
         public void DisablingCrashesCleansUpUnprocessedManagedErrorLogs()
         {
             // Make a pending error log file.
@@ -637,7 +661,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(expectedOldErrorLog.Id.ToString(), lastSessionErrorReport.Id);
             Assert.IsTrue(hasCrashedInLastSession);
         }
-        
+
         [TestMethod]
         public void PlatformNotifyUserConfirmationDefault()
         {
@@ -789,7 +813,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var alwaysSendValue = AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyAlwaysSend, false);
             Assert.IsTrue(alwaysSendValue);
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(_expectedManagedErrorLog.Id), Times.Once());
-           
+
             // We need to keep exception file until sent or failed to sent, tested in other tests.
             Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredExceptionFile(_expectedManagedErrorLog.Id), Times.Never());
         }
