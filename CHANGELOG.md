@@ -1,6 +1,10 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.2.0-preview
+## Version 2.2.2 (Under active development)
+
+___
+
+## Version 2.2.1-preview
 
 This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
 
@@ -72,6 +76,8 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 * **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure.
 
+___
+
 ## Version 2.1.1
 
 ### App Center Distribute
@@ -79,6 +85,8 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### iOS
 
 * **[Fix]** Fix a crash (regression from version 2.1.0) when checking for in-app updates.
+
+___
 
 ## Version 2.1.0
 
@@ -124,6 +132,8 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### iOS
 
 * **[Fix]** Fix document serialization/deserialization to handle non string types inside an object.
+
+___
 
 ## Version 2.0.0
 
@@ -174,6 +184,8 @@ The App Center Data service provides functionality enabling developers to persis
 * **[Feature]** After calling `Auth.SignInAsync()`, the push installation is associated to the signed in user with an `accountId` and can be pushed by using the `accountId` audience. This is a different field than the `userId` set by `AppCenter.SetUserId(string)`. The push installation is also updated on calling `Auth.SignOut()` to stop the association.
 * **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling `AppCenter.setUserId`.
 
+___
+
 ## Version 1.14.0
 
 ### AppCenter
@@ -198,6 +210,8 @@ The App Center Data service provides functionality enabling developers to persis
 #### Android
 
 * **[Fix]** Fix in-app updates not working on devices using Xiaomi MIUI from versions 10 and above.
+
+___
 
 ## Version 1.13.2
 
