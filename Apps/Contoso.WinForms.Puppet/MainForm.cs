@@ -170,7 +170,7 @@ namespace Contoso.WinForms.Puppet
 
         #endregion
 
-        private void CountryCodeEnable_CheckedChanged(object sender, EventArgs e)
+        private void CountryCodeEnabled_CheckedChanged(object sender, EventArgs e)
         {
             if (!CountryCodeEnabledCheckbox.Checked)
             {

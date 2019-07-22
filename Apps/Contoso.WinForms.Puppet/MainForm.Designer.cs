@@ -546,7 +546,7 @@ namespace Contoso.WinForms.Puppet
             this.CountryCodeEnabledCheckbox.TabIndex = 0;
             this.CountryCodeEnabledCheckbox.Text = "Country Code Enabled";
             this.CountryCodeEnabledCheckbox.UseVisualStyleBackColor = true;
-            this.CountryCodeEnabledCheckbox.CheckedChanged += new System.EventHandler(this.CountryCodeEnable_CheckedChanged);
+            this.CountryCodeEnabledCheckbox.CheckedChanged += new System.EventHandler(this.CountryCodeEnabled_CheckedChanged);
             // 
             // MainForm
             // 
