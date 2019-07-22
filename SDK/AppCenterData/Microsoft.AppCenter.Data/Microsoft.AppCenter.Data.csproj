@@ -6,9 +6,9 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Data</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>2.2.1-SNAPSHOT</Version>
+    <Version>2.2.2-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>2.2.1.0</FileVersion>
+    <FileVersion>2.2.2.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Data</AssemblyTitle>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.AppCenter.Data.xml</DocumentationFile>
   </PropertyGroup>
