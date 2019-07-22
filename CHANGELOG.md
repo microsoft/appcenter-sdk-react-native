@@ -2,6 +2,10 @@
 
 ## Version 2.1.1 (Active Development)
 
+### App Center
+
+* **[Feature]** Support for React Native 0.60.0.
+
 ### AppCenterAuth
 
 * **[Fix]** Fix incorrect file name of iOS **appcenter-auth.podspec** of Auth SDK.
