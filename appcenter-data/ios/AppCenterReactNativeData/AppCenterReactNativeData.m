@@ -28,13 +28,13 @@
 #import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterData/MSReadOptions.h>
 #import <AppCenterData/MSWriteOptions.h>
-#import <AppCenterData/MSPaginatedDocuments.h>
 #import <AppCenterData/MSPage.h>
+#import <AppCenterData/MSPaginatedDocuments.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
 
-@property (nonatomic) NSMutableDictionary *paginatedDocuments;
+@property (nonatomic, strong) NSMutableDictionary *paginatedDocuments;
 
 @end
 
