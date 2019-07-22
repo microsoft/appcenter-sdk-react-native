@@ -233,7 +233,7 @@ SPEC CHECKSUMS:
   appcenter-auth: c11d1129f534f8bad2ea31bafd5ebdf0da00e12d
   appcenter-crashes: 3dc9664f8ba8a6a40e1e26b233f122d4aaf01c5e
   appcenter-push: 8ecfe3cb704f1ae8d09349b35d4747385555deb8
-  AppCenterReactNativeShared: c6493a571d002b1dd6bd24455c5ed8c4e89e7753
+  AppCenterReactNativeShared: b642cd83b36bcaf0657a1b2c2c13f2e651b95f8c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -264,4 +264,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: aa799989050601e16f05421c7ef07e0f979eec5f
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.7.5
