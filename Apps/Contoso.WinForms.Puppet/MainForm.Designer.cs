@@ -526,7 +526,7 @@ namespace Contoso.WinForms.Puppet
             this.SaveCountryCodeButton.TabIndex = 2;
             this.SaveCountryCodeButton.Text = "Save";
             this.SaveCountryCodeButton.UseVisualStyleBackColor = true;
-            this.SaveCountryCodeButton.Click += new System.EventHandler(this.BtnSave_ClickListener);
+            this.SaveCountryCodeButton.Click += new System.EventHandler(this.CountryCodeSaveButton_ClickListener);
             // 
             // CountryCodeText
             // 

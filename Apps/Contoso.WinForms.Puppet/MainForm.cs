@@ -185,7 +185,7 @@ namespace Contoso.WinForms.Puppet
             CountryCodeGroup.Enabled = CountryCodeEnabledCheckbox.Checked;
         }
 
-        private void BtnSave_ClickListener(object sender, EventArgs e)
+        private void CountryCodeSaveButton_ClickListener(object sender, EventArgs e)
         {
             AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
