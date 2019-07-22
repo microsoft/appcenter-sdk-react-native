@@ -63,7 +63,7 @@ namespace Microsoft.AppCenter.Utils
                 || DefaultSystemProductName == deviceInfo.SystemProductName
                 ? null
                 : deviceInfo.SystemProductName;
-            return string.IsNullOrEmpty(systemProductName) ? systemSku : systemProductName;
+            return systemProductName ?? systemSku;
         }
 
         protected override string GetAppNamespace()
