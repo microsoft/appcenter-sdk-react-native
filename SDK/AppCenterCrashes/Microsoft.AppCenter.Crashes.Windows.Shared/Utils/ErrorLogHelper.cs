@@ -8,7 +8,7 @@ using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
-
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
 namespace Microsoft.AppCenter.Crashes.Utils
@@ -175,7 +175,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 AppLaunchTimestamp = _processInformation.ProcessStartTime?.ToUniversalTime(),
                 Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
-                Exception = CreateModelException(exception)
+                Exception = CreateModelException(exception),
+                Sid = SessionContext.SessionId
             };
         }
 

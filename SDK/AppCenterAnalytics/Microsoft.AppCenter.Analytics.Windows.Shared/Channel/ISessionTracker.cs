@@ -7,5 +7,6 @@ namespace Microsoft.AppCenter.Analytics.Channel
     {
         void Resume();
         void Pause();
+        void Stop();
     }
 }

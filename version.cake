@@ -31,15 +31,22 @@ Task("IncrementRevisionNumber").Does(()=>
 
 Task("SetReleaseVersion").Does(()=>
 {
-    // Get base version of PCL core
-    var baseSemanticVersion = GetPCLBaseSemanticVersion();
+    var prereleaseSuffix = Argument<string>("PrereleaseSuffix", null);
+
+    // Get base version of .NET standard core
+    var releaseVersion = GetBaseSemanticVersion();
+
+    // Append suffix if any is provided for this release
+    if (prereleaseSuffix != null) {
+        releaseVersion = $"{releaseVersion}-{prereleaseSuffix}";
+    }
 
     // Replace versions in all non-demo app files
     var informationalVersionPattern = @"AssemblyInformationalVersion\(" + "\".*\"" + @"\)";
-    ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + baseSemanticVersion + "\")", "Demo");
-    UpdateNewProjSdkVersion(baseSemanticVersion, baseSemanticVersion);
-    UpdateWrapperSdkVersion(baseSemanticVersion);
-    UpdateConfigFileSdkVersion(baseSemanticVersion);
+    ReplaceRegexInFilesWithExclusion("**/AssemblyInfo.cs", informationalVersionPattern, "AssemblyInformationalVersion(\"" + releaseVersion + "\")", "Demo");
+    UpdateNewProjSdkVersion(releaseVersion, releaseVersion);
+    UpdateWrapperSdkVersion(releaseVersion);
+    UpdateConfigFileSdkVersion(releaseVersion);
 });
 
 Task("UpdateDemoVersion").Does(()=>
@@ -154,8 +161,8 @@ Task("StartNewVersion").Does(()=>
 
 void IncrementRevisionNumber(bool useHash)
 {
-    // Get base version of PCL core
-    var baseSemanticVersion = GetPCLBaseSemanticVersion();
+    // Get base version of .NET standard core
+    var baseSemanticVersion = GetBaseSemanticVersion();
     var nugetVer = GetLatestNuGetVersion();
     var baseVersion = GetBaseVersion(nugetVer);
     var newRevNum = baseSemanticVersion == baseVersion ? GetRevisionNumber(nugetVer) + 1 : 1;
@@ -188,7 +195,7 @@ void IncrementRevisionNumber(bool useHash)
     UpdateWrapperSdkVersion(newVersion);
 }
 
-string GetPCLBaseSemanticVersion()
+string GetBaseSemanticVersion()
 {
     return GetBaseVersion(VersionReader.SdkVersion);
 }

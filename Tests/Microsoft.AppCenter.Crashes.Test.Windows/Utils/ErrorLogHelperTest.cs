@@ -6,6 +6,7 @@ using Microsoft.AppCenter.Crashes.Utils;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -39,8 +40,13 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        public void CreateErrorLog()
+        [DataRow(null)]
+        [DataRow("da657080-2445-4b80-9b77-4798a6659954")]
+        public void CreateErrorLog(string sessionId)
         {
+            // Set correlation identifier like Analytics does to set sessionId.
+            SessionContext.SessionId = sessionId == null ? default(Guid?) : Guid.Parse(sessionId);
+
             // Set up an exception. This is needed because inner exceptions cannot be mocked.
             System.Exception exception;
             try
@@ -109,6 +115,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.AreEqual(processId, log.ProcessId);
             Assert.AreEqual(processName, log.ProcessName);
             Assert.AreEqual(processStartTime, log.AppLaunchTimestamp);
+            Assert.AreEqual(sessionId, log.Sid?.ToString());
             Assert.IsTrue(log.Fatal);
         }
 
@@ -311,7 +318,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             // Check what was serialized.
             var actualException = new BinaryFormatter().Deserialize(new System.IO.MemoryStream(mockStream.ToArray()));
             Assert.IsInstanceOfType(actualException, expectedException.GetType());
-            Assert.AreEqual(expectedException.Message, ((System.Exception) actualException).Message);
+            Assert.AreEqual(expectedException.Message, ((System.Exception)actualException).Message);
         }
 
         [TestMethod]

@@ -94,7 +94,6 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CorrelationIdTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAppCenterService.cs" />
     <Compile Include="Utils\NetworkStateTests.cs" />

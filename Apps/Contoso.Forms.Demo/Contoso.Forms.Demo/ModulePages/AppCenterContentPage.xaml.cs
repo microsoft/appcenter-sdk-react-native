@@ -24,53 +24,22 @@ namespace Contoso.Forms.Demo
         {
             base.OnAppearing();
             AppCenterEnabledSwitchCell.On = await AppCenter.IsEnabledAsync();
+            if (Application.Current.Properties.ContainsKey(Constants.UserId) && Application.Current.Properties[Constants.UserId] is string id)
+            {
+                UserIdEntry.Text = id;
+            }
+            UserIdEntry.Unfocused += (sender, args) =>
+            {
+                var inputText = UserIdEntry.Text;
+                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
+                AppCenter.SetUserId(text);
+                Application.Current.Properties[Constants.UserId] = text;
+            };
         }
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
             await AppCenter.SetEnabledAsync(e.Value);
-        }
-    }
-
-    [Android.Runtime.Preserve(AllMembers = true)]
-    public class EntryCellTextChanged : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        internal static string UserIdKey = "userId";
-
-        private string _userId;
-
-        public EntryCellTextChanged()
-        {
-            if (Application.Current.Properties.ContainsKey(UserIdKey) && Application.Current.Properties[UserIdKey] is string id)
-            {
-                UserId = id;
-            }
-        }
-
-        public string UserId
-        {
-            get { return _userId; }
-
-            set
-            {
-                _userId = value;
-                OnTextChanged(_userId);
-            }
-        }
-
-        public ICommand TextChanged;
-
-        protected virtual void OnTextChanged(string inputText)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(inputText));
-                var text = string.IsNullOrEmpty(inputText) ? null : inputText;
-                AppCenter.SetUserId(text);
-                Application.Current.Properties[UserIdKey] = text;
-            }
         }
     }
 }

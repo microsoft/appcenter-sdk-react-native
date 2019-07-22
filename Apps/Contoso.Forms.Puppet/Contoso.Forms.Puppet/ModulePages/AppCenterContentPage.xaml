@@ -1,14 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage Title="App Center"
-             xmlns:local="clr-namespace:Contoso.Forms.Puppet"
-             xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AppCenterContentPage">
-    <ContentPage.BindingContext>
-        <local:EntryCellTextChanged/>
-    </ContentPage.BindingContext>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage Title="App Center" xmlns:local="clr-namespace:Contoso.Forms.Puppet" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AppCenterContentPage">
     <TableView Intent="Form">
         <TableSection Title="AppCenter Settings">
-            <SwitchCell Text="App Center Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled"/>
+            <SwitchCell Text="App Center Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled" />
             <ViewCell Tapped="LogLevelCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="Log Level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
@@ -17,8 +11,8 @@
             </ViewCell>
         </TableSection>
         <TableSection Title="Logging">
-            <EntryCell Label="Log Message" x:Name="LogMessageEntryCell"/>
-            <EntryCell Label="Log Tag" x:Name="LogTagEntryCell"/>
+            <EntryCell Label="Log Message" x:Name="LogMessageEntryCell" />
+            <EntryCell Label="Log Tag" x:Name="LogTagEntryCell" />
             <ViewCell Tapped="LogWriteLevelCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="Log Level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
@@ -26,11 +20,16 @@
                 </StackLayout>
             </ViewCell>
             <ViewCell Tapped="WriteLog">
-                <Button Text="Write Log" InputTransparent="true" Clicked="WriteLog"/>
+                <Button Text="Write Log" InputTransparent="true" Clicked="WriteLog" />
             </ViewCell>
         </TableSection>
         <TableSection Title="Logging">
-            <EntryCell Label="User Id" x:Name="UserIdEntryCell" Text="{Binding UserId, Mode=TwoWay}" HorizontalTextAlignment="End"/>
+            <ViewCell>
+                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                    <Label Text="User Id" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
+                    <Entry x:Name="UserIdEntry" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                </StackLayout>
+            </ViewCell>
         </TableSection>
     </TableView>
 </ContentPage>
