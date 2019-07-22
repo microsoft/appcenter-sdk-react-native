@@ -40,8 +40,7 @@ namespace Contoso.Forms.Demo
             if (!AppCenter.Configured)
             {
                 AppCenter.LogLevel = LogLevel.Verbose;
-                Crashes.SendingErrorReport += SendingErrorReportHandler;
-                Crashes.SendingErrorReport += SendingErrorReportHandler;
+                Crashes.SendingErrorReport += SendingErrorReportHandler; 
                 Crashes.SentErrorReport += SentErrorReportHandler;
                 Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
                 Crashes.ShouldProcessErrorReport = ShouldProcess;

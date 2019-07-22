@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
@@ -6,9 +6,9 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Data</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>2.2.0-SNAPSHOT</Version>
+    <Version>2.2.2-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
+    <FileVersion>2.2.2.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Data</AssemblyTitle>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.AppCenter.Data.xml</DocumentationFile>
   </PropertyGroup>
