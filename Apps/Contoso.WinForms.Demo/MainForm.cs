@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Contoso.WinForms.Demo
         {
             InitializeComponent();
             UpdateState();
-            AppCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
+            AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
         }
 
         private void UpdateState()
@@ -168,5 +169,25 @@ namespace Contoso.WinForms.Demo
         }
 
         #endregion
+
+        private void CountryCodeEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!CountryCodeEnabledCheckbox.Checked)
+            {
+                CountryCodeText.Text = "";
+                AppCenter.SetCountryCode(null);
+            }
+            else
+            {
+                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(CountryCodeText.Text);
+            }
+            CountryCodeGroup.Enabled = CountryCodeEnabledCheckbox.Checked;
+        }
+
+        private void CountryCodeSaveButton_ClickListener(object sender, EventArgs e)
+        {
+            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
+        }
     }
 }

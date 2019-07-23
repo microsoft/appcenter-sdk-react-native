@@ -12,7 +12,7 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 
-namespace Contoso.WinForms.Demo
+namespace Contoso.WinForms.Puppet
 {
     public partial class MainForm : Form
     {
@@ -170,9 +170,9 @@ namespace Contoso.WinForms.Demo
 
         #endregion
 
-        private void CountryCodeEnable_CheckedChanged(object sender, EventArgs e)
+        private void CountryCodeEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if (!CountryCodeEnableCheckbox.Checked)
+            if (!CountryCodeEnabledCheckbox.Checked)
             {
                 CountryCodeText.Text = "";
                 AppCenter.SetCountryCode(null);
@@ -182,10 +182,10 @@ namespace Contoso.WinForms.Demo
                 CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
                 AppCenter.SetCountryCode(CountryCodeText.Text);
             }
-            CountryCodeGroup.Enabled = CountryCodeEnableCheckbox.Checked;
+            CountryCodeGroup.Enabled = CountryCodeEnabledCheckbox.Checked;
         }
 
-        private void BtnSave_ClickListener(object sender, EventArgs e)
+        private void CountryCodeSaveButton_ClickListener(object sender, EventArgs e)
         {
             AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }

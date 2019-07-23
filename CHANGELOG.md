@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.2.2 (Under active development)
+## Version 2.2.2-preview (Under active development)
 
 ### App Center Analytics
 
@@ -8,6 +8,11 @@
 
 * **[Fix]** Fixed wrong naming system product name and system manufacturer.
 
+### App Center Crashes
+
+#### WPF/WinForms
+
+* **[Fix]** Wait to finish processing files before deleting files when calling `SetEnabledAsync(false)` during processing.
 ___
 
 ## Version 2.2.1-preview

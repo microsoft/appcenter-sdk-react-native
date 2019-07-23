@@ -7,7 +7,7 @@ using Microsoft.AppCenter.Crashes;
 using System;
 using System.Windows.Forms;
 
-namespace Contoso.WinForms.Demo
+namespace Contoso.WinForms.Puppet
 {
     static class Program
     {
