@@ -6,7 +6,7 @@
 
 #### WPF/WinForms
 
-* **[Fix]** Fixed wrong naming system product name and system manufacturer.
+* **[Fix]** Fix reporting the correct device models when a placeholder was used in some cases.
 
 ### App Center Crashes
 
