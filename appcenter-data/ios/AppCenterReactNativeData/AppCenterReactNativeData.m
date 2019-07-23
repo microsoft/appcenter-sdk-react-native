@@ -28,15 +28,21 @@
 #import <AppCenterData/MSDocumentWrapper.h>
 #import <AppCenterData/MSReadOptions.h>
 #import <AppCenterData/MSWriteOptions.h>
+#import <AppCenterData/MSPage.h>
+#import <AppCenterData/MSPaginatedDocuments.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>
+
+@property (nonatomic, strong) NSMutableDictionary *paginatedDocuments;
 
 @end
 
 @implementation AppCenterReactNativeData
 
 static NSString *const kMSReadFailedErrorCode = @"ReadFailed";
+
+static NSString *const kMSListFailedErrorCode = @"ListFailed";
 
 static NSString *const kMSCreateFailedErrorCode = @"CreateFailed";
 
@@ -48,19 +54,40 @@ static NSString *const kMSDeserializedValueKey = @"deserializedValue";
 
 static NSString *const kMSjsonValueKey = @"jsonValue";
 
-static NSString *const kMSPartitionKey = @"partition";
-
-static NSString *const kMSIDKey = @"id";
-
 static NSString *const kMSETagKey = @"eTag";
 
 static NSString *const kMSLastUpdatedDateKey = @"lastUpdatedDate";
 
 static NSString *const kMSIsFromDeviceCacheKey = @"isFromDeviceCache";
 
+static NSString *const kMSIDKey = @"id";
+
+static NSString *const kMSPartitionKey = @"partition";
+
 static NSString *const kMSTimeToLiveKey = @"timeToLive";
 
+static NSString *const kMSErrorKey = @"error";
+
+static NSString *const kMSPaginatedDocumentsIDKey = @"paginatedDocumentsId";
+
+static NSString *const kMSItemsKey = @"items";
+
+static NSString *const kMSCurrentPageKey = @"currentPage";
+
+static NSString *const kMSMessageKey = @"message";
+
 RCT_EXPORT_MODULE();
+
+- (instancetype)init {
+    if ((self = [super init])) {
+        _paginatedDocuments = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
+
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
 
 + (void)register {
     [AppCenterReactNativeShared configureAppCenter];
@@ -74,12 +101,70 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
                   readOptions:(NSDictionary *)readOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSReadOptions *readOptions = [self getReadOptions:readOptionsMap];
+    MSReadOptions *readOptions = [AppCenterReactNativeData getReadOptions:readOptionsMap];
     [MSData readDocumentWithID:documentID
                   documentType:[MSDictionaryDocument class]
                      partition:partition
                    readOptions:readOptions
-             completionHandler:[self dataCompletionHandler:kMSReadFailedErrorCode resolve:resolve reject:reject]];
+             completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSReadFailedErrorCode resolver:resolve rejecter:reject]];
+}
+
+RCT_EXPORT_METHOD(list:(NSString *)partition
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [MSData listDocumentsWithType:[MSDictionaryDocument class] partition:partition completionHandler:^(MSPaginatedDocuments* _Nonnull documentWrappers) {
+        NSString *paginatedDocumentsId = [[NSUUID UUID] UUIDString];
+        _paginatedDocuments[paginatedDocumentsId] = documentWrappers;
+        NSMutableDictionary *paginatedDocumentsDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *currentPageDict = [[NSMutableDictionary alloc] init];
+        MSPage *currentPage = documentWrappers.currentPage;
+        if (currentPage.error) {
+            [self close:paginatedDocumentsId];
+            reject(kMSListFailedErrorCode, currentPage.error.description, currentPage.error);
+            return;
+        }
+        currentPageDict[kMSItemsKey] = [AppCenterReactNativeData addDocumentsToArray:currentPage.items];
+        paginatedDocumentsDict[kMSCurrentPageKey] = currentPageDict;
+        paginatedDocumentsDict[kMSPaginatedDocumentsIDKey] = paginatedDocumentsId;
+        resolve(paginatedDocumentsDict);
+    }];
+}
+
+RCT_EXPORT_METHOD(hasNextPage:(NSString *)paginatedDocumentsId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    MSPaginatedDocuments *paginatedDocuments = _paginatedDocuments[paginatedDocumentsId];
+    if (!paginatedDocuments || ![paginatedDocuments hasNextPage]) {
+        [self close:paginatedDocumentsId];
+        resolve(@(NO));
+    } else {
+        resolve(@(YES));
+    }
+}
+
+RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    MSPaginatedDocuments *paginatedDocuments = _paginatedDocuments[paginatedDocumentsId];
+    if (!paginatedDocuments || ![paginatedDocuments hasNextPage]) {
+        [self close:paginatedDocumentsId];
+        resolve(nil);
+        return;
+    }
+    [paginatedDocuments nextPageWithCompletionHandler:^(MSPage* _Nonnull page) {
+        NSMutableDictionary *pageMap = [[NSMutableDictionary alloc] init];
+        if (page.error) {
+            [self close:paginatedDocumentsId];
+            reject(kMSListFailedErrorCode, page.error.description, page.error);
+            return;
+        }
+        pageMap[kMSItemsKey] = [AppCenterReactNativeData addDocumentsToArray:page.items];;
+        resolve(pageMap);
+    }];
+}
+
+RCT_EXPORT_METHOD(close:(NSString *)paginatedDocumentsId) {
+    [_paginatedDocuments removeObjectForKey:paginatedDocumentsId];
 }
 
 RCT_EXPORT_METHOD(create:(NSString *)documentID
@@ -88,13 +173,13 @@ RCT_EXPORT_METHOD(create:(NSString *)documentID
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = [AppCenterReactNativeData getWriteOptions:writeOptionsMap];
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData createDocumentWithID:documentID
                         document:document
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:kMSCreateFailedErrorCode resolve:resolve reject:reject]];
+               completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSCreateFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
 RCT_EXPORT_METHOD(replace:(NSString *)documentID
@@ -103,53 +188,76 @@ RCT_EXPORT_METHOD(replace:(NSString *)documentID
                   writeOptions:(NSDictionary *)writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = [AppCenterReactNativeData getWriteOptions:writeOptionsMap];
     MSDictionaryDocument *document = [[MSDictionaryDocument alloc] initFromDictionary:documentMap];
     [MSData replaceDocumentWithID:documentID
                          document:document
                         partition:partition
                      writeOptions:writeOptions
-                completionHandler:[self dataCompletionHandler:kMSReplaceFailedErrorCode resolve:resolve reject:reject]];
+                completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSReplaceFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
 RCT_EXPORT_METHOD(remove:(NSString *)documentID
                   partition:(NSString *)partition
-                  writeOptions:(NSDictionary *)writeOptionsMap
+                  writeOptions:(NSDictionary* )writeOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    MSWriteOptions *writeOptions = [self getWriteOptions:writeOptionsMap];
+    MSWriteOptions *writeOptions = [AppCenterReactNativeData getWriteOptions:writeOptionsMap];
     [MSData deleteDocumentWithID:documentID
                        partition:partition
                     writeOptions:writeOptions
-               completionHandler:[self dataCompletionHandler:kMSRemoveFailedErrorCode resolve:resolve reject:reject]];
+               completionHandler:[AppCenterReactNativeData dataCompletionHandler:kMSRemoveFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
-- (void (^)(MSDocumentWrapper * _Nonnull))dataCompletionHandler:(NSString *)errorCode
-                                                        resolve:(RCTPromiseResolveBlock)resolve
-                                                         reject:(RCTPromiseRejectBlock)reject{
-    return ^(MSDocumentWrapper * _Nonnull documentWrapper) {
++ (void (^)(MSDocumentWrapper* _Nonnull))dataCompletionHandler:(NSString *)errorCode
+                                                      resolver:(RCTPromiseResolveBlock)resolve
+                                                      rejecter:(RCTPromiseRejectBlock)reject {
+    return ^(MSDocumentWrapper* _Nonnull documentWrapper) {
         NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
-        jsDocumentWrapper[kMSjsonValueKey] = documentWrapper.jsonValue;
-        jsDocumentWrapper[kMSPartitionKey] = documentWrapper.partition;
-        jsDocumentWrapper[kMSIDKey] = documentWrapper.documentId;
-        jsDocumentWrapper[kMSETagKey] = documentWrapper.eTag;
-        jsDocumentWrapper[kMSLastUpdatedDateKey] = @([documentWrapper.lastUpdatedDate timeIntervalSince1970] * 1000);
-        jsDocumentWrapper[kMSIsFromDeviceCacheKey] = [NSNumber numberWithBool:documentWrapper.fromDeviceCache];
+        [AppCenterReactNativeData addDocumentWrapperMetaData:jsDocumentWrapper document:documentWrapper];
         if (documentWrapper.error) {
             MSDataError *dataError = documentWrapper.error;
             [jsDocumentWrapper addEntriesFromDictionary:dataError.userInfo];
             NSError *error = [[NSError alloc] initWithDomain:dataError.domain code:dataError.code userInfo:jsDocumentWrapper];
-            reject(errorCode, error.description, error);
+            reject(errorCode, dataError.description, error);
             return;
         }
-        jsDocumentWrapper[kMSDeserializedValueKey] = [documentWrapper.deserializedValue serializeToDictionary];
+        jsDocumentWrapper[kMSDeserializedValueKey] = documentWrapper.deserializedValue ? [documentWrapper.deserializedValue serializeToDictionary] : [NSNull null];
         resolve(jsDocumentWrapper);
     };
 }
 
-- (MSReadOptions *)getReadOptions:(NSDictionary *)readOptionsMap {
++ (void)addDocumentWrapperMetaData:(NSMutableDictionary *)jsDocumentWrapper
+                          document:(MSDocumentWrapper *)document {
+    jsDocumentWrapper[kMSETagKey] = document.eTag ? document.eTag : [NSNull null];
+    jsDocumentWrapper[kMSIDKey] = document.documentId ? document.documentId : [NSNull null];
+    jsDocumentWrapper[kMSPartitionKey] = document.partition ? document.partition : [NSNull null];
+    jsDocumentWrapper[kMSLastUpdatedDateKey] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
+    jsDocumentWrapper[kMSIsFromDeviceCacheKey] = [NSNumber numberWithBool:document.fromDeviceCache];
+    jsDocumentWrapper[kMSjsonValueKey] = document.jsonValue ? document.jsonValue : [NSNull null];
+}
+
++ (NSMutableArray *)addDocumentsToArray:(NSArray<MSDocumentWrapper *> *)documents {
+    NSMutableArray *itemsArray = [[NSMutableArray alloc] init];
+    for (MSDocumentWrapper *document in documents) {
+        NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
+        [AppCenterReactNativeData addDocumentWrapperMetaData:jsDocumentWrapper document:document];
+        if (document.error) {
+            NSMutableDictionary *errorDict = [[NSMutableDictionary alloc] init];
+            errorDict[kMSMessageKey] = document.error.description;
+            jsDocumentWrapper[kMSErrorKey] = errorDict;
+        } else {
+            jsDocumentWrapper[kMSErrorKey] = nil;
+        }
+        jsDocumentWrapper[kMSDeserializedValueKey] = document.deserializedValue ? [document.deserializedValue serializeToDictionary] : [NSNull null];
+        [itemsArray addObject:jsDocumentWrapper];
+    }
+    return itemsArray;
+}
+
++ (MSReadOptions *)getReadOptions:(NSDictionary *)readOptionsMap {
     MSReadOptions *readOptions;
-    if (!readOptionsMap && [readOptionsMap valueForKey:kMSTimeToLiveKey]) {
+    if ([readOptionsMap valueForKey:kMSTimeToLiveKey]) {
         readOptions = [[MSReadOptions alloc] initWithDeviceTimeToLive:[[readOptionsMap valueForKey:kMSTimeToLiveKey] integerValue]];
     } else {
         readOptions = [[MSReadOptions alloc] init];
@@ -157,9 +265,9 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     return readOptions;
 }
 
-- (MSWriteOptions *)getWriteOptions:(NSDictionary *)writeOptionsMap {
++ (MSWriteOptions *)getWriteOptions:(NSDictionary *)writeOptionsMap {
     MSWriteOptions *writeOptions;
-    if (!writeOptionsMap && [writeOptionsMap valueForKey:kMSTimeToLiveKey]) {
+    if ([writeOptionsMap valueForKey:kMSTimeToLiveKey]) {
         writeOptions = [[MSWriteOptions alloc] initWithDeviceTimeToLive:[[writeOptionsMap valueForKey:kMSTimeToLiveKey] integerValue]];
     } else {
         writeOptions = [[MSWriteOptions alloc] init];
