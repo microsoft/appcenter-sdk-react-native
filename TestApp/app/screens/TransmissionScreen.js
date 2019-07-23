@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import { Image, View, SectionList, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
-import Toast from 'react-native-simple-toast';
 
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
@@ -173,8 +172,6 @@ export default class TransmissionScreen extends Component {
       />
     );
 
-    const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
-
     return (
       <View style={SharedStyles.container}>
         <SectionList
@@ -243,7 +240,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       const eventName = 'EventWithoutPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName);
-                      showEventToast(eventName);
+                      console.log(`Scheduled event '${eventName}'.`);
                     }
                   }
                 },
@@ -254,7 +251,7 @@ export default class TransmissionScreen extends Component {
                     if (transmissionTarget) {
                       const eventName = 'EventWithPropertiesFromTarget';
                       transmissionTarget.trackEvent(eventName, { property1: '100', property2: '200' });
-                      showEventToast(eventName);
+                      console.log(`Scheduled event '${eventName}'.`);
                     }
                   }
                 }

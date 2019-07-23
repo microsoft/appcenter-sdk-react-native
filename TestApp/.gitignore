@@ -57,5 +57,8 @@ fastlane/screenshots
 /unused.jsbundle*
 /.vscode/.react
 
-ios/Pods/AppCenterReactNativeShared/AppCenterReactNativeShared/AppCenterReactNativeShared.framework/AppCenterReactNativeShared
 package-lock.json
+
+# With RN 0.60.0 autolinking, we use `pod install` to install CocoaPods dependencies,
+# and don't check in **ios/Pods/** directory.
+ios/Pods/
