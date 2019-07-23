@@ -24,5 +24,11 @@ npm install
 echo "Build shared framework..."
 (cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
 
-echo "Running jetify"
+echo "Running jetify to resolve AndroidX compatibility issues..."
 npx jetify
+
+echo "Updating CocoaPods repos..."
+pod repo update
+
+echo "Running pod install..."
+(cd ios && pod install)

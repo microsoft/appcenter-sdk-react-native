@@ -22,7 +22,6 @@
     "react-native-gesture-handler": "^1.1.0",
     "react-native-image-picker": "^0.28.0",
     "react-native-modal-selector": "^1.0.2",
-    "react-native-simple-toast": "0.0.8",
     "react-navigation": "^3.5.1"
   },
   "devDependencies": {

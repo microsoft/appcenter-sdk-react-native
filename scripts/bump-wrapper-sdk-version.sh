@@ -99,6 +99,11 @@ echo "${postlinkFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./ap
 podspecFileContent="$(cat ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)"
 echo "${podspecFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec
 
+# Update wrapper sdk version in AppCenterReactNativeShared/Products/local.podspec,
+# so that local.podspec is in sync with AppCenterReactNativeShared.podspec.
+localPodspecFileContent="$(cat ./AppCenterReactNativeShared/Products/local.podspec)"
+echo "${localPodspecFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./AppCenterReactNativeShared/Products/local.podspec
+
 # Update wrapper sdk version in AppCenterReactNativeShared/ios/AppCenterReactNativeShared/AppCenterReactNativeShared.m
 fileContent="$(cat ./AppCenterReactNativeShared/ios/AppCenterReactNativeShared/AppCenterReactNativeShared.m)"
 echo "${fileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./AppCenterReactNativeShared/ios/AppCenterReactNativeShared/AppCenterReactNativeShared.m

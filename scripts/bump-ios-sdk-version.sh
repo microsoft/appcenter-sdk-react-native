@@ -51,4 +51,9 @@ echo "${fileContent/\'AppCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'AppCen
 fileContent="$(cat ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)"
 echo "${fileContent/s.dependency \'AppCenter\/Core\', \'$oldiOSSdkVersion\'/s.dependency 'AppCenter/Core', '$newiOSSdkVersion'}" > ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec
 
+# Update wrapper sdk version in local.podspec,
+# so that local.podspec is in sync with AppCenterReactNativeShared.podspec.
+fileContent="$(cat ./AppCenterReactNativeShared/Products/local.podspec)"
+echo "${fileContent/s.dependency \'AppCenter\/Core\', \'$oldiOSSdkVersion\'/s.dependency 'AppCenter/Core', '$newiOSSdkVersion'}" > ./AppCenterReactNativeShared/Products/local.podspec
+
 echo "done."
