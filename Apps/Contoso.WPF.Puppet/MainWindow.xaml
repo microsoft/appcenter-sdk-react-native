@@ -65,7 +65,7 @@
                         <StackPanel Orientation="Vertical">
                             <DockPanel LastChildFill="True">
                                 <Label Content="Event Name"/>
-                                <TextBox Name="eventName" VerticalAlignment="Center" />
+                                <TextBox Name="EventName" VerticalAlignment="Center" />
                             </DockPanel>
                             <DataGrid Name="EventProperties" AutoGenerateColumns="False" CanUserAddRows="True" MinHeight="60" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" SelectionMode="Single" Margin="0,10,0,10">
                                 <DataGrid.Columns>

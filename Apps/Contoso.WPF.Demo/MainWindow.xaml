@@ -81,6 +81,13 @@
             <TabItem Header="Crashes">
                 <StackPanel>
                     <CheckBox Name="CrashesEnabled" Content="Crashes Enabled" Margin="0,10,0,10" Checked="CrashesEnabled_Checked" Unchecked="CrashesEnabled_Checked" />
+                    <CheckBox Name="HandleExceptions" Content="Handle Exceptions" Margin="0,10,0,10" />
+                    <DataGrid Name="ErrorProperties" AutoGenerateColumns="False" CanUserAddRows="True" MinHeight="60" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" SelectionMode="Single" Margin="0,10,0,10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Property Key" Width="*" Binding="{Binding Key}"/>
+                            <DataGridTextColumn Header="Property Value" Width="*" Binding="{Binding Value}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <GroupBox Header="Error attachment">
                         <StackPanel Orientation="Vertical">
                             <DockPanel LastChildFill="True">
@@ -106,7 +113,21 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Others"/>
+            <TabItem Header="Others">
+                <StackPanel>
+                    <CheckBox Name="CountryCodeEnableCheckbox" Content="Country Code Enabled" Margin="0,10,0,10" Checked="CountryCodeEnabled_Checked" Unchecked="CountryCodeEnabled_Checked"/>
+                    <GroupBox Header="Country code">
+                        <StackPanel IsEnabled="False" Name="CountryCodePanel">
+                            <DockPanel LastChildFill="True">
+                                <Label Name="CountryCodeLabel">Country code</Label>
+                                <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>
+                            </DockPanel>
+                            <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+
         </TabControl>
     </StackPanel>
 </Window>

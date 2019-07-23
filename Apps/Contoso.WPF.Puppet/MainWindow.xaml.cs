@@ -102,7 +102,7 @@ namespace Contoso.WPF.Puppet
 
         private void TrackEvent_Click(object sender, RoutedEventArgs e)
         {
-            var name = eventName.Text;
+            var name = EventName.Text;
             var propertiesDictionary = EventPropertiesSource.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
