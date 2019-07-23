@@ -4,7 +4,7 @@
 
 ### App Center Analytics
 
-#### WPF/WinForms
+#### Windows
 
 * **[Fix]** Fix reporting the incorrect device models when a placeholder was used in some cases.
 
