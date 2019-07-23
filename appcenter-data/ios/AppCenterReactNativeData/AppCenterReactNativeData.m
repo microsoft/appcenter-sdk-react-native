@@ -96,6 +96,18 @@ RCT_EXPORT_MODULE();
     }
 }
 
+RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve([NSNumber numberWithBool:[MSData isEnabled]]);
+}
+
+RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [MSData setEnabled:shouldEnable];
+    resolve(nil);
+}
+
 RCT_EXPORT_METHOD(read:(NSString *)documentID
                   partition:(NSString *)partition
                   readOptions:(NSDictionary *)readOptionsMap
