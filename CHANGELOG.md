@@ -6,7 +6,7 @@
 
 #### WPF/WinForms
 
-* **[Fix]** Fix reporting the correct device models when a placeholder was used in some cases.
+* **[Fix]** Fix reporting the incorrect device models when a placeholder was used in some cases.
 
 ### App Center Crashes
 
