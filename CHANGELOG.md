@@ -1,10 +1,10 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.1.1 (Active Development)
+## Version 2.2.0 (Active Development)
 
-### App Center
+### AppCenter
 
-* **[Feature]** Support for React Native 0.60.0.
+* **[Feature]** Support React Native 0.60.0.
 
 ### AppCenterAuth
 
@@ -18,7 +18,7 @@ Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
  App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices.
 
-### App Center Push
+### AppCenterPush
 
 #### Android
 
@@ -33,12 +33,12 @@ Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
 Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
-### App Center
+### AppCenter
 
 * **[Feature]** Removed interactive prompts when running `react-native link`. The documentation now has instructions how to manually configure the SDK.
 * **[Fix]** Add missing licence copyright headers to most of the files. The `.md` extension has been removed in package licence files.
 
-### App Center Crashes
+### AppCenterCrashes
 
 #### Android
 
@@ -48,7 +48,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 * **[Fix]** Print an error and return immediately when calling `Crashes.notifyWithUserConfirmation` while not using `Crashes.setListener`.
 
-### App Center Push
+### AppCenterPush
 
 * **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling `AppCenter.setUserId`.
 
