@@ -10,11 +10,9 @@
 
 * **[Fix]** Remove unsecure UUID fallback when UUID generation theorically fails, in reality it never fails.
 * **[Fix]** Check for running in App Center Test will now work when using AndroidX instead of the support library.
-* **[Feature]** Add `AppCenter.isRunningInAppCenterTestCloud` to provide method to check if the application is running in Test Cloud.
 
 #### iOS
 
-* **[Feature]** Add `isRunningInAppCenterTestCloud` in `MSAppCenter` to provide method to check if the application is running in Test Cloud.
 * **[Fix]** Drop and recreate the database when it is corrupted.
 
 ### App Center Crashes
