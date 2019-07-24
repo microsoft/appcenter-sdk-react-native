@@ -37,6 +37,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
+    private static final String READ_FAILED_ERROR_CODE = "ReadFailed";
+
+    private static final String LIST_FAILED_ERROR_CODE = "ListFailed";
+
+    private static final String CREATE_FAILED_ERROR_CODE = "CreateFailed";
+
+    private static final String REMOVE_FAILED_ERROR_CODE = "RemoveFailed";
+
+    private static final String REPLACE_FAILED_ERROR_CODE = "ReplaceFailed";
+
     private static final String DESERIALIZED_VALUE_KEY = "deserializedValue";
 
     private static final String JSON_VALUE_KEY = "jsonValue";
@@ -78,7 +88,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
         ReadOptions readOptions = AppCenterReactNativeDataUtils.getReadOptions(readOptionsMap);
-        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>("Read failed", promise));
+        Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>(READ_FAILED_ERROR_CODE, promise));
     }
 
     @ReactMethod
@@ -95,7 +105,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 Page<JsonElement> currentPage = documentWrappers.getCurrentPage();
                 if (currentPage.getError() != null) {
                     DataException dataException = currentPage.getError();
-                    promise.reject("Failed list", dataException.getMessage(), dataException);
+                    promise.reject(LIST_FAILED_ERROR_CODE, dataException.getMessage(), dataException);
                     return;
                 }
                 List<DocumentWrapper<JsonElement>> documents = currentPage.getItems();
@@ -139,7 +149,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 WritableArray itemsArray = new WritableNativeArray();
                 if (page.getError() != null) {
                     DataException dataException = page.getError();
-                    promise.reject("Failed list", dataException.getMessage(), dataException);
+                    promise.reject(LIST_FAILED_ERROR_CODE, dataException.getMessage(), dataException);
                     return;
                 }
                 List<DocumentWrapper<JsonElement>> documents = page.getItems();
@@ -163,20 +173,20 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     public void create(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions = AppCenterReactNativeDataUtils.getWriteOptions(writeOptionsMap);
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
-        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Create failed", promise));
+        Data.create(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>(CREATE_FAILED_ERROR_CODE, promise));
     }
 
     @ReactMethod
     public void remove(String documentId, String partition, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions = AppCenterReactNativeDataUtils.getWriteOptions(writeOptionsMap);
-        Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>("Delete failed", promise));
+        Data.delete(documentId, partition, writeOptions).thenAccept(new Consumer<Void>(REMOVE_FAILED_ERROR_CODE, promise));
     }
 
     @ReactMethod
     public void replace(String documentId, String partition, ReadableMap documentMap, ReadableMap writeOptionsMap, final Promise promise) {
         WriteOptions writeOptions = AppCenterReactNativeDataUtils.getWriteOptions(writeOptionsMap);
         JsonObject jsonObject = AppCenterReactNativeDataUtils.convertReadableMapToJsonObject(documentMap);
-        Data.replace(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>("Replace failed", promise));
+        Data.replace(documentId, jsonObject, JsonElement.class, partition, writeOptions).thenAccept(new Consumer<JsonElement>(REPLACE_FAILED_ERROR_CODE, promise));
     }
 
     private class Consumer<T> implements AppCenterConsumer<DocumentWrapper<T>> {
