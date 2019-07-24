@@ -1,6 +1,10 @@
 #!/bin/bash
 cd Products
-wrapperSdkString=$(grep s.version AppCenterReactNativeShared.podspec)
+
+# podspecFile is parameterized but its default value is AppCenterReactNativeShared.podspec when it's not set. 
+# Specifically, AppCenterReactNativeShared.podspec is used in the release process and local.podspec is used for local development.
+podspecFile="${podspecFile:-AppCenterReactNativeShared.podspec}"
+wrapperSdkString=$(grep s.version ${podspecFile})
 [[ ${wrapperSdkString} =~ ([0-9]+.[0-9]+.[0-9]+) ]]
 wrapperSdkVersion="${BASH_REMATCH[1]}"
 zipfilename="AppCenter-SDK-ReactNative-iOS-Pod-${wrapperSdkVersion}.zip"

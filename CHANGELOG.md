@@ -1,10 +1,35 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.2.0
+
+### App Center
+
+* **[Feature]** Support React Native 0.60.0.
+
+#### Android
+
+* **[Fix]** Remove unsecure UUID fallback when UUID generation theorically fails, in reality it never fails.
+* **[Fix]** Check for running in App Center Test will now work when using AndroidX instead of the support library.
+
+#### iOS
+
+* **[Fix]** Drop and recreate the database when it is corrupted.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** The in memory cache of error reports is now cleared when disabling Crashes.
+
+### App Center Auth
+
+* **[Fix]** Fix incorrect file name of iOS **appcenter-auth.podspec** of Auth SDK.
+
 ## Version 2.1.0
 
 Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 
-### AppCenterAuth
+### App Center Auth
 
  App Center Auth is a cloud-based identity management service that enables developers to authenticate application users and manage user identities. The service integrates with other parts of App Center, enabling developers to leverage the user identity to view user data in other services and even send push notifications to users instead of individual devices.
 
@@ -44,7 +69,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 ## Version 1.13.0
 
-### AppCenter
+### App Center
 
 #### iOS
 
@@ -56,7 +81,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 * **[Fix]** Fix network connection state tracking issue, which prevented sending data in some restricted networks.
 * **[Fix]** Fix possible deadlock on changing network connection state.
 
-### AppCenterPush
+### App Center Push
 
 #### iOS
 
@@ -64,7 +89,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 ## Version 1.12.2
 
-### AppCenter
+### App Center
 
 #### iOS
 
@@ -89,7 +114,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 ## Version 1.12.0
 
-### AppCenter
+### App Center
 
 * **[Feature]** AppCenter SDK now supports the User ID string, with a maximum of 256 characters, that applies to crashes and push logs. Settable via `AppCenter.setUserId`.
 
@@ -97,7 +122,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 * **[Fix]** Fix TLS 1.2 configuration for some specific devices running API level <21. The bug did not affect all devices running older API levels, only some models/brands, and prevented any data from being sent.
 
-### AppCenterAnalytics
+### App Center Analytics
 
 #### Android
 
@@ -111,7 +136,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 ## Version 1.11.1
 
-### AppCenter
+### App Center
 
 - **[Fix]** No longer use the deprecated `compile` Gradle keyword in the App Center gradle modules. Please note that if `react-native link` was executed prior to version **0.58** of React Native, the **app/build.gradle** file will still contain references to the `compile` keyword, this behavior is from the `react-native link` command and not from App Center SDK files. To resolve all warnings you need to follow the operations in that order: 
 
@@ -122,7 +147,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 ## Version 1.11.0
 
-### AppCenter
+### App Center
 
 - Introduce new `LogLevel` constants, deprecating old ones.
 - Fix bug with linking process being stuck when developing on windows machines. [#471](https://github.com/microsoft/appcenter-sdk-react-native/issues/471).
@@ -132,12 +157,12 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 - **[iOS]** Fix reporting carrier information using new iOS 12 APIs when running on iOS 12+.
 - **[iOS]** Fix a memory leak issue during executing SQL queries.
 
-### AppCenterCrashes
+### App Center Crashes
 
 - **[iOS]** Fixes an issue where duplicate crash logs could be sent.
 - **[Android]** Fix a bug where crash data file could leak when the database is full.
 
-### AppCenterPush
+### App Center Push
 
 - **[Feature]** Support delaying Push notification permission dialog [#287](https://github.com/microsoft/appcenter-sdk-react-native/issues/287).
 - **[Fix]** Fix build.gradle for release builds [#481](https://github.com/microsoft/appcenter-sdk-react-native/issues/481).
@@ -145,7 +170,7 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 ## Version 1.10.0
 
-### AppCenter
+### App Center
 
 - **[Android]** Fix lint issue on modern projects using latest react-native versions [#451](https://github.com/microsoft/appcenter-sdk-react-native/issues/451).
 - **[iOS]** Fix an issue where concurrent modification of custom properties was not thread safe.
@@ -153,12 +178,12 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 - **[iOS]** Use standard SQL syntax to avoid affecting users with custom SQLite libraries.
 - **[iOS]** Get database page size dynamically to support custom values.
 
-### AppCenterCrashes
+### App Center Crashes
 
 - **[Android]** Fix a bug which prevents attachments from being sent if file name is not specified.
 - **[Android]** Fix Preventing stack overflow crash while reading a huge throwable file.
 
-### AppCenterPush
+### App Center Push
 
 - **[Android]** Use latest Firebase version [#365](https://github.com/microsoft/appcenter-sdk-react-native/issues/365).
 - **[iOS]** Fix `push:didReceivePushNotification:` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set.  If you have implemented this delegate please remove any call to the `MSPush#didReceiveRemoteNotification:` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/appcenter/sdk/push/ios).
