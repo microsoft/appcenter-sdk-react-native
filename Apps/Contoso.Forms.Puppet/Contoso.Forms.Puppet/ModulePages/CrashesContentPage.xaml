@@ -39,5 +39,10 @@
                 <Button Text="Exception Inside Async Task" InputTransparent="true" Clicked="AsyncException" />
             </ViewCell>
         </TableSection>
+        <TableSection Title="Clear Crash">
+            <ViewCell Tapped="ClearCrashUserConfirmation">
+                <Button Text="Clear Crash User Confirmation" InputTransparent="True" Clicked="ClearCrashUserConfirmation"/>
+            </ViewCell>
+        </TableSection>
     </TableView>
 </ContentPage>

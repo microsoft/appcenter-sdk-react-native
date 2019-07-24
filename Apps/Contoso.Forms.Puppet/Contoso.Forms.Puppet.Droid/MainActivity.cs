@@ -13,13 +13,18 @@ using HockeyApp.Android;
 using HockeyApp.Android.Utils;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
+using Xamarin.Forms;
+using Contoso.Forms.Puppet.Droid;
 
+[assembly: Dependency(typeof(MainActivity))]
 namespace Contoso.Forms.Puppet.Droid
 {
     [Activity(Label = "ACFPuppet", Icon = "@drawable/icon", Theme = "@style/PuppetTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop)]
-    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IClearCrashClick
     {
         public static readonly int FileAttachmentId = 1;
+
+        private const string CrashesUserConfirmationStorageKey = "com.microsoft.appcenter.crashes.always.send";
 
         public TaskCompletionSource<string> FileAttachmentTaskCompletionSource { set; get; }
 
@@ -61,6 +66,12 @@ namespace Contoso.Forms.Puppet.Droid
                 }
                 FileAttachmentTaskCompletionSource.SetResult(uri?.ToString());
             }
+        }
+
+        public void ClearCrashButton()
+        {
+            ISharedPreferences appCenterPreferences = Android.App.Application.Context.GetSharedPreferences("AppCenter", FileCreationMode.Private);
+            appCenterPreferences.Edit().Remove(CrashesUserConfirmationStorageKey).Apply();
         }
     }
 

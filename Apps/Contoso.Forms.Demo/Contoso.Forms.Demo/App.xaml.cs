@@ -16,6 +16,11 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
+    public interface IClearCrashClick
+    {
+        void ClearCrashButton();
+    }
+
     public partial class App : Application
     {
         public const string LogTag = "AppCenterXamarinDemo";

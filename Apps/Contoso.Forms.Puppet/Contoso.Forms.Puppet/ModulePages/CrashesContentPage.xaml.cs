@@ -251,5 +251,10 @@ namespace Contoso.Forms.Puppet
             RefreshPropCount();
             Crashes.TrackError(e, properties);
         }
+
+        void ClearCrashUserConfirmation(object sender, EventArgs e)
+        {
+            DependencyService.Get<IClearCrashClick>().ClearCrashButton();
+        }
     }
 }
