@@ -22,10 +22,7 @@ namespace Contoso.WPF.Demo
         protected override void OnStartup(StartupEventArgs e)
         {
             AppCenter.LogLevel = LogLevel.Verbose;
-            if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
-            {
-                AppCenter.SetCountryCode(Settings.Default.CountryCode);
-            }
+            AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);
 
             // User callbacks.
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;

@@ -28,8 +28,6 @@ namespace Contoso.WPF.Demo
 
         private string textAttachments;
 
-        private const string SaveCountryCodeLabelText = "Country code update. Please close the application completely and relaunch it.";
-
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
             new Dictionary<LogLevel, Action<string, string>>
             {
@@ -140,10 +138,9 @@ namespace Contoso.WPF.Demo
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
-            InfoLable.Text = SaveCountryCodeLabelText;
+            InfoLable.Visibility = Visibility.Visible;
             Settings.Default.CountryCode = CountryCodeText.Text;
             Settings.Default.Save();
-            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
