@@ -14,9 +14,9 @@
     <PackageReference Include="System.Management" Version="4.6.0-preview7.19362.9" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.DotNetCore\Microsoft.AppCenter.Analytics.DotNetCore.csproj" />
-    <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.DotNetCore\Microsoft.AppCenter.Crashes.DotNetCore.csproj" />
-    <ProjectReference Include="..\..\SDK\AppCenter\Microsoft.AppCenter.DotNetCore\Microsoft.AppCenter.DotNetCore.csproj" />
+    <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj" />
+    <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj" />
+    <ProjectReference Include="..\..\SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources.Designer.cs">
