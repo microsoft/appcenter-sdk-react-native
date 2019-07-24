@@ -1,34 +1,34 @@
 PODS:
-  - appcenter (2.1.0):
+  - appcenter (2.2.0):
     - AppCenterReactNativeShared
     - React
-  - appcenter-analytics (2.1.0):
+  - appcenter-analytics (2.2.0):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-auth (2.1.0):
+  - appcenter-auth (2.2.0):
     - AppCenter/Auth
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (2.1.0):
+  - appcenter-crashes (2.2.0):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (2.1.0):
+  - appcenter-push (2.2.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (2.1.0):
+  - AppCenter/Analytics (2.2.0):
     - AppCenter/Core
-  - AppCenter/Auth (2.1.0):
+  - AppCenter/Auth (2.2.0):
     - AppCenter/Core
-  - AppCenter/Core (2.1.0)
-  - AppCenter/Crashes (2.1.0):
+  - AppCenter/Core (2.2.0)
+  - AppCenter/Crashes (2.2.0):
     - AppCenter/Core
-  - AppCenter/Push (2.1.0):
+  - AppCenter/Push (2.2.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (2.1.0):
-    - AppCenter/Core (= 2.1.0)
+  - AppCenterReactNativeShared (2.2.0):
+    - AppCenter/Core (= 2.2.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
@@ -227,13 +227,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 21decaa4488024e8355e650e44ccabb69ca60d47
-  appcenter: 8bbf366a65ab615082ad24f12140e48e22207067
-  appcenter-analytics: 585500b7c96b2ed627c9a7372469e48d7503f267
-  appcenter-auth: c11d1129f534f8bad2ea31bafd5ebdf0da00e12d
-  appcenter-crashes: 3dc9664f8ba8a6a40e1e26b233f122d4aaf01c5e
-  appcenter-push: 8ecfe3cb704f1ae8d09349b35d4747385555deb8
-  AppCenterReactNativeShared: b642cd83b36bcaf0657a1b2c2c13f2e651b95f8c
+  AppCenter: c809e69d93218b9861b4f8e54ded8dcf4d2131e7
+  appcenter: d063bb98744a8352099746b3adcdcac96b246505
+  appcenter-analytics: 9b88d0afe15b9908431820b8046911c297409e2b
+  appcenter-auth: c05f35137f4db6f8588944606c2468b29e1dd659
+  appcenter-crashes: 96c386fe361e2ec13267b563a205b5f051158121
+  appcenter-push: 8380c9f4b9abb69719dc47f0692a3ea979bc0d45
+  AppCenterReactNativeShared: 7997c24fd3f09f5b18f3c78e427c54606c9fa776
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
