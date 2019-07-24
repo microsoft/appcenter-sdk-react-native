@@ -2,6 +2,12 @@
 
 ## Version 2.2.2-preview (Under active development)
 
+### App Center Analytics
+
+#### Windows
+
+* **[Fix]** Fix reporting the incorrect device models when a placeholder was used in some cases.
+
 ### App Center Crashes
 
 #### WPF/WinForms

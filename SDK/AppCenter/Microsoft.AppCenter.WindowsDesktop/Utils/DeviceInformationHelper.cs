@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace Microsoft.AppCenter.Utils
 {
+
     /// <summary>
     /// Implements the abstract device information helper class
     /// </summary>
@@ -25,7 +26,8 @@ namespace Microsoft.AppCenter.Utils
             var managementClass = new ManagementClass("Win32_ComputerSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                return (string)managementObject["Model"];
+                var model = (string)managementObject["Model"];
+                return (string.IsNullOrEmpty(model) || DefaultSystemProductName == model ? null : model);
             }
             return string.Empty;
         }
@@ -40,7 +42,8 @@ namespace Microsoft.AppCenter.Utils
             var managementClass = new ManagementClass("Win32_ComputerSystem");
             foreach (var managementObject in managementClass.GetInstances())
             {
-                return (string)managementObject["Manufacturer"];
+                var manufacturer = (string)managementObject["Manufacturer"];
+                return (string.IsNullOrEmpty(manufacturer) || DefaultSystemManufacturer == manufacturer ? null : manufacturer);
             }
             return string.Empty;
         }
