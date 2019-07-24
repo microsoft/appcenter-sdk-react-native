@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Version>2.2.2-SNAPSHOT</Version>
   </PropertyGroup>
 
   <ItemGroup>
