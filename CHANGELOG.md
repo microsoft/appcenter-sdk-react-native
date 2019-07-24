@@ -1,10 +1,27 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.2.0 (Active Development)
+## Version 2.2.0
 
 ### App Center
 
 * **[Feature]** Support React Native 0.60.0.
+
+#### Android
+
+* **[Fix]** Remove unsecure UUID fallback when UUID generation theorically fails, in reality it never fails.
+* **[Fix]** Check for running in App Center Test will now work when using AndroidX instead of the support library.
+* **[Feature]** Add `AppCenter.isRunningInAppCenterTestCloud` to provide method to check if the application is running in Test Cloud.
+
+#### iOS
+
+* **[Feature]** Add `isRunningInAppCenterTestCloud` in `MSAppCenter` to provide method to check if the application is running in Test Cloud.
+* **[Fix]** Drop and recreate the database when it is corrupted.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** The in memory cache of error reports is now cleared when disabling Crashes.
 
 ### App Center Auth
 
