@@ -28,6 +28,8 @@ namespace Contoso.WPF.Puppet
 
         private string textAttachments;
 
+        private const string SaveCountryCodeLabelText = "Country code update. Please close the application completely and relaunch it.";
+
         private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
             new Dictionary<LogLevel, Action<string, string>>
             {
@@ -120,23 +122,25 @@ namespace Contoso.WPF.Puppet
             }
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
-               CountryCodeText.Text = "";
-                AppCenter.SetCountryCode(null);
+                CountryCodeText.Text = "";
             }
             else
             {
-                CountryCodeText.Text = string.IsNullOrEmpty(Settings.Default.CountryCode) 
-                    ? RegionInfo.CurrentRegion.TwoLetterISORegionName 
-                    : Settings.Default.CountryCode;
-                AppCenter.SetCountryCode(CountryCodeText.Text);
+                if (string.IsNullOrEmpty(Settings.Default.CountryCode))
+                {
+                    CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                }
+                else
+                {
+                    CountryCodeText.Text = Settings.Default.CountryCode;
+                }
             }
-            Settings.Default.CountryCode = CountryCodeText.Text;
-            Settings.Default.Save();
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
+            InfoLable.Text = SaveCountryCodeLabelText;
             Settings.Default.CountryCode = CountryCodeText.Text;
             Settings.Default.Save();
             AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
