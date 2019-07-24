@@ -23,10 +23,7 @@ namespace Contoso.WPF.Puppet
         {
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
-            if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
-            {
-                AppCenter.SetCountryCode(Settings.Default.CountryCode);
-            }
+            AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);
 
             // User callbacks.
             Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;

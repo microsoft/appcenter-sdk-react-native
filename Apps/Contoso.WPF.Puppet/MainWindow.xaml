@@ -125,7 +125,7 @@
                                 </DockPanel>
                             </StackPanel>
                             <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
-                            <TextBlock Foreground="Red" Name="InfoLable" TextWrapping="Wrap"/>
+                            <TextBlock Visibility="Collapsed" Foreground="Red" Name="InfoLable" TextWrapping="Wrap">Country code update. Please close the application completely and relaunch it.</TextBlock>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
