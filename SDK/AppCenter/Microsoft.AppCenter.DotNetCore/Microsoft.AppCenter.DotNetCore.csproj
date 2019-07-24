@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>Microsoft.AppCenter</RootNamespace>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Version>2.2.2-SNAPSHOT</Version>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>2.2.2.0</FileVersion>
+  </PropertyGroup>
+
+  <Import Project="..\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="6.0.1" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.3.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0-preview7.19362.9" />
+    <PackageReference Include="System.Management" Version="4.6.0-preview7.19362.9" />
+  </ItemGroup>
+
+</Project>
