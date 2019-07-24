@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj" />
-    <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj" />
-    <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj" />
+    <ProjectReference Include="..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj" />
+    <ProjectReference Include="..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj" />
+    <ProjectReference Include="..\..\SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj" />
   </ItemGroup>
 
   <ItemGroup>
