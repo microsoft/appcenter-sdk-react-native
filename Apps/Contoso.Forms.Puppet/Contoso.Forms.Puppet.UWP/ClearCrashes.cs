@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Puppet.UWP;
+﻿
+using Contoso.Forms.Puppet.UWP;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(ClearCrashes))]
