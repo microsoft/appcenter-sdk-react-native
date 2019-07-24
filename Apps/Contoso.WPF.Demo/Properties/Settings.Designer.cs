@@ -46,5 +46,17 @@ namespace Contoso.WPF.Demo.Properties {
                 this["FileErrorAttachments"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CountryCode {
+            get {
+                return ((string)(this["CountryCode"]));
+            }
+            set {
+                this["CountryCode"] = value;
+            }
+        }
     }
 }
