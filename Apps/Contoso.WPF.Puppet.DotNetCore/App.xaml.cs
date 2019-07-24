@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Web;
 using System.Windows;
-using Contoso.WPF.Puppet.DotNetCore.Properties;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Contoso.WPF.Puppet.DotNetCore
 {
@@ -43,21 +42,24 @@ namespace Contoso.WPF.Puppet.DotNetCore
                 }
 
                 // Binary attachment
-                // TODO GetMimeMapping does not work in dotnet core
-                //if (!string.IsNullOrEmpty(Settings.Default.FileErrorAttachments))
-                //{
-                //    if (File.Exists(Settings.Default.FileErrorAttachments))
-                //    {
-                //        var fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
-                //        var mimeType = MimeMapping.GetMimeMapping(Settings.Default.FileErrorAttachments);
-                //        var fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
-                //        attachments.Add(ErrorAttachmentLog.AttachmentWithBinary(fileContent, fileName, mimeType));
-                //    }
-                //    else
-                //    {
-                //        Settings.Default.FileErrorAttachments = null;
-                //    }
-                //}
+                if (!string.IsNullOrEmpty(Settings.Default.FileErrorAttachments))
+                {
+                    if (File.Exists(Settings.Default.FileErrorAttachments))
+                    {
+                        var fileName = new FileInfo(Settings.Default.FileErrorAttachments).Name;
+                        var provider = new FileExtensionContentTypeProvider();
+                        if (!provider.TryGetContentType(fileName, out var contentType))
+                        {
+                            contentType = "application/octet-stream";
+                        }
+                        var fileContent = File.ReadAllBytes(Settings.Default.FileErrorAttachments);
+                        attachments.Add(ErrorAttachmentLog.AttachmentWithBinary(fileContent, fileName, contentType));
+                    }
+                    else
+                    {
+                        Settings.Default.FileErrorAttachments = null;
+                    }
+                }
 
                 return attachments;
             };
