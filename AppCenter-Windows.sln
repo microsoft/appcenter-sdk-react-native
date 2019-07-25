@@ -123,6 +123,9 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems*{15e3fc9b-7714-4468-a296-81627a5b8f01}*SharedItemsImports = 4
+		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{1e9ec0aa-3e32-4551-80c4-e4f3e53d7590}*SharedItemsImports = 4
+		SDK\AppCenter\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems*{1e9ec0aa-3e32-4551-80c4-e4f3e53d7590}*SharedItemsImports = 4
+		SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Windows.Shared\Microsoft.AppCenter.Analytics.Windows.Shared.projitems*{1f6c139a-29bb-4e74-8df2-f8ccab399a67}*SharedItemsImports = 4
 		SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Windows.Shared\Microsoft.AppCenter.Analytics.Windows.Shared.projitems*{200073bf-fa7e-42af-8ed5-aa50be7c0295}*SharedItemsImports = 4
 		SDK\AppCenterRum\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.projitems*{254d5434-9087-4f05-a43f-23a790e42024}*SharedItemsImports = 4
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}*SharedItemsImports = 4
@@ -149,6 +152,8 @@ Global
 		SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.Windows.Shared\Microsoft.AppCenter.Analytics.Windows.Shared.projitems*{c5dac35e-b902-4e24-a8f7-963ad0f85f7a}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{c6c4937c-d5f4-4e00-8b51-8d826ad83c5e}*SharedItemsImports = 13
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{db5a0b7d-8090-4a0c-97c7-cdf17aacaaf2}*SharedItemsImports = 13
+		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{dc55c086-714d-4e2f-b6ce-3c14bc3b6646}*SharedItemsImports = 4
+		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{dc55c086-714d-4e2f-b6ce-3c14bc3b6646}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
 		SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems*{f707d6cc-e43a-442f-aa38-b913eae3d7c1}*SharedItemsImports = 13
