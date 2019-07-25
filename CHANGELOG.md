@@ -1,6 +1,8 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.2.2-preview (Under active development)
+## Version 2.3.0-preview (Under active development)
+
+This preview version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
 
 ### App Center Analytics
 
@@ -8,10 +10,15 @@
 
 * **[Fix]** Fix reporting the incorrect device models when a placeholder was used in some cases.
 
+#### WPF/WinForms
+
+* **[Feature]** Add support for .NET Core 3.0 applications.
+
 ### App Center Crashes
 
 #### WPF/WinForms
 
+* **[Feature]** Add support for .NET Core 3.0 applications.
 * **[Fix]** Wait to finish processing files before deleting files when calling `SetEnabledAsync(false)` during processing.
 ___
 
