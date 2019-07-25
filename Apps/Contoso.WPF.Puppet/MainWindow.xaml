@@ -117,12 +117,15 @@
                 <StackPanel>
                     <CheckBox Name="CountryCodeEnableCheckbox" Content="Country Code Enabled" Margin="0,10,0,10" Checked="CountryCodeEnabled_Checked" Unchecked="CountryCodeEnabled_Checked"/>
                     <GroupBox Header="Country code">
-                        <StackPanel IsEnabled="False" Name="CountryCodePanel">
-                            <DockPanel LastChildFill="True">
-                                <Label Name="CountryCodeLabel">Country code</Label>
-                                <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>
-                            </DockPanel>
+                        <StackPanel>
+                            <StackPanel IsEnabled="False" Name="CountryCodePanel">
+                                <DockPanel LastChildFill="True">
+                                    <Label Name="CountryCodeLabel">Country code</Label>
+                                    <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>
+                                </DockPanel>
+                            </StackPanel>
                             <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
+                            <TextBlock Visibility="Collapsed" Foreground="Red" Name="InfoLable" TextWrapping="Wrap">Country code has been updated. This value will only be applied to the following sessions.</TextBlock>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
