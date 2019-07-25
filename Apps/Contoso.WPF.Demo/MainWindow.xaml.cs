@@ -141,6 +141,7 @@ namespace Contoso.WPF.Demo
             InfoLable.Visibility = Visibility.Visible;
             Settings.Default.CountryCode = CountryCodeText.Text;
             Settings.Default.Save();
+            AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);
         }
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
