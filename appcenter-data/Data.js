@@ -19,12 +19,33 @@ const DefaultPartitions = {
 const Data = {
     TimeToLive,
     DefaultPartitions,
+    isEnabled,
+    setEnabled,
     read,
     list,
     create,
     remove,
     replace
 };
+
+/**
+ * Check whether Data service is enabled or not.
+ *
+ * @return Future asynchronous operation with result being true if enabled, false otherwise.
+ */
+function isEnabled() {
+    return AppCenterReactNativeData.isEnabled();
+}
+
+/**
+ * Enable or disable Data service.
+ *
+ * @param {boolean} enabled - true to enable, false to disable.
+ * @return Future asynchronous operation with null result to monitor when the operation completes.
+ */
+function setEnabled(enabled) {
+    return AppCenterReactNativeData.setEnabled(enabled);
+}
 
 /**
  * Read a document.
@@ -97,7 +118,7 @@ function remove(documentId, partition, writeOptions) {
     if (writeOptions === undefined) {
         writeOptions = new Data.WriteOptions(TimeToLive.DEFAULT);
     }
-    return AppCenterReactNativeData.remove(documentId, partition, writeOptions);
+    return AppCenterReactNativeData.remove(documentId, partition, writeOptions).then(convertTimestampToDate);
 }
 
 /**
