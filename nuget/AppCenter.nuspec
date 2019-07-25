@@ -56,5 +56,9 @@
     <!-- Windows Classic Desktop (WPF and WinForms) -->
     <file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" />
     <file src="$windows_desktop_dir$/Microsoft.AppCenter.xml" target="lib/net45" />
+
+    <!-- WindowsDesktop (WPF and WinForms) for .NET Core -->
+    <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.dll" target="lib/netcoreapp3.0" />
+    <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.xml" target="lib/netcoreapp3.0" />
   </files>
 </package>

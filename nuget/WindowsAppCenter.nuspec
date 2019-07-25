@@ -32,8 +32,12 @@
     <file src="$uwp_dir$/Microsoft.AppCenter.dll" target="lib/uap10.0" />
     <file src="$uwp_dir$/Microsoft.AppCenter.xml" target="lib/uap10.0" />
 
-    <!-- WindowsDesktop (WPF and WinForms) -->
+    <!-- WindowsDesktop (WPF and WinForms) for .NET Framework -->
     <file src="$windows_desktop_dir$/Microsoft.AppCenter.dll" target="lib/net45" />
     <file src="$windows_desktop_dir$/Microsoft.AppCenter.xml" target="lib/net45" />
+
+    <!-- WindowsDesktop (WPF and WinForms) for .NET Core -->
+    <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.dll" target="lib/netcoreapp3.0" />
+    <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.xml" target="lib/netcoreapp3.0" />
   </files>
 </package>

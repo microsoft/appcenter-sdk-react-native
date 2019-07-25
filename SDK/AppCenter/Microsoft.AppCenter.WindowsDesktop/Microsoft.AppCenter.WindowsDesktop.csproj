@@ -7,6 +7,8 @@
     <Version>2.2.2-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>2.2.2.0</FileVersion>
+    <AssemblyName>Microsoft.AppCenter</AssemblyName>
+    <DocumentationFile>bin\Microsoft.AppCenter.xml</DocumentationFile>
   </PropertyGroup>
 
   <Import Project="..\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems" Label="Shared" />

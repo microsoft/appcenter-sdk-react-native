@@ -6,6 +6,8 @@
     <Version>2.2.2-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>2.2.2.0</FileVersion>
+    <AssemblyName>Microsoft.AppCenter.Analytics</AssemblyName>
+    <DocumentationFile>bin\Microsoft.AppCenter.Analytics.xml</DocumentationFile>
   </PropertyGroup>
 
   <Import Project="..\Microsoft.AppCenter.Analytics.Windows.Shared\Microsoft.AppCenter.Analytics.Windows.Shared.projitems" Label="Shared" />
