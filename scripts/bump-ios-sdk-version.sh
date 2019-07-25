@@ -34,7 +34,7 @@ fi
 echo "React-Native iOS version $oldiOSSdkVersion will be updated to $newiOSSdkVersion"
 
 # Update iOS sdk version in postlink.js for appcenter-crashes, appcenter-analytics,
-# appcenter-auth appcenter-push projects appcenter-data
+# appcenter-auth appcenter-push appcenter-data projects
 fileContent="$(cat ./appcenter-crashes/scripts/postlink.js)"
 echo "${fileContent/\'AppCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Crashes', version: '$newiOSSdkVersion'}" > ./appcenter-crashes/scripts/postlink.js
 

@@ -58,7 +58,7 @@ cat ./appcenter/package.json | jq -r '.version = env.newVersion' | jq -r '.depen
 cat ./appcenter-crashes/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-crashes/package.json.temp && mv ./appcenter-crashes/package.json.temp ./appcenter-crashes/package.json 
 cat ./appcenter-analytics/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-analytics/package.json.temp && mv ./appcenter-analytics/package.json.temp ./appcenter-analytics/package.json
 cat ./appcenter-auth/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-auth/package.json.temp && mv ./appcenter-auth/package.json.temp ./appcenter-auth/package.json
-cat ./appcenter-data/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-data/package.json.temp && mv ./appcenter-data/package.json.temp ./appcenter-auth/package.json
+cat ./appcenter-data/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-data/package.json.temp && mv ./appcenter-data/package.json.temp ./appcenter-data/package.json
 cat ./appcenter-push/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-push/package.json.temp && mv ./appcenter-push/package.json.temp ./appcenter-push/package.json
 cat ./appcenter-link-scripts/package.json | jq -r '.version = env.newVersion' > ./appcenter-link-scripts/package.json.temp && mv ./appcenter-link-scripts/package.json.temp ./appcenter-link-scripts/package.json
 
