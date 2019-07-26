@@ -98,7 +98,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    resolve([NSNumber numberWithBool:[MSData isEnabled]]);
+    resolve(@([MSData isEnabled]));
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
