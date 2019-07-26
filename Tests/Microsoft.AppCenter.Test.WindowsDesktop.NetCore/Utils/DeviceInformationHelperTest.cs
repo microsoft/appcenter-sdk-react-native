@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
         public void VerifySdkName()
         {
             var device = Task.Run(() => new DeviceInformationHelper().GetDeviceInformationAsync()).Result;
-            Assert.Equal("appcenter.winforms", device.SdkName);
+            Assert.Equal("appcenter.wpf.netcore", device.SdkName);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Microsoft.AppCenter.Utils
         private readonly object configLock = new object();
         private IDictionary<string, string> current;
 
+        internal string FilePath { get; private set; }
+
         public DefaultApplicationSettings()
         {
             current = ReadAll();
@@ -80,17 +82,17 @@ namespace Microsoft.AppCenter.Utils
             }
         }
 
-        private static IDictionary<string, string> ReadAll()
+        private IDictionary<string, string> ReadAll()
         {
             var config = OpenConfiguration();
             return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
-        private static Configuration OpenConfiguration()
+        private Configuration OpenConfiguration()
         {
             var location = Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
-            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = path };
+            FilePath = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
+            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = FilePath };
             return ConfigurationManager.OpenMappedExeConfiguration(executionFileMap, ConfigurationUserLevel.None);
         }
     }
