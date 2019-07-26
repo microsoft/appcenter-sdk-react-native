@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
 
         public void Dispose()
         {
-            File.Delete(_settings.FilePath);
+            File.Delete(DefaultApplicationSettings.FilePath);
         }
 
         /// <summary>
@@ -45,9 +45,8 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             const string key = "test";
             Assert.False(_settings.ContainsKey(key));
             Assert.Equal(42, _settings.GetValue(key, 42));
-            Assert.True(_settings.ContainsKey(key));
-            Assert.Equal(42, _settings.GetValue<int>(key));
-            Assert.Equal(42, _settings.GetValue(key, 0));
+            Assert.Equal(0, _settings.GetValue<int>(key));
+            Assert.Equal(0, _settings.GetValue(key, 0));
         }
 
         /// <summary>

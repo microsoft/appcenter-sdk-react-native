@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -12,16 +13,16 @@ namespace Microsoft.AppCenter.Utils
 {
     public class DefaultApplicationSettings : IApplicationSettings
     {
-        private readonly object configLock = new object();
-        private IDictionary<string, string> current;
+        private static readonly object configLock = new object();
+        private static IDictionary<string, string> current;
 
-        internal string FilePath { get; private set; }
+        internal static string FilePath { get; private set; }
 
         public DefaultApplicationSettings()
         {
             current = ReadAll();
         }
-        
+
         public T GetValue<T>(string key, T defaultValue = default(T))
         {
             lock (configLock)
@@ -31,7 +32,6 @@ namespace Microsoft.AppCenter.Utils
                     return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
                 }
             }
-            SetValue(key, defaultValue);
             return defaultValue;
         }
 
@@ -82,13 +82,13 @@ namespace Microsoft.AppCenter.Utils
             }
         }
 
-        private IDictionary<string, string> ReadAll()
+        private static IDictionary<string, string> ReadAll()
         {
             var config = OpenConfiguration();
             return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
-        private Configuration OpenConfiguration()
+        private static Configuration OpenConfiguration()
         {
             var location = Assembly.GetExecutingAssembly().Location;
             FilePath = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
