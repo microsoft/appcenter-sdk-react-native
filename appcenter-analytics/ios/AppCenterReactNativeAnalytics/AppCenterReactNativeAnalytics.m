@@ -59,7 +59,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                    rejecter:(RCTPromiseRejectBlock)reject) {
-  resolve([NSNumber numberWithBool:[MSAnalytics isEnabled]]);
+  resolve(@([MSAnalytics isEnabled]));
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable 

@@ -127,7 +127,7 @@ RCT_EXPORT_METHOD(isDebuggerAttached:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[MSCrashes isEnabled]]);
+    resolve(@([MSCrashes isEnabled]));
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
