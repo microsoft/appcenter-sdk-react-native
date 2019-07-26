@@ -81,11 +81,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Rum.UWP
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Rum.Windows.Shared", "SDK\AppCenterRum\Microsoft.AppCenter.Rum.Windows.Shared\Microsoft.AppCenter.Rum.Windows.Shared.shproj", "{7EEA1E57-8244-42A4-AA3E-CFB995E86467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.WindowsDesktop", "SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj", "{1E9EC0AA-3E32-4551-80C4-E4F3E53D7590}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.WindowsDesktop", "SDK\AppCenter\Microsoft.AppCenter.WindowsDesktop\Microsoft.AppCenter.WindowsDesktop.csproj", "{1E9EC0AA-3E32-4551-80C4-E4F3E53D7590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Analytics.WindowsDesktop", "SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj", "{1F6C139A-29BB-4E74-8DF2-F8CCAB399A67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Analytics.WindowsDesktop", "SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics.WindowsDesktop\Microsoft.AppCenter.Analytics.WindowsDesktop.csproj", "{1F6C139A-29BB-4E74-8DF2-F8CCAB399A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Crashes.WindowsDesktop", "SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj", "{DC55C086-714D-4E2F-B6CE-3C14BC3B6646}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Crashes.WindowsDesktop", "SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.WindowsDesktop\Microsoft.AppCenter.Crashes.WindowsDesktop.csproj", "{DC55C086-714D-4E2F-B6CE-3C14BC3B6646}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Crashes.Windows.Shared", "SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.shproj", "{3F190EDF-F524-4B8D-9031-CD7B045EB6A5}"
 EndProject
@@ -119,7 +119,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.WPF.Puppet", "Apps\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.WPF.Puppet.DotNetCore", "Apps\Contoso.WPF.Puppet.DotNetCore\Contoso.WPF.Puppet.DotNetCore.csproj", "{2A33F9A9-0E74-4CA3-B930-A7E153D54252}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.WinForms.Puppet.DotNetCore", "Apps\Contoso.WinForms.Puppet.DotNetCore\Contoso.WinForms.Puppet.DotNetCore.csproj", "{B63D59B2-278C-431E-B136-B1144092B436}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.WinForms.Puppet.DotNetCore", "Apps\Contoso.WinForms.Puppet.DotNetCore\Contoso.WinForms.Puppet.DotNetCore.csproj", "{B63D59B2-278C-431E-B136-B1144092B436}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.WPF.Demo.DotNetCore", "Apps\Contoso.WPF.Demo.DotNetCore\Contoso.WPF.Demo.DotNetCore.csproj", "{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -1022,6 +1024,30 @@ Global
 		{B63D59B2-278C-431E-B136-B1144092B436}.Release|x64.Build.0 = Release|Any CPU
 		{B63D59B2-278C-431E-B136-B1144092B436}.Release|x86.ActiveCfg = Release|Any CPU
 		{B63D59B2-278C-431E-B136-B1144092B436}.Release|x86.Build.0 = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|x64.Build.0 = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Debug|x86.Build.0 = Debug|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|ARM.Build.0 = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|iPhone.Build.0 = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|x64.ActiveCfg = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|x64.Build.0 = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|x86.ActiveCfg = Release|Any CPU
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1083,6 +1109,7 @@ Global
 		{951ABE8D-7AF6-4162-8639-E78B022B1048} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 		{2A33F9A9-0E74-4CA3-B930-A7E153D54252} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 		{B63D59B2-278C-431E-B136-B1144092B436} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
+		{5BFC9B9D-FD5B-4BFB-8079-DD7A686B1FEE} = {AA6821F3-930A-49E4-BA3F-D68255F39F1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {328868E2-F749-412D-B82F-84A683A1719C}
