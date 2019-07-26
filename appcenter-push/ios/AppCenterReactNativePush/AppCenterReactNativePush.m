@@ -93,7 +93,7 @@ RCT_EXPORT_MODULE();
 }
 
 RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  resolve([NSNumber numberWithBool:[MSPush isEnabled]]);
+  resolve(@([MSPush isEnabled]));
 }
 
 RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
