@@ -77,9 +77,8 @@ namespace Contoso.WPF.Puppet
 
         private void AnalyticsEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            var isAppCenterEnabled = AppCenterEnabled.IsChecked.Value;
-            AnalyticsEnabled.IsEnabled = isAppCenterEnabled;
-            if (AnalyticsEnabled.IsChecked.HasValue && isAppCenterEnabled)
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            if (AnalyticsEnabled.IsChecked.HasValue)
             {
                 Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
             }
@@ -180,9 +179,8 @@ namespace Contoso.WPF.Puppet
 
         private void CrashesEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            var isAppCenterEnabled = AppCenterEnabled.IsChecked.Value;
-            CrashesEnabled.IsEnabled = isAppCenterEnabled;
-            if (CrashesEnabled.IsChecked.HasValue && isAppCenterEnabled)
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            if (CrashesEnabled.IsChecked.HasValue)
             {
                 Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
             }
