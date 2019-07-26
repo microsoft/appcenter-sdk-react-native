@@ -63,6 +63,8 @@ namespace Contoso.WPF.Puppet
             AppCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
             CrashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
             AnalyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
         }
 
         private void AppCenterEnabled_Checked(object sender, RoutedEventArgs e)
@@ -75,10 +77,8 @@ namespace Contoso.WPF.Puppet
 
         private void AnalyticsEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (AnalyticsEnabled.IsChecked.HasValue)
-            {
-                Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
-            }
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
         }
 
         private void AppCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
@@ -176,10 +176,8 @@ namespace Contoso.WPF.Puppet
 
         private void CrashesEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (CrashesEnabled.IsChecked.HasValue)
-            {
-                Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
-            }
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
         }
 
         public class NonSerializableException : Exception

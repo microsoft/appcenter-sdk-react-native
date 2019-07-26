@@ -36,6 +36,8 @@ namespace Contoso.WinForms.Puppet
             AppCenterEnabled.Checked = AppCenter.IsEnabledAsync().Result;
             AnalyticsEnabled.Checked = Analytics.IsEnabledAsync().Result;
             CrashesEnabled.Checked = Crashes.IsEnabledAsync().Result;
+            AnalyticsEnabled.Enabled = AppCenterEnabled.Checked;
+            CrashesEnabled.Enabled = AppCenterEnabled.Checked;
         }
 
         private void AppCenterEnabled_CheckedChanged(object sender, EventArgs e)
@@ -45,6 +47,7 @@ namespace Contoso.WinForms.Puppet
 
         private void AnalyticsEnabled_CheckedChanged(object sender, EventArgs e)
         {
+            AnalyticsEnabled.Enabled = AppCenterEnabled.Checked;
             Analytics.SetEnabledAsync(AnalyticsEnabled.Checked).Wait();
         }
 
@@ -89,6 +92,7 @@ namespace Contoso.WinForms.Puppet
 
         private async void CrashesEnabled_CheckedChanged(object sender, EventArgs e)
         {
+            CrashesEnabled.Enabled = AppCenterEnabled.Checked;
             await Crashes.SetEnabledAsync(CrashesEnabled.Checked);
         }
 
