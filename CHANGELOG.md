@@ -9,7 +9,6 @@
 #### Android
 
 * **[Fix]** Remove unsecure UUID fallback when UUID generation theorically fails, in reality it never fails.
-* **[Fix]** Check for running in App Center Test will now work when using AndroidX instead of the support library.
 
 #### iOS
 
