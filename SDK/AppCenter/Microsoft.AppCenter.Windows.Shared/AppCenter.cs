@@ -147,7 +147,16 @@ namespace Microsoft.AppCenter
 
         static Task<Guid?> PlatformGetInstallIdAsync()
         {
-            return Task.FromResult((Guid?)Instance._applicationSettings.GetValue(InstallIdKey, Guid.NewGuid()));
+            lock (AppCenterLock)
+            {
+                var value = Instance._applicationSettings.GetValue<Guid?>(InstallIdKey);
+                if (value == null)
+                {
+                    value = Guid.NewGuid();
+                    Instance._applicationSettings.SetValue(InstallIdKey, value);
+                }
+                return Task.FromResult(value);
+            }
         }
 
         static void PlatformSetLogUrl(string logUrl)
