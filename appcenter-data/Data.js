@@ -151,10 +151,15 @@ Data.WriteOptions = class {
 };
 
 function convertTimestampToDate(result) {
-    if (result && result.lastUpdatedDate) {
+    if (!result) {
+        return result;
+    } else if (result.lastUpdatedDate) {
         // Create a new `Date` object from timestamp as milliseconds.
         result.lastUpdatedDate = new Date(result.lastUpdatedDate);
+    } else {
+        result.lastUpdatedDate = null;
     }
+
     return result;
 }
 

@@ -25,8 +25,8 @@ export class WriteOptions {
 export interface DocumentWrapper {
     deserializedValue: object | null;
     eTag: string | null;
-    id: string | null;
-    isFromDeviceCache: boolean | null;
+    id: string;
+    isFromDeviceCache: boolean;
     jsonValue: string | null;
     lastUpdatedDate: Date | null;
     partition: string | null;
