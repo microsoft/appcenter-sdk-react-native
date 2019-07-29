@@ -159,7 +159,6 @@ function convertTimestampToDate(result) {
     } else {
         result.lastUpdatedDate = null;
     }
-
     return result;
 }
 
