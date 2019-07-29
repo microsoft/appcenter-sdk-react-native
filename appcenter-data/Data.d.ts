@@ -23,13 +23,13 @@ export class WriteOptions {
 }
 
 export interface DocumentWrapper {
-    deserializedValue: object;
-    eTag: string;
-    id: string;
-    isFromDeviceCache: boolean;
-    jsonValue: string;
-    lastUpdatedDate: Date;
-    partition: string;
+    deserializedValue: object | null;
+    eTag: string | null;
+    id: string | null;
+    isFromDeviceCache: boolean | null;
+    jsonValue: string | null;
+    lastUpdatedDate: Date | null;
+    partition: string | null;
 }
 
 export interface PaginatedDocuments {
