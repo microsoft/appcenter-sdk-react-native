@@ -18,7 +18,11 @@ namespace Microsoft.AppCenter.Utils
     {
         protected override string GetSdkName()
         {
-            return WpfHelper.IsRunningOnWpf ? "appcenter.wpf" : "appcenter.winforms";
+            var sdkName = WpfHelper.IsRunningOnWpf ? "appcenter.wpf" : "appcenter.winforms";
+#if NETCOREAPP3_0
+            sdkName = $"{sdkName}.netcore";
+#endif
+            return sdkName;
         }
 
         protected override string GetDeviceModel()

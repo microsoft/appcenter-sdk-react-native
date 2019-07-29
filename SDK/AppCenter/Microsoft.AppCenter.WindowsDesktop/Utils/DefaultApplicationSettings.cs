@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -12,14 +13,16 @@ namespace Microsoft.AppCenter.Utils
 {
     public class DefaultApplicationSettings : IApplicationSettings
     {
-        private readonly object configLock = new object();
-        private IDictionary<string, string> current;
+        private static readonly object configLock = new object();
+        private static IDictionary<string, string> current;
+
+        internal static string FilePath { get; private set; }
 
         public DefaultApplicationSettings()
         {
             current = ReadAll();
         }
-        
+
         public T GetValue<T>(string key, T defaultValue = default(T))
         {
             lock (configLock)
@@ -29,7 +32,6 @@ namespace Microsoft.AppCenter.Utils
                     return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
                 }
             }
-            SetValue(key, defaultValue);
             return defaultValue;
         }
 
@@ -89,8 +91,8 @@ namespace Microsoft.AppCenter.Utils
         private static Configuration OpenConfiguration()
         {
             var location = Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
-            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = path };
+            FilePath = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
+            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = FilePath };
             return ConfigurationManager.OpenMappedExeConfiguration(executionFileMap, ConfigurationUserLevel.None);
         }
     }

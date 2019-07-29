@@ -244,20 +244,37 @@ namespace Microsoft.AppCenter.Test
         /// Verify that install id comes from settings and is not null
         /// </summary>
         [TestMethod]
-        public void GetInstallId()
+        public void GetExistingInstallId()
         {
             AppCenter.Configure("appsecret");
 
             var fakeInstallId = Guid.NewGuid();
             _settingsMock.ResetCalls();
-            _settingsMock.Setup(settings => settings.GetValue(AppCenter.InstallIdKey, It.IsAny<Guid>())).Returns(fakeInstallId);
+            _settingsMock.Setup(settings => settings.GetValue(AppCenter.InstallIdKey, default(Guid?))).Returns(fakeInstallId);
 
             var installId = AppCenter.GetInstallIdAsync().Result;
 
             Assert.IsTrue(installId.HasValue);
             Assert.AreEqual(installId.Value, fakeInstallId);
-            _settingsMock.Verify(settings => settings.GetValue(AppCenter.InstallIdKey, It.IsAny<Guid>()),
+            _settingsMock.Verify(settings => settings.GetValue(AppCenter.InstallIdKey, default(Guid?)),
                 Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that install id is generated and saved if not existing.
+        /// </summary>
+        [TestMethod]
+        public void GetNewInstallId()
+        {
+            AppCenter.Configure("appsecret");
+
+            _settingsMock.ResetCalls();
+
+            var installId = AppCenter.GetInstallIdAsync().Result;
+
+            Assert.IsTrue(installId.HasValue);
+            Assert.IsNotNull(installId.Value);
+            _settingsMock.Verify(settings => settings.SetValue(AppCenter.InstallIdKey, It.IsNotNull<Guid?>()), Times.Once());
         }
 
         /// <summary>

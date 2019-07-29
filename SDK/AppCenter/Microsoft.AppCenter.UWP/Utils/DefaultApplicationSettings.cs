@@ -15,7 +15,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return (T)result;
             }
-            SetValue(key, defaultValue);
             return defaultValue;
         }
 
