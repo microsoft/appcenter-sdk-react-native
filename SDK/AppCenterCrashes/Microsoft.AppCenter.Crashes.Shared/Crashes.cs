@@ -100,6 +100,15 @@ namespace Microsoft.AppCenter.Crashes
         }
 
         /// <summary>
+        /// Provides information whether the memory warning in its last session.
+        /// </summary>
+        /// <value> Task with result being <c>true</c> if a memory warning was recorded in the last session, otherwise </value>
+        public static Task<bool> HasReceivedMemoryWarningInLastSessionAsync()
+        {
+            return PlatformHasReceivedMemoryWarningInLastSessionAsync();
+        }
+
+        /// <summary>
         /// Generates crash for testing purposes.
         /// </summary>
         /// <remarks>
