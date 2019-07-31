@@ -150,16 +150,14 @@ Data.WriteOptions = class {
     }
 };
 
-function convertTimestampToDate(result) {
-    if (!result) {
-        return result;
-    } else if (result.lastUpdatedDate) {
+function convertTimestampToDate(documentWrapper) {
+    if (documentWrapper.lastUpdatedDate) {
         // Create a new `Date` object from timestamp as milliseconds.
-        result.lastUpdatedDate = new Date(result.lastUpdatedDate);
+        documentWrapper.lastUpdatedDate = new Date(documentWrapper.lastUpdatedDate);
     } else {
-        result.lastUpdatedDate = null;
+        documentWrapper.lastUpdatedDate = null;
     }
-    return result;
+    return documentWrapper;
 }
 
 module.exports = Data;
