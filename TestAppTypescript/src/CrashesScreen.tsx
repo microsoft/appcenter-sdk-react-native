@@ -113,7 +113,7 @@ export default class CrashesScreen extends Component<
             <Text style={styles.button}>Crash native code</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.generateOOM}>
-            <Text style={styles.button}>Generate Out of Memory</Text>
+            <Text style={styles.button}>Generate low memory warning</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {

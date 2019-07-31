@@ -144,7 +144,7 @@ export default class CrashesScreen extends Component {
                   action: this.nativeCrash
                 },
                 {
-                  title: 'Generate Out of Memory',
+                  title: 'Generate low memory warning',
                   action: this.generateOOM
                 },
                 {
