@@ -56,6 +56,7 @@ export interface ErrorReport {
 
 export function generateTestCrash(): Promise<void>;
 export function hasCrashedInLastSession(): Promise<boolean>;
+export function hasReceivedMemoryWarningInLastSession(): Promise<boolean>;
 export function lastSessionCrashReport(): Promise<ErrorReport>;
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(shouldEnable: boolean): Promise<void>;

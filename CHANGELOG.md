@@ -1,5 +1,11 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.2.1
+
+### App Center
+
+* **[Feature]** Added `hasReceivedMemoryWarningInLastSession` API.
+
 ## Version 2.2.0
 
 ### App Center
