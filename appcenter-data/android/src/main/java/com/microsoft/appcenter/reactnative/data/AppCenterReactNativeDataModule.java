@@ -157,12 +157,12 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     @ReactMethod
     public void getNextPage(String paginatedDocumentsId, final Promise promise) {
-        PaginatedDocuments<JsonElement> paginatedDocuments = mPaginatedDocuments.get(paginatedDocumentsId);
-        if (paginatedDocuments == null || !paginatedDocuments.hasNextPage()) {
+        if (!mPaginatedDocuments.containsKey(paginatedDocumentsId) || mPaginatedDocuments.get(paginatedDocumentsId) == null) {
             close(paginatedDocumentsId);
-            promise.resolve(null);
+            promise.reject(LIST_FAILED_ERROR_CODE, "No additional pages available");
             return;
         }
+        PaginatedDocuments<JsonElement> paginatedDocuments = mPaginatedDocuments.get(paginatedDocumentsId);
         paginatedDocuments.getNextPage().thenAccept(new AppCenterConsumer<Page<JsonElement>>() {
 
             @Override
