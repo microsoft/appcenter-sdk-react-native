@@ -155,6 +155,7 @@ function convertTimestampToDate(documentWrapper) {
         // Create a new `Date` object from timestamp as milliseconds.
         documentWrapper.lastUpdatedDate = new Date(documentWrapper.lastUpdatedDate);
     } else {
+        // If the last updated date is 0, don't convert to January 1st 1970 UTC. Delete operation returns a timestamp of 0.
         documentWrapper.lastUpdatedDate = null;
     }
     return documentWrapper;
