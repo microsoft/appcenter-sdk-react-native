@@ -146,9 +146,9 @@ RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     MSPaginatedDocuments *paginatedDocuments = _paginatedDocuments[paginatedDocumentsId];
-    if (!paginatedDocuments || ![paginatedDocuments hasNextPage]) {
+    if (!paginatedDocuments) {
         [self close:paginatedDocumentsId];
-        resolve(nil);
+        reject(kMSListFailedErrorCode, @"No additional pages available", nil);
         return;
     }
     [paginatedDocuments nextPageWithCompletionHandler:^(MSPage* _Nonnull page) {
