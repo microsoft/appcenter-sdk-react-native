@@ -28,6 +28,7 @@ export default class CrashesScreen extends Component {
   state = {
     crashesEnabled: false,
     lastSessionStatus: '',
+    memoryWarning: '',
     textAttachment: '',
     binaryAttachment: '',
     userId: ''
@@ -39,6 +40,10 @@ export default class CrashesScreen extends Component {
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
     const lastSessionStatus = crashedInLastSession ? 'Crashed' : 'OK';
     this.setState({ lastSessionStatus });
+
+    const hasReceivedMemoryWarning = await Crashes.hasReceivedMemoryWarningInLastSession();
+    const memoryWarning = hasReceivedMemoryWarning ? 'Received' : 'No';
+    this.setState({ memoryWarning });
 
     const textAttachment = await AttachmentsProvider.getTextAttachment();
     this.setState({ textAttachment });
@@ -67,6 +72,13 @@ export default class CrashesScreen extends Component {
 
     // If the SDK disabled the test crash, use this one.
     await NativeModules.TestAppNative.generateTestCrash();
+  }
+
+  generateOOM(){
+    const array = [];
+    while(true) {
+      array.push('5')
+    }
   }
 
   render() {
@@ -132,6 +144,10 @@ export default class CrashesScreen extends Component {
                   action: this.nativeCrash
                 },
                 {
+                  title: 'Generate Out of Memory',
+                  action: this.generateOOM
+                },
+                {
                   title: 'Select image as binary error attachment',
                   action: this.showFilePicker
                 },
@@ -142,6 +158,7 @@ export default class CrashesScreen extends Component {
               title: 'Miscellaneous',
               data: [
                 { title: 'Last session status', value: 'lastSessionStatus' },
+                { title: 'Memory warning', value: 'memoryWarning' },
                 { title: 'Binary attachment', value: 'binaryAttachment' },
                 {
                   title: 'Text attachment',
