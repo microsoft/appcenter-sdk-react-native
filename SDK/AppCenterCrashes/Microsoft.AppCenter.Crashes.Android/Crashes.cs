@@ -82,7 +82,7 @@ namespace Microsoft.AppCenter.Crashes
 
         static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
         {
-            var future = AndroidCrashes.HasReceivedMemoryWarningInLastSessionAsync();
+            var future = AndroidCrashes.HasReceivedMemoryWarningInLastSession();
             return Task.Run(() => (bool)future.Get());
         }
 
