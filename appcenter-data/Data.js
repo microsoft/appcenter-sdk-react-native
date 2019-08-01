@@ -150,12 +150,15 @@ Data.WriteOptions = class {
     }
 };
 
-function convertTimestampToDate(result) {
-    if (result && result.lastUpdatedDate) {
+function convertTimestampToDate(documentWrapper) {
+    if (documentWrapper.lastUpdatedDate) {
         // Create a new `Date` object from timestamp as milliseconds.
-        result.lastUpdatedDate = new Date(result.lastUpdatedDate);
+        documentWrapper.lastUpdatedDate = new Date(documentWrapper.lastUpdatedDate);
+    } else {
+        // If the last updated date is 0, don't convert to January 1st 1970 UTC. Delete operation returns a timestamp of 0.
+        documentWrapper.lastUpdatedDate = null;
     }
-    return result;
+    return documentWrapper;
 }
 
 module.exports = Data;

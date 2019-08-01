@@ -158,9 +158,9 @@ RCT_EXPORT_METHOD(getNextPage:(NSString *)paginatedDocumentsId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     MSPaginatedDocuments *paginatedDocuments = _paginatedDocuments[paginatedDocumentsId];
-    if (!paginatedDocuments || ![paginatedDocuments hasNextPage]) {
+    if (!paginatedDocuments) {
         [self close:paginatedDocumentsId];
-        resolve(nil);
+        reject(kMSListFailedErrorCode, @"No additional pages available", nil);
         return;
     }
     [paginatedDocuments nextPageWithCompletionHandler:^(MSPage* _Nonnull page) {
@@ -244,7 +244,7 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
     jsDocumentWrapper[kMSETagKey] = document.eTag ? document.eTag : [NSNull null];
     jsDocumentWrapper[kMSIDKey] = document.documentId ? document.documentId : [NSNull null];
     jsDocumentWrapper[kMSPartitionKey] = document.partition ? document.partition : [NSNull null];
-    jsDocumentWrapper[kMSLastUpdatedDateKey] = @([document.lastUpdatedDate timeIntervalSince1970] * 1000);
+    jsDocumentWrapper[kMSLastUpdatedDateKey] = document.lastUpdatedDate ? @([document.lastUpdatedDate timeIntervalSince1970] * 1000) : [NSNull null];
     jsDocumentWrapper[kMSIsFromDeviceCacheKey] = [NSNumber numberWithBool:document.fromDeviceCache];
     jsDocumentWrapper[kMSjsonValueKey] = document.jsonValue ? document.jsonValue : [NSNull null];
 }
