@@ -219,10 +219,10 @@ namespace Microsoft.AppCenter.Crashes
             return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport>(null);
         }
 
-		private static Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
+		private async Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
 		{
-			return AppCenterTask<bool>.FromCompleted(false);
-		}
+			return await Task.FromResult(false);
+        }
 
 		private Task ProcessPendingErrorsAsync()
         {
