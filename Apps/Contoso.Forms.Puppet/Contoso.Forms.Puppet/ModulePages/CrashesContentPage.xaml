@@ -39,6 +39,17 @@
                 <Button Text="Exception Inside Async Task" InputTransparent="true" Clicked="AsyncException" />
             </ViewCell>
         </TableSection>
+        <TableSection Title="Memory warning">
+            <ViewCell>
+                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                    <Label Text="Has received low memory warning" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    <Label Text="No" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="MemoryWarningLabel"/>
+                </StackLayout>
+            </ViewCell>
+            <ViewCell Tapped="MemoryWarnningTrigger">
+                 <Button Text="Trigger low memory warning" InputTransparent="true" Clicked="MemoryWarnningTrigger" />
+            </ViewCell>
+        </TableSection>
         <TableSection Title="Clear Crash">
             <ViewCell Tapped="ClearCrashUserConfirmation">
                 <Button Text="Clear Crash User Confirmation" InputTransparent="True" Clicked="ClearCrashUserConfirmation"/>
