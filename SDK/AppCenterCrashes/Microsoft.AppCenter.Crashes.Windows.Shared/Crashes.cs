@@ -83,7 +83,12 @@ namespace Microsoft.AppCenter.Crashes
             return Instance.InstanceHasCrashedInLastSessionAsync();
         }
 
-        private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
+		private static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
+		{
+			return Instance.InstanceHasReceivedMemoryWarningInLastSessionAsync();
+		}
+
+		private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
             return Instance.InstanceGetLastSessionCrashReportAsync();
         }
@@ -214,7 +219,12 @@ namespace Microsoft.AppCenter.Crashes
             return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport>(null);
         }
 
-        private Task ProcessPendingErrorsAsync()
+		private async Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
+		{
+			return await Task.FromResult(false);
+        }
+
+		private Task ProcessPendingErrorsAsync()
         {
             return Task.Run(async () =>
             {
