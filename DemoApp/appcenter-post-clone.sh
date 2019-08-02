@@ -9,4 +9,5 @@ git clone https://$USER_ACCOUNT:$ACCESS_TOKEN@msmobilecenter.visualstudio.com/SD
 # There is a bug when trying to do a pod repo add from build agent
 # pod repo add $REPO_NAME https://$USER_ACCOUNT:$ACCESS_TOKEN@msmobilecenter.visualstudio.com/SDK/_git/$REPO_NAME --verbose
 cd $BUILD_REPOSITORY_LOCALPATH
-(cd ios && pod install)
+cd DemoApp/ios
+pod install
