@@ -4,5 +4,8 @@ echo $NPM_RC | base64 --decode > $APPCENTER_SOURCE_DIRECTORY/DemoApp/.npmrc
 # Delete everything except DemoApp folder
 rm -rf ../appcenter* ../AppCenterReactNativeShared ../TestApp34 ../BrownfieldTestApp ../TestApp
 
-pod repo add $REPO_NAME https://$USER_ACCOUNT:$ACCESS_TOKEN@msmobilecenter.visualstudio.com/SDK/_git/$REPO_NAME --verbose
+cd ~/.cocoapods/repos
+git clone https://$USER_ACCOUNT:$ACCESS_TOKEN@msmobilecenter.visualstudio.com/SDK/_git/$REPO_NAME
+# There is a bug when trying to do a pod repo add from build agent
+# pod repo add $REPO_NAME https://$USER_ACCOUNT:$ACCESS_TOKEN@msmobilecenter.visualstudio.com/SDK/_git/$REPO_NAME --verbose
 (cd ios && pod install)
