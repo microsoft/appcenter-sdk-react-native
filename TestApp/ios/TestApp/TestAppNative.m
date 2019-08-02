@@ -20,12 +20,24 @@
 #endif
 
 @interface TestAppNative () <RCTBridgeModule>
+
+@property(atomic, strong) NSMutableArray *dataArray;
+
 @end
 
 @implementation TestAppNative
 
+static int const blockSize = 256 * 1024 * 1024;
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
+
+- (instancetype) init {
+  self = [super init];
+  if (self){
+    self.dataArray = [[NSMutableArray alloc] init];
+  }
+  return self;
+}
 
 RCT_EXPORT_MODULE();
 
@@ -44,6 +56,22 @@ RCT_EXPORT_METHOD(generateTestCrash)
 {
   int* p = 0;
   *p = 0;
+}
+
+RCT_EXPORT_METHOD(produceLowMemoryWarning)
+{
+  [_dataArray addObject:[self create256mbRandomNSData]];
+
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    [self produceLowMemoryWarning];
+  });
+}
+
+-(NSData*)create256mbRandomNSData {
+  void *bytes = malloc(blockSize);
+  NSData *data = [NSData dataWithBytes:bytes length:blockSize];
+  free(bytes);
+  return data;
 }
 
 @end

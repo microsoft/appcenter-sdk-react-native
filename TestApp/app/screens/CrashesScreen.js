@@ -74,11 +74,15 @@ export default class CrashesScreen extends Component {
     await NativeModules.TestAppNative.generateTestCrash();
   }
 
-  generateOOM(){
+  generateLowMemoryWarning(){
     const array = [];
     while(true) {
-      array.push('5')
+      array.push(new ArrayBuffer(128 * 1024 * 1024))
     }
+  }
+
+  async generateNativeLowMemoryWarning(){
+    await NativeModules.TestAppNative.produceLowMemoryWarning();
   }
 
   render() {
@@ -145,7 +149,11 @@ export default class CrashesScreen extends Component {
                 },
                 {
                   title: 'Generate low memory warning',
-                  action: this.generateOOM
+                  action: this.generateLowMemoryWarning
+                },
+                {
+                  title: 'Generate low memory warning from native code',
+                  action: this.generateNativeLowMemoryWarning
                 },
                 {
                   title: 'Select image as binary error attachment',

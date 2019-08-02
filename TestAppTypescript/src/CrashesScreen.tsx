@@ -21,7 +21,6 @@ export default class CrashesScreen extends Component<
   {
     crashesEnabled: boolean;
     lastSessionStatus: string;
-    memoryWarning: string;
     textAttachment: string;
     binaryAttachment: string;
   }
@@ -32,7 +31,6 @@ export default class CrashesScreen extends Component<
     this.state = {
       crashesEnabled: false,
       lastSessionStatus: "",
-      memoryWarning: "",
       textAttachment: "",
       binaryAttachment: ""
     };
@@ -62,10 +60,6 @@ export default class CrashesScreen extends Component<
       component.setState({ lastSessionStatus: status });
     }
 
-    const hasReceivedMemoryWarning = await Crashes.hasReceivedMemoryWarningInLastSession();
-    const memoryWarning = hasReceivedMemoryWarning ? 'Received' : 'No';
-    this.setState({ memoryWarning });
-
     const textAttachmentValue = await AttachmentsProvider.getTextAttachment();
     component.setState({ textAttachment: textAttachmentValue });
 
@@ -88,13 +82,6 @@ export default class CrashesScreen extends Component<
     Crashes.generateTestCrash();
   }
 
-  generateOOM(){
-    const array = [];
-    while(true) {
-      array.push('5')
-    }
-  }
-
   render() {
     return (
       <View style={SharedStyles.container}>
@@ -111,9 +98,6 @@ export default class CrashesScreen extends Component<
           </TouchableOpacity>
           <TouchableOpacity onPress={this.nativeCrash}>
             <Text style={styles.button}>Crash native code</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.generateOOM}>
-            <Text style={styles.button}>Generate low memory warning</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -138,10 +122,6 @@ export default class CrashesScreen extends Component<
           <Text style={styles.lastSessionHeader}>Last session:</Text>
           <Text style={styles.lastSessionInfo}>
             {this.state.lastSessionStatus}
-          </Text>
-          <Text style={styles.lastSessionHeader}>Memory warning:</Text>
-          <Text style={styles.lastSessionInfo}>
-            {this.state.memoryWarning}
           </Text>
         </ScrollView>
         {this.getTextAttachmentDialog()}

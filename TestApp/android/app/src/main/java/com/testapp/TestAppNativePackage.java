@@ -3,8 +3,6 @@
 
 package com.testapp;
 
-import android.content.Context;
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -15,15 +13,9 @@ import java.util.List;
 
 public class TestAppNativePackage implements ReactPackage {
 
-    private final NativeModule mModule;
-
-    TestAppNativePackage(Context context) {
-        mModule = new TestAppNativeModule(context);
-    }
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.singletonList(mModule);
+        return Collections.singletonList(new TestAppNativeModule(reactContext));
     }
 
     @Override
