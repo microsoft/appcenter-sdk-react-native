@@ -261,11 +261,8 @@ namespace Contoso.Forms.Puppet
 
         void MemoryWarnningTrigger(object sender, EventArgs e)
         {
-            var list = new List<byte[]>();
-            while (true)
-            {
-                list.Add(new byte[1024 * 1024 * 128]);
-            }
+            var blockSize = 128 * 1024 * 1024;
+            byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
         }
     }
 }
