@@ -40,22 +40,6 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
         AppCenterReactNativeShared.setAppSecret(secretOverride);
         boolean startAutomaticallyOverride = mSharedPreferences.getBoolean(START_AUTOMATICALLY, true);
         AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
-        context.registerComponentCallbacks(new ComponentCallbacks2() {
-            @Override
-            public void onTrimMemory(int level) {
-                Log.d("TestApp", "onTrimMemory ");
-            }
-
-            @Override
-            public void onConfigurationChanged(Configuration newConfig) {
-
-            }
-
-            @Override
-            public void onLowMemory() {
-                Log.d("TestApp", "onLowMemory ");
-            }
-        });
     }
 
     @Override
