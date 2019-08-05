@@ -47,7 +47,7 @@
                 </StackLayout>
             </ViewCell>
             <ViewCell Tapped="MemoryWarnningTrigger">
-                 <Button Text="Trigger low memory warning" InputTransparent="true" Clicked="MemoryWarnningTrigger" />
+                 <Button Text="Trigger low memory warning" InputTransparent="true" Clicked="MemoryWarningTrigger" />
             </ViewCell>
         </TableSection>
         <TableSection Title="Clear Crash">

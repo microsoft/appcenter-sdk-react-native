@@ -259,7 +259,7 @@ namespace Contoso.Forms.Puppet
             DependencyService.Get<IClearCrashClick>().ClearCrashButton();
         }
 
-        void MemoryWarnningTrigger(object sender, EventArgs e)
+        void MemoryWarningTrigger(object sender, EventArgs e)
         {
             var blockSize = 128 * 1024 * 1024;
             byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
