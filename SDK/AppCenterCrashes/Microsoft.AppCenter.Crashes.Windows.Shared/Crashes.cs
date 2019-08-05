@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.System;
 
 namespace Microsoft.AppCenter.Crashes
 {
@@ -25,7 +27,11 @@ namespace Microsoft.AppCenter.Crashes
 
         private const int MaxAttachmentsPerCrash = 2;
 
+        private static bool HasRecivedMemoryWarning;
+
         internal const string PrefKeyAlwaysSend = Constants.KeyPrefix + "CrashesAlwaysSend";
+
+        internal const string PrefKeyMemoryWarning = Constants.KeyPrefix + "MemoryWarning";
 
         static Crashes()
         {
@@ -139,6 +145,16 @@ namespace Microsoft.AppCenter.Crashes
             _errorReportCache = new ConcurrentDictionary<Guid, ErrorReport>();
         }
 
+        private void MemoryManager_AppMemoryUsageLimitChanging(object sender, object e)
+        {
+            var level = MemoryManager.AppMemoryUsageLevel;
+            if (level == AppMemoryUsageLevel.OverLimit || level == AppMemoryUsageLevel.High)
+            {
+                ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"] = 1;
+                AppCenterLog.Debug(LogTag, "The application received a low memory warning.");
+            }
+        }
+
         /// <summary>
         /// Method that is called to signal start of Crashes service.
         /// </summary>
@@ -168,9 +184,12 @@ namespace Microsoft.AppCenter.Crashes
                     ChannelGroup.SendingLog += ChannelSendingLog;
                     ChannelGroup.SentLog += ChannelSentLog;
                     ChannelGroup.FailedToSendLog += ChannelFailedToSendLog;
+                    MemoryManager.AppMemoryUsageLimitChanging += MemoryManager_AppMemoryUsageLimitChanging;
                 }
                 else if (!enabled)
                 {
+                    MemoryManager.AppMemoryUsageLimitChanging -= MemoryManager_AppMemoryUsageLimitChanging;
+                    ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"] = false;
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
                     if (ChannelGroup != null)
                     {
@@ -221,7 +240,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private async Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
         {
-            return await Task.FromResult(false);
+            return await Task.FromResult(HasRecivedMemoryWarning);
         }
 
         private Task ProcessPendingErrorsAsync()
@@ -279,6 +298,13 @@ namespace Microsoft.AppCenter.Crashes
                         RemoveAllStoredErrorLogFiles(log.Id);
                     }
                 }
+                var memoryWarning = ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"];
+                if (memoryWarning != null)
+                {
+                    HasRecivedMemoryWarning = (memoryWarning as string) == "1" ? true : false;
+                    AppCenterLog.Debug(LogTag, "The application received a low memory warning in the last session.");
+                }
+                ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"] = false;
                 _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
                 await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
             });

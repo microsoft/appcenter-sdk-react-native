@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -19,6 +22,13 @@ namespace Contoso.UWP.Puppet
         {
             this.InitializeComponent();
             Application.Current.UnhandledException += OnUnhandledException;
+            SetMemoryWarning();
+        }
+
+        private async void SetMemoryWarning()
+        {
+            var memoryWarning = await Crashes.HasReceivedMemoryWarningInLastSessionAsync();
+            MemoryWarningTextBlock.Text = memoryWarning ? "Yes" : "No";
         }
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -34,6 +44,11 @@ namespace Contoso.UWP.Puppet
         private void ThrowException(object sender, RoutedEventArgs e)
         {
             throw new Exception();
+        }
+
+        private void HandleMemoryWarning(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
