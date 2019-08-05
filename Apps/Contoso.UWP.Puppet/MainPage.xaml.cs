@@ -48,7 +48,8 @@ namespace Contoso.UWP.Puppet
 
         private void HandleMemoryWarning(object sender, RoutedEventArgs e)
         {
-           
+            var blockSize = 256 * 1024 * 1024;
+            byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
         }
     }
 }

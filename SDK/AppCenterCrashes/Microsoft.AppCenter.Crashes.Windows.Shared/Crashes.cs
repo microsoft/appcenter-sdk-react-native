@@ -145,7 +145,7 @@ namespace Microsoft.AppCenter.Crashes
             _errorReportCache = new ConcurrentDictionary<Guid, ErrorReport>();
         }
 
-        private void MemoryManager_AppMemoryUsageLimitChanging(object sender, object e)
+        private void MemoryManager_AppMemoryUsageIncreased(object sender, object e)
         {
             var level = MemoryManager.AppMemoryUsageLevel;
             if (level == AppMemoryUsageLevel.OverLimit || level == AppMemoryUsageLevel.High)
@@ -184,11 +184,11 @@ namespace Microsoft.AppCenter.Crashes
                     ChannelGroup.SendingLog += ChannelSendingLog;
                     ChannelGroup.SentLog += ChannelSentLog;
                     ChannelGroup.FailedToSendLog += ChannelFailedToSendLog;
-                    MemoryManager.AppMemoryUsageLimitChanging += MemoryManager_AppMemoryUsageLimitChanging;
+                    MemoryManager.AppMemoryUsageIncreased += MemoryManager_AppMemoryUsageIncreased;
                 }
                 else if (!enabled)
                 {
-                    MemoryManager.AppMemoryUsageLimitChanging -= MemoryManager_AppMemoryUsageLimitChanging;
+                    MemoryManager.AppMemoryUsageIncreased -= MemoryManager_AppMemoryUsageIncreased;
                     ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"] = false;
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
                     if (ChannelGroup != null)
@@ -299,9 +299,9 @@ namespace Microsoft.AppCenter.Crashes
                     }
                 }
                 var memoryWarning = ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"];
-                if (memoryWarning != null)
+                if (memoryWarning != null && (memoryWarning as string) == "1")
                 {
-                    HasRecivedMemoryWarning = (memoryWarning as string) == "1" ? true : false;
+                    HasRecivedMemoryWarning = true;
                     AppCenterLog.Debug(LogTag, "The application received a low memory warning in the last session.");
                 }
                 ApplicationData.Current.LocalSettings.Values["PrefKeyMemoryWarning"] = false;
