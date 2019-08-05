@@ -74,4 +74,9 @@ RCT_EXPORT_METHOD(produceLowMemoryWarning)
   return data;
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+  return YES;
+}
+
 @end
