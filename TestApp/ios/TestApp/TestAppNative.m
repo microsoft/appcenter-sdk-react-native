@@ -21,7 +21,9 @@
 
 @interface TestAppNative () <RCTBridgeModule>
 
-@property(atomic, strong) NSMutableArray *dataArray;
+@property NSMutableArray *buffers;
+
+@property size_t allocated;
 
 @end
 
@@ -33,8 +35,9 @@ static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
 
 - (instancetype) init {
   self = [super init];
-  if (self){
-    self.dataArray = [[NSMutableArray alloc] init];
+  if (self) {
+    _buffers = [NSMutableArray new];
+    _allocated = 0;
   }
   return self;
 }
@@ -60,17 +63,15 @@ RCT_EXPORT_METHOD(generateTestCrash)
 
 RCT_EXPORT_METHOD(produceLowMemoryWarning)
 {
-  [_dataArray addObject:[self create256mbRandomNSData]];
-
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+  const size_t blockSize = 128 * 1024 * 1024;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 100 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+    void *buffer = malloc(blockSize);
+    memset(buffer, 42, blockSize);
+    [self.buffers addObject:[NSValue valueWithPointer:buffer]];
+    self.allocated += blockSize;
+    NSLog(@"Allocated %zu MB", self.allocated / (1024 * 1024));
     [self produceLowMemoryWarning];
   });
-}
-
--(NSData*)create256mbRandomNSData {
-  void *bytes = malloc(blockSize);
-  NSData *data = [NSData dataWithBytes:bytes length:blockSize];
-  return data;
 }
 
 + (BOOL)requiresMainQueueSetup
