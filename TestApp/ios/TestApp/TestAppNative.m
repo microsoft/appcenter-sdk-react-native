@@ -70,7 +70,6 @@ RCT_EXPORT_METHOD(produceLowMemoryWarning)
 -(NSData*)create256mbRandomNSData {
   void *bytes = malloc(blockSize);
   NSData *data = [NSData dataWithBytes:bytes length:blockSize];
-  free(bytes);
   return data;
 }
 

@@ -235,7 +235,7 @@ SPEC CHECKSUMS:
   appcenter-auth: c05f35137f4db6f8588944606c2468b29e1dd659
   appcenter-crashes: e6c72b0da7dd2a899531ecead4cea0fddf954ce1
   appcenter-push: 8380c9f4b9abb69719dc47f0692a3ea979bc0d45
-  AppCenterReactNativeShared: dd1584ccf86f46853dea3fa6f4e6a5f560af2352
+  AppCenterReactNativeShared: f8d182637840910487b4d7a69a1d8484c040d062
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
