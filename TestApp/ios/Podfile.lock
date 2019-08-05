@@ -11,24 +11,24 @@ PODS:
     - AppCenterReactNativeShared
     - React
   - appcenter-crashes (2.2.0):
-    - AppCenter/Crashes
+    - AppCenter/Crashes (= 2.2.1-5)
     - AppCenterReactNativeShared
     - React
   - appcenter-push (2.2.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (2.2.0):
+  - AppCenter/Analytics (2.2.1-5):
     - AppCenter/Core
-  - AppCenter/Auth (2.2.0):
+  - AppCenter/Auth (2.2.1-5):
     - AppCenter/Core
-  - AppCenter/Core (2.2.0)
-  - AppCenter/Crashes (2.2.0):
+  - AppCenter/Core (2.2.1-5)
+  - AppCenter/Crashes (2.2.1-5):
     - AppCenter/Core
-  - AppCenter/Push (2.2.0):
+  - AppCenter/Push (2.2.1-5):
     - AppCenter/Core
   - AppCenterReactNativeShared (2.2.0):
-    - AppCenter/Core (= 2.2.0)
+    - AppCenter/Core (= 2.2.1-5)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
@@ -113,9 +113,9 @@ PODS:
   - React-RCTWebSocket (0.60.0):
     - React-Core (= 0.60.0)
     - React-fishhook (= 0.60.0)
-  - RNCAsyncStorage (1.5.1):
+  - RNCAsyncStorage (1.6.1):
     - React
-  - RNFS (2.13.3):
+  - RNFS (2.14.1):
     - React
   - RNGestureHandler (1.3.0):
     - React
@@ -128,6 +128,7 @@ DEPENDENCIES:
   - appcenter-crashes (from `../node_modules/appcenter-crashes`)
   - appcenter-push (from `../node_modules/appcenter-push`)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/local.podspec`)
+  - boost-for-react-native (from `https://raw.githubusercontent.com/react-native-community/boost-for-react-native/master/boost-for-react-native.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -156,9 +157,8 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  "git@ssh.dev.azure.com:v3/msmobilecenter/SDK/AppCenterSDK-Specs-Private":
     - AppCenter
-    - boost-for-react-native
 
 EXTERNAL SOURCES:
   appcenter:
@@ -173,6 +173,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter-push"
   AppCenterReactNativeShared:
     :podspec: "../../AppCenterReactNativeShared/Products/local.podspec"
+  boost-for-react-native:
+    :podspec: https://raw.githubusercontent.com/react-native-community/boost-for-react-native/master/boost-for-react-native.podspec
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
@@ -227,13 +229,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: c809e69d93218b9861b4f8e54ded8dcf4d2131e7
+  AppCenter: 02e63160bde0979d6ea4f54c76005398bc03d81a
   appcenter: d063bb98744a8352099746b3adcdcac96b246505
   appcenter-analytics: 9b88d0afe15b9908431820b8046911c297409e2b
   appcenter-auth: c05f35137f4db6f8588944606c2468b29e1dd659
-  appcenter-crashes: 96c386fe361e2ec13267b563a205b5f051158121
+  appcenter-crashes: e6c72b0da7dd2a899531ecead4cea0fddf954ce1
   appcenter-push: 8380c9f4b9abb69719dc47f0692a3ea979bc0d45
-  AppCenterReactNativeShared: 7997c24fd3f09f5b18f3c78e427c54606c9fa776
+  AppCenterReactNativeShared: dd1584ccf86f46853dea3fa6f4e6a5f560af2352
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -257,11 +259,11 @@ SPEC CHECKSUMS:
   React-RCTText: 685fca2e13b024271048e7e247ef24476f28a41e
   React-RCTVibration: 4ee1cf208ab17a50fafb1c16ffe28fe594a64e4f
   React-RCTWebSocket: fca087d583724aa0e5fef7d911f0f2a28d0f2736
-  RNCAsyncStorage: 2808c378f6a70f22f66eeb6c11a8d69f326dd795
-  RNFS: c9bbde46b0d59619f8e7b735991c60e0f73d22c1
+  RNCAsyncStorage: 621bad7a889b5bf1583a52547f2dcd3a4d1ff15e
+  RNFS: a8fbe7060fa49157d819466404794ad9c58e58cf
   RNGestureHandler: 5329a942fce3d41c68b84c2c2276ce06a696d8b0
   yoga: 616fde658be980aa60a2158835170f3f9c2d04b4
 
-PODFILE CHECKSUM: aa799989050601e16f05421c7ef07e0f979eec5f
+PODFILE CHECKSUM: 707c88c50cbcc162c420978790b6cc6f62769591
 
 COCOAPODS: 1.7.5
