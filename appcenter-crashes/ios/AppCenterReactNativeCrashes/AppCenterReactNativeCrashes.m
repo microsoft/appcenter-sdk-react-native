@@ -112,7 +112,8 @@ RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession:(RCTPromiseResolveBlock)
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
     void (^fetchHasReceivedMemoryWarning)(void) = ^void() {
-        resolve([MSCrashes hasReceivedMemoryWarningInLastSession]);
+        BOOL memoryWarning = [MSCrashes hasReceivedMemoryWarningInLastSession];
+        resolve(@(memoryWarning));
     };
     dispatch_async(dispatch_get_main_queue(), fetchHasReceivedMemoryWarning);
 }
