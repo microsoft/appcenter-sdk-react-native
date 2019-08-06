@@ -6,6 +6,7 @@
 #include <string>
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 #include "android/log.h"
 
 #ifdef __cplusplus
@@ -19,6 +20,8 @@ extern "C"
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
 #pragma ide diagnostic ignored "cppcoreguidelines-avoid-magic-numbers"
 
+static std::vector<void*> data;
+
 void
 Java_com_testapp_TestAppNativeModule_nativeAllocateLargeBuffer(
         JNIEnv *env,
@@ -26,6 +29,7 @@ Java_com_testapp_TestAppNativeModule_nativeAllocateLargeBuffer(
     size_t size = 128 * 1024 * 1024;
     void *buffer = malloc(size);
     memset(buffer, 42, size);
+    data.push_back(buffer);
 }
 #pragma clang diagnostic pop
 
