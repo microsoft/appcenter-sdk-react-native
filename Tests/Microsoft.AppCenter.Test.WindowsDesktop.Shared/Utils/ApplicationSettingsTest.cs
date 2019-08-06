@@ -20,7 +20,13 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
 
         public void Dispose()
         {
-            File.Delete(DefaultApplicationSettings.FilePath);
+            try
+            {
+                File.Delete(DefaultApplicationSettings.FilePath);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
