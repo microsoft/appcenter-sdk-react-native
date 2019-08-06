@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ManagedErrorLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ErrorLogHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IMemoryWarningHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IProcessInformation.cs" />
   </ItemGroup>
 </Project>
