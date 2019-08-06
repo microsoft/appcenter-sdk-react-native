@@ -74,14 +74,14 @@ export default class CrashesScreen extends Component {
     await NativeModules.TestAppNative.generateTestCrash();
   }
 
-  generateLowMemoryWarning(){
+  generateLowMemoryWarning() {
     const array = [];
-    while(true) {
-      array.push(new ArrayBuffer(128 * 1024 * 1024))
+    while (true) {
+      array.push(new ArrayBuffer(128 * 1024 * 1024));
     }
   }
 
-  async generateNativeLowMemoryWarning(){
+  async generateNativeLowMemoryWarning() {
     await NativeModules.TestAppNative.produceLowMemoryWarning();
   }
 
