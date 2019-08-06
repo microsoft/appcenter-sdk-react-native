@@ -4,12 +4,8 @@ using System.Text;
 
 namespace Microsoft.AppCenter.Crashes.Windows.Shared.Utils
 {
-    interface IMemoryWarningHelper
+    public interface IMemoryWarningHelper
     {
-        event EventHandler  MemoryWarning;
-
-        bool GetHasReceiveMemoryWarning { get; }
-
-        void PrepareMemoryWarning();
+        event EventHandler MemoryWarning;
     }
 }

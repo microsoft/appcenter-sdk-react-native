@@ -28,6 +28,10 @@ namespace Microsoft.AppCenter.Crashes
 
         private const int MaxAttachmentsPerCrash = 2;
 
+        private static bool HasReceivedMemoryWarning;
+
+        internal const string PrefKeyMemoryWarning = Constants.KeyPrefix + "MemoryWarning";
+
         internal const string PrefKeyAlwaysSend = Constants.KeyPrefix + "CrashesAlwaysSend";
 
         static Crashes()
@@ -232,7 +236,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private async Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
         {
-            return await Task.FromResult(_memoryWarningHelper.GetHasReceiveMemoryWarning);
+            return await Task.FromResult(HasReceivedMemoryWarning);
         }
 
         private Task ProcessPendingErrorsAsync()
@@ -290,7 +294,14 @@ namespace Microsoft.AppCenter.Crashes
                         RemoveAllStoredErrorLogFiles(log.Id);
                     }
                 }
-                _memoryWarningHelper.PrepareMemoryWarning();
+                var memoryWarning = ApplicationSettings.GetValue(PrefKeyMemoryWarning, false);
+                if (memoryWarning)
+                    if ((memoryWarning as bool?) == true)
+                    {
+                        HasReceivedMemoryWarning = true;
+                        AppCenterLog.Debug(LogTag, "The application received a low memory warning in the last session.");
+                    }
+                ApplicationSettings.Remove(PrefKeyMemoryWarning);
                 _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
                 await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
             });
@@ -467,7 +478,8 @@ namespace Microsoft.AppCenter.Crashes
 
         private void OnMemoryWarning(object sender, EventArgs e)
         {
-            AppCenterLog.Debug(LogTag, "Calling the memory warning event.");
+            ApplicationSettings.SetValue(PrefKeyMemoryWarning, true);
+            AppCenterLog.Debug(LogTag, "The application received a low memory warning.");
         }
 
         private void ChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
