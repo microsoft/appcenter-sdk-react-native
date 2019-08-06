@@ -71,7 +71,7 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             _settings.SetValue("old", "value");
 
             // Move file back to old location to test migration.
-            var oldLocation = Assembly.GetExecutingAssembly().Location;
+            var oldLocation = typeof(DefaultApplicationSettings).Assembly.Location;
             var oldPath = Path.Combine(Path.GetDirectoryName(oldLocation), "AppCenter.config");
             File.Move(DefaultApplicationSettings.FilePath, oldPath);
 
@@ -89,7 +89,7 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             _settings.SetValue("key", "oldValue");
 
             // Move file back to old location to test migration.
-            var oldLocation = Assembly.GetExecutingAssembly().Location;
+            var oldLocation = typeof(DefaultApplicationSettings).Assembly.Location;
             var oldPath = Path.Combine(Path.GetDirectoryName(oldLocation), "AppCenter.config");
             File.Copy(DefaultApplicationSettings.FilePath, oldPath);
             _settings.SetValue("key", "newValue");
