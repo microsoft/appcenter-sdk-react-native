@@ -8,7 +8,7 @@ This preview version adds support for .NET Core 3.0 WPF and WinForms application
 
 #### WPF/WinForms
 
-* **[Fix]** Fix configuration file location to be in a user specific directory.
+* **[Fix]** Fix configuration file location to be in a user-specific directory.
 
 ### App Center Analytics
 
