@@ -89,7 +89,7 @@ namespace Microsoft.AppCenter.Utils
 
             // Don't have AppCenter.config be reset on each app assembly version, use parent directory.
             var parentDirectory = Path.GetDirectoryName(userConfigPath);
-            if (Directory.Exists(parentDirectory))
+            if (parentDirectory != null)
             {
                 userConfigPath = parentDirectory;
             }

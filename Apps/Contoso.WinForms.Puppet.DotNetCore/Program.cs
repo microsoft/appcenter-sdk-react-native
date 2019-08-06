@@ -5,6 +5,7 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System;
+using System.IO.IsolatedStorage;
 using System.Windows.Forms;
 
 namespace Contoso.WinForms.Puppet.DotNetCore
