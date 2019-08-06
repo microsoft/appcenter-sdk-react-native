@@ -13,13 +13,16 @@ namespace Microsoft.AppCenter.Utils
     {
         private const string FileName = "AppCenter.config";
         private static readonly object configLock = new object();
-        private Configuration configuration;
+        private static Configuration configuration;
 
         internal static string FilePath { get; private set; }
 
         public DefaultApplicationSettings()
         {
-            configuration = OpenConfiguration();
+            lock (configLock)
+            {
+                configuration = OpenConfiguration();
+            }
         }
 
         public T GetValue<T>(string key, T defaultValue = default(T))
