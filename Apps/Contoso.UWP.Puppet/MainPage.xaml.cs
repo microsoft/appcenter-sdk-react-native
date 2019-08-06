@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -48,8 +47,18 @@ namespace Contoso.UWP.Puppet
 
         private void HandleMemoryWarning(object sender, RoutedEventArgs e)
         {
-            var blockSize = 256 * 1024 * 1024;
-            byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
+            List<byte[]> buffer = new List<byte[]>();
+            try
+            {
+                while (true)
+                {
+                    buffer.Add(new byte[10 * 1024 * 1024]);
+                }
+            }
+            catch (OutOfMemoryException ignore)
+            {
+
+            }
         }
     }
 }
