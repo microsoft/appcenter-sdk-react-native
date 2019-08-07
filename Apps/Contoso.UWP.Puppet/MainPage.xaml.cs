@@ -47,12 +47,13 @@ namespace Contoso.UWP.Puppet
             {
                 while (true)
                 {
-                    buffer.Add(new byte[10 * 1024 * 1024]);
+                    int blockSize = 128 * 1024 * 1024;
+                    buffer.Add(new byte[blockSize]);
+                    System.Diagnostics.Debug.WriteLine(String.Format("Memory allocated: {0} bytes", (blockSize * buffer.Count)));
                 }
             }
             catch (OutOfMemoryException ignore)
             {
-
             }
         }
     }
