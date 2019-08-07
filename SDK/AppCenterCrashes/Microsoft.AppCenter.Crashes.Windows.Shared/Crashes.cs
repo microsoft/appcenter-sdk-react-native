@@ -141,7 +141,7 @@ namespace Microsoft.AppCenter.Crashes
         /// <summary>
         /// Memory warning helper.
         /// </summary>
-        internal readonly IMemoryWarningHelper _memoryWarningHelper;
+        internal IMemoryWarningHelper _memoryWarningHelper;
 
         internal Crashes()
         {

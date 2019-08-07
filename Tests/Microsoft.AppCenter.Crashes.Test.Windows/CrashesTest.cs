@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
+using Microsoft.AppCenter.Crashes.Windows.Shared.Utils;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
@@ -67,6 +68,48 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             Crashes.Instance = null;
             Assert.IsNotNull(Crashes.Instance);
+        }
+
+        [TestMethod]
+        public void VerifyRemoveMemoryWarningAfterStart()
+        {
+            var mockMemoryWarningHelper = new Mock<IMemoryWarningHelper>();
+            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyMemoryWarning, true);
+            Crashes.Instance = new Crashes();
+            Crashes.Instance._memoryWarningHelper = mockMemoryWarningHelper.Object;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.SetEnabledAsync(true).Wait();
+            _mockApplicationLifecycleHelper.Raise(eventExpression => eventExpression.UnhandledExceptionOccurred += null,
+                new UnhandledExceptionOccurredEventArgs(new System.Exception("test")));
+            var hasMemoryWarning = Crashes.HasReceivedMemoryWarningInLastSessionAsync().Result;
+            Assert.IsTrue(hasMemoryWarning);
+            Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
+        }
+
+        [TestMethod]
+        public void VerifyRemoveMemoryWarningAfterDisable()
+        {
+            Crashes.Instance = new Crashes();
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.SetEnabledAsync(true).Wait();
+            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyMemoryWarning, true);
+            Crashes.SetEnabledAsync(false).Wait();
+            Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
+        }
+
+        [TestMethod]
+        public void VerifyEventSubscription()
+        {
+            var mockMemoryWarningHelper = new Mock<IMemoryWarningHelper>();
+            Crashes.Instance = new Crashes();
+            Crashes.Instance._memoryWarningHelper = mockMemoryWarningHelper.Object;
+            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Crashes.SetEnabledAsync(true).Wait();
+            mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning += null, It.IsAny<object>(), It.IsAny<object>());
+            mockMemoryWarningHelper.VerifyAll();
+            Crashes.SetEnabledAsync(false).Wait();
+            mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning -= null, It.IsAny<object>(), It.IsAny<object>());
+            mockMemoryWarningHelper.VerifyAll();
         }
 
         [TestMethod]
