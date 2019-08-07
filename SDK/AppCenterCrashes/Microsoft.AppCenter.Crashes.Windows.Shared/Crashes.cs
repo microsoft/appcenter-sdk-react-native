@@ -184,6 +184,7 @@ namespace Microsoft.AppCenter.Crashes
                 else if (!enabled)
                 {
                     _memoryWarningHelper.MemoryWarning -= OnMemoryWarning;
+                    ApplicationSettings.Remove(PrefKeyMemoryWarning);
                     ApplicationLifecycleHelper.Instance.UnhandledExceptionOccurred -= OnUnhandledExceptionOccurred;
                     if (ChannelGroup != null)
                     {
@@ -294,11 +295,10 @@ namespace Microsoft.AppCenter.Crashes
                 }
                 var memoryWarning = ApplicationSettings.GetValue(PrefKeyMemoryWarning, false);
                 if (memoryWarning)
-                    if ((memoryWarning as bool?) == true)
-                    {
-                        HasReceivedMemoryWarning = true;
-                        AppCenterLog.Debug(LogTag, "The application received a low memory warning in the last session.");
-                    }
+                {
+                    HasReceivedMemoryWarning = true;
+                    AppCenterLog.Debug(LogTag, "The application received a low memory warning in the last session.");
+                }
                 ApplicationSettings.Remove(PrefKeyMemoryWarning);
                 _lastSessionErrorReportTaskSource.SetResult(lastSessionErrorReport);
                 await SendCrashReportsOrAwaitUserConfirmationAsync().ConfigureAwait(false);
