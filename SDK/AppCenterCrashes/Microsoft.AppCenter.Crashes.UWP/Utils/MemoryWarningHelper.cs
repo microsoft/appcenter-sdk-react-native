@@ -10,6 +10,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
     public class MemoryWarningHelper : IMemoryWarningHelper
     {
         private EventHandler _memoryWarning;
+
         public event EventHandler MemoryWarning
         {
             add
