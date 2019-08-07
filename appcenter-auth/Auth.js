@@ -15,7 +15,7 @@ const Auth = {
 /**
  * Check whether Auth service is enabled or not.
  *
- * @return Promise with the result being true if enabled, false otherwise.
+ * @return A promise fulfilled with true if enabled, false otherwise.
  */
 function isEnabled() {
     return AppCenterReactNativeAuth.isEnabled();
@@ -25,7 +25,7 @@ function isEnabled() {
  * Enable or disable Auth service.
  *
  * @param {boolean} enabled - true to enable, false to disable.
- * @return Promise with null result to monitor when the operation completes.
+ * @return Promise fulfilled with null which indicates when the operation completes.
  */
 function setEnabled(enabled) {
     return AppCenterReactNativeAuth.setEnabled(enabled);
@@ -34,7 +34,7 @@ function setEnabled(enabled) {
 /**
  * Sign in to get user information.
  *
- * @return Promise with the result of the sign-in operation.
+ * @return Promise fulfilled with the result of the sign-in operation.
  */
 function signIn() {
     return AppCenterReactNativeAuth.signIn();
