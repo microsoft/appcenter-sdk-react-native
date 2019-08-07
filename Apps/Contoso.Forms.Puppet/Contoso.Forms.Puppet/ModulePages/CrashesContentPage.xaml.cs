@@ -44,6 +44,8 @@ namespace Contoso.Forms.Puppet
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
             CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
+            var hasLowMemoryWarning = await Crashes.HasReceivedMemoryWarningInLastSessionAsync();
+            MemoryWarningLabel.Text = hasLowMemoryWarning ? "Yes" : "No";
 
             // Attachments
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
@@ -255,6 +257,12 @@ namespace Contoso.Forms.Puppet
         void ClearCrashUserConfirmation(object sender, EventArgs e)
         {
             DependencyService.Get<IClearCrashClick>().ClearCrashButton();
+        }
+
+        void MemoryWarningTrigger(object sender, EventArgs e)
+        {
+            var blockSize = 128 * 1024 * 1024;
+            byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
         }
     }
 }
