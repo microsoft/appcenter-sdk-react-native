@@ -108,7 +108,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning += null, It.IsAny<object>(), It.IsAny<object>());
             mockMemoryWarningHelper.VerifyAll();
             Crashes.SetEnabledAsync(false).Wait();
-            mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning -= null, It.IsAny<object>(), It.IsAny<object>());
+            mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning += null, It.IsAny<object>(), It.IsAny<object>());
             mockMemoryWarningHelper.VerifyAll();
         }
 
