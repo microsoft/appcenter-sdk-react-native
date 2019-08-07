@@ -102,6 +102,17 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void hasReceivedMemoryWarningInLastSession(final Promise promise) {
+        Crashes.hasReceivedMemoryWarningInLastSession().thenAccept(new AppCenterConsumer<Boolean>() {
+
+            @Override
+            public void accept(Boolean hasWarning) {
+                promise.resolve(hasWarning);
+            }
+        });
+    }
+
+    @ReactMethod
     public void setEnabled(boolean enabled, final Promise promise) {
         Crashes.setEnabled(enabled).thenAccept(new AppCenterConsumer<Void>() {
 

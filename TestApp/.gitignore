@@ -21,6 +21,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.jsbundle
+ios/assets/
 
 # Android/IntelliJ
 #
@@ -29,6 +31,9 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/bin/
+android/app/.externalNativeBuild/
+*.bundle
 
 # node.js
 #

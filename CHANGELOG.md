@@ -1,5 +1,11 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.3.0 (Under active development)
+
+### App Center
+
+* **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
+
 ## Version 2.2.0
 
 ### App Center
