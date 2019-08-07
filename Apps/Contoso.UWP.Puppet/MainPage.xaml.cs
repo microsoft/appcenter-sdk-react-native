@@ -21,12 +21,7 @@ namespace Contoso.UWP.Puppet
         {
             this.InitializeComponent();
             Application.Current.UnhandledException += OnUnhandledException;
-            SetMemoryWarning();
-        }
-
-        private async void SetMemoryWarning()
-        {
-            var memoryWarning = await Crashes.HasReceivedMemoryWarningInLastSessionAsync();
+            var memoryWarning = Crashes.HasReceivedMemoryWarningInLastSessionAsync().Result;
             MemoryWarningTextBlock.Text = memoryWarning ? "Yes" : "No";
         }
 

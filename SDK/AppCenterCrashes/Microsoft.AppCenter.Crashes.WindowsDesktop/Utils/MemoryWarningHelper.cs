@@ -1,7 +1,8 @@
-﻿using Microsoft.AppCenter.Crashes.Windows.Shared.Utils;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.AppCenter.Crashes.Windows.Shared.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.AppCenter.Crashes.Utils
 {

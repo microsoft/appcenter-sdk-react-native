@@ -15,7 +15,7 @@
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Has recived low memory warning"/>
+                <TextBlock Text="Has received low memory warning"/>
                 <TextBlock Margin="20,0,0,0" x:Name="MemoryWarningTextBlock" Text="No"/>
             </StackPanel>
             <Button x:Name="MemoryWarningTrigger" Content="Trigger low memory warning" Click="HandleMemoryWarning"/>
