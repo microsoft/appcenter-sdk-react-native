@@ -19,7 +19,7 @@ This preview version adds support for .NET Core 3.0 WPF and WinForms application
 #### WPF/WinForms
 
 * **[Feature]** Add support for .NET Core 3.0 applications.
-* **[Fix]** Optimize minimized window detection for .NET Framework.
+* **[Fix]** Optimize minimized window detection.
 
 ### App Center Crashes
 
