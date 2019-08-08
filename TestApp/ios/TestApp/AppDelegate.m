@@ -18,6 +18,7 @@
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeAuth.h>
+#import <AppCenterReactNativeData.h>
 #import <AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativePush.h>
 
@@ -27,7 +28,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [AppCenterReactNativeData register];  // Initialize AppCenter data
   [MSAppCenter setLogLevel: MSLogLevelVerbose];
   
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
@@ -41,6 +41,8 @@
   }
 
   [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
+
+  [AppCenterReactNativeData register];  // Initialize AppCenter data
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 
