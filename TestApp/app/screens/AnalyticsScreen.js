@@ -3,7 +3,6 @@
 
 import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
-import Toast from 'react-native-simple-toast';
 
 import Analytics from 'appcenter-analytics';
 
@@ -55,8 +54,6 @@ export default class AnalyticsScreen extends Component {
       </TouchableOpacity>
     );
 
-    const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
-
     return (
       <View style={SharedStyles.container}>
         <SectionList
@@ -87,7 +84,7 @@ export default class AnalyticsScreen extends Component {
                   action: () => {
                     const eventName = 'EventWithoutProperties';
                     Analytics.trackEvent(eventName);
-                    showEventToast(eventName);
+                    console.log(`Scheduled event '${eventName}'.`);
                   }
                 },
                 {
@@ -95,7 +92,7 @@ export default class AnalyticsScreen extends Component {
                   action: () => {
                     const eventName = 'EventWithProperties';
                     Analytics.trackEvent(eventName, { property1: '100', property2: '200' });
-                    showEventToast(eventName);
+                    console.log(`Scheduled event '${eventName}'.`);
                   }
                 },
                 {
@@ -103,7 +100,7 @@ export default class AnalyticsScreen extends Component {
                   action: () => {
                     const eventName = 'EventWithLongProperties';
                     Analytics.trackEvent(eventName, { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
-                    showEventToast(eventName);
+                    console.log(`Scheduled event '${eventName}'.`);
                   }
                 },
               ],

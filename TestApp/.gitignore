@@ -21,6 +21,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.jsbundle
+ios/assets/
 
 # Android/IntelliJ
 #
@@ -29,6 +31,9 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/bin/
+android/app/.externalNativeBuild/
+*.bundle
 
 # node.js
 #
@@ -57,5 +62,8 @@ fastlane/screenshots
 /unused.jsbundle*
 /.vscode/.react
 
-ios/Pods/AppCenterReactNativeShared/AppCenterReactNativeShared/AppCenterReactNativeShared.framework/AppCenterReactNativeShared
 package-lock.json
+
+# With RN 0.60.0 autolinking, we use `pod install` to install CocoaPods dependencies,
+# and don't check in **ios/Pods/** directory.
+ios/Pods/

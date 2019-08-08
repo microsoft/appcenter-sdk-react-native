@@ -7,4 +7,6 @@ npm install --save appcenter appcenter-analytics appcenter-auth appcenter-crashe
 
 pod repo update
 
+(cd ios && pod install)
+
 react-native link

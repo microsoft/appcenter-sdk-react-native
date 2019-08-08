@@ -2,5 +2,8 @@
 // Licensed under the MIT License.
 
 jest.mock('appcenter-auth', () => ({
-    // TODO
+  isEnabled: jest.fn(),
+  setEnabled: jest.fn(),
+  signIn: jest.fn(),
+  signOut: jest.fn()
 }));

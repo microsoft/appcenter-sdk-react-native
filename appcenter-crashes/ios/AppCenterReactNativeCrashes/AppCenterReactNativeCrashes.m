@@ -108,6 +108,16 @@ RCT_EXPORT_METHOD(hasCrashedInLastSession:(RCTPromiseResolveBlock)resolve
     dispatch_async(dispatch_get_main_queue(), fetchHasCrashedInLastSession);
 }
 
+RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    void (^fetchHasReceivedMemoryWarning)(void) = ^void() {
+        BOOL memoryWarning = [MSCrashes hasReceivedMemoryWarningInLastSession];
+        resolve(@(memoryWarning));
+    };
+    dispatch_async(dispatch_get_main_queue(), fetchHasReceivedMemoryWarning);
+}
+
 RCT_EXPORT_METHOD(lastSessionCrashReport:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {

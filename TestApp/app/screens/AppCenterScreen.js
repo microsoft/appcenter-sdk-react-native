@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
-import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
 import Auth from 'appcenter-auth';
@@ -125,12 +124,12 @@ export default class AppCenterScreen extends Component {
       .set('score', 7)
       .set('now', new Date());
     await AppCenter.setCustomProperties(properties);
-    Toast.show('Scheduled custom properties log. Please check verbose logs.');
+    console.log('Scheduled custom properties log. Please check verbose logs.');
   }
 
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
-    Toast.show('Relaunch app for changes to be applied.');
+    console.log('Relaunch app for changes to be applied.');
   }
 
   async selectStartup(key) {

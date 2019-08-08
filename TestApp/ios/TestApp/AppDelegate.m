@@ -2,26 +2,25 @@
 // Licensed under the MIT License.
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "AppDelegate.h"
-#import <AppCenterReactNativeData/AppCenterReactNativeData.h>
-#import <AppCenterReactNative/AppCenterReactNative.h>
-#import <AppCenterReactNativeAuth/AppCenterReactNativeAuth.h>
-#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
-#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
-#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
+#import <AppCenterReactNative.h>
+#import <AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeAuth.h>
+#import <AppCenterReactNativeCrashes.h>
+#import <AppCenterReactNativePush.h>
+
 @import AppCenter;
 
 @implementation AppDelegate
@@ -39,8 +38,8 @@
   id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
-  } 
-  
+  }
+
   [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
@@ -49,12 +48,13 @@
 
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
 
-  [AppCenterReactNative register];  // Initialize AppCenter 
+  [AppCenterReactNative register];  // Initialize AppCenter
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                 moduleName:@"TestApp"
+                                                   moduleName:@"TestApp"
                                             initialProperties:nil];
+
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
