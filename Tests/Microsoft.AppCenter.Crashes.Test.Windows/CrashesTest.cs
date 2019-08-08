@@ -98,21 +98,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void VerifyEventSubscription()
-        {
-            var mockMemoryWarningHelper = new Mock<IMemoryWarningHelper>();
-            Crashes.Instance = new Crashes();
-            Crashes.Instance._memoryWarningHelper = mockMemoryWarningHelper.Object;
-            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            Crashes.SetEnabledAsync(true).Wait();
-            mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning += null, It.IsAny<object>(), It.IsAny<object>());
-            mockMemoryWarningHelper.VerifyAll();
-            Crashes.SetEnabledAsync(false).Wait();
-            mockMemoryWarningHelper.Raise(channel => channel.MemoryWarning += null, It.IsAny<object>(), It.IsAny<object>());
-            mockMemoryWarningHelper.VerifyAll();
-        }
-
-        [TestMethod]
         public void GetEnabled()
         {
             Crashes.SetEnabledAsync(false).Wait();
