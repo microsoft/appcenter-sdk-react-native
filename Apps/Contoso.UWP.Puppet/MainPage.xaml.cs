@@ -5,6 +5,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -17,6 +18,8 @@ namespace Contoso.UWP.Puppet
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        List<byte[]> buffer = new List<byte[]>();
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -42,19 +45,17 @@ namespace Contoso.UWP.Puppet
 
         private void HandleMemoryWarning(object sender, RoutedEventArgs e)
         {
-            List<byte[]> buffer = new List<byte[]>();
-            try
-            {
-                while (true)
-                {
-                    int blockSize = 128 * 1024 * 1024;
-                    buffer.Add(new byte[blockSize]);
-                    System.Diagnostics.Debug.WriteLine(String.Format("Memory allocated: {0} bytes", (blockSize * buffer.Count)));
-                }
-            }
-            catch (OutOfMemoryException ignore)
-            {
-            }
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(100);
+            dispatcherTimer.Start();
+        }
+
+        void dispatcherTimer_Tick(object sender, object e)
+        {
+            int blockSize = 128 * 1024 * 1024;
+            buffer.Add(new byte[blockSize]);
+            System.Diagnostics.Debug.WriteLine(String.Format("Memory allocated: {0} bytes", (blockSize * buffer.Count)));
         }
     }
 }
