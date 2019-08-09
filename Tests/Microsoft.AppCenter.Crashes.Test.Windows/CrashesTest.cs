@@ -95,6 +95,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyMemoryWarning, true);
             Crashes.SetEnabledAsync(false).Wait();
             Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
+            Assert.IsFalse(AppCenter.Instance.ApplicationSettings.ContainsKey(Crashes.PrefKeyMemoryWarning));
         }
 
         [TestMethod]
