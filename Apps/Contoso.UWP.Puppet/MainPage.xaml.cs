@@ -20,6 +20,8 @@ namespace Contoso.UWP.Puppet
     {
         List<byte[]> buffer = new List<byte[]>();
 
+        const int BlockSize = 128 * 1024 * 1024;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -53,9 +55,8 @@ namespace Contoso.UWP.Puppet
 
         void dispatcherTimer_Tick(object sender, object e)
         {
-            int blockSize = 128 * 1024 * 1024;
-            buffer.Add(new byte[blockSize]);
-            System.Diagnostics.Debug.WriteLine(String.Format("Memory allocated: {0} bytes", (blockSize * buffer.Count)));
+            buffer.Add(new byte[BlockSize]);
+            System.Diagnostics.Debug.WriteLine("Memory allocated: {0} MB", buffer.Count * 128);
         }
     }
 }
