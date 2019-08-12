@@ -46,7 +46,7 @@
                     <Label Text="No" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="MemoryWarningLabel"/>
                 </StackLayout>
             </ViewCell>
-            <ViewCell Tapped="MemoryWarnningTrigger">
+            <ViewCell Tapped="MemoryWarningTrigger">
                  <Button Text="Trigger low memory warning" InputTransparent="true" Clicked="MemoryWarningTrigger" />
             </ViewCell>
         </TableSection>

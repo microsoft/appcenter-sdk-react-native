@@ -16,6 +16,10 @@ This preview version adds support for .NET Core 3.0 WPF and WinForms application
 
 ### App Center Crashes
 
+#### Android, iOS and UWP
+
+* **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session: `Crashes.HasReceivedMemoryWarningInLastSession()`.
+
 #### WPF/WinForms
 
 * **[Feature]** Add support for .NET Core 3.0 applications.
