@@ -114,8 +114,9 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void list(String partition, final Promise promise) {
-        Data.list(JsonElement.class, partition).thenAccept(new AppCenterConsumer<PaginatedDocuments<JsonElement>>() {
+    public void list(String partition, ReadableMap readOptionsMap, final Promise promise) {
+        ReadOptions readOptions = AppCenterReactNativeDataUtils.getReadOptions(readOptionsMap);
+        Data.list(JsonElement.class, partition, readOptions).thenAccept(new AppCenterConsumer<PaginatedDocuments<JsonElement>>() {
 
             @Override
             public void accept(PaginatedDocuments<JsonElement> documentWrappers) {

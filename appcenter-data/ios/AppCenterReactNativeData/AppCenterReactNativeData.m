@@ -122,9 +122,14 @@ RCT_EXPORT_METHOD(read:(NSString *)documentID
 }
 
 RCT_EXPORT_METHOD(list:(NSString *)partition
+                  readOptions:(NSDictionary *)readOptionsMap
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
-    [MSData listDocumentsWithType:[MSDictionaryDocument class] partition:partition completionHandler:^(MSPaginatedDocuments* _Nonnull documentWrappers) {
+    MSReadOptions *readOptions = [AppCenterReactNativeData getReadOptions:readOptionsMap];
+    [MSData listDocumentsWithType:[MSDictionaryDocument class] 
+                        partition:partition
+                        readOptions:readOptions
+                completionHandler:^(MSPaginatedDocuments* _Nonnull documentWrappers) {
         NSString *paginatedDocumentsId = [[NSUUID UUID] UUIDString];
         _paginatedDocuments[paginatedDocumentsId] = documentWrappers;
         NSMutableDictionary *paginatedDocumentsDict = [[NSMutableDictionary alloc] init];

@@ -68,10 +68,14 @@ function read(documentId, partition, readOptions) {
  *
  * @param {string} partition - The CosmosDB partition key.
  * @return {Promise} Future asynchronous operation with result being the document list.
+ * @param {object} readOptions - Cache read options when the operation is done offline.
  * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
-function list(partition) {
-    return AppCenterReactNativeData.list(partition).then((result) => {
+function list(partition, readOptions) {
+    if (readOptions === undefined) {
+        readOptions = new Data.ReadOptions(TimeToLive.DEFAULT);
+    }
+    return AppCenterReactNativeData.list(partition, readOptions).then((result) => {
         const paginatedDocuments = {
             currentPage: result.currentPage,
             hasNextPage() {
