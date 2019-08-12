@@ -82,7 +82,6 @@ describe('App Center Data list operation tests', () => {
     const readOptions = new Data.ReadOptions(Data.TimeToLive.DEFAULT);
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition, readOptions);
-    console.log(result);
     expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
@@ -95,7 +94,6 @@ describe('App Center Data list operation tests', () => {
     const readOptions = new Data.ReadOptions(Data.TimeToLive.DEFAULT);
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition);
-    console.log(result);
     expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
@@ -108,7 +106,6 @@ describe('App Center Data list operation tests', () => {
     const readOptions = new Data.ReadOptions(Data.TimeToLive.DEFAULT);
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition, null);
-    console.log(result);
     expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
