@@ -104,7 +104,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Set memory warning.
             AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyMemoryWarning, true);
 
-            // Verify clean the memory warning after disabling the crash module.
+            // Verify the memory warning is cleaned after disabling the crash module.
             Crashes.SetEnabledAsync(false).Wait();
             Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
             Assert.IsFalse(AppCenter.Instance.ApplicationSettings.ContainsKey(Crashes.PrefKeyMemoryWarning));
