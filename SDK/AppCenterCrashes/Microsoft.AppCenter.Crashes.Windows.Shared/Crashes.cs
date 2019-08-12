@@ -480,7 +480,7 @@ namespace Microsoft.AppCenter.Crashes
         private void OnMemoryWarning(object sender, EventArgs e)
         {
             ApplicationSettings.SetValue(PrefKeyMemoryWarning, true);
-            AppCenterLog.Debug(LogTag, "The application received a low memory warning.");
+            AppCenterLog.Debug(LogTag, "The application received a low memory warning in the last session.");
         }
 
         private void ChannelFailedToSendLog(object sender, FailedToSendLogEventArgs e)
