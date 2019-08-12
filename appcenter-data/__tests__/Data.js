@@ -77,12 +77,39 @@ describe('App Center Data read operation tests', () => {
 });
 
 describe('App Center Data list operation tests', () => {
-  test('list is called ', async () => {
+  test('list is called with readOptions', async () => {
     const partition = Data.DefaultPartitions.USER_DOCUMENTS;
+    const readOptions = new Data.ReadOptions(Data.TimeToLive.DEFAULT);
+    const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
+    const result = await Data.list(partition, readOptions);
+    console.log(result);
+    expect(spy).toHaveBeenCalledWith(partition, readOptions);
+    expect(result).toHaveProperty('currentPage');
+    expect(result).toHaveProperty('hasNextPage');
+    expect(result).toHaveProperty('getNextPage');
+    expect(result).toHaveProperty('close');
+  });
+
+  test('list is called without readOptions', async () => {
+    const partition = Data.DefaultPartitions.USER_DOCUMENTS;
+    const readOptions = new Data.ReadOptions(Data.TimeToLive.DEFAULT);
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition);
     console.log(result);
-    expect(spy).toHaveBeenCalledWith(partition);
+    expect(spy).toHaveBeenCalledWith(partition, readOptions);
+    expect(result).toHaveProperty('currentPage');
+    expect(result).toHaveProperty('hasNextPage');
+    expect(result).toHaveProperty('getNextPage');
+    expect(result).toHaveProperty('close');
+  });
+
+  test('list is called with null readOptions', async () => {
+    const partition = Data.DefaultPartitions.USER_DOCUMENTS;
+    const readOptions = new Data.ReadOptions(Data.TimeToLive.DEFAULT);
+    const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
+    const result = await Data.list(partition, null);
+    console.log(result);
+    expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
     expect(result).toHaveProperty('getNextPage');
