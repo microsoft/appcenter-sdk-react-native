@@ -84,7 +84,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Crashes.Instance.ProcessPendingErrorsTask.Wait();
 
-            // Verify the memory warning is get and clean after the start.
+            // Verify the memory warning is received and cleaned after the start.
             var hasMemoryWarning = Crashes.HasReceivedMemoryWarningInLastSessionAsync().Result;
             Assert.IsTrue(hasMemoryWarning);
             Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
