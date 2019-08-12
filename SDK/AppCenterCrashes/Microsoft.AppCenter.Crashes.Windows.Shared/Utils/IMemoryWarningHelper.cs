@@ -6,12 +6,12 @@ using System;
 namespace Microsoft.AppCenter.Crashes.Windows.Shared.Utils
 {
     /// <summary>
-    /// MemoryWarningHelper to help listen to increased memory.
+    /// The interface for platform specific memory warning event.
     /// </summary>
     public interface IMemoryWarningHelper
     {
         /// <summary>
-        /// Invoked when the app's memory consumption has increased to a higher value.
+        /// Invoked when the app receives a memory warning.
         /// </summary>
         event EventHandler MemoryWarning;
     }
