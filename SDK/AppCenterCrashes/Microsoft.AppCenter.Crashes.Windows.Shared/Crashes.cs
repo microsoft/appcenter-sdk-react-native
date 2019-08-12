@@ -26,6 +26,9 @@ namespace Microsoft.AppCenter.Crashes
 
         private const int MaxAttachmentsPerCrash = 2;
 
+        /// <summary>
+        /// Indicates if the app received a low memory warning in the last session.
+        /// </summary>
         private bool _hasReceivedMemoryWarning;
 
         internal const string PrefKeyMemoryWarning = Constants.KeyPrefix + "MemoryWarning";
