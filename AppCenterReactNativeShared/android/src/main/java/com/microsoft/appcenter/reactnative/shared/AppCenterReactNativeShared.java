@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.ingestion.models.WrapperSdk;
 import com.microsoft.appcenter.utils.AppCenterLog;
+import com.microsoft.appcenter.utils.context.AuthTokenContext;
 
 import org.json.JSONObject;
 
@@ -57,6 +58,17 @@ public class AppCenterReactNativeShared {
         } else {
             AppCenterLog.debug(LOG_TAG, "Configure with secret.");
             AppCenter.configure(application, sAppSecret);
+        }
+
+        /*
+         * In case when sStartAutomatically flag is set, we are sure that Auth service will be started
+         * with other services, but by separately `start` call. So, we don't need to reset the auth token
+         * after first start call.
+         */
+        try {
+            Class.forName("com.microsoft.appcenter.auth.Auth");
+            AuthTokenContext.getInstance().doNotResetAuthAfterStart();
+        } catch (Exception ignored) {
         }
     }
 
