@@ -23,11 +23,7 @@ Podfile.prototype.eraseOldLines = function () {
 Podfile.prototype.addPodLine = function (pod, podspec, version) {
     debug(`addPodLine pod=${pod} podspec=${podspec} version=${version}`);
     let line = `pod '${pod}'`;
-    if (podspec) {
-        line = `${line}, :podspec => '${podspec}'`;
-    } else if (version) {
-        line = `${line}, '~> ${version}'`;
-    }
+    line = `${line}, '~> ${version}'`;
     const podLinePattern = new RegExp(`pod\\s+'${pod}'.*`);
     const existingLines = this.fileContents.match(podLinePattern);
     if (existingLines) {
