@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Crashes.Windows.Shared.Utils;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
@@ -68,46 +67,6 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         {
             Crashes.Instance = null;
             Assert.IsNotNull(Crashes.Instance);
-        }
-
-        [TestMethod]
-        public void VerifyRemoveMemoryWarningAfterStart()
-        {
-            // Prepare data.
-            var mockMemoryWarningHelper = new Mock<IMemoryWarningHelper>();
-            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyMemoryWarning, true);
-            Crashes.Instance = new Crashes();
-            Crashes.Instance._memoryWarningHelper = mockMemoryWarningHelper.Object;
-
-            // Enable crash module.
-            Crashes.SetEnabledAsync(true).Wait();
-            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            Crashes.Instance.ProcessPendingErrorsTask.Wait();
-
-            // Verify the memory warning is received and cleaned after the start.
-            var hasMemoryWarning = Crashes.HasReceivedMemoryWarningInLastSessionAsync().Result;
-            Assert.IsTrue(hasMemoryWarning);
-            Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
-        }
-
-        [TestMethod]
-        public void VerifyRemoveMemoryWarningAfterDisable()
-        {
-            // Prepare data.
-            Crashes.Instance = new Crashes();
-
-            // Enable crash module.
-            Crashes.SetEnabledAsync(true).Wait();
-            Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            Crashes.Instance.ProcessPendingErrorsTask.Wait();
-
-            // Set memory warning.
-            AppCenter.Instance.ApplicationSettings.SetValue(Crashes.PrefKeyMemoryWarning, true);
-
-            // Verify the memory warning is cleaned after disabling the crash module.
-            Crashes.SetEnabledAsync(false).Wait();
-            Assert.IsFalse(AppCenter.Instance.ApplicationSettings.GetValue(Crashes.PrefKeyMemoryWarning, false));
-            Assert.IsFalse(AppCenter.Instance.ApplicationSettings.ContainsKey(Crashes.PrefKeyMemoryWarning));
         }
 
         [TestMethod]
