@@ -81,6 +81,11 @@ namespace Microsoft.AppCenter.Crashes.iOS.Bindings
         [Export("hasCrashedInLastSession")]
         bool HasCrashedInLastSession { get; }
 
+        //(BOOL)hasReceivedMemoryWarningInLastSession;
+        [Static]
+        [Export("hasReceivedMemoryWarningInLastSession")]
+        bool HasReceivedMemoryWarningInLastSession { get; }
+
         //(MSErrorReport * _Nullable)lastSessionCrashReport;
         [Static]
         [NullAllowed, Export("lastSessionCrashReport")]

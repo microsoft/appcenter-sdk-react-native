@@ -80,6 +80,12 @@ namespace Microsoft.AppCenter.Crashes
             });
         }
 
+        static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
+        {
+            var future = AndroidCrashes.HasReceivedMemoryWarningInLastSession();
+            return Task.Run(() => (bool)future.Get());
+        }
+
         static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
         {
             WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties);

@@ -31,6 +31,11 @@ namespace Microsoft.AppCenter.Crashes
             return Task.FromResult((ErrorReport)null);
         }
 
+        private static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
+        {
+            return Task.FromResult(false);
+        }
+
         private static void PlatformNotifyUserConfirmation(UserConfirmation confirmation)
         {
         }
