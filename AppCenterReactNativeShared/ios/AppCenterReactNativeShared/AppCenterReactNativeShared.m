@@ -9,7 +9,7 @@
 @interface MSAuthTokenContext
 
 + (instancetype)sharedInstance;
-- (void)finishInitialize;
+- (void)preventResetAuthTokenAfterStart;
 
 @end
 
@@ -65,10 +65,10 @@ static NSDictionary *configuration;
       /*
        * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
        * will be started by separate AppCenter.start call. If Auth module is used,
-       * call doNotResetAuthAfterStart to avoid resetting the auth token.
+       * call preventResetAuthTokenAfterStart to avoid resetting the auth token.
        */
       if (NSClassFromString(@"MSAuth")) {
-        [[MSAuthTokenContext sharedInstance] finishInitialize];
+        [[MSAuthTokenContext sharedInstance] preventResetAuthTokenAfterStart];
       }
     }
   }
