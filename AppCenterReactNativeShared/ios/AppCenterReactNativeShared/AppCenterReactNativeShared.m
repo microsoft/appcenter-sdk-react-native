@@ -63,7 +63,7 @@ static NSDictionary *configuration;
       }
 
       /*
-       * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+       * When startAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
        * will be started by separate AppCenter.start call. If Auth module is used,
        * call preventResetAuthTokenAfterStart to avoid resetting the auth token.
        */
