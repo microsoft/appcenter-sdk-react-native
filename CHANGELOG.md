@@ -8,7 +8,7 @@
 
 ### App Center Auth
 
-* **[Fix]** Fix silently signed out on application restart if auth module isn't initialized before other modules.
+* **[Fix]** Fix silently signed out on application restart if appcenter-auth module is initialized after other appcenter modules.
 
 ___
 
