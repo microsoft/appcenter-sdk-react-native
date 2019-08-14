@@ -39,15 +39,11 @@
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
 
-  [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
-
-  [AppCenterReactNativePush register];  // Initialize AppCenter push
-
-  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
-
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
-
-  [AppCenterReactNative register];  // Initialize AppCenter
+  [AppCenterReactNative register]; // Initialize AppCenter
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true]; // Initialize AppCenter Analytics
+  [AppCenterReactNativeAuth register]; // Initialize AppCenter Auth
+  [AppCenterReactNativeCrashes register]; // Initialize AppCenter Crashes
+  [AppCenterReactNativePush register]; // Initialize AppCenter Push
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
