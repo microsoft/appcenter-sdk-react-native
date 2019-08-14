@@ -119,7 +119,13 @@ namespace Contoso.iOS.Puppet
 
         partial void NativeCrash()
         {
-            NSNull.Null.PerformSelector(new ObjCRuntime.Selector("isEqualToString:"));
+            try
+			{
+				NSNull.Null.PerformSelector(new ObjCRuntime.Selector("isEqualToString:"));
+			} catch (Exception ex)
+			{
+				Crashes.TrackError(ex);
+			}
         }
     }
 }
