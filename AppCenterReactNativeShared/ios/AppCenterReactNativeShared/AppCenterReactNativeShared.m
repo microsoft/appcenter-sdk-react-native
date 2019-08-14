@@ -5,6 +5,14 @@
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenter/MSWrapperSdk.h>
 
+// Сonvince the compiler that this private class exists and implemented.
+@interface MSAuthTokenContext
+
++ (instancetype)sharedInstance;
+- (void)finishInitialize;
+
+@end
+
 @implementation AppCenterReactNativeShared
 
 static NSString *const kAppCenterSecretKey = @"AppSecret";
@@ -52,6 +60,15 @@ static NSDictionary *configuration;
         [MSAppCenter configure];
       } else {
         [MSAppCenter configureWithAppSecret:appSecret];
+      }
+
+      /*
+       * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+       * will be started by separate AppCenter.start call. If Auth module is used,
+       * call doNotResetAuthAfterStart to avoid resetting the auth token.
+       */
+      if (NSClassFromString(@"MSAuth")) {
+        [[MSAuthTokenContext sharedInstance] finishInitialize];
       }
     }
   }
