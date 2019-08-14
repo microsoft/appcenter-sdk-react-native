@@ -61,14 +61,16 @@ public class AppCenterReactNativeShared {
         }
 
         /*
-         * In case when sStartAutomatically flag is set, we are sure that Auth service will be started
-         * with other services, but by separately `start` call. So, we don't need to reset the auth token
-         * after first start call.
+         * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+         * will be started by separate AppCenter.start call. If Auth module is used,
+         * call doNotResetAuthAfterStart to avoid resetting the auth token.
          */
         try {
             Class.forName("com.microsoft.appcenter.auth.Auth");
             AuthTokenContext.getInstance().doNotResetAuthAfterStart();
         } catch (Exception ignored) {
+
+            /* Nothing to handle; this is reached if Auth SDK isn't used. */
         }
     }
 
