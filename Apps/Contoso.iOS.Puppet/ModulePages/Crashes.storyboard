@@ -171,7 +171,6 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <state key="normal" title="Generate Native Crash"/>
                                                     <connections>
-                                                        <action selector="TestCrash" destination="896" eventType="touchUpInside" id="895"/>
                                                         <action selector="NativeCrash:" destination="ZG3-fs-bgy" id="897"/>
                                                     </connections>
                                                 </button>
