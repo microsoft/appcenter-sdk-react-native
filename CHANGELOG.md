@@ -6,6 +6,10 @@
 
 * **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
 
+#### iOS
+
+* **[Fix]** Fixed `react-native link` script, which occasionally could add Pods using a relative path, therefore, failing the build.
+
 ## Version 2.2.0
 
 ### App Center
