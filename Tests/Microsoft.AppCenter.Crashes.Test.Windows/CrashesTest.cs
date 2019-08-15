@@ -113,14 +113,14 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             var mockErrorLogFile2 = Mock.Of<File>();
             var mockExceptionFile1 = Mock.Of<File>();
             var mockExceptionFile2 = Mock.Of<File>();
-            var mockErrorLogHelper = Mock.Of<ErrorLogHelper>();
-            ErrorLogHelper.Instance = mockErrorLogHelper;
+            var mockErrorLogHelper = new Mock<ErrorLogHelper>();
+            ErrorLogHelper.Instance = mockErrorLogHelper.Object;
             var expectedManagedErrorLog1 = new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.Now,
                 AppLaunchTimestamp = DateTime.Now,
-                Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
+                Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>(),
                 ProcessId = ExpectedProcessId
             };
             var expectedManagedErrorLog2 = new ManagedErrorLog
@@ -128,18 +128,18 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Id = Guid.NewGuid(),
                 Timestamp = DateTime.Now,
                 AppLaunchTimestamp = DateTime.Now,
-                Device = new Microsoft.AppCenter.Ingestion.Models.Device(),
+                Device = Mock.Of<Microsoft.AppCenter.Ingestion.Models.Device>(),
                 ProcessId = ExpectedProcessId
             };
 
             // Stub get/read/delete error files.
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile1, mockErrorLogFile2 });
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile1)).Returns(expectedManagedErrorLog1);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile2)).Returns(expectedManagedErrorLog2);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception());
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception());
+            mockErrorLogHelper.Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile1, mockErrorLogFile2 });
+            mockErrorLogHelper.Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile1)).Returns(expectedManagedErrorLog1);
+            mockErrorLogHelper.Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile2)).Returns(expectedManagedErrorLog2);
+            mockErrorLogHelper.Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
+            mockErrorLogHelper.Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
+            mockErrorLogHelper.Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception());
+            mockErrorLogHelper.Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception());
 
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
@@ -148,8 +148,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             // Verify crashes logs have been queued to the channel.
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog1.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<ManagedErrorLog>(log => log.Id == expectedManagedErrorLog2.Id && log.ProcessId == ExpectedProcessId)), Times.Once());
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog1.Id), Times.Once());
-            Mock.Get(ErrorLogHelper.Instance).Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog2.Id), Times.Once());
+            mockErrorLogHelper.Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog1.Id), Times.Once());
+            mockErrorLogHelper.Verify(instance => instance.InstanceRemoveStoredErrorLogFile(expectedManagedErrorLog2.Id), Times.Once());
         }
 
         [TestMethod]
