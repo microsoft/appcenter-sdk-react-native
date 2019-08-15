@@ -121,10 +121,11 @@ namespace Contoso.iOS.Puppet
         {
             try 
             {
-                NSNull.Null.PerformSelector (new ObjCRuntime.Selector ("isEqualToString:"));
-            } catch (Exception ex) 
+                NSNull.Null.PerformSelector(new ObjCRuntime.Selector("isEqualToString:"));
+            } 
+            catch(Exception ex) 
             {
-                Crashes.TrackError (ex);
+                Crashes.TrackError(ex);
             }
         }
     }
