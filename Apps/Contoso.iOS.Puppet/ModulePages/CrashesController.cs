@@ -117,15 +117,15 @@ namespace Contoso.iOS.Puppet
             await FakeService.DoStuffInBackground();
         }
 
-        partial void NativeCrash()
+        partial void NativeCrash() 
         {
-            try
-			{
-				NSNull.Null.PerformSelector(new ObjCRuntime.Selector("isEqualToString:"));
-			} catch (Exception ex)
-			{
-				Crashes.TrackError(ex);
-			}
+            try 
+            {
+                NSNull.Null.PerformSelector (new ObjCRuntime.Selector ("isEqualToString:"));
+            } catch (Exception ex) 
+            {
+                Crashes.TrackError (ex);
+            }
         }
     }
 }
