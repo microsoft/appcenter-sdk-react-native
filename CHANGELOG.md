@@ -10,6 +10,12 @@
 
 * **[Fix]** Fixed a react-native link issue for RN prior to 0.60 where App Center pods may be added incorrectly to Podfile.
 
+### App Center Auth
+
+* **[Fix]** Fix silently signed out on application restart if appcenter-auth module is initialized after other appcenter modules.
+
+___
+
 ## Version 2.2.0
 
 ### App Center
@@ -35,6 +41,8 @@
 
 * **[Fix]** Fix incorrect file name of iOS **appcenter-auth.podspec** of Auth SDK.
 
+___
+
 ## Version 2.1.0
 
 Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
@@ -53,6 +61,8 @@ Version 2.1.0 of the App Center React Native SDK includes a new module: Auth.
 ### iOS
 
 * **[Fix]** Fix registering push notifications in the UI thread when delaying the start of the Push module.
+
+___
 
 ## Version 2.0.0
 
@@ -77,6 +87,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 * **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling `AppCenter.setUserId`.
 
+___
+
 ## Version 1.13.0
 
 ### App Center
@@ -96,6 +108,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 #### iOS
 
 * **[Fix]** Fix crash on invoking an optional push callback when it isn't implemented in the push delegate.
+
+___
 
 ## Version 1.12.2
 
@@ -122,6 +136,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 * **[Fix]** Fix exception if we receive deep link intent with setup failure before onStart.
 * **[Fix]** Fix checking updates for applications installed on corporate-owned single-use devices.
 
+___
+
 ## Version 1.12.0
 
 ### App Center
@@ -144,6 +160,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 * **[Fix]** Fix issue with forcing Chrome to open links when other browsers are the default.
 
+___
+
 ## Version 1.11.1
 
 ### App Center
@@ -154,6 +172,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
     * Edit **app/build.gradle** to replace `compile` by `implementation`.
     * Run `react-native link` again.
 - **[Feature]** Allow users to set userId that applies to crashes, error and push logs.
+
+___
 
 ## Version 1.11.0
 
@@ -178,6 +198,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 - **[Fix]** Fix build.gradle for release builds [#481](https://github.com/microsoft/appcenter-sdk-react-native/issues/481).
 - **[Android]** Fix push notification received event for pushes received in foreground after re-enabling the push service.
 
+___
+
 ## Version 1.10.0
 
 ### App Center
@@ -197,6 +219,8 @@ Version 2.0.0 has a **breaking change**, it only supports Xcode 10.0.0+.
 
 - **[Android]** Use latest Firebase version [#365](https://github.com/microsoft/appcenter-sdk-react-native/issues/365).
 - **[iOS]** Fix `push:didReceivePushNotification:` callback not triggered on notification tapped or received in foreground when a `UNUserNotificationCenterDelegate` is set.  If you have implemented this delegate please remove any call to the `MSPush#didReceiveRemoteNotification:` method as it's now handled by the new [User Notification Center Delegate Forwarder](https://docs.microsoft.com/appcenter/sdk/push/ios).
+
+___
 
 ## Version 1.9.0
 
