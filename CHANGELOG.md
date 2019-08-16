@@ -8,7 +8,7 @@
 
 #### iOS
 
-* **[Fix]** Fixed `react-native link` script, which occasionally could add Pods using a relative path, therefore, failing the build.
+* **[Fix]** Fixed a react-native link issue for RN prior to 0.60 where App Center pods may be added incorrectly to Podfile.
 
 ## Version 2.2.0
 
