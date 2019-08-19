@@ -41,8 +41,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3D3871AD219CEC0500C2D6EA /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenterAnalytics.framework; sourceTree = "<group>"; };
-		3D3871AE219CEC1500C2D6EA /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenterCrashes.framework; sourceTree = "<group>"; };
 		3D45F78221A2DD1A00FF0F45 /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCenter.framework; sourceTree = "<group>"; };
 		5419C2561D81FDA300DDF3A1 /* libAppCenterReactNativeShared.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativeShared.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeShared.h; sourceTree = "<group>"; };
@@ -68,8 +66,6 @@
 				5419C2581D81FDA300DDF3A1 /* AppCenterReactNativeShared */,
 				5419C2571D81FDA300DDF3A1 /* Products */,
 				3D45F78221A2DD1A00FF0F45 /* AppCenter.framework */,
-				3D3871AE219CEC1500C2D6EA /* AppCenterCrashes.framework */,
-				3D3871AD219CEC0500C2D6EA /* AppCenterAnalytics.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,6 +152,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 5419C24D1D81FDA300DDF3A1;
