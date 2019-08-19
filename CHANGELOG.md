@@ -32,6 +32,26 @@ This preview version adds support for .NET Core 3.0 WPF and WinForms application
 * **[Feature]** Add support for .NET Core 3.0 applications.
 * **[Fix]** Wait to finish processing files before deleting files when calling `SetEnabledAsync(false)` during processing.
 
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Obfuscate app secret value that appears as URI part in verbose logs for in-app updates.
+
+### App Center Push
+
+#### Android
+
+* **[Fix]** Fix confusing information log about the availability of the Firebase SDK.
+* **[Fix]** Fix sending the push installation log after delayed start.
+
+### App Center Auth
+
+#### iOS and Android
+
+* **[Feature]** App Center Auth logging now includes MSAL logs.
+* **[Fix]** Redirect URIs are now hidden in logs.
+
 ___
 
 ## Version 2.2.1-preview
