@@ -1,27 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Microsoft.AppCenter.Test.WindowsDesktop
 {
-    [TestClass]
     public class AppCenterTest
     {
-        [TestInitialize]
-        public void InitializeAppCenterTest()
-        {
-            AppCenter.Instance = null;
-        }
-
         /// <summary>
         /// Verify configure with WindowsDesktop platform id
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void VerifyPlatformId()
         {
-            AppCenter.Configure("windowsdesktop=appsecret");
-            Assert.IsTrue(AppCenter.Configured);
+            var appClientId = AppCenter.GetSecretForPlatform("windowsdesktop=6a367cda-2c0a-4fb0-bedf-f110bf4e338b", "windowsdesktop");
+            Assert.Equal("6a367cda-2c0a-4fb0-bedf-f110bf4e338b", appClientId);
         }
     }
 }

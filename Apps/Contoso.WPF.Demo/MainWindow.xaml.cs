@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,18 +38,24 @@ namespace Contoso.WPF.Demo
                 {Microsoft.AppCenter.LogLevel.Error, AppCenterLog.Error}
             };
 
-        public ObservableCollection<Property> Properties = new ObservableCollection<Property>();
+        public ObservableCollection<Property> EventPropertiesSource = new ObservableCollection<Property>();
+        public ObservableCollection<Property> ErrorPropertiesSource = new ObservableCollection<Property>();
 
         public MainWindow()
         {
             InitializeComponent();
             UpdateState();
-            AppCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
-            EventProperties.ItemsSource = Properties;
+            AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
+            EventProperties.ItemsSource = EventPropertiesSource;
+            ErrorProperties.ItemsSource = ErrorPropertiesSource;
             fileAttachments = Settings.Default.FileErrorAttachments;
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
+            if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
+            {
+                CountryCodeEnableCheckbox.IsChecked = true;
+            }
         }
 
         private void UpdateState()
@@ -56,6 +63,8 @@ namespace Contoso.WPF.Demo
             AppCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
             CrashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
             AnalyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
         }
 
         private void AppCenterEnabled_Checked(object sender, RoutedEventArgs e)
@@ -68,15 +77,13 @@ namespace Contoso.WPF.Demo
 
         private void AnalyticsEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (AnalyticsEnabled.IsChecked.HasValue)
-            {
-                Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
-            }
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
         }
 
         private void AppCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            AppCenter.LogLevel = (LogLevel) AppCenterLogLevel.SelectedIndex;
+            AppCenter.LogLevel = (LogLevel)AppCenterLogLevel.SelectedIndex;
         }
 
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -91,7 +98,7 @@ namespace Contoso.WPF.Demo
                 return;
             }
 
-            var level = (LogLevel) LogLevel.SelectedIndex;
+            var level = (LogLevel)LogLevel.SelectedIndex;
             var tag = LogTag.Text;
             var message = LogMessage.Text;
             LogFunctions[level](tag, message);
@@ -100,9 +107,41 @@ namespace Contoso.WPF.Demo
         private void TrackEvent_Click(object sender, RoutedEventArgs e)
         {
             var name = EventName.Text;
-            var propertiesDictionary = Properties.Where(property => property.Key != null && property.Value != null)
+            var propertiesDictionary = EventPropertiesSource.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
+        }
+
+        private void CountryCodeEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!CountryCodeEnableCheckbox.IsChecked.HasValue)
+            {
+                return;
+            }
+            if (!CountryCodeEnableCheckbox.IsChecked.Value)
+            {
+                CountryCodeText.Text = "";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Settings.Default.CountryCode))
+                {
+                    CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                }
+                else
+                {
+                    CountryCodeText.Text = Settings.Default.CountryCode;
+                }
+            }
+            CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
+        }
+
+        private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
+        {
+            InfoLable.Visibility = Visibility.Visible;
+            Settings.Default.CountryCode = CountryCodeText.Text;
+            Settings.Default.Save();
+            AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);
         }
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
@@ -126,14 +165,19 @@ namespace Contoso.WPF.Demo
             Settings.Default.Save();
         }
 
+        private void TextAttachmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            textAttachments = TextAttachmentTextBox.Text;
+            Settings.Default.TextErrorAttachments = textAttachments;
+            Settings.Default.Save();
+        }
+
         #region Crash
 
         private void CrashesEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (CrashesEnabled.IsChecked.HasValue)
-            {
-                Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
-            }
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
         }
 
         public class NonSerializableException : Exception
@@ -142,22 +186,22 @@ namespace Contoso.WPF.Demo
 
         private void CrashWithTestException_Click(object sender, RoutedEventArgs e)
         {
-            Crashes.GenerateTestCrash();
+            HandleOrThrow(() => Crashes.GenerateTestCrash());
         }
 
         private void CrashWithNonSerializableException_Click(object sender, RoutedEventArgs e)
         {
-            throw new NonSerializableException();
+            HandleOrThrow(() => throw new NonSerializableException());
         }
 
         private void CrashWithDivisionByZero_Click(object sender, RoutedEventArgs e)
         {
-            _ = 42 / int.Parse("0");
+            HandleOrThrow(() => { _ = 42 / int.Parse("0"); });
         }
 
         private void CrashWithAggregateException_Click(object sender, RoutedEventArgs e)
         {
-            throw GenerateAggregateException();
+            HandleOrThrow(() => throw GenerateAggregateException());
         }
 
         private static Exception GenerateAggregateException()
@@ -198,14 +242,24 @@ namespace Contoso.WPF.Demo
 
         private void CrashWithNullReference_Click(object sender, RoutedEventArgs e)
         {
-            string[] values = { "a", null, "c" };
-            var b = values[1].Trim();
-            System.Diagnostics.Debug.WriteLine(b);
+            HandleOrThrow(() =>
+            {
+                string[] values = { "a", null, "c" };
+                var b = values[1].Trim();
+                System.Diagnostics.Debug.WriteLine(b);
+            });
         }
 
         private async void CrashInsideAsyncTask_Click(object sender, RoutedEventArgs e)
         {
-            await FakeService.DoStuffInBackground();
+            try
+            {
+                await FakeService.DoStuffInBackground();
+            }
+            catch (Exception ex) when (HandleExceptions.IsChecked.Value)
+            {
+                TrackException(ex);
+            }
         }
 
         private static class FakeService
@@ -216,13 +270,28 @@ namespace Contoso.WPF.Demo
             }
         }
 
-        #endregion
-
-        private void TextAttachmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TrackException(Exception e)
         {
-            textAttachments = TextAttachmentTextBox.Text;
-            Settings.Default.TextErrorAttachments = textAttachments;
-            Settings.Default.Save();
+            var properties = ErrorPropertiesSource.Where(property => property.Key != null && property.Value != null).ToDictionary(property => property.Key, property => property.Value);
+            if (properties.Count == 0)
+            {
+                properties = null;
+            }
+            Crashes.TrackError(e, properties);
         }
+
+        void HandleOrThrow(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e) when (HandleExceptions.IsChecked.Value)
+            {
+                TrackException(e);
+            }
+        }
+
+        #endregion
     }
 }

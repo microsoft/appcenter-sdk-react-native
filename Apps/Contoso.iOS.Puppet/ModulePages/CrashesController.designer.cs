@@ -44,6 +44,9 @@ namespace Contoso.iOS.Puppet
         [Action ("UpdateEnabled")]
         partial void UpdateEnabled ();
 
+        [Action ("NativeCrash")]
+        partial void NativeCrash ();
+
         void ReleaseDesignerOutlets ()
         {
             if (CrashesEnabledSwitch != null) {

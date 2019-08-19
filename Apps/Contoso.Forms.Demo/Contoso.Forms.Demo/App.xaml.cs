@@ -16,6 +16,11 @@ using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
 {
+    public interface IClearCrashClick
+    {
+        void ClearCrashButton();
+    }
+
     public partial class App : Application
     {
         public const string LogTag = "AppCenterXamarinDemo";
@@ -35,8 +40,7 @@ namespace Contoso.Forms.Demo
             if (!AppCenter.Configured)
             {
                 AppCenter.LogLevel = LogLevel.Verbose;
-                Crashes.SendingErrorReport += SendingErrorReportHandler;
-                Crashes.SendingErrorReport += SendingErrorReportHandler;
+                Crashes.SendingErrorReport += SendingErrorReportHandler; 
                 Crashes.SentErrorReport += SentErrorReportHandler;
                 Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
                 Crashes.ShouldProcessErrorReport = ShouldProcess;

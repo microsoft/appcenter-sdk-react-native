@@ -265,27 +265,27 @@ void UpdateWrapperSdkVersion(string newVersion)
 
 void UpdateNewProjSdkVersion(string newVersion, string newFileVersion)
 {
-    var csprojFiles = GetFiles("SDK/**/*.csproj");
+    var csprojFiles = GetFiles("**/*.csproj");
     foreach (var file in csprojFiles)
     {
-        UpdateNewProjVersion(file, newVersion, newFileVersion);
+        if (!file.FullPath.Contains("Demo"))
+        {
+            UpdateNewProjVersion(file, newVersion, newFileVersion);
+        }
     }
 }
 
 void UpdateNewProjVersion(FilePath file, string newVersion, string newFileVersion)
 {
     var csproj = XDocument.Load(file.FullPath);
-
-    // Check if csproj with new format
-    if (csproj.Root.Attribute("Sdk")?.Value != "Microsoft.NET.Sdk")
-    {
-        return;
-    }
     var version = csproj.XPathSelectElement("/Project/PropertyGroup/Version");
-    version.SetValue(newVersion);
+    version?.SetValue(newVersion);
     var fileVersion = csproj.XPathSelectElement("/Project/PropertyGroup/FileVersion");
-    fileVersion.SetValue(newFileVersion);
-    csproj.Save(file.FullPath);
+    fileVersion?.SetValue(newFileVersion);
+    if (version != null || fileVersion != null)
+    {
+        csproj.Save(file.FullPath);
+    }
 }
 
 // Gets the revision number from a version string containing revision -r****

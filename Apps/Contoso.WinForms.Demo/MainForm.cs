@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Contoso.WinForms.Demo
         {
             InitializeComponent();
             UpdateState();
-            AppCenterLogLevel.SelectedIndex = (int) AppCenter.LogLevel;
+            AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
         }
 
         private void UpdateState()
@@ -35,6 +36,8 @@ namespace Contoso.WinForms.Demo
             AppCenterEnabled.Checked = AppCenter.IsEnabledAsync().Result;
             AnalyticsEnabled.Checked = Analytics.IsEnabledAsync().Result;
             CrashesEnabled.Checked = Crashes.IsEnabledAsync().Result;
+            AnalyticsEnabled.Enabled = AppCenterEnabled.Checked;
+            CrashesEnabled.Enabled = AppCenterEnabled.Checked;
         }
 
         private void AppCenterEnabled_CheckedChanged(object sender, EventArgs e)
@@ -44,6 +47,7 @@ namespace Contoso.WinForms.Demo
 
         private void AnalyticsEnabled_CheckedChanged(object sender, EventArgs e)
         {
+            AnalyticsEnabled.Enabled = AppCenterEnabled.Checked;
             Analytics.SetEnabledAsync(AnalyticsEnabled.Checked).Wait();
         }
 
@@ -88,6 +92,7 @@ namespace Contoso.WinForms.Demo
 
         private async void CrashesEnabled_CheckedChanged(object sender, EventArgs e)
         {
+            CrashesEnabled.Enabled = AppCenterEnabled.Checked;
             await Crashes.SetEnabledAsync(CrashesEnabled.Checked);
         }
 
@@ -168,5 +173,25 @@ namespace Contoso.WinForms.Demo
         }
 
         #endregion
+
+        private void CountryCodeEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!CountryCodeEnabledCheckbox.Checked)
+            {
+                CountryCodeText.Text = "";
+                AppCenter.SetCountryCode(null);
+            }
+            else
+            {
+                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                AppCenter.SetCountryCode(CountryCodeText.Text);
+            }
+            CountryCodeGroup.Enabled = CountryCodeEnabledCheckbox.Checked;
+        }
+
+        private void CountryCodeSaveButton_ClickListener(object sender, EventArgs e)
+        {
+            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
+        }
     }
 }

@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using UIKit;
@@ -114,6 +115,18 @@ namespace Contoso.iOS.Puppet
         async partial void CrashAsync()
         {
             await FakeService.DoStuffInBackground();
+        }
+
+        partial void NativeCrash() 
+        {
+            try 
+            {
+                NSNull.Null.PerformSelector(new ObjCRuntime.Selector("isEqualToString:"));
+            } 
+            catch(Exception ex) 
+            {
+                Crashes.TrackError(ex);
+            }
         }
     }
 }

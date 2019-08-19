@@ -1,5 +1,63 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.3.0-preview
+
+This preview version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
+
+## App Center
+
+#### WPF/WinForms
+
+* **[Fix]** Fix configuration file location to be in a user-specific directory.
+
+### App Center Analytics
+
+#### Windows
+
+* **[Fix]** Fix reporting the incorrect device models when a placeholder was used in some cases.
+
+#### WPF/WinForms
+
+* **[Feature]** Add support for .NET Core 3.0 applications.
+* **[Fix]** Optimize minimized window detection.
+
+### App Center Crashes
+
+#### Android and iOS
+
+* **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session: `Crashes.HasReceivedMemoryWarningInLastSession()`.
+
+#### WPF/WinForms
+
+* **[Feature]** Add support for .NET Core 3.0 applications.
+* **[Fix]** Wait to finish processing files before deleting files when calling `SetEnabledAsync(false)` during processing.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Obfuscate app secret value that appears as URI part in verbose logs for in-app updates.
+
+### App Center Push
+
+#### Android
+
+* **[Fix]** Fix confusing information log about the availability of the Firebase SDK.
+* **[Fix]** Fix sending the push installation log after delayed start.
+
+### App Center Auth
+
+#### iOS
+
+* **[Feature]** App Center Auth logging now includes MSAL logs.
+
+#### Android
+
+* **[Feature]** App Center Auth logging now includes MSAL logs.
+* **[Fix]** Redirect URIs are now hidden in logs.
+
+___
+
 ## Version 2.2.1-preview
 
 This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
@@ -72,6 +130,8 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 * **[Fix]** Fix crash when an application was minimized while trying to reinstall after setup failure.
 
+___
+
 ## Version 2.1.1
 
 ### App Center Distribute
@@ -79,6 +139,8 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### iOS
 
 * **[Fix]** Fix a crash (regression from version 2.1.0) when checking for in-app updates.
+
+___
 
 ## Version 2.1.0
 
@@ -124,6 +186,8 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 #### iOS
 
 * **[Fix]** Fix document serialization/deserialization to handle non string types inside an object.
+
+___
 
 ## Version 2.0.0
 
@@ -174,6 +238,8 @@ The App Center Data service provides functionality enabling developers to persis
 * **[Feature]** After calling `Auth.SignInAsync()`, the push installation is associated to the signed in user with an `accountId` and can be pushed by using the `accountId` audience. This is a different field than the `userId` set by `AppCenter.SetUserId(string)`. The push installation is also updated on calling `Auth.SignOut()` to stop the association.
 * **[Fix]** Fix updating push installation when setting or unsetting the user identifier by calling `AppCenter.setUserId`.
 
+___
+
 ## Version 1.14.0
 
 ### AppCenter
@@ -198,6 +264,8 @@ The App Center Data service provides functionality enabling developers to persis
 #### Android
 
 * **[Fix]** Fix in-app updates not working on devices using Xiaomi MIUI from versions 10 and above.
+
+___
 
 ## Version 1.13.2
 

@@ -6,14 +6,19 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Contoso.Forms.Demo.Droid;
 using Microsoft.AppCenter.Push;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(MainActivity))]
 namespace Contoso.Forms.Demo.Droid
 {
     [Activity(Label = "ACFDemo", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IClearCrashClick
     {
         public static readonly int FileAttachmentId = 1;
+
+        private const string CrashesUserConfirmationStorageKey = "com.microsoft.appcenter.crashes.always.send";
 
         public TaskCompletionSource<string> FileAttachmentTaskCompletionSource { set; get; }
 
@@ -47,6 +52,12 @@ namespace Contoso.Forms.Demo.Droid
                 }
                 FileAttachmentTaskCompletionSource.SetResult(uri?.ToString());
             }
+        }
+
+        public void ClearCrashButton()
+        {
+            ISharedPreferences appCenterPreferences = Android.App.Application.Context.GetSharedPreferences("AppCenter", FileCreationMode.Private);
+            appCenterPreferences.Edit().Remove(CrashesUserConfirmationStorageKey).Apply();
         }
     }
 }

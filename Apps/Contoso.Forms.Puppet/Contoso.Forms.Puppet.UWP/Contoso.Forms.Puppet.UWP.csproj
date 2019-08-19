@@ -99,6 +99,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClearCrashes.cs" />
     <Compile Include="EventFilterWrapper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -163,7 +164,7 @@
       <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.0.0.482894</Version>
+      <Version>4.1.0.581479</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -1,35 +1,40 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.AppCenter.Utils
 {
     public class DefaultApplicationSettings : IApplicationSettings
     {
-        private readonly object configLock = new object();
-        private IDictionary<string, string> current;
+        private const string FileName = "AppCenter.config";
+        private static readonly object configLock = new object();
+        private static Configuration configuration;
+
+        internal static string FilePath { get; private set; }
 
         public DefaultApplicationSettings()
         {
-            current = ReadAll();
+            lock (configLock)
+            {
+                configuration = OpenConfiguration();
+            }
         }
-        
+
         public T GetValue<T>(string key, T defaultValue = default(T))
         {
             lock (configLock)
             {
-                if (current.ContainsKey(key))
+                var value = configuration.AppSettings.Settings[key];
+                if (value != null)
                 {
-                    return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(current[key]);
+                    return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(value.Value);
                 }
             }
-            SetValue(key, defaultValue);
             return defaultValue;
         }
 
@@ -38,7 +43,6 @@ namespace Microsoft.AppCenter.Utils
             var invariant = value != null ? TypeDescriptor.GetConverter(value.GetType()).ConvertToInvariantString(value) : null;
             lock (configLock)
             {
-                current[key] = invariant;
                 SaveValue(key, invariant);
             }
         }
@@ -47,7 +51,7 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
-                return current.ContainsKey(key);
+                return configuration.AppSettings.Settings[key] != null;
             }
         }
 
@@ -55,10 +59,8 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
-                current.Remove(key);
-                var config = OpenConfiguration();
-                config.AppSettings.Settings.Remove(key);
-                config.Save();
+                configuration.AppSettings.Settings.Remove(key);
+                configuration.Save();
             }
         }
 
@@ -66,31 +68,61 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
-                var config = OpenConfiguration();
-                var element = config.AppSettings.Settings[key];
+                var element = configuration.AppSettings.Settings[key];
                 if (element == null)
                 {
-                    config.AppSettings.Settings.Add(key, value);
+                    configuration.AppSettings.Settings.Add(key, value);
                 }
                 else
                 {
                     element.Value = value;
                 }
-                config.Save();
+                configuration.Save();
             }
-        }
-
-        private static IDictionary<string, string> ReadAll()
-        {
-            var config = OpenConfiguration();
-            return config.AppSettings.Settings.Cast<KeyValueConfigurationElement>().ToDictionary(e => e.Key, e => e.Value);
         }
 
         private static Configuration OpenConfiguration()
         {
-            var location = Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine(Path.GetDirectoryName(location), "AppCenter.config");
-            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = path };
+            // Get new config path.
+            var userConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+            var userConfigPath = Path.GetDirectoryName(userConfig.FilePath);
+
+            // Don't have AppCenter.config be reset on each app assembly version, use parent directory.
+            var parentDirectory = Path.GetDirectoryName(userConfigPath);
+            if (parentDirectory != null)
+            {
+                userConfigPath = parentDirectory;
+            }
+            FilePath = Path.Combine(userConfigPath, FileName);
+
+            // If old path exists, migrate.
+            try
+            {
+                // Get old config path.
+                var oldLocation = Assembly.GetExecutingAssembly().Location;
+                var oldPath = Path.Combine(Path.GetDirectoryName(oldLocation), FileName);
+                if (File.Exists(oldPath))
+                {
+                    // Delete old file if a new one already exists.
+                    if (File.Exists(FilePath))
+                    {
+                        File.Delete(oldPath);
+                    }
+
+                    // Or migrate by moving if no new file yet.
+                    else
+                    {
+                        File.Move(oldPath, FilePath);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                AppCenterLog.Warn(AppCenterLog.LogTag, "Could not check/migrate old config file", e);
+            }
+
+            // Open the configuration (with the new file path).
+            var executionFileMap = new ExeConfigurationFileMap { ExeConfigFilename = FilePath };
             return ConfigurationManager.OpenMappedExeConfiguration(executionFileMap, ConfigurationUserLevel.None);
         }
     }

@@ -52,6 +52,10 @@ namespace Contoso.WPF.Puppet
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
+            if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
+            {
+                CountryCodeEnableCheckbox.IsChecked = true;
+            }
         }
 
         private void UpdateState()
@@ -59,6 +63,8 @@ namespace Contoso.WPF.Puppet
             AppCenterEnabled.IsChecked = AppCenter.IsEnabledAsync().Result;
             CrashesEnabled.IsChecked = Crashes.IsEnabledAsync().Result;
             AnalyticsEnabled.IsChecked = Analytics.IsEnabledAsync().Result;
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
         }
 
         private void AppCenterEnabled_Checked(object sender, RoutedEventArgs e)
@@ -71,10 +77,8 @@ namespace Contoso.WPF.Puppet
 
         private void AnalyticsEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (AnalyticsEnabled.IsChecked.HasValue)
-            {
-                Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
-            }
+            AnalyticsEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
         }
 
         private void AppCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
@@ -102,7 +106,7 @@ namespace Contoso.WPF.Puppet
 
         private void TrackEvent_Click(object sender, RoutedEventArgs e)
         {
-            var name = eventName.Text;
+            var name = EventName.Text;
             var propertiesDictionary = EventPropertiesSource.Where(property => property.Key != null && property.Value != null)
                 .ToDictionary(property => property.Key, property => property.Value);
             Analytics.TrackEvent(name, propertiesDictionary);
@@ -116,20 +120,28 @@ namespace Contoso.WPF.Puppet
             }
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
-               CountryCodeText.Text = "";
-                AppCenter.SetCountryCode(null);
+                CountryCodeText.Text = "";
             }
             else
             {
-                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                AppCenter.SetCountryCode(CountryCodeText.Text);
+                if (string.IsNullOrEmpty(Settings.Default.CountryCode))
+                {
+                    CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                }
+                else
+                {
+                    CountryCodeText.Text = Settings.Default.CountryCode;
+                }
             }
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
-            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
+            InfoLable.Visibility = Visibility.Visible;
+            Settings.Default.CountryCode = CountryCodeText.Text;
+            Settings.Default.Save();
+            AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);
         }
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)
@@ -164,10 +176,8 @@ namespace Contoso.WPF.Puppet
 
         private void CrashesEnabled_Checked(object sender, RoutedEventArgs e)
         {
-            if (CrashesEnabled.IsChecked.HasValue)
-            {
-                Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
-            }
+            CrashesEnabled.IsEnabled = AppCenterEnabled.IsChecked.Value;
+            Crashes.SetEnabledAsync(CrashesEnabled.IsChecked.Value).Wait();
         }
 
         public class NonSerializableException : Exception

@@ -83,6 +83,11 @@ namespace Microsoft.AppCenter.Crashes
             return Instance.InstanceHasCrashedInLastSessionAsync();
         }
 
+        private static Task<bool> PlatformHasReceivedMemoryWarningInLastSessionAsync()
+        {
+            return Instance.InstanceHasReceivedMemoryWarningInLastSessionAsync();
+        }
+
         private static Task<ErrorReport> PlatformGetLastSessionCrashReportAsync()
         {
             return Instance.InstanceGetLastSessionCrashReportAsync();
@@ -90,7 +95,7 @@ namespace Microsoft.AppCenter.Crashes
 
         private static void PlatformNotifyUserConfirmation(UserConfirmation userConfirmation)
         {
-            Instance.HandleUserConfirmationAsync(userConfirmation);
+            Instance.InstanceHandlerUserConfirmation(userConfirmation);
         }
 
         private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties)
@@ -173,6 +178,11 @@ namespace Microsoft.AppCenter.Crashes
                         ChannelGroup.SentLog -= ChannelSentLog;
                         ChannelGroup.FailedToSendLog -= ChannelFailedToSendLog;
                     }
+
+                    // If we delete files while processing them, it will trigger noisy file errors.
+                    // In Android, tasks are executed in a queue, so the disable has to wait files to be processed, we can improve windows SDK to use a queue and be more async when it comes to handling files and avoid locking later.
+                    // But for now we emulate the same behavior by waiting here to fix the threading issue.
+                    ProcessPendingErrorsTask?.Wait();
                     ErrorLogHelper.RemoveAllStoredErrorLogFiles();
                     _unprocessedManagedErrorLogs.Clear();
                     _lastSessionErrorReportTaskSource = null;
@@ -201,12 +211,17 @@ namespace Microsoft.AppCenter.Crashes
 
         private async Task<bool> InstanceHasCrashedInLastSessionAsync()
         {
-            return (await InstanceGetLastSessionCrashReportAsync()) != null;
+            return await InstanceGetLastSessionCrashReportAsync() != null;
         }
 
         private Task<ErrorReport> InstanceGetLastSessionCrashReportAsync()
         {
             return _lastSessionErrorReportTaskSource?.Task ?? Task.FromResult<ErrorReport>(null);
+        }
+
+        private async Task<bool> InstanceHasReceivedMemoryWarningInLastSessionAsync()
+        {
+            return await Task.FromResult(false);
         }
 
         private Task ProcessPendingErrorsAsync()
@@ -303,58 +318,62 @@ namespace Microsoft.AppCenter.Crashes
             }
         }
 
-        private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
+        private void InstanceHandlerUserConfirmation(UserConfirmation userConfirmation)
         {
+            // We lock only from the public method, locking inside HandleUserConfirmationAsync when called from ProcessAsync will cause deadlocks when disabling the SDK.
             lock (_serviceLock)
             {
                 if (IsInactive)
                 {
-                    return Task.FromResult(default(object));
+                    return;
                 }
-
-                var keys = _unprocessedManagedErrorLogs.Keys.ToList();
-                var tasks = new List<Task>();
-
-                if (userConfirmation == UserConfirmation.DontSend)
-                {
-                    foreach (var key in keys)
-                    {
-                        _unprocessedManagedErrorLogs.Remove(key);
-                        RemoveAllStoredErrorLogFiles(key);
-                    }
-                }
-                else
-                {
-                    if (userConfirmation == UserConfirmation.AlwaysSend)
-                    {
-                        ApplicationSettings.SetValue(PrefKeyAlwaysSend, true);
-                    }
-
-                    // Send every pending log.
-                    foreach (var key in keys)
-                    {
-                        var log = _unprocessedManagedErrorLogs[key];
-                        tasks.Add(Channel.EnqueueAsync(log));
-                        _unprocessedManagedErrorLogs.Remove(key);
-                        ErrorLogHelper.RemoveStoredErrorLogFile(key);
-
-                        // Get error report (will be in cache).
-                        var errorReport = BuildErrorReport(log);
-
-                        // This must never be called while a lock is held.
-                        var attachments = GetErrorAttachments?.Invoke(errorReport);
-                        if (attachments == null)
-                        {
-                            AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
-                        }
-                        else
-                        {
-                            tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
-                        }
-                    }
-                }
-                return Task.WhenAll(tasks);
+                HandleUserConfirmationAsync(userConfirmation);
             }
+        }
+
+        private Task HandleUserConfirmationAsync(UserConfirmation userConfirmation)
+        {
+            var keys = _unprocessedManagedErrorLogs.Keys.ToList();
+            var tasks = new List<Task>();
+            if (userConfirmation == UserConfirmation.DontSend)
+            {
+                foreach (var key in keys)
+                {
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    RemoveAllStoredErrorLogFiles(key);
+                }
+            }
+            else
+            {
+                if (userConfirmation == UserConfirmation.AlwaysSend)
+                {
+                    ApplicationSettings.SetValue(PrefKeyAlwaysSend, true);
+                }
+
+                // Send every pending log.
+                foreach (var key in keys)
+                {
+                    var log = _unprocessedManagedErrorLogs[key];
+                    tasks.Add(Channel.EnqueueAsync(log));
+                    _unprocessedManagedErrorLogs.Remove(key);
+                    ErrorLogHelper.RemoveStoredErrorLogFile(key);
+
+                    // Get error report (will be in cache).
+                    var errorReport = BuildErrorReport(log);
+
+                    // This must never be called while a lock is held.
+                    var attachments = GetErrorAttachments?.Invoke(errorReport);
+                    if (attachments == null)
+                    {
+                        AppCenterLog.Debug(LogTag, $"Crashes.GetErrorAttachments returned null; no additional information will be attached to log: {log.Id}.");
+                    }
+                    else
+                    {
+                        tasks.Add(SendErrorAttachmentsAsync(log.Id, attachments));
+                    }
+                }
+            }
+            return Task.WhenAll(tasks);
         }
 
         private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties)

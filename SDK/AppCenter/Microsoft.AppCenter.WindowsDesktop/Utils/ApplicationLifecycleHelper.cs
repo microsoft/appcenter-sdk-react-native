@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Reflection;
 
 namespace Microsoft.AppCenter.Utils
 {
@@ -31,7 +32,8 @@ namespace Microsoft.AppCenter.Utils
         [DllImport("user32.dll")]
         private static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
-        private const uint EVENT_OBJECT_LOCATIONCHANGE = 0x800B;
+        private const uint EVENT_SYSTEM_MINIMIZESTART = 0x0016;
+        private const uint EVENT_SYSTEM_MINIMIZEEND = 0x0017;
         private const uint WINEVENT_OUTOFCONTEXT = 0;
 
         // Need to ensure delegate is not collected while we're using it,
@@ -88,12 +90,7 @@ namespace Microsoft.AppCenter.Utils
                     .GetRawConstantValue();
             }
 
-
-#pragma warning disable CS0618 // Type or member is obsolete
-            // We need Windows thread ID, not managed
-            var threadId = AppDomain.GetCurrentThreadId();
-#pragma warning restore CS0618 // Type or member is obsolete
-            var hook = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, IntPtr.Zero, hookDelegate, 0, (uint)threadId, WINEVENT_OUTOFCONTEXT);
+            var hook = SetWinEventHook(EVENT_SYSTEM_MINIMIZESTART, EVENT_SYSTEM_MINIMIZEEND, IntPtr.Zero, hookDelegate, (uint)Process.GetCurrentProcess().Id, 0, WINEVENT_OUTOFCONTEXT);
             Application.ApplicationExit += delegate { UnhookWinEvent(hook); };
         }
 

@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.0.0.482894" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter\Microsoft.AppCenter.csproj">
