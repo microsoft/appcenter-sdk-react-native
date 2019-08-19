@@ -9,13 +9,13 @@
 * **[Feature]** App Center Auth logging now includes MSAL logs.
 * **[Fix]** Fix silently signed out on application restart if appcenter-auth module is initialized after other appcenter modules.
 
-### App Center Crashes
-
-* **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
-
 #### Android
 
 * **[Fix]** Redirect URIs are now hidden in logs.
+
+### App Center Crashes
+
+* **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
 
 ### App Center Push
 
