@@ -157,9 +157,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - boost-for-react-native
-  https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
     - AppCenter
+    - boost-for-react-native
 
 EXTERNAL SOURCES:
   appcenter:
@@ -228,13 +227,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 02e63160bde0979d6ea4f54c76005398bc03d81a
+  AppCenter: 9784d2fc998c9bd0b8fbaf4fb9ed69526d12ce1a
   appcenter: e55cb133b100379be61158f511082196b8022424
   appcenter-analytics: 9db55feacae3ca037c310d31620760ae054d50c6
   appcenter-auth: 5afc7bbeb897c0887c98632f314288043846b7fb
-  appcenter-crashes: 5ecf8f8fed1010748ece7366c7ea6f8cc20ce238
+  appcenter-crashes: 47c9257ce4c9a7625face00f77908e69fa459394
   appcenter-push: 9c9408354d19580d433586a72de514b0c09329b2
-  AppCenterReactNativeShared: ded46a97da39467934390046856a900a23e1ddcc
+  AppCenterReactNativeShared: 3c81500cbdaac569a93b2db4941f01711caabedf
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
