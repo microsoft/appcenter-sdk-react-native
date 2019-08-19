@@ -1,0 +1,23 @@
+PODS:
+  - AppCenter (2.3.0):
+    - AppCenter/Analytics (= 2.3.0)
+    - AppCenter/Crashes (= 2.3.0)
+  - AppCenter/Analytics (2.3.0):
+    - AppCenter/Core
+  - AppCenter/Core (2.3.0)
+  - AppCenter/Crashes (2.3.0):
+    - AppCenter/Core
+
+DEPENDENCIES:
+  - AppCenter
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AppCenter
+
+SPEC CHECKSUMS:
+  AppCenter: 9784d2fc998c9bd0b8fbaf4fb9ed69526d12ce1a
+
+PODFILE CHECKSUM: 477fd8151a61c9b348e8cdbb8dcf1d15affee3f8
+
+COCOAPODS: 1.7.5
