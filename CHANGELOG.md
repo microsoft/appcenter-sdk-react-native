@@ -1,6 +1,6 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.3.0 (Under active development)
+## Version 2.3.0
 
 ### App Center
 
@@ -8,7 +8,19 @@
 
 ### App Center Auth
 
+* **[Feature]** App Center Auth logging now includes MSAL logs.
 * **[Fix]** Fix silently signed out on application restart if appcenter-auth module is initialized after other appcenter modules.
+
+#### Android
+
+* **[Fix]** Redirect URIs are now hidden in logs.
+
+### App Center Push
+
+#### Android
+
+* **[Fix]** Fix confusing information log about the availability of the Firebase SDK.
+* **[Fix]** Fix sending the push installation log after delayed start.
 
 ___
 
