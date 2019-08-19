@@ -2,7 +2,7 @@
 
 ## Version 2.3.0
 
-### App Center
+### App Center Crashes
 
 * **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
 
