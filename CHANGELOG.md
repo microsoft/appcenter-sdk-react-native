@@ -15,16 +15,6 @@
 
 * **[Fix]** Redirect URIs are now hidden in logs.
 
-### App Center Crashes
-
-#### Android
-
-* **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session: Crashes.hasReceivedMemoryWarningInLastSession().
-
-#### iOS
-
-* **[Feature]** Catch "low memory warning" and provide the API to check if it has happened in last session: MSCrashes.hasReceivedMemoryWarningInLastSession().
-
 ### App Center Push
 
 #### Android

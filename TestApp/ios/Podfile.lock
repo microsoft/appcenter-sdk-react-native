@@ -11,24 +11,24 @@ PODS:
     - AppCenterReactNativeShared
     - React
   - appcenter-crashes (2.3.0):
-    - AppCenter/Crashes (= 2.2.1-5)
+    - AppCenter/Crashes (= 2.3.0)
     - AppCenterReactNativeShared
     - React
   - appcenter-push (2.3.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (2.2.1-5):
+  - AppCenter/Analytics (2.3.0):
     - AppCenter/Core
-  - AppCenter/Auth (2.2.1-5):
+  - AppCenter/Auth (2.3.0):
     - AppCenter/Core
-  - AppCenter/Core (2.2.1-5)
-  - AppCenter/Crashes (2.2.1-5):
+  - AppCenter/Core (2.3.0)
+  - AppCenter/Crashes (2.3.0):
     - AppCenter/Core
-  - AppCenter/Push (2.2.1-5):
+  - AppCenter/Push (2.3.0):
     - AppCenter/Core
   - AppCenterReactNativeShared (2.3.0):
-    - AppCenter/Core (= 2.2.1-5)
+    - AppCenter/Core (= 2.3.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
