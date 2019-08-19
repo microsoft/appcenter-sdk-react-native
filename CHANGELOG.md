@@ -47,12 +47,13 @@ This preview version adds support for .NET Core 3.0 WPF and WinForms application
 
 ### App Center Auth
 
-#### iOS and Android
+#### iOS
 
 * **[Feature]** App Center Auth logging now includes MSAL logs.
 
 #### Android
 
+* **[Feature]** App Center Auth logging now includes MSAL logs.
 * **[Fix]** Redirect URIs are now hidden in logs.
 
 ___
