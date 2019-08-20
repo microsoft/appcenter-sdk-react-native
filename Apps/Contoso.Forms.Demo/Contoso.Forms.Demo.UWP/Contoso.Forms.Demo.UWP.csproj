@@ -94,6 +94,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClearCrashes.cs" />
+    <Compile Include="EventFilter.cs" />
+    <Compile Include="EventFilterWrapper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -132,11 +134,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.2.1-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.2.1-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.2.1-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="2.2.1-preview" />
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.3.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.3.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.3.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Push" Version="2.3.0-preview" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.673156" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.8" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

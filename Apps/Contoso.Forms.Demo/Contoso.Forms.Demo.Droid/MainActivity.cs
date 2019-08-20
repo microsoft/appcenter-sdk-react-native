@@ -6,14 +6,18 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Contoso.Forms.Demo.Droid;
+using Com.Microsoft.Appcenter.Analytics;
+using Com.Microsoft.Appcenter.Analytics.Channel;
+using Com.Microsoft.Appcenter.Ingestion.Models;
+using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
+using Contoso.Forms.Demo.Droid;
 
 [assembly: Dependency(typeof(MainActivity))]
 namespace Contoso.Forms.Demo.Droid
 {
-    [Activity(Label = "ACFDemo", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "ACFDemo", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IClearCrashClick
     {
         public static readonly int FileAttachmentId = 1;
@@ -31,6 +35,7 @@ namespace Contoso.Forms.Demo.Droid
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
+            AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
             LoadApplication(new App());
         }
 
@@ -58,6 +63,24 @@ namespace Contoso.Forms.Demo.Droid
         {
             ISharedPreferences appCenterPreferences = Android.App.Application.Context.GetSharedPreferences("AppCenter", FileCreationMode.Private);
             appCenterPreferences.Edit().Remove(CrashesUserConfirmationStorageKey).Apply();
+        }
+    }
+
+    public class AndroidAnalyticsListener : Java.Lang.Object, IAnalyticsListener
+    {
+        public void OnSendingFailed(ILog log, Java.Lang.Exception e)
+        {
+            AppCenterLog.Debug(App.LogTag, "Analytics listener OnSendingFailed with exception: " + e);
+        }
+
+        public void OnSendingSucceeded(ILog log)
+        {
+            AppCenterLog.Debug(App.LogTag, "Analytics listener OnSendingSucceeded");
+        }
+
+        public void OnBeforeSending(ILog log)
+        {
+            AppCenterLog.Debug(App.LogTag, "Analytics listener OnBeforeSendingEventLog");
         }
     }
 }

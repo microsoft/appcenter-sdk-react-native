@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
 using Microsoft.AppCenter.Analytics;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -18,6 +18,12 @@ namespace Contoso.UWP.Demo
         public MainPage()
         {
             this.InitializeComponent();
+            Application.Current.UnhandledException += OnUnhandledException;
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = HandleExceptions.IsOn;
         }
 
         private void TrackEvent(object sender, RoutedEventArgs e)

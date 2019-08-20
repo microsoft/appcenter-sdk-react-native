@@ -364,6 +364,7 @@
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
+    <MainPackageIdentityName>10805zumoTestUser.AppCenter-Contoso.Forms.Demo.UWP</MainPackageIdentityName>
     <MainPackageIdentityName>10805zumoTestUser.AppCenter-Contoso.UWP.Puppet</MainPackageIdentityName>
     <MainPackageIdentityName>10805zumoTestUser.AppCenter-Contso.Forms.Puppet.UW</MainPackageIdentityName>
     <MainPackageIdentityName>10805zumoTestUser.ClientSdkDotNetApp</MainPackageIdentityName>
