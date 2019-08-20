@@ -28,6 +28,7 @@ export default class CrashesScreen extends Component {
   state = {
     crashesEnabled: false,
     lastSessionStatus: '',
+    memoryWarning: '',
     textAttachment: '',
     binaryAttachment: '',
     userId: ''
@@ -39,6 +40,10 @@ export default class CrashesScreen extends Component {
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
     const lastSessionStatus = crashedInLastSession ? 'Crashed' : 'OK';
     this.setState({ lastSessionStatus });
+
+    const hasReceivedMemoryWarning = await Crashes.hasReceivedMemoryWarningInLastSession();
+    const memoryWarning = hasReceivedMemoryWarning ? 'Received' : 'No';
+    this.setState({ memoryWarning });
 
     const textAttachment = await AttachmentsProvider.getTextAttachment();
     this.setState({ textAttachment });
@@ -67,6 +72,17 @@ export default class CrashesScreen extends Component {
 
     // If the SDK disabled the test crash, use this one.
     await NativeModules.DemoAppNative.generateTestCrash();
+  }
+
+  generateLowMemoryWarning() {
+    const array = [];
+    while (true) {
+      array.push(new ArrayBuffer(128 * 1024 * 1024));
+    }
+  }
+
+  async generateNativeLowMemoryWarning() {
+    await NativeModules.DemoAppNative.produceLowMemoryWarning();
   }
 
   render() {
@@ -132,6 +148,14 @@ export default class CrashesScreen extends Component {
                   action: this.nativeCrash
                 },
                 {
+                  title: 'Generate low memory warning',
+                  action: this.generateLowMemoryWarning
+                },
+                {
+                  title: 'Generate low memory warning from native code',
+                  action: this.generateNativeLowMemoryWarning
+                },
+                {
                   title: 'Select image as binary error attachment',
                   action: this.showFilePicker
                 },
@@ -142,6 +166,7 @@ export default class CrashesScreen extends Component {
               title: 'Miscellaneous',
               data: [
                 { title: 'Last session status', value: 'lastSessionStatus' },
+                { title: 'Memory warning', value: 'memoryWarning' },
                 { title: 'Binary attachment', value: 'binaryAttachment' },
                 {
                   title: 'Text attachment',

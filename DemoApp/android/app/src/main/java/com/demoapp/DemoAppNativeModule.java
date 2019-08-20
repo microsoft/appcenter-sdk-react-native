@@ -3,21 +3,34 @@
 
 package com.demoapp;
 
+import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DemoAppNativeModule extends BaseJavaModule {
+
+    static {
+        System.loadLibrary("native-lib");
+    }
 
     private static final String APP_SECRET = "app_secret";
 
     private static final String START_AUTOMATICALLY = "start_automatically";
 
     private final SharedPreferences mSharedPreferences;
+
+    private native void nativeAllocateLargeBuffer();
 
     DemoAppNativeModule(Context context) {
         mSharedPreferences = context.getSharedPreferences(getName(), Context.MODE_PRIVATE);
@@ -54,5 +67,19 @@ public class DemoAppNativeModule extends BaseJavaModule {
          * We can tell with stack trace whether we used SDK method in debug or this one in release.
          */
         throw new TestCrashException();
+    }
+
+    @ReactMethod
+    public void produceLowMemoryWarning() {
+        final AtomicInteger i = new AtomicInteger(0);
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                nativeAllocateLargeBuffer();
+                Log.d("DemoApp", "Memory allocated: " + i.addAndGet(128) + "MB");
+                handler.post(this);
+            }
+        });
     }
 }
