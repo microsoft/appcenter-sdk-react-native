@@ -52,6 +52,11 @@ const Crashes = {
         return AppCenterReactNativeCrashes.lastSessionCrashReport();
     },
 
+     // async - returns a Promise
+     hasReceivedMemoryWarningInLastSession() {
+        return AppCenterReactNativeCrashes.hasReceivedMemoryWarningInLastSession();
+    },
+
     // async - returns a Promise
     isEnabled() {
         return AppCenterReactNativeCrashes.isEnabled();

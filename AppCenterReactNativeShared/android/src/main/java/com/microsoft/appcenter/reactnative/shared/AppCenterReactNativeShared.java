@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.ingestion.models.WrapperSdk;
 import com.microsoft.appcenter.utils.AppCenterLog;
+import com.microsoft.appcenter.utils.context.AuthTokenContext;
 
 import org.json.JSONObject;
 
@@ -57,6 +58,19 @@ public class AppCenterReactNativeShared {
         } else {
             AppCenterLog.debug(LOG_TAG, "Configure with secret.");
             AppCenter.configure(application, sAppSecret);
+        }
+
+        /*
+         * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+         * will be started by separate AppCenter.start call. If Auth module is used,
+         * call doNotResetAuthAfterStart to avoid resetting the auth token.
+         */
+        try {
+            Class.forName("com.microsoft.appcenter.auth.Auth");
+            AuthTokenContext.getInstance().doNotResetAuthAfterStart();
+        } catch (Exception ignored) {
+
+            /* Nothing to handle; this is reached if Auth SDK isn't used. */
         }
     }
 
