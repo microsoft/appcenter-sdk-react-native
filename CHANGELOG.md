@@ -2,10 +2,6 @@
 
 ## Version 2.3.0
 
-### App Center
-
-* **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
-
 ### App Center Auth
 
 * **[Feature]** App Center Auth logging now includes MSAL logs.
@@ -14,6 +10,10 @@
 #### Android
 
 * **[Fix]** Redirect URIs are now hidden in logs.
+
+### App Center Crashes
+
+* **[Feature]** Catch low memory warning and provide the API to check if it has happened in last session:  `Crashes.hasReceivedMemoryWarningInLastSession()`.
 
 ### App Center Push
 
