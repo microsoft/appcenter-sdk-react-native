@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 # Sets the minimum version of CMake required to build your native library.
 # This ensures that a certain set of CMake features is available to
 # your build.

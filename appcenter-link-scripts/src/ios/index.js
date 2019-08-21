@@ -75,7 +75,7 @@ module.exports = {
         try {
             const podFile = new PodFile(PodFile.searchForFile(path.resolve(path.dirname(appDelegatePath), '..')));
             pods.forEach((pod) => {
-                podFile.addPodLine(pod.pod, pod.podspec, pod.version);
+                podFile.addPodLine(pod.pod, pod.version);
             });
             podFile.eraseOldLines();
             if (minimumTarget) {
