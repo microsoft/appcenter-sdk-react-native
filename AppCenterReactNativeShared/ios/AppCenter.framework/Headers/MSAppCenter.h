@@ -78,6 +78,13 @@
 + (BOOL)isConfigured;
 
 /**
+ * Check whether app is running in App Center Test Cloud.
+ *
+ * @return true if running in App Center Test Cloud, false otherwise.
+ */
++ (BOOL)isRunningInAppCenterTestCloud;
+
+/**
  * Change the base URL (schema + authority + port only) used to communicate with the backend.
  *
  * @param logUrl Base URL to use for backend communication.
@@ -86,6 +93,7 @@
 
 /**
  * Enable or disable the SDK as a whole. In addition to AppCenter resources, it will also enable or disable all registered services.
+ * The state is persisted in the device's storage across application launches.
  *
  * @param isEnabled YES to enable, NO to disable.
  *
@@ -190,5 +198,26 @@
  * The value passed to this method is not persisted on disk. The default maximum database size is 10485760 bytes (10 MiB).
  */
 + (void)setMaxStorageSize:(long)sizeInBytes completionHandler:(void (^)(BOOL))completionHandler;
+
+/**
+ * Set the user identifier.
+ *
+ * @param userId User identifier.
+ *
+ * @discussion Set the user identifier for logs sent for the default target token when the secret passed in @c
+ * MSAppCenter:start:withServices: contains "target={targetToken}".
+ *
+ * For App Center backend the user identifier maximum length is 256 characters.
+ *
+ * AppCenter must be configured or started before this API can be used.
+ */
++ (void)setUserId:(NSString *)userId;
+
+/**
+ * Set country code to use when building device properties.
+ *
+ * @param countryCode The two-letter ISO country code. @see https://www.iso.org/obp/ui/#search for more information.
+ */
++ (void)setCountryCode:(NSString *)countryCode;
 
 @end
