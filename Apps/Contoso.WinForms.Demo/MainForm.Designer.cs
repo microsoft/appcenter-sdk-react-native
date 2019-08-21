@@ -499,9 +499,9 @@ namespace Contoso.WinForms.Demo
             this.CountryCodeGroup.Controls.Add(this.CountryCodeText);
             this.CountryCodeGroup.Enabled = false;
             this.CountryCodeGroup.Location = new System.Drawing.Point(16, 60);
-            this.CountryCodeGroup.Margin = new System.Windows.Forms.Padding(6);
+            this.CountryCodeGroup.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.CountryCodeGroup.Name = "CountryCodeGroup";
-            this.CountryCodeGroup.Padding = new System.Windows.Forms.Padding(6);
+            this.CountryCodeGroup.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.CountryCodeGroup.Size = new System.Drawing.Size(720, 192);
             this.CountryCodeGroup.TabIndex = 1;
             this.CountryCodeGroup.TabStop = false;
@@ -520,7 +520,7 @@ namespace Contoso.WinForms.Demo
             // SaveCountryCodeButton
             // 
             this.SaveCountryCodeButton.Location = new System.Drawing.Point(18, 137);
-            this.SaveCountryCodeButton.Margin = new System.Windows.Forms.Padding(6);
+            this.SaveCountryCodeButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SaveCountryCodeButton.Name = "SaveCountryCodeButton";
             this.SaveCountryCodeButton.Size = new System.Drawing.Size(690, 44);
             this.SaveCountryCodeButton.TabIndex = 2;
@@ -531,7 +531,7 @@ namespace Contoso.WinForms.Demo
             // CountryCodeText
             // 
             this.CountryCodeText.Location = new System.Drawing.Point(228, 65);
-            this.CountryCodeText.Margin = new System.Windows.Forms.Padding(6);
+            this.CountryCodeText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.CountryCodeText.Name = "CountryCodeText";
             this.CountryCodeText.Size = new System.Drawing.Size(476, 31);
             this.CountryCodeText.TabIndex = 0;
@@ -540,9 +540,9 @@ namespace Contoso.WinForms.Demo
             // 
             this.CountryCodeEnabledCheckbox.AutoSize = true;
             this.CountryCodeEnabledCheckbox.Location = new System.Drawing.Point(20, 15);
-            this.CountryCodeEnabledCheckbox.Margin = new System.Windows.Forms.Padding(6);
+            this.CountryCodeEnabledCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.CountryCodeEnabledCheckbox.Name = "CountryCodeEnabledCheckbox";
-            this.CountryCodeEnabledCheckbox.Size = new System.Drawing.Size(261, 29);
+            this.CountryCodeEnabledCheckbox.Size = new System.Drawing.Size(348, 39);
             this.CountryCodeEnabledCheckbox.TabIndex = 0;
             this.CountryCodeEnabledCheckbox.Text = "Country Code Enabled";
             this.CountryCodeEnabledCheckbox.UseVisualStyleBackColor = true;

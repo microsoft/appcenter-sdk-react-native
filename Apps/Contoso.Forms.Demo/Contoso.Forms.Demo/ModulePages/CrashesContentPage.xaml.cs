@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-#define DEBUG
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +14,10 @@ using System.Linq;
 namespace Contoso.Forms.Demo
 {
     using XamarinDevice = Xamarin.Forms.Device;
+
+    public class NonSerializableException : Exception
+    {
+    }
 
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class CrashesContentPage
@@ -42,6 +44,8 @@ namespace Contoso.Forms.Demo
             base.OnAppearing();
             CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
             CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
+            var hasLowMemoryWarning = await Crashes.HasReceivedMemoryWarningInLastSessionAsync();
+            MemoryWarningLabel.Text = hasLowMemoryWarning ? "Yes" : "No";
 
             // Attachments
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
@@ -139,12 +143,29 @@ namespace Contoso.Forms.Demo
             HandleOrThrow(() => Crashes.GenerateTestCrash());
         }
 
+        void NonSerializableException(object sender, EventArgs e)
+        {
+            HandleOrThrow(() => throw new NonSerializableException());
+        }
+
         void DivideByZero(object sender, EventArgs e)
         {
             /* This is supposed to cause a crash, so we don't care that the variable 'x' is never used */
 #pragma warning disable CS0219
             HandleOrThrow(() => (42 / int.Parse("0")).ToString());
 #pragma warning restore CS0219
+        }
+
+        void CatchNullReferenceException(object sender, EventArgs e)
+        {
+            try
+            {
+                TriggerNullReferenceException();
+            }
+            catch (NullReferenceException)
+            {
+                Debug.WriteLine("null reference exception");
+            }
         }
 
         void NullReferenceException(object sender, EventArgs e)
@@ -236,6 +257,12 @@ namespace Contoso.Forms.Demo
         void ClearCrashUserConfirmation(object sender, EventArgs e)
         {
             DependencyService.Get<IClearCrashClick>().ClearCrashButton();
+        }
+
+        void MemoryWarningTrigger(object sender, EventArgs e)
+        {
+            var blockSize = 128 * 1024 * 1024;
+            byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
         }
     }
 }
