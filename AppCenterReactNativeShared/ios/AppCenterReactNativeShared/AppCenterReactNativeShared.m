@@ -5,6 +5,14 @@
 #import <AppCenter/MSAppCenter.h>
 #import <AppCenter/MSWrapperSdk.h>
 
+// Сonvince the compiler that this private class exists and implemented.
+@interface MSAuthTokenContext
+
++ (instancetype)sharedInstance;
+- (void)preventResetAuthTokenAfterStart;
+
+@end
+
 @implementation AppCenterReactNativeShared
 
 static NSString *const kAppCenterSecretKey = @"AppSecret";
@@ -39,7 +47,7 @@ static NSDictionary *configuration;
 
 + (void)configureAppCenter {
   if (!wrapperSdk) {
-    MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc] initWithWrapperSdkVersion:@"2.2.0"
+    MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc] initWithWrapperSdkVersion:@"2.3.0"
                                                                 wrapperSdkName:@"appcenter.react-native"
                                                          wrapperRuntimeVersion:nil
                                                         liveUpdateReleaseLabel:nil
@@ -52,6 +60,15 @@ static NSDictionary *configuration;
         [MSAppCenter configure];
       } else {
         [MSAppCenter configureWithAppSecret:appSecret];
+      }
+
+      /*
+       * When startAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+       * will be started by separate AppCenter.start call. If Auth module is used,
+       * call preventResetAuthTokenAfterStart to avoid resetting the auth token.
+       */
+      if (NSClassFromString(@"MSAuth")) {
+        [[MSAuthTokenContext sharedInstance] preventResetAuthTokenAfterStart];
       }
     }
   }
