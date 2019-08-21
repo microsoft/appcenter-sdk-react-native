@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.4.0 (Under active development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fixed a react-native link issue for RN prior to 0.60 where App Center pods may be added incorrectly to Podfile.
+
 ## Version 2.3.0
 
 ### App Center Auth
