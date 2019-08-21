@@ -26,6 +26,5 @@ namespace Contoso.Forms.Demo
         {
             await Navigation.PopModalAsync();
         }
-
     }
 }
