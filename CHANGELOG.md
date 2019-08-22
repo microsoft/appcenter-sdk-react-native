@@ -4,6 +4,8 @@
 
 This preview version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
 
+This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+
 ## App Center
 
 #### WPF/WinForms
