@@ -108,6 +108,11 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void setRemoteOperationListener(RemoteOperationListener listener) {
+        Data.setRemoteOperationListener(listener);
+    }
+
+    @ReactMethod
     public void read(String documentId, String partition, ReadableMap readOptionsMap, final Promise promise) {
         ReadOptions readOptions = AppCenterReactNativeDataUtils.getReadOptions(readOptionsMap);
         Data.read(documentId, JsonElement.class, partition, readOptions).thenAccept(new Consumer<JsonElement>(READ_FAILED_ERROR_CODE, promise));
