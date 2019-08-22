@@ -20,6 +20,15 @@ describe('App Center Data isEnabled and setEnabled tests', () => {
   });
 });
 
+describe('App Center Data setRemoteOperationListener tests', () => {
+  test('setRemoteOperationListener is called', async () => {
+    const listener = {};
+    const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setRemoteOperationListener');
+    Data.setRemoteOperationListener(listener);
+    expect(spy).toHaveBeenCalled();
+  });
+});
+
 describe('App Center Data read operation tests', () => {
   test('read is called with readOptions and TimeToLive.INFINITE', async () => {
     const documentId = 'test_document_id';

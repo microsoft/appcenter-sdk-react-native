@@ -21,6 +21,7 @@ const Data = {
     DefaultPartitions,
     isEnabled,
     setEnabled,
+    setRemoteOperationListener,
     read,
     list,
     create,
@@ -45,6 +46,15 @@ function isEnabled() {
  */
 function setEnabled(enabled) {
     return AppCenterReactNativeData.setEnabled(enabled);
+}
+
+/**
+ * Set remoteListener for Data service.
+ * 
+ * @param {*} listener 
+ */
+function setRemoteOperationListener(listener) {
+    AppCenterReactNativeData.setRemoteOperationListener(listener);
 }
 
 /**
