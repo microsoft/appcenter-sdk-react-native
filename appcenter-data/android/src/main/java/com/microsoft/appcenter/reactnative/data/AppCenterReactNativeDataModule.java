@@ -25,6 +25,7 @@ import com.microsoft.appcenter.data.exception.DataException;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
 import com.microsoft.appcenter.data.models.Page;
 import com.microsoft.appcenter.data.models.PaginatedDocuments;
+import com.microsoft.appcenter.data.models.RemoteOperationListener;
 import com.microsoft.appcenter.data.models.ReadOptions;
 import com.microsoft.appcenter.data.models.WriteOptions;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
