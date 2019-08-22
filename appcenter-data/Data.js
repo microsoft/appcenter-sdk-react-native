@@ -48,6 +48,15 @@ function setEnabled(enabled) {
 }
 
 /**
+ * Change the URL used to retrieve CosmosDB resource tokens.
+ * 
+ * @param {string} tokenExchangeUrl - Token Exchange service URL.
+ */
+function setTokenExchangeUrl(tokenExchangeUrl) {
+    AppCenterReactNativeData.setTokenExchangeUrl(tokenExchangeUrl);
+}
+
+/**
  * Read a document.
  *
  * @param {string} documentId - The CosmosDB document id.

@@ -108,6 +108,10 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)shouldEnable
     resolve(nil);
 }
 
+RCT_EXPORT_METHOD(setTokenExchangeUrl:(NSString*)tokenExchangeUrl) {
+    [MSData setTokenExchangeUrl:tokenExchangeUrl];
+}
+
 RCT_EXPORT_METHOD(read:(NSString *)documentID
                   partition:(NSString *)partition
                   readOptions:(NSDictionary *)readOptionsMap
