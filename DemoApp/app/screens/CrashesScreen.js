@@ -34,7 +34,7 @@ export default class CrashesScreen extends Component {
     userId: ''
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.refreshToggle();
 
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
@@ -76,7 +76,7 @@ export default class CrashesScreen extends Component {
 
   generateLowMemoryWarning() {
     const array = [];
-    while (true) {
+    while (true) { // eslint-disable-line no-constant-condition
       array.push(new ArrayBuffer(128 * 1024 * 1024));
     }
   }
