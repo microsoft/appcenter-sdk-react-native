@@ -4,6 +4,7 @@
 const ReactNative = require('react-native');
 
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
+const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
 
 const TimeToLive = {
     INFINITE: -1,

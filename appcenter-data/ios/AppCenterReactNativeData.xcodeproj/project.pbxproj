@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		548694041D8384E600E6685A /* AppCenterReactNativeData.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 548694031D8384E600E6685A /* AppCenterReactNativeData.h */; };
 		548694061D8384E600E6685A /* AppCenterReactNativeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 548694051D8384E600E6685A /* AppCenterReactNativeData.m */; };
+		E8A0094F230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A0094D230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.m */; };
+		E8A00952230F596800B510EB /* AppCenterReactNativeDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A00951230F596800B510EB /* AppCenterReactNativeDataUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +30,10 @@
 		548694001D8384E600E6685A /* libAppCenterReactNativeData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativeData.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		548694031D8384E600E6685A /* AppCenterReactNativeData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeData.h; sourceTree = "<group>"; };
 		548694051D8384E600E6685A /* AppCenterReactNativeData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeData.m; sourceTree = "<group>"; };
+		E8A0094D230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeRemoteOperationDelegate.m; sourceTree = "<group>"; };
+		E8A0094E230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeRemoteOperationDelegate.h; sourceTree = "<group>"; };
+		E8A00950230F596800B510EB /* AppCenterReactNativeDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeDataUtils.h; sourceTree = "<group>"; };
+		E8A00951230F596800B510EB /* AppCenterReactNativeDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeDataUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,10 @@
 		548694021D8384E600E6685A /* AppCenterReactNativeData */ = {
 			isa = PBXGroup;
 			children = (
+				E8A00950230F596800B510EB /* AppCenterReactNativeDataUtils.h */,
+				E8A00951230F596800B510EB /* AppCenterReactNativeDataUtils.m */,
+				E8A0094E230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.h */,
+				E8A0094D230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.m */,
 				548694031D8384E600E6685A /* AppCenterReactNativeData.h */,
 				548694051D8384E600E6685A /* AppCenterReactNativeData.m */,
 			);
@@ -122,6 +132,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8A0094F230F286B00B510EB /* AppCenterReactNativeRemoteOperationDelegate.m in Sources */,
+				E8A00952230F596800B510EB /* AppCenterReactNativeDataUtils.m in Sources */,
 				548694061D8384E600E6685A /* AppCenterReactNativeData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
