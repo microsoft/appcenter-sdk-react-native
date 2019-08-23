@@ -21,10 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		04DB2A06646C1BB719107C2F /* Pods_AppCenterReactNativeShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC442297923E7CCD669E385 /* Pods_AppCenterReactNativeShared.framework */; };
 		5419C25A1D81FDA300DDF3A1 /* AppCenterReactNativeShared.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */; };
 		5419C25C1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 5419C25B1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m */; };
 		CB4D6D781DB6DE940080D9D6 /* AppCenterReactNativeShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB34C7FE7603FD051097C0F5 /* Pods_AppCenterReactNativeShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5AFE04B5D85B9357B0DE3B /* Pods_AppCenterReactNativeShared.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,12 +42,12 @@
 
 /* Begin PBXFileReference section */
 		17A4C484FBBB7AF52F8BDB1C /* Pods-AppCenterReactNativeShared.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppCenterReactNativeShared.release.xcconfig"; path = "Target Support Files/Pods-AppCenterReactNativeShared/Pods-AppCenterReactNativeShared.release.xcconfig"; sourceTree = "<group>"; };
+		3DC442297923E7CCD669E385 /* Pods_AppCenterReactNativeShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppCenterReactNativeShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2561D81FDA300DDF3A1 /* libAppCenterReactNativeShared.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppCenterReactNativeShared.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeShared.h; sourceTree = "<group>"; };
 		5419C25B1D81FDA300DDF3A1 /* AppCenterReactNativeShared.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeShared.m; sourceTree = "<group>"; };
 		584FB52F2068661D9D22E696 /* Pods-AppCenterReactNativeShared.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppCenterReactNativeShared.debug.xcconfig"; path = "Target Support Files/Pods-AppCenterReactNativeShared/Pods-AppCenterReactNativeShared.debug.xcconfig"; sourceTree = "<group>"; };
 		BA0D8B051E57C298005C4596 /* Global.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Global.xcconfig; sourceTree = "<group>"; };
-		FB5AFE04B5D85B9357B0DE3B /* Pods_AppCenterReactNativeShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppCenterReactNativeShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB34C7FE7603FD051097C0F5 /* Pods_AppCenterReactNativeShared.framework in Frameworks */,
+				04DB2A06646C1BB719107C2F /* Pods_AppCenterReactNativeShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +110,7 @@
 		EA1005747C07D8BAC80357C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FB5AFE04B5D85B9357B0DE3B /* Pods_AppCenterReactNativeShared.framework */,
+				3DC442297923E7CCD669E385 /* Pods_AppCenterReactNativeShared.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -355,10 +355,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 584FB52F2068661D9D22E696 /* Pods-AppCenterReactNativeShared.debug.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphonesimulator*]" = (
-					x86_64,
-					i386,
-				);
+				"ARCHS[sdk=iphonesimulator*]" = "x86_64 i386";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -374,10 +371,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 17A4C484FBBB7AF52F8BDB1C /* Pods-AppCenterReactNativeShared.release.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphonesimulator*]" = (
-					i386,
-					x86_64,
-				);
+				"ARCHS[sdk=iphonesimulator*]" = "i386 x86_64";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
