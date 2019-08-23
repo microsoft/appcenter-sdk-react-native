@@ -1,10 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
@@ -12,6 +8,10 @@ using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -21,10 +21,11 @@ namespace Contoso.Forms.Demo
         void ClearCrashButton();
     }
 
-    public partial class App : Application
+    public partial class App
     {
         public const string LogTag = "AppCenterXamarinDemo";
 
+        // App Center keys
         const string uwpKey = "5bce20c8-f00b-49ca-8580-7a49d5705d4c";
         const string androidKey = "987b5941-4fac-4968-933e-98a7ff29237c";
         const string iosKey = "fe2bf05d-f4f9-48a6-83d9-ea8033fbb644";
@@ -39,15 +40,25 @@ namespace Contoso.Forms.Demo
         {
             if (!AppCenter.Configured)
             {
+                AppCenterLog.Assert(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
                 AppCenter.LogLevel = LogLevel.Verbose;
-                Crashes.SendingErrorReport += SendingErrorReportHandler; 
-                Crashes.SentErrorReport += SentErrorReportHandler;
-                Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+                AppCenterLog.Info(LogTag, "AppCenter.LogLevel=" + AppCenter.LogLevel);
+                AppCenterLog.Info(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
+
+                // Set callbacks
                 Crashes.ShouldProcessErrorReport = ShouldProcess;
                 Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
                 Crashes.GetErrorAttachments = GetErrorAttachments;
                 Distribute.ReleaseAvailable = OnReleaseAvailable;
-                Push.PushNotificationReceived += OnPushNotificationReceived;
+
+                // Event handlers
+                Crashes.SendingErrorReport += SendingErrorReportHandler;
+                Crashes.SentErrorReport += SentErrorReportHandler;
+                Crashes.FailedToSendErrorReport += FailedToSendErrorReportHandler;
+                Push.PushNotificationReceived += PrintNotification;
+
+                AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
+
                 AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
@@ -56,32 +67,27 @@ namespace Contoso.Forms.Demo
 
                 // Work around for SetUserId race condition.
                 AppCenter.Start(typeof(Push));
+                AppCenter.IsEnabledAsync().ContinueWith(enabled =>
+                {
+                    AppCenterLog.Info(LogTag, "AppCenter.Enabled=" + enabled.Result);
+                });
                 AppCenter.GetInstallIdAsync().ContinueWith(installId =>
                 {
                     AppCenterLog.Info(LogTag, "AppCenter.InstallId=" + installId.Result);
                 });
+                AppCenterLog.Info(LogTag, "AppCenter.SdkVersion=" + AppCenter.SdkVersion);
                 Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
                 {
                     AppCenterLog.Info(LogTag, "Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
                 });
-                Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
+                Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
                 {
-                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
                 });
             }
         }
 
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
-        }
-
-        static void OnPushNotificationReceived(object sender, PushNotificationReceivedEventArgs e)
+        static void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
@@ -98,10 +104,9 @@ namespace Contoso.Forms.Demo
         {
             AppCenterLog.Info(LogTag, "Sending error report");
 
-            var args = e as SendingErrorReportEventArgs;
-            ErrorReport report = args.Report;
+            var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -116,10 +121,9 @@ namespace Contoso.Forms.Demo
         {
             AppCenterLog.Info(LogTag, "Sent error report");
 
-            var args = e as SentErrorReportEventArgs;
-            ErrorReport report = args.Report;
+            var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -139,10 +143,9 @@ namespace Contoso.Forms.Demo
         {
             AppCenterLog.Info(LogTag, "Failed to send error report");
 
-            var args = e as FailedToSendErrorReportEventArgs;
-            ErrorReport report = args.Report;
+            var report = e.Report;
 
-            //test some values
+            // Test some values
             if (report.Exception != null)
             {
                 AppCenterLog.Info(LogTag, report.Exception.ToString());
@@ -192,7 +195,7 @@ namespace Contoso.Forms.Demo
             return true;
         }
 
-        IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        static IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
         {
             var attachments = new List<ErrorAttachmentLog>();
             if (Current.Properties.TryGetValue(CrashesContentPage.TextAttachmentKey, out var textAttachment) &&
@@ -228,7 +231,7 @@ namespace Contoso.Forms.Demo
 
         bool OnReleaseAvailable(ReleaseDetails releaseDetails)
         {
-            AppCenterLog.Info("AppCenterDemo", "OnReleaseAvailable id=" + releaseDetails.Id
+            AppCenterLog.Info(LogTag, "OnReleaseAvailable id=" + releaseDetails.Id
                                             + " version=" + releaseDetails.Version
                                             + " releaseNotesUrl=" + releaseDetails.ReleaseNotesUrl);
             var custom = releaseDetails.ReleaseNotes?.ToLowerInvariant().Contains("custom") ?? false;
@@ -246,7 +249,7 @@ namespace Contoso.Forms.Demo
                 }
                 answer.ContinueWith((task) =>
                 {
-                    if (releaseDetails.MandatoryUpdate || (task as Task<bool>).Result)
+                    if (releaseDetails.MandatoryUpdate || ((Task<bool>)task).Result)
                     {
                         Distribute.NotifyUpdateAction(UpdateAction.Update);
                     }

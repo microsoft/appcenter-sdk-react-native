@@ -4,7 +4,7 @@
 using Contoso.Forms.Demo.UWP;
 using Xamarin.Forms;
 
-[assembly: Dependency((typeof(ClearCrashes)))]
+[assembly: Dependency(typeof(ClearCrashes))]
 namespace Contoso.Forms.Demo.UWP
 {
     public class ClearCrashes : IClearCrashClick

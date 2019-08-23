@@ -3,14 +3,16 @@
 
 using System;
 using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Push;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Contoso.UWP.Demo
 {
@@ -25,10 +27,13 @@ namespace Contoso.UWP.Demo
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            CoreApplication.EnablePrelaunch(true);
+            InitializeComponent();
+            Suspending += OnSuspending;
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start("e8354a9a-001a-4728-be65-a6477e57f2e7", typeof(Analytics), typeof(Crashes), typeof(Push));
+            Push.SetEnabledAsync(true);
+            Push.PushNotificationReceived += PushNotificationReceivedHandler;
         }
 
         /// <summary>
@@ -38,6 +43,16 @@ namespace Contoso.UWP.Demo
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                DebugSettings.EnableFrameRateCounter = true;
+            }
+#endif
+            BackgroundExecutionManager.RemoveAccess();
+            BackgroundExecutionManager.RequestAccessAsync().AsTask().Wait();
+            BGTask.RegisterBackgroundTask("", "task", new SystemTrigger(SystemTriggerType.InternetAvailable, false), new SystemCondition(SystemConditionType.InternetAvailable));
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -58,17 +73,37 @@ namespace Contoso.UWP.Demo
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if (rootFrame.Content == null)
             {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+            }
+            // Ensure the current window is active
+            Window.Current.Activate();
+            Push.CheckLaunchedFromNotification(e);
+        }
+
+        private void PushNotificationReceivedHandler(object sender, PushNotificationReceivedEventArgs args)
+        {
+            string title = args.Title;
+            string message = args.Message;
+            var customData = args.CustomData;
+
+            string customDataString = string.Empty;
+            foreach (var pair in customData)
+            {
+                customDataString += $"key='{pair.Key}', value='{pair.Value}'";
+            }
+
+            if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(message))
+            {
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"PushNotificationReceivedHandler received title:'{title}', message:'{message}', customData:{customDataString}");
+            }
+            else
+            {
+                AppCenterLog.Debug(AppCenterLog.LogTag, $"PushNotificationReceivedHandler received customData:{customDataString}");
             }
         }
 
@@ -94,6 +129,40 @@ namespace Contoso.UWP.Demo
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+    }
+
+    public class BGTask : IBackgroundTask
+    {
+        public void Run(IBackgroundTaskInstance taskInstance)
+        {
+        }
+
+        // Adapted from Microsoft documentation
+        public static BackgroundTaskRegistration RegisterBackgroundTask(string taskEntryPoint,
+            string taskName,
+            IBackgroundTrigger trigger,
+            IBackgroundCondition condition)
+        {
+            // Check for existing registrations of this background task.
+            foreach (var cur in BackgroundTaskRegistration.AllTasks)
+            {
+                if (cur.Value.Name == taskName)
+                {
+                    // The task is already registered.
+                    return (BackgroundTaskRegistration)cur.Value;
+                }
+            }
+
+            // Register the background task.
+            var builder = new BackgroundTaskBuilder {Name = taskName};
+            builder.SetTrigger(trigger);
+            if (condition != null)
+            {
+                builder.AddCondition(condition);
+            }
+            var task = builder.Register();
+            return task;
         }
     }
 }

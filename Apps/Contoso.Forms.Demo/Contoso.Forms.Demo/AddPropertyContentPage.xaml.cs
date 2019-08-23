@@ -17,8 +17,8 @@ namespace Contoso.Forms.Demo
 
         async void AddProperty(object sender, EventArgs e)
         {
-            Property addedProperty = new Property(NameEntry.Text, ValueEntry.Text);
-            PropertyAdded.Invoke(addedProperty);
+            Property addedProperty = new Property(NameEntry?.Text, ValueEntry?.Text);
+            PropertyAdded?.Invoke(addedProperty);
             await Navigation.PopModalAsync();
         }
 

@@ -26,24 +26,24 @@ namespace Contoso.WPF.Demo.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TextErrorAttachments {
-            get {
-                return ((string)(this["TextErrorAttachments"]));
-            }
-            set {
-                this["TextErrorAttachments"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string FileErrorAttachments {
             get {
                 return ((string)(this["FileErrorAttachments"]));
             }
             set {
                 this["FileErrorAttachments"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TextErrorAttachments {
+            get {
+                return ((string)(this["TextErrorAttachments"]));
+            }
+            set {
+                this["TextErrorAttachments"] = value;
             }
         }
         
