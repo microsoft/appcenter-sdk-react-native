@@ -15,7 +15,7 @@
 #endif
 
 
-static NSString *ON_PENDING_OPERATION_COMPLETED_EVENT = @"AppCenterPendingOperationCompleted";
+static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT = @"AppCenterRemoteOperationCompleted";
 
 @implementation AppCenterReactNativeRemoteOperationDelegate
 {
@@ -43,13 +43,13 @@ static NSString *ON_PENDING_OPERATION_COMPLETED_EVENT = @"AppCenterPendingOperat
                             } else {
                                 jsDocumentWrapper[kMSErrorKey] = nil;
                             }
-                            [self.eventEmitter sendEventWithName:ON_PENDING_OPERATION_COMPLETED_EVENT body:jsDocumentWrapper];
+                            [self.eventEmitter sendEventWithName:ON_REMOTE_OPERATION_COMPLETED_EVENT body:jsDocumentWrapper];
                         }
 }
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[ON_PENDING_OPERATION_COMPLETED_EVENT];
+    return @[ON_REMOTE_OPERATION_COMPLETED_EVENT];
 }
 
 - (void)startObserving {

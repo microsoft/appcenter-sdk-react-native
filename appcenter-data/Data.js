@@ -5,7 +5,7 @@ const ReactNative = require('react-native');
 
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
 const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
-const dataPendingOperationCompleted = 'AppCenterPendingOperationCompleted'; 
+const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted'; 
 
 const TimeToLive = {
     INFINITE: -1,
@@ -40,7 +40,7 @@ const Data = {
 function setListener(listenerMap) {
     dataEventEmitter.removeAllListeners(dataPendingOperationCompleted);
     if (listenerMap && listenerMap.onPendingOperationCompleted) {
-        dataEventEmitter.addListener(dataPendingOperationCompleted, (document) => {
+        dataEventEmitter.addListener(dataRemoteOperationCompleted, (document) => {
             listenerMap.onPendingOperationCompleted(document);
         });
     }
