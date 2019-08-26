@@ -132,7 +132,6 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
             }
         };
         Data.setRemoteOperationListener(remoteOperationlistener);
-
     }
 
     @ReactMethod
