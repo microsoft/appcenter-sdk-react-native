@@ -126,7 +126,6 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 if (dataException != null) {
                     errorMap = new WritableNativeMap();
                     errorMap.putString(MESSAGE_KEY, dataException.getMessage());
-                    jsDocumentWrapper.putMap(ERROR_KEY, errorMap);
                 }
                 remoteCompletedListener.invoke(operation, documentMetaDataMap, errorMap);
             }
