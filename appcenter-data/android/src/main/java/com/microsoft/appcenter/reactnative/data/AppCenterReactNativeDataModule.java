@@ -123,7 +123,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                     documentMetaDataMap.putString(PARTITION_KEY, documentMetadata.getPartition());
                     documentMetaDataMap.putString(ID_KEY, documentMetadata.getId());
                 }
-                if (error != null) {
+                if (dataException != null) {
                     errorMap = new WritableNativeMap();
                     errorMap.putString(MESSAGE_KEY, dataException.getMessage());
                     jsDocumentWrapper.putMap(ERROR_KEY, errorMap);
