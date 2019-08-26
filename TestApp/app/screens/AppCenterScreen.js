@@ -79,7 +79,7 @@ export default class AppCenterScreen extends Component {
     authStatus: 'Authentication status unknown'
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.refreshUI();
     const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
     for (let index = 0; index < StartupModes.length; index++) {

@@ -28,7 +28,7 @@ export default class AnalyticsScreen extends Component {
     analyticsEnabled: false
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.refreshToggle();
 
     this.props.navigation.setParams({
