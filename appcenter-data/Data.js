@@ -50,8 +50,8 @@ function setEnabled(enabled) {
 
 /**
  * Set remoteListener for Data service.
- * 
- * @param {object} listener 
+ *
+ * @param {object} listener
  */
 function setRemoteOperationListener(listener) {
     if (listener.onRemoteOperationCompleted) {
