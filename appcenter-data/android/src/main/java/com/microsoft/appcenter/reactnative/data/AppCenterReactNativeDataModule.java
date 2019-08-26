@@ -115,8 +115,20 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         RemoteOperationListener remoteOperationlistener = new RemoteOperationListener() {
 
             @Override
-            public void onRemoteOperationCompleted(String operation, DocumentMetadata documentMetadata, DataException error) {
-                remoteCompletedListener.invoke(operation, documentMetadata, error);
+            public void onRemoteOperationCompleted(String operation, DocumentMetadata documentMetadata, DataException dataException) {
+                WritableMap documentMetaDataMap, errorMap;
+                if (documentMetadata != null) {
+                    documentMetaDataMap = new WritableNativeMap();
+                    documentMetaDataMap.putString(ETAG_KEY, documentMetadata.getETag());
+                    documentMetaDataMap.putString(PARTITION_KEY, documentMetadata.getPartition());
+                    documentMetaDataMap.putString(ID_KEY, documentMetadata.getId());
+                }
+                if (error != null) {
+                    errorMap = new WritableNativeMap();
+                    errorMap.putString(MESSAGE_KEY, dataException.getMessage());
+                    jsDocumentWrapper.putMap(ERROR_KEY, errorMap);
+                }
+                remoteCompletedListener.invoke(operation, documentMetaDataMap, errorMap);
             }
         };
         Data.setRemoteOperationListener(remoteOperationlistener);
