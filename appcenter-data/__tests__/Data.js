@@ -21,7 +21,7 @@ describe('App Center Data isEnabled and setEnabled tests', () => {
 });
 
 describe('App Center Data setTokenExchangeUrl tests', () => {
-  test('setTokenExchangeUrl is called', async() => {
+  test('setTokenExchangeUrl is called', async () => {
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setTokenExchangeUrl');
     const url = 'https://token-exchange.url';
     Data.setTokenExchangeUrl(url);
