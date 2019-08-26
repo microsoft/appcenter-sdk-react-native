@@ -116,7 +116,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
             @Override
             public void onRemoteOperationCompleted(String operation, DocumentMetadata documentMetadata, DataException dataException) {
-                WritableMap documentMetaDataMap, errorMap;
+                WritableMap documentMetaDataMap = null;
+                WritableNativeMap errorMap = null;
                 if (documentMetadata != null) {
                     documentMetaDataMap = new WritableNativeMap();
                     documentMetaDataMap.putString(ETAG_KEY, documentMetadata.getETag());
