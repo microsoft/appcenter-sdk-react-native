@@ -8,6 +8,7 @@ package com.microsoft.appcenter.reactnative.data;
 import android.app.Application;
 
 import com.facebook.react.bridge.BaseJavaModule;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
@@ -22,6 +23,7 @@ import com.google.gson.JsonObject;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.data.Data;
 import com.microsoft.appcenter.data.exception.DataException;
+import com.microsoft.appcenter.data.models.DocumentMetadata;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
 import com.microsoft.appcenter.data.models.Page;
 import com.microsoft.appcenter.data.models.PaginatedDocuments;
@@ -109,8 +111,16 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setRemoteOperationListener(RemoteOperationListener listener) {
-        Data.setRemoteOperationListener(listener);
+    public void setRemoteOperationListener(final Callback remoteCompletedListener) {
+        RemoteOperationListener remoteOperationlistener = new RemoteOperationListener() {
+
+            @Override
+            public void onRemoteOperationCompleted(String operation, DocumentMetadata documentMetadata, DataException error) {
+                remoteCompletedListener.invoke(operation, documentMetadata, error);
+            }
+        };
+        Data.setRemoteOperationListener(remoteOperationlistener);
+
     }
 
     @ReactMethod

@@ -51,10 +51,12 @@ function setEnabled(enabled) {
 /**
  * Set remoteListener for Data service.
  * 
- * @param {*} listener 
+ * @param {object} listener 
  */
 function setRemoteOperationListener(listener) {
-    AppCenterReactNativeData.setRemoteOperationListener(listener);
+    if (listener.onRemoteOperationCompleted) {
+        AppCenterReactNativeData.setRemoteOperationListener(listener.onRemoteOperationCompleted);
+    }
 }
 
 /**
