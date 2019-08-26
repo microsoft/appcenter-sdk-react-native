@@ -32,16 +32,16 @@ const Data = {
 };
 
 /**
- * Set the pending operation listener.
+ * Set the remote operation listener.
  *
  * @param {object} listenerMap - listener.
  * @return Future asynchronous operation with result being true if enabled, false otherwise.
  */
 function setListener(listenerMap) {
-    dataEventEmitter.removeAllListeners(dataPendingOperationCompleted);
-    if (listenerMap && listenerMap.onPendingOperationCompleted) {
+    dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
+    if (listenerMap && listenerMap.onRemoteOperationCompleted) {
         dataEventEmitter.addListener(dataRemoteOperationCompleted, (document) => {
-            listenerMap.onPendingOperationCompleted(document);
+            listenerMap.onRemoteOperationCompleted(document);
         });
     }
     return Promise.resolve();

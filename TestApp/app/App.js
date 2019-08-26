@@ -67,8 +67,8 @@ Push.setListener({
 });
 
 Data.setListener({
-  onPendingOperationCompleted(document) {
-    console.log('onPendingOperationCompleted called in the delegate method.')
+  onRemoteOperationCompleted(document) {
+    console.log('onRemoteOperationCompleted called in the delegate method.')
   }
 });
 
