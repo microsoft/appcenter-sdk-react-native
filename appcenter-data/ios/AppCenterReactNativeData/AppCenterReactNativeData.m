@@ -43,6 +43,7 @@
 
 @implementation AppCenterReactNativeData
 
+static dispatch_once_t onceToken;
 static AppCenterReactNativeRemoteOperationDelegate *remoteOpetationDelegate = nil;
 
 RCT_EXPORT_MODULE();
@@ -50,6 +51,7 @@ RCT_EXPORT_MODULE();
 - (instancetype)init {
     if ((self = [super init])) {
         _paginatedDocuments = [[NSMutableDictionary alloc] init];
+        [[AppCenterReactNativeData sharedRemoteOpetationDelegate] setEventEmitter:self];
     }
     return self;
 }
@@ -63,12 +65,10 @@ RCT_EXPORT_MODULE();
     if ([MSAppCenter isConfigured]) {
         [MSAppCenter startService:[MSData class]];
     }
-}
 
-//RCT_EXPORT_METHOD(setRemoteOperationDelegate:(RCTPromiseResolveBlock)resolve
-//                  rejecter:(RCTPromiseRejectBlock)reject) {
-//    resolve(@([MSData setRemoteOperationDelegate:]));
-//}
+  // Set delegate.
+  [MSData setRemoteOperationDelegate:[AppCenterReactNativeData sharedRemoteOpetationDelegate]];
+}
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
@@ -196,5 +196,29 @@ RCT_EXPORT_METHOD(remove:(NSString *)documentID
 }
 
 
+
++ (AppCenterReactNativeRemoteOperationDelegate*)sharedRemoteOpetationDelegate {
+  dispatch_once(&onceToken, ^{
+    if (remoteOpetationDelegate == nil) {
+      remoteOpetationDelegate = [AppCenterReactNativeRemoteOperationDelegate new];
+    }
+  });
+  return remoteOpetationDelegate;
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return [remoteOpetationDelegate supportedEvents];
+}
+
+- (void)startObserving {
+  // Will be called when this module's first listener is added.
+  [remoteOpetationDelegate startObserving];
+}
+
+- (void)stopObserving {
+  // Will be called when this module's last listener is removed, or on dealloc.
+  [remoteOpetationDelegate stopObserving];
+}
 
 @end

@@ -6,6 +6,7 @@ import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
+import Data from 'appcenter-data';
 
 import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
@@ -62,6 +63,12 @@ Push.setListener({
       }
       Alert.alert(title, message);
     }
+  }
+});
+
+Data.setListener({
+  onPendingOperationCompleted(document) {
+    console.log('onPendingOperationCompleted called in the delegate method.')
   }
 });
 

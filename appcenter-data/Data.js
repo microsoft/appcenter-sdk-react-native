@@ -5,6 +5,7 @@ const ReactNative = require('react-native');
 
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
 const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
+const dataPendingOperationCompleted = 'AppCenterPendingOperationCompleted'; 
 
 const TimeToLive = {
     INFINITE: -1,
@@ -26,8 +27,25 @@ const Data = {
     list,
     create,
     remove,
-    replace
+    replace,
+    setListener
 };
+
+/**
+ * Set the pending operation listener.
+ *
+ * @param {object} listenerMap - listener.
+ * @return Future asynchronous operation with result being true if enabled, false otherwise.
+ */
+function setListener(listenerMap) {
+    dataEventEmitter.removeAllListeners(dataPendingOperationCompleted);
+    if (listenerMap && listenerMap.onPendingOperationCompleted) {
+        dataEventEmitter.addListener(dataPendingOperationCompleted, (document) => {
+            listenerMap.onPendingOperationCompleted(document);
+        });
+    }
+    return Promise.resolve();
+}
 
 /**
  * Check whether Data service is enabled or not.

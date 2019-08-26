@@ -31,7 +31,6 @@ static NSString *ON_PENDING_OPERATION_COMPLETED_EVENT = @"AppCenterPendingOperat
     didCompletePendingOperation:(NSString *)operation
                     forDocument:(MSDocumentWrapper *_Nullable)document
                       withError:(MSDataError *_Nullable)error{
-                          // TODO
                         if (hasListeners){
                              NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
                              [AppCenterReactNativeDataUtils addDocumentWrapperMetaData:jsDocumentWrapper document:document];
@@ -44,9 +43,8 @@ static NSString *ON_PENDING_OPERATION_COMPLETED_EVENT = @"AppCenterPendingOperat
                             } else {
                                 jsDocumentWrapper[kMSErrorKey] = nil;
                             }
-                            [self.eventEmitter sendEventWithName:ON_PENDING_OPERATION_COMPLETED_EVENT body:jsDocumentWrapper]; // TODO Pass the document and error
+                            [self.eventEmitter sendEventWithName:ON_PENDING_OPERATION_COMPLETED_EVENT body:jsDocumentWrapper];
                         }
-
 }
 
 - (NSArray<NSString *> *)supportedEvents
