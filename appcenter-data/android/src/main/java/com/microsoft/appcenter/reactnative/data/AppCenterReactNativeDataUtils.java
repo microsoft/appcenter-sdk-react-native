@@ -183,16 +183,16 @@ public class AppCenterReactNativeDataUtils {
 
     public static WritableMap convertRemoteOperationDataToWritableMap(String operation, DocumentMetadata documentMetadata, DataException dataException) {
         WritableMap remoteOperationDataMap = new WritableNativeMap();
-        remoteOperationDataMap.putString("operation", operation);
+        remoteOperationDataMap.putString(AppCenterReactNativeDataModule.OPERATION_KEY, operation);
         if (documentMetadata != null) {
-            remoteOperationDataMap.putString("eTag", documentMetadata.getETag());
-            remoteOperationDataMap.putString("partition", documentMetadata.getPartition());
-            remoteOperationDataMap.putString("id", documentMetadata.getId());
+            remoteOperationDataMap.putString(AppCenterReactNativeDataModule.ETAG_KEY, documentMetadata.getETag());
+            remoteOperationDataMap.putString(AppCenterReactNativeDataModule.PARTITION_KEY, documentMetadata.getPartition());
+            remoteOperationDataMap.putString(AppCenterReactNativeDataModule.ID_KEY, documentMetadata.getId());
         }
         if (dataException != null) {
             WritableNativeMap errorMap = new WritableNativeMap();
-            errorMap.putString("message", dataException.getMessage());
-            remoteOperationDataMap.putMap("error", errorMap);
+            errorMap.putString(AppCenterReactNativeDataModule.MESSAGE_KEY, dataException.getMessage());
+            remoteOperationDataMap.putMap(AppCenterReactNativeDataModule.ERROR_KEY, errorMap);
         }
         return remoteOperationDataMap;
     }

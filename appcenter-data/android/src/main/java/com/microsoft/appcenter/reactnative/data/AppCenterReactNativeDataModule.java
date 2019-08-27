@@ -38,6 +38,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
+    public static final String ID_KEY = "id";
+
+    public static final String PARTITION_KEY = "partition";
+
+    public static final String ETAG_KEY = "eTag";
+
+    public static final String ERROR_KEY = "error";
+
+    public static final String MESSAGE_KEY = "message";
+
+    public static final String OPERATION_KEY = "operation";
+
     private static final String READ_FAILED_ERROR_CODE = "ReadFailed";
 
     private static final String LIST_FAILED_ERROR_CODE = "ListFailed";
@@ -52,25 +64,15 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String JSON_VALUE_KEY = "jsonValue";
 
-    private static final String ETAG_KEY = "eTag";
-
     private static final String LAST_UPDATED_DATE_KEY = "lastUpdatedDate";
 
     private static final String IS_FROM_DEVICE_CACHE_KEY = "isFromDeviceCache";
-
-    private static final String ID_KEY = "id";
-
-    private static final String PARTITION_KEY = "partition";
-
-    private static final String ERROR_KEY = "error";
 
     private static final String PAGINATED_DOCUMENTS_ID_KEY = "paginatedDocumentsId";
 
     private static final String ITEMS_KEY = "items";
 
     private static final String CURRENT_PAGE_KEY = "currentPage";
-
-    private static final String MESSAGE_KEY = "message";
 
     private AppCenterReactNativeDataListener mDataListener;
 
