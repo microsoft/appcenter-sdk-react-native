@@ -181,23 +181,19 @@ public class AppCenterReactNativeDataUtils {
         return writeOptions;
     }
 
-    public static WritableMap convertDocumentMetaDataToWritableMap(DocumentMetadata documentMetadata) {
+    public static WritableMap convertRemoteOperationDataToWritableMap(String operation, DocumentMetadata documentMetadata, DataException dataException) {
+        WritableMap remoteOperationDataMap = new WritableNativeMap();
+        remoteOperationDataMap.putString("operation", operation);
         if (documentMetadata != null) {
-            WritableMap documentMetaDataMap = new WritableNativeMap();
-            documentMetaDataMap.putString("eTag", documentMetadata.getETag());
-            documentMetaDataMap.putString("partition", documentMetadata.getPartition());
-            documentMetaDataMap.putString("id", documentMetadata.getId());
-            return documentMetaDataMap;
+            remoteOperationDataMap.putString("eTag", documentMetadata.getETag());
+            remoteOperationDataMap.putString("partition", documentMetadata.getPartition());
+            remoteOperationDataMap.putString("id", documentMetadata.getId());
         }
-        return null;
-    }
-
-    public static WritableMap convertDataExceptionToWritableMap(DataException dataException) {
         if (dataException != null) {
             WritableNativeMap errorMap = new WritableNativeMap();
-            errorMap.putString("errorMessage", dataException.getMessage());
-            return errorMap;
+            errorMap.putString("message", dataException.getMessage());
+            remoteOperationDataMap.putMap("error", errorMap);
         }
-        return null;
+        return remoteOperationDataMap;
     }
 }

@@ -32,11 +32,7 @@ public class AppCenterReactNativeDataListener implements RemoteOperationListener
 
     @Override
     public void onRemoteOperationCompleted(String operation, DocumentMetadata documentMetadata, DataException dataException) {
-        WritableMap remoteOperationCompletedMap = new WritableNativeMap();
-        remoteOperationCompletedMap.putString("operation", operation);
-        remoteOperationCompletedMap.putMap("documentMetadata", AppCenterReactNativeDataUtils.convertDocumentMetaDataToWritableMap(documentMetadata));
-        remoteOperationCompletedMap.putMap("dataException", AppCenterReactNativeDataUtils.convertDataExceptionToWritableMap(dataException));
-        sendEvent(ON_REMOTE_OPERATION_COMPLETED_EVENT, remoteOperationCompletedMap);
+        sendEvent(ON_REMOTE_OPERATION_COMPLETED_EVENT, AppCenterReactNativeDataUtils.convertRemoteOperationDataToWritableMap(operation, documentMetadata, dataException));
     }
 
     private void sendEvent(String eventType, WritableMap report) {

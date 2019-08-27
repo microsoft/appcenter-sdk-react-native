@@ -24,7 +24,7 @@ describe('App Center Data setRemoteOperationListener tests', () => {
   test('setRemoteOperationListener is called', async () => {
     const listener = {};
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setRemoteOperationListener');
-    Data.setListener(listener);
+    Data.setRemoteOperationListener(listener);
     expect(spy).toHaveBeenCalled();
   });
 });

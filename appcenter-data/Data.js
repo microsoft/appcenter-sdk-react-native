@@ -23,22 +23,24 @@ const Data = {
     create,
     remove,
     replace,
-    setListener
+    setRemoteOperationListener
 };
+
 /**
  * Set the remote operation listener.
  *
  * @param {object} listenerMap - listener.
- * 
+ *
  */
-function setListener(listenerMap) {
+function setRemoteOperationListener(listenerMap) {
     dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
     if (listenerMap && listenerMap.onRemoteOperationCompleted) {
-        dataEventEmitter.addListener(dataRemoteOperationCompleted, (document) => {
-            listenerMap.onRemoteOperationCompleted(document);
+        dataEventEmitter.addListener(dataRemoteOperationCompleted, (remoteOperationData) => {
+            listenerMap.onRemoteOperationCompleted(remoteOperationData);
         });
     }
 }
+
 /**
  * Check whether Data service is enabled or not.
  *

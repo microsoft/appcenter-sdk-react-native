@@ -62,7 +62,7 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String PARTITION_KEY = "partition";
 
-    private static final String ERROR_KEY = "errorMessage";
+    private static final String ERROR_KEY = "error";
 
     private static final String PAGINATED_DOCUMENTS_ID_KEY = "paginatedDocumentsId";
 
