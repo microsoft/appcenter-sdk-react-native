@@ -1,34 +1,44 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 const ReactNative = require('react-native');
-
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
-
+const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
+const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted'; 
 const TimeToLive = {
     INFINITE: -1,
     NO_CACHE: 0,
     DEFAULT: -1
 };
-
 const DefaultPartitions = {
     USER_DOCUMENTS: 'user',
     APP_DOCUMENTS: 'readonly'
 };
-
 const Data = {
     TimeToLive,
     DefaultPartitions,
     isEnabled,
     setEnabled,
-    setRemoteOperationListener,
     read,
     list,
     create,
     remove,
-    replace
+    replace,
+    setListener
 };
-
+/**
+ * Set the remote operation listener.
+ *
+ * @param {object} listenerMap - listener.
+ * 
+ */
+function setListener(listenerMap) {
+    dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
+    if (listenerMap && listenerMap.onRemoteOperationCompleted) {
+        dataEventEmitter.addListener(dataRemoteOperationCompleted, (document) => {
+            listenerMap.onRemoteOperationCompleted(document);
+        });
+    }
+}
 /**
  * Check whether Data service is enabled or not.
  *
@@ -37,7 +47,6 @@ const Data = {
 function isEnabled() {
     return AppCenterReactNativeData.isEnabled();
 }
-
 /**
  * Enable or disable Data service.
  *
@@ -47,18 +56,6 @@ function isEnabled() {
 function setEnabled(enabled) {
     return AppCenterReactNativeData.setEnabled(enabled);
 }
-
-/**
- * Set remoteListener for Data service.
- *
- * @param {object} listener
- */
-function setRemoteOperationListener(listener) {
-    if (listener.onRemoteOperationCompleted) {
-        AppCenterReactNativeData.setRemoteOperationListener(listener.onRemoteOperationCompleted);
-    }
-}
-
 /**
  * Read a document.
  *
@@ -74,7 +71,6 @@ function read(documentId, partition, readOptions) {
     }
     return AppCenterReactNativeData.read(documentId, partition, readOptions).then(convertTimestampToDate);
 }
-
 /**
  * Retrieve a paginated list of the documents in a partition.
  *
@@ -99,7 +95,6 @@ function list(partition) {
         return paginatedDocuments;
     });
 }
-
 /**
  * Create a document.
  *
@@ -116,7 +111,6 @@ function create(documentId, document, partition, writeOptions) {
     }
     return AppCenterReactNativeData.create(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
-
 /**
  * Delete a document.
  *
@@ -132,7 +126,6 @@ function remove(documentId, partition, writeOptions) {
     }
     return AppCenterReactNativeData.remove(documentId, partition, writeOptions).then(convertTimestampToDate);
 }
-
 /**
  * Replace a document.
  *
@@ -149,19 +142,16 @@ function replace(documentId, document, partition, writeOptions) {
     }
     return AppCenterReactNativeData.replace(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
-
 Data.ReadOptions = class {
     constructor(timeToLive) {
         this.timeToLive = timeToLive;
     }
 };
-
 Data.WriteOptions = class {
     constructor(timeToLive) {
         this.timeToLive = timeToLive;
     }
 };
-
 function convertTimestampToDate(documentWrapper) {
     if (documentWrapper.lastUpdatedDate) {
         // Create a new `Date` object from timestamp as milliseconds.
@@ -172,5 +162,4 @@ function convertTimestampToDate(documentWrapper) {
     }
     return documentWrapper;
 }
-
 module.exports = Data;

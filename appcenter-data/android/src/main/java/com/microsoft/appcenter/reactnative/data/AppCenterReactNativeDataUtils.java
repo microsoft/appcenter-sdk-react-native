@@ -17,6 +17,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.microsoft.appcenter.data.exception.DataException;
+import com.microsoft.appcenter.data.models.DocumentMetadata;
 import com.microsoft.appcenter.data.models.ReadOptions;
 import com.microsoft.appcenter.data.models.WriteOptions;
 
@@ -177,5 +179,25 @@ public class AppCenterReactNativeDataUtils {
             writeOptions = new WriteOptions();
         }
         return writeOptions;
+    }
+
+    public static WritableMap convertDocumentMetaDataToWritableMap(DocumentMetadata documentMetadata) {
+        if (documentMetadata != null) {
+            WritableMap documentMetaDataMap = new WritableNativeMap();
+            documentMetaDataMap.putString("eTag", documentMetadata.getETag());
+            documentMetaDataMap.putString("partition", documentMetadata.getPartition());
+            documentMetaDataMap.putString("id", documentMetadata.getId());
+            return documentMetaDataMap;
+        }
+        return null;
+    }
+
+    public static WritableMap convertDataExceptionToWritableMap(DataException dataException) {
+        if (dataException != null) {
+            WritableNativeMap errorMap = new WritableNativeMap();
+            errorMap.putString("errorMessage", dataException.getMessage());
+            return errorMap;
+        }
+        return null;
     }
 }

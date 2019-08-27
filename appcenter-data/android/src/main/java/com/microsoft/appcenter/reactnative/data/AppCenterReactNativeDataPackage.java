@@ -28,6 +28,7 @@ public class AppCenterReactNativeDataPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
+        mDataModule.setReactApplicationContext(reactContext);
         modules.add(mDataModule);
         return modules;
     }

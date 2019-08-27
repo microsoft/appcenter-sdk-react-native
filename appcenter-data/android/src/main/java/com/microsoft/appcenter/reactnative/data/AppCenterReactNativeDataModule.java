@@ -8,8 +8,8 @@ package com.microsoft.appcenter.reactnative.data;
 import android.app.Application;
 
 import com.facebook.react.bridge.BaseJavaModule;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
@@ -23,11 +23,9 @@ import com.google.gson.JsonObject;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.data.Data;
 import com.microsoft.appcenter.data.exception.DataException;
-import com.microsoft.appcenter.data.models.DocumentMetadata;
 import com.microsoft.appcenter.data.models.DocumentWrapper;
 import com.microsoft.appcenter.data.models.Page;
 import com.microsoft.appcenter.data.models.PaginatedDocuments;
-import com.microsoft.appcenter.data.models.RemoteOperationListener;
 import com.microsoft.appcenter.data.models.ReadOptions;
 import com.microsoft.appcenter.data.models.WriteOptions;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
@@ -74,6 +72,8 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
 
     private static final String MESSAGE_KEY = "message";
 
+    private AppCenterReactNativeDataListener mDataListener;
+
     private final Map<String, PaginatedDocuments<JsonElement>> mPaginatedDocuments = new ConcurrentHashMap<>();
 
     public AppCenterReactNativeDataModule(Application application) {
@@ -81,6 +81,12 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
         if (AppCenter.isConfigured()) {
             AppCenter.start(Data.class);
         }
+        mDataListener = new AppCenterReactNativeDataListener();
+        Data.setRemoteOperationListener(mDataListener);
+    }
+
+    public void setReactApplicationContext(ReactApplicationContext reactContext) {
+        this.mDataListener.setReactApplicationContext(reactContext);
     }
 
     @Override
@@ -108,30 +114,6 @@ public class AppCenterReactNativeDataModule extends BaseJavaModule {
                 promise.resolve(null);
             }
         });
-    }
-
-    @ReactMethod
-    public void setRemoteOperationListener(final Callback remoteCompletedListener) {
-        RemoteOperationListener remoteOperationlistener = new RemoteOperationListener() {
-
-            @Override
-            public void onRemoteOperationCompleted(String operation, DocumentMetadata documentMetadata, DataException dataException) {
-                WritableMap documentMetaDataMap = null;
-                WritableNativeMap errorMap = null;
-                if (documentMetadata != null) {
-                    documentMetaDataMap = new WritableNativeMap();
-                    documentMetaDataMap.putString(ETAG_KEY, documentMetadata.getETag());
-                    documentMetaDataMap.putString(PARTITION_KEY, documentMetadata.getPartition());
-                    documentMetaDataMap.putString(ID_KEY, documentMetadata.getId());
-                }
-                if (dataException != null) {
-                    errorMap = new WritableNativeMap();
-                    errorMap.putString(MESSAGE_KEY, dataException.getMessage());
-                }
-                remoteCompletedListener.invoke(operation, documentMetaDataMap, errorMap);
-            }
-        };
-        Data.setRemoteOperationListener(remoteOperationlistener);
     }
 
     @ReactMethod
