@@ -7,6 +7,7 @@
 #import <AppCenterData/MSDataError.h>
 #import <AppCenterData/MSDictionaryDocument.h>
 #import <AppCenterData/MSDocumentWrapper.h>
+#import "AppCenterReactNativeDataContants.h"
 
 #if __has_include(<React/RCTEventDispatcher.h>)
 #import <React/RCTEventDispatcher.h>

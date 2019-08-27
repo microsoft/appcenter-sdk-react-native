@@ -33,6 +33,7 @@
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 #import "AppCenterReactNativeDataUtils.h"
+#import "AppCenterReactNativeDataContants.h"
 #import "AppCenterReactNativeRemoteOperationDelegate.h"
 
 @interface AppCenterReactNativeData () <RCTBridgeModule>

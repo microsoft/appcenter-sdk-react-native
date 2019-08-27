@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 #import "AppCenterReactNativeDataUtils.h"
+#import "AppCenterReactNativeDataContants.h"
 
 @implementation AppCenterReactNativeDataUtils
 
