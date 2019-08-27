@@ -51,10 +51,15 @@ static NSString *const kMSMessageKey = @"message";
 
 @interface AppCenterReactNativeDataUtils : NSObject
 
-+ (void)addDocumentWrapperMetaData:(NSMutableDictionary *)jsDocumentWrapper document:(MSDocumentWrapper *)document;
-+ (NSMutableArray *)addDocumentsToArray:(NSArray<MSDocumentWrapper *> *)documents;
++ (void)addDocumentWrapperMetaData:(NSMutableDictionary *)jsDocumentWrapper
+                          document:(MSDocumentWrapper *)document;
++ (NSMutableArray *)addDocumentsToArray:
+    (NSArray<MSDocumentWrapper *> *)documents;
 + (MSReadOptions *)getReadOptions:(NSDictionary *)readOptionsMap;
 + (MSWriteOptions *)getWriteOptions:(NSDictionary *)writeOptionsMap;
-+ (void (^)(MSDocumentWrapper* _Nonnull))dataCompletionHandler:(NSString *)errorCode resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject;
++ (void (^)(MSDocumentWrapper *_Nonnull))
+    dataCompletionHandler:(NSString *)errorCode
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject;
 
 @end
