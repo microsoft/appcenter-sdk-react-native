@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 const ReactNative = require('react-native');
+
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
+
 const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
 const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted'; 
 const TimeToLive = {
@@ -9,10 +12,12 @@ const TimeToLive = {
     NO_CACHE: 0,
     DEFAULT: -1
 };
+
 const DefaultPartitions = {
     USER_DOCUMENTS: 'user',
     APP_DOCUMENTS: 'readonly'
 };
+
 const Data = {
     TimeToLive,
     DefaultPartitions,
@@ -36,8 +41,8 @@ const Data = {
 function setRemoteOperationListener(listenerMap) {
     dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
     if (listenerMap && listenerMap.onRemoteOperationCompleted) {
-        dataEventEmitter.addListener(dataRemoteOperationCompleted, (remoteOperationData) => {
-            listenerMap.onRemoteOperationCompleted(remoteOperationData);
+        dataEventEmitter.addListener(dataRemoteOperationCompleted, (remoteOperationCompletedData) => {
+            listenerMap.onRemoteOperationCompleted(remoteOperationCompletedData);
         });
     }
 }
@@ -50,6 +55,7 @@ function setRemoteOperationListener(listenerMap) {
 function isEnabled() {
     return AppCenterReactNativeData.isEnabled();
 }
+
 /**
  * Enable or disable Data service.
  *
@@ -59,6 +65,7 @@ function isEnabled() {
 function setEnabled(enabled) {
     return AppCenterReactNativeData.setEnabled(enabled);
 }
+
 /**
  * Change the URL used to retrieve CosmosDB resource tokens.
  *
@@ -83,6 +90,7 @@ function read(documentId, partition, readOptions) {
     }
     return AppCenterReactNativeData.read(documentId, partition, readOptions).then(convertTimestampToDate);
 }
+
 /**
  * Retrieve a paginated list of the documents in a partition.
  *
@@ -107,6 +115,7 @@ function list(partition) {
         return paginatedDocuments;
     });
 }
+
 /**
  * Create a document.
  *
@@ -123,6 +132,7 @@ function create(documentId, document, partition, writeOptions) {
     }
     return AppCenterReactNativeData.create(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
+
 /**
  * Delete a document.
  *
@@ -138,6 +148,7 @@ function remove(documentId, partition, writeOptions) {
     }
     return AppCenterReactNativeData.remove(documentId, partition, writeOptions).then(convertTimestampToDate);
 }
+
 /**
  * Replace a document.
  *
