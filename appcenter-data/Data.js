@@ -165,16 +165,19 @@ function replace(documentId, document, partition, writeOptions) {
     }
     return AppCenterReactNativeData.replace(documentId, partition, document, writeOptions).then(convertTimestampToDate);
 }
+
 Data.ReadOptions = class {
     constructor(timeToLive) {
         this.timeToLive = timeToLive;
     }
 };
+
 Data.WriteOptions = class {
     constructor(timeToLive) {
         this.timeToLive = timeToLive;
     }
 };
+
 function convertTimestampToDate(documentWrapper) {
     if (documentWrapper.lastUpdatedDate) {
         // Create a new `Date` object from timestamp as milliseconds.
@@ -185,4 +188,5 @@ function convertTimestampToDate(documentWrapper) {
     }
     return documentWrapper;
 }
+
 module.exports = Data;
