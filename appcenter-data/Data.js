@@ -6,7 +6,7 @@ const ReactNative = require('react-native');
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
 
 const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
-const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted'; 
+const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted';
 const TimeToLive = {
     INFINITE: -1,
     NO_CACHE: 0,
