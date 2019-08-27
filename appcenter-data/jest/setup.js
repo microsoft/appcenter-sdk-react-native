@@ -10,6 +10,7 @@ jest.mock('NativeModules', () => {
       isEnabled: jest.fn(),
       setEnabled: jest.fn(() => Promise.resolve(null)),
       setRemoteOperationListener: jest.fn(),
+      setTokenExchangeUrl: jest.fn(),
       read: jest.fn(() => Promise.resolve({ lastUpdatedDate: testTimestamp })),
       list: jest.fn(() => {
         const result = {

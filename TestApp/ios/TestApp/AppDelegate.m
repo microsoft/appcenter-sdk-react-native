@@ -45,7 +45,8 @@
   [AppCenterReactNativeAuth register]; // Initialize AppCenter Auth
   [AppCenterReactNativeCrashes register]; // Initialize AppCenter Crashes
   [AppCenterReactNativePush register]; // Initialize AppCenter Push
-
+  [AppCenterReactNativeData register]; // Initialize AppCenter Data
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"TestApp"

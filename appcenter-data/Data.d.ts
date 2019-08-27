@@ -44,12 +44,21 @@ export interface Page {
 }
 
 export interface RemoteOperationListener {
-    onRemoteOperationCompleted: (operation: string, documentMetadata: DocumentMetaData) => void;
+    onRemoteOperationCompleted: (documentMetadata: DocumentMetaData) => void;
+}
+
+export interface RemoteOperationCompletedData {
+    id: string;
+    eTag: string;
+    partition: string;
+    opertation: string;
+    error: Map<string, string>;
 }
  
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
 export function setRemoteOperationListener(listener: RemoteOperationListener);
+export function setTokenExchangeUrl(tokenExchangeUrl: string): void; 
 export function read(documentId: string, partition: DefaultPartitions, readOptions?: ReadOptions): Promise<DocumentWrapper>;
 export function list(partition: DefaultPartitions): Promise<PaginatedDocuments>;
 export function create(documentId: string, document: object, partition: DefaultPartitions, writeOptions?: WriteOptions): Promise<DocumentWrapper>;

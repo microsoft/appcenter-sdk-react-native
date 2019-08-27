@@ -21,7 +21,7 @@
     "react-native": "0.60.3",
     "react-native-fs": "^2.9.12",
     "react-native-gesture-handler": "^1.1.0",
-    "react-native-image-picker": "^0.28.0",
+    "react-native-image-picker": "^1.0.1",
     "react-native-modal-selector": "^1.0.2",
     "react-navigation": "^3.5.1"
   },
