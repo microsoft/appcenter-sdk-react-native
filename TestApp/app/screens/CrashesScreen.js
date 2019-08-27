@@ -34,7 +34,7 @@ export default class CrashesScreen extends Component {
     userId: ''
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.refreshToggle();
 
     const crashedInLastSession = await Crashes.hasCrashedInLastSession();
