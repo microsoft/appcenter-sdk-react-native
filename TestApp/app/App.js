@@ -11,6 +11,7 @@ import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
+import DataScreen from './screens/DataScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
 const TabNavigator = createBottomTabNavigator(
@@ -18,7 +19,8 @@ const TabNavigator = createBottomTabNavigator(
     AppCenter: AppCenterScreen,
     Analytics: AnalyticsScreen,
     Transmission: TransmissionScreen,
-    Crashes: CrashesScreen
+    Crashes: CrashesScreen,
+    Data: DataScreen
   },
   {
     tabBarOptions: {
