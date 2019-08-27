@@ -45,6 +45,7 @@ export interface Page {
 
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
+export function setTokenExchangeUrl(tokenExchangeUrl: string): void; 
 export function read(documentId: string, partition: DefaultPartitions, readOptions?: ReadOptions): Promise<DocumentWrapper>;
 export function list(partition: DefaultPartitions): Promise<PaginatedDocuments>;
 export function create(documentId: string, document: object, partition: DefaultPartitions, writeOptions?: WriteOptions): Promise<DocumentWrapper>;

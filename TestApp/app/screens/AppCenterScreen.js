@@ -72,6 +72,7 @@ export default class AppCenterScreen extends Component {
     appCenterEnabled: false,
     pushEnabled: false,
     authEnabled: false,
+    dataEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
@@ -98,6 +99,8 @@ export default class AppCenterScreen extends Component {
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
+
+    await AppCenter.setLogLevel(AppCenter.LogLevel.VERBOSE);
   }
 
   async refreshUI() {
@@ -106,6 +109,9 @@ export default class AppCenterScreen extends Component {
 
     const authEnabled = await Auth.isEnabled();
     this.setState({ authEnabled });
+
+    const dataEnabled = await Data.isEnabled();
+    this.setState({ dataEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -216,6 +222,15 @@ export default class AppCenterScreen extends Component {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
                     this.setState({ authEnabled, accountId: '', authStatus: 'User is not authenticated' });
+                  }
+                },
+                {
+                  title: 'Data Enabled',
+                  value: 'dataEnabled',
+                  toggle: async () => {
+                    await Data.setEnabled(!this.state.dataEnabled);
+                    const dataEnabled = await Data.isEnabled();
+                    this.setState({ dataEnabled });
                   }
                 },
                 {
@@ -359,6 +374,9 @@ async function runDataCrudScenarios() {
     someOtherBool: true,
     '👀': '🙉'
   };
+
+  // TODO: Remove this (once Data tests screens are ready), set token exchange URL to the integration endpoint
+  // Data.setTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
   const createResult = await Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
   console.log('Successful create', createResult);

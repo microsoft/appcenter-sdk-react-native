@@ -21,6 +21,7 @@ const Data = {
     DefaultPartitions,
     isEnabled,
     setEnabled,
+    setTokenExchangeUrl,
     read,
     list,
     create,
@@ -45,6 +46,15 @@ function isEnabled() {
  */
 function setEnabled(enabled) {
     return AppCenterReactNativeData.setEnabled(enabled);
+}
+
+/**
+ * Change the URL used to retrieve CosmosDB resource tokens.
+ *
+ * @param {string} tokenExchangeUrl - Token Exchange service URL.
+ */
+function setTokenExchangeUrl(tokenExchangeUrl) {
+    AppCenterReactNativeData.setTokenExchangeUrl(tokenExchangeUrl);
 }
 
 /**
