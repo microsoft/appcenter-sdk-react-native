@@ -41,7 +41,7 @@ namespace Microsoft.AppCenter.Crashes
         public Exception Exception { get; }
 
         /// <summary>
-        /// Gets the C# Exception object that caused the crash. Available only on Windows.
+        /// Gets the C# exception stack trace captured at crash time. Available only on Windows.
         /// </summary>
         /// <value>The exception.</value>
         public string StackTrace { get; }
