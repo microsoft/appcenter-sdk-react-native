@@ -232,55 +232,24 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.IsNull(ErrorLogHelper.ReadErrorLogFile(mockFile));
         }
 
-
         [TestMethod]
         public void ReadExceptionFile()
         {
             var expectedException = new ArgumentException("test");
             var mockFile = Mock.Of<File>();
-            var mockStream = new System.IO.MemoryStream();
-            new BinaryFormatter().Serialize(mockStream, expectedException);
-            mockStream.Position = 0;
-            string actualFullFileName = null;
-            System.IO.FileMode? actualFileMode = null;
-
-            Mock.Get(mockFile).Setup(f => f.FullName).Returns("test.exception");
-            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
-            {
-                actualFullFileName = name;
-                actualFileMode = mode;
-                return mockStream;
-            };
+            Mock.Get(mockFile).Setup(file => file.ReadAllText()).Returns(expectedException.ToString());
 
             var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
 
-            Assert.IsInstanceOfType(actualException, expectedException.GetType());
-            Assert.AreEqual(expectedException.Message, actualException.Message);
-            Assert.AreEqual(mockFile.FullName, actualFullFileName);
-            Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
+            Assert.AreEqual(expectedException.ToString(), actualException);
         }
 
         [TestMethod]
         public void ReadExceptionFileFailureDoesNotThrow()
         {
             var mockFile = Mock.Of<File>();
-            var mockStream = Mock.Of<System.IO.Stream>();
-            string actualFullFileName = null;
-            System.IO.FileMode? actualFileMode = null;
-
-            Mock.Get(mockFile).Setup(f => f.FullName).Returns("test.exception");
-            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
-            {
-                actualFullFileName = name;
-                actualFileMode = mode;
-                return mockStream;
-            };
-
-            var actualException = ErrorLogHelper.ReadExceptionFile(mockFile);
-
-            Assert.IsNull(actualException);
-            Assert.AreEqual(mockFile.FullName, actualFullFileName);
-            Assert.AreEqual(System.IO.FileMode.Open, actualFileMode);
+            Mock.Get(mockFile).Setup(file => file.ReadAllText()).Throws(new System.IO.IOException());
+            Assert.IsNull(ErrorLogHelper.ReadExceptionFile(mockFile));
         }
 
         [TestMethod]
@@ -297,28 +266,12 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var exceptionFilename = errorLog.Id + ".exception";
             var mockStream = new System.IO.MemoryStream();
             var mockDirectory = Mock.Of<Directory>();
-            Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
-            var expectedFullFileName = $"Errors\\{exceptionFilename}";
-            string actualFullFileName = null;
-            System.IO.FileMode? actualFileMode = null;
 
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
-            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
-            {
-                actualFullFileName = name;
-                actualFileMode = mode;
-                return mockStream;
-            };
             ErrorLogHelper.SaveErrorLogFiles(expectedException, errorLog);
 
-            Assert.AreEqual(expectedFullFileName, actualFullFileName);
-            Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
             Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
-
-            // Check what was serialized.
-            var actualException = new BinaryFormatter().Deserialize(new System.IO.MemoryStream(mockStream.ToArray()));
-            Assert.IsInstanceOfType(actualException, expectedException.GetType());
-            Assert.AreEqual(expectedException.Message, ((System.Exception)actualException).Message);
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(exceptionFilename, expectedException.ToString()));
         }
 
         [TestMethod]
@@ -364,29 +317,19 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             var mockDirectory = Mock.Of<Directory>();
             var mockStream = new System.IO.MemoryStream();
             Mock.Get(mockDirectory).Setup(d => d.FullName).Returns("Errors");
-            var expectedFullFileName = $"Errors\\{exceptionFilename}";
-            string actualFullFileName = null;
-            System.IO.FileMode? actualFileMode = null;
 
             // Cause stream to fail writing
             mockStream.Dispose();
 
             // Given we succeed saving log file but fail saving exception file.
             ErrorLogHelper.Instance._crashesDirectory = mockDirectory;
-            ErrorLogHelper.Instance.NewFileStream = (name, mode) =>
-            {
-                actualFullFileName = name;
-                actualFileMode = mode;
-                return mockStream;
-            };
 
             // When we save files.
             ErrorLogHelper.SaveErrorLogFiles(exception, errorLog);
 
             // Then it does not throw.
-            Assert.AreEqual(expectedFullFileName, actualFullFileName);
-            Assert.AreEqual(System.IO.FileMode.Create, actualFileMode);
             Mock.Get(mockDirectory).Verify(d => d.CreateFile(errorLogFilename, serializedErrorLog));
+            Mock.Get(mockDirectory).Verify(d => d.CreateFile(exceptionFilename, exception.ToString()));
         }
 
         [TestMethod]

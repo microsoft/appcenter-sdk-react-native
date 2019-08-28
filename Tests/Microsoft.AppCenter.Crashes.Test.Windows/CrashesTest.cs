@@ -138,8 +138,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             mockErrorLogHelper.Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile2)).Returns(expectedManagedErrorLog2);
             mockErrorLogHelper.Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
             mockErrorLogHelper.Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
-            mockErrorLogHelper.Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception());
-            mockErrorLogHelper.Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception());
+            mockErrorLogHelper.Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception().ToString());
+            mockErrorLogHelper.Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception().ToString());
 
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
@@ -170,8 +170,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile2)).Returns(expectedManagedErrorLog2);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception());
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception());
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(new System.Exception().ToString());
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile2)).Returns(new System.Exception().ToString());
 
             // Implement ShouldProcess to send only one of the 2 crashes.
             Crashes.ShouldProcessErrorReport += report => report.Id == expectedManagedErrorLog2.Id.ToString();
@@ -236,7 +236,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogCorruptedFile1)).Returns<ManagedErrorLog>(null);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogCorruptedFile2)).Returns<ManagedErrorLog>(null);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception());
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(new System.Exception().ToString());
             Mock.Get(mockErrorLogCorruptedFile1).Setup(file => file.Delete()).Throws(new System.IO.IOException());
             Mock.Get(mockErrorLogCorruptedFile1).Setup(file => file.Name).Returns($"{corruptedId1}.exception");
 
@@ -315,7 +315,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             Assert.IsNotNull(actualSendingReport);
             Assert.AreEqual(_expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
-            Assert.AreEqual(_expectedException, actualSendingReport.Exception);
+            Assert.AreEqual(_expectedException.ToString(), actualSendingReport.StackTrace);
             Assert.IsNotNull(actualSendingReport.Device);
             Assert.AreEqual(_expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
             Assert.AreEqual(_expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
@@ -384,7 +384,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             _mockChannelGroup.Raise(channel => channel.SendingLog += null, null, new SendingLogEventArgs(_expectedManagedErrorLog));
             Assert.IsNotNull(actualSendingReport);
             Assert.AreEqual(_expectedManagedErrorLog.Id.ToString(), actualSendingReport.Id);
-            Assert.AreEqual(_expectedException, actualSendingReport.Exception);
+            Assert.AreEqual(_expectedException.ToString(), actualSendingReport.StackTrace);
             Assert.IsNotNull(actualSendingReport.Device);
             Assert.AreEqual(_expectedManagedErrorLog.AppLaunchTimestamp.Value.Ticks, actualSendingReport.AppStartTime.Ticks);
             Assert.AreEqual(_expectedManagedErrorLog.Timestamp.Value.Ticks, actualSendingReport.AppErrorTime.Ticks);
@@ -495,7 +495,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(oldFile)).Returns(expectedOldManagedErrorLog);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedRecentManagedErrorLog.Id)).Returns(recentExceptionFile);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedOldManagedErrorLog.Id)).Returns(oldExceptionFile);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(recentExceptionFile)).Returns(recentExpectedException);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(recentExceptionFile)).Returns(recentExpectedException.ToString());
 
             // Start crashes service in an enabled state to initiate the process of getting the error report.
             Crashes.SetEnabledAsync(true).Wait();
@@ -505,7 +505,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Verify results.
             Assert.IsNotNull(lastSessionErrorReport);
-            Assert.AreSame(recentExpectedException, lastSessionErrorReport.Exception);
+            Assert.AreEqual(recentExpectedException.ToString(), lastSessionErrorReport.StackTrace);
             Assert.AreEqual(expectedRecentManagedErrorLog.Id.ToString(), lastSessionErrorReport.Id);
             Assert.IsTrue(hasCrashedInLastSession);
         }
@@ -846,7 +846,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetErrorLogFiles()).Returns(new List<File> { mockErrorLogFile });
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadErrorLogFile(mockErrorLogFile)).Returns(_expectedManagedErrorLog);
             Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceGetStoredExceptionFile(_expectedManagedErrorLog.Id)).Returns(mockExceptionFile);
-            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(_expectedException);
+            Mock.Get(mockErrorLogHelper).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile)).Returns(_expectedException.ToString());
             return mockErrorLogHelper;
         }
     }

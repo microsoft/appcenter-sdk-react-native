@@ -75,7 +75,7 @@ namespace Contoso.WPF.Puppet
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
             {
-                Log("Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
+                Log("Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
             });
         }
 
