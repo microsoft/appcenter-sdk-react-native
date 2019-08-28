@@ -65,10 +65,12 @@ export default class DataScreen extends Component {
     );
 
     const partitionPicker = ({ item: { onChange } }) => (
-      <ModalSelector data={DataScreen.partitions}
+      <ModalSelector
+        data={DataScreen.partitions}
         selectedKey={this.state.partition}
         onChange={onChange}
-        style={SharedStyles.modalSelector} />
+        style={SharedStyles.modalSelector}
+      />
     );
 
     return (
