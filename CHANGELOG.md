@@ -4,13 +4,7 @@
 
 ### App Center Crashes
 
-#### WPF/WinForms
-
-* **[Fix]** Remove insecure implementation of the raw `ErrorReport.Exception` property, now providing `string StackTrace` property as an alternative.
-
-#### UWP
-
-* **[Feature]** Add `StackTrace` property to the `ErrorReport` object.
+* **[Breaking change]** Remove insecure implementation of the raw `ErrorReport.Exception` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin, UWP, WPF and WinForms.
 
 ## Version 2.3.0-preview
 
