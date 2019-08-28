@@ -14,6 +14,10 @@ import CrashesScreen from './screens/CrashesScreen';
 import DataScreen from './screens/DataScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
+// Disable remote debugger warning.
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Remote debugger']);
+
 const TabNavigator = createBottomTabNavigator(
   {
     AppCenter: AppCenterScreen,
