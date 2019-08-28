@@ -20,15 +20,6 @@ describe('App Center Data isEnabled and setEnabled tests', () => {
   });
 });
 
-describe('App Center Data setRemoteOperationListener tests', () => {
-  test('setRemoteOperationListener is called', async () => {
-    const listener = {};
-    const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setRemoteOperationListener');
-    Data.setRemoteOperationListener(listener);
-    expect(spy).toHaveBeenCalled();
-  });
-});
-
 describe('App Center Data setTokenExchangeUrl tests', () => {
   test('setTokenExchangeUrl is called', async () => {
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setTokenExchangeUrl');
