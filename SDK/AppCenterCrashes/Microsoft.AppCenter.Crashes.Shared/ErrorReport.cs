@@ -35,10 +35,16 @@ namespace Microsoft.AppCenter.Crashes
         public Device Device { get; }
 
         /// <summary>
-        /// Gets the C# Exception object that caused the crash.
+        /// Gets the C# Exception object that caused the crash. Available only on Xamarin.
         /// </summary>
         /// <value>The exception.</value>
         public Exception Exception { get; }
+
+        /// <summary>
+        /// Gets the C# exception stack trace captured at crash time. Available only on Windows.
+        /// </summary>
+        /// <value>The exception.</value>
+        public string StackTrace { get; }
 
         /// <summary>
         /// Gets details specific to Android.

@@ -78,15 +78,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadErrorLogFile(mockFile2)).Returns(olderExpectedManagedErrorLog);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(lastExpectedManagedErrorLog.Id)).Returns(mockExceptionFile1);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(olderExpectedManagedErrorLog.Id)).Returns(mockExceptionFile2);
-            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(expectedException);
+            Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceReadExceptionFile(mockExceptionFile1)).Returns(expectedException.ToString());
 
             // Implement attachments callback.
-            System.Exception actualException = null;
+            string actualException = null;
             Crashes.GetErrorAttachments = errorReport =>
             {
                 if (errorReport.Id == lastExpectedManagedErrorLog.Id.ToString())
                 {
-                    actualException = errorReport.Exception;
+                    actualException = errorReport.StackTrace;
                     return new List<ErrorAttachmentLog> { validErrorAttachment };
                 }
                 return null;
@@ -105,7 +105,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreNotEqual(Guid.Empty, validErrorAttachment.ErrorId);
 
             // Verify exception was attached to report in the callback.
-            Assert.AreSame(expectedException, actualException);
+            Assert.AreEqual(expectedException.ToString(), actualException);
         }
 
         [TestMethod]

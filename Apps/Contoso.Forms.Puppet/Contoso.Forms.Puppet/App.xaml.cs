@@ -87,7 +87,7 @@ namespace Contoso.Forms.Puppet
                 });
                 Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
                 {
-                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
+                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + (task.Result?.Exception?.ToString() ?? task.Result?.StackTrace));
                 });
             }
         }

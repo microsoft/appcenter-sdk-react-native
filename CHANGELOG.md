@@ -1,6 +1,16 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.3.1
+## Version 2.4.0-preview
+
+### App Center Crashes
+
+#### WPF/WinForms
+
+* **[Fix]** Remove insecure implementation of the raw `ErrorReport.Exception` property, now providing `string StackTrace` property as an alternative.
+
+#### UWP
+
+* **[Feature]** Add `StackTrace` property to the `ErrorReport` object.
 
 ## Version 2.3.0-preview
 
@@ -8,7 +18,7 @@ This preview version adds support for .NET Core 3.0 WPF and WinForms application
 
 This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
-## App Center
+### App Center
 
 #### WPF/WinForms
 
