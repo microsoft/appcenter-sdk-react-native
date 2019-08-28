@@ -96,7 +96,7 @@ export default class DataScreen extends Component {
               renderItem: switchRenderItem
             },
             {
-              title: 'Documents',
+              title: 'Partition',
               value: 'partition',
               data: [
                 {
