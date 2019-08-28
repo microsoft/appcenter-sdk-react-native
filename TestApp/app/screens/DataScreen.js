@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Switch, SectionList } from 'react-native';
+import ModalSelector from 'react-native-modal-selector';
 
 import Data from 'appcenter-data';
 
@@ -22,9 +23,22 @@ export default class DataScreen extends Component {
     }
   }
 
+  // List of supported partitions.
+  static partitions = [
+    {
+      label: 'Application documents',
+      key: Data.DefaultPartitions.APP_DOCUMENTS
+    },
+    {
+      label: 'User documents',
+      key: Data.DefaultPartitions.USER_DOCUMENTS
+    }
+  ]
+
   // Screen's state.
   state = {
-    dataEnabled: false
+    dataEnabled: false,
+    partition: Data.DefaultPartitions.APP_DOCUMENTS
   }
 
   async componentDidMount() {
@@ -50,6 +64,13 @@ export default class DataScreen extends Component {
       </View>
     );
 
+    const partitionPicker = ({ item: { onChange } }) => (
+      <ModalSelector data={DataScreen.partitions}
+        selectedKey={this.state.partition}
+        onChange={onChange}
+        style={SharedStyles.modalSelector} />
+    );
+
     return (
       <View style={SharedStyles.container}>
         <SectionList
@@ -71,6 +92,18 @@ export default class DataScreen extends Component {
                 },
               ],
               renderItem: switchRenderItem
+            },
+            {
+              title: 'Documents',
+              value: 'partition',
+              data: [
+                {
+                  onChange: async (option) => {
+                    this.setState({ partition: option.key });
+                  }
+                }
+              ],
+              renderItem: partitionPicker
             }
           ]}
         />
