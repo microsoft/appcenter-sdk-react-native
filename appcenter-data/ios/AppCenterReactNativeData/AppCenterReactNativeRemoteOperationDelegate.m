@@ -15,7 +15,7 @@
 #import "RCTEventDispatcher.h"
 #endif
 
-static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT = @"AppCenterRemoteOperationCompleted";
+static NSString *const ON_REMOTE_OPERATION_COMPLETED_EVENT = @"AppCenterRemoteOperationCompleted";
 
 @implementation AppCenterReactNativeRemoteOperationDelegate {
   bool hasListeners;
