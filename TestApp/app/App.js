@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
+import { AppState, Alert, Platform, ToastAndroid, YellowBox } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
@@ -14,8 +14,6 @@ import CrashesScreen from './screens/CrashesScreen';
 import DataScreen from './screens/DataScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-// Disable remote debugger warning.
-import { YellowBox } from 'react-native';
 YellowBox.ignoreWarnings(['Remote debugger']);
 
 const TabNavigator = createBottomTabNavigator(

@@ -4,9 +4,9 @@
 import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, ActivityIndicator } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
-import { DataDocumentListView } from '../components/DataDocumentListView';
-
 import Data from 'appcenter-data';
+
+import { DataDocumentListView } from '../components/DataDocumentListView';
 
 import SharedStyles from '../SharedStyles';
 import DataTabBarIcon from '../assets/data.png';
@@ -52,8 +52,8 @@ export default class DataScreen extends Component {
     this.props.navigation.setParams({
       refreshScreen: this.refreshToggle.bind(this)
     });
-    documents = await this.listDocuments(this.state.partition);
-    this.setState({ documents: documents, loadingData: false });
+    const documents = await this.listDocuments(this.state.partition);
+    this.setState({ documents, loadingData: false });
   }
 
   async refreshToggle() {
@@ -62,19 +62,21 @@ export default class DataScreen extends Component {
   }
 
   async listDocuments(partition) {
-    let documents = [];
-    hasNextPage = false;
+    const documents = [];
     try {
       let page = await Data.list(partition);
-      page.currentPage.items.forEach(item => {
+      page.currentPage.items.forEach((item) => {
         documents.push(item);
       });
+
+      /* eslint-disable no-await-in-loop */
       while (await page.hasNextPage()) {
         page = await page.getNextPage();
-        page.currentPage.items.forEach(item => {
+        page.currentPage.items.forEach((item) => {
           documents.push(item);
         });
       }
+      /* eslint-enable no-await-in-loop */
       return documents;
     } catch (err) {
       console.log(err);
@@ -136,9 +138,9 @@ export default class DataScreen extends Component {
               data: [
                 {
                   onChange: async (option) => {
-                    this.setState({loadingData: true});
-                    let documents = await this.listDocuments(option.key);
-                    this.setState({ partition: option.key, documents: documents, loadingData: false });
+                    this.setState({ loadingData: true });
+                    const documents = await this.listDocuments(option.key);
+                    this.setState({ partition: option.key, documents, loadingData: false });
                   }
                 }
               ],
@@ -150,8 +152,8 @@ export default class DataScreen extends Component {
                 {
                   onDocumentRemoved: async (documentId) => {
                     await Data.remove(documentId, this.state.partition);
-                    let newDocuments = [];
-                    this.state.documents.forEach(document => {
+                    const newDocuments = [];
+                    this.state.documents.forEach((document) => {
                       if (document.id !== documentId) {
                         newDocuments.push(document);
                       }
