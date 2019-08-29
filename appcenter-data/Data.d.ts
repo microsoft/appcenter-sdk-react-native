@@ -44,7 +44,7 @@ export interface Page {
 }
 
 export interface RemoteOperationListener {
-    onRemoteOperationCompleted: (remoteOperationCompletedData: RemoteOperationCompletedData) => void;
+    onRemoteOperationCompleted?: (remoteOperationCompletedData: RemoteOperationCompletedData) => void;
 }
 
 export interface RemoteOperationCompletedData {
