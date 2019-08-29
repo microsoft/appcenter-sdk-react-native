@@ -92,9 +92,7 @@ RCT_EXPORT_MODULE();
   [crashesDelegate stopObserving];
 }
 
-RCT_EXPORT_METHOD(hasCrashedInLastSession
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(hasCrashedInLastSession : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchHasCrashedInLastSession)(void) = ^void() {
     MSErrorReport *report = [MSCrashes lastSessionCrashReport];
     resolve(report != nil ? @YES : @NO);
@@ -102,9 +100,7 @@ RCT_EXPORT_METHOD(hasCrashedInLastSession
   dispatch_async(dispatch_get_main_queue(), fetchHasCrashedInLastSession);
 }
 
-RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchHasReceivedMemoryWarning)(void) = ^void() {
     BOOL memoryWarning = [MSCrashes hasReceivedMemoryWarningInLastSession];
     resolve(@(memoryWarning));
@@ -112,9 +108,7 @@ RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession
   dispatch_async(dispatch_get_main_queue(), fetchHasReceivedMemoryWarning);
 }
 
-RCT_EXPORT_METHOD(lastSessionCrashReport
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(lastSessionCrashReport : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchLastSessionCrashReport)(void) = ^void() {
     MSErrorReport *report = [MSCrashes lastSessionCrashReport];
     resolve(convertReportToJS(report));
@@ -122,29 +116,20 @@ RCT_EXPORT_METHOD(lastSessionCrashReport
   dispatch_async(dispatch_get_main_queue(), fetchLastSessionCrashReport);
 }
 
-RCT_EXPORT_METHOD(isDebuggerAttached
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isDebuggerAttached : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   resolve([NSNumber numberWithBool:[MSAppCenter isDebuggerAttached]]);
 }
 
-RCT_EXPORT_METHOD(isEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   resolve(@([MSCrashes isEnabled]));
 }
 
-RCT_EXPORT_METHOD(setEnabled
-                  : (BOOL)shouldEnable resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   [MSCrashes setEnabled:shouldEnable];
   resolve(nil);
 }
 
-RCT_EXPORT_METHOD(generateTestCrash
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(generateTestCrash : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   [MSCrashes generateTestCrash];
   resolve(nil);
 }
@@ -176,12 +161,9 @@ RCT_EXPORT_METHOD(notifyWithUserConfirmation
 /**
  * Gets a list of unprocessed crash reports.
  */
-RCT_EXPORT_METHOD(getUnprocessedCrashReports
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getUnprocessedCrashReports : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchUnprocessedCrashReports)(void) = ^void() {
-    NSArray *unprocessedCrashReports =
-        [MSWrapperCrashesHelper unprocessedCrashReports];
+    NSArray *unprocessedCrashReports = [MSWrapperCrashesHelper unprocessedCrashReports];
     resolve(convertReportsToJS(unprocessedCrashReports));
   };
   dispatch_async(dispatch_get_main_queue(), fetchUnprocessedCrashReports);
@@ -195,8 +177,7 @@ RCT_EXPORT_METHOD(sendCrashReportsOrAwaitUserConfirmationForFilteredIds
                   : (NSArray *)filteredIds resolver
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-  BOOL alwaysSend = [MSWrapperCrashesHelper
-      sendCrashReportsOrAwaitUserConfirmationForFilteredIds:filteredIds];
+  BOOL alwaysSend = [MSWrapperCrashesHelper sendCrashReportsOrAwaitUserConfirmationForFilteredIds:filteredIds];
   resolve([NSNumber numberWithBool:alwaysSend]);
 }
 
@@ -208,10 +189,7 @@ RCT_EXPORT_METHOD(sendErrorAttachments
                   : (NSString *)incidentId resolver
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-  [MSWrapperCrashesHelper
-        sendErrorAttachments:convertJSAttachmentsToNativeAttachments(
-                                 errorAttachments)
-      withIncidentIdentifier:incidentId];
+  [MSWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments) withIncidentIdentifier:incidentId];
   resolve(nil);
 }
 

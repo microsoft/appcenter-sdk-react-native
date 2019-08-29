@@ -40,8 +40,7 @@ static id<AppCenterReactNativePushDelegate> pushDelegate;
 
 RCT_EXPORT_MODULE();
 
-- (void)push:(MSPush *)push
-    didReceivePushNotification:(MSPushNotification *)pushNotification {
+- (void)push:(MSPush *)push didReceivePushNotification:(MSPushNotification *)pushNotification {
 }
 
 - (instancetype)init {
@@ -72,12 +71,9 @@ RCT_EXPORT_MODULE();
   [AppCenterReactNativeShared configureAppCenter];
   if ([MSAppCenter isConfigured]) {
     BOOL startPush = YES;
-    id enablePushInJavascript =
-        [AppCenterReactNativeShared getConfiguration][kEnablePushInJavascript];
-    if ([enablePushInJavascript isKindOfClass:[NSNumber class]] &&
-        [enablePushInJavascript boolValue]) {
-      startPush =
-          [[NSUserDefaults standardUserDefaults] boolForKey:kPushOnceEnabled];
+    id enablePushInJavascript = [AppCenterReactNativeShared getConfiguration][kEnablePushInJavascript];
+    if ([enablePushInJavascript isKindOfClass:[NSNumber class]] && [enablePushInJavascript boolValue]) {
+      startPush = [[NSUserDefaults standardUserDefaults] boolForKey:kPushOnceEnabled];
     }
     if (startPush) {
       [MSAppCenter startService:[MSPush class]];
@@ -96,16 +92,9 @@ RCT_EXPORT_MODULE();
   [pushDelegate stopObserving];
 }
 
-RCT_EXPORT_METHOD(isEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-  resolve(@([MSPush isEnabled]));
-}
+RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) { resolve(@([MSPush isEnabled])); }
 
-RCT_EXPORT_METHOD(setEnabled
-                  : (BOOL)shouldEnable resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   // [UIApplication registerForRemoteNotifications] should be called from the
   // main thread.
   dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -115,16 +104,13 @@ RCT_EXPORT_METHOD(setEnabled
     }
     [MSPush setEnabled:shouldEnable];
     if (shouldEnable) {
-      [[NSUserDefaults standardUserDefaults] setBool:YES
-                                              forKey:kPushOnceEnabled];
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPushOnceEnabled];
     }
     resolve(nil);
   });
 }
 
-RCT_EXPORT_METHOD(sendAndClearInitialNotification
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(sendAndClearInitialNotification : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   [pushDelegate sendAndClearInitialNotification];
   resolve(nil);
 }
