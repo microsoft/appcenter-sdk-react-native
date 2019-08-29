@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker } from 'react-native';
-
+import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
+import ModalSelector from 'react-native-modal-selector';
+import { DataDocumentListView } from '../components/DataDocumentListView';
 import Data from 'appcenter-data';
 
 import SharedStyles from '../SharedStyles';
@@ -22,6 +23,18 @@ export default class DataScreen extends Component {
     }
   }
 
+  // List of supported partitions.
+  static partitions = [
+    {
+      label: 'Application documents',
+      key: Data.DefaultPartitions.APP_DOCUMENTS
+    },
+    {
+      label: 'User documents',
+      key: Data.DefaultPartitions.USER_DOCUMENTS
+    }
+  ]
+
   // Screen's state.
   state = {
     dataEnabled: false,
@@ -31,6 +44,9 @@ export default class DataScreen extends Component {
     docType: "",
     docKey: "",
     docValue: "",
+    partition: Data.DefaultPartitions.APP_DOCUMENTS,
+    documents: [],
+    loadingData: true
   }
 
   async componentDidMount() {
@@ -41,6 +57,8 @@ export default class DataScreen extends Component {
     this.props.navigation.setParams({
       refreshScreen: this.refreshToggle.bind(this)
     });
+    documents = await this.listDocuments(this.state.partition);
+    this.setState({ documents: documents, loadingData: false });
   }
 
   async refreshToggle() {
@@ -50,6 +68,27 @@ export default class DataScreen extends Component {
 
   setCreateDocModalVisible(visible) {
     this.setState({createDocModalVisible: visible});
+  }
+
+  async listDocuments(partition) {
+    let documents = [];
+    hasNextPage = false;
+    try {
+      let page = await Data.list(partition);
+      page.currentPage.items.forEach(item => {
+        documents.push(item);
+      });
+      while (await page.hasNextPage()) {
+        page = await page.getNextPage();
+        page.currentPage.items.forEach(item => {
+          documents.push(item);
+        });
+      }
+      return documents;
+    } catch (err) {
+      console.log(err);
+    }
+    return documents;
   }
 
   render() {
@@ -236,6 +275,25 @@ export default class DataScreen extends Component {
       </TouchableOpacity>
     );
 
+    const partitionPicker = ({ item: { onChange } }) => (
+      <ModalSelector
+        data={DataScreen.partitions}
+        selectedKey={this.state.partition}
+        onChange={onChange}
+        style={SharedStyles.modalSelector}
+      />
+    );
+
+    const documentsViewer = ({ item: { onDocumentRemoved } }) => (
+      <View>
+        <ActivityIndicator size="large" color="#0000ff" animating={this.state.loadingData} />
+        <DataDocumentListView
+          items={this.state.documents}
+          onDocumentRemoved={onDocumentRemoved}
+        />
+      </View>
+    );
+
     return (
       <View style={SharedStyles.container}>
         <SectionList
@@ -271,6 +329,38 @@ export default class DataScreen extends Component {
               ],
               renderItem: actionRenderItem
             },
+            {
+              title: 'Partition',
+              value: 'partition',
+              data: [
+                {
+                  onChange: async (option) => {
+                    this.setState({loadingData: true});
+                    let documents = await this.listDocuments(option.key);
+                    this.setState({ partition: option.key, documents: documents, loadingData: false });
+                  }
+                }
+              ],
+              renderItem: partitionPicker
+            },
+            {
+              title: 'Documents',
+              data: [
+                {
+                  onDocumentRemoved: async (documentId) => {
+                    await Data.remove(documentId, this.state.partition);
+                    let newDocuments = [];
+                    this.state.documents.forEach(document => {
+                      if (document.id !== documentId) {
+                        newDocuments.push(document);
+                      }
+                    });
+                    this.setState({ documents: newDocuments });
+                  }
+                }
+              ],
+              renderItem: documentsViewer
+            }
           ]}
         />
       </View>
