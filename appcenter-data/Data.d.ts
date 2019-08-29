@@ -51,8 +51,8 @@ export interface RemoteOperationCompletedData {
     id: string;
     eTag: string;
     partition: string;
-    opertation: string;
-    error: Map<string, string>;
+    operation: string;
+    error: Map<string, string> | null;
 }
  
 export function isEnabled(): Promise<boolean>;

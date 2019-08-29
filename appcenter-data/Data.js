@@ -35,14 +35,14 @@ const Data = {
 /**
  * Set the remote operation listener.
  *
- * @param {object} listenerMap - listener.
+ * @param {object} listener - listener.
  *
  */
-function setRemoteOperationListener(listenerMap) {
+function setRemoteOperationListener(listener) {
     dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
-    if (listenerMap && listenerMap.onRemoteOperationCompleted) {
+    if (listener && listener.onRemoteOperationCompleted) {
         dataEventEmitter.addListener(dataRemoteOperationCompleted, (remoteOperationCompletedData) => {
-            listenerMap.onRemoteOperationCompleted(remoteOperationCompletedData);
+            listener.onRemoteOperationCompleted(remoteOperationCompletedData);
         });
     }
 }
