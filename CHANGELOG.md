@@ -2,6 +2,10 @@
 
 ## Version 2.4.0-preview
 
+### App Center
+
+* **[Fix]** Fix application version being reported for ClickOnce deployments.
+
 ### App Center Crashes
 
 #### WPF/WinForms
