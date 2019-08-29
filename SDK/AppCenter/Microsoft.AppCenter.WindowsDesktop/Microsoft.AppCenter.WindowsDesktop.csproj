@@ -24,5 +24,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Management" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Deployment" />
   </ItemGroup>
 </Project>
