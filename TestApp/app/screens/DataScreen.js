@@ -24,18 +24,6 @@ export default class DataScreen extends Component {
     }
   }
 
-  // List of supported partitions.
-  partitions = [
-    {
-      label: 'Application documents',
-      key: Data.DefaultPartitions.APP_DOCUMENTS
-    },
-    {
-      label: 'User documents',
-      key: Data.DefaultPartitions.USER_DOCUMENTS
-    }
-  ]
-
   // Screen's state.
   state = {
     dataEnabled: false,
@@ -94,7 +82,16 @@ export default class DataScreen extends Component {
 
     const partitionPicker = ({ item: { onChange } }) => (
       <ModalSelector
-        data={DataScreen.partitions}
+        data={[
+          {
+            label: 'Application documents',
+            key: Data.DefaultPartitions.APP_DOCUMENTS
+          },
+          {
+            label: 'User documents',
+            key: Data.DefaultPartitions.USER_DOCUMENTS
+          }
+        ]}
         selectedKey={this.state.partition}
         onChange={onChange}
         style={SharedStyles.modalSelector}
