@@ -103,7 +103,7 @@ export default class DataScreen extends Component {
 
     const documentsViewer = ({ item: { onDocumentRemoved } }) => (
       <View>
-        <ActivityIndicator size="large" color="#0000ff" animating={this.state.loadingData} />
+        <ActivityIndicator size="large" color="red" animating={this.state.loadingData} />
         <DataDocumentListView
           items={this.state.documents}
           onDocumentRemoved={onDocumentRemoved}
