@@ -72,7 +72,6 @@ export default class AppCenterScreen extends Component {
     appCenterEnabled: false,
     pushEnabled: false,
     authEnabled: false,
-    dataEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
@@ -81,7 +80,7 @@ export default class AppCenterScreen extends Component {
     authStatus: 'Authentication status unknown'
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.refreshUI();
     const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
     for (let index = 0; index < StartupModes.length; index++) {
@@ -109,9 +108,6 @@ export default class AppCenterScreen extends Component {
 
     const authEnabled = await Auth.isEnabled();
     this.setState({ authEnabled });
-
-    const dataEnabled = await Data.isEnabled();
-    this.setState({ dataEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -222,15 +218,6 @@ export default class AppCenterScreen extends Component {
                     await Auth.setEnabled(!this.state.authEnabled);
                     const authEnabled = await Auth.isEnabled();
                     this.setState({ authEnabled, accountId: '', authStatus: 'User is not authenticated' });
-                  }
-                },
-                {
-                  title: 'Data Enabled',
-                  value: 'dataEnabled',
-                  toggle: async () => {
-                    await Data.setEnabled(!this.state.dataEnabled);
-                    const dataEnabled = await Data.isEnabled();
-                    this.setState({ dataEnabled });
                   }
                 },
                 {
