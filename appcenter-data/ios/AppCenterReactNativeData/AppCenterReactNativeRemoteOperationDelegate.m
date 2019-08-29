@@ -15,8 +15,7 @@
 #import "RCTEventDispatcher.h"
 #endif
 
-static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT =
-    @"AppCenterRemoteOperationCompleted";
+static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT = @"AppCenterRemoteOperationCompleted";
 
 @implementation AppCenterReactNativeRemoteOperationDelegate {
   bool hasListeners;
@@ -32,8 +31,7 @@ static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT =
                       withError:(MSDataError *_Nullable)error {
   if (hasListeners) {
     NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
-    [AppCenterReactNativeDataUtils addDocumentWrapperMetaData:jsDocumentWrapper
-                                                     document:document];
+    [AppCenterReactNativeDataUtils addDocumentWrapperMetaData:jsDocumentWrapper document:document];
 
     // Add error.
     if (document.error) {
@@ -43,8 +41,7 @@ static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT =
     } else {
       jsDocumentWrapper[kMSErrorKey] = nil;
     }
-    [self.eventEmitter sendEventWithName:ON_REMOTE_OPERATION_COMPLETED_EVENT
-                                    body:jsDocumentWrapper];
+    [self.eventEmitter sendEventWithName:ON_REMOTE_OPERATION_COMPLETED_EVENT body:jsDocumentWrapper];
   }
 }
 

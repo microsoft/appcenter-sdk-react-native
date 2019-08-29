@@ -45,26 +45,15 @@ RCT_EXPORT_MODULE();
   }
 }
 
-RCT_EXPORT_METHOD(isEnabled
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-  resolve(@([MSAuth isEnabled]));
-}
+RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) { resolve(@([MSAuth isEnabled])); }
 
-RCT_EXPORT_METHOD(setEnabled
-                  : (BOOL)shouldEnable resolver
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   [MSAuth setEnabled:shouldEnable];
   resolve(nil);
 }
 
-RCT_EXPORT_METHOD(signIn
-                  : (RCTPromiseResolveBlock)resolve rejecter
-                  : (RCTPromiseRejectBlock)reject) {
-  [MSAuth signInWithCompletionHandler:^(
-              MSUserInformation *_Nullable userInformation,
-              NSError *_Nullable error) {
+RCT_EXPORT_METHOD(signIn : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
+  [MSAuth signInWithCompletionHandler:^(MSUserInformation *_Nullable userInformation, NSError *_Nullable error) {
     if (!error) {
 
       /* Sign-in succeeded, convert native result to a JavaScript result. */

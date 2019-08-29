@@ -13,8 +13,7 @@
 
 @protocol MSRemoteOperationDelegate;
 
-@interface AppCenterReactNativeRemoteOperationDelegate
-    : NSObject <MSRemoteOperationDelegate>
+@interface AppCenterReactNativeRemoteOperationDelegate : NSObject <MSRemoteOperationDelegate>
 
 @property RCTEventEmitter *eventEmitter;
 
