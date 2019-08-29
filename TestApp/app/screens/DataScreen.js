@@ -4,9 +4,8 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
-import { DataDocumentListView } from '../components/DataDocumentListView';
 import Data from 'appcenter-data';
-
+import { DataDocumentListView } from '../components/DataDocumentListView';
 import SharedStyles from '../SharedStyles';
 import DataTabBarIcon from '../assets/data.png';
 
@@ -57,8 +56,8 @@ export default class DataScreen extends Component {
     this.props.navigation.setParams({
       refreshScreen: this.refreshToggle.bind(this)
     });
-    documents = await this.listDocuments(this.state.partition);
-    this.setState({ documents: documents, loadingData: false });
+    const documents = await this.listDocuments(this.state.partition);
+    this.setState({ documents, loadingData: false });
   }
 
   async refreshToggle() {
@@ -71,19 +70,21 @@ export default class DataScreen extends Component {
   }
 
   async listDocuments(partition) {
-    let documents = [];
-    hasNextPage = false;
+    const documents = [];
     try {
       let page = await Data.list(partition);
-      page.currentPage.items.forEach(item => {
+      page.currentPage.items.forEach((item) => {
         documents.push(item);
       });
+
+      /* eslint-disable no-await-in-loop */
       while (await page.hasNextPage()) {
         page = await page.getNextPage();
-        page.currentPage.items.forEach(item => {
+        page.currentPage.items.forEach((item) => {
           documents.push(item);
         });
       }
+      /* eslint-enable no-await-in-loop */
       return documents;
     } catch (err) {
       console.log(err);
@@ -275,7 +276,16 @@ export default class DataScreen extends Component {
 
     const partitionPicker = ({ item: { onChange } }) => (
       <ModalSelector
-        data={DataScreen.partitions}
+        data={[
+          {
+            label: 'Application documents',
+            key: Data.DefaultPartitions.APP_DOCUMENTS
+          },
+          {
+            label: 'User documents',
+            key: Data.DefaultPartitions.USER_DOCUMENTS
+          }
+        ]}
         selectedKey={this.state.partition}
         onChange={onChange}
         style={SharedStyles.modalSelector}
@@ -284,7 +294,7 @@ export default class DataScreen extends Component {
 
     const documentsViewer = ({ item: { onDocumentRemoved } }) => (
       <View>
-        <ActivityIndicator size="large" color="#0000ff" animating={this.state.loadingData} />
+        <ActivityIndicator size="large" color="red" animating={this.state.loadingData} />
         <DataDocumentListView
           items={this.state.documents}
           onDocumentRemoved={onDocumentRemoved}
@@ -333,9 +343,9 @@ export default class DataScreen extends Component {
               data: [
                 {
                   onChange: async (option) => {
-                    this.setState({loadingData: true});
-                    let documents = await this.listDocuments(option.key);
-                    this.setState({ partition: option.key, documents: documents, loadingData: false });
+                    this.setState({ loadingData: true });
+                    const documents = await this.listDocuments(option.key);
+                    this.setState({ partition: option.key, documents, loadingData: false });
                   }
                 }
               ],
@@ -347,8 +357,8 @@ export default class DataScreen extends Component {
                 {
                   onDocumentRemoved: async (documentId) => {
                     await Data.remove(documentId, this.state.partition);
-                    let newDocuments = [];
-                    this.state.documents.forEach(document => {
+                    const newDocuments = [];
+                    this.state.documents.forEach((document) => {
                       if (document.id !== documentId) {
                         newDocuments.push(document);
                       }

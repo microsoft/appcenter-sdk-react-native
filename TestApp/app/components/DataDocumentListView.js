@@ -9,31 +9,31 @@ import RemoveIcon from '../assets/remove.png';
 export class DataDocumentListView extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <FlatList
-                    style={{ marginTop: 10 }}
-                    data={this.props.items}
-                    renderItem={({ item }) => (
-                        <View style={styles.documentsContainer}>
-                            <TouchableOpacity style={styles.documentText}>
-                                <Text>{item.id}</Text>
-                            </TouchableOpacity>
-                            <Divider />
-                            {
+          <View style={styles.container}>
+            <FlatList
+              style={{ marginTop: 10 }}
+              data={this.props.items}
+              renderItem={({ item }) => (
+                <View style={styles.documentsContainer}>
+                  <TouchableOpacity style={styles.documentText}>
+                    <Text>{item.id}</Text>
+                  </TouchableOpacity>
+                  <Divider />
+                  {
                                 item.partition === Data.DefaultPartitions.APP_DOCUMENTS ?
                                     null :
                                     (
-                                        <TouchableOpacity onPress={() => this.props.onDocumentRemoved(item.id)}>
-                                            <Image style={styles.removeIcon} source={RemoveIcon} />
-                                        </TouchableOpacity>
+                                      <TouchableOpacity onPress={() => this.props.onDocumentRemoved(item.id)}>
+                                        <Image style={styles.removeIcon} source={RemoveIcon} />
+                                      </TouchableOpacity>
                                     )
 
                             }
-                        </View>)
+                </View>)
                     }
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            </View>
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
         );
     }
 }

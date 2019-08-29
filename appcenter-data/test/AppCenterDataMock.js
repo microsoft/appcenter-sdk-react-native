@@ -4,6 +4,7 @@
 jest.mock('appcenter-data', () => ({
     isEnabled: jest.fn(),
     setEnabled: jest.fn(),
+    setRemoteOperationListener: jest.fn(),
     read: jest.fn(),
     list: jest.fn(),
     create: jest.fn(),

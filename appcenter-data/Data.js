@@ -5,6 +5,8 @@ const ReactNative = require('react-native');
 
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
 
+const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
+const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted';
 const TimeToLive = {
     INFINITE: -1,
     NO_CACHE: 0,
@@ -26,8 +28,24 @@ const Data = {
     list,
     create,
     remove,
-    replace
+    replace,
+    setRemoteOperationListener
 };
+
+/**
+ * Set the remote operation listener.
+ *
+ * @param {object} listener - listener.
+ *
+ */
+function setRemoteOperationListener(listener) {
+    dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
+    if (listener && listener.onRemoteOperationCompleted) {
+        dataEventEmitter.addListener(dataRemoteOperationCompleted, (remoteOperationCompletedData) => {
+            listener.onRemoteOperationCompleted(remoteOperationCompletedData);
+        });
+    }
+}
 
 /**
  * Check whether Data service is enabled or not.
