@@ -28,10 +28,13 @@ namespace Contoso.Forms.Puppet
 
         List<Property> Properties;
 
+        List<byte[]> Temp;
+
         public CrashesContentPage()
         {
             InitializeComponent();
             Properties = new List<Property>();
+            Temp = new List<byte[]>();
             NumPropertiesLabel.Text = Properties.Count.ToString();
             if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
             {
@@ -261,8 +264,15 @@ namespace Contoso.Forms.Puppet
 
         void MemoryWarningTrigger(object sender, EventArgs e)
         {
-            var blockSize = 128 * 1024 * 1024;
-            byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
+            new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+            {
+                while (true)
+                {
+                    var blockSize = 1024 * 1024 * 1024;
+                    byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
+                    Temp.Add(a);
+                }
+            })).Start();
         }
     }
 }
