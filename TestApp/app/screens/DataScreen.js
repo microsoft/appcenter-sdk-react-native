@@ -25,7 +25,7 @@ export default class DataScreen extends Component {
   }
 
   // List of supported partitions.
-  static partitions = [
+  partitions = [
     {
       label: 'Application documents',
       key: Data.DefaultPartitions.APP_DOCUMENTS
