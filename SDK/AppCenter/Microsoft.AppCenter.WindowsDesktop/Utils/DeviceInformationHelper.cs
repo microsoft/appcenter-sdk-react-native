@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetAppNamespace()
         {
-             return Assembly.GetEntryAssembly()?.EntryPoint.DeclaringType?.Namespace;
+            return Assembly.GetEntryAssembly()?.EntryPoint.DeclaringType?.Namespace;
         }
 
         protected override string GetDeviceOemName()
@@ -95,16 +95,23 @@ namespace Microsoft.AppCenter.Utils
 
         protected override string GetAppVersion()
         {
+#if NET45
+            // Get ClickOnce version or fall back to assembly file version. ClickOnce does not exist on .NET Core.
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
+#endif
             return Application.ProductVersion;
         }
 
         protected override string GetAppBuild()
         {
-            return Application.ProductVersion;
+            return GetAppVersion();
         }
 
         protected override string GetScreenSize()
-        {          
+        {
             const int DESKTOPVERTRES = 117;
             const int DESKTOPHORZRES = 118;
             using (var graphics = Graphics.FromHwnd(IntPtr.Zero))
