@@ -126,6 +126,16 @@ export default class AppCenterScreen extends Component {
     await AppCenter.setCustomProperties(properties);
     console.log('Scheduled custom properties log. Please check verbose logs.');
   }
+  async testData()
+  {
+    console.log('testData called');
+
+    const readOptions = new Data.ReadOptions(5000);
+
+    const listResult = await Data.list(Data.DefaultPartitions.USER_DOCUMENTS, readOptions);
+    console.log('Successful create', listResult);  
+  }
+  
 
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
@@ -243,8 +253,8 @@ export default class AppCenterScreen extends Component {
               title: 'Actions',
               data: [
                 {
-                  title: 'Set Custom Properties',
-                  action: this.setCustomProperties
+                  title: 'Test Data',
+                  action: this.testData
                 },
               ],
               renderItem: actionRenderItem

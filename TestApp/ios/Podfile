@@ -30,5 +30,13 @@ target 'TestApp' do
 
   pod 'AppCenterReactNativeShared', :podspec => '../../AppCenterReactNativeShared/Products/local.podspec'
 
+  pod 'AppCenter/Data', '~> 2.3.1-0+26c17fdd3ceffd9c2929c266dab5c1b4d74d3071'
+
+  pod 'AppCenter/Push', '~> 2.3.1-0+26c17fdd3ceffd9c2929c266dab5c1b4d74d3071'
+  pod 'AppCenter/Crashes', '~> 2.3.1-0+26c17fdd3ceffd9c2929c266dab5c1b4d74d3071'
+  pod 'AppCenter/Analytics', '~> 2.3.1-0+26c17fdd3ceffd9c2929c266dab5c1b4d74d3071'
+  pod 'AppCenter/Auth', '~> 2.3.1-0+26c17fdd3ceffd9c2929c266dab5c1b4d74d3071'
+
+
   use_native_modules!
 end
