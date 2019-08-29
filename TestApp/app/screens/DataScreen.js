@@ -247,8 +247,6 @@ export default class DataScreen extends Component {
               <View style={{flex:.5}}>
                 <TouchableOpacity
                   onPress={async () => {
-                    // TODO: remove this before merging. For testing ONLY!
-                    Data.setTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
                     const createResult = 
                             await Data.create(
                               this.state.docId, 
