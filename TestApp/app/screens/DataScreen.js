@@ -5,7 +5,9 @@ import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Data from 'appcenter-data';
+
 import { DataDocumentListView } from '../components/DataDocumentListView';
+
 import SharedStyles from '../SharedStyles';
 import DataTabBarIcon from '../assets/data.png';
 
@@ -21,18 +23,6 @@ export default class DataScreen extends Component {
       defaultHandler();
     }
   }
-
-  // List of supported partitions.
-  static partitions = [
-    {
-      label: 'Application documents',
-      key: Data.DefaultPartitions.APP_DOCUMENTS
-    },
-    {
-      label: 'User documents',
-      key: Data.DefaultPartitions.USER_DOCUMENTS
-    }
-  ]
 
   // Screen's state.
   state = {
