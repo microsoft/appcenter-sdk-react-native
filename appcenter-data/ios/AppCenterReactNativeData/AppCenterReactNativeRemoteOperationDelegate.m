@@ -31,7 +31,9 @@ static NSString *ON_REMOTE_OPERATION_COMPLETED_EVENT = @"AppCenterRemoteOperatio
                       withError:(MSDataError *_Nullable)error {
   if (hasListeners) {
     NSMutableDictionary *jsDocumentWrapper = [[NSMutableDictionary alloc] init];
-    [AppCenterReactNativeDataUtils addDocumentWrapperMetaData:jsDocumentWrapper document:document];
+
+    // TODO: Once updated to the latest native iOS sdk, create a new object based of MSDocumentMetadata.
+    [AppCenterReactNativeDataUtils addDocumentWrapperMetaData:jsDocumentWrapper document:document includeAll:NO];
 
     // Add error.
     if (document.error) {

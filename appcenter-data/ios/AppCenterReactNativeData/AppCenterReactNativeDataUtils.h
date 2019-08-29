@@ -15,10 +15,16 @@
 
 @interface AppCenterReactNativeDataUtils : NSObject
 
-+ (void)addDocumentWrapperMetaData:(NSMutableDictionary *)jsDocumentWrapper document:(MSDocumentWrapper *)document;
++ (void)addDocumentWrapperMetaData:(NSMutableDictionary *)jsDocumentWrapper
+                          document:(MSDocumentWrapper *)document
+                        includeAll:(BOOL)inclueAll;
+
 + (NSMutableArray *)addDocumentsToArray:(NSArray<MSDocumentWrapper *> *)documents;
+
 + (MSReadOptions *)getReadOptions:(NSDictionary *)readOptionsMap;
+
 + (MSWriteOptions *)getWriteOptions:(NSDictionary *)writeOptionsMap;
+
 + (void (^)(MSDocumentWrapper *_Nonnull))dataCompletionHandler:(NSString *)errorCode
                                                       resolver:(RCTPromiseResolveBlock)resolve
                                                       rejecter:(RCTPromiseRejectBlock)reject;
