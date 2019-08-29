@@ -9,6 +9,7 @@ jest.mock('NativeModules', () => {
     AppCenterReactNativeData: {
       isEnabled: jest.fn(),
       setEnabled: jest.fn(() => Promise.resolve(null)),
+      setRemoteOperationListener: jest.fn(),
       setTokenExchangeUrl: jest.fn(),
       read: jest.fn(() => Promise.resolve({ lastUpdatedDate: testTimestamp })),
       list: jest.fn(() => {

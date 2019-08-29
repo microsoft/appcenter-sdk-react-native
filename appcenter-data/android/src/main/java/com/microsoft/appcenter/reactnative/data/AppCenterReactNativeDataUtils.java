@@ -17,6 +17,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.microsoft.appcenter.data.exception.DataException;
+import com.microsoft.appcenter.data.models.DocumentMetadata;
 import com.microsoft.appcenter.data.models.ReadOptions;
 import com.microsoft.appcenter.data.models.WriteOptions;
 
@@ -177,5 +179,21 @@ public class AppCenterReactNativeDataUtils {
             writeOptions = new WriteOptions();
         }
         return writeOptions;
+    }
+
+    public static WritableMap convertRemoteOperationDataToWritableMap(String operation, DocumentMetadata documentMetadata, DataException dataException) {
+        WritableMap remoteOperationDataMap = new WritableNativeMap();
+        remoteOperationDataMap.putString(AppCenterReactNativeDataModule.OPERATION_KEY, operation);
+        if (documentMetadata != null) {
+            remoteOperationDataMap.putString(AppCenterReactNativeDataModule.ETAG_KEY, documentMetadata.getETag());
+            remoteOperationDataMap.putString(AppCenterReactNativeDataModule.PARTITION_KEY, documentMetadata.getPartition());
+            remoteOperationDataMap.putString(AppCenterReactNativeDataModule.ID_KEY, documentMetadata.getId());
+        }
+        if (dataException != null) {
+            WritableNativeMap errorMap = new WritableNativeMap();
+            errorMap.putString(AppCenterReactNativeDataModule.MESSAGE_KEY, dataException.getMessage());
+            remoteOperationDataMap.putMap(AppCenterReactNativeDataModule.ERROR_KEY, errorMap);
+        }
+        return remoteOperationDataMap;
     }
 }
