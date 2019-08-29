@@ -143,11 +143,6 @@ namespace Contoso.Forms.Puppet
             HandleOrThrow(() => Crashes.GenerateTestCrash());
         }
 
-        void NonSerializableException(object sender, EventArgs e)
-        {
-            HandleOrThrow(() => throw new NonSerializableException());
-        }
-
         void DivideByZero(object sender, EventArgs e)
         {
             /* This is supposed to cause a crash, so we don't care that the variable 'x' is never used */
