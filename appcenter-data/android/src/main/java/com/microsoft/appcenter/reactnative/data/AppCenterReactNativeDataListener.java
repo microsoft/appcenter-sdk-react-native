@@ -27,7 +27,7 @@ public class AppCenterReactNativeDataListener implements RemoteOperationListener
 
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
-        this.mReactApplicationContext = reactApplicationContext;
+        mReactApplicationContext = reactApplicationContext;
     }
 
     @Override
@@ -36,23 +36,23 @@ public class AppCenterReactNativeDataListener implements RemoteOperationListener
     }
 
     private void sendEvent(String eventType, WritableMap report) {
-        if (this.mReactApplicationContext != null) {
-            if (this.mReactApplicationContext.hasActiveCatalystInstance()) {
-                this.mReactApplicationContext
+        if (mReactApplicationContext != null) {
+            if (mReactApplicationContext.hasActiveCatalystInstance()) {
+                mReactApplicationContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit(eventType, report);
             } else {
-                this.mPendingEvents.add(new AbstractMap.SimpleEntry<>(eventType, report));
-                this.mReactApplicationContext.addLifecycleEventListener(lifecycleEventListener);
+                mPendingEvents.add(new AbstractMap.SimpleEntry<>(eventType, report));
+                mReactApplicationContext.addLifecycleEventListener(lifecycleEventListener);
             }
         }
     }
 
     private void replayPendingEvents() {
-        for (Map.Entry<String, WritableMap> event : this.mPendingEvents) {
+        for (Map.Entry<String, WritableMap> event : mPendingEvents) {
             sendEvent(event.getKey(), event.getValue());
         }
-        this.mPendingEvents.clear();
+        mPendingEvents.clear();
     }
 
     private LifecycleEventListener lifecycleEventListener = new LifecycleEventListener() {
