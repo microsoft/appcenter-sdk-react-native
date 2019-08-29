@@ -72,7 +72,7 @@ export default class DataScreen extends Component {
             onValueChange={(itemValue, itemIndex) =>
               this.setState({docTtl: itemValue})
             }>
-            <Picker.Item label="Default" value="60" />
+            <Picker.Item label="Default" value="-1" />
             <Picker.Item label="No Cache" value="0" />
             <Picker.Item label="2 seconds" value="2" />
             <Picker.Item label="Infinite" value="-1" />
