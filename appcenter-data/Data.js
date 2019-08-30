@@ -86,6 +86,7 @@ function read(documentId, partition, readOptions) {
  * Retrieve a paginated list of the documents in a partition.
  *
  * @param {string} partition - The CosmosDB partition key.
+ * @param {object} readOptions - Cache read options when the operation is done offline.
  * @return {Promise} Future asynchronous operation with result being the document list.
  * If the operation fails, the promise is rejected with an exception containing the details of the error.
  */
