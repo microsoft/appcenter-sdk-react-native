@@ -2,12 +2,28 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet, Modal, SectionList } from 'react-native';
 import Data from 'appcenter-data';
 import RemoveIcon from '../assets/remove.png';
+import SharedStyles from '../SharedStyles';
 
 export class DataDocumentListView extends Component {
+    state = {
+        modalVisible: false,
+        currentDocument: null
+      };
+
+    setModalVisible(visible, currentDocument) {
+        this.setState({modalVisible: visible, currentDocument: currentDocument});
+    }
+
     render() {
+        renderDocumentItem = ({ item: { title, value } }) => (
+            <View style={SharedStyles.item}>
+                <Text style={SharedStyles.itemTitle}>{title}</Text>
+                <Text style={SharedStyles.itemInput}>{value}</Text>
+            </View>);
+
         return (
           <View style={styles.container}>
             <FlatList
@@ -15,7 +31,11 @@ export class DataDocumentListView extends Component {
               data={this.props.items}
               renderItem={({ item }) => (
                 <View style={styles.documentsContainer}>
-                  <TouchableOpacity style={styles.documentText}>
+                  <TouchableOpacity 
+                        style={styles.documentText}
+                        onPress={() => {
+                            this.setModalVisible(true, item);
+                          }}>
                     <Text>{item.id}</Text>
                   </TouchableOpacity>
                   <Divider />
@@ -33,6 +53,76 @@ export class DataDocumentListView extends Component {
                     }
               keyExtractor={(item, index) => index.toString()}
             />
+            <Modal
+                animationType="slide"
+                transparent={false}
+                visible={this.state.modalVisible}
+                onRequestClose={() => {}}>
+                <View style={SharedStyles.container}>
+                    <SectionList
+                        renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
+                        keyExtractor={(item, index) => item + index}
+                        sections={[
+                            {
+                                data: [
+                                    {
+                                    title: 'ID',
+                                    value: this.state.currentDocument == null ? "" : this.state.currentDocument.id,
+                                    },
+                            ],
+                            renderItem: renderDocumentItem
+                            },
+                            {
+                                data: [
+                                    {
+                                    title: 'Partition',
+                                    value: this.state.currentDocument == null ? "" : this.state.currentDocument.partition,
+                                    },
+                            ],
+                            renderItem: renderDocumentItem
+                            },
+                            {
+                                data: [
+                                    {
+                                    title: 'Date',
+                                    value: this.state.currentDocument == null ? "" : this.state.currentDocument.lastUpdatedDate,
+                                    },
+                            ],
+                            renderItem: renderDocumentItem
+                            },
+                            {
+                                data: [
+                                    {
+                                    title: 'State',
+                                    value: this.state.currentDocument == null ? "" : (this.state.currentDocument.isFromDeviceCache ? "Local" : "Remote")
+                                    },
+                            ],
+                            renderItem: renderDocumentItem
+                            },
+                            {
+                                data: [
+                                    {
+                                    title: 'Content',
+                                    value: this.state.currentDocument == null ? "" : (this.state.currentDocument.jsonValue)
+                                    },
+                            ],
+                            renderItem: renderDocumentItem
+                            },
+                            {
+                                data: [{}],
+                                renderItem: () => (
+                                    <TouchableOpacity
+                                        style={SharedStyles.item}
+                                        onPress={() => {
+                                        this.setModalVisible(!this.state.modalVisible);
+                                        }}>
+                                        <Text style={SharedStyles.itemButton}>Close</Text>
+                                    </TouchableOpacity>)
+                            },
+                        ]}
+                    />            
+              </View>
+            </Modal>
           </View>
         );
     }
