@@ -92,9 +92,16 @@ RCT_EXPORT_METHOD(read
            completionHandler:[AppCenterReactNativeDataUtils dataCompletionHandler:kMSReadFailedErrorCode resolver:resolve rejecter:reject]];
 }
 
-RCT_EXPORT_METHOD(list : (NSString *)partition resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(list
+                  : (NSString *)partition readOptions
+                  : (NSDictionary *)readOptionsMap resolver
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+  MSReadOptions *readOptions = [AppCenterReactNativeDataUtils getReadOptions:readOptionsMap];
+
   [MSData listDocumentsWithType:[MSDictionaryDocument class]
                       partition:partition
+                    readOptions:readOptions
               completionHandler:^(MSPaginatedDocuments *_Nonnull documentWrappers) {
                 NSString *paginatedDocumentsId = [[NSUUID UUID] UUIDString];
                 _paginatedDocuments[paginatedDocumentsId] = documentWrappers;
