@@ -66,13 +66,11 @@ export class DataDocumentListView extends Component {
                   keyExtractor={(item, index) => item + index}
                   sections={[
                             {
-                                data: [
-                                    {
+                                data: [{
                                     title: 'ID',
                                     value: this.state.currentDocument == null ? '' : this.state.currentDocument.id,
-                                    },
-                            ],
-                            renderItem: renderDocumentItem
+                                    }],
+                                renderItem: renderDocumentItem
                             },
                             {
                                 data: [
