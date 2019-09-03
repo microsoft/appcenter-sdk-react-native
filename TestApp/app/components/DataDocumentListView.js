@@ -14,15 +14,15 @@ export class DataDocumentListView extends Component {
       };
 
     setModalVisible(visible, currentDocument) {
-        this.setState({modalVisible: visible, currentDocument: currentDocument});
+        this.setState({ modalVisible: visible, currentDocument });
     }
 
     render() {
-        renderDocumentItem = ({ item: { title, value } }) => (
-            <View style={SharedStyles.item}>
-                <Text style={SharedStyles.itemTitle}>{title}</Text>
-                <Text style={SharedStyles.itemInput}>{value}</Text>
-            </View>);
+        const renderDocumentItem = ({ item: { title, value } }) => (
+          <View style={SharedStyles.item}>
+            <Text style={SharedStyles.itemTitle}>{title}</Text>
+            <Text style={SharedStyles.itemInput}>{value}</Text>
+          </View>);
 
         return (
           <View style={styles.container}>
@@ -31,11 +31,12 @@ export class DataDocumentListView extends Component {
               data={this.props.items}
               renderItem={({ item }) => (
                 <View style={styles.documentsContainer}>
-                  <TouchableOpacity 
-                        style={styles.documentText}
-                        onPress={() => {
+                  <TouchableOpacity
+                    style={styles.documentText}
+                    onPress={() => {
                             this.setModalVisible(true, item);
-                          }}>
+                          }}
+                  >
                     <Text>{item.id}</Text>
                   </TouchableOpacity>
                   <Divider />
@@ -54,20 +55,21 @@ export class DataDocumentListView extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
             <Modal
-                animationType="slide"
-                transparent={false}
-                visible={this.state.modalVisible}
-                onRequestClose={() => {}}>
-                <View style={SharedStyles.container}>
-                    <SectionList
-                        renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
-                        keyExtractor={(item, index) => item + index}
-                        sections={[
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {}}
+            >
+              <View style={SharedStyles.container}>
+                <SectionList
+                  renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
+                  keyExtractor={(item, index) => item + index}
+                  sections={[
                             {
                                 data: [
                                     {
                                     title: 'ID',
-                                    value: this.state.currentDocument == null ? "" : this.state.currentDocument.id,
+                                    value: this.state.currentDocument == null ? '' : this.state.currentDocument.id,
                                     },
                             ],
                             renderItem: renderDocumentItem
@@ -76,7 +78,7 @@ export class DataDocumentListView extends Component {
                                 data: [
                                     {
                                     title: 'Partition',
-                                    value: this.state.currentDocument == null ? "" : this.state.currentDocument.partition,
+                                    value: this.state.currentDocument == null ? '' : this.state.currentDocument.partition,
                                     },
                             ],
                             renderItem: renderDocumentItem
@@ -85,7 +87,7 @@ export class DataDocumentListView extends Component {
                                 data: [
                                     {
                                     title: 'Date',
-                                    value: this.state.currentDocument == null ? "" : this.state.currentDocument.lastUpdatedDate,
+                                    value: this.state.currentDocument == null ? '' : this.state.currentDocument.lastUpdatedDate,
                                     },
                             ],
                             renderItem: renderDocumentItem
@@ -94,7 +96,7 @@ export class DataDocumentListView extends Component {
                                 data: [
                                     {
                                     title: 'State',
-                                    value: this.state.currentDocument == null ? "" : (this.state.currentDocument.isFromDeviceCache ? "Local" : "Remote")
+                                    value: this.formatStateLabel()
                                     },
                             ],
                             renderItem: renderDocumentItem
@@ -103,7 +105,7 @@ export class DataDocumentListView extends Component {
                                 data: [
                                     {
                                     title: 'Content',
-                                    value: this.state.currentDocument == null ? "" : (this.state.currentDocument.jsonValue)
+                                    value: this.state.currentDocument == null ? '' : (this.state.currentDocument.jsonValue)
                                     },
                             ],
                             renderItem: renderDocumentItem
@@ -111,20 +113,28 @@ export class DataDocumentListView extends Component {
                             {
                                 data: [{}],
                                 renderItem: () => (
-                                    <TouchableOpacity
-                                        style={SharedStyles.item}
-                                        onPress={() => {
+                                  <TouchableOpacity
+                                    style={SharedStyles.item}
+                                    onPress={() => {
                                         this.setModalVisible(!this.state.modalVisible);
-                                        }}>
-                                        <Text style={SharedStyles.itemButton}>Close</Text>
-                                    </TouchableOpacity>)
+                                        }}
+                                  >
+                                    <Text style={SharedStyles.itemButton}>Close</Text>
+                                  </TouchableOpacity>)
                             },
                         ]}
-                    />            
+                />
               </View>
             </Modal>
           </View>
         );
+    }
+
+    formatStateLabel() {
+        if (this.state.currentDocument != null) {
+            return this.state.currentDocument.isFromDeviceCache ? 'Local' : 'Remote';
+        }
+        return '';
     }
 }
 
