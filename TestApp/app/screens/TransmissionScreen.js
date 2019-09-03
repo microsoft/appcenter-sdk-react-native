@@ -8,7 +8,7 @@ import ModalSelector from 'react-native-modal-selector';
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
 
-import PropertiesConfiguratorView from '../components/PropertiesConfiguratorView';
+import PropertiesConfiguratorView from './PropertiesConfiguratorView';
 
 import SharedStyles from '../SharedStyles';
 import TransmissionTabBarIcon from '../assets/fuel.png';

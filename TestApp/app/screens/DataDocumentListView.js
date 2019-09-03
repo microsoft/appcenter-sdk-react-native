@@ -34,24 +34,24 @@ export class DataDocumentListView extends Component {
                   <TouchableOpacity
                     style={styles.documentText}
                     onPress={() => {
-                            this.setModalVisible(true, item);
+                              this.setModalVisible(true, item);
                           }}
                   >
                     <Text>{item.id}</Text>
                   </TouchableOpacity>
                   <Divider />
                   {
-                                item.partition === Data.DefaultPartitions.APP_DOCUMENTS ?
-                                    null :
-                                    (
-                                      <TouchableOpacity onPress={() => this.props.onDocumentRemoved(item.id)}>
-                                        <Image style={styles.removeIcon} source={RemoveIcon} />
-                                      </TouchableOpacity>
-                                    )
+                          item.partition === Data.DefaultPartitions.APP_DOCUMENTS ?
+                              null :
+                              (
+                                <TouchableOpacity onPress={() => this.props.onDocumentRemoved(item.id)}>
+                                  <Image style={styles.removeIcon} source={RemoveIcon} />
+                                </TouchableOpacity>
+                              )
 
-                            }
+                      }
                 </View>)
-                    }
+              }
               keyExtractor={(item, index) => index.toString()}
             />
             <Modal
@@ -75,38 +75,38 @@ export class DataDocumentListView extends Component {
                             {
                                 data: [
                                     {
-                                    title: 'Partition',
-                                    value: this.state.currentDocument == null ? '' : this.state.currentDocument.partition,
+                                        title: 'Partition',
+                                        value: this.state.currentDocument == null ? '' : this.state.currentDocument.partition,
                                     },
-                            ],
-                            renderItem: renderDocumentItem
+                                ],
+                                renderItem: renderDocumentItem
                             },
                             {
                                 data: [
                                     {
-                                    title: 'Date',
-                                    value: this.state.currentDocument == null ? '' : this.state.currentDocument.lastUpdatedDate,
+                                        title: 'Date',
+                                        value: this.state.currentDocument == null ? '' : this.state.currentDocument.lastUpdatedDate,
                                     },
-                            ],
-                            renderItem: renderDocumentItem
+                                ],
+                                renderItem: renderDocumentItem
                             },
                             {
                                 data: [
                                     {
-                                    title: 'State',
-                                    value: this.formatStateLabel()
+                                        title: 'State',
+                                        value: this.formatStateLabel()
                                     },
-                            ],
-                            renderItem: renderDocumentItem
+                                ],
+                                renderItem: renderDocumentItem
                             },
                             {
                                 data: [
                                     {
-                                    title: 'Content',
-                                    value: this.state.currentDocument == null ? '' : (this.state.currentDocument.jsonValue)
+                                        title: 'Content',
+                                        value: this.state.currentDocument == null ? '' : (this.state.currentDocument.jsonValue)
                                     },
-                            ],
-                            renderItem: renderDocumentItem
+                                ],
+                                renderItem: renderDocumentItem
                             },
                             {
                                 data: [{}],
