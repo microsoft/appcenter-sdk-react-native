@@ -29,10 +29,10 @@ export default class DataScreen extends Component {
     dataEnabled: false,
     createDocModalVisible: false,
     docTtl: 60,
-    docId: "",
-    docType: "",
-    docKey: "",
-    docValue: "",
+    docId: '',
+    docType: '',
+    docKey: '',
+    docValue: '',
     partition: Data.DefaultPartitions.APP_DOCUMENTS,
     documents: [],
     loadingData: true
@@ -56,7 +56,7 @@ export default class DataScreen extends Component {
   }
 
   setCreateDocModalVisible(visible) {
-    this.setState({createDocModalVisible: visible});
+    this.setState({ createDocModalVisible: visible });
   }
 
   async listDocuments(partition) {
@@ -90,18 +90,19 @@ export default class DataScreen extends Component {
       </View>
     );
 
-    const DocTtlRenderItem = ({ item: { title, value, toggle } }) => (
-      <View style={{flexDirection: "row", alignItems: "center"}}>
-        <View style={{flex:.25}}>
+    const DocTtlRenderItem = ({ item: { title } }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
-        <View style={{flex:.75}}>
+        <View style={{ flex: 0.75 }}>
           <Picker
             selectedValue={this.state.docTtl}
-            style={{flex:1}}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({docTtl: itemValue})
-            }>
+            style={{ flex: 1 }}
+            onValueChange={itemValue =>
+              this.setState({ docTtl: itemValue })
+            }
+          >
             <Picker.Item label="Default" value="-1" />
             <Picker.Item label="No Cache" value="0" />
             <Picker.Item label="2 seconds" value="2" />
@@ -111,18 +112,19 @@ export default class DataScreen extends Component {
       </View>
     );
 
-    const DocTypeRenderItem = ({ item: { title, value, toggle } }) => (
-      <View style={{flexDirection: "row", alignItems: "center"}}>
-        <View style={{flex:.25}}>
+    const DocTypeRenderItem = ({ item: { title } }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
-        <View style={{flex:.75}}>
+        <View style={{ flex: 0.75 }}>
           <Picker
             selectedValue={this.state.docType}
-            style={{flex:1}}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({docType: itemValue})
-            }>
+            style={{ flex: 1 }}
+            onValueChange={itemValue =>
+              this.setState({ docType: itemValue })
+            }
+          >
             <Picker.Item label="String" value="string" />
             <Picker.Item label="Boolean" value="bool" />
             <Picker.Item label="Long" value="long" />
@@ -133,60 +135,61 @@ export default class DataScreen extends Component {
       </View>
     );
 
-    const DocIdRenderItem = ({ item: { title, value, toggle } }) => (
-      <View style={{flexDirection: "row", alignItems: "center"}}>
-        <View style={{flex:.25}}>
+    const DocIdRenderItem = ({ item: { title } }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
-        <View style={{flex:.75}}>
+        <View style={{ flex: 0.75 }}>
           <TextInput
-              onChangeText={(docId) => this.setState({docId})}
-              value={this.state.docId}
-            />
+            onChangeText={docId => this.setState({ docId })}
+            value={this.state.docId}
+          />
         </View>
       </View>
     );
 
-    const DocValueRenderItem = ({ item: { title, value, toggle } }) => (
-      <View style={{flexDirection: "row", alignItems: "center"}}>
-        <View style={{flex:.25}}>
+    const DocValueRenderItem = ({ item: { title } }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
-        <View style={{flex:.75}}>
+        <View style={{ flex: 0.75 }}>
           <TextInput
-              onChangeText={(docValue) => this.setState({docValue})}
-              value={this.state.docValue}
-            />
+            onChangeText={docValue => this.setState({ docValue })}
+            value={this.state.docValue}
+          />
         </View>
       </View>
     );
 
-    const DocKeyRenderItem = ({ item: { title, value, toggle } }) => (
-      <View style={{flexDirection: "row", alignItems: "center"}}>
-        <View style={{flex:.25}}>
+    const DocKeyRenderItem = ({ item: { title } }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
-        <View style={{flex:.75}}>
+        <View style={{ flex: 0.75 }}>
           <TextInput
-              onChangeText={(docKey) => this.setState({docKey})}
-              value={this.state.docKey}
-            />
+            onChangeText={docKey => this.setState({ docKey })}
+            value={this.state.docKey}
+          />
         </View>
       </View>
     );
 
    const actionRenderItem = ({ item: { title, action } }) => (
-      <TouchableOpacity style={SharedStyles.item} onPress={action}>
-        <Text style={SharedStyles.itemButton}>{title}</Text>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.createDocModalVisible}>
-          <View style={{marginTop: 22}}>
-              <SectionList
-                renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
-                keyExtractor={(item, index) => item + index}
-                sections={[
+     <TouchableOpacity style={SharedStyles.item} onPress={action}>
+       <Text style={SharedStyles.itemButton}>{title}</Text>
+       <Modal
+         animationType="slide"
+         transparent={false}
+         visible={this.state.createDocModalVisible}
+       >
+         <View style={{ marginTop: 22 }}>
+           <SectionList
+             renderItem={({ item }) => <Text style={[SharedStyles.item, SharedStyles.itemTitle]}>{item}</Text>}
+             keyExtractor={(item, index) => item + index}
+             sections={[
                   {
                     data: [
                       {
@@ -233,35 +236,38 @@ export default class DataScreen extends Component {
                     renderItem: DocValueRenderItem
                   },
                 ]}
-              />
-            <View style={{flexDirection: "row", alignItems: "center"}}>
-              <View style={{flex:.5}}>
-                <TouchableOpacity
-                  onPress={async () => {
-                    const createResult = 
+           />
+           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+             <View style={{ flex: 0.5 }}>
+               <TouchableOpacity
+                 onPress={async () => {
+                    const createResult =
                             await Data.create(
-                              this.state.docId, 
-                              this.state.value, 
-                              Data.DefaultPartitions.USER_DOCUMENTS, 
-                              new Data.WriteOptions(this.state.docTtl));
+                              this.state.docId,
+                              this.state.value,
+                              Data.DefaultPartitions.USER_DOCUMENTS,
+                              new Data.WriteOptions(this.state.docTtl)
+);
                     console.log('Successful create', createResult);
                     this.setCreateDocModalVisible(!this.state.createDocModalVisible);
-                  }}>
-                  <Text style={[SharedStyles.itemButton]}>Create</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{flex:.5}}>
-                <TouchableOpacity
-                    onPress={() => {
+                  }}
+               >
+                 <Text style={[SharedStyles.itemButton]}>Create</Text>
+               </TouchableOpacity>
+             </View>
+             <View style={{ flex: 0.5 }}>
+               <TouchableOpacity
+                 onPress={() => {
                       this.setCreateDocModalVisible(!this.state.createDocModalVisible);
-                    }}>
-                    <Text style={[SharedStyles.itemButton]}>Cancel</Text>
-                  </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </TouchableOpacity>
+                    }}
+               >
+                 <Text style={[SharedStyles.itemButton]}>Cancel</Text>
+               </TouchableOpacity>
+             </View>
+           </View>
+         </View>
+       </Modal>
+     </TouchableOpacity>
     );
 
     const partitionPicker = ({ item: { onChange } }) => (
