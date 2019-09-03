@@ -98,6 +98,8 @@ export default class AppCenterScreen extends Component {
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
     });
+
+    await AppCenter.setLogLevel(AppCenter.LogLevel.VERBOSE);
   }
 
   async refreshUI() {
@@ -359,6 +361,9 @@ async function runDataCrudScenarios() {
     someOtherBool: true,
     '👀': '🙉'
   };
+
+  // TODO: Remove this (once Data tests screens are ready), set token exchange URL to the integration endpoint
+  // Data.setTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
   const createResult = await Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
   console.log('Successful create', createResult);

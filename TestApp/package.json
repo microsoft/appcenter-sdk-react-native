@@ -5,7 +5,8 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint ."
+    "lint": "./node_modules/.bin/eslint .",
+    "lint-fix": "./node_modules/.bin/eslint . --fix"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.5.0",
@@ -18,10 +19,10 @@
     "appcenter-push": "file:appcenter-push-2.3.0.tgz",
     "metro": "^0.54.1",
     "react": "16.8.6",
-    "react-native": "0.60.0",
+    "react-native": "0.60.3",
     "react-native-fs": "^2.9.12",
     "react-native-gesture-handler": "^1.1.0",
-    "react-native-image-picker": "^0.28.0",
+    "react-native-image-picker": "^1.0.1",
     "react-native-modal-selector": "^1.0.2",
     "react-navigation": "^3.5.1"
   },

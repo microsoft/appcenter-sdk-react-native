@@ -4,9 +4,9 @@
 const ReactNative = require('react-native');
 
 const { AppCenterReactNativeData } = ReactNative.NativeModules;
+
 const dataEventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNativeData);
 const dataRemoteOperationCompleted = 'AppCenterRemoteOperationCompleted';
-
 const TimeToLive = {
     INFINITE: -1,
     NO_CACHE: 0,
@@ -23,28 +23,28 @@ const Data = {
     DefaultPartitions,
     isEnabled,
     setEnabled,
+    setTokenExchangeUrl,
     read,
     list,
     create,
     remove,
     replace,
-    setListener
+    setRemoteOperationListener
 };
 
 /**
  * Set the remote operation listener.
  *
- * @param {object} listenerMap - listener.
- * @return Future asynchronous operation with result being true if enabled, false otherwise.
+ * @param {object} listener - listener.
+ *
  */
-function setListener(listenerMap) {
+function setRemoteOperationListener(listener) {
     dataEventEmitter.removeAllListeners(dataRemoteOperationCompleted);
-    if (listenerMap && listenerMap.onRemoteOperationCompleted) {
-        dataEventEmitter.addListener(dataRemoteOperationCompleted, (document) => {
-            listenerMap.onRemoteOperationCompleted(document);
+    if (listener && listener.onRemoteOperationCompleted) {
+        dataEventEmitter.addListener(dataRemoteOperationCompleted, (remoteOperationCompletedData) => {
+            listener.onRemoteOperationCompleted(remoteOperationCompletedData);
         });
     }
-    return Promise.resolve();
 }
 
 /**
@@ -64,6 +64,15 @@ function isEnabled() {
  */
 function setEnabled(enabled) {
     return AppCenterReactNativeData.setEnabled(enabled);
+}
+
+/**
+ * Change the URL used to retrieve CosmosDB resource tokens.
+ *
+ * @param {string} tokenExchangeUrl - Token Exchange service URL.
+ */
+function setTokenExchangeUrl(tokenExchangeUrl) {
+    AppCenterReactNativeData.setTokenExchangeUrl(tokenExchangeUrl);
 }
 
 /**
