@@ -3,7 +3,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AppCenterReactNativeData : NSObject
+#if __has_include(<React/RCTEventEmitter.h>)
+#import <React/RCTEventEmitter.h>
+#else
+#import "RCTEventEmitter.h"
+#endif
+
+@interface AppCenterReactNativeData : RCTEventEmitter
 
 + (void)register;
 
