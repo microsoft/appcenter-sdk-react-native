@@ -6,7 +6,7 @@ import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpac
 import ModalSelector from 'react-native-modal-selector';
 import Data from 'appcenter-data';
 
-import { DataDocumentListView } from '../components/DataDocumentListView';
+import { DataDocumentListView } from './DataDocumentListView';
 
 import SharedStyles from '../SharedStyles';
 import DataTabBarIcon from '../assets/data.png';
