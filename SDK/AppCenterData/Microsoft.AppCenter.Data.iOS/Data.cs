@@ -4,6 +4,7 @@
 using System;
 using System.Threading.Tasks;
 using Foundation;
+using Microsoft.AppCenter.Data.iOS;
 using Microsoft.AppCenter.Data.iOS.Bindings;
 using Newtonsoft.Json;
 using ObjCRuntime;
@@ -20,6 +21,25 @@ namespace Microsoft.AppCenter.Data
         /// </value>
         [Preserve]
         public static Type BindingType => typeof(MSData);
+        static RemoteOperationDelegate _remoteOperationDelegate = new RemoteOperationDelegate();
+
+        static Data()
+        {
+            _remoteOperationDelegate.OnDataDidCompletedRemoteOperationAction = (operation, documentMetadata, error) =>
+            {
+                if (RemoteOperationCompleted == null)
+                {
+                    return;
+                }
+                RemoteOperationCompleted(typeof(Data), new RemoteOperationCompletedEventArgs
+                {
+                    Operation = operation,
+                    DocumentMetadata = documentMetadata.ToDocumentMetadata(),
+                    Error = error?.ToDataException()
+                });
+            };
+            MSData.SetRemoteOperationDelegate(_remoteOperationDelegate);
+        }
 
         private static Task<bool> PlatformIsEnabledAsync()
         {
