@@ -233,7 +233,7 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         //                      forDocumentMetadata:(MSDocumentMetadata* _Nullable) documentMetadata
         //                                withError:(MSDataError* _Nullable) error;
         [Export("data:didCompleteRemoteOperation:forDocumentMetadata:withError:")]
-        void DataDidCompletedRemoteOperation(MSData data, string operation, MSDocumentMetadata documentMetadata, MSDataError error);
+        void DataDidCompleteRemoteOperation(MSData data, string operation, MSDocumentMetadata documentMetadata, MSDataError error);
     }
 
     // typedef void (^MSDocumentWrapperCompletionHandler)(MSDocumentWrapper *document);

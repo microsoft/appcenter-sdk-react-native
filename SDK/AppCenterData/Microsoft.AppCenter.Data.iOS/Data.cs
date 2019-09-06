@@ -25,7 +25,7 @@ namespace Microsoft.AppCenter.Data
 
         static Data()
         {
-            _remoteOperationDelegate.OnDataDidCompletedRemoteOperationAction = (operation, documentMetadata, error) =>
+            _remoteOperationDelegate.DataDidCompleteRemoteOperation = (operation, documentMetadata, error) =>
             {
                 if (RemoteOperationCompleted == null)
                 {

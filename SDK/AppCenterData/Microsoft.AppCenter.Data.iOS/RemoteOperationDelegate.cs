@@ -8,11 +8,11 @@ namespace Microsoft.AppCenter.Data.iOS
 {
     public class RemoteOperationDelegate : MSRemoteOperationDelegate
     {
-        public override void DataDidCompletedRemoteOperation(MSData data, string operation, MSDocumentMetadata documentMetadata, MSDataError error)
+        public override void DataDidCompleteRemoteOperation(MSData data, string operation, MSDocumentMetadata documentMetadata, MSDataError error)
         {
-            OnDataDidCompletedRemoteOperationAction.Invoke(operation, documentMetadata, error);
+            OnDataDidCompleteRemoteOperationAction.Invoke(operation, documentMetadata, error);
         }
 
-        public Action<string, MSDocumentMetadata, MSDataError> OnDataDidCompletedRemoteOperationAction { get; set; }
+        public Action<string, MSDocumentMetadata, MSDataError> OnDataDidCompleteRemoteOperationAction { get; set; }
     }
 }
