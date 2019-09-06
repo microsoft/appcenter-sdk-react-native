@@ -29,13 +29,10 @@ namespace Contoso.Forms.Puppet
 
         List<Property> Properties;
 
-        List<byte[]> Temp;
-
         public CrashesContentPage()
         {
             InitializeComponent();
             Properties = new List<Property>();
-            Temp = new List<byte[]>();
             NumPropertiesLabel.Text = Properties.Count.ToString();
             if (XamarinDevice.RuntimePlatform == XamarinDevice.iOS)
             {
