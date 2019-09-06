@@ -10,6 +10,7 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Contoso.Forms.Puppet
 {
@@ -264,15 +265,15 @@ namespace Contoso.Forms.Puppet
 
         void MemoryWarningTrigger(object sender, EventArgs e)
         {
-            new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+            Task.Run(async () =>
             {
+                var blockSize = 128 * 1024 * 1024;
+                var byteArrays = new List<IEnumerable<byte>>();
                 while (true)
                 {
-                    var blockSize = 1024 * 1024 * 1024;
-                    byte[] a = Enumerable.Repeat((byte)blockSize, int.MaxValue).ToArray();
-                    Temp.Add(a);
+                    byteArrays.Add(Enumerable.Repeat((byte)blockSize, 10000000));
                 }
-            })).Start();
+            });
         }
     }
 }
