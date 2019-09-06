@@ -262,7 +262,7 @@ namespace Contoso.Forms.Demo
 
         void MemoryWarningTrigger(object sender, EventArgs e)
         {
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 var blockSize = 128 * 1024 * 1024;
                 var byteArrays = new List<IEnumerable<byte>>();
