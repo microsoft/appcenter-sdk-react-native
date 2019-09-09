@@ -30,7 +30,7 @@ namespace Microsoft.AppCenter.Data
                 RemoteOperationCompleted?.Invoke(null, new RemoteOperationCompletedEventArgs
                 {
                     Operation = operation,
-                    DocumentMetadata = documentMetadata?.ToDocumentMetadata(),
+                    DocumentMetadata = documentMetadata.ToDocumentMetadata(),
                     Error = error?.ToDataException()
                 });
             };
