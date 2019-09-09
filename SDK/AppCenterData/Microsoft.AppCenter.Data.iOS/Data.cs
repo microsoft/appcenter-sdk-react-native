@@ -25,16 +25,12 @@ namespace Microsoft.AppCenter.Data
 
         static Data()
         {
-            _remoteOperationDelegate.DataDidCompleteRemoteOperation = (operation, documentMetadata, error) =>
+            _remoteOperationDelegate.OnDataDidCompleteRemoteOperationAction = (operation, documentMetadata, error) =>
             {
-                if (RemoteOperationCompleted == null)
-                {
-                    return;
-                }
-                RemoteOperationCompleted(typeof(Data), new RemoteOperationCompletedEventArgs
+                RemoteOperationCompleted?.Invoke(null, new RemoteOperationCompletedEventArgs
                 {
                     Operation = operation,
-                    DocumentMetadata = documentMetadata.ToDocumentMetadata(),
+                    DocumentMetadata = documentMetadata?.ToDocumentMetadata(),
                     Error = error?.ToDataException()
                 });
             };
