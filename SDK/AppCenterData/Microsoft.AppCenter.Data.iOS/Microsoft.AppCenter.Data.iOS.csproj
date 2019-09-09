@@ -50,6 +50,7 @@
     <Compile Include="Data.cs" />
     <Compile Include="PaginatedDocuments.cs" />
     <Compile Include="ConversionExtensions.cs" />
+    <Compile Include="RemoteOperationDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.iOS\Microsoft.AppCenter.iOS.csproj">

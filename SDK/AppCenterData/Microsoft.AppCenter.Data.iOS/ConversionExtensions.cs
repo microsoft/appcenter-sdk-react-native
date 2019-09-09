@@ -92,5 +92,15 @@ namespace Microsoft.AppCenter.Data
                 DocumentMetadata = msDocumentWrapper?.ToDocumentMetadata()
             };
         }
+
+        public static DocumentMetadata ToDocumentMetadata(this MSDocumentMetadata documentMetadata)
+        {
+            return new DocumentMetadata
+            {
+                Id = documentMetadata.DocumentId,
+                Partition = documentMetadata.Partition,
+                ETag = documentMetadata.ETag
+            };
+        }
     }
 }
