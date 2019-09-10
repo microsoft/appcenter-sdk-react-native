@@ -80,7 +80,7 @@ namespace Contoso.Forms.Puppet
                 // Default to B2C
                 var AppSecrets = B2CAuthAppSecrets;
 
-                // If user has selected another Auth Type, override the secret dictionary accordingly
+                // If user has selected another Auth Type, override the secret dictionary accordingly.
                 var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
                 if (persistedAuthType == AuthType.AAD)
                 {

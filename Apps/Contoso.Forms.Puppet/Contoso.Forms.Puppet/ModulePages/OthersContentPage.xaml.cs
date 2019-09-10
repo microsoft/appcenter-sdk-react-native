@@ -99,7 +99,7 @@ namespace Contoso.Forms.Puppet
 
         async void ChangeAuthType(object sender, EventArgs e)
         {
-            int newSelectionCandidate = this.AuthTypePicker.SelectedIndex;
+            var newSelectionCandidate = this.AuthTypePicker.SelectedIndex;
             var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
             if (newSelectionCandidate != (int)persistedAuthType)
             {
