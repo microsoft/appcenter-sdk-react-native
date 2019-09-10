@@ -77,17 +77,8 @@ namespace Contoso.Forms.Puppet
                 Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
                 Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
-                // Default to B2C
-                var AppSecrets = B2CAuthAppSecrets;
-
-                // If user has selected another Auth Type, override the secret dictionary accordingly.
-                var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
-                if (persistedAuthType == AuthType.AAD)
-                {
-                    AppSecrets = AADAuthAppSecrets;
-                }
-
-                AppCenter.Start($"uwp={AppSecrets[XamarinDevice.UWP]};android={AppSecrets[XamarinDevice.Android]};ios={AppSecrets[XamarinDevice.iOS]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                var appSecrets = GetAppSecretDictionary();
+                AppCenter.Start($"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -112,6 +103,20 @@ namespace Contoso.Forms.Puppet
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
                 });
+            }
+        }
+
+        static IReadOnlyDictionary<string, string> GetAppSecretDictionary()
+        {
+            // If user has selected another Auth Type, override the secret dictionary accordingly.
+            var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
+            switch (persistedAuthType)
+            {
+                case AuthType.AAD:
+                    return AADAuthAppSecrets;
+                default:
+                    // Default to B2C.
+                    return B2CAuthAppSecrets;
             }
         }
 
