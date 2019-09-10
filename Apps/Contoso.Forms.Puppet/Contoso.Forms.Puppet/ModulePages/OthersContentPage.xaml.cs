@@ -45,6 +45,13 @@ namespace Contoso.Forms.Puppet
             {
                 Icon = "handbag.png";
             }
+
+            // Setup auth type dropdown choices
+            foreach (var authType in AuthTypeUtils.GetAuthTypeChoiceStrings())
+            {
+                this.AuthTypePicker.Items.Add(authType);
+            }
+            this.AuthTypePicker.SelectedIndex = (int)(AuthTypeUtils.GetPersistedAuthType());
         }
 
         protected override async void OnAppearing()
@@ -88,6 +95,18 @@ namespace Contoso.Forms.Puppet
         async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
         {
             await Auth.SetEnabledAsync(e.Value);
+        }
+
+        async void ChangeAuthType(object sender, EventArgs e)
+        {
+            int newSelectionCandidate = this.AuthTypePicker.SelectedIndex;
+            var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
+            if (newSelectionCandidate != (int)persistedAuthType)
+            {
+                AuthTypeUtils.SetPersistedAuthType((AuthType)newSelectionCandidate);
+                await Application.Current.SavePropertiesAsync();
+                await DisplayAlert("Authorization Type Changed", "Authorization type has changed, which alters the app secret. Please close and re-run the app for the new app secret to take effect.", "OK");
+            }
         }
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)

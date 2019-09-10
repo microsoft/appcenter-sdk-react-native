@@ -21,14 +21,32 @@ namespace Contoso.Forms.Puppet
         void ClearCrashButton();
     }
 
+    enum PlatformType
+    {
+        Uwp,
+        Android,
+        Ios
+    }
+
     public partial class App
     {
         public const string LogTag = "AppCenterXamarinPuppet";
 
-        // App Center keys
-        const string UwpKey = "a678b499-1912-4a94-9d97-25b569284d3a";
-        const string AndroidKey = "bff0949b-7970-439d-9745-92cdc59b10fe";
-        const string IosKey = "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899";
+        // App Center B2C secrets
+        static readonly IReadOnlyDictionary<PlatformType, string> B2CAuthAppSecrets = new Dictionary<PlatformType, string>
+        {
+            { PlatformType.Uwp, "a678b499-1912-4a94-9d97-25b569284d3a" },
+            { PlatformType.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
+            { PlatformType.Ios, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
+        };
+
+        // App Center AAD secrets
+        static readonly IReadOnlyDictionary<PlatformType, string> AADAuthAppSecrets = new Dictionary<PlatformType, string>
+        {
+            { PlatformType.Uwp, "" },
+            { PlatformType.Android, "" },
+            { PlatformType.Ios, "" }
+        };
 
         public App()
         {
@@ -64,7 +82,18 @@ namespace Contoso.Forms.Puppet
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
                 Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
                 Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
-                AppCenter.Start($"uwp={UwpKey};android={AndroidKey};ios={IosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+
+                // Default to B2C
+                IReadOnlyDictionary<PlatformType, string> AppSecrets = B2CAuthAppSecrets;
+
+                // If user has selected another Auth Type, override the secret dictionary accordingly
+                var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
+                if (persistedAuthType == AuthType.AAD)
+                {
+                    AppSecrets = AADAuthAppSecrets;
+                }
+
+                AppCenter.Start($"uwp={AppSecrets[PlatformType.Uwp]};android={AppSecrets[PlatformType.Android]};ios={AppSecrets[PlatformType.Ios]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
