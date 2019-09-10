@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XamarinDevice = Xamarin.Forms.Device;
 
 namespace Contoso.Forms.Puppet
 {
@@ -21,31 +22,24 @@ namespace Contoso.Forms.Puppet
         void ClearCrashButton();
     }
 
-    enum PlatformType
-    {
-        Uwp,
-        Android,
-        Ios
-    }
-
     public partial class App
     {
         public const string LogTag = "AppCenterXamarinPuppet";
 
         // App Center B2C secrets
-        static readonly IReadOnlyDictionary<PlatformType, string> B2CAuthAppSecrets = new Dictionary<PlatformType, string>
+        static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
         {
-            { PlatformType.Uwp, "a678b499-1912-4a94-9d97-25b569284d3a" },
-            { PlatformType.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
-            { PlatformType.Ios, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
+            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" },
+            { XamarinDevice.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
+            { XamarinDevice.iOS, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
         };
 
         // App Center AAD secrets
-        static readonly IReadOnlyDictionary<PlatformType, string> AADAuthAppSecrets = new Dictionary<PlatformType, string>
+        static readonly IReadOnlyDictionary<string, string> AADAuthAppSecrets = new Dictionary<string, string>
         {
-            { PlatformType.Uwp, "" },
-            { PlatformType.Android, "" },
-            { PlatformType.Ios, "" }
+            { XamarinDevice.UWP, "" },
+            { XamarinDevice.Android, "" },
+            { XamarinDevice.iOS, "" }
         };
 
         public App()
@@ -84,7 +78,7 @@ namespace Contoso.Forms.Puppet
                 Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
                 // Default to B2C
-                IReadOnlyDictionary<PlatformType, string> AppSecrets = B2CAuthAppSecrets;
+                var AppSecrets = B2CAuthAppSecrets;
 
                 // If user has selected another Auth Type, override the secret dictionary accordingly
                 var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
@@ -93,7 +87,7 @@ namespace Contoso.Forms.Puppet
                     AppSecrets = AADAuthAppSecrets;
                 }
 
-                AppCenter.Start($"uwp={AppSecrets[PlatformType.Uwp]};android={AppSecrets[PlatformType.Android]};ios={AppSecrets[PlatformType.Ios]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start($"uwp={AppSecrets[XamarinDevice.UWP]};android={AppSecrets[XamarinDevice.Android]};ios={AppSecrets[XamarinDevice.iOS]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
