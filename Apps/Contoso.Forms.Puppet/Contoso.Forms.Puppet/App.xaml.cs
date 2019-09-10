@@ -29,7 +29,7 @@ namespace Contoso.Forms.Puppet
         // App Center B2C secrets
         static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
         {
-            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" },
+            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
             { XamarinDevice.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
             { XamarinDevice.iOS, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
         };
@@ -37,9 +37,9 @@ namespace Contoso.Forms.Puppet
         // App Center AAD secrets
         static readonly IReadOnlyDictionary<string, string> AADAuthAppSecrets = new Dictionary<string, string>
         {
-            { XamarinDevice.UWP, "" },
-            { XamarinDevice.Android, "" },
-            { XamarinDevice.iOS, "" }
+            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
+            { XamarinDevice.Android, "739eacee-42de-454c-b0d7-c093e765e009" },
+            { XamarinDevice.iOS, "e9f015c6-6c2b-4410-8053-70eaa52d90e0" }
         };
 
         public App()
