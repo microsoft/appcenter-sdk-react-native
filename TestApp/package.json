@@ -5,7 +5,8 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint ."
+    "lint": "./node_modules/.bin/eslint .",
+    "lint-fix": "./node_modules/.bin/eslint . --fix"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.5.0",
@@ -13,14 +14,15 @@
     "appcenter-analytics": "file:appcenter-analytics-2.3.0.tgz",
     "appcenter-auth": "file:appcenter-auth-2.3.0.tgz",
     "appcenter-crashes": "file:appcenter-crashes-2.3.0.tgz",
+    "appcenter-data": "file:appcenter-data-2.2.0.tgz",
     "appcenter-link-scripts": "file:appcenter-link-scripts-2.3.0.tgz",
     "appcenter-push": "file:appcenter-push-2.3.0.tgz",
     "metro": "^0.54.1",
     "react": "16.8.6",
-    "react-native": "0.60.0",
+    "react-native": "0.60.3",
     "react-native-fs": "^2.9.12",
     "react-native-gesture-handler": "^1.1.0",
-    "react-native-image-picker": "^0.28.0",
+    "react-native-image-picker": "^1.0.1",
     "react-native-modal-selector": "^1.0.2",
     "react-navigation": "^3.5.1"
   },
@@ -50,6 +52,7 @@
       "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
       "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
       "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
+      "<rootDir>/node_modules/appcenter-data/test/AppCenterDataMock.js",
       "<rootDir>/node_modules/appcenter-push/test/AppCenterPushMock.js"
     ],
     "transformIgnorePatterns": [

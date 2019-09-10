@@ -7,3 +7,6 @@ import mockAsyncStorage from '@react-native-community/async-storage/jest/async-s
 require('stacktrace-parser');
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
+
+// Mock the native image picker library
+jest.mock('react-native-image-picker', () => null);

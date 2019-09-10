@@ -12,6 +12,7 @@ npm pack ../appcenter
 npm pack ../appcenter-analytics
 npm pack ../appcenter-crashes
 npm pack ../appcenter-push
+npm pack ../appcenter-data
 npm pack ../appcenter-auth
 npm pack ../appcenter-link-scripts
 
