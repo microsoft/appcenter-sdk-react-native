@@ -1,8 +1,12 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.4.0 (Under active development)
+## Version 2.4.0
 
 ### App Center
+
+### App Center Data
+
+ The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms.
 
 #### iOS
 
