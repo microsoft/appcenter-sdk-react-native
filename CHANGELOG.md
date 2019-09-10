@@ -1,6 +1,6 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.4.0
+## Version 2.4.0 (Under active development)
 
 ### App Center
 
