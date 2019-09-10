@@ -114,8 +114,8 @@ namespace Contoso.Forms.Puppet
             {
                 case AuthType.AAD:
                     return AADAuthAppSecrets;
+                case AuthType.B2C:
                 default:
-                    // Default to B2C.
                     return B2CAuthAppSecrets;
             }
         }
