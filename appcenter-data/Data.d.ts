@@ -23,13 +23,13 @@ export class WriteOptions {
 }
 
 export interface DocumentWrapper {
-    deserializedValue?: object;
-    eTag?: string;
+    deserializedValue: object | null;
+    eTag: string | null;
     id: string;
     isFromDeviceCache: boolean;
-    jsonValue?: string;
-    lastUpdatedDate?: Date;
-    partition?: string;
+    jsonValue: string | null;
+    lastUpdatedDate: Date | null;
+    partition: string | null;
 }
 
 export interface PaginatedDocuments {
@@ -48,15 +48,15 @@ export interface RemoteOperationListener {
 }
 
 export interface RemoteOperationCompletedData {
-    id: string;
+    id?: string;
     eTag?: string;
-    partition: string;
+    partition?: string;
     operation: string;
     error?: Map<string, string>;
 }
+
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
- 
 export function setRemoteOperationListener(listener: RemoteOperationListener): Promise<void>;
 export function setTokenExchangeUrl(tokenExchangeUrl: string): void;
 export function read(documentId: string, partition: DefaultPartitions, readOptions?: ReadOptions): Promise<DocumentWrapper>;
