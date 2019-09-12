@@ -30,7 +30,11 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
 
     private static final String ID_TOKEN_KEY = "idToken";
 
+    private static final String USE_AUTH_IN_JAVASCRIPT = "use_auth_in_javascript";
+
     public AppCenterReactNativeAuthModule(Application application) {
+        boolean useAuthInJavaScript = AppCenterReactNativeShared.getConfiguration().optBoolean(USE_AUTH_IN_JAVASCRIPT);
+
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
             AppCenter.start(Auth.class);
