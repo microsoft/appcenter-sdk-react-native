@@ -4,13 +4,15 @@
 
 ### App Center
 
+#### iOS
+
+* **[Fix]** Fixed a react-native link issue for RN prior to 0.60 where App Center pods may be added incorrectly to Podfile.
+
 ### App Center Data
 
  The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms.
 
-#### iOS
-
-* **[Fix]** Fixed a react-native link issue for RN prior to 0.60 where App Center pods may be added incorrectly to Podfile.
+___
 
 ## Version 2.3.0
 
