@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Auth;
@@ -45,6 +46,13 @@ namespace Contoso.Forms.Puppet
             {
                 Icon = "handbag.png";
             }
+
+            // Setup auth type dropdown choices
+            foreach (var authType in AuthTypeUtils.GetAuthTypeChoiceStrings())
+            {
+                this.AuthTypePicker.Items.Add(authType);
+            }
+            this.AuthTypePicker.SelectedIndex = (int)(AuthTypeUtils.GetPersistedAuthType());
         }
 
         protected override async void OnAppearing()
@@ -88,6 +96,23 @@ namespace Contoso.Forms.Puppet
         async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
         {
             await Auth.SetEnabledAsync(e.Value);
+        }
+
+        async void ChangeAuthType(object sender, PropertyChangedEventArgs e)
+        {
+            // IOS sends an event every time user rests their selection on an item without hitting "done", and the only event they send when hitting "done" is that the control is no longer focused.
+            // So we'll process the change at that time. This works for android as well.
+            if (e.PropertyName == "IsFocused" && !this.AuthTypePicker.IsFocused)
+            {
+                var newSelectionCandidate = this.AuthTypePicker.SelectedIndex;
+                var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
+                if (newSelectionCandidate != (int)persistedAuthType)
+                {
+                    AuthTypeUtils.SetPersistedAuthType((AuthType)newSelectionCandidate);
+                    await Application.Current.SavePropertiesAsync();
+                    await DisplayAlert("Authorization Type Changed", "Authorization type has changed, which alters the app secret. Please close and re-run the app for the new app secret to take effect.", "OK");
+                }
+            }
         }
 
         async void UpdateRumEnabled(object sender, ToggledEventArgs e)
