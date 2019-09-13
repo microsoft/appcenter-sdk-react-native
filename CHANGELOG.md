@@ -14,7 +14,7 @@
 
 #### WinForms
 
-* **[Fix]** Don't prevent WinForms applications from crashing. If unhandled exceptions are handled by the application, they must now be reported using `Crashes.TrackError` to be displayed on AppCenter, see the public documentation for more details about this change.
+* **[Fix]** Don't prevent WinForms applications from crashing. If unhandled exceptions are handled by the application, they must now be reported using `Crashes.TrackError` to be displayed on AppCenter, see the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/crashes/wpf-winforms) for more details about this change.
 
 ## Version 2.3.0-preview
 
