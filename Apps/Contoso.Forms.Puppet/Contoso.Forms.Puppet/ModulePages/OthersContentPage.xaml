@@ -10,7 +10,7 @@
         <TableSection Title="Auth">
             <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled" />
             <ViewCell>
-                <Picker x:Name="AuthTypePicker" Title="Auth Type" SelectedIndexChanged="ChangeAuthType"/>
+                <Picker x:Name="AuthTypePicker" Title="Auth Type" PropertyChanged="ChangeAuthType"/>
             </ViewCell>
         </TableSection>
         <TableSection Title="Rum">
