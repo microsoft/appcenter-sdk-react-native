@@ -6,6 +6,7 @@
 package com.microsoft.appcenter.reactnative.auth;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
@@ -32,13 +33,23 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
 
     private static final String USE_AUTH_IN_JAVASCRIPT = "use_auth_in_javascript";
 
+    private AppCenterReactNativeAuthListener mAuthListener;
+
     public AppCenterReactNativeAuthModule(Application application) {
         boolean useAuthInJavaScript = AppCenterReactNativeShared.getConfiguration().optBoolean(USE_AUTH_IN_JAVASCRIPT);
-
+        if (useAuthInJavaScript) {
+            mAuthListener = new AppCenterReactNativeAuthListener();
+            Auth.setAuthTokenListener(mAuthListener);
+        }
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
             AppCenter.start(Auth.class);
         }
+    }
+
+    public void setReactApplicationContext(ReactApplicationContext reactContext) {
+        Log.d("Setting react context");
+        mAuthListener.setReactApplicationContext(reactContext);
     }
 
     @Nonnull

@@ -28,10 +28,10 @@ public class AppCenterReactNativeAuthListener implements AuthTokenListener {
         mReactApplicationContext = reactApplicationContext;
     }
 
-
     @Override
-    public void acquireAuthToken(AuthTokenCallback callback) {
-
+    public void acquireAuthToken(AuthTokenCallback callback)) {
+        // TODO logging
+        sendEvent(ON_SET_AUTH_TOKEN_COMPLETED_EVENT, );
     }
 
     private void sendEvent(String eventType, WritableMap report) {
