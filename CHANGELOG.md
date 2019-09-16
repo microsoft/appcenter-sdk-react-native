@@ -4,11 +4,17 @@
 
 ### App Center
 
+#### WPF/WinForms
+
 * **[Fix]** Fix application version being reported for ClickOnce deployments.
 
 ### App Center Crashes
 
 * **[Breaking change]** Remove insecure implementation of the raw `ErrorReport.Exception` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin, UWP, WPF and WinForms.
+
+#### WinForms
+
+* **[Fix]** Don't prevent WinForms applications from crashing. If unhandled exceptions are handled by the application, they must now be reported using `Crashes.TrackError` to be displayed on AppCenter, see the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/crashes/wpf-winforms) for more details about this change.
 
 ## Version 2.3.0-preview
 
