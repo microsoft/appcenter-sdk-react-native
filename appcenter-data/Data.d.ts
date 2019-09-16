@@ -47,12 +47,16 @@ export interface RemoteOperationListener {
     onRemoteOperationCompleted?: (remoteOperationCompletedData: RemoteOperationCompletedData) => void;
 }
 
+export interface OperationSyncError {
+    message: string;
+}
+
 export interface RemoteOperationCompletedData {
     id?: string;
     eTag?: string;
     partition?: string;
     operation: string;
-    error?: Map<string, string>;
+    error?: OperationSyncError;
 }
 
 export function isEnabled(): Promise<boolean>;
