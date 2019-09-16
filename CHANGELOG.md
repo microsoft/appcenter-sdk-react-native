@@ -6,6 +6,10 @@
 
 * **[Fix]** Fix application version being reported for ClickOnce deployments.
 
+#### Xamarin
+
+* **[Fix]** Updated Google Play Services and Firebase to v71 versions in Push module.
+
 ### App Center Crashes
 
 * **[Breaking change]** Remove insecure implementation of the raw `ErrorReport.Exception` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin, UWP, WPF and WinForms.
