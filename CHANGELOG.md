@@ -6,7 +6,7 @@
 
 * **[Fix]** Fix application version being reported for ClickOnce deployments.
 
-#### Xamarin
+#### Android
 
 * **[Fix]** Updated Google Play Services and Firebase to v71 versions in Push module.
 
