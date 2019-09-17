@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.appcenter.reactnative.auth;
+package com.microsoft.appcenter.reactnative.appcenter;
 
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AppCenterReactNativeAuthListener implements AuthTokenListener {
+public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private static final String ON_SET_AUTH_TOKEN_COMPLETED_EVENT = "AppCenterSetAuthTokenCompleted";
 
@@ -29,9 +29,10 @@ public class AppCenterReactNativeAuthListener implements AuthTokenListener {
     }
 
     @Override
-    public void acquireAuthToken(AuthTokenCallback callback)) {
+    public void acquireAuthToken(AuthTokenCallback callback) {
         // TODO logging
-        sendEvent(ON_SET_AUTH_TOKEN_COMPLETED_EVENT, );
+        callback.onAuthTokenResult("token")
+        //sendEvent(ON_SET_AUTH_TOKEN_COMPLETED_EVENT, );
     }
 
     private void sendEvent(String eventType, WritableMap report) {

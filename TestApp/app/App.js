@@ -4,6 +4,7 @@
 import { AppState, Alert, Platform, ToastAndroid, YellowBox } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
+import AppCenter from 'appcenter';
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
 import Data from 'appcenter-data';
@@ -126,5 +127,12 @@ Crashes.setListener({
 
   onSendingFailed() {
     console.log('Failed sending crash. onSendingFailed is invoked.');
+  }
+});
+
+AppCenter.setAuthTokenListener({
+
+  async acquireAuthToken() {
+    return "abcdefg";
   }
 });

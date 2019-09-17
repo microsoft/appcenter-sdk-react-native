@@ -23,7 +23,16 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     private final Application mApplication;
 
+    private AppCenterReactNativeAuthListener mAuthListener;
+
+    private static final String USE_AUTH_IN_JAVASCRIPT = "use_auth_in_javascript";
+
     public AppCenterReactNativeModule(Application application) {
+        boolean useAuthInJavaScript = AppCenterReactNativeShared.getConfiguration().optBoolean(USE_AUTH_IN_JAVASCRIPT);
+        if (useAuthInJavaScript) {
+            mAuthListener = new AppCenterReactNativeAuthListener();
+            AppCenter.setAuthTokenListener(mAuthListener);
+        }
         mApplication = application;
         AppCenterReactNativeShared.configureAppCenter(application);
     }
@@ -96,5 +105,10 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
         AppCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
+    }
+
+    @ReactMethod
+    public void setAuthToken(String authToken) {
+        AppCenter.setAuthToken(authToken);
     }
 }

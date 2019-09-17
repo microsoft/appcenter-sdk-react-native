@@ -110,8 +110,7 @@ const AppCenter = {
         eventEmitter.removeAllListeners(setAuthTokenCompleted);
         if (listener && listener.acquireAuthToken) {
             eventEmitter.addListener(setAuthTokenCompleted, async () => { 
-                const authToken = await listener.acquireAuthToken();
-                
+                await listener.acquireAuthToken();
             });
         }
     }
