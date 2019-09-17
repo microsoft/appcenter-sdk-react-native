@@ -63,7 +63,7 @@ export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
 export function setRemoteOperationListener(listener: RemoteOperationListener): Promise<void>;
 export function read(documentId: string, partition: DefaultPartitions, readOptions?: ReadOptions): Promise<DocumentWrapper>;
-export function list(partition: DefaultPartitions): Promise<PaginatedDocuments>;
+export function list(partition: DefaultPartitions, readOptions?: ReadOptions): Promise<PaginatedDocuments>;
 export function create(documentId: string, document: object, partition: DefaultPartitions, writeOptions?: WriteOptions): Promise<DocumentWrapper>;
 export function remove(documentId: string, partition: DefaultPartitions, writeOptions?: WriteOptions): Promise<DocumentWrapper>;
 export function replace(documentId: string, document: object, partition: DefaultPartitions, writeOptions?: WriteOptions): Promise<DocumentWrapper>;
