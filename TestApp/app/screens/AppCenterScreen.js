@@ -361,7 +361,7 @@ async function runDataCrudScenarios() {
     someOtherBool: true,
     '👀': '🙉'
   };
-  
+
   const createResult = await Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
   console.log('Successful create', createResult);
 
