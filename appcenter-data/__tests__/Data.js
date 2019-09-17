@@ -20,15 +20,6 @@ describe('App Center Data isEnabled and setEnabled tests', () => {
   });
 });
 
-describe('App Center Data setTokenExchangeUrl tests', () => {
-  test('setTokenExchangeUrl is called', async () => {
-    const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'setTokenExchangeUrl');
-    const url = 'https://token-exchange.url';
-    Data.setTokenExchangeUrl(url);
-    expect(spy).toHaveBeenCalledWith(url);
-  });
-});
-
 describe('App Center Data read operation tests', () => {
   test('read is called with readOptions and TimeToLive.INFINITE', async () => {
     const documentId = 'test_document_id';
