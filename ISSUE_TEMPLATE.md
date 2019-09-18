@@ -35,5 +35,5 @@ Place output here
 
 Place output here
 
-7. Please enable verbose logging for your app using `[MSAppCenter setLogLevel: MSLogLevelVerbose];` before your call to `[AppCenterReactNative register];` (or any other SDK registration). For Android, use `AppCenter.setLogLevel(android.util.Log.VERBOSE);` before your `SoLoader.init` call. Include the logs here:
+7. Please enable verbose logging for your app using `[MSAppCenter setLogLevel: MSLogLevelVerbose];` before your call to `[AppCenterReactNative register];` (or any other SDK registration). For Android, use `AppCenter.setLogLevel(android.util.Log.VERBOSE);` before your `SoLoader.init` call (you will need to `import com.microsoft.appcenter.AppCenter;`). Include the logs here:
 
