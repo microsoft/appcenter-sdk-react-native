@@ -8,7 +8,8 @@
 
 #### Android
 
-* **[Fix]** Updated Google Play Services and Firebase to v71 versions in Push module.
+* **[Breaking change]** We Updated Google Play Services and Firebase to v71 versions in Push module which forces applications to use Android 9.0 Mono frameworks.
+    * You need to have Xamarin tools up to date, select Android 9.0 as a target framework and then make sure that in `package.config` the attribute for every package looks like this: `targetFramework="monoandroid90"` and update as necessary. It's highly recommended to close Studio and clean every obj/bin folder manually in case of any build error after the update.
 
 ### App Center Crashes
 
