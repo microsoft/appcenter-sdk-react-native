@@ -21,6 +21,8 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private ReactApplicationContext mReactApplicationContext;
 
+    private AuthTokenCallback mCallback;
+
     private List<Map.Entry<String, WritableMap>> mPendingEvents = new ArrayList<>();
 
     @SuppressWarnings("WeakerAccess")
@@ -31,8 +33,8 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
     @Override
     public void acquireAuthToken(AuthTokenCallback callback) {
         // TODO logging
-        callback.onAuthTokenResult("token")
-        //sendEvent(ON_SET_AUTH_TOKEN_COMPLETED_EVENT, );
+        sendEvent(ON_SET_AUTH_TOKEN_COMPLETED_EVENT, null);
+        mCallback = callback;
     }
 
     private void sendEvent(String eventType, WritableMap report) {
@@ -72,4 +74,11 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
         }
     };
 
+    AuthTokenCallback getAuthTokenCallback() {
+        return mCallback;
+    }
+
+    void setAuthTokenCallback(AuthTokenCallback authTokenCallback) {
+        mCallback = authTokenCallback;
+    }
 }

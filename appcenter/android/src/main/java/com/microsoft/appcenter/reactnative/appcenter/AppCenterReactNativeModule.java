@@ -111,4 +111,17 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     public void setAuthToken(String authToken) {
         AppCenter.setAuthToken(authToken);
     }
+
+    @ReactMethod
+    public void notifyNativeModuleWithAuthToken(String authToken) {
+        if (mAuthListener != null && mAuthListener.getAuthTokenCallback() != null) {
+            mAuthListener.getAuthTokenCallback().onAuthTokenResult(authToken);
+            mAuthListener.setAuthTokenCallback(null);
+        }
+    }
+
+    @ReactMethod
+    public void setAuthListener() {
+        // do replay
+    }
 }
