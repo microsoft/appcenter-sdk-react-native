@@ -38,11 +38,6 @@ public class AppCenterReactNativeAuthModule extends BaseJavaModule {
         }
     }
 
-    public void setReactApplicationContext(ReactApplicationContext reactContext) {
-        Log.d("Setting react context");
-        mAuthListener.setReactApplicationContext(reactContext);
-    }
-
     @Nonnull
     @Override
     public String getName() {

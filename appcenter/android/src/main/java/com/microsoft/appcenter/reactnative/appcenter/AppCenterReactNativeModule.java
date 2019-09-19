@@ -23,15 +23,15 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     private final Application mApplication;
 
-    private AppCenterReactNativeAuthListener mAuthListener;
+    private AppCenterReactNativeListener mAppCenterListener;
 
     private static final String USE_AUTH_IN_JAVASCRIPT = "use_auth_in_javascript";
 
     public AppCenterReactNativeModule(Application application) {
         boolean useAuthInJavaScript = AppCenterReactNativeShared.getConfiguration().optBoolean(USE_AUTH_IN_JAVASCRIPT);
         if (useAuthInJavaScript) {
-            mAuthListener = new AppCenterReactNativeAuthListener();
-            AppCenter.setAuthTokenListener(mAuthListener);
+            mAppCenterListener = new AppCenterReactNativeListener();
+            AppCenter.setAuthTokenListener(mAppCenterListener);
         }
         mApplication = application;
         AppCenterReactNativeShared.configureAppCenter(application);
@@ -114,14 +114,16 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     @ReactMethod
     public void notifyNativeModuleWithAuthToken(String authToken) {
-        if (mAuthListener != null && mAuthListener.getAuthTokenCallback() != null) {
-            mAuthListener.getAuthTokenCallback().onAuthTokenResult(authToken);
-            mAuthListener.setAuthTokenCallback(null);
+        if (mAppCenterListener != null && mAppCenterListener.getAuthTokenCallback() != null) {
+            mAppCenterListener.getAuthTokenCallback().onAuthTokenResult(authToken);
+            mAppCenterListener.setAuthTokenCallback(null);
         }
     }
 
     @ReactMethod
-    public void setAuthListener() {
-        // do replay
+    public void onSetAuthTokenListenerCompleted() {
+        if (mAppCenterListener != null) {
+            mAppCenterListener.replayPendingEvents();
+        }
     }
 }

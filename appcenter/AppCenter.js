@@ -9,7 +9,7 @@ const PackageJson = require('./package.json');
 
 const logTag = 'AppCenter';
 const eventEmitter = new ReactNative.NativeEventEmitter(AppCenterReactNative);
-const setAuthTokenCompleted = 'AppCenterSetAuthTokenCompleted';
+const onAcquireAuthTokenEvent = 'OnAcquireAuthTokenEvent';
 
 const AppCenter = {
     LogLevel: {
@@ -107,13 +107,13 @@ const AppCenter = {
     },
 
     setAuthTokenListener(listener) {
-        eventEmitter.removeAllListeners(setAuthTokenCompleted);
+        eventEmitter.removeAllListeners(onAcquireAuthTokenEvent);
         if (listener && listener.acquireAuthToken) {
-            eventEmitter.addListener(setAuthTokenCompleted, async () => { 
+            eventEmitter.addListener(onAcquireAuthTokenEvent, async () => { 
                 const authToken = await listener.acquireAuthToken();
                 AppCenterReactNative.notifyNativeModuleWithAuthToken(authToken);
             });
-            AppCenterReactNative.setAuthListener();
+            AppCenterReactNative.onSetAuthTokenListenerCompleted();
         }
     }
 };

@@ -9,21 +9,24 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.microsoft.appcenter.AuthTokenCallback;
 import com.microsoft.appcenter.AuthTokenListener;
+import com.microsoft.appcenter.utils.AppCenterLog;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.microsoft.appcenter.AppCenter.LOG_TAG;
+
 public class AppCenterReactNativeListener implements AuthTokenListener {
 
-    private static final String ON_SET_AUTH_TOKEN_COMPLETED_EVENT = "AppCenterSetAuthTokenCompleted";
+    private static final String ON_ACQUIRE_AUTH_TOKEN_EVENT = "OnAcquireAuthTokenEvent";
 
     private ReactApplicationContext mReactApplicationContext;
 
     private AuthTokenCallback mCallback;
 
-    private List<Map.Entry<String, WritableMap>> mPendingEvents = new ArrayList<>();
+    private List<String> mPendingEvents = new ArrayList<>();
 
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
@@ -32,47 +35,29 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     @Override
     public void acquireAuthToken(AuthTokenCallback callback) {
-        // TODO logging
-        sendEvent(ON_SET_AUTH_TOKEN_COMPLETED_EVENT, null);
+        ReactNativeUtils.logInfo("Auth token acquired.");
+        sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT);
         mCallback = callback;
     }
 
-    private void sendEvent(String eventType, WritableMap report) {
+    private void sendEvent(String eventType) {
         if (mReactApplicationContext != null) {
             if (mReactApplicationContext.hasActiveCatalystInstance()) {
                 mReactApplicationContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(eventType, report);
+                        .emit(eventType, null);
             } else {
-                mPendingEvents.add(new AbstractMap.SimpleEntry<>(eventType, report));
-                mReactApplicationContext.addLifecycleEventListener(lifecycleEventListener);
+                mPendingEvents.add(eventType);
             }
         }
     }
 
-    private void replayPendingEvents() {
-        for (Map.Entry<String, WritableMap> event : mPendingEvents) {
-            sendEvent(event.getKey(), event.getValue());
+    void replayPendingEvents() {
+        for (String event: mPendingEvents) {
+            sendEvent(event);
         }
         mPendingEvents.clear();
     }
-
-    private LifecycleEventListener lifecycleEventListener = new LifecycleEventListener() {
-
-        @Override
-        public void onHostResume() {
-            mReactApplicationContext.removeLifecycleEventListener(lifecycleEventListener);
-            replayPendingEvents();
-        }
-
-        @Override
-        public void onHostPause() {
-        }
-
-        @Override
-        public void onHostDestroy() {
-        }
-    };
 
     AuthTokenCallback getAuthTokenCallback() {
         return mCallback;

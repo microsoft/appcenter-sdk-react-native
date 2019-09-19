@@ -27,7 +27,6 @@ public class AppCenterReactNativeAuthPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        mAuthModule.setReactApplicationContext(reactContext);
         List<NativeModule> modules = new ArrayList<>();
         modules.add(mAuthModule);
         return modules;

@@ -129,10 +129,3 @@ Crashes.setListener({
     console.log('Failed sending crash. onSendingFailed is invoked.');
   }
 });
-
-AppCenter.setAuthTokenListener({
-
-  async acquireAuthToken() {
-    return "abcdefg";
-  }
-});
