@@ -26,7 +26,7 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private AuthTokenCallback mCallback;
 
-    private List<String> mPendingEvents = new ArrayList<>();
+    private boolean authTokenEventSent = false;
 
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
@@ -42,21 +42,21 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private void sendEvent(String eventType) {
         if (mReactApplicationContext != null) {
-            if (mReactApplicationContext.hasActiveCatalystInstance()) {
+            if (mReactApplicationContext.hasActiveCatalystInstance() && !authTokenEventSent) {
                 mReactApplicationContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit(eventType, null);
+                authTokenEventSent = true;
             } else {
-                mPendingEvents.add(eventType);
+                replayPendingEvents();
             }
         }
     }
 
     void replayPendingEvents() {
-        for (String event: mPendingEvents) {
-            sendEvent(event);
+        if (!authTokenEventSent) {
+            sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT);
         }
-        mPendingEvents.clear();
     }
 
     AuthTokenCallback getAuthTokenCallback() {
