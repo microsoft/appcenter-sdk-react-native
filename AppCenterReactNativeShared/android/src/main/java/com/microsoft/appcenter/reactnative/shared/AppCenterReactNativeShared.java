@@ -25,6 +25,8 @@ public class AppCenterReactNativeShared {
 
     private static final String START_AUTOMATICALLY_KEY = "start_automatically";
 
+    private static final String CUSTOM_AUTH_IN_JAVASCRIPT = "custom_auth_in_javascript";
+
     private static Application sApplication;
 
     private static JSONObject sConfiguration;
@@ -44,6 +46,10 @@ public class AppCenterReactNativeShared {
         wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(wrapperSdk);
         readConfigurationFile();
+        boolean useAuthInJavaScript = sConfiguration.optBoolean(CUSTOM_AUTH_IN_JAVASCRIPT);
+        if (useAuthInJavaScript) {
+            AuthTokenContext.getInstance().doNotResetAuthAfterStart();
+        }
         if (!sStartAutomatically) {
             AppCenterLog.debug(LOG_TAG, "Configure not to start automatically.");
             return;
