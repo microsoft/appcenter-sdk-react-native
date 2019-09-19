@@ -6,7 +6,6 @@
 package com.microsoft.appcenter.reactnative.auth;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;

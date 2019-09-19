@@ -38,7 +38,7 @@ export function setUserId(userId: string | null): Promise<void>;
 export function getInstallId(): Promise<string>;
 export function setCustomProperties(properties: CustomProperties);
 export function setAuthToken(authToken: string | null): void;
-export function setAuthTokenListener(listener: AuthTokenListener) : Promise<void>;
+export function setAuthTokenListener(listener: AuthTokenListener) : void;
 
 export interface AuthTokenListener {
     acquireAuthToken?: () => string;
