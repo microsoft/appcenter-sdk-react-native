@@ -47,16 +47,19 @@ public class AppCenterReactNativeShared {
             return;
         }
         sApplication = application;
+        if (sConfiguration == null) {
+            readConfigurationFile(application);
+            if (sConfiguration == null) {
+                return;
+            }
+        }
         WrapperSdk wrapperSdk = new WrapperSdk();
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(wrapperSdk);
-        if (sConfiguration == null) {
-            readConfigurationFile(application);
-            if (sAppSecret == null) {
-                sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
-                sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
-            }
+        if (sAppSecret == null) {
+            sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
+            sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
         }
         String authProvider = sConfiguration.optString(AUTH_PROVIDER);
         String authProviderLowerCase = authProvider.toLowerCase();
@@ -89,6 +92,9 @@ public class AppCenterReactNativeShared {
     }
 
     public static synchronized JSONObject readConfigurationFile(Application application) {
+        if (sConfiguration != null) {
+            return sConfiguration;
+        }
         try {
             AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
             InputStream configStream = application.getAssets().open(APPCENTER_CONFIG_ASSET);
@@ -102,7 +108,7 @@ public class AppCenterReactNativeShared {
             sConfiguration = new JSONObject(jsonContents);
         } catch (Exception e) {
             AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
-            sConfiguration = new JSONObject();
+            sConfiguration = null;
         }
         return sConfiguration;
     }
@@ -113,9 +119,5 @@ public class AppCenterReactNativeShared {
 
     public static synchronized void setStartAutomatically(boolean startAutomatically) {
         sStartAutomatically = startAutomatically;
-    }
-
-    public static synchronized JSONObject getConfiguration() {
-        return sConfiguration;
     }
 }
