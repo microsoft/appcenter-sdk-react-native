@@ -61,17 +61,13 @@ public class AppCenterReactNativeShared {
             sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
             sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
         }
-        String authProvider = sConfiguration.optString(AUTH_PROVIDER);
-        String authProviderLowerCase = authProvider.toLowerCase();
-        if (authProviderLowerCase.equals(AUTH0.toLowerCase())
-                || authProviderLowerCase.equals(FIREBASE.toLowerCase())
-                || authProviderLowerCase.equals(AAD_B2C.toLowerCase())) {
 
-            /*
-             * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
-             * will be started by separate AppCenter.start call. Since App Center Auth is used,
-             * we call doNotResetAuthAfterStart to avoid resetting the auth token.
-             */
+        /*
+         * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+         * will be started by separate AppCenter.start call. If any auth provider is used,
+         * we should call doNotResetAuthAfterStart to avoid resetting the auth token.
+         */
+        if (authProviderExistsInConfigFile()) {
             AuthTokenContext.getInstance().doNotResetAuthAfterStart();
         }
         if (!sStartAutomatically) {
@@ -119,5 +115,12 @@ public class AppCenterReactNativeShared {
 
     public static synchronized void setStartAutomatically(boolean startAutomatically) {
         sStartAutomatically = startAutomatically;
+    }
+
+    private static boolean authProviderExistsInConfigFile() {
+        String authProviderLowerCase = sConfiguration.optString(AUTH_PROVIDER).toLowerCase();
+        return authProviderLowerCase.equals(AUTH0.toLowerCase())
+                || authProviderLowerCase.equals(FIREBASE.toLowerCase())
+                || authProviderLowerCase.equals(AAD_B2C.toLowerCase());
     }
 }
