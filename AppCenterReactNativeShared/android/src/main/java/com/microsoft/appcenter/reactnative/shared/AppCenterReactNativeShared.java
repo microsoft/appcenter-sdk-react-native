@@ -25,7 +25,13 @@ public class AppCenterReactNativeShared {
 
     private static final String START_AUTOMATICALLY_KEY = "start_automatically";
 
-    private static final String CUSTOM_AUTH_IN_JAVASCRIPT = "custom_auth_in_javascript";
+    private static final String AUTH_PROVIDER = "auth_provider";
+
+    private static final String AUTH0 = "Auth0";
+
+    private static final String AAD_B2C = "AADB2C";
+
+    private static final String FIREBASE = "Firebase";
 
     private static Application sApplication;
 
@@ -46,8 +52,17 @@ public class AppCenterReactNativeShared {
         wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(wrapperSdk);
         readConfigurationFile();
-        boolean useAuthInJavaScript = sConfiguration.optBoolean(CUSTOM_AUTH_IN_JAVASCRIPT);
-        if (useAuthInJavaScript) {
+        String authProvider = AppCenterReactNativeShared.getConfiguration().optString(AUTH_PROVIDER);
+        String authProviderLowerCase = authProvider.toLowerCase();
+        if (authProviderLowerCase.equals(AUTH0.toLowerCase())
+                || authProviderLowerCase.equals(FIREBASE.toLowerCase())
+                || authProviderLowerCase.equals(AAD_B2C.toLowerCase())) {
+
+            /*
+             * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+             * will be started by separate AppCenter.start call. Since App Center Auth is used,
+             * we call doNotResetAuthAfterStart to avoid resetting the auth token.
+             */
             AuthTokenContext.getInstance().doNotResetAuthAfterStart();
         }
         if (!sStartAutomatically) {
@@ -64,19 +79,6 @@ public class AppCenterReactNativeShared {
         } else {
             AppCenterLog.debug(LOG_TAG, "Configure with secret.");
             AppCenter.configure(application, sAppSecret);
-        }
-
-        /*
-         * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
-         * will be started by separate AppCenter.start call. If Auth module is used,
-         * call doNotResetAuthAfterStart to avoid resetting the auth token.
-         */
-        try {
-            Class.forName("com.microsoft.appcenter.auth.Auth");
-            AuthTokenContext.getInstance().doNotResetAuthAfterStart();
-        } catch (Exception ignored) {
-
-            /* Nothing to handle; this is reached if Auth SDK isn't used. */
         }
     }
 
@@ -111,6 +113,9 @@ public class AppCenterReactNativeShared {
     }
 
     public static synchronized JSONObject getConfiguration() {
+        if (sConfiguration == null) {
+            readConfigurationFile();
+        }
         return sConfiguration;
     }
 }
