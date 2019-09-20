@@ -23,7 +23,18 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     private final Application mApplication;
 
+    private static final String AUTH_PROVIDER = "auth_provider";
+
+    private static final String AUTH0 = "Auth0";
+
+    private static final String FIREBASE = "Firebase";
+
     public AppCenterReactNativeModule(Application application) {
+        String authProvider = AppCenterReactNativeShared.getConfiguration().optString(AUTH_PROVIDER);
+        String authProviderLowerCase = authProvider.toLowerCase();
+        if (authProviderLowerCase.equals(AUTH0.toLowerCase()) || authProviderLowerCase.equals(FIREBASE.toLowerCase())) {
+            // TODO: AppCenter.setAuthTokenListener(mAppCenterListener)
+        }
         mApplication = application;
         AppCenterReactNativeShared.configureAppCenter(application);
     }
