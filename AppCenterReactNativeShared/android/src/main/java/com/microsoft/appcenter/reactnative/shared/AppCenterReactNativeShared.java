@@ -51,8 +51,14 @@ public class AppCenterReactNativeShared {
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(wrapperSdk);
-        readConfigurationFile();
-        String authProvider = AppCenterReactNativeShared.getConfiguration().optString(AUTH_PROVIDER);
+        if (sConfiguration == null) {
+            readConfigurationFile(application);
+            if (sAppSecret == null) {
+                sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
+                sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
+            }
+        }
+        String authProvider = sConfiguration.optString(AUTH_PROVIDER);
         String authProviderLowerCase = authProvider.toLowerCase();
         if (authProviderLowerCase.equals(AUTH0.toLowerCase())
                 || authProviderLowerCase.equals(FIREBASE.toLowerCase())
@@ -82,10 +88,10 @@ public class AppCenterReactNativeShared {
         }
     }
 
-    private static void readConfigurationFile() {
+    public static synchronized JSONObject readConfigurationFile(Application application) {
         try {
             AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
-            InputStream configStream = sApplication.getAssets().open(APPCENTER_CONFIG_ASSET);
+            InputStream configStream = application.getAssets().open(APPCENTER_CONFIG_ASSET);
             int size = configStream.available();
             byte[] buffer = new byte[size];
 
@@ -94,14 +100,11 @@ public class AppCenterReactNativeShared {
             configStream.close();
             String jsonContents = new String(buffer, "UTF-8");
             sConfiguration = new JSONObject(jsonContents);
-            if (sAppSecret == null) {
-                sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
-                sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
-            }
         } catch (Exception e) {
             AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
             sConfiguration = new JSONObject();
         }
+        return sConfiguration;
     }
 
     public static synchronized void setAppSecret(String secret) {
@@ -113,9 +116,6 @@ public class AppCenterReactNativeShared {
     }
 
     public static synchronized JSONObject getConfiguration() {
-        if (sConfiguration == null) {
-            readConfigurationFile();
-        }
         return sConfiguration;
     }
 }
