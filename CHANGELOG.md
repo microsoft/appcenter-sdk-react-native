@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.5.0 (Under active development)
+
+### App Center Auth
+
+#### Android
+
+* **[Android Breaking Change]** App Center Android Auth now requires a new config `auth_provider` in **appcenter-config.json** file. Valid auth provider values are `AADB2C`, `FireBase` and `Auth0`. For more information of setting up Auth, please follow [App Center Auth documentation](https://docs.microsoft.com/en-us/appcenter/sdk/auth/react-native).
+
 ## Version 2.4.0 (Under active development)
 
 ### App Center
