@@ -23,6 +23,8 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
 
     private final Application mApplication;
 
+    private AppCenterReactNativeListener mAppCenterListener;
+
     private static final String AUTH_PROVIDER = "auth_provider";
 
     private static final String AUTH0 = "Auth0";
@@ -33,7 +35,8 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
         String authProvider = AppCenterReactNativeShared.readConfigurationFile(application).optString(AUTH_PROVIDER);
         String authProviderLowerCase = authProvider.toLowerCase();
         if (authProviderLowerCase.equals(AUTH0.toLowerCase()) || authProviderLowerCase.equals(FIREBASE.toLowerCase())) {
-            // TODO: AppCenter.setAuthTokenListener(mAppCenterListener)
+            mAppCenterListener = new AppCenterReactNativeListener();
+            AppCenter.setAuthTokenListener(mAppCenterListener);
         }
         mApplication = application;
         AppCenterReactNativeShared.configureAppCenter(application);
@@ -107,5 +110,25 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     @ReactMethod
     public void setCustomProperties(ReadableMap properties) {
         AppCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
+    }
+
+    @ReactMethod
+    public void setAuthToken(String authToken) {
+        AppCenter.setAuthToken(authToken);
+    }
+
+    @ReactMethod
+    public void notifyNativeModuleWithAuthToken(String authToken) {
+        if (mAppCenterListener != null && mAppCenterListener.getAuthTokenCallback() != null) {
+            mAppCenterListener.getAuthTokenCallback().onAuthTokenResult(authToken);
+            mAppCenterListener.setAuthTokenCallback(null);
+        }
+    }
+
+    @ReactMethod
+    public void onSetAuthTokenListenerCompleted() {
+        if (mAppCenterListener != null) {
+            mAppCenterListener.replayPendingEvents();
+        }
     }
 }
