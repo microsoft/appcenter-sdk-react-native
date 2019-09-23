@@ -10,7 +10,7 @@
 
 #### Android
 
-* **[Breaking change]** We Updated Google Play Services and Firebase to v71 versions in Push module which forces applications to use Android 9.0 Mono frameworks.
+* **[Breaking change]** Update Google Play Services' and Firebase's versions to v71 in Push module which forces applications to use Android 9.0 Mono frameworks.
 
 ### App Center Crashes
 
