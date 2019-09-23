@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.4.0-preview
+## Version 2.4.0-preview (Under development)
 
 ### App Center
 
