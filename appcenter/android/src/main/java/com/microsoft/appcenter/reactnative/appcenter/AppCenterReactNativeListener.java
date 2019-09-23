@@ -3,20 +3,10 @@
 
 package com.microsoft.appcenter.reactnative.appcenter;
 
-import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.microsoft.appcenter.AuthTokenCallback;
 import com.microsoft.appcenter.AuthTokenListener;
-import com.microsoft.appcenter.utils.AppCenterLog;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static com.microsoft.appcenter.AppCenter.LOG_TAG;
 
 public class AppCenterReactNativeListener implements AuthTokenListener {
 
@@ -26,7 +16,9 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private AuthTokenCallback mCallback;
 
-    private boolean authTokenEventSent = false;
+    private boolean mAuthTokenEventSent = false;
+
+    private boolean mHasPendingEvent = false;
 
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
@@ -42,19 +34,20 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private void sendEvent(String eventType) {
         if (mReactApplicationContext != null) {
-            if (mReactApplicationContext.hasActiveCatalystInstance() && !authTokenEventSent) {
+            if (mHasPendingEvent) {
                 mReactApplicationContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit(eventType, null);
-                authTokenEventSent = true;
+                mAuthTokenEventSent = true;
             } else {
-                replayPendingEvents();
+                mHasPendingEvent = true;
             }
         }
     }
 
+    // Replay method is only called when JavaScript SetAuthTokenListener is registered.
     void replayPendingEvents() {
-        if (!authTokenEventSent) {
+        if (!mAuthTokenEventSent) {
             sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT);
         }
     }
