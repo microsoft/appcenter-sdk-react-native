@@ -49,9 +49,6 @@ public class AppCenterReactNativeShared {
         sApplication = application;
         if (sConfiguration == null) {
             readConfigurationFile(application);
-            if (sConfiguration == null) {
-                return;
-            }
         }
         WrapperSdk wrapperSdk = new WrapperSdk();
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
@@ -104,7 +101,7 @@ public class AppCenterReactNativeShared {
             sConfiguration = new JSONObject(jsonContents);
         } catch (Exception e) {
             AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
-            sConfiguration = null;
+            sConfiguration = new JSONObject();
         }
         return sConfiguration;
     }
