@@ -1,12 +1,18 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.4.0-preview
+## Version 2.4.0-preview (Under development)
 
 ### App Center
 
 #### WPF/WinForms
 
 * **[Fix]** Fix application version being reported for ClickOnce deployments.
+
+### App Center Push
+
+#### Android
+
+* **[Breaking change]** Update Google Play Services' and Firebase's versions to v71 in Push module which forces applications to use Android 9.0 Mono frameworks in build options. This has no impact on minimum Android SDK version which remains API level 16.
 
 ### App Center Crashes
 

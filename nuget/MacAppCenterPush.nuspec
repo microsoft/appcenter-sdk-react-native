@@ -20,7 +20,7 @@
       </group>
       <group targetFramework="MonoAndroid403">
         <dependency id="Microsoft.AppCenter" version="$version$" />
-        <dependency id="Xamarin.Firebase.Messaging" version="60.1142.1" />
+        <dependency id="Xamarin.Firebase.Messaging" version="71.1740.0" />
 
         <!-- 
           We get conflicts between Forms and Messaging if we don't resolve those packages explicitly.
