@@ -41,5 +41,5 @@ export function setAuthToken(authToken: string | null): void;
 export function setAuthTokenListener(listener: AuthTokenListener) : void;
 
 export interface AuthTokenListener {
-    acquireAuthToken: () => Promise<string | null>;
+    acquireAuthToken: () => Promise<string | null> | string | null;
 }
