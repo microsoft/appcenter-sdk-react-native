@@ -32,6 +32,8 @@ public class AppCenterReactNativeShared {
 
     private static final String AAD_B2C = "AADB2C";
 
+    private static final String AAD = "AAD";
+
     private static final String FIREBASE = "Firebase";
 
     private static Application sApplication;
@@ -123,7 +125,8 @@ public class AppCenterReactNativeShared {
         String authProviderLowerCase = authProvider.toLowerCase();
         boolean authProviderIsValid = authProviderLowerCase.equals(AUTH0.toLowerCase())
                 || authProviderLowerCase.equals(FIREBASE.toLowerCase())
-                || authProviderLowerCase.equals(AAD_B2C.toLowerCase());
+                || authProviderLowerCase.equals(AAD_B2C.toLowerCase())
+                || authProviderLowerCase.equals(AAD.toLowerCase());
         if (authProviderIsValid) {
             AppCenterLog.debug(LOG_TAG, AUTH_PROVIDER + ": " + authProvider + " found in appcenter-config.json.");
         } else {
