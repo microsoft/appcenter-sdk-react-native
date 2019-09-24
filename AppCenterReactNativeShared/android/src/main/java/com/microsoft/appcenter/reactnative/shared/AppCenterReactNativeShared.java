@@ -4,6 +4,7 @@
 package com.microsoft.appcenter.reactnative.shared;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.microsoft.appcenter.AppCenter;
@@ -25,6 +26,14 @@ public class AppCenterReactNativeShared {
 
     private static final String START_AUTOMATICALLY_KEY = "start_automatically";
 
+    private static final String AUTH_PROVIDER = "auth_provider";
+
+    private static final String AUTH0 = "Auth0";
+
+    private static final String AAD_B2C = "AADB2C";
+
+    private static final String FIREBASE = "Firebase";
+
     private static Application sApplication;
 
     private static JSONObject sConfiguration;
@@ -39,11 +48,26 @@ public class AppCenterReactNativeShared {
             return;
         }
         sApplication = application;
+        if (sConfiguration == null) {
+            readConfigurationFile(application.getApplicationContext());
+        }
         WrapperSdk wrapperSdk = new WrapperSdk();
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(wrapperSdk);
-        readConfigurationFile();
+        if (sAppSecret == null) {
+            sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
+            sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
+        }
+
+        /*
+         * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
+         * will be started by separate AppCenter.start call. If any auth provider is used,
+         * we should call doNotResetAuthAfterStart to avoid resetting the auth token.
+         */
+        if (validAuthProviderInConfigFile()) {
+            AuthTokenContext.getInstance().doNotResetAuthAfterStart();
+        }
         if (!sStartAutomatically) {
             AppCenterLog.debug(LOG_TAG, "Configure not to start automatically.");
             return;
@@ -59,25 +83,15 @@ public class AppCenterReactNativeShared {
             AppCenterLog.debug(LOG_TAG, "Configure with secret.");
             AppCenter.configure(application, sAppSecret);
         }
-
-        /*
-         * When sStartAutomatically flag is set to true, every service (analytics/auth/crashes/etc.)
-         * will be started by separate AppCenter.start call. If Auth module is used,
-         * call doNotResetAuthAfterStart to avoid resetting the auth token.
-         */
-        try {
-            Class.forName("com.microsoft.appcenter.auth.Auth");
-            AuthTokenContext.getInstance().doNotResetAuthAfterStart();
-        } catch (Exception ignored) {
-
-            /* Nothing to handle; this is reached if Auth SDK isn't used. */
-        }
     }
 
-    private static void readConfigurationFile() {
+    public static synchronized JSONObject readConfigurationFile(Context context) {
+        if (sConfiguration != null) {
+            return sConfiguration;
+        }
         try {
             AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
-            InputStream configStream = sApplication.getAssets().open(APPCENTER_CONFIG_ASSET);
+            InputStream configStream = context.getAssets().open(APPCENTER_CONFIG_ASSET);
             int size = configStream.available();
             byte[] buffer = new byte[size];
 
@@ -86,14 +100,11 @@ public class AppCenterReactNativeShared {
             configStream.close();
             String jsonContents = new String(buffer, "UTF-8");
             sConfiguration = new JSONObject(jsonContents);
-            if (sAppSecret == null) {
-                sAppSecret = sConfiguration.optString(APP_SECRET_KEY);
-                sStartAutomatically = sConfiguration.optBoolean(START_AUTOMATICALLY_KEY, true);
-            }
         } catch (Exception e) {
-            AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
+            AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json.", e);
             sConfiguration = new JSONObject();
         }
+        return sConfiguration;
     }
 
     public static synchronized void setAppSecret(String secret) {
@@ -104,7 +115,20 @@ public class AppCenterReactNativeShared {
         sStartAutomatically = startAutomatically;
     }
 
-    public static synchronized JSONObject getConfiguration() {
-        return sConfiguration;
+    private static boolean validAuthProviderInConfigFile() {
+        String authProvider = sConfiguration.optString(AUTH_PROVIDER);
+        if (authProvider.length() == 0) {
+            return false;
+        }
+        String authProviderLowerCase = authProvider.toLowerCase();
+        boolean authProviderIsValid = authProviderLowerCase.equals(AUTH0.toLowerCase())
+                || authProviderLowerCase.equals(FIREBASE.toLowerCase())
+                || authProviderLowerCase.equals(AAD_B2C.toLowerCase());
+        if (authProviderIsValid) {
+            AppCenterLog.debug(LOG_TAG, AUTH_PROVIDER + ": " + authProvider + " found in appcenter-config.json.");
+        } else {
+            AppCenterLog.error(LOG_TAG, "Invalid " + AUTH_PROVIDER + ": " + authProvider + " in appcenter-config.json.");
+        }
+        return authProviderIsValid;
     }
 }

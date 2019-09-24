@@ -35,6 +35,6 @@ dependencies {
         api "com.android.support:support-v4:${supportLibVersion}"
     }
 
-    //api project(':AppCenterReactNativeShared')   // For testing with TestApp
-    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.3.0'
+    api project(':AppCenterReactNativeShared')   // For testing with TestApp
+    //api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.3.0'
 }
