@@ -35,7 +35,7 @@ public class AppCenterReactNativePushModule extends BaseJavaModule {
         AppCenterReactNativeShared.configureAppCenter(application);
         if (AppCenter.isConfigured()) {
             boolean startPush = true;
-            boolean enablePushInJavascript = AppCenterReactNativeShared.readConfigurationFile(application).optBoolean(ENABLE_PUSH_IN_JAVASCRIPT);
+            boolean enablePushInJavascript = AppCenterReactNativeShared.readConfigurationFile(application.getApplicationContext()).optBoolean(ENABLE_PUSH_IN_JAVASCRIPT);
             if (enablePushInJavascript) {
 
                 /*

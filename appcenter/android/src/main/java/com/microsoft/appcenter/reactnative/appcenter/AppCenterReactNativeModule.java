@@ -32,7 +32,7 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     private static final String FIREBASE = "Firebase";
 
     public AppCenterReactNativeModule(Application application) {
-        String authProvider = AppCenterReactNativeShared.readConfigurationFile(application).optString(AUTH_PROVIDER);
+        String authProvider = AppCenterReactNativeShared.readConfigurationFile(application.getApplicationContext()).optString(AUTH_PROVIDER);
         String authProviderLowerCase = authProvider.toLowerCase();
         if (authProviderLowerCase.equals(AUTH0.toLowerCase()) || authProviderLowerCase.equals(FIREBASE.toLowerCase())) {
             mAppCenterListener = new AppCenterReactNativeListener();

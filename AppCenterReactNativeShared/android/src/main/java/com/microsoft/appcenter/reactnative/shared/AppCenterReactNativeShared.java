@@ -4,6 +4,7 @@
 package com.microsoft.appcenter.reactnative.shared;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.microsoft.appcenter.AppCenter;
@@ -48,7 +49,7 @@ public class AppCenterReactNativeShared {
         }
         sApplication = application;
         if (sConfiguration == null) {
-            readConfigurationFile(application);
+            readConfigurationFile(application.getApplicationContext());
         }
         WrapperSdk wrapperSdk = new WrapperSdk();
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
@@ -64,7 +65,7 @@ public class AppCenterReactNativeShared {
          * will be started by separate AppCenter.start call. If any auth provider is used,
          * we should call doNotResetAuthAfterStart to avoid resetting the auth token.
          */
-        if (authProviderExistsInConfigFile()) {
+        if (validAuthProviderInConfigFile()) {
             AuthTokenContext.getInstance().doNotResetAuthAfterStart();
         }
         if (!sStartAutomatically) {
@@ -84,13 +85,13 @@ public class AppCenterReactNativeShared {
         }
     }
 
-    public static synchronized JSONObject readConfigurationFile(Application application) {
+    public static synchronized JSONObject readConfigurationFile(Context context) {
         if (sConfiguration != null) {
             return sConfiguration;
         }
         try {
             AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
-            InputStream configStream = application.getAssets().open(APPCENTER_CONFIG_ASSET);
+            InputStream configStream = context.getAssets().open(APPCENTER_CONFIG_ASSET);
             int size = configStream.available();
             byte[] buffer = new byte[size];
 
@@ -100,7 +101,7 @@ public class AppCenterReactNativeShared {
             String jsonContents = new String(buffer, "UTF-8");
             sConfiguration = new JSONObject(jsonContents);
         } catch (Exception e) {
-            AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json", e);
+            AppCenterLog.error(LOG_TAG, "Failed to parse appcenter-config.json.", e);
             sConfiguration = new JSONObject();
         }
         return sConfiguration;
@@ -114,10 +115,20 @@ public class AppCenterReactNativeShared {
         sStartAutomatically = startAutomatically;
     }
 
-    private static boolean authProviderExistsInConfigFile() {
-        String authProviderLowerCase = sConfiguration.optString(AUTH_PROVIDER).toLowerCase();
-        return authProviderLowerCase.equals(AUTH0.toLowerCase())
+    private static boolean validAuthProviderInConfigFile() {
+        String authProvider = sConfiguration.optString(AUTH_PROVIDER);
+        if (authProvider.length() == 0) {
+            return false;
+        }
+        String authProviderLowerCase = authProvider.toLowerCase();
+        boolean authProviderIsValid = authProviderLowerCase.equals(AUTH0.toLowerCase())
                 || authProviderLowerCase.equals(FIREBASE.toLowerCase())
                 || authProviderLowerCase.equals(AAD_B2C.toLowerCase());
+        if (authProviderIsValid) {
+            AppCenterLog.debug(LOG_TAG, AUTH_PROVIDER + ": " + authProvider + " found in appcenter-config.json.");
+        } else {
+            AppCenterLog.error(LOG_TAG, "Invalid " + AUTH_PROVIDER + ": " + authProvider + " in appcenter-config.json.");
+        }
+        return authProviderIsValid;
     }
 }
