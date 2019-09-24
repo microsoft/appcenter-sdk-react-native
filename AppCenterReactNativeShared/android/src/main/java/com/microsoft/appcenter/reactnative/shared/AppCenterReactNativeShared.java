@@ -4,6 +4,7 @@
 package com.microsoft.appcenter.reactnative.shared;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.microsoft.appcenter.AppCenter;
@@ -48,7 +49,7 @@ public class AppCenterReactNativeShared {
         }
         sApplication = application;
         if (sConfiguration == null) {
-            readConfigurationFile(application);
+            readConfigurationFile(application.getApplicationContext());
         }
         WrapperSdk wrapperSdk = new WrapperSdk();
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
@@ -84,13 +85,14 @@ public class AppCenterReactNativeShared {
         }
     }
 
-    public static synchronized JSONObject readConfigurationFile(Application application) {
+    public static synchronized JSONObject readConfigurationFile(Context context) {
         if (sConfiguration != null) {
             return sConfiguration;
         }
         try {
             AppCenterLog.debug(LOG_TAG, "Reading " + APPCENTER_CONFIG_ASSET);
-            InputStream configStream = application.getAssets().open(APPCENTER_CONFIG_ASSET);
+
+            InputStream configStream = context.getAssets().open(APPCENTER_CONFIG_ASSET);
             int size = configStream.available();
             byte[] buffer = new byte[size];
 
