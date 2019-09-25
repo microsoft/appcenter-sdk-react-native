@@ -1,12 +1,5 @@
-[   
-    {
-        "app_secret": "32fcfc69-d576-41dc-8d49-4be159e3d7b2",
-        "auth_provider": "AADB2C",
-        "enable_push_in_javascript": true
-    },
-    {
-        "app_secret": "f0ac54aa-6e53-4018-98f6-37d60ff7649a",
-        "auth_provider": "AAD",
-        "enable_push_in_javascript": true
-    }
-]
+{
+    "app_secret": "32fcfc69-d576-41dc-8d49-4be159e3d7b2",
+    "auth_provider": "AADB2C",
+    "enable_push_in_javascript": true
+}
