@@ -86,12 +86,12 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.3.0-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.3.0-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.3.0-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="2.3.0-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.3.0-preview" />
-    <PackageReference Include="Microsoft.AppCenter.Data" Version="2.3.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.4.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.4.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.4.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Push" Version="2.4.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.4.0-preview" />
+    <PackageReference Include="Microsoft.AppCenter.Data" Version="2.4.0-preview" />
     <PackageReference Include="Xamarin.Forms" Version="4.1.0.673156" />
   </ItemGroup>
   <ItemGroup>
