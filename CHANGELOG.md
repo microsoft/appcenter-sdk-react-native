@@ -16,10 +16,6 @@
 * **[Fix]** Fix interactive sign in on iOS 13. Temporary fix, will be revisited in the future.
 * **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
 
-#### Android
-
-* **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
-
 ### App Center Analytics
 
 * **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
