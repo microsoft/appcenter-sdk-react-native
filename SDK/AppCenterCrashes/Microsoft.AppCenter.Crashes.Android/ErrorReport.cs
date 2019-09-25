@@ -31,7 +31,7 @@ namespace Microsoft.AppCenter.Crashes
             byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
             if (exceptionBytes != null)
             {
-                Exception = CrashesUtils.DeserializeException(exceptionBytes);
+                StackTrace = CrashesUtils.DeserializeException(exceptionBytes);
             }
         }
     }

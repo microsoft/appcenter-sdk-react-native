@@ -1,12 +1,48 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.4.0-preview
+
+### App Center
+
+#### WPF/WinForms
+
+* **[Fix]** Fix application version being reported for ClickOnce deployments.
+
+### App Center Auth
+
+#### iOS
+
+* **[Fix]** Redirect URIs are now hidden in logs.
+* **[Fix]** Fix interactive sign in on iOS 13. Temporary fix, will be revisited in the future.
+* **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
+
+### App Center Push
+
+#### Android
+
+* **[Breaking change]** Update Google Play Services' and Firebase's versions to v71 in Push module which forces applications to use Android 9.0 Mono frameworks in build options. This has no impact on minimum Android SDK version which remains API level 16.
+
+### App Center Crashes
+
+* **[Breaking change]** Remove insecure implementation of the raw `ErrorReport.Exception` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin, UWP, WPF and WinForms.
+
+#### WinForms
+
+* **[Fix]** Don't prevent WinForms applications from crashing. If unhandled exceptions are handled by the application, they must now be reported using `Crashes.TrackError` to be displayed on AppCenter, see the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/crashes/wpf-winforms) for more details about this change.
+
 ## Version 2.3.0-preview
 
 This preview version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
 
 This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
-## App Center
+### App Center
 
 #### WPF/WinForms
 

@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace Microsoft.AppCenter.Crashes
 {
@@ -11,38 +10,14 @@ namespace Microsoft.AppCenter.Crashes
     {
         internal static byte[] SerializeException(Exception exception)
         {
-            if (!exception.GetType().IsSerializable)
-            {
-                AppCenterLog.Warn(Crashes.LogTag, $"Cannot serialize {exception.GetType().FullName} exception for client side inspection. " +
-                                  "If you want to have access to the exception in the callbacks, please add a Serializable attribute " +
-                                  "and a deserialization constructor to the exception class.");
-                return null;
-            }
-            try
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(memoryStream, exception);
-                    return memoryStream.ToArray();
-                }
-            }
-            catch (Exception e)
-            {
-                AppCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection.", e);
-            }
-            return null;
+            return Encoding.UTF8.GetBytes(exception.ToString());
         }
 
-        internal static Exception DeserializeException(byte[] exceptionBytes)
+        internal static string DeserializeException(byte[] exceptionBytes)
         {
             try
             {
-                using (var memoryStream = new MemoryStream(exceptionBytes))
-                {
-                    var formatter = new BinaryFormatter();
-                    return formatter.Deserialize(memoryStream) as Exception;
-                }
+                return Encoding.UTF8.GetString(exceptionBytes);
             }
             catch (Exception e)
             {

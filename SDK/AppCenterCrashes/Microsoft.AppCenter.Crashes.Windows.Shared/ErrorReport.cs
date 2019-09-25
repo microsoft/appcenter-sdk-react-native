@@ -15,14 +15,14 @@ namespace Microsoft.AppCenter.Crashes
         /// Creates a new error report.
         /// </summary>
         /// <param name="log">The managed error log.</param>
-        /// <param name="exception">The associated exception object.</param>
-        public ErrorReport(ManagedErrorLog log, System.Exception exception)
+        /// <param name="stackTrace">The associated exception stack trace.</param>
+        public ErrorReport(ManagedErrorLog log, string stackTrace)
         {
             Id = log.Id.ToString();
             AppStartTime = new DateTimeOffset(log.AppLaunchTimestamp.Value);
             AppErrorTime = new DateTimeOffset(log.Timestamp.Value);
             Device = new Device(log.Device);
-            Exception = exception;
+            StackTrace = stackTrace;
         }
     }
 }

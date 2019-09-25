@@ -53,6 +53,11 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         [Export("setTokenExchangeUrl:")]
         void SetTokenExchangeUrl(string tokenExchangeUrl);
 
+        // + (void)setRemoteOperationDelegate:(nullable id<MSRemoteOperationDelegate>)delegate;
+        [Static]
+        [Export("setRemoteOperationDelegate:")]
+        void SetRemoteOperationDelegate([NullAllowed] MSRemoteOperationDelegate _delegate);
+
         // + (void)readDocumentWithID:(NSString *)documentID
         //               documentType:(Class)documentType
         //                  partition:(NSString *)partition
@@ -141,6 +146,23 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
         bool FromDeviceCache { get; set; }
     }
 
+    // @interface MSDocumentMetadata : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSDocumentMetadata
+    {
+        // @property(nonatomic, strong, readonly) NSString *partition;
+        [Export("partition")]
+        string Partition { get; }
+
+        // @property(nonatomic, strong, readonly) NSString *documentId;
+        [Export("documentId")]
+        string DocumentId { get; }
+
+        // @property(nonatomic, strong, readonly) NSString *eTag;
+        [Export("eTag")]
+        string ETag { get; }
+    }
+
     // @interface MSPaginatedDocuments : NSObject
     [BaseType(typeof(NSObject))]
     interface MSPaginatedDocuments
@@ -199,6 +221,19 @@ namespace Microsoft.AppCenter.Data.iOS.Bindings
     [BaseType(typeof(MSBaseOptions))]
     interface MSWriteOptions : MSBaseOptions
     {
+    }
+
+    // @protocol MSRemoteOperationDelegate <NSObject>
+    [Protocol, Model]
+    [BaseType(typeof(NSObject))]
+    interface MSRemoteOperationDelegate
+    {
+        // @optional - (void)data:(MSData *)data
+        //               didCompleteRemoteOperation:(NSString*) operation
+        //                      forDocumentMetadata:(MSDocumentMetadata* _Nullable) documentMetadata
+        //                                withError:(MSDataError* _Nullable) error;
+        [Export("data:didCompleteRemoteOperation:forDocumentMetadata:withError:")]
+        void DataDidCompleteRemoteOperation(MSData data, string operation, MSDocumentMetadata documentMetadata, MSDataError error);
     }
 
     // typedef void (^MSDocumentWrapperCompletionHandler)(MSDocumentWrapper *document);

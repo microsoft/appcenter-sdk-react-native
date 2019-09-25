@@ -16,7 +16,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
-    public partial class ErrorLogHelper
+    public class ErrorLogHelper
     {
         /// <summary>
         /// Error log file extension for the JSON schema.
@@ -130,10 +130,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
         /// Reads an exception on disk.
         /// </summary>
         /// <param name="file">The exception file.</param>
-        /// <returns>The exception instance.</returns>
-        public static System.Exception ReadExceptionFile(File file)
+        /// <returns>The exception stack trace.</returns>
+        public static string ReadExceptionFile(File file)
         {
-            // The instance method is implemented in the other parts of the partial class in platform-specific projects.
             return Instance.InstanceReadExceptionFile(file);
         }
 
@@ -227,6 +226,24 @@ namespace Microsoft.AppCenter.Crashes.Utils
         }
 
         /// <summary>
+        /// Reads an exception file from the given file.
+        /// </summary>
+        /// <param name="file">The file that contains exception.</param>
+        /// <returns>An exception stack trace or null if the file cannot be read.</returns>
+        public virtual string InstanceReadExceptionFile(File file)
+        {
+            try
+            {
+                return file.ReadAllText();
+            }
+            catch (System.Exception e)
+            {
+                AppCenterLog.Error(Crashes.LogTag, $"Encountered an unexpected error while reading stack trace file: {file.Name}", e);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Saves an error log and an exception on disk.
         /// Get the error storage directory, or creates it if it does not exist.
         /// </summary>
@@ -254,9 +271,17 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 directory.CreateFile(errorLogFileName, errorLogString);
                 AppCenterLog.Debug(Crashes.LogTag, $"Saved error log in directory {ErrorStorageDirectoryName} with name {errorLogFileName}.");
 
-                // Serialize binary exception.
-                var exceptionFileName = errorLog.Id + ExceptionFileExtension;
-                SaveExceptionFile(directory, exceptionFileName, exception);
+                try
+                {
+                    // Serialize exception as raw stack trace.
+                    var exceptionFileName = errorLog.Id + ExceptionFileExtension;
+                    directory.CreateFile(exceptionFileName, exception.ToString());
+                    AppCenterLog.Debug(Crashes.LogTag, $"Saved exception in directory {ErrorStorageDirectoryName} with name {exceptionFileName}.");
+                }
+                catch (System.Exception ex)
+                {
+                    AppCenterLog.Warn(Crashes.LogTag, "Failed to serialize exception for client side inspection.", ex);
+                }
             }
             catch (System.Exception ex)
             {
