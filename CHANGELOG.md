@@ -18,6 +18,8 @@
 
 ### App Center Analytics
 
+#### iOS
+
 * **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
 
 ### App Center Push
