@@ -27,6 +27,9 @@ const SecretStrings = {
   }
 };
 
+SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
+SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
+
 const AADSecretStrings = {
   ios: {
     appSecret: '5ee746f1-4731-4df9-8602-9bc505edb2c3',
@@ -35,9 +38,6 @@ const AADSecretStrings = {
     appSecret: 'f0ac54aa-6e53-4018-98f6-37d60ff7649a',
   }
 };
-
-SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
-SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
 
 const STARTUP_MODE = 'STARTUP_MODE';
 
