@@ -11,6 +11,7 @@ jest.mock('NativeModules', () => ({
     setEnabled: jest.fn(),
     setCustomProperties: jest.fn(),
     getSdkVersion: jest.fn(),
-    setAuthTokenListener: jest.fn()
+    setAuthTokenListener: jest.fn(),
+    setAuthToken: jest.fn()
   }
 }));
