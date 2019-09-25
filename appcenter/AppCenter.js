@@ -115,6 +115,10 @@ const AppCenter = {
             });
             AppCenterReactNative.onSetAuthTokenListenerCompleted();
         }
+    },
+
+    setAuthToken(authToken) {
+        return AppCenterReactNative.setAuthToken(authToken);
     }
 };
 

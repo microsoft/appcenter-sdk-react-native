@@ -24,6 +24,7 @@ public class AppCenterReactNativePackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+        this.module.setReactApplicationContext(reactContext);
         List<NativeModule> modules = new ArrayList<>();
         modules.add(this.module);
         return modules;

@@ -7,6 +7,7 @@ import android.app.Application;
 
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.microsoft.appcenter.AppCenter;
@@ -42,6 +43,10 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
         AppCenterReactNativeShared.configureAppCenter(application);
     }
 
+    public void setReactApplicationContext(ReactApplicationContext reactContext) {
+        mAppCenterListener.setReactApplicationContext(reactContext);
+    }
+    
     @Override
     public String getName() {
         return "AppCenterReactNative";
