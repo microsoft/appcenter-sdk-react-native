@@ -1,12 +1,26 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.4.0-preview (Under development)
+## Version 2.4.0-preview
 
 ### App Center
 
 #### WPF/WinForms
 
 * **[Fix]** Fix application version being reported for ClickOnce deployments.
+
+### App Center Auth
+
+#### iOS
+
+* **[Fix]** Redirect URIs are now hidden in logs.
+* **[Fix]** Fix interactive sign in on iOS 13. Temporary fix, will be revisited in the future.
+* **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
 
 ### App Center Push
 
