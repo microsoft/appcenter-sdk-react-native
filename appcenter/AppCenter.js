@@ -109,7 +109,7 @@ const AppCenter = {
     setAuthTokenListener(listener) {
         eventEmitter.removeAllListeners(onAcquireAuthTokenEvent);
         if (listener) {
-            if (listener.acquireAuthToken) {
+            if (typeof(listener.acquireAuthToken) === "function") {
                 eventEmitter.addListener(onAcquireAuthTokenEvent, async () => {
                     const authToken = await listener.acquireAuthToken();
                     AppCenterReactNative.notifyNativeModuleWithAuthToken(authToken);
