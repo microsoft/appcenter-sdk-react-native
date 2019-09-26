@@ -2,7 +2,7 @@
 <ContentPage Title="Others" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.OthersContentPage">
     <TableView Intent="Form">
         <TableSection Title="Distribute">
-            <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled" OnColor="{StaticResource SwitchCellOnColor}"  />
+            <SwitchCell Text="Distribute Enabled" On="true" x:Name="DistributeEnabledSwitchCell" OnChanged="UpdateDistributeEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
         <TableSection Title="Push">
             <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
@@ -11,7 +11,7 @@
             <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
         <TableSection Title="EventFilter">
-            <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
+            <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
         <TableSection Title="MBaaS">
             <ViewCell Tapped="RunMBaaSAsync">

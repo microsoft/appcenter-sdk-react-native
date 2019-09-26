@@ -4,12 +4,12 @@
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AspNetCore.StaticFiles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Contoso.WPF.Demo.DotNetCore
 {
@@ -76,7 +76,7 @@ namespace Contoso.WPF.Demo.DotNetCore
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
             {
-                Log("Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
+                Log("Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
             });
         }
 
