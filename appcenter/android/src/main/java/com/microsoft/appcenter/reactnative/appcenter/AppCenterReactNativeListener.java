@@ -16,9 +16,9 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     private AuthTokenCallback mCallback;
 
-    private boolean mAuthTokenEventSent = false;
+    private boolean mAuthTokenEventListenerSet;
 
-    private boolean mHasPendingEvent = false;
+    private boolean mHasPendingEvent;
 
     @SuppressWarnings("WeakerAccess")
     public final void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
@@ -27,29 +27,24 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
 
     @Override
     public void acquireAuthToken(AuthTokenCallback callback) {
-        ReactNativeUtils.logInfo("Auth token requested from native code.");
-        sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT);
+        ReactNativeUtils.logDebug("Auth token requested from native code.");
+        mHasPendingEvent = true;
+        sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT, null);
         mCallback = callback;
     }
 
-    private void sendEvent(String eventType) {
-        if (mReactApplicationContext != null) {
-            if (mHasPendingEvent) {
-                mReactApplicationContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(eventType, null);
-                mAuthTokenEventSent = true;
-            } else {
-                mHasPendingEvent = true;
-            }
+    private void sendEvent(String eventType, Object data) {
+        if (mAuthTokenEventListenerSet && mHasPendingEvent) {
+            mReactApplicationContext
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit(eventType, data);
         }
     }
 
-    // Replay method is only called when JavaScript SetAuthTokenListener is registered.
+    /* Replay method is only called when JavaScript SetAuthTokenListener is registered. */
     void replayPendingEvents() {
-        if (!mAuthTokenEventSent) {
-            sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT);
-        }
+        mAuthTokenEventListenerSet = true;
+        sendEvent(ON_ACQUIRE_AUTH_TOKEN_EVENT, null);
     }
 
     AuthTokenCallback getAuthTokenCallback() {
