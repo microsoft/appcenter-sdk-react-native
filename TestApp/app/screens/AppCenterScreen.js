@@ -224,7 +224,7 @@ export default class AppCenterScreen extends Component {
       />
     );
 
-    const appSecretRenderItem = ({ item: { startupModes } }) => (
+    const appSecretRenderItem = ({ item: { appSecrets } }) => (
       <ModalSelector
         data={appSecrets}
         initValue={this.state.appSecret.label}
@@ -292,7 +292,7 @@ export default class AppCenterScreen extends Component {
                   appSecrets: AppSecrets
                 }
               ],
-              renderItem: pickerRenderItem
+              renderItem: appSecretRenderItem
             },
             {
               title: 'Actions',
