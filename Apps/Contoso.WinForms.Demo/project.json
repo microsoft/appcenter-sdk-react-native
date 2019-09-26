@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "Microsoft.AppCenter.Analytics": "2.3.0-preview",
-    "Microsoft.AppCenter.Crashes": "2.3.0-preview"
+    "Microsoft.AppCenter.Analytics": "2.4.0-preview",
+    "Microsoft.AppCenter.Crashes": "2.4.0-preview"
   },
   "frameworks": {
     "net45": {}

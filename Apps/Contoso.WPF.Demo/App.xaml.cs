@@ -74,7 +74,7 @@ namespace Contoso.WPF.Demo
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
             {
-                Log("Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
+                Log("Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
             });
         }
 

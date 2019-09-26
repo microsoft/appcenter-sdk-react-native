@@ -82,7 +82,7 @@ namespace Contoso.Forms.Demo
                 });
                 Crashes.GetLastSessionCrashReportAsync().ContinueWith(task =>
                 {
-                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + task.Result?.Exception);
+                    AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
                 });
             }
         }
@@ -103,62 +103,16 @@ namespace Contoso.Forms.Demo
         static void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
             AppCenterLog.Info(LogTag, "Sending error report");
-
-            var report = e.Report;
-
-            // Test some values
-            if (report.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
-            }
-            else if (report.AndroidDetails != null)
-            {
-                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-            }
         }
 
         static void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
             AppCenterLog.Info(LogTag, "Sent error report");
-
-            var report = e.Report;
-
-            // Test some values
-            if (report.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
-            }
-            else
-            {
-                AppCenterLog.Info(LogTag, "No system exception was found");
-            }
-
-            if (report.AndroidDetails != null)
-            {
-                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-            }
         }
 
         static void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
             AppCenterLog.Info(LogTag, "Failed to send error report");
-
-            var report = e.Report;
-
-            // Test some values
-            if (report.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
-            }
-            else if (report.AndroidDetails != null)
-            {
-                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-            }
-
-            if (e.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, "There is an exception associated with the failure");
-            }
         }
 
         bool ShouldProcess(ErrorReport report)
