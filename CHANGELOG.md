@@ -1,5 +1,38 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.4.0
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fixed a react-native link issue for RN prior to 0.60 where App Center pods may be added incorrectly to Podfile.
+
+### App Center Auth
+
+#### iOS
+
+* **[Fix]** Fix token storage initialization if services are started via `[MSAppCenter startService:]` method.
+* **[Fix]** Redirect URIs are now hidden in logs.
+* **[Fix]** Fix interactive sign in on iOS 13. Temporary fix, will be revisited in the future.
+* **[Feature]** Updated the Microsoft Authentication Library dependency to v0.7.0.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix crash involving SDK's `ms_viewWillAppear` method.
+
+### App Center Data
+
+ The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms.
+
+#### iOS
+
+* **[Breaking change]** Rename delegate method `data:didCompletePendingOperation:forDocument:withError:` from `MSRemoteOperationDelegate` to `data:didCompleteRemoteOperation:forDocumentMetadata:withError:`.
+
+___
+
 ## Version 2.3.0
 
 ### App Center Auth

@@ -3,8 +3,8 @@
 
 #import "AppCenterReactNativePush.h"
 
-// Support React Native headers both in the React namespace, where they are in RN version 0.40+,
-// and no namespace, for older versions of React Native
+// Support React Native headers both in the React namespace, where they are in
+// RN version 0.40+, and no namespace, for older versions of React Native
 #if __has_include(<React/RCTAssert.h>)
 #import <React/RCTAssert.h>
 #import <React/RCTBridgeModule.h>
@@ -25,8 +25,8 @@
 #import <AppCenterPush/AppCenterPush.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
-#import "AppCenterReactNativePushUtils.h"
 #import "AppCenterReactNativePushDelegate.h"
+#import "AppCenterReactNativePushUtils.h"
 
 @implementation AppCenterReactNativePush
 
@@ -92,12 +92,11 @@ RCT_EXPORT_MODULE();
   [pushDelegate stopObserving];
 }
 
-RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  resolve([NSNumber numberWithBool:[MSPush isEnabled]]);
-}
+RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) { resolve(@([MSPush isEnabled])); }
 
 RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  // [UIApplication registerForRemoteNotifications] should be called from the main thread.
+  // [UIApplication registerForRemoteNotifications] should be called from the
+  // main thread.
   dispatch_async(dispatch_get_main_queue(), ^(void) {
     if (!startedPush && shouldEnable) {
       [MSAppCenter startService:[MSPush class]];

@@ -40,6 +40,7 @@ for file in \
     "appcenter-analytics/android/build.gradle" \
     "appcenter-auth/android/build.gradle" \
     "appcenter-crashes/android/build.gradle" \
+    "appcenter-data/android/build.gradle" \
     "appcenter-push/android/build.gradle" \
     "AppCenterReactNativeShared/android/build.gradle"
 do

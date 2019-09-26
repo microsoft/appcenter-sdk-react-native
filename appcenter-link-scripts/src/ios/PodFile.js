@@ -20,14 +20,9 @@ Podfile.prototype.eraseOldLines = function () {
     this.fileContents = this.fileContents.replace(new RegExp("pod 'AppCenter'.*"), '');
 };
 
-Podfile.prototype.addPodLine = function (pod, podspec, version) {
-    debug(`addPodLine pod=${pod} podspec=${podspec} version=${version}`);
-    let line = `pod '${pod}'`;
-    if (podspec) {
-        line = `${line}, :podspec => '${podspec}'`;
-    } else if (version) {
-        line = `${line}, '~> ${version}'`;
-    }
+Podfile.prototype.addPodLine = function (pod, version) {
+    debug(`addPodLine pod=${pod} version=${version}`);
+    const line = `pod '${pod}', '~> ${version}'`;
     const podLinePattern = new RegExp(`pod\\s+'${pod}'.*`);
     const existingLines = this.fileContents.match(podLinePattern);
     if (existingLines) {

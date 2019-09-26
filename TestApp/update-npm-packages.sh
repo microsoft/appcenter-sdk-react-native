@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+echo "Install shared framework pods..."
+(cd ../AppCenterReactNativeShared/ios && pod install)
+
 echo 'Removing existing appcenter* packages...'
 rm -rf node_modules/appcenter*
 
@@ -9,6 +12,7 @@ npm pack ../appcenter
 npm pack ../appcenter-analytics
 npm pack ../appcenter-crashes
 npm pack ../appcenter-push
+npm pack ../appcenter-data
 npm pack ../appcenter-auth
 npm pack ../appcenter-link-scripts
 
@@ -32,3 +36,6 @@ pod repo update
 
 echo "Running pod install..."
 (cd ios && pod install)
+
+echo "Copy shared framework pod..."
+cp -r ../AppCenterReactNativeShared/Products/AppCenterReactNativeShared ios/Pods/AppCenterReactNativeShared

@@ -1,24 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { AppState, Alert, Platform, ToastAndroid } from 'react-native';
+import { AppState, Alert, Platform, ToastAndroid, YellowBox } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
+import Data from 'appcenter-data';
 
 import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
+import DataScreen from './screens/DataScreen';
 import AttachmentsProvider from './AttachmentsProvider';
+
+YellowBox.ignoreWarnings(['Remote debugger']);
 
 const TabNavigator = createBottomTabNavigator(
   {
     AppCenter: AppCenterScreen,
     Analytics: AnalyticsScreen,
     Transmission: TransmissionScreen,
-    Crashes: CrashesScreen
+    Crashes: CrashesScreen,
+    Data: DataScreen
   },
   {
     tabBarOptions: {
@@ -62,6 +67,12 @@ Push.setListener({
       }
       Alert.alert(title, message);
     }
+  }
+});
+
+Data.setRemoteOperationListener({
+  onRemoteOperationCompleted(document) {
+    console.log(`onRemoteOperationCompleted called in the delegate method. document id: ${document.id}`);
   }
 });
 
