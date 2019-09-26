@@ -186,9 +186,8 @@ export default class AppCenterScreen extends Component {
         await this.configureStartup(null, false);
         break;
       default:
-        throw new Error(`Unexpected startup type=${key}`);
+        throw new Error(`Unexpected startup type=${this.state.startupMode}`);
     }
-    await AsyncStorage.setItem(STARTUP_MODE, key);
   }
 
   render() {
@@ -214,13 +213,17 @@ export default class AppCenterScreen extends Component {
       </TouchableOpacity>
     );
 
-    const pickerRenderItem = ({ item: { startupModes } }) => (
+    const startupModeRenderItem = ({ item: { startupModes } }) => (
       <ModalSelector
         data={startupModes}
         initValue={this.state.startupMode.label}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
-        onChange={({ key }) => this.setState({startupMode: key}, this.selectStartup)}
+        onChange={async ({ key }) => {
+            await AsyncStorage.setItem(STARTUP_MODE, key);
+            this.setState({ startupMode: key }, this.selectStartup);
+          }
+        }
       />
     );
 
@@ -230,7 +233,11 @@ export default class AppCenterScreen extends Component {
         initValue={this.state.appSecret.label}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
-        onChange={({ key }) => this.setState({appSecret: key}, this.selectStartup)}
+        onChange={async ({ key }) => {
+            await AsyncStorage.setItem(APP_SECRET, key);
+            this.setState({ appSecret: key }, this.selectStartup);
+          }
+        }
       />
     );
 
@@ -283,7 +290,7 @@ export default class AppCenterScreen extends Component {
                   startupModes: StartupModes
                 }
               ],
-              renderItem: pickerRenderItem
+              renderItem: startupModeRenderItem
             },
             {
               title: 'Change App Secret',
