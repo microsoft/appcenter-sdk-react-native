@@ -168,16 +168,16 @@ export default class AppCenterScreen extends Component {
     console.log('Relaunch app for changes to be applied.');
   }
 
-  async selectStartup() {
-    switch (this.state.startupMode) {
+  async selectStartup(startupMode, appSecret) {
+    switch (startupMode) {
       case 'APPCENTER':
-        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret], true);
+        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[appSecret], true);
         break;
       case 'TARGET':
         await this.configureStartup(SecretStrings[Platform.OS].target, true);
         break;
       case 'BOTH':
-        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret], true);
+        await this.configureStartup(SecretStrings[Platform.OS].both[appSecret], true);
         break;
       case 'NONE':
         await this.configureStartup(null, true);
@@ -186,7 +186,7 @@ export default class AppCenterScreen extends Component {
         await this.configureStartup(null, false);
         break;
       default:
-        throw new Error(`Unexpected startup type=${this.state.startupMode}`);
+        throw new Error(`Unexpected startup type=${startupMode}`);
     }
   }
 
@@ -221,7 +221,7 @@ export default class AppCenterScreen extends Component {
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(STARTUP_MODE, key);
-            this.setState({ startupMode: key }, this.selectStartup);
+            this.selectStartup(key, this.state.appSecret.key);
           }
         }
       />
@@ -235,7 +235,7 @@ export default class AppCenterScreen extends Component {
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(APP_SECRET, key);
-            this.setState({ appSecret: key }, this.selectStartup);
+            this.selectStartup(this.state.startupMode.key, key);
           }
         }
       />
