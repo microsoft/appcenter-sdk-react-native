@@ -26,25 +26,15 @@ const SecretStrings = {
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
   }
 };
-
 SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
 SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
-
-const AADSecretStrings = {
-  ios: {
-    appSecret: '5ee746f1-4731-4df9-8602-9bc505edb2c3',
-  },
-  android: {
-    appSecret: 'f0ac54aa-6e53-4018-98f6-37d60ff7649a',
-  }
-};
 
 const STARTUP_MODE = 'STARTUP_MODE';
 
 const StartupModes = [
   {
-    label: 'AppCenter B2C target only',
-    key: 'APPCENTERB2C'
+    label: 'AppCenter target only',
+    key: 'APPCENTER'
   },
   {
     label: 'OneCollector target only',
@@ -61,10 +51,6 @@ const StartupModes = [
   {
     label: 'Skip start (library only)',
     key: 'SKIP'
-  },
-  {
-    label: 'AppCenter AAD target only',
-    key: 'APPCENTERAAD'
   }
 ];
 
@@ -148,7 +134,7 @@ export default class AppCenterScreen extends Component {
 
   async selectStartup(key) {
     switch (key) {
-      case 'APPCENTERB2C':
+      case 'APPCENTER':
         await this.configureStartup(SecretStrings[Platform.OS].appSecret, true);
         break;
       case 'TARGET':
@@ -162,9 +148,6 @@ export default class AppCenterScreen extends Component {
         break;
       case 'SKIP':
         await this.configureStartup(null, false);
-        break;
-      case 'APPCENTERAAD':
-        await this.configureStartup(AADSecretStrings[Platform.OS].appSecret, true);
         break;
       default:
         throw new Error(`Unexpected startup type=${key}`);
