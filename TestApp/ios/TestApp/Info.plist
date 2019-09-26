@@ -8,6 +8,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>msale59c0968-b7e3-474d-85ad-6dcfaffb8bf5</string>
+				<string>msal5ee746f1-4731-4df9-8602-9bc505edb2c3</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
