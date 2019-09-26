@@ -38,6 +38,7 @@ public class AppCenterReactNativeListener implements AuthTokenListener {
             mReactApplicationContext
                     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                     .emit(eventType, data);
+            mHasPendingEvent = false;
         }
     }
 
