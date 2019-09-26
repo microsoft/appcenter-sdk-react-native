@@ -24,7 +24,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
-    api 'com.microsoft.appcenter:appcenter:2.3.1-13+d12ce4cf0'
+    api 'com.microsoft.appcenter:appcenter:2.3.0'
 
     //api project(':AppCenterReactNativeShared')   // For testing with TestApp
     api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.3.0'
