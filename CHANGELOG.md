@@ -25,7 +25,7 @@
 
 ### App Center Data
 
-Version 2.4.0 of the App Center React Native SDK includes a new module: Data.
+This version of App Center React Native SDK includes a new module: Data.
 
 The App Center Data service provides functionality enabling developers to persist app data in the cloud in both online and offline scenarios. This enables you to store and manage both user-specific data as well as data shared between users and across platforms.
 
