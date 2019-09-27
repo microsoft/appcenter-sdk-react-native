@@ -124,7 +124,7 @@ export default class AppCenterScreen extends Component {
       }
     }
     // Make sure we setup whatever app secret was configured last run
-    selectStartup();
+    await this.selectStartup();
 
     const userId = await AsyncStorage.getItem(USER_ID_KEY);
     if (userId !== null) {
