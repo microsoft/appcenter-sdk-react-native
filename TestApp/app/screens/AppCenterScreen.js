@@ -66,14 +66,16 @@ const StartupModes = [
   }
 ];
 
+const B2C = 'B2C';
+const AAD = 'AAD';
 const AppSecrets = [
   {
-    label: 'B2C',
-    key: 'B2C'
+    label: B2C,
+    key: B2C
   },
   {
-    label: 'AAD',
-    key: 'AAD'
+    label: AAD,
+    key: AAD
   }
 ];
 
