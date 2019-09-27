@@ -169,15 +169,15 @@ export default class AppCenterScreen extends Component {
   }
 
   async selectStartup() {
-    switch (this.state.startupMode.value) {
+    switch (this.state.startupMode.key) {
       case 'APPCENTER':
-        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret.value], true);
+        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret.key], true);
         break;
       case 'TARGET':
         await this.configureStartup(SecretStrings[Platform.OS].target, true);
         break;
       case 'BOTH':
-        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret.value], true);
+        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret.key], true);
         break;
       case 'NONE':
         await this.configureStartup(null, true);
@@ -186,7 +186,7 @@ export default class AppCenterScreen extends Component {
         await this.configureStartup(null, false);
         break;
       default:
-        throw new Error(`Unexpected startup type=${this.state.startupMode.value}`);
+        throw new Error(`Unexpected startup type=${this.state.startupMode.key}`);
     }
   }
 
@@ -216,7 +216,7 @@ export default class AppCenterScreen extends Component {
     const startupModeRenderItem = ({ item: { startupModes } }) => (
       <ModalSelector
         data={startupModes}
-        initValue={this.state.startupMode}
+        initValue={this.state.startupMode.label}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
@@ -230,7 +230,7 @@ export default class AppCenterScreen extends Component {
     const appSecretRenderItem = ({ item: { appSecrets } }) => (
       <ModalSelector
         data={appSecrets}
-        initValue={this.state.appSecret}
+        initValue={this.state.appSecret.label}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
