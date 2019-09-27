@@ -97,8 +97,8 @@ export default class AppCenterScreen extends Component {
     authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
-    startupMode: StartupModes[0],
-    appSecret: AppSecrets[0],
+    startupMode: StartupModes[0].key,
+    appSecret: AppSecrets[0].key,
     userId: '',
     accountId: '',
     authStatus: 'Authentication status unknown'
@@ -106,23 +106,8 @@ export default class AppCenterScreen extends Component {
 
   async componentDidMount() {
     await this.refreshUI();
-    const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
-    for (let index = 0; index < StartupModes.length; index++) {
-      const startupMode = StartupModes[index];
-      if (startupMode.key === startupModeKey) {
-        this.state.startupMode = startupMode;
-        break;
-      }
-    }
-
-    const appSecretKey = await AsyncStorage.getItem(APP_SECRET);
-    for (let index = 0; index < AppSecrets.length; index++) {
-      const appSecret = AppSecrets[index];
-      if (appSecret.key === appSecretKey) {
-        this.state.appSecret = appSecret;
-        break;
-      }
-    }
+    this.state.startupMode = await AsyncStorage.getItem(STARTUP_MODE);
+    this.state.appSecret = await AsyncStorage.getItem(APP_SECRET);
 
     const userId = await AsyncStorage.getItem(USER_ID_KEY);
     if (userId !== null) {
@@ -165,19 +150,19 @@ export default class AppCenterScreen extends Component {
 
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
-    console.log('Relaunch app for changes to be applied.');
+    console.log('Relaunch app for changes to be applied. New Secret: ' + secretString);
   }
 
-  async selectStartup(startupMode, appSecret) {
-    switch (startupMode) {
+  async selectStartup() {
+    switch (this.state.startupMode) {
       case 'APPCENTER':
-        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[appSecret], true);
+        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret], true);
         break;
       case 'TARGET':
         await this.configureStartup(SecretStrings[Platform.OS].target, true);
         break;
       case 'BOTH':
-        await this.configureStartup(SecretStrings[Platform.OS].both[appSecret], true);
+        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret], true);
         break;
       case 'NONE':
         await this.configureStartup(null, true);
@@ -186,7 +171,7 @@ export default class AppCenterScreen extends Component {
         await this.configureStartup(null, false);
         break;
       default:
-        throw new Error(`Unexpected startup type=${startupMode}`);
+        throw new Error(`Unexpected startup type=${this.state.startupMode}`);
     }
   }
 
@@ -216,12 +201,12 @@ export default class AppCenterScreen extends Component {
     const startupModeRenderItem = ({ item: { startupModes } }) => (
       <ModalSelector
         data={startupModes}
-        initValue={this.state.startupMode.label}
+        initValue={this.state.startupMode}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(STARTUP_MODE, key);
-            this.selectStartup(key, this.state.appSecret.key);
+            this.setState({ startupMode: key }, this.selectStartup);
           }
         }
       />
@@ -230,12 +215,12 @@ export default class AppCenterScreen extends Component {
     const appSecretRenderItem = ({ item: { appSecrets } }) => (
       <ModalSelector
         data={appSecrets}
-        initValue={this.state.appSecret.label}
+        initValue={this.state.appSecret}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(APP_SECRET, key);
-            this.selectStartup(this.state.startupMode.key, key);
+            this.setState({ appSecret: key }, this.selectStartup);
           }
         }
       />
