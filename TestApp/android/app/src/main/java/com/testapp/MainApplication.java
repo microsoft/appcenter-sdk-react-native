@@ -26,8 +26,6 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-
-            @SuppressWarnings("UnnecessaryLocalVariable")
             List<ReactPackage> packages = new PackageList(this).getPackages();
             packages.add(new TestAppNativePackage());
             return packages;
@@ -48,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         AppCenter.setLogLevel(Log.VERBOSE);
+        TestAppNativeModule.initSecrets(this);
         SoLoader.init(this, /* native exopackage */ false);
     }
 }
