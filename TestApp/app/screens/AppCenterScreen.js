@@ -97,8 +97,8 @@ export default class AppCenterScreen extends Component {
     authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
-    startupMode: StartupModes[0].key,
-    appSecret: AppSecrets[0].key,
+    startupMode: StartupModes[0],
+    appSecret: AppSecrets[0],
     userId: '',
     accountId: '',
     authStatus: 'Authentication status unknown'
@@ -106,8 +106,23 @@ export default class AppCenterScreen extends Component {
 
   async componentDidMount() {
     await this.refreshUI();
-    this.state.startupMode = await AsyncStorage.getItem(STARTUP_MODE);
-    this.state.appSecret = await AsyncStorage.getItem(APP_SECRET);
+    const startupModeKey = await AsyncStorage.getItem(STARTUP_MODE);
+    for (let index = 0; index < StartupModes.length; index++) {
+      const startupMode = StartupModes[index];
+      if (startupMode.key === startupModeKey) {
+        this.state.startupMode = startupMode;
+        break;
+      }
+    }
+
+    const appSecretKey = await AsyncStorage.getItem(APP_SECRET);
+    for (let index = 0; index < AppSecrets.length; index++) {
+      const appSecret = AppSecrets[index];
+      if (appSecret.key === appSecretKey) {
+        this.state.appSecret = appSecret;
+        break;
+      }
+    }
 
     const userId = await AsyncStorage.getItem(USER_ID_KEY);
     if (userId !== null) {
@@ -154,15 +169,15 @@ export default class AppCenterScreen extends Component {
   }
 
   async selectStartup() {
-    switch (this.state.startupMode) {
+    switch (this.state.startupMode.value) {
       case 'APPCENTER':
-        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret], true);
+        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret.value], true);
         break;
       case 'TARGET':
         await this.configureStartup(SecretStrings[Platform.OS].target, true);
         break;
       case 'BOTH':
-        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret], true);
+        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret.value], true);
         break;
       case 'NONE':
         await this.configureStartup(null, true);
@@ -171,7 +186,7 @@ export default class AppCenterScreen extends Component {
         await this.configureStartup(null, false);
         break;
       default:
-        throw new Error(`Unexpected startup type=${this.state.startupMode}`);
+        throw new Error(`Unexpected startup type=${this.state.startupMode.value}`);
     }
   }
 
@@ -206,7 +221,7 @@ export default class AppCenterScreen extends Component {
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(STARTUP_MODE, key);
-            this.setState({ startupMode: key }, this.selectStartup);
+            this.setState({ startupMode: startupModes.filter(m => m.key === key)[0] }, this.selectStartup);
           }
         }
       />
@@ -220,7 +235,7 @@ export default class AppCenterScreen extends Component {
         selectTextStyle={SharedStyles.itemButton}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(APP_SECRET, key);
-            this.setState({ appSecret: key }, this.selectStartup);
+            this.setState({ appSecret: appSecrets.filter(s => s.key === key)[0] }, this.selectStartup);
           }
         }
       />
