@@ -36,6 +36,7 @@ const SecretStrings = {
 SecretStrings.ios.both = {};
 SecretStrings.ios.both.AAD = `appsecret=${SecretStrings.ios.appSecrets.AAD};${SecretStrings.ios.target}`;
 SecretStrings.ios.both.B2C = `appsecret=${SecretStrings.ios.appSecrets.B2C};${SecretStrings.ios.target}`;
+
 SecretStrings.android.both = {};
 SecretStrings.android.both.AAD = `appsecret=${SecretStrings.android.appSecrets.AAD};${SecretStrings.android.target}`;
 SecretStrings.android.both.B2C = `appsecret=${SecretStrings.android.appSecrets.B2C};${SecretStrings.android.target}`;
