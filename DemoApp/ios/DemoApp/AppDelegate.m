@@ -11,6 +11,7 @@
  */
 
 #import "AppDelegate.h"
+#import <AppCenterReactNativeData/AppCenterReactNativeData.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativeAuth/AppCenterReactNativeAuth.h>
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
@@ -25,34 +26,29 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  [MSAppCenter setLogLevel: MSLogLevelVerbose];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [MSAppCenter setLogLevel:MSLogLevelVerbose];
   
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
   if ([appSecret isKindOfClass:[NSString class]]) {
     [AppCenterReactNativeShared setAppSecret:appSecret];
   }
-  
+
   id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
 
-  [AppCenterReactNativeAuth register];  // Initialize AppCenter auth
-
-  [AppCenterReactNative register];  // Initialize AppCenter 
-
-  [AppCenterReactNativePush register];  // Initialize AppCenter push
-
-  [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
-
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
+  [AppCenterReactNative register];                                   // Initialize AppCenter
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true]; // Initialize AppCenter Analytics
+  [AppCenterReactNativeAuth register];                               // Initialize AppCenter Auth
+  [AppCenterReactNativeCrashes register];                            // Initialize AppCenter Crashes
+  [AppCenterReactNativePush register];                               // Initialize AppCenter Push
+  [AppCenterReactNativeData register];                               // Initialize AppCenter Data
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"DemoApp"
-                                            initialProperties:nil];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"DemoApp" initialProperties:nil];
+
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -63,8 +59,7 @@
   return YES;
 }
 
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
-{
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
