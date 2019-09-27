@@ -123,6 +123,8 @@ export default class AppCenterScreen extends Component {
         break;
       }
     }
+    // Make sure we setup whatever app secret was configured last run
+    selectStartup();
 
     const userId = await AsyncStorage.getItem(USER_ID_KEY);
     if (userId !== null) {
@@ -165,7 +167,7 @@ export default class AppCenterScreen extends Component {
 
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
-    console.log('Relaunch app for changes to be applied. New Secret: ' + secretString);
+    console.log('Relaunch app for app secret changes to be applied. Secret: ' + secretString);
   }
 
   async selectStartup() {
