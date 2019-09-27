@@ -29,6 +29,6 @@ target 'TestApp' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'AppCenterReactNativeShared', :podspec => '../../AppCenterReactNativeShared/Products/local.podspec'
-
+  source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private'
   use_native_modules!
 end
