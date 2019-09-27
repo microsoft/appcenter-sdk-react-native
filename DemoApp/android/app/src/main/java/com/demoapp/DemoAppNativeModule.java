@@ -3,10 +3,8 @@
 
 package com.demoapp;
 
-import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -18,7 +16,11 @@ import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.Nonnull;
+
 public class DemoAppNativeModule extends BaseJavaModule {
+
+    private static final String DEMO_APP_NATIVE = "DemoAppNative";
 
     static {
         System.loadLibrary("native-lib");
@@ -34,17 +36,23 @@ public class DemoAppNativeModule extends BaseJavaModule {
 
     DemoAppNativeModule(Context context) {
         mSharedPreferences = context.getSharedPreferences(getName(), Context.MODE_PRIVATE);
-        String secretOverride = mSharedPreferences.getString(APP_SECRET, null);
+    }
+
+    static void initSecrets(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DEMO_APP_NATIVE, Context.MODE_PRIVATE);
+        String secretOverride = sharedPreferences.getString(APP_SECRET, null);
         AppCenterReactNativeShared.setAppSecret(secretOverride);
-        boolean startAutomaticallyOverride = mSharedPreferences.getBoolean(START_AUTOMATICALLY, true);
+        boolean startAutomaticallyOverride = sharedPreferences.getBoolean(START_AUTOMATICALLY, true);
         AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
     }
 
     @Override
+    @Nonnull
     public String getName() {
-        return "DemoAppNative";
+        return DEMO_APP_NATIVE;
     }
 
+    @SuppressWarnings("unused")
     @ReactMethod
     public void configureStartup(String secretString, boolean startAutomatically) {
 
@@ -58,6 +66,7 @@ public class DemoAppNativeModule extends BaseJavaModule {
                 .apply();
     }
 
+    @SuppressWarnings("unused")
     @ReactMethod
     public void generateTestCrash() {
 
@@ -69,6 +78,7 @@ public class DemoAppNativeModule extends BaseJavaModule {
         throw new TestCrashException();
     }
 
+    @SuppressWarnings("unused")
     @ReactMethod
     public void produceLowMemoryWarning() {
         final AtomicInteger i = new AtomicInteger(0);
