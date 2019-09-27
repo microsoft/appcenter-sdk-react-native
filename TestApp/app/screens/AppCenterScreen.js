@@ -168,7 +168,7 @@ export default class AppCenterScreen extends Component {
 
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
-    console.log('Relaunch app for app secret changes to be applied. Secret: ' + secretString);
+    console.log('Relaunch app for changes to be applied.');
   }
 
   async selectStartup() {
