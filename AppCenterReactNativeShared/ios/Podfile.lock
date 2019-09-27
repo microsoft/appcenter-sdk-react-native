@@ -12,12 +12,12 @@ DEPENDENCIES:
   - AppCenter (~> 2.4.0)
 
 SPEC REPOS:
-  https://github.com/Microsoft/mobile-center-sdk-specs:
+  trunk:
     - AppCenter
 
 SPEC CHECKSUMS:
-  AppCenter: e6ad7e43b4335dd356ecffd551b9be90c118deb6
+  AppCenter: 49a9ffe114c00e2bf5374aeda816d47eabf1978a
 
 PODFILE CHECKSUM: 91d961987471dae6e18bde0992c5534de92e8971
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.0
