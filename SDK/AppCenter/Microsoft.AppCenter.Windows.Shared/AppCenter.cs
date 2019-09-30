@@ -144,7 +144,6 @@ namespace Microsoft.AppCenter
             {
                 return;
             }
-
             UserIdContext.Instance.UserId = userId;
         }
 
