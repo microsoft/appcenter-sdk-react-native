@@ -74,5 +74,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Synchronization\StatefulMutexException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\UserIdContext.cs" />
   </ItemGroup>
 </Project>

@@ -385,7 +385,7 @@ namespace Microsoft.AppCenter.Crashes
                     return;
                 }
                 properties = PropertyValidator.ValidateProperties(properties, "HandledError");
-                var log = new HandledErrorLog(exception: ErrorLogHelper.CreateModelException(exception), properties: properties, id: Guid.NewGuid(), device: null);
+                var log = new HandledErrorLog(exception: ErrorLogHelper.CreateModelException(exception), properties: properties, id: Guid.NewGuid(), device: null, userId: UserIdContext.Instance.UserId);
                 Channel.EnqueueAsync(log);
             }
         }
