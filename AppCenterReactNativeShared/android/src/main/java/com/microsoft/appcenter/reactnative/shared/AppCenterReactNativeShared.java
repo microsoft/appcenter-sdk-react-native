@@ -43,6 +43,9 @@ public class AppCenterReactNativeShared {
         wrapperSdk.setWrapperSdkVersion(com.microsoft.appcenter.reactnative.shared.BuildConfig.VERSION_NAME);
         wrapperSdk.setWrapperSdkName(com.microsoft.appcenter.reactnative.shared.BuildConfig.SDK_NAME);
         AppCenter.setWrapperSdk(wrapperSdk);
+        AppCenter.setLogUrl("https://in-integration.dev.avalanch.es");
+        Data.setTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
+        Auth.setConfigUrl("https://config-integration.dev.avalanch.es");
         readConfigurationFile();
         if (!sStartAutomatically) {
             AppCenterLog.debug(LOG_TAG, "Configure not to start automatically.");

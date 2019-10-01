@@ -7,8 +7,8 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>msale59c0968-b7e3-474d-85ad-6dcfaffb8bf5</string>
-				<string>msal5ee746f1-4731-4df9-8602-9bc505edb2c3</string>
+				<string>msal6c4207ab-6816-47b9-a692-e59d0f012938</string>
+				<string>msala9ee0bf2-831a-4f83-93a2-4786d8cb5f23</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
