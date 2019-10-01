@@ -25,10 +25,21 @@ namespace Contoso.Forms.Demo
     {
         public const string LogTag = "AppCenterXamarinDemo";
 
-        // App Center keys
-        const string uwpKey = "5bce20c8-f00b-49ca-8580-7a49d5705d4c";
-        const string androidKey = "987b5941-4fac-4968-933e-98a7ff29237c";
-        const string iosKey = "fe2bf05d-f4f9-48a6-83d9-ea8033fbb644";
+        // App Center B2C secrets
+        static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
+        {
+            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" }, // same for all devices
+            { XamarinDevice.Android, "987b5941-4fac-4968-933e-98a7ff29237c" },
+            { XamarinDevice.iOS, "fe2bf05d-f4f9-48a6-83d9-ea8033fbb644" }
+        };
+
+        // App Center AAD secrets
+        static readonly IReadOnlyDictionary<string, string> AADAuthAppSecrets = new Dictionary<string, string>
+        {
+            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" }, // same for all devices
+            { XamarinDevice.Android, "739eacee-42de-454c-b0d7-c093e765e009" },
+            { XamarinDevice.iOS, "e9f015c6-6c2b-4410-8053-70eaa52d90e0" }
+        };
 
         public App()
         {
@@ -59,7 +70,8 @@ namespace Contoso.Forms.Demo
 
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
-                AppCenter.Start($"uwp={uwpKey};android={androidKey};ios={iosKey}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                var appSecrets = GetAppSecretDictionary();
+                AppCenter.Start($"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -84,6 +96,20 @@ namespace Contoso.Forms.Demo
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
                 });
+            }
+        }
+
+        static IReadOnlyDictionary<string, string> GetAppSecretDictionary()
+        {
+            // If user has selected another Auth Type, override the secret dictionary accordingly.
+            var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
+            switch (persistedAuthType)
+            {
+                case AuthType.AAD:
+                    return AADAuthAppSecrets;
+                case AuthType.B2C:
+                default:
+                    return B2CAuthAppSecrets;
             }
         }
 
