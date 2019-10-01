@@ -34,5 +34,16 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             var isUserIdValid = UserIdContext.CheckUserIdValidForAppCenter(userIdGreaterThan256);
             Assert.IsFalse(isUserIdValid, "User Id can't be greater than 256");
         }
+
+        /// <summary>
+        /// Test signleton instance
+        /// </summary>
+        [TestMethod]
+        public void InstanceIsSingleton()
+        {
+            var localInstance = UserIdContext.Instance;
+
+            Assert.AreSame(localInstance, UserIdContext.Instance);
+        }
     }
 }
