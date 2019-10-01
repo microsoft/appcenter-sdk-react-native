@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace Contoso.Forms.Puppet
+namespace Contoso.Forms.Demo
 {
     public enum AuthType
     {
