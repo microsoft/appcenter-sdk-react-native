@@ -9,11 +9,10 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
     /**
      * Utility to store and retrieve values for user identifiers.
     */
-    public partial class UserIdContext
+    public class UserIdContext
     {
         // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object UserIdLock = new object();
-        private string _userId;
         private static UserIdContext _instanceField;
 
         internal UserIdContext()
@@ -50,31 +49,14 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// <summary>
         /// Current user identifier.
         /// </summary>
-        public string UserId
-        {
-            get
-            {
-                lock (UserIdLock)
-                {
-                    return _userId;
-                }
-            }
-
-            set
-            {
-                lock (UserIdLock)
-                {
-                  _userId = value;
-                }
-            }
-        }
+        public string UserId { get; set; }
 
         /// <summary>
         /// Check if userId is valid for App Center.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>true if valid, false otherwise.</returns>
-        public static Boolean CheckUserIdValidForAppCenter(String userId)
+        public static bool CheckUserIdValidForAppCenter(String userId)
         {
             if (userId != null && userId.Length > USER_ID_APP_CENTER_MAX_LENGTH)
             {
