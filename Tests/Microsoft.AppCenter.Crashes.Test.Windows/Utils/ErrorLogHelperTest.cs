@@ -47,6 +47,9 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             // Set correlation identifier like Analytics does to set sessionId.
             SessionContext.SessionId = sessionId == null ? default(Guid?) : Guid.Parse(sessionId);
 
+            var mockUser = "dummyUser";
+            UserIdContext.Instance.UserId = mockUser;
+
             // Set up an exception. This is needed because inner exceptions cannot be mocked.
             System.Exception exception;
             try
@@ -117,6 +120,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.AreEqual(processStartTime, log.AppLaunchTimestamp);
             Assert.AreEqual(sessionId, log.Sid?.ToString());
             Assert.IsTrue(log.Fatal);
+            Assert.AreEqual(mockUser, log.UserId);
         }
 
         [TestMethod]
