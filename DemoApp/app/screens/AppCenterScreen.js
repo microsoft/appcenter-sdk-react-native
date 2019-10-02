@@ -223,7 +223,6 @@ export default class AppCenterScreen extends Component {
         initValue={this.state.startupMode.label}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
-        onChange={({ key }) => this.selectStartup(key)}
         onChange={async ({ key }) => {
             await AsyncStorage.setItem(STARTUP_MODE, key);
             this.setState({ startupMode: startupModes.filter(m => m.key === key)[0] }, this.selectStartup);
