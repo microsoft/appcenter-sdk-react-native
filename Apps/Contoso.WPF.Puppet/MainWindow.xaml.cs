@@ -58,7 +58,7 @@ namespace Contoso.WPF.Puppet
                 CountryCodeEnableCheckbox.IsChecked = true;
             }
 
-            if(Settings.Default.UserId is string id)
+            if (Settings.Default.UserId is string id)
             {
                 UserId.Text = Settings.Default.UserId;
                 AppCenter.SetUserId(id);
