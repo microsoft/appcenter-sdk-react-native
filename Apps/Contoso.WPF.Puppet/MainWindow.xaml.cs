@@ -57,11 +57,9 @@ namespace Contoso.WPF.Puppet
             {
                 CountryCodeEnableCheckbox.IsChecked = true;
             }
-
-            if (Settings.Default.UserId is string id)
+            if (!string.IsNullOrEmpty(Settings.Default.UserId))
             {
                 UserId.Text = Settings.Default.UserId;
-                AppCenter.SetUserId(id);
             }
         }
 
@@ -308,7 +306,7 @@ namespace Contoso.WPF.Puppet
                 var userId = UserId.Text;
                 var text = string.IsNullOrEmpty(userId) ? null : userId;
                 AppCenter.SetUserId(text);
-                Settings.Default.UserId = UserId.Text;
+                Settings.Default.UserId = text;
                 Settings.Default.Save();
             }
         }
@@ -318,7 +316,7 @@ namespace Contoso.WPF.Puppet
             var userId = UserId.Text;
             var text = string.IsNullOrEmpty(userId) ? null : userId;
             AppCenter.SetUserId(text);
-            Settings.Default.UserId = UserId.Text;
+            Settings.Default.UserId = text;
             Settings.Default.Save();
         }
     }
