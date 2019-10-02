@@ -40,15 +40,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         }
 
         [TestMethod]
-        [DataRow(null)]
-        [DataRow("da657080-2445-4b80-9b77-4798a6659954")]
-        public void CreateErrorLog(string sessionId)
+        [DataRow(null, null)]
+        [DataRow("da657080-2445-4b80-9b77-4798a6659954", null)]
+        [DataRow(null, "dummyUser")]
+        public void CreateErrorLog(string sessionId, string userId)
         {
             // Set correlation identifier like Analytics does to set sessionId.
             SessionContext.SessionId = sessionId == null ? default(Guid?) : Guid.Parse(sessionId);
 
-            var mockUser = "dummyUser";
-            UserIdContext.Instance.UserId = mockUser;
+            UserIdContext.Instance.UserId = userId;
 
             // Set up an exception. This is needed because inner exceptions cannot be mocked.
             System.Exception exception;
@@ -120,7 +120,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
             Assert.AreEqual(processStartTime, log.AppLaunchTimestamp);
             Assert.AreEqual(sessionId, log.Sid?.ToString());
             Assert.IsTrue(log.Fatal);
-            Assert.AreEqual(mockUser, log.UserId);
+            Assert.AreEqual(userId, log.UserId);
         }
 
         [TestMethod]
