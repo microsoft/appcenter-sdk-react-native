@@ -47,10 +47,10 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        AppCenter.setLogLevel(Log.VERBOSE);
         AppCenter.setLogUrl("https://in-integration.dev.avalanch.es");
         Data.setTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
         Auth.setConfigUrl("https://config-integration.dev.avalanch.es");
-        AppCenter.setLogLevel(Log.VERBOSE);
         TestAppNativeModule.initSecrets(this);
         SoLoader.init(this, /* native exopackage */ false);
     }
