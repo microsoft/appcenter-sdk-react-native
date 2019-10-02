@@ -303,15 +303,16 @@ namespace Contoso.WPF.Puppet
         {
             if (e.Key == Key.Return)
             {
-                var userId = UserId.Text;
-                var text = string.IsNullOrEmpty(userId) ? null : userId;
-                AppCenter.SetUserId(text);
-                Settings.Default.UserId = text;
-                Settings.Default.Save();
+                HandleUserIdChange();
             }
         }
 
         private void UserId_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HandleUserIdChange();
+        }
+
+        private void HandleUserIdChange()
         {
             var userId = UserId.Text;
             var text = string.IsNullOrEmpty(userId) ? null : userId;
