@@ -23,8 +23,8 @@
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @import AppCenter;
-@import AppCenterData;
 @import AppCenterAuth;
+@import AppCenterData;
 
 @implementation AppDelegate
 

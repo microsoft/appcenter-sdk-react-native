@@ -12,8 +12,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.data.Data;
 import com.microsoft.appcenter.auth.Auth;
+import com.microsoft.appcenter.data.Data;
 
 import java.util.List;
 
