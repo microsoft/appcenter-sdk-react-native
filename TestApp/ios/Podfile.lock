@@ -1,40 +1,40 @@
 PODS:
-  - appcenter (2.4.0):
+  - appcenter (2.3.0):
     - AppCenterReactNativeShared
     - React
-  - appcenter-analytics (2.4.0):
-    - AppCenter/Analytics (= 2.4.1-9)
+  - appcenter-analytics (2.3.0):
+    - AppCenter/Analytics (= 2.4.0-17)
     - AppCenterReactNativeShared
     - React
-  - appcenter-auth (2.4.0):
-    - AppCenter/Auth (= 2.4.1-9)
+  - appcenter-auth (2.3.0):
+    - AppCenter/Auth (= 2.4.0-17)
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (2.4.0):
-    - AppCenter/Crashes (= 2.4.1-9)
+  - appcenter-crashes (2.3.0):
+    - AppCenter/Crashes (= 2.4.0-17)
     - AppCenterReactNativeShared
     - React
-  - appcenter-data (2.4.0):
-    - AppCenter/Data (= 2.4.1-9)
+  - appcenter-data (2.2.0):
+    - AppCenter/Data (= 2.4.0-17)
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (2.4.0):
-    - AppCenter/Push (= 2.4.1-9)
+  - appcenter-push (2.3.0):
+    - AppCenter/Push (= 2.4.0-17)
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (2.4.1-9):
+  - AppCenter/Analytics (2.4.0-17):
     - AppCenter/Core
-  - AppCenter/Auth (2.4.1-9):
+  - AppCenter/Auth (2.4.0-17):
     - AppCenter/Core
-  - AppCenter/Core (2.4.1-9)
-  - AppCenter/Crashes (2.4.1-9):
+  - AppCenter/Core (2.4.0-17)
+  - AppCenter/Crashes (2.4.0-17):
     - AppCenter/Core
-  - AppCenter/Data (2.4.1-9):
+  - AppCenter/Data (2.4.0-17):
     - AppCenter/Core
-  - AppCenter/Push (2.4.1-9):
+  - AppCenter/Push (2.4.0-17):
     - AppCenter/Core
-  - AppCenterReactNativeShared (2.4.0):
-    - AppCenter/Core (= 2.4.1-9)
+  - AppCenterReactNativeShared (2.3.0):
+    - AppCenter/Core (= 2.4.0-17)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
@@ -163,7 +163,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
   https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
     - AppCenter
@@ -237,14 +237,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 773ab0f9342edde1b79708f7d8deee3ee713ca3b
-  appcenter: 4072e79b8d037d99056e6fc6556224b4525b5829
-  appcenter-analytics: 8112e31b073c9e57a8ae64718850f29d571d2151
-  appcenter-auth: 761ccd9a10ecf2bd76ecfaec6f36849f36e1d7c4
-  appcenter-crashes: 23dfa12b37588bdbc074c78dbe0e7f25b8180cb8
-  appcenter-data: a86113eac5a43ff500ab6570d287d7b991042e44
-  appcenter-push: 2e09314c6bc0aa1674a1701bd1168f9e80fd81df
-  AppCenterReactNativeShared: 27f76bbfa585ff9afa27e448f73ce9107a4298ec
+  AppCenter: 5f1043e49b470ec4d22f07e12a77418d18b680f8
+  appcenter: 51cfd9f783b0bd0dd3aa0cb02b362e7842d17f2d
+  appcenter-analytics: cda30735ed1c61f338fd24242882e18ab13e2676
+  appcenter-auth: ac4601f9bfe671eaab0e29b8977b0f2698e1c922
+  appcenter-crashes: c2fc70b935e7f982cdeb78cc627753a50974b2fc
+  appcenter-data: 799e18a2ece9b472c426450f0431dadeafa6f8d4
+  appcenter-push: 0ed6efaf78a8322dad6c7c67ab8ec7d5ee08d09e
+  AppCenterReactNativeShared: 0983aed5b4a06a70bf004fa5a0af17a848f360f9
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -275,4 +275,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6421e99a8c5ecedac7319898976d71a630a4fec6
 
-COCOAPODS: 1.8.0
+COCOAPODS: 1.7.5
