@@ -43,6 +43,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows.Utils
         [DataRow(null, null)]
         [DataRow("da657080-2445-4b80-9b77-4798a6659954", null)]
         [DataRow(null, "dummyUser")]
+        [DataRow("da657080-2445-4b80-9b77-4798a6659954", "dummyUser")]
         public void CreateErrorLog(string sessionId, string userId)
         {
             // Set correlation identifier like Analytics does to set sessionId.
