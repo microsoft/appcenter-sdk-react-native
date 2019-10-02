@@ -19,15 +19,15 @@ const USER_ID_KEY = 'USER_ID_KEY';
 const SecretStrings = {
   ios: {
     appSecrets: {
-      AAD: '5ee746f1-4731-4df9-8602-9bc505edb2c3',
-      B2C: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5'
+      AAD: 'a9ee0bf2-831a-4f83-93a2-4786d8cb5f23',
+      B2C: '6c4207ab-6816-47b9-a692-e59d0f012938'
     },
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {
     appSecrets: {
-      AAD: 'f0ac54aa-6e53-4018-98f6-37d60ff7649a',
-      B2C: '32fcfc69-d576-41dc-8d49-4be159e3d7b2'
+      AAD: 'be23fc61-f73b-4feb-8815-c8ad31804202',
+      B2C: 'ec226b05-8eb0-4af7-a908-bfc9e153791d'
     },
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
   }
