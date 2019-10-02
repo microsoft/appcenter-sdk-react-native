@@ -227,5 +227,33 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
         }
+
+        [TestMethod]
+        public void TrackErrorWithUserId()
+        {
+            var semaphore = new SemaphoreSlim(0);
+            var dummyUser = "dummyUser";
+            UserIdContext.Instance.UserId = dummyUser;
+
+            HandledErrorLog actualLog = null;
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<IDictionary<string, string>>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
+                    semaphore.Release();
+                });
+            var exception = new System.Exception("Something went wrong.");
+            Crashes.TrackError(exception);
+
+            // Wait until the http layer sends the log.
+            semaphore.Wait(2000);
+            Assert.IsNotNull(actualLog);
+            Assert.AreEqual(dummyUser, actualLog.UserId);
+        }
     }
 }
