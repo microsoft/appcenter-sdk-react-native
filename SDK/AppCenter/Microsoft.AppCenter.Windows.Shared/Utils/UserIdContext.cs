@@ -11,7 +11,6 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
     */
     public class UserIdContext
     {
-        // The lock is static. Instance methods are not necessarily thread safe, but static methods are
         private static readonly object UserIdLock = new object();
         private static UserIdContext _instanceField;
 
