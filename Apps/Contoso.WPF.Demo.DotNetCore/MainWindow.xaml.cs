@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -51,6 +52,10 @@ namespace Contoso.WPF.Demo.DotNetCore
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
+            if (!string.IsNullOrEmpty(Settings.Default.UserId))
+            {
+                UserId.Text = Settings.Default.UserId;
+            }
         }
 
         private void UpdateState()
@@ -156,6 +161,28 @@ namespace Contoso.WPF.Demo.DotNetCore
         {
             textAttachments = TextAttachmentTextBox.Text;
             Settings.Default.TextErrorAttachments = textAttachments;
+            Settings.Default.Save();
+        }
+
+        private void UserId_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                HandleUserIdChange();
+            }
+        }
+
+        private void UserId_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HandleUserIdChange();
+        }
+
+        private void HandleUserIdChange()
+        {
+            var userId = UserId.Text;
+            var text = string.IsNullOrEmpty(userId) ? null : userId;
+            AppCenter.SetUserId(text);
+            Settings.Default.UserId = text;
             Settings.Default.Save();
         }
 
