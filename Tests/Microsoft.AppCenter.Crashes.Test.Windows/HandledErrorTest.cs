@@ -252,6 +252,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Wait until the http layer sends the log.
             semaphore.Wait(2000);
+            Assert.IsNotNull(actualLog);
             Assert.AreEqual(dummyUser, actualLog.UserId);
         }
     }
