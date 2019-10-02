@@ -23,10 +23,15 @@
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @import AppCenter;
+@import AppCenterData;
+@import AppCenterAuth;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
+  [MSData setTokenExchangeUrl:@"https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1"];
+  [MSAuth setConfigUrl:@"https://config-integration.dev.avalanch.es"];
   [MSAppCenter setLogLevel:MSLogLevelVerbose];
 
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
