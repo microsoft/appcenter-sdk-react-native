@@ -20,14 +20,14 @@ const USER_ID_KEY = 'USER_ID_KEY';
 const SecretStrings = {
   ios: {
     appSecrets: {
-      AAD: '',
+      AAD: '5ee746f1-4731-4df9-8602-9bc505edb2c3',
       B2C: 'f5f84a76-6622-437a-9130-07b27d3c72e7'
     },
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {
     appSecrets: {
-      AAD: '',
+      AAD: 'f0ac54aa-6e53-4018-98f6-37d60ff7649a',
       B2C: 'e65c7490-1f58-4e93-bb55-a2e11dac4368'
     },
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
