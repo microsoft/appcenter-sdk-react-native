@@ -55,6 +55,19 @@
                         </Grid>
 
                     </GroupBox>
+                    <GroupBox Header="Logging">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="User Id" Grid.Column="0" Grid.Row="0"/>
+                            <TextBox Name="UserId" Grid.Column="1" Grid.Row="0" KeyDown="UserId_KeyDown" LostFocus="UserId_LostFocus"/>
+                        </Grid>
+                    </GroupBox>
                 </StackPanel>
 
             </TabItem>
