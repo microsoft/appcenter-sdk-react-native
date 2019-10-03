@@ -1,5 +1,17 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.5.0 (Under development)
+
+### App Center
+
+* **[Feature]** TestApp will now use INT environment.
+
+### App Center Auth
+
+* **[Feature]** Add authentication support for Azure Active Directory (AAD) applications. Users can now connect an [AAD tenant and AAD single tenant (AzureADMyOrg), multi-tenant (AzureADMultipleOrgs) and multi-tenant and personal Microsoft account (AzureADandPersonalMicrosoftAccount)](https://docs.microsoft.com/en-us/azure/active-directory/develop/single-and-multi-tenant-apps) applications.
+
+___
+
 ## Version 2.4.0
 
 ### App Center
