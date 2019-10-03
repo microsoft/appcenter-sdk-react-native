@@ -54,14 +54,14 @@ namespace Contoso.WPF.Demo
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
 
-            if (!string.IsNullOrEmpty(Settings.Default.UserId))
-            {
-                UserId.Text = Settings.Default.UserId;
-            }
-
             if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
             {
                 CountryCodeEnableCheckbox.IsChecked = true;
+            }
+
+            if (!string.IsNullOrEmpty(Settings.Default.UserId))
+            {
+                UserId.Text = Settings.Default.UserId;
             }
         }
 
