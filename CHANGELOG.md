@@ -11,7 +11,7 @@
 
 ___
 
-## Version 2.4.0
+## Version 2.4.0-preview
 
 ### App Center
 
@@ -47,11 +47,11 @@ ___
 
 * **[Fix]** Don't prevent WinForms applications from crashing. If unhandled exceptions are handled by the application, they must now be reported using `Crashes.TrackError` to be displayed on AppCenter, see the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/crashes/wpf-winforms) for more details about this change.
 
-## Version 2.3.0
+## Version 2.3.0-preview
 
-This version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
+This preview version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
 
-This version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
 ### App Center
 
@@ -107,11 +107,11 @@ This version removes Crashes support for UWP. The App Center backend is not yet 
 
 ___
 
-## Version 2.2.1
+## Version 2.2.1-preview
 
-This version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
+This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
 
-This version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
 ### App Center
 
