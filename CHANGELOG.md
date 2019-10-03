@@ -1,5 +1,16 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.5.0 (Under development)
+
+### App Center Auth
+
+* **[Feature]** Add authentication support for Azure Active Directory (AAD) applications. Users can now connect an AAD tenant with [AAD single-tenant or multi-tenant apps](https://docs.microsoft.com/azure/active-directory/develop/single-and-multi-tenant-apps) with the following audiences:
+  - Accounts in this directory only
+  - Accounts in any Azure AD directory
+  - Accounts in any Azure AD directory and personal Microsoft accounts
+
+___
+
 ## Version 2.4.0
 
 ### App Center
