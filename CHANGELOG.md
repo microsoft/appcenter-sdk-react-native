@@ -1,10 +1,17 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.4.1 (Under development)
+## Version 2.5.0 (Under development)
+
+### App Center Auth
+
+* **[Feature]** Add authentication support for Azure Active Directory (AAD) applications. Users can now connect an AAD tenant with [AAD single-tenant or multi-tenant apps](https://docs.microsoft.com/azure/active-directory/develop/single-and-multi-tenant-apps) with the following audiences:
+  - Accounts in this directory only
+  - Accounts in any Azure AD directory
+  - Accounts in any Azure AD directory and personal Microsoft accounts
 
 ___
 
-## Version 2.4.0-preview
+## Version 2.4.0
 
 ### App Center
 
@@ -40,11 +47,11 @@ ___
 
 * **[Fix]** Don't prevent WinForms applications from crashing. If unhandled exceptions are handled by the application, they must now be reported using `Crashes.TrackError` to be displayed on AppCenter, see the [public documentation](https://docs.microsoft.com/en-us/appcenter/sdk/crashes/wpf-winforms) for more details about this change.
 
-## Version 2.3.0-preview
+## Version 2.3.0
 
-This preview version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
+This version adds support for .NET Core 3.0 WPF and WinForms applications for the Analytics and Crashes modules.
 
-This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+This version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
 ### App Center
 
@@ -100,11 +107,11 @@ This preview version removes Crashes support for UWP. The App Center backend is 
 
 ___
 
-## Version 2.2.1-preview
+## Version 2.2.1
 
-This preview version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
+This version adds support for WPF and WinForms applications for the Analytics and Crashes modules.
 
-This preview version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
+This version removes Crashes support for UWP. The App Center backend is not yet ready to process UWP crashes using the system introduced in this version. If your app relies on UWP crashes, do not update to this preview version.
 
 ### App Center
 
