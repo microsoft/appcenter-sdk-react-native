@@ -69,6 +69,13 @@ namespace Contoso.WPF.Puppet
 
             // Start AppCenter.
             AppCenter.Start("d967daf9-28ed-4899-84e8-17a00c064987", typeof(Analytics), typeof(Crashes));
+
+            var userId = Settings.Default.UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                AppCenter.SetUserId(userId);
+            }
+
             Crashes.HasCrashedInLastSessionAsync().ContinueWith(hasCrashed =>
             {
                 Log("Crashes.HasCrashedInLastSession=" + hasCrashed.Result);
