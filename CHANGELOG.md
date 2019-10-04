@@ -6,7 +6,7 @@
 
 #### .NET Core 3
 
-* **[Fix]** Fix using stable versions of nuget dependencies for .NET Core 3.0.
+* **[Fix]** Fix using stable versions of NuGet dependencies for .NET Core 3.0.
 
 ### App Center Auth
 
