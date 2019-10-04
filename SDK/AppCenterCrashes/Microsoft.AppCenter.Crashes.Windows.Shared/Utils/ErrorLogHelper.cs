@@ -175,7 +175,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
                 Exception = CreateModelException(exception),
-                Sid = SessionContext.SessionId
+                Sid = SessionContext.SessionId,
+                UserId = UserIdContext.Instance.UserId
             };
         }
 

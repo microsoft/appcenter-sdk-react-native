@@ -15,6 +15,11 @@
   - Accounts in any Azure AD directory
   - Accounts in any Azure AD directory and personal Microsoft accounts
 
+### App Center Crashes
+
+#### UWP/WPF/WinForms
+
+* **[Feature]** Allow users to set userId that applies to crashes, error.
 ___
 
 ## Version 2.4.0-preview

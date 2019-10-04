@@ -132,6 +132,7 @@
     <Compile Include="TestAppCenterService.cs" />
     <Compile Include="Utils\MockApplicationSettingsFactory.cs" />
     <Compile Include="Utils\UnhandledExceptionEventArgsTest.cs" />
+    <Compile Include="Utils\UserIdContextTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CodeCoverage.runsettings">
