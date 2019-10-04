@@ -2,6 +2,12 @@
 
 ## Version 2.5.0 (Under development)
 
+### App Center
+
+#### .NET Core 3
+
+* **[Fix]** Fix using stable versions of NuGet dependencies for .NET Core 3.0.
+
 ### App Center Auth
 
 * **[Feature]** Add authentication support for Azure Active Directory (AAD) applications. Users can now connect an AAD tenant with [AAD single-tenant or multi-tenant apps](https://docs.microsoft.com/azure/active-directory/develop/single-and-multi-tenant-apps) with the following audiences:
