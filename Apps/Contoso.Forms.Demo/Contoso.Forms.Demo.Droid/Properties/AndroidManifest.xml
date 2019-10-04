@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.forms.demo" android:versionName="2.4.0-preview" android:versionCode="69">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="27" />
 	<application android:label="ACFDemo">
@@ -18,6 +18,12 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:host="auth" android:scheme="msal987b5941-4fac-4968-933e-98a7ff29237c" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:host="auth" android:scheme="msal739eacee-42de-454c-b0d7-c093e765e009" />
 			</intent-filter>
 		</activity>
 	</application>
