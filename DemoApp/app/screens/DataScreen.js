@@ -16,9 +16,9 @@ export default class DataScreen extends Component {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DataTabBarIcon} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       // Allow consequent presses to refresh the screen.
-      const refreshScreen = navigation.getParam('refreshScreen');
-      if (refreshScreen) {
-        refreshScreen();
+      const refreshData = navigation.getParam('refreshData');
+      if (refreshData) {
+        refreshData();
       }
       defaultHandler();
     }
@@ -44,7 +44,7 @@ export default class DataScreen extends Component {
 
     // Add a way to refresh the screen when the tab is pressed.
     this.props.navigation.setParams({
-      refreshScreen: this.refreshToggle.bind(this)
+      refreshData: this.refreshToggle.bind(this)
     });
     const documents = await this.listDocuments(this.state.partition);
     this.setState({ documents, loadingData: false });
