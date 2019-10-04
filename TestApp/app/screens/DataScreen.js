@@ -178,7 +178,7 @@ export default class DataScreen extends Component {
     );
 
    const actionRenderItem = ({ item: { title, action } }) => (
-     <TouchableOpacity style={SharedStyles.item} onPress={action}>
+     <TouchableOpacity disabled={this.state.partition == Data.DefaultPartitions.APP_DOCUMENTS} style={SharedStyles.item} onPress={action}>
        <Text style={SharedStyles.itemButton}>{title}</Text>
        <Modal
          animationType="slide"
