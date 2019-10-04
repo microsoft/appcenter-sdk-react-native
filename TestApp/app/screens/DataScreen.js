@@ -16,7 +16,7 @@ export default class DataScreen extends Component {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DataTabBarIcon} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       // Allow consequent presses to refresh the screen.
-      const refreshScreen = navigation.getParam('refreshData');
+      const refreshScreen = navigation.getParam('refreshScreen');
       if (refreshScreen) {
         refreshScreen();
       }
