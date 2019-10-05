@@ -103,10 +103,9 @@ export default class DataScreen extends Component {
               this.setState({ docTtl: itemValue })
             }
           >
-            <Picker.Item label="Default" value={-1} />
-            <Picker.Item label="No Cache" value={0} />
+            <Picker.Item label="Infinite(Default)" value={Data.TimeToLive.DEFAULT} />
+            <Picker.Item label="No Cache" value={Data.TimeToLive.NO_CACHE} />
             <Picker.Item label="2 seconds" value={2} />
-            <Picker.Item label="Infinite" value={-1} />
           </Picker>
         </View>
       </View>
