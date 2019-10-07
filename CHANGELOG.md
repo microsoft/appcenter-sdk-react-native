@@ -17,6 +17,8 @@
 
 ### App Center Crashes
 
+* **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
+
 #### UWP/WPF/WinForms
 
 * **[Feature]** Allow users to set userId that applies to crashes, error.
