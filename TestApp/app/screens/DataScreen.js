@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
+import { Alert, Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Data from 'appcenter-data';
 
@@ -28,6 +28,7 @@ export default class DataScreen extends Component {
   state = {
     dataEnabled: false,
     createDocModalVisible: false,
+    canCreateDocument: false,
     docTtl: 60,
     docId: '',
     docType: '',
@@ -75,8 +76,18 @@ export default class DataScreen extends Component {
         });
       }
       /* eslint-enable no-await-in-loop */
+
+      if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
+        this.setState({ canCreateDocument: true });
+      } else {
+        this.setState({ canCreateDocument: false });
+      }
       return documents;
     } catch (err) {
+      if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
+        this.setState({ canCreateDocument: false });
+      }
+      Alert.alert('Unable to list user partition.', err.message);
       console.log(err);
     }
     return documents;
@@ -182,7 +193,7 @@ export default class DataScreen extends Component {
        <Modal
          animationType="slide"
          transparent={false}
-         visible={this.state.createDocModalVisible}
+         visible={this.state.createDocModalVisible && this.state.canCreateDocument}
        >
          <View style={{ marginTop: 22 }}>
            <SectionList
@@ -246,7 +257,7 @@ export default class DataScreen extends Component {
                               this.state.value,
                               Data.DefaultPartitions.USER_DOCUMENTS,
                               new Data.WriteOptions(this.state.docTtl)
-);
+                            );
                     console.log('Successful create', createResult);
                     this.setCreateDocModalVisible(!this.state.createDocModalVisible);
                   }}
@@ -325,8 +336,9 @@ export default class DataScreen extends Component {
                 {
                   title: 'Create a new document',
                   value: 'createNewDocument',
-                  action: () => {
-                    this.setCreateDocModalVisible(true);
+                  action: async () => {
+                    this.setCreateDocModalVisible(this.state.dataEnabled &&
+                      this.state.canCreateDocument);
                   }
                 },
               ],
