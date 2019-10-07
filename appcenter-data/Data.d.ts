@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 export const enum TimeToLive {
+    INFINITE = -1,
     NO_CACHE = 0,
     DEFAULT = -1
 }
