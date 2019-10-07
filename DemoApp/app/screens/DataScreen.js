@@ -80,14 +80,15 @@ export default class DataScreen extends Component {
       if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
         this.setState({ canCreateDocument: true });
       } else {
-        this.setState({ canCreateDocument: false});
+        this.setState({ canCreateDocument: false });
       }
       return documents;
     } catch (err) {
       if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
         this.setState({ canCreateDocument: false });
       }
-      alert(err.message);
+      Alert.alert('Unable to list user partition.', err.message);
+      console.log(err);
     }
     return documents;
   }
@@ -337,8 +338,7 @@ export default class DataScreen extends Component {
                   title: 'Create a new document',
                   value: 'createNewDocument',
                   action: async () => {
-                    this.setCreateDocModalVisible(
-                      this.state.dataEnabled &&
+                    this.setCreateDocModalVisible(this.state.dataEnabled &&
                       this.state.canCreateDocument);
                   }
                 },
