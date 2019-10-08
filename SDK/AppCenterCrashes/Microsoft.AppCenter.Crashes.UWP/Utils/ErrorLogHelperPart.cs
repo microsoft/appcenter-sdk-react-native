@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Windows.Utils;
 using ModelBinary = Microsoft.AppCenter.Crashes.Ingestion.Models.Binary;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
@@ -22,7 +23,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             var binaries = new Dictionary<long, ModelBinary>();
             var modelException = ProcessException(exception, null, binaries);
-            return new ErrorExceptionAndBinaries { Binaries = binaries.Count > 0 ? binaries.Values.ToList() : null, Exception = modelException };
+
+            // TODO this will send empty binary array for non .NET native builds. But currently backend requires the property to be set.
+            return new ErrorExceptionAndBinaries { Binaries = binaries.Values.ToList(), Exception = modelException };
         }
 
         private static ModelException ProcessException(System.Exception exception, ModelException outerException, Dictionary<long, ModelBinary> seenBinaries)
@@ -51,7 +54,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
             }
             var stackTrace = new StackTrace(exception, true);
             var frames = stackTrace.GetFrames();
-            modelException.Frames = new List<ModelStackFrame>();
 
             // If there are native frames available, process them to extract image information and frame addresses.
             // The check looks odd, but there is a possibility of frames being null or empty both.
@@ -64,6 +66,10 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     {
                         Address = string.Format(CultureInfo.InvariantCulture, AddressFormat, frame.GetNativeIP().ToInt64()),
                     };
+                    if (modelException.Frames == null)
+                    {
+                        modelException.Frames = new List<ModelStackFrame>();
+                    }
                     modelException.Frames.Add(crashFrame);
 
                     // Process binary.

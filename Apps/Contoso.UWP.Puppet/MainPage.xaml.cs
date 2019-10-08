@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,7 +34,23 @@ namespace Contoso.UWP.Puppet
 
         private void ThrowException(object sender, RoutedEventArgs e)
         {
-            throw new Exception();
+            // Contoso.Forms.Puppet.UWP has more crash types and UI features to test properties.
+            // This app is just for smoke testing.
+            if (HandleExceptions.IsOn)
+            {
+                try
+                {
+                    var a = 2 / int.Parse("0");
+                }
+                catch (Exception ex)
+                {
+                    Crashes.TrackError(ex);
+                }
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
     }
 }
