@@ -46,10 +46,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// </param>
         /// <param name="id">Unique identifier for this Error.
         /// </param>
-        public HandledErrorLog(Device device, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>), System.Guid? id = default(System.Guid?))
+        public HandledErrorLog(Device device, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>), System.Guid? id = default(System.Guid?), IList<Binary> binaries = default(IList<Binary>))
             : base(device, timestamp, sid, userId, properties)
         {
             Id = id;
+            Binaries = binaries;
             Exception = exception;
             CustomInit();
         }
@@ -68,6 +69,11 @@ namespace Microsoft.AppCenter.Ingestion.Models
 
         /// <summary>
         /// </summary>
+        [JsonProperty(PropertyName = "binaries")]
+        public IList<Binary> Binaries { get; set; }
+
+        /// <summary>
+        /// </summary>
         [JsonProperty(PropertyName = "exception")]
         public Exception Exception { get; set; }
 
@@ -83,6 +89,16 @@ namespace Microsoft.AppCenter.Ingestion.Models
             if (Exception == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Exception");
+            }
+            if (Binaries != null)
+            {
+                foreach (var element in Binaries)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
             }
             if (Exception != null)
             {

@@ -28,7 +28,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// architecture.</param>
         /// <param name="architectureVariantId">CPU architecture
         /// variant.</param>
-        public Binary(System.Guid id, string startAddress, string endAddress, string name, string path, string architecture = default(string), long? primaryArchitectureId = default(long?), long? architectureVariantId = default(long?))
+        public Binary(string id, string startAddress, string endAddress, string name, string path, string architecture = default(string), long? primaryArchitectureId = default(long?), long? architectureVariantId = default(long?))
         {
             Id = id;
             StartAddress = startAddress;
@@ -49,7 +49,7 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public System.Guid Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// </summary>
@@ -96,6 +96,10 @@ namespace Microsoft.AppCenter.Ingestion.Models
         /// </exception>
         public virtual void Validate()
         {
+            if (Id == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Id");
+            }
             if (StartAddress == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "StartAddress");
