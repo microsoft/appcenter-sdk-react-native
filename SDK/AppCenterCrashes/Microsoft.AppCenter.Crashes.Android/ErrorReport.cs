@@ -19,10 +19,10 @@ namespace Microsoft.AppCenter.Crashes
             var androidStackTrace = androidReport.StackTrace;
             AndroidDetails = new AndroidErrorDetails(androidStackTrace, androidReport.ThreadName);
             iOSDetails = null;
-            byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
-            if (exceptionBytes != null)
+            string exceptionString = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
+            if (exceptionString != null)
             {
-                StackTrace = CrashesUtils.DeserializeException(exceptionBytes);
+                StackTrace = exceptionString;
             }
         }
     }

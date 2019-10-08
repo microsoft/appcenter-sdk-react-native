@@ -132,8 +132,8 @@ namespace Microsoft.AppCenter.Crashes
                 AppCenterLog.Error(LogTag, $"Unhandled Exception from source={source}", exception);
                 var javaThrowable = exception as Throwable;
                 var modelException = GenerateModelException(exception, true);
-                byte[] rawException = javaThrowable == null ? CrashesUtils.SerializeException(exception) : null;
-                WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), javaThrowable, modelException, rawException);
+                string rawExceptionString = javaThrowable == null ? exception.ToString() : null;
+                WrapperSdkExceptionManager.SaveWrapperException(Thread.CurrentThread(), javaThrowable, modelException, rawExceptionString);
                 _exception = exception;
             }
         }
