@@ -9,7 +9,7 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
     /// <summary>
     /// Error log for managed platforms (such as Android Dalvik/ART).
     /// </summary>
-    [JsonObject("JsonIdentifier")]
+    [JsonObject(JsonIdentifier)]
     public partial class ManagedErrorLog : AbstractErrorLog
     {
         internal const string JsonIdentifier = "managedError";
