@@ -9,6 +9,11 @@
   - Accounts in any Azure AD directory
   - Accounts in any Azure AD directory and personal Microsoft accounts
 
+### App Center Crashes
+
+#### Android
+* **[Behavior Change]** Fixes a security issue in the way native Android crashes are processed. The exception message will now be `null` and the exception stack trace might look slightly different.
+
 ___
 
 ## Version 2.4.0
