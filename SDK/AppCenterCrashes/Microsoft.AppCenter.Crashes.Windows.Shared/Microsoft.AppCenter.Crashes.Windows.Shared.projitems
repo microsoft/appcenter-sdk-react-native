@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ManagedErrorLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\StackFrame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ErrorExceptionAndBinaries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ErrorLogHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IProcessInformation.cs" />
   </ItemGroup>
