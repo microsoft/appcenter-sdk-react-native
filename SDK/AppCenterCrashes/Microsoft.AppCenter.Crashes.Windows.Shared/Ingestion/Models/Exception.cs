@@ -1,5 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System.Collections.Generic;
 using Microsoft.AppCenter.Ingestion.Models;
@@ -10,13 +9,14 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
     /// <summary>
     /// Exception definition for any platform.
     /// </summary>
-    public class Exception
+    public partial class Exception
     {
         /// <summary>
         /// Initializes a new instance of the Exception class.
         /// </summary>
         public Exception()
         {
+            CustomInit();
         }
 
         /// <summary>
@@ -26,20 +26,28 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         /// <param name="message">Exception reason.</param>
         /// <param name="stackTrace">Raw stack trace. Sent when the frames
         /// property is either missing or unreliable.</param>
+        /// <param name="frames">Stack frames. Optional.</param>
         /// <param name="innerExceptions">Inner exceptions of this
         /// exception.</param>
         /// <param name="wrapperSdkName">Name of the wrapper SDK that emitted
         /// this exeption. Consists of the name of the SDK and the wrapper
         /// platform, e.g. "appcenter.xamarin", "hockeysdk.cordova".
         /// </param>
-        public Exception(string type, string message = default(string), string stackTrace = default(string), IList<Exception> innerExceptions = default(IList<Exception>), string wrapperSdkName = default(string))
+        public Exception(string type, string message = default(string), string stackTrace = default(string), IList<StackFrame> frames = default(IList<StackFrame>), IList<Exception> innerExceptions = default(IList<Exception>), string wrapperSdkName = default(string))
         {
             Type = type;
             Message = message;
             StackTrace = stackTrace;
+            Frames = frames;
             InnerExceptions = innerExceptions;
             WrapperSdkName = wrapperSdkName;
+            CustomInit();
         }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
 
         /// <summary>
         /// Gets or sets exception type.
@@ -61,6 +69,12 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         public string StackTrace { get; set; }
 
         /// <summary>
+        /// Gets or sets stack frames. Optional.
+        /// </summary>
+        [JsonProperty(PropertyName = "frames")]
+        public IList<StackFrame> Frames { get; set; }
+
+        /// <summary>
         /// Gets or sets inner exceptions of this exception.
         /// </summary>
         [JsonProperty(PropertyName = "innerExceptions")]
@@ -70,6 +84,7 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         /// Gets or sets name of the wrapper SDK that emitted this exeption.
         /// Consists of the name of the SDK and the wrapper platform, e.g.
         /// "appcenter.xamarin", "hockeysdk.cordova".
+        ///
         /// </summary>
         [JsonProperty(PropertyName = "wrapperSdkName")]
         public string WrapperSdkName { get; set; }
