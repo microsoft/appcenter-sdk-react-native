@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Windows.Utils;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 
@@ -35,7 +36,9 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 modelException.InnerExceptions = modelException.InnerExceptions ?? new List<ModelException>();
                 modelException.InnerExceptions.Add(CreateModelExceptionAndBinaries(exception.InnerException).Exception);
             }
-            return new ErrorExceptionAndBinaries { Exception = modelException, Binaries = null };
+
+            // The binaries needs to be set to empty list even when .NET native not used in the app. Known bug in backend.
+            return new ErrorExceptionAndBinaries { Exception = modelException, Binaries = new List<Binary>() };
         }
     }
 }
