@@ -41,6 +41,12 @@ export default class CrashesScreen extends Component {
     const lastSessionStatus = crashedInLastSession ? 'Crashed' : 'OK';
     this.setState({ lastSessionStatus });
 
+    if (crashedInLastSession) {
+      const crashReport = await Crashes.lastSessionCrashReport();
+      const crashReportString = JSON.stringify(crashReport, null, 4);
+      console.log('App crashed in the last session. Crashes.lastSessionCrashReport(): ', crashReportString);
+    }
+
     const hasReceivedMemoryWarning = await Crashes.hasReceivedMemoryWarningInLastSession();
     const memoryWarning = hasReceivedMemoryWarning ? 'Received' : 'No';
     this.setState({ memoryWarning });
