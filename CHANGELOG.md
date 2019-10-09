@@ -12,7 +12,8 @@
 ### App Center Crashes
 
 #### Android
-* **[Behavior Change]** Fixes a security issue in the way native Android crashes are processed. The exception message will now be `null` and the exception stack trace might look slightly different.
+
+* **[Behavior change]** Fix a security issue in the way native Android crashes are processed. The exception message is now `null` and the exception stack trace is the raw Java stack trace.
 
 ___
 
