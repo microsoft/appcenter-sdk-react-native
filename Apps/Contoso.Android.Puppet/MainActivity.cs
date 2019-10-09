@@ -92,10 +92,10 @@ namespace Contoso.Android.Puppet
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-            AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
-            AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable + " (should be null)");
-            AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.StackTrace);
-        });
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable + " (should be null)");
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.StackTrace);
+            });
         }
 
         void PrintNotification(object sender, PushNotificationReceivedEventArgs e)
