@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Synchronization;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.Activation;
@@ -21,6 +22,8 @@ namespace Microsoft.AppCenter.Push
     public partial class Push
     {
         private PushNotificationChannel _channel;
+        private UserIdContext userIdContext;
+        private string latestPushToken;
 
         protected override int TriggerCount => 1;
 
@@ -56,6 +59,19 @@ namespace Microsoft.AppCenter.Push
             }
         }
 
+        public void OnUserIdChange(object sender, UserIdEventArgs e)
+        {
+            if (this.latestPushToken != null)
+            {
+                var pushInstallationLog = new PushInstallationLog(null, null, this.latestPushToken, Guid.NewGuid(), e.UserId);
+#pragma warning disable CS4014
+                Channel.EnqueueAsync(pushInstallationLog);
+#pragma warning restore
+            }
+
+        }
+
+
         /// <summary>
         /// If enabled, register push channel and send URI to backend.
         /// Also start intercepting pushes.
@@ -80,13 +96,16 @@ namespace Microsoft.AppCenter.Push
                                 // Save channel member
                                 _channel = channel;
 
+                                // Subscribe to UserId Change
+                                UserIdContext.UserIdChangeReceived += OnUserIdChange;
+
                                 // Subscribe to push
                                 channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
 
                                 // Send channel URI to backend
                                 AppCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
 
-                                var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid());
+                                var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid(), UserIdContext.Instance.UserId);
 
                                 // Do not await the call to EnqueueAsync or the UI thread can be blocked!
 #pragma warning disable CS4014
@@ -107,6 +126,7 @@ namespace Microsoft.AppCenter.Push
             }
             else if (_channel != null)
             {
+                UserIdContext.UserIdChangeReceived -= OnUserIdChange;
                 _channel.PushNotificationReceived -= OnPushNotificationReceivedHandler;
             }
         }

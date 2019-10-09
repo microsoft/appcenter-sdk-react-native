@@ -24,6 +24,13 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// </summary>
         public static int USER_ID_APP_CENTER_MAX_LENGTH = 256;
 
+        // The lock is static. Instance methods are not necessarily thread safe, but static methods are
+        private static readonly object UserIdContextLock = new object();
+
+        private string _userId = "";
+
+        public static event EventHandler<UserIdEventArgs> UserIdChangeReceived;
+
         /// <summary>
         /// Unique instance.
         /// </summary>
@@ -48,7 +55,31 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// <summary>
         /// Current user identifier.
         /// </summary>
-        public string UserId { get; set; }
+        public string UserId
+        {
+            get
+            {
+                lock (UserIdContextLock)
+                {
+                    return _userId;
+                }
+
+            }
+
+            set
+            {
+                lock (UserIdContextLock)
+                {
+                    /// if (_userId != null && !_userId.Equals(value))
+                    if (!_userId.Equals(value))
+                    {
+                        _userId = value;
+                        UserIdChangeReceived?.Invoke(null, new UserIdEventArgs { UserId = value });
+                    }
+                }
+
+            }
+        }
 
         /// <summary>
         /// Check if userId is valid for App Center.
