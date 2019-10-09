@@ -24,6 +24,23 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             Assert.IsNotNull(UserIdContext.Instance);
         }
 
+        [TestMethod]
+        public void GetUserId()
+        {
+            Assert.AreEqual(UserIdContext.Instance.UserId, "");
+        }
+
+
+        [TestMethod]
+        public void SetUserId()
+        {
+            var userId = "userId";
+            UserIdContext.Instance.UserId = userId;
+            Assert.AreEqual(UserIdContext.Instance.UserId, userId);
+            // how to check if the handler is invoked
+            // UserIdContext.UserIdChangeReceived.Should().NotBeNull();
+        }
+
         /// <summary>
         /// Verify User Id max length
         /// </summary>

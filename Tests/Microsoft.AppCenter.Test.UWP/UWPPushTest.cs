@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.Data.Xml.Dom;
 
@@ -152,6 +153,19 @@ namespace Microsoft.AppCenter.Test.UWP
             Assert.AreEqual(expectedResult.Message, actualResult.Message);
             Assert.AreEqual(expectedResult.CustomData["key1"], actualResult.CustomData["key1"]);
             Assert.AreEqual(expectedResult.CustomData["key2"], actualResult.CustomData["key2"]);
+        }
+
+        [TestMethod]
+        public void GetEnabled1()
+        {
+            // Push.Instance = new Push();
+            Push.Push.SetEnabledAsync(false).Wait();
+            Assert.IsFalse(Push.Push.IsEnabledAsync().Result);
+
+            Push.Push.SetEnabledAsync(true).Wait();
+            Assert.IsTrue(Push.Push.IsEnabledAsync().Result);
+
+            
         }
     }
 }

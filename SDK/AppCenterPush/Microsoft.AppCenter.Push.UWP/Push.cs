@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
@@ -22,7 +23,7 @@ namespace Microsoft.AppCenter.Push
     public partial class Push
     {
         private PushNotificationChannel _channel;
-        private UserIdContext userIdContext;
+        //private UserIdContext userIdContext;
         private string latestPushToken;
 
         protected override int TriggerCount => 1;
@@ -79,6 +80,7 @@ namespace Microsoft.AppCenter.Push
         /// </summary>
         private void ApplyEnabledState(bool enabled)
         {
+            Debugger.Launch();
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
