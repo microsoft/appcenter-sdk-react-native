@@ -2,6 +2,12 @@
 
 ## Version 2.5.0 (Under development)
 
+### App Center Crashes
+
+#### Android
+
+* **[Behavior change]** Fix a security issue in the way native Android crashes are processed. The exception message is now `null` and the exception stack trace is the raw Java stack trace.
+
 ___
 
 ## Version 2.4.0
