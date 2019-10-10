@@ -64,7 +64,6 @@ namespace Contoso.Android.Puppet
             AppCenter.SetLogUrl("https://in-integration.dev.avalanch.es");
             Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
             Distribute.SetApiUrl("https://asgard-int.trafficmanager.net/api/v0.1");
-            Distribute.SetEnabledForDebuggableBuild(true);
 
             // Enable Firebase Analytics if set
             var enableAnalytics = Preferences.SharedPreferences.GetBoolean(Constants.FirebaseAnalyticsEnabledKey, false);
@@ -92,9 +91,8 @@ namespace Contoso.Android.Puppet
             });
             Crashes.GetLastSessionCrashReportAsync().ContinueWith(report =>
             {
-                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Exception=" + report.Result?.Exception);
-                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.Throwable + " (should be null)");
-                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.Throwable=" + report.Result?.AndroidDetails?.StackTrace);
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.DotNetStackTrace=" + report.Result?.StackTrace);
+                AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.JavaStackTrace=" + report.Result?.AndroidDetails?.StackTrace);
             });
         }
 
@@ -114,65 +112,16 @@ namespace Contoso.Android.Puppet
         void SendingErrorReportHandler(object sender, SendingErrorReportEventArgs e)
         {
             AppCenterLog.Info(LogTag, "Sending error report");
-
-            var args = e as SendingErrorReportEventArgs;
-            ErrorReport report = args.Report;
-
-            //test some values
-            if (report.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
-            }
-            else if (report.AndroidDetails != null)
-            {
-                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-            }
         }
 
         void SentErrorReportHandler(object sender, SentErrorReportEventArgs e)
         {
             AppCenterLog.Info(LogTag, "Sent error report");
-
-            var args = e as SentErrorReportEventArgs;
-            ErrorReport report = args.Report;
-
-            //test some values
-            if (report.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
-            }
-            else
-            {
-                AppCenterLog.Info(LogTag, "No system exception was found");
-            }
-
-            if (report.AndroidDetails != null)
-            {
-                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-            }
         }
 
         void FailedToSendErrorReportHandler(object sender, FailedToSendErrorReportEventArgs e)
         {
             AppCenterLog.Info(LogTag, "Failed to send error report");
-
-            var args = e as FailedToSendErrorReportEventArgs;
-            ErrorReport report = args.Report;
-
-            //test some values
-            if (report.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, report.Exception.ToString());
-            }
-            else if (report.AndroidDetails != null)
-            {
-                AppCenterLog.Info(LogTag, report.AndroidDetails.ThreadName);
-            }
-
-            if (e.Exception != null)
-            {
-                AppCenterLog.Info(LogTag, "There is an exception associated with the failure");
-            }
         }
 
         bool ShouldProcess(ErrorReport report)
