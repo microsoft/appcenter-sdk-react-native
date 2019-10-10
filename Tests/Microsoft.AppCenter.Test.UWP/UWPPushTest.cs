@@ -177,7 +177,6 @@ namespace Microsoft.AppCenter.Test.UWP
         [TestMethod]
         public void GetEnabled()
         {
-            System.Diagnostics.Debug.WriteLine("here!!!!!");
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.SetEnabledAsync(false).Wait();
             Assert.IsFalse(Push.Push.IsEnabledAsync().Result);

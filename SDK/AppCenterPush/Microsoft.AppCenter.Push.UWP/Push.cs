@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Push.Ingestion.Models;
 using Microsoft.AppCenter.Utils;
@@ -24,7 +23,8 @@ namespace Microsoft.AppCenter.Push
     {
         private PushNotificationChannel _channel;
 
-        private string latestPushToken;
+        // expose for testing
+        internal string latestPushToken;
 
         protected override int TriggerCount => 1;
 
