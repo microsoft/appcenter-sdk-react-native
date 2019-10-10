@@ -1,16 +1,35 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
+using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Windows.Data.Xml.Dom;
+
+
 
 namespace Microsoft.AppCenter.Test.UWP
 {
     [TestClass]
     public class UWPPushTest
     {
+        private Mock<IChannelGroup> _mockChannelGroup;
+        private Mock<IChannelUnit> _mockChannel;
+
+        [TestInitialize]
+        public void InitializeUWPPushTest()
+        {
+            _mockChannelGroup = new Mock<IChannelGroup>();
+            _mockChannel = new Mock<IChannelUnit>();
+            _mockChannelGroup.Setup(
+                    group => group.AddChannel(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<TimeSpan>(), It.IsAny<int>()))
+                .Returns(_mockChannel.Object);
+        }
+
+
         /// <summary>
         /// Verify ParseLaunchString works when launch string is null
         /// </summary>
@@ -156,16 +175,37 @@ namespace Microsoft.AppCenter.Test.UWP
         }
 
         [TestMethod]
-        public void GetEnabled1()
+        public void GetEnabled()
         {
-            // Push.Instance = new Push();
+            System.Diagnostics.Debug.WriteLine("here!!!!!");
+            Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.SetEnabledAsync(false).Wait();
             Assert.IsFalse(Push.Push.IsEnabledAsync().Result);
 
             Push.Push.SetEnabledAsync(true).Wait();
             Assert.IsTrue(Push.Push.IsEnabledAsync().Result);
+            // Assert.IsNotNull(Push.Push.Instance.latestPushToken);
+        }
 
-            
+        [TestMethod]
+        public void OnUserIdChange()
+        {
+            Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+
+            // when token is null
+            Push.Push.Instance.OnUserIdChange(null, null);
+
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            log.PushToken == null)), Times.Never());
+
+            // when token is not null
+            Push.Push.Instance.latestPushToken = "token";
+            var e = new UserIdEventArgs { UserId = "userId" };
+            Push.Push.Instance.OnUserIdChange(null, e);
+
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            log.PushToken == Push.Push.Instance.latestPushToken &&
+            log.UserId == e.UserId)), Times.Once());
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Microsoft.AppCenter.Push
     public partial class Push
     {
         private PushNotificationChannel _channel;
-        //private UserIdContext userIdContext;
+
         private string latestPushToken;
 
         protected override int TriggerCount => 1;
@@ -64,6 +64,7 @@ namespace Microsoft.AppCenter.Push
         {
             if (this.latestPushToken != null)
             {
+
                 var pushInstallationLog = new PushInstallationLog(null, null, this.latestPushToken, Guid.NewGuid(), e.UserId);
 #pragma warning disable CS4014
                 Channel.EnqueueAsync(pushInstallationLog);
@@ -72,7 +73,6 @@ namespace Microsoft.AppCenter.Push
 
         }
 
-
         /// <summary>
         /// If enabled, register push channel and send URI to backend.
         /// Also start intercepting pushes.
@@ -80,7 +80,7 @@ namespace Microsoft.AppCenter.Push
         /// </summary>
         private void ApplyEnabledState(bool enabled)
         {
-            Debugger.Launch();
+            // Debugger.Launch();
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive

@@ -90,7 +90,6 @@ namespace Microsoft.AppCenter.Push
 
             set
             {
-                Debugger.Launch();
                 using (_mutex.GetLock())
                 {
                     var prevValue = InstanceEnabled;
