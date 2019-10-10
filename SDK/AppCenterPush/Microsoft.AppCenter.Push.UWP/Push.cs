@@ -92,8 +92,8 @@ namespace Microsoft.AppCenter.Push
                     {
                         using (_mutex.GetLock(state))
                         {
-                            var pushToken = channel?.Uri;
-                            if (!string.IsNullOrEmpty(pushToken))
+                            this.latestPushToken = channel?.Uri;
+                            if (!string.IsNullOrEmpty(this.latestPushToken))
                             {
                                 // Save channel member
                                 _channel = channel;
@@ -105,9 +105,9 @@ namespace Microsoft.AppCenter.Push
                                 channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
 
                                 // Send channel URI to backend
-                                AppCenterLog.Debug(LogTag, $"Push token '{pushToken}'");
+                                AppCenterLog.Debug(LogTag, $"Push token '{this.latestPushToken}'");
 
-                                var pushInstallationLog = new PushInstallationLog(null, null, pushToken, Guid.NewGuid(), UserIdContext.Instance.UserId);
+                                var pushInstallationLog = new PushInstallationLog(null, null, this.latestPushToken, Guid.NewGuid(), UserIdContext.Instance.UserId);
 
                                 // Do not await the call to EnqueueAsync or the UI thread can be blocked!
 #pragma warning disable CS4014
