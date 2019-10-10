@@ -91,7 +91,10 @@ namespace Contoso.Forms.Puppet
         {
             string message = LogMessageEntryCell.Text;
             string tag = LogTagEntryCell.Text;
-            LogFunctions[LogWriteLevel](tag, message);
+            if (tag != null && message != null)
+            {
+                LogFunctions[LogWriteLevel](tag, message);
+            }
         }
 
         async void UpdateEnabled(object sender, ToggledEventArgs e)
