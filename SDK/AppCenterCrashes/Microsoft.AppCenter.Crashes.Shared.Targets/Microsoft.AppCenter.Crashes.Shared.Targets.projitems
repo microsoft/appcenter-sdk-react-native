@@ -9,7 +9,6 @@
     <Import_RootNamespace>Microsoft.AppCenter.Crashes</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CrashesUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestCrashException.cs" />
   </ItemGroup>
 </Project>
