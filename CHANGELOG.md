@@ -14,7 +14,7 @@
 
 #### UWP/WPF/WinForms
 
-* **[Feature]** Allow users to set userId that applies to crashes, error.
+* **[Feature]** Allow users to set userId that applies to crashes and errors.
 ___
 
 ## Version 2.4.0-preview
