@@ -77,9 +77,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UserIdContext.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="D:\appcenter\appcenter-sdk-dotnet\SDK\AppCenter\Microsoft.AppCenter.Windows.Shared\Utils\BlankPage1.xaml.cs">
-      <DependentUpon>BlankPage1.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
 </Project>
