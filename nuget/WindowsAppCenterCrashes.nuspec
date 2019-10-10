@@ -28,6 +28,7 @@
     <!-- UWP -->
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/uap10.0" />
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/uap10.0" />
+    <file src="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/Properties/Microsoft.AppCenter.Crashes.UWP.rd.xml" target="lib/uap10.0/Properties" />
 
     <!-- WindowsDesktop (WPF and WinForms) for .NET framework -->
     <file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net45" />
@@ -36,5 +37,6 @@
     <!-- WindowsDesktop (WPF and WinForms) for .NET Core -->
     <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/netcoreapp3.0" />
     <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/netcoreapp3.0" />
+
   </files>
 </package>
