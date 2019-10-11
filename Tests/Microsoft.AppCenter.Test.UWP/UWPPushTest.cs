@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Windows.Data.Xml.Dom;
 
-
 namespace Microsoft.AppCenter.Test.UWP
 {
     [TestClass]
@@ -176,33 +175,40 @@ namespace Microsoft.AppCenter.Test.UWP
         [TestMethod]
         public void GetEnabled()
         {
-            Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.SetEnabledAsync(false).Wait();
             Assert.IsFalse(Push.Push.IsEnabledAsync().Result);
 
             Push.Push.SetEnabledAsync(true).Wait();
             Assert.IsTrue(Push.Push.IsEnabledAsync().Result);
-            // Assert.IsNotNull(Push.Push.Instance.latestPushToken);
         }
 
+        /// <summary>
+        /// Verify OnUserIdUpdated works with LatestPushToken being null
+        /// </summary>
         [TestMethod]
-        public void OnUserIdChange()
+        public void OnUserIdUpdatedTokenNull()
         {
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-
-            // when token is null
-            Push.Push.Instance.OnUserIdChange(null, null);
+            Push.Push.Instance.LatestPushToken = null;
+            Push.Push.Instance.OnUserIdUpdated(null, null);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
             log.PushToken == null)), Times.Never());
+        }
 
-            // when token is not null
-            Push.Push.Instance.latestPushToken = "token";
-            var e = new UserIdEventArgs { UserId = "userId" };
-            Push.Push.Instance.OnUserIdChange(null, e);
+        /// <summary>
+        /// Verify OnUserIdUpdated works with LatestPushToken being not null
+        /// </summary>
+        [TestMethod]
+        public void OnUserIdUpdatedTokenNotNull()
+        {
+            Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Push.Push.Instance.LatestPushToken = "token";
+            var e = new UserIdUpdatedEventArgs { UserId = "userId" };
+            Push.Push.Instance.OnUserIdUpdated(null, e);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            log.PushToken == Push.Push.Instance.latestPushToken &&
+            log.PushToken == Push.Push.Instance.LatestPushToken &&
             log.UserId == e.UserId)), Times.Once());
         }
     }

@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Push
         private PushNotificationChannel _channel;
 
         // expose for testing
-        internal string latestPushToken;
+        internal string LatestPushToken { get; set; }
 
         protected override int TriggerCount => 1;
 
@@ -60,16 +60,15 @@ namespace Microsoft.AppCenter.Push
             }
         }
 
-        public void OnUserIdChange(object sender, UserIdEventArgs e)
+        public void OnUserIdUpdated(object sender, UserIdUpdatedEventArgs e)
         {
-            if (this.latestPushToken != null)
+            if (LatestPushToken != null)
             {
-                var pushInstallationLog = new PushInstallationLog(null, null, this.latestPushToken, Guid.NewGuid(), e.UserId);
+                var pushInstallationLog = new PushInstallationLog(null, null, LatestPushToken, Guid.NewGuid(), e.UserId);
 #pragma warning disable CS4014
                 Channel.EnqueueAsync(pushInstallationLog);
 #pragma warning restore
             }
-
         }
 
         /// <summary>
@@ -79,7 +78,6 @@ namespace Microsoft.AppCenter.Push
         /// </summary>
         private void ApplyEnabledState(bool enabled)
         {
-            // Debugger.Launch();
             if (enabled)
             {
                 // We expect caller of this method to lock on _mutex, we can't do it here as that lock is not recursive
@@ -91,22 +89,22 @@ namespace Microsoft.AppCenter.Push
                     {
                         using (_mutex.GetLock(state))
                         {
-                            this.latestPushToken = channel?.Uri;
-                            if (!string.IsNullOrEmpty(this.latestPushToken))
+                            LatestPushToken = channel?.Uri;
+                            if (!string.IsNullOrEmpty(LatestPushToken))
                             {
                                 // Save channel member
                                 _channel = channel;
 
                                 // Subscribe to UserId Change
-                                UserIdContext.UserIdChangeReceived += OnUserIdChange;
+                                UserIdContext.UserIdUpdated += OnUserIdUpdated;
 
                                 // Subscribe to push
                                 channel.PushNotificationReceived += OnPushNotificationReceivedHandler;
 
                                 // Send channel URI to backend
-                                AppCenterLog.Debug(LogTag, $"Push token '{this.latestPushToken}'");
+                                AppCenterLog.Debug(LogTag, $"Push token '{LatestPushToken}'");
 
-                                var pushInstallationLog = new PushInstallationLog(null, null, this.latestPushToken, Guid.NewGuid(), UserIdContext.Instance.UserId);
+                                var pushInstallationLog = new PushInstallationLog(null, null, LatestPushToken, Guid.NewGuid(), UserIdContext.Instance.UserId);
 
                                 // Do not await the call to EnqueueAsync or the UI thread can be blocked!
 #pragma warning disable CS4014
@@ -127,7 +125,7 @@ namespace Microsoft.AppCenter.Push
             }
             else if (_channel != null)
             {
-                UserIdContext.UserIdChangeReceived -= OnUserIdChange;
+                UserIdContext.UserIdUpdated -= OnUserIdUpdated;
                 _channel.PushNotificationReceived -= OnPushNotificationReceivedHandler;
             }
         }

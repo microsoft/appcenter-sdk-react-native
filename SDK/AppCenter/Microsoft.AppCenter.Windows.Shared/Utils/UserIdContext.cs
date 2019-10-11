@@ -29,7 +29,10 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
 
         private string _userId = "";
 
-        public static event EventHandler<UserIdEventArgs> UserIdChangeReceived;
+        /// <summary>
+        /// Event handler to subscribe to the user id update.
+        /// </summary>
+        public static event EventHandler<UserIdUpdatedEventArgs> UserIdUpdated;
 
         /// <summary>
         /// Unique instance.
@@ -74,7 +77,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                     if (!_userId.Equals(value))
                     {
                         _userId = value;
-                        UserIdChangeReceived?.Invoke(null, new UserIdEventArgs { UserId = value });
+                        UserIdUpdated?.Invoke(null, new UserIdUpdatedEventArgs { UserId = value });
                     }
                 }
 
