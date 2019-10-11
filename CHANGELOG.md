@@ -4,10 +4,9 @@
 
 ### App Center
 
-
 #### Windows
 
-* **[Fix]** Updated Newtonsoft.Json dependency.
+* **[Fix]** Update `Newtonsoft.Json` dependency to version `12.0.2`.
 
 #### .NET Core 3
 
