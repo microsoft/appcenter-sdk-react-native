@@ -10,7 +10,6 @@ using Moq;
 using Windows.Data.Xml.Dom;
 
 
-
 namespace Microsoft.AppCenter.Test.UWP
 {
     [TestClass]
