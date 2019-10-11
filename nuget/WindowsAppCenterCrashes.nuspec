@@ -37,6 +37,5 @@
     <!-- WindowsDesktop (WPF and WinForms) for .NET Core -->
     <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/netcoreapp3.0" />
     <file src="$windows_desktop_netcore_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/netcoreapp3.0" />
-
   </files>
 </package>
