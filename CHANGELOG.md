@@ -4,6 +4,11 @@
 
 ### App Center
 
+
+#### Windows
+
+* **[Fix]** Updated Newtonsoft.Json dependency.
+
 #### .NET Core 3
 
 * **[Fix]** Fix using stable versions of NuGet dependencies for .NET Core 3.0.
