@@ -112,8 +112,8 @@ const Crashes = {
             if (reports.length > 0) {
                 const filteredReportIds = [];
                 reports.forEach((report) => {
-                    if (!listenerMap.shouldProcess ||
-                        listenerMap.shouldProcess(report)) {
+                    if (!listenerMap.shouldProcess
+                        || listenerMap.shouldProcess(report)) {
                         filteredReports.push(report);
                         filteredReportIds.push(report.id);
                     }
@@ -129,7 +129,7 @@ const Crashes = {
                 Crashes.notifyUserConfirmation(UserConfirmation.SEND);
             }
         })
-        .catch(error => console.log(error.message));
+        .catch((error) => console.log(error.message));
     }
 };
 
@@ -140,8 +140,8 @@ const Helper = {
         }
         filteredReports.forEach((report) => {
             Promise.resolve(getErrorAttachmentsMethod(report))
-            .then(attachments => AppCenterReactNativeCrashes.sendErrorAttachments(attachments, report.id))
-            .catch(error => AppCenterLog.error(LOG_TAG, `Could not send error attachments. Error: ${error}`));
+            .then((attachments) => AppCenterReactNativeCrashes.sendErrorAttachments(attachments, report.id))
+            .catch((error) => AppCenterLog.error(LOG_TAG, `Could not send error attachments. Error: ${error}`));
         });
 
         // Prevent multipe calls if shouldAwaitUserConfirmation is false and user calling notifyUserConfirmation for some reason

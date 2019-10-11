@@ -25,6 +25,7 @@
         "jsx-a11y/href-no-hash": 0,
         "indent": 0,
         "import/no-unresolved": 0,
-        "no-console": 0
+        "no-console": 0,
+        "max-classes-per-file": 0
     }
 }
