@@ -26,6 +26,5 @@
 -->
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
   <Library Name="Microsoft.AppCenter.Crashes.UWP">
-    <Type Name="System.Text.Encoding" Dynamic="Required All" />
   </Library>
 </Directives>
