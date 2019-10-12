@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.AppCenter.Crashes.Windows.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Microsoft.AppCenter.Crashes.Ingestion.Models;
-using Microsoft.AppCenter.Crashes.Windows.Utils;
 using ModelBinary = Microsoft.AppCenter.Crashes.Ingestion.Models.Binary;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 using ModelStackFrame = Microsoft.AppCenter.Crashes.Ingestion.Models.StackFrame;
@@ -23,9 +22,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
         {
             var binaries = new Dictionary<long, ModelBinary>();
             var modelException = ProcessException(exception, null, binaries);
-
-            // TODO this will send empty binary array for non .NET native builds. But currently backend requires the property to be set.
-            return new ErrorExceptionAndBinaries { Binaries = binaries.Values.ToList(), Exception = modelException };
+            return new ErrorExceptionAndBinaries { Binaries = binaries.Count > 0 ? binaries.Values.ToList() : null, Exception = modelException };
         }
 
         private static ModelException ProcessException(System.Exception exception, ModelException outerException, Dictionary<long, ModelBinary> seenBinaries)
