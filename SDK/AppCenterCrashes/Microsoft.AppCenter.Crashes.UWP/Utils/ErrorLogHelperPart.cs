@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ModelBinary = Microsoft.AppCenter.Crashes.Ingestion.Models.Binary;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
 using ModelStackFrame = Microsoft.AppCenter.Crashes.Ingestion.Models.StackFrame;
@@ -88,9 +89,8 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         private static unsafe ModelBinary ImageToBinary(IntPtr imageBase)
         {
-            // TODO - we are told that this "int.MaxValue" is safe because PEReader will only read what it must read and thus won't go out of bounds. If this is a problem, some of the parsing code from HockeyApp can be ported to get an exact size.
-            // That parsing code is here: https://github.com/bitstadium/HockeySDK-Windows/blob/af56dd7f7b10f9d5f63ce33bd68dbaab8c504faf/Src/Kit.UWP/Extensibility/PEImageReader.cs#L88
-            var reader = new System.Reflection.PortableExecutable.PEReader((byte*)imageBase.ToPointer(), int.MaxValue, true);
+            var imageSize = GetImageSize(imageBase);
+            var reader = new System.Reflection.PortableExecutable.PEReader((byte*)imageBase.ToPointer(), imageSize, true);
             var debugdir = reader.ReadDebugDirectory();
             var codeViewEntry = debugdir.First(entry => entry.Type == System.Reflection.PortableExecutable.DebugDirectoryEntryType.CodeView);
             var codeView = reader.ReadCodeViewDebugDirectoryData(codeViewEntry);
@@ -104,6 +104,23 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 Name = string.IsNullOrEmpty(pdbPath) == false ? Path.GetFileNameWithoutExtension(pdbPath) : null,
                 Id = string.Format(CultureInfo.InvariantCulture, "{0:N}-{1}", codeView.Guid, codeView.Age)
             };
+        }
+
+        private static int GetImageSize(IntPtr imageBase)
+        {
+            // These constants come from the PE format described in documentation: https://docs.microsoft.com/en-us/windows/win32/debug/pe-format
+            var sizeOfImageOffset = 56;
+            var peSignatureOffsetLocation = 0x3C;
+            var dwordSizeInBytes = 4;
+            var sizeofCOFFFileHeader = 20;
+            var baseOfDataSize = 4; //TODO verify this variable name.
+            var peHeaderBytes = new byte[dwordSizeInBytes];
+            Marshal.Copy(imageBase + peSignatureOffsetLocation, peHeaderBytes, 0, peHeaderBytes.Length);
+            var peHeaderOffset = BitConverter.ToInt32(peHeaderBytes, 0);
+            var peOptionalHeaderOffset = peHeaderOffset + baseOfDataSize + sizeofCOFFFileHeader;
+            var peOptionalHeaderBytes = new byte[dwordSizeInBytes];
+            Marshal.Copy(imageBase + peOptionalHeaderOffset + sizeOfImageOffset, peOptionalHeaderBytes, 0, peOptionalHeaderBytes.Length);
+            return BitConverter.ToInt32(peOptionalHeaderBytes, 0);
         }
     }
 }
