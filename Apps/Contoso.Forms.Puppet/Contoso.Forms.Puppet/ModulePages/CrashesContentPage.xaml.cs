@@ -52,7 +52,7 @@ namespace Contoso.Forms.Puppet
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
                 textAttachment is string text)
             {
-                TextAttachmentButton.Text = text;
+                TextAttachmentContent.Text = text;
             }
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
@@ -77,7 +77,7 @@ namespace Contoso.Forms.Puppet
         async void TextAttachment(object sender, EventArgs e)
         {
             var text = await TextAttachmentView.Show(Navigation);
-            //((TextCell)sender).Detail = text;
+            TextAttachmentContent.Text = text;
             Application.Current.Properties[TextAttachmentKey] = text;
             await Application.Current.SavePropertiesAsync();
         }
