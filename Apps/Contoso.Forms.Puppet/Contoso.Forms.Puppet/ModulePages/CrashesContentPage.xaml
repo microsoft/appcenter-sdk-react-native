@@ -5,10 +5,16 @@
             <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled" />
             <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell" />
             <ViewCell Tapped="TextAttachment">
-                <Button Text="Text Attachment" x:Name="TextAttachmentCell" Clicked="TextAttachment" />
+                <Button Text="Text Attachment" x:Name="TextAttachmentButton" Clicked="TextAttachment" />
             </ViewCell>
             <ViewCell Tapped="FileAttachment">
-                <Button Text="Binary Attachment" x:Name="FileAttachmentCell" Clicked="FileAttachment" />
+                <Button Text="Binary Attachment" x:Name="FileAttachmentButton" Clicked="FileAttachment" />
+            </ViewCell>
+            <ViewCell>
+                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                    <Label Text="Binary Attachment file path" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    <Label Text="No" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="BinaryAttachmentFilePathLabel"/>
+                </StackLayout>
             </ViewCell>
             <ViewCell Tapped="PropertiesCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">

@@ -52,26 +52,20 @@ namespace Contoso.Forms.Puppet
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
                 textAttachment is string text)
             {
-                TextAttachmentCell.Text = text;
+                TextAttachmentButton.Text = text;
             }
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
             {
-                var filePicker = DependencyService.Get<IFilePicker>();
                 try
                 {
-                    FileAttachmentCell.Text = filePicker?.GetFileDescription(file);
+                    BinaryAttachmentFilePathLabel.Text = file;
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Couldn't read file attachment: {0}", e.Message);
                     Application.Current.Properties.Remove(FileAttachmentKey);
                 }
-            }
-            if (XamarinDevice.RuntimePlatform == XamarinDevice.UWP)
-            {
-                TextAttachmentCell.IsEnabled = false;
-                FileAttachmentCell.IsEnabled = false;
             }
         }
 
@@ -83,7 +77,7 @@ namespace Contoso.Forms.Puppet
         async void TextAttachment(object sender, EventArgs e)
         {
             var text = await TextAttachmentView.Show(Navigation);
-            ((TextCell)sender).Detail = text;
+            //((TextCell)sender).Detail = text;
             Application.Current.Properties[TextAttachmentKey] = text;
             await Application.Current.SavePropertiesAsync();
         }
@@ -97,7 +91,7 @@ namespace Contoso.Forms.Puppet
                 return;
             }
             var filePath = await filePicker.PickFile();
-            //((TextCell)sender).Detail = filePath;
+            BinaryAttachmentFilePathLabel.Text = filePath;
             Application.Current.Properties[FileAttachmentKey] = filePath;
             await Application.Current.SavePropertiesAsync();
         }
