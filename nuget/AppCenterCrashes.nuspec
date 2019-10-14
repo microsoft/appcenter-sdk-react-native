@@ -43,7 +43,6 @@
     <!-- UWP -->
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/uap10.0" />
     <file src="$uwp_dir$/Microsoft.AppCenter.Crashes.xml" target="lib/uap10.0" />
-    <file src="SDK/AppCenterCrashes/Microsoft.AppCenter.Crashes.UWP/Properties/Microsoft.AppCenter.Crashes.UWP.rd.xml" target="lib/uap10.0/Microsoft.AppCenter.Crashes/Properties/Microsoft.AppCenter.Crashes.rd.xml" />
 
     <!-- WindowsDesktop (WPF and WinForms) for .NET framework -->
     <file src="$windows_desktop_dir$/Microsoft.AppCenter.Crashes.dll" target="lib/net45" />
