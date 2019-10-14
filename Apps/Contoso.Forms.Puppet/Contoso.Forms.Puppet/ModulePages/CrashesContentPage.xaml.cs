@@ -52,7 +52,7 @@ namespace Contoso.Forms.Puppet
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
                 textAttachment is string text)
             {
-                TextAttachmentCell.Detail = text;
+                TextAttachmentCell.Text = text;
             }
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
@@ -60,7 +60,7 @@ namespace Contoso.Forms.Puppet
                 var filePicker = DependencyService.Get<IFilePicker>();
                 try
                 {
-                    FileAttachmentCell.Detail = filePicker?.GetFileDescription(file);
+                    FileAttachmentCell.Text = filePicker?.GetFileDescription(file);
                 }
                 catch (Exception e)
                 {
@@ -90,15 +90,15 @@ namespace Contoso.Forms.Puppet
 
         async void FileAttachment(object sender, EventArgs e)
         {
-            var filePicker = DependencyService.Get<IFilePicker>();
+            var filePicker = DependencyService.Get<IFilePicker>(); 
             if (filePicker == null)
             {
                 Debug.WriteLine("File attachment isn't implemented");
                 return;
             }
-            var file = await filePicker.PickFile();
-            ((TextCell)sender).Detail = filePicker.GetFileDescription(file);
-            Application.Current.Properties[FileAttachmentKey] = file;
+            var filePath = await filePicker.PickFile();
+            //((TextCell)sender).Detail = filePath;
+            Application.Current.Properties[FileAttachmentKey] = filePath;
             await Application.Current.SavePropertiesAsync();
         }
 

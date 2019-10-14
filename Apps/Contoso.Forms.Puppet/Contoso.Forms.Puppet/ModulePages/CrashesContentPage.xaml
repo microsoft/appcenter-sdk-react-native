@@ -4,8 +4,12 @@
         <TableSection Title="Crashes Settings">
             <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled" />
             <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell" />
-            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment" />
-            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment" />
+            <ViewCell Tapped="TextAttachment">
+                <Button Text="Text Attachment" x:Name="TextAttachmentCell" Clicked="TextAttachment" />
+            </ViewCell>
+            <ViewCell Tapped="FileAttachment">
+                <Button Text="Binary Attachment" x:Name="FileAttachmentCell" Clicked="FileAttachment" />
+            </ViewCell>
             <ViewCell Tapped="PropertiesCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="Properties" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />

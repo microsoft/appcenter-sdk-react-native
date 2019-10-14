@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="ClearCrashes.cs" />
     <Compile Include="EventFilterWrapper.cs" />
+    <Compile Include="FilePicker.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
