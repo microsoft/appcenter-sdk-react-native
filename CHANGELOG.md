@@ -2,6 +2,10 @@
 
 ## Version 2.5.0 (Under development)
 
+### App Center
+
+* **[Fix]** Fix dependency vulnerabilities in all App Center packages.
+
 ### App Center Crashes
 
 #### Android
