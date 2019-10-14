@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Fix]** Fix dependency vulnerabilities in appcenter packages.
+* **[Fix]** Fix dependency vulnerabilities in all App Center packages.
 
 ### App Center Crashes
 
