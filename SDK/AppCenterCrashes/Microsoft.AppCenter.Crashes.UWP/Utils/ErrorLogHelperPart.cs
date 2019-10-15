@@ -20,6 +20,23 @@ namespace Microsoft.AppCenter.Crashes.Utils
     {
         private const string AddressFormat = "0x{0:x16}";
 
+        // A dword, which is short for "double word," is a data type definition that is specific to Microsoft Windows. As defined in the file windows.h, a dword is an unsigned, 32-bit unit of data.
+        private const int DWordSize = 4;
+
+        // These constants come from the PE format described in documentation: https://docs.microsoft.com/en-us/windows/win32/debug/pe-format.
+
+        // Optional Header Windows-Specific field: SizeOfImage is located at the offset 56.
+        private const int SizeOfImageOffset = 56;
+
+        // At location 0x3c, the stub has the file offset to the PE signature. This information enables Windows to properly execute the image file.
+        private const int SignatureOffsetLocation = 0x3C;
+
+        // At the beginning of an object file, or immediately after the signature of an image file, is a standard COFF file header of 20 bytes.
+        private const int COFFFileHeaderSize = 20;
+
+        // Size in bytes of the address that is relative to the image base of the beginning-of-code section when it is loaded into memory.
+        private const int BaseOfDataSize = 4;
+
         internal static ErrorExceptionAndBinaries CreateModelExceptionAndBinaries(System.Exception exception)
         {
             var binaries = new Dictionary<long, ModelBinary>();
@@ -105,7 +122,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     StartAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, imageBase.ToInt64()),
                     EndAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, endAddress.ToInt64()),
                     Path = pdbPath,
-                    Architecture = "" + reader.PEHeaders.PEHeader.SizeOfImage,
                     Name = string.IsNullOrEmpty(pdbPath) == false ? Path.GetFileNameWithoutExtension(pdbPath) : null,
                     Id = string.Format(CultureInfo.InvariantCulture, "{0:N}-{1}", codeView.Guid, codeView.Age)
                 };
@@ -114,18 +130,12 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         private static int GetImageSize(IntPtr imageBase)
         {
-            // These constants come from the PE format described in documentation: https://docs.microsoft.com/en-us/windows/win32/debug/pe-format
-            var sizeOfImageOffset = 56;
-            var peSignatureOffsetLocation = 0x3C;
-            var dwordSizeInBytes = 4;
-            var sizeofCOFFFileHeader = 20;
-            var baseOfDataSize = 4; //TODO verify this variable name.
-            var peHeaderBytes = new byte[dwordSizeInBytes];
-            Marshal.Copy(imageBase + peSignatureOffsetLocation, peHeaderBytes, 0, peHeaderBytes.Length);
+            var peHeaderBytes = new byte[DWordSize];
+            Marshal.Copy(imageBase + SignatureOffsetLocation, peHeaderBytes, 0, peHeaderBytes.Length);
             var peHeaderOffset = BitConverter.ToInt32(peHeaderBytes, 0);
-            var peOptionalHeaderOffset = peHeaderOffset + baseOfDataSize + sizeofCOFFFileHeader;
-            var peOptionalHeaderBytes = new byte[dwordSizeInBytes];
-            Marshal.Copy(imageBase + peOptionalHeaderOffset + sizeOfImageOffset, peOptionalHeaderBytes, 0, peOptionalHeaderBytes.Length);
+            var peOptionalHeaderOffset = peHeaderOffset + BaseOfDataSize + COFFFileHeaderSize;
+            var peOptionalHeaderBytes = new byte[DWordSize];
+            Marshal.Copy(imageBase + peOptionalHeaderOffset + SizeOfImageOffset, peOptionalHeaderBytes, 0, peOptionalHeaderBytes.Length);
             return BitConverter.ToInt32(peOptionalHeaderBytes, 0);
         }
     }
